@@ -22,6 +22,7 @@
         self.title = kTKPDCART_TITLE;
         UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
         [self.navigationItem setTitleView:logo];
+        
     }
     return self;
 }

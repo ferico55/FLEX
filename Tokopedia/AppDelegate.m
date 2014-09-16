@@ -82,6 +82,11 @@
     UITabBarController *tabBarController = [UITabBarController new];
     UITabBar *tabbar = tabBarController.tabBar;
     
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] }
+                                             forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor greenColor] }
+                                             forState:UIControlStateSelected];
+    
     /** TAB BAR INDEX 1 **/
     /** adjust view controllers at tab bar controller **/
     viewcontrollers = [NSMutableArray new];
@@ -138,7 +143,7 @@
     
     NSArray* controllers = [NSArray arrayWithObjects:swipevcNav, categoryNavBar, searchNavBar, cartNavBar, moreNavBar, nil];
     tabBarController.viewControllers = controllers;
-    tabBarController.tabBarItem.title = nil;
+    //tabBarController.tabBarItem.title = nil;
     
     UITabBarItem *tabBarItem1 = [tabbar.items objectAtIndex:0];
     UITabBarItem *tabBarItem2 = [tabbar.items objectAtIndex:1];
@@ -154,10 +159,15 @@
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         image_active = [image_active imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        
+        [tabBarItem1 setImage:image];
+        [tabBarItem1 setSelectedImage:image_active];
+        
+        
     }
-    tabBarItem1.image = image;
-    [tabBarItem1 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
-    tabBarController.tabBar.selectedImageTintColor = nil;
+    else{
+        [tabBarItem1 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
+    }
     //tabBarItem1.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     tabBarItem1.title = @"HOME";
     
@@ -167,9 +177,12 @@
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         image_active = [image_active imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        
+        [tabBarItem2 setImage:image];
+        [tabBarItem2 setSelectedImage:image_active];
     }
-    tabBarItem2.image = image;
-    [tabBarItem2 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
+    else
+        [tabBarItem2 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
     //tabBarItem2.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     tabBarItem2.title = @"KATALOG";
     
@@ -179,9 +192,12 @@
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         image_active = [image_active imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        
+        [tabBarItem3 setImage:image];
+        [tabBarItem3 setSelectedImage:image_active];
     }
-    tabBarItem3.image = image;
-    [tabBarItem3 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
+    else
+        [tabBarItem3 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
     //tabBarItem3.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     tabBarItem3.title = @"SEARCH";
     
@@ -191,9 +207,12 @@
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         image_active = [image_active imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        
+        [tabBarItem4 setImage:image];
+        [tabBarItem4 setSelectedImage:image_active];
     }
-    tabBarItem4.image = image;
-    [tabBarItem4 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
+    else
+        [tabBarItem4 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
     //tabBarItem4.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     tabBarItem4.title = @"CART";
     
@@ -203,9 +222,12 @@
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         image_active = [image_active imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        
+        [tabBarItem5 setImage:image];
+        [tabBarItem5 setSelectedImage:image_active];
     }
-    tabBarItem5.image = image;
-    [tabBarItem5 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
+    else
+        [tabBarItem5 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
     //tabBarItem5.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     tabBarItem5.title = @"MORE";
 
@@ -245,6 +267,7 @@
 
 - (void)adjustnavigationbar
 {
+    
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
     
 	NSBundle* bundle = [NSBundle mainBundle];
@@ -265,7 +288,7 @@
 	//[proxy setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
     
 	//[proxy setTitleVerticalPositionAdjustment:kJYNAVIGATION_ITEMVERTICALADJUSTMENT forBarMetrics:UIBarMetricsDefault];	//TODO: navigation bar animation corruption
-    
+        
 	[proxy setTitleTextAttributes:[[NSDictionary alloc] initWithObjectsAndKeys:kTKPDNAVIGATION_TITLEFONT, UITextAttributeFont,kTKPDNAVIGATION_TITLECOLOR, UITextAttributeTextColor, kTKPDNAVIGATION_TITLESHADOWCOLOR, UITextAttributeTextShadowColor, nil]];
 	
 	proxy = [UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil];
