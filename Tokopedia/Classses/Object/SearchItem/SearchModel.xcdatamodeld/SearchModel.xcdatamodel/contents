@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13D2061" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="List" representedClassName="List" syncable="YES">
+        <attribute name="catalog_image" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="catalog_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="product_image" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="product_name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="product_price" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="shop_name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="result" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Result" inverseName="list" inverseEntity="Result" syncable="YES"/>
+    </entity>
+    <entity name="Result" syncable="YES">
+        <attribute name="status" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="list" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="List" inverseName="result" inverseEntity="List" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="List" positionX="18" positionY="-90" width="128" height="148"/>
+        <element name="Result" positionX="18" positionY="81" width="128" height="73"/>
+    </elements>
+</model>

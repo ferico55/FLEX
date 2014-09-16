@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="CategoryViewCell" rowHeight="111" id="eEP-Cx-A0S" customClass="CategoryViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="110"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eEP-Cx-A0S" id="Cxf-2O-fmP">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="109"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view hidden="YES" tag="10" contentMode="scaleToFill" id="RW2-8G-o0G">
+                        <rect key="frame" x="3" y="0.0" width="99" height="109"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_house.png" id="elQ-oG-jPQ">
+                                <rect key="frame" x="18" y="15" width="60" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dPA-Ei-OwS">
+                                <rect key="frame" x="0.0" y="78" width="99" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="I4h-tz-B0D" appends="YES" id="oUu-5n-kaR"/>
+                        </connections>
+                    </view>
+                    <view hidden="YES" tag="11" contentMode="scaleToFill" id="Mkn-DS-vXX">
+                        <rect key="frame" x="110" y="0.0" width="105" height="103"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_house.png" id="RUf-od-C9U">
+                                <rect key="frame" x="19" y="16" width="60" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bwo-0C-2Rc">
+                                <rect key="frame" x="0.0" y="76" width="99" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="ECe-Xm-SON" appends="YES" id="4nV-tK-hy7"/>
+                        </connections>
+                    </view>
+                    <view hidden="YES" tag="12" contentMode="scaleToFill" id="VT9-us-qxM">
+                        <rect key="frame" x="211" y="0.0" width="99" height="103"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="12" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cyd-YP-N7F">
+                                <rect key="frame" x="0.0" y="75" width="99" height="28"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_house.png" id="yay-Gh-d5j">
+                                <rect key="frame" x="19" y="16" width="60" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="8Wq-ov-1t1" appends="YES" id="Ezc-tH-BBp"/>
+                        </connections>
+                    </view>
+                </subviews>
+            </tableViewCellContentView>
+            <connections>
+                <outletCollection property="thumb" destination="elQ-oG-jPQ" id="0cb-g6-SAk"/>
+                <outletCollection property="thumb" destination="RUf-od-C9U" id="BEA-P2-ZXn"/>
+                <outletCollection property="thumb" destination="yay-Gh-d5j" id="F6R-BF-u8A"/>
+                <outletCollection property="view" destination="RW2-8G-o0G" id="fvm-3m-sNq"/>
+                <outletCollection property="view" destination="Mkn-DS-vXX" id="TyY-Ky-NV2"/>
+                <outletCollection property="view" destination="VT9-us-qxM" id="S1f-ke-d1O"/>
+                <outletCollection property="lable" destination="dPA-Ei-OwS" id="ayB-lN-1Rl"/>
+                <outletCollection property="lable" destination="bwo-0C-2Rc" id="a7J-3J-0GB"/>
+                <outletCollection property="lable" destination="cyd-YP-N7F" id="Gul-rA-05r"/>
+            </connections>
+        </tableViewCell>
+        <tapGestureRecognizer id="ECe-Xm-SON">
+            <connections>
+                <action selector="gesture:" destination="eEP-Cx-A0S" id="DMq-tA-utl"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="I4h-tz-B0D">
+            <connections>
+                <action selector="gesture:" destination="eEP-Cx-A0S" id="0g8-Gb-LBb"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="8Wq-ov-1t1">
+            <connections>
+                <action selector="gesture:" destination="eEP-Cx-A0S" id="CKW-FV-qxN"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="icon_house.png" width="30" height="30"/>
+    </resources>
+</document>

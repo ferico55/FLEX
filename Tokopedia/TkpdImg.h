@@ -1,0 +1,33 @@
+//
+//  TkpdImg.h
+//  Tokopedia
+//
+//  Created by IT Tkpd on 8/21/14.
+//  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
+//
+
+#ifndef Tokopedia_TkpdImg_h
+#define Tokopedia_TkpdImg_h
+
+#define kTKPDIMAGE_TITLEHOMEIMAGE @"logo"
+
+#define kTKPDIMAGE_ICONTABBAR_HOME @"icon_home"
+#define kTKPDIMAGE_ICONTABBAR_SEARCH @"icon_search"
+#define kTKPDIMAGE_ICONTABBAR_CATEGORY @"icon_category"
+#define kTKPDIMAGE_ICONTABBAR_CART @"icon_cart"
+#define kTKPDIMAGE_ICONTABBAR_MORE @"icon_more"
+
+#define kTKPDIMAGE_ICONTABBARACTIVE_HOME @"icon_home_active"
+#define kTKPDIMAGE_ICONTABBARACTIVE_SEARCH @"icon_search_active"
+#define kTKPDIMAGE_ICONTABBARACTIVE_CATEGORY @"icon_category_active"
+#define kTKPDIMAGE_ICONTABBARACTIVE_CART @"icon_cart_active"
+#define kTKPDIMAGE_ICONTABBARACTIVE_MORE @"icon_more_active"
+
+#define kTKPDIMAGE_NAVBARBG @"actionbar_bg"
+
+#define kTKPDIMAGE_ICONNOTIFICATION @"image-1"
+
+#define kTKPDIMAGE_TABBARACTIVEBG @"active_tab"
+#define kTKPDIMAGE_TABBARBG @"tabnav_bg"
+
+#endif

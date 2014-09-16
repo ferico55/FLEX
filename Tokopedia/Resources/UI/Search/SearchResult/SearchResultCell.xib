@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="SearchResultCellIdentifier" rowHeight="179" id="MYw-TL-yGh" customClass="SearchResultCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="179"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MYw-TL-yGh" id="DU8-hg-bfW">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="178"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view hidden="YES" tag="10" contentMode="scaleToFill" id="xwW-p0-iHe">
+                        <rect key="frame" x="10" y="9" width="145" height="170"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thumb_product.png" id="Pxl-PG-hIw">
+                                <rect key="frame" x="0.0" y="0.0" width="145" height="122"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp. 75.000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="s0R-yK-EE4">
+                                <rect key="frame" x="0.0" y="127" width="125" height="12"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" red="0.81568627449999997" green="0.090196078430000007" blue="0.086274509799999996" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model Baju Korea Yang Keren" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rHp-OA-VTc">
+                                <rect key="frame" x="0.0" y="140" width="145" height="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bangkok Collection" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CvB-Xq-18E">
+                                <rect key="frame" x="0.0" y="153" width="145" height="12"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" id="HHH-uD-oTT">
+                                <rect key="frame" x="62" y="46" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="pa0-mw-MhT" appends="YES" id="WdA-gO-2Yw"/>
+                        </connections>
+                    </view>
+                    <view hidden="YES" tag="11" contentMode="scaleToFill" id="HFC-K8-scl">
+                        <rect key="frame" x="164" y="9" width="145" height="170"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thumb_product.png" id="qsU-n6-G4W">
+                                <rect key="frame" x="0.0" y="0.0" width="145" height="122"/>
+                            </imageView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp. 75.000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6Y5-X1-1pz">
+                                <rect key="frame" x="0.0" y="130" width="137" height="9"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" red="0.81568627449999997" green="0.090196078430000007" blue="0.086274509799999996" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model Baju Korea Yang Keren" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ZzY-ep-eXy">
+                                <rect key="frame" x="0.0" y="140" width="145" height="14"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bangkok Collection" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="StV-Ox-gzB">
+                                <rect key="frame" x="0.0" y="153" width="145" height="12"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" id="ZeP-ga-851">
+                                <rect key="frame" x="62" y="51" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Feh-oE-Sam" appends="YES" id="eZO-t6-9e3"/>
+                        </connections>
+                    </view>
+                </subviews>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <connections>
+                <outletCollection property="viewcell" destination="xwW-p0-iHe" id="afw-5i-6Ck"/>
+                <outletCollection property="thumb" destination="Pxl-PG-hIw" id="Lay-hi-0aZ"/>
+                <outletCollection property="labeldescription" destination="rHp-OA-VTc" id="AMo-ai-nGN"/>
+                <outletCollection property="labelalbum" destination="CvB-Xq-18E" id="x5I-SQ-iTs"/>
+                <outletCollection property="labelprice" destination="s0R-yK-EE4" id="rVS-cs-5yU"/>
+                <outletCollection property="viewcell" destination="HFC-K8-scl" id="Tk3-4M-7ix"/>
+                <outletCollection property="labelalbum" destination="StV-Ox-gzB" id="nhV-w0-kEx"/>
+                <outletCollection property="labeldescription" destination="ZzY-ep-eXy" id="X66-T7-IzV"/>
+                <outletCollection property="labelprice" destination="6Y5-X1-1pz" id="af8-Xy-svv"/>
+                <outletCollection property="thumb" destination="qsU-n6-G4W" id="TA2-Lm-pSR"/>
+                <outletCollection property="act" destination="HHH-uD-oTT" id="Yni-O7-RBl"/>
+                <outletCollection property="act" destination="ZeP-ga-851" id="gTq-0C-f92"/>
+            </connections>
+        </tableViewCell>
+        <tapGestureRecognizer id="pa0-mw-MhT">
+            <connections>
+                <action selector="gesture:" destination="MYw-TL-yGh" id="Liq-RU-FW6"/>
+                <outlet property="delegate" destination="MYw-TL-yGh" id="2Ss-ET-wWV"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="Feh-oE-Sam">
+            <connections>
+                <action selector="gesture:" destination="MYw-TL-yGh" id="RWQ-Gw-S8v"/>
+                <outlet property="delegate" destination="MYw-TL-yGh" id="TfH-WA-gCg"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="thumb_product.png" width="276" height="244"/>
+    </resources>
+</document>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPDTabNavigationController">
+            <connections>
+                <outlet property="container" destination="h6P-fn-Wnp" id="quZ-Kg-XgS"/>
+                <outlet property="tabbarthrees" destination="9wn-WC-rW6" id="P96-y9-lqu"/>
+                <outlet property="tabbartwos" destination="9ay-QG-bit" id="mCm-VA-QlW"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <segmentedControl hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="9wn-WC-rW6" userLabel="Plain Segmented Control - 3">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="29"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <segments>
+                        <segment title="Product"/>
+                        <segment title="Catalog"/>
+                        <segment title="Shop"/>
+                    </segments>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="valueChanged" id="tkp-7o-TXd"/>
+                    </connections>
+                </segmentedControl>
+                <segmentedControl hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="9ay-QG-bit" userLabel="Plain Segmented Control - 2">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="29"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                    <segments>
+                        <segment title="Product"/>
+                        <segment title="Shop"/>
+                    </segments>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="valueChanged" id="CCS-xX-bZz"/>
+                    </connections>
+                </segmentedControl>
+                <view clipsSubviews="YES" contentMode="scaleToFill" id="h6P-fn-Wnp" userLabel="ContainerView">
+                    <rect key="frame" x="0.0" y="42" width="320" height="526"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+</document>
