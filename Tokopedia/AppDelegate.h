@@ -24,6 +24,10 @@
 
 #define kTKPDWINDOW_TINTLCOLOR [UIColor blackColor]
 
+#define kTKPD_HOMETITLEARRAY @[@"Hotlist",@"Produk Feed", @"Terakhir dilihat", @"Toko Favorite"]
+
+#define kTKPDNAVIGATION_TABBARTITLEARRAY @[@"Home", @"Katalog", @"Search", @"Cart", @"More"]
+
 #define kTKPDNAVIGATION_BACKGROUNDINSET UIEdgeInsetsZero
 #define kTKPDNAVIGATION_TITLEFONT [UIFont fontWithName:@"Lato-Bold" size:16.0f]
 #define kTKPDNAVIGATION_TITLECOLOR [UIColor whiteColor]

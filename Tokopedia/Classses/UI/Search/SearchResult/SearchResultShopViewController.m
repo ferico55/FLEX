@@ -108,12 +108,14 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
 }
 
 
 // We have been obscured -- cancel any pending requests
 - (void)viewWillDisappear:(BOOL)animated {
     [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -130,7 +132,17 @@
     //[self request:YES withrefreshControl:refresh];
 }
 
-
+-(void)setDepartmentID:(NSNotification*)notification
+{
+    NSDictionary* userinfo = notification.userInfo;
+    
+    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [_params setObject:[userinfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    [_product removeAllObjects];
+    _page = 1;
+    [_table reloadData];
+    [self loadData];
+}
 
 #pragma mark - Properties
 -(void)setData:(NSDictionary *)data
@@ -299,7 +311,6 @@
     
     if (deptid == nil ) {
         param = @{
-                  //@"auth":@(1),
                   kTKPDSEARCH_APIQUERYKEY : querry?:@"",
                   kTKPDSEARCH_APIACTIONTYPEKEY : type?:@"",
                   kTKPDSEARCH_APIPAGEKEY : @(_page),
@@ -308,7 +319,6 @@
     }
     else{
         param = @{
-                  //@"auth":@(1),
                   kTKPDSEARCH_APIDEPARTEMENTIDKEY : deptid?:@"",
                   kTKPDSEARCH_APIACTIONTYPEKEY : type?:@"",
                   kTKPDSEARCH_APIPAGEKEY : @(_page),

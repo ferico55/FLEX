@@ -535,6 +535,7 @@
 		FCCCB95819B435440077349C /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainViewController.xib; path = Tokopedia/Resources/MainViewController.xib; sourceTree = SOURCE_ROOT; };
 		FCCCB95B19B4476A0077349C /* Paging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paging.h; sourceTree = "<group>"; };
 		FCCCB95C19B4476A0077349C /* Paging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Paging.m; sourceTree = "<group>"; };
+		FCFCC1A619C830280017E211 /* controller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = controller.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1162,6 +1163,7 @@
 				FC24856819C16168008755DA /* TKPDTabNavigationController.m */,
 				FC24857B19C199FC008755DA /* TKPDTabHomeNavigationController.h */,
 				FC24857C19C199FC008755DA /* TKPDTabHomeNavigationController.m */,
+				FCFCC1A619C830280017E211 /* controller.h */,
 			);
 			path = Controller;
 			sourceTree = "<group>";

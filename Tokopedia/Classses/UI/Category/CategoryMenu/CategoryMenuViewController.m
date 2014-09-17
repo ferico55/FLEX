@@ -85,7 +85,7 @@
     _table.dataSource = self;
     
     /** Set isnull value (title and icon for category) **/
-    NSInteger parentid = [[_data objectForKey:@"d_id"]integerValue];
+    NSInteger parentid = [[_data objectForKey:kTKPDCATEGORY_DATADEPARTMENTIDKEY]integerValue];
     NSArray *data = [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%d\" order by weight",parentid]];
     
     [_menu addObjectsFromArray:data];
@@ -95,10 +95,10 @@
         NSInteger childparentid = [_menu[i][@"id"]integerValue];
         NSArray * data= [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%d\" order by weight",childparentid]];
         if (data == nil || data.count == 0) {
-            [_menu[i] setObject:@(YES) forKey:@"isnullchild"];
+            [_menu[i] setObject:@(YES) forKey:kTKPDCATEGORY_DATAISNULLCHILD];
         }
         else
-            [_menu[i] setObject:@(NO) forKey:@"isnullchild"];
+            [_menu[i] setObject:@(NO) forKey:kTKPDCATEGORY_DATAISNULLCHILD];
     }
     /** **/
     
@@ -226,14 +226,17 @@
 
 #pragma mark - Cell Delegate
 -(void)CategoryMenuViewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath{
-    if([[_menu[indexpath.row] objectForKey:@"isnullchild"] isEqual:@(0)]){
+    if([[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATAISNULLCHILD] isEqual:@(0)]){
         CategoryMenuViewController *vc = [CategoryMenuViewController new];
-        vc.data = @{kTKPDCATEGORY_DATADIDKEY:[_menu[indexpath.row] objectForKey:@"id"]};
+        vc.data = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexpath.row] objectForKey:@"id"]};
         [self.navigationController pushViewController:vc animated:YES];
     }
     else{
         NSArray *array = [self.navigationController viewControllers];
         [self.navigationController popToViewController:[array objectAtIndex:0] animated:YES];
+        NSDictionary *userinfo = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexpath.row] objectForKey:@"id"]};
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"setDepartmentID" object:self userInfo:userinfo];
+
     }
 }
 

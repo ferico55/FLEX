@@ -6,7 +6,9 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+#import "controller.h"
 #import "TKPDTabNavigationController.h"
+#import "CategoryMenuViewController.h"
 
 @interface TKPDTabNavigationController () {
 	UIView* _tabbar;
@@ -116,6 +118,7 @@
     [super viewWillDisappear:animated];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
 }
 
 - (void)viewDidLayoutSubviews
@@ -160,6 +163,30 @@
 
 #pragma mark -
 #pragma mark Properties
+
+-(void)setData:(NSDictionary *)data
+{
+    _data = data;
+    
+    if (data) {
+        
+        UIBarButtonItem *barbutton1;
+        NSBundle* bundle = [NSBundle mainBundle];
+        //TODO:: Change image
+        UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
+        if ([[_data objectForKey:kTKPDCONTROLLER_DATATYPEKEY]  isEqual: @(kTKPDCONTROLLER_DATATYPECATEGORYKEY)]) {
+            UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+                UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+                barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+            }
+            else
+                barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+            [barbutton1 setTag:11];
+            self.navigationItem.rightBarButtonItem = barbutton1;
+        }
+    }
+}
 
 - (void)setViewControllers:(NSArray *)viewControllers
 {
@@ -485,9 +512,17 @@
         
         switch (btn.tag) {
             case 10:
+            {
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
-                
+            }
+            case 11:
+            {
+                CategoryMenuViewController *vc = [CategoryMenuViewController new];
+                NSInteger d_id = [[_data objectForKey:kTKPDCONTROLLER_DATADEPARTMENTIDKEY] integerValue];
+                vc.data = @{kTKPDCONTROLLER_DATADEPARTMENTIDKEY:@(d_id)};
+                [self.navigationController pushViewController:vc animated:YES];
+            }
             default:
                 break;
         }

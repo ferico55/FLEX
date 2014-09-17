@@ -39,6 +39,8 @@
 
 @property (nonatomic, readonly, assign) UIEdgeInsets contentInsetForChildController;
 
+@property (nonatomic, copy, setter = setData:) NSDictionary *data;
+
 //+ (id)allocinit;
 - (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated;
 - (void)setSelectedViewController:(UIViewController *)selectedViewController animated:(BOOL)animated;

@@ -6,11 +6,9 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "SearchRedirect.h"
 #import "HotlistDetail.h"
 #import "SearchResult.h"
 #import "List.h"
-#import "Paging.h"
 
 #import "home.h"
 #import "HotlistResultViewCell.h"
@@ -45,6 +43,8 @@
     NSString *_urinext;
     
     BOOL _isnodata;
+    
+    UIRefreshControl *_refreshControl;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -62,17 +62,19 @@
 {
     [super viewDidLoad];
     
-    /** set title navigation **/
+    // set title navigation
     NSString * title = [_data objectForKey:kTKPDHOME_DATATITLEKEY];
     self.navigationItem.title = title;
     
-    /** create new **/
+    // create initialitation
     _paging = [NSMutableDictionary new];
     _product = [NSMutableArray new];
     _detailhotlist = [NSMutableDictionary new];
     
-    /** set max data per page request **/
+    // set max data per page request
     _limit = kTKPDHOMEHOTLISTRESULT_LIMITPAGE;
+    
+    _page = 1;
     
     /** set inset table for different size**/
     //if (is4inch) {
@@ -107,15 +109,13 @@
 	[barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
     
-    /** adjust refresh control **/
-    //[self request:YES withrefreshControl:nil];
-    //UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
-    //refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
-    //[refresh addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
-    //[_hotlisttable addSubview:refresh];
+    // adjust refresh control
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_table addSubview:_refreshControl];
     
     [self configureRestKit];
-    //[self loadVenues];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -124,29 +124,12 @@
     [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
 }
 
-
-//TODO:: refresh view
-//-(void)refreshView:(UIRefreshControl*)refresh
-//{
-//    
-//    [_product removeAllObjects];
-//    [_paging removeAllObjects];
-//    [_table reloadData];
-//    //static dispatch_once_t onceToken;
-//    
-//    //dispatch_once (&onceToken, ^{
-//    //[self request:YES withrefreshControl:refresh];
-//    //});
-//}
-
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 
-
 #pragma mark - Table View Data Source
-
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger count = (_product.count%2==0)?_product.count/2:_product.count/2+1;
 #ifdef kTKPDHOTLISTRESULT_NODATAENABLE
@@ -256,15 +239,23 @@
             case 10:
                 //BACK
                 if ([_data objectForKey:kTKPDHOME_DATAISSEARCHHOTLISTKEY]) {
-                    //pop from search
+                    //dissmis if parent view controller from search
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 }
                 else
+                    // pop if parent view controller from hotlist (home)
                     [self.navigationController popViewControllerAnimated:YES];
                 break;
                 
             default:
                 break;
+        }
+    }
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *button = (UIButton*)sender;
+        // buttons tag >=20 are tags untuk hashtags
+        if (button.tag >=20) {
+            
         }
     }
 }
@@ -279,23 +270,23 @@
     RKObjectManager *objectManager =  [RKObjectManager sharedManager];
     
     // setup object mappings
-    /** Hotlist detail **/
+    // Hotlist detail
     RKObjectMapping *hotlistDetailMapping = [RKObjectMapping mappingForClass:[HotlistDetail class]];
     [hotlistDetailMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APISTATUSKEY:kTKPDHOME_APISTATUSKEY, kTKPDHOME_APISERVERPROCESSTIMEKEY:kTKPDHOME_APISERVERPROCESSTIMEKEY}];
     
-    /** result **/
+    // result mapping
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APICOVERIMAGEKEY:kTKPDHOME_APICOVERIMAGEKEY, KTKPDHOME_APIDESCRIPTIONKEY:KTKPDHOME_APIDESCRIPTIONKEY}];
     
-    /** searchs list mappng **/
+    // searchs list mapping
     RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[List class]];
     [hotlistMapping addAttributeMappingsFromArray:@[kTKPDHOME_APICATALOGIMAGEKEY,kTKPDHOME_APICATALOGNAMEKEY,kTKPDHOME_APICATALOGPRICEKEY,kTKPDHOME_APIPRODUCTPRICEKEY,kTKPDHOME_APIPRODUCTIDKEY,kTKPDHOME_APISHOPGOLDSTATUSKEY,kTKPDHOME_APISHOPLOCATIONKEY,kTKPDHOME_APISHOPNAMEKEY,kTKPDHOME_APIPRODUCTIMAGEKEY,kTKPDHOME_APIPRODUCTNAMEKEY]];
     
-    /** paging mapping **/
+    // paging mapping
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APIURINEXTKEY:kTKPDHOME_APIURINEXTKEY}];
     
-    /** hashtags mapping **/
+    // hashtags mapping
     RKObjectMapping *hashtagMapping = [RKObjectMapping mappingForClass:[Hashtags class]];
     [hashtagMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHASHTAGSNAMEKEY, kTKPDHOME_APIHASHTAGSURLKEY]];
     
@@ -303,16 +294,16 @@
     [hotlistDetailMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIRESULTKEY toKeyPath:kTKPDHOME_APIRESULTKEY withMapping:resultMapping]];
     
     // register mappings with the provider using a response descriptor
-    
+    // result
     RKResponseDescriptor *responseDescriptorResult = [RKResponseDescriptor responseDescriptorWithMapping:hotlistDetailMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
+    // hotlist
     RKResponseDescriptor *responseDescriptorHotlistDetail = [RKResponseDescriptor responseDescriptorWithMapping:hotlistMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APIPATHMAPPINGLISTKEY statusCodes:kTkpdIndexSetStatusCodeOK];
-    
+    // paging
     RKResponseDescriptor *responseDescriptorPaging = [RKResponseDescriptor responseDescriptorWithMapping:pagingMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APIPATHMAPPINGPAGINGKEY statusCodes:kTkpdIndexSetStatusCodeOK];
-    
+    // hashtags
      RKResponseDescriptor *responseDescriptorHashtags = [RKResponseDescriptor responseDescriptorWithMapping:hashtagMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOMEHOTLIST_APIHASHTAGSKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    
+    // add response description to object manager
     [objectManager addResponseDescriptor:responseDescriptorResult];
     [objectManager addResponseDescriptor:responseDescriptorHotlistDetail];
     [objectManager addResponseDescriptor:responseDescriptorPaging];
@@ -356,7 +347,7 @@
         [_act stopAnimating];
         _table.tableFooterView = nil;
         [_table reloadData];
-        //[_refreshControl endRefreshing];
+        [_refreshControl endRefreshing];
         
         NSLog(@"============================== DONE GET HOTLIST DETAIL =====================");
         
@@ -367,7 +358,7 @@
         //[alertView show];
         [_act stopAnimating];
         _table.tableFooterView = nil;
-        //[_refreshControl endRefreshing];
+        [_refreshControl endRefreshing];
         
         NSLog(@"============================== DONE GET HOTLIST DETAIL =====================");
     }];
@@ -492,7 +483,7 @@
         CGFloat widthlabel = stringSize.width+10;
         
         button.frame = CGRectMake(widthcontenttop,_hashtagsscrollview.frame.size.height/2-10,widthlabel,(_hashtagsscrollview.frame.size.height)-30);
-        button.tag = i;
+        button.tag = i+20;
         
         widthcontenttop +=widthlabel;
         
@@ -501,6 +492,22 @@
     }
     
     _hashtagsscrollview.contentSize = CGSizeMake(widthcontenttop+10, 0);
+}
+
+
+#pragma mark - Methods
+-(void)refreshView:(UIRefreshControl*)refresh
+{
+    // cancel all request
+    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    
+    // reset object
+    [_product removeAllObjects];
+    _page = 1;
+    [_table reloadData];
+    
+    // request data
+    [self loadData];
 }
 
 @end

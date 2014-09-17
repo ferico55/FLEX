@@ -107,16 +107,20 @@
     //[_table addSubview:_refreshControl];
     
     [self configureRestKit];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
 }
 
 
 // We have been obscured -- cancel any pending requests
 - (void)viewWillDisappear:(BOOL)animated {
     [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
 }
 
 
@@ -530,13 +534,13 @@
         NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
         
         // Redirect URI to hotlist
-        if ([querry[1] isEqualToString:@"hot"]) {
+        if ([querry[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
             HotlistResultViewController *vc = [HotlistResultViewController new];
             vc.data = @{kTKPDSEARCH_DATAISSEARCHHOTLISTKEY : @(YES), kTKPDSEARCHHOTLIST_APIQUERYKEY : querry[2]};
             [self.navigationController pushViewController:vc animated:NO];
         }
         // redirect uri to search category
-        if ([querry[1] isEqualToString:@"p"]) {
+        if ([querry[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
             NSString *deptid = searchcatalog.department_id;
             [_params setObject:deptid forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
             [self loadData];
@@ -595,5 +599,17 @@
     }
 }
 
+#pragma mark - Methods
+-(void)setDepartmentID:(NSNotification*)notification
+{
+    NSDictionary* userinfo = notification.userInfo;
+    
+    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [_params setObject:[userinfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    [_product removeAllObjects];
+    _page = 1;
+    [_table reloadData];
+    [self loadData];
+}
 
 @end

@@ -19,6 +19,9 @@
 #define kTKPDSEARCH_DATATYPE @"type"
 #define kTKPDSEARCH_DATAISSEARCHHOTLISTKEY @"issearchhotlist"
 
+#define kTKPDSEARCH_DATAURLREDIRECTHOTKEY @"hot"
+#define kTKPDSEARCH_DATAURLREDIRECTCATEGORY @"p"
+
 #define kTKPDSEARCH_DATASEARCHPRODUCTKEY @"search_product"
 #define kTKPDSEARCH_DATASEARCHCATALOGKEY @"search_catalog"
 #define kTKPDSEARCH_DATASEARCHSHOPKEY @"search_shop"
@@ -49,6 +52,8 @@
 /** redirect url **/
 #define kTKPDSEARCH_APIREDIRECTURLKEY @"redirect_url"
 #define kTKPDSEARCH_APIDEPARTEMENTIDKEY @"department_id"
+#define kTKPDSEARCH_APIDIDKEY @"d_id"
+
 /** has catalog **/
 #define kTKPDSEARCH_APIHASCATALOGKEY @"has_catalog"
 

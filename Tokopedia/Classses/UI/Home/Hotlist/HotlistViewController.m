@@ -31,24 +31,17 @@
     NSInteger _page;
     NSInteger _limit;
     
-    NSInteger _viewposition;
-    
     NSString *_urinext;
     
     BOOL _isnodata;
     
     UIRefreshControl *_refreshControl;
-    //__weak AFHTTPRequestOperation *_request;
 }
 
 #pragma mark - View Lifecylce
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    /** this will setup the position in the UIScrollView **/
-    [self.view setFrame:CGRectMake(320*_viewposition, 0, 320, 460)];
-    
     
     /** create new **/
     _product = [NSMutableArray new];
@@ -92,7 +85,6 @@
     [_table addSubview:_refreshControl];
     
     [self configureRestKit];
-    [self loadData];
 }
 
 #pragma mark - Methods
@@ -237,6 +229,8 @@
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [dictionary setObject:responseDescriptorHotlist.mapping forKey:(responseDescriptorHotlist.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptorPaging.mapping forKey:(responseDescriptorPaging.keyPath ?: [NSNull null])];
+    
+    [self loadData];
 }
 
 - (void)loadData
@@ -352,7 +346,7 @@
     NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
     
     vc.data = @{kTKPDHOME_DATAQUERYKEY: querry[2]};
-    [_navcon pushViewController:vc animated:YES];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end
