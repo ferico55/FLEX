@@ -81,9 +81,9 @@
     UITabBarController *tabBarController = [UITabBarController new];
     UITabBar *tabbar = tabBarController.tabBar;
     
-    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] }
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : kTKPDNAVIGATION_TABBARTITLECOLOR }
                                              forState:UIControlStateNormal];
-    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor greenColor] }
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : kTKPDNAVIGATION_TABBARACTIVETITLECOLOR }
                                              forState:UIControlStateSelected];
     
     /** TAB BAR INDEX 1 **/
