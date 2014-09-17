@@ -1,20 +1,21 @@
 //
-//  SearchFilterLocationViewCell.m
+//  FilterLocationViewCell.m
 //  Tokopedia
 //
 //  Created by IT Tkpd on 9/5/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "SearchFilterLocationViewCell.h"
+#import "sortfiltershare.h"
+#import "FilterLocationViewCell.h"
 
-@implementation SearchFilterLocationViewCell
+@implementation FilterLocationViewCell
 
 #pragma mark - Factory methods
 
 + (id)newcell
 {
-    NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"SearchFilterLocationViewCell" owner:nil options:0];
+    NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"FilterLocationViewCell" owner:nil options:0];
     for (id o in a) {
         if ([o isKindOfClass:[self class]]) {
             return o;
@@ -40,7 +41,8 @@
 {
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
-        [_delegate SearchFilterLocationViewCell:self withdata:_data];
+        NSIndexPath *indexpath = [_data objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
+        [_delegate FilterLocationViewCell:self withindexpath:indexpath];
     }
 }
 
@@ -51,7 +53,7 @@
     
     if (data) {
         //NSDictionary *column = [_data objectForKey:@"column"];
-        _label.text = [_data objectForKey:@"column"];
+        _label.text = [_data objectForKey:kTKPDFILTER_DATACOLUMNKEY];
     }
 }
 

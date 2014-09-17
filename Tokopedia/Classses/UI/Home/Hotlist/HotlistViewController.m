@@ -71,12 +71,9 @@
     /** set table footer view (loading act) **/
     _table.tableFooterView = _footer;
     
-    _isnodata = NO; //TODO: Remove this
-    
-    
-    //if (_product.count > 0) {
-    //    _isnodata = NO;
-    //}
+    if (_product.count > 0) {
+        _isnodata = NO;
+    }
     
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -86,21 +83,6 @@
     
     [self configureRestKit];
 }
-
-#pragma mark - Methods
--(void)refreshView:(UIRefreshControl*)refresh
-{
-    /** clear object **/
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
-    [_product removeAllObjects];
-    _page = 1;
-    
-    [_table reloadData];
-    /** request data **/
-    [self loadData];
-    //[self request:YES withrefreshControl:refresh];
-}
-
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -200,10 +182,6 @@
     // initialize AFNetworking HTTPClient + restkit
     TraktAPIClient *client = [TraktAPIClient sharedClient];
     RKObjectManager *objectManager = [[RKObjectManager alloc] initWithHTTPClient:client];
-    
-#define kTKPDHOME_APISTATUSKEY @"status"
-#define kTKPDHOME_APISERVERPROCESSTIMEKEY @"server_process_time"
-#define kTKPDHOME_APIRESULTKEY @"result"
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Hotlist class]];
@@ -346,7 +324,22 @@
     NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
     
     vc.data = @{kTKPDHOME_DATAQUERYKEY: querry[2]};
-    [self.navigationController pushViewController:vc animated:YES];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+#pragma mark - Methods
+-(void)refreshView:(UIRefreshControl*)refresh
+{
+    /** clear object **/
+    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [_product removeAllObjects];
+    _page = 1;
+    
+    [_table reloadData];
+    /** request data **/
+    [self loadData];
+    //[self request:YES withrefreshControl:refresh];
 }
 
 @end

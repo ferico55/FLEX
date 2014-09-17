@@ -11,6 +11,8 @@
 #import "List.h"
 
 #import "home.h"
+#import "FilterViewController.h"
+#import "SortViewController.h"
 #import "HotlistResultViewCell.h"
 #import "HotlistResultViewController.h"
 
@@ -22,6 +24,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UIScrollView *hashtagsscrollview;
+@property (strong, nonatomic) IBOutlet UIView *descriptionview;
+@property (weak, nonatomic) IBOutlet UIScrollView *imagescrollview;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionlabel;
 
 @property (nonatomic, strong) NSMutableArray *product;
 
@@ -38,6 +43,7 @@
     NSMutableDictionary *_paging;
     NSMutableArray *_buttons;
     NSMutableDictionary *_detailhotlist;
+    NSMutableDictionary *_detailfilter;
     
     /** url to the next page **/
     NSString *_urinext;
@@ -70,6 +76,7 @@
     _paging = [NSMutableDictionary new];
     _product = [NSMutableArray new];
     _detailhotlist = [NSMutableDictionary new];
+    _detailfilter = [NSMutableDictionary new];
     
     // set max data per page request
     _limit = kTKPDHOMEHOTLISTRESULT_LIMITPAGE;
@@ -109,24 +116,47 @@
 	[barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
     
+    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    }
+    else
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+	[barbutton1 setTag:11];
+    self.navigationItem.rightBarButtonItem = barbutton1;
+    
     // adjust refresh control
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(updateView:) name:@"setfilter" object:nil];
+    
     [self configureRestKit];
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setFilterandRefresh:) name:@"setfilter" object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    //[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Table View Data Source
@@ -237,16 +267,16 @@
         
         switch (button.tag) {
             case 10:
+            {
                 //BACK
-                if ([_data objectForKey:kTKPDHOME_DATAISSEARCHHOTLISTKEY]) {
-                    //dissmis if parent view controller from search
-                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                }
-                else
-                    // pop if parent view controller from hotlist (home)
-                    [self.navigationController popViewControllerAnimated:YES];
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
+            }
+            case 11:
+            {
+                //CATEGORY
                 
+            }
             default:
                 break;
         }
@@ -257,8 +287,57 @@
         if (button.tag >=20) {
             
         }
+        else
+        {
+            switch (button.tag) {
+                case 10:
+                {
+                    // URUTKAN
+                    SortViewController *vc = [SortViewController new];
+                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                    [self.navigationController presentViewController:nav animated:YES completion:nil];
+                    break;
+                }
+                case 11:
+                {
+                    // FILTER
+                    FilterViewController *vc = [FilterViewController new];
+                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                    [self.navigationController presentViewController:nav animated:YES completion:nil];
+                    break;
+                }
+                case 12:
+                {
+                    //SHARE
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
     }
 }
+- (IBAction)gesture:(id)sender {
+    
+    if ([sender isKindOfClass:[UISwipeGestureRecognizer class]]) {
+        UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer*)sender;
+        switch (swipe.state) {
+            case UIGestureRecognizerStateEnded: {
+                if (swipe.direction == UISwipeGestureRecognizerDirectionRight) {
+                    [_descriptionview removeFromSuperview];
+                }
+               if (swipe.direction == UISwipeGestureRecognizerDirectionLeft) {
+                   [_descriptionview setFrame:CGRectMake(_imageview.frame.origin.x, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
+                   [self.view addSubview:_descriptionview];
+                }
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
+
 
 #pragma mark - Request + Mapping
 - (void)configureRestKit
@@ -331,13 +410,19 @@
                                     repeats:NO];
     
     NSString *querry =[_data objectForKey:kTKPDHOME_DATAQUERYKEY];
-    
+
 	NSDictionary* param = @{
                             //@"auth":@(1),
                             //kTKPDHOME_APIQUERYKEY : querry?:@"",
                             kTKPDHOME_APIQUERYKEY : @"demi-iklan", //TODO::remove dummy data
                             kTKPDHOME_APIPAGEKEY : @(_page),
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLISTRESULT_LIMITPAGE),
+                            kTKPDHOME_APIORDERBYKEY : [_data objectForKey:kTKPDHOME_APIORDERBYKEY]?:@"",
+                            kTKPDHOME_APIDEPARTMENTIDKEY: [_data objectForKey:kTKPDHOME_APIDEPARTMENTIDKEY]?:@"",
+                            kTKPDHOME_APILOCATIONKEY :[_detailfilter objectForKey:kTKPDHOME_APILOCATIONKEY]?:@"",
+                            kTKPDHOME_APISHOPTYPEKEY :[_detailfilter objectForKey:kTKPDHOME_APISHOPTYPEKEY]?:@"",
+                            kTKPDHOME_APIPRICEMINKEY :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMINKEY]?:@"",
+                            kTKPDHOME_APIPRICEMAXKEY :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMAXKEY]?:@""
                             };
     
     NSLog(@"============================== GET HOTLIST DETAIL =====================");
@@ -457,6 +542,8 @@
         [_act stopAnimating];
     }];
     
+    _descriptionlabel.text = hotlistdetail.result.description;
+    
     NSArray *hashtags = [data objectForKey:kTKPDHOMEHOTLIST_APIHASHTAGSKEYPATH];
     [self setHashtagsArray:hashtags];
 }
@@ -507,6 +594,23 @@
     [_table reloadData];
     
     // request data
+    [self loadData];
+}
+
+#pragma mark - Post Notification Methods
+- (void)updateView:(NSNotification *)notification;
+{
+    NSDictionary *userinfo = notification.userInfo;
+    [_detailfilter addEntriesFromDictionary:userinfo];
+    
+    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    
+    // reset object
+    [_product removeAllObjects];
+    _page = 1;
+    [_table reloadData];
+
+    
     [self loadData];
 }
 

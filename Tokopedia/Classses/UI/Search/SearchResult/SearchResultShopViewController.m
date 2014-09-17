@@ -13,7 +13,7 @@
 #import "DetailProductViewController.h"
 #import "SearchResultShopCell.h"
 #import "SearchResultViewController.h"
-#import "SearchFilterLocationViewController.h"
+#import "FilterLocationViewController.h"
 #import "DetailShopViewController.h"
 #import "HotlistResultViewController.h"
 #import "TKPDTabNavigationController.h"
@@ -453,7 +453,7 @@
         case 10:
         {
             // Action Location Button
-            SearchFilterLocationViewController *vc = [SearchFilterLocationViewController new];
+            FilterLocationViewController *vc = [FilterLocationViewController new];
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             

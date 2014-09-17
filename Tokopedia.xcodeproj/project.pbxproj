@@ -141,6 +141,16 @@
 		FC2F209519BD675800C2B9B5 /* Product.m in Sources */ = {isa = PBXBuildFile; fileRef = FC2F209419BD675800C2B9B5 /* Product.m */; };
 		FC2F209819BD682F00C2B9B5 /* WholesalePrice.m in Sources */ = {isa = PBXBuildFile; fileRef = FC2F209719BD682F00C2B9B5 /* WholesalePrice.m */; };
 		FC2F209E19BD73F300C2B9B5 /* DetailProductResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FC2F209D19BD73F300C2B9B5 /* DetailProductResult.m */; };
+		FC300B7419C946360098F0D0 /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC300B6D19C946360098F0D0 /* FilterViewController.m */; };
+		FC300B7519C946360098F0D0 /* SortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC300B7019C946360098F0D0 /* SortCell.m */; };
+		FC300B7619C946360098F0D0 /* SortViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC300B7219C946360098F0D0 /* SortViewController.m */; };
+		FC300B7D19C946430098F0D0 /* FilterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC300B7919C946430098F0D0 /* FilterViewController.xib */; };
+		FC300B7E19C946430098F0D0 /* SortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC300B7B19C946430098F0D0 /* SortCell.xib */; };
+		FC300B7F19C946430098F0D0 /* SortViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC300B7C19C946430098F0D0 /* SortViewController.xib */; };
+		FC300B8519C949760098F0D0 /* FilterLocationViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC300B8219C949760098F0D0 /* FilterLocationViewCell.m */; };
+		FC300B8619C949760098F0D0 /* FilterLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC300B8419C949760098F0D0 /* FilterLocationViewController.m */; };
+		FC300B8A19C949830098F0D0 /* FilterLocationViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC300B8819C949830098F0D0 /* FilterLocationViewCell.xib */; };
+		FC300B8B19C949830098F0D0 /* FilterLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC300B8919C949830098F0D0 /* FilterLocationViewController.xib */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
 		FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */; };
 		FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8A19B0656400AF74C1 /* UIKit.framework */; };
@@ -200,8 +210,6 @@
 		FC36E1C919B0673800AF74C1 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC36E16D19B0673800AF74C1 /* SearchResultCell.xib */; };
 		FC36E1CA19B0673800AF74C1 /* SearchResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC36E16E19B0673800AF74C1 /* SearchResultViewController.xib */; };
 		FC36E1D419B0904F00AF74C1 /* TraktAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36E1D319B0904F00AF74C1 /* TraktAPIClient.m */; };
-		FC52109A19C68FFF004932C5 /* SearchFilterLocationViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC52109819C68FFF004932C5 /* SearchFilterLocationViewCell.xib */; };
-		FC52109B19C68FFF004932C5 /* SearchFilterLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC52109919C68FFF004932C5 /* SearchFilterLocationViewController.xib */; };
 		FC52109F19C6A428004932C5 /* SearchResultShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC52109D19C6A428004932C5 /* SearchResultShopViewController.m */; };
 		FC5210A019C6A428004932C5 /* SearchResultShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC52109E19C6A428004932C5 /* SearchResultShopViewController.xib */; };
 		FC5210A919C6A48A004932C5 /* SearchResultShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC5210A719C6A48A004932C5 /* SearchResultShopCell.m */; };
@@ -216,8 +224,6 @@
 		FC681F6A19B6D6A100C58548 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC681F6919B6D6A100C58548 /* DBManager.m */; };
 		FC681F6D19B6DDBD00C58548 /* TokopediaDB.db in Resources */ = {isa = PBXBuildFile; fileRef = FC681F6C19B6DDBD00C58548 /* TokopediaDB.db */; };
 		FC6E27FB19B98CF20064873F /* SearchRedirect.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6E27FA19B98CF20064873F /* SearchRedirect.m */; };
-		FC6E280219B9A1700064873F /* SearchFilterLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6E280019B9A1700064873F /* SearchFilterLocationViewController.m */; };
-		FC6E280719B9A1B10064873F /* SearchFilterLocationViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6E280519B9A1B10064873F /* SearchFilterLocationViewCell.m */; };
 		FC9FD74619B4277F00CF6CDD /* tab_btm_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = FC9FD74419B4277F00CF6CDD /* tab_btm_shadow.png */; };
 		FC9FD74719B4277F00CF6CDD /* tab_btm_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC9FD74519B4277F00CF6CDD /* tab_btm_shadow@2x.png */; };
 		FCCCB95619B4317A0077349C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCCB95419B4317A0077349C /* MainViewController.m */; };
@@ -417,6 +423,22 @@
 		FC2F209719BD682F00C2B9B5 /* WholesalePrice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WholesalePrice.m; sourceTree = "<group>"; };
 		FC2F209C19BD73F300C2B9B5 /* DetailProductResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailProductResult.h; sourceTree = "<group>"; };
 		FC2F209D19BD73F300C2B9B5 /* DetailProductResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailProductResult.m; sourceTree = "<group>"; };
+		FC300B6C19C946360098F0D0 /* FilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterViewController.h; sourceTree = "<group>"; };
+		FC300B6D19C946360098F0D0 /* FilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterViewController.m; sourceTree = "<group>"; };
+		FC300B6F19C946360098F0D0 /* SortCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SortCell.h; sourceTree = "<group>"; };
+		FC300B7019C946360098F0D0 /* SortCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SortCell.m; sourceTree = "<group>"; };
+		FC300B7119C946360098F0D0 /* SortViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SortViewController.h; sourceTree = "<group>"; };
+		FC300B7219C946360098F0D0 /* SortViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SortViewController.m; sourceTree = "<group>"; };
+		FC300B7319C946360098F0D0 /* sortfiltershare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sortfiltershare.h; sourceTree = "<group>"; };
+		FC300B7919C946430098F0D0 /* FilterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterViewController.xib; sourceTree = "<group>"; };
+		FC300B7B19C946430098F0D0 /* SortCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SortCell.xib; sourceTree = "<group>"; };
+		FC300B7C19C946430098F0D0 /* SortViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SortViewController.xib; sourceTree = "<group>"; };
+		FC300B8119C949760098F0D0 /* FilterLocationViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterLocationViewCell.h; sourceTree = "<group>"; };
+		FC300B8219C949760098F0D0 /* FilterLocationViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterLocationViewCell.m; sourceTree = "<group>"; };
+		FC300B8319C949760098F0D0 /* FilterLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterLocationViewController.h; sourceTree = "<group>"; };
+		FC300B8419C949760098F0D0 /* FilterLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterLocationViewController.m; sourceTree = "<group>"; };
+		FC300B8819C949830098F0D0 /* FilterLocationViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterLocationViewCell.xib; sourceTree = "<group>"; };
+		FC300B8919C949830098F0D0 /* FilterLocationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterLocationViewController.xib; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC36DF8619B0656400AF74C1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -498,8 +520,6 @@
 		FC36E1CE19B067AD00AF74C1 /* TkpdImg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TkpdImg.h; sourceTree = "<group>"; };
 		FC36E1D219B0904F00AF74C1 /* TraktAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TraktAPIClient.h; path = ../TraktAPIClient.h; sourceTree = "<group>"; };
 		FC36E1D319B0904F00AF74C1 /* TraktAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TraktAPIClient.m; path = ../TraktAPIClient.m; sourceTree = "<group>"; };
-		FC52109819C68FFF004932C5 /* SearchFilterLocationViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchFilterLocationViewCell.xib; sourceTree = "<group>"; };
-		FC52109919C68FFF004932C5 /* SearchFilterLocationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchFilterLocationViewController.xib; sourceTree = "<group>"; };
 		FC52109C19C6A428004932C5 /* SearchResultShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultShopViewController.h; sourceTree = "<group>"; };
 		FC52109D19C6A428004932C5 /* SearchResultShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultShopViewController.m; sourceTree = "<group>"; };
 		FC52109E19C6A428004932C5 /* SearchResultShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultShopViewController.xib; sourceTree = "<group>"; };
@@ -524,10 +544,6 @@
 		FC681F6C19B6DDBD00C58548 /* TokopediaDB.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = TokopediaDB.db; sourceTree = "<group>"; };
 		FC6E27F919B98CF20064873F /* SearchRedirect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchRedirect.h; sourceTree = "<group>"; };
 		FC6E27FA19B98CF20064873F /* SearchRedirect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchRedirect.m; sourceTree = "<group>"; };
-		FC6E27FF19B9A1700064873F /* SearchFilterLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchFilterLocationViewController.h; sourceTree = "<group>"; };
-		FC6E280019B9A1700064873F /* SearchFilterLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchFilterLocationViewController.m; sourceTree = "<group>"; };
-		FC6E280419B9A1B10064873F /* SearchFilterLocationViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchFilterLocationViewCell.h; sourceTree = "<group>"; };
-		FC6E280519B9A1B10064873F /* SearchFilterLocationViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchFilterLocationViewCell.m; sourceTree = "<group>"; };
 		FC9FD74419B4277F00CF6CDD /* tab_btm_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_btm_shadow.png; sourceTree = "<group>"; };
 		FC9FD74519B4277F00CF6CDD /* tab_btm_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_btm_shadow@2x.png"; sourceTree = "<group>"; };
 		FCCCB95319B4317A0077349C /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -883,10 +899,10 @@
 		FC2F205D19BD5EE900C2B9B5 /* Hotlist */ = {
 			isa = PBXGroup;
 			children = (
-				FC2F205E19BD5EE900C2B9B5 /* HotlistCell.h */,
-				FC2F205F19BD5EE900C2B9B5 /* HotlistCell.m */,
 				FC2F206019BD5EE900C2B9B5 /* HotlistViewController.h */,
 				FC2F206119BD5EE900C2B9B5 /* HotlistViewController.m */,
+				FC2F205E19BD5EE900C2B9B5 /* HotlistCell.h */,
+				FC2F205F19BD5EE900C2B9B5 /* HotlistCell.m */,
 			);
 			path = Hotlist;
 			sourceTree = "<group>";
@@ -952,6 +968,84 @@
 				FC2F209119BD65EA00C2B9B5 /* ProductImages.m */,
 			);
 			path = DetailProduct;
+			sourceTree = "<group>";
+		};
+		FC300B6A19C946360098F0D0 /* SortFilterShare */ = {
+			isa = PBXGroup;
+			children = (
+				FC300B6B19C946360098F0D0 /* Filter */,
+				FC300B6E19C946360098F0D0 /* Sort */,
+				FC300B7319C946360098F0D0 /* sortfiltershare.h */,
+			);
+			path = SortFilterShare;
+			sourceTree = "<group>";
+		};
+		FC300B6B19C946360098F0D0 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				FC300B8019C949760098F0D0 /* FilterLocation */,
+				FC300B6C19C946360098F0D0 /* FilterViewController.h */,
+				FC300B6D19C946360098F0D0 /* FilterViewController.m */,
+			);
+			path = Filter;
+			sourceTree = "<group>";
+		};
+		FC300B6E19C946360098F0D0 /* Sort */ = {
+			isa = PBXGroup;
+			children = (
+				FC300B6F19C946360098F0D0 /* SortCell.h */,
+				FC300B7019C946360098F0D0 /* SortCell.m */,
+				FC300B7119C946360098F0D0 /* SortViewController.h */,
+				FC300B7219C946360098F0D0 /* SortViewController.m */,
+			);
+			path = Sort;
+			sourceTree = "<group>";
+		};
+		FC300B7719C946430098F0D0 /* SortFilterShare */ = {
+			isa = PBXGroup;
+			children = (
+				FC300B7819C946430098F0D0 /* Filter */,
+				FC300B7A19C946430098F0D0 /* Sort */,
+			);
+			path = SortFilterShare;
+			sourceTree = "<group>";
+		};
+		FC300B7819C946430098F0D0 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				FC300B8719C949830098F0D0 /* FilterLocation */,
+				FC300B7919C946430098F0D0 /* FilterViewController.xib */,
+			);
+			path = Filter;
+			sourceTree = "<group>";
+		};
+		FC300B7A19C946430098F0D0 /* Sort */ = {
+			isa = PBXGroup;
+			children = (
+				FC300B7B19C946430098F0D0 /* SortCell.xib */,
+				FC300B7C19C946430098F0D0 /* SortViewController.xib */,
+			);
+			path = Sort;
+			sourceTree = "<group>";
+		};
+		FC300B8019C949760098F0D0 /* FilterLocation */ = {
+			isa = PBXGroup;
+			children = (
+				FC300B8119C949760098F0D0 /* FilterLocationViewCell.h */,
+				FC300B8219C949760098F0D0 /* FilterLocationViewCell.m */,
+				FC300B8319C949760098F0D0 /* FilterLocationViewController.h */,
+				FC300B8419C949760098F0D0 /* FilterLocationViewController.m */,
+			);
+			path = FilterLocation;
+			sourceTree = "<group>";
+		};
+		FC300B8719C949830098F0D0 /* FilterLocation */ = {
+			isa = PBXGroup;
+			children = (
+				FC300B8819C949830098F0D0 /* FilterLocationViewCell.xib */,
+				FC300B8919C949830098F0D0 /* FilterLocationViewController.xib */,
+			);
+			path = FilterLocation;
 			sourceTree = "<group>";
 		};
 		FC36DF7A19B0656400AF74C1 = {
@@ -1093,6 +1187,7 @@
 		FC36E0CC19B0673700AF74C1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				FC300B6A19C946360098F0D0 /* SortFilterShare */,
 				FC2F205B19BD5EE900C2B9B5 /* Home */,
 				FC2F204219BD5BEE00C2B9B5 /* Detail */,
 				FC36E0CD19B0673700AF74C1 /* Activation */,
@@ -1181,7 +1276,6 @@
 		FC36E10A19B0673700AF74C1 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				FC6E27FE19B9A14B0064873F /* SearchFilterLocation */,
 				FC36E10C19B0673700AF74C1 /* SearchResult */,
 				FC158D8719B80D4100F325D8 /* SearchHistory */,
 				FC36E10B19B0673700AF74C1 /* search.h */,
@@ -1339,6 +1433,7 @@
 		FC36E14A19B0673700AF74C1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				FC300B7719C946430098F0D0 /* SortFilterShare */,
 				FC2F204E19BD5C6500C2B9B5 /* Detail */,
 				FC2F202A19BD5B7200C2B9B5 /* Home */,
 				FCCCB95819B435440077349C /* MainViewController.xib */,
@@ -1416,7 +1511,6 @@
 		FC36E16B19B0673800AF74C1 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				FC52109719C68FFF004932C5 /* SearchFilterLocation */,
 				FC36E16C19B0673800AF74C1 /* SearchResult */,
 				FC158D8E19B80D6900F325D8 /* SearchHistory */,
 			);
@@ -1432,32 +1526,12 @@
 			path = SearchResult;
 			sourceTree = "<group>";
 		};
-		FC52109719C68FFF004932C5 /* SearchFilterLocation */ = {
-			isa = PBXGroup;
-			children = (
-				FC52109819C68FFF004932C5 /* SearchFilterLocationViewCell.xib */,
-				FC52109919C68FFF004932C5 /* SearchFilterLocationViewController.xib */,
-			);
-			path = SearchFilterLocation;
-			sourceTree = "<group>";
-		};
 		FC681F6B19B6DDBD00C58548 /* Database */ = {
 			isa = PBXGroup;
 			children = (
 				FC681F6C19B6DDBD00C58548 /* TokopediaDB.db */,
 			);
 			path = Database;
-			sourceTree = "<group>";
-		};
-		FC6E27FE19B9A14B0064873F /* SearchFilterLocation */ = {
-			isa = PBXGroup;
-			children = (
-				FC6E27FF19B9A1700064873F /* SearchFilterLocationViewController.h */,
-				FC6E280019B9A1700064873F /* SearchFilterLocationViewController.m */,
-				FC6E280419B9A1B10064873F /* SearchFilterLocationViewCell.h */,
-				FC6E280519B9A1B10064873F /* SearchFilterLocationViewCell.m */,
-			);
-			path = SearchFilterLocation;
 			sourceTree = "<group>";
 		};
 		FC9FD74219B4277F00CF6CDD /* Controller */ = {
@@ -1577,6 +1651,7 @@
 				FC21F34A19BFE5BD00417CA8 /* icon_category_active.png in Resources */,
 				FC2F203E19BD5B7200C2B9B5 /* KatalogViewController.xib in Resources */,
 				FC5210A019C6A428004932C5 /* SearchResultShopViewController.xib in Resources */,
+				FC300B8A19C949830098F0D0 /* FilterLocationViewCell.xib in Resources */,
 				FC012DCC19BEB2360072A31A /* icon_18.png in Resources */,
 				FC012DD219BEB2360072A31A /* icon_20.png in Resources */,
 				FC21F35519BFE5BD00417CA8 /* icon_search@2x.png in Resources */,
@@ -1593,6 +1668,7 @@
 				FC36E1B719B0673800AF74C1 /* CartViewController.xib in Resources */,
 				FC012D8319BEA8A90072A31A /* icon_house.png in Resources */,
 				FC21F34B19BFE5BD00417CA8 /* icon_category_active@2x.png in Resources */,
+				FC300B8B19C949830098F0D0 /* FilterLocationViewController.xib in Resources */,
 				FC36E19719B0673800AF74C1 /* navigation-button-bg-pt@2x.png in Resources */,
 				FC36E19F19B0673800AF74C1 /* top_bg1.png in Resources */,
 				FC36E1A819B0673800AF74C1 /* active_tab@2x.png in Resources */,
@@ -1601,6 +1677,7 @@
 				FC012DDA19BEB2360072A31A /* icon_4@2x.png in Resources */,
 				FC012DD019BEB2360072A31A /* icon_1@2x.png in Resources */,
 				FC36E1AE19B0673800AF74C1 /* ic_home@2x.png in Resources */,
+				FC300B7F19C946430098F0D0 /* SortViewController.xib in Resources */,
 				FC012DC919BEB2360072A31A /* icon_16@2x.png in Resources */,
 				FC36E1AB19B0673800AF74C1 /* ic_category.png in Resources */,
 				FC21F34F19BFE5BD00417CA8 /* icon_home_active@2x.png in Resources */,
@@ -1612,7 +1689,6 @@
 				FC012DE219BEB2360072A31A /* icon_8@2x.png in Resources */,
 				FC9FD74619B4277F00CF6CDD /* tab_btm_shadow.png in Resources */,
 				FC012DC619BEB2360072A31A /* icon_15.png in Resources */,
-				FC52109A19C68FFF004932C5 /* SearchFilterLocationViewCell.xib in Resources */,
 				FC012DDC19BEB2360072A31A /* icon_5@2x.png in Resources */,
 				FC012DC219BEB2360072A31A /* icon_13.png in Resources */,
 				FC012DF019BEE3710072A31A /* DetailProductWholesaleCell.xib in Resources */,
@@ -1663,6 +1739,7 @@
 				FC18C7A119B581CC00BA162D /* CategoryMenuViewController.xib in Resources */,
 				FC18C78019B568D800BA162D /* CategoryResultViewController.xib in Resources */,
 				FC012DC419BEB2360072A31A /* icon_14.png in Resources */,
+				FC300B7D19C946430098F0D0 /* FilterViewController.xib in Resources */,
 				FC36E1AF19B0673800AF74C1 /* ic_more.png in Resources */,
 				FC1C95A219C2988B00CF0C53 /* TKPDTabNavigationController.xib in Resources */,
 				FC2F205A19BD5DC600C2B9B5 /* DetailProductDescriptionCell.xib in Resources */,
@@ -1688,6 +1765,7 @@
 				FC21F35719BFE5BD00417CA8 /* icon_search_active@2x.png in Resources */,
 				FC012DD319BEB2360072A31A /* icon_20@2x.png in Resources */,
 				FC36E19E19B0673800AF74C1 /* top_bg.png in Resources */,
+				FC300B7E19C946430098F0D0 /* SortCell.xib in Resources */,
 				FC36E1B419B0673800AF74C1 /* tabnav_bg@2x.png in Resources */,
 				FC36E1C919B0673800AF74C1 /* SearchResultCell.xib in Resources */,
 				FC2F203819BD5B7200C2B9B5 /* HotlistCell.xib in Resources */,
@@ -1696,7 +1774,6 @@
 				FC012DE119BEB2360072A31A /* icon_8.png in Resources */,
 				FC012DCA19BEB2360072A31A /* icon_17.png in Resources */,
 				FC012E4D19BEFD060072A31A /* DetailShopViewController.xib in Resources */,
-				FC52109B19C68FFF004932C5 /* SearchFilterLocationViewController.xib in Resources */,
 				FC012DCF19BEB2360072A31A /* icon_19@2x.png in Resources */,
 				FC21F35619BFE5BD00417CA8 /* icon_search_active.png in Resources */,
 				FC012DE319BEB2360072A31A /* icon_9.png in Resources */,
@@ -1754,6 +1831,7 @@
 				FC18C77D19B568BB00BA162D /* CategoryResultViewController.m in Sources */,
 				FC2F209819BD682F00C2B9B5 /* WholesalePrice.m in Sources */,
 				FC2F209E19BD73F300C2B9B5 /* DetailProductResult.m in Sources */,
+				FC300B8619C949760098F0D0 /* FilterLocationViewController.m in Sources */,
 				FC36E17619B0673800AF74C1 /* CartViewController.m in Sources */,
 				FC2F208019BD629100C2B9B5 /* Info.m in Sources */,
 				FC2F207C19BD5EE900C2B9B5 /* ProductFeedViewController.m in Sources */,
@@ -1781,13 +1859,15 @@
 				FC2F207419BD5EE900C2B9B5 /* HotlistCell.m in Sources */,
 				FC2F207619BD5EE900C2B9B5 /* HotlistResultViewCell.m in Sources */,
 				FC5210B019C6C93A004932C5 /* Hotlist.m in Sources */,
-				FC6E280219B9A1700064873F /* SearchFilterLocationViewController.m in Sources */,
 				FC5210B319C6ED9E004932C5 /* SearchResult.m in Sources */,
+				FC300B7419C946360098F0D0 /* FilterViewController.m in Sources */,
+				FC300B7519C946360098F0D0 /* SortCell.m in Sources */,
 				FC012E3819BEF6D50072A31A /* Shipment.m in Sources */,
 				FC2F208F19BD659E00C2B9B5 /* OtherProduct.m in Sources */,
 				FC5210A919C6A48A004932C5 /* SearchResultShopCell.m in Sources */,
 				FC18C78419B56A5000BA162D /* CategoryResultViewCell.m in Sources */,
 				FC012E3B19BEF7B80072A31A /* ShipmentPackage.m in Sources */,
+				FC300B8519C949760098F0D0 /* FilterLocationViewCell.m in Sources */,
 				FC012E4119BEF8910072A31A /* Address.m in Sources */,
 				FC012E4719BEFA480072A31A /* Shop.m in Sources */,
 				FC2F209219BD65EA00C2B9B5 /* ProductImages.m in Sources */,
@@ -1803,11 +1883,11 @@
 				FC36E18A19B0673800AF74C1 /* SearchResultCell.m in Sources */,
 				FC52109F19C6A428004932C5 /* SearchResultShopViewController.m in Sources */,
 				FC681F6A19B6D6A100C58548 /* DBManager.m in Sources */,
+				FC300B7619C946360098F0D0 /* SortViewController.m in Sources */,
 				FCCCB95619B4317A0077349C /* MainViewController.m in Sources */,
 				FC5210AD19C6C874004932C5 /* HotlistResult.m in Sources */,
 				FC21F35A19C01B5A00417CA8 /* RKClient.m in Sources */,
 				FC36E17519B0673800AF74C1 /* RegisterViewController.m in Sources */,
-				FC6E280719B9A1B10064873F /* SearchFilterLocationViewCell.m in Sources */,
 				FC5210BC19C6F61C004932C5 /* HotlistDetailResult.m in Sources */,
 				FC36E17219B0673800AF74C1 /* NSStringCategory.m in Sources */,
 				FC36E17319B0673800AF74C1 /* HotlistList.m in Sources */,

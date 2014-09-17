@@ -11,7 +11,7 @@
 
 @implementation HotlistCell
 
-//@synthesize delegate = _delegate;
+@synthesize delegate = _delegate;
 
 #pragma mark - Factory methods
 
