@@ -55,7 +55,13 @@
     _table.delegate = self;
     _table.dataSource = self;
     
-    _sortarray = kTKPDSORT_HOTLISTSORTARRAY;
+    if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEHOTLISTVIEWKEY]||[[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEPRODUCTVIEWKEY]) {
+        _sortarray = kTKPDSORT_HOTLISTSORTARRAY;
+    }
+    if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPECATALOGVIEWKEY]) {
+            _sortarray = kTKPDSORT_SEARCHCATALOGSORTARRAY;
+    }
+
     
 }
 

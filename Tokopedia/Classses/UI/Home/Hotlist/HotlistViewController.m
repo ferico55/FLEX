@@ -84,6 +84,12 @@
     [self configureRestKit];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self loadData];
+}
+
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
@@ -196,9 +202,9 @@
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    RKResponseDescriptor *responseDescriptorHotlist = [RKResponseDescriptor responseDescriptorWithMapping:hotlistMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:kTKPDHOMEHOTLIST_APILISTKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorHotlist = [RKResponseDescriptor responseDescriptorWithMapping:hotlistMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:kTKPDHOME_APILISTKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    RKResponseDescriptor *responseDescriptorPaging = [RKResponseDescriptor responseDescriptorWithMapping:pagingMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:kTKPDHOMEHOTLIST_APIPAGINGKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorPaging = [RKResponseDescriptor responseDescriptorWithMapping:pagingMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:kTKPDHOME_APIPAGINGKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [objectManager addResponseDescriptor:responseDescriptorStatus];
     [objectManager addResponseDescriptor:responseDescriptorHotlist];
@@ -256,9 +262,9 @@
     if (status) {
         
         
-        [_product addObjectsFromArray: [result objectForKey:kTKPDHOME_APIPATHMAPPINGLISTKEY]];
+        [_product addObjectsFromArray: [result objectForKey:kTKPDHOME_APILISTKEYPATH]];
         //[_paging removeAllObjects];
-        id page =[result objectForKey:kTKPDHOME_APIPATHMAPPINGPAGINGKEY];
+        id page =[result objectForKey:kTKPDHOME_APIPAGINGKEYPATH];
         //[_paging addObject:[result objectForKey:@"result.paging"]];
         
         if (_product.count >0) {

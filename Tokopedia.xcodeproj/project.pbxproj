@@ -211,9 +211,7 @@
 		FC36E1CA19B0673800AF74C1 /* SearchResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC36E16E19B0673800AF74C1 /* SearchResultViewController.xib */; };
 		FC36E1D419B0904F00AF74C1 /* TraktAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36E1D319B0904F00AF74C1 /* TraktAPIClient.m */; };
 		FC52109F19C6A428004932C5 /* SearchResultShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC52109D19C6A428004932C5 /* SearchResultShopViewController.m */; };
-		FC5210A019C6A428004932C5 /* SearchResultShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC52109E19C6A428004932C5 /* SearchResultShopViewController.xib */; };
 		FC5210A919C6A48A004932C5 /* SearchResultShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC5210A719C6A48A004932C5 /* SearchResultShopCell.m */; };
-		FC5210AA19C6A48A004932C5 /* SearchResultShopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC5210A819C6A48A004932C5 /* SearchResultShopCell.xib */; };
 		FC5210AD19C6C874004932C5 /* HotlistResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FC5210AC19C6C874004932C5 /* HotlistResult.m */; };
 		FC5210B019C6C93A004932C5 /* Hotlist.m in Sources */ = {isa = PBXBuildFile; fileRef = FC5210AF19C6C93A004932C5 /* Hotlist.m */; };
 		FC5210B319C6ED9E004932C5 /* SearchResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FC5210B219C6ED9E004932C5 /* SearchResult.m */; };
@@ -224,6 +222,11 @@
 		FC681F6A19B6D6A100C58548 /* DBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC681F6919B6D6A100C58548 /* DBManager.m */; };
 		FC681F6D19B6DDBD00C58548 /* TokopediaDB.db in Resources */ = {isa = PBXBuildFile; fileRef = FC681F6C19B6DDBD00C58548 /* TokopediaDB.db */; };
 		FC6E27FB19B98CF20064873F /* SearchRedirect.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6E27FA19B98CF20064873F /* SearchRedirect.m */; };
+		FC9806F919CA7A2600DB1089 /* DepartmentTree.m in Sources */ = {isa = PBXBuildFile; fileRef = FC9806F819CA7A2600DB1089 /* DepartmentTree.m */; };
+		FC9806FC19CA7A7500DB1089 /* DepartmentChild.m in Sources */ = {isa = PBXBuildFile; fileRef = FC9806FB19CA7A7500DB1089 /* DepartmentChild.m */; };
+		FC9806FF19CA7BEC00DB1089 /* DepartmentChild2.m in Sources */ = {isa = PBXBuildFile; fileRef = FC9806FE19CA7BEC00DB1089 /* DepartmentChild2.m */; };
+		FC98070219CAA15300DB1089 /* SearchResultShopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC98070019CAA15300DB1089 /* SearchResultShopCell.xib */; };
+		FC98070319CAA15300DB1089 /* SearchResultShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC98070119CAA15300DB1089 /* SearchResultShopViewController.xib */; };
 		FC9FD74619B4277F00CF6CDD /* tab_btm_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = FC9FD74419B4277F00CF6CDD /* tab_btm_shadow.png */; };
 		FC9FD74719B4277F00CF6CDD /* tab_btm_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC9FD74519B4277F00CF6CDD /* tab_btm_shadow@2x.png */; };
 		FCCCB95619B4317A0077349C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCCB95419B4317A0077349C /* MainViewController.m */; };
@@ -522,10 +525,8 @@
 		FC36E1D319B0904F00AF74C1 /* TraktAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TraktAPIClient.m; path = ../TraktAPIClient.m; sourceTree = "<group>"; };
 		FC52109C19C6A428004932C5 /* SearchResultShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultShopViewController.h; sourceTree = "<group>"; };
 		FC52109D19C6A428004932C5 /* SearchResultShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultShopViewController.m; sourceTree = "<group>"; };
-		FC52109E19C6A428004932C5 /* SearchResultShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultShopViewController.xib; sourceTree = "<group>"; };
 		FC5210A619C6A48A004932C5 /* SearchResultShopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultShopCell.h; sourceTree = "<group>"; };
 		FC5210A719C6A48A004932C5 /* SearchResultShopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultShopCell.m; sourceTree = "<group>"; };
-		FC5210A819C6A48A004932C5 /* SearchResultShopCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultShopCell.xib; sourceTree = "<group>"; };
 		FC5210AB19C6C874004932C5 /* HotlistResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistResult.h; sourceTree = "<group>"; };
 		FC5210AC19C6C874004932C5 /* HotlistResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistResult.m; sourceTree = "<group>"; };
 		FC5210AE19C6C93A004932C5 /* Hotlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Hotlist.h; sourceTree = "<group>"; };
@@ -544,6 +545,14 @@
 		FC681F6C19B6DDBD00C58548 /* TokopediaDB.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = TokopediaDB.db; sourceTree = "<group>"; };
 		FC6E27F919B98CF20064873F /* SearchRedirect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchRedirect.h; sourceTree = "<group>"; };
 		FC6E27FA19B98CF20064873F /* SearchRedirect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchRedirect.m; sourceTree = "<group>"; };
+		FC9806F719CA7A2600DB1089 /* DepartmentTree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepartmentTree.h; sourceTree = "<group>"; };
+		FC9806F819CA7A2600DB1089 /* DepartmentTree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepartmentTree.m; sourceTree = "<group>"; };
+		FC9806FA19CA7A7500DB1089 /* DepartmentChild.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepartmentChild.h; sourceTree = "<group>"; };
+		FC9806FB19CA7A7500DB1089 /* DepartmentChild.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepartmentChild.m; sourceTree = "<group>"; };
+		FC9806FD19CA7BEC00DB1089 /* DepartmentChild2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepartmentChild2.h; sourceTree = "<group>"; };
+		FC9806FE19CA7BEC00DB1089 /* DepartmentChild2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepartmentChild2.m; sourceTree = "<group>"; };
+		FC98070019CAA15300DB1089 /* SearchResultShopCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultShopCell.xib; sourceTree = "<group>"; };
+		FC98070119CAA15300DB1089 /* SearchResultShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultShopViewController.xib; sourceTree = "<group>"; };
 		FC9FD74419B4277F00CF6CDD /* tab_btm_shadow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_btm_shadow.png; sourceTree = "<group>"; };
 		FC9FD74519B4277F00CF6CDD /* tab_btm_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_btm_shadow@2x.png"; sourceTree = "<group>"; };
 		FCCCB95319B4317A0077349C /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -1180,6 +1189,12 @@
 				FC5210AC19C6C874004932C5 /* HotlistResult.m */,
 				FC5210B719C6F57E004932C5 /* Hashtags.h */,
 				FC5210B819C6F57E004932C5 /* Hashtags.m */,
+				FC9806F719CA7A2600DB1089 /* DepartmentTree.h */,
+				FC9806F819CA7A2600DB1089 /* DepartmentTree.m */,
+				FC9806FA19CA7A7500DB1089 /* DepartmentChild.h */,
+				FC9806FB19CA7A7500DB1089 /* DepartmentChild.m */,
+				FC9806FD19CA7BEC00DB1089 /* DepartmentChild2.h */,
+				FC9806FE19CA7BEC00DB1089 /* DepartmentChild2.m */,
 			);
 			path = Hotlist;
 			sourceTree = "<group>";
@@ -1292,10 +1307,8 @@
 				FC36E10E19B0673700AF74C1 /* SearchResultCell.m */,
 				FC52109C19C6A428004932C5 /* SearchResultShopViewController.h */,
 				FC52109D19C6A428004932C5 /* SearchResultShopViewController.m */,
-				FC52109E19C6A428004932C5 /* SearchResultShopViewController.xib */,
 				FC5210A619C6A48A004932C5 /* SearchResultShopCell.h */,
 				FC5210A719C6A48A004932C5 /* SearchResultShopCell.m */,
-				FC5210A819C6A48A004932C5 /* SearchResultShopCell.xib */,
 			);
 			path = SearchResult;
 			sourceTree = "<group>";
@@ -1520,6 +1533,8 @@
 		FC36E16C19B0673800AF74C1 /* SearchResult */ = {
 			isa = PBXGroup;
 			children = (
+				FC98070019CAA15300DB1089 /* SearchResultShopCell.xib */,
+				FC98070119CAA15300DB1089 /* SearchResultShopViewController.xib */,
 				FC36E16D19B0673800AF74C1 /* SearchResultCell.xib */,
 				FC36E16E19B0673800AF74C1 /* SearchResultViewController.xib */,
 			);
@@ -1650,7 +1665,6 @@
 				FC36E1B119B0673800AF74C1 /* ic_search.png in Resources */,
 				FC21F34A19BFE5BD00417CA8 /* icon_category_active.png in Resources */,
 				FC2F203E19BD5B7200C2B9B5 /* KatalogViewController.xib in Resources */,
-				FC5210A019C6A428004932C5 /* SearchResultShopViewController.xib in Resources */,
 				FC300B8A19C949830098F0D0 /* FilterLocationViewCell.xib in Resources */,
 				FC012DCC19BEB2360072A31A /* icon_18.png in Resources */,
 				FC012DD219BEB2360072A31A /* icon_20.png in Resources */,
@@ -1675,6 +1689,7 @@
 				FC012DDB19BEB2360072A31A /* icon_5.png in Resources */,
 				FC012DC119BEB2360072A31A /* icon_12@2x.png in Resources */,
 				FC012DDA19BEB2360072A31A /* icon_4@2x.png in Resources */,
+				FC98070219CAA15300DB1089 /* SearchResultShopCell.xib in Resources */,
 				FC012DD019BEB2360072A31A /* icon_1@2x.png in Resources */,
 				FC36E1AE19B0673800AF74C1 /* ic_home@2x.png in Resources */,
 				FC300B7F19C946430098F0D0 /* SortViewController.xib in Resources */,
@@ -1702,6 +1717,7 @@
 				FC1C95A119C2988B00CF0C53 /* TKPDTabHomeNavigationController.xib in Resources */,
 				FC36E19519B0673800AF74C1 /* logo@2x.png in Resources */,
 				FC012DD719BEB2360072A31A /* icon_3.png in Resources */,
+				FC98070319CAA15300DB1089 /* SearchResultShopViewController.xib in Resources */,
 				FC21F35019BFE5BD00417CA8 /* icon_more.png in Resources */,
 				FC21F35219BFE5BD00417CA8 /* icon_more_active.png in Resources */,
 				FC36E1AA19B0673800AF74C1 /* ic_cart@2x.png in Resources */,
@@ -1709,7 +1725,6 @@
 				FC012DC519BEB2360072A31A /* icon_14@2x.png in Resources */,
 				FC36E19319B0673800AF74C1 /* image-1@2x.png in Resources */,
 				FC36E1A119B0673800AF74C1 /* hotlist.png in Resources */,
-				FC5210AA19C6A48A004932C5 /* SearchResultShopCell.xib in Resources */,
 				FC012DBA19BEB2360072A31A /* icon_0@2x.png in Resources */,
 				FC2F203B19BD5B7200C2B9B5 /* HotlistResultViewController.xib in Resources */,
 				FC012DC719BEB2360072A31A /* icon_15@2x.png in Resources */,
@@ -1844,6 +1859,7 @@
 				FC36E17E19B0673800AF74C1 /* MoreViewController.m in Sources */,
 				FC36E17419B0673800AF74C1 /* LoginViewController.m in Sources */,
 				FC2F208319BD632D00C2B9B5 /* Statistic.m in Sources */,
+				FC9806FC19CA7A7500DB1089 /* DepartmentChild.m in Sources */,
 				FC2F205719BD5D4300C2B9B5 /* DetailProductDescriptionCell.m in Sources */,
 				FC012E3519BEF5AB0072A31A /* Owner.m in Sources */,
 				FC2F207819BD5EE900C2B9B5 /* KatalogListViewCell.m in Sources */,
@@ -1875,6 +1891,7 @@
 				FC2F208C19BD653100C2B9B5 /* Breadcrumb.m in Sources */,
 				FC2F207B19BD5EE900C2B9B5 /* ProductFeedViewCell.m in Sources */,
 				FC2F204C19BD5C2F00C2B9B5 /* DetailProductViewController.m in Sources */,
+				FC9806F919CA7A2600DB1089 /* DepartmentTree.m in Sources */,
 				FC5210B619C6F554004932C5 /* HotlistDetail.m in Sources */,
 				FCCCB95D19B4476A0077349C /* Paging.m in Sources */,
 				FC2F208619BD639900C2B9B5 /* ShopInfo.m in Sources */,
@@ -1896,6 +1913,7 @@
 				FC24856A19C16168008755DA /* TKPDTabNavigationController.m in Sources */,
 				FC012DF519BEE5450072A31A /* DetailProductWholesaleCell.m in Sources */,
 				FC2F207A19BD5EE900C2B9B5 /* KatalogViewController.m in Sources */,
+				FC9806FF19CA7BEC00DB1089 /* DepartmentChild2.m in Sources */,
 				FC2F207719BD5EE900C2B9B5 /* HotlistResultViewController.m in Sources */,
 				FC2F207919BD5EE900C2B9B5 /* KatalogViewCell.m in Sources */,
 				FC18C7A519B5950D00BA162D /* CategoryMenuViewCell.m in Sources */,

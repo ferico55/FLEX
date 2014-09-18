@@ -84,6 +84,8 @@
     _table.dataSource = self;
     
     /** Set isnull value (title and icon for category) **/
+    [_locationvalues addObject:@""];
+    [_locationnames addObject:@"All Location"];
 
     NSArray *name = [[DBManager getSharedInstance]LoadDataQueryLocationName:[NSString stringWithFormat:@"select d.district_name from ws_district d WHERE d.district_id IN (select distinct d.district_id from ws_shipping_city sc LEFT JOIN ws_district d ON sc.district_id = d.district_id order by d.district_name) order by d.district_name"]];
     
@@ -117,7 +119,7 @@
             case 11:
             {
                 NSIndexPath *indexpath = [_selectedlocation objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
-                NSDictionary *data = @{kTKPDFILTER_APILOCATIONKEY : _locationvalues[indexpath.row]};
+                NSDictionary *data = @{kTKPDFILTER_APILOCATIONKEY : _locationvalues[indexpath.row], kTKPDFILTER_APILOCATIONNAMEKEY :  _locationnames[indexpath.row]};
                 [_delegate FilterLocationViewController:self withdata:data];
                 [self.navigationController popToRootViewControllerAnimated:YES];
                 break;
@@ -132,9 +134,9 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 #ifdef kTKPDmenuLISTHOTLIST_NODATAENABLE
-    return _isnodata ? 1 : _locationnames.count;
+    return _isnodata ? 1 : _locationnames.count+1;
 #else
-    return _isnodata ? 0 : _locationnames.count;
+    return _isnodata ? 0 : _locationnames.count+1;
 #endif
 }
 

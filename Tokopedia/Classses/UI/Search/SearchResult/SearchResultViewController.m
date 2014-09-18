@@ -14,12 +14,13 @@
 #import "DetailProductViewController.h"
 #import "SearchResultCell.h"
 #import "SearchResultViewController.h"
-#import "FilterLocationViewController.h"
+#import "SortViewController.h"
+#import "FilterViewController.h"
 #import "DetailShopViewController.h"
 #import "HotlistResultViewController.h"
 #import "TKPDTabNavigationController.h"
 
-@interface SearchResultViewController () <SearchResultCellDelegate, TKPDTabNavigationControllerDelegate>
+@interface SearchResultViewController () <SearchResultCellDelegate, TKPDTabNavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -101,12 +102,17 @@
     [_act startAnimating];
     
     /** adjust refresh control **/
-    //_refreshControl = [[UIRefreshControl alloc] init];
-    //_refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
-    //[_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
-    //[_table addSubview:_refreshControl];
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_table addSubview:_refreshControl];
     
     [_params setObject:[_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(updateView:) name:@"setfilter" object:nil];
+    
+    _catalogproductview.hidden = YES;
     
     [self configureRestKit];
 
@@ -114,6 +120,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self refreshView:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
 }
 
@@ -121,25 +128,8 @@
 // We have been obscured -- cancel any pending requests
 - (void)viewWillDisappear:(BOOL)animated {
     [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 
 }
-
-
-#pragma mark - Methods
--(void)refreshView:(UIRefreshControl*)refresh
-{
-    /** clear object **/
-    [_product removeAllObjects];
-    _page = 1;
-    
-    [_table reloadData];
-    /** request data **/
-    //[self loadData];
-    //[self request:YES withrefreshControl:refresh];
-}
-
-
 
 #pragma mark - Properties
 -(void)setData:(NSDictionary *)data
@@ -151,6 +141,7 @@
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Table View Delegate
@@ -432,6 +423,11 @@
                 kTKPDSEARCH_APIACTIONTYPEKEY : type?:@"",
                 kTKPDSEARCH_APIPAGEKEY : @(_page),
                 kTKPDSEARCH_APILIMITKEY : @(kTKPDSEARCH_LIMITPAGE),
+                kTKPDSEARCH_APIORDERBYKEY : [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+                kTKPDSEARCH_APILOCATIONKEY : [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+                kTKPDSEARCH_APISHOPTYPEKEY : [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+                kTKPDSEARCH_APIPRICEMINKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+                kTKPDSEARCH_APIPRICEMAXKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
                 };
     }
     else{
@@ -441,6 +437,11 @@
                 kTKPDSEARCH_APIACTIONTYPEKEY : type?:@"",
                 kTKPDSEARCH_APIPAGEKEY : @(_page),
                 kTKPDSEARCH_APILIMITKEY : @(kTKPDSEARCH_LIMITPAGE),
+                kTKPDSEARCH_APIORDERBYKEY : [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+                kTKPDSEARCH_APILOCATIONKEY : [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+                kTKPDSEARCH_APISHOPTYPEKEY : [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+                kTKPDSEARCH_APIPRICEMINKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+                kTKPDSEARCH_APIPRICEMAXKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
                 };
     }
 
@@ -549,9 +550,6 @@
         }
     }
     _catalogproductview.hidden = NO;
-    _shopview.hidden = YES;
-    
-    
 }
 
 -(void)requesttimeout
@@ -567,6 +565,7 @@
     if ([(NSError*)object code] == NSURLErrorCancelled) {
         [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
     }
+    [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
 }
 
 #pragma mark - cell delegate
@@ -583,17 +582,26 @@
     switch (button.tag) {
         case 10:
         {
-            // Action Location Button
-            FilterLocationViewController *vc = [FilterLocationViewController new];
+            // Action Urutkan Button
+            SortViewController *vc = [SortViewController new];
+            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
+                vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDSEARCH_DATATYPEPRODUCTVIEWKEY};
+            else
+                vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDSEARCH_DATATYPECATALOGVIEWKEY};
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
-            
             break;
         }
         case 11:
         {
             // Action Filter Button
-            
+            FilterViewController *vc = [FilterViewController new];
+            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
+                vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDSEARCH_DATATYPEPRODUCTVIEWKEY};
+            else
+                vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDSEARCH_DATATYPECATALOGVIEWKEY};
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
             break;
         }
         default:
@@ -602,6 +610,17 @@
 }
 
 #pragma mark - Methods
+-(void)refreshView:(UIRefreshControl*)refresh
+{
+    /** clear object **/
+    [_product removeAllObjects];
+    _page = 1;
+    
+    [_table reloadData];
+    /** request data **/
+    [self loadData];
+}
+
 -(void)setDepartmentID:(NSNotification*)notification
 {
     NSDictionary* userinfo = notification.userInfo;
@@ -614,4 +633,20 @@
     [self loadData];
 }
 
+#pragma mark - Post Notification Methods
+- (void)updateView:(NSNotification *)notification;
+{
+    NSDictionary *userinfo = notification.userInfo;
+    [_params addEntriesFromDictionary:userinfo];
+    
+    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    
+    // reset object
+    [_product removeAllObjects];
+    _page = 1;
+    [_table reloadData];
+    
+    
+    [self loadData];
+}
 @end

@@ -10,6 +10,7 @@
                 <outlet property="act" destination="Nhx-0E-74X" id="Uo2-pK-c1B"/>
                 <outlet property="descriptionlabel" destination="mBb-aS-tY9" id="faL-qh-eu1"/>
                 <outlet property="descriptionview" destination="91z-Sh-o8k" id="8tz-hs-PvV"/>
+                <outlet property="filterview" destination="vHm-Tc-Aus" id="2yn-hQ-25U"/>
                 <outlet property="footer" destination="ZTM-NR-ebR" id="b1t-OG-YwW"/>
                 <outlet property="hashtagsscrollview" destination="Q9k-15-37M" id="T8O-HL-Y1y"/>
                 <outlet property="header" destination="HKl-uZ-hi3" id="arn-Kv-qgv"/>

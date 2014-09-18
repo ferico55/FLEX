@@ -16,6 +16,12 @@
 }
 @property (weak, nonatomic) IBOutlet UITextField *pricemin;
 @property (weak, nonatomic) IBOutlet UITextField *pricemax;
+@property (strong, nonatomic) IBOutlet UIView *productview;
+@property (strong, nonatomic) IBOutlet UIView *catalogview;
+@property (strong, nonatomic) IBOutlet UIView *shopview;
+
+@property (weak, nonatomic) IBOutlet UIButton *shoplocationbutton;
+@property (weak, nonatomic) IBOutlet UIButton *productlocationbutton;
 
 
 @end
@@ -34,6 +40,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEHOTLISTVIEWKEY]||[[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEPRODUCTVIEWKEY]) {
+        [self.view addSubview: _productview];
+    }
+    if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPESHOPVIEWKEY]) {
+        [self.view addSubview: _shopview];
+    }
+    if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPECATALOGVIEWKEY]) {
+        [self.view addSubview: _catalogview];
+    }
     
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
@@ -125,6 +141,8 @@
 #pragma mark - Filter View Controller Delegate
 -(void)FilterLocationViewController:(UIViewController *)viewcontroller withdata:(NSDictionary *)data
 {
+    [_shoplocationbutton setTitle:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forState:UIControlStateNormal];
+    [_productlocationbutton setTitle:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forState:UIControlStateNormal];
     [_detailfilter setObject:[data objectForKey:kTKPDFILTER_APILOCATIONKEY] forKey:kTKPDFILTER_APILOCATIONKEY];
 }
 
@@ -150,7 +168,4 @@
     return YES;
 }
 
-
-- (IBAction)pricemax:(id)sender {
-}
 @end

@@ -16,6 +16,8 @@
 	NSInteger _unloadSelectedIndex;
 	NSArray* _unloadViewControllers;
     BOOL _hascatalog;
+    
+    UIBarButtonItem *_barbuttoncategory;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *buttonlocation;
@@ -169,8 +171,6 @@
     _data = data;
     
     if (data) {
-        
-        UIBarButtonItem *barbutton1;
         NSBundle* bundle = [NSBundle mainBundle];
         //TODO:: Change image
         UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
@@ -178,12 +178,13 @@
             UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
             if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
                 UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-                barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+                _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
             }
             else
-                barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-            [barbutton1 setTag:11];
-            self.navigationItem.rightBarButtonItem = barbutton1;
+                _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+            [_barbuttoncategory setTag:11];
+            [_barbuttoncategory setEnabled:NO];
+            self.navigationItem.rightBarButtonItem = _barbuttoncategory;
         }
     }
 }
@@ -611,6 +612,7 @@
         _tabbartwos.hidden = YES;
         _hascatalog = YES;
     }
+    _barbuttoncategory.enabled = YES;
 }
 
 @end

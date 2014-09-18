@@ -13,18 +13,22 @@
 #import "DetailProductViewController.h"
 #import "SearchResultShopCell.h"
 #import "SearchResultViewController.h"
-#import "FilterLocationViewController.h"
+#import "SortViewController.h"
+#import "FilterViewController.h"
 #import "DetailShopViewController.h"
 #import "HotlistResultViewController.h"
 #import "TKPDTabNavigationController.h"
 
 #import "SearchResultShopViewController.h"
 
-@interface SearchResultShopViewController ()
+@interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource>
+
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) NSMutableArray *product;
+@property (weak, nonatomic) IBOutlet UIView *shopview;
+
 @end
 
 @implementation SearchResultShopViewController
@@ -98,24 +102,28 @@
     [_act startAnimating];
     
     /** adjust refresh control **/
-    //_refreshControl = [[UIRefreshControl alloc] init];
-    //_refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
-    //[_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
-    //[_table addSubview:_refreshControl];
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_table addSubview:_refreshControl];
     
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(updateView:) name:@"setfilter" object:nil];
+    
+    _shopview.hidden = YES;
     [self configureRestKit];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
+    [self refreshView:nil];
 }
 
 
 // We have been obscured -- cancel any pending requests
 - (void)viewWillDisappear:(BOOL)animated {
     [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 
@@ -128,8 +136,7 @@
     
     [_table reloadData];
     /** request data **/
-    //[self loadData];
-    //[self request:YES withrefreshControl:refresh];
+    [self loadData];
 }
 
 -(void)setDepartmentID:(NSNotification*)notification
@@ -154,6 +161,7 @@
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Table View Delegate
@@ -315,6 +323,11 @@
                   kTKPDSEARCH_APIACTIONTYPEKEY : type?:@"",
                   kTKPDSEARCH_APIPAGEKEY : @(_page),
                   kTKPDSEARCH_APILIMITKEY : @(kTKPDSEARCH_LIMITPAGE),
+                  kTKPDSEARCH_APIORDERBYKEY : [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+                  kTKPDSEARCH_APILOCATIONKEY : [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+                  kTKPDSEARCH_APISHOPTYPEKEY : [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+                  kTKPDSEARCH_APIPRICEMINKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+                  kTKPDSEARCH_APIPRICEMAXKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
                   };
     }
     else{
@@ -323,6 +336,11 @@
                   kTKPDSEARCH_APIACTIONTYPEKEY : type?:@"",
                   kTKPDSEARCH_APIPAGEKEY : @(_page),
                   kTKPDSEARCH_APILIMITKEY : @(kTKPDSEARCH_LIMITPAGE),
+                  kTKPDSEARCH_APIORDERBYKEY : [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+                  kTKPDSEARCH_APILOCATIONKEY : [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+                  kTKPDSEARCH_APISHOPTYPEKEY : [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+                  kTKPDSEARCH_APIPRICEMINKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+                  kTKPDSEARCH_APIPRICEMAXKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
                   };
     }
     
@@ -420,7 +438,7 @@
         }
     }
     
-    
+    _shopview.hidden = NO;
 }
 
 -(void)requesttimeout
@@ -452,8 +470,9 @@
     switch (button.tag) {
         case 10:
         {
-            // Action Location Button
-            FilterLocationViewController *vc = [FilterLocationViewController new];
+            // Action Sort Button
+            SortViewController *vc = [SortViewController new];
+            vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDSEARCH_DATASEARCHSHOPKEY};
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             
@@ -462,7 +481,10 @@
         case 11:
         {
             // Action Filter Button
-            
+            FilterViewController *vc = [FilterViewController new];
+            vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDSEARCH_DATATYPESHOPVIEWKEY};
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
             break;
         }
         default:
@@ -470,5 +492,21 @@
     }
 }
 
+#pragma mark - Post Notification Methods
+- (void)updateView:(NSNotification *)notification;
+{
+    NSDictionary *userinfo = notification.userInfo;
+    [_params addEntriesFromDictionary:userinfo];
+    
+    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    
+    // reset object
+    [_product removeAllObjects];
+    _page = 1;
+    [_table reloadData];
+    
+    
+    [self loadData];
+}
 
 @end
