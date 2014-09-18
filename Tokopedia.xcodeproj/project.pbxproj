@@ -223,6 +223,7 @@
 		FCCCB95619B4317A0077349C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCCB95419B4317A0077349C /* MainViewController.m */; };
 		FCCCB95919B435440077349C /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCCCB95819B435440077349C /* MainViewController.xib */; };
 		FCCCB95D19B4476A0077349C /* Paging.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCCB95C19B4476A0077349C /* Paging.m */; };
+		FF36BD0A6E2A48F0BC3439CF /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 482BA56B21334661A9065EEC /* libPods-TokopediaTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -237,6 +238,8 @@
 
 /* Begin PBXFileReference section */
 		091FB04E48F44F1BBA374E42 /* Pods-Tokopedia.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.xcconfig"; path = "Pods/Pods-Tokopedia.xcconfig"; sourceTree = "<group>"; };
+		482BA56B21334661A9065EEC /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		62A52619A9614BB78AFC9FF8 /* Pods-TokopediaTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.xcconfig"; path = "Pods/Pods-TokopediaTests.xcconfig"; sourceTree = "<group>"; };
 		EDC5E5AE50A14C3FB286B367 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC012D8119BEA8A90072A31A /* icon_house.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_house.png; sourceTree = "<group>"; };
 		FC012D8219BEA8A90072A31A /* icon_house@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_house@2x.png"; sourceTree = "<group>"; };
@@ -557,6 +560,7 @@
 				FC36DFA019B0656400AF74C1 /* XCTest.framework in Frameworks */,
 				FC36DFA219B0656400AF74C1 /* UIKit.framework in Frameworks */,
 				FC36DFA119B0656400AF74C1 /* Foundation.framework in Frameworks */,
+				FF36BD0A6E2A48F0BC3439CF /* libPods-TokopediaTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -961,6 +965,7 @@
 				FC36DF8519B0656400AF74C1 /* Frameworks */,
 				FC36DF8419B0656400AF74C1 /* Products */,
 				091FB04E48F44F1BBA374E42 /* Pods-Tokopedia.xcconfig */,
+				62A52619A9614BB78AFC9FF8 /* Pods-TokopediaTests.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -982,6 +987,7 @@
 				FC36DF8A19B0656400AF74C1 /* UIKit.framework */,
 				FC36DF9F19B0656400AF74C1 /* XCTest.framework */,
 				EDC5E5AE50A14C3FB286B367 /* libPods-Tokopedia.a */,
+				482BA56B21334661A9065EEC /* libPods-TokopediaTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1510,9 +1516,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC36DFB219B0656400AF74C1 /* Build configuration list for PBXNativeTarget "TokopediaTests" */;
 			buildPhases = (
+				66B6361E93B8451F93E58898 /* Check Pods Manifest.lock */,
 				FC36DF9A19B0656400AF74C1 /* Sources */,
 				FC36DF9B19B0656400AF74C1 /* Frameworks */,
 				FC36DF9C19B0656400AF74C1 /* Resources */,
+				5DE7980136424989A1A7B226 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1712,6 +1720,36 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		5DE7980136424989A1A7B226 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-TokopediaTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		66B6361E93B8451F93E58898 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		72CC7607790349BDBBECF8CD /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1939,6 +1977,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -1953,6 +1992,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -1961,6 +2001,7 @@
 		};
 		FC36DFB319B0656400AF74C1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 62A52619A9614BB78AFC9FF8 /* Pods-TokopediaTests.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Tokopedia.app/Tokopedia";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1983,6 +2024,7 @@
 		};
 		FC36DFB419B0656400AF74C1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 62A52619A9614BB78AFC9FF8 /* Pods-TokopediaTests.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Tokopedia.app/Tokopedia";
 				FRAMEWORK_SEARCH_PATHS = (
