@@ -86,6 +86,11 @@
 #define kTKPDHOMEHOTLIST_APIHASHTAGSKEYPATH @"result.hashtags"
 #define kTKPDHOMEHOTLIST_APIRESULTKEYPATH @"result"
 
+#define kTKPDHOME_DATAURLREDIRECTHOTKEY @"hot"
+#define kTKPDHOME_DATAURLREDIRECTCATEGORY @"p"
+
+#define kTKPDHOME_APIQUERYKEY @"key"
+
 #define kTKPDHOME_FONTSLIDETITLES [UIFont fontWithName:@"Lato-Regular" size:14.0]
 #define kTKPDHOME_FONTSLIDETITLESACTIVE [UIFont fontWithName:@"Lato-Regular" size:16.0]
 

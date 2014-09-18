@@ -128,16 +128,28 @@
     [_detailfilter setObject:[data objectForKey:kTKPDFILTER_APILOCATIONKEY] forKey:kTKPDFILTER_APILOCATIONKEY];
 }
 
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+    [textField resignFirstResponder];
+    return YES;
+}
+
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
+
+    [textField resignFirstResponder];
+    return YES;
+}
+
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
     if (textField == _pricemin) {
         [_detailfilter setObject:textField.text forKey:kTKPDFILTER_APIPRICEMINKEY];
     }
     if (textField == _pricemax) {
         [_detailfilter setObject:textField.text forKey:kTKPDFILTER_APIPRICEMAXKEY];
     }
-    [textField resignFirstResponder];
     return YES;
 }
+
 
 - (IBAction)pricemax:(id)sender {
 }

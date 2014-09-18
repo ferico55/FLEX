@@ -55,7 +55,8 @@
     _table.delegate = self;
     _table.dataSource = self;
     
-    _sortarray = kTKPDSORT_SORTARRAY;
+    _sortarray = kTKPDSORT_HOTLISTSORTARRAY;
+    
 }
 
 #pragma mark - Memory Management
@@ -78,8 +79,9 @@
             case 11:
             {
                 //SUBMIT
-                NSIndexPath *indexpath =[_selectedsort objectForKey:kTKPDFILTER_APIORDERBYKEY];
-                NSDictionary *userinfo = @{kTKPDFILTER_APIORDERBYKEY:_sortarray[indexpath.row]?:@""};
+                NSIndexPath *indexpath =[_selectedsort objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
+                NSDictionary *orderdict = _sortarray[indexpath.row];
+                NSDictionary *userinfo = @{kTKPDFILTER_APIORDERBYKEY:[orderdict objectForKey:kTKPDGILTER_DATASORTVALUEKEY]?:@""};
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilter" object:nil userInfo:userinfo];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;

@@ -11,10 +11,15 @@
 #import "List.h"
 
 #import "home.h"
+#import "search.h"
 #import "FilterViewController.h"
 #import "SortViewController.h"
 #import "HotlistResultViewCell.h"
 #import "HotlistResultViewController.h"
+#import "SearchResultViewController.h"
+#import "SearchResultShopViewController.h"
+#import "TKPDTabNavigationController.h"
+#import "CategoryMenuViewController.h"
 
 @interface HotlistResultViewController () <UITableViewDataSource,UITableViewDelegate>
 
@@ -275,7 +280,12 @@
             case 11:
             {
                 //CATEGORY
-                
+                NSArray *hashtagsarray = [_detailhotlist objectForKey:kTKPDHOME_APIDEPARTMENTIDKEY];
+                Hashtags *hashtag = hashtagsarray[0];
+                NSString *d_id = hashtag.department_id;
+                CategoryMenuViewController *vc = [CategoryMenuViewController new];
+                vc.data = @{kTKPDHOME_APIDEPARTMENTIDKEY:d_id?:@"0"};
+                [self.navigationController pushViewController:vc animated:YES];
             }
             default:
                 break;
@@ -285,7 +295,40 @@
         UIButton *button = (UIButton*)sender;
         // buttons tag >=20 are tags untuk hashtags
         if (button.tag >=20) {
+            NSArray *hashtagsarray = [_detailhotlist objectForKey:kTKPDHOMEHOTLIST_APIHASHTAGSKEYPATH];
+            Hashtags *hashtags = hashtagsarray[button.tag - 20];
             
+            NSURL *url = [NSURL URLWithString:hashtags.url];
+            NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
+            
+            // Redirect URI to search category
+            if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTCATEGORY]) {
+                SearchResultViewController *vc = [SearchResultViewController new];
+                NSString *searchtext = hashtags.department_id;
+                vc.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
+                SearchResultViewController *vc1 = [SearchResultViewController new];
+                vc1.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
+                SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+                vc2.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
+                NSArray *viewcontrollers = @[vc,vc1,vc2];
+                
+                TKPDTabNavigationController *c = [TKPDTabNavigationController new];
+                
+                [c setSelectedIndex:0];
+                [c setViewControllers:viewcontrollers];
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
+                [nav.navigationBar setTranslucent:NO];
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+
+                [self loadData];
+            }
+            // redirect uri to search hotlist
+            //if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTHOTKEY]) {
+            //    [_detailfilter setObject:querry[2] forKey:kTKPDHOME_APIQUERYKEY];
+            //    [_product removeAllObjects];
+            //    [_detailhotlist removeAllObjects];
+            //    [self loadData];
+            //}
         }
         else
         {
@@ -367,7 +410,7 @@
     
     // hashtags mapping
     RKObjectMapping *hashtagMapping = [RKObjectMapping mappingForClass:[Hashtags class]];
-    [hashtagMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHASHTAGSNAMEKEY, kTKPDHOME_APIHASHTAGSURLKEY]];
+    [hashtagMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHASHTAGSNAMEKEY, kTKPDHOME_APIHASHTAGSURLKEY, kTKPDHOME_APIDEPARTMENTIDKEY]];
     
     // Adjust Relationship
     [hotlistDetailMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIRESULTKEY toKeyPath:kTKPDHOME_APIRESULTKEY withMapping:resultMapping]];
@@ -413,12 +456,12 @@
 
 	NSDictionary* param = @{
                             //@"auth":@(1),
-                            //kTKPDHOME_APIQUERYKEY : querry?:@"",
-                            kTKPDHOME_APIQUERYKEY : @"demi-iklan", //TODO::remove dummy data
+                            kTKPDHOME_APIQUERYKEY : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"demi-iklan",
+                            //kTKPDHOME_APIQUERYKEY : @"demi-iklan", //TODO::remove dummy data
                             kTKPDHOME_APIPAGEKEY : @(_page),
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLISTRESULT_LIMITPAGE),
-                            kTKPDHOME_APIORDERBYKEY : [_data objectForKey:kTKPDHOME_APIORDERBYKEY]?:@"",
-                            kTKPDHOME_APIDEPARTMENTIDKEY: [_data objectForKey:kTKPDHOME_APIDEPARTMENTIDKEY]?:@"",
+                            kTKPDHOME_APIORDERBYKEY : [_detailfilter objectForKey:kTKPDHOME_APIORDERBYKEY]?:@"",
+                            kTKPDHOME_APIDEPARTMENTIDKEY: [_detailfilter objectForKey:kTKPDHOME_APIDEPARTMENTIDKEY]?:@"",
                             kTKPDHOME_APILOCATIONKEY :[_detailfilter objectForKey:kTKPDHOME_APILOCATIONKEY]?:@"",
                             kTKPDHOME_APISHOPTYPEKEY :[_detailfilter objectForKey:kTKPDHOME_APISHOPTYPEKEY]?:@"",
                             kTKPDHOME_APIPRICEMINKEY :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMINKEY]?:@"",
@@ -490,6 +533,7 @@
             NSLog(@"next page : %d",_page);
             
             _isnodata = NO;
+            
         }
     }
  }

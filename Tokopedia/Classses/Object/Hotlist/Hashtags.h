@@ -12,5 +12,6 @@
 
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *url;
+@property (nonatomic, strong) NSString *department_id;
 
 @end

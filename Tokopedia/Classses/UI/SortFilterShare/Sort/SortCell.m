@@ -38,7 +38,8 @@
 {
     _data = data;
     if (data) {
-        _label.text = [_data objectForKey:kTKPDSORT_DATASORTKEY];
+        NSDictionary *detaildata = [_data objectForKey:kTKPDSORT_DATASORTKEY];
+        _label.text = [detaildata objectForKey:kTKPDFILTER_DATASORTNAMEKEY];
     }
 }
 

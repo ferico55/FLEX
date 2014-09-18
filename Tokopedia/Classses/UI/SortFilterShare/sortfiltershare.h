@@ -18,8 +18,12 @@
 
 #define kTKPDFILTER_DATACOLUMNKEY @"column"
 #define kTKPDFILTER_DATAINDEXPATHKEY @"indexpath"
+
+#define kTKPDFILTER_DATASORTNAMEKEY @"name"
+#define kTKPDGILTER_DATASORTVALUEKEY @"value"
+
 #define kTKPDSORT_DATASORTKEY @"sort"
 
-#define kTKPDSORT_SORTARRAY @[@"Relevansi", @"Promosi", @"Penjualan", @"Ulasan", @"Diskusi Product", @"Terbaru", @"Harga Terendah", @"Harga Tertingg"]
+#define kTKPDSORT_HOTLISTSORTARRAY @[@{@"name":@"Promosi",@"value":@"1"}, @{@"name":@"Penjualan",@"value":@"8"}, @{@"name":@"Ulasan",@"value":@"6"}, @{@"name":@"Diskusi",@"value":@"7"}, @{@"name":@"Terbaru",@"value":@"9"}, @{@"name":@"Harga Tertinggi",@"value":@"4"}, @{@"name":@"Harga Terendah",@"value":@"3"}]
 
 #endif
