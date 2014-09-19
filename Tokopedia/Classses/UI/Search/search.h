@@ -11,6 +11,11 @@
 
 #define kTKPDSEARCH_TITLE @"Search"
 
+#define kTKPDSEARCH_DATAFILTERTYPEVIEWKEY @"typeview"
+#define kTKPDSEARCH_DATATYPEPRODUCTVIEWKEY @"productview"
+#define kTKPDSEARCH_DATATYPECATALOGVIEWKEY @"catalogview"
+#define kTKPDSEARCH_DATATYPESHOPVIEWKEY @"shopview"
+
 #define kTKPDSEARCH_DATAINDEXPATHKEY @"indexpath"
 #define kTKPDSEARCH_DATACOLUMNSKEY @"column"
 #define kTKPDSEARCH_DATASEARCHKEY @"search"
@@ -18,6 +23,9 @@
 #define kTKPDSEARCH_DATAICONKEY @"icon"
 #define kTKPDSEARCH_DATATYPE @"type"
 #define kTKPDSEARCH_DATAISSEARCHHOTLISTKEY @"issearchhotlist"
+
+#define kTKPDSEARCH_DATAURLREDIRECTHOTKEY @"hot"
+#define kTKPDSEARCH_DATAURLREDIRECTCATEGORY @"p"
 
 #define kTKPDSEARCH_DATASEARCHPRODUCTKEY @"search_product"
 #define kTKPDSEARCH_DATASEARCHCATALOGKEY @"search_catalog"
@@ -30,6 +38,12 @@
 
 #define kTKPDSEARCH_APIQUERYKEY @"query"
 #define kTKPDSEARCH_APIACTIONTYPEKEY @"action"
+#define kTKPDSEARCH_APIORDERBYKEY @"order_by"
+#define kTKPDSEARCH_APILOCATIONKEY @"location"
+#define kTKPDSEARCH_APISHOPTYPEKEY @"shop_type"
+#define kTKPDSEARCH_APIPRICEMINKEY @"price_min"
+#define kTKPDSEARCH_APIPRICEMAXKEY @"price_max"
+
 #define kTKPDSEARCH_APIPAGEKEY @"page"
 #define kTKPDSEARCH_APILIMITKEY @"per_page"
 /** product **/
@@ -49,6 +63,8 @@
 /** redirect url **/
 #define kTKPDSEARCH_APIREDIRECTURLKEY @"redirect_url"
 #define kTKPDSEARCH_APIDEPARTEMENTIDKEY @"department_id"
+#define kTKPDSEARCH_APIDIDKEY @"d_id"
+
 /** has catalog **/
 #define kTKPDSEARCH_APIHASCATALOGKEY @"has_catalog"
 

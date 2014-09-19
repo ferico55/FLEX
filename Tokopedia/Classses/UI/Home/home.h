@@ -14,6 +14,9 @@
 #define kTKPDHOME_DATAISSEARCHHOTLISTKEY @"issearchhotlist"
 #define kTKPDHOME_DATAQUERYKEY @"key"
 
+#define kTKPDHOME_DATAFILTERTYPEVIEWKEY @"typeview"
+#define kTKPDHOME_DATATYPEHOTLISTVIEWKEY @"hotlistview"
+
 #define kTKPDHOMEHOTLISTACT @"get_hotlist"
 
 #define kTKPDHOMEHOTLIST_LIMITPAGE 5
@@ -44,6 +47,13 @@
 #define kTKPDHOME_APISTARTERPRICEKEY @"price_start"
 #define kTKPDHOME_APITITLEKEY @"title"
 
+#define kTKPDHOME_APIDEPARTMENTIDKEY @"department_id"
+#define kTKPDHOME_APIORDERBYKEY @"order_by"
+#define kTKPDHOME_APILOCATIONKEY @"location"
+#define kTKPDHOME_APISHOPTYPEKEY @"shop_type"
+#define kTKPDHOME_APIPRICEMINKEY @"price_min"
+#define kTKPDHOME_APIPRICEMAXKEY @"price_max"
+
 #define kTKPDHOME_APIQUERYKEY @"key"
 #define kTKPDHOME_APILIMITKEY @"limit"
 
@@ -62,25 +72,39 @@
 #define kTKPDHOME_APICATALOGNAMEKEY @"catalog_name"
 #define kTKPDHOME_APICATALOGPRICEKEY @"catalog_price"
 
+
+// department tree
+#define kTKPDHOME_APIDEPARTMENTTREEKEY @"department_tree"
+#define kTKPDHOME_APICHILDTREEKEY @"child"
+#define kTKPDHOME_APIHREFKEY @"href"
+#define kTKPDHOME_APITREEKEY @"tree"
+#define kTKPDHOME_APIDIDKEY @"d_id"
+#define kTKPDHOME_APITITLEKEY @"title"
+
 #define kTKPDHOME_APIHASHTAGSNAMEKEY @"name"
 #define kTKPDHOME_APIHASHTAGSURLKEY @"url"
 
-#define kTKPDHOME_APIPATHMAPPINGLISTKEY @"result.list"
-#define kTKPDHOME_APIPATHMAPPINGPAGINGKEY @"result.paging"
-#define kTKPDHOME_APIPATHMAPPINGREDIRECTKEY @"result"
+#define kTKPDHOME_APILISTKEYPATH @"result.list"
+#define kTKPDHOME_APIPAGINGKEYPATH @"result.paging"
+#define kTKPDHOME_APIREDIRECTPATH @"result"
+#define kTKPDHOME_APIHASHTAGSKEYPATH @"result.hashtags"
+#define kTKPDHOME_APIDEPARTMENTTREEKEYPATH @"result.department_tree"
+#define kTKPDHOME_APIDEPARTMENTCHILDKEYPATH @"result.department_tree.child"
+#define kTKPDHOME_APIDEPARTMENTCHILD2KEYPATH @"result.department_tree.child.cild"
 
 #define kTKPDHOME_APIURINEXTKEY @"uri_next"
 
 #define kTKPDHOMEHOTLIST_APIPATH @"home.pl"
 #define kTKPDHOMEHOTLISTRESULT_APIPATH @"hotlist.pl"
 
-#define kTKPDHOMEHOTLIST_APILISTKEYPATH @"result.list"
-#define kTKPDHOMEHOTLIST_APIPAGINGKEYPATH @"result.paging"
-#define kTKPDHOMEHOTLIST_APIHASHTAGSKEYPATH @"result.hashtags"
-#define kTKPDHOMEHOTLIST_APIRESULTKEYPATH @"result"
+#define kTKPDHOME_DATAURLREDIRECTHOTKEY @"hot"
+#define kTKPDHOME_DATAURLREDIRECTCATEGORY @"p"
+
+#define kTKPDHOME_APIQUERYKEY @"key"
 
 #define kTKPDHOME_FONTSLIDETITLES [UIFont fontWithName:@"Lato-Regular" size:14.0]
 #define kTKPDHOME_FONTSLIDETITLESACTIVE [UIFont fontWithName:@"Lato-Regular" size:16.0]
+#define kTKPDHOME_FONTHOTLIST [UIFont fontWithName:@"GothamBlack" size:12.0]
 
 #define kTKPDHOME_FONTSLIDETITLESCOLOR [UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1]
 #define kTKPDHOME_FONTSLIDETITLESACTIVECOLOR [UIColor colorWithRed:252.0f/255.0f green:63.0f/255.0f blue:27.0f/255.0f alpha:1]

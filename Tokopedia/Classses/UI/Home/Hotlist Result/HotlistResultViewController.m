@@ -6,17 +6,22 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "SearchRedirect.h"
 #import "HotlistDetail.h"
 #import "SearchResult.h"
 #import "List.h"
-#import "Paging.h"
 
 #import "home.h"
+#import "search.h"
+#import "FilterViewController.h"
+#import "SortViewController.h"
 #import "HotlistResultViewCell.h"
 #import "HotlistResultViewController.h"
+#import "SearchResultViewController.h"
+#import "SearchResultShopViewController.h"
+#import "TKPDTabNavigationController.h"
+#import "CategoryMenuViewController.h"
 
-@interface HotlistResultViewController () <UITableViewDataSource,UITableViewDelegate>
+@interface HotlistResultViewController () <UITableViewDataSource,UITableViewDelegate, HotlistResultViewCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -24,6 +29,10 @@
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UIScrollView *hashtagsscrollview;
+@property (strong, nonatomic) IBOutlet UIView *descriptionview;
+@property (weak, nonatomic) IBOutlet UIScrollView *imagescrollview;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionlabel;
+@property (weak, nonatomic) IBOutlet UIView *filterview;
 
 @property (nonatomic, strong) NSMutableArray *product;
 
@@ -40,11 +49,16 @@
     NSMutableDictionary *_paging;
     NSMutableArray *_buttons;
     NSMutableDictionary *_detailhotlist;
+    NSMutableDictionary *_detailfilter;
     
     /** url to the next page **/
     NSString *_urinext;
     
     BOOL _isnodata;
+    
+    UIRefreshControl *_refreshControl;
+    
+    UIBarButtonItem *_barbuttoncategory;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -62,17 +76,20 @@
 {
     [super viewDidLoad];
     
-    /** set title navigation **/
+    // set title navigation
     NSString * title = [_data objectForKey:kTKPDHOME_DATATITLEKEY];
     self.navigationItem.title = title;
     
-    /** create new **/
+    // create initialitation
     _paging = [NSMutableDictionary new];
     _product = [NSMutableArray new];
     _detailhotlist = [NSMutableDictionary new];
+    _detailfilter = [NSMutableDictionary new];
     
-    /** set max data per page request **/
+    // set max data per page request
     _limit = kTKPDHOMEHOTLISTRESULT_LIMITPAGE;
+    
+    _page = 1;
     
     /** set inset table for different size**/
     //if (is4inch) {
@@ -107,46 +124,52 @@
 	[barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
     
-    /** adjust refresh control **/
-    //[self request:YES withrefreshControl:nil];
-    //UIRefreshControl *refresh = [[UIRefreshControl alloc] init];
-    //refresh.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
-    //[refresh addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
-    //[_hotlisttable addSubview:refresh];
+    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    }
+    else
+        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+	[_barbuttoncategory setTag:11];
+    _barbuttoncategory.enabled = NO;
+    self.navigationItem.rightBarButtonItem = _barbuttoncategory;
+    
+    // adjust refresh control
+    //_refreshControl = [[UIRefreshControl alloc] init];
+    //_refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+    //[_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    //[_table addSubview:_refreshControl];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(updateView:) name:@"setfilter" object:nil];
+    
+    _filterview.hidden = YES;
     
     [self configureRestKit];
-    //[self loadVenues];
+    
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    //[self refreshView:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    //[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
-
-//TODO:: refresh view
-//-(void)refreshView:(UIRefreshControl*)refresh
-//{
-//    
-//    [_product removeAllObjects];
-//    [_paging removeAllObjects];
-//    [_table reloadData];
-//    //static dispatch_once_t onceToken;
-//    
-//    //dispatch_once (&onceToken, ^{
-//    //[self request:YES withrefreshControl:refresh];
-//    //});
-//}
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-
 #pragma mark - Table View Data Source
-
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger count = (_product.count%2==0)?_product.count/2:_product.count/2+1;
 #ifdef kTKPDHOTLISTRESULT_NODATAENABLE
@@ -168,50 +191,52 @@
 			((HotlistResultViewCell*)cell).delegate = self;
 		}
 		
-        /** Flexible view count **/
-		NSUInteger indexsegment = indexPath.row * 2;
-		NSUInteger indexmax = indexsegment + 2;
-		NSUInteger indexlimit = MIN(indexmax, _product.count);
-		
-		NSAssert(!(indexlimit > _product.count), @"producs out of bounds");
-		
-		NSUInteger i;
-		
-		for (i = 0; (indexsegment + i) < indexlimit; i++) {
-            List *list = [_product objectAtIndex:indexsegment + i];
-            ((UIView*)((HotlistResultViewCell*)cell).viewcell[i]).hidden = NO;
-            (((HotlistResultViewCell*)cell).indexpath) = indexPath;
+        if (_product.count > indexPath.row) {
+            /** Flexible view count **/
+            NSUInteger indexsegment = indexPath.row * 2;
+            NSUInteger indexmax = indexsegment + 2;
+            NSUInteger indexlimit = MIN(indexmax, _product.count);
             
-            ((UILabel*)((HotlistResultViewCell*)cell).labelprice[i]).text = list.catalog_price?:list.product_price;
-            ((UILabel*)((HotlistResultViewCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
-            ((UILabel*)((HotlistResultViewCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
+            NSAssert(!(indexlimit > _product.count), @"producs out of bounds");
             
-            NSString *urlstring = list.catalog_image?:list.product_image;
+            NSUInteger i;
             
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
-            
-            UIImageView *thumb = (UIImageView*)((HotlistResultViewCell*)cell).thumb[i];
-            thumb.image = nil;
-            
-            UIActivityIndicatorView *act = (UIActivityIndicatorView*)((HotlistResultViewCell*)cell).act[i];
-            [act startAnimating];
-            
-            NSLog(@"============================== START GET IMAGE =====================");
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                //NSLOG(@"thumb: %@", thumb);
-                [thumb setImage:image];
+            for (i = 0; (indexsegment + i) < indexlimit; i++) {
+                List *list = [_product objectAtIndex:indexsegment + i];
+                ((UIView*)((HotlistResultViewCell*)cell).viewcell[i]).hidden = NO;
+                (((HotlistResultViewCell*)cell).indexpath) = indexPath;
                 
-                [act stopAnimating];
-                NSLog(@"============================== DONE GET IMAGE =====================");
-#pragma clang diagnostic pop
+                ((UILabel*)((HotlistResultViewCell*)cell).labelprice[i]).text = list.catalog_price?:list.product_price;
+                ((UILabel*)((HotlistResultViewCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
+                ((UILabel*)((HotlistResultViewCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
                 
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                [act stopAnimating];
+                NSString *urlstring = list.catalog_image?:list.product_image;
                 
-                NSLog(@"============================== DONE GET IMAGE =====================");
-            }];
+                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
+                
+                UIImageView *thumb = (UIImageView*)((HotlistResultViewCell*)cell).thumb[i];
+                thumb.image = nil;
+                
+                UIActivityIndicatorView *act = (UIActivityIndicatorView*)((HotlistResultViewCell*)cell).act[i];
+                [act startAnimating];
+                
+                NSLog(@"============================== START GET IMAGE =====================");
+                [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Warc-retain-cycles"
+                    //NSLOG(@"thumb: %@", thumb);
+                    [thumb setImage:image];
+                    
+                    [act stopAnimating];
+                    NSLog(@"============================== DONE GET IMAGE =====================");
+    #pragma clang diagnostic pop
+                    
+                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                    [act stopAnimating];
+                    
+                    NSLog(@"============================== DONE GET IMAGE =====================");
+                }];
+            }
         }
 	} else {
 		static NSString *CellIdentifier = kTKPDHOME_STANDARDTABLEVIEWCELLIDENTIFIER;
@@ -254,20 +279,117 @@
         
         switch (button.tag) {
             case 10:
+            {
                 //BACK
-                if ([_data objectForKey:kTKPDHOME_DATAISSEARCHHOTLISTKEY]) {
-                    //pop from search
-                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                }
-                else
-                    [self.navigationController popViewControllerAnimated:YES];
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
+            }
+            case 11:
+            {
+                //CATEGORY
+                NSArray *hashtagsarray = [_detailhotlist objectForKey:kTKPDHOME_APIDEPARTMENTIDKEY];
+                Hashtags *hashtag = hashtagsarray[0];
+                NSString *d_id = hashtag.department_id;
+                CategoryMenuViewController *vc = [CategoryMenuViewController new];
+                vc.data = @{kTKPDHOME_APIDEPARTMENTIDKEY:d_id?:@"0"};
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+            default:
+                break;
+        }
+    }
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *button = (UIButton*)sender;
+        // buttons tag >=20 are tags untuk hashtags
+        if (button.tag >=20) {
+            NSArray *hashtagsarray = [_detailhotlist objectForKey:kTKPDHOME_APIHASHTAGSKEYPATH];
+            Hashtags *hashtags = hashtagsarray[button.tag - 20];
+            
+            NSURL *url = [NSURL URLWithString:hashtags.url];
+            NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
+            
+            // Redirect URI to search category
+            if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTCATEGORY]) {
+                SearchResultViewController *vc = [SearchResultViewController new];
+                NSString *searchtext = hashtags.department_id;
+                vc.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
+                SearchResultViewController *vc1 = [SearchResultViewController new];
+                vc1.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
+                SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+                vc2.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
+                NSArray *viewcontrollers = @[vc,vc1,vc2];
                 
+                TKPDTabNavigationController *c = [TKPDTabNavigationController new];
+                
+                [c setSelectedIndex:0];
+                [c setViewControllers:viewcontrollers];
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
+                [nav.navigationBar setTranslucent:NO];
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+
+                [self loadData];
+            }
+            // redirect uri to search hotlist
+            //if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTHOTKEY]) {
+            //    [_detailfilter setObject:querry[2] forKey:kTKPDHOME_APIQUERYKEY];
+            //    [_product removeAllObjects];
+            //    [_detailhotlist removeAllObjects];
+            //    [self loadData];
+            //}
+        }
+        else
+        {
+            switch (button.tag) {
+                case 10:
+                {
+                    // URUTKAN
+                    SortViewController *vc = [SortViewController new];
+                    vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDHOME_DATATYPEHOTLISTVIEWKEY};
+                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                    [self.navigationController presentViewController:nav animated:YES completion:nil];
+                    break;
+                }
+                case 11:
+                {
+                    // FILTER
+                    FilterViewController *vc = [FilterViewController new];
+                    vc.data = @{kTKPDHOME_DATAFILTERTYPEVIEWKEY:kTKPDHOME_DATATYPEHOTLISTVIEWKEY};
+                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                    [self.navigationController presentViewController:nav animated:YES completion:nil];
+                    break;
+                }
+                case 12:
+                {
+                    //SHARE
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    }
+}
+- (IBAction)gesture:(id)sender {
+    
+    if ([sender isKindOfClass:[UISwipeGestureRecognizer class]]) {
+        UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer*)sender;
+        switch (swipe.state) {
+            case UIGestureRecognizerStateEnded: {
+                if (swipe.direction == UISwipeGestureRecognizerDirectionRight) {
+                    [_descriptionview removeFromSuperview];
+                }
+               if (swipe.direction == UISwipeGestureRecognizerDirectionLeft) {
+                   [_descriptionview setFrame:CGRectMake(_imageview.frame.origin.x, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
+                   [self.view addSubview:_descriptionview];
+                }
+                break;
+            }
             default:
                 break;
         }
     }
 }
+
 
 #pragma mark - Request + Mapping
 - (void)configureRestKit
@@ -279,50 +401,74 @@
     RKObjectManager *objectManager =  [RKObjectManager sharedManager];
     
     // setup object mappings
-    /** Hotlist detail **/
+    // Hotlist detail
     RKObjectMapping *hotlistDetailMapping = [RKObjectMapping mappingForClass:[HotlistDetail class]];
     [hotlistDetailMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APISTATUSKEY:kTKPDHOME_APISTATUSKEY, kTKPDHOME_APISERVERPROCESSTIMEKEY:kTKPDHOME_APISERVERPROCESSTIMEKEY}];
     
-    /** result **/
+    // result mapping
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APICOVERIMAGEKEY:kTKPDHOME_APICOVERIMAGEKEY, KTKPDHOME_APIDESCRIPTIONKEY:KTKPDHOME_APIDESCRIPTIONKEY}];
     
-    /** searchs list mappng **/
+    // searchs list mapping
     RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[List class]];
     [hotlistMapping addAttributeMappingsFromArray:@[kTKPDHOME_APICATALOGIMAGEKEY,kTKPDHOME_APICATALOGNAMEKEY,kTKPDHOME_APICATALOGPRICEKEY,kTKPDHOME_APIPRODUCTPRICEKEY,kTKPDHOME_APIPRODUCTIDKEY,kTKPDHOME_APISHOPGOLDSTATUSKEY,kTKPDHOME_APISHOPLOCATIONKEY,kTKPDHOME_APISHOPNAMEKEY,kTKPDHOME_APIPRODUCTIMAGEKEY,kTKPDHOME_APIPRODUCTNAMEKEY]];
     
-    /** paging mapping **/
+    // paging mapping
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APIURINEXTKEY:kTKPDHOME_APIURINEXTKEY}];
     
-    /** hashtags mapping **/
+    // hashtags mapping
     RKObjectMapping *hashtagMapping = [RKObjectMapping mappingForClass:[Hashtags class]];
-    [hashtagMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHASHTAGSNAMEKEY, kTKPDHOME_APIHASHTAGSURLKEY]];
+    [hashtagMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHASHTAGSNAMEKEY, kTKPDHOME_APIHASHTAGSURLKEY, kTKPDHOME_APIDEPARTMENTIDKEY]];
+
+    // departmenttree mapping
+    RKObjectMapping *departmentMapping = [RKObjectMapping mappingForClass:[DepartmentTree class]];
+    [departmentMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY, kTKPDHOME_APITREEKEY, kTKPDHOME_APIDIDKEY, kTKPDHOME_APITITLEKEY]];
+    // departmentchild mapping
+    RKObjectMapping *departmentchildMapping = [RKObjectMapping mappingForClass:[DepartmentChild class]];
+    [departmentchildMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY, kTKPDHOME_APITREEKEY, kTKPDHOME_APIDIDKEY, kTKPDHOME_APITITLEKEY]];
+    // departmentchild2 mapping
+    RKObjectMapping *departmentchild2Mapping = [RKObjectMapping mappingForClass:[DepartmentChild2 class]];
+    [departmentchild2Mapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY, kTKPDHOME_APITREEKEY, kTKPDHOME_APIDIDKEY, kTKPDHOME_APITITLEKEY]];
     
     // Adjust Relationship
     [hotlistDetailMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIRESULTKEY toKeyPath:kTKPDHOME_APIRESULTKEY withMapping:resultMapping]];
+    [departmentchildMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"department_tree.child" toKeyPath:@"child" withMapping:departmentMapping]];
+    [departmentchild2Mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"department_tree.child.child"  toKeyPath:@"child" withMapping:departmentchildMapping]];
     
     // register mappings with the provider using a response descriptor
-    
+    // result
     RKResponseDescriptor *responseDescriptorResult = [RKResponseDescriptor responseDescriptorWithMapping:hotlistDetailMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    // hotlist
+    RKResponseDescriptor *responseDescriptorHotlistDetail = [RKResponseDescriptor responseDescriptorWithMapping:hotlistMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APILISTKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
+    // paging
+    RKResponseDescriptor *responseDescriptorPaging = [RKResponseDescriptor responseDescriptorWithMapping:pagingMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APIPAGINGKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
+    // hashtags
+     RKResponseDescriptor *responseDescriptorHashtags = [RKResponseDescriptor responseDescriptorWithMapping:hashtagMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APIHASHTAGSKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
+    // department tree
+    RKResponseDescriptor *responseDescriptionDepartmenttree = [RKResponseDescriptor responseDescriptorWithMapping:departmentMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APIDEPARTMENTTREEKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
+    // department child
+    //RKResponseDescriptor *responseDescriptionDepartmentchild = [RKResponseDescriptor responseDescriptorWithMapping:departmentchildMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APIDEPARTMENTCHILDKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
+    // department child2
+    //RKResponseDescriptor *responseDescriptionDepartmentchild2 = [RKResponseDescriptor responseDescriptorWithMapping:departmentchild2Mapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APIDEPARTMENTCHILD2KEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    RKResponseDescriptor *responseDescriptorHotlistDetail = [RKResponseDescriptor responseDescriptorWithMapping:hotlistMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APIPATHMAPPINGLISTKEY statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    RKResponseDescriptor *responseDescriptorPaging = [RKResponseDescriptor responseDescriptorWithMapping:pagingMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APIPATHMAPPINGPAGINGKEY statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-     RKResponseDescriptor *responseDescriptorHashtags = [RKResponseDescriptor responseDescriptorWithMapping:hashtagMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOMEHOTLIST_APIHASHTAGSKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    
+    // add response description to object manager
     [objectManager addResponseDescriptor:responseDescriptorResult];
     [objectManager addResponseDescriptor:responseDescriptorHotlistDetail];
     [objectManager addResponseDescriptor:responseDescriptorPaging];
-    [objectManager addResponseDescriptor:responseDescriptorHashtags];
+    //[objectManager addResponseDescriptor:responseDescriptorHashtags];
+    [objectManager addResponseDescriptor:responseDescriptionDepartmenttree];
+    //[objectManager addResponseDescriptor:responseDescriptionDepartmentchild];
+    //[objectManager addResponseDescriptor:responseDescriptionDepartmentchild2];
     
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [dictionary setObject:responseDescriptorResult.mapping forKey:(responseDescriptorResult.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptorHotlistDetail.mapping forKey:(responseDescriptorHotlistDetail.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptorPaging.mapping forKey:(responseDescriptorPaging.keyPath ?: [NSNull null])];
-    [dictionary setObject:responseDescriptorHashtags.mapping forKey:(responseDescriptorHashtags.keyPath ?: [NSNull null])];
+    //[dictionary setObject:responseDescriptorHashtags.mapping forKey:(responseDescriptorHashtags.keyPath ?: [NSNull null])];
+    [dictionary setObject:responseDescriptionDepartmenttree.mapping forKey:(responseDescriptionDepartmenttree.keyPath?: [NSNull null])];
+    //[dictionary setObject:responseDescriptionDepartmentchild.mapping forKey:(responseDescriptionDepartmentchild.keyPath?: [NSNull null])];
+    //[dictionary setObject:responseDescriptionDepartmentchild2.mapping forKey:(responseDescriptionDepartmentchild2.keyPath?: [NSNull null])];
     
     [self loadData];
 }
@@ -340,13 +486,19 @@
                                     repeats:NO];
     
     NSString *querry =[_data objectForKey:kTKPDHOME_DATAQUERYKEY];
-    
+
 	NSDictionary* param = @{
                             //@"auth":@(1),
-                            //kTKPDHOME_APIQUERYKEY : querry?:@"",
-                            kTKPDHOME_APIQUERYKEY : @"demi-iklan", //TODO::remove dummy data
+                            kTKPDHOME_APIQUERYKEY : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"wewe",
+                            //kTKPDHOME_APIQUERYKEY : @"demi-iklan", //TODO::remove dummy data
                             kTKPDHOME_APIPAGEKEY : @(_page),
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLISTRESULT_LIMITPAGE),
+                            kTKPDHOME_APIORDERBYKEY : [_detailfilter objectForKey:kTKPDHOME_APIORDERBYKEY]?:@"",
+                            kTKPDHOME_APIDEPARTMENTIDKEY: [_detailfilter objectForKey:kTKPDHOME_APIDEPARTMENTIDKEY]?:@"",
+                            kTKPDHOME_APILOCATIONKEY :[_detailfilter objectForKey:kTKPDHOME_APILOCATIONKEY]?:@"",
+                            kTKPDHOME_APISHOPTYPEKEY :[_detailfilter objectForKey:kTKPDHOME_APISHOPTYPEKEY]?:@"",
+                            kTKPDHOME_APIPRICEMINKEY :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMINKEY]?:@"",
+                            kTKPDHOME_APIPRICEMAXKEY :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMAXKEY]?:@""
                             };
     
     NSLog(@"============================== GET HOTLIST DETAIL =====================");
@@ -356,7 +508,7 @@
         [_act stopAnimating];
         _table.tableFooterView = nil;
         [_table reloadData];
-        //[_refreshControl endRefreshing];
+        [_refreshControl endRefreshing];
         
         NSLog(@"============================== DONE GET HOTLIST DETAIL =====================");
         
@@ -367,7 +519,7 @@
         //[alertView show];
         [_act stopAnimating];
         _table.tableFooterView = nil;
-        //[_refreshControl endRefreshing];
+        [_refreshControl endRefreshing];
         
         NSLog(@"============================== DONE GET HOTLIST DETAIL =====================");
     }];
@@ -384,11 +536,14 @@
     BOOL status = [statusstring isEqualToString:@"OK"];
     
     if (status) {
-        [_product addObjectsFromArray: [result objectForKey:kTKPDHOME_APIPATHMAPPINGLISTKEY]];
+        [_product addObjectsFromArray: [result objectForKey:kTKPDHOME_APILISTKEYPATH]];
         [_detailhotlist addEntriesFromDictionary:result];
         [self setHeaderData:result];
         
-        id page =[result objectForKey:kTKPDHOME_APIPATHMAPPINGPAGINGKEY];
+        NSArray * departmenttree = [result objectForKey:kTKPDHOME_APIDEPARTMENTTREEKEYPATH];
+        DepartmentTree *dt = departmenttree[0];
+        
+        id page =[result objectForKey:kTKPDHOME_APIPAGINGKEYPATH];
         
         if (_product.count >0) {
             
@@ -414,6 +569,10 @@
             NSLog(@"next page : %d",_page);
             
             _isnodata = NO;
+            
+            _filterview.hidden = NO;
+            _barbuttoncategory.enabled = YES;
+            
         }
     }
  }
@@ -466,7 +625,9 @@
         [_act stopAnimating];
     }];
     
-    NSArray *hashtags = [data objectForKey:kTKPDHOMEHOTLIST_APIHASHTAGSKEYPATH];
+    _descriptionlabel.text = hotlistdetail.result.description;
+    
+    NSArray *hashtags = [data objectForKey:kTKPDHOME_APIHASHTAGSKEYPATH];
     [self setHashtagsArray:hashtags];
 }
 
@@ -492,7 +653,7 @@
         CGFloat widthlabel = stringSize.width+10;
         
         button.frame = CGRectMake(widthcontenttop,_hashtagsscrollview.frame.size.height/2-10,widthlabel,(_hashtagsscrollview.frame.size.height)-30);
-        button.tag = i;
+        button.tag = i+20;
         
         widthcontenttop +=widthlabel;
         
@@ -501,6 +662,39 @@
     }
     
     _hashtagsscrollview.contentSize = CGSizeMake(widthcontenttop+10, 0);
+}
+
+
+#pragma mark - Methods
+-(void)refreshView:(UIRefreshControl*)refresh
+{
+    // cancel all request
+    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    
+    // reset object
+    [_product removeAllObjects];
+    _page = 1;
+    [_table reloadData];
+    
+    // request data
+    [self loadData];
+}
+
+#pragma mark - Post Notification Methods
+- (void)updateView:(NSNotification *)notification;
+{
+    NSDictionary *userinfo = notification.userInfo;
+    [_detailfilter addEntriesFromDictionary:userinfo];
+    
+    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    
+    // reset object
+    [_product removeAllObjects];
+    _page = 1;
+    [_table reloadData];
+
+    
+    [self loadData];
 }
 
 @end

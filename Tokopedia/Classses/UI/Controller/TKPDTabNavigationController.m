@@ -6,7 +6,9 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+#import "controller.h"
 #import "TKPDTabNavigationController.h"
+#import "CategoryMenuViewController.h"
 
 @interface TKPDTabNavigationController () {
 	UIView* _tabbar;
@@ -14,6 +16,8 @@
 	NSInteger _unloadSelectedIndex;
 	NSArray* _unloadViewControllers;
     BOOL _hascatalog;
+    
+    UIBarButtonItem *_barbuttoncategory;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *buttonlocation;
@@ -116,6 +120,7 @@
     [super viewWillDisappear:animated];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
 }
 
 - (void)viewDidLayoutSubviews
@@ -160,6 +165,29 @@
 
 #pragma mark -
 #pragma mark Properties
+
+-(void)setData:(NSDictionary *)data
+{
+    _data = data;
+    
+    if (data) {
+        NSBundle* bundle = [NSBundle mainBundle];
+        //TODO:: Change image
+        UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
+        if ([[_data objectForKey:kTKPDCONTROLLER_DATATYPEKEY]  isEqual: @(kTKPDCONTROLLER_DATATYPECATEGORYKEY)]) {
+            UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
+            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+                UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+                _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+            }
+            else
+                _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+            [_barbuttoncategory setTag:11];
+            [_barbuttoncategory setEnabled:NO];
+            self.navigationItem.rightBarButtonItem = _barbuttoncategory;
+        }
+    }
+}
 
 - (void)setViewControllers:(NSArray *)viewControllers
 {
@@ -485,9 +513,17 @@
         
         switch (btn.tag) {
             case 10:
+            {
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
-                
+            }
+            case 11:
+            {
+                CategoryMenuViewController *vc = [CategoryMenuViewController new];
+                NSInteger d_id = [[_data objectForKey:kTKPDCONTROLLER_DATADEPARTMENTIDKEY] integerValue];
+                vc.data = @{kTKPDCONTROLLER_DATADEPARTMENTIDKEY:@(d_id)};
+                [self.navigationController pushViewController:vc animated:YES];
+            }
             default:
                 break;
         }
@@ -576,6 +612,7 @@
         _tabbartwos.hidden = YES;
         _hascatalog = YES;
     }
+    _barbuttoncategory.enabled = YES;
 }
 
 @end

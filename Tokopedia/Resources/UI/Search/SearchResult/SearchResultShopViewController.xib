@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="act" destination="4UL-cg-udr" id="FCo-1b-QE3"/>
                 <outlet property="footer" destination="wVY-21-3dp" id="DSX-WW-bHw"/>
+                <outlet property="shopview" destination="r0y-ak-8VP" id="UlM-l6-a06"/>
                 <outlet property="table" destination="DEU-dk-S8H" id="39x-0i-9ST"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -38,8 +39,11 @@
                             <state key="normal" title="Filter">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="J5X-if-yad"/>
+                            </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zok-Ht-qhm">
+                        <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="zok-Ht-qhm">
                             <rect key="frame" x="159" y="1" width="161" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.61974774399999999" green="1" blue="0.63670880060000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -47,6 +51,9 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="sbe-iA-SF1"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>

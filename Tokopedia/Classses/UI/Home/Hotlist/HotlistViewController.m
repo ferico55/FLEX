@@ -31,24 +31,17 @@
     NSInteger _page;
     NSInteger _limit;
     
-    NSInteger _viewposition;
-    
     NSString *_urinext;
     
     BOOL _isnodata;
     
     UIRefreshControl *_refreshControl;
-    //__weak AFHTTPRequestOperation *_request;
 }
 
 #pragma mark - View Lifecylce
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
-    /** this will setup the position in the UIScrollView **/
-    [self.view setFrame:CGRectMake(320*_viewposition, 0, 320, 460)];
-    
     
     /** create new **/
     _product = [NSMutableArray new];
@@ -78,12 +71,9 @@
     /** set table footer view (loading act) **/
     _table.tableFooterView = _footer;
     
-    _isnodata = NO; //TODO: Remove this
-    
-    
-    //if (_product.count > 0) {
-    //    _isnodata = NO;
-    //}
+    if (_product.count > 0) {
+        _isnodata = NO;
+    }
     
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -92,23 +82,13 @@
     [_table addSubview:_refreshControl];
     
     [self configureRestKit];
-    [self loadData];
 }
 
-#pragma mark - Methods
--(void)refreshView:(UIRefreshControl*)refresh
+-(void)viewWillAppear:(BOOL)animated
 {
-    /** clear object **/
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
-    [_product removeAllObjects];
-    _page = 1;
-    
-    [_table reloadData];
-    /** request data **/
+    [super viewWillAppear:animated];
     [self loadData];
-    //[self request:YES withrefreshControl:refresh];
 }
-
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -131,6 +111,7 @@
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         NSString *cellid = kTKPDHOTLISTCELL_IDENTIFIER;
+        UIFont * font = kTKPDHOME_FONTHOTLIST;
 		
 		cell = (HotlistCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
@@ -142,6 +123,9 @@
             
             HotlistList *hotlist = _product[indexPath.row];
             ((HotlistCell*)cell).pricelabel.text = hotlist.price_start;
+            
+            
+            ((HotlistCell*)cell).pricelabel.font = font;
             
             [((HotlistCell*)cell).act startAnimating];
             
@@ -209,10 +193,6 @@
     TraktAPIClient *client = [TraktAPIClient sharedClient];
     RKObjectManager *objectManager = [[RKObjectManager alloc] initWithHTTPClient:client];
     
-#define kTKPDHOME_APISTATUSKEY @"status"
-#define kTKPDHOME_APISERVERPROCESSTIMEKEY @"server_process_time"
-#define kTKPDHOME_APIRESULTKEY @"result"
-    
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Hotlist class]];
     [statusMapping addAttributeMappingsFromArray:@[kTKPDHOME_APISTATUSKEY,kTKPDHOME_APISERVERPROCESSTIMEKEY,kTKPDHOME_APIRESULTKEY]];
@@ -226,9 +206,9 @@
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    RKResponseDescriptor *responseDescriptorHotlist = [RKResponseDescriptor responseDescriptorWithMapping:hotlistMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:kTKPDHOMEHOTLIST_APILISTKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorHotlist = [RKResponseDescriptor responseDescriptorWithMapping:hotlistMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:kTKPDHOME_APILISTKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    RKResponseDescriptor *responseDescriptorPaging = [RKResponseDescriptor responseDescriptorWithMapping:pagingMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:kTKPDHOMEHOTLIST_APIPAGINGKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorPaging = [RKResponseDescriptor responseDescriptorWithMapping:pagingMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:kTKPDHOME_APIPAGINGKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [objectManager addResponseDescriptor:responseDescriptorStatus];
     [objectManager addResponseDescriptor:responseDescriptorHotlist];
@@ -237,6 +217,8 @@
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [dictionary setObject:responseDescriptorHotlist.mapping forKey:(responseDescriptorHotlist.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptorPaging.mapping forKey:(responseDescriptorPaging.keyPath ?: [NSNull null])];
+    
+    [self loadData];
 }
 
 - (void)loadData
@@ -284,9 +266,9 @@
     if (status) {
         
         
-        [_product addObjectsFromArray: [result objectForKey:kTKPDHOME_APIPATHMAPPINGLISTKEY]];
+        [_product addObjectsFromArray: [result objectForKey:kTKPDHOME_APILISTKEYPATH]];
         //[_paging removeAllObjects];
-        id page =[result objectForKey:kTKPDHOME_APIPATHMAPPINGPAGINGKEY];
+        id page =[result objectForKey:kTKPDHOME_APIPAGINGKEYPATH];
         //[_paging addObject:[result objectForKey:@"result.paging"]];
         
         if (_product.count >0) {
@@ -352,7 +334,22 @@
     NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
     
     vc.data = @{kTKPDHOME_DATAQUERYKEY: querry[2]};
-    [_navcon pushViewController:vc animated:YES];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+#pragma mark - Methods
+-(void)refreshView:(UIRefreshControl*)refresh
+{
+    /** clear object **/
+    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [_product removeAllObjects];
+    _page = 1;
+    
+    [_table reloadData];
+    /** request data **/
+    [self loadData];
+    //[self request:YES withrefreshControl:refresh];
 }
 
 @end

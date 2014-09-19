@@ -7,10 +7,14 @@
 //
 
 #import "category.h"
+#import "search.h"
 #import "DBManager.h"
 #import "CategoryViewController.h"
 #import "CategoryViewCell.h"
 #import "CategoryResultViewController.h"
+#import "TKPDTabNavigationController.h"
+#import "SearchResultViewController.h"
+#import "SearchResultShopViewController.h"
 
 @interface CategoryViewController () <CategoryViewCellDelegate>
 {
@@ -138,14 +142,33 @@
 #pragma mark - Delegate Cell
 -(void)CategoryViewCellDelegateCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
-    CategoryResultViewController *vc = [CategoryResultViewController new];
-    UINavigationController *nav =[[UINavigationController alloc]initWithRootViewController:vc];
-    [nav.navigationBar setTranslucent:NO];
     NSInteger index = indexpath.section+3*(indexpath.row);
-    vc.data = @{@"d_id" : _category[index][@"d_id"]};
-    [self.navigationController presentViewController:nav animated:YES completion:^{
-        nil;
-    }];
+    
+    SearchResultViewController *vc = [SearchResultViewController new];
+    vc.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
+    SearchResultViewController *vc1 = [SearchResultViewController new];
+    vc1.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
+    SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+    vc2.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
+    NSArray *viewcontrollers = @[vc,vc1,vc2];
+    
+    TKPDTabNavigationController *c = [TKPDTabNavigationController new];
+    [c setData:@{kTKPDCATEGORY_DATATYPEKEY: @(kTKPDCATEGORY_DATATYPECATEGORYKEY), kTKPDSEARCH_APIDEPARTEMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@""}];
+    [c setSelectedIndex:0];
+    [c setViewControllers:viewcontrollers];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
+    [nav.navigationBar setTranslucent:NO];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+
+    
+//    CategoryResultViewController *vc = [CategoryResultViewController new];
+//    UINavigationController *nav =[[UINavigationController alloc]initWithRootViewController:vc];
+//    [nav.navigationBar setTranslucent:NO];
+//    NSInteger index = indexpath.section+3*(indexpath.row);
+//    vc.data = @{@"d_id" : _category[index][@"d_id"]};
+//    [self.navigationController presentViewController:nav animated:YES completion:^{
+//        nil;
+//    }];
 }
 
 @end

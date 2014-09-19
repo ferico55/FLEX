@@ -18,6 +18,7 @@
                 <outlet property="shopthumb" destination="ml1-bf-Teo" id="Lig-kO-TZ2"/>
                 <outlet property="table" destination="lLg-MF-2b8" id="zA1-hj-0Xz"/>
                 <outlet property="talaboutbutton" destination="MtP-j2-yZq" id="34V-Zj-pLh"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="rj9-SZ-4n0"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

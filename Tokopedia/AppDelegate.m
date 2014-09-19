@@ -17,7 +17,6 @@
 #import "MoreViewController.h"
 #import "CategoryViewController.h"
 
-//#import "SwipeMenuViewController.h"
 #import "TKPDTabHomeNavigationController.h"
 
 #import "HotlistViewController.h"
@@ -82,9 +81,9 @@
     UITabBarController *tabBarController = [UITabBarController new];
     UITabBar *tabbar = tabBarController.tabBar;
     
-    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor blackColor] }
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : kTKPDNAVIGATION_TABBARTITLECOLOR }
                                              forState:UIControlStateNormal];
-    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : [UIColor greenColor] }
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : kTKPDNAVIGATION_TABBARACTIVETITLECOLOR }
                                              forState:UIControlStateSelected];
     
     /** TAB BAR INDEX 1 **/
@@ -99,7 +98,7 @@
     [viewcontrollers addObject:v2];
     ProductFeedViewController *v3 = [ProductFeedViewController new];
     [viewcontrollers addObject:v3];
-    NSArray *titles = @[@"Hotlist",@"Produk Feed", @"Terakhir dilihat", @"Toko Favorite"];
+    NSArray *titles = kTKPD_HOMETITLEARRAY;
     /** Adjust View Controller **/
     TKPDTabHomeNavigationController *swipevc = [TKPDTabHomeNavigationController new];
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:swipevc];
@@ -169,7 +168,7 @@
         [tabBarItem1 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
     }
     //tabBarItem1.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-    tabBarItem1.title = @"HOME";
+    tabBarItem1.title = kTKPDNAVIGATION_TABBARTITLEARRAY[0];
     
     /** set tab bar item 2**/
     image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_CATEGORY];
@@ -184,7 +183,7 @@
     else
         [tabBarItem2 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
     //tabBarItem2.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-    tabBarItem2.title = @"KATALOG";
+    tabBarItem2.title = kTKPDNAVIGATION_TABBARTITLEARRAY[1];
     
     /** set tab bar item 3*/
     image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_SEARCH];
@@ -199,7 +198,7 @@
     else
         [tabBarItem3 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
     //tabBarItem3.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-    tabBarItem3.title = @"SEARCH";
+    tabBarItem3.title = kTKPDNAVIGATION_TABBARTITLEARRAY[2];
     
     /** set tab bar item 4*/
     image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_CART];
@@ -214,7 +213,7 @@
     else
         [tabBarItem4 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
     //tabBarItem4.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-    tabBarItem4.title = @"CART";
+    tabBarItem4.title = kTKPDNAVIGATION_TABBARTITLEARRAY[3];
     
     /** set tab bar item 5*/
     image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_MORE];
@@ -229,13 +228,8 @@
     else
         [tabBarItem5 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
     //tabBarItem5.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-    tabBarItem5.title = @"MORE";
+    tabBarItem5.title = kTKPDNAVIGATION_TABBARTITLEARRAY[4];
 
-
-    
-    //MainViewController *mainvc = [MainViewController new];
-    //_window.rootViewController = mainvc;
-    //[mainvc.navigationController pushViewController:tabBarController animated:YES];
     _window.rootViewController = tabBarController;
     
 }

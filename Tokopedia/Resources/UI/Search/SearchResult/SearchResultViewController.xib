@@ -32,9 +32,12 @@
                             <rect key="frame" x="0.0" y="1" width="106" height="44"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.61974774399999999" green="1" blue="0.63670880060000001" alpha="1" colorSpace="calibratedRGB"/>
-                            <state key="normal" title="Location">
+                            <state key="normal" title="Urutkan">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="NJN-TE-hk1"/>
+                            </connections>
                         </button>
                         <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="OyR-0N-WSa">
                             <rect key="frame" x="106" y="1" width="99" height="44"/>
@@ -43,8 +46,11 @@
                             <state key="normal" title="Filter">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="PRJ-ok-hx8"/>
+                            </connections>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Ymo-OI-l5T">
+                        <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Ymo-OI-l5T">
                             <rect key="frame" x="203" y="1" width="117" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.61974774399999999" green="1" blue="0.63670880060000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -52,6 +58,9 @@
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="1n9-hS-G2W"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
