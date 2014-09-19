@@ -2109,7 +2109,7 @@
 				FC36DFAE19B0656400AF74C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		FC36DFAF19B0656400AF74C1 /* Build configuration list for PBXNativeTarget "Tokopedia" */ = {
 			isa = XCConfigurationList;
@@ -2118,7 +2118,7 @@
 				FC36DFB119B0656400AF74C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		FC36DFB219B0656400AF74C1 /* Build configuration list for PBXNativeTarget "TokopediaTests" */ = {
 			isa = XCConfigurationList;
@@ -2127,7 +2127,7 @@
 				FC36DFB419B0656400AF74C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 	};

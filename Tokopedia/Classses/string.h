@@ -11,4 +11,6 @@
 
 #define kTKPDAUTHKEY @"auth"
 
+#define kTKPDREQUESTCOUNTMAX 5
+
 #endif

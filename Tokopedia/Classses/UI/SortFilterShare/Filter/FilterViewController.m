@@ -12,8 +12,11 @@
 
 @interface FilterViewController ()<FilterLocationViewControllerDelegate,UITextFieldDelegate>
 {
+    UITextField *_activetextfield;
     NSMutableDictionary *_detailfilter;
 }
+@property (weak, nonatomic) IBOutlet UITextField *pricemaxcatalog;
+@property (weak, nonatomic) IBOutlet UITextField *pricemincatalog;
 @property (weak, nonatomic) IBOutlet UITextField *pricemin;
 @property (weak, nonatomic) IBOutlet UITextField *pricemax;
 @property (strong, nonatomic) IBOutlet UIView *productview;
@@ -85,6 +88,8 @@
 #pragma mark - View Gesture
 -(IBAction)tap:(id)sender
 {
+    [_activetextfield resignFirstResponder];
+    
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         switch (button.tag) {
@@ -97,12 +102,20 @@
             case 11:
             {
                 //SUBMIT
-                NSDictionary *userinfo = @{kTKPDFILTER_APILOCATIONKEY:[_detailfilter objectForKey:kTKPDFILTER_APILOCATIONKEY]?:@"",
+                NSInteger pricemin = [[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMINKEY] integerValue];
+                NSInteger pricemax = [[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMAXKEY] integerValue];
+                if (pricemax>=pricemin){
+                    NSDictionary *userinfo = @{kTKPDFILTER_APILOCATIONKEY:[_detailfilter objectForKey:kTKPDFILTER_APILOCATIONKEY]?:@"",
                                            kTKPDFILTER_APISHOPTYPEKEY:[_detailfilter objectForKey:kTKPDFILTER_APISHOPTYPEKEY]?:@"",
                                            kTKPDFILTER_APIPRICEMINKEY:[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMINKEY]?:@"",
                                            kTKPDFILTER_APIPRICEMAXKEY:[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMAXKEY]?:@""};
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilter" object:nil userInfo:userinfo];
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilter" object:nil userInfo:userinfo];
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                }
+                else{
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"price max < price min" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alertView show];
+                }
                 break;
             }
             default:
@@ -131,14 +144,52 @@
                 [_detailfilter setObject:@(0) forKey:kTKPDFILTER_APISHOPTYPEKEY];
                 break;
             case 1:
-                [_detailfilter setObject:@(3) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+            {
+                //product
+                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEHOTLISTVIEWKEY]||[[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEPRODUCTVIEWKEY]) {
+                    [_detailfilter setObject:@(3) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                }
+                //shop
+                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPESHOPVIEWKEY]) {
+                    [_detailfilter setObject:@(2) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                }
+                //catalog
+                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPECATALOGVIEWKEY]) {
+                    [_detailfilter setObject:@(3) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                }
+                else
+                break;
+            }
             default:
                 break;
-        }
+            }
     }
+}
+- (IBAction)gesture:(id)sender {
+    [_activetextfield resignFirstResponder];
 }
 
 #pragma mark - Filter View Controller Delegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    // allow backspace
+    if (!string.length){
+        return YES;
+    }
+
+    // Prevent invalid character input, if keyboard is numberpad
+    if (textField.keyboardType == UIKeyboardTypeNumberPad){
+        if ([string rangeOfCharacterFromSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]].location != NSNotFound)
+        {
+            // BasicAlert(@"", @"This field accepts only numeric entries.");
+            return NO;
+        }
+    }
+    
+    // only enable the OK/submit button if they have entered all numbers for the last four of their SSN (prevents early submissions/trips to authentication server)
+    return YES;
+}
+
 -(void)FilterLocationViewController:(UIViewController *)viewcontroller withdata:(NSDictionary *)data
 {
     [_shoplocationbutton setTitle:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forState:UIControlStateNormal];
@@ -147,6 +198,7 @@
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+    _activetextfield = textField;
     [textField resignFirstResponder];
     return YES;
 }
@@ -159,10 +211,10 @@
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    if (textField == _pricemin) {
+    if (textField == _pricemin || textField == _pricemincatalog) {
         [_detailfilter setObject:textField.text forKey:kTKPDFILTER_APIPRICEMINKEY];
     }
-    if (textField == _pricemax) {
+    if (textField == _pricemax || textField == _pricemaxcatalog) {
         [_detailfilter setObject:textField.text forKey:kTKPDFILTER_APIPRICEMAXKEY];
     }
     return YES;

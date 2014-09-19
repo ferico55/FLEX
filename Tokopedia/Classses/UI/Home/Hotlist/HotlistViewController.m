@@ -90,6 +90,12 @@
     [self loadData];
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+}
+
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
@@ -223,19 +229,20 @@
     [_act startAnimating];
     
     [NSTimer scheduledTimerWithTimeInterval:10.0
-                                     target:nil
-                                   selector:@selector(requestfailure:)
+                                     target:self
+                                   selector:@selector(requesttimeout)
                                    userInfo:nil
                                     repeats:NO];
     
-	NSDictionary* param = @{@"auth":@(1),
+	NSDictionary* param = @{//@"auth":@(1),
                             kTKPDHOME_APIACTIONKEY:kTKPDHOMEHOTLISTACT,
                             kTKPDHOME_APIPAGEKEY : @(_page),
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE)
                             };
     
+    NSLog(@"============================== GET HOTLIST =====================");
     [[RKObjectManager sharedManager] getObjectsAtPath:kTKPDHOMEHOTLIST_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        
+        NSLog(@"============================== DONE GET HOTLIST =====================");
         [self requestsuccess:mappingResult];
         [_act stopAnimating];
         _table.tableFooterView = nil;
@@ -243,6 +250,7 @@
         [_refreshControl endRefreshing];
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        NSLog(@"============================== DONE GET HOTLIST =====================");
         /** failure **/
         [self requestfailure:error];
         [_act stopAnimating];
@@ -260,8 +268,6 @@
     BOOL status = [hotlist.status isEqualToString:@"OK"];
     
     if (status) {
-        
-        
         [_product addObjectsFromArray: [result objectForKey:kTKPDHOME_APILISTKEYPATH]];
         //[_paging removeAllObjects];
         id page =[result objectForKey:kTKPDHOME_APIPAGINGKEYPATH];
@@ -316,7 +322,7 @@
 {
     NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
     if ([(NSError*)object code] == NSURLErrorCancelled) {
-        [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
+        //[self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
     }
 }
 

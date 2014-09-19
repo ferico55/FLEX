@@ -59,13 +59,16 @@
     UIRefreshControl *_refreshControl;
     
     UIBarButtonItem *_barbuttoncategory;
+    
+    NSInteger _requestcount;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-
+        _isnodata = YES;
+        _requestcount = 0;
     }
     return self;
 }
@@ -153,7 +156,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    //[self refreshView:nil];
+    [self refreshView:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -395,7 +398,7 @@
 - (void)configureRestKit
 {
     
-    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    //[AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     
     // initialize RestKit
     RKObjectManager *objectManager =  [RKObjectManager sharedManager];
@@ -427,14 +430,15 @@
     // departmentchild mapping
     RKObjectMapping *departmentchildMapping = [RKObjectMapping mappingForClass:[DepartmentChild class]];
     [departmentchildMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY, kTKPDHOME_APITREEKEY, kTKPDHOME_APIDIDKEY, kTKPDHOME_APITITLEKEY]];
+    
     // departmentchild2 mapping
     RKObjectMapping *departmentchild2Mapping = [RKObjectMapping mappingForClass:[DepartmentChild2 class]];
     [departmentchild2Mapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY, kTKPDHOME_APITREEKEY, kTKPDHOME_APIDIDKEY, kTKPDHOME_APITITLEKEY]];
     
     // Adjust Relationship
     [hotlistDetailMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIRESULTKEY toKeyPath:kTKPDHOME_APIRESULTKEY withMapping:resultMapping]];
-    [departmentchildMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"department_tree.child" toKeyPath:@"child" withMapping:departmentMapping]];
-    [departmentchild2Mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"department_tree.child.child"  toKeyPath:@"child" withMapping:departmentchildMapping]];
+    [departmentchildMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result.department_tree.child" toKeyPath:@"child1" withMapping:departmentMapping]];
+    [departmentchild2Mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result.department_tree.child.child"  toKeyPath:@"child2" withMapping:departmentchildMapping]];
     
     // register mappings with the provider using a response descriptor
     // result
@@ -456,7 +460,7 @@
     [objectManager addResponseDescriptor:responseDescriptorResult];
     [objectManager addResponseDescriptor:responseDescriptorHotlistDetail];
     [objectManager addResponseDescriptor:responseDescriptorPaging];
-    //[objectManager addResponseDescriptor:responseDescriptorHashtags];
+    [objectManager addResponseDescriptor:responseDescriptorHashtags];
     [objectManager addResponseDescriptor:responseDescriptionDepartmenttree];
     //[objectManager addResponseDescriptor:responseDescriptionDepartmentchild];
     //[objectManager addResponseDescriptor:responseDescriptionDepartmentchild2];
@@ -465,7 +469,7 @@
     [dictionary setObject:responseDescriptorResult.mapping forKey:(responseDescriptorResult.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptorHotlistDetail.mapping forKey:(responseDescriptorHotlistDetail.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptorPaging.mapping forKey:(responseDescriptorPaging.keyPath ?: [NSNull null])];
-    //[dictionary setObject:responseDescriptorHashtags.mapping forKey:(responseDescriptorHashtags.keyPath ?: [NSNull null])];
+    [dictionary setObject:responseDescriptorHashtags.mapping forKey:(responseDescriptorHashtags.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptionDepartmenttree.mapping forKey:(responseDescriptionDepartmenttree.keyPath?: [NSNull null])];
     //[dictionary setObject:responseDescriptionDepartmentchild.mapping forKey:(responseDescriptionDepartmentchild.keyPath?: [NSNull null])];
     //[dictionary setObject:responseDescriptionDepartmentchild2.mapping forKey:(responseDescriptionDepartmentchild2.keyPath?: [NSNull null])];
@@ -478,12 +482,6 @@
 {
     _table.tableFooterView = _footer;
     [_act startAnimating];
-    
-    [NSTimer scheduledTimerWithTimeInterval:10.0
-                                     target:nil
-                                   selector:@selector(requestfailure:)
-                                   userInfo:nil
-                                    repeats:NO];
     
     NSString *querry =[_data objectForKey:kTKPDHOME_DATAQUERYKEY];
 
@@ -523,6 +521,9 @@
         
         NSLog(@"============================== DONE GET HOTLIST DETAIL =====================");
     }];
+    
+    //NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    //[[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 
@@ -579,20 +580,20 @@
 
 -(void)requesttimeout
 {
+    _table.tableFooterView = _footer;
+    [_act startAnimating];
     [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    _requestcount ++;
 }
 
 -(void)requestfailure:(id)object
 {
     NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
     if ([(NSError*)object code] == NSURLErrorCancelled) {
-        [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
+        if (_requestcount <= kTKPDREQUESTCOUNTMAX) {
+            [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
+        }
     }
-    else
-        [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
-
-    //NSDictionary *userInfo = @{@"count":@(0)};
-    //[[NSNotificationCenter defaultCenter] postNotificationName: @"setsegmentcontrol" object:nil userInfo:userInfo];
 }
 
 #pragma mark - Methods
