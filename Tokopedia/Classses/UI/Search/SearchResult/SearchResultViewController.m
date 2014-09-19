@@ -45,6 +45,8 @@
     BOOL _isnodata;
     
     UIRefreshControl *_refreshControl;
+    NSInteger _requestcount;
+    BOOL _isloadagain;
 }
 
 #pragma mark - Initialization
@@ -53,6 +55,8 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isnodata = YES;
+        _requestcount = 0;
+        _isloadagain = NO;
     }
     return self;
 }
@@ -120,8 +124,12 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self refreshView:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
+    if (_isloadagain) {
+        [self refreshView:nil];
+        _isloadagain = NO;
+    }
+    //[self refreshView:nil];
 }
 
 
@@ -190,113 +198,114 @@
 			((SearchResultCell*)cell).delegate = self;
 		}
         
-        /** Flexible view count **/
-		NSUInteger indexsegment = indexPath.row * 2;
-		NSUInteger indexmax = indexsegment + 2;
-		NSUInteger indexlimit = MIN(indexmax, _product.count);
-		
-		NSAssert(!(indexlimit > _product.count), @"producs out of bounds");
-		
-		NSUInteger i;
-		
-		for (i = 0; (indexsegment + i) < indexlimit; i++) {
-            List *list = [_product objectAtIndex:indexsegment + i];
-            ((UIView*)((SearchResultCell*)cell).viewcell[i]).hidden = NO;
-            (((SearchResultCell*)cell).indexpath) = indexPath;
+        if (_product.count > indexPath.row) {
+            //reset cell
+            [self reset:cell];
             
-            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
-                ((UILabel*)((SearchResultCell*)cell).labelprice[i]).text = list.product_price?:@"";
-                ((UILabel*)((SearchResultCell*)cell).labeldescription[i]).text = list.product_name?:@"";
-                ((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
+            /** Flexible view count **/
+            NSUInteger indexsegment = indexPath.row * 2;
+            NSUInteger indexmax = indexsegment + 2;
+            NSUInteger indexlimit = MIN(indexmax, _product.count);
+            
+            NSAssert(!(indexlimit > _product.count), @"producs out of bounds");
+            
+            for (int i = 0; (indexsegment + i) < indexlimit; i++) {
+                List *list = [_product objectAtIndex:indexsegment + i];
+                ((UIView*)((SearchResultCell*)cell).viewcell[i]).hidden = NO;
+                (((SearchResultCell*)cell).indexpath) = indexPath;
                 
-                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
-                
-                UIImageView *thumb = (UIImageView*)((SearchResultCell*)cell).thumb[i];
-                thumb.image = nil;
-                
-                UIActivityIndicatorView *act = (UIActivityIndicatorView*)((SearchResultCell*)cell).act[i];
-                [act startAnimating];
-                
-                NSLog(@"============================== START GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-                [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+                    ((UILabel*)((SearchResultCell*)cell).labelprice[i]).text = list.product_price?:@"";
+                    ((UILabel*)((SearchResultCell*)cell).labeldescription[i]).text = list.product_name?:@"";
+                    ((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
+                    
+                    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
+                    
+                    UIImageView *thumb = (UIImageView*)((SearchResultCell*)cell).thumb[i];
+                    thumb.image = nil;
+                    
+                    UIActivityIndicatorView *act = (UIActivityIndicatorView*)((SearchResultCell*)cell).act[i];
+                    [act startAnimating];
+                    
+                    NSLog(@"============================== START GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+                    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    //NSLOG(@"thumb: %@", thumb);
-                    [thumb setImage:image];
-                    
-                    [act stopAnimating];
-                    NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+                        //NSLOG(@"thumb: %@", thumb);
+                        [thumb setImage:image];
+                        
+                        [act stopAnimating];
+                        NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
 #pragma clang diagnostic pop
+                        
+                    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                        [act stopAnimating];
+                        
+                        NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+                    }];
+                }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+                    ((UILabel*)((SearchResultCell*)cell).labelprice[i]).text = list.catalog_price?:@"";
+                    ((UILabel*)((SearchResultCell*)cell).labeldescription[i]).text = list.catalog_name?:@"";
+                    ((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = list.product_name?:@"";
+                    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.catalog_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
+                    //request.URL = url;
                     
-                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                    [act stopAnimating];
+                    UIImageView *thumb = (UIImageView*)((SearchResultCell*)cell).thumb[i];
+                    thumb.image = nil;
+                    //thumb.hidden = YES;	//@prepareforreuse then @reset
                     
-                    NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-                }];
-            }
-            else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-                ((UILabel*)((SearchResultCell*)cell).labelprice[i]).text = list.catalog_price?:@"";
-                ((UILabel*)((SearchResultCell*)cell).labeldescription[i]).text = list.catalog_name?:@"";
-                ((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = list.product_name?:@"";
-                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.catalog_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
-                //request.URL = url;
-                
-                UIImageView *thumb = (UIImageView*)((SearchResultCell*)cell).thumb[i];
-                thumb.image = nil;
-                //thumb.hidden = YES;	//@prepareforreuse then @reset
-                
-                UIActivityIndicatorView *act = (UIActivityIndicatorView*)((SearchResultCell*)cell).act[i];
-                [act startAnimating];
-                
-                NSLog(@"============================== START GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-                [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                    UIActivityIndicatorView *act = (UIActivityIndicatorView*)((SearchResultCell*)cell).act[i];
+                    [act startAnimating];
+                    
+                    NSLog(@"============================== START GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+                    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    //NSLOG(@"thumb: %@", thumb);
-                    [thumb setImage:image];
-                    
-                    [act stopAnimating];
-                    
-                    NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+                        //NSLOG(@"thumb: %@", thumb);
+                        [thumb setImage:image];
+                        
+                        [act stopAnimating];
+                        
+                        NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
 #pragma clang diagnostic pop
+                        
+                    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                        [act stopAnimating];
+                        NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+                    }];
+                }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHSHOPKEY]) {
+                    ((UILabel*)((SearchResultCell*)cell).labelprice[i]).text = list.product_price?:@"";
+                    ((UILabel*)((SearchResultCell*)cell).labeldescription[i]).text = list.shop_name?:@"";
+                    //((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = searchitem.product_name?:@"";
                     
-                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                    [act stopAnimating];
-                    NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-                }];
-            }
-            else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHSHOPKEY]) {
-                ((UILabel*)((SearchResultCell*)cell).labelprice[i]).text = list.product_price?:@"";
-                ((UILabel*)((SearchResultCell*)cell).labeldescription[i]).text = list.shop_name?:@"";
-                //((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = searchitem.product_name?:@"";
-                
-                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.shop_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
-                //request.URL = url;
-                
-                UIImageView *thumb = (UIImageView*)((SearchResultCell*)cell).thumb[i];
-                thumb.image = nil;
-                //thumb.hidden = YES;	//@prepareforreuse then @reset
-                
-                UIActivityIndicatorView *act = (UIActivityIndicatorView*)((SearchResultCell*)cell).act[i];
-                [act startAnimating];
-                NSLog(@"============================== START GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-                [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.shop_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
+                    //request.URL = url;
+                    
+                    UIImageView *thumb = (UIImageView*)((SearchResultCell*)cell).thumb[i];
+                    thumb.image = nil;
+                    //thumb.hidden = YES;	//@prepareforreuse then @reset
+                    
+                    UIActivityIndicatorView *act = (UIActivityIndicatorView*)((SearchResultCell*)cell).act[i];
+                    [act startAnimating];
+                    NSLog(@"============================== START GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+                    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    //NSLOG(@"thumb: %@", thumb);
-                    [thumb setImage:image];
-                    
-                    [act stopAnimating];
-                    NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+                        //NSLOG(@"thumb: %@", thumb);
+                        [thumb setImage:image];
+                        
+                        [act stopAnimating];
+                        NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
 #pragma clang diagnostic pop
-                    
-                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                    [act stopAnimating];
-                    NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-                }];
+                        
+                    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                        [act stopAnimating];
+                        NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+                    }];
+                }
             }
+
         }
-        
 	} else {
 		static NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
 		
@@ -319,7 +328,7 @@
 - (void)configureRestKit
 {
     
-    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    //[AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
 /** RestKit With Core Data
     // Initialize managed object store
     NSManagedObjectModel *managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
@@ -405,12 +414,6 @@
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
-    [NSTimer scheduledTimerWithTimeInterval:10.0
-                                     target:nil
-                                   selector:@selector(requestfailure:)
-                                   userInfo:nil
-                                    repeats:NO];
-    
     NSString *querry =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *type = [_params objectForKey:kTKPDSEARCH_DATATYPE];
     NSString *deptid =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
@@ -445,32 +448,30 @@
                 };
     }
 
+    NSLog(@"============================== GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+    [[RKObjectManager sharedManager] getObjectsAtPath:kTKPDSEARCH_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        
+        [self requestsuccess:mappingResult];
+        [_table reloadData];
+        [_refreshControl endRefreshing];
+        //[_act stopAnimating];
+        //_table.tableFooterView = nil;
+        NSLog(@"============================== DONE GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+        [self requestfailure:error];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"An Error Has Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        //[alertView show];
+        [_act stopAnimating];
+        _table.tableFooterView = nil;
+        [_refreshControl endRefreshing];
+        
+        NSLog(@"============================== DONE GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+    }];
     
-    // Some asynchronous work to do
-    //dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        NSLog(@"============================== GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-        [[RKObjectManager sharedManager] getObjectsAtPath:kTKPDSEARCH_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            
-            [self requestsuccess:mappingResult];
-            [_table reloadData];
-            [_refreshControl endRefreshing];
-            //[_act stopAnimating];
-            //_table.tableFooterView = nil;
-            NSLog(@"============================== DONE GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-            
-        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            /** failure **/
-            [self requestfailure:error];
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"An Error Has Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            //[alertView show];
-            [_act stopAnimating];
-            _table.tableFooterView = nil;
-            [_refreshControl endRefreshing];
-            
-            NSLog(@"============================== DONE GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-        }];
-    //});
-
+    //NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    //[[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 
@@ -501,10 +502,7 @@
             [_act stopAnimating];
             _table.tableFooterView = nil;
         }
-        //[_paging removeAllObjects];
         id page =[result objectForKey:kTKPDSEARCH_APIPATHMAPPINGPAGINGKEY];
-        //[_paging addObject:[result objectForKey:@"result.paging"]];
-        
         if (_product.count >0) {
             
             Paging *paging = page;
@@ -554,18 +552,19 @@
 
 -(void)requesttimeout
 {
-    _table.tableFooterView = _footer;
-    [_act startAnimating];
     [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    _requestcount ++;
 }
+
 
 -(void)requestfailure:(id)object
 {
     NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
     if ([(NSError*)object code] == NSURLErrorCancelled) {
-        [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
+        if (_requestcount <= kTKPDREQUESTCOUNTMAX) {
+            [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
+        }
     }
-    [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
 }
 
 #pragma mark - cell delegate
@@ -583,7 +582,7 @@
         case 10:
         {
             // Action Urutkan Button
-            SortViewController *vc = [SortViewController new];
+            SortViewController *vc = [SortViewController new]; 
             if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
                 vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDSEARCH_DATATYPEPRODUCTVIEWKEY};
             else
@@ -610,6 +609,15 @@
 }
 
 #pragma mark - Methods
+-(void)reset:(UITableViewCell*)cell
+{
+    [((SearchResultCell*)cell).thumb makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
+    [((SearchResultCell*)cell).labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [((SearchResultCell*)cell).labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [((SearchResultCell*)cell).labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    
+}
+
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     /** clear object **/
@@ -637,16 +645,30 @@
 - (void)updateView:(NSNotification *)notification;
 {
     NSDictionary *userinfo = notification.userInfo;
-    [_params addEntriesFromDictionary:userinfo];
-    
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
-    
-    // reset object
-    [_product removeAllObjects];
-    _page = 1;
-    [_table reloadData];
-    
-    
-    [self loadData];
+    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+        [_params addEntriesFromDictionary:userinfo];
+        
+        [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+        
+        // reset object
+        [_product removeAllObjects];
+        _page = 1;
+        [_table reloadData];
+        
+        _isloadagain = YES;
+        [self loadData];
+    }
+    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+        [_params addEntriesFromDictionary:userinfo];
+        
+        [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+        
+        // reset object
+        [_product removeAllObjects];
+        _page = 1;
+        [_table reloadData];
+        _isloadagain = YES;
+        [self loadData];
+    }
 }
 @end

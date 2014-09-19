@@ -45,6 +45,8 @@
     BOOL _isnodata;
     
     UIRefreshControl *_refreshControl;
+    NSInteger _requestcount;
+    BOOL _isloadagain;
 }
 
 #pragma mark - Initialization
@@ -52,6 +54,8 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        _isloadagain = NO;
+        _requestcount = 0;
         _isnodata = YES;
     }
     return self;
@@ -117,7 +121,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
-    [self refreshView:nil];
+    if (_isloadagain) {
+        [self refreshView:nil];
+        _isloadagain = NO;
+    }
 }
 
 
@@ -261,9 +268,6 @@
 #pragma mark - Request + Mapping
 - (void)configureRestKit
 {
-    
-    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
-    
     // initialize RestKit
     RKObjectManager *objectManager =  [RKObjectManager sharedManager];
     
@@ -344,9 +348,6 @@
                   };
     }
     
-    
-    // Some asynchronous work to do
-    //dispatch_async(dispatch_get_global_queue(0, 0), ^{
     NSLog(@"============================== GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
     [[RKObjectManager sharedManager] getObjectsAtPath:kTKPDSEARCH_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         
@@ -368,7 +369,9 @@
         
         NSLog(@"============================== DONE GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
     }];
-    //});
+
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     
 }
 
@@ -417,7 +420,6 @@
             NSLog(@"next page : %d",_page);
             _isnodata = NO;
         }
-        
     }
     else{
         _uriredirect =  uriredirect;
@@ -443,16 +445,18 @@
 
 -(void)requesttimeout
 {
-    _table.tableFooterView = _footer;
-    [_act startAnimating];
     [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    _requestcount ++;
 }
+
 
 -(void)requestfailure:(id)object
 {
     NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
     if ([(NSError*)object code] == NSURLErrorCancelled) {
-        [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
+        if (_requestcount <= kTKPDREQUESTCOUNTMAX) {
+            [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
+        }
     }
 }
 
@@ -504,7 +508,7 @@
     [_product removeAllObjects];
     _page = 1;
     [_table reloadData];
-    
+    _isloadagain = YES;
     
     [self loadData];
 }

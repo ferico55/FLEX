@@ -21,4 +21,6 @@
     #import "NSStringCategory.h"
     #import "UIImageView+AFNetworking.h"
     #import "Tkpd.h"
+    #import "string.h"
+
 #endif

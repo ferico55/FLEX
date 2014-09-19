@@ -15,6 +15,6 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *d_id;
 @property (nonatomic, strong) NSString *href;
-@property (nonatomic, strong) DepartmentChild2 *child;
+@property (nonatomic, strong) DepartmentChild2 *child2;
 
 @end

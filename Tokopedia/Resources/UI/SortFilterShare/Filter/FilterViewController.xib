@@ -9,7 +9,9 @@
             <connections>
                 <outlet property="catalogview" destination="kEs-ef-swp" id="ahk-1C-eAB"/>
                 <outlet property="pricemax" destination="vVH-FT-XGN" id="GxL-un-K2j"/>
+                <outlet property="pricemaxcatalog" destination="wdt-eQ-gGH" id="rDh-CY-s3C"/>
                 <outlet property="pricemin" destination="QHW-6Q-aoV" id="31o-Ig-Qzc"/>
+                <outlet property="pricemincatalog" destination="lQ0-1m-SDD" id="wGQ-wq-vyX"/>
                 <outlet property="productlocationbutton" destination="Q8C-My-ydD" id="yCr-KT-9Nf"/>
                 <outlet property="productview" destination="i5M-Pr-FkT" id="ole-cd-OIC"/>
                 <outlet property="shoplocationbutton" destination="2eP-79-0Hx" id="Qae-3e-rBt"/>
@@ -18,7 +20,7 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT" userLabel="Productfilter - View">
+        <view clearsContextBeforeDrawing="NO" tag="10" contentMode="scaleToFill" id="i5M-Pr-FkT" userLabel="Productfilter - View">
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
@@ -85,7 +87,7 @@
                     <rect key="frame" x="20" y="214" width="97" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="7tV-1G-ty9"/>
                     </connections>
@@ -94,47 +96,55 @@
                     <rect key="frame" x="197" y="214" width="97" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="a2G-iu-snY"/>
                     </connections>
                 </textField>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="l61-I3-a1T" appends="YES" id="S1n-ey-eIO"/>
+            </connections>
         </view>
-        <view contentMode="scaleToFill" id="kEs-ef-swp" userLabel="Catalogfilter - View">
+        <view tag="10" contentMode="scaleToFill" id="kEs-ef-swp" userLabel="Catalogfilter - View">
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4HM-bu-N0Z">
-                    <rect key="frame" x="20" y="49" width="42" height="21"/>
+                    <rect key="frame" x="20" y="111" width="42" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lQ0-1m-SDD">
-                    <rect key="frame" x="20" y="71" width="97" height="30"/>
+                    <rect key="frame" x="20" y="133" width="97" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="l3b-sN-Kmp"/>
                     </connections>
                 </textField>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wdt-eQ-gGH">
-                    <rect key="frame" x="197" y="71" width="97" height="30"/>
+                    <rect key="frame" x="197" y="133" width="97" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <textInputTraits key="textInputTraits"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="ruT-00-iLd"/>
                     </connections>
                 </textField>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="ylg-qM-Q8c" appends="YES" id="OtS-0W-EyD"/>
+            </connections>
         </view>
         <view contentMode="scaleToFill" id="w5S-UV-2ld" userLabel="Shopfilter - View">
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -196,5 +206,15 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
+        <tapGestureRecognizer id="l61-I3-a1T">
+            <connections>
+                <action selector="gesture:" destination="-1" id="uez-2U-Q72"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="ylg-qM-Q8c">
+            <connections>
+                <action selector="gesture:" destination="-1" id="hAM-Pd-N8W"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
 </document>
