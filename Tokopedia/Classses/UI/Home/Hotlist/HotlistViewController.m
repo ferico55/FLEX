@@ -120,6 +120,7 @@
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         NSString *cellid = kTKPDHOTLISTCELL_IDENTIFIER;
+        UIFont * font = kTKPDHOME_FONTHOTLIST;
 		
 		cell = (HotlistCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
@@ -132,6 +133,9 @@
             HotlistList *hotlist = _product[indexPath.row];
             ((HotlistCell*)cell).indexpath = indexPath;
             ((HotlistCell*)cell).pricelabel.text = hotlist.price_start;
+            ((HotlistCell*)cell).namelabel.text = hotlist.title;
+            
+            ((HotlistCell*)cell).pricelabel.font = font;
             
             [((HotlistCell*)cell).act startAnimating];
             

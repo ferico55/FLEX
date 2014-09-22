@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		85386DCC19CBE88700BCA463 /* GothamLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCA19CBD8E500BCA463 /* GothamLight.ttf */; };
+		85386DCD19CBE88A00BCA463 /* GothamBlack.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCB19CBD92900BCA463 /* GothamBlack.ttf */; };
+		8558292319D0211B00CFC96B /* icon_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 8558292219D0211B00CFC96B /* icon_check.png */; };
+		8558292619D0357B00CFC96B /* ic_arrow_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 8558292519D0357B00CFC96B /* ic_arrow_right.png */; };
 		F3B587558A434636B6275320 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDC5E5AE50A14C3FB286B367 /* libPods-Tokopedia.a */; };
 		FC012D8319BEA8A90072A31A /* icon_house.png in Resources */ = {isa = PBXBuildFile; fileRef = FC012D8119BEA8A90072A31A /* icon_house.png */; };
 		FC012D8419BEA8A90072A31A /* icon_house@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC012D8219BEA8A90072A31A /* icon_house@2x.png */; };
@@ -232,6 +236,7 @@
 		FCCCB95619B4317A0077349C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCCB95419B4317A0077349C /* MainViewController.m */; };
 		FCCCB95919B435440077349C /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCCCB95819B435440077349C /* MainViewController.xib */; };
 		FCCCB95D19B4476A0077349C /* Paging.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCCB95C19B4476A0077349C /* Paging.m */; };
+		FF36BD0A6E2A48F0BC3439CF /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 482BA56B21334661A9065EEC /* libPods-TokopediaTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -246,6 +251,12 @@
 
 /* Begin PBXFileReference section */
 		091FB04E48F44F1BBA374E42 /* Pods-Tokopedia.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.xcconfig"; path = "Pods/Pods-Tokopedia.xcconfig"; sourceTree = "<group>"; };
+		482BA56B21334661A9065EEC /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		62A52619A9614BB78AFC9FF8 /* Pods-TokopediaTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.xcconfig"; path = "Pods/Pods-TokopediaTests.xcconfig"; sourceTree = "<group>"; };
+		85386DCA19CBD8E500BCA463 /* GothamLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamLight.ttf; sourceTree = "<group>"; };
+		85386DCB19CBD92900BCA463 /* GothamBlack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamBlack.ttf; sourceTree = "<group>"; };
+		8558292219D0211B00CFC96B /* icon_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_check.png; path = "../../../../../Downloads/Tokopedia Mockup/icon_check.png"; sourceTree = "<group>"; };
+		8558292519D0357B00CFC96B /* ic_arrow_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_arrow_right.png; path = "../../../../../Downloads/Tokopedia Mockup/ic_arrow_right.png"; sourceTree = "<group>"; };
 		EDC5E5AE50A14C3FB286B367 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC012D8119BEA8A90072A31A /* icon_house.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_house.png; sourceTree = "<group>"; };
 		FC012D8219BEA8A90072A31A /* icon_house@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_house@2x.png"; sourceTree = "<group>"; };
@@ -583,12 +594,22 @@
 				FC36DFA019B0656400AF74C1 /* XCTest.framework in Frameworks */,
 				FC36DFA219B0656400AF74C1 /* UIKit.framework in Frameworks */,
 				FC36DFA119B0656400AF74C1 /* Foundation.framework in Frameworks */,
+				FF36BD0A6E2A48F0BC3439CF /* libPods-TokopediaTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8558292419D0212600CFC96B /* icon_general */ = {
+			isa = PBXGroup;
+			children = (
+				8558292519D0357B00CFC96B /* ic_arrow_right.png */,
+				8558292219D0211B00CFC96B /* icon_check.png */,
+			);
+			name = icon_general;
+			sourceTree = "<group>";
+		};
 		FC012D8019BEA8A90072A31A /* Category */ = {
 			isa = PBXGroup;
 			children = (
@@ -1065,6 +1086,7 @@
 				FC36DF8519B0656400AF74C1 /* Frameworks */,
 				FC36DF8419B0656400AF74C1 /* Products */,
 				091FB04E48F44F1BBA374E42 /* Pods-Tokopedia.xcconfig */,
+				62A52619A9614BB78AFC9FF8 /* Pods-TokopediaTests.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1086,6 +1108,7 @@
 				FC36DF8A19B0656400AF74C1 /* UIKit.framework */,
 				FC36DF9F19B0656400AF74C1 /* XCTest.framework */,
 				EDC5E5AE50A14C3FB286B367 /* libPods-Tokopedia.a */,
+				482BA56B21334661A9065EEC /* libPods-TokopediaTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1328,6 +1351,8 @@
 		FC36E11819B0673700AF74C1 /* Font */ = {
 			isa = PBXGroup;
 			children = (
+				85386DCB19CBD92900BCA463 /* GothamBlack.ttf */,
+				85386DCA19CBD8E500BCA463 /* GothamLight.ttf */,
 				FC36E11919B0673700AF74C1 /* Lato-Bold.ttf */,
 				FC36E11A19B0673700AF74C1 /* Lato-Regular.ttf */,
 			);
@@ -1337,6 +1362,7 @@
 		FC36E11B19B0673700AF74C1 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8558292419D0212600CFC96B /* icon_general */,
 				FC012D8019BEA8A90072A31A /* Category */,
 				FC9FD74219B4277F00CF6CDD /* Controller */,
 				FC36E11C19B0673700AF74C1 /* Navigation */,
@@ -1601,9 +1627,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC36DFB219B0656400AF74C1 /* Build configuration list for PBXNativeTarget "TokopediaTests" */;
 			buildPhases = (
+				66B6361E93B8451F93E58898 /* Check Pods Manifest.lock */,
 				FC36DF9A19B0656400AF74C1 /* Sources */,
 				FC36DF9B19B0656400AF74C1 /* Frameworks */,
 				FC36DF9C19B0656400AF74C1 /* Resources */,
+				5DE7980136424989A1A7B226 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1728,6 +1756,7 @@
 				FC012DBA19BEB2360072A31A /* icon_0@2x.png in Resources */,
 				FC2F203B19BD5B7200C2B9B5 /* HotlistResultViewController.xib in Resources */,
 				FC012DC719BEB2360072A31A /* icon_15@2x.png in Resources */,
+				85386DCD19CBE88A00BCA463 /* GothamBlack.ttf in Resources */,
 				FC18C79619B57F4D00BA162D /* CategoryViewCell.xib in Resources */,
 				FC18C7A819B5955800BA162D /* CategoryMenuViewCell.xib in Resources */,
 				FC2F203919BD5B7200C2B9B5 /* HotlistViewController.xib in Resources */,
@@ -1739,6 +1768,7 @@
 				FC36E1A019B0673800AF74C1 /* top_bg1@2x.png in Resources */,
 				FC012DDE19BEB2360072A31A /* icon_6@2x.png in Resources */,
 				FC36E19819B0673800AF74C1 /* navigation-chevron.png in Resources */,
+				8558292619D0357B00CFC96B /* ic_arrow_right.png in Resources */,
 				FC36E1A919B0673800AF74C1 /* ic_cart.png in Resources */,
 				FC36E1BD19B0673800AF74C1 /* MoreViewController.xib in Resources */,
 				FC21F34D19BFE5BD00417CA8 /* icon_home@2x.png in Resources */,
@@ -1763,6 +1793,7 @@
 				FC012DD419BEB2360072A31A /* icon_21.png in Resources */,
 				FC9FD74719B4277F00CF6CDD /* tab_btm_shadow@2x.png in Resources */,
 				FC21F34C19BFE5BD00417CA8 /* icon_home.png in Resources */,
+				85386DCC19CBE88700BCA463 /* GothamLight.ttf in Resources */,
 				FC36E19119B0673800AF74C1 /* actionbar_bg.png in Resources */,
 				FC2F203C19BD5B7200C2B9B5 /* KatalogListViewCell.xib in Resources */,
 				FC36E19219B0673800AF74C1 /* image-1.png in Resources */,
@@ -1780,6 +1811,7 @@
 				FC21F35719BFE5BD00417CA8 /* icon_search_active@2x.png in Resources */,
 				FC012DD319BEB2360072A31A /* icon_20@2x.png in Resources */,
 				FC36E19E19B0673800AF74C1 /* top_bg.png in Resources */,
+				8558292319D0211B00CFC96B /* icon_check.png in Resources */,
 				FC300B7E19C946430098F0D0 /* SortCell.xib in Resources */,
 				FC36E1B419B0673800AF74C1 /* tabnav_bg@2x.png in Resources */,
 				FC36E1C919B0673800AF74C1 /* SearchResultCell.xib in Resources */,
@@ -1806,6 +1838,36 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		5DE7980136424989A1A7B226 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-TokopediaTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		66B6361E93B8451F93E58898 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		72CC7607790349BDBBECF8CD /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2039,6 +2101,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -2053,6 +2116,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
@@ -2061,6 +2125,7 @@
 		};
 		FC36DFB319B0656400AF74C1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 62A52619A9614BB78AFC9FF8 /* Pods-TokopediaTests.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Tokopedia.app/Tokopedia";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -2083,6 +2148,7 @@
 		};
 		FC36DFB419B0656400AF74C1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 62A52619A9614BB78AFC9FF8 /* Pods-TokopediaTests.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Tokopedia.app/Tokopedia";
 				FRAMEWORK_SEARCH_PATHS = (

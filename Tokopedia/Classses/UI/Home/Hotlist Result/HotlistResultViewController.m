@@ -131,10 +131,12 @@
 	[barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
     
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
+    //img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONTABBAR_SEARCH ofType:@"png"]];
+    
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        //_barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        _barbuttoncategory = [[UIBarButtonItem alloc] initWithTitle:@"Category" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     }
     else
         _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
@@ -420,7 +422,7 @@
     
     // result mapping
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APICOVERIMAGEKEY:kTKPDHOME_APICOVERIMAGEKEY, KTKPDHOME_APIDESCRIPTIONKEY:KTKPDHOME_APIDESCRIPTIONKEY}];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APICOVERIMAGEKEY:kTKPDHOME_APICOVERIMAGEKEY, KTKPDHOME_APIDESCRIPTION1KEY:KTKPDHOME_APIDESCRIPTIONKEY}];
     
     // searchs list mapping
     RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[List class]];
@@ -489,7 +491,7 @@
 
 	NSDictionary* param = @{
                             //@"auth":@(1),
-                            kTKPDHOME_APIQUERYKEY : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"wewe",
+                            kTKPDHOME_APIQUERYKEY : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"bantal-donat",
                             //kTKPDHOME_APIQUERYKEY : @"demi-iklan", //TODO::remove dummy data
                             kTKPDHOME_APIPAGEKEY : @(_page),
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLISTRESULT_LIMITPAGE),
@@ -647,20 +649,29 @@
     /** Adjust hashtags to Scrollview **/
     for (int i = 0; i<array.count; i++) {
         Hashtags *hashtags = array[i];
-        NSString *name = hashtags.name;
+        
+        NSString *hash = hashtags.name;
+        NSString *name = [@"# " stringByAppendingFormat:
+                             hash];
+        
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
         [button setTitle:name forState:UIControlStateNormal];
+
         UIFont * font = kTKPDHOME_FONTSLIDETITLES;
         button.titleLabel.font = font;
-        button.backgroundColor = [UIColor clearColor];
+        //button.tintColor = [UIColor blackColor];
+        
+        
         [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         CGSize stringSize = [name sizeWithFont:kTKPDHOME_FONTSLIDETITLESACTIVE];
         CGFloat widthlabel = stringSize.width+10;
         
-        button.frame = CGRectMake(widthcontenttop,_hashtagsscrollview.frame.size.height/2-10,widthlabel,(_hashtagsscrollview.frame.size.height)-30);
+        
+        button.frame = CGRectMake(widthcontenttop,_hashtagsscrollview.frame.size.height/2-10,widthlabel,30);
         button.tag = i+20;
+        button.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0);
         
         widthcontenttop +=widthlabel;
         

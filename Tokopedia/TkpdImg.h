@@ -25,7 +25,7 @@
 
 #define kTKPDIMAGE_NAVBARBG @"actionbar_bg"
 
-#define kTKPDIMAGE_ICONNOTIFICATION @"image-1"
+#define kTKPDIMAGE_ICONNOTIFICATION @"navigation-chevron"
 
 #define kTKPDIMAGE_TABBARACTIVEBG @"active_tab"
 #define kTKPDIMAGE_TABBARBG @"tabnav_bg"
