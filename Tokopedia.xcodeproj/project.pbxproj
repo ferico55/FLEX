@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		85386DCC19CBE88700BCA463 /* GothamLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCA19CBD8E500BCA463 /* GothamLight.ttf */; };
 		85386DCD19CBE88A00BCA463 /* GothamBlack.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCB19CBD92900BCA463 /* GothamBlack.ttf */; };
-		8558292319D0211B00CFC96B /* icon_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 8558292219D0211B00CFC96B /* icon_check.png */; };
-		8558292619D0357B00CFC96B /* ic_arrow_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 8558292519D0357B00CFC96B /* ic_arrow_right.png */; };
 		F3B587558A434636B6275320 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDC5E5AE50A14C3FB286B367 /* libPods-Tokopedia.a */; };
 		FC012D8319BEA8A90072A31A /* icon_house.png in Resources */ = {isa = PBXBuildFile; fileRef = FC012D8119BEA8A90072A31A /* icon_house.png */; };
 		FC012D8419BEA8A90072A31A /* icon_house@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC012D8219BEA8A90072A31A /* icon_house@2x.png */; };
@@ -214,6 +212,8 @@
 		FC36E1C919B0673800AF74C1 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC36E16D19B0673800AF74C1 /* SearchResultCell.xib */; };
 		FC36E1CA19B0673800AF74C1 /* SearchResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC36E16E19B0673800AF74C1 /* SearchResultViewController.xib */; };
 		FC36E1D419B0904F00AF74C1 /* TraktAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36E1D319B0904F00AF74C1 /* TraktAPIClient.m */; };
+		FC3E7FE119D041B600053022 /* ic_arrow_right.png in Resources */ = {isa = PBXBuildFile; fileRef = FC3E7FDF19D041B600053022 /* ic_arrow_right.png */; };
+		FC3E7FE219D041B600053022 /* icon_check.png in Resources */ = {isa = PBXBuildFile; fileRef = FC3E7FE019D041B600053022 /* icon_check.png */; };
 		FC52109F19C6A428004932C5 /* SearchResultShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC52109D19C6A428004932C5 /* SearchResultShopViewController.m */; };
 		FC5210A919C6A48A004932C5 /* SearchResultShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC5210A719C6A48A004932C5 /* SearchResultShopCell.m */; };
 		FC5210AD19C6C874004932C5 /* HotlistResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FC5210AC19C6C874004932C5 /* HotlistResult.m */; };
@@ -255,8 +255,6 @@
 		62A52619A9614BB78AFC9FF8 /* Pods-TokopediaTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.xcconfig"; path = "Pods/Pods-TokopediaTests.xcconfig"; sourceTree = "<group>"; };
 		85386DCA19CBD8E500BCA463 /* GothamLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamLight.ttf; sourceTree = "<group>"; };
 		85386DCB19CBD92900BCA463 /* GothamBlack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamBlack.ttf; sourceTree = "<group>"; };
-		8558292219D0211B00CFC96B /* icon_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_check.png; path = "../../../../../Downloads/Tokopedia Mockup/icon_check.png"; sourceTree = "<group>"; };
-		8558292519D0357B00CFC96B /* ic_arrow_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_arrow_right.png; path = "../../../../../Downloads/Tokopedia Mockup/ic_arrow_right.png"; sourceTree = "<group>"; };
 		EDC5E5AE50A14C3FB286B367 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC012D8119BEA8A90072A31A /* icon_house.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_house.png; sourceTree = "<group>"; };
 		FC012D8219BEA8A90072A31A /* icon_house@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_house@2x.png"; sourceTree = "<group>"; };
@@ -534,6 +532,8 @@
 		FC36E1CE19B067AD00AF74C1 /* TkpdImg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TkpdImg.h; sourceTree = "<group>"; };
 		FC36E1D219B0904F00AF74C1 /* TraktAPIClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TraktAPIClient.h; path = ../TraktAPIClient.h; sourceTree = "<group>"; };
 		FC36E1D319B0904F00AF74C1 /* TraktAPIClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TraktAPIClient.m; path = ../TraktAPIClient.m; sourceTree = "<group>"; };
+		FC3E7FDF19D041B600053022 /* ic_arrow_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_arrow_right.png; sourceTree = "<group>"; };
+		FC3E7FE019D041B600053022 /* icon_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_check.png; sourceTree = "<group>"; };
 		FC52109C19C6A428004932C5 /* SearchResultShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultShopViewController.h; sourceTree = "<group>"; };
 		FC52109D19C6A428004932C5 /* SearchResultShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultShopViewController.m; sourceTree = "<group>"; };
 		FC5210A619C6A48A004932C5 /* SearchResultShopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultShopCell.h; sourceTree = "<group>"; };
@@ -604,8 +604,8 @@
 		8558292419D0212600CFC96B /* icon_general */ = {
 			isa = PBXGroup;
 			children = (
-				8558292519D0357B00CFC96B /* ic_arrow_right.png */,
-				8558292219D0211B00CFC96B /* icon_check.png */,
+				FC3E7FDF19D041B600053022 /* ic_arrow_right.png */,
+				FC3E7FE019D041B600053022 /* icon_check.png */,
 			);
 			name = icon_general;
 			sourceTree = "<group>";
@@ -1711,6 +1711,7 @@
 				FC012D8319BEA8A90072A31A /* icon_house.png in Resources */,
 				FC21F34B19BFE5BD00417CA8 /* icon_category_active@2x.png in Resources */,
 				FC300B8B19C949830098F0D0 /* FilterLocationViewController.xib in Resources */,
+				FC3E7FE119D041B600053022 /* ic_arrow_right.png in Resources */,
 				FC36E19719B0673800AF74C1 /* navigation-button-bg-pt@2x.png in Resources */,
 				FC36E19F19B0673800AF74C1 /* top_bg1.png in Resources */,
 				FC36E1A819B0673800AF74C1 /* active_tab@2x.png in Resources */,
@@ -1768,10 +1769,10 @@
 				FC36E1A019B0673800AF74C1 /* top_bg1@2x.png in Resources */,
 				FC012DDE19BEB2360072A31A /* icon_6@2x.png in Resources */,
 				FC36E19819B0673800AF74C1 /* navigation-chevron.png in Resources */,
-				8558292619D0357B00CFC96B /* ic_arrow_right.png in Resources */,
 				FC36E1A919B0673800AF74C1 /* ic_cart.png in Resources */,
 				FC36E1BD19B0673800AF74C1 /* MoreViewController.xib in Resources */,
 				FC21F34D19BFE5BD00417CA8 /* icon_home@2x.png in Resources */,
+				FC3E7FE219D041B600053022 /* icon_check.png in Resources */,
 				FC012D8419BEA8A90072A31A /* icon_house@2x.png in Resources */,
 				FC36E1A419B0673800AF74C1 /* thumb_product.png in Resources */,
 				FC012DBE19BEB2360072A31A /* icon_11.png in Resources */,
@@ -1811,7 +1812,6 @@
 				FC21F35719BFE5BD00417CA8 /* icon_search_active@2x.png in Resources */,
 				FC012DD319BEB2360072A31A /* icon_20@2x.png in Resources */,
 				FC36E19E19B0673800AF74C1 /* top_bg.png in Resources */,
-				8558292319D0211B00CFC96B /* icon_check.png in Resources */,
 				FC300B7E19C946430098F0D0 /* SortCell.xib in Resources */,
 				FC36E1B419B0673800AF74C1 /* tabnav_bg@2x.png in Resources */,
 				FC36E1C919B0673800AF74C1 /* SearchResultCell.xib in Resources */,
