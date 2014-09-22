@@ -50,6 +50,7 @@
     NSMutableArray *_buttons;
     NSMutableDictionary *_detailhotlist;
     NSMutableDictionary *_detailfilter;
+    NSMutableArray *_departmenttree;
     
     /** url to the next page **/
     NSString *_urinext;
@@ -61,6 +62,8 @@
     UIBarButtonItem *_barbuttoncategory;
     
     NSInteger _requestcount;
+    
+    __weak RKObjectManager *_objectmanager;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -88,6 +91,7 @@
     _product = [NSMutableArray new];
     _detailhotlist = [NSMutableDictionary new];
     _detailfilter = [NSMutableDictionary new];
+    _departmenttree = [NSMutableArray new];
     
     // set max data per page request
     _limit = kTKPDHOMEHOTLISTRESULT_LIMITPAGE;
@@ -145,25 +149,25 @@
     //[_table addSubview:_refreshControl];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateView:) name:@"setfilter" object:nil];
+    [nc addObserver:self selector:@selector(updateView:) name:@"setfilterProduct" object:nil];
     
     _filterview.hidden = YES;
     
     [self configureRestKit];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self refreshView:nil];
+    //[self refreshView:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
-    //[[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self cancel];
 }
 
 #pragma mark - Memory Management
@@ -186,6 +190,9 @@
     
     UITableViewCell* cell = nil;
     if (!_isnodata) {
+        
+        [self reset:cell];
+        
         NSString *cellid = kTKPDHOTLISTRESULTVIEWCELL_IDENTIFIER;
 		
 		cell = (HotlistResultViewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
@@ -290,11 +297,8 @@
             case 11:
             {
                 //CATEGORY
-                NSArray *hashtagsarray = [_detailhotlist objectForKey:kTKPDHOME_APIDEPARTMENTIDKEY];
-                Hashtags *hashtag = hashtagsarray[0];
-                NSString *d_id = hashtag.department_id;
                 CategoryMenuViewController *vc = [CategoryMenuViewController new];
-                vc.data = @{kTKPDHOME_APIDEPARTMENTIDKEY:d_id?:@"0"};
+                vc.data = @{kTKPDHOME_APIDEPARTMENTTREEKEY:_departmenttree?:@""};
                 [self.navigationController pushViewController:vc animated:YES];
             }
             default:
@@ -330,7 +334,7 @@
                 [nav.navigationBar setTranslucent:NO];
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
 
-                [self loadData];
+                //[self loadData];
             }
             // redirect uri to search hotlist
             //if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTHOTKEY]) {
@@ -395,13 +399,19 @@
 
 
 #pragma mark - Request + Mapping
+-(void)cancel
+{
+    [_objectmanager.operationQueue cancelAllOperations];
+    _objectmanager = nil;
+}
+
 - (void)configureRestKit
 {
     
     //[AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
     
     // initialize RestKit
-    RKObjectManager *objectManager =  [RKObjectManager sharedManager];
+    _objectmanager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     // Hotlist detail
@@ -426,20 +436,16 @@
 
     // departmenttree mapping
     RKObjectMapping *departmentMapping = [RKObjectMapping mappingForClass:[DepartmentTree class]];
-    [departmentMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY, kTKPDHOME_APITREEKEY, kTKPDHOME_APIDIDKEY, kTKPDHOME_APITITLEKEY]];
+    [departmentMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY, kTKPDHOME_APITREEKEY, kTKPDHOME_APIDIDKEY, kTKPDHOME_APITITLEKEY,kTKPDHOME_APICHILDTREEKEY]];
     // departmentchild mapping
-    RKObjectMapping *departmentchildMapping = [RKObjectMapping mappingForClass:[DepartmentChild class]];
+    //TODO:CECKING MAPPING
+    RKObjectMapping *departmentchildMapping =  [RKObjectMapping mappingForClass:[DepartmentChild class]];
     [departmentchildMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY, kTKPDHOME_APITREEKEY, kTKPDHOME_APIDIDKEY, kTKPDHOME_APITITLEKEY]];
-    
-    // departmentchild2 mapping
-    RKObjectMapping *departmentchild2Mapping = [RKObjectMapping mappingForClass:[DepartmentChild2 class]];
-    [departmentchild2Mapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY, kTKPDHOME_APITREEKEY, kTKPDHOME_APIDIDKEY, kTKPDHOME_APITITLEKEY]];
     
     // Adjust Relationship
     [hotlistDetailMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIRESULTKEY toKeyPath:kTKPDHOME_APIRESULTKEY withMapping:resultMapping]];
-    [departmentchildMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result.department_tree.child" toKeyPath:@"child1" withMapping:departmentMapping]];
-    [departmentchild2Mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"result.department_tree.child.child"  toKeyPath:@"child2" withMapping:departmentchildMapping]];
-    
+    [departmentchildMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"departmentchild" withMapping:departmentMapping]];
+
     // register mappings with the provider using a response descriptor
     // result
     RKResponseDescriptor *responseDescriptorResult = [RKResponseDescriptor responseDescriptorWithMapping:hotlistDetailMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
@@ -452,18 +458,14 @@
     // department tree
     RKResponseDescriptor *responseDescriptionDepartmenttree = [RKResponseDescriptor responseDescriptorWithMapping:departmentMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APIDEPARTMENTTREEKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
     // department child
-    //RKResponseDescriptor *responseDescriptionDepartmentchild = [RKResponseDescriptor responseDescriptorWithMapping:departmentchildMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APIDEPARTMENTCHILDKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
-    // department child2
-    //RKResponseDescriptor *responseDescriptionDepartmentchild2 = [RKResponseDescriptor responseDescriptorWithMapping:departmentchild2Mapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APIDEPARTMENTCHILD2KEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
+
     
     // add response description to object manager
-    [objectManager addResponseDescriptor:responseDescriptorResult];
-    [objectManager addResponseDescriptor:responseDescriptorHotlistDetail];
-    [objectManager addResponseDescriptor:responseDescriptorPaging];
-    [objectManager addResponseDescriptor:responseDescriptorHashtags];
-    [objectManager addResponseDescriptor:responseDescriptionDepartmenttree];
-    //[objectManager addResponseDescriptor:responseDescriptionDepartmentchild];
-    //[objectManager addResponseDescriptor:responseDescriptionDepartmentchild2];
+    [_objectmanager addResponseDescriptor:responseDescriptorResult];
+    [_objectmanager addResponseDescriptor:responseDescriptorHotlistDetail];
+    [_objectmanager addResponseDescriptor:responseDescriptorPaging];
+    [_objectmanager addResponseDescriptor:responseDescriptorHashtags];
+    [_objectmanager addResponseDescriptor:responseDescriptionDepartmenttree];
     
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [dictionary setObject:responseDescriptorResult.mapping forKey:(responseDescriptorResult.keyPath ?: [NSNull null])];
@@ -471,8 +473,6 @@
     [dictionary setObject:responseDescriptorPaging.mapping forKey:(responseDescriptorPaging.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptorHashtags.mapping forKey:(responseDescriptorHashtags.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptionDepartmenttree.mapping forKey:(responseDescriptionDepartmenttree.keyPath?: [NSNull null])];
-    //[dictionary setObject:responseDescriptionDepartmentchild.mapping forKey:(responseDescriptionDepartmentchild.keyPath?: [NSNull null])];
-    //[dictionary setObject:responseDescriptionDepartmentchild2.mapping forKey:(responseDescriptionDepartmentchild2.keyPath?: [NSNull null])];
     
     [self loadData];
 }
@@ -483,7 +483,9 @@
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
-    NSString *querry =[_data objectForKey:kTKPDHOME_DATAQUERYKEY];
+    _requestcount ++;
+    
+    NSString *querry =[_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"";
 
 	NSDictionary* param = @{
                             //@"auth":@(1),
@@ -500,7 +502,7 @@
                             };
     
     NSLog(@"============================== GET HOTLIST DETAIL =====================");
-    [[RKObjectManager sharedManager] getObjectsAtPath:kTKPDHOMEHOTLISTRESULT_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [_objectmanager getObjectsAtPath:kTKPDHOMEHOTLISTRESULT_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         
         [self requestsuccess:mappingResult];
         [_act stopAnimating];
@@ -522,8 +524,8 @@
         NSLog(@"============================== DONE GET HOTLIST DETAIL =====================");
     }];
     
-    //NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    //[[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 
@@ -541,8 +543,13 @@
         [_detailhotlist addEntriesFromDictionary:result];
         [self setHeaderData:result];
         
-        NSArray * departmenttree = [result objectForKey:kTKPDHOME_APIDEPARTMENTTREEKEYPATH];
-        DepartmentTree *dt = departmenttree[0];
+        NSArray * departmenttree = [result objectForKey:kTKPDHOME_APIDEPARTMENTTREEKEYPATH]?:@[];
+        
+        //[_departmenttree removeAllObjects];
+        if (_departmenttree.count == 0) {
+            [_departmenttree addObjectsFromArray:departmenttree];
+        }
+
         
         id page =[result objectForKey:kTKPDHOME_APIPAGINGKEYPATH];
         
@@ -582,8 +589,7 @@
 {
     _table.tableFooterView = _footer;
     [_act startAnimating];
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
-    _requestcount ++;
+    [self cancel];
 }
 
 -(void)requestfailure:(id)object
@@ -667,6 +673,14 @@
 
 
 #pragma mark - Methods
+-(void)reset:(UITableViewCell*)cell
+{
+    [((HotlistResultViewCell*)cell).thumb makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
+    [((HotlistResultViewCell*)cell).labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [((HotlistResultViewCell*)cell).labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [((HotlistResultViewCell*)cell).labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+}
+
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     // cancel all request
@@ -674,6 +688,7 @@
     
     // reset object
     [_product removeAllObjects];
+    //[_departmenttree removeAllObjects];
     _page = 1;
     [_table reloadData];
     
@@ -682,6 +697,17 @@
 }
 
 #pragma mark - Post Notification Methods
+
+-(void)setDepartmentID:(NSNotification*)notification
+{
+    NSDictionary* userinfo = notification.userInfo;
+    
+    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [_detailfilter setObject:[userinfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    [_product removeAllObjects];
+    [self refreshView:nil];
+}
+
 - (void)updateView:(NSNotification *)notification;
 {
     NSDictionary *userinfo = notification.userInfo;

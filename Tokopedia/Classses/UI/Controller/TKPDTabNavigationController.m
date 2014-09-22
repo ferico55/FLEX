@@ -113,6 +113,20 @@
         barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
 	[barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
+    
+    //TODO:: Change image
+    //if ([[_data objectForKey:kTKPDCONTROLLER_DATATYPEKEY]  isEqual: @(kTKPDCONTROLLER_DATATYPECATEGORYKEY)]) {
+        img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+            UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+        }
+        else
+            _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+        [_barbuttoncategory setTag:11];
+        [_barbuttoncategory setEnabled:NO];
+        self.navigationItem.rightBarButtonItem = _barbuttoncategory;
+    //}
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -120,7 +134,6 @@
     [super viewWillDisappear:animated];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    
 }
 
 - (void)viewDidLayoutSubviews
@@ -171,21 +184,6 @@
     _data = data;
     
     if (data) {
-        NSBundle* bundle = [NSBundle mainBundle];
-        //TODO:: Change image
-        UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
-        if ([[_data objectForKey:kTKPDCONTROLLER_DATATYPEKEY]  isEqual: @(kTKPDCONTROLLER_DATATYPECATEGORYKEY)]) {
-            UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
-            if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-                UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-                _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-            }
-            else
-                _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-            [_barbuttoncategory setTag:11];
-            [_barbuttoncategory setEnabled:NO];
-            self.navigationItem.rightBarButtonItem = _barbuttoncategory;
-        }
     }
 }
 

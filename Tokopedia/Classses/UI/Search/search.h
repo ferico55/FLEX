@@ -68,6 +68,14 @@
 /** has catalog **/
 #define kTKPDSEARCH_APIHASCATALOGKEY @"has_catalog"
 
+// department tree
+#define kTKPDSEARCH_APIDEPARTMENTTREEKEY @"department_tree"
+#define kTKPDSEARCH_APICHILDTREEKEY @"child"
+#define kTKPDSEARCH_APIHREFKEY @"href"
+#define kTKPDSEARCH_APITREEKEY @"tree"
+#define kTKPDSEARCH_APIDIDKEY @"d_id"
+#define kTKPDSEARCH_APITITLEKEY @"title"
+
 #define kTKPDSEARCHHOTLIST_APIQUERYKEY @"key"
 
 #define kTKPDSEARCH_APIURINEXTKEY @"uri_next"

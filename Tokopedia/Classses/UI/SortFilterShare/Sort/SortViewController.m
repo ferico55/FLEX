@@ -88,8 +88,18 @@
                 NSIndexPath *indexpath =[_selectedsort objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
                 NSDictionary *orderdict = _sortarray[indexpath.row];
                 NSDictionary *userinfo = @{kTKPDFILTER_APIORDERBYKEY:[orderdict objectForKey:kTKPDGILTER_DATASORTVALUEKEY]?:@""};
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilter" object:nil userInfo:userinfo];
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEHOTLISTVIEWKEY]||[[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEPRODUCTVIEWKEY]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterProduct" object:nil userInfo:userinfo];
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                }
+                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPESHOPVIEWKEY]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterShop" object:nil userInfo:userinfo];
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                }
+                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPECATALOGVIEWKEY]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterCatalog" object:nil userInfo:userinfo];
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                }
                 break;
             }
             default:

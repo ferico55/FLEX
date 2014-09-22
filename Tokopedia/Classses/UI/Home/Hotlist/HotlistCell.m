@@ -38,49 +38,14 @@
 //    _viewcontainer.layer.borderWidth = 1.0f;
 }
 
-#pragma mark - setdata
--(void)setImageUrl:(NSURL *)url
-{
-    [_act startAnimating];
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:url cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
-    //request.URL = url;
-    
-    UIImageView *thumb = _productimageview;
-    thumb.image = nil;
-    //thumb.hidden = YES;	//@prepareforreuse then @reset
-
-    [_act startAnimating];
-    
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        //NSLOG(@"thumb: %@", thumb);
-        [thumb setImage:image];
-        
-        [_act stopAnimating];
-#pragma clang diagnostic pop
-
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [_act stopAnimating];
-    }];
-}
-
-#pragma mark - Methods
-
--(void)reset
-{
-    
-}
 
 #pragma mark - View Gesture
 - (IBAction)gesture:(id)sender {
     
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-        
-        NSIndexPath *indexpath = [_data objectForKey:kTKPDHOME_DATAINDEXPATHKEY];
-        [_delegate HotlistCell:self withindexpath:indexpath];
+    
+        [_delegate HotlistCell:self withindexpath:_indexpath];
     
     }
     

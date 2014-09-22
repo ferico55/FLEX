@@ -46,7 +46,8 @@
     
     UIRefreshControl *_refreshControl;
     NSInteger _requestcount;
-    BOOL _isloadagain;
+    
+    __weak RKObjectManager *_objectmanager;
 }
 
 #pragma mark - Initialization
@@ -54,7 +55,6 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _isloadagain = NO;
         _requestcount = 0;
         _isnodata = YES;
     }
@@ -112,7 +112,7 @@
     [_table addSubview:_refreshControl];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateView:) name:@"setfilter" object:nil];
+    [nc addObserver:self selector:@selector(updateViewShop:) name:@"setfilterShop" object:nil];
     
     _shopview.hidden = YES;
     [self configureRestKit];
@@ -121,16 +121,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
-    if (_isloadagain) {
-        [self refreshView:nil];
-        _isloadagain = NO;
-    }
 }
 
 
 // We have been obscured -- cancel any pending requests
 - (void)viewWillDisappear:(BOOL)animated {
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [self cancel];
 }
 
 
@@ -150,12 +146,12 @@
 {
     NSDictionary* userinfo = notification.userInfo;
     
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [_objectmanager.operationQueue cancelAllOperations];
     [_params setObject:[userinfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     [_product removeAllObjects];
     _page = 1;
     [_table reloadData];
-    [self loadData];
+    [self refreshView:nil];
 }
 
 #pragma mark - Properties
@@ -167,7 +163,7 @@
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [_objectmanager.operationQueue cancelAllOperations];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -217,36 +213,39 @@
 			((SearchResultShopCell*)cell).delegate = self;
 		}
         
-        List *list = [_product objectAtIndex:indexPath.row];
+        if (_product.count>indexPath.row) {
+            
+            List *list = [_product objectAtIndex:indexPath.row];
 
-        ((SearchResultShopCell*)cell).shopname.text = list.shop_name?:@"";
-        //((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = searchitem.product_name?:@"";
-        
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.shop_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
-        //request.URL = url;
-        
-        UIImageView *thumb = (UIImageView*)((SearchResultShopCell*)cell).thumb;
-        thumb.image = nil;
-        //thumb.hidden = YES;	//@prepareforreuse then @reset
-        
-        UIActivityIndicatorView *act = ((SearchResultShopCell*)cell).act;
-        [act startAnimating];
-        NSLog(@"============================== START GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-            //NSLOG(@"thumb: %@", thumb);
-            [thumb setImage:image];
+            ((SearchResultShopCell*)cell).shopname.text = list.shop_name?:@"";
+            //((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = searchitem.product_name?:@"";
             
-            [act stopAnimating];
-            NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-#pragma clang diagnostic pop
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.shop_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
+            //request.URL = url;
             
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            [act stopAnimating];
-            NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-        }];
-        
+            UIImageView *thumb = (UIImageView*)((SearchResultShopCell*)cell).thumb;
+            thumb.image = nil;
+            //thumb.hidden = YES;	//@prepareforreuse then @reset
+            
+            UIActivityIndicatorView *act = ((SearchResultShopCell*)cell).act;
+            [act startAnimating];
+            NSLog(@"============================== START GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Warc-retain-cycles"
+                //NSLOG(@"thumb: %@", thumb);
+                [thumb setImage:image];
+                
+                [act stopAnimating];
+                NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+    #pragma clang diagnostic pop
+                
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                [act stopAnimating];
+                NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+            }];
+        }
+        else [self reset:cell];
 	} else {
 		static NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
 		
@@ -266,10 +265,16 @@
 
 
 #pragma mark - Request + Mapping
+-(void)cancel
+{
+    [_objectmanager.operationQueue cancelAllOperations];
+    _objectmanager = nil;
+}
+
 - (void)configureRestKit
 {
     // initialize RestKit
-    RKObjectManager *objectManager =  [RKObjectManager sharedManager];
+    _objectmanager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     /** searchs list mappng **/
@@ -292,9 +297,9 @@
     RKResponseDescriptor *responseDescriptorRedirect = [RKResponseDescriptor responseDescriptorWithMapping:redirectMapping method:RKRequestMethodGET pathPattern:kTKPDSEARCH_APIPATH keyPath:kTKPDSEARCH_APIPATHMAPPINGREDIRECTKEY statusCodes:kTkpdIndexSetStatusCodeOK];
     
     //add response description to object manager
-    [objectManager addResponseDescriptor:responseDescriptorSearch];
-    [objectManager addResponseDescriptor:responseDescriptorPaging];
-    [objectManager addResponseDescriptor:responseDescriptorRedirect];
+    [_objectmanager addResponseDescriptor:responseDescriptorSearch];
+    [_objectmanager addResponseDescriptor:responseDescriptorPaging];
+    [_objectmanager addResponseDescriptor:responseDescriptorRedirect];
     
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [dictionary setObject:responseDescriptorSearch.mapping forKey:(responseDescriptorSearch.keyPath ?: [NSNull null])];
@@ -310,12 +315,8 @@
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
-    [NSTimer scheduledTimerWithTimeInterval:10.0
-                                     target:nil
-                                   selector:@selector(requestfailure:)
-                                   userInfo:nil
-                                    repeats:NO];
-    
+    _requestcount ++;
+
     NSString *querry =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *type = [_params objectForKey:kTKPDSEARCH_DATATYPE];
     NSString *deptid =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
@@ -349,7 +350,7 @@
     }
     
     NSLog(@"============================== GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-    [[RKObjectManager sharedManager] getObjectsAtPath:kTKPDSEARCH_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [_objectmanager getObjectsAtPath:kTKPDSEARCH_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         
         [self requestsuccess:mappingResult];
         [_table reloadData];
@@ -383,7 +384,6 @@
     id redirect_catalog = [result objectForKey:kTKPDSEARCH_APIPATHMAPPINGREDIRECTKEY];
     SearchRedirect *searchcatalog = redirect_catalog;
     NSString *uriredirect = searchcatalog.redirect_url;
-    NSString *hascatalog = searchcatalog.has_catalog;
     
     if (uriredirect == nil) {
         
@@ -445,8 +445,7 @@
 
 -(void)requesttimeout
 {
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
-    _requestcount ++;
+    [_objectmanager.operationQueue cancelAllOperations];
 }
 
 
@@ -496,21 +495,25 @@
     }
 }
 
+#pragma mark - Methods
+-(void)reset:(UITableViewCell*)cell
+{
+    ((SearchResultShopCell*)cell).thumb = nil;
+    ((SearchResultShopCell*)cell).shopname = nil;
+    ((SearchResultShopCell*)cell).favbutton = nil;
+}
+
 #pragma mark - Post Notification Methods
-- (void)updateView:(NSNotification *)notification;
+- (void)updateViewShop:(NSNotification *)notification;
 {
     NSDictionary *userinfo = notification.userInfo;
+    
     [_params addEntriesFromDictionary:userinfo];
     
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [_objectmanager.operationQueue cancelAllOperations];
     
-    // reset object
-    [_product removeAllObjects];
-    _page = 1;
-    [_table reloadData];
-    _isloadagain = YES;
-    
-    [self loadData];
+    [self refreshView:nil];
+
 }
 
 @end

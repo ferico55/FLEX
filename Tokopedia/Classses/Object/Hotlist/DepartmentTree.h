@@ -16,6 +16,9 @@
 @property (nonatomic, strong) NSString *href;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *d_id;
-@property (nonatomic, strong) DepartmentChild *child1;
+@property (nonatomic, strong) NSArray *child;
+@property (nonatomic, strong) DepartmentChild *departmentchild;
+
++ (RKMapping *)childMapping;
 
 @end

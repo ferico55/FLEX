@@ -421,6 +421,7 @@
 {
     NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
     if ([(NSError*)object code] == NSURLErrorCancelled) {
+        
         [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
     }
 }

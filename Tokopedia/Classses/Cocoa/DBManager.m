@@ -111,7 +111,7 @@ static sqlite3_stmt *statement = nil;
                 //[dict removeAllObjects];
                 if ( sqlite3_column_type(statement, 0) != SQLITE_NULL )
                     d_id = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
-                [dict setObject:d_id forKey:@"id"];
+                [dict setObject:d_id forKey:@"d_id"];
                 //[dict setObject:d_id forKey:@"id"];
                 if ( sqlite3_column_type(statement, 1) != SQLITE_NULL )
                     name = [[NSString alloc] initWithUTF8String: (const char *) sqlite3_column_text(statement, 1)];

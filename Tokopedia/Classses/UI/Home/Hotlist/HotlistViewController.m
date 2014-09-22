@@ -36,6 +36,9 @@
     BOOL _isnodata;
     
     UIRefreshControl *_refreshControl;
+    NSInteger _requestcount;
+    
+    __weak RKObjectManager *_objectmanager;
 }
 
 #pragma mark - View Lifecylce
@@ -87,13 +90,13 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self loadData];
+    [self configureRestKit];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [self cancel];
 }
 
 #pragma mark - Memory Management
@@ -127,6 +130,7 @@
 		if (_product.count > indexPath.row) {
             
             HotlistList *hotlist = _product[indexPath.row];
+            ((HotlistCell*)cell).indexpath = indexPath;
             ((HotlistCell*)cell).pricelabel.text = hotlist.price_start;
             
             [((HotlistCell*)cell).act startAnimating];
@@ -138,7 +142,7 @@
             thumb.image = nil;
             //thumb.hidden = YES;	//@prepareforreuse then @reset
             
-            [_act startAnimating];
+            [((HotlistCell*)cell).act startAnimating];
             
             [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
@@ -146,11 +150,11 @@
                 //NSLOG(@"thumb: %@", thumb);
                 [thumb setImage:image];
                 
-                [_act stopAnimating];
+                [((HotlistCell*)cell).act stopAnimating];
 #pragma clang diagnostic pop
                 
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                [_act stopAnimating];
+                [((HotlistCell*)cell).act stopAnimating];
             }];
             
 		}
@@ -183,17 +187,23 @@
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             /** called if need to load next page **/
             //NSLog(@"%@", NSStringFromSelector(_cmd));
-            [self loadData];
+            [self configureRestKit];
         }
 	}
 }
 
 #pragma mark - Request + Mapping
+-(void)cancel
+{
+    [_objectmanager.operationQueue cancelAllOperations];
+    _objectmanager = nil;
+}
+
 - (void)configureRestKit
 {
     // initialize AFNetworking HTTPClient + restkit
-    TraktAPIClient *client = [TraktAPIClient sharedClient];
-    RKObjectManager *objectManager = [[RKObjectManager alloc] initWithHTTPClient:client];
+    //TraktAPIClient *client = [TraktAPIClient sharedClient];
+    _objectmanager = [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Hotlist class]];
@@ -212,9 +222,9 @@
     
     RKResponseDescriptor *responseDescriptorPaging = [RKResponseDescriptor responseDescriptorWithMapping:pagingMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:kTKPDHOME_APIPAGINGKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [objectManager addResponseDescriptor:responseDescriptorStatus];
-    [objectManager addResponseDescriptor:responseDescriptorHotlist];
-    [objectManager addResponseDescriptor:responseDescriptorPaging];
+    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+    [_objectmanager addResponseDescriptor:responseDescriptorHotlist];
+    [_objectmanager addResponseDescriptor:responseDescriptorPaging];
     
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [dictionary setObject:responseDescriptorHotlist.mapping forKey:(responseDescriptorHotlist.keyPath ?: [NSNull null])];
@@ -228,20 +238,16 @@
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
-    [NSTimer scheduledTimerWithTimeInterval:10.0
-                                     target:self
-                                   selector:@selector(requesttimeout)
-                                   userInfo:nil
-                                    repeats:NO];
+    _requestcount ++;
     
 	NSDictionary* param = @{//@"auth":@(1),
                             kTKPDHOME_APIACTIONKEY:kTKPDHOMEHOTLISTACT,
                             kTKPDHOME_APIPAGEKEY : @(_page),
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE)
                             };
-    
+    _requestcount ++;
     NSLog(@"============================== GET HOTLIST =====================");
-    [[RKObjectManager sharedManager] getObjectsAtPath:kTKPDHOMEHOTLIST_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [_objectmanager getObjectsAtPath:kTKPDHOMEHOTLIST_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSLog(@"============================== DONE GET HOTLIST =====================");
         [self requestsuccess:mappingResult];
         [_act stopAnimating];
@@ -257,6 +263,9 @@
         _table.tableFooterView = nil;
         [_refreshControl endRefreshing];
     }];
+    
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)requestsuccess:(id)object
@@ -313,16 +322,16 @@
 
 -(void)requesttimeout
 {
-    _table.tableFooterView = _footer;
-    [_act startAnimating];
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [_objectmanager.operationQueue cancelAllOperations];
 }
 
 -(void)requestfailure:(id)object
 {
     NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
     if ([(NSError*)object code] == NSURLErrorCancelled) {
-        //[self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
+        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:0.3];
+        }
     }
 }
 
@@ -335,23 +344,43 @@
     NSURL *url = [NSURL URLWithString:hotlist.url];
     NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
     
-    vc.data = @{kTKPDHOME_DATAQUERYKEY: querry[2]};
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTHOTKEY]) {
+        vc.data = @{kTKPDHOME_DATAQUERYKEY: querry[2]?:@""};
+        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+        [self.navigationController presentViewController:nav animated:YES completion:nil];
+    }
+    // redirect uri to search category
+    if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTCATEGORY]) {
+        //TODO:: GO TO SEARCH
+        //SearchResultViewController *vc = [SearchResultViewController new];
+        //NSString *searchtext = hashtags.department_id;
+        //vc.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
+        //SearchResultViewController *vc1 = [SearchResultViewController new];
+        //vc1.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
+        //SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+        //vc2.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
+        //NSArray *viewcontrollers = @[vc,vc1,vc2];
+        //
+        //TKPDTabNavigationController *c = [TKPDTabNavigationController new];
+        //
+        //[c setSelectedIndex:0];
+        //[c setViewControllers:viewcontrollers];
+        //UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
+        //[nav.navigationBar setTranslucent:NO];
+        //[self.navigationController presentViewController:nav animated:YES completion:nil];
+    }
 }
 
 #pragma mark - Methods
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     /** clear object **/
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
     [_product removeAllObjects];
     _page = 1;
     
     [_table reloadData];
     /** request data **/
-    [self loadData];
-    //[self request:YES withrefreshControl:refresh];
+    [self configureRestKit];
 }
 
 @end

@@ -33,6 +33,7 @@
 @property (weak, nonatomic, setter = setImageUrl:) NSString *urlstring;
 @property (weak, nonatomic) IBOutlet UIImageView *productimageview;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (strong, nonatomic) NSIndexPath *indexpath;
 
 //-(void)setImageURL:(NSString*)urlstring;
 
