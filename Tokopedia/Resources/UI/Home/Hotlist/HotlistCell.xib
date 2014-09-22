@@ -10,6 +10,7 @@
         </mutableArray>
         <mutableArray key="GothamLight.ttf">
             <string>GothamLight</string>
+            <string>GothamLight</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -53,12 +54,20 @@
                         <color key="textColor" red="0.93769106657608692" green="0.44360182746835053" blue="0.14870811547253557" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FWS-wd-VPI">
+                        <rect key="frame" x="18" y="151" width="163" height="21"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="11"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.95202105978260865" green="0.95202105978260865" blue="0.95202105978260865" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="act" destination="Nsd-Xa-ZQO" id="NS6-pY-jzH"/>
-                <outlet property="pricelabel" destination="j8t-Vu-9rj" id="UhY-iq-ckn"/>
+                <outlet property="namelabel" destination="FWS-wd-VPI" id="HK2-mJ-XoF"/>
+                <outlet property="pricelabel" destination="j8t-Vu-9rj" id="SYA-o7-uuX"/>
                 <outlet property="productimageview" destination="wAf-xN-EU4" id="JnX-Nw-vk6"/>
             </connections>
             <point key="canvasLocation" x="694" y="365.5"/>

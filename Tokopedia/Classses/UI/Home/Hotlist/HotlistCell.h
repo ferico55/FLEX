@@ -30,6 +30,7 @@
 +(id)newcell;
 
 @property (weak, nonatomic) IBOutlet UILabel *pricelabel;
+@property (weak, nonatomic) IBOutlet UILabel *namelabel;
 @property (weak, nonatomic, setter = setImageUrl:) NSString *urlstring;
 @property (weak, nonatomic) IBOutlet UIImageView *productimageview;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;

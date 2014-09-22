@@ -21,6 +21,6 @@
 @property (nonatomic, strong) DepartmentTree *departmenttree;
 
 @property (nonatomic, strong) NSString *cover_image;
-@property (nonatomic, strong) NSString *description;
+@property (nonatomic, strong) NSString *description1;
 
 @end

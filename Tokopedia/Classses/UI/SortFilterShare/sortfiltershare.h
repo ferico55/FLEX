@@ -37,4 +37,6 @@
 
 #define kTKPDSORT_SEARCHCATALOGSORTARRAY @[@{@"name":@"Tanggal Rilis",@"value":@"1"}, @{@"name":@"Product Terbanyak",@"value":@"3"}, @{@"name":@"Harga Tertinggi",@"value":@"5"}, @{@"name":@"Harga Terendah",@"value":@"4"}]
 
+#define kTKPDHOME_GOTHAM_LIGHT [UIFont fontWithName:@"GothamLight" size:12.0]
+
 #endif

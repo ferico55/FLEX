@@ -129,7 +129,7 @@
             
             HotlistList *hotlist = _product[indexPath.row];
             ((HotlistCell*)cell).pricelabel.text = hotlist.price_start;
-            
+            ((HotlistCell*)cell).namelabel.text = hotlist.title;
             
             ((HotlistCell*)cell).pricelabel.font = font;
             

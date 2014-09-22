@@ -66,6 +66,7 @@
 #define kTKPDHOME_APIPRODUCTNAMEKEY @"product_name"
 
 #define kTKPDHOME_APICOVERIMAGEKEY @"cover_image"
+#define KTKPDHOME_APIDESCRIPTION1KEY @"desc_key"
 #define KTKPDHOME_APIDESCRIPTIONKEY @"description"
 
 #define kTKPDHOME_APICATALOGIMAGEKEY @"catalog_image"

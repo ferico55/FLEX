@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		85386DCC19CBE88700BCA463 /* GothamLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCA19CBD8E500BCA463 /* GothamLight.ttf */; };
 		85386DCD19CBE88A00BCA463 /* GothamBlack.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCB19CBD92900BCA463 /* GothamBlack.ttf */; };
+		8558292319D0211B00CFC96B /* icon_check.png in Resources */ = {isa = PBXBuildFile; fileRef = 8558292219D0211B00CFC96B /* icon_check.png */; };
+		8558292619D0357B00CFC96B /* ic_arrow_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 8558292519D0357B00CFC96B /* ic_arrow_right.png */; };
 		F3B587558A434636B6275320 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDC5E5AE50A14C3FB286B367 /* libPods-Tokopedia.a */; };
 		FC012D8319BEA8A90072A31A /* icon_house.png in Resources */ = {isa = PBXBuildFile; fileRef = FC012D8119BEA8A90072A31A /* icon_house.png */; };
 		FC012D8419BEA8A90072A31A /* icon_house@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC012D8219BEA8A90072A31A /* icon_house@2x.png */; };
@@ -253,6 +255,8 @@
 		62A52619A9614BB78AFC9FF8 /* Pods-TokopediaTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.xcconfig"; path = "Pods/Pods-TokopediaTests.xcconfig"; sourceTree = "<group>"; };
 		85386DCA19CBD8E500BCA463 /* GothamLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamLight.ttf; sourceTree = "<group>"; };
 		85386DCB19CBD92900BCA463 /* GothamBlack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamBlack.ttf; sourceTree = "<group>"; };
+		8558292219D0211B00CFC96B /* icon_check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_check.png; path = "../../../../../Downloads/Tokopedia Mockup/icon_check.png"; sourceTree = "<group>"; };
+		8558292519D0357B00CFC96B /* ic_arrow_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = ic_arrow_right.png; path = "../../../../../Downloads/Tokopedia Mockup/ic_arrow_right.png"; sourceTree = "<group>"; };
 		EDC5E5AE50A14C3FB286B367 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC012D8119BEA8A90072A31A /* icon_house.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_house.png; sourceTree = "<group>"; };
 		FC012D8219BEA8A90072A31A /* icon_house@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_house@2x.png"; sourceTree = "<group>"; };
@@ -597,6 +601,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8558292419D0212600CFC96B /* icon_general */ = {
+			isa = PBXGroup;
+			children = (
+				8558292519D0357B00CFC96B /* ic_arrow_right.png */,
+				8558292219D0211B00CFC96B /* icon_check.png */,
+			);
+			name = icon_general;
+			sourceTree = "<group>";
+		};
 		FC012D8019BEA8A90072A31A /* Category */ = {
 			isa = PBXGroup;
 			children = (
@@ -1349,6 +1362,7 @@
 		FC36E11B19B0673700AF74C1 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				8558292419D0212600CFC96B /* icon_general */,
 				FC012D8019BEA8A90072A31A /* Category */,
 				FC9FD74219B4277F00CF6CDD /* Controller */,
 				FC36E11C19B0673700AF74C1 /* Navigation */,
@@ -1754,6 +1768,7 @@
 				FC36E1A019B0673800AF74C1 /* top_bg1@2x.png in Resources */,
 				FC012DDE19BEB2360072A31A /* icon_6@2x.png in Resources */,
 				FC36E19819B0673800AF74C1 /* navigation-chevron.png in Resources */,
+				8558292619D0357B00CFC96B /* ic_arrow_right.png in Resources */,
 				FC36E1A919B0673800AF74C1 /* ic_cart.png in Resources */,
 				FC36E1BD19B0673800AF74C1 /* MoreViewController.xib in Resources */,
 				FC21F34D19BFE5BD00417CA8 /* icon_home@2x.png in Resources */,
@@ -1796,6 +1811,7 @@
 				FC21F35719BFE5BD00417CA8 /* icon_search_active@2x.png in Resources */,
 				FC012DD319BEB2360072A31A /* icon_20@2x.png in Resources */,
 				FC36E19E19B0673800AF74C1 /* top_bg.png in Resources */,
+				8558292319D0211B00CFC96B /* icon_check.png in Resources */,
 				FC300B7E19C946430098F0D0 /* SortCell.xib in Resources */,
 				FC36E1B419B0673800AF74C1 /* tabnav_bg@2x.png in Resources */,
 				FC36E1C919B0673800AF74C1 /* SearchResultCell.xib in Resources */,
