@@ -44,16 +44,16 @@
     [super viewDidLoad];
     
     /** set inset table for different size**/
-    if (is4inch) {
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 150;
-        _table.contentInset = inset;
-    }
-    else{
-        UIEdgeInsets inset = _table.contentInset;
-        //inset.bottom += 200;
-        _table.contentInset = inset;
-    }
+    //if (is4inch) {
+    //    UIEdgeInsets inset = _table.contentInset;
+    //    inset.bottom += 150;
+    //    _table.contentInset = inset;
+    //}
+    //else{
+    //    UIEdgeInsets inset = _table.contentInset;
+    //    inset.bottom += 200;
+    //    _table.contentInset = inset;
+    //}
     
     /** Initialization variable **/
     _category = [NSMutableArray new];

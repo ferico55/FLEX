@@ -606,6 +606,7 @@
         [_detailhotlist addEntriesFromDictionary:result];
         _swipegestureleft.enabled = YES;
         _swipegestureright.enabled = YES;
+        _pagecontrol.hidden = YES;
         [self setHeaderData:result];
         
         NSArray * departmenttree = [result objectForKey:kTKPDHOME_APIDEPARTMENTTREEKEYPATH]?:@[];
