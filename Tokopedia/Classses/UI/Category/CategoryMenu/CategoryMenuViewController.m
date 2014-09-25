@@ -98,7 +98,7 @@
             DepartmentTree *dt =[_data objectForKey:kTKPDCATEGORY_APIDEPARTMENTTREEKEY][i];
             NSArray * datachild = dt.child;
             if (datachild == nil || datachild.count == 0) {
-                [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:dt.d_id,kTKPDCATEGORY_DATATITLEKEY:dt.title,kTKPDCATEGORY_DATAISNULLCHILD:@(YES),kTKPDCATEGORY_APIDEPARTMENTCHILDKEY:datachild}];
+                [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:dt.d_id,kTKPDCATEGORY_DATATITLEKEY:dt.title,kTKPDCATEGORY_DATAISNULLCHILD:@(YES)}];
             }
             else
                 [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:dt.d_id,kTKPDCATEGORY_DATATITLEKEY:dt.title,kTKPDCATEGORY_DATAISNULLCHILD:@(NO),kTKPDCATEGORY_APIDEPARTMENTCHILDKEY:datachild}];

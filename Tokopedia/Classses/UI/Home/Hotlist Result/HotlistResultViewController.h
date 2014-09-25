@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+#pragma mark - Hotlist Result View Controller
 @interface HotlistResultViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UIImage *image;

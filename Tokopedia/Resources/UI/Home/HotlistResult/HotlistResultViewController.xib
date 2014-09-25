@@ -1,15 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamLight.ttf">
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HotlistResultViewController">
             <connections>
@@ -21,6 +15,9 @@
                 <outlet property="hashtagsscrollview" destination="Q9k-15-37M" id="T8O-HL-Y1y"/>
                 <outlet property="header" destination="HKl-uZ-hi3" id="arn-Kv-qgv"/>
                 <outlet property="imageview" destination="CGm-73-BvT" id="k5X-Y4-xQF"/>
+                <outlet property="pagecontrol" destination="wpV-ue-3NP" id="6DV-WQ-y8T"/>
+                <outlet property="swipegestureleft" destination="pSV-5V-5RB" id="c4J-rH-uJ4"/>
+                <outlet property="swipegestureright" destination="fyb-L5-qaN" id="Nh9-MH-mwo"/>
                 <outlet property="table" destination="NpJ-7r-c1k" id="t3M-2x-FZ0"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -39,7 +36,7 @@
                         <outlet property="delegate" destination="-1" id="l59-D3-irF"/>
                     </connections>
                 </tableView>
-                <view contentMode="scaleToFill" id="vHm-Tc-Aus">
+                <view hidden="YES" contentMode="scaleToFill" id="vHm-Tc-Aus">
                     <rect key="frame" x="0.0" y="519" width="320" height="49"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
@@ -100,10 +97,9 @@
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <view contentMode="scaleToFill" id="HKl-uZ-hi3" userLabel="HeaderView">
+        <view hidden="YES" contentMode="scaleToFill" id="HKl-uZ-hi3" userLabel="HeaderView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="190"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -132,15 +128,19 @@
                 </pageControl>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <view contentMode="scaleToFill" id="91z-Sh-o8k" userLabel="DescriptionView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="124"/>
+        <view hidden="YES" contentMode="scaleToFill" id="91z-Sh-o8k" userLabel="DescriptionView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <view alpha="0.40000000000000002" contentMode="scaleToFill" id="XlR-8a-cQk">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mBb-aS-tY9">
-                    <rect key="frame" x="5" y="0.0" width="309" height="124"/>
+                    <rect key="frame" x="5" y="0.0" width="309" height="150"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <string key="text">LabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLab</string>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -148,8 +148,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <nil key="simulatedStatusBarMetrics"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="fyb-L5-qaN" appends="YES" id="uUj-Go-inz"/>
@@ -166,9 +165,4 @@
             </connections>
         </swipeGestureRecognizer>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

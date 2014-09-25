@@ -51,6 +51,7 @@
 #define kTKPDSEARCH_APIPRODUCTNAMEKEY @"product_name"
 #define kTKPDSEARCH_APIPRODUCTPRICEKEY @"product_price"
 #define kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY @"shop_name"
+#define kTKPDSEARCH_APIPRODUCTIDKEY @"product_id"
 
 /** catalog **/
 #define kTKPDSEARCH_APICATALOGIMAGEKEY @"catalog_image"
@@ -91,6 +92,8 @@
 #define kTKPDSEARCH_APIMAXPRICEKEY @"pmax"
 #define kTKPDSEARCH_APIIMAGESIZEKEY @"img_size"
 #define kTKPDSEARCH_APIORDERBYKEY @"order_by"
+
+#define kTKPDSEARCH_APIPRODUCTIDKEY @"product_id"
 
 #define kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define kTKPDSEARCH_NODATACELLTITLE @"no data"

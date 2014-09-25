@@ -12,7 +12,7 @@
 
 @protocol HotlistCellDelegate <NSObject>
 @required
--(void)HotlistCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
+-(void)HotlistCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath withimageview:(UIImageView *)imageview;
 
 @end
 
@@ -31,12 +31,10 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *pricelabel;
 @property (weak, nonatomic) IBOutlet UILabel *namelabel;
-@property (weak, nonatomic, setter = setImageUrl:) NSString *urlstring;
 @property (weak, nonatomic) IBOutlet UIImageView *productimageview;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (weak, nonatomic) IBOutlet UILabel *mulaidarilabel;
 @property (strong, nonatomic) NSIndexPath *indexpath;
-
-//-(void)setImageURL:(NSString*)urlstring;
 
 
 @end

@@ -42,6 +42,9 @@
 #define kTKPDHOME_APILIMITPAGEKEY @"per_page"
 #define kTKPDHOME_APIURINEXTKEY @"uri_next"
 
+#define kTKPHOME_APIPRODUCTIDKEY @"product_id"
+#define kTKPHOME_DATAHEADERIMAGEKEY @"headerimage"
+
 #define kTKPDHOME_APIURLKEY @"url"
 #define kTKPDHOME_APITHUMBURLKEY @"image_url"
 #define kTKPDHOME_APISTARTERPRICEKEY @"price_start"

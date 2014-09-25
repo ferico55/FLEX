@@ -12,6 +12,7 @@
 #import "FilterLocationViewCell.h"
 #import "FilterLocationViewController.h"
 
+#pragma mark - Filter Location View Controller
 @interface FilterLocationViewController () <FilterLocationViewCellDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (nonatomic, strong) NSMutableArray *locationnames;
@@ -36,6 +37,7 @@
     BOOL _isnodata;
 }
 
+#pragma mark - Life Cycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];

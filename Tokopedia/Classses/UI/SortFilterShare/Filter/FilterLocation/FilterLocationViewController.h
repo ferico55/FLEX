@@ -8,13 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+#pragma mark - Filter Location View Controller Delegate
 @protocol FilterLocationViewControllerDelegate <NSObject>
 @required
 -(void)FilterLocationViewController:(UIViewController*)viewcontroller withdata:(NSDictionary*)data;
 
 @end
 
-
+#pragma mark - Filter Location View Controller
 @interface FilterLocationViewController : UIViewController
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION

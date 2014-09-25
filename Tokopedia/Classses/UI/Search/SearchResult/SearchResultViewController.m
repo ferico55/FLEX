@@ -44,9 +44,11 @@
     NSString *_uriredirect;
     
     BOOL _isnodata;
+    BOOL _isrefreshview;
     
     UIRefreshControl *_refreshControl;
     NSInteger _requestcount;
+    NSTimer *_timer;
     
     __weak RKObjectManager *_objectmanager;
 }
@@ -56,6 +58,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        _isrefreshview = NO;
         _isnodata = YES;
         _requestcount = 0;
     }
@@ -113,22 +116,29 @@
     [_table addSubview:_refreshControl];
     
     [_params setObject:[_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+        _catalogproductview.hidden = YES;
     
+    // add notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateViewProduct:) name:@"setfilterProduct" object:nil];
     [nc addObserver:self selector:@selector(updateViewCatalog:) name:@"setfilterCatalog" object:nil];
-    
-    _catalogproductview.hidden = YES;
-    
-    [self configureRestKit];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
+    [nc addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    if (!_isrefreshview) {
+        [self configureRestKit];
+        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
+            [self loadData];
+        }
+    }
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
     [self cancel];
 }
 
@@ -346,7 +356,7 @@
     // setup object mappings
     /** searchs list mappng **/
     RKObjectMapping *searchMapping = [RKObjectMapping mappingForClass:[List class]];
-    [searchMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APIPRODUCTIMAGEKEY,kTKPDSEARCH_APIPRODUCTPRICEKEY,kTKPDSEARCH_APIPRODUCTNAMEKEY,kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY, kTKPDSEARCH_APICATALOGIMAGEKEY,kTKPDSEARCH_APICATALOGNAMEKEY,kTKPDSEARCH_APICATALOGPRICEKEY]];
+    [searchMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APIPRODUCTIMAGEKEY,kTKPDSEARCH_APIPRODUCTPRICEKEY,kTKPDSEARCH_APIPRODUCTNAMEKEY,kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY, kTKPDSEARCH_APICATALOGIMAGEKEY,kTKPDSEARCH_APICATALOGNAMEKEY,kTKPDSEARCH_APICATALOGPRICEKEY,kTKPDSEARCH_APIPRODUCTIDKEY]];
     
     /** paging mappng **/
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -380,16 +390,15 @@
     [dictionary setObject:responseDescriptorPaging.mapping forKey:(responseDescriptorPaging.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptorRedirect.mapping forKey:(responseDescriptorRedirect.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptionDepartmenttree.mapping forKey:(responseDescriptionDepartmenttree.keyPath?: [NSNull null])];
-    
-    [self loadData];
 }
 
 
 - (void)loadData
 {
-    _table.tableFooterView = _footer;
-    [_act startAnimating];
-    
+    if (!_isrefreshview) {
+        _table.tableFooterView = _footer;
+        [_act startAnimating];
+    }
     _requestcount ++;
     
     NSLog(@"========= Request Count : %d ==============", _requestcount);
@@ -433,9 +442,12 @@
         
         [self requestsuccess:mappingResult];
         [_table reloadData];
-        [_refreshControl endRefreshing];
         //[_act stopAnimating];
         //_table.tableFooterView = nil;
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        [_timer invalidate];
+        _timer = nil;
         NSLog(@"============================== DONE GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
@@ -445,13 +457,15 @@
         //[alertView show];
         [_act stopAnimating];
         _table.tableFooterView = nil;
+        _isrefreshview = NO;
         [_refreshControl endRefreshing];
-        
+        [_timer invalidate];
+        _timer = nil;
         NSLog(@"============================== DONE GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
     }];
     
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)requestsuccess:(id)object
@@ -534,14 +548,28 @@
     [self cancel];
 }
 
-
 -(void)requestfailure:(id)object
 {
+    [self cancel];
     NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
     if ([(NSError*)object code] == NSURLErrorCancelled) {
-        if (_requestcount < kTKPDREQUESTCOUNTMAX) {
-            [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
+        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+            _table.tableFooterView = _footer;
+            [_act startAnimating];
+            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
         }
+        else
+        {
+            [_act stopAnimating];
+            _table.tableFooterView = nil;
+        }
+    }
+    else
+    {
+        [_act stopAnimating];
+        _table.tableFooterView = nil;
     }
 }
 
@@ -549,6 +577,9 @@
 -(void)SearchResultCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     DetailProductViewController *vc = [DetailProductViewController new];
+    NSInteger index = indexpath.section+2*(indexpath.row);
+    List *list = _product[index];
+    vc.data = @{kTKPDSEARCH_APIPRODUCTIDKEY : list.product_id};
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -599,22 +630,23 @@
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     /** clear object **/
+    [self cancel];
     [_product removeAllObjects];
     _page = 1;
+    _isrefreshview = YES;
     _requestcount = 0;
-    [_table reloadData];
     
+    [_table reloadData];
     /** request data **/
+    [self configureRestKit];
     [self loadData];
-} 
+}
 
 #pragma mark - Post Notification Methods
 -(void)setDepartmentID:(NSNotification*)notification
 {
     NSDictionary* userinfo = notification.userInfo;
-    
     [_params setObject:[userinfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-    [_product removeAllObjects];
     [self refreshView:nil];
 }
 

@@ -10,4 +10,8 @@
 
 @interface WholesalePrice : NSObject
 
+@property (strong, nonatomic) NSString *wholesale_min;
+@property (strong, nonatomic) NSString *wholesale_max;
+@property (strong, nonatomic) NSString *wholesale_price;
+
 @end

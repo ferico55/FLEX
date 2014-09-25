@@ -43,9 +43,11 @@
     NSString *_uriredirect;
     
     BOOL _isnodata;
+    BOOL _isrefreshview;
     
     UIRefreshControl *_refreshControl;
     NSInteger _requestcount;
+    NSTimer *_timer;
     
     __weak RKObjectManager *_objectmanager;
 }
@@ -55,6 +57,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        _isrefreshview = NO;
         _requestcount = 0;
         _isnodata = YES;
     }
@@ -113,45 +116,26 @@
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateViewShop:) name:@"setfilterShop" object:nil];
-    
+    [nc addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
+
     _shopview.hidden = YES;
-    [self configureRestKit];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
+    [super viewWillAppear:animated];
+    if (!_isrefreshview) {
+        [self configureRestKit];
+        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
+            [self loadData];
+        }
+    }
 }
 
-
-// We have been obscured -- cancel any pending requests
-- (void)viewWillDisappear:(BOOL)animated {
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
     [self cancel];
-}
-
-
-#pragma mark - Methods
--(void)refreshView:(UIRefreshControl*)refresh
-{
-    /** clear object **/
-    [_product removeAllObjects];
-    _page = 1;
-    
-    [_table reloadData];
-    /** request data **/
-    [self loadData];
-}
-
--(void)setDepartmentID:(NSNotification*)notification
-{
-    NSDictionary* userinfo = notification.userInfo;
-    
-    [_objectmanager.operationQueue cancelAllOperations];
-    [_params setObject:[userinfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-    [_product removeAllObjects];
-    _page = 1;
-    [_table reloadData];
-    [self refreshView:nil];
 }
 
 #pragma mark - Properties
@@ -163,7 +147,6 @@
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [_objectmanager.operationQueue cancelAllOperations];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -305,15 +288,15 @@
     [dictionary setObject:responseDescriptorSearch.mapping forKey:(responseDescriptorSearch.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptorPaging.mapping forKey:(responseDescriptorPaging.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptorRedirect.mapping forKey:(responseDescriptorRedirect.keyPath ?: [NSNull null])];
-    
-    [self loadData];
 }
 
 
 - (void)loadData
 {
-    _table.tableFooterView = _footer;
-    [_act startAnimating];
+    if (!_isrefreshview) {
+        _table.tableFooterView = _footer;
+        [_act startAnimating];
+    }
     
     _requestcount ++;
 
@@ -354,9 +337,12 @@
         
         [self requestsuccess:mappingResult];
         [_table reloadData];
-        [_refreshControl endRefreshing];
+        _isrefreshview = NO;
         //[_act stopAnimating];
         //_table.tableFooterView = nil;
+        [_refreshControl endRefreshing];
+        [_timer invalidate];
+        _timer = nil;
         NSLog(@"============================== DONE GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
@@ -366,13 +352,15 @@
         //[alertView show];
         [_act stopAnimating];
         _table.tableFooterView = nil;
+        _isrefreshview = NO;
         [_refreshControl endRefreshing];
-        
+        [_timer invalidate];
+        _timer = nil;
         NSLog(@"============================== DONE GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
     }];
 
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
     
 }
 
@@ -445,17 +433,31 @@
 
 -(void)requesttimeout
 {
-    [_objectmanager.operationQueue cancelAllOperations];
+    [self cancel];
 }
-
 
 -(void)requestfailure:(id)object
 {
+    [self cancel];
     NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
     if ([(NSError*)object code] == NSURLErrorCancelled) {
-        if (_requestcount <= kTKPDREQUESTCOUNTMAX) {
-            [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
+        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+            _table.tableFooterView = _footer;
+            [_act startAnimating];
+            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
         }
+        else
+        {
+            [_act stopAnimating];
+            _table.tableFooterView = nil;
+        }
+    }
+    else
+    {
+        [_act stopAnimating];
+        _table.tableFooterView = nil;
     }
 }
 
@@ -503,17 +505,36 @@
     ((SearchResultShopCell*)cell).favbutton = nil;
 }
 
+-(void)refreshView:(UIRefreshControl*)refresh
+{
+    /** clear object **/
+    [self cancel];
+    [_product removeAllObjects];
+    _page = 1;
+    _isrefreshview = YES;
+    _requestcount = 0;
+    
+    [_table reloadData];
+    /** request data **/
+    [self configureRestKit];
+    [self loadData];
+}
+
+
 #pragma mark - Post Notification Methods
+
+-(void)setDepartmentID:(NSNotification*)notification
+{
+    NSDictionary* userinfo = notification.userInfo;
+    [_params setObject:[userinfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    [self refreshView:nil];
+}
+
 - (void)updateViewShop:(NSNotification *)notification;
 {
     NSDictionary *userinfo = notification.userInfo;
-    
     [_params addEntriesFromDictionary:userinfo];
-    
-    [_objectmanager.operationQueue cancelAllOperations];
-    
     [self refreshView:nil];
-
 }
 
 @end

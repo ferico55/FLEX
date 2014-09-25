@@ -26,8 +26,8 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Gotham-Light.ttf</string>
-		<string>Gotham-Black.ttf</string>
+		<string>GothamLight.ttf</string>
+		<string>GothamBlack.ttf</string>
 		<string>Lato-Regular.ttf</string>
 		<string>Lato-Bold.ttf</string>
 	</array>
