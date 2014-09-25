@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8507B9F219D29320003D9CEB /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8507B9F119D29320003D9CEB /* SearchResultCell.xib */; };
-		851A5FC519D281A600D06C9A /* GeneralThumb.xib in Resources */ = {isa = PBXBuildFile; fileRef = 851A5FC419D281A600D06C9A /* GeneralThumb.xib */; };
 		85386DCC19CBE88700BCA463 /* GothamLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCA19CBD8E500BCA463 /* GothamLight.ttf */; };
 		85386DCD19CBE88A00BCA463 /* GothamBlack.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCB19CBD92900BCA463 /* GothamBlack.ttf */; };
 		F3B587558A434636B6275320 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDC5E5AE50A14C3FB286B367 /* libPods-Tokopedia.a */; };
@@ -270,7 +269,6 @@
 		482BA56B21334661A9065EEC /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		62A52619A9614BB78AFC9FF8 /* Pods-TokopediaTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.xcconfig"; path = "Pods/Pods-TokopediaTests.xcconfig"; sourceTree = "<group>"; };
 		8507B9F119D29320003D9CEB /* SearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
-		851A5FC419D281A600D06C9A /* GeneralThumb.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralThumb.xib; sourceTree = "<group>"; };
 		85386DCA19CBD8E500BCA463 /* GothamLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamLight.ttf; sourceTree = "<group>"; };
 		85386DCB19CBD92900BCA463 /* GothamBlack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamBlack.ttf; sourceTree = "<group>"; };
 		EDC5E5AE50A14C3FB286B367 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -645,14 +643,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		851A5FC319D281A600D06C9A /* GeneralUI */ = {
-			isa = PBXGroup;
-			children = (
-				851A5FC419D281A600D06C9A /* GeneralThumb.xib */,
-			);
-			path = GeneralUI;
-			sourceTree = "<group>";
-		};
 		8558292419D0212600CFC96B /* icon_general */ = {
 			isa = PBXGroup;
 			children = (
@@ -956,7 +946,6 @@
 			isa = PBXGroup;
 			children = (
 				FC2F203019BD5B7200C2B9B5 /* HotlistResultViewController.xib */,
-				FC2F202F19BD5B7200C2B9B5 /* HotlistResultViewCell.xib */,
 			);
 			path = HotlistResult;
 			sourceTree = "<group>";
@@ -1848,7 +1837,6 @@
 				FC300B7F19C946430098F0D0 /* SortViewController.xib in Resources */,
 				FC012DC919BEB2360072A31A /* icon_16@2x.png in Resources */,
 				FC36E1AB19B0673800AF74C1 /* ic_category.png in Resources */,
-				851A5FC519D281A600D06C9A /* GeneralThumb.xib in Resources */,
 				FC21F34F19BFE5BD00417CA8 /* icon_home_active@2x.png in Resources */,
 				FC2F205219BD5CB000C2B9B5 /* DetailProductViewController.xib in Resources */,
 				FC36E19019B0673800AF74C1 /* Lato-Regular.ttf in Resources */,
