@@ -7,34 +7,70 @@
 //
 
 #import "detail.h"
+#import "search.h"
 
 #import "Product.h"
 
+#import "StarsRateView.h"
+
 #import "DetailProductViewController.h"
 #import "DetailProductWholesaleCell.h"
+#import "DetailProductInfoCell.h"
 #import "DetailProductDescriptionCell.h"
+#import "DetailProductWholesaleTableCell.h"
 
-@interface DetailProductViewController () <UITableViewDelegate, UITableViewDataSource>
+#import "TKPDTabNavigationController.h"
+#import "SearchResultViewController.h"
+#import "SearchResultShopViewController.h"
+
+#pragma mark - Detail Product View Controller
+@interface DetailProductViewController () <UITableViewDelegate, UITableViewDataSource, DetailProductInfoCellDelegate>
 {
     NSMutableDictionary *_detailproduct;
+    NSMutableArray *_detailwholesale;
+    
     NSMutableIndexSet *expandedSections;
     BOOL _isexpanded;
     NSInteger _heightOfSection;
+    
+    BOOL _isnodata;
+    BOOL _isnodatawholesale;
+    NSTimer *_timer;
+    
+    NSInteger _requestcount;
+    
+    NSInteger _expandedsection;
+    
+    NSMutableArray *_headerimages;
+    
+    NSInteger _pageheaderimages;
+    __weak RKObjectManager *_objectmanager;
 }
 
-
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) IBOutlet UIView *headerview;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UILabel *productnamelabel;
 @property (weak, nonatomic) IBOutlet UILabel *pricelabel;
-@property (weak, nonatomic) IBOutlet UILabel *countview;
 @property (weak, nonatomic) IBOutlet UIButton *reviewbutton;
 @property (weak, nonatomic) IBOutlet UIButton *talaboutbutton;
-@property (weak, nonatomic) IBOutlet UILabel *productdescriptionlabel;
 @property (weak, nonatomic) IBOutlet UIImageView *shopthumb;
 @property (weak, nonatomic) IBOutlet UILabel *shopname;
 @property (weak, nonatomic) IBOutlet UILabel *shoplocation;
+@property (strong, nonatomic) IBOutlet UIView *shopinformationview;
 
+@property (weak, nonatomic) IBOutlet UIScrollView *imagescrollview;
+@property (weak, nonatomic) IBOutlet StarsRateView *productrateview;
+@property (weak, nonatomic) IBOutlet StarsRateView *ratespeedshop;
+@property (weak, nonatomic) IBOutlet StarsRateView *rateaccuracyshop;
+@property (weak, nonatomic) IBOutlet StarsRateView *rateserviceshop;
+@property (weak, nonatomic) IBOutlet UILabel *countsoldlabel;
+@property (weak, nonatomic) IBOutlet UILabel *countviewlabel;
+
+@property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
+
+@property (weak, nonatomic) IBOutlet UIButton *backbutton;
+@property (weak, nonatomic) IBOutlet UIButton *nextbutton;
 
 @end
 
@@ -42,20 +78,28 @@
 
 @synthesize data = _data;
 
+#pragma mark - Initializations
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        _isnodata = YES;
+        _isnodatawholesale = YES;
+        _requestcount = 0;
     }
     return self;
 }
 
+#pragma mark - Life Cycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     _detailproduct = [NSMutableDictionary new];
+    _detailwholesale = [NSMutableArray new];
+    _headerimages = [NSMutableArray new];
+    
     _isexpanded = NO;
     
     /** set inset table for different size**/
@@ -71,18 +115,32 @@
     }
     
     _table.tableHeaderView = _headerview;
+    _table.tableFooterView = _shopinformationview;
     
     if (!expandedSections)
     {
         expandedSections = [[NSMutableIndexSet alloc] init];
     }
     
-    [self configureRestKit];
-    [self loadData];
-    
+    _imagescrollview.pagingEnabled = YES;
 }
 
-#pragma mark -Table view delegate
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self configureRestKit];
+    if (_isnodata) {
+        [self loadData];
+    }
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self cancel];
+}
+
+#pragma mark - Table view delegate
 - (BOOL)tableView:(UITableView *)tableView canCollapseSection:(NSInteger)section
 {
     if (section>0) return YES;
@@ -131,6 +189,39 @@
 //    }
 //}
 
+#pragma mark - View Gesture
+-(IBAction)tap:(id)sender
+{
+    _nextbutton.hidden = (_pageheaderimages == _headerimages.count -1)?YES:NO;
+    _backbutton.hidden = (_pageheaderimages == 0)?YES:NO;
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton *)sender;
+        switch (btn.tag) {
+            case 10:
+            {
+                // back action image scroll view
+                if (_pageheaderimages>0) {
+                    _pageheaderimages --;
+                    [_imagescrollview setContentOffset:CGPointMake(_imagescrollview.frame.size.width*_pageheaderimages, 0.0f) animated:YES];
+
+                }
+                break;
+            }
+            case 11:
+            {
+                // next action image scroll view
+                if (_pageheaderimages<_headerimages.count-1) {
+                    _pageheaderimages ++;
+                    [_imagescrollview setContentOffset:CGPointMake(_imagescrollview.frame.size.width*_pageheaderimages, 0.0f) animated:YES];
+                }
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
+
 
 #pragma mark - Table view data source
 
@@ -147,17 +238,35 @@
     [bt setFrame:CGRectMake(0, 0, 150, 20)];
     [bt setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
     [bt setTag:section];
-    [bt.titleLabel setFont:[UIFont systemFontOfSize:20]];
+    [bt.titleLabel setFont:[UIFont systemFontOfSize:12]];
     [bt.titleLabel setTextAlignment:NSTextAlignmentCenter];
     [bt.titleLabel setTextColor:[UIColor blackColor]];
-    [bt setTitle: @"More Info" forState: UIControlStateNormal];
-    [bt addTarget:self action:@selector(addCell:) forControlEvents:UIControlEventTouchUpInside];
+    switch (section) {
+        case 0:
+            [bt setTitle: @"Product Description" forState: UIControlStateNormal];
+            break;
+        case 1:
+            if (!_isnodatawholesale)
+                [bt setTitle: @"Wholesale Price " forState: UIControlStateNormal];
+            else
+                [bt setTitle: @"Product Information" forState: UIControlStateNormal];
+            break;
+        case 2:
+            [bt setTitle: @"Product Information" forState: UIControlStateNormal];
+            break;
+            
+        default:
+            break;
+    }
+    //[bt addTarget:self action:@selector(addCell:) forControlEvents:UIControlEventTouchUpInside];
     [mView addSubview:bt];
-    
-    NSLog(@"SECTION %d BUTTON %@",section, bt.titleLabel);
-    
     return mView;
     
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 20;
 }
 
 #pragma mark - Suppose you want to hide/show section 2... then
@@ -166,7 +275,7 @@
 - (void)addCell:(UIButton *)bt{
     
     // If section of more information
-    //if (bt.tag) {
+    if (bt.tag != 0) {
         // Initially more info is close, if more info is open
         if(_isexpanded) {
             // Set height of section
@@ -175,85 +284,128 @@
             _isexpanded = NO;
         }else {
             // Set height of section
-            _heightOfSection = 145.0f;
+            _heightOfSection = 200.0f;
             // Reset the parameter that more info is closed now
             _isexpanded = YES;
         }
-        //[self.tableView reloadData];
+        _expandedsection = bt.tag;
+        [_table reloadData];
         [_table reloadSections:[NSIndexSet indexSetWithIndex:bt.tag] withRowAnimation:UITableViewRowAnimationFade];
-    //}
+    }
 }
 
 #pragma mark -
 #pragma mark  What will be the height of the section, Make it dynamic
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    //if (indexPath.section == 1) {
-        return _heightOfSection;
-    //}else {
-     //   return 0;
-    //}
+    //if (indexPath.section == _expandedsection && indexPath.section != 0) {
+    //    return _heightOfSection;
+    //}else if (indexPath.section == 0)
+        return 200;
+    //else {
+    //    return 0;
+   //}
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Return the number of sections.
-    return 3;
+    if (!_isnodatawholesale)return 3;
+    else return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    // Return the number of rows in the section.
-    return 1;
+    //if (_isexpanded || section == 0) {
+        return 1;
+    //}
+    //return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell* cell = nil;
-    static NSString *CellIdentifier = @"Cell";
-    
-    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
     
     // Configure the cell...
     if (indexPath.section == 0) {
-        if (_isexpanded) {
+        //if (_isexpanded) {
             NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
             cell = (DetailProductDescriptionCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
             if (cell == nil) {
                 cell = [DetailProductDescriptionCell newcell];
                 //((DetailProductWholesaleCell*)cell).delegate = self;
             }
-        }
+        
+            id products = [_detailproduct objectForKey:@""];
+            Product *product = products;
+            NSString *productdesc = product.result.info.product_description;
+            ((DetailProductDescriptionCell*)cell).descriptionlabel.text = productdesc;
+        //}
         return cell;
     }
-    if (indexPath.section == 1) {
-        if (_isexpanded) {
-            NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
-            cell = (DetailProductDescriptionCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-            if (cell == nil) {
-                cell = [DetailProductDescriptionCell newcell];
-                //((DetailProductWholesaleCell*)cell).delegate = self;
-            }
-        }
-        return cell;
-    }
-    if (indexPath.section == 2) {
-         if (_isexpanded) {
-            NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
-            cell = (DetailProductDescriptionCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-            if (cell == nil) {
-                cell = [DetailProductDescriptionCell newcell];
-                //((DetailProductWholesaleCell*)cell).delegate = self;
-            }
-            
+    if (!_isnodatawholesale) {
+        if (indexPath.section == 1) {
+            //wholesale price view
+            //if (_isexpanded) {
+                NSString *cellid = kTKPDDETAILPRODUCTWHOLESALECELLIDENTIFIER;
+                cell = (DetailProductWholesaleCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+                if (cell == nil) {
+                    cell = [DetailProductWholesaleCell newcell];
+                    //((DetailProductWholesaleCell*)cell).delegate = self;
+                }
+            ((DetailProductWholesaleCell*)cell).data = @{kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY :[_detailproduct objectForKey:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY]?:@[]};
+            //}
             return cell;
         }
+        if (indexPath.section == 2) {
+            // if (_isexpanded) {
+                NSString *cellid = kTKPDDETAILPRODUCTWHOLESALECELLIDENTIFIER;
+                cell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+                if (cell == nil) {
+                    cell = [DetailProductInfoCell newcell];
+                    ((DetailProductInfoCell*)cell).delegate = self;
+                }
+                [self productinfocell:cell withtableview:tableView];
+                return cell;
+            //}
+        }
+    }
+    else
+    {
+        if (indexPath.section == 1) {
+            //if (_isexpanded) {
+            NSString *cellid = kTKPDDETAILPRODUCTWHOLESALECELLIDENTIFIER;
+            cell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+            if (cell == nil) {
+                cell = [DetailProductInfoCell newcell];
+                ((DetailProductInfoCell*)cell).delegate = self;
+            }
+            [self productinfocell:cell withtableview:tableView];
+            
+            //TODO::category & etalase label
+            
+            return cell;
+           // }
+        }
+
     }
     return cell;
+}
+
+-(void)productinfocell:(UITableViewCell*)cell withtableview:(UITableView*)tableView
+{
+
+    id products = [_detailproduct objectForKey:@""];
+    Product *product = products;
+    ((DetailProductInfoCell*)cell).minorderlabel.text = [NSString stringWithFormat:@"%d",product.result.info.product_min_order];
+    ((DetailProductInfoCell*)cell).weightlabel.text = product.result.info.product_weight_unit;
+    ((DetailProductInfoCell*)cell).insurancelabel.text = product.result.info.product_insurance;
+    ((DetailProductInfoCell*)cell).conditionlabel.text = product.result.info.product_condition;
+    NSArray *breadcrumbs = [_detailproduct objectForKey:kTKPDDETAIL_APIBREADCRUMBPATHKEY];
+    for (int i = 0; i<breadcrumbs.count; i++) {
+        Breadcrumb *breadcrumb = breadcrumbs[i];
+        [((UIButton*)((DetailProductInfoCell*)cell).categorybuttons[i]) setTitle:breadcrumb.department_name forState:UIControlStateNormal];
+        ((UIButton*)((DetailProductInfoCell*)cell).categorybuttons[i]).hidden = NO;
+    }
 }
 
 #pragma mark - Memory Management
@@ -267,12 +419,17 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Mapping
+#pragma mark - Request and Mapping
+-(void)cancel
+{
+    [_objectmanager.operationQueue cancelAllOperations];
+    _objectmanager = nil;
+}
 
 - (void)configureRestKit
 {
     // initialize RestKit
-    RKObjectManager *objectManager =  [RKObjectManager sharedManager];
+    _objectmanager =  [RKObjectManager sharedManager];
     
     // setup object mappings
     RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[Product class]];
@@ -330,6 +487,9 @@
                                                            kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY
                                                            }];
     
+    RKObjectMapping *wholesaleMapping = [RKObjectMapping mappingForClass:[WholesalePrice class]];
+    [wholesaleMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIWHOLESALEMINKEY,kTKPDDETAILPRODUCT_APIWHOLESALEPRICEKEY,kTKPDDETAILPRODUCT_APIWHOLESALEMAXKEY]];
+    
     RKObjectMapping *breadcrumbMapping = [RKObjectMapping mappingForClass:[Breadcrumb class]];
     [breadcrumbMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIDEPARTMENTNAMEKEY,kTKPDDETAILPRODUCT_APIDEPARTMENTIDKEY]];
     
@@ -344,49 +504,55 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY withMapping:infoMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY toKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY withMapping:statisticMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY withMapping:shopinfoMapping]];
-    
     [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY withMapping:shopstatsMapping]];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:productMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    RKResponseDescriptor *responsebreadcrumbDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:breadcrumbMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"result.breadcrumb" statusCodes:kTkpdIndexSetStatusCodeOK];
-    RKResponseDescriptor *responseotherproductDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:otherproductMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"result.other_product" statusCodes:kTkpdIndexSetStatusCodeOK];
-    RKResponseDescriptor *responseproductimagesDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:imagesMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"result.product_images" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responsebreadcrumbDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:breadcrumbMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseotherproductDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:otherproductMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseproductimagesDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:imagesMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responsewholesaleDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:wholesaleMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [objectManager addResponseDescriptor:responseDescriptor];
-    [objectManager addResponseDescriptor:responsebreadcrumbDescriptor];
-    [objectManager addResponseDescriptor:responseotherproductDescriptor];
-    [objectManager addResponseDescriptor:responseproductimagesDescriptor];
+    [_objectmanager addResponseDescriptor:responseDescriptor];
+    [_objectmanager addResponseDescriptor:responsebreadcrumbDescriptor];
+    [_objectmanager addResponseDescriptor:responseotherproductDescriptor];
+    [_objectmanager addResponseDescriptor:responseproductimagesDescriptor];
+    [_objectmanager addResponseDescriptor:responsewholesaleDescriptor];
     
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [dictionary setObject:responseDescriptor.mapping forKey:(responseDescriptor.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptor.mapping forKey:(responsebreadcrumbDescriptor.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptor.mapping forKey:(responseotherproductDescriptor.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptor.mapping forKey:(responseproductimagesDescriptor.keyPath ?: [NSNull null])];
-    
+    [dictionary setObject:responseDescriptor.mapping forKey:(responsewholesaleDescriptor.keyPath ?: [NSNull null])];
 }
 
 - (void)loadData
 {
-    
-    [NSTimer scheduledTimerWithTimeInterval:10.0
-                                     target:self
-                                   selector:@selector(requesttimeout)
-                                   userInfo:nil
-                                    repeats:NO];
+    _requestcount++;
+
+    [_act startAnimating];
     
 	NSDictionary* param = @{
-                            @"action" : @"get_detail",
-                            @"product_id" : @(9622)
+                            kTKPDETAIL_APIACTIONKEY : kTKPDETAIL_APIGETDETAILACTIONKEY,
+                            kTKPDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDETAIL_APIPRODUCTIDKEY]
                             };
     
-    [[RKObjectManager sharedManager] getObjectsAtPath:kTKPDDETAILPRODUCT_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        
+    [_objectmanager getObjectsAtPath:kTKPDDETAILPRODUCT_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [_timer invalidate];
+        _timer = nil;
+        [_act stopAnimating];
+        _table.hidden = NO;
         [self requestsuccess:mappingResult];
-        
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
+        [_timer invalidate];
+        _timer = nil;
+        [_act stopAnimating];
         [self requestfailure:error];
     }];
+    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)requestsuccess:(id)object
@@ -396,34 +562,103 @@
     id stats = [result objectForKey:@""];
     
     Product *product = stats;
-    BOOL status = [product.status isEqualToString:@"OK"];
+    BOOL status = [product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        NSArray* breadcrumb = [result objectForKey:@"result.breadcrumb"];
-        NSArray* otherproduct = [result objectForKey:@"result.other_product"];
-        NSArray* productimage = [result objectForKey:@"result.product_images"];
 
-        [_detailproduct setObject:result forKey:@"product"];
-        [_detailproduct setObject:breadcrumb forKey:@"breadcrumb"];
-        [_detailproduct setObject:otherproduct forKey:@"oterproduct"];
-        [_detailproduct setObject:productimage forKey:@"productimages"];
+        [_detailproduct addEntriesFromDictionary:result];
+        [_detailwholesale addObjectsFromArray:[result objectForKey:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY]?:@[]];
+        if (_detailwholesale.count > 0) {
+            _isnodatawholesale = NO;
+        }
         
         [self setHeaderviewData:(id)product];
+        [self setFooterViewData:(id)product.result.shop_info];
+        _isnodata = NO;
+        [_table reloadData];
     }
 }
 
 -(void)requesttimeout
 {
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
+    [self cancel];
 }
 
 -(void)requestfailure:(id)object
 {
+    [self cancel];
     NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
     if ([(NSError*)object code] == NSURLErrorCancelled) {
-        
-        [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
+        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+            //_table.tableFooterView = _footer;
+            [_act startAnimating];
+            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+        }
+        else
+        {
+            [_act stopAnimating];
+        }
     }
+    else
+    {
+        [_act stopAnimating];
+    }
+}
+
+#pragma mark - UIScrollView Delegate
+- (void)scrollViewDidScroll:(UIScrollView *)sender
+{
+    // Update the page when more than 50% of the previous/next page is visible
+    CGFloat pageWidth = _imagescrollview.frame.size.width;
+    _pageheaderimages = floor((_imagescrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    _pagecontrol.currentPage = _pageheaderimages;
+    _nextbutton.hidden = (_pageheaderimages == _headerimages.count -1)?YES:NO;
+    _backbutton.hidden = (_pageheaderimages == 0)?YES:NO;
+}
+
+#pragma mark - Cell Delegate
+-(void)DetailProductInfoCell:(UITableViewCell *)cell withbuttonindex:(NSInteger)index
+{
+    switch (index) {
+        case 10:
+        case 11:
+        case 12:
+        {
+            // Tag 10 until 12 is category
+            /** Goto category **/
+            NSArray *breadcrumbs = [_detailproduct objectForKey:kTKPDDETAIL_APIBREADCRUMBPATHKEY];
+            Breadcrumb *breadcrumb = breadcrumbs[index-10];
+            
+            SearchResultViewController *vc = [SearchResultViewController new];
+            NSString *deptid = breadcrumb.department_id;
+            vc.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
+            SearchResultViewController *vc1 = [SearchResultViewController new];
+            vc1.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
+            SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+            vc2.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
+            NSArray *viewcontrollers = @[vc,vc1,vc2];
+            
+            TKPDTabNavigationController *c = [TKPDTabNavigationController new];
+            
+            [c setSelectedIndex:0];
+            [c setViewControllers:viewcontrollers];
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
+            [nav.navigationBar setTranslucent:NO];
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            break;
+        }
+        case 13:
+        {
+            // Etalase
+            
+            break;
+        }
+        default:
+            break;
+    }
+
 }
 
 #pragma mark - Methods
@@ -432,8 +667,84 @@
     Product *p = product;
     _productnamelabel.text = p.result.info.product_name;
     _pricelabel.text = p.result.info.product_price;
-
+    _countsoldlabel.text = [NSString stringWithFormat:@"%@ Sold", p.result.statistic.product_sold];
+    _countviewlabel.text = [NSString stringWithFormat:@"%@ View", p.result.statistic.product_view];
+    
+    _productrateview.starscount = p.result.statistic.product_rating;
+    
+    NSArray *images = [_detailproduct objectForKey:kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY];
+    
+    for(int i = 0; i< images.count; i++)
+    {
+        CGFloat y = i * 320;
+        
+        ProductImages *image = images[i];
+        
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        //request.URL = url;
+        
+        UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
+        
+        thumb.image = nil;
+        //thumb.hidden = YES;	//@prepareforreuse then @reset
+        
+        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+            //NSLOG(@"thumb: %@", thumb);
+            [thumb setImage:image];
+            
+#pragma clang diagnostic pop
+            
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        }];
+        
+        [_imagescrollview addSubview:thumb];
+        [_headerimages addObject:thumb];
+    }
+    _pagecontrol.numberOfPages = images.count;
+    
+    _nextbutton.hidden = _headerimages.count <= 1?YES:NO;
+    _backbutton.hidden = _headerimages.count <= 1?YES:NO;
+    
+    _nextbutton.hidden = (_pageheaderimages == _headerimages.count -1)?YES:NO;
+    _backbutton.hidden = (_pageheaderimages == 0)?YES:NO;
+    
+    _imagescrollview.contentSize = CGSizeMake(_headerimages.count*320,0);
+    
 }
 
+-(void)setFooterViewData:(id)data
+{
+    ShopInfo *shopinfo = data;
+    
+    _shopname.text = shopinfo.shop_name;
+    _shoplocation.text = shopinfo.shop_location;
+    
+    _ratespeedshop.starscount = shopinfo.shop_stats.shop_speed_rate;
+    _rateserviceshop.starscount = shopinfo.shop_stats.shop_service_rate;
+    _rateaccuracyshop.starscount = shopinfo.shop_stats.shop_accuracy_rate;
+    
+    UIImageView *thumb = _shopthumb;
+    
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:shopinfo.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    //request.URL = url;
+    
+    thumb.image = nil;
+    //thumb.hidden = YES;	//@prepareforreuse then @reset
+    
+    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        //NSLOG(@"thumb: %@", thumb);
+        [thumb setImage:image];
+        
+#pragma clang diagnostic pop
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        
+    }];
+
+}
 
 @end

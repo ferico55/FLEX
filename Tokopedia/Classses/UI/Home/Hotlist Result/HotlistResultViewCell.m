@@ -11,6 +11,7 @@
 
 @implementation HotlistResultViewCell
 
+#pragma mark - Factory Methods
 + (id)newcell
 {
     NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"GeneralThumb" owner:nil options:0];
@@ -34,5 +35,15 @@
     // Configure the view for the selected state
 }
 
-
+#pragma mark - View Gesture
+- (IBAction)gesture:(id)sender {
+    
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+        
+        [_delegate HotlistResultViewCell:self withindexpath:_indexpath];
+        
+    }
+    
+}
 @end

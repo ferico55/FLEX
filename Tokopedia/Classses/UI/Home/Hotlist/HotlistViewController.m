@@ -17,6 +17,21 @@
 #pragma mark - HotlistView
 
 @interface HotlistViewController ()
+{
+    NSInteger _page;
+    NSInteger _limit;
+    
+    NSString *_urinext;
+    
+    BOOL _isrefreshview;
+    BOOL _isnodata;
+    
+    UIRefreshControl *_refreshControl;
+    NSInteger _requestcount;
+    NSTimer *_timer;
+    
+    __weak RKObjectManager *_objectmanager;
+}
 
 @property (strong, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -27,19 +42,17 @@
 @end
 
 @implementation HotlistViewController
+#pragma mark - Initialization
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    NSInteger _page;
-    NSInteger _limit;
-    
-    NSString *_urinext;
-    
-    BOOL _isnodata;
-    
-    UIRefreshControl *_refreshControl;
-    NSInteger _requestcount;
-    
-    __weak RKObjectManager *_objectmanager;
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        _isrefreshview = NO;
+        _isnodata = YES;
+    }
+    return self;
 }
+
 
 #pragma mark - View Lifecylce
 - (void) viewDidLoad
@@ -58,7 +71,7 @@
     /** set inset table for different size**/
     if (is4inch) {
         UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 150;
+        inset.bottom += 115;
         _table.contentInset = inset;
     }
     else{
@@ -84,13 +97,17 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
-    [self configureRestKit];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self configureRestKit];
+    if (!_isrefreshview) {
+        [self configureRestKit];
+        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
+            [self loadData];
+        }
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -106,7 +123,6 @@
 
 
 #pragma mark - Table View Data Source
-
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 #ifdef kTKPDPRODUCTHOTLIST_NODATAENABLE
     return _isnodata ? 1 : _product.count;
@@ -161,7 +177,7 @@
                 [((HotlistCell*)cell).act stopAnimating];
             }];
             
-		}
+		}else [self reset:((HotlistCell*)cell)];
 	} else {
 		static NSString *CellIdentifier = kTKPDHOME_STANDARDTABLEVIEWCELLIDENTIFIER;
 		
@@ -185,13 +201,14 @@
 	}
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-	if (row == indexPath.row+1) {
+	if (row == indexPath.row) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 		
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             /** called if need to load next page **/
             //NSLog(@"%@", NSStringFromSelector(_cmd));
             [self configureRestKit];
+            [self loadData];
         }
 	}
 }
@@ -233,16 +250,15 @@
     NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
     [dictionary setObject:responseDescriptorHotlist.mapping forKey:(responseDescriptorHotlist.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptorPaging.mapping forKey:(responseDescriptorPaging.keyPath ?: [NSNull null])];
-    
-    [self loadData];
 }
 
 - (void)loadData
 {
-    _table.tableFooterView = _footer;
-    [_act startAnimating];
-    
-    _requestcount ++;
+   
+    if (!_isrefreshview) {
+        _table.tableFooterView = _footer;
+        [_act startAnimating];
+    }
     
 	NSDictionary* param = @{//@"auth":@(1),
                             kTKPDHOME_APIACTIONKEY:kTKPDHOMEHOTLISTACT,
@@ -257,28 +273,32 @@
         [_act stopAnimating];
         _table.tableFooterView = nil;
         [_table reloadData];
+        _isrefreshview = NO;
         [_refreshControl endRefreshing];
-        
+        [_timer invalidate];
+        _timer = nil;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         NSLog(@"============================== DONE GET HOTLIST =====================");
         /** failure **/
         [self requestfailure:error];
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
+        //[_act stopAnimating];
+        //_table.tableFooterView = nil;
+        _isrefreshview = NO;
         [_refreshControl endRefreshing];
+        [_timer invalidate];
+        _timer = nil;
     }];
     
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)requestsuccess:(id)object
 {
-    
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id stat = [result objectForKey:@""];
     Hotlist *hotlist = stat;
-    BOOL status = [hotlist.status isEqualToString:@"OK"];
+    BOOL status = [hotlist.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
         [_product addObjectsFromArray: [result objectForKey:kTKPDHOME_APILISTKEYPATH]];
@@ -287,7 +307,7 @@
         //[_paging addObject:[result objectForKey:@"result.paging"]];
         
         if (_product.count >0) {
-            
+            _isnodata = NO;
             Paging *paging = page;
             _urinext =  paging.uri_next;
             NSURL *url = [NSURL URLWithString:_urinext];
@@ -326,21 +346,36 @@
 
 -(void)requesttimeout
 {
-    [_objectmanager.operationQueue cancelAllOperations];
+    [self cancel];
 }
 
 -(void)requestfailure:(id)object
 {
+    [self cancel];
     NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
     if ([(NSError*)object code] == NSURLErrorCancelled) {
         if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:0.3];
+            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+            _table.tableFooterView = _footer;
+            [_act startAnimating];
+            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
         }
+        else
+        {
+            [_act stopAnimating];
+            _table.tableFooterView = nil;
+        }
+    }
+    else
+    {
+        [_act stopAnimating];
+        _table.tableFooterView = nil;
     }
 }
 
 #pragma mark - Delegate
--(void)HotlistCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+-(void)HotlistCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withimageview:(UIImageView *)imageview
 {
     HotlistResultViewController *vc = [HotlistResultViewController new];
     vc.image = ((HotlistCell*)cell).productimageview.image;
@@ -349,12 +384,12 @@
     NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
     
     if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTHOTKEY]) {
-        vc.data = @{kTKPDHOME_DATAQUERYKEY: querry[2]?:@""};
+        vc.data = @{kTKPDHOME_DATAQUERYKEY: querry[2]?:@"", kTKPHOME_DATAHEADERIMAGEKEY: imageview};
         UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
         [self.navigationController presentViewController:nav animated:YES completion:nil];
     }
     // redirect uri to search category
-    if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTCATEGORY]) {
+    else if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTCATEGORY]) {
         //TODO:: GO TO SEARCH
         //SearchResultViewController *vc = [SearchResultViewController new];
         //NSString *searchtext = hashtags.department_id;
@@ -373,18 +408,33 @@
         //[nav.navigationBar setTranslucent:NO];
         //[self.navigationController presentViewController:nav animated:YES completion:nil];
     }
+    else{
+        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+        [self.navigationController presentViewController:nav animated:YES completion:nil];
+    }
 }
 
 #pragma mark - Methods
+-(void)reset:(UITableViewCell*)cell
+{
+    ((HotlistCell*)cell).productimageview = nil;
+    ((HotlistCell*)cell).pricelabel = nil;
+    ((HotlistCell*)cell).namelabel = nil;
+}
+
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     /** clear object **/
+    [self cancel];
+    _requestcount = 0;
     [_product removeAllObjects];
     _page = 1;
+    _isrefreshview = YES;
     
     [_table reloadData];
     /** request data **/
     [self configureRestKit];
+    [self loadData];
 }
 
 @end

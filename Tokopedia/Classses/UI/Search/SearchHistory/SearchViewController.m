@@ -233,7 +233,7 @@
         
         //_searchbar.text = nil;
         
-        /** Goto next page **/
+        /** Goto result page **/
         SearchResultViewController *vc = [SearchResultViewController new];
         vc.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
         SearchResultViewController *vc1 = [SearchResultViewController new];

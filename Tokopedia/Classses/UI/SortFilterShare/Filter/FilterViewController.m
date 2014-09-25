@@ -10,6 +10,7 @@
 #import "FilterLocationViewController.h"
 #import "FilterViewController.h"
 
+#pragma mark Filter View Controller
 @interface FilterViewController ()<FilterLocationViewControllerDelegate,UITextFieldDelegate>
 {
     UITextField *_activetextfield;
@@ -31,6 +32,7 @@
 
 @implementation FilterViewController
 
+#pragma mark - Initialization
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -40,6 +42,7 @@
     return self;
 }
 
+#pragma mark - Life Cycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -203,6 +206,7 @@
     return YES;
 }
 
+#pragma mark - Delegate
 -(void)FilterLocationViewController:(UIViewController *)viewcontroller withdata:(NSDictionary *)data
 {
     [_shoplocationbutton setTitle:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forState:UIControlStateNormal];
@@ -210,6 +214,7 @@
     [_detailfilter setObject:[data objectForKey:kTKPDFILTER_APILOCATIONKEY] forKey:kTKPDFILTER_APILOCATIONKEY];
 }
 
+#pragma mark - Text Field Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     _activetextfield = textField;
     [textField resignFirstResponder];

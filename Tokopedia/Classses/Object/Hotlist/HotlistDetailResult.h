@@ -15,7 +15,7 @@
 @interface HotlistDetailResult : NSObject
 
 @property (nonatomic, strong) NSString *cover_image;
-@property (nonatomic, strong) NSString *description;
+@property (nonatomic, strong) NSString *desc_key;
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) Hashtags *hashtags;
 @property (nonatomic, strong) DepartmentTree *department_tree;

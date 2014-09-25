@@ -12,6 +12,8 @@
 
 @interface DetailProductWholesaleCell : UITableViewCell
 
+@property (strong, nonatomic) NSDictionary *data;
+
 +(id)newcell;
 
 @end

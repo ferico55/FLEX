@@ -9,6 +9,7 @@
 
 #import <UIKit/UIKit.h>
 
+#pragma mark - Filter View Controller
 @interface FilterViewController : UIViewController
 
 @property (nonatomic, strong) NSDictionary *data;

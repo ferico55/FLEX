@@ -19,6 +19,7 @@
     #import "TkpdImg.h"
     #import "TraktAPIClient.h"
     #import "NSStringCategory.h"
+    #import "NSArrayCategory.h"
     #import "UIImageView+AFNetworking.h"
     #import "Tkpd.h"
     #import "string.h"

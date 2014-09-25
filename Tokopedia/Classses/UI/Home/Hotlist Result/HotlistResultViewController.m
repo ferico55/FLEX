@@ -20,25 +20,9 @@
 #import "SearchResultShopViewController.h"
 #import "TKPDTabNavigationController.h"
 #import "CategoryMenuViewController.h"
+#import "DetailProductViewController.h"
 
 @interface HotlistResultViewController () <UITableViewDataSource,UITableViewDelegate, HotlistResultViewCellDelegate>
-
-@property (weak, nonatomic) IBOutlet UIImageView *imageview;
-@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (strong, nonatomic) IBOutlet UIView *footer;
-@property (weak, nonatomic) IBOutlet UITableView *table;
-@property (strong, nonatomic) IBOutlet UIView *header;
-@property (weak, nonatomic) IBOutlet UIScrollView *hashtagsscrollview;
-@property (strong, nonatomic) IBOutlet UIView *descriptionview;
-@property (weak, nonatomic) IBOutlet UIScrollView *imagescrollview;
-@property (weak, nonatomic) IBOutlet UILabel *descriptionlabel;
-@property (weak, nonatomic) IBOutlet UIView *filterview;
-
-@property (nonatomic, strong) NSMutableArray *product;
-
-@end
-
-@implementation HotlistResultViewController
 {
     NSInteger _page;
     NSInteger _limit;
@@ -56,15 +40,39 @@
     NSString *_urinext;
     
     BOOL _isnodata;
+    BOOL _isrefreshview;
     
     UIRefreshControl *_refreshControl;
     
     UIBarButtonItem *_barbuttoncategory;
     
     NSInteger _requestcount;
+    NSTimer *_timer;
     
     __weak RKObjectManager *_objectmanager;
 }
+
+@property (weak, nonatomic) IBOutlet UIImageView *imageview;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (strong, nonatomic) IBOutlet UIView *footer;
+@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (strong, nonatomic) IBOutlet UIView *header;
+@property (weak, nonatomic) IBOutlet UIScrollView *hashtagsscrollview;
+@property (strong, nonatomic) IBOutlet UIView *descriptionview;
+@property (weak, nonatomic) IBOutlet UIScrollView *imagescrollview;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionlabel;
+@property (weak, nonatomic) IBOutlet UIView *filterview;
+@property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
+
+@property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *swipegestureleft;
+@property (strong, nonatomic) IBOutlet UISwipeGestureRecognizer *swipegestureright;
+
+@property (nonatomic, strong) NSMutableArray *product;
+
+@end
+
+@implementation HotlistResultViewController
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -72,6 +80,7 @@
     if (self) {
         _isnodata = YES;
         _requestcount = 0;
+        _isrefreshview = NO;
     }
     return self;
 }
@@ -85,6 +94,7 @@
     // set title navigation
     NSString * title = [_data objectForKey:kTKPDHOME_DATATITLEKEY];
     self.navigationItem.title = title;
+    [self.navigationController.navigationBar setTranslucent:NO];
     
     // create initialitation
     _paging = [NSMutableDictionary new];
@@ -152,18 +162,31 @@
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateView:) name:@"setfilterProduct" object:nil];
+    [nc addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
     
-    _filterview.hidden = YES;
+    UIImageView *imageview = [_data objectForKey:kTKPHOME_DATAHEADERIMAGEKEY];
+    if (imageview) {
+        _imageview.image = imageview.image;
+        _header.hidden = NO;
+        _pagecontrol.hidden = YES;
+        _swipegestureleft.enabled = NO;
+        _swipegestureright.enabled = NO;
+    }
     
-    [self configureRestKit];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
-
+    [_descriptionview setFrame:CGRectMake(350, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
+    [_pagecontrol bringSubviewToFront:_descriptionview];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    //[self refreshView:nil];
+    
+    if (!_isrefreshview) {
+        [self configureRestKit];
+        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
+            [self loadData];
+        }
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -193,7 +216,7 @@
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         
-        [self reset:cell];
+        [self reset:(HotlistResultViewCell*)cell];
         
         NSString *cellid = kTKPDHOTLISTRESULTVIEWCELL_IDENTIFIER;
 		
@@ -273,16 +296,19 @@
 		cell.backgroundColor = [UIColor whiteColor];
 	}
     
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
+    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
 	if (row == indexPath.row) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 		
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
+            /** called if need to load next page **/
             //NSLog(@"%@", NSStringFromSelector(_cmd));
+            [self configureRestKit];
             [self loadData];
         }
 	}
 }
+
 
 #pragma mark - Action View
 -(IBAction)tap:(id)sender{
@@ -385,17 +411,47 @@
         switch (swipe.state) {
             case UIGestureRecognizerStateEnded: {
                 if (swipe.direction == UISwipeGestureRecognizerDirectionRight) {
-                    [_descriptionview removeFromSuperview];
+                    [self descriptionviewhideanimation:YES];
+                    _pagecontrol.currentPage=0;
                 }
                if (swipe.direction == UISwipeGestureRecognizerDirectionLeft) {
-                   [_descriptionview setFrame:CGRectMake(_imageview.frame.origin.x, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
-                   [self.view addSubview:_descriptionview];
+                   [self descriptionviewshowanimation:YES];
+                   _pagecontrol.currentPage=1;
                 }
                 break;
             }
             default:
                 break;
         }
+    }
+}
+
+-(void)descriptionviewshowanimation:(BOOL)animated
+{
+    if (animated) {
+        [UIView animateWithDuration:0.5
+                              delay:0
+                            options: UIViewAnimationCurveEaseOut
+                         animations:^{
+                             [_descriptionview setFrame:CGRectMake(_imageview.frame.origin.x, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
+                             [self.view addSubview:_descriptionview];
+                         }
+                         completion:^(BOOL finished){
+                         }];
+    }
+}
+-(void)descriptionviewhideanimation:(BOOL)animated
+{
+    if (animated) {
+        [UIView animateWithDuration:0.5
+                              delay:0
+                            options: UIViewAnimationCurveEaseOut
+                         animations:^{
+                             [_descriptionview setFrame:CGRectMake(350, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
+                             [self.view addSubview:_descriptionview];
+                         }
+                         completion:^(BOOL finished){
+                         }];
     }
 }
 
@@ -422,7 +478,7 @@
     
     // result mapping
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APICOVERIMAGEKEY:kTKPDHOME_APICOVERIMAGEKEY, KTKPDHOME_APIDESCRIPTION1KEY:KTKPDHOME_APIDESCRIPTIONKEY}];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APICOVERIMAGEKEY:kTKPDHOME_APICOVERIMAGEKEY, KTKPDHOME_APIDESCRIPTIONKEY:KTKPDHOME_APIDESCRIPTION1KEY}];
     
     // searchs list mapping
     RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[List class]];
@@ -475,8 +531,6 @@
     [dictionary setObject:responseDescriptorPaging.mapping forKey:(responseDescriptorPaging.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptorHashtags.mapping forKey:(responseDescriptorHashtags.keyPath ?: [NSNull null])];
     [dictionary setObject:responseDescriptionDepartmenttree.mapping forKey:(responseDescriptionDepartmenttree.keyPath?: [NSNull null])];
-    
-    [self loadData];
 }
 
 
@@ -511,7 +565,8 @@
         _table.tableFooterView = nil;
         [_table reloadData];
         [_refreshControl endRefreshing];
-        
+        [_timer invalidate];
+        _timer = nil;
         NSLog(@"============================== DONE GET HOTLIST DETAIL =====================");
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
@@ -522,12 +577,13 @@
         [_act stopAnimating];
         _table.tableFooterView = nil;
         [_refreshControl endRefreshing];
-        
+        [_timer invalidate];
+        _timer = nil;
         NSLog(@"============================== DONE GET HOTLIST DETAIL =====================");
     }];
     
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
 
@@ -538,11 +594,18 @@
     id info = [result objectForKey:@""];
     HotlistDetail *hotlistdetail = info;
     NSString *statusstring = hotlistdetail.status;
-    BOOL status = [statusstring isEqualToString:@"OK"];
+    BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
+        
+        if (_page == 1) {
+            [_product removeAllObjects];
+        }
+        
         [_product addObjectsFromArray: [result objectForKey:kTKPDHOME_APILISTKEYPATH]];
         [_detailhotlist addEntriesFromDictionary:result];
+        _swipegestureleft.enabled = YES;
+        _swipegestureright.enabled = YES;
         [self setHeaderData:result];
         
         NSArray * departmenttree = [result objectForKey:kTKPDHOME_APIDEPARTMENTTREEKEYPATH]?:@[];
@@ -551,11 +614,14 @@
         if (_departmenttree.count == 0) {
             [_departmenttree addObjectsFromArray:departmenttree];
         }
-
         
         id page =[result objectForKey:kTKPDHOME_APIPAGINGKEYPATH];
         
         if (_product.count >0) {
+            
+            _descriptionview.hidden = NO;
+            _header.hidden = NO;
+            _filterview.hidden = NO;
             
             Paging *paging = page;
             _urinext =  paging.uri_next;
@@ -589,19 +655,37 @@
 
 -(void)requesttimeout
 {
-    _table.tableFooterView = _footer;
-    [_act startAnimating];
     [self cancel];
 }
 
 -(void)requestfailure:(id)object
 {
+    [self cancel];
     NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
     if ([(NSError*)object code] == NSURLErrorCancelled) {
-        if (_requestcount <= kTKPDREQUESTCOUNTMAX) {
-            [self performSelector:@selector(loadData) withObject:nil afterDelay:0.3];
+        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+            _table.tableFooterView = _footer;
+            [_act startAnimating];
+            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
         }
     }
+    else
+    {
+        [_act stopAnimating];
+        _table.tableFooterView = nil;
+    }
+    
+}
+
+#pragma mark - Cell Delegate
+-(void)HotlistResultViewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+{
+    NSInteger index = indexpath.section+2*(indexpath.row);
+    List *list = _product[index];
+    DetailProductViewController *vc = [DetailProductViewController new];
+    vc.data = @{kTKPHOME_APIPRODUCTIDKEY : list.product_id};
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Methods
@@ -610,31 +694,33 @@
     id info = [data objectForKey:@""];
     HotlistDetail *hotlistdetail = info;
     
-    NSString *urlstring = hotlistdetail.result.cover_image;
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
-    //request.URL = url;
-    
-    UIImageView *thumb = _imageview;
-    thumb.image = nil;
-    //thumb.hidden = YES;	//@prepareforreuse then @reset
-    
-    [_act startAnimating];
-    
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    if (![_data objectForKey:kTKPHOME_DATAHEADERIMAGEKEY]) {
+        NSString *urlstring = hotlistdetail.result.cover_image;
+        
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
+        //request.URL = url;
+        
+        UIImageView *thumb = _imageview;
+        thumb.image = nil;
+        //thumb.hidden = YES;	//@prepareforreuse then @reset
+        
+        [_act startAnimating];
+        
+        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        //NSLOG(@"thumb: %@", thumb);
-        [thumb setImage:image];
-        
-        [_act stopAnimating];
+            //NSLOG(@"thumb: %@", thumb);
+            [thumb setImage:image];
+            
+            [_act stopAnimating];
 #pragma clang diagnostic pop
-        
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [_act stopAnimating];
-    }];
+            
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            [_act stopAnimating];
+        }];
+    }
     
-    _descriptionlabel.text = hotlistdetail.result.description;
+    _descriptionlabel.text = hotlistdetail.result.desc_key;
     
     NSArray *hashtags = [data objectForKey:kTKPDHOME_APIHASHTAGSKEYPATH];
     [self setHashtagsArray:hashtags];
@@ -650,9 +736,8 @@
     for (int i = 0; i<array.count; i++) {
         Hashtags *hashtags = array[i];
         
-        NSString *hash = hashtags.name;
-        NSString *name = [@"# " stringByAppendingFormat:
-                             hash];
+        NSString *hashtag = hashtags.name;
+        NSString *name = [@"# " stringByAppendingFormat:hashtag];
         
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -682,8 +767,6 @@
     _hashtagsscrollview.contentSize = CGSizeMake(widthcontenttop+10, 0);
 }
 
-
-#pragma mark - Methods
 -(void)reset:(UITableViewCell*)cell
 {
     [((HotlistResultViewCell*)cell).thumb makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
@@ -694,16 +777,16 @@
 
 -(void)refreshView:(UIRefreshControl*)refresh
 {
-    // cancel all request
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
-    
-    // reset object
+    [self cancel];
+    /** clear object **/
     [_product removeAllObjects];
-    //[_departmenttree removeAllObjects];
     _page = 1;
-    [_table reloadData];
+    _requestcount = 0;
+    _isrefreshview = YES;
     
-    // request data
+    [_table reloadData];
+    /** request data **/
+    [self configureRestKit];
     [self loadData];
 }
 
@@ -711,28 +794,18 @@
 
 -(void)setDepartmentID:(NSNotification*)notification
 {
+    [self cancel];
     NSDictionary* userinfo = notification.userInfo;
-    
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
     [_detailfilter setObject:[userinfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-    [_product removeAllObjects];
     [self refreshView:nil];
 }
 
 - (void)updateView:(NSNotification *)notification;
 {
+    [self cancel];
     NSDictionary *userinfo = notification.userInfo;
     [_detailfilter addEntriesFromDictionary:userinfo];
-    
-    [[RKObjectManager sharedManager].operationQueue cancelAllOperations];
-    
-    // reset object
-    [_product removeAllObjects];
-    _page = 1;
-    [_table reloadData];
-
-    
-    [self loadData];
+    [self refreshView:nil];
 }
 
 @end

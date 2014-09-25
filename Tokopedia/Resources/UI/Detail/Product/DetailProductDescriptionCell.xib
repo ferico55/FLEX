@@ -23,6 +23,9 @@
                     </label>
                 </subviews>
             </tableViewCellContentView>
+            <connections>
+                <outlet property="descriptionlabel" destination="gdk-zI-Nu6" id="Hey-cw-MnH"/>
+            </connections>
         </tableViewCell>
     </objects>
 </document>

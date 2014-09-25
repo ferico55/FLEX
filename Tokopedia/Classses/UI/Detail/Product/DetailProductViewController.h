@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+#pragma mark - Detail Product View Controller
 @interface DetailProductViewController : UIViewController
 
 @property (strong,nonatomic) NSDictionary *data;

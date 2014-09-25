@@ -9,10 +9,10 @@
 #import "sortfiltershare.h"
 #import "FilterLocationViewCell.h"
 
+#pragma mark - Filter Location View Cell
 @implementation FilterLocationViewCell
 
 #pragma mark - Factory methods
-
 + (id)newcell
 {
     NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"FilterLocationViewCell" owner:nil options:0];
@@ -40,7 +40,6 @@
 -(IBAction)gesture:(id)sender
 {
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
-        UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
         NSIndexPath *indexpath = [_data objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
         [_delegate FilterLocationViewCell:self withindexpath:indexpath];
     }
@@ -52,7 +51,6 @@
     _data = data;
     
     if (data) {
-        //NSDictionary *column = [_data objectForKey:@"column"];
         _label.text = [_data objectForKey:kTKPDFILTER_DATACOLUMNKEY];
     }
 }
