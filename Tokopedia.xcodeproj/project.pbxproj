@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8507B9F219D29320003D9CEB /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8507B9F119D29320003D9CEB /* SearchResultCell.xib */; };
+		851A5FC519D281A600D06C9A /* GeneralThumb.xib in Resources */ = {isa = PBXBuildFile; fileRef = 851A5FC419D281A600D06C9A /* GeneralThumb.xib */; };
 		85386DCC19CBE88700BCA463 /* GothamLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCA19CBD8E500BCA463 /* GothamLight.ttf */; };
 		85386DCD19CBE88A00BCA463 /* GothamBlack.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCB19CBD92900BCA463 /* GothamBlack.ttf */; };
 		F3B587558A434636B6275320 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDC5E5AE50A14C3FB286B367 /* libPods-Tokopedia.a */; };
@@ -113,7 +115,6 @@
 		FC24857E19C199FC008755DA /* TKPDTabHomeNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC24857C19C199FC008755DA /* TKPDTabHomeNavigationController.m */; };
 		FC2F203819BD5B7200C2B9B5 /* HotlistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC2F202C19BD5B7200C2B9B5 /* HotlistCell.xib */; };
 		FC2F203919BD5B7200C2B9B5 /* HotlistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC2F202D19BD5B7200C2B9B5 /* HotlistViewController.xib */; };
-		FC2F203A19BD5B7200C2B9B5 /* HotlistResultViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC2F202F19BD5B7200C2B9B5 /* HotlistResultViewCell.xib */; };
 		FC2F203B19BD5B7200C2B9B5 /* HotlistResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC2F203019BD5B7200C2B9B5 /* HotlistResultViewController.xib */; };
 		FC2F203C19BD5B7200C2B9B5 /* KatalogListViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC2F203219BD5B7200C2B9B5 /* KatalogListViewCell.xib */; };
 		FC2F203D19BD5B7200C2B9B5 /* KatalogViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC2F203319BD5B7200C2B9B5 /* KatalogViewCell.xib */; };
@@ -209,7 +210,6 @@
 		FC36E1B719B0673800AF74C1 /* CartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC36E15119B0673700AF74C1 /* CartViewController.xib */; };
 		FC36E1BA19B0673800AF74C1 /* TKPDTabBarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC36E15619B0673700AF74C1 /* TKPDTabBarController.xib */; };
 		FC36E1BD19B0673800AF74C1 /* MoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC36E15B19B0673800AF74C1 /* MoreViewController.xib */; };
-		FC36E1C919B0673800AF74C1 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC36E16D19B0673800AF74C1 /* SearchResultCell.xib */; };
 		FC36E1CA19B0673800AF74C1 /* SearchResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC36E16E19B0673800AF74C1 /* SearchResultViewController.xib */; };
 		FC36E1D419B0904F00AF74C1 /* TraktAPIClient.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36E1D319B0904F00AF74C1 /* TraktAPIClient.m */; };
 		FC3E7FE119D041B600053022 /* ic_arrow_right.png in Resources */ = {isa = PBXBuildFile; fileRef = FC3E7FDF19D041B600053022 /* ic_arrow_right.png */; };
@@ -253,6 +253,8 @@
 		091FB04E48F44F1BBA374E42 /* Pods-Tokopedia.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.xcconfig"; path = "Pods/Pods-Tokopedia.xcconfig"; sourceTree = "<group>"; };
 		482BA56B21334661A9065EEC /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		62A52619A9614BB78AFC9FF8 /* Pods-TokopediaTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.xcconfig"; path = "Pods/Pods-TokopediaTests.xcconfig"; sourceTree = "<group>"; };
+		8507B9F119D29320003D9CEB /* SearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
+		851A5FC419D281A600D06C9A /* GeneralThumb.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralThumb.xib; sourceTree = "<group>"; };
 		85386DCA19CBD8E500BCA463 /* GothamLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamLight.ttf; sourceTree = "<group>"; };
 		85386DCB19CBD92900BCA463 /* GothamBlack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamBlack.ttf; sourceTree = "<group>"; };
 		EDC5E5AE50A14C3FB286B367 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -381,7 +383,6 @@
 		FC24857C19C199FC008755DA /* TKPDTabHomeNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabHomeNavigationController.m; sourceTree = "<group>"; };
 		FC2F202C19BD5B7200C2B9B5 /* HotlistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotlistCell.xib; sourceTree = "<group>"; };
 		FC2F202D19BD5B7200C2B9B5 /* HotlistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotlistViewController.xib; sourceTree = "<group>"; };
-		FC2F202F19BD5B7200C2B9B5 /* HotlistResultViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotlistResultViewCell.xib; sourceTree = "<group>"; };
 		FC2F203019BD5B7200C2B9B5 /* HotlistResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotlistResultViewController.xib; sourceTree = "<group>"; };
 		FC2F203219BD5B7200C2B9B5 /* KatalogListViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KatalogListViewCell.xib; sourceTree = "<group>"; };
 		FC2F203319BD5B7200C2B9B5 /* KatalogViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = KatalogViewCell.xib; sourceTree = "<group>"; };
@@ -526,7 +527,6 @@
 		FC36E15119B0673700AF74C1 /* CartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CartViewController.xib; sourceTree = "<group>"; };
 		FC36E15619B0673700AF74C1 /* TKPDTabBarController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabBarController.xib; sourceTree = "<group>"; };
 		FC36E15B19B0673800AF74C1 /* MoreViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MoreViewController.xib; sourceTree = "<group>"; };
-		FC36E16D19B0673800AF74C1 /* SearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
 		FC36E16E19B0673800AF74C1 /* SearchResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultViewController.xib; sourceTree = "<group>"; };
 		FC36E1CD19B067AD00AF74C1 /* Tkpd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tkpd.h; sourceTree = "<group>"; };
 		FC36E1CE19B067AD00AF74C1 /* TkpdImg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TkpdImg.h; sourceTree = "<group>"; };
@@ -601,6 +601,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		851A5FC319D281A600D06C9A /* GeneralUI */ = {
+			isa = PBXGroup;
+			children = (
+				851A5FC419D281A600D06C9A /* GeneralThumb.xib */,
+			);
+			path = GeneralUI;
+			sourceTree = "<group>";
+		};
 		8558292419D0212600CFC96B /* icon_general */ = {
 			isa = PBXGroup;
 			children = (
@@ -847,7 +855,6 @@
 		FC2F202E19BD5B7200C2B9B5 /* HotlistResult */ = {
 			isa = PBXGroup;
 			children = (
-				FC2F202F19BD5B7200C2B9B5 /* HotlistResultViewCell.xib */,
 				FC2F203019BD5B7200C2B9B5 /* HotlistResultViewController.xib */,
 			);
 			path = HotlistResult;
@@ -1472,6 +1479,7 @@
 		FC36E14A19B0673700AF74C1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				851A5FC319D281A600D06C9A /* GeneralUI */,
 				FC300B7719C946430098F0D0 /* SortFilterShare */,
 				FC2F204E19BD5C6500C2B9B5 /* Detail */,
 				FC2F202A19BD5B7200C2B9B5 /* Home */,
@@ -1561,7 +1569,7 @@
 			children = (
 				FC98070019CAA15300DB1089 /* SearchResultShopCell.xib */,
 				FC98070119CAA15300DB1089 /* SearchResultShopViewController.xib */,
-				FC36E16D19B0673800AF74C1 /* SearchResultCell.xib */,
+				8507B9F119D29320003D9CEB /* SearchResultCell.xib */,
 				FC36E16E19B0673800AF74C1 /* SearchResultViewController.xib */,
 			);
 			path = SearchResult;
@@ -1652,6 +1660,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = TOKOPEDIA;
 				TargetAttributes = {
+					FC36DF8219B0656400AF74C1 = {
+						DevelopmentTeam = YQP4A2M94J;
+					};
 					FC36DF9D19B0656400AF74C1 = {
 						TestTargetID = FC36DF8219B0656400AF74C1;
 					};
@@ -1724,6 +1735,7 @@
 				FC300B7F19C946430098F0D0 /* SortViewController.xib in Resources */,
 				FC012DC919BEB2360072A31A /* icon_16@2x.png in Resources */,
 				FC36E1AB19B0673800AF74C1 /* ic_category.png in Resources */,
+				851A5FC519D281A600D06C9A /* GeneralThumb.xib in Resources */,
 				FC21F34F19BFE5BD00417CA8 /* icon_home_active@2x.png in Resources */,
 				FC2F205219BD5CB000C2B9B5 /* DetailProductViewController.xib in Resources */,
 				FC36E19019B0673800AF74C1 /* Lato-Regular.ttf in Resources */,
@@ -1737,6 +1749,7 @@
 				FC012DC219BEB2360072A31A /* icon_13.png in Resources */,
 				FC012DF019BEE3710072A31A /* DetailProductWholesaleCell.xib in Resources */,
 				FC012DE419BEB2360072A31A /* icon_9@2x.png in Resources */,
+				8507B9F219D29320003D9CEB /* SearchResultCell.xib in Resources */,
 				FC012DBB19BEB2360072A31A /* icon_1.png in Resources */,
 				FC21F34819BFE5BD00417CA8 /* icon_category.png in Resources */,
 				FC36DF9919B0656400AF74C1 /* Images.xcassets in Resources */,
@@ -1808,13 +1821,11 @@
 				FC36E1B219B0673800AF74C1 /* ic_search@2x.png in Resources */,
 				FC36E1B319B0673800AF74C1 /* tabnav_bg.png in Resources */,
 				FCCCB95919B435440077349C /* MainViewController.xib in Resources */,
-				FC2F203A19BD5B7200C2B9B5 /* HotlistResultViewCell.xib in Resources */,
 				FC21F35719BFE5BD00417CA8 /* icon_search_active@2x.png in Resources */,
 				FC012DD319BEB2360072A31A /* icon_20@2x.png in Resources */,
 				FC36E19E19B0673800AF74C1 /* top_bg.png in Resources */,
 				FC300B7E19C946430098F0D0 /* SortCell.xib in Resources */,
 				FC36E1B419B0673800AF74C1 /* tabnav_bg@2x.png in Resources */,
-				FC36E1C919B0673800AF74C1 /* SearchResultCell.xib in Resources */,
 				FC2F203819BD5B7200C2B9B5 /* HotlistCell.xib in Resources */,
 				FC21F35319BFE5BD00417CA8 /* icon_more_active@2x.png in Resources */,
 				FC21F34E19BFE5BD00417CA8 /* icon_home_active.png in Resources */,

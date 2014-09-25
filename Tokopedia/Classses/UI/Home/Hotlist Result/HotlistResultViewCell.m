@@ -13,7 +13,7 @@
 
 + (id)newcell
 {
-    NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"HotlistResultViewCell" owner:nil options:0];
+    NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"GeneralThumb" owner:nil options:0];
     for (id o in a) {
         if ([o isKindOfClass:[self class]]) {
             return o;

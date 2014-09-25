@@ -78,6 +78,18 @@
         for (int i = 0; i<column.count; i++) {
             
             ((UIView*)_view[i]).hidden = NO;
+//            
+//            CALayer *bottomBorder = [CALayer layer];
+//            
+//            bottomBorder.frame = CGRectMake(0, 0, self.frame.size.width, 0.3f);
+//            
+//            bottomBorder.backgroundColor = [UIColor colorWithWhite:0.8f
+//                                                             alpha:1.0f].CGColor;
+//            [self.layer addSublayer:bottomBorder];
+            
+            
+            [((UIView*)_view[i]).layer setBorderColor:[UIColor colorWithRed:231.0/255 green:231.0/255 blue:231.0/255 alpha:1.0].CGColor];
+             [((UIView*)_view[i]).layer setBorderWidth : 0.5f];
             NSString *title =[column[i] objectForKey:kTKPDCATEGORY_DATATITLEKEY];
             ((UILabel*)_lable[i]).text = title;
             

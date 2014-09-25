@@ -26,7 +26,7 @@
 
 #define kTKPD_HOMETITLEARRAY @[@"Hotlist",@"Produk Feed", @"Terakhir dilihat", @"Toko Favorite"]
 
-#define kTKPDNAVIGATION_TABBARTITLEARRAY @[@"Home", @"Katalog", @"Search", @"Cart", @"More"]
+#define kTKPDNAVIGATION_TABBARTITLEARRAY @[@"Home", @"Category", @"Search", @"Cart", @"More"]
 
 #define kTKPDNAVIGATION_BACKGROUNDINSET UIEdgeInsetsZero
 #define kTKPDNAVIGATION_TITLEFONT [UIFont fontWithName:@"Lato-Bold" size:16.0f]
@@ -36,7 +36,7 @@
 #define kTKPDNAVIGATION_BACKBUTTONINSET UIEdgeInsetsZero
 
 #define kTKPDNAVIGATION_NAVIGATIONBGCOLOR [UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1]
-#define kTKPDNAVIGATION_TABBARACTIVETITLECOLOR [UIColor greenColor]
+#define kTKPDNAVIGATION_TABBARACTIVETITLECOLOR [UIColor blackColor]
 #define kTKPDNAVIGATION_TABBARTITLECOLOR [UIColor blackColor]
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>

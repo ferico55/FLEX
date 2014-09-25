@@ -22,6 +22,7 @@
 #import "HotlistViewController.h"
 #import "ProductFeedViewController.h"
 
+
 #import "RKClient.h"
 
 @implementation AppDelegate
@@ -170,6 +171,13 @@
     //tabBarItem1.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     tabBarItem1.title = kTKPDNAVIGATION_TABBARTITLEARRAY[0];
     
+    [tabBarItem1 setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      [UIColor blackColor], UITextAttributeTextColor,
+      [UIFont fontWithName:@"GothamLight" size:9.0], UITextAttributeFont,
+      nil]
+                               forState:UIControlStateNormal];
+    
     /** set tab bar item 2**/
     image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_CATEGORY];
     image_active =[UIImage imageNamed:kTKPDIMAGE_ICONTABBARACTIVE_CATEGORY];
@@ -184,6 +192,13 @@
         [tabBarItem2 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
     //tabBarItem2.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     tabBarItem2.title = kTKPDNAVIGATION_TABBARTITLEARRAY[1];
+    
+    [tabBarItem2 setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      [UIColor blackColor], UITextAttributeTextColor,
+      [UIFont fontWithName:@"GothamLight" size:9.0], UITextAttributeFont,
+      nil]
+                                             forState:UIControlStateNormal];
     
     /** set tab bar item 3*/
     image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_SEARCH];
@@ -200,6 +215,13 @@
     //tabBarItem3.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     tabBarItem3.title = kTKPDNAVIGATION_TABBARTITLEARRAY[2];
     
+    [tabBarItem3 setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      [UIColor blackColor], UITextAttributeTextColor,
+      [UIFont fontWithName:@"GothamLight" size:9.0], UITextAttributeFont,
+      nil]
+                               forState:UIControlStateNormal];
+    
     /** set tab bar item 4*/
     image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_CART];
     image_active =[UIImage imageNamed:kTKPDIMAGE_ICONTABBARACTIVE_CART];
@@ -215,6 +237,13 @@
     //tabBarItem4.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     tabBarItem4.title = kTKPDNAVIGATION_TABBARTITLEARRAY[3];
     
+    [tabBarItem4 setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      [UIColor blackColor], UITextAttributeTextColor,
+      [UIFont fontWithName:@"GothamLight" size:9.0], UITextAttributeFont,
+      nil]
+                               forState:UIControlStateNormal];
+    
     /** set tab bar item 5*/
     image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_MORE];
     image_active =[UIImage imageNamed:kTKPDIMAGE_ICONTABBARACTIVE_MORE];
@@ -229,6 +258,12 @@
         [tabBarItem5 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
     //tabBarItem5.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     tabBarItem5.title = kTKPDNAVIGATION_TABBARTITLEARRAY[4];
+    [tabBarItem5 setTitleTextAttributes:
+     [NSDictionary dictionaryWithObjectsAndKeys:
+      [UIColor blackColor], UITextAttributeTextColor,
+      [UIFont fontWithName:@"GothamLight" size:9.0], UITextAttributeFont,
+      nil]
+                               forState:UIControlStateNormal];
 
     _window.rootViewController = tabBarController;
     
