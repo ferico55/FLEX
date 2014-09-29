@@ -144,12 +144,6 @@
 - (void)viewDidLayoutSubviews
 {
 	[super viewDidLayoutSubviews];
-	//CGRect frame = _container.frame;
-	//CGSize size = CGSizeMake((inset.left + inset.right) / 2.0f, (inset.top + inset.bottom) / 2.0f);
-	//frame = CGRectInset(frame, size.width, size.height);
-	//frame = CGRectOffset(frame, inset.left - size.width, inset.top - size.height);
-	//_container.frame = frame;
-	
 	_selectedViewController.view.frame = _container.bounds;
 	
 	UIEdgeInsets inset = [self contentInsetForContainerController];
