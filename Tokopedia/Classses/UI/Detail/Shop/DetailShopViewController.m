@@ -48,7 +48,7 @@
     
     // setup object mappings
     RKObjectMapping *shopMapping = [RKObjectMapping mappingForClass:[Shop class]];
-    [shopMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APISTATUSKEY:kTKPDDETAIL_APISTATUSKEY,kTKPRDETAIL_APISERVERPROCESSTIMEKEY:kTKPRDETAIL_APISERVERPROCESSTIMEKEY}];
+    [shopMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APISTATUSKEY:kTKPDDETAIL_APISTATUSKEY,kTKPDDETAIL_APISERVERPROCESSTIMEKEY:kTKPDDETAIL_APISERVERPROCESSTIMEKEY}];
 
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailShopResult class]];
     RKObjectMapping *closedinfoMapping = [RKObjectMapping mappingForClass:[ClosedInfo class]];

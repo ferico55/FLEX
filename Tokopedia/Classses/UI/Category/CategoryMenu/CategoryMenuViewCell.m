@@ -27,35 +27,13 @@
     return nil;
 }
 
-#pragma mark - Properties
--(void)setData:(NSDictionary *)data
-{
-    _data = data;
-    if (data) {
-        NSDictionary *colomn = [_data objectForKey:@"column"];
-        _label.text = [colomn objectForKey:@"title"];
-        _imagenext.hidden = ([[colomn objectForKey:@"isnullchild"] isEqual:@(0)])?NO:YES;
-        
-    }
-    else
-    {
-        [self reset];
-    }
-}
-
 -(IBAction)gesture:(id)sender
 {
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-        NSIndexPath *indexpath = _data[@"indexpath"];
+        NSIndexPath *indexpath =_indexpath;
         [_delegate CategoryMenuViewCell:self withindexpath:indexpath];
     }
-}
-
-#pragma mark - Methods
--(void)reset
-{
-    
 }
 
 @end

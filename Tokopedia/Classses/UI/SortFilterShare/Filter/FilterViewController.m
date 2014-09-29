@@ -23,9 +23,12 @@
 @property (strong, nonatomic) IBOutlet UIView *productview;
 @property (strong, nonatomic) IBOutlet UIView *catalogview;
 @property (strong, nonatomic) IBOutlet UIView *shopview;
+@property (weak, nonatomic) IBOutlet UIScrollView *container;
 
 @property (weak, nonatomic) IBOutlet UIButton *shoplocationbutton;
 @property (weak, nonatomic) IBOutlet UIButton *productlocationbutton;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *shopsegmentcontrol;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *productsegmentcontrol;
 
 
 @end
@@ -37,7 +40,8 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        self.navigationItem.title = kTKPDFILTER_TITLEFILTERKEY;
+        [self.navigationController.navigationBar setTranslucent:NO];
     }
     return self;
 }
@@ -60,7 +64,7 @@
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
@@ -70,7 +74,7 @@
 	[barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
     //TODO:: Change image
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
+    //img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         //barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
@@ -83,11 +87,28 @@
     self.navigationItem.rightBarButtonItem = barbutton1;
     
     _detailfilter = [NSMutableDictionary new];
+    
+    /** keyboard notification **/
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillBeHidden:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
 }
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+
 }
 
 #pragma mark - View Gesture
@@ -148,6 +169,19 @@
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
+            }
+            case 11:
+            {
+                //ACTION RESET
+                [_detailfilter removeAllObjects];
+                _pricemax.text = nil;
+                _pricemin.text = nil;
+                _pricemincatalog.text = nil;
+                _pricemaxcatalog.text = nil;
+                [_productlocationbutton setTitle:@"All Location" forState:UIControlStateNormal];
+                [_shoplocationbutton setTitle:@"All Location" forState:UIControlStateNormal];
+                [_shopsegmentcontrol setSelectedSegmentIndex:0];
+                [_productsegmentcontrol setSelectedSegmentIndex:0];
             }
             default:
                 break;
@@ -237,5 +271,34 @@
     }
     return YES;
 }
+
+#pragma mark - Keyboard Notification
+// Called when the UIKeyboardWillShowNotification is sent
+- (void)keyboardWillShow:(NSNotification *)notification {
+    
+    NSDictionary* info = [notification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    _container.contentInset = contentInsets;
+    _container.scrollIndicatorInsets = contentInsets;
+    
+    // If active text field is hidden by keyboard, scroll it so it's visible
+    // Your application might not need or want this behavior.
+    CGRect aRect = self.view.frame;
+    aRect.size.height -= kbSize.height;
+    //if (!CGRectContainsPoint(aRect, _activetextfield.frame.origin) ) {
+        CGPoint scrollPoint = CGPointMake(0.0, _activetextfield.frame.origin.y-kbSize.height);
+        [_container setContentOffset:scrollPoint animated:YES];
+    //}
+}
+// Called when the UIKeyboardWillHideNotification is sent
+- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+{
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    _container.contentInset = contentInsets;
+    _container.scrollIndicatorInsets = contentInsets;
+    
+}
+
 
 @end

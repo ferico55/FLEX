@@ -7,7 +7,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductReviewViewController">
             <connections>
+                <outlet property="act" destination="9kL-8p-bx7" id="PRJ-J9-t1r"/>
                 <outlet property="averagerateview" destination="Zq7-hg-FJG" id="MGR-cE-Tgt"/>
+                <outlet property="footer" destination="SbQ-YZ-jhc" id="jKj-aA-Li7"/>
                 <outlet property="headerview" destination="Zki-Zp-Hk4" id="vXT-E5-TKW"/>
                 <outlet property="scalelabel" destination="Wbw-Ep-7WT" id="wp5-cQ-Gzu"/>
                 <outlet property="table" destination="51Y-8v-3dM" id="lIy-Vs-PLL"/>
@@ -152,6 +154,18 @@
                 </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+        <view contentMode="scaleToFill" id="SbQ-YZ-jhc" userLabel="FooterView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="9kL-8p-bx7">
+                    <rect key="frame" x="150" y="7" width="20" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </activityIndicatorView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>

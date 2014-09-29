@@ -10,12 +10,21 @@
 #define Tokopedia_detail_h
 
 #define kTKPDDETAIL_APISTATUSKEY @"status"
-#define kTKPRDETAIL_APISERVERPROCESSTIMEKEY @"server_process_time"
+#define kTKPDDETAIL_APISERVERPROCESSTIMEKEY @"server_process_time"
+
+#define kTKPDDETAIL_APILISTKEYPATH @"result.list"
+#define kTKPDDETAIL_APIPAGINGKEYPATH @"result.paging"
 #define kTKPDDETAIL_APIRESULTKEY @"result"
 
-#define kTKPDETAIL_APIACTIONKEY @"action"
-#define kTKPDETAIL_APIPRODUCTIDKEY @"product_id"
-#define kTKPDETAIL_APIGETDETAILACTIONKEY @"get_detail"
+#define kTKPDDETAIL_APIACTIONKEY @"action"
+#define kTKPDDETAIL_APIPRODUCTIDKEY @"product_id"
+#define kTKPDDETAIL_APIGETDETAILACTIONKEY @"get_detail"
+#define kTKPDDETAIL_APIGETPRODUCTREVIEWKEY @"get_product_review"
+#define kTKPDDETAIL_APIGETPRODUCTTALKKEY @"get_product_talk"
+#define kTKPDDETAIL_APIPAGEKEY @"page"
+#define kTKPDDETAIL_APILIMITKEY @"per_page"
+
+#define kTKPDDETAILREVIEW_LIMITPAGE 5
 
 #define kTKPDDETAILPRODUCT_APIINFOKEY @"info"
 #define kTKPDDETAILPRODUCT_APIPRODUCTWEIGHTUNITKEY @"product_weight_unit"
@@ -126,6 +135,41 @@
 #define kTKPDDETAILSHOP_APIADDRESSPHONEKEY @"address_phone"
 #define kTKPDDETAILSHOP_APIADDRESSEMAILKEY @"address_email"
 #define kTKPDDETAILSHOP_APIADDRESSPROVINCEKEY @"address_province"
+
+// REVIEW
+#define kTKPDREVIEW_APIREVIEWRESPONSEKEY @"review_response"
+#define kTKPDREVIEW_APIRESPONSECREATETIMEKEY @"response_create_time"
+#define kTKPDREVIEW_APIRESPONSEMESSAGEKEY @"response_message"
+
+#define kTKPDREVIEW_APIREVIEWSHOPIDKEY @"review_shop_id"
+#define kTKPDREVIEW_APIREVIEWUSERIMAGEKEY @"review_user_image"
+#define kTKPDREVIEW_APIREVIEWCREATETIMEKEY @"review_create_time"
+#define kTKPDREVIEW_APIREVIEWIDKEY @"review_id"
+
+#define kTKPDREVIEW_APIREVIEWPRODUCTOWNERKEY @"review_product_owner"
+#define kTKPDREVIEW_APIUSERIDKEY @"user_id"
+#define kTKPDREVIEW_APIUSERIMAGEKEY @"user_image"
+#define kTKPDREVIEW_APIUSERNAME @"user_name"
+
+#define kTKPDREVIEW_APIREVIEWUSERNAMEKEY @"review_user_name"
+#define kTKPDREVIEW_APIREVIEWRATEQUALITY @"review_rate_quality"
+#define kTKPDREVIEW_APIREVIEWRATESPEEDKEY @"review_rate_speed"
+#define kTKPDREVIEW_APIREVIEWRATESERVICEKEY @"review_rate_service"
+#define kTKPDREVIEW_APIREVIEWRATEACCURACYKEY @"review_rate_accuracy"
+#define kTKPDREVIEW_APIREVIEWMESSAGEKEY @"review_message"
+#define kTKPDREVIEW_APIREVIEWUSERIDKEY @"review_user_id"
+
+// TALK
+#define kTKPDREVIEW_APITALKTOTALCOMMENTKEY @"talk_total_comment"
+#define kTKPDREVIEW_APITALKUSERIMAGEKEY @"talk_user_image"
+#define kTKPDREVIEW_APITALKUSERNAMEKEY @"talk_user_name"
+#define kTKPDREVIEW_APITALKIDKEY @"talk_id"
+#define kTKPDREVIEW_APITALKCREATETIMEKEY @"talk_create_time"
+#define kTKPDREVIEW_APITALKMESSAGEKEY @"talk_message"
+#define kTKPDREVIEW_APITALKFOLLOWSTATUSKEY @"talk_follow_status"
+
+
+#define kTKPDDETAIL_APIURINEXTKEY @"uri_next"
 
 #define kTKPDDETAILPRODUCT_APIPATH @"product.pl"
 #define kTKPDDETAILSHOP_APIPATH @"shop.pl"

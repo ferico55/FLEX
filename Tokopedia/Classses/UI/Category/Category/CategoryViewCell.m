@@ -35,6 +35,8 @@
 {
     [super awakeFromNib];
     
+    _view = [NSArray sortViewsWithTagInArray:_view];
+    
     for (UIView *view in _view) {
         view.multipleTouchEnabled = NO;
         view.exclusiveTouch = YES;

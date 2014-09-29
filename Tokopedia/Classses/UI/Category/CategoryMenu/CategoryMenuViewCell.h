@@ -20,8 +20,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *label;
 
-@property (strong,nonatomic) NSDictionary *data;
-
+@property (strong, nonatomic) NSIndexPath *indexpath;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
 @property (nonatomic, weak) IBOutlet id<CategoryMenuViewCellDelegate> delegate;
 #else

@@ -72,6 +72,18 @@
 		FC012E4719BEFA480072A31A /* Shop.m in Sources */ = {isa = PBXBuildFile; fileRef = FC012E4619BEFA480072A31A /* Shop.m */; };
 		FC012E4C19BEFD060072A31A /* DetailShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC012E4A19BEFD060072A31A /* DetailShopViewController.m */; };
 		FC012E4D19BEFD060072A31A /* DetailShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC012E4B19BEFD060072A31A /* DetailShopViewController.xib */; };
+		FC12A08B19D9084C0049EB76 /* ProductTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC12A08919D9084C0049EB76 /* ProductTalkViewController.m */; };
+		FC12A09019D9086C0049EB76 /* ProductTalkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC12A08E19D9086C0049EB76 /* ProductTalkCell.m */; };
+		FC12A09519D909A20049EB76 /* ProductTalkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC12A09319D909A20049EB76 /* ProductTalkCell.xib */; };
+		FC12A09619D909A20049EB76 /* ProductTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC12A09419D909A20049EB76 /* ProductTalkViewController.xib */; };
+		FC12A09A19D916410049EB76 /* Talk.m in Sources */ = {isa = PBXBuildFile; fileRef = FC12A09919D916410049EB76 /* Talk.m */; };
+		FC12A09D19D916540049EB76 /* TalkResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FC12A09C19D916540049EB76 /* TalkResult.m */; };
+		FC12A0A019D916640049EB76 /* TalkList.m in Sources */ = {isa = PBXBuildFile; fileRef = FC12A09F19D916640049EB76 /* TalkList.m */; };
+		FC12A0A219D942290049EB76 /* ProgressBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC12A0A119D942290049EB76 /* ProgressBarView.xib */; };
+		FC12A0B319D95E8D0049EB76 /* icon_arrow_white.png in Resources */ = {isa = PBXBuildFile; fileRef = FC12A0AF19D95E8D0049EB76 /* icon_arrow_white.png */; };
+		FC12A0B419D95E8D0049EB76 /* icon_arrow_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC12A0B019D95E8D0049EB76 /* icon_arrow_white@2x.png */; };
+		FC12A0B519D95E8D0049EB76 /* icon_category_white.png in Resources */ = {isa = PBXBuildFile; fileRef = FC12A0B119D95E8D0049EB76 /* icon_category_white.png */; };
+		FC12A0B619D95E8D0049EB76 /* icon_category_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC12A0B219D95E8D0049EB76 /* icon_category_white@2x.png */; };
 		FC158D8C19B80D4100F325D8 /* SearchCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC158D8919B80D4100F325D8 /* SearchCell.m */; };
 		FC158D8D19B80D4100F325D8 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC158D8B19B80D4100F325D8 /* SearchViewController.m */; };
 		FC158D9119B80D6900F325D8 /* SearchCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC158D8F19B80D6900F325D8 /* SearchCell.xib */; };
@@ -344,6 +356,23 @@
 		FC012E4919BEFD060072A31A /* DetailShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailShopViewController.h; sourceTree = "<group>"; };
 		FC012E4A19BEFD060072A31A /* DetailShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailShopViewController.m; sourceTree = "<group>"; };
 		FC012E4B19BEFD060072A31A /* DetailShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailShopViewController.xib; sourceTree = "<group>"; };
+		FC12A08819D9084C0049EB76 /* ProductTalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkViewController.h; sourceTree = "<group>"; };
+		FC12A08919D9084C0049EB76 /* ProductTalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkViewController.m; sourceTree = "<group>"; };
+		FC12A08D19D9086C0049EB76 /* ProductTalkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkCell.h; sourceTree = "<group>"; };
+		FC12A08E19D9086C0049EB76 /* ProductTalkCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkCell.m; sourceTree = "<group>"; };
+		FC12A09319D909A20049EB76 /* ProductTalkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkCell.xib; sourceTree = "<group>"; };
+		FC12A09419D909A20049EB76 /* ProductTalkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkViewController.xib; sourceTree = "<group>"; };
+		FC12A09819D916410049EB76 /* Talk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Talk.h; sourceTree = "<group>"; };
+		FC12A09919D916410049EB76 /* Talk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Talk.m; sourceTree = "<group>"; };
+		FC12A09B19D916540049EB76 /* TalkResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TalkResult.h; sourceTree = "<group>"; };
+		FC12A09C19D916540049EB76 /* TalkResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TalkResult.m; sourceTree = "<group>"; };
+		FC12A09E19D916640049EB76 /* TalkList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TalkList.h; sourceTree = "<group>"; };
+		FC12A09F19D916640049EB76 /* TalkList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TalkList.m; sourceTree = "<group>"; };
+		FC12A0A119D942290049EB76 /* ProgressBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProgressBarView.xib; sourceTree = "<group>"; };
+		FC12A0AF19D95E8D0049EB76 /* icon_arrow_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_arrow_white.png; sourceTree = "<group>"; };
+		FC12A0B019D95E8D0049EB76 /* icon_arrow_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_arrow_white@2x.png"; sourceTree = "<group>"; };
+		FC12A0B119D95E8D0049EB76 /* icon_category_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_category_white.png; sourceTree = "<group>"; };
+		FC12A0B219D95E8D0049EB76 /* icon_category_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_category_white@2x.png"; sourceTree = "<group>"; };
 		FC158D8819B80D4100F325D8 /* SearchCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchCell.h; sourceTree = "<group>"; };
 		FC158D8919B80D4100F325D8 /* SearchCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchCell.m; sourceTree = "<group>"; };
 		FC158D8A19B80D4100F325D8 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
@@ -748,6 +777,39 @@
 			path = Shop;
 			sourceTree = "<group>";
 		};
+		FC12A08719D8FF710049EB76 /* Talk */ = {
+			isa = PBXGroup;
+			children = (
+				FC12A08819D9084C0049EB76 /* ProductTalkViewController.h */,
+				FC12A08919D9084C0049EB76 /* ProductTalkViewController.m */,
+				FC12A08D19D9086C0049EB76 /* ProductTalkCell.h */,
+				FC12A08E19D9086C0049EB76 /* ProductTalkCell.m */,
+			);
+			path = Talk;
+			sourceTree = "<group>";
+		};
+		FC12A09219D9088D0049EB76 /* Talk */ = {
+			isa = PBXGroup;
+			children = (
+				FC12A09419D909A20049EB76 /* ProductTalkViewController.xib */,
+				FC12A09319D909A20049EB76 /* ProductTalkCell.xib */,
+			);
+			path = Talk;
+			sourceTree = "<group>";
+		};
+		FC12A09719D916000049EB76 /* Talk */ = {
+			isa = PBXGroup;
+			children = (
+				FC12A09819D916410049EB76 /* Talk.h */,
+				FC12A09919D916410049EB76 /* Talk.m */,
+				FC12A09B19D916540049EB76 /* TalkResult.h */,
+				FC12A09C19D916540049EB76 /* TalkResult.m */,
+				FC12A09E19D916640049EB76 /* TalkList.h */,
+				FC12A09F19D916640049EB76 /* TalkList.m */,
+			);
+			path = Talk;
+			sourceTree = "<group>";
+		};
 		FC158D8719B80D4100F325D8 /* SearchHistory */ = {
 			isa = PBXGroup;
 			children = (
@@ -920,6 +982,7 @@
 			isa = PBXGroup;
 			children = (
 				FC28A39119D4048C005815A0 /* StarsRateView.xib */,
+				FC12A0A119D942290049EB76 /* ProgressBarView.xib */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -985,6 +1048,7 @@
 		FC2F204819BD5C2F00C2B9B5 /* Product */ = {
 			isa = PBXGroup;
 			children = (
+				FC12A08719D8FF710049EB76 /* Talk */,
 				FC28A37B19D3FF8E005815A0 /* Review */,
 				FC2F204919BD5C2F00C2B9B5 /* DetailProductViewController.h */,
 				FC2F204A19BD5C2F00C2B9B5 /* DetailProductViewController.m */,
@@ -1011,6 +1075,7 @@
 		FC2F205019BD5C8300C2B9B5 /* Product */ = {
 			isa = PBXGroup;
 			children = (
+				FC12A09219D9088D0049EB76 /* Talk */,
 				FC28A38119D40377005815A0 /* Review */,
 				FC2F205119BD5CB000C2B9B5 /* DetailProductViewController.xib */,
 				FC2F205919BD5DC600C2B9B5 /* DetailProductDescriptionCell.xib */,
@@ -1083,6 +1148,7 @@
 		FC2F207D19BD625600C2B9B5 /* DetailProduct */ = {
 			isa = PBXGroup;
 			children = (
+				FC12A09719D916000049EB76 /* Talk */,
 				FC28A36B19D3FBD2005815A0 /* Review */,
 				FC2F209319BD675800C2B9B5 /* Product.h */,
 				FC2F209419BD675800C2B9B5 /* Product.m */,
@@ -1486,6 +1552,10 @@
 		FC36E11C19B0673700AF74C1 /* Navigation */ = {
 			isa = PBXGroup;
 			children = (
+				FC12A0AF19D95E8D0049EB76 /* icon_arrow_white.png */,
+				FC12A0B019D95E8D0049EB76 /* icon_arrow_white@2x.png */,
+				FC12A0B119D95E8D0049EB76 /* icon_category_white.png */,
+				FC12A0B219D95E8D0049EB76 /* icon_category_white@2x.png */,
 				FC36E11D19B0673700AF74C1 /* actionbar_bg.png */,
 				FC36E11E19B0673700AF74C1 /* image-1.png */,
 				FC36E11F19B0673700AF74C1 /* image-1@2x.png */,
@@ -1842,6 +1912,7 @@
 				FC012DC919BEB2360072A31A /* icon_16@2x.png in Resources */,
 				FC36E1AB19B0673800AF74C1 /* ic_category.png in Resources */,
 				FC21F34F19BFE5BD00417CA8 /* icon_home_active@2x.png in Resources */,
+				FC12A0A219D942290049EB76 /* ProgressBarView.xib in Resources */,
 				FC2F205219BD5CB000C2B9B5 /* DetailProductViewController.xib in Resources */,
 				FC36E19019B0673800AF74C1 /* Lato-Regular.ttf in Resources */,
 				FC2F203F19BD5B7200C2B9B5 /* ProductFeedViewCell.xib in Resources */,
@@ -1854,6 +1925,7 @@
 				FC012DC219BEB2360072A31A /* icon_13.png in Resources */,
 				FC012DF019BEE3710072A31A /* DetailProductWholesaleCell.xib in Resources */,
 				FC012DE419BEB2360072A31A /* icon_9@2x.png in Resources */,
+				FC12A0B419D95E8D0049EB76 /* icon_arrow_white@2x.png in Resources */,
 				8507B9F219D29320003D9CEB /* SearchResultCell.xib in Resources */,
 				FC012DBB19BEB2360072A31A /* icon_1.png in Resources */,
 				FC21F34819BFE5BD00417CA8 /* icon_category.png in Resources */,
@@ -1892,6 +1964,7 @@
 				FC36E1A919B0673800AF74C1 /* ic_cart.png in Resources */,
 				FC36E1BD19B0673800AF74C1 /* MoreViewController.xib in Resources */,
 				FC21F34D19BFE5BD00417CA8 /* icon_home@2x.png in Resources */,
+				FC12A0B319D95E8D0049EB76 /* icon_arrow_white.png in Resources */,
 				FC3E7FE219D041B600053022 /* icon_check.png in Resources */,
 				FC012D8419BEA8A90072A31A /* icon_house@2x.png in Resources */,
 				FC36E1A419B0673800AF74C1 /* thumb_product.png in Resources */,
@@ -1905,6 +1978,7 @@
 				FC18C7A119B581CC00BA162D /* CategoryMenuViewController.xib in Resources */,
 				FC18C78019B568D800BA162D /* CategoryResultViewController.xib in Resources */,
 				FC012DC419BEB2360072A31A /* icon_14.png in Resources */,
+				FC12A0B619D95E8D0049EB76 /* icon_category_white@2x.png in Resources */,
 				FC300B7D19C946430098F0D0 /* FilterViewController.xib in Resources */,
 				FC36E1AF19B0673800AF74C1 /* ic_more.png in Resources */,
 				FC1C95A219C2988B00CF0C53 /* TKPDTabNavigationController.xib in Resources */,
@@ -1914,10 +1988,13 @@
 				FC012DD419BEB2360072A31A /* icon_21.png in Resources */,
 				FC9FD74719B4277F00CF6CDD /* tab_btm_shadow@2x.png in Resources */,
 				FC21F34C19BFE5BD00417CA8 /* icon_home.png in Resources */,
+				FC12A09519D909A20049EB76 /* ProductTalkCell.xib in Resources */,
 				85386DCC19CBE88700BCA463 /* GothamLight.ttf in Resources */,
 				FC36E19119B0673800AF74C1 /* actionbar_bg.png in Resources */,
 				FC2F203C19BD5B7200C2B9B5 /* KatalogListViewCell.xib in Resources */,
 				FC36E19219B0673800AF74C1 /* image-1.png in Resources */,
+				FC12A09619D909A20049EB76 /* ProductTalkViewController.xib in Resources */,
+				FC12A0B519D95E8D0049EB76 /* icon_category_white.png in Resources */,
 				FC012DC319BEB2360072A31A /* icon_13@2x.png in Resources */,
 				FC012DD819BEB2360072A31A /* icon_3@2x.png in Resources */,
 				FC36E18F19B0673800AF74C1 /* Lato-Bold.ttf in Resources */,
@@ -2030,6 +2107,7 @@
 				FC300B8619C949760098F0D0 /* FilterLocationViewController.m in Sources */,
 				FC36E17619B0673800AF74C1 /* CartViewController.m in Sources */,
 				FC28A37A19D3FDD0005815A0 /* ReviewProductOwner.m in Sources */,
+				FC12A09019D9086C0049EB76 /* ProductTalkCell.m in Sources */,
 				FC2F208019BD629100C2B9B5 /* Info.m in Sources */,
 				FC2F207C19BD5EE900C2B9B5 /* ProductFeedViewController.m in Sources */,
 				FC36DF9719B0656400AF74C1 /* AppDelegate.m in Sources */,
@@ -2058,6 +2136,7 @@
 				FC36E18B19B0673800AF74C1 /* SearchResultViewController.m in Sources */,
 				FC2F209519BD675800C2B9B5 /* Product.m in Sources */,
 				FC2F207419BD5EE900C2B9B5 /* HotlistCell.m in Sources */,
+				FC12A08B19D9084C0049EB76 /* ProductTalkViewController.m in Sources */,
 				FC2F207619BD5EE900C2B9B5 /* HotlistResultViewCell.m in Sources */,
 				FC5210B019C6C93A004932C5 /* Hotlist.m in Sources */,
 				FC5210B319C6ED9E004932C5 /* SearchResult.m in Sources */,
@@ -2071,6 +2150,7 @@
 				FC300B8519C949760098F0D0 /* FilterLocationViewCell.m in Sources */,
 				FC012E4119BEF8910072A31A /* Address.m in Sources */,
 				FC012E4719BEFA480072A31A /* Shop.m in Sources */,
+				FC12A0A019D916640049EB76 /* TalkList.m in Sources */,
 				FC2F209219BD65EA00C2B9B5 /* ProductImages.m in Sources */,
 				FC36E17B19B0673800AF74C1 /* TKPDTabBarController.m in Sources */,
 				FC2F208C19BD653100C2B9B5 /* Breadcrumb.m in Sources */,
@@ -2097,6 +2177,7 @@
 				FC36E17519B0673800AF74C1 /* RegisterViewController.m in Sources */,
 				FC5210BC19C6F61C004932C5 /* HotlistDetailResult.m in Sources */,
 				FC36E17219B0673800AF74C1 /* NSStringCategory.m in Sources */,
+				FC12A09A19D916410049EB76 /* Talk.m in Sources */,
 				FC203A1019D12EE8005C826C /* DetailProductWholesaleTableCell.m in Sources */,
 				FC36E17319B0673800AF74C1 /* HotlistList.m in Sources */,
 				FC012E3219BEF3E00072A31A /* ClosedInfo.m in Sources */,
@@ -2108,6 +2189,7 @@
 				FC9806FF19CA7BEC00DB1089 /* DepartmentChild2.m in Sources */,
 				FC2F207719BD5EE900C2B9B5 /* HotlistResultViewController.m in Sources */,
 				FC2F207919BD5EE900C2B9B5 /* KatalogViewCell.m in Sources */,
+				FC12A09D19D916540049EB76 /* TalkResult.m in Sources */,
 				FC28A37419D3FC69005815A0 /* ReviewList.m in Sources */,
 				FC18C7A519B5950D00BA162D /* CategoryMenuViewCell.m in Sources */,
 				FC012E4419BEF9210072A31A /* DetailShopResult.m in Sources */,

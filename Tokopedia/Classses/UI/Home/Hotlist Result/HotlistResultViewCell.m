@@ -25,7 +25,12 @@
 
 - (void)awakeFromNib
 {
-    // Initialization code
+    _viewcell = [NSArray sortViewsWithTagInArray:_viewcell];
+    _act = [NSArray sortViewsWithTagInArray:_act];
+    _thumb = [NSArray sortViewsWithTagInArray:_thumb];
+    _labelalbum = [NSArray sortViewsWithTagInArray:_labelalbum];
+    _labelprice = [NSArray sortViewsWithTagInArray:_labelprice];
+    _labeldescription = [NSArray sortViewsWithTagInArray:_labeldescription];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -40,8 +45,9 @@
     
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-        
-        [_delegate HotlistResultViewCell:self withindexpath:_indexpath];
+        NSIndexPath* indexpath = _indexpath;
+        NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:indexpath.row inSection:gesture.view.tag-10];
+        [_delegate HotlistResultViewCell:self withindexpath:indexpath1];
         
     }
     

@@ -7,6 +7,7 @@
 //
 
 #import "controller.h"
+#import "category.h"
 #import "TKPDTabNavigationController.h"
 #import "CategoryMenuViewController.h"
 
@@ -28,6 +29,8 @@
 @property (weak, nonatomic) IBOutlet UIView *tabbartwos;
 @property (weak, nonatomic) IBOutlet UIView *catalogproductbuttonview;
 @property (weak, nonatomic) IBOutlet UIView *shopbuttonview;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentcontrol;
+@property (weak, nonatomic) IBOutlet UIView *viewtop;
 
 - (IBAction)tap:(UISegmentedControl *)sender;
 
@@ -94,6 +97,8 @@
 {
     [super viewDidLoad];
     
+    self.navigationItem.title = kTKPDCONTROLLER_TITLESEARCHKEY;
+    
 	if (_unloadSelectedIndex != -1) {
 		[self setViewControllers:_unloadViewControllers];
 		
@@ -104,7 +109,7 @@
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
@@ -116,7 +121,7 @@
     
     //TODO:: Change image
     //if ([[_data objectForKey:kTKPDCONTROLLER_DATATYPEKEY]  isEqual: @(kTKPDCONTROLLER_DATATYPECATEGORYKEY)]) {
-        img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
+        img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"]];
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
             UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
             _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
@@ -184,6 +189,8 @@
     _data = data;
     
     if (data) {
+        if ( [[_data objectForKey:kTKPDCATEGORY_DATATYPEKEY]  isEqual: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)])
+            self.navigationItem.title = kTKPDCONTROLLER_TITLECATEGORYKEY;
     }
 }
 
@@ -199,6 +206,7 @@
                                                  name:@"setsegmentcontrol" object:nil];
 	if (viewControllers != nil) {
 		NSUInteger count = viewControllers.count;
+        [_segmentcontrol setSelectedSegmentIndex:0];
 //		if (count == 2) {
 //			_tabbar = _tabbartwos;
 //			_tabbar.hidden = NO;
@@ -598,17 +606,52 @@
 {
     NSDictionary *userinfo = notification.userInfo;
     NSInteger count = [[userinfo objectForKey:@"count"]integerValue];
+    
     if (count == 2) {
-        _tabbar = _tabbartwos;
-        _tabbar.hidden = NO;
-        _tabbarthrees.hidden = YES;
-        _hascatalog = NO;
+        _segmentcontrol.hidden = NO;
+        [_segmentcontrol removeAllSegments];
+        [_segmentcontrol insertSegmentWithTitle:@"Product" atIndex:0 animated:NO];
+        [_segmentcontrol insertSegmentWithTitle:@"Shop" atIndex:1 animated:NO];
+        _tabbar = _segmentcontrol;
+        [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
+        //_tabbar.hidden = NO;
+        //_tabbarthrees.hidden = YES;
+        //_hascatalog = NO;
         _catalogproductbuttonview.hidden = NO;
     } else if (count == 3) {	//not default to 3
-        _tabbar = _tabbarthrees;
-        _tabbar.hidden = NO;
-        _tabbartwos.hidden = YES;
-        _hascatalog = YES;
+        _segmentcontrol.hidden = NO;
+        [_segmentcontrol removeAllSegments];
+        [_segmentcontrol insertSegmentWithTitle:@"Product" atIndex:0 animated:NO];
+        [_segmentcontrol insertSegmentWithTitle:@"Catalog" atIndex:1 animated:NO];
+        [_segmentcontrol insertSegmentWithTitle:@"Shop" atIndex:2 animated:NO];
+        _tabbar = _segmentcontrol;
+        [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
+        //_tabbar.hidden = NO;
+        //_tabbartwos.hidden = YES;
+        //_hascatalog = YES;
+    }
+    if ( [[_data objectForKey:kTKPDCATEGORY_DATATYPEKEY]  isEqual: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)]) {
+        if (count == 2) {
+            _segmentcontrol.hidden = NO;
+            [_segmentcontrol removeAllSegments];
+            [_segmentcontrol insertSegmentWithTitle:@"Product" atIndex:0 animated:NO];
+            _tabbar = _segmentcontrol;
+            [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
+            //_tabbar.hidden = NO;
+            //_tabbarthrees.hidden = YES;
+            //_hascatalog = NO;
+            _catalogproductbuttonview.hidden = NO;
+        } else if (count == 3) {	//not default to 3
+            _segmentcontrol.hidden = NO;
+            [_segmentcontrol removeAllSegments];
+            [_segmentcontrol insertSegmentWithTitle:@"Product" atIndex:0 animated:NO];
+            [_segmentcontrol insertSegmentWithTitle:@"Catalog" atIndex:1 animated:NO];
+            _tabbar = _segmentcontrol;
+            [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
+            //_tabbar.hidden = NO;
+            //_tabbartwos.hidden = YES;
+            //_hascatalog = YES;
+        }
     }
     _barbuttoncategory.enabled = YES;
 }

@@ -33,8 +33,12 @@
 -(void)awakeFromNib
 {
     [super awakeFromNib];
-
-    
+    _viewcell = [NSArray sortViewsWithTagInArray:_viewcell];
+    _thumb = [NSArray sortViewsWithTagInArray:_thumb];
+    _labelprice = [NSArray sortViewsWithTagInArray:_labelprice];
+    _labeldescription = [NSArray sortViewsWithTagInArray:_labeldescription];
+    _labelalbum = [NSArray sortViewsWithTagInArray:_labelalbum];
+    _act = [NSArray sortViewsWithTagInArray:_act];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

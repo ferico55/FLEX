@@ -17,13 +17,14 @@
 @property (nonatomic, strong) NSString *review_shop_id;
 @property (nonatomic, strong) NSString *review_user_image;
 @property (nonatomic, strong) NSString *review_create_time;
-@property (nonatomic) NSInteger *review_id;
+@property (nonatomic, strong) NSString *review_id;
 @property (nonatomic, strong) NSString *product_images;
 @property (nonatomic, strong) ReviewProductOwner *review_product_owner;
 @property (nonatomic, strong) NSString *review_user_name;
-@property (nonatomic) NSInteger *review_rate_speed;
-@property (nonatomic) NSInteger *review_rate_service;
-@property (nonatomic) NSInteger *review_rate_accuracy;
+@property (nonatomic) NSInteger review_rate_quality;
+@property (nonatomic) NSInteger review_rate_speed;
+@property (nonatomic) NSInteger review_rate_service;
+@property (nonatomic) NSInteger review_rate_accuracy;
 @property (nonatomic, strong) NSString *review_message;
 @property (nonatomic, strong) NSString *review_user_id;
 

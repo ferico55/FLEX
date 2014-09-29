@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailProductViewController">
             <connections>
+                <outlet property="accuracynumberlabel" destination="2Pc-N3-lR1" id="CV3-HE-56D"/>
+                <outlet property="accuracyrateview" destination="zom-b0-fRT" id="9MT-4V-X9p"/>
                 <outlet property="act" destination="aLU-la-IJ3" id="pzS-Or-M08"/>
                 <outlet property="backbutton" destination="aU0-JJ-LL4" id="Bmz-vf-y7n"/>
                 <outlet property="countsoldlabel" destination="O6i-hV-fyZ" id="9HR-2B-nKs"/>
                 <outlet property="countviewlabel" destination="Y8i-ea-qzA" id="WoE-BC-n3Y"/>
-                <outlet property="headerview" destination="U7y-jr-OJ5" id="hlE-4Z-UWe"/>
+                <outlet property="header" destination="U7y-jr-OJ5" id="K7q-dP-Z2R"/>
                 <outlet property="imagescrollview" destination="DQy-5R-3v9" id="cSB-b4-zhc"/>
                 <outlet property="nextbutton" destination="tbJ-pg-VbT" id="03P-KE-iPj"/>
                 <outlet property="pagecontrol" destination="H1h-3a-FsP" id="J6E-C0-UQJ"/>
                 <outlet property="pricelabel" destination="81S-XA-wuz" id="OJs-07-ju5"/>
                 <outlet property="productnamelabel" destination="klK-p8-rjh" id="nzH-eU-ztP"/>
                 <outlet property="productrateview" destination="ac5-gS-K4V" id="Ike-kK-ZWI"/>
+                <outlet property="qualitynumberlabel" destination="RTa-kE-XJL" id="yfc-y8-oko"/>
                 <outlet property="rateaccuracyshop" destination="WCO-BD-z3y" id="Oar-NU-9hh"/>
                 <outlet property="rateserviceshop" destination="bvx-zi-bYv" id="Hf0-YY-hj5"/>
                 <outlet property="ratespeedshop" destination="CNE-SU-qo5" id="I9f-id-Adf"/>
@@ -26,7 +30,7 @@
                 <outlet property="shopname" destination="ZYD-nZ-3Mc" id="czW-RL-OBO"/>
                 <outlet property="shopthumb" destination="ml1-bf-Teo" id="Lig-kO-TZ2"/>
                 <outlet property="table" destination="lLg-MF-2b8" id="zA1-hj-0Xz"/>
-                <outlet property="talaboutbutton" destination="MtP-j2-yZq" id="34V-Zj-pLh"/>
+                <outlet property="talkaboutbutton" destination="MtP-j2-yZq" id="spa-j2-YRo"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="rj9-SZ-4n0"/>
             </connections>
         </placeholder>
@@ -91,35 +95,41 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="81S-XA-wuz">
-                    <rect key="frame" x="15" y="224" width="292" height="21"/>
+                    <rect key="frame" x="15" y="218" width="292" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="view" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y8i-ea-qzA">
-                    <rect key="frame" x="186" y="247" width="32" height="21"/>
+                    <rect key="frame" x="186" y="229" width="32" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="sold" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O6i-hV-fyZ">
-                    <rect key="frame" x="244" y="247" width="37" height="21"/>
+                    <rect key="frame" x="249" y="229" width="37" height="20"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CZA-uO-b4x">
-                    <rect key="frame" x="20" y="278" width="114" height="30"/>
+                <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CZA-uO-b4x">
+                    <rect key="frame" x="5" y="304" width="114" height="30"/>
                     <state key="normal" title="Reviews">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="Yn8-uD-2tT"/>
+                    </connections>
                 </button>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MtP-j2-yZq">
-                    <rect key="frame" x="186" y="278" width="114" height="30"/>
+                <button opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MtP-j2-yZq">
+                    <rect key="frame" x="186" y="304" width="114" height="30"/>
                     <state key="normal" title="Talk About it">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="DPn-WS-RdG"/>
+                    </connections>
                 </button>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ac5-gS-K4V" customClass="StarsRateView">
-                    <rect key="frame" x="15" y="248" width="138" height="22"/>
+                    <rect key="frame" x="15" y="274" width="138" height="22"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ck4-EC-Gmd">
                             <rect key="frame" x="59" y="-1" width="28" height="25"/>
@@ -146,9 +156,60 @@
                         <outletCollection property="starimages" destination="A2W-Vo-5yF" id="MMO-VX-kuh"/>
                     </connections>
                 </view>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zom-b0-fRT" customClass="StarsRateView">
+                    <rect key="frame" x="169" y="274" width="138" height="22"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nVF-dW-bxM">
+                            <rect key="frame" x="59" y="-1" width="28" height="25"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hHp-dm-7ed">
+                            <rect key="frame" x="113" y="0.0" width="25" height="25"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZDK-Cv-M4B">
+                            <rect key="frame" x="87" y="-1" width="25" height="25"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5lQ-VL-6Ae">
+                            <rect key="frame" x="31" y="-1" width="26" height="25"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6zy-ks-LuX">
+                            <rect key="frame" x="2" y="0.0" width="28" height="25"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <connections>
+                        <outletCollection property="starimages" destination="6zy-ks-LuX" id="VL3-3T-4Ay"/>
+                        <outletCollection property="starimages" destination="5lQ-VL-6Ae" id="suX-5y-0IZ"/>
+                        <outletCollection property="starimages" destination="nVF-dW-bxM" id="986-N9-opj"/>
+                        <outletCollection property="starimages" destination="ZDK-Cv-M4B" id="T7X-OM-OZu"/>
+                        <outletCollection property="starimages" destination="hHp-dm-7ed" id="fJN-3V-sFZ"/>
+                    </connections>
+                </view>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Quality" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVw-9F-3vG">
+                    <rect key="frame" x="15" y="237" width="94" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RTa-kE-XJL">
+                    <rect key="frame" x="15" y="252" width="42" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Accuracy" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZRZ-Da-9rF">
+                    <rect key="frame" x="212" y="237" width="74" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Pc-N3-lR1">
+                    <rect key="frame" x="228" y="252" width="42" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="S8c-C2-gKh" userLabel="Shop Information - View">
@@ -169,7 +230,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="lokasi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6SQ-DJ-iQi">
-                    <rect key="frame" x="97" y="57" width="75" height="21"/>
+                    <rect key="frame" x="97" y="47" width="75" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -184,7 +245,7 @@
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Accurasy" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SuJ-0C-C5E">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Accuracy" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SuJ-0C-C5E">
                     <rect key="frame" x="128" y="110" width="64" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <nil key="highlightedColor"/>
@@ -280,13 +341,7 @@
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

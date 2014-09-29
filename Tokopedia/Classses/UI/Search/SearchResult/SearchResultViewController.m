@@ -111,7 +111,7 @@
     
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
-    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
@@ -204,6 +204,7 @@
         if (_product.count > indexPath.row) {
             //reset cell
             [self reset:cell];
+            
             /** Flexible view count **/
             NSUInteger indexsegment = indexPath.row * 2;
             NSUInteger indexmax = indexsegment + 2;
@@ -217,6 +218,7 @@
                 (((SearchResultCell*)cell).indexpath) = indexPath;
                 
                 if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+                    ((UIView*)((SearchResultCell*)cell).viewcell[i]).hidden = NO;
                     ((UILabel*)((SearchResultCell*)cell).labelprice[i]).text = list.product_price?:@"";
                     ((UILabel*)((SearchResultCell*)cell).labeldescription[i]).text = list.product_name?:@"";
                     ((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
@@ -245,7 +247,9 @@
                         
                         NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
                     }];
+                    
                 }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+                    ((UIView*)((SearchResultCell*)cell).viewcell[i]).hidden = NO;
                     ((UILabel*)((SearchResultCell*)cell).labelprice[i]).text = list.catalog_price?:@"";
                     ((UILabel*)((SearchResultCell*)cell).labeldescription[i]).text = list.catalog_name?:@"";
                     ((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = list.product_name?:@"";
@@ -406,9 +410,10 @@
     NSString *querry =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *type = [_params objectForKey:kTKPDSEARCH_DATATYPE];
     NSString *deptid =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    BOOL isredirect = [[_params objectForKey:kTKPDSEARCH_DATAISREDIRECTKEY] boolValue];
     NSDictionary* param;
     
-    if (deptid == nil || [deptid isEqualToString:@""]) {
+    if (querry != nil && ![querry isEqualToString:@""] && !isredirect) {
         param = @{
                 //@"auth":@(1),
                 kTKPDSEARCH_APIQUERYKEY : querry?:@"",
@@ -537,7 +542,13 @@
         if ([querry[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
             NSString *deptid = searchcatalog.department_id;
             [_params setObject:deptid forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-            [self loadData];
+            [_params setObject:@(YES) forKey:kTKPDSEARCH_DATAISREDIRECTKEY];
+            [self cancel];
+            _table.tableFooterView = _footer;
+            [_act startAnimating];
+            
+            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
         }
     }
     _catalogproductview.hidden = NO;
@@ -624,7 +635,7 @@
     [((SearchResultCell*)cell).labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
     [((SearchResultCell*)cell).labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
     [((SearchResultCell*)cell).labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    
+    [((SearchResultCell*)cell).viewcell makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
 }
 
 -(void)refreshView:(UIRefreshControl*)refresh

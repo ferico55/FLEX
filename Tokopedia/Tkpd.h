@@ -9,7 +9,7 @@
 #ifndef Tokopedia_Tkpd_h
 #define Tokopedia_Tkpd_h
 
-#define kTkpdBaseURLString @"http://www.tkpdevel-pg.tonito/ws"
+#define kTkpdBaseURLString @"http://www.tkpdevel-pg.renny/ws"
 
 #define kTkpdAPIkey @"8b0c367dd3ef0860f5730ec64e3bbdc9" //TODO:: Remove api key
 

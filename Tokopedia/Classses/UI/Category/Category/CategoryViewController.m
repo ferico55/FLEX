@@ -44,16 +44,16 @@
     [super viewDidLoad];
     
     /** set inset table for different size**/
-    if (is4inch) {
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 150;
-        _table.contentInset = inset;
-    }
-    else{
-        UIEdgeInsets inset = _table.contentInset;
-        //inset.bottom += 200;
-        _table.contentInset = inset;
-    }
+    //if (is4inch) {
+    //    UIEdgeInsets inset = _table.contentInset;
+    //    inset.bottom += 150;
+    //    _table.contentInset = inset;
+    //}
+    //else{
+    //    UIEdgeInsets inset = _table.contentInset;
+    //    //inset.bottom += 200;
+    //    _table.contentInset = inset;
+    //}
     
     /** Initialization variable **/
     _category = [NSMutableArray new];
@@ -153,7 +153,7 @@
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *c = [TKPDTabNavigationController new];
-    [c setData:@{kTKPDCATEGORY_DATATYPEKEY: @(kTKPDCATEGORY_DATATYPECATEGORYKEY), kTKPDSEARCH_APIDEPARTEMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@""}];
+    [c setData:@{kTKPDCATEGORY_DATATYPEKEY: @(kTKPDCATEGORY_DATATYPECATEGORYKEY), kTKPDSEARCH_APIDEPARTEMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"", }];
     [c setSelectedIndex:0];
     [c setViewControllers:viewcontrollers];
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];

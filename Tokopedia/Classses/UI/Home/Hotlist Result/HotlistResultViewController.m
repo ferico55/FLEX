@@ -131,7 +131,7 @@
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
@@ -141,12 +141,12 @@
 	[barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
     
-    //img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONTABBAR_SEARCH ofType:@"png"]];
+    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"]];
     
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        //_barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        _barbuttoncategory = [[UIBarButtonItem alloc] initWithTitle:@"Category" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        //_barbuttoncategory = [[UIBarButtonItem alloc] initWithTitle:@"Category" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     }
     else
         _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
@@ -604,6 +604,7 @@
         
         [_product addObjectsFromArray: [result objectForKey:kTKPDHOME_APILISTKEYPATH]];
         [_detailhotlist addEntriesFromDictionary:result];
+        _pagecontrol.hidden = NO;
         _swipegestureleft.enabled = YES;
         _swipegestureright.enabled = YES;
         [self setHeaderData:result];

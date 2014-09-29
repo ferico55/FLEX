@@ -23,6 +23,7 @@
 
 -(void)awakeFromNib
 {
+    [super awakeFromNib];
     _starimages = [NSArray sortViewsWithTagInArray:_starimages];
 }
 

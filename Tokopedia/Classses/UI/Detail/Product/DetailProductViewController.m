@@ -22,11 +22,16 @@
 #import "TKPDTabNavigationController.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
+#import "ProductReviewViewController.h"
+#import "ProductTalkViewController.h"
 
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController () <UITableViewDelegate, UITableViewDataSource, DetailProductInfoCellDelegate>
 {
     NSMutableDictionary *_detailproduct;
+    
+    NSMutableDictionary *_datatalk;
+    
     NSMutableArray *_detailwholesale;
     
     NSMutableIndexSet *expandedSections;
@@ -48,29 +53,33 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (strong, nonatomic) IBOutlet UIView *headerview;
+@property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UITableView *table;
+
 @property (weak, nonatomic) IBOutlet UILabel *productnamelabel;
 @property (weak, nonatomic) IBOutlet UILabel *pricelabel;
 @property (weak, nonatomic) IBOutlet UIButton *reviewbutton;
-@property (weak, nonatomic) IBOutlet UIButton *talaboutbutton;
+@property (weak, nonatomic) IBOutlet UIButton *talkaboutbutton;
 @property (weak, nonatomic) IBOutlet UIImageView *shopthumb;
 @property (weak, nonatomic) IBOutlet UILabel *shopname;
-@property (weak, nonatomic) IBOutlet UILabel *shoplocation;
-@property (strong, nonatomic) IBOutlet UIView *shopinformationview;
-
+@property (weak, nonatomic) IBOutlet UILabel *accuracynumberlabel;
+@property (weak, nonatomic) IBOutlet UILabel *qualitynumberlabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *imagescrollview;
 @property (weak, nonatomic) IBOutlet StarsRateView *productrateview;
+@property (weak, nonatomic) IBOutlet StarsRateView *accuracyrateview;
+@property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
+@property (weak, nonatomic) IBOutlet UIButton *backbutton;
+@property (weak, nonatomic) IBOutlet UIButton *nextbutton;
+
 @property (weak, nonatomic) IBOutlet StarsRateView *ratespeedshop;
 @property (weak, nonatomic) IBOutlet StarsRateView *rateaccuracyshop;
 @property (weak, nonatomic) IBOutlet StarsRateView *rateserviceshop;
 @property (weak, nonatomic) IBOutlet UILabel *countsoldlabel;
 @property (weak, nonatomic) IBOutlet UILabel *countviewlabel;
 
-@property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
+@property (weak, nonatomic) IBOutlet UILabel *shoplocation;
+@property (strong, nonatomic) IBOutlet UIView *shopinformationview;
 
-@property (weak, nonatomic) IBOutlet UIButton *backbutton;
-@property (weak, nonatomic) IBOutlet UIButton *nextbutton;
 
 @end
 
@@ -97,6 +106,7 @@
     [super viewDidLoad];
     
     _detailproduct = [NSMutableDictionary new];
+    _datatalk = [NSMutableDictionary new];
     _detailwholesale = [NSMutableArray new];
     _headerimages = [NSMutableArray new];
     
@@ -114,7 +124,7 @@
         _table.contentInset = inset;
     }
     
-    _table.tableHeaderView = _headerview;
+    _table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
     
     if (!expandedSections)
@@ -189,7 +199,7 @@
 //    }
 //}
 
-#pragma mark - View Gesture
+#pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
     _nextbutton.hidden = (_pageheaderimages == _headerimages.count -1)?YES:NO;
@@ -214,6 +224,23 @@
                     _pageheaderimages ++;
                     [_imagescrollview setContentOffset:CGPointMake(_imagescrollview.frame.size.width*_pageheaderimages, 0.0f) animated:YES];
                 }
+                break;
+            }
+            case 12:
+            {
+                // go to review page
+                ProductReviewViewController *vc = [ProductReviewViewController new];
+                vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0)};
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 13:
+            {
+                // got to talk page
+                ProductTalkViewController *vc = [ProductTalkViewController new];
+                [_datatalk setObject:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0) forKey:kTKPDDETAIL_APIPRODUCTIDKEY];
+                vc.data = _datatalk;
+                [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
             default:
@@ -433,7 +460,7 @@
     
     // setup object mappings
     RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[Product class]];
-    [productMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APISTATUSKEY:kTKPDDETAIL_APISTATUSKEY,kTKPRDETAIL_APISERVERPROCESSTIMEKEY:kTKPRDETAIL_APISERVERPROCESSTIMEKEY}];
+    [productMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APISTATUSKEY:kTKPDDETAIL_APISTATUSKEY,kTKPDDETAIL_APISERVERPROCESSTIMEKEY:kTKPDDETAIL_APISERVERPROCESSTIMEKEY}];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailProductResult class]];
     RKObjectMapping *infoMapping = [RKObjectMapping mappingForClass:[Info class]];
@@ -533,8 +560,8 @@
     [_act startAnimating];
     
 	NSDictionary* param = @{
-                            kTKPDETAIL_APIACTIONKEY : kTKPDETAIL_APIGETDETAILACTIONKEY,
-                            kTKPDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDETAIL_APIPRODUCTIDKEY]
+                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETDETAILACTIONKEY,
+                            kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]
                             };
     
     [_objectmanager getObjectsAtPath:kTKPDDETAILPRODUCT_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -669,7 +696,9 @@
     _pricelabel.text = p.result.info.product_price;
     _countsoldlabel.text = [NSString stringWithFormat:@"%@ Sold", p.result.statistic.product_sold];
     _countviewlabel.text = [NSString stringWithFormat:@"%@ View", p.result.statistic.product_view];
-    
+    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Reviews",p.result.statistic.product_review] forState:UIControlStateNormal];
+    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Talk About it",p.result.statistic.product_talk] forState:UIControlStateNormal];
+    _qualitynumberlabel.text = [NSString stringWithFormat: @"%d ",p.result.statistic.product_rating];
     _productrateview.starscount = p.result.statistic.product_rating;
     
     NSArray *images = [_detailproduct objectForKey:kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY];
@@ -702,6 +731,8 @@
         [_imagescrollview addSubview:thumb];
         [_headerimages addObject:thumb];
     }
+    
+    _pagecontrol.hidden = _headerimages.count <= 1?YES:NO;
     _pagecontrol.numberOfPages = images.count;
     
     _nextbutton.hidden = _headerimages.count <= 1?YES:NO;
@@ -711,6 +742,10 @@
     _backbutton.hidden = (_pageheaderimages == 0)?YES:NO;
     
     _imagescrollview.contentSize = CGSizeMake(_headerimages.count*320,0);
+    
+    [_datatalk setObject:p.result.info.product_name forKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
+    [_datatalk setObject:p.result.info.product_price forKey:kTKPDDETAILPRODUCT_APIPRODUCTPRICEKEY];
+    [_datatalk setObject:_headerimages forKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
     
 }
 

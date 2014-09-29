@@ -21,6 +21,17 @@
 
 @implementation SortViewController
 
+#pragma mark - Initialization
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        self.navigationItem.title = kTKPDFILTER_TITLESORTKEY;
+        [self.navigationController.navigationBar setTranslucent:NO];
+    }
+    return self;
+}
+
 #pragma mark - View Lifecylce
 - (void) viewDidLoad
 {
@@ -31,7 +42,7 @@
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
@@ -41,7 +52,7 @@
 	[barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
     //TODO:: Change image
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONNOTIFICATION ofType:@"png"]];
+    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         //UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         //barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
@@ -149,9 +160,7 @@
 #pragma mark - Cell Delegate
 -(void)SortCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
-    //[_table reloadData];
     [_selectedsort setObject:indexpath forKey:kTKPDFILTER_DATAINDEXPATHKEY];
-    //((SortCell*)cell).imageview.hidden = NO;
     [_table reloadData];
 }
 
