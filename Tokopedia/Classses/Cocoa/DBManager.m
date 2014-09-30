@@ -87,8 +87,8 @@ static sqlite3_stmt *statement = nil;
         NSAssert1(0, @"Failed to create writable database file with message '%@'.", [error localizedDescription]);
     }
     // Build the path to the database file
-    databasePath = [[NSString alloc] initWithString:
-                    [defaultDBPath stringByAppendingPathComponent: @"TokopediaDB.db"]];
+   // databasePath = [[NSString alloc] initWithString:
+    //                [defaultDBPath stringByAppendingPathComponent: @"TokopediaDB.db"]];
 }
 
 - (NSArray*)LoadDataQueryDepartement:(NSString*)query
