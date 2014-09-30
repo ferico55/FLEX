@@ -186,7 +186,7 @@
             CGSize stringSize = [titles[i] sizeWithFont:kTKPDHOME_FONTSLIDETITLESACTIVE];
             CGFloat widthlabel = stringSize.width+10;
             
-            button.frame = CGRectMake(widthcontenttop+6,0,widthlabel,(_scrollviewtop.frame.size.height)-30);
+            button.frame = CGRectMake(widthcontenttop+6,3,widthlabel,(_scrollviewtop.frame.size.height)-30);
             button.tag = i;
             
             widthcontenttop +=widthlabel;

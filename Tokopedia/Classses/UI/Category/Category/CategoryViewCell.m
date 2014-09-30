@@ -90,8 +90,8 @@
 //            [self.layer addSublayer:bottomBorder];
             
             
-            [((UIView*)_view[i]).layer setBorderColor:[UIColor colorWithRed:231.0/255 green:231.0/255 blue:231.0/255 alpha:1.0].CGColor];
-             [((UIView*)_view[i]).layer setBorderWidth : 0.5f];
+            //[((UIView*)_view[i]).layer setBorderColor:[UIColor colorWithRed:231.0/255 green:231.0/255 blue:231.0/255 alpha:1.0].CGColor];
+             //[((UIView*)_view[i]).layer setBorderWidth : 0.5f];
             NSString *title =[column[i] objectForKey:kTKPDCATEGORY_DATATITLEKEY];
             ((UILabel*)_lable[i]).text = title;
             

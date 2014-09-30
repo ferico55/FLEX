@@ -27,7 +27,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.navigationItem.title = kTKPDFILTER_TITLESORTKEY;
-        [self.navigationController.navigationBar setTranslucent:NO];
+
     }
     return self;
 }
@@ -37,6 +37,7 @@
 {
     [super viewDidLoad];
     
+    [self.navigationController.navigationBar setTranslucent:NO];
     _selectedsort = [NSMutableDictionary new];
     
     UIBarButtonItem *barbutton1;

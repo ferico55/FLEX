@@ -106,8 +106,8 @@
 
 #define kTKPDHOME_APIQUERYKEY @"key"
 
-#define kTKPDHOME_FONTSLIDETITLES [UIFont fontWithName:@"Lato-Regular" size:14.0]
-#define kTKPDHOME_FONTSLIDETITLESACTIVE [UIFont fontWithName:@"Lato-Regular" size:16.0]
+#define kTKPDHOME_FONTSLIDETITLES [UIFont fontWithName:@"GothamLight" size:14.0]
+#define kTKPDHOME_FONTSLIDETITLESACTIVE [UIFont fontWithName:@"GothamLight" size:16.0]
 #define kTKPDHOME_FONTHOTLIST [UIFont fontWithName:@"GothamBlack" size:12.0]
 
 #define kTKPDHOME_FONTSLIDETITLESCOLOR [UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1]

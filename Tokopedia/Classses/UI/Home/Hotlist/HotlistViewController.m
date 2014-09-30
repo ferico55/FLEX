@@ -151,7 +151,7 @@
             ((HotlistCell*)cell).pricelabel.text = hotlist.price_start;
             ((HotlistCell*)cell).namelabel.text = hotlist.title;
             
-            ((HotlistCell*)cell).pricelabel.font = font;
+            //((HotlistCell*)cell).pricelabel.font = font;
             
             [((HotlistCell*)cell).act startAnimating];
             

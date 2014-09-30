@@ -43,7 +43,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.navigationItem.title = kTKPDFILTER_TITLEFILTERLOCATIONKEY;
-        [self.navigationController.navigationBar setTranslucent:NO];
+
     }
     return self;
 }
@@ -53,6 +53,7 @@
 {
     [super viewDidLoad];
     
+    [self.navigationController.navigationBar setTranslucent:NO];
     /** create new **/
     _paging = [NSMutableDictionary new];
     _locationnames = [NSMutableArray new];
@@ -172,8 +173,10 @@
         }
         else
             ((FilterLocationViewCell*)cell).imageview.hidden = NO;
-
-        ((FilterLocationViewCell*)cell).data = @{kTKPDSEARCH_DATAINDEXPATHKEY: indexPath, kTKPDSEARCH_DATACOLUMNSKEY: _locationnames[indexPath.row]};
+        
+        //if (indexPath.row>_locationnames.count) {
+            ((FilterLocationViewCell*)cell).data = @{kTKPDSEARCH_DATAINDEXPATHKEY: indexPath, kTKPDSEARCH_DATACOLUMNSKEY: _locationnames[indexPath.row]};
+        //}
         
 	} else {
 		static NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
