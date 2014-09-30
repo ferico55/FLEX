@@ -79,7 +79,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _hascatalog = YES;
+        _hascatalog = NO;
 		_selectedIndex = -1;
 		//_navigationIndex = -1;
 		_unloadSelectedIndex = -1;
@@ -454,40 +454,44 @@
 	if (_viewControllers != nil) {
 		
 		NSInteger index = _selectedIndex;
-        
-        switch (sender.selectedSegmentIndex) {
-            //case 1:
-            case 0: {
-                //if (_selectedIndex > 2) {
-                //	index = (_navigationIndex != -1) ? _navigationIndex : 0;
-                //}
-                //if (_selectedIndex > 0) {
-                //    index = _selectedIndex - 1;
-                //} else {
-                //    index = 0;
-                //}
-                index = sender.selectedSegmentIndex;
-                break;
-            }
-            case 1: {
-                //if (_selectedIndex < 3) {
-                //	index = (_navigationIndex != -1) ? _navigationIndex : 3;
-                //}
-                if (_hascatalog) {
+        if ( ![[_data objectForKey:kTKPDCATEGORY_DATATYPEKEY]  isEqual: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)]) {
+            switch (sender.selectedSegmentIndex) {
+                //case 1:
+                case 0: {
+                    //if (_selectedIndex > 2) {
+                    //	index = (_navigationIndex != -1) ? _navigationIndex : 0;
+                    //}
+                    //if (_selectedIndex > 0) {
+                    //    index = _selectedIndex - 1;
+                    //} else {
+                    //    index = 0;
+                    //}
                     index = sender.selectedSegmentIndex;
+                    break;
                 }
-                else
-                    index = sender.selectedSegmentIndex + 1;
-                break;
+                case 1: {
+                    //if (_selectedIndex < 3) {
+                    //	index = (_navigationIndex != -1) ? _navigationIndex : 3;
+                    //}
+                    if (_hascatalog) {
+                        index = sender.selectedSegmentIndex;
+                    }
+                    else
+                        index = sender.selectedSegmentIndex + 1;
+                    break;
+                }
+                case 2:{
+                    index = sender.selectedSegmentIndex;
+                    break;
+                }
+                default:
+                    break;
             }
-            case 2:{
-                index = sender.selectedSegmentIndex;
-                break;
-            }
-            default:
-                break;
         }
-    
+        else
+        {
+            index = sender.selectedSegmentIndex;
+        }
 		BOOL should = YES;
 		
 		if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:shouldSelectViewController:)])) {
@@ -610,7 +614,7 @@
         [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
         //_tabbar.hidden = NO;
         //_tabbarthrees.hidden = YES;
-        //_hascatalog = NO;
+        _hascatalog = NO;
         _catalogproductbuttonview.hidden = NO;
     } else if (count == 3) {	//not default to 3
         _segmentcontrol.hidden = NO;
@@ -622,7 +626,7 @@
         [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
         //_tabbar.hidden = NO;
         //_tabbartwos.hidden = YES;
-        //_hascatalog = YES;
+        _hascatalog = YES;
     }
     if ( [[_data objectForKey:kTKPDCATEGORY_DATATYPEKEY]  isEqual: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)]) {
         if (count == 2) {
@@ -633,7 +637,7 @@
             [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
             //_tabbar.hidden = NO;
             //_tabbarthrees.hidden = YES;
-            //_hascatalog = NO;
+            _hascatalog = NO;
             _catalogproductbuttonview.hidden = NO;
         } else if (count == 3) {	//not default to 3
             _segmentcontrol.hidden = NO;
@@ -644,7 +648,7 @@
             [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
             //_tabbar.hidden = NO;
             //_tabbartwos.hidden = YES;
-            //_hascatalog = YES;
+            _hascatalog = YES;
         }
     }
     _barbuttoncategory.enabled = YES;
