@@ -16,6 +16,8 @@
                 <outlet property="header" destination="U7y-jr-OJ5" id="K7q-dP-Z2R"/>
                 <outlet property="imagescrollview" destination="DQy-5R-3v9" id="cSB-b4-zhc"/>
                 <outlet property="nextbutton" destination="tbJ-pg-VbT" id="03P-KE-iPj"/>
+                <outlet property="otherproductscrollview" destination="sPl-HV-1Ei" id="GLQ-Ct-Tus"/>
+                <outlet property="otherproductview" destination="P75-Lv-uni" id="Z0w-bp-kfw"/>
                 <outlet property="pagecontrol" destination="H1h-3a-FsP" id="J6E-C0-UQJ"/>
                 <outlet property="pricelabel" destination="81S-XA-wuz" id="OJs-07-ju5"/>
                 <outlet property="productnamelabel" destination="klK-p8-rjh" id="nzH-eU-ztP"/>
@@ -211,7 +213,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="S8c-C2-gKh" userLabel="Shop Information - View">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="170"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="456"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Shop Information" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pBx-Mv-2gY">
@@ -337,9 +339,61 @@
                         <outletCollection property="starimages" destination="YnM-Gn-W1I" id="97z-qp-dt5"/>
                     </connections>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nle-JR-ork">
+                    <rect key="frame" x="0.0" y="426" width="320" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="Buy">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hvP-6T-M9q">
+                    <rect key="frame" x="0.0" y="388" width="320" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <state key="normal" title="View More Product">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sPl-HV-1Ei">
+                    <rect key="frame" x="0.0" y="169" width="320" height="220"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                    <color key="backgroundColor" red="0.24471801360000001" green="0.66666666669999997" blue="0.14011867850000001" alpha="1" colorSpace="calibratedRGB"/>
+                </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
+        <view tag="10" contentMode="scaleToFill" id="P75-Lv-uni" userLabel="OtherProductView" customClass="DetailProductOtherView">
+            <rect key="frame" x="0.0" y="0.0" width="145" height="181"/>
+            <subviews>
+                <imageView tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="thumb_product.png" translatesAutoresizingMaskIntoConstraints="NO" id="Whf-o7-mYJ">
+                    <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
+                </imageView>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rp. 75.000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Va7-Ts-UVQ">
+                    <rect key="frame" x="6" y="165" width="103" height="16"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
+                    <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Model Baju Korea Yang Keren" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q5e-TV-sDK">
+                    <rect key="frame" x="6" y="149" width="133" height="19"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <activityIndicatorView opaque="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="oaW-ZO-G2a">
+                    <rect key="frame" x="62" y="51" width="20" height="20"/>
+                </activityIndicatorView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
+            <connections>
+                <outlet property="act" destination="oaW-ZO-G2a" id="wOP-YE-DSG"/>
+                <outlet property="namelabel" destination="Q5e-TV-sDK" id="POK-md-cQc"/>
+                <outlet property="pricelabel" destination="Va7-Ts-UVQ" id="gn2-kp-LuS"/>
+                <outlet property="thumb" destination="Whf-o7-mYJ" id="nff-qM-iFa"/>
+            </connections>
+        </view>
     </objects>
+    <resources>
+        <image name="thumb_product.png" width="276" height="244"/>
+    </resources>
 </document>

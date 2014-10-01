@@ -25,14 +25,15 @@
 #import "ProductReviewViewController.h"
 #import "ProductTalkViewController.h"
 
+#import "DetailProductOtherView.h"
+
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController () <UITableViewDelegate, UITableViewDataSource, DetailProductInfoCellDelegate>
 {
     NSMutableDictionary *_detailproduct;
-    
     NSMutableDictionary *_datatalk;
-    
     NSMutableArray *_detailwholesale;
+    NSMutableArray *_otherproductviews;
     
     NSMutableIndexSet *expandedSections;
     BOOL _isexpanded;
@@ -79,6 +80,9 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *shoplocation;
 @property (strong, nonatomic) IBOutlet UIView *shopinformationview;
+@property (strong, nonatomic) IBOutlet DetailProductOtherView *otherproductview;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *otherproductscrollview;
 
 
 @end
@@ -109,6 +113,7 @@
     _datatalk = [NSMutableDictionary new];
     _detailwholesale = [NSMutableArray new];
     _headerimages = [NSMutableArray new];
+    _otherproductviews = [NSMutableArray new];
     
     _isexpanded = NO;
     
@@ -385,7 +390,7 @@
         }
         if (indexPath.section == 2) {
             // if (_isexpanded) {
-                NSString *cellid = kTKPDDETAILPRODUCTWHOLESALECELLIDENTIFIER;
+                NSString *cellid = kTKPDDETAILPRODUCTINFOCELLIDENTIFIER;
                 cell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
                 if (cell == nil) {
                     cell = [DetailProductInfoCell newcell];
@@ -400,15 +405,13 @@
     {
         if (indexPath.section == 1) {
             //if (_isexpanded) {
-            NSString *cellid = kTKPDDETAILPRODUCTWHOLESALECELLIDENTIFIER;
+            NSString *cellid = kTKPDDETAILPRODUCTINFOCELLIDENTIFIER;
             cell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
             if (cell == nil) {
                 cell = [DetailProductInfoCell newcell];
                 ((DetailProductInfoCell*)cell).delegate = self;
             }
             [self productinfocell:cell withtableview:tableView];
-            
-            //TODO::category & etalase label
             
             return cell;
            // }
@@ -601,6 +604,7 @@
         
         [self setHeaderviewData:(id)product];
         [self setFooterViewData:(id)product.result.shop_info];
+        [self setOtherProducts:[result objectForKey:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY]?:@[]];
         _isnodata = NO;
         [_table reloadData];
     }
@@ -689,7 +693,7 @@
 }
 
 #pragma mark - Methods
--(void) setHeaderviewData:(id)product{
+-(void)setHeaderviewData:(id)product{
     
     Product *p = product;
     _productnamelabel.text = p.result.info.product_name;
@@ -782,4 +786,49 @@
 
 }
 
+-(void)setOtherProducts:(NSArray*)products
+{
+    if (products) {
+        for(int i = 0; i< products.count; i++)
+        {
+            CGFloat y = i * 160;
+            
+            OtherProduct *product = products[i];
+            
+            DetailProductOtherView *v = [DetailProductOtherView newview];
+            [v setFrame:CGRectMake(y, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
+            
+            v.namelabel.text = product.product_name;
+            v.pricelabel.text = product.product_price;
+            //DetailProductOtherView *v = [[DetailProductOtherView alloc]initWithFrame:CGRectMake(y, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
+            
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            //request.URL = url;
+            
+            UIImageView *thumb = v.thumb;
+            //UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
+            
+            thumb.image = nil;
+            //thumb.hidden = YES;	//@prepareforreuse then @reset
+            
+            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                //NSLOG(@"thumb: %@", thumb);
+                [thumb setImage:image];
+                [v.act stopAnimating];
+#pragma clang diagnostic pop
+                
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                [v.act stopAnimating];
+            }];
+            
+            [_otherproductscrollview addSubview:v];
+            [_otherproductviews addObject:v];
+        }
+        
+        _otherproductscrollview.pagingEnabled = YES;
+        _otherproductscrollview.contentSize = CGSizeMake(_otherproductviews.count*160,0);
+    }
+}
 @end

@@ -46,6 +46,7 @@
     }
 }
 
+#pragma mark - methods
 -(void)reset
 {
     UIImage *image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_HOME];
