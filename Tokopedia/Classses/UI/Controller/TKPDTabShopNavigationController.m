@@ -28,7 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
 
 
-- (IBAction)tap:(id*)sender;
+- (IBAction)tap:(UIButton*)sender;
 
 - (UIEdgeInsets)contentInsetForContainerController;
 - (UIViewController*)isChildViewControllersContainsNavigationController:(UIViewController*)controller;
