@@ -254,6 +254,9 @@
                             </connections>
                         </view>
                     </subviews>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="MFT-Wb-N4M"/>
+                    </connections>
                 </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>

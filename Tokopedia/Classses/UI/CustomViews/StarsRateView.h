@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 
 #pragma mark - Stars Rate View
-
 @interface StarsRateView : UIView
 
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *starimages;

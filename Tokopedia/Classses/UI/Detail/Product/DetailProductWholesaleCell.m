@@ -16,7 +16,7 @@
     NSMutableArray *_wholesales;
     BOOL _isnodata;
 }
-@property (weak, nonatomic) IBOutlet UITableView *tabel;
+@property (strong, nonatomic) IBOutlet UITableView *tabel;
 
 @end
 
