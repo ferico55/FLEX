@@ -38,6 +38,7 @@
     NSMutableIndexSet *expandedSections;
     BOOL _isexpanded;
     NSInteger _heightOfSection;
+    NSInteger _heightDescSection;
     
     BOOL _isnodata;
     BOOL _isnodatawholesale;
@@ -50,6 +51,9 @@
     NSMutableArray *_headerimages;
     
     NSInteger _pageheaderimages;
+    
+    UILabel *_desclabel;
+    
     __weak RKObjectManager *_objectmanager;
 }
 
@@ -143,6 +147,8 @@
     }
     
     _imagescrollview.pagingEnabled = YES;
+    
+    _heightDescSection = 155;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -345,8 +351,14 @@
     //else {
     //    return 0;
    //}
-    
-    return 300;
+    if (indexPath.section == 0)
+    {
+        // description section
+        NSLog(@" Height %d", _heightDescSection);
+        return _heightDescSection;
+    }
+    else
+        return 300;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -378,25 +390,19 @@
                 //((DetailProductWholesaleCell*)cell).delegate = self;
             }
         
-            id products = [_detailproduct objectForKey:@""];
-            Product *product = products;
-//            NSString *productdesc = product.result.info.product_description;
-//            ((DetailProductDescriptionCell*)cell).descriptionlabel.text = productdesc;
-//        
-//            //Calculate the expected size based on the font and linebreak mode of your label
-//            // FLT_MAX here simply means no constraint in height
-//            CGSize maximumLabelSize = CGSizeMake(100, FLT_MAX);
-            UILabel *desclabel = ((DetailProductDescriptionCell*)cell).descriptionlabel;
-//
-//            CGSize expectedLabelSize = [productdesc sizeWithFont:desclabel.font constrainedToSize:maximumLabelSize lineBreakMode:desclabel.lineBreakMode];
-//        
-//            //adjust the label the the new height.
-//            CGRect newFrame = desclabel.frame;
-//            newFrame.size.height = expectedLabelSize.height;
-//            desclabel.frame = newFrame;
+                id products = [_detailproduct objectForKey:@""];
+                Product *product = products;
+                NSString *productdesc = product.result.info.product_description;
+                _desclabel = ((DetailProductDescriptionCell*)cell).descriptionlabel;
+                _desclabel.text = productdesc;
+                
+                //adjust the label the the new height.
+                CGRect newFrame = _desclabel.frame;
+                newFrame.size.height = _heightDescSection;
+                _desclabel.frame = newFrame;
         
-            [desclabel setNumberOfLines:0];
-            [desclabel sizeToFit];
+            //[_desclabel setNumberOfLines:0];
+            //[_desclabel sizeToFit];
         //}
         return cell;
     }
@@ -632,6 +638,18 @@
         [self setFooterViewData:(id)product.result.shop_info];
         [self setOtherProducts:[result objectForKey:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY]?:@[]];
         _isnodata = NO;
+        
+
+        //Calculate the expected size based on the font and linebreak mode of your label
+        // FLT_MAX here simply means no constraint in height
+        NSString *productdesc = product.result.info.product_description;
+        CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
+        
+        CGSize expectedLabelSize = [productdesc sizeWithFont:_desclabel.font constrainedToSize:maximumLabelSize lineBreakMode:_desclabel.lineBreakMode];
+        NSInteger delta = 60;
+        _heightDescSection = expectedLabelSize.height +delta;
+        NSLog(@" ==== HEIGHT %d", _heightDescSection);
+        
         [_table reloadData];
     }
 }
