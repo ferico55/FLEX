@@ -15,9 +15,11 @@
 
 @interface DetailCatalogViewController ()<UITableViewDataSource, UITableViewDelegate>
 {
+    NSMutableDictionary *_params;
+    
     NSMutableDictionary *_detailcatalog;
     BOOL _isnodata;
-    BOOL _isnodatawholesale;
+    BOOL _isrefreshseller;
     NSTimer *_timer;
     NSInteger _requestcount;
     
@@ -65,7 +67,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isnodata = YES;
-        _isnodatawholesale = YES;
+        _isrefreshseller = NO;
         _requestcount = 0;
     }
     return self;
@@ -78,12 +80,17 @@
     
     _detailcatalog = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
+    _params = [NSMutableDictionary new];
     
     [_specificationview removeFromSuperview];
     [_containerview setFrame:CGRectMake(_containerview.frame.origin.x, _containerview.frame.origin.y, _descriptionlabel.frame.size.width, _descriptionlabel.frame.size.height)];
     [_containerview addSubview:_descriptionlabel];
     [_continerscrollview setContentSize:CGSizeMake(self.view.frame.size.width,_descriptionlabel.frame.size.height + _headerview.frame.size.height+_buybutton.frame.size.height)];
     [_buybutton setFrame:CGRectMake(_buybutton.frame.origin.x, _descriptionlabel.frame.size.height + _headerview.frame.size.height+_buybutton.frame.size.height, _buybutton.frame.size.width, _buybutton.frame.size.height)];
+    
+    // add notification
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(updateViewDetailCatalog:) name:@"setfilterDetailCatalog" object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -92,6 +99,13 @@
     [self configureRestKit];
     if (_isnodata) {
         [self loadData];
+    }
+    if (_isrefreshseller || _isnodata) {
+        _continerscrollview.hidden = YES;
+    }
+    else
+    {
+        _continerscrollview.hidden = NO;
     }
 }
 
@@ -104,6 +118,7 @@
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -202,7 +217,6 @@
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
 	if (row == indexPath.row) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
-		
 	}
 }
 
@@ -311,7 +325,10 @@
     
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETCATALOGDETAILKEY,
-                            kTKPDDETAIL_APICATALOGIDKEY : [_data objectForKey:kTKPDDETAIL_APICATALOGIDKEY]?:@(0)
+                            kTKPDDETAIL_APICATALOGIDKEY : [_data objectForKey:kTKPDDETAIL_APICATALOGIDKEY]?:@(0),
+                            kTKPDDETAIL_APILOCATIONKEY : [_params objectForKey:kTKPDDETAIL_APILOCATIONKEY]?:@(0),
+                            kTKPDDETAIL_APIORERBYKEY : [_params objectForKey:kTKPDDETAIL_APIORERBYKEY]?:@(0),
+                            kTKPDDETAIL_APICONDITIONKEY : [_params objectForKey:kTKPDDETAIL_APICONDITIONKEY]?:@(0)
                             };
     
     [_objectmanager getObjectsAtPath:kTKDPDETAILCATALOG_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -344,6 +361,19 @@
         [_detailcatalog addEntriesFromDictionary:result];
         [self setHeaderviewData:catalog];
         _isnodata = NO;
+        
+        if(_isrefreshseller)
+        {
+            // go to seller list
+            _isrefreshseller = NO;
+            _continerscrollview.hidden = YES;
+            CatalogSellerViewController *vc = [CatalogSellerViewController new];
+            vc.data = @{kTKPDDETAIL_DATASHOPSKEY: [_detailcatalog objectForKey:kTKPDDETAIL_APICATALOGSHOPPATHKEY]?:@[]};
+            [self.navigationController pushViewController:vc animated:NO];
+        }
+        else{
+            _continerscrollview.hidden = NO;
+        }
     }
 }
 
@@ -372,6 +402,14 @@
     else
     {
         [_act stopAnimating];
+        if(_isrefreshseller)
+        {
+            // go to seller list
+            _isrefreshseller = NO;
+            CatalogSellerViewController *vc = [CatalogSellerViewController new];
+            vc.data = @{kTKPDDETAIL_DATASHOPSKEY: [_detailcatalog objectForKey:kTKPDDETAIL_APICATALOGSHOPPATHKEY]?:@[]};
+            [self.navigationController pushViewController:vc animated:NO];
+        }
     }
 }
 
@@ -441,5 +479,31 @@
     
     _headerimagescrollview.contentSize = CGSizeMake(_headerimages.count*320,0);
 }
+
+-(void)refreshView:(UIRefreshControl*)refresh
+{
+    /** clear object **/
+    [self cancel];
+    [_detailcatalog removeAllObjects];
+    
+    _requestcount = 0;
+    
+    [_table reloadData];
+    /** request data **/
+    [self configureRestKit];
+    [self loadData];
+}
+
+
+#pragma mark - Notification
+- (void)updateViewDetailCatalog:(NSNotification *)notification
+{
+    NSDictionary *userinfo = notification.userInfo;
+    [_params addEntriesFromDictionary:userinfo];
+    _isrefreshseller = YES;
+    [self refreshView:nil];
+}
+
+
 
 @end

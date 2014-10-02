@@ -14,6 +14,7 @@
 #define kTKPDFILTER_APIDEPARTMENTIDKEY @"department_id"
 #define kTKPDFILTER_APIORDERBYKEY @"order_by"
 #define kTKPDFILTER_APILOCATIONKEY @"location"
+#define kTKPDFILTER_APICONDITIONKEY @"condition"
 #define kTKPDFILTER_APILOCATIONNAMEKEY @"locationname"
 #define kTKPDFILTER_APISHOPTYPEKEY @"shop_type"
 #define kTKPDFILTER_APIPRICEMINKEY @"price_min"
@@ -39,7 +40,7 @@
 #define kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY @"detailcatalogview"
 #define kTKPDFILTER_DATATYPESHOPVIEWKEY @"shopview"
 
-#define kTKPDSORT_CONDITIONSARRAY @[@{@"name":@"All Condition",@"value":@"0"},@{@"name":@"New",@"value":@"1"},@{@"name":@"Used",@"value":@"1"}]
+#define kTKPDSORT_CONDITIONSARRAY @[@{@"name":@"All Condition",@"value":@"0"},@{@"name":@"New",@"value":@"1"},@{@"name":@"Used",@"value":@"2"}]
 
 #define kTKPDSORT_HOTLISTSORTARRAY @[@{@"name":@"Promosi",@"value":@"1"}, @{@"name":@"Penjualan",@"value":@"8"}, @{@"name":@"Ulasan",@"value":@"6"}, @{@"name":@"Diskusi",@"value":@"7"}, @{@"name":@"Terbaru",@"value":@"9"}, @{@"name":@"Harga Tertinggi",@"value":@"4"}, @{@"name":@"Harga Terendah",@"value":@"3"}]
 

@@ -28,6 +28,9 @@
 
 #define kTKPDDETAIL_APIPAGEKEY @"page"
 #define kTKPDDETAIL_APILIMITKEY @"per_page"
+#define kTKPDDETAIL_APILOCATIONKEY @"location"
+#define kTKPDDETAIL_APICONDITIONKEY @"condition"
+#define kTKPDDETAIL_APIORERBYKEY @"order_by"
 
 #define kTKPDDETAILREVIEW_LIMITPAGE 5
 

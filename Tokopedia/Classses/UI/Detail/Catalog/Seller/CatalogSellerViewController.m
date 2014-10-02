@@ -76,6 +76,7 @@
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -219,5 +220,6 @@
     vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : @(((CatalogSellerCell*)cell).product_id)};
     [self.navigationController pushViewController:vc animated:YES];
 }
+
 
 @end

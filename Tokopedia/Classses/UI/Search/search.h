@@ -99,4 +99,6 @@
 #define kTKPDSEARCH_NODATACELLTITLE @"no data"
 #define kTKPDSEARCH_NODATACELLDESCS @"no data description"
 
+#define kTKPDSEARCH_SEARCHHISTORYPATHKEY @"history_search.plist"
+
 #endif
