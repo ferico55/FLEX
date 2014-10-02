@@ -16,6 +16,8 @@
 #define kTKPDIMAGE_ICONTABBAR_CATEGORY @"icon_category"
 #define kTKPDIMAGE_ICONTABBAR_CART @"icon_cart"
 #define kTKPDIMAGE_ICONTABBAR_MORE @"icon_more"
+#define kTKPDIMAGE_ICONSTAR @"icon_star"
+#define kTKPDIMAGE_ICONSTAR_ACTIVE @"icon_star_active"
 
 #define kTKPDIMAGE_ICONTABBARACTIVE_HOME @"icon_home_active"
 #define kTKPDIMAGE_ICONTABBARACTIVE_SEARCH @"icon_search_active"

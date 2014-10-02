@@ -118,16 +118,21 @@
     _isexpanded = NO;
     
     /** set inset table for different size**/
-    if (is4inch) {
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 200;
-        _table.contentInset = inset;
-    }
-    else{
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 120;
-        _table.contentInset = inset;
-    }
+//    if (is4inch) {
+//        UIEdgeInsets inset = _table.contentInset;
+//        inset.bottom += 200;
+//        _table.contentInset = inset;
+//    }
+//    else{
+//        UIEdgeInsets inset = _table.contentInset;
+//        inset.bottom += 120;
+//        _table.contentInset = inset;
+//    }
+    
+    
+    UIEdgeInsets inset = _table.contentInset;
+    inset.bottom += 65  ;
+    _table.contentInset = inset;
     
     _table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
@@ -260,19 +265,19 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     UIView *mView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 20, 200)];
-    [mView setBackgroundColor:[UIColor greenColor]];
+    [mView setBackgroundColor:[UIColor whiteColor]];
     
-    UIImageView *logoView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 5, 20, 20)];
-    [logoView setImage:[UIImage imageNamed:@"carat.png"]];
+    UIImageView *logoView = [[UIImageView alloc]initWithFrame:CGRectMake(290, 10, 20, 20)];
+    [logoView setImage:[UIImage imageNamed:@"icon_arrow_up_28px-01.png"]];
     [mView addSubview:logoView];
     
     UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
-    [bt setFrame:CGRectMake(0, 0, 150, 20)];
-    [bt setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [bt setFrame:CGRectMake(0, 10, 150, 20)];
+    [bt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [bt setTag:section];
-    [bt.titleLabel setFont:[UIFont systemFontOfSize:12]];
+    [bt.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size: 13]];
     [bt.titleLabel setTextAlignment:NSTextAlignmentCenter];
-    [bt.titleLabel setTextColor:[UIColor blackColor]];
+//    [bt.titleLabel setTextColor:[UIColor blackColor]];
     switch (section) {
         case 0:
             [bt setTitle: @"Product Description" forState: UIControlStateNormal];
@@ -330,13 +335,18 @@
 #pragma mark  What will be the height of the section, Make it dynamic
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    if(indexPath == 0) {
+//        return 0;
+//    }
     //if (indexPath.section == _expandedsection && indexPath.section != 0) {
     //    return _heightOfSection;
     //}else if (indexPath.section == 0)
-        return 200;
+//        return 300;
     //else {
     //    return 0;
    //}
+    
+    return 300;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -361,6 +371,7 @@
     if (indexPath.section == 0) {
         //if (_isexpanded) {
             NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
+       
             cell = (DetailProductDescriptionCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
             if (cell == nil) {
                 cell = [DetailProductDescriptionCell newcell];
@@ -369,8 +380,23 @@
         
             id products = [_detailproduct objectForKey:@""];
             Product *product = products;
-            NSString *productdesc = product.result.info.product_description;
-            ((DetailProductDescriptionCell*)cell).descriptionlabel.text = productdesc;
+//            NSString *productdesc = product.result.info.product_description;
+//            ((DetailProductDescriptionCell*)cell).descriptionlabel.text = productdesc;
+//        
+//            //Calculate the expected size based on the font and linebreak mode of your label
+//            // FLT_MAX here simply means no constraint in height
+//            CGSize maximumLabelSize = CGSizeMake(100, FLT_MAX);
+            UILabel *desclabel = ((DetailProductDescriptionCell*)cell).descriptionlabel;
+//
+//            CGSize expectedLabelSize = [productdesc sizeWithFont:desclabel.font constrainedToSize:maximumLabelSize lineBreakMode:desclabel.lineBreakMode];
+//        
+//            //adjust the label the the new height.
+//            CGRect newFrame = desclabel.frame;
+//            newFrame.size.height = expectedLabelSize.height;
+//            desclabel.frame = newFrame;
+        
+            [desclabel setNumberOfLines:0];
+            [desclabel sizeToFit];
         //}
         return cell;
     }
@@ -717,7 +743,7 @@
         //request.URL = url;
         
         UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
-        
+        thumb.contentMode = UIViewContentModeScaleAspectFit;
         thumb.image = nil;
         //thumb.hidden = YES;	//@prepareforreuse then @reset
         
@@ -796,7 +822,7 @@
             OtherProduct *product = products[i];
             
             DetailProductOtherView *v = [DetailProductOtherView newview];
-            [v setFrame:CGRectMake(y, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
+            [v setFrame:CGRectMake(y + 7, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
             
             v.namelabel.text = product.product_name;
             v.pricelabel.text = product.product_price;

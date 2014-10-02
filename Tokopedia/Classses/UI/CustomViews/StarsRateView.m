@@ -32,8 +32,8 @@
 {
     _starscount = starscount;
     if (starscount) {
-        UIImage *image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_HOME];
-        UIImage *imageactive = [UIImage imageNamed:kTKPDIMAGE_ICONTABBARACTIVE_HOME];
+        UIImage *image =[UIImage imageNamed:kTKPDIMAGE_ICONSTAR];
+        UIImage *imageactive = [UIImage imageNamed:kTKPDIMAGE_ICONSTAR_ACTIVE];
         [_starimages makeObjectsPerformSelector:@selector(setImage:)withObject:image];
 
         for (int i =0; i<_starscount; i++) {
@@ -49,7 +49,7 @@
 #pragma mark - methods
 -(void)reset
 {
-    UIImage *image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_HOME];
+    UIImage *image =[UIImage imageNamed:kTKPDIMAGE_ICONSTAR];
     [_starimages makeObjectsPerformSelector:@selector(setImage:)withObject:image];
 }
 
