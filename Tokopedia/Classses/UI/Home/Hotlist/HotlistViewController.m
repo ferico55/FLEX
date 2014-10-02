@@ -337,10 +337,10 @@
         //NSLog(@"query: %@", [url query]);
         //NSLog(@"fragment: %@", [url fragment]);
         
-    #ifdef _DEBUG
+#if DEBUG
         NSString* path = [NSHomeDirectory() stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
-        [response writeToFile:path atomically:YES];
-    #endif
+        [result writeToFile:path atomically:YES];
+#endif
     }
 }
 
@@ -351,6 +351,17 @@
 
 -(void)requestfailure:(id)object
 {
+    
+#if DEBUG
+    NSDictionary* result;
+	
+	NSString* path = [NSHomeDirectory() stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
+	result = [NSDictionary dictionaryWithContentsOfFile:path];
+    
+    [self requestsuccess:result];
+    
+#endif
+    
     [self cancel];
     NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
     if ([(NSError*)object code] == NSURLErrorCancelled) {

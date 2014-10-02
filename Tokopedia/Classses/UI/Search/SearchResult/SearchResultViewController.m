@@ -7,17 +7,21 @@
 //
 
 #import "search.h"
+#import "sortfiltershare.h"
+#import "detail.h"
+
 #import "SearchRedirect.h"
 #import "List.h"
 #import "Paging.h"
 #import "DepartmentTree.h"
 
 #import "DetailProductViewController.h"
+#import "DetailCatalogViewController.h"
+
 #import "SearchResultCell.h"
 #import "SearchResultViewController.h"
 #import "SortViewController.h"
 #import "FilterViewController.h"
-#import "DetailShopViewController.h"
 #import "HotlistResultViewController.h"
 #import "TKPDTabNavigationController.h"
 
@@ -360,7 +364,7 @@
     // setup object mappings
     /** searchs list mappng **/
     RKObjectMapping *searchMapping = [RKObjectMapping mappingForClass:[List class]];
-    [searchMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APIPRODUCTIMAGEKEY,kTKPDSEARCH_APIPRODUCTPRICEKEY,kTKPDSEARCH_APIPRODUCTNAMEKEY,kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY, kTKPDSEARCH_APICATALOGIMAGEKEY,kTKPDSEARCH_APICATALOGNAMEKEY,kTKPDSEARCH_APICATALOGPRICEKEY,kTKPDSEARCH_APIPRODUCTIDKEY]];
+    [searchMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APIPRODUCTIMAGEKEY,kTKPDSEARCH_APIPRODUCTPRICEKEY,kTKPDSEARCH_APIPRODUCTNAMEKEY,kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY, kTKPDSEARCH_APICATALOGIMAGEKEY,kTKPDSEARCH_APICATALOGNAMEKEY,kTKPDSEARCH_APICATALOGPRICEKEY,kTKPDSEARCH_APIPRODUCTIDKEY,kTKPDSEARCH_APICATALOGIDKEY]];
     
     /** paging mappng **/
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -584,14 +588,26 @@
     }
 }
 
-#pragma mark - cell delegate
+#pragma mark - Cell Delegate
 -(void)SearchResultCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
-    DetailProductViewController *vc = [DetailProductViewController new];
-    NSInteger index = indexpath.section+2*(indexpath.row);
-    List *list = _product[index];
-    vc.data = @{kTKPDSEARCH_APIPRODUCTIDKEY : list.product_id?:@(0)};
-    [self.navigationController pushViewController:vc animated:YES];
+    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]){
+        // Go to product detail
+        DetailProductViewController *vc = [DetailProductViewController new];
+        NSInteger index = indexpath.section+2*(indexpath.row);
+        List *list = _product[index];
+        vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id?:@(0)};
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY])
+    {
+        // Go to catalog detail
+        DetailCatalogViewController *vc = [DetailCatalogViewController new];
+        NSInteger index = indexpath.section+2*(indexpath.row);
+        List *list = _product[index];
+        vc.data = @{kTKPDDETAIL_APICATALOGIDKEY : list.catalog_id?:@(0)};
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 #pragma mark - TKPDTabNavigationController Tap Button Notification
@@ -604,9 +620,9 @@
             // Action Urutkan Button
             SortViewController *vc = [SortViewController new]; 
             if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
-                vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDSEARCH_DATATYPEPRODUCTVIEWKEY};
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPEPRODUCTVIEWKEY};
             else
-                vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDSEARCH_DATATYPECATALOGVIEWKEY};
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPECATALOGVIEWKEY};
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             break;
@@ -616,9 +632,9 @@
             // Action Filter Button
             FilterViewController *vc = [FilterViewController new];
             if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
-                vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDSEARCH_DATATYPEPRODUCTVIEWKEY};
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPEPRODUCTVIEWKEY};
             else
-                vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDSEARCH_DATATYPECATALOGVIEWKEY};
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPECATALOGVIEWKEY};
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             break;

@@ -9,6 +9,8 @@
 #ifndef Tokopedia_detail_h
 #define Tokopedia_detail_h
 
+#define kTKPDDETAIL_DATASHOPSKEY @"shop"
+
 #define kTKPDDETAIL_APISTATUSKEY @"status"
 #define kTKPDDETAIL_APISERVERPROCESSTIMEKEY @"server_process_time"
 
@@ -18,9 +20,12 @@
 
 #define kTKPDDETAIL_APIACTIONKEY @"action"
 #define kTKPDDETAIL_APIPRODUCTIDKEY @"product_id"
+#define kTKPDDETAIL_APICATALOGIDKEY @"catalog_id"
 #define kTKPDDETAIL_APIGETDETAILACTIONKEY @"get_detail"
 #define kTKPDDETAIL_APIGETPRODUCTREVIEWKEY @"get_product_review"
 #define kTKPDDETAIL_APIGETPRODUCTTALKKEY @"get_product_talk"
+#define kTKPDDETAIL_APIGETCATALOGDETAILKEY @"get_catalog_detail"
+
 #define kTKPDDETAIL_APIPAGEKEY @"page"
 #define kTKPDDETAIL_APILIMITKEY @"per_page"
 
@@ -91,8 +96,10 @@
 #define kTKPDDETAIL_APIBREADCRUMBPATHKEY @"result.breadcrumb"
 #define kTKPDDETAIL_APIOTHERPRODUCTPATHKEY @"result.other_product"
 #define kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY @"result.product_images"
+#define kTKPDDETAIL_APICATALOGIMAGEPATHKEY @"result.catalog_info.catalog_image"
+#define kTKPDDETAIL_APICATALOGSHOPPATHKEY @"result.catalog_shops"
 
-///SHOP//
+#pragma mark - Shop
 
 #define kTKPDDETAILSHOP_APICLOSEDINFOKEY @"closed_info"
 #define kTKPDDETAILSHOP_APIUNTILKEY @"until"
@@ -136,7 +143,7 @@
 #define kTKPDDETAILSHOP_APIADDRESSEMAILKEY @"address_email"
 #define kTKPDDETAILSHOP_APIADDRESSPROVINCEKEY @"address_province"
 
-// REVIEW
+#pragma mark - Review
 #define kTKPDREVIEW_APIREVIEWRESPONSEKEY @"review_response"
 #define kTKPDREVIEW_APIRESPONSECREATETIMEKEY @"response_create_time"
 #define kTKPDREVIEW_APIRESPONSEMESSAGEKEY @"response_message"
@@ -159,7 +166,7 @@
 #define kTKPDREVIEW_APIREVIEWMESSAGEKEY @"review_message"
 #define kTKPDREVIEW_APIREVIEWUSERIDKEY @"review_user_id"
 
-// TALK
+#pragma mark - Talk
 #define kTKPDREVIEW_APITALKTOTALCOMMENTKEY @"talk_total_comment"
 #define kTKPDREVIEW_APITALKUSERIMAGEKEY @"talk_user_image"
 #define kTKPDREVIEW_APITALKUSERNAMEKEY @"talk_user_name"
@@ -168,10 +175,62 @@
 #define kTKPDREVIEW_APITALKMESSAGEKEY @"talk_message"
 #define kTKPDREVIEW_APITALKFOLLOWSTATUSKEY @"talk_follow_status"
 
+#pragma mark - Catalog
+#define kTKPDDETAILCATALOG_APICATALOGINFOKEY @"catalog_info"
+#define kTKPDDETAILCATALOG_APICATALOGSPECSKEY @"catalog_specs"
+#define kTKPDDETAILCATALOG_APICATALOGREVIEWKEY @"catalog_review"
+#define kTKPDDETAILCATALOG_APICATALOGMARKETPRICEKEY @"catalog_market_price"
+#define kTKPDDETAILCATALOG_APICATALOGSHOPSKEY @"catalog_shops"
+#define kTKPDDETAILCATALOG_APICATALOGIMAGEKEY @"catalog_image"
+
+#define kTKPDDETAILCATALOG_APICATALOGDESCKEY @"catalog_description"
+#define kTKPDDETAILCATALOG_APICATALOGKEYKEY @"catalog_key"
+#define kTKPDDETAILCATALOG_APICATALOGDEPARTMENTIDKEY @"catalog_department_id"
+#define kTKPDDETAILCATALOG_APICATALOGIDKEY @"catalog_id"
+#define kTKPDDETAILCATALOG_APICATALOGNAMEKEY @"catalog_name"
+#define kTKPDDETAILCATALOG_APICATALOGPRICEKEY @"catalog_price"
+#define kTKPDDETAILCATALOG_APICATALOGIMAGESKEY @"catalog_image"
+
+#define kTKPDDETAILCATALOG_APIIMAGEPRIMARYKEY @"image_primary"
+#define kTKPDDETAILCATALOG_APIIMAGESRCKEY @"image_src"
+
+#define kTKPDDETAILCATALOG_APIPRICEMINKEY @"price_min"
+#define kTKPDDETAILCATALOG_APIPRICEMAXKEY @"price_max"
+
+#define kTKPDDETAILCATALOG_APIREVIEWIMAGEKEY @"review_from_image"
+#define kTKPDDETAILCATALOG_APIREVIEWRATINGKEY @"review_rating"
+#define kTKPDDETAILCATALOG_APIREVIEWURLKEY @"review_url"
+#define kTKPDDETAILCATALOG_APIREVIEWFROMURLKEY @"review_from_url"
+#define kTKPDDETAILCATALOG_APIREVIEWFROMKEY @"review_from"
+#define kTKPDDETAILCATALOG_APICATALOGIDKEY @"catalog_id"
+#define kTKPDDETAILCATALOG_APIREVIEWDESCKEY @"review_description"
+
+#define kTKPDDETAILCATALOG_APIMAXPRICEKEY @"max_price"
+#define kTKPDDETAILCATALOG_APITIMEKEY @"time"
+#define kTKPDDETAILCATALOG_APINAMEKEY @"name"
+#define kTKPDDETAILCATALOG_APIMINPRICEKEY @"min_price"
+
+#define kTKPDDETAILCATALOG_APIPRODUCTLISTKEY @"product_list"
+#define kTKPDDETAILCATALOG_APISHOPRATEACCURACYKEY @"shop_rate_accuracy"
+#define kTKPDDETAILCATALOG_APISHOPIMAGEKEY @"shop_image"
+#define kTKPDDETAILCATALOG_APISHOPIDKEY @"shop_id"
+#define kTKPDDETAILCATALOG_APISHOPLOCATIONKEY @"shop_location"
+#define kTKPDDETAILCATALOG_APISHOPRATESPEEDKEY @"shop_rate_speed"
+#define kTKPDDETAILCATALOG_APIISGOLDSHOPKEY @"is_gold_shop"
+#define kTKPDDETAILCATALOG_APISHOPNAMEKEY @"shop_name"
+#define kTKPDDETAILCATALOG_APISHOPTOTALADDRESSKEY @"shop_total_address"
+#define kTKPDDETAILCATALOG_APISHOPTOTALPRODUCTKEY @"shop_total_product"
+#define kTKPDDETAILCATALOG_APISHOPRATESERVICEKEY @"shop_rate_service"
+
+#define kTKPDDETAILCATALOG_APIPRODUCTPRICEKEY @"product_price"
+#define kTKPDDETAILCATALOG_APIPRODUCTIDKEY @"product_id"
+#define kTKPDDETAILCATALOG_APIPRODUCTCONDITIONKEY @"product_condition"
+#define kTKPDDETAILCATALOG_APIPRODUCTNAMEKEY @"product_name"
 
 #define kTKPDDETAIL_APIURINEXTKEY @"uri_next"
 
 #define kTKPDDETAILPRODUCT_APIPATH @"product.pl"
+#define kTKDPDETAILCATALOG_APIPATH @"catalog.pl"
 #define kTKPDDETAILSHOP_APIPATH @"shop.pl"
 
 #define kTKPDDETAIL_STANDARDTABLEVIEWCELLIEDNTIFIER @"cell"

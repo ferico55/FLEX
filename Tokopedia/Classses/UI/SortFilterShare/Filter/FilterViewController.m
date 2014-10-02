@@ -8,10 +8,11 @@
 
 #import "sortfiltershare.h"
 #import "FilterLocationViewController.h"
+#import "FilterConditionViewController.h"
 #import "FilterViewController.h"
 
 #pragma mark Filter View Controller
-@interface FilterViewController ()<FilterLocationViewControllerDelegate,UITextFieldDelegate>
+@interface FilterViewController ()<FilterLocationViewControllerDelegate,FilterConditionViewControllerDelegate,UITextFieldDelegate>
 {
     UITextField *_activetextfield;
     NSMutableDictionary *_detailfilter;
@@ -29,7 +30,10 @@
 @property (weak, nonatomic) IBOutlet UIButton *productlocationbutton;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *shopsegmentcontrol;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *productsegmentcontrol;
+@property (weak, nonatomic) IBOutlet UIButton *conditionbutton;
 
+@property (strong, nonatomic) IBOutlet UIView *detailcatalogview;
+@property (weak, nonatomic) IBOutlet UIButton *detailcataloglocationbutton;
 
 @end
 
@@ -59,6 +63,9 @@
     }
     if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPECATALOGVIEWKEY]) {
         [self.view addSubview: _catalogview];
+    }
+    if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY]) {
+        [self.view addSubview: _detailcatalogview];
     }
     
     UIBarButtonItem *barbutton1;
@@ -148,6 +155,11 @@
                         [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterCatalog" object:nil userInfo:userinfo];
                         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                     }
+                    else
+                    {
+                        //TODO:: Notification configure with ws
+                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                    }
                 }
                 else{
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"price max < price min" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -164,7 +176,7 @@
         switch (button.tag) {
             case 10:
             {
-                //LOCATION
+                // select location
                 FilterLocationViewController *vc = [FilterLocationViewController new];
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
@@ -172,7 +184,7 @@
             }
             case 11:
             {
-                //ACTION RESET
+                // action reset
                 [_detailfilter removeAllObjects];
                 _pricemax.text = nil;
                 _pricemin.text = nil;
@@ -182,6 +194,16 @@
                 [_shoplocationbutton setTitle:@"All Location" forState:UIControlStateNormal];
                 [_shopsegmentcontrol setSelectedSegmentIndex:0];
                 [_productsegmentcontrol setSelectedSegmentIndex:0];
+                break;
+            }
+            case 12:
+            {
+                // select condition
+                FilterConditionViewController *vc = [FilterConditionViewController new];
+                vc.delegate = self;
+                [self.navigationController pushViewController:vc animated:YES];
+                
+                break;
             }
             default:
                 break;
@@ -207,6 +229,7 @@
                 if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPECATALOGVIEWKEY]) {
                     [_detailfilter setObject:@(3) forKey:kTKPDFILTER_APISHOPTYPEKEY];
                 }
+                
                 else
                 break;
             }
@@ -245,7 +268,16 @@
 {
     [_shoplocationbutton setTitle:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forState:UIControlStateNormal];
     [_productlocationbutton setTitle:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forState:UIControlStateNormal];
+    [_detailcataloglocationbutton setTitle:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forState:UIControlStateNormal];
     [_detailfilter setObject:[data objectForKey:kTKPDFILTER_APILOCATIONKEY] forKey:kTKPDFILTER_APILOCATIONKEY];
+}
+
+-(void)FilterConditionViewController:(UIViewController *)viewcontroller withdata:(NSDictionary *)data
+{
+    NSDictionary *conditiondata = [data objectForKey:kTKPDFILTER_DATACONDITIONKEY]?:@{};
+    [_conditionbutton setTitle:[conditiondata objectForKey:kTKPDFILTER_DATASORTNAMEKEY] forState:UIControlStateNormal];
+    //TODO:: Configure with WS
+    //[_detailfilter setObject:[conditiondata objectForKey:kTKPDGILTER_DATASORTVALUEKEY] forKey:kTKPDFILTER_DATACONDITIONKEY];
 }
 
 #pragma mark - Text Field Delegate

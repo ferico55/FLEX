@@ -5,7 +5,10 @@
 //  Created by IT Tkpd on 9/15/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+
 #import "search.h"
+#import "sortfiltershare.h"
+
 #import "SearchRedirect.h"
 #import "List.h"
 #import "Paging.h"
@@ -477,7 +480,7 @@
         {
             // Action Sort Button
             SortViewController *vc = [SortViewController new];
-            vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDSEARCH_DATASEARCHSHOPKEY};
+            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPESHOPVIEWKEY};
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             
@@ -487,7 +490,7 @@
         {
             // Action Filter Button
             FilterViewController *vc = [FilterViewController new];
-            vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDSEARCH_DATATYPESHOPVIEWKEY};
+            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPESHOPVIEWKEY};
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             break;

@@ -750,7 +750,6 @@
     [_datatalk setObject:p.result.info.product_name forKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
     [_datatalk setObject:p.result.info.product_price forKey:kTKPDDETAILPRODUCT_APIPRODUCTPRICEKEY];
     [_datatalk setObject:_headerimages forKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
-    
 }
 
 -(void)setFooterViewData:(id)data

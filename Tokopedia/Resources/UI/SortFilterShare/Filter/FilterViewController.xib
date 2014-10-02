@@ -8,7 +8,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FilterViewController">
             <connections>
                 <outlet property="catalogview" destination="kEs-ef-swp" id="ahk-1C-eAB"/>
+                <outlet property="conditionbutton" destination="mrD-Iy-W6S" id="3FK-U4-s3h"/>
                 <outlet property="container" destination="KkN-D2-JcV" id="1eh-p2-SI1"/>
+                <outlet property="detailcataloglocationbutton" destination="rBq-fk-Zq4" id="4LE-bg-Y1P"/>
+                <outlet property="detailcatalogview" destination="xOo-S5-Q40" id="rLt-Nz-a6S"/>
                 <outlet property="pricemax" destination="bLe-XV-blo" id="Fup-ML-kbm"/>
                 <outlet property="pricemaxcatalog" destination="wdt-eQ-gGH" id="rDh-CY-s3C"/>
                 <outlet property="pricemin" destination="GyU-uG-nxO" id="beq-o4-l85"/>
@@ -247,6 +250,72 @@
                 </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+        </view>
+        <view contentMode="scaleToFill" id="xOo-S5-Q40" userLabel="DetailCatalog - View">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" id="Rq8-tE-dag" userLabel="location View">
+                    <rect key="frame" x="20" y="182" width="281" height="49"/>
+                    <subviews>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4rs-Ib-4gO">
+                            <rect key="frame" x="0.0" y="13" width="86" height="21"/>
+                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="16"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_arrow_right.png" id="hmd-B7-IHr">
+                            <rect key="frame" x="254" y="10" width="26" height="24"/>
+                        </imageView>
+                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="rBq-fk-Zq4">
+                            <rect key="frame" x="173" y="7" width="81" height="30"/>
+                            <state key="normal" title="All Location">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="RIW-zO-Veg"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <gestureRecognizers/>
+                </view>
+                <view contentMode="scaleToFill" id="ht2-5c-K62" userLabel="location View">
+                    <rect key="frame" x="19" y="120" width="281" height="49"/>
+                    <subviews>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Condition" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lQn-Y2-PZl">
+                            <rect key="frame" x="0.0" y="13" width="86" height="21"/>
+                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="16"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_arrow_right.png" id="Zyy-VF-Axd">
+                            <rect key="frame" x="254" y="10" width="26" height="24"/>
+                        </imageView>
+                        <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="mrD-Iy-W6S">
+                            <rect key="frame" x="158" y="7" width="96" height="30"/>
+                            <state key="normal" title="All Conditions">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="mQ7-Yt-nBp"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <gestureRecognizers/>
+                </view>
+                <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="alF-RG-lGK">
+                    <rect key="frame" x="-9" y="538" width="320" height="30"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <state key="normal" title="RESET">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="GqH-Nm-NqG"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>
     <resources>

@@ -9,6 +9,8 @@
 #ifndef Tokopedia_sort_h
 #define Tokopedia_sort_h
 
+#define kTKPDFILTER_DATACONDITIONKEY @"condition"
+
 #define kTKPDFILTER_APIDEPARTMENTIDKEY @"department_id"
 #define kTKPDFILTER_APIORDERBYKEY @"order_by"
 #define kTKPDFILTER_APILOCATIONKEY @"location"
@@ -27,13 +29,17 @@
 
 #define kTKPDFILTER_TITLEFILTERKEY @"Filters"
 #define kTKPDFILTER_TITLEFILTERLOCATIONKEY @"Select Location"
+#define kTKPDFILTER_TITLEFILTERCONDITIONKEY @"Select Condition"
 #define kTKPDFILTER_TITLESORTKEY @"Sort"
 
 #define kTKPDFILTER_DATAFILTERTYPEVIEWKEY @"typeview"
 #define kTKPDFILTER_DATATYPEHOTLISTVIEWKEY @"hotlistview"
 #define kTKPDFILTER_DATATYPEPRODUCTVIEWKEY @"productview"
 #define kTKPDFILTER_DATATYPECATALOGVIEWKEY @"catalogview"
+#define kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY @"detailcatalogview"
 #define kTKPDFILTER_DATATYPESHOPVIEWKEY @"shopview"
+
+#define kTKPDSORT_CONDITIONSARRAY @[@{@"name":@"All Condition",@"value":@"0"},@{@"name":@"New",@"value":@"1"},@{@"name":@"Used",@"value":@"1"}]
 
 #define kTKPDSORT_HOTLISTSORTARRAY @[@{@"name":@"Promosi",@"value":@"1"}, @{@"name":@"Penjualan",@"value":@"8"}, @{@"name":@"Ulasan",@"value":@"6"}, @{@"name":@"Diskusi",@"value":@"7"}, @{@"name":@"Terbaru",@"value":@"9"}, @{@"name":@"Harga Tertinggi",@"value":@"4"}, @{@"name":@"Harga Terendah",@"value":@"3"}]
 

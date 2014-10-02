@@ -14,9 +14,6 @@
 #define kTKPDHOME_DATAISSEARCHHOTLISTKEY @"issearchhotlist"
 #define kTKPDHOME_DATAQUERYKEY @"key"
 
-#define kTKPDHOME_DATAFILTERTYPEVIEWKEY @"typeview"
-#define kTKPDHOME_DATATYPEHOTLISTVIEWKEY @"hotlistview"
-
 #define kTKPDHOMEHOTLISTACT @"get_hotlist"
 
 #define kTKPDHOMEHOTLIST_LIMITPAGE 5
@@ -112,5 +109,8 @@
 
 #define kTKPDHOME_FONTSLIDETITLESCOLOR [UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1]
 #define kTKPDHOME_FONTSLIDETITLESACTIVECOLOR [UIColor colorWithRed:252.0f/255.0f green:63.0f/255.0f blue:27.0f/255.0f alpha:1]
+
+#define kTKPDHOMEHOTLIST_APIRESPONSEFILE @"temp/hotlist.plist"
+#define kTKPDHOMEHOTLISTDETAIL_APIRESPONSEFILE @"temp/hotlistdetail.plist"
 
 #endif

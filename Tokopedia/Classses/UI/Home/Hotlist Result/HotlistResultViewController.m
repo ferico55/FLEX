@@ -12,12 +12,17 @@
 
 #import "home.h"
 #import "search.h"
+#import "sortfiltershare.h"
+#import "detail.h"
+
 #import "FilterViewController.h"
 #import "SortViewController.h"
+
 #import "HotlistResultViewCell.h"
 #import "HotlistResultViewController.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
+
 #import "TKPDTabNavigationController.h"
 #import "CategoryMenuViewController.h"
 #import "DetailProductViewController.h"
@@ -379,7 +384,7 @@
                 {
                     // URUTKAN
                     SortViewController *vc = [SortViewController new];
-                    vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDHOME_DATATYPEHOTLISTVIEWKEY};
+                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPEHOTLISTVIEWKEY};
                     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                     [self.navigationController presentViewController:nav animated:YES completion:nil];
                     break;
@@ -388,7 +393,7 @@
                 {
                     // FILTER
                     FilterViewController *vc = [FilterViewController new];
-                    vc.data = @{kTKPDHOME_DATAFILTERTYPEVIEWKEY:kTKPDHOME_DATATYPEHOTLISTVIEWKEY};
+                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPEHOTLISTVIEWKEY};
                     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                     [self.navigationController presentViewController:nav animated:YES completion:nil];
                     break;
@@ -685,7 +690,7 @@
     NSInteger index = indexpath.section+2*(indexpath.row);
     List *list = _product[index];
     DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPHOME_APIPRODUCTIDKEY : list.product_id};
+    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id};
     [self.navigationController pushViewController:vc animated:YES];
 }
 

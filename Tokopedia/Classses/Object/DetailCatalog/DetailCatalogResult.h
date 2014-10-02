@@ -1,0 +1,26 @@
+//
+//  DetailCatalogResult.h
+//  Tokopedia
+//
+//  Created by IT Tkpd on 10/1/14.
+//  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+#import "CatalogInfo.h"
+#import "CatalogSpecs.h"
+#import "CatalogReview.h"
+#import "CatalogMarketPlace.h"
+#import "CatalogShops.h"
+
+@interface DetailCatalogResult : NSObject
+
+@property (nonatomic, strong) CatalogInfo *catalog_info;
+@property (nonatomic, strong) CatalogSpecs *catalog_specs;
+@property (nonatomic, strong) CatalogReview *catalog_review;
+@property (nonatomic, strong) CatalogMarketPlace *catalog_market_price;
+@property (nonatomic, strong) CatalogShops *catalog_shops;
+@property (nonatomic, strong) NSArray *catalog_image;
+
+@end

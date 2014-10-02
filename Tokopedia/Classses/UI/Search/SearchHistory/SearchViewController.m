@@ -69,6 +69,12 @@
     [self LoadHistory];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [_searchbar becomeFirstResponder];
+}
+
 #pragma mark - Memory Management
 
 -(void)dealloc{

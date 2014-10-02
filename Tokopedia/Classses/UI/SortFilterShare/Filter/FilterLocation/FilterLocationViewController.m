@@ -151,9 +151,9 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 #ifdef kTKPDmenuLISTHOTLIST_NODATAENABLE
-    return _isnodata ? 1 : _locationnames.count+1;
+    return _isnodata ? 1 : _locationnames.count;
 #else
-    return _isnodata ? 0 : _locationnames.count+1;
+    return _isnodata ? 0 : _locationnames.count;
 #endif
 }
 

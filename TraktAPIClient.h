@@ -13,7 +13,7 @@
 extern NSString * const kTraktAPIKey;
 extern NSString * const kTraktBaseURLString;
 
-@interface RKObjectManager (tkpdCategory)
+@interface RKObjectManager (TkpdCategory)
 
 + (RKObjectManager *)sharedClient;
 

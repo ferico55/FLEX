@@ -11,11 +11,6 @@
 
 #define kTKPDSEARCH_TITLE @"Search"
 
-#define kTKPDSEARCH_DATAFILTERTYPEVIEWKEY @"typeview"
-#define kTKPDSEARCH_DATATYPEPRODUCTVIEWKEY @"productview"
-#define kTKPDSEARCH_DATATYPECATALOGVIEWKEY @"catalogview"
-#define kTKPDSEARCH_DATATYPESHOPVIEWKEY @"shopview"
-
 #define kTKPDSEARCH_DATAINDEXPATHKEY @"indexpath"
 #define kTKPDSEARCH_DATACOLUMNSKEY @"column"
 #define kTKPDSEARCH_DATASEARCHKEY @"search"
@@ -60,6 +55,7 @@
 #define kTKPDSEARCH_APICATALOGIMAGEKEY @"catalog_image"
 #define kTKPDSEARCH_APICATALOGNAMEKEY @"catalog_name"
 #define kTKPDSEARCH_APICATALOGPRICEKEY @"catalog_price"
+#define kTKPDSEARCH_APICATALOGIDKEY @"catalog_id"
 
 /** shop **/
 #define kTKPDSEARCH_APISHOPIMAGEKEY @"shop_image"
@@ -97,6 +93,7 @@
 #define kTKPDSEARCH_APIORDERBYKEY @"order_by"
 
 #define kTKPDSEARCH_APIPRODUCTIDKEY @"product_id"
+#define kTKDPSEARCH_APICATALOGIDKEY @"catalog_id"
 
 #define kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define kTKPDSEARCH_NODATACELLTITLE @"no data"
