@@ -8,12 +8,12 @@
 
 #import "TKPDTabShopNavigationController.h"
 
-@interface TKPDTabShopNavigationController () {
+@interface TKPDTabShopNavigationController () <UIScrollViewDelegate> {
 	UIView* _tabbar;
 	NSInteger _unloadSelectedIndex;
 	NSArray* _unloadViewControllers;
     
-    NSMutableArray *_chevrons;
+    NSArray *_chevrons;
 }
 
 
@@ -23,12 +23,14 @@
 @property (weak, nonatomic) IBOutlet UILabel *shopdesclabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationlabel;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
+@property (strong, nonatomic) IBOutlet UIView *contentview;
 
 @property (weak, nonatomic) IBOutlet UIView *container;
 @property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
 
 
-- (IBAction)tap:(UIButton*)sender;
+- (IBAction)tap:(UIButton* )sender;
 
 - (UIEdgeInsets)contentInsetForContainerController;
 - (UIViewController*)isChildViewControllersContainsNavigationController:(UIViewController*)controller;
@@ -90,9 +92,7 @@
 {
     [super viewDidLoad];
     
-    
-    _buttons = [NSMutableArray new];
-    _chevrons = [NSMutableArray new];
+    _chevrons = _buttons;
 	
 	if (_unloadSelectedIndex != -1) {
 		[self setViewControllers:_unloadViewControllers];
@@ -100,6 +100,10 @@
 		_unloadSelectedIndex = -1;
 		_unloadViewControllers = nil;
 	}
+    
+    _scrollview.contentSize = _contentview.frame.size;
+    
+    
 }
 
 - (void)viewDidLayoutSubviews
@@ -145,12 +149,12 @@
 #pragma mark -
 #pragma mark Properties
 
-- (void)setViewControllers:(NSArray *)viewControllers withtitles:(NSArray*)titles
+- (void)setViewControllers:(NSArray *)viewControllers
 {
-	[self setViewControllers:viewControllers animated:YES withtitles:(NSArray*)titles];
+	[self setViewControllers:viewControllers animated:YES];
 }
 
-- (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated withtitles:(NSArray*)titles
+- (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated
 {
 	if (viewControllers != nil) {
         

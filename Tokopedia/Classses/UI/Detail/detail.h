@@ -99,8 +99,10 @@
 #define kTKPDDETAIL_APIBREADCRUMBPATHKEY @"result.breadcrumb"
 #define kTKPDDETAIL_APIOTHERPRODUCTPATHKEY @"result.other_product"
 #define kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY @"result.product_images"
-#define kTKPDDETAIL_APICATALOGIMAGEPATHKEY @"result.catalog_info.catalog_image"
-#define kTKPDDETAIL_APICATALOGSHOPPATHKEY @"result.catalog_shops"
+#define kTKPDDETAIL_APICATALOGIMAGEPATHKEY @"catalog_info.catalog_image"
+#define kTKPDDETAIL_APIPRODUCTLISTPATHKEY @"product_list"
+#define kTKPDDETAIL_APICATALOGSPECSPATHKEY @"result.catalog_specs"
+#define kTKPDDETAIL_APICATALOGSPECCHILDSPATHKEY @"result.catalog_specs.spec_childs"
 
 #pragma mark - Shop
 
@@ -229,6 +231,18 @@
 #define kTKPDDETAILCATALOG_APIPRODUCTIDKEY @"product_id"
 #define kTKPDDETAILCATALOG_APIPRODUCTCONDITIONKEY @"product_condition"
 #define kTKPDDETAILCATALOG_APIPRODUCTNAMEKEY @"product_name"
+
+#define kTKPDDETAILCATALOG_APISPECSKEY @"catalog_specs"
+#define kTKPDDETAILCATALOG_APISPECCHILDSKEY @"spec_childs"
+#define kTKPDDETAILCATALOG_APISPECVALKEY @"spec_val"
+#define kTKPDDETAILCATALOG_APISPECKEYKEY @"spec_key"
+#define kTKPDDETAILCATALOG_APISPECHEADERKEY @"spec_header"
+
+#define kTKPDDETAILCATALOG_APILOCATIONKEY @"catalog_location"
+#define kTKPDDETAILCATALOG_APILOCATIONNAMEKEY @"location_name"
+#define kTKPDDETAILCATALOG_APILOCATIONIDKEY @"location_id"
+#define kTKPDDETAILCATALOG_APITOTALSHOPKEY @"total_shop"
+
 
 #define kTKPDDETAIL_APIURINEXTKEY @"uri_next"
 

@@ -11,7 +11,6 @@
 @implementation SearchResultShopCell
 
 #pragma mark - Factory methods
-
 + (id)newcell
 {
     NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"SearchResultShopCell" owner:nil options:0];
@@ -23,16 +22,17 @@
     return nil;
 }
 
+#pragma mark - Life Cycle
 - (void)awakeFromNib
 {
     // Initialization code
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+#pragma mark - View Action
+- (IBAction)gesture:(id)sender {
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        [_delegate SearchResultShopCell:self withindexpath:_indexpath];
+    }
 }
 
 @end

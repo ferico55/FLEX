@@ -10,7 +10,7 @@
 
 @interface CatalogImage : NSObject
 
-@property (nonatomic) NSInteger *image_primary;
+@property (nonatomic) NSInteger image_primary;
 @property (nonatomic, strong) NSString *image_src;
 
 @end

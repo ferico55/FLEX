@@ -11,7 +11,7 @@
 @interface ProductList : NSObject
 
 @property (nonatomic, strong) NSString *product_price;
-@property (nonatomic) NSInteger *product_id;
+@property (nonatomic) NSInteger product_id;
 @property (nonatomic, strong) NSString *product_condition;
 @property (nonatomic, strong) NSString *product_name;
 

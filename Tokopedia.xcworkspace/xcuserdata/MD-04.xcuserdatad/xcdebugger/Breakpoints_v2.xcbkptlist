@@ -48,31 +48,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UI/Detail/Shop/DetailShopViewController.m"
-            timestampString = "432787094.644915"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "184"
-            endingLineNumber = "184"
-            landmarkName = "-requestfailure:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UI/Search/SearchResult/SearchResultViewController.m"
-            timestampString = "433915113.634135"
+            timestampString = "434020050.679421"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "258"
-            endingLineNumber = "258"
+            startingLineNumber = "261"
+            endingLineNumber = "261"
             landmarkName = "-tableView:cellForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
@@ -83,13 +67,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UI/Search/SearchResult/SearchResultViewController.m"
-            timestampString = "433936693.14349"
+            filePath = "Tokopedia/Classses/UI/Detail/Catalog/DetailCatalogViewController.m"
+            timestampString = "434005955.102579"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "178"
-            endingLineNumber = "178"
-            landmarkName = "-tableView:willDisplayCell:forRowAtIndexPath:"
+            startingLineNumber = "384"
+            endingLineNumber = "384"
+            landmarkName = "-requestsuccess:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

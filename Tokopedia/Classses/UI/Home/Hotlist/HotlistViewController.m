@@ -228,7 +228,11 @@
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Hotlist class]];
-    [statusMapping addAttributeMappingsFromArray:@[kTKPDHOME_APISTATUSKEY,kTKPDHOME_APISERVERPROCESSTIMEKEY,kTKPDHOME_APIRESULTKEY]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[HotlistResult class]];
     
     RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[HotlistList class]];
     [hotlistMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIURLKEY,kTKPDHOME_APITHUMBURLKEY,kTKPDHOME_APISTARTERPRICEKEY,kTKPDHOME_APITITLEKEY]];
@@ -236,20 +240,19 @@
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APIURINEXTKEY:kTKPDHOME_APIURINEXTKEY}];
     
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:hotlistMapping];
+    [resultMapping addPropertyMapping:listRel];
+    
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
+    [resultMapping addPropertyMapping:pageRel];
+
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    RKResponseDescriptor *responseDescriptorHotlist = [RKResponseDescriptor responseDescriptorWithMapping:hotlistMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:kTKPDHOME_APILISTKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    RKResponseDescriptor *responseDescriptorPaging = [RKResponseDescriptor responseDescriptorWithMapping:pagingMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:kTKPDHOME_APIPAGINGKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
-    
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-    [_objectmanager addResponseDescriptor:responseDescriptorHotlist];
-    [_objectmanager addResponseDescriptor:responseDescriptorPaging];
     
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [dictionary setObject:responseDescriptorHotlist.mapping forKey:(responseDescriptorHotlist.keyPath ?: [NSNull null])];
-    [dictionary setObject:responseDescriptorPaging.mapping forKey:(responseDescriptorPaging.keyPath ?: [NSNull null])];
 }
 
 - (void)loadData
@@ -301,15 +304,11 @@
     BOOL status = [hotlist.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [_product addObjectsFromArray: [result objectForKey:kTKPDHOME_APILISTKEYPATH]];
-        //[_paging removeAllObjects];
-        id page =[result objectForKey:kTKPDHOME_APIPAGINGKEYPATH];
-        //[_paging addObject:[result objectForKey:@"result.paging"]];
+        [_product addObjectsFromArray: hotlist.result.list];
         
         if (_product.count >0) {
             _isnodata = NO;
-            Paging *paging = page;
-            _urinext =  paging.uri_next;
+            _urinext =  hotlist.result.paging.uri_next;
             NSURL *url = [NSURL URLWithString:_urinext];
             NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
             

@@ -183,7 +183,8 @@
             {
                 // action buy button - go to seller list
                 CatalogSellerViewController *vc = [CatalogSellerViewController new];
-                vc.data = @{kTKPDDETAIL_DATASHOPSKEY: [_detailcatalog objectForKey:kTKPDDETAIL_APICATALOGSHOPPATHKEY]?:@[]};
+                //TODO::
+                //vc.data = @{kTKPDDETAIL_DATASHOPSKEY: [_detailcatalog objectForKey:kTKPDDETAIL_APICATALOGSHOPPATHKEY]?:@[]};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -242,29 +243,39 @@
 - (void)configureRestKit
 {
     // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedManager];
-    
+    _objectmanager =  [RKObjectManager sharedClient];
+        
     // setup object mappings
     RKObjectMapping *catalogMapping = [RKObjectMapping mappingForClass:[Catalog class]];
     [catalogMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APISTATUSKEY:kTKPDDETAIL_APISTATUSKEY,kTKPDDETAIL_APISERVERPROCESSTIMEKEY:kTKPDDETAIL_APISERVERPROCESSTIMEKEY}];
 
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailCatalogResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILCATALOG_APICATALOGIMAGEKEY:kTKPDDETAILCATALOG_APICATALOGIMAGEKEY}];
+
     
     RKObjectMapping *infoMapping = [RKObjectMapping mappingForClass:[CatalogInfo class]];
     [infoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILCATALOG_APICATALOGDESCKEY:kTKPDDETAILCATALOG_APICATALOGDESCKEY,
                                                       kTKPDDETAILCATALOG_APICATALOGKEYKEY:kTKPDDETAILCATALOG_APICATALOGKEYKEY,
                                                       kTKPDDETAILCATALOG_APICATALOGDEPARTMENTIDKEY:kTKPDDETAILCATALOG_APICATALOGDEPARTMENTIDKEY,
                                                       kTKPDDETAILCATALOG_APICATALOGIDKEY:kTKPDDETAILCATALOG_APICATALOGIDKEY,
-                                                      kTKPDDETAILCATALOG_APICATALOGNAMEKEY:kTKPDDETAILCATALOG_APICATALOGNAMEKEY ,
-                                                      kTKPDDETAILCATALOG_APICATALOGIMAGESKEY:kTKPDDETAILCATALOG_APICATALOGIMAGESKEY
+                                                      kTKPDDETAILCATALOG_APICATALOGNAMEKEY:kTKPDDETAILCATALOG_APICATALOGNAMEKEY
                                                       }];
     
     RKObjectMapping *priceMapping = [RKObjectMapping mappingForClass:[CatalogPrice class]];
     [priceMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILCATALOG_APIPRICEMINKEY:kTKPDDETAILCATALOG_APIPRICEMINKEY,kTKPDDETAILCATALOG_APIPRICEMAXKEY:kTKPDDETAILCATALOG_APIPRICEMAXKEY}];
     
-    //RKObjectMapping *imagesMapping = [RKObjectMapping mappingForClass:[CatalogImage class]];
-    //[imagesMapping addAttributeMappingsFromArray:@[kTK PDDETAILCATALOG_APIIMAGEPRIMARYKEY,kTKPDDETAILCATALOG_APIIMAGESRCKEY]];
+    RKObjectMapping *specsMapping = [RKObjectMapping mappingForClass:[CatalogSpecs class]];
+    [specsMapping addAttributeMappingsFromArray:@[kTKPDDETAILCATALOG_APISPECHEADERKEY]];
+    
+    RKObjectMapping *specchildsMapping = [RKObjectMapping mappingForClass:[SpecChilds class]];
+    [specchildsMapping addAttributeMappingsFromArray:@[kTKPDDETAILCATALOG_APISPECVALKEY, kTKPDDETAILCATALOG_APISPECKEYKEY]];
+
+    RKObjectMapping *locationMapping = [RKObjectMapping mappingForClass:[CatalogLocation class]];
+    [locationMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILCATALOG_APILOCATIONNAMEKEY:kTKPDDETAILCATALOG_APILOCATIONNAMEKEY,
+                                                          kTKPDDETAILCATALOG_APILOCATIONIDKEY:kTKPDDETAILCATALOG_APILOCATIONIDKEY,
+                                                          kTKPDDETAILCATALOG_APITOTALSHOPKEY:kTKPDDETAILCATALOG_APITOTALSHOPKEY}];
+    
+    RKObjectMapping *imagesMapping = [RKObjectMapping mappingForClass:[CatalogImage class]];
+    [imagesMapping addAttributeMappingsFromArray:@[kTKPDDETAILCATALOG_APIIMAGEPRIMARYKEY,kTKPDDETAILCATALOG_APIIMAGESRCKEY]];
 
     RKObjectMapping *reviewMapping = [RKObjectMapping mappingForClass:[CatalogReview class]];
     [reviewMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILCATALOG_APIREVIEWIMAGEKEY:kTKPDDETAILCATALOG_APIREVIEWIMAGEKEY,
@@ -284,18 +295,21 @@
                                                           }];
     
     RKObjectMapping *shopsMapping = [RKObjectMapping mappingForClass:[CatalogShops class]];
-    [shopsMapping addAttributeMappingsFromArray:@[kTKPDDETAILCATALOG_APIPRODUCTLISTKEY,
-                                                        kTKPDDETAILCATALOG_APISHOPRATEACCURACYKEY,
-                                                        kTKPDDETAILCATALOG_APISHOPIMAGEKEY,
-                                                        kTKPDDETAILCATALOG_APISHOPIDKEY,
-                                                        kTKPDDETAILCATALOG_APISHOPLOCATIONKEY,
-                                                        kTKPDDETAILCATALOG_APISHOPRATESPEEDKEY,
-                                                        kTKPDDETAILCATALOG_APIISGOLDSHOPKEY,
-                                                        kTKPDDETAILCATALOG_APISHOPNAMEKEY,
-                                                        kTKPDDETAILCATALOG_APISHOPTOTALADDRESSKEY,
-                                                        kTKPDDETAILCATALOG_APISHOPTOTALPRODUCTKEY,
-                                                        kTKPDDETAILCATALOG_APISHOPRATESERVICEKEY
-                                                        ]];
+    [shopsMapping addAttributeMappingsFromArray:@[
+                                                    kTKPDDETAILCATALOG_APISHOPRATEACCURACYKEY,
+                                                    kTKPDDETAILCATALOG_APISHOPIMAGEKEY,
+                                                    kTKPDDETAILCATALOG_APISHOPIDKEY,
+                                                    kTKPDDETAILCATALOG_APISHOPLOCATIONKEY,
+                                                    kTKPDDETAILCATALOG_APISHOPRATESPEEDKEY,
+                                                    kTKPDDETAILCATALOG_APIISGOLDSHOPKEY,
+                                                    kTKPDDETAILCATALOG_APISHOPNAMEKEY,
+                                                    kTKPDDETAILCATALOG_APISHOPTOTALADDRESSKEY,
+                                                    kTKPDDETAILCATALOG_APISHOPTOTALPRODUCTKEY,
+                                                    kTKPDDETAILCATALOG_APISHOPRATESERVICEKEY
+                                                    ]];
+    
+    RKObjectMapping *productlistMapping = [RKObjectMapping mappingForClass:[ProductList class]];
+    [productlistMapping addAttributeMappingsFromArray:@[kTKPDDETAILCATALOG_APIPRODUCTPRICEKEY,kTKPDDETAILCATALOG_APIPRODUCTIDKEY,kTKPDDETAILCATALOG_APIPRODUCTCONDITIONKEY,kTKPDDETAILCATALOG_APIPRODUCTNAMEKEY]];
 
     [catalogMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
     
@@ -304,16 +318,26 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILCATALOG_APICATALOGINFOKEY toKeyPath:kTKPDDETAILCATALOG_APICATALOGINFOKEY withMapping:infoMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILCATALOG_APICATALOGREVIEWKEY toKeyPath:kTKPDDETAILCATALOG_APICATALOGREVIEWKEY withMapping:reviewMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILCATALOG_APICATALOGMARKETPRICEKEY toKeyPath:kTKPDDETAILCATALOG_APICATALOGMARKETPRICEKEY withMapping:marketpriceMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APICATALOGSPECSPATHKEY toKeyPath:kTKPDDETAILCATALOG_APISPECSKEY withMapping:specsMapping]];
     
+    RKRelationshipMapping *imagesRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APICATALOGIMAGEPATHKEY toKeyPath:kTKPDDETAILCATALOG_APICATALOGIMAGESKEY withMapping:imagesMapping];
+    [resultMapping addPropertyMapping:imagesRel];
+    
+    RKRelationshipMapping *locationRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILCATALOG_APILOCATIONKEY toKeyPath:kTKPDDETAILCATALOG_APILOCATIONKEY withMapping:locationMapping];
+    [resultMapping addPropertyMapping:locationRel];
+    RKRelationshipMapping *shopsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILCATALOG_APICATALOGSHOPSKEY toKeyPath:kTKPDDETAILCATALOG_APICATALOGSHOPSKEY withMapping:shopsMapping];
+    [resultMapping addPropertyMapping:shopsRel];
+    
+    //TODO::
+    RKRelationshipMapping *productlistRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPRODUCTLISTPATHKEY toKeyPath:kTKPDDETAILCATALOG_APIPRODUCTLISTKEY withMapping:productlistMapping];
+    [shopsMapping addPropertyMapping:productlistRel];
+    
+    [specsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APICATALOGSPECCHILDSPATHKEY toKeyPath:kTKPDDETAILCATALOG_APISPECCHILDSKEY withMapping:specchildsMapping]];
+    
+    // set response description
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:catalogMapping method:RKRequestMethodGET pathPattern:kTKDPDETAILCATALOG_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    RKResponseDescriptor *responseshopsDescription = [RKResponseDescriptor responseDescriptorWithMapping:shopsMapping method:RKRequestMethodGET pathPattern:kTKDPDETAILCATALOG_APIPATH keyPath:kTKPDDETAIL_APICATALOGSHOPPATHKEY statusCodes:kTkpdIndexSetStatusCodeOK];
-    
+
     [_objectmanager addResponseDescriptor:responseDescriptor];
-    [_objectmanager addResponseDescriptor:responseshopsDescription];
-    
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [dictionary setObject:responseDescriptor.mapping forKey:(responseDescriptor.keyPath ?: [NSNull null])];
-    [dictionary setObject:responseshopsDescription.mapping forKey:(responseshopsDescription.keyPath ?: [NSNull null])];
     
 }
 
@@ -368,7 +392,8 @@
             _isrefreshseller = NO;
             _continerscrollview.hidden = YES;
             CatalogSellerViewController *vc = [CatalogSellerViewController new];
-            vc.data = @{kTKPDDETAIL_DATASHOPSKEY: [_detailcatalog objectForKey:kTKPDDETAIL_APICATALOGSHOPPATHKEY]?:@[]};
+            //TODO::
+            //vc.data = @{kTKPDDETAIL_DATASHOPSKEY: [_detailcatalog objectForKey:kTKPDDETAIL_APICATALOGSHOPPATHKEY]?:@[]};
             [self.navigationController pushViewController:vc animated:NO];
         }
         else{
@@ -407,7 +432,8 @@
             // go to seller list
             _isrefreshseller = NO;
             CatalogSellerViewController *vc = [CatalogSellerViewController new];
-            vc.data = @{kTKPDDETAIL_DATASHOPSKEY: [_detailcatalog objectForKey:kTKPDDETAIL_APICATALOGSHOPPATHKEY]?:@[]};
+            //TODO::
+            //vc.data = @{kTKPDDETAIL_DATASHOPSKEY: [_detailcatalog objectForKey:kTKPDDETAIL_APICATALOGSHOPPATHKEY]?:@[]};
             [self.navigationController pushViewController:vc animated:NO];
         }
     }

@@ -29,6 +29,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *favbutton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
+@property (strong, nonatomic) NSIndexPath *indexpath;
+
 + (id)newcell;
 
 @end

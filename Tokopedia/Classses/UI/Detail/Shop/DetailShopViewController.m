@@ -44,7 +44,7 @@
 - (void)configureRestKit
 {
     // initialize RestKit
-    RKObjectManager *objectManager =  [RKObjectManager sharedManager];
+    RKObjectManager *objectManager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *shopMapping = [RKObjectMapping mappingForClass:[Shop class]];

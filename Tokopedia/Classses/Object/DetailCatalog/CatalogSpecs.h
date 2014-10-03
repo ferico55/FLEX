@@ -7,7 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SpecChilds.h"
 
 @interface CatalogSpecs : NSObject
+
+@property (strong, nonatomic) SpecChilds *spec_childs;
+@property (strong, nonatomic) NSString *spec_header;
 
 @end

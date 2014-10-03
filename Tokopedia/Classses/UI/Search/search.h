@@ -59,6 +59,10 @@
 
 /** shop **/
 #define kTKPDSEARCH_APISHOPIMAGEKEY @"shop_image"
+#define kTKPDSEARCH_APISHOPLOCATIONKEY @"shop_location"
+#define kTKPDSEARCH_APISHOPIDKEY @"shop_id"
+#define kTKPDSEARCH_APISHOPTOTALTRANSACTIONKEY @"shop_total_transaction"
+#define kTKPDSEARCH_APISHOPTOTALFAVKEY @"shop_total_favorite"
 
 /** redirect url **/
 #define kTKPDSEARCH_APIREDIRECTURLKEY @"redirect_url"
@@ -80,8 +84,8 @@
 
 #define kTKPDSEARCH_APIURINEXTKEY @"uri_next"
 
-#define kTKPDSEARCH_APIPATHMAPPINGLISTKEY @"result.list"
-#define kTKPDSEARCH_APIPATHMAPPINGPAGINGKEY @"result.paging"
+#define kTKPDSEARCH_APILISTKEY @"list"
+#define kTKPDSEARCH_APIPAGINGKEY @"paging"
 #define kTKPDSEARCH_APIPATHMAPPINGREDIRECTKEY @"result"
 
 #define kTKPDSEARCH_APIPRODUCTTYPEKEY @"vi"

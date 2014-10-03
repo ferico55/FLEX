@@ -28,11 +28,7 @@
 #define kTKPDHOME_NODATACELLTITLE @"no data"
 #define kTKPDHOME_NODATACELLDESCS @"no data description"
 
-#define kTKPDHOME_APISTATUSKEY @"status"
-#define kTKPDHOME_APISERVERPROCESSTIMEKEY @"server_process_time"
-#define kTKPDHOME_APIRESULTKEY @"result"
-
-#define kTKPDHOME_APIKEY @"list"
+#define kTKPDHOME_APILISTKEY @"list"
 #define kTKPDHOME_APIPAGINGKEY @"paging"
 #define kTKPDHOME_APIPAGEKEY @"page"
 #define kTKPDHOME_APIACTIONKEY @"action"
@@ -88,9 +84,9 @@
 #define kTKPDHOME_APILISTKEYPATH @"result.list"
 #define kTKPDHOME_APIPAGINGKEYPATH @"result.paging"
 #define kTKPDHOME_APIREDIRECTPATH @"result"
-#define kTKPDHOME_APIHASHTAGSKEYPATH @"result.hashtags"
+#define kTKPDHOME_APIHASHTAGSKEY @"hashtags"
 #define kTKPDHOME_APIDEPARTMENTTREEKEYPATH @"result.department_tree"
-#define kTKPDHOME_APIDEPARTMENTCHILDKEYPATH @"result.department_tree.child"
+#define kTKPDHOME_APIDEPARTMENTCHILDKEYPATH @"child"
 #define kTKPDHOME_APIDEPARTMENTCHILD2KEYPATH @"result.department_tree.child.cild"
 
 #define kTKPDHOME_APIURINEXTKEY @"uri_next"

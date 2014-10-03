@@ -459,7 +459,7 @@
 - (void)configureRestKit
 {
     // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedManager];
+    _objectmanager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[Product class]];

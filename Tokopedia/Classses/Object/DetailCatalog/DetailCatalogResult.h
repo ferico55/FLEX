@@ -13,14 +13,16 @@
 #import "CatalogReview.h"
 #import "CatalogMarketPlace.h"
 #import "CatalogShops.h"
+#import "CatalogLocation.h"
 
 @interface DetailCatalogResult : NSObject
 
 @property (nonatomic, strong) CatalogInfo *catalog_info;
-@property (nonatomic, strong) CatalogSpecs *catalog_specs;
+@property (nonatomic, strong) NSArray *catalog_specs;
 @property (nonatomic, strong) CatalogReview *catalog_review;
 @property (nonatomic, strong) CatalogMarketPlace *catalog_market_price;
-@property (nonatomic, strong) CatalogShops *catalog_shops;
+@property (nonatomic, strong) NSArray *catalog_shops;
 @property (nonatomic, strong) NSArray *catalog_image;
+@property (nonatomic, strong) NSArray *catalog_location;
 
 @end
