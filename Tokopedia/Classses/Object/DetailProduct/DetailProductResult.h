@@ -21,9 +21,9 @@
 @property (nonatomic, strong) Info *info;
 @property (nonatomic, strong) Statistic *statistic;
 @property (nonatomic, strong) ShopInfo *shop_info;
-@property (nonatomic, strong) WholesalePrice *wholesale_price;
-@property (nonatomic, strong) Breadcrumb *breadcrumb;
-@property (nonatomic, strong) OtherProduct *other_product;
-@property (nonatomic, strong) ProductImages *product_images;
+@property (nonatomic, strong) NSArray *wholesale_price;
+@property (nonatomic, strong) NSArray *breadcrumb;
+@property (nonatomic, strong) NSArray *other_product;
+@property (nonatomic, strong) NSArray *product_images;
 
 @end
