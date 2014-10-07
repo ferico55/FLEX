@@ -7,6 +7,7 @@
 //
 
 #import "TKPDTabShopNavigationController.h"
+#import "ShopInfoViewController.h"
 
 @interface TKPDTabShopNavigationController () <UIScrollViewDelegate> {
 	UIView* _tabbar;
@@ -103,6 +104,28 @@
     
     _scrollview.contentSize = _contentview.frame.size;
     
+    UIBarButtonItem *barbutton1;
+    NSBundle* bundle = [NSBundle mainBundle];
+    //TODO:: Change image
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+    }
+    else
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+	[barbutton1 setTag:10];
+    self.navigationItem.leftBarButtonItem = barbutton1;
+    
+    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+    }
+    else
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+	[barbutton1 setTag:11];
+    self.navigationItem.rightBarButtonItem = barbutton1;
     
 }
 
@@ -417,6 +440,25 @@
 			}
 		}
 	}
+}
+
+-(void)tapbutton:(UIButton *)sender
+{
+    switch (sender.tag) {
+        case 10:
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+            break;
+        }
+        case 11:
+        {
+            ShopInfoViewController *vc = [ShopInfoViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 - (IBAction)gesture:(UISwipeGestureRecognizer *)sender

@@ -52,6 +52,8 @@
     
     _shops = [NSMutableArray new];
     
+    [_shops removeAllObjects];
+    
     NSArray *shops = [_data objectForKey:kTKPDDETAIL_DATASHOPSKEY]?:@[];
     
     [_shops addObjectsFromArray:shops];
@@ -155,16 +157,17 @@
 			((CatalogSellerCell*)cell).delegate = self;
 		}
         
-        CatalogShops *shops = _shops[indexPath.section];
-        if (shops.product_list.count>indexPath.row){
-            ((CatalogSellerCell*)cell).namelabel.text = [shops.product_list[indexPath.row]objectForKey:kTKPDDETAILCATALOG_APIPRODUCTNAMEKEY];
-            ((CatalogSellerCell*)cell).pricelabel.text = [shops.product_list[indexPath.row]objectForKey:kTKPDDETAILCATALOG_APIPRODUCTPRICEKEY];
-            ((CatalogSellerCell*)cell).conditionlabel.text = [shops.product_list[indexPath.row]objectForKey:kTKPDDETAILCATALOG_APIPRODUCTCONDITIONKEY];
-            ((CatalogSellerCell*)cell).product_id = [[shops.product_list[indexPath.row]objectForKey:kTKPDDETAILCATALOG_APIPRODUCTIDKEY] integerValue];
+        CatalogShops *shop = _shops[indexPath.section];
+        ProductList *productlist = shop.product_list[indexPath.row];
+        if (shop.product_list.count>indexPath.row){
+            ((CatalogSellerCell*)cell).namelabel.text = productlist.product_name;
+            ((CatalogSellerCell*)cell).pricelabel.text = productlist.product_price;
+            ((CatalogSellerCell*)cell).conditionlabel.text = productlist.product_condition;
+            ((CatalogSellerCell*)cell).product_id = productlist.product_id;
         }
         
 	} else {
-		static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIEDNTIFIER;
+		static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
 		
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (cell == nil) {
@@ -196,7 +199,8 @@
             {
                 // Action Filter Button
                 FilterViewController *vc = [FilterViewController new];
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY};
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY?:@"",
+                            kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY : [_data objectForKey:kTKPDDETAIL_DATALOCATIONARRAYKEY]?:@[]};
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;

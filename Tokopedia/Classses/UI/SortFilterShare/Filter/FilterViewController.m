@@ -182,6 +182,9 @@
             {
                 // select location
                 FilterLocationViewController *vc = [FilterLocationViewController new];
+                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY]) {
+                    vc.data = @{kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY : [_data objectForKey:kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY]?:@[]};
+                }
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
@@ -280,7 +283,7 @@
 {
     NSDictionary *conditiondata = [data objectForKey:kTKPDFILTER_DATACONDITIONKEY]?:@{};
     [_conditionbutton setTitle:[conditiondata objectForKey:kTKPDFILTER_DATASORTNAMEKEY] forState:UIControlStateNormal];
-    [_detailfilter setObject:[conditiondata objectForKey:kTKPDGILTER_DATASORTVALUEKEY] forKey:kTKPDFILTER_APICONDITIONKEY];
+    [_detailfilter setObject:[conditiondata objectForKey:kTKPDFILTER_DATASORTVALUEKEY] forKey:kTKPDFILTER_APICONDITIONKEY];
 }
 
 #pragma mark - Text Field Delegate

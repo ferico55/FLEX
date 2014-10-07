@@ -23,8 +23,6 @@
                 <outlet property="pricelabel" destination="Cut-Ae-sxZ" id="CjV-y5-jse"/>
                 <outlet property="sellbutton" destination="e7n-hp-kOb" id="AGC-f7-A2t"/>
                 <outlet property="specificationbutton" destination="J0x-QF-Ecc" id="bTx-4w-dAu"/>
-                <outlet property="specificationview" destination="jSW-gv-9Gz" id="WeH-Uc-ZMU"/>
-                <outlet property="table" destination="gs5-R0-UqT" id="CqQ-tJ-sIm"/>
                 <outlet property="view" destination="3pI-pN-GLh" id="N0i-JD-MeI"/>
             </connections>
         </placeholder>
@@ -160,7 +158,7 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <view contentMode="scaleToFill" id="jSW-gv-9Gz" userLabel="SpecificationView">
+        <view contentMode="scaleToFill" id="jSW-gv-9Gz" userLabel="SpecificationView" customClass="DetailCatalogSpecView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
@@ -169,13 +167,16 @@
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     <connections>
-                        <outlet property="dataSource" destination="-1" id="XIv-Vi-YKP"/>
-                        <outlet property="delegate" destination="-1" id="zU0-dE-WUv"/>
+                        <outlet property="dataSource" destination="jSW-gv-9Gz" id="Bx0-tq-Uvm"/>
+                        <outlet property="delegate" destination="jSW-gv-9Gz" id="7Bj-0s-kDa"/>
                     </connections>
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <connections>
+                <outlet property="_tabel" destination="gs5-R0-UqT" id="KgR-im-40n"/>
+            </connections>
         </view>
     </objects>
 </document>

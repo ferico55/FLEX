@@ -27,6 +27,8 @@
     BOOL _isrefreshview;
     UIRefreshControl *_refreshControl;
     
+    Review *_review;
+    
     __weak RKObjectManager *_objectmanager;
 }
 
@@ -156,7 +158,7 @@
         
 		return cell;
     } else {
-        static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIEDNTIFIER;
+        static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
         
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
@@ -232,7 +234,10 @@
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Review class]];
-    [statusMapping addAttributeMappingsFromArray:@[kTKPDDETAIL_APISTATUSKEY,kTKPDDETAIL_APISERVERPROCESSTIMEKEY,kTKPDDETAIL_APIRESULTKEY]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APISTATUSKEY:kTKPDDETAIL_APISTATUSKEY,
+                                                        kTKPDDETAIL_APISERVERPROCESSTIMEKEY:kTKPDDETAIL_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ReviewResult class]];
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[ReviewList class]];
     [listMapping addAttributeMappingsFromArray:@[kTKPDREVIEW_APIREVIEWSHOPIDKEY,
@@ -264,23 +269,17 @@
 //                                                                    }];
 //    
     //add relationship mapping
-//    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDREVIEW_APIREVIEWRESPONSEKEY toKeyPath:kTKPDREVIEW_APIREVIEWRESPONSEKEY withMapping:responseMapping]];
-//    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDREVIEW_APIREVIEWPRODUCTOWNERKEY toKeyPath:kTKPDREVIEW_APIREVIEWPRODUCTOWNERKEY withMapping:reviewproductownerMapping]];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APILISTKEY toKeyPath:kTKPDDETAIL_APILISTKEY withMapping:listMapping];
+    [resultMapping addPropertyMapping:listRel];
+    
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPAGINGKEY toKeyPath:kTKPDDETAIL_APIPAGINGKEY withMapping:pagingMapping];
+    [resultMapping addPropertyMapping:pageRel];
     
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    RKResponseDescriptor *responseDescriptorlist = [RKResponseDescriptor responseDescriptorWithMapping:listMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:kTKPDDETAIL_APILISTKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    RKResponseDescriptor *responseDescriptorPaging = [RKResponseDescriptor responseDescriptorWithMapping:pagingMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:kTKPDDETAIL_APIPAGINGKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
-    
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-    [_objectmanager addResponseDescriptor:responseDescriptorlist];
-    [_objectmanager addResponseDescriptor:responseDescriptorPaging];
-    
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [dictionary setObject:responseDescriptorlist.mapping forKey:(responseDescriptorlist.keyPath ?: [NSNull null])];
-    [dictionary setObject:responseDescriptorPaging.mapping forKey:(responseDescriptorPaging.keyPath ?: [NSNull null])];
 }
 
 - (void)loadData
@@ -327,18 +326,16 @@
     
     id stats = [result objectForKey:@""];
     
-    Review *review = stats;
-    BOOL status = [review.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    _review = stats;
+    BOOL status = [_review.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        id page =[result objectForKey:kTKPDDETAIL_APIPAGINGKEYPATH];
-        NSArray *list = [result objectForKey:kTKPDDETAIL_APILISTKEYPATH];
+        NSArray *list = _review.result.list;
         [_list addObjectsFromArray:list];
         _headerview.hidden = NO;
         _isnodata = NO;
         
-        Paging *paging = page;
-        _urinext =  paging.uri_next;
+        _urinext =  _review.result.paging.uri_next;
         NSURL *url = [NSURL URLWithString:_urinext];
         NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
         

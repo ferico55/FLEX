@@ -14,6 +14,6 @@
 @interface TalkResult : NSObject
 
 @property (nonatomic, strong) Paging *paging;
-@property (nonatomic, strong) TalkList *list;
+@property (nonatomic, strong) NSArray *list;
 
 @end

@@ -24,4 +24,6 @@
 @property (nonatomic, assign) IBOutlet id<FilterLocationViewControllerDelegate> delegate;
 #endif
 
+@property (nonatomic, strong) NSDictionary *data;
+
 @end

@@ -10,6 +10,7 @@
 #define Tokopedia_detail_h
 
 #define kTKPDDETAIL_DATASHOPSKEY @"shop"
+#define kTKPDDETAIL_DATALOCATIONARRAYKEY @"locationarray"
 
 #define kTKPDDETAIL_APISTATUSKEY @"status"
 #define kTKPDDETAIL_APISERVERPROCESSTIMEKEY @"server_process_time"
@@ -21,10 +22,12 @@
 #define kTKPDDETAIL_APIACTIONKEY @"action"
 #define kTKPDDETAIL_APIPRODUCTIDKEY @"product_id"
 #define kTKPDDETAIL_APICATALOGIDKEY @"catalog_id"
+#define kTKPDDETAIL_APISHOPIDKEY @"shop_id"
 #define kTKPDDETAIL_APIGETDETAILACTIONKEY @"get_detail"
 #define kTKPDDETAIL_APIGETPRODUCTREVIEWKEY @"get_product_review"
 #define kTKPDDETAIL_APIGETPRODUCTTALKKEY @"get_product_talk"
 #define kTKPDDETAIL_APIGETCATALOGDETAILKEY @"get_catalog_detail"
+#define kTKPDDETAIL_APIGETSHOPDETAILKEY @"get_shop_info"
 
 #define kTKPDDETAIL_APIPAGEKEY @"page"
 #define kTKPDDETAIL_APILIMITKEY @"per_page"
@@ -99,10 +102,10 @@
 #define kTKPDDETAIL_APIBREADCRUMBPATHKEY @"breadcrumb"
 #define kTKPDDETAIL_APIOTHERPRODUCTPATHKEY @"other_product"
 #define kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY @"product_images"
-#define kTKPDDETAIL_APICATALOGIMAGEPATHKEY @"catalog_info.catalog_image"
+#define kTKPDDETAIL_APICATALOGIMAGEPATHKEY @"catalog_image"
 #define kTKPDDETAIL_APIPRODUCTLISTPATHKEY @"product_list"
-#define kTKPDDETAIL_APICATALOGSPECSPATHKEY @"result.catalog_specs"
-#define kTKPDDETAIL_APICATALOGSPECCHILDSPATHKEY @"result.catalog_specs.spec_childs"
+#define kTKPDDETAIL_APICATALOGSPECSPATHKEY @"catalog_specs"
+#define kTKPDDETAIL_APICATALOGSPECCHILDSPATHKEY @"spec_childs"
 
 #pragma mark - Shop
 
@@ -215,6 +218,9 @@
 #define kTKPDDETAILCATALOG_APINAMEKEY @"name"
 #define kTKPDDETAILCATALOG_APIMINPRICEKEY @"min_price"
 
+#define kTKPDDETAIL_APILISTKEY @"list"
+#define kTKPDDETAIL_APIPAGINGKEY @"paging"
+
 #define kTKPDDETAILCATALOG_APIPRODUCTLISTKEY @"product_list"
 #define kTKPDDETAILCATALOG_APISHOPRATEACCURACYKEY @"shop_rate_accuracy"
 #define kTKPDDETAILCATALOG_APISHOPIMAGEKEY @"shop_image"
@@ -250,7 +256,7 @@
 #define kTKDPDETAILCATALOG_APIPATH @"catalog.pl"
 #define kTKPDDETAILSHOP_APIPATH @"shop.pl"
 
-#define kTKPDDETAIL_STANDARDTABLEVIEWCELLIEDNTIFIER @"cell"
+#define kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define kTKPDDETAIL_NODATACELLTITLE @"no data"
 #define kTKPDDETAIL_NODATACELLDESCS @"no data description"
 

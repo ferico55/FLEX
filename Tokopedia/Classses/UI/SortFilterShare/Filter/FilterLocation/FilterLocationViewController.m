@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+#import "CatalogLocation.h"
+
 #import "sortfiltershare.h"
 #import "search.h"
 #import "DBManager.h"
@@ -104,13 +106,22 @@
     [_locationvalues addObject:@""];
     [_locationnames addObject:@"All Location"];
 
-    NSArray *name = [[DBManager getSharedInstance]LoadDataQueryLocationName:[NSString stringWithFormat:@"select d.district_name from ws_district d WHERE d.district_id IN (select distinct d.district_id from ws_shipping_city sc LEFT JOIN ws_district d ON sc.district_id = d.district_id order by d.district_name) order by d.district_name"]];
-    
-    NSArray *value = [[DBManager getSharedInstance]LoadDataQueryLocationValue:[NSString stringWithFormat:@"select distinct sc.district_id from ws_shipping_city sc, ws_district d where sc.district_id = d.district_id order by d.district_name"]];
-    
-    [_locationnames addObjectsFromArray:name];
-    [_locationvalues addObjectsFromArray:value];
-    
+    NSArray *locations =[_data objectForKey:kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY]?:@[];
+    if (locations.count>0) {
+        for (int i = 0; i<locations.count; i++) {
+            CatalogLocation *location = locations[i];
+            [_locationnames addObject:location.location_name];
+            [_locationvalues addObject:@(location.location_id)];
+        }
+    }
+    else{
+        NSArray *name = [[DBManager getSharedInstance]LoadDataQueryLocationName:[NSString stringWithFormat:@"select d.district_name from ws_district d WHERE d.district_id IN (select distinct d.district_id from ws_shipping_city sc LEFT JOIN ws_district d ON sc.district_id = d.district_id order by d.district_name) order by d.district_name"]];
+        
+        NSArray *value = [[DBManager getSharedInstance]LoadDataQueryLocationValue:[NSString stringWithFormat:@"select distinct sc.district_id from ws_shipping_city sc, ws_district d where sc.district_id = d.district_id order by d.district_name"]];
+        
+        [_locationnames addObjectsFromArray:name];
+        [_locationvalues addObjectsFromArray:value];
+    }
     if (_locationnames.count > 0) {
         _isnodata = NO;
     }

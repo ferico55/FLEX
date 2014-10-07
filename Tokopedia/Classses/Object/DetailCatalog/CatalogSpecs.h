@@ -11,7 +11,7 @@
 
 @interface CatalogSpecs : NSObject
 
-@property (strong, nonatomic) SpecChilds *spec_childs;
+@property (strong, nonatomic) NSArray *spec_childs;
 @property (strong, nonatomic) NSString *spec_header;
 
 @end

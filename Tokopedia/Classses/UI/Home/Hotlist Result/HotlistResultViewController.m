@@ -252,7 +252,7 @@
                 
                 NSString *urlstring = list.catalog_image?:list.product_image;
                 
-                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
+                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
                 
                 UIImageView *thumb = (UIImageView*)((HotlistResultViewCell*)cell).thumb[i];
                 thumb.image = nil;
@@ -701,7 +701,7 @@
     if (![_data objectForKey:kTKPHOME_DATAHEADERIMAGEKEY]) {
         NSString *urlstring = _hotlistdetail.result.cover_image;
         
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         //request.URL = url;
         
         UIImageView *thumb = _imageview;

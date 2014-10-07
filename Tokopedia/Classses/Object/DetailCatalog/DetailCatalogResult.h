@@ -22,7 +22,7 @@
 @property (nonatomic, strong) CatalogReview *catalog_review;
 @property (nonatomic, strong) CatalogMarketPlace *catalog_market_price;
 @property (nonatomic, strong) NSArray *catalog_shops;
-@property (nonatomic, strong) NSArray *catalog_image;
+@property (nonatomic, strong) NSString *catalog_image;
 @property (nonatomic, strong) NSArray *catalog_location;
 
 @end

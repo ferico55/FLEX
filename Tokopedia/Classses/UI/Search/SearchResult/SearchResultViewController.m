@@ -230,7 +230,7 @@
                     ((UILabel*)((SearchResultCell*)cell).labeldescription[i]).text = list.product_name?:@"";
                     ((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
                     
-                    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
+                    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
                     
                     UIImageView *thumb = (UIImageView*)((SearchResultCell*)cell).thumb[i];
                     thumb.image = nil;
@@ -260,7 +260,7 @@
                     ((UILabel*)((SearchResultCell*)cell).labelprice[i]).text = list.catalog_price?:@"";
                     ((UILabel*)((SearchResultCell*)cell).labeldescription[i]).text = list.catalog_name?:@"";
                     ((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = list.product_name?:@"";
-                    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.catalog_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
+                    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.catalog_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
                     //request.URL = url;
                     
                     UIImageView *thumb = (UIImageView*)((SearchResultCell*)cell).thumb[i];

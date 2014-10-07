@@ -12,12 +12,12 @@
 
 #import "DetailCatalogViewController.h"
 #import "CatalogSellerViewController.h"
+#import "DetailCatalogSpecView.h"
 
-@interface DetailCatalogViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface DetailCatalogViewController ()
 {
     NSMutableDictionary *_params;
     
-    NSMutableDictionary *_detailcatalog;
     BOOL _isnodata;
     BOOL _isrefreshseller;
     NSTimer *_timer;
@@ -26,6 +26,9 @@
     NSMutableArray *_headerimages;
     
     NSInteger _pageheaderimages;
+    DetailCatalogSpecView *_specview;
+    
+    Catalog *_catalog;
     __weak RKObjectManager *_objectmanager;
 }
 
@@ -45,14 +48,9 @@
 @property (strong, nonatomic) IBOutlet UIView *descriptionview;
 @property (strong, nonatomic) IBOutlet UILabel *descriptionlabel;
 
-@property (strong, nonatomic) IBOutlet UIView *specificationview;
-
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @property (weak, nonatomic) IBOutlet UIButton *buybutton;
-
-@property (weak, nonatomic) IBOutlet UITableView *table;
-
 
 - (IBAction)tap:(id)sender;
 
@@ -78,11 +76,12 @@
 {
     [super viewDidLoad];
     
-    _detailcatalog = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
     _params = [NSMutableDictionary new];
     
-    [_specificationview removeFromSuperview];
+    _specview = [DetailCatalogSpecView newview];
+    
+    [_specview removeFromSuperview];
     [_containerview setFrame:CGRectMake(_containerview.frame.origin.x, _containerview.frame.origin.y, _descriptionlabel.frame.size.width, _descriptionlabel.frame.size.height)];
     [_containerview addSubview:_descriptionlabel];
     [_continerscrollview setContentSize:CGSizeMake(self.view.frame.size.width,_descriptionlabel.frame.size.height + _headerview.frame.size.height+_buybutton.frame.size.height)];
@@ -141,7 +140,6 @@
                 if (_pageheaderimages>0) {
                     _pageheaderimages --;
                     [_headerimagescrollview setContentOffset:CGPointMake(_headerimagescrollview.frame.size.width*_pageheaderimages, 0.0f) animated:YES];
-                    
                 }
                 break;
             }
@@ -162,7 +160,7 @@
             case 13:
             {
                 // action description button
-                [_specificationview removeFromSuperview];
+                [_specview removeFromSuperview];
                 [_containerview setFrame:CGRectMake(_containerview.frame.origin.x, _containerview.frame.origin.y, _descriptionlabel.frame.size.width, _descriptionlabel.frame.size.height)];
                 [_containerview addSubview:_descriptionlabel];
                 [_continerscrollview setContentSize:CGSizeMake(self.view.frame.size.width,_descriptionlabel.frame.size.height + _headerview.frame.size.height + _buybutton.frame.size.height+64)];
@@ -172,19 +170,21 @@
             case 14:
             {
                 // action specification button
+                [_specview.tabel layoutIfNeeded];
+                CGSize tableViewSize=_specview.tabel.contentSize;
                 [_descriptionlabel removeFromSuperview];
-                [_containerview setFrame:CGRectMake(_containerview.frame.origin.x, _containerview.frame.origin.y, _specificationview.frame.size.width, _specificationview.frame.size.height)];
-                [_containerview addSubview:_specificationview];
-                [_continerscrollview setContentSize:CGSizeMake(self.view.frame.size.width,_specificationview.frame.size.height + _headerview.frame.size.height + _buybutton.frame.size.height+64)];
-                [_buybutton setFrame:CGRectMake(_buybutton.frame.origin.x, _specificationview.frame.size.height + _headerview.frame.size.height+_buybutton.frame.size.height, _buybutton.frame.size.width, _buybutton.frame.size.height)];
+                [_containerview setFrame:CGRectMake(_containerview.frame.origin.x, _containerview.frame.origin.y, _specview.frame.size.width, tableViewSize.height)];
+                [_containerview addSubview:_specview];
+                [_continerscrollview setContentSize:CGSizeMake(self.view.frame.size.width,tableViewSize.height + _headerview.frame.size.height + _buybutton.frame.size.height+64)];
+                [_buybutton setFrame:CGRectMake(_buybutton.frame.origin.x, tableViewSize.height + _headerview.frame.size.height+_buybutton.frame.size.height, _buybutton.frame.size.width, _buybutton.frame.size.height)];
                 break;
             }
             case 15:
             {
                 // action buy button - go to seller list
                 CatalogSellerViewController *vc = [CatalogSellerViewController new];
-                //TODO::
-                //vc.data = @{kTKPDDETAIL_DATASHOPSKEY: [_detailcatalog objectForKey:kTKPDDETAIL_APICATALOGSHOPPATHKEY]?:@[]};
+                vc.data = @{kTKPDDETAIL_DATASHOPSKEY: (_catalog.result.catalog_shops)?:@"",
+                            kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -194,32 +194,32 @@
     }
 }
 
-#pragma mark - Tableview Data Source
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 0;
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    UITableViewCell* cell = nil;
-    if (!_isnodata) {
-     
-	}
-	return cell;
-}
-
-#pragma mark - Table View Delegate
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	if (_isnodata) {
-		cell.backgroundColor = [UIColor whiteColor];
-	}
-    
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-	if (row == indexPath.row) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
-}
+//#pragma mark - Tableview Data Source
+//-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+//    return 0;
+//}
+//
+//-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    
+//    UITableViewCell* cell = nil;
+//    if (!_isnodata) {
+//     
+//	}
+//	return cell;
+//}
+//
+//#pragma mark - Table View Delegate
+//- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//	if (_isnodata) {
+//		cell.backgroundColor = [UIColor whiteColor];
+//	}
+//    
+//    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
+//	if (row == indexPath.row) {
+//		NSLog(@"%@", NSStringFromSelector(_cmd));
+//	}
+//}
 
 
 #pragma mark - UIScrollView Delegate
@@ -247,10 +247,11 @@
         
     // setup object mappings
     RKObjectMapping *catalogMapping = [RKObjectMapping mappingForClass:[Catalog class]];
-    [catalogMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APISTATUSKEY:kTKPDDETAIL_APISTATUSKEY,kTKPDDETAIL_APISERVERPROCESSTIMEKEY:kTKPDDETAIL_APISERVERPROCESSTIMEKEY}];
+    [catalogMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APISTATUSKEY:kTKPDDETAIL_APISTATUSKEY,
+                                                         kTKPDDETAIL_APISERVERPROCESSTIMEKEY:kTKPDDETAIL_APISERVERPROCESSTIMEKEY}];
 
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailCatalogResult class]];
-
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILCATALOG_APICATALOGIMAGEKEY:kTKPDDETAILCATALOG_APICATALOGIMAGEKEY}];
     
     RKObjectMapping *infoMapping = [RKObjectMapping mappingForClass:[CatalogInfo class]];
     [infoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILCATALOG_APICATALOGDESCKEY:kTKPDDETAILCATALOG_APICATALOGDESCKEY,
@@ -275,7 +276,8 @@
                                                           kTKPDDETAILCATALOG_APITOTALSHOPKEY:kTKPDDETAILCATALOG_APITOTALSHOPKEY}];
     
     RKObjectMapping *imagesMapping = [RKObjectMapping mappingForClass:[CatalogImage class]];
-    [imagesMapping addAttributeMappingsFromArray:@[kTKPDDETAILCATALOG_APIIMAGEPRIMARYKEY,kTKPDDETAILCATALOG_APIIMAGESRCKEY]];
+    [imagesMapping addAttributeMappingsFromArray:@[kTKPDDETAILCATALOG_APIIMAGEPRIMARYKEY,
+                                                   kTKPDDETAILCATALOG_APIIMAGESRCKEY]];
 
     RKObjectMapping *reviewMapping = [RKObjectMapping mappingForClass:[CatalogReview class]];
     [reviewMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILCATALOG_APIREVIEWIMAGEKEY:kTKPDDETAILCATALOG_APIREVIEWIMAGEKEY,
@@ -309,8 +311,12 @@
                                                     ]];
     
     RKObjectMapping *productlistMapping = [RKObjectMapping mappingForClass:[ProductList class]];
-    [productlistMapping addAttributeMappingsFromArray:@[kTKPDDETAILCATALOG_APIPRODUCTPRICEKEY,kTKPDDETAILCATALOG_APIPRODUCTIDKEY,kTKPDDETAILCATALOG_APIPRODUCTCONDITIONKEY,kTKPDDETAILCATALOG_APIPRODUCTNAMEKEY]];
+    [productlistMapping addAttributeMappingsFromArray:@[kTKPDDETAILCATALOG_APIPRODUCTPRICEKEY,
+                                                        kTKPDDETAILCATALOG_APIPRODUCTIDKEY,
+                                                        kTKPDDETAILCATALOG_APIPRODUCTCONDITIONKEY,
+                                                        kTKPDDETAILCATALOG_APIPRODUCTNAMEKEY]];
 
+    // Relationship Mapping
     [catalogMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
     
     [infoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILCATALOG_APICATALOGPRICEKEY toKeyPath:kTKPDDETAILCATALOG_APICATALOGPRICEKEY withMapping:priceMapping]];
@@ -318,21 +324,23 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILCATALOG_APICATALOGINFOKEY toKeyPath:kTKPDDETAILCATALOG_APICATALOGINFOKEY withMapping:infoMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILCATALOG_APICATALOGREVIEWKEY toKeyPath:kTKPDDETAILCATALOG_APICATALOGREVIEWKEY withMapping:reviewMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILCATALOG_APICATALOGMARKETPRICEKEY toKeyPath:kTKPDDETAILCATALOG_APICATALOGMARKETPRICEKEY withMapping:marketpriceMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APICATALOGSPECSPATHKEY toKeyPath:kTKPDDETAILCATALOG_APISPECSKEY withMapping:specsMapping]];
     
     RKRelationshipMapping *imagesRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APICATALOGIMAGEPATHKEY toKeyPath:kTKPDDETAILCATALOG_APICATALOGIMAGESKEY withMapping:imagesMapping];
-    [resultMapping addPropertyMapping:imagesRel];
+    [infoMapping addPropertyMapping:imagesRel];
     
     RKRelationshipMapping *locationRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILCATALOG_APILOCATIONKEY toKeyPath:kTKPDDETAILCATALOG_APILOCATIONKEY withMapping:locationMapping];
     [resultMapping addPropertyMapping:locationRel];
     RKRelationshipMapping *shopsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILCATALOG_APICATALOGSHOPSKEY toKeyPath:kTKPDDETAILCATALOG_APICATALOGSHOPSKEY withMapping:shopsMapping];
     [resultMapping addPropertyMapping:shopsRel];
     
-    //TODO::
     RKRelationshipMapping *productlistRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPRODUCTLISTPATHKEY toKeyPath:kTKPDDETAILCATALOG_APIPRODUCTLISTKEY withMapping:productlistMapping];
     [shopsMapping addPropertyMapping:productlistRel];
     
-    [specsMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APICATALOGSPECCHILDSPATHKEY toKeyPath:kTKPDDETAILCATALOG_APISPECCHILDSKEY withMapping:specchildsMapping]];
+    RKRelationshipMapping *specsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APICATALOGSPECSPATHKEY toKeyPath:kTKPDDETAIL_APICATALOGSPECSPATHKEY withMapping:specsMapping];
+    [resultMapping addPropertyMapping:specsRel];
+    
+    RKRelationshipMapping *specchildsRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APICATALOGSPECCHILDSPATHKEY toKeyPath:kTKPDDETAIL_APICATALOGSPECCHILDSPATHKEY withMapping:specchildsMapping];
+    [specsMapping addPropertyMapping:specchildsRel];
     
     // set response description
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:catalogMapping method:RKRequestMethodGET pathPattern:kTKDPDETAILCATALOG_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
@@ -378,12 +386,12 @@
     
     id stats = [result objectForKey:@""];
     
-    Catalog *catalog = stats;
-    BOOL status = [catalog.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    _catalog = stats;
+    BOOL status = [_catalog.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [_detailcatalog addEntriesFromDictionary:result];
-        [self setHeaderviewData:catalog];
+        [self setHeaderviewData];
+        [self setSpecsViewData];
         _isnodata = NO;
         
         if(_isrefreshseller)
@@ -392,8 +400,8 @@
             _isrefreshseller = NO;
             _continerscrollview.hidden = YES;
             CatalogSellerViewController *vc = [CatalogSellerViewController new];
-            //TODO::
-            //vc.data = @{kTKPDDETAIL_DATASHOPSKEY: [_detailcatalog objectForKey:kTKPDDETAIL_APICATALOGSHOPPATHKEY]?:@[]};
+            vc.data = @{kTKPDDETAIL_DATASHOPSKEY: (_catalog.result.catalog_shops),
+                        kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location};
             [self.navigationController pushViewController:vc animated:NO];
         }
         else{
@@ -432,26 +440,24 @@
             // go to seller list
             _isrefreshseller = NO;
             CatalogSellerViewController *vc = [CatalogSellerViewController new];
-            //TODO::
-            //vc.data = @{kTKPDDETAIL_DATASHOPSKEY: [_detailcatalog objectForKey:kTKPDDETAIL_APICATALOGSHOPPATHKEY]?:@[]};
+            vc.data = @{kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location};
             [self.navigationController pushViewController:vc animated:NO];
         }
     }
 }
 
 #pragma mark - Methods
--(void)setHeaderviewData:(id)catalog{
+-(void)setHeaderviewData{
     
-    Catalog *c = catalog;
-    _namelabel.text = c.result.catalog_info.catalog_name;
-    _pricelabel.text = [NSString stringWithFormat:@"%@ - %@", c.result.catalog_info.catalog_price.price_min, c.result.catalog_info.catalog_price.price_max];
-    _descriptionlabel.text = c.result.catalog_info.catalog_description;
+    _namelabel.text = _catalog.result.catalog_info.catalog_name;
+    _pricelabel.text = [NSString stringWithFormat:@"%@ - %@", _catalog.result.catalog_info.catalog_price.price_min, _catalog.result.catalog_info.catalog_price.price_max];
+    _descriptionlabel.text = _catalog.result.catalog_info.catalog_description;
     
     //Calculate the expected size based on the font and linebreak mode of your label
     // FLT_MAX here simply means no constraint in height
     CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
     
-    CGSize expectedLabelSize = [c.result.catalog_info.catalog_description sizeWithFont:_descriptionlabel.font constrainedToSize:maximumLabelSize lineBreakMode:_descriptionlabel.lineBreakMode];
+    CGSize expectedLabelSize = [_catalog.result.catalog_info.catalog_description sizeWithFont:_descriptionlabel.font constrainedToSize:maximumLabelSize lineBreakMode:_descriptionlabel.lineBreakMode];
     
     //adjust the label the the new height.
     CGRect newFrame = _descriptionlabel.frame;
@@ -461,15 +467,15 @@
     [_buybutton setFrame:CGRectMake(_buybutton.frame.origin.x, _descriptionlabel.frame.size.height + _headerview.frame.size.height+_buybutton.frame.size.height, _buybutton.frame.size.width, _buybutton.frame.size.height)];
     [_continerscrollview setContentSize:CGSizeMake(self.view.frame.size.width,_descriptionlabel.frame.size.height + _headerview.frame.size.height + _buybutton.frame.size.height+64)];
     
-    NSArray *images = c.result.catalog_info.catalog_image;
+    NSArray *images = _catalog.result.catalog_info.catalog_image;
     
     for(int i = 0; i< images.count; i++)
     {
         CGFloat y = i * 320;
         
-        NSDictionary *image = images[i];
+        CatalogImage *image = images[i];
         
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[image objectForKey:kTKPDDETAILCATALOG_APIIMAGESRCKEY]] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         //request.URL = url;
         
         UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _headerimagescrollview.frame.size.width, _headerimagescrollview.frame.size.height)];
@@ -506,15 +512,24 @@
     _headerimagescrollview.contentSize = CGSizeMake(_headerimages.count*320,0);
 }
 
+-(void)setSpecsViewData{
+
+    _specview.data = @{kTKPDDETAILCATALOG_APICATALOGSPECSKEY: _catalog.result.catalog_specs};
+    [_specview.tabel layoutIfNeeded];
+    CGSize tableViewSize=_specview.tabel.contentSize;
+    CGRect frame = _specview.frame;
+    frame.size.height = tableViewSize.height;
+    [_specview.tabel setFrame:frame];
+    [_specview setFrame:frame];
+    
+}
+
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     /** clear object **/
     [self cancel];
-    [_detailcatalog removeAllObjects];
-    
     _requestcount = 0;
     
-    [_table reloadData];
     /** request data **/
     [self configureRestKit];
     [self loadData];
