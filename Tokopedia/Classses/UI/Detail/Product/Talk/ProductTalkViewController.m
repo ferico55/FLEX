@@ -124,6 +124,10 @@
             ((ProductTalkCell*)cell).timelabel.text = list.talk_create_time;
             ((ProductTalkCell*)cell).commentlabel.text = list.talk_message;
             
+            NSString *commentstring = [list.talk_total_comment stringByAppendingFormat:
+                                 @" Comment"];
+            [((ProductTalkCell*)cell).commentbutton setTitle:commentstring forState:UIControlStateNormal];
+            
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
             UIImageView *thumb = ((ProductTalkCell*)cell).thumb;
@@ -399,11 +403,13 @@
     for (int i = 0; i<_headerimages.count; i++) {
         CGFloat y = i * 320;
         UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
-         thumb.image = ((UIImageView*)_headerimages[i]).image;
+        thumb.image = ((UIImageView*)_headerimages[i]).image;
+        thumb.contentMode = UIViewContentModeScaleAspectFit;
         [_imagescrollview addSubview:thumb];
     }
     
     _imagescrollview.contentSize = CGSizeMake(_headerimages.count*320,0);
+    _imagescrollview.pagingEnabled = YES;
     
     _pagecontrol.hidden = _headerimages.count <= 1?YES:NO;
     _pagecontrol.numberOfPages = _headerimages.count;
