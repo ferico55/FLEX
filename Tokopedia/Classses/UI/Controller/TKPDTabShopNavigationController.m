@@ -7,13 +7,14 @@
 //
 
 #import "TKPDTabShopNavigationController.h"
+#import "ShopInfoViewController.h"
 
-@interface TKPDTabShopNavigationController () {
+@interface TKPDTabShopNavigationController () <UIScrollViewDelegate> {
 	UIView* _tabbar;
 	NSInteger _unloadSelectedIndex;
 	NSArray* _unloadViewControllers;
     
-    NSMutableArray *_chevrons;
+    NSArray *_chevrons;
 }
 
 
@@ -23,12 +24,14 @@
 @property (weak, nonatomic) IBOutlet UILabel *shopdesclabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationlabel;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
+@property (strong, nonatomic) IBOutlet UIView *contentview;
 
 @property (weak, nonatomic) IBOutlet UIView *container;
 @property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
 
 
-- (IBAction)tap:(UIButton*)sender;
+- (IBAction)tap:(UIButton* )sender;
 
 - (UIEdgeInsets)contentInsetForContainerController;
 - (UIViewController*)isChildViewControllersContainsNavigationController:(UIViewController*)controller;
@@ -90,9 +93,7 @@
 {
     [super viewDidLoad];
     
-    
-    _buttons = [NSMutableArray new];
-    _chevrons = [NSMutableArray new];
+    _chevrons = _buttons;
 	
 	if (_unloadSelectedIndex != -1) {
 		[self setViewControllers:_unloadViewControllers];
@@ -100,6 +101,32 @@
 		_unloadSelectedIndex = -1;
 		_unloadViewControllers = nil;
 	}
+    
+    _scrollview.contentSize = _contentview.frame.size;
+    
+    UIBarButtonItem *barbutton1;
+    NSBundle* bundle = [NSBundle mainBundle];
+    //TODO:: Change image
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+    }
+    else
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+	[barbutton1 setTag:10];
+    self.navigationItem.leftBarButtonItem = barbutton1;
+    
+    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+    }
+    else
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+	[barbutton1 setTag:11];
+    self.navigationItem.rightBarButtonItem = barbutton1;
+    
 }
 
 - (void)viewDidLayoutSubviews
@@ -145,12 +172,12 @@
 #pragma mark -
 #pragma mark Properties
 
-- (void)setViewControllers:(NSArray *)viewControllers withtitles:(NSArray*)titles
+- (void)setViewControllers:(NSArray *)viewControllers
 {
-	[self setViewControllers:viewControllers animated:YES withtitles:(NSArray*)titles];
+	[self setViewControllers:viewControllers animated:YES];
 }
 
-- (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated withtitles:(NSArray*)titles
+- (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated
 {
 	if (viewControllers != nil) {
         
@@ -413,6 +440,25 @@
 			}
 		}
 	}
+}
+
+-(void)tapbutton:(UIButton *)sender
+{
+    switch (sender.tag) {
+        case 10:
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+            break;
+        }
+        case 11:
+        {
+            ShopInfoViewController *vc = [ShopInfoViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 - (IBAction)gesture:(UISwipeGestureRecognizer *)sender

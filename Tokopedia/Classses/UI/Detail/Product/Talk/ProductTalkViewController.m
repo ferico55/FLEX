@@ -26,6 +26,7 @@
     BOOL _isrefreshview;
     UIRefreshControl *_refreshControl;
     
+    Talk *_talk;
     __weak RKObjectManager *_objectmanager;
 }
 
@@ -246,7 +247,11 @@
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Talk class]];
-    [statusMapping addAttributeMappingsFromArray:@[kTKPDDETAIL_APISTATUSKEY,kTKPDDETAIL_APISERVERPROCESSTIMEKEY,kTKPDDETAIL_APIRESULTKEY]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APISTATUSKEY:kTKPDDETAIL_APISTATUSKEY,
+                                                        kTKPDDETAIL_APISERVERPROCESSTIMEKEY:kTKPDDETAIL_APISERVERPROCESSTIMEKEY
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TalkResult class]];
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TalkList class]];
     [listMapping addAttributeMappingsFromArray:@[kTKPDREVIEW_APITALKTOTALCOMMENTKEY,
@@ -261,20 +266,18 @@
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
     
+    // Relationship Mapping
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APILISTKEY toKeyPath:kTKPDDETAIL_APILISTKEY withMapping:listMapping];
+    [resultMapping addPropertyMapping:listRel];
+    
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPAGINGKEY toKeyPath:kTKPDDETAIL_APIPAGINGKEY withMapping:pagingMapping];
+    [resultMapping addPropertyMapping:pageRel];
+    
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    RKResponseDescriptor *responseDescriptorlist = [RKResponseDescriptor responseDescriptorWithMapping:listMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:kTKPDDETAIL_APILISTKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    RKResponseDescriptor *responseDescriptorPaging = [RKResponseDescriptor responseDescriptorWithMapping:pagingMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:kTKPDDETAIL_APIPAGINGKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
-    
+
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-    [_objectmanager addResponseDescriptor:responseDescriptorlist];
-    [_objectmanager addResponseDescriptor:responseDescriptorPaging];
-    
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [dictionary setObject:responseDescriptorlist.mapping forKey:(responseDescriptorlist.keyPath ?: [NSNull null])];
-    [dictionary setObject:responseDescriptorPaging.mapping forKey:(responseDescriptorPaging.keyPath ?: [NSNull null])];
 }
 
 - (void)loadData
@@ -319,17 +322,15 @@
     
     id stats = [result objectForKey:@""];
     
-    Talk *talk = stats;
-    BOOL status = [talk.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    _talk = stats;
+    BOOL status = [_talk.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
         
-        NSArray *list = [result objectForKey:kTKPDDETAIL_APILISTKEYPATH];
+        NSArray *list = _talk.result.list;
         [_list addObjectsFromArray:list];
         
-        id page =[result objectForKey:kTKPDDETAIL_APIPAGINGKEYPATH];
-        Paging *paging = page;
-        _urinext =  paging.uri_next;
+        _urinext =  _talk.result.paging.uri_next;
         NSURL *url = [NSURL URLWithString:_urinext];
         NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
         

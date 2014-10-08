@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+#import "HotlistDetail.h"
+
 #import "DBManager.h"
 #import "category.h"
 #import "CategoryMenuViewCell.h"
@@ -26,6 +28,8 @@
     
     /** url to the next page **/
     NSString *_urinext;
+    
+    DepartmentTree *_departmenttree;
     
     BOOL _isnodata;
 }
@@ -97,44 +101,17 @@
     _table.delegate = self;
     _table.dataSource = self;
     
-    //TODO set d_id all category
-    
-    NSArray *departmenttree =[_data objectForKey:kTKPDCATEGORY_APIDEPARTMENTTREEKEY];
-    NSArray *departmentchild = [_data objectForKey:kTKPDCATEGORY_APIDEPARTMENTCHILDKEY];
-    if (departmenttree && departmenttree.count != 0) {
-        if (![_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]) {
-            [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:@(0),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:@"All Category"}];
-        }
-        else{
-            [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:@(0),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:[NSString stringWithFormat:@"All Category %@",[_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]]}];
-        }
-        //[_menu addObjectsFromArray:[_data objectForKey:kTKPDCATEGORY_APIDEPARTMENTTREEKEY]];
-        /** ceck is have a child or not **/
-        for (int i = 0 ; i<departmenttree.count; i++) {
-            DepartmentTree *dt =[_data objectForKey:kTKPDCATEGORY_APIDEPARTMENTTREEKEY][i];
-            NSArray * datachild = dt.child;
-            if (datachild == nil || datachild.count == 0) {
-                [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:dt.d_id,kTKPDCATEGORY_DATATITLEKEY:dt.title,kTKPDCATEGORY_DATAISNULLCHILD:@(YES)}];
-            }
-            else
-                [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:dt.d_id,kTKPDCATEGORY_DATATITLEKEY:dt.title,kTKPDCATEGORY_DATAISNULLCHILD:@(NO),kTKPDCATEGORY_APIDEPARTMENTCHILDKEY:datachild}];
-        }
-    }
-    else if (departmentchild) {
-        if (![_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]) {
-            [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:[_data objectForKey:kTKPDCATEGORY_DATADIDALLCATEGORYKEY],kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:@"All Category"}];
-        }
-        else{
-            [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:[_data objectForKey:kTKPDCATEGORY_DATADIDALLCATEGORYKEY],kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:[NSString stringWithFormat:@"All Category %@",[_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]]}];
-        }
+    NSArray *departmenttree =[_data objectForKey:kTKPDCATEGORY_APIDEPARTMENTTREEKEY]?:@[];
+    if (departmenttree) {
+        [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:[_data objectForKey:kTKPDCATEGORY_DATADIDALLCATEGORYKEY]?:@(0),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:[NSString stringWithFormat:@"All Category %@",[_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]?:@""]}];
 
-        for (int i = 0 ; i<departmentchild.count; i++) {
-            NSArray *datachild = [departmentchild[i] objectForKey:kTKPDCATEGORY_APIDEPARTMENTCHILDKEY]?:@"";
-            if ([datachild isEqual:@""]) {
-                [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:[departmentchild[i] objectForKey:kTKPDCATEGORY_DATADIDKEY],kTKPDCATEGORY_DATATITLEKEY:[departmentchild[i] objectForKey:kTKPDCATEGORY_DATATITLEKEY],kTKPDCATEGORY_DATAISNULLCHILD:@(YES)}];
+        for (int i = 0 ; i<departmenttree.count; i++) {
+            _departmenttree = departmenttree[i];
+            if (_departmenttree.child == nil) {
+                [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:_departmenttree.d_id ,kTKPDCATEGORY_DATATITLEKEY:_departmenttree.title,kTKPDCATEGORY_DATAISNULLCHILD:@(YES)}];
             }
             else
-                [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:[departmentchild[i] objectForKey:kTKPDCATEGORY_DATADIDKEY],kTKPDCATEGORY_DATATITLEKEY:[departmentchild[i] objectForKey:kTKPDCATEGORY_DATATITLEKEY],kTKPDCATEGORY_DATAISNULLCHILD:@(NO),kTKPDCATEGORY_APIDEPARTMENTCHILDKEY:datachild}];
+                [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:_departmenttree.d_id,kTKPDCATEGORY_DATATITLEKEY:_departmenttree.title,kTKPDCATEGORY_DATAISNULLCHILD:@(NO),kTKPDCATEGORY_APIDEPARTMENTCHILDKEY:_departmenttree.child}];
         }
     }
     else{
@@ -293,39 +270,14 @@
 	return cell;
 }
 
-#pragma mark - Table View Delegate
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	if (_isnodata) {
-		cell.backgroundColor = [UIColor whiteColor];
-	}
-    
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
-	if (row == indexPath.row) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-		
-        if (_urinext != NULL && ![_urinext isEqualToString:@""]) {
-            //NSLog(@"%@", NSStringFromSelector(_cmd));
-            //[self request:NO withrefreshControl:nil];
-        }
-	}
-}
-
-
 #pragma mark - Cell Delegate
 -(void)CategoryMenuViewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath{
     if([[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATAISNULLCHILD] isEqual:@(0)]){
         CategoryMenuViewController *vc = [CategoryMenuViewController new];
-        if ([_data objectForKey:kTKPDCATEGORY_APIDEPARTMENTTREEKEY]) {
-            vc.data = @{kTKPDCATEGORY_APIDEPARTMENTCHILDKEY: [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_APIDEPARTMENTCHILDKEY], kTKPDCATEGORY_DATADIDALLCATEGORYKEY: [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY]?:[NSNull null],kTKPDCATEGORY_DATATITLEKEY : [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY]};
-        }
-        else if ([_data objectForKey:kTKPDCATEGORY_APIDEPARTMENTCHILDKEY]){
-            vc.data = @{kTKPDCATEGORY_APIDEPARTMENTCHILDKEY: [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_APIDEPARTMENTCHILDKEY]?:[NSNull null], kTKPDCATEGORY_DATADIDALLCATEGORYKEY: [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY]?:[NSNull null ],kTKPDCATEGORY_DATATITLEKEY : [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY]};
-        }
-        else
-        {
-            vc.data = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY], kTKPDCATEGORY_DATATITLEKEY : [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY]};
-        }
+        NSArray *childs =[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_APIDEPARTMENTCHILDKEY]?:@[];
+        vc.data = @{kTKPDCATEGORY_APIDEPARTMENTTREEKEY : childs,
+                    kTKPDCATEGORY_DATADIDALLCATEGORYKEY: [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY]?:[NSNull null],
+                    kTKPDCATEGORY_DATATITLEKEY : [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY]};
         [self.navigationController pushViewController:vc animated:YES];
     }
     else{

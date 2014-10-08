@@ -77,7 +77,9 @@
     if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPECATALOGVIEWKEY]) {
             _sortarray = kTKPDSORT_SEARCHCATALOGSORTARRAY;
     }
-
+    if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY]) {
+        _sortarray = kTKPDSORT_SEARCHDETAILCATALOGSORTARRAY;
+    }
     
 }
 
@@ -103,7 +105,7 @@
                 //SUBMIT
                 NSIndexPath *indexpath =[_selectedsort objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
                 NSDictionary *orderdict = _sortarray[indexpath.row];
-                NSDictionary *userinfo = @{kTKPDFILTER_APIORDERBYKEY:[orderdict objectForKey:kTKPDGILTER_DATASORTVALUEKEY]?:@""};
+                NSDictionary *userinfo = @{kTKPDFILTER_APIORDERBYKEY:[orderdict objectForKey:kTKPDFILTER_DATASORTVALUEKEY]?:@""};
                 if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEHOTLISTVIEWKEY]||[[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEPRODUCTVIEWKEY]) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterProduct" object:nil userInfo:userinfo];
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -115,6 +117,13 @@
                 if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPECATALOGVIEWKEY]) {
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterCatalog" object:nil userInfo:userinfo];
                     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                }
+                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY]) {
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterDetailCatalog" object:nil userInfo:userinfo];
+                    UINavigationController *nav = (UINavigationController *)self.presentingViewController;
+                    [self dismissViewControllerAnimated:NO completion:^{
+                        [nav popViewControllerAnimated:NO];
+                    }];
                 }
                 break;
             }

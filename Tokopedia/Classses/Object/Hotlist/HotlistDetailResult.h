@@ -11,13 +11,15 @@
 #import "Paging.h"
 #import "Hashtags.h"
 #import "DepartmentTree.h"
+#import "List.h"
 
 @interface HotlistDetailResult : NSObject
 
 @property (nonatomic, strong) NSString *cover_image;
 @property (nonatomic, strong) NSString *desc_key;
 @property (nonatomic, strong) Paging *paging;
-@property (nonatomic, strong) Hashtags *hashtags;
-@property (nonatomic, strong) DepartmentTree *department_tree;
+@property (nonatomic, strong) NSArray *hashtags;
+@property (nonatomic, strong) NSArray *department_tree;
+@property (nonatomic, strong) NSArray *list;
 
 @end

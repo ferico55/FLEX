@@ -21,4 +21,8 @@
 
 #define kTKPDREQUEST_REFRESHMESSAGE @"Pull to Refresh"
 
+#define kTKPD_APISTATUSKEY @"status"
+#define kTKPD_APISERVERPROCESSTIMEKEY @"server_process_time"
+#define kTKPD_APIRESULTKEY @"result"
+
 #endif

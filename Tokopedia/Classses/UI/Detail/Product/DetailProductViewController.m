@@ -30,9 +30,7 @@
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController () <UITableViewDelegate, UITableViewDataSource, DetailProductInfoCellDelegate>
 {
-    NSMutableDictionary *_detailproduct;
     NSMutableDictionary *_datatalk;
-    NSMutableArray *_detailwholesale;
     NSMutableArray *_otherproductviews;
     
     NSMutableIndexSet *expandedSections;
@@ -53,6 +51,9 @@
     NSInteger _pageheaderimages;
     
     UILabel *_desclabel;
+
+    Product *_product;
+
     
     __weak RKObjectManager *_objectmanager;
 }
@@ -113,9 +114,7 @@
 {
     [super viewDidLoad];
     
-    _detailproduct = [NSMutableDictionary new];
     _datatalk = [NSMutableDictionary new];
-    _detailwholesale = [NSMutableArray new];
     _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
     
@@ -390,6 +389,7 @@
                 //((DetailProductWholesaleCell*)cell).delegate = self;
             }
         
+
                 id products = [_detailproduct objectForKey:@""];
                 Product *product = products;
                 NSString *productdesc = product.result.info.product_description;
@@ -403,6 +403,7 @@
         
             //[_desclabel setNumberOfLines:0];
             //[_desclabel sizeToFit];
+
         //}
         return cell;
     }
@@ -416,7 +417,7 @@
                     cell = [DetailProductWholesaleCell newcell];
                     //((DetailProductWholesaleCell*)cell).delegate = self;
                 }
-            ((DetailProductWholesaleCell*)cell).data = @{kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY :[_detailproduct objectForKey:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY]?:@[]};
+            ((DetailProductWholesaleCell*)cell).data = @{kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY : _product.result.wholesale_price};
             //}
             return cell;
         }
@@ -456,13 +457,11 @@
 -(void)productinfocell:(UITableViewCell*)cell withtableview:(UITableView*)tableView
 {
 
-    id products = [_detailproduct objectForKey:@""];
-    Product *product = products;
-    ((DetailProductInfoCell*)cell).minorderlabel.text = [NSString stringWithFormat:@"%d",product.result.info.product_min_order];
-    ((DetailProductInfoCell*)cell).weightlabel.text = product.result.info.product_weight_unit;
-    ((DetailProductInfoCell*)cell).insurancelabel.text = product.result.info.product_insurance;
-    ((DetailProductInfoCell*)cell).conditionlabel.text = product.result.info.product_condition;
-    NSArray *breadcrumbs = [_detailproduct objectForKey:kTKPDDETAIL_APIBREADCRUMBPATHKEY];
+    ((DetailProductInfoCell*)cell).minorderlabel.text = [NSString stringWithFormat:@"%d",_product.result.info.product_min_order];
+    ((DetailProductInfoCell*)cell).weightlabel.text = _product.result.info.product_weight_unit;
+    ((DetailProductInfoCell*)cell).insurancelabel.text = _product.result.info.product_insurance;
+    ((DetailProductInfoCell*)cell).conditionlabel.text = _product.result.info.product_condition;
+    NSArray *breadcrumbs = _product.result.breadcrumb;
     for (int i = 0; i<breadcrumbs.count; i++) {
         Breadcrumb *breadcrumb = breadcrumbs[i];
         [((UIButton*)((DetailProductInfoCell*)cell).categorybuttons[i]) setTitle:breadcrumb.department_name forState:UIControlStateNormal];
@@ -491,7 +490,7 @@
 - (void)configureRestKit
 {
     // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedManager];
+    _objectmanager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[Product class]];
@@ -561,31 +560,27 @@
     RKObjectMapping *imagesMapping = [RKObjectMapping mappingForClass:[ProductImages class]];
     [imagesMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIIMAGEIDKEY,kTKPDDETAILPRODUCT_APIIMAGESTATUSKEY,kTKPDDETAILPRODUCT_APIIMAGEDESCRIPTIONKEY,kTKPDDETAILPRODUCT_APIIMAGEPRIMARYKEY,kTKPDDETAILPRODUCT_APIIMAGESRCKEY]];
     
+    // Relationship Mapping
     [productMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
     
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY withMapping:infoMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY toKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY withMapping:statisticMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY withMapping:shopinfoMapping]];
     [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY withMapping:shopstatsMapping]];
+
+    RKRelationshipMapping *breadcrumbRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY toKeyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY withMapping:breadcrumbMapping];
+    [resultMapping addPropertyMapping:breadcrumbRel];
+    RKRelationshipMapping *otherproductRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY toKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY withMapping:otherproductMapping];
+    [resultMapping addPropertyMapping:otherproductRel];
+    RKRelationshipMapping *productimageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY toKeyPath:kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY withMapping:imagesMapping];
+    [resultMapping addPropertyMapping:productimageRel];
+    RKRelationshipMapping *wholesaleRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY toKeyPath:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY withMapping:wholesaleMapping];
+    [resultMapping addPropertyMapping:wholesaleRel];
     
+    // Response Descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:productMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    RKResponseDescriptor *responsebreadcrumbDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:breadcrumbMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY statusCodes:kTkpdIndexSetStatusCodeOK];
-    RKResponseDescriptor *responseotherproductDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:otherproductMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY statusCodes:kTkpdIndexSetStatusCodeOK];
-    RKResponseDescriptor *responseproductimagesDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:imagesMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY statusCodes:kTkpdIndexSetStatusCodeOK];
-    RKResponseDescriptor *responsewholesaleDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:wholesaleMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptor];
-    [_objectmanager addResponseDescriptor:responsebreadcrumbDescriptor];
-    [_objectmanager addResponseDescriptor:responseotherproductDescriptor];
-    [_objectmanager addResponseDescriptor:responseproductimagesDescriptor];
-    [_objectmanager addResponseDescriptor:responsewholesaleDescriptor];
-    
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [dictionary setObject:responseDescriptor.mapping forKey:(responseDescriptor.keyPath ?: [NSNull null])];
-    [dictionary setObject:responseDescriptor.mapping forKey:(responsebreadcrumbDescriptor.keyPath ?: [NSNull null])];
-    [dictionary setObject:responseDescriptor.mapping forKey:(responseotherproductDescriptor.keyPath ?: [NSNull null])];
-    [dictionary setObject:responseDescriptor.mapping forKey:(responseproductimagesDescriptor.keyPath ?: [NSNull null])];
-    [dictionary setObject:responseDescriptor.mapping forKey:(responsewholesaleDescriptor.keyPath ?: [NSNull null])];
 }
 
 - (void)loadData
@@ -623,20 +618,17 @@
     
     id stats = [result objectForKey:@""];
     
-    Product *product = stats;
-    BOOL status = [product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    _product = stats;
+    BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-
-        [_detailproduct addEntriesFromDictionary:result];
-        [_detailwholesale addObjectsFromArray:[result objectForKey:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY]?:@[]];
-        if (_detailwholesale.count > 0) {
+        if (_product.result.wholesale_price.count > 0) {
             _isnodatawholesale = NO;
         }
         
-        [self setHeaderviewData:(id)product];
-        [self setFooterViewData:(id)product.result.shop_info];
-        [self setOtherProducts:[result objectForKey:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY]?:@[]];
+        [self setHeaderviewData];
+        [self setFooterViewData];
+        [self setOtherProducts];
         _isnodata = NO;
         
 
@@ -703,7 +695,7 @@
         {
             // Tag 10 until 12 is category
             /** Goto category **/
-            NSArray *breadcrumbs = [_detailproduct objectForKey:kTKPDDETAIL_APIBREADCRUMBPATHKEY];
+            NSArray *breadcrumbs = _product.result.breadcrumb;
             Breadcrumb *breadcrumb = breadcrumbs[index-10];
             
             SearchResultViewController *vc = [SearchResultViewController new];
@@ -737,19 +729,17 @@
 }
 
 #pragma mark - Methods
--(void)setHeaderviewData:(id)product{
+-(void)setHeaderviewData{
+    _productnamelabel.text = _product.result.info.product_name;
+    _pricelabel.text = _product.result.info.product_price;
+    _countsoldlabel.text = [NSString stringWithFormat:@"%@ Sold", _product.result.statistic.product_sold];
+    _countviewlabel.text = [NSString stringWithFormat:@"%@ View", _product.result.statistic.product_view];
+    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Reviews",_product.result.statistic.product_review] forState:UIControlStateNormal];
+    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Talk About it",_product.result.statistic.product_talk] forState:UIControlStateNormal];
+    _qualitynumberlabel.text = [NSString stringWithFormat: @"%d ",_product.result.statistic.product_rating];
+    _productrateview.starscount = _product.result.statistic.product_rating;
     
-    Product *p = product;
-    _productnamelabel.text = p.result.info.product_name;
-    _pricelabel.text = p.result.info.product_price;
-    _countsoldlabel.text = [NSString stringWithFormat:@"%@ Sold", p.result.statistic.product_sold];
-    _countviewlabel.text = [NSString stringWithFormat:@"%@ View", p.result.statistic.product_view];
-    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Reviews",p.result.statistic.product_review] forState:UIControlStateNormal];
-    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Talk About it",p.result.statistic.product_talk] forState:UIControlStateNormal];
-    _qualitynumberlabel.text = [NSString stringWithFormat: @"%d ",p.result.statistic.product_rating];
-    _productrateview.starscount = p.result.statistic.product_rating;
-    
-    NSArray *images = [_detailproduct objectForKey:kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY];
+    NSArray *images = _product.result.product_images;
     
     for(int i = 0; i< images.count; i++)
     {
@@ -791,26 +781,23 @@
     
     _imagescrollview.contentSize = CGSizeMake(_headerimages.count*320,0);
     
-    [_datatalk setObject:p.result.info.product_name forKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
-    [_datatalk setObject:p.result.info.product_price forKey:kTKPDDETAILPRODUCT_APIPRODUCTPRICEKEY];
+    [_datatalk setObject:_product.result.info.product_name forKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
+    [_datatalk setObject:_product.result.info.product_price forKey:kTKPDDETAILPRODUCT_APIPRODUCTPRICEKEY];
     [_datatalk setObject:_headerimages forKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
-    
 }
 
--(void)setFooterViewData:(id)data
+-(void)setFooterViewData
 {
-    ShopInfo *shopinfo = data;
+    _shopname.text = _product.result.shop_info.shop_name;
+    _shoplocation.text = _product.result.shop_info.shop_location;
     
-    _shopname.text = shopinfo.shop_name;
-    _shoplocation.text = shopinfo.shop_location;
-    
-    _ratespeedshop.starscount = shopinfo.shop_stats.shop_speed_rate;
-    _rateserviceshop.starscount = shopinfo.shop_stats.shop_service_rate;
-    _rateaccuracyshop.starscount = shopinfo.shop_stats.shop_accuracy_rate;
+    _ratespeedshop.starscount = _product.result.shop_info.shop_stats.shop_speed_rate;
+    _rateserviceshop.starscount = _product.result.shop_info.shop_stats.shop_service_rate;
+    _rateaccuracyshop.starscount = _product.result.shop_info.shop_stats.shop_accuracy_rate;
     
     UIImageView *thumb = _shopthumb;
     
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:shopinfo.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_product.result.shop_info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     //request.URL = url;
     
     thumb.image = nil;
@@ -830,14 +817,14 @@
 
 }
 
--(void)setOtherProducts:(NSArray*)products
+-(void)setOtherProducts
 {
-    if (products) {
-        for(int i = 0; i< products.count; i++)
+
+        for(int i = 0; i< _product.result.other_product.count; i++)
         {
             CGFloat y = i * 160;
             
-            OtherProduct *product = products[i];
+            OtherProduct *product = _product.result.other_product[i];
             
             DetailProductOtherView *v = [DetailProductOtherView newview];
             [v setFrame:CGRectMake(y + 7, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
@@ -873,6 +860,5 @@
         
         _otherproductscrollview.pagingEnabled = YES;
         _otherproductscrollview.contentSize = CGSizeMake(_otherproductviews.count*160,0);
-    }
 }
 @end

@@ -12,12 +12,17 @@
 
 #import "home.h"
 #import "search.h"
+#import "sortfiltershare.h"
+#import "detail.h"
+
 #import "FilterViewController.h"
 #import "SortViewController.h"
+
 #import "HotlistResultViewCell.h"
 #import "HotlistResultViewController.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
+
 #import "TKPDTabNavigationController.h"
 #import "CategoryMenuViewController.h"
 #import "DetailProductViewController.h"
@@ -32,7 +37,6 @@
     //NSMutableArray *_hotlist;
     NSMutableDictionary *_paging;
     NSMutableArray *_buttons;
-    NSMutableDictionary *_detailhotlist;
     NSMutableDictionary *_detailfilter;
     NSMutableArray *_departmenttree;
     
@@ -48,6 +52,8 @@
     
     NSInteger _requestcount;
     NSTimer *_timer;
+    
+    HotlistDetail *_hotlistdetail;
     
     __weak RKObjectManager *_objectmanager;
 }
@@ -99,7 +105,6 @@
     // create initialitation
     _paging = [NSMutableDictionary new];
     _product = [NSMutableArray new];
-    _detailhotlist = [NSMutableDictionary new];
     _detailfilter = [NSMutableDictionary new];
     _departmenttree = [NSMutableArray new];
     
@@ -247,7 +252,7 @@
                 
                 NSString *urlstring = list.catalog_image?:list.product_image;
                 
-                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
+                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
                 
                 UIImageView *thumb = (UIImageView*)((HotlistResultViewCell*)cell).thumb[i];
                 thumb.image = nil;
@@ -337,7 +342,8 @@
         UIButton *button = (UIButton*)sender;
         // buttons tag >=20 are tags untuk hashtags
         if (button.tag >=20) {
-            NSArray *hashtagsarray = [_detailhotlist objectForKey:kTKPDHOME_APIHASHTAGSKEYPATH];
+            //TODO::
+            NSArray *hashtagsarray = _hotlistdetail.result.hashtags;
             Hashtags *hashtags = hashtagsarray[button.tag - 20];
             
             NSURL *url = [NSURL URLWithString:hashtags.url];
@@ -379,7 +385,7 @@
                 {
                     // URUTKAN
                     SortViewController *vc = [SortViewController new];
-                    vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDHOME_DATATYPEHOTLISTVIEWKEY};
+                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPEHOTLISTVIEWKEY};
                     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                     [self.navigationController presentViewController:nav animated:YES completion:nil];
                     break;
@@ -388,7 +394,7 @@
                 {
                     // FILTER
                     FilterViewController *vc = [FilterViewController new];
-                    vc.data = @{kTKPDHOME_DATAFILTERTYPEVIEWKEY:kTKPDHOME_DATATYPEHOTLISTVIEWKEY};
+                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPEHOTLISTVIEWKEY};
                     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                     [self.navigationController presentViewController:nav animated:YES completion:nil];
                     break;
@@ -465,28 +471,37 @@
 
 - (void)configureRestKit
 {
-    
-    //[AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
-    
     // initialize RestKit
     _objectmanager =  [RKObjectManager sharedClient];
     
     // setup object mappings
-    // Hotlist detail
-    RKObjectMapping *hotlistDetailMapping = [RKObjectMapping mappingForClass:[HotlistDetail class]];
-    [hotlistDetailMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APISTATUSKEY:kTKPDHOME_APISTATUSKEY, kTKPDHOME_APISERVERPROCESSTIMEKEY:kTKPDHOME_APISERVERPROCESSTIMEKEY}];
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[HotlistDetail class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
-    // result mapping
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APICOVERIMAGEKEY:kTKPDHOME_APICOVERIMAGEKEY, KTKPDHOME_APIDESCRIPTIONKEY:KTKPDHOME_APIDESCRIPTION1KEY}];
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[HotlistDetailResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APICOVERIMAGEKEY:kTKPDHOME_APICOVERIMAGEKEY,
+                                                        KTKPDHOME_APIDESCRIPTIONKEY:KTKPDHOME_APIDESCRIPTION1KEY}];
     
-    // searchs list mapping
+    // list mapping
     RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[List class]];
-    [hotlistMapping addAttributeMappingsFromArray:@[kTKPDHOME_APICATALOGIMAGEKEY,kTKPDHOME_APICATALOGNAMEKEY,kTKPDHOME_APICATALOGPRICEKEY,kTKPDHOME_APIPRODUCTPRICEKEY,kTKPDHOME_APIPRODUCTIDKEY,kTKPDHOME_APISHOPGOLDSTATUSKEY,kTKPDHOME_APISHOPLOCATIONKEY,kTKPDHOME_APISHOPNAMEKEY,kTKPDHOME_APIPRODUCTIMAGEKEY,kTKPDHOME_APIPRODUCTNAMEKEY]];
+    [hotlistMapping addAttributeMappingsFromArray:@[kTKPDHOME_APICATALOGIMAGEKEY,
+                                                    kTKPDHOME_APICATALOGNAMEKEY,
+                                                    kTKPDHOME_APICATALOGPRICEKEY,
+                                                    kTKPDHOME_APIPRODUCTPRICEKEY,
+                                                    kTKPDHOME_APIPRODUCTIDKEY,
+                                                    kTKPDHOME_APISHOPGOLDSTATUSKEY,
+                                                    kTKPDHOME_APISHOPLOCATIONKEY,
+                                                    kTKPDHOME_APISHOPNAMEKEY,
+                                                    kTKPDHOME_APIPRODUCTIMAGEKEY,
+                                                    kTKPDHOME_APIPRODUCTNAMEKEY
+                                                    ]];
     
     // paging mapping
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APIURINEXTKEY:kTKPDHOME_APIURINEXTKEY}];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
     // hashtags mapping
     RKObjectMapping *hashtagMapping = [RKObjectMapping mappingForClass:[Hashtags class]];
@@ -494,43 +509,38 @@
 
     // departmenttree mapping
     RKObjectMapping *departmentMapping = [RKObjectMapping mappingForClass:[DepartmentTree class]];
-    [departmentMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY, kTKPDHOME_APITREEKEY, kTKPDHOME_APIDIDKEY, kTKPDHOME_APITITLEKEY,kTKPDHOME_APICHILDTREEKEY]];
-    // departmentchild mapping
-    //TODO:CECKING MAPPING
-    RKObjectMapping *departmentchildMapping =  [RKObjectMapping mappingForClass:[DepartmentChild class]];
-    [departmentchildMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY, kTKPDHOME_APITREEKEY, kTKPDHOME_APIDIDKEY, kTKPDHOME_APITITLEKEY]];
-    
+    [departmentMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIHREFKEY,
+                                                       kTKPDHOME_APITREEKEY,
+                                                       kTKPDHOME_APIDIDKEY,
+                                                       kTKPDHOME_APITITLEKEY
+                                                       ]];
     // Adjust Relationship
-    [hotlistDetailMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIRESULTKEY toKeyPath:kTKPDHOME_APIRESULTKEY withMapping:resultMapping]];
-    [departmentchildMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"child" toKeyPath:@"departmentchild" withMapping:departmentMapping]];
+    //add Department tree relationship
+    RKRelationshipMapping *depttreeRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIDEPARTMENTTREEKEY toKeyPath:kTKPDHOME_APIDEPARTMENTTREEKEY withMapping:departmentMapping];
+    [resultMapping addPropertyMapping:depttreeRel];
+    
+    //add list relationship
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:hotlistMapping];
+    [resultMapping addPropertyMapping:listRel];
 
+    // add page relationship
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
+    [resultMapping addPropertyMapping:pageRel];
+    
+    // hastags relationship
+    RKRelationshipMapping *hashtagRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIHASHTAGSKEY toKeyPath:kTKPDHOME_APIHASHTAGSKEY withMapping:hashtagMapping];
+    [resultMapping addPropertyMapping:hashtagRel];
+    
+    // departmentchild relationship
+    RKRelationshipMapping *deptchildRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APICHILDTREEKEY toKeyPath:kTKPDHOME_APICHILDTREEKEY withMapping:departmentMapping];
+    [departmentMapping addPropertyMapping:deptchildRel];
+    
     // register mappings with the provider using a response descriptor
-    // result
-    RKResponseDescriptor *responseDescriptorResult = [RKResponseDescriptor responseDescriptorWithMapping:hotlistDetailMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    // hotlist
-    RKResponseDescriptor *responseDescriptorHotlistDetail = [RKResponseDescriptor responseDescriptorWithMapping:hotlistMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APILISTKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
-    // paging
-    RKResponseDescriptor *responseDescriptorPaging = [RKResponseDescriptor responseDescriptorWithMapping:pagingMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APIPAGINGKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
-    // hashtags
-     RKResponseDescriptor *responseDescriptorHashtags = [RKResponseDescriptor responseDescriptorWithMapping:hashtagMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APIHASHTAGSKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
-    // department tree
-    RKResponseDescriptor *responseDescriptionDepartmenttree = [RKResponseDescriptor responseDescriptorWithMapping:departmentMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:kTKPDHOME_APIDEPARTMENTTREEKEYPATH statusCodes:kTkpdIndexSetStatusCodeOK];
-    // department child
-
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     // add response description to object manager
-    [_objectmanager addResponseDescriptor:responseDescriptorResult];
-    [_objectmanager addResponseDescriptor:responseDescriptorHotlistDetail];
-    [_objectmanager addResponseDescriptor:responseDescriptorPaging];
-    [_objectmanager addResponseDescriptor:responseDescriptorHashtags];
-    [_objectmanager addResponseDescriptor:responseDescriptionDepartmenttree];
-    
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [dictionary setObject:responseDescriptorResult.mapping forKey:(responseDescriptorResult.keyPath ?: [NSNull null])];
-    [dictionary setObject:responseDescriptorHotlistDetail.mapping forKey:(responseDescriptorHotlistDetail.keyPath ?: [NSNull null])];
-    [dictionary setObject:responseDescriptorPaging.mapping forKey:(responseDescriptorPaging.keyPath ?: [NSNull null])];
-    [dictionary setObject:responseDescriptorHashtags.mapping forKey:(responseDescriptorHashtags.keyPath ?: [NSNull null])];
-    [dictionary setObject:responseDescriptionDepartmenttree.mapping forKey:(responseDescriptionDepartmenttree.keyPath?: [NSNull null])];
+    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+
 }
 
 
@@ -592,8 +602,8 @@
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     
     id info = [result objectForKey:@""];
-    HotlistDetail *hotlistdetail = info;
-    NSString *statusstring = hotlistdetail.status;
+    _hotlistdetail = info;
+    NSString *statusstring = _hotlistdetail.status;
     BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
@@ -602,21 +612,18 @@
             [_product removeAllObjects];
         }
         
-        [_product addObjectsFromArray: [result objectForKey:kTKPDHOME_APILISTKEYPATH]];
-        [_detailhotlist addEntriesFromDictionary:result];
+        [_product addObjectsFromArray: _hotlistdetail.result.list];
         _pagecontrol.hidden = NO;
         _swipegestureleft.enabled = YES;
         _swipegestureright.enabled = YES;
-        [self setHeaderData:result];
+        [self setHeaderData];
         
-        NSArray * departmenttree = [result objectForKey:kTKPDHOME_APIDEPARTMENTTREEKEYPATH]?:@[];
+        NSArray * departmenttree = _hotlistdetail.result.department_tree;
         
         //[_departmenttree removeAllObjects];
         if (_departmenttree.count == 0) {
             [_departmenttree addObjectsFromArray:departmenttree];
         }
-        
-        id page =[result objectForKey:kTKPDHOME_APIPAGINGKEYPATH];
         
         if (_product.count >0) {
             
@@ -624,8 +631,7 @@
             _header.hidden = NO;
             _filterview.hidden = NO;
             
-            Paging *paging = page;
-            _urinext =  paging.uri_next;
+            _urinext =  _hotlistdetail.result.paging.uri_next;
             
             NSURL *url = [NSURL URLWithString:_urinext];
             NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
@@ -685,20 +691,17 @@
     NSInteger index = indexpath.section+2*(indexpath.row);
     List *list = _product[index];
     DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPHOME_APIPRODUCTIDKEY : list.product_id};
+    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id};
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Methods
--(void)setHeaderData:(NSDictionary*)data
+-(void)setHeaderData
 {
-    id info = [data objectForKey:@""];
-    HotlistDetail *hotlistdetail = info;
-    
     if (![_data objectForKey:kTKPHOME_DATAHEADERIMAGEKEY]) {
-        NSString *urlstring = hotlistdetail.result.cover_image;
+        NSString *urlstring = _hotlistdetail.result.cover_image;
         
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         //request.URL = url;
         
         UIImageView *thumb = _imageview;
@@ -721,25 +724,22 @@
         }];
     }
     
-    _descriptionlabel.text = hotlistdetail.result.desc_key;
-    
-    NSArray *hashtags = [data objectForKey:kTKPDHOME_APIHASHTAGSKEYPATH];
-    [self setHashtagsArray:hashtags];
+    _descriptionlabel.text = _hotlistdetail.result.desc_key;
+    [self setHashtags];
 }
 
--(void)setHashtagsArray:(NSArray*)array
+-(void)setHashtags
 {
 
     NSInteger widthcontenttop=0;
     _buttons = [NSMutableArray new];
     
+    NSArray *array = _hotlistdetail.result.hashtags;
+    
     /** Adjust hashtags to Scrollview **/
     for (int i = 0; i<array.count; i++) {
-        Hashtags *hashtags = array[i];
-        
-        NSString *hashtag = hashtags.name;
-        NSString *name = [@"# " stringByAppendingFormat:hashtag];
-        
+        Hashtags *hashtag =array[i];
+        NSString *name = [@"# " stringByAppendingFormat:hashtag.name];
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];

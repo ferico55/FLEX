@@ -13,7 +13,7 @@
 
 @interface HotlistResult : NSObject
 
-@property (nonatomic, strong) HotlistList *list;
+@property (nonatomic, strong) NSArray *list;
 @property (nonatomic, strong) Paging *paging;
 
 @end

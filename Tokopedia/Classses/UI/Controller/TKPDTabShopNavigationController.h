@@ -42,7 +42,7 @@
 @property (nonatomic, readonly, assign) UIEdgeInsets contentInsetForChildController;
 
 //+ (id)allocinit;
-- (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated withtitles:(NSArray*)titles;
+- (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated;
 - (void)setSelectedViewController:(UIViewController *)selectedViewController animated:(BOOL)animated;
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated;
 

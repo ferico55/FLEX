@@ -20,9 +20,9 @@
 
 @property (nonatomic, strong) ClosedInfo *closed_info;
 @property (nonatomic, strong) Owner     *owner;
-@property (nonatomic, strong) Shipment *shipment;
-@property (nonatomic, strong) Payment *payment;
-@property (nonatomic, strong) Address *address;
+@property (nonatomic, strong) NSArray *shipment;
+@property (nonatomic, strong) NSArray *payment;
+@property (nonatomic, strong) NSArray *address;
 @property (nonatomic, strong) ShopInfo *info;
 @property (nonatomic, strong) ShopStats *stats;
 

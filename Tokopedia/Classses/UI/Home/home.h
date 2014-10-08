@@ -14,9 +14,6 @@
 #define kTKPDHOME_DATAISSEARCHHOTLISTKEY @"issearchhotlist"
 #define kTKPDHOME_DATAQUERYKEY @"key"
 
-#define kTKPDHOME_DATAFILTERTYPEVIEWKEY @"typeview"
-#define kTKPDHOME_DATATYPEHOTLISTVIEWKEY @"hotlistview"
-
 #define kTKPDHOMEHOTLISTACT @"get_hotlist"
 
 #define kTKPDHOMEHOTLIST_LIMITPAGE 5
@@ -31,11 +28,7 @@
 #define kTKPDHOME_NODATACELLTITLE @"no data"
 #define kTKPDHOME_NODATACELLDESCS @"no data description"
 
-#define kTKPDHOME_APISTATUSKEY @"status"
-#define kTKPDHOME_APISERVERPROCESSTIMEKEY @"server_process_time"
-#define kTKPDHOME_APIRESULTKEY @"result"
-
-#define kTKPDHOME_APIKEY @"list"
+#define kTKPDHOME_APILISTKEY @"list"
 #define kTKPDHOME_APIPAGINGKEY @"paging"
 #define kTKPDHOME_APIPAGEKEY @"page"
 #define kTKPDHOME_APIACTIONKEY @"action"
@@ -91,9 +84,9 @@
 #define kTKPDHOME_APILISTKEYPATH @"result.list"
 #define kTKPDHOME_APIPAGINGKEYPATH @"result.paging"
 #define kTKPDHOME_APIREDIRECTPATH @"result"
-#define kTKPDHOME_APIHASHTAGSKEYPATH @"result.hashtags"
+#define kTKPDHOME_APIHASHTAGSKEY @"hashtags"
 #define kTKPDHOME_APIDEPARTMENTTREEKEYPATH @"result.department_tree"
-#define kTKPDHOME_APIDEPARTMENTCHILDKEYPATH @"result.department_tree.child"
+#define kTKPDHOME_APIDEPARTMENTCHILDKEYPATH @"child"
 #define kTKPDHOME_APIDEPARTMENTCHILD2KEYPATH @"result.department_tree.child.cild"
 
 #define kTKPDHOME_APIURINEXTKEY @"uri_next"
@@ -112,5 +105,8 @@
 
 #define kTKPDHOME_FONTSLIDETITLESCOLOR [UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1]
 #define kTKPDHOME_FONTSLIDETITLESACTIVECOLOR [UIColor colorWithRed:252.0f/255.0f green:63.0f/255.0f blue:27.0f/255.0f alpha:1]
+
+#define kTKPDHOMEHOTLIST_APIRESPONSEFILE @"temp/hotlist.plist"
+#define kTKPDHOMEHOTLISTDETAIL_APIRESPONSEFILE @"temp/hotlistdetail.plist"
 
 #endif

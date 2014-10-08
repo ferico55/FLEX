@@ -13,7 +13,7 @@
 NSString * const kTraktAPIKey = @"8b0c367dd3ef0860f5730ec64e3bbdc9";
 NSString * const kTraktBaseURLString = kTkpdBaseURLString;
 
-@implementation RKObjectManager (tkpdCategory)
+@implementation RKObjectManager (TkpdCategory)
 
 + (RKObjectManager *)sharedClient {
     static RKObjectManager *_sharedClient = nil;

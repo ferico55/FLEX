@@ -11,11 +11,6 @@
 
 #define kTKPDSEARCH_TITLE @"Search"
 
-#define kTKPDSEARCH_DATAFILTERTYPEVIEWKEY @"typeview"
-#define kTKPDSEARCH_DATATYPEPRODUCTVIEWKEY @"productview"
-#define kTKPDSEARCH_DATATYPECATALOGVIEWKEY @"catalogview"
-#define kTKPDSEARCH_DATATYPESHOPVIEWKEY @"shopview"
-
 #define kTKPDSEARCH_DATAINDEXPATHKEY @"indexpath"
 #define kTKPDSEARCH_DATACOLUMNSKEY @"column"
 #define kTKPDSEARCH_DATASEARCHKEY @"search"
@@ -60,9 +55,14 @@
 #define kTKPDSEARCH_APICATALOGIMAGEKEY @"catalog_image"
 #define kTKPDSEARCH_APICATALOGNAMEKEY @"catalog_name"
 #define kTKPDSEARCH_APICATALOGPRICEKEY @"catalog_price"
+#define kTKPDSEARCH_APICATALOGIDKEY @"catalog_id"
 
 /** shop **/
 #define kTKPDSEARCH_APISHOPIMAGEKEY @"shop_image"
+#define kTKPDSEARCH_APISHOPLOCATIONKEY @"shop_location"
+#define kTKPDSEARCH_APISHOPIDKEY @"shop_id"
+#define kTKPDSEARCH_APISHOPTOTALTRANSACTIONKEY @"shop_total_transaction"
+#define kTKPDSEARCH_APISHOPTOTALFAVKEY @"shop_total_favorite"
 
 /** redirect url **/
 #define kTKPDSEARCH_APIREDIRECTURLKEY @"redirect_url"
@@ -84,8 +84,8 @@
 
 #define kTKPDSEARCH_APIURINEXTKEY @"uri_next"
 
-#define kTKPDSEARCH_APIPATHMAPPINGLISTKEY @"result.list"
-#define kTKPDSEARCH_APIPATHMAPPINGPAGINGKEY @"result.paging"
+#define kTKPDSEARCH_APILISTKEY @"list"
+#define kTKPDSEARCH_APIPAGINGKEY @"paging"
 #define kTKPDSEARCH_APIPATHMAPPINGREDIRECTKEY @"result"
 
 #define kTKPDSEARCH_APIPRODUCTTYPEKEY @"vi"
@@ -97,9 +97,12 @@
 #define kTKPDSEARCH_APIORDERBYKEY @"order_by"
 
 #define kTKPDSEARCH_APIPRODUCTIDKEY @"product_id"
+#define kTKDPSEARCH_APICATALOGIDKEY @"catalog_id"
 
 #define kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define kTKPDSEARCH_NODATACELLTITLE @"no data"
 #define kTKPDSEARCH_NODATACELLDESCS @"no data description"
+
+#define kTKPDSEARCH_SEARCHHISTORYPATHKEY @"history_search.plist"
 
 #endif

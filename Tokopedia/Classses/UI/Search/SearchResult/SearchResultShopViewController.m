@@ -5,10 +5,15 @@
 //  Created by IT Tkpd on 9/15/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+
 #import "search.h"
-#import "SearchRedirect.h"
-#import "List.h"
-#import "Paging.h"
+#import "detail.h"
+#import "sortfiltershare.h"
+
+#import "SearchItem.h"
+
+#import "TKPDTabNavigationController.h"
+#import "TKPDTabShopNavigationController.h"
 
 #import "DetailProductViewController.h"
 #import "SearchResultShopCell.h"
@@ -17,11 +22,10 @@
 #import "FilterViewController.h"
 #import "DetailShopViewController.h"
 #import "HotlistResultViewController.h"
-#import "TKPDTabNavigationController.h"
 
 #import "SearchResultShopViewController.h"
 
-@interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -48,6 +52,8 @@
     UIRefreshControl *_refreshControl;
     NSInteger _requestcount;
     NSTimer *_timer;
+    
+    SearchItem *_searchitem;
     
     __weak RKObjectManager *_objectmanager;
 }
@@ -198,12 +204,14 @@
         
         if (_product.count>indexPath.row) {
             
+            ((SearchResultShopCell*)cell).indexpath = indexPath;
+            
             List *list = [_product objectAtIndex:indexPath.row];
 
             ((SearchResultShopCell*)cell).shopname.text = list.shop_name?:@"";
             //((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = searchitem.product_name?:@"";
             
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.shop_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:0.3];
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.shop_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
             
             UIImageView *thumb = (UIImageView*)((SearchResultShopCell*)cell).thumb;
@@ -260,34 +268,50 @@
     _objectmanager =  [RKObjectManager sharedClient];
     
     // setup object mappings
-    /** searchs list mappng **/
-    RKObjectMapping *searchMapping = [RKObjectMapping mappingForClass:[List class]];
-    [searchMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APIPRODUCTIMAGEKEY,kTKPDSEARCH_APIPRODUCTPRICEKEY,kTKPDSEARCH_APIPRODUCTNAMEKEY,kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY, kTKPDSEARCH_APICATALOGIMAGEKEY,kTKPDSEARCH_APICATALOGNAMEKEY,kTKPDSEARCH_APICATALOGPRICEKEY, kTKPDSEARCH_APISHOPIMAGEKEY]];
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[SearchItem class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
+                                                        }];
     
-    /** paging mappng **/
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchResult class]];
+    
+    // setup object mappings
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[List class]];
+    [listMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APISHOPIMAGEKEY,
+                                                 kTKPDSEARCH_APISHOPLOCATIONKEY,
+                                                 kTKPDSEARCH_APISHOPIDKEY,
+                                                 kTKPDSEARCH_APISHOPTOTALTRANSACTIONKEY,
+                                                 kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY,
+                                                 kTKPDSEARCH_APISHOPTOTALFAVKEY
+                                                 ]];
+    
+    /** paging mapping **/
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
     
-    /** redirect mappng & hascatalog **/
+    /** redirect mapping & hascatalog **/
     RKObjectMapping *redirectMapping = [RKObjectMapping mappingForClass:[SearchRedirect class]];
-    [redirectMapping addAttributeMappingsFromDictionary: @{kTKPDSEARCH_APIREDIRECTURLKEY:kTKPDSEARCH_APIREDIRECTURLKEY, kTKPDSEARCH_APIDEPARTEMENTIDKEY:kTKPDSEARCH_APIDEPARTEMENTIDKEY,kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY}];
+    [redirectMapping addAttributeMappingsFromDictionary: @{kTKPDSEARCH_APIREDIRECTURLKEY:kTKPDSEARCH_APIREDIRECTURLKEY,
+                                                           kTKPDSEARCH_APIDEPARTEMENTIDKEY:kTKPDSEARCH_APIDEPARTEMENTIDKEY,
+                                                           kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY}];
+    
+    //add list relationship
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APILISTKEY toKeyPath:kTKPDSEARCH_APILISTKEY withMapping:listMapping];
+    [resultMapping addPropertyMapping:listRel];
+    
+    // add page relationship
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
+    [resultMapping addPropertyMapping:pageRel];
+
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorSearch = [RKResponseDescriptor responseDescriptorWithMapping:searchMapping method:RKRequestMethodGET pathPattern:kTKPDSEARCH_APIPATH keyPath:kTKPDSEARCH_APIPATHMAPPINGLISTKEY statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    RKResponseDescriptor *responseDescriptorPaging = [RKResponseDescriptor responseDescriptorWithMapping:pagingMapping method:RKRequestMethodGET pathPattern:kTKPDSEARCH_APIPATH keyPath:kTKPDSEARCH_APIPATHMAPPINGPAGINGKEY statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    RKResponseDescriptor *responseDescriptorRedirect = [RKResponseDescriptor responseDescriptorWithMapping:redirectMapping method:RKRequestMethodGET pathPattern:kTKPDSEARCH_APIPATH keyPath:kTKPDSEARCH_APIPATHMAPPINGREDIRECTKEY statusCodes:kTkpdIndexSetStatusCodeOK];
+    //TODO::
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDSEARCH_APIPATH keyPath:kTKPDSEARCH_APILISTKEY statusCodes:kTkpdIndexSetStatusCodeOK];
     
     //add response description to object manager
-    [_objectmanager addResponseDescriptor:responseDescriptorSearch];
-    [_objectmanager addResponseDescriptor:responseDescriptorPaging];
-    [_objectmanager addResponseDescriptor:responseDescriptorRedirect];
-    
-    NSMutableDictionary *dictionary = [NSMutableDictionary dictionary];
-    [dictionary setObject:responseDescriptorSearch.mapping forKey:(responseDescriptorSearch.keyPath ?: [NSNull null])];
-    [dictionary setObject:responseDescriptorPaging.mapping forKey:(responseDescriptorPaging.keyPath ?: [NSNull null])];
-    [dictionary setObject:responseDescriptorRedirect.mapping forKey:(responseDescriptorRedirect.keyPath ?: [NSNull null])];
+    [_objectmanager addResponseDescriptor:responseDescriptor];
 }
 
 
@@ -350,7 +374,7 @@
         [self requestfailure:error];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"An Error Has Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         //[alertView show];
-        [_act stopAnimating];
+        //[_act stopAnimating];
         _table.tableFooterView = nil;
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
@@ -369,66 +393,69 @@
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     
-    id redirect_catalog = [result objectForKey:kTKPDSEARCH_APIPATHMAPPINGREDIRECTKEY];
-    SearchRedirect *searchcatalog = redirect_catalog;
-    NSString *uriredirect = searchcatalog.redirect_url;
+    _searchitem = [result objectForKey: @""];
     
-    if (uriredirect == nil) {
+    NSString *statusstring = _searchitem.status;
+    BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+        NSString *uriredirect = _searchitem.result.redirect_url.redirect_url;
         
-        [_product addObjectsFromArray: [result objectForKey:kTKPDSEARCH_APIPATHMAPPINGLISTKEY]];
-        if (_product.count == 0) {
-            [_act stopAnimating];
-            _table.tableFooterView = nil;
-        }
-        //[_paging removeAllObjects];
-        id page =[result objectForKey:kTKPDSEARCH_APIPATHMAPPINGPAGINGKEY];
-        //[_paging addObject:[result objectForKey:@"result.paging"]];
-        
-        if (_product.count >0) {
+        if (uriredirect == nil) {
             
-            Paging *paging = page;
-            _urinext =  paging.uri_next;
+            //TODO::
+            [_product addObjectsFromArray:_searchitem.result.list];
             
-            NSURL *url = [NSURL URLWithString:_urinext];
-            NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-            
-            NSMutableDictionary *queries = [NSMutableDictionary new];
-            [queries removeAllObjects];
-            for (NSString *keyValuePair in querry)
-            {
-                NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                NSString *key = [pairComponents objectAtIndex:0];
-                NSString *value = [pairComponents objectAtIndex:1];
-                
-                [queries setObject:value forKey:key];
+            if (_product.count == 0) {
+                [_act stopAnimating];
+                _table.tableFooterView = nil;
             }
             
-            _page = [[queries objectForKey:kTKPDSEARCH_APIPAGEKEY] integerValue];
+            if (_product.count >0) {
+                
+                _urinext =  _searchitem.result.paging.uri_next;
+                
+                NSURL *url = [NSURL URLWithString:_urinext];
+                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                
+                NSMutableDictionary *queries = [NSMutableDictionary new];
+                [queries removeAllObjects];
+                for (NSString *keyValuePair in querry)
+                {
+                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                    NSString *key = [pairComponents objectAtIndex:0];
+                    NSString *value = [pairComponents objectAtIndex:1];
+                    
+                    [queries setObject:value forKey:key];
+                }
+                
+                _page = [[queries objectForKey:kTKPDSEARCH_APIPAGEKEY] integerValue];
+                
+                NSLog(@"next page : %d",_page);
+                _isnodata = NO;
+            }
+        }
+        else{
+            _uriredirect =  uriredirect;
+            NSURL *url = [NSURL URLWithString:_uriredirect];
+            NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
             
-            NSLog(@"next page : %d",_page);
-            _isnodata = NO;
+            // Redirect URI to hotlist
+            if ([querry[1] isEqualToString:@"hot"]) {
+                HotlistResultViewController *vc = [HotlistResultViewController new];
+                vc.data = @{kTKPDSEARCH_DATAISSEARCHHOTLISTKEY : @(YES), kTKPDSEARCHHOTLIST_APIQUERYKEY : querry[2]};
+                [self.navigationController pushViewController:vc animated:NO];
+            }
+            // redirect uri to search category
+            if ([querry[1] isEqualToString:@"p"]) {
+                NSString *deptid = _searchitem.result.redirect_url.department_id;
+                [_params setObject:deptid forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+                [self loadData];
+            }
         }
-    }
-    else{
-        _uriredirect =  uriredirect;
-        NSURL *url = [NSURL URLWithString:_uriredirect];
-        NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
         
-        // Redirect URI to hotlist
-        if ([querry[1] isEqualToString:@"hot"]) {
-            HotlistResultViewController *vc = [HotlistResultViewController new];
-            vc.data = @{kTKPDSEARCH_DATAISSEARCHHOTLISTKEY : @(YES), kTKPDSEARCHHOTLIST_APIQUERYKEY : querry[2]};
-            [self.navigationController pushViewController:vc animated:NO];
-        }
-        // redirect uri to search category
-        if ([querry[1] isEqualToString:@"p"]) {
-            NSString *deptid = searchcatalog.department_id;
-            [_params setObject:deptid forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-            [self loadData];
-        }
+        _shopview.hidden = NO;
     }
-    
-    _shopview.hidden = NO;
 }
 
 -(void)requesttimeout
@@ -464,8 +491,25 @@
 #pragma mark - cell delegate
 -(void)SearchResultShopCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
-    DetailShopViewController *vc = [DetailShopViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
+    NSMutableArray *viewcontrollers = [NSMutableArray new];
+    /** create new view controller **/
+    DetailShopViewController *v = [DetailShopViewController new];
+    [viewcontrollers addObject:v];
+    DetailShopViewController *v1 = [DetailShopViewController new];
+    [viewcontrollers addObject:v1];
+    DetailShopViewController *v2 = [DetailShopViewController new];
+    [viewcontrollers addObject:v2];
+    DetailShopViewController *v3 = [DetailShopViewController new];
+    [viewcontrollers addObject:v3];
+    /** Adjust View Controller **/
+    TKPDTabShopNavigationController *tapnavcon = [TKPDTabShopNavigationController new];
+    [tapnavcon setViewControllers:viewcontrollers animated:YES];
+    [tapnavcon setSelectedIndex:0];
+
+//    DetailShopViewController *vc = [DetailShopViewController new];
+//    List *list = _product[indexpath.row];
+//    vc.data = @{kTKPDDETAILPRODUCT_APISHOPIDKEY : list.shop_id?:@""};
+    [self.navigationController pushViewController:tapnavcon animated:YES];
 }
 
 #pragma mark - TKPDTabNavigationController Tap Button Notification
@@ -477,7 +521,7 @@
         {
             // Action Sort Button
             SortViewController *vc = [SortViewController new];
-            vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDSEARCH_DATASEARCHSHOPKEY};
+            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPESHOPVIEWKEY};
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             
@@ -487,7 +531,7 @@
         {
             // Action Filter Button
             FilterViewController *vc = [FilterViewController new];
-            vc.data = @{kTKPDSEARCH_DATAFILTERTYPEVIEWKEY:kTKPDSEARCH_DATATYPESHOPVIEWKEY};
+            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPESHOPVIEWKEY};
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             break;

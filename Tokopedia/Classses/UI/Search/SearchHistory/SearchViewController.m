@@ -69,6 +69,12 @@
     [self LoadHistory];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [_searchbar becomeFirstResponder];
+}
+
 #pragma mark - Memory Management
 
 -(void)dealloc{
@@ -85,7 +91,7 @@
 #pragma mark - Methods
 -(void)SaveHistory:(id)history{
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    destPath = [destPath stringByAppendingPathComponent:@"history_search.plist"];
+    destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
     
     [_historysearch insertObject:history atIndex:0];
     [_historysearch writeToFile:destPath atomically:YES];
@@ -102,7 +108,7 @@
 -(void)LoadHistory
 {
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    destPath = [destPath stringByAppendingPathComponent:@"history_search.plist"];
+    destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
     
     // If the file doesn't exist in the Documents Folder, copy it.
 //    NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -127,7 +133,7 @@
     [_historysearch removeAllObjects];
     
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-    destPath = [destPath stringByAppendingPathComponent:@"history_search.plist"];
+    destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
     
     // If the file doesn't exist in the Documents Folder, copy it.
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -197,7 +203,7 @@
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     [_searchresultarray removeAllObjects];
-    if (![searchBar.text isEqual: @""]) {
+    if (![searchBar.text isEqualToString: @""]&&![searchBar.text isEqualToString:@" "]) {
         _labelsearchfor.hidden = NO;
         //_labelsearchfor.text = [NSString stringWithFormat:@"Search for '%@'", searchBar.text];
         NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
@@ -220,7 +226,7 @@
     [_searchbar resignFirstResponder];
     NSArray *histories = _historysearch;
     
-    if (![_searchbar.text isEqual: @""]) {
+    if (![_searchbar.text isEqualToString: @""]&&![searchBar.text isEqualToString: @" "]) {
         
         if (histories.count == 0 || [histories isEqualToArray: @[]]) {
             [self SaveHistory:searchBar.text];

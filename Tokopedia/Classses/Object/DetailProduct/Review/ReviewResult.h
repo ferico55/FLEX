@@ -14,6 +14,6 @@
 @interface ReviewResult : NSObject
 
 @property (nonatomic, strong) Paging *paging;
-@property (nonatomic, strong) ReviewList *list;
+@property (nonatomic, strong) NSArray *list;
 
 @end

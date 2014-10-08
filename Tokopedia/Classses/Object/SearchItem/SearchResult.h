@@ -16,11 +16,9 @@
 @interface SearchResult : NSObject
 
 @property (nonatomic, strong) SearchRedirect *redirect_url;
-@property (nonatomic, strong) List*list;
+@property (nonatomic, strong) NSArray *list;
 @property (nonatomic, strong) Paging *paging;
-@property (nonatomic, strong) DepartmentTree *departmenttree;
-
-@property (nonatomic, strong) NSString *cover_image;
-@property (nonatomic, strong) NSString *desc_key;
+@property (nonatomic, strong) NSArray *departmenttree;
+@property (nonatomic, strong) NSString *has_catalog;
 
 @end

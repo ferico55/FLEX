@@ -17,8 +17,5 @@
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSString *d_id;
 @property (nonatomic, strong) NSArray *child;
-@property (nonatomic, strong) DepartmentChild *departmentchild;
-
-+ (RKMapping *)childMapping;
 
 @end
