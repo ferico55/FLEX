@@ -7,19 +7,27 @@
 //
 
 #import "detail.h"
+#import "alert.h"
 
 #import "Review.h"
 #import "StarsRateView.h"
+#import "ProgressBarView.h"
 #import "ProductReviewViewController.h"
-#import "ProductReviewCell.h"
+#import "GeneralReviewCell.h"
+
+#import "TKPDAlertView.h"
+#import "AlertListView.h"
 
 #pragma mark - Product Review View Controller
-@interface ProductReviewViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface ProductReviewViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate>
 {
+    NSMutableDictionary *_param;
     NSMutableArray *_list;
     NSInteger _requestcount;
     NSTimer *_timer;
     BOOL _isnodata;
+    
+    NSInteger _starcount;
     
     NSInteger _page;
     NSInteger _limit;
@@ -27,19 +35,38 @@
     BOOL _isrefreshview;
     UIRefreshControl *_refreshControl;
     
+    BOOL _isadvreviewquality;
+    BOOL _isalltimes;
+    
     Review *_review;
     
     __weak RKObjectManager *_objectmanager;
 }
 
+@property (weak, nonatomic) IBOutlet UIView *detailstarsandtimesview;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *headerview;
 @property (weak, nonatomic) IBOutlet StarsRateView *averagerateview;
-@property (weak, nonatomic) IBOutlet UILabel *scalelabel;
-@property (weak, nonatomic) IBOutlet UILabel *timelabel;
+
+@property (weak, nonatomic) IBOutlet UILabel *labeltotalreview;
+
+@property (weak, nonatomic) IBOutlet UILabel *labelstarcount;
+
+@property (weak, nonatomic) IBOutlet UIButton *buttontime;
+@property (weak, nonatomic) IBOutlet UILabel *labeltime;
+
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (weak, nonatomic) IBOutlet UIButton *buttonadvreview;
 
+@property (strong, nonatomic) IBOutletCollection(ProgressBarView) NSArray *progressviews;
+
+@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labelstars;
+
+@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *ratingviews;
+
+- (IBAction)tap:(id)sender;
+- (IBAction)gesture:(id)sender;
 @end
 
 @implementation ProductReviewViewController
@@ -49,7 +76,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-    
+        _isadvreviewquality = YES;
         _isnodata = YES;
     }
     return self;
@@ -60,7 +87,12 @@
 {
     [super viewDidLoad];
     
+    _ratingviews = [NSArray sortViewsWithTagInArray:_ratingviews];
+    _labelstars = [NSArray sortViewsWithTagInArray:_labelstars];
+    _progressviews = [NSArray sortViewsWithTagInArray:_progressviews];
+    
     _list = [NSMutableArray new];
+    _param = [NSMutableDictionary new];
     
     _table.tableFooterView = _footer;
     _table.tableHeaderView = _headerview;
@@ -110,19 +142,19 @@
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         
-        NSString *cellid = kTKPDPRODUCTREVIEWCELLIDENTIFIER;
+        NSString *cellid = kTKPDGENERALREVIEWCELLIDENTIFIER;
 		
-		cell = (ProductReviewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+		cell = (GeneralReviewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
-			cell = [ProductReviewCell newcell];
-			//((ProductReviewCell*)cell).delegate = self;
+			cell = [GeneralReviewCell newcell];
+			//((GeneralReviewCell*)cell).delegate = self;
 		}
         
         if (_list.count > indexPath.row) {
             ReviewList *list = _list[indexPath.row];
-            ((ProductReviewCell*)cell).namelabel.text = list.review_user_name;
-            ((ProductReviewCell*)cell).timelabel.text = list.review_create_time;
-            ((ProductReviewCell*)cell).commentlabel.text = list.review_message;
+            ((GeneralReviewCell*)cell).namelabel.text = list.review_user_name;
+            ((GeneralReviewCell*)cell).timelabel.text = list.review_create_time;
+            ((GeneralReviewCell*)cell).commentlabel.text = list.review_message;
             //TODO:: create see more button
             //UIFont * font = ((ProductReviewCell*)cell).commentlabel.font ;
             //CGSize stringSize = [((ProductReviewCell*)cell).commentlabel.text sizeWithFont:font];
@@ -133,14 +165,14 @@
             //[button setTitle:@"See More" forState:UIControlStateNormal];
             //[button setFrame:CGRectMake(widthlabel,heightlabel, ((ProductReviewCell*)cell).commentlabel.frame.size.width, ((ProductReviewCell*)cell).commentlabel.frame.size.height)];
             //button.tag = 10;
-            ((ProductReviewCell*)cell).qualityrate.starscount = list.review_rate_quality;
-            ((ProductReviewCell*)cell).speedrate.starscount = list.review_rate_speed;
-            ((ProductReviewCell*)cell).servicerate.starscount = list.review_rate_service;
-            ((ProductReviewCell*)cell).accuracyrate.starscount = list.review_rate_accuracy;
+            ((GeneralReviewCell*)cell).qualityrate.starscount = list.review_rate_quality;
+            ((GeneralReviewCell*)cell).speedrate.starscount = list.review_rate_speed;
+            ((GeneralReviewCell*)cell).servicerate.starscount = list.review_rate_service;
+            ((GeneralReviewCell*)cell).accuracyrate.starscount = list.review_rate_accuracy;
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
-            UIImageView *thumb = ((ProductReviewCell*)cell).thumb;
+            UIImageView *thumb = ((GeneralReviewCell*)cell).thumb;
             thumb.image = nil;
             //thumb.hidden = YES;	//@prepareforreuse then @reset
             
@@ -202,10 +234,46 @@
                 // see more action
                 
                 break;
-                
+             case 11:
+            {
+                // Action Advance Review Quality / Accuracy
+                AlertListView *v = [AlertListView newview];
+                v.delegate = self;
+                v.tag = 10;
+                v.data = @{kTKPDALERTVIEW_DATALISTKEY:kTKPDREVIEW_ALERTRATINGLISTARRAY};
+                [v show];
+                break;
+            }
+            case 12:
+            {
+                // Action Period
+                AlertListView *v = [AlertListView newview];
+                v.tag = 11;
+                v.delegate = self;
+                v.data = @{kTKPDALERTVIEW_DATALISTKEY:kTKPDREVIEW_ALERTPERIODSARRAY};
+                [v show];
+            }
             default:
                 break;
         }
+    }
+}
+
+- (IBAction)gesture:(id)sender {
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+        _starcount = gesture.view.tag-10;
+        _detailstarsandtimesview.hidden = NO;
+        if (_isadvreviewquality)
+        {
+            [_param setObject:@(0) forKey:kTKPDREVIEW_APIRATEACCURACYKEY];
+            [_param setObject:@(gesture.view.tag-10) forKey:kTKPDTEVIEW_APIRATEQUALITYKEY];
+        }else{
+            [_param setObject:@(0) forKey:kTKPDTEVIEW_APIRATEQUALITYKEY];
+            [_param setObject:@(gesture.view.tag-10) forKey:kTKPDREVIEW_APIRATEACCURACYKEY];
+        }
+        [self refreshView:nil];
+        [self setHeaderData];
     }
 }
 
@@ -238,6 +306,27 @@
                                                         kTKPDDETAIL_APISERVERPROCESSTIMEKEY:kTKPDDETAIL_APISERVERPROCESSTIMEKEY}];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ReviewResult class]];
+    
+    //TODO:: Relationship
+    RKObjectMapping *advreviewMapping = [RKObjectMapping mappingForClass:[AdvanceReview class]];
+    [advreviewMapping addAttributeMappingsFromDictionary:@{
+                                                           kTKPDREVIEW_APINETRALQUALITYKEY:kTKPDREVIEW_APINETRALQUALITYKEY,
+                                                           kTKPDREVIEW_APINEGATIVEACCURACYKEY:kTKPDREVIEW_APINEGATIVEACCURACYKEY,
+                                                           kTKPDREVIEW_APIRATINGACCURACYKEY:kTKPDREVIEW_APIRATINGACCURACYKEY,
+                                                           kTKPDREVIEW_APINEGATIVEQUALITYKEY:kTKPDREVIEW_APINEGATIVEQUALITYKEY,
+                                                           kTKPDREVIEW_APIPOSITIVEQUALITYKEY:kTKPDREVIEW_APIPOSITIVEQUALITYKEY,
+                                                           kTKPDREVIEW_APINETRALACCURACYKEY:kTKPDREVIEW_APINETRALACCURACYKEY,
+                                                           kTKPDREVIEW_APIPOSITIVEACCURACYKEY:kTKPDREVIEW_APIPOSITIVEACCURACYKEY,
+                                                           kTKPDREVIEW_APITOTALREVIEWKEY:kTKPDREVIEW_APITOTALREVIEWKEY,
+                                                           kTKPDREVIEW_APIRATINGQUALITYKEY:kTKPDREVIEW_APIRATINGQUALITYKEY
+                                                           }];
+    
+    RKObjectMapping *ratinglistMapping = [RKObjectMapping mappingForClass:[RatingList class]];
+    [ratinglistMapping addAttributeMappingsFromArray:@[kTKPDREVIEW_APIRATINGSTARPOINTKEY,
+                                                       kTKPDREVIEW_APIRATINGACCURACYKEY,
+                                                       kTKPDREVIEW_APIRATINGQUALITYKEY
+                                                       ]];
+    
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[ReviewList class]];
     [listMapping addAttributeMappingsFromArray:@[kTKPDREVIEW_APIREVIEWSHOPIDKEY,
@@ -276,6 +365,12 @@
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPAGINGKEY toKeyPath:kTKPDDETAIL_APIPAGINGKEY withMapping:pagingMapping];
     [resultMapping addPropertyMapping:pageRel];
     
+    RKRelationshipMapping *advreviewRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDREVIEW_APIADVREVIEWKEY toKeyPath:kTKPDREVIEW_APIADVREVIEWKEY withMapping:advreviewMapping];
+    [resultMapping addPropertyMapping:advreviewRel];
+    
+    RKRelationshipMapping *ratinglistRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDREVIEW_APIRATINGLISTKEY toKeyPath:kTKPDREVIEW_APIRATINGLISTKEY withMapping:ratinglistMapping];
+    [advreviewMapping addPropertyMapping:ratinglistRel];
+    
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -286,16 +381,23 @@
 {
     _requestcount++;
     
-    if (!_isrefreshview) {
+    //if (!_isrefreshview) {
         _table.tableFooterView = _footer;
         [_act startAnimating];
-    }
+    //}
+    
+    NSInteger monthrange = [[_param objectForKey:kTKPDREVIEW_APIMONTHRANGEKEY]integerValue];
+    NSInteger rateaccuracy = [[_param objectForKey:kTKPDREVIEW_APIRATEACCURACYKEY]integerValue];
+    NSInteger ratequality = [[_param objectForKey:kTKPDTEVIEW_APIRATEQUALITYKEY]integerValue];
     
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETPRODUCTREVIEWKEY,
                             kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
                             kTKPDDETAIL_APIPAGEKEY : @(_page),
-                            kTKPDDETAIL_APILIMITKEY :@(kTKPDDETAILREVIEW_LIMITPAGE)
+                            kTKPDDETAIL_APILIMITKEY :@(kTKPDDETAILREVIEW_LIMITPAGE),
+                            kTKPDREVIEW_APIMONTHRANGEKEY : @(monthrange),
+                            kTKPDREVIEW_APIRATEACCURACYKEY : @(rateaccuracy),
+                            kTKPDTEVIEW_APIRATEQUALITYKEY : @(ratequality)
                             };
     
     [_objectmanager getObjectsAtPath:kTKPDDETAILPRODUCT_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -335,6 +437,8 @@
         _headerview.hidden = NO;
         _isnodata = NO;
         
+        [self setHeaderData];
+                
         _urinext =  _review.result.paging.uri_next;
         NSURL *url = [NSURL URLWithString:_urinext];
         NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
@@ -389,9 +493,23 @@
 
 #pragma mark - Methods
 
--(void)setHeaderData:(NSDictionary*)data
+-(void)setHeaderData
 {
+    _labelstarcount.text = (_starcount>1)?[NSString stringWithFormat:@"%d ratings",_starcount]:[NSString stringWithFormat:@"%d rating",_starcount];
+    
+    NSArray *list =kTKPDREVIEW_ALERTPERIODSARRAY;
+    _labeltime.text = (_isalltimes)?[NSString stringWithFormat:@"%@",list[0]]:[NSString stringWithFormat:@"in the past %@",list[1]];
+    
+    float ratingpoint = (_isadvreviewquality)?_review.result.advance_review.rating_quality_point:_review.result.advance_review.rating_accuracy_point;
 
+    _labeltotalreview.text = [NSString stringWithFormat:@"%f out of %d",ratingpoint,_review.result.advance_review.total_review];
+    
+    NSArray *ratinglist = _review.result.advance_review.rating_list;
+    
+    for (RatingList *list in ratinglist) {
+        NSInteger starpoint = list.rating_star_point;
+        ((ProgressBarView*)_progressviews[starpoint-1]).floatcount =(_isadvreviewquality)?list.rating_quality_point:list.rating_accuracy_point;
+    }
 }
 
 -(void)refreshView:(UIRefreshControl*)refresh
@@ -407,6 +525,38 @@
     /** request data **/
     [self configureRestKit];
     [self loadData];
+}
+
+#pragma mark - Alert View Delegate
+-(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (alertView.tag) {
+        case 10:
+        {
+            // Alert Quality / Accuracy
+            NSArray *list =kTKPDREVIEW_ALERTRATINGLISTARRAY;
+            [_buttonadvreview setTitle:list[buttonIndex] forState:UIControlStateNormal];
+            _isadvreviewquality = (buttonIndex == 0)?YES:NO;
+            [self setHeaderData];
+
+            break;
+        }
+        case 11:
+        {
+            // Alert All Times / 6 Months
+            NSArray *list =kTKPDREVIEW_ALERTPERIODSARRAY;
+            [_buttontime setTitle:list[buttonIndex] forState:UIControlStateNormal];
+            _isalltimes = (buttonIndex == 0)?YES:NO;
+            [self setHeaderData];
+            _detailstarsandtimesview.hidden = NO;
+            NSArray *listvalue = kTKPDREVIEW_ALERTPERIODSVALUEARRAY;
+            [_param setObject:listvalue[buttonIndex] forKey:kTKPDREVIEW_APIMONTHRANGEKEY];
+            [self refreshView:nil];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 @end

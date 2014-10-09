@@ -9,7 +9,10 @@
 #import "cart.h"
 #import "CartViewController.h"
 
+#import "ProgressBarView.h"
+
 @interface CartViewController ()
+@property (weak, nonatomic) IBOutlet ProgressBarView *progress;
 
 @end
 
@@ -32,6 +35,8 @@
     [super viewDidLoad];
     
     [self.navigationController.navigationBar setTranslucent:NO];
+    
+    _progress.floatcount = .9f;
     
 //    NSInteger navigation = [self.navigationController.viewControllers count];
 //	if (navigation > 0) {

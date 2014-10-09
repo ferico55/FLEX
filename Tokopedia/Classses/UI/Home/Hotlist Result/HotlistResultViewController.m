@@ -18,7 +18,7 @@
 #import "FilterViewController.h"
 #import "SortViewController.h"
 
-#import "HotlistResultViewCell.h"
+#import "GeneralProductCell.h"
 #import "HotlistResultViewController.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
@@ -27,7 +27,7 @@
 #import "CategoryMenuViewController.h"
 #import "DetailProductViewController.h"
 
-@interface HotlistResultViewController () <UITableViewDataSource,UITableViewDelegate, HotlistResultViewCellDelegate>
+@interface HotlistResultViewController () <UITableViewDataSource,UITableViewDelegate, GeneralProductCellDelegate>
 {
     NSInteger _page;
     NSInteger _limit;
@@ -221,14 +221,14 @@
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         
-        [self reset:(HotlistResultViewCell*)cell];
+        [self reset:(GeneralProductCell*)cell];
         
-        NSString *cellid = kTKPDHOTLISTRESULTVIEWCELL_IDENTIFIER;
+        NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
 		
-		cell = (HotlistResultViewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+		cell = (GeneralProductCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
-			cell = [HotlistResultViewCell newcell];
-			((HotlistResultViewCell*)cell).delegate = self;
+			cell = [GeneralProductCell newcell];
+			((GeneralProductCell*)cell).delegate = self;
 		}
 		
         if (_product.count > indexPath.row) {
@@ -243,21 +243,21 @@
             
             for (i = 0; (indexsegment + i) < indexlimit; i++) {
                 List *list = [_product objectAtIndex:indexsegment + i];
-                ((UIView*)((HotlistResultViewCell*)cell).viewcell[i]).hidden = NO;
-                (((HotlistResultViewCell*)cell).indexpath) = indexPath;
+                ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
+                (((GeneralProductCell*)cell).indexpath) = indexPath;
                 
-                ((UILabel*)((HotlistResultViewCell*)cell).labelprice[i]).text = list.catalog_price?:list.product_price;
-                ((UILabel*)((HotlistResultViewCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
-                ((UILabel*)((HotlistResultViewCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
+                ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.catalog_price?:list.product_price;
+                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
+                ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
                 
                 NSString *urlstring = list.catalog_image?:list.product_image;
                 
                 NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
                 
-                UIImageView *thumb = (UIImageView*)((HotlistResultViewCell*)cell).thumb[i];
+                UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
                 thumb.image = nil;
                 
-                UIActivityIndicatorView *act = (UIActivityIndicatorView*)((HotlistResultViewCell*)cell).act[i];
+                UIActivityIndicatorView *act = (UIActivityIndicatorView*)((GeneralProductCell*)cell).act[i];
                 [act startAnimating];
                 
                 NSLog(@"============================== START GET IMAGE =====================");
@@ -385,7 +385,7 @@
                 {
                     // URUTKAN
                     SortViewController *vc = [SortViewController new];
-                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPEHOTLISTVIEWKEY};
+                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY)};
                     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                     [self.navigationController presentViewController:nav animated:YES completion:nil];
                     break;
@@ -394,7 +394,7 @@
                 {
                     // FILTER
                     FilterViewController *vc = [FilterViewController new];
-                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPEHOTLISTVIEWKEY};
+                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY)};
                     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                     [self.navigationController presentViewController:nav animated:YES completion:nil];
                     break;
@@ -686,7 +686,7 @@
 }
 
 #pragma mark - Cell Delegate
--(void)HotlistResultViewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+-(void)GeneralProductCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     NSInteger index = indexpath.section+2*(indexpath.row);
     List *list = _product[index];
@@ -770,10 +770,10 @@
 
 -(void)reset:(UITableViewCell*)cell
 {
-    [((HotlistResultViewCell*)cell).thumb makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
-    [((HotlistResultViewCell*)cell).labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((HotlistResultViewCell*)cell).labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((HotlistResultViewCell*)cell).labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [((GeneralProductCell*)cell).thumb makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
+    [((GeneralProductCell*)cell).labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [((GeneralProductCell*)cell).labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [((GeneralProductCell*)cell).labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];
 }
 
 -(void)refreshView:(UIRefreshControl*)refresh

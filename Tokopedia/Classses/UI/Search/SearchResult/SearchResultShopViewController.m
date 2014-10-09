@@ -25,6 +25,8 @@
 
 #import "SearchResultShopViewController.h"
 
+#import "ShopProductViewController.h"
+
 @interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -493,7 +495,7 @@
 {
     NSMutableArray *viewcontrollers = [NSMutableArray new];
     /** create new view controller **/
-    DetailShopViewController *v = [DetailShopViewController new];
+    ShopProductViewController *v = [ShopProductViewController new];
     [viewcontrollers addObject:v];
     DetailShopViewController *v1 = [DetailShopViewController new];
     [viewcontrollers addObject:v1];
@@ -521,7 +523,7 @@
         {
             // Action Sort Button
             SortViewController *vc = [SortViewController new];
-            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPESHOPVIEWKEY};
+            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY)};
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             
@@ -531,7 +533,7 @@
         {
             // Action Filter Button
             FilterViewController *vc = [FilterViewController new];
-            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPESHOPVIEWKEY};
+            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY)};
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             break;

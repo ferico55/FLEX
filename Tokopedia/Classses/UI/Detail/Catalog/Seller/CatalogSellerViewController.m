@@ -134,7 +134,6 @@
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        //NSLOG(@"thumb: %@", thumb);
         [thumb setImage:image];
         
 #pragma clang diagnostic pop
@@ -190,7 +189,7 @@
             {
                 // Action Urutkan Button
                 SortViewController *vc = [SortViewController new];
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY};
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY)};
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
@@ -199,7 +198,7 @@
             {
                 // Action Filter Button
                 FilterViewController *vc = [FilterViewController new];
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY?:@"",
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY)?:@"",
                             kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY : [_data objectForKey:kTKPDDETAIL_DATALOCATIONARRAYKEY]?:@[]};
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                 [self.navigationController presentViewController:nav animated:YES completion:nil];

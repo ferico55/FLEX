@@ -19,14 +19,14 @@
 #import "DetailProductViewController.h"
 #import "DetailCatalogViewController.h"
 
-#import "SearchResultCell.h"
+#import "GeneralProductCell.h"
 #import "SearchResultViewController.h"
 #import "SortViewController.h"
 #import "FilterViewController.h"
 #import "HotlistResultViewController.h"
 #import "TKPDTabNavigationController.h"
 
-@interface SearchResultViewController () <SearchResultCellDelegate, TKPDTabNavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface SearchResultViewController () <GeneralProductCellDelegate, TKPDTabNavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -200,12 +200,12 @@
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         
-        NSString *cellid = kTKPDSEARCHRESULTCELL_IDENTIFIER;
+        NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
 		
-		cell = (SearchResultCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+		cell = (GeneralProductCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
-			cell = [SearchResultCell newcell];
-			((SearchResultCell*)cell).delegate = self;
+			cell = [GeneralProductCell newcell];
+			((GeneralProductCell*)cell).delegate = self;
 		}
         
         if (_product.count > indexPath.row) {
@@ -221,21 +221,21 @@
             
             for (int i = 0; (indexsegment + i) < indexlimit; i++) {
                 List *list = [_product objectAtIndex:indexsegment + i];
-                ((UIView*)((SearchResultCell*)cell).viewcell[i]).hidden = NO;
-                (((SearchResultCell*)cell).indexpath) = indexPath;
+                ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
+                (((GeneralProductCell*)cell).indexpath) = indexPath;
                 
                 if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
-                    ((UIView*)((SearchResultCell*)cell).viewcell[i]).hidden = NO;
-                    ((UILabel*)((SearchResultCell*)cell).labelprice[i]).text = list.product_price?:@"";
-                    ((UILabel*)((SearchResultCell*)cell).labeldescription[i]).text = list.product_name?:@"";
-                    ((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
+                    ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
+                    ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.product_price?:@"";
+                    ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.product_name?:@"";
+                    ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
                     
                     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
                     
-                    UIImageView *thumb = (UIImageView*)((SearchResultCell*)cell).thumb[i];
+                    UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
                     thumb.image = nil;
                     
-                    UIActivityIndicatorView *act = (UIActivityIndicatorView*)((SearchResultCell*)cell).act[i];
+                    UIActivityIndicatorView *act = (UIActivityIndicatorView*)((GeneralProductCell*)cell).act[i];
                     [act startAnimating];
                     
                     NSLog(@"============================== START GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
@@ -256,18 +256,18 @@
                     }];
                     
                 }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-                    ((UIView*)((SearchResultCell*)cell).viewcell[i]).hidden = NO;
-                    ((UILabel*)((SearchResultCell*)cell).labelprice[i]).text = list.catalog_price?:@"";
-                    ((UILabel*)((SearchResultCell*)cell).labeldescription[i]).text = list.catalog_name?:@"";
-                    ((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = list.product_name?:@"";
+                    ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
+                    ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.catalog_price?:@"";
+                    ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:@"";
+                    ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.product_name?:@"";
                     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.catalog_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
                     //request.URL = url;
                     
-                    UIImageView *thumb = (UIImageView*)((SearchResultCell*)cell).thumb[i];
+                    UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
                     thumb.image = nil;
                     //thumb.hidden = YES;	//@prepareforreuse then @reset
                     
-                    UIActivityIndicatorView *act = (UIActivityIndicatorView*)((SearchResultCell*)cell).act[i];
+                    UIActivityIndicatorView *act = (UIActivityIndicatorView*)((GeneralProductCell*)cell).act[i];
                     [act startAnimating];
                     
                     NSLog(@"============================== START GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
@@ -562,7 +562,7 @@
 }
 
 #pragma mark - Cell Delegate
--(void)SearchResultCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+-(void)GeneralProductCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]){
         // Go to product detail
@@ -593,9 +593,9 @@
             // Action Urutkan Button
             SortViewController *vc = [SortViewController new]; 
             if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPEPRODUCTVIEWKEY};
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEPRODUCTVIEWKEY)};
             else
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPECATALOGVIEWKEY};
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPECATALOGVIEWKEY)};
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             break;
@@ -605,9 +605,9 @@
             // Action Filter Button
             FilterViewController *vc = [FilterViewController new];
             if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPEPRODUCTVIEWKEY};
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEPRODUCTVIEWKEY)};
             else
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:kTKPDFILTER_DATATYPECATALOGVIEWKEY};
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPECATALOGVIEWKEY)};
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             break;
@@ -620,11 +620,11 @@
 #pragma mark - Methods
 -(void)reset:(UITableViewCell*)cell
 {
-    [((SearchResultCell*)cell).thumb makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
-    [((SearchResultCell*)cell).labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((SearchResultCell*)cell).labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((SearchResultCell*)cell).labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((SearchResultCell*)cell).viewcell makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
+    [((GeneralProductCell*)cell).thumb makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
+    [((GeneralProductCell*)cell).labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [((GeneralProductCell*)cell).labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [((GeneralProductCell*)cell).labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [((GeneralProductCell*)cell).viewcell makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
 }
 
 -(void)refreshView:(UIRefreshControl*)refresh

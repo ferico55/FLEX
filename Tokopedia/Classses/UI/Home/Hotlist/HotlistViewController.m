@@ -7,10 +7,9 @@
 //
 
 #import "Hotlist.h"
-
+#import "ExpiringCache.h"
 #import "home.h"
 #import "HotlistViewController.h"
-#import "HotListCell.h"
 #import "TraktAPIClient.h"
 #import "HotlistResultViewController.h"
 
@@ -32,6 +31,8 @@
     
     __weak RKObjectManager *_objectmanager;
 }
+
+@property (nonatomic, strong) ExpiringCache *accountsCache;
 
 @property (strong, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -97,6 +98,10 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
+    if (!self.accountsCache) {
+        self.accountsCache = [[ExpiringCache alloc] init];
+        self.accountsCache.expiryTimeInterval = 360; // 2 hours
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -105,7 +110,11 @@
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self loadData];
+            // get an object
+            NSObject *cachedObj = [self.accountsCache objectForKey:@"hotlist"];
+            if (!cachedObj) {
+                [self loadData];
+            }
         }
     }
 }
@@ -226,6 +235,7 @@
     //TraktAPIClient *client = [TraktAPIClient sharedClient];
     _objectmanager = [RKObjectManager sharedClient];
     
+    
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Hotlist class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
@@ -257,21 +267,31 @@
 
 - (void)loadData
 {
-   
+    // create a new one, this one is expired or we've never gotten it
     if (!_isrefreshview) {
         _table.tableFooterView = _footer;
         [_act startAnimating];
     }
     
-	NSDictionary* param = @{//@"auth":@(1),
+    NSDictionary* param = @{//@"auth":@(1),
                             kTKPDHOME_APIACTIONKEY:kTKPDHOMEHOTLISTACT,
                             kTKPDHOME_APIPAGEKEY : @(_page),
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE)
                             };
     _requestcount ++;
+
     NSLog(@"============================== GET HOTLIST =====================");
     [_objectmanager getObjectsAtPath:kTKPDHOMEHOTLIST_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         NSLog(@"============================== DONE GET HOTLIST =====================");
+        [operation setWillMapDeserializedResponseBlock:^id(id deserializedResponseBody)
+         
+         {
+             NSDictionary *dictionary     = [[NSMutableDictionary alloc] init];
+             dictionary = deserializedResponseBody;
+             NSString *Details = [dictionary objectForKey:@"Details"];
+             return  deserializedResponseBody;
+             
+         }];
         [self requestsuccess:mappingResult];
         [_act stopAnimating];
         _table.tableFooterView = nil;
@@ -294,6 +314,7 @@
     
     _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+
 }
 
 -(void)requestsuccess:(id)object
@@ -336,12 +357,17 @@
         //NSLog(@"query: %@", [url query]);
         //NSLog(@"fragment: %@", [url fragment]);
         
+        // add an object to the cache
+        //[self.accountsCache setObject:result forKey:@"hotlist"];
+        
 #if DEBUG
         NSString* path = [NSHomeDirectory() stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
         [result writeToFile:path atomically:YES];
+
 #endif
     }
 }
+
 
 -(void)requesttimeout
 {

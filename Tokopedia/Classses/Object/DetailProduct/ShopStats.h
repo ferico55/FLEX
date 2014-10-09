@@ -16,5 +16,9 @@
 @property (nonatomic) NSInteger shop_accuracy_rate;
 @property (nonatomic, strong) NSString *shop_accuracy_description;
 @property (nonatomic, strong) NSString *shop_speed_description;
+@property (nonatomic, strong) NSString *shop_total_transaction;
+@property (nonatomic, strong) NSString *shop_total_etalase;
+@property (nonatomic, strong) NSString *shop_total_product;
+@property (nonatomic, strong) NSString *shop_item_sold;
 
 @end

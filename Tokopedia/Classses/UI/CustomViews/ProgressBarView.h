@@ -10,6 +10,6 @@
 
 @interface ProgressBarView : UIView
 
-@property (nonatomic) NSInteger floatcount;
+@property (nonatomic) CGFloat floatcount;
 
 @end

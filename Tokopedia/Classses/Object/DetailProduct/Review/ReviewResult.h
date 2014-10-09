@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
+#import "AdvanceReview.h"
 #import "ReviewList.h"
 #import "Paging.h"
 
 @interface ReviewResult : NSObject
 
 @property (nonatomic, strong) Paging *paging;
+@property (nonatomic, strong) AdvanceReview *advance_review;
 @property (nonatomic, strong) NSArray *list;
 
 @end

@@ -14,6 +14,7 @@
 {
     NSArray *_sortarray;
     NSMutableDictionary *_selectedsort;
+    NSInteger _type;
 }
 @property (weak, nonatomic) IBOutlet UITableView *table;
 
@@ -68,16 +69,36 @@
     _table.delegate = self;
     _table.dataSource = self;
     
-    if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEHOTLISTVIEWKEY]||[[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEPRODUCTVIEWKEY]) {
-        _sortarray = kTKPDSORT_HOTLISTSORTARRAY;
-    }
-    if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPECATALOGVIEWKEY]) {
+    _type = [[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] integerValue]?:0;
+    switch (_type) {
+        case 1:
+        case 2:
+        {   //product
+            _sortarray = kTKPDSORT_HOTLISTSORTARRAY;
+            break;
+        }
+        case 3:
+        {   //catalog
             _sortarray = kTKPDSORT_SEARCHCATALOGSORTARRAY;
+            break;
+        }
+        case 4:
+        {    //detail catalog
+            _sortarray = kTKPDSORT_SEARCHDETAILCATALOGSORTARRAY;
+            break;
+        }
+        case 5:
+        {    //shop
+            break;
+        }
+        case 6:
+        {   //shop product
+            _sortarray = kTKPDSORT_SEARCHPRODUCTSHOPSORTARRAY;
+            break;
+        }
+        default:
+            break;
     }
-    if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY]) {
-        _sortarray = kTKPDSORT_SEARCHDETAILCATALOGSORTARRAY;
-    }
-    
 }
 
 #pragma mark - Memory Management
@@ -103,24 +124,41 @@
                 NSIndexPath *indexpath =[_selectedsort objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
                 NSDictionary *orderdict = _sortarray[indexpath.row];
                 NSDictionary *userinfo = @{kTKPDFILTER_APIORDERBYKEY:[orderdict objectForKey:kTKPDFILTER_DATASORTVALUEKEY]?:@""};
-                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEHOTLISTVIEWKEY]||[[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEPRODUCTVIEWKEY]) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterProduct" object:nil userInfo:userinfo];
-                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                }
-                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPESHOPVIEWKEY]) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterShop" object:nil userInfo:userinfo];
-                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                }
-                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPECATALOGVIEWKEY]) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterCatalog" object:nil userInfo:userinfo];
-                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                }
-                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY]) {
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterDetailCatalog" object:nil userInfo:userinfo];
-                    UINavigationController *nav = (UINavigationController *)self.presentingViewController;
-                    [self dismissViewControllerAnimated:NO completion:^{
-                        [nav popViewControllerAnimated:NO];
-                    }];
+                
+                switch (_type) {
+                    case 1:
+                    case 2:
+                    {   //product
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterProduct" object:nil userInfo:userinfo];
+                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                        break;
+                    }
+                    case 3:
+                    {   //catalog
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterCatalog" object:nil userInfo:userinfo];
+                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                        break;
+                    }
+                    case 4:
+                    {    //detail catalog
+                        UINavigationController *nav = (UINavigationController *)self.presentingViewController;
+                        [self dismissViewControllerAnimated:NO completion:^{
+                            [nav popViewControllerAnimated:NO];
+                        }];
+                        break;
+                    }
+                    case 5:
+                    {    //shop
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterShop" object:nil userInfo:userinfo];
+                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                        break;
+                    }
+                    case 6:
+                    {   //shop product
+                        break;
+                    }
+                    default:
+                        break;
                 }
                 break;
             }

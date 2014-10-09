@@ -5,7 +5,8 @@
 //  Created by IT Tkpd on 9/30/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "detail.h"
+#import "Shop.h"
 #import "TKPDTabShopNavigationController.h"
 #import "ShopInfoViewController.h"
 
@@ -15,8 +16,21 @@
 	NSArray* _unloadViewControllers;
     
     NSArray *_chevrons;
+    
+    UIBarButtonItem *_barbuttoninfo;
+    
+    NSInteger _pagedetail;
+    
+    Shop *_shop;
+    BOOL _isnodata;
+    NSInteger _requestcount;
+    BOOL _isaddressexpanded;
+    __weak RKObjectManager *_objectmanager;
+    NSTimer *_timer;
 }
 
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actpp;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actcover;
 
 @property (weak, nonatomic) IBOutlet UIImageView *coverimage;
 @property (weak, nonatomic) IBOutlet UIImageView *ppimage;
@@ -29,7 +43,15 @@
 
 @property (weak, nonatomic) IBOutlet UIView *container;
 @property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
+@property (weak, nonatomic) IBOutlet UIView *tapview;
 
+@property (weak, nonatomic) IBOutlet UILabel *labelfav;
+@property (weak, nonatomic) IBOutlet UILabel *labelsold;
+
+@property (strong, nonatomic) IBOutlet UIView *descriptionview;
+@property (strong, nonatomic) IBOutlet UIView *detailview;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *detailscrollview;
 
 - (IBAction)tap:(UIButton* )sender;
 
@@ -83,6 +105,9 @@
 #pragma clang diagnostic ignored "-Wunused-value"
 		self.view;
 #pragma clang diagnostic pop
+        
+        _requestcount = 0;
+        _isnodata = YES;
     }
     return self;
 }
@@ -93,6 +118,7 @@
 {
     [super viewDidLoad];
     
+    _buttons = [NSArray sortViewsWithTagInArray:_buttons];
     _chevrons = _buttons;
 	
 	if (_unloadSelectedIndex != -1) {
@@ -102,7 +128,9 @@
 		_unloadViewControllers = nil;
 	}
     
-    _scrollview.contentSize = _contentview.frame.size;
+    CGSize size =_contentview.frame.size;
+    size.height = size.height - _tapview.frame.size.height;
+    _scrollview.contentSize = size;
     
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
@@ -120,13 +148,46 @@
     img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
     }
     else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-	[barbutton1 setTag:11];
-    self.navigationItem.rightBarButtonItem = barbutton1;
+        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+	[_barbuttoninfo setTag:11];
+    _barbuttoninfo.enabled = NO;
+    self.navigationItem.rightBarButtonItem = _barbuttoninfo;
+    [_scrollview addSubview:_contentview];
     
+    CGRect frame = _descriptionview.frame;
+    frame.origin.x = _detailview.frame.size.width;
+    _descriptionview.frame = frame;
+    [_detailscrollview addSubview:_descriptionview];
+    
+    frame = _detailview.frame;
+    frame.origin.x = 0;
+    _detailview.frame = frame;
+    [_detailscrollview addSubview:_detailview];
+    
+    size = _detailscrollview.frame.size;
+    size.width = size.width * _detailscrollview.subviews.count-1;
+    [_detailscrollview setContentSize:size];
+    _detailscrollview.pagingEnabled = YES;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    //if (!_isrefreshview) {
+    [self configureRestKit];
+    if (_isnodata) {
+        [self loadData];
+    }
+    //}
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self cancel];
 }
 
 - (void)viewDidLayoutSubviews
@@ -265,6 +326,10 @@
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated
 {
+    selectedIndex = selectedIndex-10;
+    if (selectedIndex<0) {
+        selectedIndex = 0;
+    }
 	if (selectedIndex == _selectedIndex) return;
 	
 	if (_viewControllers != nil) {
@@ -276,6 +341,8 @@
 		selectframe = _tabbar.frame;
         
 		UIViewController* deselect = _selectedViewController;
+        
+
 		UIViewController* select = _viewControllers[selectedIndex];
 		
 		UIEdgeInsets inset = [self contentInsetForContainerController];
@@ -453,6 +520,7 @@
         case 11:
         {
             ShopInfoViewController *vc = [ShopInfoViewController new];
+            vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop};
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
@@ -549,7 +617,255 @@
 	return nil;
 }
 
+-(void)setDetailData{
+    _detailview.hidden = NO;
+    _descriptionview.hidden = NO;
+    _pagecontrol.hidden = NO;
+    
+    _namelabel.text = _shop.result.info.shop_name;
+    _shopdesclabel.text = _shop.result.info.shop_description;
+    _locationlabel.text = _shop.result.info.shop_location;
+    
+    _labelfav.text = [NSString stringWithFormat:@"%@ Favorite",_shop.result.info.shop_total_favorit];
+    _labelsold.text = [NSString stringWithFormat:@"%@ Sold",_shop.result.stats.shop_item_sold];
+    
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    //request.URL = url;
+    
+    UIImageView *thumb = _ppimage;
+    thumb.image = nil;
+    //thumb.hidden = YES;	//@prepareforreuse then @reset
+    
+    [_actpp startAnimating];
+    
+    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        //NSLOG(@"thumb: %@", thumb);
+        [thumb setImage:image];
+        [_actpp stopAnimating];
+#pragma clang diagnostic pop
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        [_actpp stopAnimating];
+    }];
+    
+    request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_cover] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    //request.URL = url;
+    
+    thumb = _coverimage;
+    thumb.image = nil;
+    //thumb.hidden = YES;	//@prepareforreuse then @reset
+    
+    [_actcover startAnimating];
+    
+    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        //NSLOG(@"thumb: %@", thumb);
+        [thumb setImage:image];
+        
+        [_actcover stopAnimating];
+#pragma clang diagnostic pop
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        [_actcover stopAnimating];
+    }];
+}
+
+#pragma mark - Request and Mapping
+-(void)cancel
+{
+    [_objectmanager.operationQueue cancelAllOperations];
+    _objectmanager = nil;
+}
+
+- (void)configureRestKit
+{
+    // initialize RestKit
+    _objectmanager =  [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Shop class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APISTATUSKEY:kTKPDDETAIL_APISTATUSKEY,
+                                                        kTKPDDETAIL_APISERVERPROCESSTIMEKEY:kTKPDDETAIL_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailShopResult class]];
+    
+    RKObjectMapping *closedinfoMapping = [RKObjectMapping mappingForClass:[ClosedInfo class]];
+    [closedinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APIUNTILKEY:kTKPDDETAILSHOP_APIUNTILKEY,
+                                                            kTKPDDETAILSHOP_APIRESONKEY:kTKPDDETAILSHOP_APIRESONKEY
+                                                            }];
+    
+    RKObjectMapping *ownerMapping = [RKObjectMapping mappingForClass:[Owner class]];
+    [ownerMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APIOWNERIMAGEKEY:kTKPDDETAILSHOP_APIOWNERIMAGEKEY,
+                                                       kTKPDDETAILSHOP_APIOWNERPHONEKEY:kTKPDDETAILSHOP_APIOWNERPHONEKEY,
+                                                       kTKPDDETAILSHOP_APIOWNERIDKEY:kTKPDDETAILSHOP_APIOWNERIDKEY,
+                                                       kTKPDDETAILSHOP_APIOWNEREMAILKEY:kTKPDDETAILSHOP_APIOWNEREMAILKEY,
+                                                       kTKPDDETAILSHOP_APIOWNERNAMEKEY:kTKPDDETAILSHOP_APIOWNERNAMEKEY,
+                                                       kTKPDDETAILSHOP_APIOWNERMESSAGERKEY:kTKPDDETAILSHOP_APIOWNERMESSAGERKEY
+                                                       }];
+    
+    RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
+    [shopinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPINFOKEY:kTKPDDETAILPRODUCT_APISHOPINFOKEY,
+                                                          kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY:kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY,
+                                                          kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
+                                                          kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
+                                                          kTKPDDETAILPRODUCT_APISHOPIDKEY:kTKPDDETAILPRODUCT_APISHOPIDKEY,
+                                                          kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY:kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY,
+                                                          kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY:kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY,
+                                                          kTKPDDETAILPRODUCT_APISHOPNAMEKEY:kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
+                                                          kTKPDDETAILPRODUCT_APISHOPISFAVKEY:kTKPDDETAILPRODUCT_APISHOPISFAVKEY,
+                                                          kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY,
+                                                          kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY,
+                                                          kTKPDDETAILSHOP_APICOVERKEY:kTKPDDETAILSHOP_APICOVERKEY,
+                                                          kTKPDDETAILSHOP_APITOTALFAVKEY:kTKPDDETAILSHOP_APITOTALFAVKEY,
+                                                          kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY
+                                                          }];
+    
+    RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
+    [shopstatsMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY:kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY,
+                                                           kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY,
+                                                           kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY,
+                                                           kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY:kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY,
+                                                           kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY,
+                                                           kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY,
+                                                           kTKPDSHOP_APISHOPTOTALTRANSACTIONKEY:kTKPDSHOP_APISHOPTOTALTRANSACTIONKEY,
+                                                           kTKPDSHOP_APISHOPTOTALETALASEKEY:kTKPDSHOP_APISHOPTOTALETALASEKEY,
+                                                           kTKPDSHOP_APISHOPTOTALPRODUCTKEY:kTKPDSHOP_APISHOPTOTALPRODUCTKEY,
+                                                           kTKPDSHOP_APISHOPTOTALSOLDKEY:kTKPDSHOP_APISHOPTOTALSOLDKEY
+                                                           }];
+    
+    RKObjectMapping *shipmentMapping = [RKObjectMapping mappingForClass:[Shipment class]];
+    [shipmentMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APISHIPMENTIDKEY:kTKPDDETAILSHOP_APISHIPMENTIDKEY,
+                                                          kTKPDDETAILSHOP_APISHIPMENTIMAGEKEY:kTKPDDETAILSHOP_APISHIPMENTIMAGEKEY,
+                                                          kTKPDDETAILSHOP_APISHIPMENTNAMEKEY:kTKPDDETAILSHOP_APISHIPMENTNAMEKEY
+                                                          }];
+    
+    RKObjectMapping *shipmentpackageMapping = [RKObjectMapping mappingForClass:[ShipmentPackage class]];
+    [shipmentpackageMapping addAttributeMappingsFromArray:@[kTKPDDETAILSHOP_APISHIPPINGIDKEY,
+                                                            kTKPDDETAILSHOP_APIPRODUCTNAMEKEY
+                                                            ]];
+    
+    RKObjectMapping *paymentMapping = [RKObjectMapping mappingForClass:[Payment class]];
+    [paymentMapping addAttributeMappingsFromArray:@[kTKPDDETAILSHOP_APIPAYMENTIMAGEKEY,
+                                                    kTKPDDETAILSHOP_APIPAYMENTNAMEKEY]];
+    
+    RKObjectMapping *addressMapping = [RKObjectMapping mappingForClass:[Address class]];
+    [addressMapping addAttributeMappingsFromArray:@[kTKPDDETAILSHOP_APIADDRESSKEY,
+                                                    kTKPDDETAILSHOP_APIADDRESSNAMEKEY,
+                                                    kTKPDDETAILSHOP_APIADDRESSIDKEY,
+                                                    kTKPDDETAILSHOP_APIADDRESSPOSTALKEY,
+                                                    kTKPDDETAILSHOP_APIADDRESSDISTRICTKEY,
+                                                    kTKPDDETAILSHOP_APIADDRESSFAXKEY,
+                                                    kTKPDDETAILSHOP_APIADDRESSCITYKEY,
+                                                    kTKPDDETAILSHOP_APIADDRESSPHONEKEY,
+                                                    kTKPDDETAILSHOP_APIADDRESSEMAILKEY,
+                                                    kTKPDDETAILSHOP_APIADDRESSPROVINCEKEY
+                                                    ]];
+    // Relationship Mapping
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APICLOSEDINFOKEY toKeyPath:kTKPDDETAILSHOP_APICLOSEDINFOKEY withMapping:closedinfoMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APIOWNERKEY toKeyPath:kTKPDDETAILSHOP_APIOWNERKEY withMapping:ownerMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APIINFOKEY toKeyPath:kTKPDDETAILSHOP_APIINFOKEY withMapping:shopinfoMapping]];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISTATKEY toKeyPath:kTKPDDETAILSHOP_APISTATKEY withMapping:shopstatsMapping]];
+    
+    RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY toKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY withMapping:shipmentMapping];
+    [resultMapping addPropertyMapping:shipmentRel];
+    
+    RKRelationshipMapping *shipmentpackageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTPACKAGEKEY toKeyPath:kTKPDDETAILSHOP_APISHIPMENTPACKAGEKEY withMapping:shipmentpackageMapping];
+    [shipmentMapping addPropertyMapping:shipmentpackageRel];
+    
+    RKRelationshipMapping *paymentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APIPAYMENTKEY toKeyPath:kTKPDDETAILSHOP_APIPAYMENTKEY withMapping:paymentMapping];
+    [resultMapping addPropertyMapping:paymentRel];
+    
+    RKRelationshipMapping *addressRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APIADDRESSKEY toKeyPath:kTKPDDETAILSHOP_APIADDRESSKEY withMapping:addressMapping];
+    [resultMapping addPropertyMapping:addressRel];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOP_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectmanager addResponseDescriptor:responseDescriptor];
+}
+
+- (void)loadData
+{
+    _requestcount ++;
+    
+	NSDictionary* param = @{
+                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPDETAILKEY,
+                            kTKPDDETAIL_APISHOPIDKEY : @(681)
+                            };
+    
+    [_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        
+        [self requestsuccess:mappingResult];
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+        [self requestfailure:error];
+    }];
+    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+}
+
+-(void)requestsuccess:(id)object
+{
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    
+    id stats = [result objectForKey:@""];
+    
+    _shop = stats;
+    BOOL status = [_shop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+        _isnodata = NO;
+        _barbuttoninfo.enabled = YES;
+        [self setDetailData];
+    }
+}
+
+-(void)requesttimeout
+{
+    [self cancel];
+}
+
+-(void)requestfailure:(id)object
+{
+    [self cancel];
+    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
+    if ([(NSError*)object code] == NSURLErrorCancelled) {
+        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+            //_table.tableFooterView = _footer;
+            //[_act startAnimating];
+            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+        }
+        else
+        {
+            //[_act stopAnimating];
+            //_table.tableFooterView = nil;
+        }
+    }
+    else
+    {
+        //[_act stopAnimating];
+        //_table.tableFooterView = nil;
+    }
+}
+
+#pragma mark - UIScrollView Delegate
+- (void)scrollViewDidScroll:(UIScrollView *)sender
+{
+    // Update the page when more than 50% of the previous/next page is visible
+    CGFloat pageWidth = _detailscrollview.frame.size.width;
+    _pagedetail = floor((_detailscrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    _pagecontrol.currentPage = _pagedetail;
+}
+
 @end
+
 
 #pragma mark -
 #pragma mark UIViewController category

@@ -13,6 +13,7 @@
 #import "StarsRateView.h"
 #import "ShopInfoShipmentCell.h"
 #import "ShopInfoPaymentCell.h"
+#import "ShopInfoAddressView.h"
 
 #import "ShopInfoViewController.h"
 
@@ -20,9 +21,7 @@
 {
     Shop *_shop;
     BOOL _isnodata;
-    NSInteger _requestcount;
-    __weak RKObjectManager *_objectmanager;
-    NSTimer *_timer;
+    BOOL _isaddressexpanded;
 }
 
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollview;
@@ -54,11 +53,14 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *thumbowner;
 @property (weak, nonatomic) IBOutlet UILabel *nameowner;
-
+@property (weak, nonatomic) IBOutlet UIView *transactionview;
 @property (weak, nonatomic) IBOutlet UIView *shipmentview;
 @property (weak, nonatomic) IBOutlet UIView *paymentview;
 @property (weak, nonatomic) IBOutlet UIView *ownerview;
+@property (weak, nonatomic) IBOutlet UIView *addressoffview;
+@property (weak, nonatomic) IBOutlet UIView *shopdetailview;
 
+- (IBAction)tap:(id)sender;
 @end
 
 @implementation ShopInfoViewController
@@ -68,8 +70,8 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _requestcount = 0;
         _isnodata = YES;
+        _isaddressexpanded = NO;
     }
     return self;
 }
@@ -83,29 +85,35 @@
     CGSize viewsize = _containerview.frame.size;
     [_scrollview setContentSize:viewsize];
     [_scrollview addSubview:_containerview];
+    
+    [self setData:_data];
+    [_tablepayment reloadData];
+    [_tableshipment reloadData];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    //if (!_isrefreshview) {
-        [self configureRestKit];
-        if (_isnodata) {
-            [self loadData];
-        }
-    //}
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self cancel];
-}
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - View Action
+- (IBAction)tap:(id)sender {
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton*)sender;
+        switch (btn.tag) {
+            case 10:
+            {
+                //expand location
+                _isaddressexpanded = _isaddressexpanded?NO:YES;
+                [self setDetailFrame];
+                break;
+            }
+            default:
+                break;
+        }
+    }
 }
 
 #pragma mark - Table View Data Source
@@ -222,186 +230,6 @@
 	}
 }
 
-
-#pragma mark - Request and Mapping
--(void)cancel
-{
-    [_objectmanager.operationQueue cancelAllOperations];
-    _objectmanager = nil;
-}
-
-- (void)configureRestKit
-{
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Shop class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APISTATUSKEY:kTKPDDETAIL_APISTATUSKEY,
-                                                        kTKPDDETAIL_APISERVERPROCESSTIMEKEY:kTKPDDETAIL_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailShopResult class]];
-    
-    RKObjectMapping *closedinfoMapping = [RKObjectMapping mappingForClass:[ClosedInfo class]];
-    [closedinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APIUNTILKEY:kTKPDDETAILSHOP_APIUNTILKEY,
-                                                            kTKPDDETAILSHOP_APIRESONKEY:kTKPDDETAILSHOP_APIRESONKEY
-                                                            }];
-    
-    RKObjectMapping *ownerMapping = [RKObjectMapping mappingForClass:[Owner class]];
-    [ownerMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APIOWNERIMAGEKEY:kTKPDDETAILSHOP_APIOWNERIMAGEKEY,
-                                                       kTKPDDETAILSHOP_APIOWNERPHONEKEY:kTKPDDETAILSHOP_APIOWNERPHONEKEY,
-                                                       kTKPDDETAILSHOP_APIOWNERIDKEY:kTKPDDETAILSHOP_APIOWNERIDKEY,
-                                                       kTKPDDETAILSHOP_APIOWNEREMAILKEY:kTKPDDETAILSHOP_APIOWNEREMAILKEY,
-                                                       kTKPDDETAILSHOP_APIOWNERNAMEKEY:kTKPDDETAILSHOP_APIOWNERNAMEKEY,
-                                                       kTKPDDETAILSHOP_APIOWNERMESSAGERKEY:kTKPDDETAILSHOP_APIOWNERMESSAGERKEY
-                                                       }];
-    
-    RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
-    [shopinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPINFOKEY:kTKPDDETAILPRODUCT_APISHOPINFOKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY:kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPIDKEY:kTKPDDETAILPRODUCT_APISHOPIDKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY:kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY:kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPNAMEKEY:kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPISFAVKEY:kTKPDDETAILPRODUCT_APISHOPISFAVKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY,
-                                                          kTKPDDETAILSHOP_APICOVERKEY:kTKPDDETAILSHOP_APICOVERKEY,
-                                                          kTKPDDETAILSHOP_APITOTALFAVKEY:kTKPDDETAILSHOP_APITOTALFAVKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY
-                                                          }];
-    
-    RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
-    [shopstatsMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY:kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY:kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY
-                                                           }];
-    
-    RKObjectMapping *shipmentMapping = [RKObjectMapping mappingForClass:[Shipment class]];
-    [shipmentMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APISHIPMENTIDKEY:kTKPDDETAILSHOP_APISHIPMENTIDKEY,
-                                                          kTKPDDETAILSHOP_APISHIPMENTIMAGEKEY:kTKPDDETAILSHOP_APISHIPMENTIMAGEKEY,
-                                                          kTKPDDETAILSHOP_APISHIPMENTNAMEKEY:kTKPDDETAILSHOP_APISHIPMENTNAMEKEY
-                                                          }];
-    
-    RKObjectMapping *shipmentpackageMapping = [RKObjectMapping mappingForClass:[ShipmentPackage class]];
-    [shipmentpackageMapping addAttributeMappingsFromArray:@[kTKPDDETAILSHOP_APISHIPPINGIDKEY,
-                                                            kTKPDDETAILSHOP_APIPRODUCTNAMEKEY
-                                                            ]];
-    
-    RKObjectMapping *paymentMapping = [RKObjectMapping mappingForClass:[Payment class]];
-    [paymentMapping addAttributeMappingsFromArray:@[kTKPDDETAILSHOP_APIPAYMENTIMAGEKEY,
-                                                    kTKPDDETAILSHOP_APIPAYMENTNAMEKEY]];
-    
-    RKObjectMapping *addressMapping = [RKObjectMapping mappingForClass:[Address class]];
-    [addressMapping addAttributeMappingsFromArray:@[kTKPDDETAILSHOP_APIADDRESSKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSNAMEKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSIDKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSPOSTALKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSDISTRICTKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSFAXKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSCITYKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSPHONEKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSEMAILKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSPROVINCEKEY
-                                                    ]];
-    // Relationship Mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APICLOSEDINFOKEY toKeyPath:kTKPDDETAILSHOP_APICLOSEDINFOKEY withMapping:closedinfoMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APIOWNERKEY toKeyPath:kTKPDDETAILSHOP_APIOWNERKEY withMapping:ownerMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APIINFOKEY toKeyPath:kTKPDDETAILSHOP_APIINFOKEY withMapping:shopinfoMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISTATKEY toKeyPath:kTKPDDETAILSHOP_APISTATKEY withMapping:shopstatsMapping]];
-    
-    RKRelationshipMapping *shipmentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY toKeyPath:kTKPDDETAILSHOP_APISHIPMENTKEY withMapping:shipmentMapping];
-    [resultMapping addPropertyMapping:shipmentRel];
-    
-    RKRelationshipMapping *shipmentpackageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APISHIPMENTPACKAGEKEY toKeyPath:kTKPDDETAILSHOP_APISHIPMENTPACKAGEKEY withMapping:shipmentpackageMapping];
-    [shipmentMapping addPropertyMapping:shipmentpackageRel];
-    
-    RKRelationshipMapping *paymentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APIPAYMENTKEY toKeyPath:kTKPDDETAILSHOP_APIPAYMENTKEY withMapping:paymentMapping];
-    [resultMapping addPropertyMapping:paymentRel];
-    
-    RKRelationshipMapping *addressRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APIADDRESSKEY toKeyPath:kTKPDDETAILSHOP_APIADDRESSKEY withMapping:addressMapping];
-    [resultMapping addPropertyMapping:addressRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOP_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptor];
-}
-
-- (void)loadData
-{
-    _requestcount ++;
-    
-	NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPDETAILKEY,
-                            kTKPDDETAIL_APISHOPIDKEY : @(681)
-                            };
-    
-    [_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        
-        [self requestsuccess:mappingResult];
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestfailure:error];
-    }];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestsuccess:(id)object
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    
-    id stats = [result objectForKey:@""];
-    
-    _shop = stats;
-    BOOL status = [_shop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        _isnodata = NO;
-        [self setShopInfoData];
-        [_tablepayment reloadData];
-        [_tableshipment reloadData];
-    }
-}
-
--(void)requesttimeout
-{
-    [self cancel];
-}
-
--(void)requestfailure:(id)object
-{
-    [self cancel];
-    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-    if ([(NSError*)object code] == NSURLErrorCancelled) {
-        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
-            //_table.tableFooterView = _footer;
-            //[_act startAnimating];
-            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-        }
-        else
-        {
-            //[_act stopAnimating];
-            //_table.tableFooterView = nil;
-        }
-    }
-    else
-    {
-        //[_act stopAnimating];
-        //_table.tableFooterView = nil;
-    }
-}
-
 #pragma mark - Methods
 -(void)setShopInfoData
 {
@@ -417,6 +245,13 @@
     _labellastlogin.text = _shop.result.info.shop_owner_last_login;
     _labelopensince.text = _shop.result.info.shop_open_since;
     _nameowner.text = _shop.result.owner.owner_name;
+    NSInteger totallocation = _shop.result.address.count;
+    [_buttonofflocation setTitle:[NSString stringWithFormat:@"%d Offline", totallocation] forState:UIControlStateNormal];
+    
+    _labelsuccessfulltransaction.text = _shop.result.stats.shop_total_transaction;
+    _labelsold.text = _shop.result.stats.shop_item_sold;
+    _labeletalase.text = _shop.result.stats.shop_total_etalase;
+    _labeltotalproduct.text = _shop.result.stats.shop_total_product;
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     //request.URL = url;
@@ -464,23 +299,102 @@
 
 }
 
--(void)setFrame
+-(void)setDetailFrame
 {
+    NSInteger delta = 50;
+    
+    CGRect frame;
+    
+    [_labelshopdescription sizeToFit];
+    
+    frame = _shopdetailview.frame;
+    frame.origin.y = _labelshopdescription.frame.size.height + _labelshopdescription.frame.origin.y ;
+    _shopdetailview.frame = frame;
+    
+    NSArray * address = _shop.result.address;
+
+    for (int i = 0; i<address.count; i++) {
+        if (_isaddressexpanded) {
+            ShopInfoAddressView *v = [ShopInfoAddressView newview];
+            frame = _addressoffview.frame;
+            frame.size.height = v.frame.size.height * address.count;
+            
+            _addressoffview.frame = frame;
+            frame = v.frame;
+            frame.origin.y = v.frame.size.height*i;
+            [_addressoffview addSubview:v];
+            v.frame = frame;
+            _addressoffview.hidden = NO;
+            [self setAddressDataView:v withData:address[i]];
+        }
+        else{
+            frame = _addressoffview.frame;
+            frame.size.height = 0;
+            frame.origin.y = _shopdetailview.frame.size.height + _shopdetailview.frame.origin.y ;
+            _addressoffview.frame = frame;
+            _addressoffview.hidden = YES;
+        }
+    }
+    
+    frame = _transactionview.frame;
+    frame.origin.y = _addressoffview.frame.size.height + _addressoffview.frame.origin.y ;
+    _transactionview.frame = frame;
+    
     [_tableshipment layoutIfNeeded];
     CGSize size = _tableshipment.contentSize;
-    CGRect frame = _shipmentview.frame;
-    frame.size.height = size.height + _tableshipment.frame.origin.y;
+    CGRect tableframe = _tableshipment.frame;
+    tableframe.size.height = size.height;
+    _tableshipment.frame = tableframe;
+    frame = _shipmentview.frame;
+    frame.origin.y = _transactionview.frame.size.height + _transactionview.frame.origin.y;
+    frame.size.height = size.height + delta;
+    _shipmentview.frame = frame;
     
     [_tablepayment layoutIfNeeded];
     size = _tablepayment.contentSize;
+    tableframe = _tablepayment.frame;
+    tableframe.size.height = size.height;
+    _tablepayment.frame = tableframe;
     frame = _paymentview.frame;
     frame.origin.y = _shipmentview.frame.size.height + _shipmentview.frame.origin.y;
-    frame.size.height = size.height;
+    frame.size.height = size.height+ delta;
     _paymentview.frame = frame;
     
     frame = _ownerview.frame;
-    frame.origin.y = _paymentview.frame.size.height + _paymentview.frame.origin.y;
+    frame.origin.y = _paymentview.frame.size.height + _paymentview.frame.origin.y ;
     _ownerview.frame = frame;
+    
+    frame = _containerview.frame;
+    frame.size.height = _ownerview.frame.origin.y + _ownerview.frame.size.height + delta;
+   _containerview.frame = frame;
+    
+    CGSize viewsize = frame.size;
+    [_scrollview setContentSize:viewsize];
+}
+
+-(void)setAddressDataView:(ShopInfoAddressView*)view withData:(id)data
+{
+    Address *address = data;
+    view.labelname.text = (address.address_name == 0)?@"-":address.address_name;
+    view.labelDistric.text = (address.address_district == 0)?@"-":address.address_district;
+    view.labelcity.text = (address.address_city ==0)?@"-":address.address_city;
+    view.labelprov.text = (address.address_province ==0)?@"-":address.address_province;
+    view.labelpostal.text = (address.address_postal ==0)?@"-":address.address_postal;
+    view.labelemail.text = (address.address_email ==0)?@"-":address.address_email;
+    view.labelfax.text = (address.address_fax ==0)?@"-":address.address_fax;
+    view.labelphone.text = (address.address_phone ==0)?@"-":address.address_phone;
+}
+
+#pragma mark - Properties
+-(void)setData:(NSDictionary *)data
+{
+    _data = data;
+    if (data) {
+        _isnodata = NO;
+        _shop = [_data objectForKey:kTKPDDETAIL_DATAINFOSHOPSKEY];
+        [self setShopInfoData];
+        [self setDetailFrame];
+    }
 }
 
 @end
