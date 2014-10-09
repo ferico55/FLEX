@@ -51,6 +51,7 @@
     if (self) {
     
         _isnodata = YES;
+        self.title = kTKPDTITLE_REVIEW;
     }
     return self;
 }
@@ -67,6 +68,19 @@
     _headerview.hidden = YES;
     
     _page = 1;
+    
+    UIBarButtonItem *barbutton1;
+    NSBundle* bundle = [NSBundle mainBundle];
+    //TODO:: Change image
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    }
+    else
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    [barbutton1 setTag:10];
+    self.navigationItem.leftBarButtonItem = barbutton1;
     
     if (_list.count>2) {
         _isnodata = NO;
@@ -95,6 +109,8 @@
     [super viewWillDisappear:animated];
     [self cancel];
 }
+
+
 
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -192,21 +208,23 @@
 	}
 }
 
+
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
-    if ([sender isKindOfClass:[UIButton class]]) {
+//    if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
         switch (btn.tag) {
             case 10:
                 // see more action
-                
+//                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                [self.navigationController popViewControllerAnimated:YES];
                 break;
                 
             default:
                 break;
         }
-    }
+//    }
 }
 
 #pragma mark - Memory Management

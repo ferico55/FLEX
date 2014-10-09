@@ -59,6 +59,7 @@
     CatalogSpecs *spec = specs[section];
     CatalogSpecViewHeaderView *v = [CatalogSpecViewHeaderView newview];
     v.headerlabel.text = spec.spec_header;
+    
     return v;
 }
 

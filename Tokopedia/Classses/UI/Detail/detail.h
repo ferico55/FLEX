@@ -9,6 +9,9 @@
 #ifndef Tokopedia_detail_h
 #define Tokopedia_detail_h
 
+#define kTKPDTITLE_TALK @"Talk About It"
+#define kTKPDTITLE_REVIEW @"Review"
+
 #define kTKPDDETAIL_DATASHOPSKEY @"shop"
 #define kTKPDDETAIL_DATALOCATIONARRAYKEY @"locationarray"
 

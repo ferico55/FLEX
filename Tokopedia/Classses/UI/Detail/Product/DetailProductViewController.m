@@ -36,7 +36,6 @@
     NSMutableIndexSet *expandedSections;
     BOOL _isexpanded;
     NSInteger _heightOfSection;
-    NSInteger _heightDescSection;
     
     BOOL _isnodata;
     BOOL _isnodatawholesale;
@@ -49,17 +48,15 @@
     NSMutableArray *_headerimages;
     
     NSInteger _pageheaderimages;
-    
-    UILabel *_desclabel;
-
+    NSInteger _heightDescSection;
     Product *_product;
-
     
     __weak RKObjectManager *_objectmanager;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) IBOutlet UIView *header;
+@property (strong, nonatomic) IBOutlet UIView *sticky;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 
 @property (weak, nonatomic) IBOutlet UILabel *productnamelabel;
@@ -120,22 +117,31 @@
     
     _isexpanded = NO;
     
+    
+    UIBarButtonItem *barbutton1;
+    NSBundle* bundle = [NSBundle mainBundle];
+    //TODO:: Change image
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    }
+    else
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    [barbutton1 setTag:10];
+    self.navigationItem.leftBarButtonItem = barbutton1;
+    
     /** set inset table for different size**/
-//    if (is4inch) {
-//        UIEdgeInsets inset = _table.contentInset;
-//        inset.bottom += 200;
-//        _table.contentInset = inset;
-//    }
-//    else{
-//        UIEdgeInsets inset = _table.contentInset;
-//        inset.bottom += 120;
-//        _table.contentInset = inset;
-//    }
-    
-    
-    UIEdgeInsets inset = _table.contentInset;
-    inset.bottom += 65  ;
-    _table.contentInset = inset;
+    if (is4inch) {
+        UIEdgeInsets inset = _table.contentInset;
+        inset.bottom += 200;
+        _table.contentInset = inset;
+    }
+    else{
+        UIEdgeInsets inset = _table.contentInset;
+        inset.bottom += 120;
+        _table.contentInset = inset;
+    }
     
     _table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
@@ -146,8 +152,7 @@
     }
     
     _imagescrollview.pagingEnabled = YES;
-    
-    _heightDescSection = 155;
+    _imagescrollview.contentMode = UIViewContentModeScaleAspectFit;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -258,8 +263,17 @@
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
+         
             default:
                 break;
+        }
+    } else {
+        UIButton *btn = (UIButton *)sender;
+        switch (btn.tag) {
+            case 10:
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
         }
     }
 }
@@ -269,20 +283,21 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
-    UIView *mView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 20, 200)];
+    UIView *mView = [[UIView alloc]initWithFrame:CGRectMake(0, 30, 50, 200)];
     [mView setBackgroundColor:[UIColor whiteColor]];
     
     UIImageView *logoView = [[UIImageView alloc]initWithFrame:CGRectMake(290, 10, 20, 20)];
-    [logoView setImage:[UIImage imageNamed:@"icon_arrow_up_28px-01.png"]];
+    [logoView setImage:[UIImage imageNamed:@"icon_arrow_up.png"]];
+    
     [mView addSubview:logoView];
     
     UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
-    [bt setFrame:CGRectMake(0, 10, 150, 20)];
+    [bt setFrame:CGRectMake(0, 0, 150, 40)];
     [bt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [bt setTag:section];
-    [bt.titleLabel setFont:[UIFont fontWithName:@"Helvetica-Bold" size: 13]];
-    [bt.titleLabel setTextAlignment:NSTextAlignmentCenter];
-//    [bt.titleLabel setTextColor:[UIColor blackColor]];
+    [bt.titleLabel setFont:[UIFont systemFontOfSize:12]];
+    [bt.titleLabel setTextAlignment:NSTextAlignmentLeft];
+    [bt.titleLabel setTextColor:[UIColor blackColor]];
     switch (section) {
         case 0:
             [bt setTitle: @"Product Description" forState: UIControlStateNormal];
@@ -340,24 +355,13 @@
 #pragma mark  What will be the height of the section, Make it dynamic
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    if(indexPath == 0) {
-//        return 0;
-//    }
-    //if (indexPath.section == _expandedsection && indexPath.section != 0) {
-    //    return _heightOfSection;
-    //}else if (indexPath.section == 0)
-//        return 300;
-    //else {
-    //    return 0;
-   //}
-    if (indexPath.section == 0)
-    {
-        // description section
-        NSLog(@" Height %d", _heightDescSection);
-        return _heightDescSection;
-    }
-    else
+   
+//    if(indexPath.section == 0) {
+//        return _heightDescSection;
+//    } else {
         return 300;
+//    }
+    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -382,28 +386,16 @@
     if (indexPath.section == 0) {
         //if (_isexpanded) {
             NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
-       
             cell = (DetailProductDescriptionCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
             if (cell == nil) {
                 cell = [DetailProductDescriptionCell newcell];
                 //((DetailProductWholesaleCell*)cell).delegate = self;
             }
         
-
-                id products = [_detailproduct objectForKey:@""];
-                Product *product = products;
-                NSString *productdesc = product.result.info.product_description;
-                _desclabel = ((DetailProductDescriptionCell*)cell).descriptionlabel;
-                _desclabel.text = productdesc;
-                
-                //adjust the label the the new height.
-                CGRect newFrame = _desclabel.frame;
-                newFrame.size.height = _heightDescSection;
-                _desclabel.frame = newFrame;
-        
-            //[_desclabel setNumberOfLines:0];
-            //[_desclabel sizeToFit];
-
+            NSString *productdesc = _product.result.info.product_description;
+            ((DetailProductDescriptionCell*)cell).descriptionlabel.text = productdesc;
+            [((DetailProductDescriptionCell*)cell).descriptionlabel sizeToFit];
+            _heightDescSection =  ((DetailProductDescriptionCell*)cell).descriptionlabel.frame.size.height;
         //}
         return cell;
     }
@@ -630,18 +622,6 @@
         [self setFooterViewData];
         [self setOtherProducts];
         _isnodata = NO;
-        
-
-        //Calculate the expected size based on the font and linebreak mode of your label
-        // FLT_MAX here simply means no constraint in height
-        NSString *productdesc = product.result.info.product_description;
-        CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
-        
-        CGSize expectedLabelSize = [productdesc sizeWithFont:_desclabel.font constrainedToSize:maximumLabelSize lineBreakMode:_desclabel.lineBreakMode];
-        NSInteger delta = 60;
-        _heightDescSection = expectedLabelSize.height +delta;
-        NSLog(@" ==== HEIGHT %d", _heightDescSection);
-        
         [_table reloadData];
     }
 }
@@ -683,6 +663,7 @@
     _pagecontrol.currentPage = _pageheaderimages;
     _nextbutton.hidden = (_pageheaderimages == _headerimages.count -1)?YES:NO;
     _backbutton.hidden = (_pageheaderimages == 0)?YES:NO;
+    
 }
 
 #pragma mark - Cell Delegate
@@ -751,7 +732,7 @@
         //request.URL = url;
         
         UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
-        thumb.contentMode = UIViewContentModeScaleAspectFit;
+        
         thumb.image = nil;
         //thumb.hidden = YES;	//@prepareforreuse then @reset
         
@@ -765,6 +746,8 @@
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         }];
+        
+        thumb.contentMode = UIViewContentModeScaleAspectFit;
         
         [_imagescrollview addSubview:thumb];
         [_headerimages addObject:thumb];
@@ -780,6 +763,7 @@
     _backbutton.hidden = (_pageheaderimages == 0)?YES:NO;
     
     _imagescrollview.contentSize = CGSizeMake(_headerimages.count*320,0);
+    _imagescrollview.contentMode = UIViewContentModeScaleAspectFit;
     
     [_datatalk setObject:_product.result.info.product_name forKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
     [_datatalk setObject:_product.result.info.product_price forKey:kTKPDDETAILPRODUCT_APIPRODUCTPRICEKEY];
