@@ -10,4 +10,6 @@
 
 @interface ShopInfoViewController : UIViewController
 
+@property (strong, nonatomic) NSDictionary *data;
+
 @end

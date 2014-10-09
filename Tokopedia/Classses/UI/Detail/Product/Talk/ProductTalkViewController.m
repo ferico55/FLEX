@@ -8,7 +8,7 @@
 
 #import "Talk.h"
 #import "detail.h"
-#import "ProductTalkCell.h"
+#import "GeneralTalkCell.h"
 #import "ProductTalkViewController.h"
 
 @interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
@@ -128,19 +128,19 @@
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         
-        NSString *cellid = kTKPDPRODUCTTALKCELLIDENTIFIER;
+        NSString *cellid = kTKPDGENERALTALKCELL_IDENTIFIER;
 		
-		cell = (ProductTalkCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+		cell = (GeneralTalkCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
-			cell = [ProductTalkCell newcell];
-			//((ProductTalkCell*)cell).delegate = self;
+			cell = [GeneralTalkCell newcell];
+			//((GeneralTalkCell*)cell).delegate = self;
 		}
         
         if (_list.count > indexPath.row) {
             TalkList *list = _list[indexPath.row];
-            ((ProductTalkCell*)cell).namelabel.text = list.talk_user_name;
-            ((ProductTalkCell*)cell).timelabel.text = list.talk_create_time;
-            ((ProductTalkCell*)cell).commentlabel.text = list.talk_message;
+            ((GeneralTalkCell*)cell).namelabel.text = list.talk_user_name;
+            ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
+            ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             
             NSString *commentstring = [list.talk_total_comment stringByAppendingFormat:
                                  @" Comment"];
@@ -148,7 +148,7 @@
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
-            UIImageView *thumb = ((ProductTalkCell*)cell).thumb;
+            UIImageView *thumb = ((GeneralTalkCell*)cell).thumb;
             thumb.image = nil;
             //thumb.hidden = YES;	//@prepareforreuse then @reset
             
@@ -166,7 +166,7 @@
         
 		return cell;
     } else {
-        static NSString *CellIdentifier = kTKPDPRODUCTTALKCELLIDENTIFIER;
+        static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
         
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
@@ -272,13 +272,13 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TalkResult class]];
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TalkList class]];
-    [listMapping addAttributeMappingsFromArray:@[kTKPDREVIEW_APITALKTOTALCOMMENTKEY,
-                                                 kTKPDREVIEW_APITALKUSERIMAGEKEY,
-                                                 kTKPDREVIEW_APITALKUSERNAMEKEY,
-                                                 kTKPDREVIEW_APITALKIDKEY,
-                                                 kTKPDREVIEW_APITALKCREATETIMEKEY,
-                                                 kTKPDREVIEW_APITALKMESSAGEKEY,
-                                                 kTKPDREVIEW_APITALKFOLLOWSTATUSKEY
+    [listMapping addAttributeMappingsFromArray:@[kTKPDTALK_APITALKTOTALCOMMENTKEY,
+                                                 kTKPDTALK_APITALKUSERIMAGEKEY,
+                                                 kTKPDTALK_APITALKUSERNAMEKEY,
+                                                 kTKPDTALK_APITALKIDKEY,
+                                                 kTKPDTALK_APITALKCREATETIMEKEY,
+                                                 kTKPDTALK_APITALKMESSAGEKEY,
+                                                 kTKPDTALK_APITALKFOLLOWSTATUSKEY
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];

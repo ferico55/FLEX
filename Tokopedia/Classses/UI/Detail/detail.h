@@ -13,7 +13,9 @@
 #define kTKPDTITLE_REVIEW @"Review"
 
 #define kTKPDDETAIL_DATASHOPSKEY @"shop"
+#define kTKPDDETAIL_DATAINFOSHOPSKEY @"infoshop"
 #define kTKPDDETAIL_DATALOCATIONARRAYKEY @"locationarray"
+#define kTKPDDETAIL_DATAQUERYKEY @"query"
 
 #define kTKPDDETAIL_APISTATUSKEY @"status"
 #define kTKPDDETAIL_APISERVERPROCESSTIMEKEY @"server_process_time"
@@ -31,6 +33,7 @@
 #define kTKPDDETAIL_APIGETPRODUCTTALKKEY @"get_product_talk"
 #define kTKPDDETAIL_APIGETCATALOGDETAILKEY @"get_catalog_detail"
 #define kTKPDDETAIL_APIGETSHOPDETAILKEY @"get_shop_info"
+#define kTKPDDETAIL_APIGETSHOPPRODUCTKEY @"get_shop_product"
 
 #define kTKPDDETAIL_APIPAGEKEY @"page"
 #define kTKPDDETAIL_APILIMITKEY @"per_page"
@@ -39,6 +42,11 @@
 #define kTKPDDETAIL_APIORERBYKEY @"order_by"
 
 #define kTKPDDETAILREVIEW_LIMITPAGE 5
+#define kTKPDSHOPPRODUCT_LIMITPAGE 6
+
+#define kTKPDDETAIL_DATASHOPTITLEKEY @"Shop"
+
+#define kTKPDDETAIL_APIQUERYKEY @"query"
 
 #define kTKPDDETAILPRODUCT_APIINFOKEY @"info"
 #define kTKPDDETAILPRODUCT_APIPRODUCTWEIGHTUNITKEY @"product_weight_unit"
@@ -154,7 +162,30 @@
 #define kTKPDDETAILSHOP_APIADDRESSEMAILKEY @"address_email"
 #define kTKPDDETAILSHOP_APIADDRESSPROVINCEKEY @"address_province"
 
+#define kTKPDSHOP_APISHOPTOTALTRANSACTIONKEY @"shop_total_transaction"
+#define kTKPDSHOP_APISHOPTOTALETALASEKEY @"shop_total_etalase"
+#define kTKPDSHOP_APISHOPTOTALPRODUCTKEY @"shop_total_product"
+#define kTKPDSHOP_APISHOPTOTALSOLDKEY @"shop_item_sold"
+
 #pragma mark - Review
+
+#define kTKPDREVIEW_APIADVREVIEWKEY @"advance_review"
+
+#define kTKPDREVIEW_APIRATINGLISTKEY @"rating_list"
+#define kTKPDREVIEW_APINETRALQUALITYKEY @"netral_quality_point"
+#define kTKPDREVIEW_APINEGATIVEACCURACYKEY @"negative_accuracy_point"
+#define kTKPDREVIEW_APIRATINGACCURACYKEY @"rating_accuracy_point"
+#define kTKPDREVIEW_APINEGATIVEQUALITYKEY @"negative_quality_point"
+#define kTKPDREVIEW_APIPOSITIVEQUALITYKEY @"positive_quality_point"
+#define kTKPDREVIEW_APINETRALACCURACYKEY @"netral_accuracy_point"
+#define kTKPDREVIEW_APIPOSITIVEACCURACYKEY @"positive_accuracy_point"
+#define kTKPDREVIEW_APITOTALREVIEWKEY @"total_review"
+#define kTKPDREVIEW_APIRATINGQUALITYKEY @"rating_quality_point"
+
+#define kTKPDREVIEW_APIRATINGSTARPOINTKEY @"rating_star_point"
+#define kTKPDREVIEW_APIRATINGACCURACYKEY @"rating_accuracy_point"
+#define kTKPDREVIEW_APIRATINGQUALITYKEY @"rating_quality_point"
+
 #define kTKPDREVIEW_APIREVIEWRESPONSEKEY @"review_response"
 #define kTKPDREVIEW_APIRESPONSECREATETIMEKEY @"response_create_time"
 #define kTKPDREVIEW_APIRESPONSEMESSAGEKEY @"response_message"
@@ -177,14 +208,18 @@
 #define kTKPDREVIEW_APIREVIEWMESSAGEKEY @"review_message"
 #define kTKPDREVIEW_APIREVIEWUSERIDKEY @"review_user_id"
 
+#define kTKPDREVIEW_APIMONTHRANGEKEY @"month_range"
+#define kTKPDREVIEW_APIRATEACCURACYKEY @"shop_accuracy"
+#define kTKPDTEVIEW_APIRATEQUALITYKEY @"shop_quality"
+
 #pragma mark - Talk
-#define kTKPDREVIEW_APITALKTOTALCOMMENTKEY @"talk_total_comment"
-#define kTKPDREVIEW_APITALKUSERIMAGEKEY @"talk_user_image"
-#define kTKPDREVIEW_APITALKUSERNAMEKEY @"talk_user_name"
-#define kTKPDREVIEW_APITALKIDKEY @"talk_id"
-#define kTKPDREVIEW_APITALKCREATETIMEKEY @"talk_create_time"
-#define kTKPDREVIEW_APITALKMESSAGEKEY @"talk_message"
-#define kTKPDREVIEW_APITALKFOLLOWSTATUSKEY @"talk_follow_status"
+#define kTKPDTALK_APITALKTOTALCOMMENTKEY @"talk_total_comment"
+#define kTKPDTALK_APITALKUSERIMAGEKEY @"talk_user_image"
+#define kTKPDTALK_APITALKUSERNAMEKEY @"talk_user_name"
+#define kTKPDTALK_APITALKIDKEY @"talk_id"
+#define kTKPDTALK_APITALKCREATETIMEKEY @"talk_create_time"
+#define kTKPDTALK_APITALKMESSAGEKEY @"talk_message"
+#define kTKPDTALK_APITALKFOLLOWSTATUSKEY @"talk_follow_status"
 
 #pragma mark - Catalog
 #define kTKPDDETAILCATALOG_APICATALOGINFOKEY @"catalog_info"
@@ -252,7 +287,6 @@
 #define kTKPDDETAILCATALOG_APILOCATIONIDKEY @"location_id"
 #define kTKPDDETAILCATALOG_APITOTALSHOPKEY @"total_shop"
 
-
 #define kTKPDDETAIL_APIURINEXTKEY @"uri_next"
 
 #define kTKPDDETAILPRODUCT_APIPATH @"product.pl"
@@ -262,5 +296,10 @@
 #define kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define kTKPDDETAIL_NODATACELLTITLE @"no data"
 #define kTKPDDETAIL_NODATACELLDESCS @"no data description"
+
+#define kTKPDREVIEW_ALERTRATINGLISTARRAY @[@"Average Quality Rating", @"Average Accuracy Rating"]
+
+#define kTKPDREVIEW_ALERTPERIODSARRAY @[@"All The Times", @"6 Months"]
+#define kTKPDREVIEW_ALERTPERIODSVALUEARRAY @[@(0), @(6)]
 
 #endif

@@ -16,6 +16,7 @@
 {
     UITextField *_activetextfield;
     NSMutableDictionary *_detailfilter;
+    NSInteger _type;
 }
 @property (weak, nonatomic) IBOutlet UITextField *pricemaxcatalog;
 @property (weak, nonatomic) IBOutlet UITextField *pricemincatalog;
@@ -54,18 +55,37 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEHOTLISTVIEWKEY]||[[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEPRODUCTVIEWKEY]) {
-        [self.view addSubview: _productview];
-    }
-    if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPESHOPVIEWKEY]) {
-        [self.view addSubview: _shopview];
-    }
-    if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPECATALOGVIEWKEY]) {
-        [self.view addSubview: _catalogview];
-    }
-    if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY]) {
-        [self.view addSubview: _detailcatalogview];
+    
+    _type = [[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] integerValue]?:0;
+    switch (_type) {
+        case 1:
+        case 2:
+        {   //product
+            [self.view addSubview: _productview];
+            break;
+        }
+        case 3:
+        {   //catalog
+            [self.view addSubview: _catalogview];
+            break;
+        }
+        case 4:
+        {    //detail catalog
+            [self.view addSubview: _detailcatalogview];
+            break;
+        }
+        case 5:
+        {    //shop
+            [self.view addSubview: _shopview];
+            break;
+        }
+        case 6:
+        {   //shop product
+            [self.view addSubview: _shopview];
+            break;
+        }
+        default:
+            break;
     }
     
     UIBarButtonItem *barbutton1;
@@ -148,27 +168,44 @@
                                                kTKPDFILTER_APIPRICEMINKEY:[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMINKEY]?:@"",
                                                kTKPDFILTER_APIPRICEMAXKEY:[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMAXKEY]?:@"",
                                                kTKPDFILTER_APICONDITIONKEY:[_detailfilter objectForKey:kTKPDFILTER_APICONDITIONKEY]?:@""};
-                
-                    if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEHOTLISTVIEWKEY]||[[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEPRODUCTVIEWKEY]) {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterProduct" object:nil userInfo:userinfo];
-                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                    
+                    switch (_type) {
+                        case 1:
+                        case 2:
+                        {   //product
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterProduct" object:nil userInfo:userinfo];
+                            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                            break;
+                        }
+                        case 3:
+                        {   //catalog
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterCatalog" object:nil userInfo:userinfo];
+                            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                            break;
+                        }
+                        case 4:
+                        {    //detail catalog
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterDetailCatalog" object:nil userInfo:userinfo];
+                            UINavigationController *nav = (UINavigationController *)self.presentingViewController;
+                            [self dismissViewControllerAnimated:NO completion:^{
+                                [nav popViewControllerAnimated:NO];
+                            }];
+                            break;
+                        }
+                        case 5:
+                        {    //shop
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterShop" object:nil userInfo:userinfo];
+                            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                            break;
+                        }
+                        case 6:
+                        {   //shop product
+                            [self.view addSubview: _shopview];
+                            break;
+                        }
+                        default:
+                            break;
                     }
-                    else if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPESHOPVIEWKEY]) {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterShop" object:nil userInfo:userinfo];
-                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                    }
-                    else if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPECATALOGVIEWKEY]) {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterCatalog" object:nil userInfo:userinfo];
-                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                    }
-                    else if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY]) {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterDetailCatalog" object:nil userInfo:userinfo];
-                        UINavigationController *nav = (UINavigationController *)self.presentingViewController;
-                        [self dismissViewControllerAnimated:NO completion:^{
-                            [nav popViewControllerAnimated:NO];
-                        }];
-                    }
-                
                 }
                 else{
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"price max < price min" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -187,7 +224,8 @@
             {
                 // select location
                 FilterLocationViewController *vc = [FilterLocationViewController new];
-                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY]) {
+                if (_type == 3) {
+                    //catalog
                     vc.data = @{kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY : [_data objectForKey:kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY]?:@[]};
                 }
                 vc.delegate = self;
@@ -229,20 +267,34 @@
                 break;
             case 1:
             {
-                //product
-                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEHOTLISTVIEWKEY]||[[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPEPRODUCTVIEWKEY]) {
-                    [_detailfilter setObject:@(3) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                switch (_type) {
+                    case 1:
+                    case 2:
+                    {   //product
+                        [_detailfilter setObject:@(3) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                        break;
+                    }
+                    case 3:
+                    {   //catalog
+                        [_detailfilter setObject:@(3) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                        break;
+                    }
+                    case 4:
+                    {    //detail catalog
+                        break;
+                    }
+                    case 5:
+                    {    //shop
+                        [_detailfilter setObject:@(2) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                        break;
+                    }
+                    case 6:
+                    {   //shop product
+                        break;
+                    }
+                    default:
+                        break;
                 }
-                //shop
-                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPESHOPVIEWKEY]) {
-                    [_detailfilter setObject:@(2) forKey:kTKPDFILTER_APISHOPTYPEKEY];
-                }
-                //catalog
-                if ([[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] isEqualToString: kTKPDFILTER_DATATYPECATALOGVIEWKEY]) {
-                    [_detailfilter setObject:@(3) forKey:kTKPDFILTER_APISHOPTYPEKEY];
-                }
-                
-                else
                 break;
             }
             default:

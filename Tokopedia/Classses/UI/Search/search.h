@@ -31,6 +31,7 @@
 
 #define kTKPDSEARCH_LIMITPAGE 6
 
+#define kTKPDSHOP_APIPATH @"shop.pl"
 #define kTKPDSEARCH_APIPATH @"search.pl"
 #define kTKPDSEARCHHOTLIST_APIPATH @"hotlist.pl"
 
