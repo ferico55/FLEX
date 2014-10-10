@@ -17,6 +17,7 @@
 
 @property (nonatomic, strong) SearchRedirect *redirect_url;
 @property (nonatomic, strong) NSArray *list;
+@property (nonatomic, strong) NSArray *listshop;
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) NSArray *departmenttree;
 @property (nonatomic, strong) NSString *has_catalog;

@@ -45,6 +45,14 @@
 
 #define kTKPDSEARCH_APIPAGEKEY @"page"
 #define kTKPDSEARCH_APILIMITKEY @"per_page"
+
+/** shop **/
+#define kTKPDSEARCH_APISHOPIMAGEKEY @"shop_image"
+#define kTKPDSEARCH_APISHOPLOCATIONKEY @"shop_location"
+#define kTKPDSEARCH_APISHOPIDKEY @"shop_id"
+#define kTKPDSEARCH_APISHOPTOTALTRANSACTIONKEY @"shop_total_transaction"
+#define kTKPDSEARCH_APISHOPTOTALFAVKEY @"shop_total_favorite"
+
 /** product **/
 #define kTKPDSEARCH_APIPRODUCTIMAGEKEY @"product_image"
 #define kTKPDSEARCH_APIPRODUCTNAMEKEY @"product_name"
@@ -57,13 +65,6 @@
 #define kTKPDSEARCH_APICATALOGNAMEKEY @"catalog_name"
 #define kTKPDSEARCH_APICATALOGPRICEKEY @"catalog_price"
 #define kTKPDSEARCH_APICATALOGIDKEY @"catalog_id"
-
-/** shop **/
-#define kTKPDSEARCH_APISHOPIMAGEKEY @"shop_image"
-#define kTKPDSEARCH_APISHOPLOCATIONKEY @"shop_location"
-#define kTKPDSEARCH_APISHOPIDKEY @"shop_id"
-#define kTKPDSEARCH_APISHOPTOTALTRANSACTIONKEY @"shop_total_transaction"
-#define kTKPDSEARCH_APISHOPTOTALFAVKEY @"shop_total_favorite"
 
 /** redirect url **/
 #define kTKPDSEARCH_APIREDIRECTURLKEY @"redirect_url"

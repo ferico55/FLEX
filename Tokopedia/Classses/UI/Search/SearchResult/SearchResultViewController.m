@@ -58,6 +58,8 @@
     SearchItem *_searchitem;
     
     __weak RKObjectManager *_objectmanager;
+    __weak RKManagedObjectRequestOperation *_request;
+    NSOperationQueue *_operationQueue;
 }
 
 #pragma mark - Initialization
@@ -76,6 +78,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _operationQueue = [NSOperationQueue new];
     
     /** create new **/
     _product = [NSMutableArray new];
@@ -310,6 +314,8 @@
 #pragma mark - Request + Mapping
 -(void)cancel
 {
+    [_request cancel];
+    _request = nil;
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
 }
@@ -373,6 +379,8 @@
 
 - (void)loadData
 {
+    if([_request isExecuting]) return;
+    
     if (!_isrefreshview) {
         _table.tableFooterView = _footer;
         [_act startAnimating];
@@ -416,8 +424,10 @@
                 };
     }
 
-    NSLog(@"============================== GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-    [_objectmanager getObjectsAtPath:kTKPDSEARCH_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDSEARCH_APIPATH parameters:param];
+    
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+//    [_objectmanager getObjectsAtPath:kTKPDSEARCH_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         
         [self requestsuccess:mappingResult];
         [_table reloadData];
@@ -442,6 +452,8 @@
         _timer = nil;
         NSLog(@"============================== DONE GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
     }];
+    
+    [_operationQueue addOperation:_request];
     
     _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];

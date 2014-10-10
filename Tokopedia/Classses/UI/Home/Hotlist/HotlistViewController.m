@@ -30,6 +30,8 @@
     NSTimer *_timer;
     
     __weak RKObjectManager *_objectmanager;
+    __weak RKManagedObjectRequestOperation *_request;
+    NSOperationQueue *_operationQueue;
 }
 
 @property (nonatomic, strong) ExpiringCache *accountsCache;
@@ -59,6 +61,7 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    _operationQueue = [NSOperationQueue new];
     
     /** create new **/
     _product = [NSMutableArray new];
@@ -180,7 +183,7 @@
                 [thumb setImage:image];
                 
                 [((HotlistCell*)cell).act stopAnimating];
-#pragma clang diagnostic pop
+#pragma clang diagnosti c pop
                 
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                 [((HotlistCell*)cell).act stopAnimating];
@@ -225,6 +228,8 @@
 #pragma mark - Request + Mapping
 -(void)cancel
 {
+    [_request cancel];
+    _request = nil;
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
 }
@@ -267,32 +272,23 @@
 
 - (void)loadData
 {
+    if (_request.isExecuting) return;
+    
     // create a new one, this one is expired or we've never gotten it
     if (!_isrefreshview) {
         _table.tableFooterView = _footer;
         [_act startAnimating];
     }
     
-    NSDictionary* param = @{//@"auth":@(1),
-                            kTKPDHOME_APIACTIONKEY:kTKPDHOMEHOTLISTACT,
+    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEHOTLISTACT,
                             kTKPDHOME_APIPAGEKEY : @(_page),
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE)
                             };
     _requestcount ++;
-
-    NSLog(@"============================== GET HOTLIST =====================");
-    [_objectmanager getObjectsAtPath:kTKPDHOMEHOTLIST_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        NSLog(@"============================== DONE GET HOTLIST =====================");
-        [operation setWillMapDeserializedResponseBlock:^id(id deserializedResponseBody)
-         
-         {
-             NSDictionary *dictionary     = [[NSMutableDictionary alloc] init];
-             dictionary = deserializedResponseBody;
-             NSString *Details = [dictionary objectForKey:@"Details"];
-             return  deserializedResponseBody;
-             
-         }];
-        [self requestsuccess:mappingResult];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDHOMEHOTLIST_APIPATH parameters:param];
+    
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestsuccess:mappingResult withOperation:operation];
         [_act stopAnimating];
         _table.tableFooterView = nil;
         [_table reloadData];
@@ -300,8 +296,8 @@
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
+
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        NSLog(@"============================== DONE GET HOTLIST =====================");
         /** failure **/
         [self requestfailure:error];
         //[_act stopAnimating];
@@ -312,12 +308,14 @@
         _timer = nil;
     }];
     
+    [_operationQueue addOperation:_request];
+    
     _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 
 }
 
--(void)requestsuccess:(id)object
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id stat = [result objectForKey:@""];
@@ -327,44 +325,15 @@
     if (status) {
         [_product addObjectsFromArray: hotlist.result.list];
         
-        if (_product.count >0) {
-            _isnodata = NO;
-            _urinext =  hotlist.result.paging.uri_next;
-            NSURL *url = [NSURL URLWithString:_urinext];
-            NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-            
-            NSMutableDictionary *queries = [NSMutableDictionary new];
-            [queries removeAllObjects];
-            for (NSString *keyValuePair in querry)
-            {
-                NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                NSString *key = [pairComponents objectAtIndex:0];
-                NSString *value = [pairComponents objectAtIndex:1];
-                
-                [queries setObject:value forKey:key];
-            }
-            
-            _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
-            NSLog(@"next page : %d",_page);
-        }
-        /** uri split **/
-        //NSLog(@"scheme: %@", [url scheme]);
-        //NSLog(@"host: %@", [url host]);
-        //NSLog(@"port: %@", [url port]);
-        //NSLog(@"path: %@", [url path]);
-        //NSLog(@"path components: %@", [url pathComponents]);
-        //NSLog(@"parameterString: %@", [url parameterString]);
-        //NSLog(@"query: %@", [url query]);
-        //NSLog(@"fragment: %@", [url fragment]);
-        
-        // add an object to the cache
-        //[self.accountsCache setObject:result forKey:@"hotlist"];
-        
-#if DEBUG
-        NSString* path = [NSHomeDirectory() stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
-        [result writeToFile:path atomically:YES];
+        [self requestproses:object];
 
-#endif
+        NSString* path = [NSHomeDirectory() stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
+        NSError *error;
+        BOOL success = [result writeToFile:path atomically:YES];
+        if (!success) {
+            NSLog(@"writeToFile failed with error %@", error);
+        }
+        
     }
 }
 
@@ -373,40 +342,73 @@
 {
     [self cancel];
 }
+  
 
 -(void)requestfailure:(id)object
 {
-    
-#if DEBUG
+
     NSDictionary* result;
 	
 	NSString* path = [NSHomeDirectory() stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
 	result = [NSDictionary dictionaryWithContentsOfFile:path];
     
-    [self requestsuccess:result];
-    
-#endif
-    
-    [self cancel];
-    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-    if ([(NSError*)object code] == NSURLErrorCancelled) {
-        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
-            _table.tableFooterView = _footer;
-            [_act startAnimating];
-            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+}
+
+-(void)requestproses:(id)object{
+    if (object) {
+        NSDictionary *result = ((RKMappingResult*)object).dictionary;
+        id stat = [result objectForKey:@""];
+        Hotlist *hotlist = stat;
+        BOOL status = [hotlist.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        
+        if (status) {
+            [_product addObjectsFromArray: hotlist.result.list];
+            
+            if (_product.count >0) {
+                _isnodata = NO;
+                _urinext =  hotlist.result.paging.uri_next;
+                NSURL *url = [NSURL URLWithString:_urinext];
+                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                
+                NSMutableDictionary *queries = [NSMutableDictionary new];
+                [queries removeAllObjects];
+                for (NSString *keyValuePair in querry)
+                {
+                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                    NSString *key = [pairComponents objectAtIndex:0];
+                    NSString *value = [pairComponents objectAtIndex:1];
+                    
+                    [queries setObject:value forKey:key];
+                }
+                
+                _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
+            }
         }
-        else
-        {
-            [_act stopAnimating];
-            _table.tableFooterView = nil;
+        else{
+        
+            [self cancel];
+            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
+            if ([(NSError*)object code] == NSURLErrorCancelled) {
+                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    _table.tableFooterView = _footer;
+                    [_act startAnimating];
+                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                }
+                else
+                {
+                    [_act stopAnimating];
+                    _table.tableFooterView = nil;
+                }
+            }
+            else
+            {
+                [_act stopAnimating];
+                _table.tableFooterView = nil;
+            }
+
         }
-    }
-    else
-    {
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
     }
 }
 

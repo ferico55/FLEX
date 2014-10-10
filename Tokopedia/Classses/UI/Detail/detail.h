@@ -31,6 +31,9 @@
 #define kTKPDDETAIL_APIGETCATALOGDETAILKEY @"get_catalog_detail"
 #define kTKPDDETAIL_APIGETSHOPDETAILKEY @"get_shop_info"
 #define kTKPDDETAIL_APIGETSHOPPRODUCTKEY @"get_shop_product"
+#define kTKPDDETAIL_APIGETSHOPTALKKEY @"get_shop_talk"
+#define kTKPDDETAIL_APIGETSHOPREVIEWKEY @"get_shop_review"
+#define kTKPDDETAIL_APIGETSHOPNOTESKEY @"get_shop_notes"
 
 #define kTKPDDETAIL_APIPAGEKEY @"page"
 #define kTKPDDETAIL_APILIMITKEY @"per_page"
@@ -192,6 +195,14 @@
 #define kTKPDREVIEW_APIREVIEWCREATETIMEKEY @"review_create_time"
 #define kTKPDREVIEW_APIREVIEWIDKEY @"review_id"
 
+#define kTKPDREVIEW_APIQUARITYRATEKEY @"review_quality_rate"
+#define kTKPDREVIEW_APISPEEDRATEKEY @"review_speed_rate"
+#define kTKPDREVIEW_APISERVICERATEKEY @"review_service_rate"
+#define kTKPDREVIEW_APIACCURACYRATEKEY @"review_accuracy_rate"
+#define kTKPDREVIEW_APIPRODUCTNAMEKEY @"review_product_name"
+#define kTKPDREVIEW_APIPRODUCTIDKEY @"review_product_id"
+#define kTKPDREVIEW_APIPRODUCTIMAGEKEY @"review_product_image"
+
 #define kTKPDREVIEW_APIREVIEWPRODUCTOWNERKEY @"review_product_owner"
 #define kTKPDREVIEW_APIUSERIDKEY @"user_id"
 #define kTKPDREVIEW_APIUSERIMAGEKEY @"user_image"
@@ -217,6 +228,17 @@
 #define kTKPDTALK_APITALKCREATETIMEKEY @"talk_create_time"
 #define kTKPDTALK_APITALKMESSAGEKEY @"talk_message"
 #define kTKPDTALK_APITALKFOLLOWSTATUSKEY @"talk_follow_status"
+
+#define kTKPDTALK_APITALKPRODUCTNAMEKEY @"talk_product_name"
+#define kTKPDTALK_APITALKPRODUCTIMAGEKEY @"talk_product_image"
+#define kTKPDTALK_APITALKPRODUCTIDKEY @"talk_product_id"
+#define kTKPDTALK_APITALKOWNKEY @"talk_own"
+#define kTKPDTALK_APITALKUSERIDKEY @"talk_user_id"
+
+#pragma mark - Notes
+#define kTKPDNOTES_APINOTESIDKEY @"notes_id"
+#define kTKPDNOTES_APINOTESSTATUSKEY @"notes_status"
+#define kTKPDNOTES_APINOTESTITLEKEY @"notes_title"
 
 #pragma mark - Catalog
 #define kTKPDDETAILCATALOG_APICATALOGINFOKEY @"catalog_info"

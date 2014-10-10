@@ -21,11 +21,22 @@
 @property (nonatomic, strong) NSString *product_images;
 @property (nonatomic, strong) ReviewProductOwner *review_product_owner;
 @property (nonatomic, strong) NSString *review_user_name;
+@property (nonatomic, strong) NSString *review_message;
+@property (nonatomic, strong) NSString *review_user_id;
+
+// product
 @property (nonatomic) NSInteger review_rate_quality;
 @property (nonatomic) NSInteger review_rate_speed;
 @property (nonatomic) NSInteger review_rate_service;
 @property (nonatomic) NSInteger review_rate_accuracy;
-@property (nonatomic, strong) NSString *review_message;
-@property (nonatomic, strong) NSString *review_user_id;
+
+//shop
+@property (nonatomic) NSInteger review_quality_rate;
+@property (nonatomic) NSInteger review_speed_rate;
+@property (nonatomic) NSInteger review_service_rate;
+@property (nonatomic) NSInteger review_accuracy_rate;
+@property (nonatomic, strong) NSString *review_product_name;
+@property (nonatomic, strong) NSString *review_product_id;
+@property (nonatomic, strong) NSString *review_product_image;
 
 @end

@@ -260,9 +260,7 @@
 		FC3EEA7819E4E5200094F4AE /* AlertListView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3EEA7719E4E5200094F4AE /* AlertListView.m */; };
 		FC3EEA7B19E4E54A0094F4AE /* AlertListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3EEA7A19E4E54A0094F4AE /* AlertListView.xib */; };
 		FC3EEA7F19E4EA550094F4AE /* AlertListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3EEA7D19E4EA550094F4AE /* AlertListViewCell.m */; };
-		FC3EEA8519E5279A0094F4AE /* ShopProductViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3EEA8319E5279A0094F4AE /* ShopProductViewCell.xib */; };
 		FC3EEA8619E5279A0094F4AE /* ShopProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3EEA8419E5279A0094F4AE /* ShopProductViewController.xib */; };
-		FC3EEA8B19E527D60094F4AE /* ShopProductViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3EEA8819E527D60094F4AE /* ShopProductViewCell.m */; };
 		FC3EEA8C19E527D60094F4AE /* ShopProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3EEA8A19E527D60094F4AE /* ShopProductViewController.m */; };
 		FC3EEA9119E53CB10094F4AE /* GeneralProductCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3EEA9019E53CB10094F4AE /* GeneralProductCell.m */; };
 		FC3EEA9319E53CB90094F4AE /* GeneralProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3EEA9219E53CB90094F4AE /* GeneralProductCell.xib */; };
@@ -313,6 +311,20 @@
 		FCC885F919E6277A005A7074 /* GeneralReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCC885F819E6277A005A7074 /* GeneralReviewCell.xib */; };
 		FCC885FC19E62783005A7074 /* GeneralReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCC885FB19E62783005A7074 /* GeneralReviewCell.m */; };
 		FCC885FF19E67BE8005A7074 /* ExpiringCache.m in Sources */ = {isa = PBXBuildFile; fileRef = FCC885FE19E67BE8005A7074 /* ExpiringCache.m */; };
+		FCCB4AFA19E77ECB00722891 /* ShopTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCB4AF919E77ECB00722891 /* ShopTalkViewController.m */; };
+		FCCB4AFD19E77EEE00722891 /* ShopTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCCB4AFC19E77EEE00722891 /* ShopTalkViewController.xib */; };
+		FCCB4B0419E7BCE800722891 /* test.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCB4B0319E7BCE800722891 /* test.m */; };
+		FCCB4B0719E7CE6F00722891 /* ShopReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCCB4B0619E7CE6F00722891 /* ShopReviewViewController.xib */; };
+		FCCB4B0A19E7CEB900722891 /* ShopReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCB4B0919E7CEB900722891 /* ShopReviewViewController.m */; };
+		FCCB4B0E19E7D99300722891 /* ShopNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCB4B0D19E7D99300722891 /* ShopNotesViewController.m */; };
+		FCCB4B1119E7D9BE00722891 /* ShopNotesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCCB4B1019E7D9BE00722891 /* ShopNotesViewController.xib */; };
+		FCCB4B1419E7D9F200722891 /* ShopNotesCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCB4B1319E7D9F200722891 /* ShopNotesCell.m */; };
+		FCCB4B1619E7DA0500722891 /* ShopNotesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCCB4B1519E7DA0500722891 /* ShopNotesCell.xib */; };
+		FCCB4B1A19E7DB7300722891 /* Notes.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCB4B1919E7DB7300722891 /* Notes.m */; };
+		FCCB4B1D19E7DB8400722891 /* NotesResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCB4B1C19E7DB8400722891 /* NotesResult.m */; };
+		FCCB4B2019E7DB9300722891 /* NotesList.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCB4B1F19E7DB9300722891 /* NotesList.m */; };
+		FCCB4B2319E7E77200722891 /* ShopNotesDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCB4B2219E7E77200722891 /* ShopNotesDetailViewController.m */; };
+		FCCB4B2519E7E7F700722891 /* ShopNotesDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCCB4B2419E7E7F700722891 /* ShopNotesDetailViewController.xib */; };
 		FCCCB95619B4317A0077349C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCCB95419B4317A0077349C /* MainViewController.m */; };
 		FCCCB95919B435440077349C /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCCCB95819B435440077349C /* MainViewController.xib */; };
 		FCCCB95D19B4476A0077349C /* Paging.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCCB95C19B4476A0077349C /* Paging.m */; };
@@ -692,10 +704,7 @@
 		FC3EEA7A19E4E54A0094F4AE /* AlertListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertListView.xib; sourceTree = "<group>"; };
 		FC3EEA7C19E4EA550094F4AE /* AlertListViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertListViewCell.h; sourceTree = "<group>"; };
 		FC3EEA7D19E4EA550094F4AE /* AlertListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertListViewCell.m; sourceTree = "<group>"; };
-		FC3EEA8319E5279A0094F4AE /* ShopProductViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopProductViewCell.xib; sourceTree = "<group>"; };
 		FC3EEA8419E5279A0094F4AE /* ShopProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopProductViewController.xib; sourceTree = "<group>"; };
-		FC3EEA8719E527D60094F4AE /* ShopProductViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopProductViewCell.h; sourceTree = "<group>"; };
-		FC3EEA8819E527D60094F4AE /* ShopProductViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopProductViewCell.m; sourceTree = "<group>"; };
 		FC3EEA8919E527D60094F4AE /* ShopProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopProductViewController.h; sourceTree = "<group>"; };
 		FC3EEA8A19E527D60094F4AE /* ShopProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopProductViewController.m; sourceTree = "<group>"; };
 		FC3EEA8F19E53CB10094F4AE /* GeneralProductCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralProductCell.h; sourceTree = "<group>"; };
@@ -781,6 +790,29 @@
 		FCC885FB19E62783005A7074 /* GeneralReviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralReviewCell.m; sourceTree = "<group>"; };
 		FCC885FD19E67BE8005A7074 /* ExpiringCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpiringCache.h; sourceTree = "<group>"; };
 		FCC885FE19E67BE8005A7074 /* ExpiringCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpiringCache.m; sourceTree = "<group>"; };
+		FCCB4AF819E77ECB00722891 /* ShopTalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopTalkViewController.h; sourceTree = "<group>"; };
+		FCCB4AF919E77ECB00722891 /* ShopTalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopTalkViewController.m; sourceTree = "<group>"; };
+		FCCB4AFC19E77EEE00722891 /* ShopTalkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopTalkViewController.xib; sourceTree = "<group>"; };
+		FCCB4B0219E7BCE800722891 /* test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = test.h; sourceTree = "<group>"; };
+		FCCB4B0319E7BCE800722891 /* test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = test.m; sourceTree = "<group>"; };
+		FCCB4B0619E7CE6F00722891 /* ShopReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopReviewViewController.xib; sourceTree = "<group>"; };
+		FCCB4B0819E7CEB900722891 /* ShopReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopReviewViewController.h; sourceTree = "<group>"; };
+		FCCB4B0919E7CEB900722891 /* ShopReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopReviewViewController.m; sourceTree = "<group>"; };
+		FCCB4B0C19E7D99300722891 /* ShopNotesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopNotesViewController.h; sourceTree = "<group>"; };
+		FCCB4B0D19E7D99300722891 /* ShopNotesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopNotesViewController.m; sourceTree = "<group>"; };
+		FCCB4B1019E7D9BE00722891 /* ShopNotesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopNotesViewController.xib; sourceTree = "<group>"; };
+		FCCB4B1219E7D9F200722891 /* ShopNotesCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopNotesCell.h; sourceTree = "<group>"; };
+		FCCB4B1319E7D9F200722891 /* ShopNotesCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopNotesCell.m; sourceTree = "<group>"; };
+		FCCB4B1519E7DA0500722891 /* ShopNotesCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopNotesCell.xib; sourceTree = "<group>"; };
+		FCCB4B1819E7DB7300722891 /* Notes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notes.h; sourceTree = "<group>"; };
+		FCCB4B1919E7DB7300722891 /* Notes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notes.m; sourceTree = "<group>"; };
+		FCCB4B1B19E7DB8400722891 /* NotesResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesResult.h; sourceTree = "<group>"; };
+		FCCB4B1C19E7DB8400722891 /* NotesResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesResult.m; sourceTree = "<group>"; };
+		FCCB4B1E19E7DB9300722891 /* NotesList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotesList.h; sourceTree = "<group>"; };
+		FCCB4B1F19E7DB9300722891 /* NotesList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotesList.m; sourceTree = "<group>"; };
+		FCCB4B2119E7E77200722891 /* ShopNotesDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopNotesDetailViewController.h; sourceTree = "<group>"; };
+		FCCB4B2219E7E77200722891 /* ShopNotesDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopNotesDetailViewController.m; sourceTree = "<group>"; };
+		FCCB4B2419E7E7F700722891 /* ShopNotesDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopNotesDetailViewController.xib; sourceTree = "<group>"; };
 		FCCCB95319B4317A0077349C /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		FCCCB95419B4317A0077349C /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		FCCCB95819B435440077349C /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MainViewController.xib; path = Tokopedia/Resources/MainViewController.xib; sourceTree = SOURCE_ROOT; };
@@ -919,6 +951,9 @@
 		FC012E4819BEFCCC0072A31A /* Shop */ = {
 			isa = PBXGroup;
 			children = (
+				FCCB4B0B19E7D97F00722891 /* Notes */,
+				FCCB4B0119E792D500722891 /* Review */,
+				FCCB4AF719E77E7A00722891 /* Talk */,
 				FC3EEA8119E523DC0094F4AE /* Product */,
 				FC170DA119E27CA7003FF32F /* Info */,
 				FC012E4919BEFD060072A31A /* DetailShopViewController.h */,
@@ -1050,6 +1085,9 @@
 		FC170DA519E27CCB003FF32F /* Shop */ = {
 			isa = PBXGroup;
 			children = (
+				FCCB4B0F19E7D9A800722891 /* Notes */,
+				FCCB4B0519E7CE5000722891 /* Review */,
+				FCCB4AFB19E77EDA00722891 /* Talk */,
 				FC170DA619E27CD7003FF32F /* Info */,
 				FC3EEA8219E5277D0094F4AE /* Product */,
 				FC170DB719E2A93E003FF32F /* DetailShopViewController.xib */,
@@ -1596,12 +1634,15 @@
 		FC36E0C719B0673700AF74C1 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				FCCB4B1719E7DB5E00722891 /* Notes */,
 				FC53463819DBBD9900E5AAD9 /* DetailCatalog */,
 				FC012E2F19BEF36E0072A31A /* ShopInfo */,
 				FC2F207D19BD625600C2B9B5 /* DetailProduct */,
 				FC158D9319B8184800F325D8 /* SearchItem */,
 				FCCCB95A19B4474C0077349C /* Paging */,
 				FC36E0C819B0673700AF74C1 /* Hotlist */,
+				FCCB4B0219E7BCE800722891 /* test.h */,
+				FCCB4B0319E7BCE800722891 /* test.m */,
 			);
 			path = Object;
 			sourceTree = "<group>";
@@ -2010,8 +2051,6 @@
 		FC3EEA8119E523DC0094F4AE /* Product */ = {
 			isa = PBXGroup;
 			children = (
-				FC3EEA8719E527D60094F4AE /* ShopProductViewCell.h */,
-				FC3EEA8819E527D60094F4AE /* ShopProductViewCell.m */,
 				FC3EEA8919E527D60094F4AE /* ShopProductViewController.h */,
 				FC3EEA8A19E527D60094F4AE /* ShopProductViewController.m */,
 			);
@@ -2021,7 +2060,6 @@
 		FC3EEA8219E5277D0094F4AE /* Product */ = {
 			isa = PBXGroup;
 			children = (
-				FC3EEA8319E5279A0094F4AE /* ShopProductViewCell.xib */,
 				FC3EEA8419E5279A0094F4AE /* ShopProductViewController.xib */,
 			);
 			path = Product;
@@ -2157,6 +2195,76 @@
 			path = SwipeMenuViewController;
 			sourceTree = "<group>";
 		};
+		FCCB4AF719E77E7A00722891 /* Talk */ = {
+			isa = PBXGroup;
+			children = (
+				FCCB4AF819E77ECB00722891 /* ShopTalkViewController.h */,
+				FCCB4AF919E77ECB00722891 /* ShopTalkViewController.m */,
+			);
+			path = Talk;
+			sourceTree = "<group>";
+		};
+		FCCB4AFB19E77EDA00722891 /* Talk */ = {
+			isa = PBXGroup;
+			children = (
+				FCCB4AFC19E77EEE00722891 /* ShopTalkViewController.xib */,
+			);
+			path = Talk;
+			sourceTree = "<group>";
+		};
+		FCCB4B0119E792D500722891 /* Review */ = {
+			isa = PBXGroup;
+			children = (
+				FCCB4B0819E7CEB900722891 /* ShopReviewViewController.h */,
+				FCCB4B0919E7CEB900722891 /* ShopReviewViewController.m */,
+			);
+			path = Review;
+			sourceTree = "<group>";
+		};
+		FCCB4B0519E7CE5000722891 /* Review */ = {
+			isa = PBXGroup;
+			children = (
+				FCCB4B0619E7CE6F00722891 /* ShopReviewViewController.xib */,
+			);
+			path = Review;
+			sourceTree = "<group>";
+		};
+		FCCB4B0B19E7D97F00722891 /* Notes */ = {
+			isa = PBXGroup;
+			children = (
+				FCCB4B0C19E7D99300722891 /* ShopNotesViewController.h */,
+				FCCB4B0D19E7D99300722891 /* ShopNotesViewController.m */,
+				FCCB4B1219E7D9F200722891 /* ShopNotesCell.h */,
+				FCCB4B1319E7D9F200722891 /* ShopNotesCell.m */,
+				FCCB4B2119E7E77200722891 /* ShopNotesDetailViewController.h */,
+				FCCB4B2219E7E77200722891 /* ShopNotesDetailViewController.m */,
+			);
+			path = Notes;
+			sourceTree = "<group>";
+		};
+		FCCB4B0F19E7D9A800722891 /* Notes */ = {
+			isa = PBXGroup;
+			children = (
+				FCCB4B1019E7D9BE00722891 /* ShopNotesViewController.xib */,
+				FCCB4B1519E7DA0500722891 /* ShopNotesCell.xib */,
+				FCCB4B2419E7E7F700722891 /* ShopNotesDetailViewController.xib */,
+			);
+			path = Notes;
+			sourceTree = "<group>";
+		};
+		FCCB4B1719E7DB5E00722891 /* Notes */ = {
+			isa = PBXGroup;
+			children = (
+				FCCB4B1819E7DB7300722891 /* Notes.h */,
+				FCCB4B1919E7DB7300722891 /* Notes.m */,
+				FCCB4B1B19E7DB8400722891 /* NotesResult.h */,
+				FCCB4B1C19E7DB8400722891 /* NotesResult.m */,
+				FCCB4B1E19E7DB9300722891 /* NotesList.h */,
+				FCCB4B1F19E7DB9300722891 /* NotesList.m */,
+			);
+			path = Notes;
+			sourceTree = "<group>";
+		};
 		FCCCB95A19B4474C0077349C /* Paging */ = {
 			isa = PBXGroup;
 			children = (
@@ -2283,6 +2391,7 @@
 				FC012DCC19BEB2360072A31A /* icon_18.png in Resources */,
 				FC012DD219BEB2360072A31A /* icon_20.png in Resources */,
 				FC21F35519BFE5BD00417CA8 /* icon_search@2x.png in Resources */,
+				FCCB4B0719E7CE6F00722891 /* ShopReviewViewController.xib in Resources */,
 				FC08C69E19DD096C0062FA0C /* FilterConditionViewController.xib in Resources */,
 				FCC885F919E6277A005A7074 /* GeneralReviewCell.xib in Resources */,
 				FC08C6AD19DD39660062FA0C /* DetailListCell.xib in Resources */,
@@ -2307,6 +2416,7 @@
 				FC36E19F19B0673800AF74C1 /* top_bg1.png in Resources */,
 				FC36E1A819B0673800AF74C1 /* active_tab@2x.png in Resources */,
 				FC839EB719DAB125002C4FC1 /* DetailProductOtherView.xib in Resources */,
+				FCCB4AFD19E77EEE00722891 /* ShopTalkViewController.xib in Resources */,
 				FC170D9B19E242B4003FF32F /* DetailCatalogSpecView.xib in Resources */,
 				FC012DDB19BEB2360072A31A /* icon_5.png in Resources */,
 				FC012DC119BEB2360072A31A /* icon_12@2x.png in Resources */,
@@ -2360,6 +2470,7 @@
 				85386DCD19CBE88A00BCA463 /* GothamBlack.ttf in Resources */,
 				FC53467E19DC0AFF00E5AAD9 /* CatalogSellerViewController.xib in Resources */,
 				FC18C79619B57F4D00BA162D /* CategoryViewCell.xib in Resources */,
+				FCCB4B1119E7D9BE00722891 /* ShopNotesViewController.xib in Resources */,
 				FC18C7A819B5955800BA162D /* CategoryMenuViewCell.xib in Resources */,
 				FC2F203919BD5B7200C2B9B5 /* HotlistViewController.xib in Resources */,
 				FC21F34919BFE5BD00417CA8 /* icon_category@2x.png in Resources */,
@@ -2369,7 +2480,6 @@
 				FC21F34419BFE5BD00417CA8 /* icon_cart.png in Resources */,
 				FC36E1B519B0673800AF74C1 /* LoginViewController.xib in Resources */,
 				FC36E1A019B0673800AF74C1 /* top_bg1@2x.png in Resources */,
-				FC3EEA8519E5279A0094F4AE /* ShopProductViewCell.xib in Resources */,
 				FC012DDE19BEB2360072A31A /* icon_6@2x.png in Resources */,
 				FC36E19819B0673800AF74C1 /* navigation-chevron.png in Resources */,
 				FC36E1A919B0673800AF74C1 /* ic_cart.png in Resources */,
@@ -2412,6 +2522,7 @@
 				FC36E18F19B0673800AF74C1 /* Lato-Bold.ttf in Resources */,
 				FC53463719DBA47100E5AAD9 /* DetailCatalogViewController.xib in Resources */,
 				FC012DD119BEB2360072A31A /* icon_2.png in Resources */,
+				FCCB4B2519E7E7F700722891 /* ShopNotesDetailViewController.xib in Resources */,
 				FC158D9219B80D6900F325D8 /* SearchViewController.xib in Resources */,
 				FC012DC819BEB2360072A31A /* icon_16.png in Resources */,
 				FC012DD619BEB2360072A31A /* icon_2@2x.png in Resources */,
@@ -2424,6 +2535,7 @@
 				FC21F35719BFE5BD00417CA8 /* icon_search_active@2x.png in Resources */,
 				FC012DD319BEB2360072A31A /* icon_20@2x.png in Resources */,
 				FC36E19E19B0673800AF74C1 /* top_bg.png in Resources */,
+				FCCB4B1619E7DA0500722891 /* ShopNotesCell.xib in Resources */,
 				FC300B7E19C946430098F0D0 /* SortCell.xib in Resources */,
 				FC170D9919E23AE8003FF32F /* DetailCatalogSpecViewCell.xib in Resources */,
 				FC36E1B419B0673800AF74C1 /* tabnav_bg@2x.png in Resources */,
@@ -2515,12 +2627,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCCB4AFA19E77ECB00722891 /* ShopTalkViewController.m in Sources */,
 				FC18C77D19B568BB00BA162D /* CategoryResultViewController.m in Sources */,
 				FCC885FC19E62783005A7074 /* GeneralReviewCell.m in Sources */,
 				FC08C69819DD093B0062FA0C /* FilterConditionCell.m in Sources */,
 				FC2F209819BD682F00C2B9B5 /* WholesalePrice.m in Sources */,
 				FC2F209E19BD73F300C2B9B5 /* DetailProductResult.m in Sources */,
 				FC300B8619C949760098F0D0 /* FilterLocationViewController.m in Sources */,
+				FCCB4B2319E7E77200722891 /* ShopNotesDetailViewController.m in Sources */,
 				FC170DAC19E291A0003FF32F /* ShopInfoShipmentCell.m in Sources */,
 				FC3EEA7F19E4EA550094F4AE /* AlertListViewCell.m in Sources */,
 				FC36E17619B0673800AF74C1 /* CartViewController.m in Sources */,
@@ -2547,6 +2661,7 @@
 				FC2F208319BD632D00C2B9B5 /* Statistic.m in Sources */,
 				FC08C69319DD091A0062FA0C /* FilterConditionViewController.m in Sources */,
 				FC170D9719E23ACD003FF32F /* DetailCatalogSpecViewCell.m in Sources */,
+				FCCB4B1A19E7DB7300722891 /* Notes.m in Sources */,
 				FC2F205719BD5D4300C2B9B5 /* DetailProductDescriptionCell.m in Sources */,
 				FC012E3519BEF5AB0072A31A /* Owner.m in Sources */,
 				FC28A37719D3FCE8005815A0 /* ReviewResponse.m in Sources */,
@@ -2558,6 +2673,7 @@
 				FC53463E19DBBDD400E5AAD9 /* DetailCatalogResult.m in Sources */,
 				FC18C78E19B57F0D00BA162D /* CategoryViewCell.m in Sources */,
 				FC170D9419E23A8A003FF32F /* DetailCatalogSpecView.m in Sources */,
+				FCCB4B0419E7BCE800722891 /* test.m in Sources */,
 				FC53467319DC0AC100E5AAD9 /* CatalogSellerCell.m in Sources */,
 				FC28A38E19D40454005815A0 /* StarsRateView.m in Sources */,
 				FC012E4C19BEFD060072A31A /* DetailShopViewController.m in Sources */,
@@ -2565,6 +2681,7 @@
 				FC36E18B19B0673800AF74C1 /* SearchResultViewController.m in Sources */,
 				FC2F209519BD675800C2B9B5 /* Product.m in Sources */,
 				FC08C6A819DD39000062FA0C /* DetailListCell.m in Sources */,
+				FCCB4B0A19E7CEB900722891 /* ShopReviewViewController.m in Sources */,
 				FC839EB519DA6A3A002C4FC1 /* DetailProductOtherView.m in Sources */,
 				FC2F207419BD5EE900C2B9B5 /* HotlistCell.m in Sources */,
 				FC3EEA7419E4E2E20094F4AE /* TKPDAlertView.m in Sources */,
@@ -2575,6 +2692,7 @@
 				FC5210B319C6ED9E004932C5 /* SearchResult.m in Sources */,
 				FC53464719DBBE2A00E5AAD9 /* CatalogReview.m in Sources */,
 				FC300B7419C946360098F0D0 /* FilterViewController.m in Sources */,
+				FCCB4B1D19E7DB8400722891 /* NotesResult.m in Sources */,
 				FC300B7519C946360098F0D0 /* SortCell.m in Sources */,
 				FC012E3819BEF6D50072A31A /* Shipment.m in Sources */,
 				FC2F208F19BD659E00C2B9B5 /* OtherProduct.m in Sources */,
@@ -2605,6 +2723,7 @@
 				FCBCCB2519DE55D70099246C /* SpecChilds.m in Sources */,
 				FC2F208619BD639900C2B9B5 /* ShopInfo.m in Sources */,
 				FC158D8D19B80D4100F325D8 /* SearchViewController.m in Sources */,
+				FCCB4B1419E7D9F200722891 /* ShopNotesCell.m in Sources */,
 				FC18C79E19B57FD300BA162D /* CategoryMenuViewController.m in Sources */,
 				FC36E18A19B0673800AF74C1 /* SearchResultCell.m in Sources */,
 				FC266D5E19D2CF3B002912EC /* NSArrayCategory.m in Sources */,
@@ -2620,14 +2739,15 @@
 				FC21F35A19C01B5A00417CA8 /* RKClient.m in Sources */,
 				FC36E17519B0673800AF74C1 /* RegisterViewController.m in Sources */,
 				FC5210BC19C6F61C004932C5 /* HotlistDetailResult.m in Sources */,
-				FC3EEA8B19E527D60094F4AE /* ShopProductViewCell.m in Sources */,
 				FC36E17219B0673800AF74C1 /* NSStringCategory.m in Sources */,
 				FC53465919DBC2AE00E5AAD9 /* ProductList.m in Sources */,
+				FCCB4B2019E7DB9300722891 /* NotesList.m in Sources */,
 				FC12A09A19D916410049EB76 /* Talk.m in Sources */,
 				FC203A1019D12EE8005C826C /* DetailProductWholesaleTableCell.m in Sources */,
 				FC36E17319B0673800AF74C1 /* HotlistList.m in Sources */,
 				FC012E3219BEF3E00072A31A /* ClosedInfo.m in Sources */,
 				FC28A36E19D3FC08005815A0 /* Review.m in Sources */,
+				FCCB4B0E19E7D99300722891 /* ShopNotesViewController.m in Sources */,
 				FCBCCB2819DE954E0099246C /* SearchItem.m in Sources */,
 				FC158D8C19B80D4100F325D8 /* SearchCell.m in Sources */,
 				FC24856A19C16168008755DA /* TKPDTabNavigationController.m in Sources */,

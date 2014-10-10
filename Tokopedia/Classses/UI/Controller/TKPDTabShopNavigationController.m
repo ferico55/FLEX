@@ -793,7 +793,7 @@
     
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPDETAILKEY,
-                            kTKPDDETAIL_APISHOPIDKEY : @(681)
+                            kTKPDDETAIL_APISHOPIDKEY : @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue])
                             };
     
     [_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -862,6 +862,12 @@
     CGFloat pageWidth = _detailscrollview.frame.size.width;
     _pagedetail = floor((_detailscrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     _pagecontrol.currentPage = _pagedetail;
+}
+
+#pragma mark - Properties
+-(void)setData:(NSDictionary *)data
+{
+    _data = data;
 }
 
 @end

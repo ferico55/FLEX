@@ -15,7 +15,7 @@
 #import "FilterViewController.h"
 #import "SortViewController.h"
 
-#import "ShopProductViewCell.h"
+#import "GeneralProductCell.h"
 #import "ShopProductViewController.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
@@ -24,7 +24,7 @@
 #import "CategoryMenuViewController.h"
 #import "DetailProductViewController.h"
 
-@interface ShopProductViewController () <UITableViewDataSource,UITableViewDelegate, ShopProductViewCellDelegate>
+@interface ShopProductViewController () <UITableViewDataSource,UITableViewDelegate, GeneralProductCellDelegate>
 {
     NSInteger _page;
     NSInteger _limit;
@@ -53,6 +53,8 @@
     SearchItem *_searchitem;
     
     __weak RKObjectManager *_objectmanager;
+    __weak RKManagedObjectRequestOperation *_request;
+    NSOperationQueue *_operationQueue;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
@@ -93,6 +95,8 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    _operationQueue = [NSOperationQueue new];
     
     // set title navigation
     NSString * title = [_data objectForKey:kTKPDDETAIL_DATASHOPTITLEKEY];
@@ -205,14 +209,14 @@
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         
-        [self reset:(ShopProductViewCell*)cell];
+        [self reset:(GeneralProductCell*)cell];
         
-        NSString *cellid = kTKPDSHOPPRODUCTVIEWCELL_IDENTIFIER;
+        NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
 		
-		cell = (ShopProductViewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+		cell = (GeneralProductCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
-			cell = [ShopProductViewCell newcell];
-			((ShopProductViewCell*)cell).delegate = self;
+			cell = [GeneralProductCell newcell];
+			((GeneralProductCell*)cell).delegate = self;
 		}
 		
         if (_product.count > indexPath.row) {
@@ -227,21 +231,21 @@
             
             for (i = 0; (indexsegment + i) < indexlimit; i++) {
                 List *list = [_product objectAtIndex:indexsegment + i];
-                ((UIView*)((ShopProductViewCell*)cell).viewcell[i]).hidden = NO;
-                (((ShopProductViewCell*)cell).indexpath) = indexPath;
+                ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
+                (((GeneralProductCell*)cell).indexpath) = indexPath;
                 
-                ((UILabel*)((ShopProductViewCell*)cell).labelprice[i]).text = list.catalog_price?:list.product_price;
-                ((UILabel*)((ShopProductViewCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
-                ((UILabel*)((ShopProductViewCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
+                ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.catalog_price?:list.product_price;
+                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
+                ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
                 
                 NSString *urlstring = list.catalog_image?:list.product_image;
                 
                 NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
                 
-                UIImageView *thumb = (UIImageView*)((ShopProductViewCell*)cell).thumb[i];
+                UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
                 thumb.image = nil;
                 
-                UIActivityIndicatorView *act = (UIActivityIndicatorView*)((ShopProductViewCell*)cell).act[i];
+                UIActivityIndicatorView *act = (UIActivityIndicatorView*)((GeneralProductCell*)cell).act[i];
                 [act startAnimating];
                 
                 NSLog(@"============================== START GET IMAGE =====================");
@@ -401,6 +405,8 @@
 #pragma mark - Request + Mapping
 -(void)cancel
 {
+    [_request cancel];
+    _request = nil;
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
 }
@@ -463,6 +469,9 @@
 
 - (void)loadData
 {
+    
+    if (_request.isExecuting) return;
+    
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
@@ -471,7 +480,7 @@
     NSString *querry =[_data objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
 
 	NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPPRODUCTKEY,
-                            kTKPDDETAILPRODUCT_APISHOPIDKEY: @(681),
+                            kTKPDDETAILPRODUCT_APISHOPIDKEY: @([[_data objectForKey:kTKPDDETAILPRODUCT_APISHOPIDKEY]integerValue]?:0),
                             //@"auth":@(1),
                             //kTKPDDETAIL_APIQUERYKEY : [_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:querry,
                             //kTKPDDETAIL_APIQUERYKEY : @"demi-iklan", //TODO::remove dummy data
@@ -484,8 +493,10 @@
                             //kTKPDDETAIL_APIPRICEMAXKEY :[_detailfilter objectForKey:kTKPDDETAIL_APIPRICEMAXKEY]?:@""
                             };
     
-    NSLog(@"============================== GET HOTLIST DETAIL =====================");
-    [_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:param];
+    
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    //[_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         
         [self requestsuccess:mappingResult];
         [_act stopAnimating];
@@ -507,7 +518,8 @@
         [_timer invalidate];
         _timer = nil;
         NSLog(@"============================== DONE GET HOTLIST DETAIL =====================");
-        }];
+    }];
+    [_operationQueue addOperation:_request];
     
     _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
@@ -607,10 +619,10 @@
 #pragma mark - Methods
 -(void)reset:(UITableViewCell*)cell
 {
-    [((ShopProductViewCell*)cell).thumb makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
-    [((ShopProductViewCell*)cell).labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((ShopProductViewCell*)cell).labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((ShopProductViewCell*)cell).labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [((GeneralProductCell*)cell).thumb makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
+    [((GeneralProductCell*)cell).labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [((GeneralProductCell*)cell).labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [((GeneralProductCell*)cell).labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];
 }
 
 -(void)refreshView:(UIRefreshControl*)refresh
