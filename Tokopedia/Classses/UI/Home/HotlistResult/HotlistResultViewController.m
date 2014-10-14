@@ -166,8 +166,8 @@
     //[_table addSubview:_refreshControl];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateView:) name:@"setfilterProduct" object:nil];
-    [nc addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
+    [nc addObserver:self selector:@selector(updateView:) name:TKPD_FILTERPRODUCTPOSTNOTIFICATIONNAME object:nil];
+    [nc addObserver:self selector:@selector(setDepartmentID:) name:TKPD_DEPARTMENTIDPOSTNOTIFICATIONNAME object:nil];
     
     UIImageView *imageview = [_data objectForKey:kTKPHOME_DATAHEADERIMAGEKEY];
     if (imageview) {
@@ -724,7 +724,7 @@
         }];
     }
     
-    _descriptionlabel.text = _hotlistdetail.result.desc_key;
+    _descriptionlabel.text = [NSString convertHTML: _hotlistdetail.result.desc_key];
     [self setHashtags];
 }
 

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "HotListCell.h"
+#import "test.h"
 
 @interface HotlistViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, HotlistCellDelegate>
 

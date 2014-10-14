@@ -15,4 +15,7 @@
 @property (nonatomic, strong) NSString *image_url;
 @property (nonatomic, strong) NSString *title;
 
+- (void) encodeWithCoder:(NSCoder *)encoder;
+- (id)initWithCoder:(NSCoder *)decoder;
+
 @end

@@ -26,6 +26,9 @@
 #import "SearchResultShopViewController.h"
 
 #import "ShopProductViewController.h"
+#import "ShopTalkViewController.h"
+#import "ShopReviewViewController.h"
+#import "ShopNotesViewController.h"
 
 @interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate>
 
@@ -58,6 +61,7 @@
     SearchItem *_searchitem;
     
     __weak RKObjectManager *_objectmanager;
+    __weak RKManagedObjectRequestOperation *_request;
 }
 
 #pragma mark - Initialization
@@ -260,6 +264,8 @@
 #pragma mark - Request + Mapping
 -(void)cancel
 {
+    [_request cancel];
+    _request = nil;
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
 }
@@ -279,9 +285,9 @@
     
     // setup object mappings
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[List class]];
-    [listMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APISHOPIMAGEKEY,
+    [listMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APISHOPIDKEY,
+                                                 kTKPDSEARCH_APISHOPIMAGEKEY,
                                                  kTKPDSEARCH_APISHOPLOCATIONKEY,
-                                                 kTKPDSEARCH_APISHOPIDKEY,
                                                  kTKPDSEARCH_APISHOPTOTALTRANSACTIONKEY,
                                                  kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY,
                                                  kTKPDSEARCH_APISHOPTOTALFAVKEY
@@ -309,7 +315,6 @@
 
     
     // register mappings with the provider using a response descriptor
-    //TODO::
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDSEARCH_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     //add response description to object manager
@@ -327,7 +332,7 @@
     _requestcount ++;
 
     NSString *querry =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
-    NSString *type = [_params objectForKey:kTKPDSEARCH_DATATYPE];
+    NSString *type = kTKPDSEARCH_DATASEARCHSHOPKEY;
     NSString *deptid =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     NSDictionary* param;
     
@@ -358,9 +363,10 @@
                   };
     }
     
-    NSLog(@"============================== GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-    [_objectmanager getObjectsAtPath:kTKPDSEARCH_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        
+    _requestcount ++;
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDSEARCH_APIPATH parameters:param];
+    
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsuccess:mappingResult];
         [_table reloadData];
         _isrefreshview = NO;
@@ -384,6 +390,9 @@
         _timer = nil;
         NSLog(@"============================== DONE GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
     }];
+    
+    NSOperationQueue *operationQueue = [NSOperationQueue new];
+    [operationQueue addOperation:_request];
 
     _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
@@ -493,24 +502,27 @@
 #pragma mark - cell delegate
 -(void)SearchResultShopCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
+    List *list = _product[indexpath.row];
     NSMutableArray *viewcontrollers = [NSMutableArray new];
     /** create new view controller **/
     ShopProductViewController *v = [ShopProductViewController new];
+    v.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0)};
     [viewcontrollers addObject:v];
-    DetailShopViewController *v1 = [DetailShopViewController new];
+    ShopTalkViewController *v1 = [ShopTalkViewController new];
+    v1.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0)};
     [viewcontrollers addObject:v1];
-    DetailShopViewController *v2 = [DetailShopViewController new];
+    ShopReviewViewController *v2 = [ShopReviewViewController new];
+    v2.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0)};
     [viewcontrollers addObject:v2];
-    DetailShopViewController *v3 = [DetailShopViewController new];
+    ShopNotesViewController *v3 = [ShopNotesViewController new];
+    v3.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0)};
     [viewcontrollers addObject:v3];
     /** Adjust View Controller **/
     TKPDTabShopNavigationController *tapnavcon = [TKPDTabShopNavigationController new];
+    tapnavcon.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id};
     [tapnavcon setViewControllers:viewcontrollers animated:YES];
     [tapnavcon setSelectedIndex:0];
 
-//    DetailShopViewController *vc = [DetailShopViewController new];
-//    List *list = _product[indexpath.row];
-//    vc.data = @{kTKPDDETAILPRODUCT_APISHOPIDKEY : list.shop_id?:@""};
     [self.navigationController pushViewController:tapnavcon animated:YES];
 }
 

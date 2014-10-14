@@ -10,12 +10,22 @@
 
 @interface TalkList : NSObject
 
-@property (nonatomic, strong) NSString *talk_total_comment;
+// shop
+@property (nonatomic, strong) NSString *talk_product_name;
+@property (nonatomic, strong) NSString *talk_product_image;
+@property (nonatomic, strong) NSString *talk_product_id;
+@property (nonatomic, strong) NSString *talk_own;
+@property (nonatomic) NSInteger talk_user_id;
+
+//product
 @property (nonatomic, strong) NSString *talk_user_image;
 @property (nonatomic, strong) NSString *talk_user_name;
+
+// shop + product
 @property (nonatomic, strong) NSString *talk_id;
 @property (nonatomic, strong) NSString *talk_create_time;
 @property (nonatomic, strong) NSString *talk_message;
 @property (nonatomic) NSInteger talk_follow_status;
+@property (nonatomic, strong) NSString *talk_total_comment;
 
 @end

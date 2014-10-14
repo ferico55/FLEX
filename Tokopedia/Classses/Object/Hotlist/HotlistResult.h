@@ -16,4 +16,7 @@
 @property (nonatomic, strong) NSArray *list;
 @property (nonatomic, strong) Paging *paging;
 
+- (void) encodeWithCoder:(NSCoder *)encoder;
+- (id)initWithCoder:(NSCoder *)decoder;
+
 @end

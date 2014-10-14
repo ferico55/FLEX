@@ -102,7 +102,7 @@
     _table.dataSource = self;
     
     NSArray *departmenttree =[_data objectForKey:kTKPDCATEGORY_APIDEPARTMENTTREEKEY]?:@[];
-    if (departmenttree) {
+    if (departmenttree && departmenttree.count>0) {
         [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:[_data objectForKey:kTKPDCATEGORY_DATADIDALLCATEGORYKEY]?:@(0),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:[NSString stringWithFormat:@"All Category %@",[_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]?:@""]}];
 
         for (int i = 0 ; i<departmenttree.count; i++) {

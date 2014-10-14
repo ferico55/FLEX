@@ -277,8 +277,8 @@
         
     // setup object mappings
     RKObjectMapping *catalogMapping = [RKObjectMapping mappingForClass:[Catalog class]];
-    [catalogMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APISTATUSKEY:kTKPDDETAIL_APISTATUSKEY,
-                                                         kTKPDDETAIL_APISERVERPROCESSTIMEKEY:kTKPDDETAIL_APISERVERPROCESSTIMEKEY}];
+    [catalogMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
 
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailCatalogResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILCATALOG_APICATALOGIMAGEKEY:kTKPDDETAILCATALOG_APICATALOGIMAGEKEY}];
@@ -330,7 +330,7 @@
     [shopsMapping addAttributeMappingsFromArray:@[
                                                     kTKPDDETAILCATALOG_APISHOPRATEACCURACYKEY,
                                                     kTKPDDETAILCATALOG_APISHOPIMAGEKEY,
-                                                    kTKPDDETAILCATALOG_APISHOPIDKEY,
+                                                    kTKPDDETAIL_APISHOPIDKEY,
                                                     kTKPDDETAILCATALOG_APISHOPLOCATIONKEY,
                                                     kTKPDDETAILCATALOG_APISHOPRATESPEEDKEY,
                                                     kTKPDDETAILCATALOG_APIISGOLDSHOPKEY,

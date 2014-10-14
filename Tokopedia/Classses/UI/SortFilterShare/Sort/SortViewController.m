@@ -109,7 +109,7 @@
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 
-#pragma mark - View Gesture
+#pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
@@ -132,13 +132,13 @@
                     case 1:
                     case 2:
                     {   //product
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterProduct" object:nil userInfo:userinfo];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_FILTERPRODUCTPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
                         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                         break;
                     }
                     case 3:
                     {   //catalog
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterCatalog" object:nil userInfo:userinfo];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_FILTERCATALOGPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
                         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                         break;
                     }
@@ -152,7 +152,7 @@
                     }
                     case 5:
                     {    //shop
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"setfilterShop" object:nil userInfo:userinfo];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_FILTERSHOPPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
                         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                         break;
                     }

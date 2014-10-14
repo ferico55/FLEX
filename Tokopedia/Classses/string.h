@@ -24,5 +24,7 @@
 #define kTKPD_APISTATUSKEY @"status"
 #define kTKPD_APISERVERPROCESSTIMEKEY @"server_process_time"
 #define kTKPD_APIRESULTKEY @"result"
+#define kTKPD_APIURINEXTKEY @"uri_next"
+#define kTKPD_APILISTKEY @"list"
 
 #endif

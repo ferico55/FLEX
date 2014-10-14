@@ -5,11 +5,15 @@
 //  Created by IT Tkpd on 9/30/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
+
+#import "sortfiltershare.h"
 #import "detail.h"
 #import "Shop.h"
 #import "TKPDTabShopNavigationController.h"
 #import "ShopInfoViewController.h"
 #import "BackgroundLayer.h"
+#import "SortViewController.h"
+#import "ProductEtalaseViewController.h"
 
 @interface TKPDTabShopNavigationController () <UIScrollViewDelegate> {
 	UIView* _tabbar;
@@ -29,6 +33,7 @@
     __weak RKObjectManager *_objectmanager;
     NSTimer *_timer;
 }
+@property (weak, nonatomic) IBOutlet UIView *filterview;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actpp;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actcover;
@@ -120,6 +125,8 @@
 {
     [super viewDidLoad];
     
+    [self.navigationController.navigationBar setTranslucent:NO];
+    
     _buttons = [NSArray sortViewsWithTagInArray:_buttons];
     _chevrons = _buttons;
 	
@@ -183,8 +190,6 @@
     if (_isnodata) {
         [self loadData];
     }
-    
-    
     //}
 }
 
@@ -335,6 +340,12 @@
         selectedIndex = 0;
     }
 	if (selectedIndex == _selectedIndex) return;
+    
+    if (selectedIndex != 0) {
+        _filterview.hidden = YES;
+    }
+    else
+        _filterview.hidden = NO;
 	
 	if (_viewControllers != nil) {
 		
@@ -513,23 +524,56 @@
 	}
 }
 
--(void)tapbutton:(UIButton *)sender
+-(IBAction)tapbutton:(UIButton *)sender
 {
-    switch (sender.tag) {
-        case 10:
-        {
-            [self.navigationController popViewControllerAnimated:YES];
-            break;
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton*)sender;
+        switch (btn.tag) {
+            case 10:
+            {
+                // URUTKAN
+                SortViewController *vc = [SortViewController new];
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY)};
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                break;
+            }
+            case 11:
+            {
+                // FILTER
+                ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
+                vc.data = @{kTKPDDETAIL_APISHOPIDKEY:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]};
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                break;
+            }
+            case 12:
+            {
+                //SHARE
+                break;
+            }
+            default:
+                break;
+        }    }
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
+        
+        switch (sender.tag) {
+            case 10:
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+                break;
+            }
+            case 11:
+            {
+                ShopInfoViewController *vc = [ShopInfoViewController new];
+                vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop};
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            default:
+                break;
         }
-        case 11:
-        {
-            ShopInfoViewController *vc = [ShopInfoViewController new];
-            vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop};
-            [self.navigationController pushViewController:vc animated:YES];
-            break;
-        }
-        default:
-            break;
     }
 }
 
@@ -697,8 +741,8 @@
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Shop class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APISTATUSKEY:kTKPDDETAIL_APISTATUSKEY,
-                                                        kTKPDDETAIL_APISERVERPROCESSTIMEKEY:kTKPDDETAIL_APISERVERPROCESSTIMEKEY}];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailShopResult class]];
     
@@ -721,7 +765,7 @@
                                                           kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY:kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPIDKEY:kTKPDDETAILPRODUCT_APISHOPIDKEY,
+                                                          kTKPDDETAIL_APISHOPIDKEY:kTKPDDETAIL_APISHOPIDKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY:kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY:kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPNAMEKEY:kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
@@ -803,7 +847,7 @@
     
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPDETAILKEY,
-                            kTKPDDETAIL_APISHOPIDKEY : @(681)
+                            kTKPDDETAIL_APISHOPIDKEY : @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue])
                             };
     
     [_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -872,6 +916,12 @@
     CGFloat pageWidth = _detailscrollview.frame.size.width;
     _pagedetail = floor((_detailscrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     _pagecontrol.currentPage = _pagedetail;
+}
+
+#pragma mark - Properties
+-(void)setData:(NSDictionary *)data
+{
+    _data = data;
 }
 
 @end

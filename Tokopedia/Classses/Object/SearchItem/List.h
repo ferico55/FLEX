@@ -10,6 +10,11 @@
 
 @interface List : NSObject
 
+/** shop **/
+@property (nonatomic, strong) NSString *shop_image;
+@property (nonatomic, strong) NSString *shop_id;
+@property (nonatomic, strong) NSString *shop_total_transaction;
+@property (nonatomic, strong) NSString *shop_total_favorite;
 
 /** catalog **/
 @property (nonatomic, strong) NSString *catalog_id;
@@ -26,12 +31,6 @@
 @property (nonatomic, strong) NSString *product_image;
 @property (nonatomic, strong) NSString *product_name;
 
-/** shop **/
-@property (nonatomic, strong) NSString *shop_image;
-//@property (nonatomic, strong) NSString *shop_location;
-@property (nonatomic, strong) NSString *shop_id;
-@property (nonatomic, strong) NSString *shop_total_transaction;
-//@property (nonatomic, strong) NSString *shop_name;
-@property (nonatomic, strong) NSString *shop_total_favorite;
+
 
 @end

@@ -42,8 +42,10 @@
 }
 
 - (void)setObject:(NSObject <ExpiringCacheItem> *)obj forKey:(id)key {
-    obj.expiringCacheItemDate = [NSDate date];
+    //obj.expiringCacheItemDate = [NSDate date];
     [self.cache setObject:obj forKey:key];
+    
+    
 }
 
 @end
