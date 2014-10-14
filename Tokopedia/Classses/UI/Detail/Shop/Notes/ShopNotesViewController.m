@@ -120,7 +120,7 @@
 		cell = (ShopNotesCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
 			cell = [ShopNotesCell newcell];
-			//((ShopNotesCell*)cell).delegate = self;
+			((ShopNotesCell*)cell).delegate = self;
 		}
         
         if (_list.count > indexPath.row) {
@@ -186,8 +186,8 @@
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Notes class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APISTATUSKEY:kTKPDDETAIL_APISTATUSKEY,
-                                                        kTKPDDETAIL_APISERVERPROCESSTIMEKEY:kTKPDDETAIL_APISERVERPROCESSTIMEKEY}];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResult class]];
 
@@ -317,7 +317,7 @@
 {
     ShopNotesDetailViewController *vc = [ShopNotesDetailViewController new];
     NotesList *list = _list[indexpath.row];
-    vc.data = @{kTKPDNOTES_APINOTESIDKEY:list.notes_id};
+    vc.data = @{kTKPDNOTES_APINOTESIDKEY:list.notes_id,kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)};
     [self.navigationController pushViewController:vc animated:YES];
 }
 

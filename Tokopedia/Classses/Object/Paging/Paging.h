@@ -12,4 +12,7 @@
 
 @property (nonatomic, strong) NSString *uri_next;
 
+- (void) encodeWithCoder:(NSCoder *)encoder;
+- (id)initWithCoder:(NSCoder *)decoder;
+
 @end

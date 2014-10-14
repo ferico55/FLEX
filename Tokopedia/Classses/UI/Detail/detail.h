@@ -13,9 +13,9 @@
 #define kTKPDDETAIL_DATAINFOSHOPSKEY @"infoshop"
 #define kTKPDDETAIL_DATALOCATIONARRAYKEY @"locationarray"
 #define kTKPDDETAIL_DATAQUERYKEY @"query"
-
-#define kTKPDDETAIL_APISTATUSKEY @"status"
-#define kTKPDDETAIL_APISERVERPROCESSTIMEKEY @"server_process_time"
+#define kTKPDDETAIL_DATAETALASEKEY @"etalase"
+#define kTKPDDETAIL_DATAINDEXPATHKEY @"indexpath"
+#define kTKPDDETAIL_DATACOLUMNKEY @"column"
 
 #define kTKPDDETAIL_APILISTKEYPATH @"result.list"
 #define kTKPDDETAIL_APIPAGINGKEYPATH @"result.paging"
@@ -34,12 +34,17 @@
 #define kTKPDDETAIL_APIGETSHOPTALKKEY @"get_shop_talk"
 #define kTKPDDETAIL_APIGETSHOPREVIEWKEY @"get_shop_review"
 #define kTKPDDETAIL_APIGETSHOPNOTESKEY @"get_shop_notes"
+#define kTKPDDETAIL_APIGETNOTESDETAILKEY @"get_notes_detail"
+#define kTKPDDETAIL_APIGETETALASEKEY @"get_shop_etalase"
 
 #define kTKPDDETAIL_APIPAGEKEY @"page"
 #define kTKPDDETAIL_APILIMITKEY @"per_page"
 #define kTKPDDETAIL_APILOCATIONKEY @"location"
 #define kTKPDDETAIL_APICONDITIONKEY @"condition"
 #define kTKPDDETAIL_APIORERBYKEY @"order_by"
+#define kTKPDDETAIL_APISORTKEY @"sort"
+#define kTKPDDETAIL_APIKEYWORDKEY @"keyword"
+#define kTKPDDETAIL_APIETALASEIDKEY @"menu_id"
 
 #define kTKPDDETAILREVIEW_LIMITPAGE 5
 #define kTKPDSHOPPRODUCT_LIMITPAGE 6
@@ -74,7 +79,6 @@
 #define kTKPDDETAILPRODUCT_APISHOPINFOKEY @"shop_info"
 #define kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY @"shop_open_since"
 #define kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY @"shop_location"
-#define kTKPDDETAILPRODUCT_APISHOPIDKEY @"shop_id"
 #define kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY @"shop_owner_last_login"
 #define kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY @"shop_tagline"
 #define kTKPDDETAILPRODUCT_APISHOPNAMEKEY @"shop_name"
@@ -167,6 +171,10 @@
 #define kTKPDSHOP_APISHOPTOTALPRODUCTKEY @"shop_total_product"
 #define kTKPDSHOP_APISHOPTOTALSOLDKEY @"shop_item_sold"
 
+#define kTKPDSHOP_APIETALASENAMEKEY @"etalase_name"
+#define kTKPDSHOP_APIETALASEIDKEY @"etalase_id"
+#define kTKPDSHOP_APIETALASETOTALPRODUCTKEY @"etalase_total_product"
+
 #pragma mark - Review
 
 #define kTKPDREVIEW_APIADVREVIEWKEY @"advance_review"
@@ -236,9 +244,14 @@
 #define kTKPDTALK_APITALKUSERIDKEY @"talk_user_id"
 
 #pragma mark - Notes
+#define kTKPDNOTES_APINOTEIDKEY @"note_id"
 #define kTKPDNOTES_APINOTESIDKEY @"notes_id"
 #define kTKPDNOTES_APINOTESSTATUSKEY @"notes_status"
 #define kTKPDNOTES_APINOTESTITLEKEY @"notes_title"
+
+#define kTKPDNOTE_APINOTESTITLEKEY @"notes_title"
+#define kTKPDNOTE_APINOTESUPDATETIMEKEY @"notes_update_time"
+#define kTKPDNOTE_APINOTESCONTENTKEY @"notes_content"
 
 #pragma mark - Catalog
 #define kTKPDDETAILCATALOG_APICATALOGINFOKEY @"catalog_info"
@@ -277,11 +290,12 @@
 
 #define kTKPDDETAIL_APILISTKEY @"list"
 #define kTKPDDETAIL_APIPAGINGKEY @"paging"
+#define kTKPDDETAIL_APIDETAILKEY @"detail"
 
 #define kTKPDDETAILCATALOG_APIPRODUCTLISTKEY @"product_list"
 #define kTKPDDETAILCATALOG_APISHOPRATEACCURACYKEY @"shop_rate_accuracy"
 #define kTKPDDETAILCATALOG_APISHOPIMAGEKEY @"shop_image"
-#define kTKPDDETAILCATALOG_APISHOPIDKEY @"shop_id"
+#define kTKPDDETAIL_APISHOPIDKEY @"shop_id"
 #define kTKPDDETAILCATALOG_APISHOPLOCATIONKEY @"shop_location"
 #define kTKPDDETAILCATALOG_APISHOPRATESPEEDKEY @"shop_rate_speed"
 #define kTKPDDETAILCATALOG_APIISGOLDSHOPKEY @"is_gold_shop"
@@ -311,6 +325,7 @@
 #define kTKPDDETAILPRODUCT_APIPATH @"product.pl"
 #define kTKDPDETAILCATALOG_APIPATH @"catalog.pl"
 #define kTKPDDETAILSHOP_APIPATH @"shop.pl"
+#define kTKPDDETAILNOTES_APIPATH @"notes.pl"
 
 #define kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define kTKPDDETAIL_NODATACELLTITLE @"no data"
@@ -320,5 +335,11 @@
 
 #define kTKPDREVIEW_ALERTPERIODSARRAY @[@"All The Times", @"6 Months"]
 #define kTKPDREVIEW_ALERTPERIODSVALUEARRAY @[@(0), @(6)]
+
+#define kTKPDSHOP_APIETALASENAMEKEY @"etalase_name"
+#define kTKPDSHOP_APIETALASEIDKEY @"etalase_id"
+#define kTKPDSHOP_APIETALASETOTALPRODUCTKEY @"etalase_total_product"
+
+#define kTKPDSHOP_ETALASEARRAY @[@{kTKPDSHOP_APIETALASENAMEKEY:@"Produk Terjual",kTKPDSHOP_APIETALASEIDKEY:@(0)}, @{kTKPDSHOP_APIETALASENAMEKEY:@"All Etalase",kTKPDSHOP_APIETALASEIDKEY:@(0)}]
 
 #endif

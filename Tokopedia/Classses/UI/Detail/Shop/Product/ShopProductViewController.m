@@ -7,12 +7,13 @@
 //
 
 #import "SearchItem.h"
+#import "ListEtalase.h"
 
 #import "search.h"
 #import "sortfiltershare.h"
 #import "detail.h"
 
-#import "FilterViewController.h"
+#import "ProductEtalaseViewController.h"
 #import "SortViewController.h"
 
 #import "GeneralProductCell.h"
@@ -24,7 +25,7 @@
 #import "CategoryMenuViewController.h"
 #import "DetailProductViewController.h"
 
-@interface ShopProductViewController () <UITableViewDataSource,UITableViewDelegate, GeneralProductCellDelegate>
+@interface ShopProductViewController () <UITableViewDataSource,UITableViewDelegate, GeneralProductCellDelegate, UISearchBarDelegate>
 {
     NSInteger _page;
     NSInteger _limit;
@@ -55,6 +56,8 @@
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
+    
+    UISearchBar *_searchbaractive;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
@@ -154,8 +157,9 @@
     //[_table addSubview:_refreshControl];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateView:) name:@"setfilterProduct" object:nil];
-    [nc addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
+    [nc addObserver:self selector:@selector(updateView:) name:TKPD_FILTERPRODUCTPOSTNOTIFICATIONNAME object:nil];
+    [nc addObserver:self selector:@selector(setDepartmentID:) name:TKPD_DEPARTMENTIDPOSTNOTIFICATIONNAME object:nil];
+    [nc addObserver:self selector:@selector(updateView:) name:TKPD_ETALASEPOSTNOTIFICATIONNAME object:nil];
     
 //    UIImageView *imageview = [_data objectForKey:kTKPDETAIL_DATAHEADERIMAGEKEY];
 //    if (imageview) {
@@ -305,6 +309,7 @@
 
 #pragma mark - Action View
 -(IBAction)tap:(id)sender{
+    [_searchbaractive resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         
@@ -319,39 +324,9 @@
                 break;
         }
     }
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton*)sender;
-        switch (button.tag) {
-                case 10:
-                {
-                    // URUTKAN
-                    SortViewController *vc = [SortViewController new];
-                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY)};
-                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                    [self.navigationController presentViewController:nav animated:YES completion:nil];
-                    break;
-                }
-                case 11:
-                {
-                    // FILTER
-                    FilterViewController *vc = [FilterViewController new];
-                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY)};
-                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                    [self.navigationController presentViewController:nav animated:YES completion:nil];
-                    break;
-                }
-                case 12:
-                {
-                    //SHARE
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
 }
 - (IBAction)gesture:(id)sender {
-    
+    [_searchbaractive resignFirstResponder];
     if ([sender isKindOfClass:[UISwipeGestureRecognizer class]]) {
         UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer*)sender;
         switch (swipe.state) {
@@ -402,7 +377,7 @@
 }
 
 
-#pragma mark - Request + Mapping
+#pragma mark - Request + Mapping Shop
 -(void)cancel
 {
     [_request cancel];
@@ -477,20 +452,16 @@
     
     _requestcount ++;
     
-    NSString *querry =[_data objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
+    NSString *querry =[_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
+    ListEtalase *etalase = [_detailfilter objectForKey:kTKPDDETAIL_DATAETALASEKEY];
 
 	NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPPRODUCTKEY,
-                            kTKPDDETAILPRODUCT_APISHOPIDKEY: @([[_data objectForKey:kTKPDDETAILPRODUCT_APISHOPIDKEY]integerValue]?:0),
-                            //@"auth":@(1),
-                            //kTKPDDETAIL_APIQUERYKEY : [_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:querry,
-                            //kTKPDDETAIL_APIQUERYKEY : @"demi-iklan", //TODO::remove dummy data
+                            kTKPDDETAIL_APISHOPIDKEY: @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
                             kTKPDDETAIL_APIPAGEKEY : @(_page),
                             kTKPDDETAIL_APILIMITKEY : @(_limit),
-                            //kTKPDDETAIL_APIORDERBYKEY : [_detailfilter objectForKey:kTKPDDETAIL_APIORDERBYKEY]?:@"",
-                            //kTKPDDETAIL_APILOCATIONKEY :[_detailfilter objectForKey:kTKPDDETAIL_APILOCATIONKEY]?:@""
-                            //kTKPDDETAIL_APISHOPTYPEKEY :[_detailfilter objectForKey:kTKPDDETAIL_APISHOPTYPEKEY]?:@"",
-                            //kTKPDDETAIL_APIPRICEMINKEY :[_detailfilter objectForKey:kTKPDDETAIL_APIPRICEMINKEY]?:@"",
-                            //kTKPDDETAIL_APIPRICEMAXKEY :[_detailfilter objectForKey:kTKPDDETAIL_APIPRICEMAXKEY]?:@""
+                            kTKPDDETAIL_APISORTKEY : @([[_detailfilter objectForKey:kTKPDDETAIL_APIORERBYKEY]integerValue]?:0),
+                            kTKPDDETAIL_APIKEYWORDKEY : querry?:@"",
+                            kTKPDDETAIL_APIETALASEIDKEY :@(etalase.etalase_id?:0)
                             };
     
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:param];
@@ -505,7 +476,6 @@
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
-        NSLog(@"============================== DONE GET HOTLIST DETAIL =====================");
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
@@ -517,7 +487,6 @@
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
-        NSLog(@"============================== DONE GET HOTLIST DETAIL =====================");
     }];
     [_operationQueue addOperation:_request];
     
@@ -540,7 +509,7 @@
         if (_page == 1) {
             [_product removeAllObjects];
         }
-        
+        _filterview.hidden = NO;
         [_product addObjectsFromArray: _searchitem.result.list];
         _pagecontrol.hidden = NO;
         _swipegestureleft.enabled = YES;
@@ -607,8 +576,9 @@
 }
 
 #pragma mark - Cell Delegate
--(void)ShopProductViewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+-(void)GeneralProductCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
+    [_searchbaractive resignFirstResponder];
     NSInteger index = indexpath.section+2*(indexpath.row);
     List *list = _product[index];
     DetailProductViewController *vc = [DetailProductViewController new];
@@ -639,6 +609,20 @@
     [self configureRestKit];
     [self loadData];
 }
+
+#pragma mark - UISearchBar Delegate
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    _searchbaractive = searchBar;
+}
+
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [_searchbaractive resignFirstResponder];
+    [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+    [self refreshView:nil];
+}
+
 
 #pragma mark - Post Notification Methods
 

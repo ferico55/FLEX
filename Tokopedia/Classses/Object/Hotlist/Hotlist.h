@@ -10,10 +10,13 @@
 
 #import "HotlistResult.h"
 
-@interface Hotlist : NSObject
+@interface Hotlist : NSObject <NSCoding>
 
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) HotlistResult *result;
+
+- (void) encodeWithCoder:(NSCoder *)encoder;
+- (id)initWithCoder:(NSCoder *)decoder;
 
 @end

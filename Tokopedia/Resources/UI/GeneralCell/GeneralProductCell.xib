@@ -59,6 +59,9 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="zX6-Io-410" appends="YES" id="L3A-rc-3GU"/>
+                        </connections>
                     </view>
                     <view hidden="YES" tag="11" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EJe-fO-eTj">
                         <rect key="frame" x="163" y="13" width="145" height="197"/>
@@ -115,7 +118,6 @@
                 <outletCollection property="act" destination="ZYh-6Y-gzo" id="fOd-7P-ZOa"/>
                 <outletCollection property="viewcell" destination="Bcb-32-YCv" id="s5y-zW-8Gx"/>
                 <outletCollection property="viewcell" destination="EJe-fO-eTj" id="had-f2-8r9"/>
-                <outletCollection property="gestureRecognizers" destination="zX6-Io-410" appends="YES" id="ww2-Oq-Mrf"/>
             </connections>
         </tableViewCell>
     </objects>

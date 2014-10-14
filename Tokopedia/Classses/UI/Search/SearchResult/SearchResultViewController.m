@@ -478,11 +478,11 @@
             if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
                 if ([hascatalog isEqualToString:@"1"] && hascatalog) {
                     NSDictionary *userInfo = @{@"count":@(3)};
-                    [[NSNotificationCenter defaultCenter] postNotificationName: @"setsegmentcontrol" object:nil userInfo:userInfo];
+                    [[NSNotificationCenter defaultCenter] postNotificationName: TKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAME object:nil userInfo:userInfo];
                 }
                 else if ([hascatalog isEqualToString:@"0"] && hascatalog){
                     NSDictionary *userInfo = @{@"count":@(2)};
-                    [[NSNotificationCenter defaultCenter] postNotificationName: @"setsegmentcontrol" object:nil userInfo:userInfo];
+                    [[NSNotificationCenter defaultCenter] postNotificationName: TKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAME object:nil userInfo:userInfo];
                 }
             }
             [_product addObjectsFromArray: _searchitem.result.list];

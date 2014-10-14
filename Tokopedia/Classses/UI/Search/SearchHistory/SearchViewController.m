@@ -263,6 +263,7 @@
     }
 }
 
+#pragma mark - cell delegate
 -(void)SearchCellDelegate:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withdata:(NSDictionary *)data
 {
     

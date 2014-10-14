@@ -11,5 +11,6 @@
 @interface NSString (TkpdCategory)
 
 -(NSString *)isEmail;
++(NSString *)convertHTML:(NSString *)html;
 
 @end
