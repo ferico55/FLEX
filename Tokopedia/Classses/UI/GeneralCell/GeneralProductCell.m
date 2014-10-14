@@ -46,7 +46,7 @@
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
         NSIndexPath* indexpath = _indexpath;
-        NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:indexpath.row inSection:gesture.view.tag];
+        NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:indexpath.row inSection:gesture.view.tag-10];
         [_delegate GeneralProductCell:self withindexpath:indexpath1];
     }
     

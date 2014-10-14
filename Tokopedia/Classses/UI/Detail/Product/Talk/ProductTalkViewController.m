@@ -10,6 +10,7 @@
 #import "detail.h"
 #import "GeneralTalkCell.h"
 #import "ProductTalkViewController.h"
+#import "ProductTalkCell.h"
 
 @interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 {

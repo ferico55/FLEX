@@ -28,6 +28,8 @@
 #define kTKPDIMAGE_NAVBARBG @"actionbar_bg"
 
 #define kTKPDIMAGE_ICONBACK @"icon_arrow_white"
+#define kTKPDIMAGE_ICONINFO @"icon_info"
+
 #define kTKPDIMAGE_ICONMORECATEGORY @"icon_category_white"
 
 #define kTKPDIMAGE_TABBARACTIVEBG @"active_tab"

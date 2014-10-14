@@ -11,6 +11,7 @@
 
 #define kTKPDTITLE_TALK @"Talk About It"
 #define kTKPDTITLE_REVIEW @"Review"
+#define kTKPDTITLE_SHOP_INFO @"Shop Information"
 
 #define kTKPDDETAIL_DATASHOPSKEY @"shop"
 #define kTKPDDETAIL_DATAINFOSHOPSKEY @"infoshop"

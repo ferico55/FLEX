@@ -9,6 +9,7 @@
 #import "Shop.h"
 #import "TKPDTabShopNavigationController.h"
 #import "ShopInfoViewController.h"
+#import "BackgroundLayer.h"
 
 @interface TKPDTabShopNavigationController () <UIScrollViewDelegate> {
 	UIView* _tabbar;
@@ -42,6 +43,7 @@
 @property (strong, nonatomic) IBOutlet UIView *contentview;
 
 @property (weak, nonatomic) IBOutlet UIView *container;
+@property (weak, nonatomic) IBOutlet UIView *gradient;
 @property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
 @property (weak, nonatomic) IBOutlet UIView *tapview;
 
@@ -145,7 +147,7 @@
 	[barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
     
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
@@ -181,6 +183,8 @@
     if (_isnodata) {
         [self loadData];
     }
+    
+    
     //}
 }
 
@@ -671,6 +675,12 @@
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         [_actcover stopAnimating];
     }];
+    
+    
+    CAGradientLayer *bgLayer = [BackgroundLayer blackGradient];
+    bgLayer.frame = _gradient.bounds;
+    [_gradient.layer insertSublayer:bgLayer atIndex:0];
+
 }
 
 #pragma mark - Request and Mapping

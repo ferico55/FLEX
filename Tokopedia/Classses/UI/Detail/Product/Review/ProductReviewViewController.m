@@ -133,7 +133,7 @@
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
             [self loadData];
         }
-    }
+    } 
 }
 
 -(void)viewWillDisappear:(BOOL)animated

@@ -298,6 +298,7 @@
     [bt.titleLabel setFont:[UIFont systemFontOfSize:12]];
     [bt.titleLabel setTextAlignment:NSTextAlignmentLeft];
     [bt.titleLabel setTextColor:[UIColor blackColor]];
+    [bt.titleLabel setFont: [UIFont fontWithName:@"GothamLight" size:12.0f]];
     switch (section) {
         case 0:
             [bt setTitle: @"Product Description" forState: UIControlStateNormal];
@@ -356,11 +357,20 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
    
-//    if(indexPath.section == 0) {
-//        return _heightDescSection;
-//    } else {
-        return 300;
-//    }
+    
+    if(indexPath.section == 0) {
+        if(!_isnodata) {
+            if(_heightDescSection < 100) {
+                return 100;
+            }
+            return _heightDescSection;
+        }
+//        return 200;
+
+    }
+    
+    return 300;
+    
     
 }
 
@@ -384,7 +394,8 @@
     
     // Configure the cell...
     if (indexPath.section == 0) {
-        //if (_isexpanded) {
+//        //if (_isexpanded) {
+        
             NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
             cell = (DetailProductDescriptionCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
             if (cell == nil) {
@@ -392,11 +403,21 @@
                 //((DetailProductWholesaleCell*)cell).delegate = self;
             }
         
-            NSString *productdesc = _product.result.info.product_description;
-            ((DetailProductDescriptionCell*)cell).descriptionlabel.text = productdesc;
-            [((DetailProductDescriptionCell*)cell).descriptionlabel sizeToFit];
-            _heightDescSection =  ((DetailProductDescriptionCell*)cell).descriptionlabel.frame.size.height;
-        //}
+            if(!_isnodata) {
+                NSString *productdesc = _product.result.info.product_description;
+                UILabel *desclabel = ((DetailProductDescriptionCell*)cell).descriptionlabel;
+                desclabel.text = productdesc;
+                CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
+                
+                CGSize expectedLabelSize = [productdesc sizeWithFont:desclabel.font constrainedToSize:maximumLabelSize lineBreakMode:desclabel.lineBreakMode];
+                _heightDescSection = lroundf(expectedLabelSize.height);
+                
+
+            }
+        
+
+        
+//        //}
         return cell;
     }
     if (!_isnodatawholesale) {
@@ -617,6 +638,16 @@
         if (_product.result.wholesale_price.count > 0) {
             _isnodatawholesale = NO;
         }
+        
+        //decide description height
+        id cell = [DetailProductDescriptionCell newcell];
+        NSString *productdesc = _product.result.info.product_description;
+        UILabel *desclabel = ((DetailProductDescriptionCell*)cell).descriptionlabel;
+        desclabel.text = productdesc;
+        CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
+        
+        CGSize expectedLabelSize = [productdesc sizeWithFont:desclabel.font constrainedToSize:maximumLabelSize lineBreakMode:desclabel.lineBreakMode];
+        _heightDescSection = lroundf(expectedLabelSize.height);
         
         [self setHeaderviewData];
         [self setFooterViewData];
@@ -845,4 +876,6 @@
         _otherproductscrollview.pagingEnabled = YES;
         _otherproductscrollview.contentSize = CGSizeMake(_otherproductviews.count*160,0);
 }
+
+
 @end
