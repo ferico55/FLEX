@@ -174,7 +174,7 @@
     [tabBarItem1 setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
       [UIColor blackColor], UITextAttributeTextColor,
-      [UIFont fontWithName:@"GothamLight" size:9.0], UITextAttributeFont,
+      [UIFont fontWithName:@"GothamBook" size:9.0], UITextAttributeFont,
       nil]
                                forState:UIControlStateNormal];
     
@@ -196,7 +196,7 @@
     [tabBarItem2 setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
       [UIColor blackColor], UITextAttributeTextColor,
-      [UIFont fontWithName:@"GothamLight" size:9.0], UITextAttributeFont,
+      [UIFont fontWithName:@"GothamBook" size:9.0], UITextAttributeFont,
       nil]
                                              forState:UIControlStateNormal];
     
@@ -218,7 +218,7 @@
     [tabBarItem3 setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
       [UIColor blackColor], UITextAttributeTextColor,
-      [UIFont fontWithName:@"GothamLight" size:9.0], UITextAttributeFont,
+      [UIFont fontWithName:@"GothamBook" size:9.0], UITextAttributeFont,
       nil]
                                forState:UIControlStateNormal];
     
@@ -240,7 +240,7 @@
     [tabBarItem4 setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
       [UIColor blackColor], UITextAttributeTextColor,
-      [UIFont fontWithName:@"GothamLight" size:9.0], UITextAttributeFont,
+      [UIFont fontWithName:@"GothamBook" size:9.0], UITextAttributeFont,
       nil]
                                forState:UIControlStateNormal];
     
@@ -261,7 +261,7 @@
     [tabBarItem5 setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
       [UIColor blackColor], UITextAttributeTextColor,
-      [UIFont fontWithName:@"GothamLight" size:9.0], UITextAttributeFont,
+      [UIFont fontWithName:@"GothamBook" size:9.0], UITextAttributeFont,
       nil]
                                forState:UIControlStateNormal];
 

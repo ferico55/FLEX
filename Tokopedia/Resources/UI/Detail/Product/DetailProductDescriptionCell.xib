@@ -4,8 +4,8 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="GothamLight.ttf">
-            <string>GothamLight</string>
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -21,7 +21,7 @@
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" id="gdk-zI-Nu6">
                         <rect key="frame" x="23" y="15" width="262" height="60"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="12"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                         <nil key="highlightedColor"/>
                         <size key="shadowOffset" width="0.0" height="0.0"/>
                     </label>

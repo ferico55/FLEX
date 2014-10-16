@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<<<<<<< HEAD
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
-=======
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
->>>>>>> e6f9044f1559dcff8262894b2fe37aa4d9df82da
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="GothamLight.ttf">
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -35,11 +34,8 @@
                 <outlet property="descriptionview" destination="2th-5G-Eec" id="SFc-Dr-IUs"/>
                 <outlet property="detailscrollview" destination="zcg-61-pM2" id="Uk0-VJ-dcJ"/>
                 <outlet property="detailview" destination="3Mp-3B-wFr" id="ah4-cl-rzj"/>
-<<<<<<< HEAD
+                <outlet property="filterview" destination="1gX-pV-G32" id="lQD-Mf-dvh"/>
                 <outlet property="gradient" destination="jQW-vO-DT3" id="ofb-Yl-FwJ"/>
-=======
-                <outlet property="filterview" destination="989-4o-9dt" id="FNO-17-oOj"/>
->>>>>>> e6f9044f1559dcff8262894b2fe37aa4d9df82da
                 <outlet property="labelfav" destination="KUJ-Cg-u4d" id="R8J-6B-AFB"/>
                 <outlet property="labelsold" destination="LRr-3G-JLn" id="ikV-LW-nHC"/>
                 <outlet property="locationlabel" destination="WHJ-eR-QYb" id="HDW-9Z-nVF"/>
@@ -61,34 +57,19 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-<<<<<<< HEAD
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KUJ-Cg-u4d">
                     <rect key="frame" x="60" y="58" width="200" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <color key="textColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="highlightedColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LRr-3G-JLn">
                     <rect key="frame" x="60" y="87" width="200" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <color key="textColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="highlightedColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="shadowColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-=======
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="KUJ-Cg-u4d">
-                    <rect key="frame" x="139" y="43" width="42" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LRr-3G-JLn">
-                    <rect key="frame" x="139" y="87" width="42" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="highlightedColor"/>
->>>>>>> e6f9044f1559dcff8262894b2fe37aa4d9df82da
                 </label>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -99,27 +80,20 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="502"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-<<<<<<< HEAD
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WAa-CY-UR1">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="457"/>
-=======
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="WAa-CY-UR1">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
->>>>>>> e6f9044f1559dcff8262894b2fe37aa4d9df82da
                     <color key="backgroundColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="EVH-C9-oph"/>
                     </connections>
                 </scrollView>
-<<<<<<< HEAD
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1gX-pV-G32">
-                    <rect key="frame" x="0.0" y="454" width="320" height="48"/>
+                    <rect key="frame" x="0.0" y="457" width="320" height="48"/>
                     <subviews>
                         <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4V6-FO-MpA">
                             <rect key="frame" x="220" y="2" width="104" height="45"/>
                             <color key="backgroundColor" red="0.95202105979999996" green="0.95202105979999996" blue="0.95202105979999996" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <state key="normal" title="Share">
                                 <color key="titleColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -129,20 +103,26 @@
                             <rect key="frame" x="0.0" y="2" width="109" height="45"/>
                             <color key="backgroundColor" red="0.95202105979999996" green="0.95202105979999996" blue="0.95202105979999996" alpha="1" colorSpace="calibratedRGB"/>
                             <rect key="contentStretch" x="1" y="0.0" width="1" height="1"/>
-                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <state key="normal" title="Urutkan">
                                 <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="joR-Yr-iUI"/>
+                            </connections>
                         </button>
                         <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ltJ-zF-bUo">
                             <rect key="frame" x="110" y="2" width="109" height="45"/>
                             <color key="backgroundColor" red="0.95202105979999996" green="0.95202105979999996" blue="0.95202105979999996" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
-                            <state key="normal" title="Filter">
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <state key="normal" title="Etalase">
                                 <color key="titleColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="Rly-tV-sB3"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -152,100 +132,23 @@
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-237" y="714"/>
-=======
-                <view contentMode="scaleToFill" id="989-4o-9dt">
-                    <rect key="frame" x="0.0" y="519" width="320" height="49"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                    <subviews>
-                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Njk-bS-dEh">
-                            <rect key="frame" x="0.0" y="3" width="105" height="45"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <color key="backgroundColor" red="0.95202105979999996" green="0.95202105979999996" blue="0.95202105979999996" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
-                            <state key="normal" title="Urutkan">
-                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="JzP-wd-dEg"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4yG-2Z-znB">
-                            <rect key="frame" x="216" y="3" width="104" height="45"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <color key="backgroundColor" red="0.95202105979999996" green="0.95202105979999996" blue="0.95202105979999996" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
-                            <state key="normal" title="Share">
-                                <color key="titleColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="CDd-3g-iYa"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="2rE-rZ-CNh">
-                            <rect key="frame" x="106" y="3" width="109" height="45"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                            <color key="backgroundColor" red="0.95202105979999996" green="0.95202105979999996" blue="0.95202105979999996" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
-                            <state key="normal" title="Etalase">
-                                <color key="titleColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="XiS-Sl-PH8"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-                </view>
-            </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
->>>>>>> e6f9044f1559dcff8262894b2fe37aa4d9df82da
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="320" height="836"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="6bl-5T-dVF">
+                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6bl-5T-dVF">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                 </imageView>
-<<<<<<< HEAD
                 <view alpha="0.90000000000000002" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jQW-vO-DT3" userLabel="gradient">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zcg-61-pM2">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
-=======
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="zcg-61-pM2">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
->>>>>>> e6f9044f1559dcff8262894b2fe37aa4d9df82da
                     <connections>
                         <outlet property="delegate" destination="-1" id="0fV-B0-7Xa"/>
                     </connections>
                 </scrollView>
-<<<<<<< HEAD
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7LK-36-qbj">
-                    <rect key="frame" x="20" y="197" width="130" height="30"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="13"/>
-                    <state key="normal" title=" Message" image="icon_message.png">
-                        <color key="titleColor" red="0.65958599452554745" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
-=======
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="7LK-36-qbj">
-                    <rect key="frame" x="20" y="197" width="80" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Message">
->>>>>>> e6f9044f1559dcff8262894b2fe37aa4d9df82da
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="L8A-HQ-Z0Q"/>
-                    </connections>
-                </button>
-<<<<<<< HEAD
                 <pageControl hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="fjV-yf-VkG">
                     <rect key="frame" x="135" y="148" width="50" height="37"/>
                     <color key="pageIndicatorTintColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -256,26 +159,7 @@
                     <subviews>
                         <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6q2-xK-i3h">
                             <rect key="frame" x="0.0" y="0.0" width="70" height="30"/>
-                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
-=======
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="cVc-Hq-EZS">
-                    <rect key="frame" x="231" y="197" width="63" height="30"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" title="Favorite">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="8nH-8o-A5h"/>
-                    </connections>
-                </button>
-                <view contentMode="scaleToFill" id="kgB-5M-hOL">
-                    <rect key="frame" x="0.0" y="228" width="320" height="43"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6q2-xK-i3h">
-                            <rect key="frame" x="0.0" y="7" width="69" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
->>>>>>> e6f9044f1559dcff8262894b2fe37aa4d9df82da
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <state key="normal" title="Product">
                                 <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -284,15 +168,9 @@
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="UyQ-HK-ooH"/>
                             </connections>
                         </button>
-<<<<<<< HEAD
                         <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ol2-ob-zWC">
                             <rect key="frame" x="70" y="0.0" width="100" height="30"/>
-                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
-=======
-                        <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ol2-ob-zWC">
-                            <rect key="frame" x="78" y="7" width="89" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
->>>>>>> e6f9044f1559dcff8262894b2fe37aa4d9df82da
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <state key="normal" title="Talk About It">
                                 <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -301,15 +179,9 @@
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="FAM-kj-S3b"/>
                             </connections>
                         </button>
-<<<<<<< HEAD
                         <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BYS-gx-9Xv">
                             <rect key="frame" x="170" y="0.0" width="80" height="30"/>
-                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
-=======
-                        <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="BYS-gx-9Xv">
-                            <rect key="frame" x="184" y="7" width="53" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
->>>>>>> e6f9044f1559dcff8262894b2fe37aa4d9df82da
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <state key="normal" title="Review">
                                 <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -318,15 +190,9 @@
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="9Ny-OD-l0n"/>
                             </connections>
                         </button>
-<<<<<<< HEAD
                         <button opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3qG-Ie-QUb">
                             <rect key="frame" x="248" y="0.0" width="70" height="30"/>
-                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
-=======
-                        <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3qG-Ie-QUb">
-                            <rect key="frame" x="261" y="7" width="46" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
->>>>>>> e6f9044f1559dcff8262894b2fe37aa4d9df82da
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <state key="normal" title="Notes">
                                 <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -338,31 +204,16 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
-<<<<<<< HEAD
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="abB-jT-cSJ" userLabel="Container-View">
                     <rect key="frame" x="0.0" y="282" width="320" height="567"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-=======
-                <view contentMode="scaleToFill" id="abB-jT-cSJ" userLabel="Container-View">
-                    <rect key="frame" x="0.0" y="268" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
->>>>>>> e6f9044f1559dcff8262894b2fe37aa4d9df82da
                     <gestureRecognizers/>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="APh-NK-HnG" appends="YES" id="tUJ-0m-Uc2"/>
                         <outletCollection property="gestureRecognizers" destination="X8P-TM-e1C" appends="YES" id="4MC-Ri-bOx"/>
                     </connections>
                 </view>
-<<<<<<< HEAD
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="DDl-z9-A7W">
-=======
-                <pageControl hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" id="fjV-yf-VkG">
-                    <rect key="frame" x="135" y="152" width="50" height="37"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </pageControl>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" id="DDl-z9-A7W">
->>>>>>> e6f9044f1559dcff8262894b2fe37aa4d9df82da
                     <rect key="frame" x="150" y="80" width="20" height="20"/>
                 </activityIndicatorView>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cVu-HK-Fzk">
@@ -372,7 +223,7 @@
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cVc-Hq-EZS">
                     <rect key="frame" x="170" y="197" width="130" height="28"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="13"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <state key="normal" title=" Favorite" image="icon_love.png">
                         <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -381,9 +232,52 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="8nH-8o-A5h"/>
                     </connections>
                 </button>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oug-5r-yx1">
+                    <rect key="frame" x="20" y="197" width="130" height="30"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7LK-36-qbj">
+                            <rect key="frame" x="1" y="1" width="128" height="28"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                            <state key="normal" title=" Message" image="icon_message.png">
+                                <color key="titleColor" red="0.65958599452554745" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected">
+                                <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="L8A-HQ-Z0Q"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+        <view contentMode="scaleToFill" id="8ke-SH-1gU">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uNi-jE-iDN">
+                    <rect key="frame" x="1" y="1" width="128" height="28"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                    <state key="normal" title=" Message" image="icon_message.png">
+                        <color key="titleColor" red="0.65958599449999999" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected">
+                        <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="xfO-gT-agT"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
         </view>
         <swipeGestureRecognizer direction="left" id="APh-NK-HnG">
             <connections>
@@ -399,59 +293,30 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-<<<<<<< HEAD
                 <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="31Y-2q-Ggi" userLabel="shop_ava">
                     <rect key="frame" x="135" y="20" width="50" height="50"/>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F6R-Pu-avF" userLabel="namelabel">
                     <rect key="frame" x="10" y="89" width="300" height="21"/>
-                    <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="267" translatesAutoresizingMaskIntoConstraints="NO" id="ZS3-wa-XnO" userLabel="shopdesc">
                     <rect key="frame" x="10" y="103" width="300" height="36"/>
-                    <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="12"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="BNt-0T-WmM">
                     <rect key="frame" x="150" y="79" width="20" height="20"/>
-=======
-                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="31Y-2q-Ggi">
-                    <rect key="frame" x="128" y="20" width="64" height="61"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="F6R-Pu-avF">
-                    <rect key="frame" x="139" y="89" width="42" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ZS3-wa-XnO">
-                    <rect key="frame" x="27" y="107" width="267" height="37"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WHJ-eR-QYb">
-                    <rect key="frame" x="106" y="141" width="108" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" id="BNt-0T-WmM">
-                    <rect key="frame" x="150" y="41" width="20" height="20"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
->>>>>>> e6f9044f1559dcff8262894b2fe37aa4d9df82da
                 </activityIndicatorView>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bBo-ud-AlT" userLabel="loc_view">
                     <rect key="frame" x="10" y="132" width="300" height="29"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WHJ-eR-QYb" userLabel="location">
                             <rect key="frame" x="138" y="3" width="150" height="20"/>
-                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="12"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </label>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_location_28px.png" translatesAutoresizingMaskIntoConstraints="NO" id="HxO-Rl-C4M">
@@ -468,7 +333,7 @@
     </objects>
     <resources>
         <image name="icon_location_28px.png" width="28" height="28"/>
-        <image name="icon_love.png" width="14" height="14"/>
+        <image name="icon_love.png" width="20" height="20"/>
         <image name="icon_message.png" width="14" height="14"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

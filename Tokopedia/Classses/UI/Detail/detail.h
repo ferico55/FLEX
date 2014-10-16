@@ -11,6 +11,7 @@
 
 #define kTKPDTITLE_TALK @"Talk About It"
 #define kTKPDTITLE_REVIEW @"Review"
+#define kTKPDTITLE_SHOP_NOTES @"Shop Note"
 #define kTKPDTITLE_SHOP_INFO @"Shop Information"
 
 #define kTKPDDETAIL_DATASHOPSKEY @"shop"
@@ -207,10 +208,7 @@
 #define kTKPDREVIEW_APIREVIEWCREATETIMEKEY @"review_create_time"
 #define kTKPDREVIEW_APIREVIEWIDKEY @"review_id"
 
-#define kTKPDREVIEW_APIQUARITYRATEKEY @"review_quality_rate"
-#define kTKPDREVIEW_APISPEEDRATEKEY @"review_speed_rate"
-#define kTKPDREVIEW_APISERVICERATEKEY @"review_service_rate"
-#define kTKPDREVIEW_APIACCURACYRATEKEY @"review_accuracy_rate"
+
 #define kTKPDREVIEW_APIPRODUCTNAMEKEY @"review_product_name"
 #define kTKPDREVIEW_APIPRODUCTIDKEY @"review_product_id"
 #define kTKPDREVIEW_APIPRODUCTIMAGEKEY @"review_product_image"

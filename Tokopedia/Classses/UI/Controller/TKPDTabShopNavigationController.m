@@ -299,8 +299,19 @@
 		_viewControllers = nil;
 		_selectedViewController = nil;
 		_selectedIndex = -1;
+        
+        
 		//_navigationIndex = -1;
 	}
+    
+
+        CALayer *upperBorder = [CALayer layer];
+        upperBorder.backgroundColor = [[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] CGColor];
+        upperBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[_selectedIndex] frame]), 2.0f);
+        
+        [[_chevrons[_selectedIndex] layer] addSublayer:upperBorder];
+
+    
 }
 
 - (void)setSelectedViewController:(UIViewController *)selectedViewController
@@ -343,6 +354,11 @@
     
     if (selectedIndex != 0) {
         _filterview.hidden = YES;
+        CGRect scrollFrame;
+        scrollFrame.origin = _scrollview.frame.origin;
+        scrollFrame.size = CGSizeMake(_scrollview.frame.size.width, _scrollview.frame.size.height+_filterview.frame.size.height);
+        
+        _scrollview.frame = scrollFrame;
     }
     else
         _filterview.hidden = NO;
@@ -507,7 +523,22 @@
         index = sender.tag;
         
 		BOOL should = YES;
-		
+        
+        //add border green on bottom button
+        CALayer *upperBorder = [CALayer layer];
+        upperBorder.backgroundColor = [[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] CGColor];
+        upperBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[index-10] frame]), 2.0f);
+        
+        
+        for(int i=0;i<4;i++) {
+            CALayer *whiteBorder = [CALayer layer];
+            
+            whiteBorder.backgroundColor = [[UIColor whiteColor] CGColor];
+            whiteBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[i] frame]), 2.0f);
+            [[_chevrons[i] layer] addSublayer:whiteBorder];
+        }
+
+        [[_chevrons[index-10] layer] addSublayer:upperBorder];
 		if (([_delegate respondsToSelector:@selector(tabBarController:shouldSelectViewController:)])) {
 			
 			should  = [_delegate tabBarController:self shouldSelectViewController:_viewControllers[index]];
@@ -519,6 +550,7 @@
 			if (([_delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])) {
 				
 				[_delegate tabBarController:self didSelectViewController:_viewControllers[index]];
+                
 			}
 		}
 	}

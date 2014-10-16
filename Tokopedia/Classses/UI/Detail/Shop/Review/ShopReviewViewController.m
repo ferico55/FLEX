@@ -168,10 +168,10 @@
             //[button setTitle:@"See More" forState:UIControlStateNormal];
             //[button setFrame:CGRectMake(widthlabel,heightlabel, ((ProductReviewCell*)cell).commentlabel.frame.size.width, ((ProductReviewCell*)cell).commentlabel.frame.size.height)];
             //button.tag = 10;
-            ((GeneralReviewCell*)cell).qualityrate.starscount = list.review_quality_rate;
-            ((GeneralReviewCell*)cell).speedrate.starscount = list.review_speed_rate;
-            ((GeneralReviewCell*)cell).servicerate.starscount = list.review_service_rate;
-            ((GeneralReviewCell*)cell).accuracyrate.starscount = list.review_accuracy_rate;
+            ((GeneralReviewCell*)cell).qualityrate.starscount = list.review_rate_quality;
+            ((GeneralReviewCell*)cell).speedrate.starscount = list.review_rate_speed;
+            ((GeneralReviewCell*)cell).servicerate.starscount = list.review_rate_service;
+            ((GeneralReviewCell*)cell).accuracyrate.starscount = list.review_rate_accuracy;
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
@@ -326,10 +326,10 @@
                                                  kTKPDREVIEW_APIREVIEWUSERNAMEKEY,
                                                  kTKPDREVIEW_APIREVIEWMESSAGEKEY,
                                                  kTKPDREVIEW_APIREVIEWUSERIDKEY,
-                                                 kTKPDREVIEW_APIQUARITYRATEKEY,
-                                                 kTKPDREVIEW_APISPEEDRATEKEY,
-                                                 kTKPDREVIEW_APISERVICERATEKEY,
-                                                 kTKPDREVIEW_APIACCURACYRATEKEY,
+                                                 kTKPDREVIEW_APIREVIEWRATEQUALITY,
+                                                 kTKPDREVIEW_APIREVIEWRATESPEEDKEY,
+                                                 kTKPDREVIEW_APIREVIEWRATESERVICEKEY,
+                                                 kTKPDREVIEW_APIREVIEWRATEACCURACYKEY,
                                                  kTKPDREVIEW_APIPRODUCTNAMEKEY,
                                                  kTKPDREVIEW_APIPRODUCTIDKEY,
                                                  kTKPDREVIEW_APIPRODUCTIMAGEKEY
