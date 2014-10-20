@@ -14,7 +14,9 @@
 #define kTKPDDETAIL_DATALOCATIONARRAYKEY @"locationarray"
 #define kTKPDDETAIL_DATAQUERYKEY @"query"
 #define kTKPDDETAIL_DATAETALASEKEY @"etalase"
+#define kTKPDDETAIL_DATAINDEXKEY @"index"
 #define kTKPDDETAIL_DATAINDEXPATHKEY @"indexpath"
+#define kTKPDDETAILETALASE_DATAINDEXPATHKEY @"etalaseindexpath"
 #define kTKPDDETAIL_DATACOLUMNKEY @"column"
 
 #define kTKPDDETAIL_APILISTKEYPATH @"result.list"
@@ -25,6 +27,8 @@
 #define kTKPDDETAIL_APIPRODUCTIDKEY @"product_id"
 #define kTKPDDETAIL_APICATALOGIDKEY @"catalog_id"
 #define kTKPDDETAIL_APISHOPIDKEY @"shop_id"
+
+#pragma mark - Get Action
 #define kTKPDDETAIL_APIGETDETAILACTIONKEY @"get_detail"
 #define kTKPDDETAIL_APIGETPRODUCTREVIEWKEY @"get_product_review"
 #define kTKPDDETAIL_APIGETPRODUCTTALKKEY @"get_product_talk"
@@ -36,13 +40,14 @@
 #define kTKPDDETAIL_APIGETSHOPNOTESKEY @"get_shop_notes"
 #define kTKPDDETAIL_APIGETNOTESDETAILKEY @"get_notes_detail"
 #define kTKPDDETAIL_APIGETETALASEKEY @"get_shop_etalase"
+#define kTKPDDETAIL_APIGETSHOPFAVORITEDKEY @"get_people_who_favorite_myshop"
 
 #define kTKPDDETAIL_APIPAGEKEY @"page"
+#define kTKPDDETAIL_APITOTALPAGEKEY @"total_page"
 #define kTKPDDETAIL_APILIMITKEY @"per_page"
 #define kTKPDDETAIL_APILOCATIONKEY @"location"
 #define kTKPDDETAIL_APICONDITIONKEY @"condition"
 #define kTKPDDETAIL_APIORERBYKEY @"order_by"
-#define kTKPDDETAIL_APISORTKEY @"sort"
 #define kTKPDDETAIL_APIKEYWORDKEY @"keyword"
 #define kTKPDDETAIL_APIETALASEIDKEY @"menu_id"
 
@@ -203,10 +208,6 @@
 #define kTKPDREVIEW_APIREVIEWCREATETIMEKEY @"review_create_time"
 #define kTKPDREVIEW_APIREVIEWIDKEY @"review_id"
 
-#define kTKPDREVIEW_APIQUARITYRATEKEY @"review_quality_rate"
-#define kTKPDREVIEW_APISPEEDRATEKEY @"review_speed_rate"
-#define kTKPDREVIEW_APISERVICERATEKEY @"review_service_rate"
-#define kTKPDREVIEW_APIACCURACYRATEKEY @"review_accuracy_rate"
 #define kTKPDREVIEW_APIPRODUCTNAMEKEY @"review_product_name"
 #define kTKPDREVIEW_APIPRODUCTIDKEY @"review_product_id"
 #define kTKPDREVIEW_APIPRODUCTIMAGEKEY @"review_product_image"
@@ -252,6 +253,11 @@
 #define kTKPDNOTE_APINOTESTITLEKEY @"notes_title"
 #define kTKPDNOTE_APINOTESUPDATETIMEKEY @"notes_update_time"
 #define kTKPDNOTE_APINOTESCONTENTKEY @"notes_content"
+
+#pragma mark - Favorited
+#define kTKPDFAVORITED_APIUSERIDKEY @"user_id"
+#define kTKPDFAVORITED_APIUSERIMAGEKEY @"user_image"
+#define kTKPDFAVORITED_APIUSERNAMEKEY @"user_name"
 
 #pragma mark - Catalog
 #define kTKPDDETAILCATALOG_APICATALOGINFOKEY @"catalog_info"
@@ -340,6 +346,6 @@
 #define kTKPDSHOP_APIETALASEIDKEY @"etalase_id"
 #define kTKPDSHOP_APIETALASETOTALPRODUCTKEY @"etalase_total_product"
 
-#define kTKPDSHOP_ETALASEARRAY @[@{kTKPDSHOP_APIETALASENAMEKEY:@"Produk Terjual",kTKPDSHOP_APIETALASEIDKEY:@(0)}, @{kTKPDSHOP_APIETALASENAMEKEY:@"All Etalase",kTKPDSHOP_APIETALASEIDKEY:@(0)}]
+#define kTKPDSHOP_ETALASEARRAY @[@{kTKPDSHOP_APIETALASENAMEKEY:@"Produk Terjual",kTKPDSHOP_APIETALASEIDKEY:@(7)}, @{kTKPDSHOP_APIETALASENAMEKEY:@"All Etalase",kTKPDSHOP_APIETALASEIDKEY:@(0)}]
 
 #endif

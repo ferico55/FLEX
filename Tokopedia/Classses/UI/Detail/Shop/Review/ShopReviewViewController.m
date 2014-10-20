@@ -168,10 +168,10 @@
             //[button setTitle:@"See More" forState:UIControlStateNormal];
             //[button setFrame:CGRectMake(widthlabel,heightlabel, ((ProductReviewCell*)cell).commentlabel.frame.size.width, ((ProductReviewCell*)cell).commentlabel.frame.size.height)];
             //button.tag = 10;
-            ((GeneralReviewCell*)cell).qualityrate.starscount = list.review_quality_rate;
-            ((GeneralReviewCell*)cell).speedrate.starscount = list.review_speed_rate;
-            ((GeneralReviewCell*)cell).servicerate.starscount = list.review_service_rate;
-            ((GeneralReviewCell*)cell).accuracyrate.starscount = list.review_accuracy_rate;
+            ((GeneralReviewCell*)cell).qualityrate.starscount = list.review_rate_quality;
+            ((GeneralReviewCell*)cell).speedrate.starscount = list.review_rate_speed;
+            ((GeneralReviewCell*)cell).servicerate.starscount = list.review_rate_service;
+            ((GeneralReviewCell*)cell).accuracyrate.starscount = list.review_rate_accuracy;
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
@@ -265,18 +265,29 @@
 - (IBAction)gesture:(id)sender {
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-        _starcount = gesture.view.tag-10;
-        _detailstarsandtimesview.hidden = NO;
-        if (_isadvreviewquality)
-        {
-            [_param setObject:@(0) forKey:kTKPDREVIEW_APIRATEACCURACYKEY];
-            [_param setObject:@(gesture.view.tag-10) forKey:kTKPDTEVIEW_APIRATEQUALITYKEY];
-        }else{
-            [_param setObject:@(0) forKey:kTKPDTEVIEW_APIRATEQUALITYKEY];
-            [_param setObject:@(gesture.view.tag-10) forKey:kTKPDREVIEW_APIRATEACCURACYKEY];
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                _starcount = gesture.view.tag-10;
+                _detailstarsandtimesview.hidden = NO;
+                if (_isadvreviewquality)
+                {
+                    [_param setObject:@(0) forKey:kTKPDREVIEW_APIRATEACCURACYKEY];
+                    [_param setObject:@(gesture.view.tag-10) forKey:kTKPDTEVIEW_APIRATEQUALITYKEY];
+                }else{
+                    [_param setObject:@(0) forKey:kTKPDTEVIEW_APIRATEQUALITYKEY];
+                    [_param setObject:@(gesture.view.tag-10) forKey:kTKPDREVIEW_APIRATEACCURACYKEY];
+                }
+                [self refreshView:nil];
+                [self setHeaderData];
+                break;
+            }
         }
-        [self refreshView:nil];
-        [self setHeaderData];
     }
 }
 
@@ -317,7 +328,7 @@
                                                        kTKPDREVIEW_APIRATINGACCURACYKEY,
                                                        kTKPDREVIEW_APIRATINGQUALITYKEY
                                                        ]];
-    
+
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[ReviewList class]];
     [listMapping addAttributeMappingsFromArray:@[kTKPDREVIEW_APIREVIEWSHOPIDKEY,
                                                  kTKPDREVIEW_APIREVIEWUSERIMAGEKEY,
@@ -326,10 +337,10 @@
                                                  kTKPDREVIEW_APIREVIEWUSERNAMEKEY,
                                                  kTKPDREVIEW_APIREVIEWMESSAGEKEY,
                                                  kTKPDREVIEW_APIREVIEWUSERIDKEY,
-                                                 kTKPDREVIEW_APIQUARITYRATEKEY,
-                                                 kTKPDREVIEW_APISPEEDRATEKEY,
-                                                 kTKPDREVIEW_APISERVICERATEKEY,
-                                                 kTKPDREVIEW_APIACCURACYRATEKEY,
+                                                 kTKPDREVIEW_APIREVIEWRATEQUALITY,
+                                                 kTKPDREVIEW_APIREVIEWRATESPEEDKEY,
+                                                 kTKPDREVIEW_APIREVIEWRATESERVICEKEY,
+                                                 kTKPDREVIEW_APIREVIEWRATEACCURACYKEY,
                                                  kTKPDREVIEW_APIPRODUCTNAMEKEY,
                                                  kTKPDREVIEW_APIPRODUCTIDKEY,
                                                  kTKPDREVIEW_APIPRODUCTIMAGEKEY
@@ -370,7 +381,7 @@
                             kTKPDDETAIL_APILIMITKEY :@(kTKPDDETAILREVIEW_LIMITPAGE),
                             };
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOP_APIPATH parameters:param];
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
     //[_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [_timer invalidate];

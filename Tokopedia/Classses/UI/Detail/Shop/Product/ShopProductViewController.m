@@ -252,7 +252,6 @@
                 UIActivityIndicatorView *act = (UIActivityIndicatorView*)((GeneralProductCell*)cell).act[i];
                 [act startAnimating];
                 
-                NSLog(@"============================== START GET IMAGE =====================");
                 [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -260,13 +259,10 @@
                     [thumb setImage:image];
                     
                     [act stopAnimating];
-                    NSLog(@"============================== DONE GET IMAGE =====================");
     #pragma clang diagnostic pop
                     
                 } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                     [act stopAnimating];
-                    
-                    NSLog(@"============================== DONE GET IMAGE =====================");
                 }];
             }
         }
@@ -453,18 +449,32 @@
     _requestcount ++;
     
     NSString *querry =[_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
-    ListEtalase *etalase = [_detailfilter objectForKey:kTKPDDETAIL_DATAETALASEKEY];
-
+    NSInteger indexfilter = [[_detailfilter objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+    NSInteger sort =  [[_detailfilter objectForKey:kTKPDDETAIL_APIORERBYKEY]integerValue];
+    id etalaseid;
+    if (indexfilter && indexfilter==0) {
+        etalaseid = @"sold";
+        sort = 7;
+    }
+    else if (indexfilter == 1)
+    {
+        etalaseid = @"all";
+    }
+    else{
+        ListEtalase *etalase = [_detailfilter objectForKey:kTKPDDETAIL_DATAETALASEKEY];
+        etalaseid = @(etalase.etalase_id);
+    }
+    
 	NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPPRODUCTKEY,
                             kTKPDDETAIL_APISHOPIDKEY: @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
                             kTKPDDETAIL_APIPAGEKEY : @(_page),
                             kTKPDDETAIL_APILIMITKEY : @(_limit),
-                            kTKPDDETAIL_APISORTKEY : @([[_detailfilter objectForKey:kTKPDDETAIL_APIORERBYKEY]integerValue]?:0),
+                            kTKPDDETAIL_APIORERBYKEY : @(sort?:0),
                             kTKPDDETAIL_APIKEYWORDKEY : querry?:@"",
-                            kTKPDDETAIL_APIETALASEIDKEY :@(etalase.etalase_id?:0)
+                            kTKPDDETAIL_APIETALASEIDKEY :etalaseid?:0
                             };
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOP_APIPATH parameters:param];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
     //[_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {

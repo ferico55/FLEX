@@ -31,10 +31,6 @@
 @property (nonatomic) NSInteger review_rate_accuracy;
 
 //shop
-@property (nonatomic) NSInteger review_quality_rate;
-@property (nonatomic) NSInteger review_speed_rate;
-@property (nonatomic) NSInteger review_service_rate;
-@property (nonatomic) NSInteger review_accuracy_rate;
 @property (nonatomic, strong) NSString *review_product_name;
 @property (nonatomic, strong) NSString *review_product_id;
 @property (nonatomic, strong) NSString *review_product_image;

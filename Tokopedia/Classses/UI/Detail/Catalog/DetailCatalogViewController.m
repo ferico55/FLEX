@@ -7,6 +7,7 @@
 //
 
 #import "detail.h"
+#import "sortfiltershare.h"
 
 #import "Catalog.h"
 
@@ -89,7 +90,7 @@
     
     // add notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateViewDetailCatalog:) name:@"setfilterDetailCatalog" object:nil];
+    [nc addObserver:self selector:@selector(updateViewDetailCatalog:) name:TKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAME object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -184,7 +185,10 @@
                 // action buy button - go to seller list
                 CatalogSellerViewController *vc = [CatalogSellerViewController new];
                 vc.data = @{kTKPDDETAIL_DATASHOPSKEY: (_catalog.result.catalog_shops)?:@"",
-                            kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location};
+                            kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location,
+                            kTKPDFILTER_DATAINDEXPATHKEY: [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
+                            kTKPDFILTER_DATAFILTERKEY:_params
+                            };
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -400,8 +404,10 @@
             _isrefreshseller = NO;
             _continerscrollview.hidden = YES;
             CatalogSellerViewController *vc = [CatalogSellerViewController new];
+            NSIndexPath *indexpath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
             vc.data = @{kTKPDDETAIL_DATASHOPSKEY: (_catalog.result.catalog_shops),
-                        kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location};
+                        kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location,
+                        kTKPDFILTERSORT_DATAINDEXPATHKEY: indexpath};
             [self.navigationController pushViewController:vc animated:NO];
         }
         else{
@@ -440,7 +446,9 @@
             // go to seller list
             _isrefreshseller = NO;
             CatalogSellerViewController *vc = [CatalogSellerViewController new];
-            vc.data = @{kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location};
+            vc.data = @{kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location,
+                        kTKPDFILTER_DATAINDEXPATHKEY: [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
+                        kTKPDFILTER_DATAFILTERKEY:_params};
             [self.navigationController pushViewController:vc animated:NO];
         }
     }

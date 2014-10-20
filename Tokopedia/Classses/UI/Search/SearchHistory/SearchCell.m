@@ -43,8 +43,20 @@
 
 - (IBAction)gesture:(id)sender {
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
-        NSString *histori = [_data objectForKey:@"column"];
-        [_delegate SearchCellDelegate:self withindexpath:[_data objectForKey:kTKPDSEARCH_DATAINDEXPATHKEY] withdata:@{kTKPDSEARCH_DATASEARCHKEY:histori}];
+        UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                NSString *histori = [_data objectForKey:@"column"];
+                [_delegate SearchCellDelegate:self withindexpath:[_data objectForKey:kTKPDSEARCH_DATAINDEXPATHKEY] withdata:@{kTKPDSEARCH_DATASEARCHKEY:histori}];
+                break;
+            }
+        }
     }
 }
 

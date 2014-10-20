@@ -44,9 +44,18 @@
     
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-    
-        [_delegate HotlistCell:self withindexpath:_indexpath withimageview:_productimageview];
-    
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                [_delegate HotlistCell:self withindexpath:_indexpath withimageview:_productimageview];
+                break;
+            }
+        }
     }
     
 }

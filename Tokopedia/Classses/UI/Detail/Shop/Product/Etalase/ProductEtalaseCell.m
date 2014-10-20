@@ -46,7 +46,18 @@
     
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-        [_delegate ProductEtalaseCell:self withindexpath:_indexpath ];
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                [_delegate ProductEtalaseCell:self withindexpath:_indexpath ];
+                break;
+            }
+        }
         
     }
     

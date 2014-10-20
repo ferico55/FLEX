@@ -44,7 +44,21 @@
     // Configure the view for the selected state
 }
 - (IBAction)gesture:(id)sender {
-    [_delegate ShopNotesCellDelegate:self withindexpath:_indexpath];
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer* gesture = (UITapGestureRecognizer*)sender;
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                [_delegate ShopNotesCellDelegate:self withindexpath:_indexpath];
+                break;
+            }
+        }
+    }
 }
 
 @end

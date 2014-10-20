@@ -16,10 +16,14 @@
 
 @interface CategoryMenuViewController () <CategoryMenuViewCellDelegate, UITableViewDataSource, UITableViewDelegate>
 {
-    NSInteger _page;
-    NSInteger _limit;
+    // ceck berapa kali view di tampilkan
+    NSInteger _pushcount;
+    NSMutableArray *_choosenindexpaths;
+    BOOL _ispushotomatis;
     
     NSInteger _viewposition;
+    
+    NSIndexPath *_selectedindexpath;
     
     //NSMutableArray *_hotlist;
     NSMutableDictionary *_paging;
@@ -94,8 +98,6 @@
     }
     
     /** set max data per page request **/
-    _limit = kTKPDCATEGORYRESULT_LIMITPAGE;
-    
     _table.delegate = self;
     _table.dataSource = self;
     
@@ -137,9 +139,41 @@
                 [_menu[i] setObject:@(NO) forKey:kTKPDCATEGORY_DATAISNULLCHILD];
         }
     }
+    _ispushotomatis = [[_data objectForKey:kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY]boolValue];
+    _selectedindexpath = [_data objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+
+}
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
     
     if (_menu.count > 0) {
         _isnodata = NO;
+        _pushcount = [[_data objectForKey: kTKPDCATEGORY_DATAPUSHCOUNTKEY]integerValue]?:0;
+        _choosenindexpaths = [NSMutableArray new];
+        NSArray *chosenid =[_data objectForKey:kTKPDCATEGORY_DATACHOSENINDEXPATHKEY];
+        [_choosenindexpaths addObjectsFromArray:chosenid?:@[]];
+
+        if (_pushcount>0 && _ispushotomatis) {
+            //TODO::
+            //if([[_menu[_selectedindexpath.row] objectForKey:kTKPDCATEGORY_DATAISNULLCHILD] isEqual:@(0)]){
+            //    [_choosenindexpaths addObject:_selectedindexpath];
+            //    CategoryMenuViewController *vc = [CategoryMenuViewController new];
+            //    NSArray *childs =[_menu[_selectedindexpath.row] objectForKey:kTKPDCATEGORY_APIDEPARTMENTCHILDKEY]?:@[];
+            //    vc.data = @{kTKPDCATEGORY_APIDEPARTMENTTREEKEY : childs,
+            //                kTKPDCATEGORY_DATADIDALLCATEGORYKEY: [_menu[_selectedindexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY]?:[NSNull null],
+            //                kTKPDCATEGORY_DATATITLEKEY : [_menu[_selectedindexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY],
+            //                kTKPDCATEGORY_DATAPUSHCOUNTKEY : @(_pushcount),
+            //                kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : _choosenindexpaths?:@[],
+            //                kTKPDCATEGORY_DATAINDEXPATHKEY : _selectedindexpath,
+            //                kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY : @(YES)
+            //                };
+            //    [self.navigationController pushViewController:vc animated:YES];
+            //}
+            //else{
+            //    [_selectedcategory setObject:_selectedindexpath forKey:kTKPDCATEGORY_DATAINDEXPATHKEY];
+            //    [_table reloadData];
+            //}
+        }
     }
 }
 
@@ -169,6 +203,7 @@
         switch (btn.tag) {
             case 10:
             {
+                _ispushotomatis = NO;
                 if (self.navigationController.viewControllers.count>1) {
                     [self.navigationController popViewControllerAnimated:YES];
                 }
@@ -187,9 +222,15 @@
             {
                 //Done Action
                 NSArray *array = [self.navigationController viewControllers];
-                NSIndexPath *indexpath = [_selectedcategory objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY];
+                NSIndexPath *indexpath = [_selectedcategory objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                
                 if (indexpath) {
-                    NSDictionary *userinfo = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY]};
+                    NSDictionary *userinfo = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY],
+                                               kTKPDCATEGORY_DATAPUSHCOUNTKEY : @(_pushcount?:0),
+                                               kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : _choosenindexpaths?:@[],
+                                               kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY : @(YES),
+                                               kTKPDCATEGORY_DATACATEGORYINDEXPATHKEY :indexpath
+                                               };
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"setDepartmentID" object:self userInfo:userinfo];
                     [self.navigationController popToViewController:[array objectAtIndex:0] animated:YES];
                 }
@@ -238,7 +279,7 @@
 
         if (_menu.count > indexPath.row) {
             NSIndexPath *selectedindex =[_selectedcategory objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY];
-            if (selectedindex && indexPath.row == selectedindex.row) {
+            if (indexPath.row == selectedindex.row) {
                 [((CategoryMenuViewCell*)cell).imagenext setImage:[UIImage imageNamed:@"icon_check.png"]];
             }
             else{
@@ -271,11 +312,16 @@
 #pragma mark - Cell Delegate
 -(void)CategoryMenuViewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath{
     if([[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATAISNULLCHILD] isEqual:@(0)]){
+        _pushcount ++;
+        [_choosenindexpaths addObject:indexpath];
         CategoryMenuViewController *vc = [CategoryMenuViewController new];
         NSArray *childs =[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_APIDEPARTMENTCHILDKEY]?:@[];
         vc.data = @{kTKPDCATEGORY_APIDEPARTMENTTREEKEY : childs,
                     kTKPDCATEGORY_DATADIDALLCATEGORYKEY: [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY]?:[NSNull null],
-                    kTKPDCATEGORY_DATATITLEKEY : [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY]};
+                    kTKPDCATEGORY_DATATITLEKEY : [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY],
+                    kTKPDCATEGORY_DATAPUSHCOUNTKEY : @(_pushcount),
+                    kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : _choosenindexpaths?:@[],
+                    kTKPDCATEGORY_DATAINDEXPATHKEY : indexpath};
         [self.navigationController pushViewController:vc animated:YES];
     }
     else{

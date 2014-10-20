@@ -80,8 +80,12 @@
     _table.dataSource = self;
     
     [self.navigationController.navigationBar setTranslucent:NO];
+    _etalase = [[Etalase alloc] init];
+
+    [_datas addObjectsFromArray:kTKPDSHOP_ETALASEARRAY];
     
-    //[_datas addObjectsFromArray:kTKPDSHOP_ETALASEARRAY];
+    NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
 }
 
 - (void)didReceiveMemoryWarning
@@ -127,9 +131,9 @@
             case 11:
             {
                 //SUBMIT
-                NSIndexPath *indexpath =[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY];
+                NSIndexPath *indexpath =[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 NSDictionary *orderdict = _datas[indexpath.row];
-                NSDictionary *userinfo = @{kTKPDDETAIL_DATAETALASEKEY:orderdict};
+                NSDictionary *userinfo = @{kTKPDDETAIL_DATAETALASEKEY:orderdict,kTKPDDETAILETALASE_DATAINDEXPATHKEY:indexpath};
                 [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_ETALASEPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
@@ -164,17 +168,29 @@
             ((ProductEtalaseCell*)cell).delegate = self;
         }
         
-        if (_datas.count > indexPath.row) {
-            if (indexPath.row != ((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row) {
-                ((ProductEtalaseCell*)cell).imageview.hidden = YES;
+        if (indexPath.row>1) {
+            if (_datas.count > indexPath.row) {
+                if (indexPath.row != ((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row) {
+                    ((ProductEtalaseCell*)cell).imageview.hidden = YES;
+                }
+                else
+                    ((ProductEtalaseCell*)cell).imageview.hidden = NO;
+                ListEtalase *list =_datas[indexPath.row];
+                ((ProductEtalaseCell*)cell).label.text = list.etalase_name;
+                ((ProductEtalaseCell*)cell).indexpath = indexPath;
             }
-            else
-                ((ProductEtalaseCell*)cell).imageview.hidden = NO;
-            ListEtalase *list =_datas[indexPath.row];
-            ((ProductEtalaseCell*)cell).label.text = list.etalase_name;
-            ((ProductEtalaseCell*)cell).indexpath = indexPath;
+        }else{
+            if (_datas.count > indexPath.row) {
+                if (indexPath.row != ((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row) {
+                    ((ProductEtalaseCell*)cell).imageview.hidden = YES;
+                }
+                else
+                    ((ProductEtalaseCell*)cell).imageview.hidden = NO;
+                NSDictionary *data =_datas[indexPath.row];
+                ((ProductEtalaseCell*)cell).label.text = [data objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
+                ((ProductEtalaseCell*)cell).indexpath = indexPath;
+            }
         }
-        
 	}
 	return cell;
 }

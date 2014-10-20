@@ -125,6 +125,8 @@
     if (_locationnames.count > 0) {
         _isnodata = NO;
     }
+    NSIndexPath *indexpath = [_data objectForKey:kTKPDFILTER_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    [_selectedlocation setObject:indexpath forKey:kTKPDFILTER_DATAINDEXPATHKEY];
 }
 
 #pragma mark - Memory Management
@@ -146,8 +148,11 @@
             }
             case 11:
             {
-                NSIndexPath *indexpath = [_selectedlocation objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
-                NSDictionary *data = @{kTKPDFILTER_APILOCATIONKEY : _locationvalues[indexpath.row], kTKPDFILTER_APILOCATIONNAMEKEY :  _locationnames[indexpath.row]};
+                NSIndexPath *indexpath = [_selectedlocation objectForKey:kTKPDFILTER_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                NSDictionary *data = @{kTKPDFILTER_APILOCATIONKEY : _locationvalues[indexpath.row],
+                                       kTKPDFILTER_APILOCATIONNAMEKEY :  _locationnames[indexpath.row],
+                                       kTKPDFILTERLOCATION_DATAINDEXPATHKEY:indexpath
+                                       };
                 [_delegate FilterLocationViewController:self withdata:data];
                 [self.navigationController popToRootViewControllerAnimated:YES];
                 break;

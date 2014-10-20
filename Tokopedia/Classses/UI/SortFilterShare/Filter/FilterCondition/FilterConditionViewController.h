@@ -24,4 +24,6 @@
 @property (nonatomic, assign) IBOutlet id<FilterConditionViewControllerDelegate> delegate;
 #endif
 
+@property (nonatomic, strong) NSDictionary *data;
+
 @end
