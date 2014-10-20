@@ -26,11 +26,15 @@
     
     NSInteger _pagedetail;
     
+    NSMutableDictionary *_detailfilter;
+    
     Shop *_shop;
     BOOL _isnodata;
     NSInteger _requestcount;
     BOOL _isaddressexpanded;
     __weak RKObjectManager *_objectmanager;
+    __weak RKManagedObjectRequestOperation *_request;
+    NSOperationQueue *_operationQueue;
     NSTimer *_timer;
 }
 @property (weak, nonatomic) IBOutlet UIView *filterview;
@@ -180,6 +184,14 @@
     size.width = size.width * _detailscrollview.subviews.count-1;
     [_detailscrollview setContentSize:size];
     _detailscrollview.pagingEnabled = YES;
+    
+    _operationQueue = [NSOperationQueue new];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(updateView:) name:TKPD_FILTERPRODUCTPOSTNOTIFICATIONNAME object:nil];
+    [nc addObserver:self selector:@selector(updateView:) name:TKPD_ETALASEPOSTNOTIFICATIONNAME object:nil];
+    
+    _detailfilter = [NSMutableDictionary new];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -556,25 +568,29 @@
 	}
 }
 
--(IBAction)tapbutton:(UIButton *)sender
+-(IBAction)tapbutton:(id)sender
 {
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
         switch (btn.tag) {
             case 10:
             {
-                // URUTKAN
+                // sort button action
+                NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 SortViewController *vc = [SortViewController new];
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY)};
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY),
+                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
             case 11:
             {
-                // FILTER
+                // etalase button action
+                NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
-                vc.data = @{kTKPDDETAIL_APISHOPIDKEY:[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]};
+                vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
@@ -590,7 +606,7 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         
-        switch (sender.tag) {
+        switch (btn.tag) {
             case 10:
             {
                 [self.navigationController popViewControllerAnimated:YES];
@@ -882,14 +898,21 @@
                             kTKPDDETAIL_APISHOPIDKEY : @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue])
                             };
     
-    [_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:param];
+    
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+//    [_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         
         [self requestsuccess:mappingResult];
+        [_timer invalidate];
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestfailure:error];
+        [_timer invalidate];
     }];
+    
+    [_operationQueue addOperation:_request];
     
     _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
@@ -954,6 +977,13 @@
 -(void)setData:(NSDictionary *)data
 {
     _data = data;
+}
+
+- (void)updateView:(NSNotification *)notification;
+{
+    [self cancel];
+    NSDictionary *userinfo = notification.userInfo;
+    [_detailfilter addEntriesFromDictionary:userinfo];
 }
 
 @end

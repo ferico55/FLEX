@@ -104,6 +104,9 @@
     
     [_conditions addObjectsFromArray:kTKPDSORT_CONDITIONSARRAY];
     
+    NSIndexPath *indexpath = [_data objectForKey:kTKPDFILTER_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    [_selectedcondition setObject:indexpath forKey:kTKPDFILTER_DATAINDEXPATHKEY];
+    
     if (_conditions.count > 0) {
         _isnodata = NO;
     }
@@ -128,8 +131,9 @@
             }
             case 11:
             {
-                NSIndexPath *indexpath = [_selectedcondition objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
-                NSDictionary *data = @{kTKPDFILTER_DATACONDITIONKEY : _conditions[indexpath.row]};
+                NSIndexPath *indexpath = [_selectedcondition objectForKey:kTKPDFILTER_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                NSDictionary *data = @{kTKPDFILTER_DATACONDITIONKEY : _conditions[indexpath.row],
+                                       kTKPDFILTERCONDITION_DATAINDEXPATHKEY: indexpath};
                 [_delegate FilterConditionViewController:self withdata:data];
                 [self.navigationController popToRootViewControllerAnimated:YES];
                 break;

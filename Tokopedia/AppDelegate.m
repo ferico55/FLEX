@@ -22,9 +22,6 @@
 #import "HotlistViewController.h"
 #import "ProductFeedViewController.h"
 
-
-#import "RKClient.h"
-
 @implementation AppDelegate
 {
     NSMutableArray* viewcontrollers;
@@ -46,6 +43,10 @@
     [self.window makeKeyAndVisible];
     
     [self createtabbar];
+    
+    // Register for changes in network availability
+    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+//    [center addObserver:self selector:@selector(reachabilityDidChange:) name:RKReachabilityDidChangeNotification object:nil];
     
     return YES;
 }
@@ -333,4 +334,12 @@
 
     #endif
 }
+
+#pragma mark -
+#pragma mark Methods availability
+- (void)reachabilityChanged:(NSNotification *)notification
+{
+\
+}
+
 @end

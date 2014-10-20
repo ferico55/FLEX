@@ -15,6 +15,8 @@
 #import "ShopInfoPaymentCell.h"
 #import "ShopInfoAddressView.h"
 
+#import "ShopFavoritedViewController.h"
+
 #import "ShopInfoViewController.h"
 
 @interface ShopInfoViewController()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
@@ -124,6 +126,22 @@
                 //expand location
                 _isaddressexpanded = _isaddressexpanded?NO:YES;
                 [self setDetailFrame];
+                break;
+            }
+            case 11:
+            {
+                //favorited button action
+                ShopFavoritedViewController *vc = [ShopFavoritedViewController new];
+                vc.data = @{kTKPDDETAIL_APISHOPIDKEY : @(_shop.result.info.shop_id)};
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 12:
+            {
+                // sold item button action
+                NSDictionary *userinfo = @{kTKPDDETAIL_DATAINDEXKEY:@(0)};
+                [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_ETALASEPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
+                [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
             default:

@@ -160,7 +160,19 @@
     [self ClearHistories];
 }
 - (IBAction)gesture:(id)sender {
-    [_searchbar resignFirstResponder];
+    UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+    switch (gesture.state) {
+        case UIGestureRecognizerStateBegan: {
+            break;
+        }
+        case UIGestureRecognizerStateChanged: {
+            break;
+        }
+        case UIGestureRecognizerStateEnded: {
+            [_searchbar resignFirstResponder];
+            break;
+        }
+    }
 }
 
 #pragma mark - Table View Data Source

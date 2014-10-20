@@ -292,18 +292,29 @@
 - (IBAction)gesture:(id)sender {
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-        _starcount = gesture.view.tag-10;
-        _detailstarsandtimesview.hidden = NO;
-        if (_isadvreviewquality)
-        {
-            [_param setObject:@(0) forKey:kTKPDREVIEW_APIRATEACCURACYKEY];
-            [_param setObject:@(gesture.view.tag-10) forKey:kTKPDTEVIEW_APIRATEQUALITYKEY];
-        }else{
-            [_param setObject:@(0) forKey:kTKPDTEVIEW_APIRATEQUALITYKEY];
-            [_param setObject:@(gesture.view.tag-10) forKey:kTKPDREVIEW_APIRATEACCURACYKEY];
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                _starcount = gesture.view.tag-10;
+                _detailstarsandtimesview.hidden = NO;
+                if (_isadvreviewquality)
+                {
+                    [_param setObject:@(0) forKey:kTKPDREVIEW_APIRATEACCURACYKEY];
+                    [_param setObject:@(gesture.view.tag-10) forKey:kTKPDTEVIEW_APIRATEQUALITYKEY];
+                }else{
+                    [_param setObject:@(0) forKey:kTKPDTEVIEW_APIRATEQUALITYKEY];
+                    [_param setObject:@(gesture.view.tag-10) forKey:kTKPDREVIEW_APIRATEACCURACYKEY];
+                }
+                [self refreshView:nil];
+                [self setHeaderData];
+                break;
+            }
         }
-        [self refreshView:nil];
-        [self setHeaderData];
     }
 }
 

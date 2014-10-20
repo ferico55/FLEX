@@ -40,8 +40,20 @@
 -(IBAction)gesture:(id)sender
 {
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
-        NSIndexPath *indexpath = [_data objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
-        [_delegate FilterLocationViewCell:self withindexpath:indexpath];
+        UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                NSIndexPath *indexpath = [_data objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
+                [_delegate FilterLocationViewCell:self withindexpath:indexpath];
+                break;
+            }
+        }
     }
 }
 

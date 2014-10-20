@@ -27,15 +27,21 @@ typedef enum
 #define kTKPDFILTER_APILOCATIONKEY @"location"
 #define kTKPDFILTER_APICONDITIONKEY @"condition"
 #define kTKPDFILTER_APILOCATIONNAMEKEY @"locationname"
+#define kTKPDFILTER_APICONDITIONNAMEKEY @"conditionname"
 #define kTKPDFILTER_APISHOPTYPEKEY @"shop_type"
 #define kTKPDFILTER_APIPRICEMINKEY @"price_min"
 #define kTKPDFILTER_APIPRICEMAXKEY @"price_max"
 
 #define kTKPDFILTER_DATACOLUMNKEY @"column"
 #define kTKPDFILTER_DATAINDEXPATHKEY @"indexpath"
+#define kTKPDFILTERSORT_DATAINDEXPATHKEY @"sortindexpath"
+#define kTKPDFILTERLOCATION_DATAINDEXPATHKEY @"locationindexpath"
+#define kTKPDFILTERCONDITION_DATAINDEXPATHKEY @"conditionindexpath"
 
 #define kTKPDFILTER_DATASORTNAMEKEY @"name"
 #define kTKPDFILTER_DATASORTVALUEKEY @"value"
+
+#define kTKPDFILTER_DATAFILTERKEY @"datafilter"
 
 #define kTKPDSORT_DATASORTKEY @"sort"
 

@@ -364,7 +364,7 @@
     }
     
     _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDSEARCH_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDSEARCH_APIPATH parameters:param];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsuccess:mappingResult];
@@ -519,7 +519,9 @@
     [viewcontrollers addObject:v3];
     /** Adjust View Controller **/
     TKPDTabShopNavigationController *tapnavcon = [TKPDTabShopNavigationController new];
-    tapnavcon.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id};
+    NSIndexPath *indexpathparam = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    tapnavcon.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id,
+                       kTKPDFILTERSORT_DATAINDEXPATHKEY: indexpathparam?:0};
     [tapnavcon setViewControllers:viewcontrollers animated:YES];
     [tapnavcon setSelectedIndex:0];
 
@@ -534,8 +536,10 @@
         case 10:
         {
             // Action Sort Button
+            NSIndexPath *indexpath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
             SortViewController *vc = [SortViewController new];
-            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY)};
+            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY),
+                        kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:0};
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             
@@ -545,7 +549,8 @@
         {
             // Action Filter Button
             FilterViewController *vc = [FilterViewController new];
-            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY)};
+            vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY),
+                        kTKPDFILTER_DATAFILTERKEY: _params};
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             break;

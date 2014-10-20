@@ -189,7 +189,10 @@
             {
                 // Action Urutkan Button
                 SortViewController *vc = [SortViewController new];
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY)};
+                NSIndexPath *indexpath = [_data objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY),
+                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath
+                            };
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
@@ -199,7 +202,8 @@
                 // Action Filter Button
                 FilterViewController *vc = [FilterViewController new];
                 vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY)?:@"",
-                            kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY : [_data objectForKey:kTKPDDETAIL_DATALOCATIONARRAYKEY]?:@[]};
+                            kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY : [_data objectForKey:kTKPDDETAIL_DATALOCATIONARRAYKEY]?:@[],
+                            kTKPDFILTER_DATAFILTERKEY : [_data objectForKey:kTKPDFILTER_DATAFILTERKEY]?:@{}};
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;

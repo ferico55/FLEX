@@ -7,6 +7,7 @@
 //
 
 #import "detail.h"
+#import "sortfiltershare.h"
 
 #import "Catalog.h"
 
@@ -28,7 +29,6 @@
     NSInteger _pageheaderimages;
     DetailCatalogSpecView *_specview;
     
-    
     Catalog *_catalog;
     __weak RKObjectManager *_objectmanager;
 }
@@ -45,7 +45,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *descriptionbutton;
 @property (weak, nonatomic) IBOutlet UIButton *specificationbutton;
 @property (weak, nonatomic) IBOutlet UIView *containerview;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *segmentcontrol;
 
 @property (strong, nonatomic) IBOutlet UIView *descriptionview;
 @property (strong, nonatomic) IBOutlet UILabel *descriptionlabel;
@@ -87,11 +86,11 @@
     [_containerview setFrame:CGRectMake(_containerview.frame.origin.x, _containerview.frame.origin.y, _descriptionlabel.frame.size.width, _descriptionlabel.frame.size.height)];
     [_containerview addSubview:_descriptionlabel];
     [_continerscrollview setContentSize:CGSizeMake(self.view.frame.size.width,_descriptionlabel.frame.size.height + _headerview.frame.size.height+_buybutton.frame.size.height)];
-//    [_buybutton setFrame:CGRectMake(_buybutton.frame.origin.x, _descriptionlabel.frame.size.height + _headerview.frame.size.height+_buybutton.frame.size.height, _buybutton.frame.size.width, _buybutton.frame.size.height)];
+    [_buybutton setFrame:CGRectMake(_buybutton.frame.origin.x, _descriptionlabel.frame.size.height + _headerview.frame.size.height+_buybutton.frame.size.height, _buybutton.frame.size.width, _buybutton.frame.size.height)];
     
     // add notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateViewDetailCatalog:) name:@"setsDetailCatalog" object:nil];
+    [nc addObserver:self selector:@selector(updateViewDetailCatalog:) name:TKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAME object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -129,34 +128,6 @@
 }
 
 #pragma mark - View Action
--(IBAction)indexChanged:(UISegmentedControl *)sender
-{
-    switch (_segmentcontrol.selectedSegmentIndex)
-    {
-        case 0:
-            // action description button
-            [_specview removeFromSuperview];
-            [_containerview setFrame:CGRectMake(_containerview.frame.origin.x, _containerview.frame.origin.y, _descriptionlabel.frame.size.width, _descriptionlabel.frame.size.height)];
-            [_containerview addSubview:_descriptionlabel];
-            [_continerscrollview setContentSize:CGSizeMake(self.view.frame.size.width,_descriptionlabel.frame.size.height + _headerview.frame.size.height + _buybutton.frame.size.height+64)];
-            [_buybutton setFrame:CGRectMake(_buybutton.frame.origin.x, _descriptionlabel.frame.size.height + _headerview.frame.size.height+_buybutton.frame.size.height, _buybutton.frame.size.width, _buybutton.frame.size.height)];
-            break;
-        case 1:
-            // action specification button
-            [_specview.tabel layoutIfNeeded];
-            CGSize tableViewSize=_specview.tabel.contentSize;
-            [_descriptionlabel removeFromSuperview];
-            [_containerview setFrame:CGRectMake(_containerview.frame.origin.x, _containerview.frame.origin.y, _specview.frame.size.width, tableViewSize.height)];
-            [_containerview addSubview:_specview];
-            [_continerscrollview setContentSize:CGSizeMake(self.view.frame.size.width,tableViewSize.height + _headerview.frame.size.height + _buybutton.frame.size.height+64)];
-            [_buybutton setFrame:CGRectMake(_buybutton.frame.origin.x, tableViewSize.height + _headerview.frame.size.height+_buybutton.frame.size.height, _buybutton.frame.size.width, _buybutton.frame.size.height)];
-
-            break;
-        default:
-            break; 
-    } 
-}
-
 - (IBAction)tap:(id)sender {
     _imagenextbutton.hidden = (_pageheaderimages == _headerimages.count -1)?YES:NO;
     _imagebackbutton.hidden = (_pageheaderimages == 0)?YES:NO;
@@ -214,7 +185,10 @@
                 // action buy button - go to seller list
                 CatalogSellerViewController *vc = [CatalogSellerViewController new];
                 vc.data = @{kTKPDDETAIL_DATASHOPSKEY: (_catalog.result.catalog_shops)?:@"",
-                            kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location};
+                            kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location,
+                            kTKPDFILTER_DATAINDEXPATHKEY: [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
+                            kTKPDFILTER_DATAFILTERKEY:_params
+                            };
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -430,8 +404,10 @@
             _isrefreshseller = NO;
             _continerscrollview.hidden = YES;
             CatalogSellerViewController *vc = [CatalogSellerViewController new];
+            NSIndexPath *indexpath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
             vc.data = @{kTKPDDETAIL_DATASHOPSKEY: (_catalog.result.catalog_shops),
-                        kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location};
+                        kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location,
+                        kTKPDFILTERSORT_DATAINDEXPATHKEY: indexpath};
             [self.navigationController pushViewController:vc animated:NO];
         }
         else{
@@ -470,7 +446,9 @@
             // go to seller list
             _isrefreshseller = NO;
             CatalogSellerViewController *vc = [CatalogSellerViewController new];
-            vc.data = @{kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location};
+            vc.data = @{kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location,
+                        kTKPDFILTER_DATAINDEXPATHKEY: [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
+                        kTKPDFILTER_DATAFILTERKEY:_params};
             [self.navigationController pushViewController:vc animated:NO];
         }
     }
@@ -494,10 +472,7 @@
     newFrame.size.height = expectedLabelSize.height;
     _descriptionlabel.frame = newFrame;
     
-//    _descriptionlabel.backgroundColor =[UIColor greenColor];
-    
-    
-
+    [_buybutton setFrame:CGRectMake(_buybutton.frame.origin.x, _descriptionlabel.frame.size.height + _headerview.frame.size.height+_buybutton.frame.size.height, _buybutton.frame.size.width, _buybutton.frame.size.height)];
     [_continerscrollview setContentSize:CGSizeMake(self.view.frame.size.width,_descriptionlabel.frame.size.height + _headerview.frame.size.height + _buybutton.frame.size.height+64)];
     
     NSArray *images = _catalog.result.catalog_info.catalog_image;
@@ -514,7 +489,6 @@
         UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _headerimagescrollview.frame.size.width, _headerimagescrollview.frame.size.height)];
         
         thumb.image = nil;
-        thumb.contentMode = UIViewContentModeScaleAspectFit;
         //thumb.hidden = YES;	//@prepareforreuse then @reset
         
         [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {

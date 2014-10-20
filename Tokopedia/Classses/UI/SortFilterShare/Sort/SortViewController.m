@@ -102,6 +102,8 @@
         default:
             break;
     }
+    NSIndexPath *indexpath = [_data objectForKey:kTKPDFILTER_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    [_selectedsort setObject:indexpath forKey:kTKPDFILTER_DATAINDEXPATHKEY];
 }
 
 #pragma mark - Memory Management
@@ -126,7 +128,7 @@
                 //SUBMIT
                 NSIndexPath *indexpath =[_selectedsort objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
                 NSDictionary *orderdict = _sortarray[indexpath.row];
-                NSDictionary *userinfo = @{kTKPDFILTER_APIORDERBYKEY:[orderdict objectForKey:kTKPDFILTER_DATASORTVALUEKEY]?:@""};
+                NSDictionary *userinfo = @{kTKPDFILTER_APIORDERBYKEY:[orderdict objectForKey:kTKPDFILTER_DATASORTVALUEKEY]?:@"", kTKPDFILTERSORT_DATAINDEXPATHKEY:indexpath?:0};
                 
                 switch (_type) {
                     case 1:
@@ -144,6 +146,7 @@
                     }
                     case 4:
                     {    //detail catalog
+                        [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
                         UINavigationController *nav = (UINavigationController *)self.presentingViewController;
                         [self dismissViewControllerAnimated:NO completion:^{
                             [nav popViewControllerAnimated:NO];
@@ -152,12 +155,13 @@
                     }
                     case 5:
                     {    //shop
-                        [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_FILTERSHOPPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
-                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+
                         break;
                     }
                     case 6:
                     {   //shop product
+                        [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_FILTERPRODUCTPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
+                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                         break;
                     }
                     default:
@@ -189,7 +193,8 @@
     }
     
     if (_sortarray.count > indexPath.row) {
-        if (indexPath.row != ((NSIndexPath*)[_selectedsort objectForKey:kTKPDFILTER_DATAINDEXPATHKEY]).row) {
+        NSIndexPath *indexpath = [_selectedsort objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
+        if (indexPath.row != indexpath.row) {
             ((SortCell*)cell).imageview.hidden = YES;
         }
         else

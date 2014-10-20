@@ -14,6 +14,7 @@
 #import "search.h"
 #import "sortfiltershare.h"
 #import "detail.h"
+#import "category.h"
 
 #import "FilterViewController.h"
 #import "SortViewController.h"
@@ -221,8 +222,6 @@
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         
-        [self reset:(GeneralProductCell*)cell];
-        
         NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
 		
 		cell = (GeneralProductCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
@@ -230,6 +229,8 @@
 			cell = [GeneralProductCell newcell];
 			((GeneralProductCell*)cell).delegate = self;
 		}
+        
+       [self reset:(GeneralProductCell*)cell];
 		
         if (_product.count > indexPath.row) {
             /** Flexible view count **/
@@ -331,7 +332,12 @@
             {
                 //CATEGORY
                 CategoryMenuViewController *vc = [CategoryMenuViewController new];
-                vc.data = @{kTKPDHOME_APIDEPARTMENTTREEKEY:_departmenttree?:@""};
+                vc.data = @{kTKPDHOME_APIDEPARTMENTTREEKEY:_departmenttree?:@"",
+                            kTKPDCATEGORY_DATAPUSHCOUNTKEY : @([[_detailfilter objectForKey:kTKPDCATEGORY_DATAPUSHCOUNTKEY]integerValue]?:0),
+                            kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : [_detailfilter objectForKey:kTKPDCATEGORY_DATACHOSENINDEXPATHKEY]?:@[],
+                            kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY : @([[_detailfilter objectForKey:kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY]boolValue])?:NO,
+                            kTKPDCATEGORY_DATAINDEXPATHKEY :[_detailfilter objectForKey:kTKPDCATEGORY_DATACATEGORYINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0]
+                            };
                 [self.navigationController pushViewController:vc animated:YES];
             }
             default:
@@ -384,8 +390,10 @@
                 case 10:
                 {
                     // URUTKAN
+                    NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                     SortViewController *vc = [SortViewController new];
-                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY)};
+                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY),
+                                kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
                     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                     [self.navigationController presentViewController:nav animated:YES completion:nil];
                     break;
@@ -394,7 +402,8 @@
                 {
                     // FILTER
                     FilterViewController *vc = [FilterViewController new];
-                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY)};
+                    vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY),
+                                kTKPDFILTER_DATAFILTERKEY: _detailfilter};
                     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                     [self.navigationController presentViewController:nav animated:YES completion:nil];
                     break;
@@ -774,6 +783,7 @@
     [((GeneralProductCell*)cell).labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
     [((GeneralProductCell*)cell).labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
     [((GeneralProductCell*)cell).labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [((GeneralProductCell*)cell).viewcell makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
 }
 
 -(void)refreshView:(UIRefreshControl*)refresh
@@ -797,7 +807,7 @@
 {
     [self cancel];
     NSDictionary* userinfo = notification.userInfo;
-    [_detailfilter setObject:[userinfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    [_detailfilter addEntriesFromDictionary:userinfo];
     [self refreshView:nil];
 }
 

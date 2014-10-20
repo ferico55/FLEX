@@ -62,10 +62,21 @@
 - (IBAction)gesture:(id)sender {
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-        NSIndexPath *indexpath = [_data objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY];
-        NSInteger row = indexpath.row;
-        NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:row inSection:gesture.view.tag-10];
-        [_delegate CategoryViewCellDelegateCell:self withindexpath:indexpath1];
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                NSIndexPath *indexpath = [_data objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY];
+                NSInteger row = indexpath.row;
+                NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:row inSection:gesture.view.tag-10];
+                [_delegate CategoryViewCellDelegateCell:self withindexpath:indexpath1];
+                break;
+            }
+        }
     }
 }
 

@@ -31,8 +31,19 @@
 {
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-        NSIndexPath *indexpath =_indexpath;
-        [_delegate CategoryMenuViewCell:self withindexpath:indexpath];
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                NSIndexPath *indexpath =_indexpath;
+                [_delegate CategoryMenuViewCell:self withindexpath:indexpath];
+                break;
+            }
+        }
     }
 }
 

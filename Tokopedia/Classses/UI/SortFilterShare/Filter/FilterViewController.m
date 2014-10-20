@@ -121,6 +121,76 @@
     self.navigationItem.rightBarButtonItem = barbutton1;
     
     _detailfilter = [NSMutableDictionary new];
+    NSDictionary *datafilter = [_data objectForKey:kTKPDFILTER_DATAFILTERKEY]?:@{};
+    [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTER_APILOCATIONKEY]?:@"" forKey:kTKPDFILTER_APILOCATIONKEY];
+    [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTER_DATASORTVALUEKEY]?:@"" forKey:kTKPDFILTER_APICONDITIONKEY];
+    
+    NSInteger pricemin = [[datafilter objectForKey:kTKPDFILTER_APIPRICEMINKEY] integerValue];
+    NSInteger pricemax = [[datafilter objectForKey:kTKPDFILTER_APIPRICEMAXKEY] integerValue];
+    [_detailfilter setObject:@(pricemin?:0) forKey:kTKPDFILTER_APIPRICEMINKEY];
+    [_detailfilter setObject:@(pricemax?:0) forKey:kTKPDFILTER_APIPRICEMAXKEY];
+    
+    _pricemin.text = (pricemin>0)?[NSString stringWithFormat:@"%d",pricemin]:0;
+    _pricemax.text = (pricemax>0)?[NSString stringWithFormat:@"%d",pricemax]:0;
+    _pricemincatalog.text = (pricemin>0)?[NSString stringWithFormat:@"%d",pricemin]:0;
+    _pricemaxcatalog.text = (pricemax>0)?[NSString stringWithFormat:@"%d",pricemax]:0;
+    
+    NSString *location = [datafilter objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY]?:@"All Location";
+    [_shoplocationbutton setTitle:location forState:UIControlStateNormal];
+    [_productlocationbutton setTitle:location forState:UIControlStateNormal];
+    [_detailcataloglocationbutton setTitle:location forState:UIControlStateNormal];
+    [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY]?:@"All Location" forKey:kTKPDFILTER_APILOCATIONNAMEKEY];
+    [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY];
+    
+    NSString *condition = [datafilter objectForKey:kTKPDFILTER_APICONDITIONNAMEKEY] ?:@"All Condition";
+    [_conditionbutton setTitle:condition forState:UIControlStateNormal];
+    [_detailfilter setObject:condition forKey:kTKPDFILTER_APICONDITIONKEY];
+    [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTERCONDITION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDFILTERCONDITION_DATAINDEXPATHKEY];
+    
+    NSInteger goldshopvalue = [[datafilter objectForKey:kTKPDFILTER_APISHOPTYPEKEY] integerValue];
+    switch (goldshopvalue) {
+        case 0:
+            [_detailfilter setObject:@(goldshopvalue) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+            break;
+        case 2:
+        {
+            switch (_type) {
+                case 5:
+                {    //shop
+                    [_detailfilter setObject:@(goldshopvalue) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                    _shopsegmentcontrol.selectedSegmentIndex=1;
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
+        case 3:
+        {
+            switch (_type) {
+                case 1:
+                case 2:
+                {   //product
+                    [_detailfilter setObject:@(goldshopvalue) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                    _productsegmentcontrol.selectedSegmentIndex = 1;
+                    break;
+                }
+                case 3:
+                {   //catalog
+                    [_detailfilter setObject:@(goldshopvalue) forKey:kTKPDFILTER_APISHOPTYPEKEY];
+                    _productsegmentcontrol.selectedSegmentIndex = 1;
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+
     
     /** keyboard notification **/
 //    [[NSNotificationCenter defaultCenter] addObserver:self
@@ -169,7 +239,12 @@
                                                kTKPDFILTER_APISHOPTYPEKEY:[_detailfilter objectForKey:kTKPDFILTER_APISHOPTYPEKEY]?:@"",
                                                kTKPDFILTER_APIPRICEMINKEY:[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMINKEY]?:@"",
                                                kTKPDFILTER_APIPRICEMAXKEY:[_detailfilter objectForKey:kTKPDFILTER_APIPRICEMAXKEY]?:@"",
-                                               kTKPDFILTER_APICONDITIONKEY:[_detailfilter objectForKey:kTKPDFILTER_APICONDITIONKEY]?:@""};
+                                               kTKPDFILTER_APICONDITIONKEY:[_detailfilter objectForKey:kTKPDFILTER_APICONDITIONKEY]?:@"",
+                                               kTKPDFILTER_APILOCATIONNAMEKEY: [_detailfilter objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY]?:@"",
+                                               kTKPDFILTERLOCATION_DATAINDEXPATHKEY:[_detailfilter objectForKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
+                                               kTKPDFILTERCONDITION_DATAINDEXPATHKEY:[_detailfilter objectForKey:kTKPDFILTERCONDITION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
+                                               kTKPDFILTER_APICONDITIONNAMEKEY : [_detailfilter objectForKey:kTKPDFILTER_APICONDITIONNAMEKEY]?:@""
+                                               };
                     
                     switch (_type) {
                         case 1:
@@ -202,7 +277,6 @@
                         }
                         case 6:
                         {   //shop product
-                            [self.view addSubview: _shopview];
                             break;
                         }
                         default:
@@ -228,7 +302,12 @@
                 FilterLocationViewController *vc = [FilterLocationViewController new];
                 if (_type == 3) {
                     //catalog
-                    vc.data = @{kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY : [_data objectForKey:kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY]?:@[]};
+                    vc.data = @{kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY : [_data objectForKey:kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY]?:@[],
+                                kTKPDFILTER_DATAINDEXPATHKEY: [_detailfilter objectForKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0]};
+                }
+                else
+                {
+                    vc.data = @{kTKPDFILTER_DATAINDEXPATHKEY: [_detailfilter objectForKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0]};
                 }
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
@@ -252,6 +331,7 @@
             {
                 // select condition
                 FilterConditionViewController *vc = [FilterConditionViewController new];
+                vc.data = @{kTKPDFILTER_DATAINDEXPATHKEY: [_detailfilter objectForKey:kTKPDFILTERCONDITION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0]};
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
                 
@@ -305,7 +385,19 @@
     }
 }
 - (IBAction)gesture:(id)sender {
-    [_activetextfield resignFirstResponder];
+    UITapGestureRecognizer *gesture = (UITapGestureRecognizer *)sender;
+    switch (gesture.state) {
+        case UIGestureRecognizerStateBegan: {
+            break;
+        }
+        case UIGestureRecognizerStateChanged: {
+            break;
+        }
+        case UIGestureRecognizerStateEnded: {
+            [_activetextfield resignFirstResponder];
+            break;
+        }
+    }
 }
 
 #pragma mark - Filter View Controller Delegate
@@ -336,6 +428,8 @@
     [_productlocationbutton setTitle:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forState:UIControlStateNormal];
     [_detailcataloglocationbutton setTitle:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forState:UIControlStateNormal];
     [_detailfilter setObject:[data objectForKey:kTKPDFILTER_APILOCATIONKEY] forKey:kTKPDFILTER_APILOCATIONKEY];
+    [_detailfilter setObject:[data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] forKey:kTKPDFILTER_APILOCATIONNAMEKEY];
+    [_detailfilter setObject:[data objectForKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY] forKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY];
 }
 
 -(void)FilterConditionViewController:(UIViewController *)viewcontroller withdata:(NSDictionary *)data
@@ -343,6 +437,8 @@
     NSDictionary *conditiondata = [data objectForKey:kTKPDFILTER_DATACONDITIONKEY]?:@{};
     [_conditionbutton setTitle:[conditiondata objectForKey:kTKPDFILTER_DATASORTNAMEKEY] forState:UIControlStateNormal];
     [_detailfilter setObject:[conditiondata objectForKey:kTKPDFILTER_DATASORTVALUEKEY] forKey:kTKPDFILTER_APICONDITIONKEY];
+    [_detailfilter setObject:[data objectForKey:kTKPDFILTERCONDITION_DATAINDEXPATHKEY] forKey:kTKPDFILTERCONDITION_DATAINDEXPATHKEY];
+    [_detailfilter setObject:[conditiondata objectForKey:kTKPDFILTER_DATASORTNAMEKEY] forKey:kTKPDFILTER_APICONDITIONNAMEKEY];
 }
 
 #pragma mark - Text Field Delegate

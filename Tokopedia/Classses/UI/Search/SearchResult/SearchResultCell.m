@@ -52,9 +52,20 @@
 - (IBAction)gesture:(id)sender {
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-        NSIndexPath* indexpath = _indexpath;
-        NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:indexpath.row inSection:gesture.view.tag-10];
-        [_delegate SearchResultCell:self withindexpath:indexpath1];
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                NSIndexPath* indexpath = _indexpath;
+                NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:indexpath.row inSection:gesture.view.tag-10];
+                [_delegate SearchResultCell:self withindexpath:indexpath1];
+                break;
+            }
+        }
     }
 }
 
