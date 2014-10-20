@@ -35,4 +35,23 @@
     // Configure the view for the selected state
 }
 
+#pragma mark - View Action
+-(IBAction)tap:(id)sender
+{
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton *)sender;
+        switch (btn.tag) {
+            case 10:
+            {
+                NSIndexPath* indexpath = _indexpath;
+                [_delegate GeneralReviewCell:self withindexpath:indexpath];
+                break;
+            }
+                
+            default:
+                break;
+        }
+    }
+}
+
 @end

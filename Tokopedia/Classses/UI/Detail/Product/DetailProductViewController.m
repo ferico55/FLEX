@@ -250,7 +250,14 @@
             {
                 // go to review page
                 ProductReviewViewController *vc = [ProductReviewViewController new];
-                vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0)};
+                NSArray *images = _product.result.product_images;
+                ProductImages *image = images[0];
+                
+                vc.data = @{
+                            kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
+                            kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY : _product.result.info.product_name,
+                            kTKPDDETAILPRODUCT_APIIMAGESRCKEY : image.image_src,
+                            };
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }

@@ -25,7 +25,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Xl-wK-C6H">
-                        <rect key="frame" x="10" y="10" width="300" height="235"/>
+                        <rect key="frame" x="10" y="11" width="300" height="235"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BF2-9t-61W">
                                 <rect key="frame" x="10" y="10" width="50" height="50"/>
@@ -61,7 +61,7 @@
                                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Quality" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b2F-1k-Cxr">
-                                <rect key="frame" x="10" y="140" width="60" height="21"/>
+                                <rect key="frame" x="10" y="141" width="60" height="21"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -195,13 +195,16 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_comment.png" translatesAutoresizingMaskIntoConstraints="NO" id="aDN-1c-RQO">
                                 <rect key="frame" x="10" y="206" width="15" height="15"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Ph-2s-iOx">
-                                <rect key="frame" x="15" y="199" width="77" height="30"/>
+                            <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Ph-2s-iOx">
+                                <rect key="frame" x="28" y="199" width="77" height="30"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                                 <state key="normal" title="Comment">
                                     <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="tap:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="BH6-4l-1hm"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -210,17 +213,17 @@
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
-                <outlet property="accuracyrate" destination="VoR-jL-2fy" id="yTO-I1-W6Q"/>
+                <outlet property="accuracyrate" destination="uXS-Qm-ioM" id="ecR-yt-BSz"/>
                 <outlet property="commentbutton" destination="9Ph-2s-iOx" id="6it-bi-Kyk"/>
                 <outlet property="commentlabel" destination="74s-oq-gaN" id="z3O-Mv-AHg"/>
                 <outlet property="namelabel" destination="nFC-df-PN8" id="Dzo-S8-27x"/>
-                <outlet property="qualityrate" destination="C2H-gO-nux" id="twJ-6x-bos"/>
-                <outlet property="servicerate" destination="zwa-vL-RZ3" id="dlV-sr-Hg5"/>
-                <outlet property="speedrate" destination="uXS-Qm-ioM" id="vSj-XS-WMG"/>
+                <outlet property="qualityrate" destination="C2H-gO-nux" id="9sK-hd-9CU"/>
+                <outlet property="servicerate" destination="VoR-jL-2fy" id="ssE-eI-MHS"/>
+                <outlet property="speedrate" destination="zwa-vL-RZ3" id="AhT-QZ-wPQ"/>
                 <outlet property="thumb" destination="BF2-9t-61W" id="5Yd-d4-bDq"/>
                 <outlet property="timelabel" destination="9aw-P8-EwF" id="Dwc-t9-9A3"/>
             </connections>
-            <point key="canvasLocation" x="384" y="198"/>
+            <point key="canvasLocation" x="384" y="196"/>
         </tableViewCell>
     </objects>
     <resources>

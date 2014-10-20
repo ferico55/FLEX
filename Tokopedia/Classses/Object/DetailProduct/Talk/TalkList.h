@@ -27,5 +27,6 @@
 @property (nonatomic, strong) NSString *talk_message;
 @property (nonatomic) NSInteger talk_follow_status;
 @property (nonatomic, strong) NSString *talk_total_comment;
+@property (nonatomic, strong) NSString *talk_shop_id;
 
 @end

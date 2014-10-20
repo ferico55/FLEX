@@ -33,6 +33,7 @@
 #define kTKPDDETAIL_APIGETDETAILACTIONKEY @"get_detail"
 #define kTKPDDETAIL_APIGETPRODUCTREVIEWKEY @"get_product_review"
 #define kTKPDDETAIL_APIGETPRODUCTTALKKEY @"get_product_talk"
+#define kTKPDDETAIL_APIGETCOMMENTBYTALKID @"get_comment_by_talk_id"
 #define kTKPDDETAIL_APIGETCATALOGDETAILKEY @"get_catalog_detail"
 #define kTKPDDETAIL_APIGETSHOPDETAILKEY @"get_shop_info"
 #define kTKPDDETAIL_APIGETSHOPPRODUCTKEY @"get_shop_product"
@@ -238,12 +239,24 @@
 #define kTKPDTALK_APITALKCREATETIMEKEY @"talk_create_time"
 #define kTKPDTALK_APITALKMESSAGEKEY @"talk_message"
 #define kTKPDTALK_APITALKFOLLOWSTATUSKEY @"talk_follow_status"
+#define kTKPDTALK_APITALKSHOPID @"talk_shop_id"
+
 
 #define kTKPDTALK_APITALKPRODUCTNAMEKEY @"talk_product_name"
 #define kTKPDTALK_APITALKPRODUCTIMAGEKEY @"talk_product_image"
 #define kTKPDTALK_APITALKPRODUCTIDKEY @"talk_product_id"
 #define kTKPDTALK_APITALKOWNKEY @"talk_own"
 #define kTKPDTALK_APITALKUSERIDKEY @"talk_user_id"
+
+#pragma mark - Talk Comment
+#define kTKPDTALKCOMMENT_TALKID @"talk_id"
+#define kTKPDTALKCOMMENT_MESSAGE @"comment_message"
+#define kTKPDTALKCOMMENT_ID @"comment_id"
+#define kTKPDTALKCOMMENT_ISMOD @"is_moderator"
+#define kTKPDTALKCOMMENT_ISSELLER @"is_seller"
+#define kTKPDTALKCOMMENT_CREATETIME @"create_time"
+#define kTKPDTALKCOMMENT_USERIMAGE @"user_image"
+#define kTKPDTALKCOMMENT_USERNAME @"user_name"
 
 #pragma mark - Notes
 #define kTKPDNOTES_APINOTEIDKEY @"note_id"
@@ -328,6 +341,7 @@
 #define kTKDPDETAILCATALOG_APIPATH @"catalog.pl"
 #define kTKPDDETAILSHOP_APIPATH @"shop.pl"
 #define kTKPDDETAILNOTES_APIPATH @"notes.pl"
+#define kTKPDDETAILTALK_APIPATH @"talk.pl"
 
 #define kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define kTKPDDETAIL_NODATACELLTITLE @"no data"

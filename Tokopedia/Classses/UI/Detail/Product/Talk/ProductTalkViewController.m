@@ -11,8 +11,9 @@
 #import "GeneralTalkCell.h"
 #import "ProductTalkViewController.h"
 #import "ProductTalkCell.h"
+#import "ProductTalkDetailViewController.h"
 
-@interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
+@interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, GeneralTalkCellDelegate>
 {
     NSMutableArray *_list;
     NSArray *_headerimages;
@@ -134,7 +135,7 @@
 		cell = (GeneralTalkCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
 			cell = [GeneralTalkCell newcell];
-			//((GeneralTalkCell*)cell).delegate = self;
+			((GeneralTalkCell*)cell).delegate = self;
 		}
         
         if (_list.count > indexPath.row) {
@@ -142,6 +143,8 @@
             ((GeneralTalkCell*)cell).namelabel.text = list.talk_user_name;
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
+            
+            ((GeneralTalkCell*)cell).indexpath = indexPath;
             
             NSString *commentstring = [list.talk_total_comment stringByAppendingFormat:
                                  @" Comment"];
@@ -206,6 +209,8 @@
 {
     _nextbutton.hidden = (_pageheaderimages == _headerimages.count -1)?YES:NO;
     _backbutton.hidden = (_pageheaderimages == 0)?YES:NO;
+
+    
 //    if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton *)sender;
         switch (btn.tag) {
@@ -239,6 +244,8 @@
                 break;
         }
 //    }
+    
+    
 }
 
 #pragma mark - Memory Management
@@ -279,7 +286,8 @@
                                                  kTKPDTALK_APITALKIDKEY,
                                                  kTKPDTALK_APITALKCREATETIMEKEY,
                                                  kTKPDTALK_APITALKMESSAGEKEY,
-                                                 kTKPDTALK_APITALKFOLLOWSTATUSKEY
+                                                 kTKPDTALK_APITALKFOLLOWSTATUSKEY,
+                                                 kTKPDTALK_APITALKSHOPID
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -403,6 +411,25 @@
     }
 }
 
+
+#pragma mark - Delegate
+- (void)GeneralTalkCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
+    
+    TalkList *list = _list[indexpath.row];
+    vc.data = @{
+                kTKPDTALK_APITALKMESSAGEKEY:list.talk_message,
+                kTKPDTALK_APITALKUSERIMAGEKEY:list.talk_user_image,
+                kTKPDTALK_APITALKCREATETIMEKEY:list.talk_create_time,
+                kTKPDTALK_APITALKUSERNAMEKEY:list.talk_user_name,
+                kTKPDTALK_APITALKIDKEY:list.talk_id,
+                kTKPDTALK_APITALKSHOPID:list.talk_shop_id
+                };
+    [self.navigationController pushViewController:vc animated:YES];
+    
+}
+
+
 #pragma mark - UIScrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)sender
 {
@@ -455,6 +482,7 @@
     [self configureRestKit];
     [self loadData];
 }
+
 
 
 @end
