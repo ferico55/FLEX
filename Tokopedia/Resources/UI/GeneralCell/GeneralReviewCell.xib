@@ -1,222 +1,237 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GeneralReviewCellIdentifier" rowHeight="256" id="KGk-i7-Jjw" customClass="GeneralReviewCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="256"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GeneralReviewCellIdentifier" rowHeight="246" id="KGk-i7-Jjw" customClass="GeneralReviewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="246"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="255"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BF2-9t-61W">
-                        <rect key="frame" x="10" y="19" width="50" height="53"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    </imageView>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFC-df-PN8">
-                        <rect key="frame" x="78" y="20" width="42" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9aw-P8-EwF">
-                        <rect key="frame" x="78" y="47" width="42" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="301" translatesAutoresizingMaskIntoConstraints="NO" id="74s-oq-gaN">
-                        <rect key="frame" x="10" y="76" width="301" height="44"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <string key="text">LabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabel</string>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Quality" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b2F-1k-Cxr">
-                        <rect key="frame" x="10" y="133" width="42" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Accuracy" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p7Y-nW-1E0">
-                        <rect key="frame" x="10" y="167" width="59" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="speed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M8N-Il-3JW">
-                        <rect key="frame" x="187" y="133" width="39" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Service" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F6g-GC-e1C">
-                        <rect key="frame" x="187" y="167" width="48" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C2H-gO-nux" customClass="StarsRateView">
-                        <rect key="frame" x="25" y="150" width="139" height="22"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Xl-wK-C6H">
+                        <rect key="frame" x="10" y="11" width="300" height="235"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IhU-bL-hsy">
-                                <rect key="frame" x="60" y="-1" width="28" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BF2-9t-61W">
+                                <rect key="frame" x="10" y="10" width="50" height="50"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jBe-md-d8P">
-                                <rect key="frame" x="114" y="0.0" width="25" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFC-df-PN8" userLabel="user_name">
+                                <rect key="frame" x="70" y="15" width="200" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9aw-P8-EwF" userLabel="create_time">
+                                <rect key="frame" x="70" y="30" width="200" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="301" translatesAutoresizingMaskIntoConstraints="NO" id="74s-oq-gaN" userLabel="comment">
+                                <rect key="frame" x="10" y="65" width="280" height="50"/>
+                                <attributedString key="attributedText">
+                                    <fragment>
+                                        <string key="content">LabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabel</string>
+                                        <attributes>
+                                            <color key="NSColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <font key="NSFont" size="13" name="GothamBook"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="5"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XLe-Zl-6y2" userLabel="h_line">
+                                <rect key="frame" x="10" y="130" width="280" height="1"/>
+                                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Quality" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b2F-1k-Cxr">
+                                <rect key="frame" x="10" y="141" width="60" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Accuracy" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p7Y-nW-1E0">
+                                <rect key="frame" x="10" y="160" width="60" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Speed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M8N-Il-3JW">
+                                <rect key="frame" x="160" y="140" width="50" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Service" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F6g-GC-e1C">
+                                <rect key="frame" x="160" y="160" width="48" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="C2H-gO-nux" customClass="StarsRateView">
+                                <rect key="frame" x="68" y="140" width="100" height="20"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IhU-bL-hsy">
+                                        <rect key="frame" x="2" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jBe-md-d8P">
+                                        <rect key="frame" x="18" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NzI-WI-OE8">
+                                        <rect key="frame" x="34" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z4D-jw-k0P">
+                                        <rect key="frame" x="50" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="quQ-ue-YYW">
+                                        <rect key="frame" x="66" y="2" width="13" height="13"/>
+                                    </imageView>
+                                </subviews>
+                                <connections>
+                                    <outletCollection property="starimages" destination="quQ-ue-YYW" id="Ue7-Zw-3d3"/>
+                                    <outletCollection property="starimages" destination="z4D-jw-k0P" id="m0m-Ib-4lW"/>
+                                    <outletCollection property="starimages" destination="IhU-bL-hsy" id="xWA-dS-83d"/>
+                                    <outletCollection property="starimages" destination="NzI-WI-OE8" id="GYT-ot-vM6"/>
+                                    <outletCollection property="starimages" destination="jBe-md-d8P" id="0Xi-Kq-dUs"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uXS-Qm-ioM" customClass="StarsRateView">
+                                <rect key="frame" x="68" y="160" width="100" height="20"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Ju-xb-awF">
+                                        <rect key="frame" x="2" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="auc-tE-Cyt">
+                                        <rect key="frame" x="18" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PW0-zt-3uu">
+                                        <rect key="frame" x="34" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WQe-r7-P74">
+                                        <rect key="frame" x="50" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rUs-Zt-Zia">
+                                        <rect key="frame" x="66" y="2" width="13" height="13"/>
+                                    </imageView>
+                                </subviews>
+                                <connections>
+                                    <outletCollection property="starimages" destination="rUs-Zt-Zia" id="0az-OL-WVW"/>
+                                    <outletCollection property="starimages" destination="WQe-r7-P74" id="5th-fa-YGl"/>
+                                    <outletCollection property="starimages" destination="7Ju-xb-awF" id="Y0n-q2-05Q"/>
+                                    <outletCollection property="starimages" destination="PW0-zt-3uu" id="xMV-1M-Q0M"/>
+                                    <outletCollection property="starimages" destination="auc-tE-Cyt" id="uny-LX-VoA"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zwa-vL-RZ3" customClass="StarsRateView">
+                                <rect key="frame" x="207" y="140" width="100" height="22"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KCL-tK-6Lz">
+                                        <rect key="frame" x="0.0" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XYm-ca-ycV">
+                                        <rect key="frame" x="16" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lkf-Zz-IwH">
+                                        <rect key="frame" x="32" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4WE-6I-AVs">
+                                        <rect key="frame" x="48" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7xE-Vc-YwO">
+                                        <rect key="frame" x="64" y="2" width="13" height="13"/>
+                                    </imageView>
+                                </subviews>
+                                <connections>
+                                    <outletCollection property="starimages" destination="7xE-Vc-YwO" id="suz-5U-VkD"/>
+                                    <outletCollection property="starimages" destination="4WE-6I-AVs" id="hnq-f4-Dbd"/>
+                                    <outletCollection property="starimages" destination="KCL-tK-6Lz" id="cpy-lb-bQi"/>
+                                    <outletCollection property="starimages" destination="Lkf-Zz-IwH" id="fKH-I8-aqF"/>
+                                    <outletCollection property="starimages" destination="XYm-ca-ycV" id="IfV-eR-gGX"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VoR-jL-2fy" customClass="StarsRateView">
+                                <rect key="frame" x="207" y="160" width="100" height="22"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M1r-BB-pWN">
+                                        <rect key="frame" x="0.0" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EDw-ke-KA8">
+                                        <rect key="frame" x="16" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PUv-sM-Z1J">
+                                        <rect key="frame" x="32" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pgc-2w-Fnw">
+                                        <rect key="frame" x="48" y="2" width="13" height="13"/>
+                                    </imageView>
+                                    <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lww-Lt-41p">
+                                        <rect key="frame" x="64" y="2" width="13" height="13"/>
+                                    </imageView>
+                                </subviews>
+                                <connections>
+                                    <outletCollection property="starimages" destination="lww-Lt-41p" id="Ys0-ZA-ltv"/>
+                                    <outletCollection property="starimages" destination="pgc-2w-Fnw" id="URU-OD-QAb"/>
+                                    <outletCollection property="starimages" destination="M1r-BB-pWN" id="Hi2-G4-piV"/>
+                                    <outletCollection property="starimages" destination="PUv-sM-Z1J" id="BIB-Cv-sZe"/>
+                                    <outletCollection property="starimages" destination="EDw-ke-KA8" id="0cv-XH-tl2"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gJv-gE-zf1" userLabel="h_line">
+                                <rect key="frame" x="10" y="190" width="280" height="1"/>
+                                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_comment.png" translatesAutoresizingMaskIntoConstraints="NO" id="aDN-1c-RQO">
+                                <rect key="frame" x="10" y="206" width="15" height="15"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NzI-WI-OE8">
-                                <rect key="frame" x="88" y="-1" width="25" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z4D-jw-k0P">
-                                <rect key="frame" x="32" y="-1" width="26" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="quQ-ue-YYW">
-                                <rect key="frame" x="3" y="0.0" width="28" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                            <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Ph-2s-iOx">
+                                <rect key="frame" x="28" y="199" width="77" height="30"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                <state key="normal" title="Comment">
+                                    <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="tap:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="BH6-4l-1hm"/>
+                                </connections>
+                            </button>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <connections>
-                            <outletCollection property="starimages" destination="quQ-ue-YYW" id="Ue7-Zw-3d3"/>
-                            <outletCollection property="starimages" destination="z4D-jw-k0P" id="m0m-Ib-4lW"/>
-                            <outletCollection property="starimages" destination="IhU-bL-hsy" id="xWA-dS-83d"/>
-                            <outletCollection property="starimages" destination="NzI-WI-OE8" id="GYT-ot-vM6"/>
-                            <outletCollection property="starimages" destination="jBe-md-d8P" id="0Xi-Kq-dUs"/>
-                        </connections>
+                        <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uXS-Qm-ioM" customClass="StarsRateView">
-                        <rect key="frame" x="172" y="150" width="139" height="22"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Ju-xb-awF">
-                                <rect key="frame" x="60" y="-1" width="28" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="auc-tE-Cyt">
-                                <rect key="frame" x="114" y="0.0" width="25" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PW0-zt-3uu">
-                                <rect key="frame" x="88" y="-1" width="25" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WQe-r7-P74">
-                                <rect key="frame" x="32" y="-1" width="26" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rUs-Zt-Zia">
-                                <rect key="frame" x="3" y="0.0" width="28" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <connections>
-                            <outletCollection property="starimages" destination="rUs-Zt-Zia" id="0az-OL-WVW"/>
-                            <outletCollection property="starimages" destination="WQe-r7-P74" id="5th-fa-YGl"/>
-                            <outletCollection property="starimages" destination="7Ju-xb-awF" id="Y0n-q2-05Q"/>
-                            <outletCollection property="starimages" destination="PW0-zt-3uu" id="xMV-1M-Q0M"/>
-                            <outletCollection property="starimages" destination="auc-tE-Cyt" id="uny-LX-VoA"/>
-                        </connections>
-                    </view>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zwa-vL-RZ3" customClass="StarsRateView">
-                        <rect key="frame" x="172" y="186" width="139" height="22"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KCL-tK-6Lz">
-                                <rect key="frame" x="60" y="-1" width="28" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XYm-ca-ycV">
-                                <rect key="frame" x="114" y="0.0" width="25" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lkf-Zz-IwH">
-                                <rect key="frame" x="88" y="-1" width="25" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4WE-6I-AVs">
-                                <rect key="frame" x="32" y="-1" width="26" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7xE-Vc-YwO">
-                                <rect key="frame" x="3" y="0.0" width="28" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <connections>
-                            <outletCollection property="starimages" destination="7xE-Vc-YwO" id="suz-5U-VkD"/>
-                            <outletCollection property="starimages" destination="4WE-6I-AVs" id="hnq-f4-Dbd"/>
-                            <outletCollection property="starimages" destination="KCL-tK-6Lz" id="cpy-lb-bQi"/>
-                            <outletCollection property="starimages" destination="Lkf-Zz-IwH" id="fKH-I8-aqF"/>
-                            <outletCollection property="starimages" destination="XYm-ca-ycV" id="IfV-eR-gGX"/>
-                        </connections>
-                    </view>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VoR-jL-2fy" customClass="StarsRateView">
-                        <rect key="frame" x="10" y="186" width="139" height="22"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="M1r-BB-pWN">
-                                <rect key="frame" x="60" y="-1" width="28" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EDw-ke-KA8">
-                                <rect key="frame" x="114" y="0.0" width="25" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PUv-sM-Z1J">
-                                <rect key="frame" x="88" y="-1" width="25" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pgc-2w-Fnw">
-                                <rect key="frame" x="32" y="-1" width="26" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lww-Lt-41p">
-                                <rect key="frame" x="3" y="0.0" width="28" height="25"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <connections>
-                            <outletCollection property="starimages" destination="lww-Lt-41p" id="Ys0-ZA-ltv"/>
-                            <outletCollection property="starimages" destination="pgc-2w-Fnw" id="URU-OD-QAb"/>
-                            <outletCollection property="starimages" destination="M1r-BB-pWN" id="Hi2-G4-piV"/>
-                            <outletCollection property="starimages" destination="PUv-sM-Z1J" id="BIB-Cv-sZe"/>
-                            <outletCollection property="starimages" destination="EDw-ke-KA8" id="0cv-XH-tl2"/>
-                        </connections>
-                    </view>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Ph-2s-iOx">
-                        <rect key="frame" x="6" y="216" width="77" height="30"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <state key="normal" title="Comment">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                    </button>
                 </subviews>
             </tableViewCellContentView>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
-                <outlet property="accuracyrate" destination="VoR-jL-2fy" id="yTO-I1-W6Q"/>
+                <outlet property="accuracyrate" destination="uXS-Qm-ioM" id="ecR-yt-BSz"/>
                 <outlet property="commentbutton" destination="9Ph-2s-iOx" id="6it-bi-Kyk"/>
                 <outlet property="commentlabel" destination="74s-oq-gaN" id="z3O-Mv-AHg"/>
                 <outlet property="namelabel" destination="nFC-df-PN8" id="Dzo-S8-27x"/>
-                <outlet property="qualityrate" destination="C2H-gO-nux" id="twJ-6x-bos"/>
-                <outlet property="servicerate" destination="zwa-vL-RZ3" id="dlV-sr-Hg5"/>
-                <outlet property="speedrate" destination="uXS-Qm-ioM" id="vSj-XS-WMG"/>
+                <outlet property="qualityrate" destination="C2H-gO-nux" id="9sK-hd-9CU"/>
+                <outlet property="servicerate" destination="VoR-jL-2fy" id="ssE-eI-MHS"/>
+                <outlet property="speedrate" destination="zwa-vL-RZ3" id="AhT-QZ-wPQ"/>
                 <outlet property="thumb" destination="BF2-9t-61W" id="5Yd-d4-bDq"/>
                 <outlet property="timelabel" destination="9aw-P8-EwF" id="Dwc-t9-9A3"/>
             </connections>
+            <point key="canvasLocation" x="384" y="196"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="icon_comment.png" width="14" height="14"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

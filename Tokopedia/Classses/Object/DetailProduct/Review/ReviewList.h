@@ -30,7 +30,7 @@
 @property (nonatomic) NSInteger review_rate_service;
 @property (nonatomic) NSInteger review_rate_accuracy;
 
-//shop
+
 @property (nonatomic, strong) NSString *review_product_name;
 @property (nonatomic, strong) NSString *review_product_id;
 @property (nonatomic, strong) NSString *review_product_image;

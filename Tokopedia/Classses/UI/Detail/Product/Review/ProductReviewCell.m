@@ -14,7 +14,7 @@
 #pragma mark - Factory Methods
 + (id)newcell
 {
-    NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"ProductReviewCell" owner:nil options:0];
+    NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"GeneralReview" owner:nil options:0];
     for (id o in a) {
         if ([o isKindOfClass:[self class]]) {
             return o;

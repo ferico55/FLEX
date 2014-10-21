@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamLight.ttf">
+            <string>GothamLight</string>
+            <string>GothamLight</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductTalkViewController">
             <connections>
                 <outlet property="act" destination="ajS-mb-YKw" id="oao-Pg-kxN"/>
-                <outlet property="backbutton" destination="09n-il-69m" id="lPA-Nu-08D"/>
                 <outlet property="footer" destination="mJU-85-H19" id="18b-Ir-o5x"/>
                 <outlet property="header" destination="LZd-s0-Fh4" id="aws-UE-Skp"/>
                 <outlet property="imagescrollview" destination="OfS-BY-0mA" id="HoF-J5-D6V"/>
-                <outlet property="nextbutton" destination="KdB-Vj-RSf" id="zIo-0K-w5x"/>
                 <outlet property="pagecontrol" destination="tvJ-b0-bs8" id="Ucb-N8-Tom"/>
                 <outlet property="pricelabel" destination="t9c-y1-kcP" id="5hA-4z-eAx"/>
                 <outlet property="productnamelabel" destination="KuO-5c-BCQ" id="c2O-Gx-6Z5"/>
@@ -25,9 +28,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="216" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="dMb-4I-t0S">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="180" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="dMb-4I-t0S">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="542"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="aYU-2U-Jv2"/>
@@ -36,8 +38,6 @@
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
         <view contentMode="scaleToFill" id="mJU-85-H19" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
@@ -45,58 +45,50 @@
             <subviews>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="ajS-mb-YKw">
                     <rect key="frame" x="150" y="7" width="20" height="20"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="LZd-s0-Fh4" userLabel="HeaderView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="246"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="289"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OfS-BY-0mA">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="192"/>
-                    <color key="backgroundColor" red="0.24471801360000001" green="0.66666666669999997" blue="0.14011867850000001" alpha="1" colorSpace="calibratedRGB"/>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OfS-BY-0mA">
+                    <rect key="frame" x="0.0" y="59" width="320" height="192"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="LvU-cf-560"/>
                     </connections>
                 </scrollView>
-                <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="tvJ-b0-bs8">
-                    <rect key="frame" x="140" y="149" width="39" height="37"/>
-                </pageControl>
-                <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09n-il-69m">
-                    <rect key="frame" x="15" y="81" width="46" height="30"/>
-                    <state key="normal" title="&lt;">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="Vu3-Wl-xwr"/>
-                    </connections>
-                </button>
-                <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KdB-Vj-RSf">
-                    <rect key="frame" x="261" y="81" width="46" height="30"/>
-                    <state key="normal" title=">">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="S6G-Gh-Qab"/>
-                    </connections>
-                </button>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KuO-5c-BCQ">
-                    <rect key="frame" x="15" y="200" width="292" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <rect key="frame" x="20" y="10" width="292" height="21"/>
+                    <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t9c-y1-kcP">
-                    <rect key="frame" x="15" y="218" width="292" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <rect key="frame" x="20" y="28" width="292" height="21"/>
+                    <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
+                    <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="tvJ-b0-bs8">
+                    <rect key="frame" x="134" y="253" width="39" height="37"/>
+                    <color key="pageIndicatorTintColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="currentPageIndicatorTintColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                </pageControl>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-202" y="35.5"/>
         </view>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

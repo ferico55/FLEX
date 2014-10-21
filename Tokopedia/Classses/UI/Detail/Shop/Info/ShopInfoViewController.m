@@ -74,9 +74,12 @@
     if (self) {
         _isnodata = YES;
         _isaddressexpanded = NO;
+        self.title = kTKPDTITLE_SHOP_INFO;
     }
     return self;
 }
+
+
 
 #pragma mark - Life Cycle
 - (void)viewDidLoad
@@ -87,6 +90,19 @@
     CGSize viewsize = _containerview.frame.size;
     [_scrollview setContentSize:viewsize];
     [_scrollview addSubview:_containerview];
+    
+    UIBarButtonItem *barbutton1;
+    NSBundle* bundle = [NSBundle mainBundle];
+    //TODO:: Change image
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    }
+    else
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    [barbutton1 setTag:10];
+    self.navigationItem.leftBarButtonItem = barbutton1;
     
     [self setData:_data];
     [_tablepayment reloadData];
@@ -132,6 +148,21 @@
                 break;
         }
     }
+    
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
+        switch (btn.tag) {
+            case 10:
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+                break;
+            }
+            default:
+                break;
+        }
+        
+    }
+    
 }
 
 #pragma mark - Table View Data Source
@@ -210,6 +241,7 @@
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                     //NSLOG(@"thumb: %@", thumb);
                     [thumb setImage:image];
+                    thumb.contentMode = UIViewContentModeScaleAspectFit;
                     
                     //[((ShopInfoPaymentCell*)cell).act stopAnimating];
 #pragma clang diagnostic pop
@@ -326,7 +358,7 @@
     [_labelshopdescription sizeToFit];
     
     frame = _shopdetailview.frame;
-    frame.origin.y = _labelshopdescription.frame.size.height + _labelshopdescription.frame.origin.y ;
+    frame.origin.y = _labelshopdescription.frame.size.height + _labelshopdescription.frame.origin.y + 20;
     _shopdetailview.frame = frame;
     
     NSArray * address = _shop.result.address;

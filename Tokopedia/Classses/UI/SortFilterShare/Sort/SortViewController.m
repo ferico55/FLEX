@@ -47,7 +47,9 @@
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        //barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        [barbutton1 setTintColor:[UIColor whiteColor]];
     }
     else
         barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
@@ -59,6 +61,7 @@
         //UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         //barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
         barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        [barbutton1 setTintColor:[UIColor blackColor]];
     }
     else
         barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];

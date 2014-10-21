@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProfileFavoriteShopCellIdentifier" rowHeight="85" id="GL1-5k-0bA" customClass="ProfileFavoriteShopCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="85"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="GL1-5k-0bA" id="gpL-fE-sk9">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nx5-T4-FTa">
+                        <rect key="frame" x="0.0" y="0.0" width="84" height="84"/>
+                    </imageView>
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TMJ-xp-oCg">
+                        <rect key="frame" x="92" y="31" width="174" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k2N-aq-yUJ">
+                        <rect key="frame" x="282" y="25" width="31" height="33"/>
+                    </imageView>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Sxg-HD-u8r">
+                        <rect key="frame" x="32" y="32" width="20" height="20"/>
+                    </activityIndicatorView>
+                </subviews>
+            </tableViewCellContentView>
+            <gestureRecognizers/>
+            <connections>
+                <outlet property="act" destination="Sxg-HD-u8r" id="urp-Hu-eEJ"/>
+                <outlet property="label" destination="TMJ-xp-oCg" id="jRh-YX-QZG"/>
+                <outlet property="thumb" destination="nx5-T4-FTa" id="Bat-4c-nOu"/>
+                <outlet property="thumbfav" destination="k2N-aq-yUJ" id="umz-c0-Mhy"/>
+                <outletCollection property="gestureRecognizers" destination="Qam-rN-wdj" appends="YES" id="l1n-UH-aOD"/>
+            </connections>
+        </tableViewCell>
+        <tapGestureRecognizer id="Qam-rN-wdj">
+            <connections>
+                <action selector="gesture:" destination="GL1-5k-0bA" id="QME-X9-zzA"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

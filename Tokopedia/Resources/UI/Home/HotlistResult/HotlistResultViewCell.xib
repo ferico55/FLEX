@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6205" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6198"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,8 +13,8 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="219"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view hidden="YES" tag="10" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UsS-53-0rU">
-                        <rect key="frame" x="10" y="2" width="145" height="181"/>
+                    <view tag="10" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UsS-53-0rU">
+                        <rect key="frame" x="10" y="2" width="145" height="197"/>
                         <subviews>
                             <imageView tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="thumb_product.png" translatesAutoresizingMaskIntoConstraints="NO" id="hjg-oL-r7P">
                                 <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
@@ -34,6 +33,12 @@
                             <activityIndicatorView opaque="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="roW-mb-8Xe">
                                 <rect key="frame" x="62" y="51" width="20" height="20"/>
                             </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ioy-sh-v9R">
+                                <rect key="frame" x="6" y="176" width="145" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -42,7 +47,7 @@
                         </connections>
                     </view>
                     <view hidden="YES" tag="11" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xYV-N4-0UI">
-                        <rect key="frame" x="163" y="2" width="145" height="181"/>
+                        <rect key="frame" x="163" y="2" width="145" height="197"/>
                         <subviews>
                             <imageView tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="thumb_product.png" translatesAutoresizingMaskIntoConstraints="NO" id="QGb-mr-tD2">
                                 <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
@@ -61,6 +66,12 @@
                             <activityIndicatorView opaque="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="4Sb-M0-OL9">
                                 <rect key="frame" x="62" y="51" width="20" height="20"/>
                             </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ek0-cG-ilF">
+                                <rect key="frame" x="6" y="176" width="145" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
@@ -82,6 +93,8 @@
                 <outletCollection property="thumb" destination="QGb-mr-tD2" id="fCY-oq-mXV"/>
                 <outletCollection property="act" destination="roW-mb-8Xe" id="dli-ex-Ed9"/>
                 <outletCollection property="act" destination="4Sb-M0-OL9" id="fGj-Eo-Rqs"/>
+                <outletCollection property="labelalbum" destination="ioy-sh-v9R" id="ZmY-gf-8a7"/>
+                <outletCollection property="labelalbum" destination="Ek0-cG-ilF" id="6uu-ea-1WE"/>
             </connections>
             <point key="canvasLocation" x="140" y="146"/>
         </tableViewCell>
@@ -102,9 +115,6 @@
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4">
-            <size key="portraitSize" width="320" height="568"/>
-            <size key="landscapeSize" width="568" height="320"/>
-        </simulatedScreenMetrics>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
 </document>

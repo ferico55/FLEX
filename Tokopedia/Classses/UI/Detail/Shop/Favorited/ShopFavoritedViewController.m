@@ -50,6 +50,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isnodata = YES;
+        self.title = KTKPDTITLE_FAV_THIS_SHOP;
     }
     return self;
 }
@@ -70,6 +71,19 @@
     if (_list.count>2) {
         _isnodata = NO;
     }
+    
+    UIBarButtonItem *barbutton1;
+    NSBundle* bundle = [NSBundle mainBundle];
+    //TODO:: Change image
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    }
+    else
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    [barbutton1 setTag:10];
+    self.navigationItem.leftBarButtonItem = barbutton1;
     
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -369,6 +383,24 @@
     
     [self.navigationController pushViewController:tapnavcon animated:YES];
     
+}
+
+
+#pragma mark - View Action
+-(IBAction)tap:(id)sender
+{
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIButton *btn = (UIButton*)sender;
+        switch (btn.tag) {
+            case 10:
+                // see more action
+                //                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                [self.navigationController popViewControllerAnimated:YES];
+                break;
+                        default:
+            break;
+        }
+    }
 }
 
 @end

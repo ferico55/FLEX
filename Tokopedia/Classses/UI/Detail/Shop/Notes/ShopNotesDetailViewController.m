@@ -38,6 +38,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self.title = kTKPDTITLE_SHOP_NOTES;
     if (self) {
         _isnodata = YES;
     }
@@ -126,6 +127,19 @@
                             kTKPDNOTES_APINOTEIDKEY : [_data objectForKey:kTKPDNOTES_APINOTESIDKEY]?:@(0)
                             };
     
+    UIBarButtonItem *barbutton1;
+    NSBundle* bundle = [NSBundle mainBundle];
+    //TODO:: Change image
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    }
+    else
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    [barbutton1 setTag:10];
+    self.navigationItem.leftBarButtonItem = barbutton1;
+    
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILNOTES_APIPATH parameters:param];
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         //[_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -161,6 +175,8 @@
         _labeltime.text = _note.result.detail.notes_update_time;
         
         _labelmessage.text = [NSString convertHTML:_note.result.detail.notes_content];
+        [_labelmessage sizeToFit];
+        [_labelmessage setNumberOfLines:0];
         
     }
 }
@@ -190,6 +206,25 @@
     {
         [_act stopAnimating];
     }
+}
+
+
+#pragma mark - View Action
+-(IBAction)tap:(id)sender
+{
+    //    if ([sender isKindOfClass:[UIButton class]]) {
+    UIButton *btn = (UIButton*)sender;
+    switch (btn.tag) {
+        case 10:
+            // see more action
+            //                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            [self.navigationController popViewControllerAnimated:YES];
+            break;
+        
+        default:
+            break;
+    }
+    //    }
 }
 
 

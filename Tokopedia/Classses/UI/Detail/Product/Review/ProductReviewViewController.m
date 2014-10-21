@@ -13,16 +13,18 @@
 #import "StarsRateView.h"
 #import "ProgressBarView.h"
 #import "ProductReviewViewController.h"
+#import "ProductReviewDetailViewController.h"
 #import "GeneralReviewCell.h"
 
 #import "TKPDAlertView.h"
 #import "AlertListView.h"
 
 #pragma mark - Product Review View Controller
-@interface ProductReviewViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate>
+@interface ProductReviewViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, GeneralReviewCellDelegate>
 {
     NSMutableDictionary *_param;
     NSMutableArray *_list;
+    NSMutableArray *_listresponse;
     NSInteger _requestcount;
     NSTimer *_timer;
     BOOL _isnodata;
@@ -39,6 +41,7 @@
     BOOL _isalltimes;
     
     Review *_review;
+    ReviewResponse *_reviewresponse;
     
     __weak RKObjectManager *_objectmanager;
 }
@@ -78,6 +81,7 @@
     if (self) {
         _isadvreviewquality = YES;
         _isnodata = YES;
+        self.title = kTKPDTITLE_REVIEW;
     }
     return self;
 }
@@ -100,6 +104,19 @@
     
     _page = 1;
     
+    UIBarButtonItem *barbutton1;
+    NSBundle* bundle = [NSBundle mainBundle];
+    //TODO:: Change image
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    }
+    else
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    [barbutton1 setTag:10];
+    self.navigationItem.leftBarButtonItem = barbutton1;
+    
     if (_list.count>2) {
         _isnodata = NO;
     }
@@ -119,7 +136,7 @@
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
             [self loadData];
         }
-    }
+    } 
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -127,6 +144,8 @@
     [super viewWillDisappear:animated];
     [self cancel];
 }
+
+
 
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -147,14 +166,23 @@
 		cell = (GeneralReviewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
 			cell = [GeneralReviewCell newcell];
-			//((GeneralReviewCell*)cell).delegate = self;
+			((GeneralReviewCell*)cell).delegate = self;
 		}
         
         if (_list.count > indexPath.row) {
             ReviewList *list = _list[indexPath.row];
+
+            
             ((GeneralReviewCell*)cell).namelabel.text = list.review_user_name;
             ((GeneralReviewCell*)cell).timelabel.text = list.review_create_time;
             ((GeneralReviewCell*)cell).commentlabel.text = list.review_message;
+            ((GeneralReviewCell*)cell).indexpath = indexPath;
+            
+            
+            ReviewResponse *review_response = list.review_response;
+            [((GeneralReviewCell*)cell).commentbutton setTitle:([review_response.response_message isEqualToString:@"0"] ? @"0 Comment" : @"1 Comment") forState:UIControlStateNormal];
+            
+            
             //TODO:: create see more button
             //UIFont * font = ((ProductReviewCell*)cell).commentlabel.font ;
             //CGSize stringSize = [((ProductReviewCell*)cell).commentlabel.text sizeWithFont:font];
@@ -224,15 +252,17 @@
 	}
 }
 
+
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
-    if ([sender isKindOfClass:[UIButton class]]) {
+//    if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
         switch (btn.tag) {
             case 10:
                 // see more action
-                
+//                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                [self.navigationController popViewControllerAnimated:YES];
                 break;
              case 11:
             {
@@ -256,7 +286,7 @@
             default:
                 break;
         }
-    }
+//    }
 }
 
 - (IBAction)gesture:(id)sender {
@@ -351,23 +381,23 @@
                                                  kTKPDREVIEW_APIREVIEWRATEACCURACYKEY,
                                                  kTKPDREVIEW_APIREVIEWMESSAGEKEY,
                                                  kTKPDREVIEW_APIREVIEWUSERIDKEY,
-                                                 //kTKPDREVIEW_APIREVIEWRESPONSEKEY
+//                                                 kTKPDREVIEW_APIREVIEWRESPONSEKEY
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
     
-//    RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[ReviewResponse class]];
-//    [responseMapping addAttributeMappingsFromDictionary:@{kTKPDREVIEW_APIRESPONSECREATETIMEKEY:kTKPDREVIEW_APIRESPONSECREATETIMEKEY,
-//                                                          kTKPDREVIEW_APIRESPONSEMESSAGEKEY:kTKPDREVIEW_APIRESPONSEMESSAGEKEY
-//                                                          }];
-//    
-//    RKObjectMapping *reviewproductownerMapping = [RKObjectMapping mappingForClass:[ReviewProductOwner class]];
-//    [reviewproductownerMapping addAttributeMappingsFromDictionary:@{kTKPDREVIEW_APIUSERIDKEY:kTKPDREVIEW_APIUSERIDKEY,
-//                                                                    kTKPDREVIEW_APIUSERIMAGEKEY:kTKPDREVIEW_APIUSERIMAGEKEY,
-//                                                                    kTKPDREVIEW_APIUSERNAME:kTKPDREVIEW_APIUSERNAME
-//                                                                    }];
-//    
+    RKObjectMapping *responseMapping = [RKObjectMapping mappingForClass:[ReviewResponse class]];
+    [responseMapping addAttributeMappingsFromDictionary:@{kTKPDREVIEW_APIRESPONSECREATETIMEKEY:kTKPDREVIEW_APIRESPONSECREATETIMEKEY,
+                                                          kTKPDREVIEW_APIRESPONSEMESSAGEKEY:kTKPDREVIEW_APIRESPONSEMESSAGEKEY
+                                                          }];
+
+    RKObjectMapping *reviewproductownerMapping = [RKObjectMapping mappingForClass:[ReviewProductOwner class]];
+    [reviewproductownerMapping addAttributeMappingsFromDictionary:@{kTKPDREVIEW_APIUSERIDKEY:kTKPDREVIEW_APIUSERIDKEY,
+                                                                    kTKPDREVIEW_APIUSERIMAGEKEY:kTKPDREVIEW_APIUSERIMAGEKEY,
+                                                                    kTKPDREVIEW_APIUSERNAME:kTKPDREVIEW_APIUSERNAME
+                                                                    }];
+//
     //add relationship mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APILISTKEY toKeyPath:kTKPDDETAIL_APILISTKEY withMapping:listMapping];
@@ -375,6 +405,12 @@
     
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPAGINGKEY toKeyPath:kTKPDDETAIL_APIPAGINGKEY withMapping:pagingMapping];
     [resultMapping addPropertyMapping:pageRel];
+    
+    RKRelationshipMapping *responseRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDREVIEW_APIREVIEWRESPONSEKEY toKeyPath:kTKPDREVIEW_APIREVIEWRESPONSEKEY withMapping:responseMapping];
+    [listMapping addPropertyMapping:responseRel];
+    
+    RKRelationshipMapping *productOwner = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDREVIEW_APIREVIEWPRODUCTOWNERKEY toKeyPath:kTKPDREVIEW_APIREVIEWPRODUCTOWNERKEY withMapping:reviewproductownerMapping];
+    [listMapping addPropertyMapping:productOwner];
     
     RKRelationshipMapping *advreviewRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDREVIEW_APIADVREVIEWKEY toKeyPath:kTKPDREVIEW_APIADVREVIEWKEY withMapping:advreviewMapping];
     [resultMapping addPropertyMapping:advreviewRel];
@@ -521,6 +557,32 @@
         NSInteger starpoint = list.rating_star_point;
         ((ProgressBarView*)_progressviews[starpoint-1]).floatcount =(_isadvreviewquality)?list.rating_quality_point:list.rating_accuracy_point;
     }
+}
+
+#pragma mark - Delegate
+- (void)GeneralReviewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    ProductReviewDetailViewController *vc = [ProductReviewDetailViewController new];
+    
+    ReviewList *list = _list[indexpath.row];
+
+    vc.data = @{
+                kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY]?:@(""),
+                kTKPDDETAILPRODUCT_APIIMAGESRCKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]?:@(""),
+                //ini untuk review
+                kTKPDREVIEW_APIREVIEWMESSAGEKEY:list.review_message,
+                kTKPDREVIEW_APIREVIEWCREATETIMEKEY:list.review_create_time,
+                kTKPDREVIEW_APIREVIEWUSERNAMEKEY:list.review_user_name,
+                kTKPDREVIEW_APIREVIEWUSERIMAGEKEY:list.review_user_image,
+                kTKPDREVIEW_APIREVIEWUSERIDKEY:list.review_user_id,
+                kTKPDREVIEW_APIREVIEWRESPONSEKEY:list.review_response,
+                kTKPDREVIEW_APIREVIEWRATEACCURACYKEY:@(list.review_rate_accuracy),
+                kTKPDREVIEW_APIREVIEWRATEQUALITY:@(list.review_rate_quality),
+                kTKPDREVIEW_APIREVIEWRATESERVICEKEY:@(list.review_rate_service),
+                kTKPDREVIEW_APIREVIEWRATESPEEDKEY:@(list.review_rate_speed),
+                kTKPDREVIEW_APIREVIEWPRODUCTOWNERKEY:list.review_product_owner
+                };
+    [self.navigationController pushViewController:vc animated:YES];
+    
 }
 
 -(void)refreshView:(UIRefreshControl*)refresh

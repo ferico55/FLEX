@@ -1,37 +1,42 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="64" id="KGk-i7-Jjw" customClass="SearchResultShopCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="63" id="KGk-i7-Jjw" customClass="SearchResultShopCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2WS-eh-gEh">
-                        <rect key="frame" x="3" y="3" width="61" height="57"/>
-                    </imageView>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GfF-sh-Y4H">
-                        <rect key="frame" x="72" y="20" width="165" height="21"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="66" y="21" width="165" height="21"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ejk-zf-Iv6">
-                        <rect key="frame" x="266" y="17" width="46" height="30"/>
-                        <state key="normal" title="fav">
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ejk-zf-Iv6">
+                        <rect key="frame" x="266" y="17" width="30" height="30"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <state key="normal" image="icon_love.png">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="hry-u8-Sr8">
                         <rect key="frame" x="23" y="21" width="20" height="20"/>
                     </activityIndicatorView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2WS-eh-gEh">
+                        <rect key="frame" x="8" y="6" width="50" height="50"/>
+                    </imageView>
                 </subviews>
             </tableViewCellContentView>
             <gestureRecognizers/>
@@ -42,6 +47,7 @@
                 <outlet property="thumb" destination="2WS-eh-gEh" id="9Ec-va-fyK"/>
                 <outletCollection property="gestureRecognizers" destination="FmU-K5-Y46" appends="YES" id="ueE-gY-aeQ"/>
             </connections>
+            <point key="canvasLocation" x="140" y="147.5"/>
         </tableViewCell>
         <tapGestureRecognizer id="FmU-K5-Y46">
             <connections>
@@ -49,4 +55,12 @@
             </connections>
         </tapGestureRecognizer>
     </objects>
+    <resources>
+        <image name="icon_love.png" width="20" height="20"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>
