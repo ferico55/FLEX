@@ -13,6 +13,7 @@
 #define kTKPDTITLE_REVIEW @"Review"
 #define kTKPDTITLE_SHOP_NOTES @"Shop Note"
 #define kTKPDTITLE_SHOP_INFO @"Shop Information"
+#define KTKPDTITLE_FAV_THIS_SHOP @"People who Favorited This Shop"
 
 #define kTKPDDETAIL_DATASHOPSKEY @"shop"
 #define kTKPDDETAIL_DATAINFOSHOPSKEY @"infoshop"
