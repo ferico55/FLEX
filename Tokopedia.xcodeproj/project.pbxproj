@@ -330,6 +330,15 @@
 		FCA1288E19EE6F58008C3E72 /* FavoriteShop.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA1288D19EE6F58008C3E72 /* FavoriteShop.m */; };
 		FCA1289119EE6F75008C3E72 /* FavoriteShopResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA1289019EE6F75008C3E72 /* FavoriteShopResult.m */; };
 		FCA1289419EE6F93008C3E72 /* ListFavoriteShop.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA1289319EE6F93008C3E72 /* ListFavoriteShop.m */; };
+		FCA14FEA19F4AC7A00B0F7F7 /* DSBSecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA14FE919F4AC7A00B0F7F7 /* DSBSecureStorage.m */; };
+		FCA14FF119F4B8D300B0F7F7 /* Login.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA14FF019F4B8D300B0F7F7 /* Login.m */; };
+		FCA14FF419F4B8E400B0F7F7 /* LoginResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA14FF319F4B8E400B0F7F7 /* LoginResult.m */; };
+		FCA14FFA19F4BB6800B0F7F7 /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA14FF719F4BB6800B0F7F7 /* LoginViewController.xib */; };
+		FCA14FFB19F4BB6800B0F7F7 /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA14FF919F4BB6800B0F7F7 /* RegisterViewController.xib */; };
+		FCA14FFF19F4E7FE00B0F7F7 /* NSUserDefaultCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA14FFE19F4E7FE00B0F7F7 /* NSUserDefaultCategory.m */; };
+		FCA1500B19F4FE9B00B0F7F7 /* LogoutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA1500A19F4FE9B00B0F7F7 /* LogoutViewController.xib */; };
+		FCA1500F19F4FEA700B0F7F7 /* LogoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA1500E19F4FEA700B0F7F7 /* LogoutViewController.m */; };
+		FCA1501119F523B400B0F7F7 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA1501019F523B400B0F7F7 /* MobileCoreServices.framework */; };
 		FCA1D5F119EB88F700B25A8B /* ProductEtalaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA1D5F019EB88F700B25A8B /* ProductEtalaseViewController.m */; };
 		FCA1D5F619EB8AB100B25A8B /* ProductEtalaseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA1D5F519EB8AB100B25A8B /* ProductEtalaseViewController.xib */; };
 		FCA1D5F919EB8B0500B25A8B /* ProductEtalaseCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA1D5F819EB8B0500B25A8B /* ProductEtalaseCell.xib */; };
@@ -354,7 +363,6 @@
 		FCC885FF19E67BE8005A7074 /* ExpiringCache.m in Sources */ = {isa = PBXBuildFile; fileRef = FCC885FE19E67BE8005A7074 /* ExpiringCache.m */; };
 		FCCB4AFA19E77ECB00722891 /* ShopTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCB4AF919E77ECB00722891 /* ShopTalkViewController.m */; };
 		FCCB4AFD19E77EEE00722891 /* ShopTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCCB4AFC19E77EEE00722891 /* ShopTalkViewController.xib */; };
-		FCCB4B0419E7BCE800722891 /* test.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCB4B0319E7BCE800722891 /* test.m */; };
 		FCCB4B0719E7CE6F00722891 /* ShopReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCCB4B0619E7CE6F00722891 /* ShopReviewViewController.xib */; };
 		FCCB4B0A19E7CEB900722891 /* ShopReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCB4B0919E7CEB900722891 /* ShopReviewViewController.m */; };
 		FCCB4B0E19E7D99300722891 /* ShopNotesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCB4B0D19E7D99300722891 /* ShopNotesViewController.m */; };
@@ -865,6 +873,20 @@
 		FCA1289219EE6F93008C3E72 /* ListFavoriteShop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListFavoriteShop.h; sourceTree = "<group>"; };
 		FCA1289319EE6F93008C3E72 /* ListFavoriteShop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ListFavoriteShop.m; sourceTree = "<group>"; };
 		FCA1289519EE7636008C3E72 /* profile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = profile.h; sourceTree = "<group>"; };
+		FCA14FE819F4AC7A00B0F7F7 /* DSBSecureStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSBSecureStorage.h; sourceTree = "<group>"; };
+		FCA14FE919F4AC7A00B0F7F7 /* DSBSecureStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSBSecureStorage.m; sourceTree = "<group>"; };
+		FCA14FEF19F4B8D300B0F7F7 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
+		FCA14FF019F4B8D300B0F7F7 /* Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Login.m; sourceTree = "<group>"; };
+		FCA14FF219F4B8E400B0F7F7 /* LoginResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginResult.h; sourceTree = "<group>"; };
+		FCA14FF319F4B8E400B0F7F7 /* LoginResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginResult.m; sourceTree = "<group>"; };
+		FCA14FF719F4BB6800B0F7F7 /* LoginViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginViewController.xib; sourceTree = "<group>"; };
+		FCA14FF919F4BB6800B0F7F7 /* RegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterViewController.xib; sourceTree = "<group>"; };
+		FCA14FFD19F4E7FE00B0F7F7 /* NSUserDefaultCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUserDefaultCategory.h; sourceTree = "<group>"; };
+		FCA14FFE19F4E7FE00B0F7F7 /* NSUserDefaultCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSUserDefaultCategory.m; sourceTree = "<group>"; };
+		FCA1500A19F4FE9B00B0F7F7 /* LogoutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogoutViewController.xib; sourceTree = "<group>"; };
+		FCA1500D19F4FEA700B0F7F7 /* LogoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogoutViewController.h; sourceTree = "<group>"; };
+		FCA1500E19F4FEA700B0F7F7 /* LogoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogoutViewController.m; sourceTree = "<group>"; };
+		FCA1501019F523B400B0F7F7 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FCA1D5EF19EB88F700B25A8B /* ProductEtalaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProductEtalaseViewController.h; path = ../ProductEtalaseViewController.h; sourceTree = "<group>"; };
 		FCA1D5F019EB88F700B25A8B /* ProductEtalaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProductEtalaseViewController.m; path = ../ProductEtalaseViewController.m; sourceTree = "<group>"; };
 		FCA1D5F519EB8AB100B25A8B /* ProductEtalaseViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductEtalaseViewController.xib; sourceTree = "<group>"; };
@@ -904,8 +926,6 @@
 		FCCB4AF819E77ECB00722891 /* ShopTalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopTalkViewController.h; sourceTree = "<group>"; };
 		FCCB4AF919E77ECB00722891 /* ShopTalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopTalkViewController.m; sourceTree = "<group>"; };
 		FCCB4AFC19E77EEE00722891 /* ShopTalkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopTalkViewController.xib; sourceTree = "<group>"; };
-		FCCB4B0219E7BCE800722891 /* test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = test.h; sourceTree = "<group>"; };
-		FCCB4B0319E7BCE800722891 /* test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = test.m; sourceTree = "<group>"; };
 		FCCB4B0619E7CE6F00722891 /* ShopReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopReviewViewController.xib; sourceTree = "<group>"; };
 		FCCB4B0819E7CEB900722891 /* ShopReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopReviewViewController.h; sourceTree = "<group>"; };
 		FCCB4B0919E7CEB900722891 /* ShopReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopReviewViewController.m; sourceTree = "<group>"; };
@@ -944,6 +964,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCA1501119F523B400B0F7F7 /* MobileCoreServices.framework in Frameworks */,
 				FCB2031419F0FD84008ACD19 /* SystemConfiguration.framework in Frameworks */,
 				FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */,
 				FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */,
@@ -1673,6 +1694,7 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FCA1501019F523B400B0F7F7 /* MobileCoreServices.framework */,
 				FCB2031319F0FD84008ACD19 /* SystemConfiguration.framework */,
 				FC681F6619B6D62200C58548 /* libsqlite3.dylib */,
 				FC36DF8619B0656400AF74C1 /* Foundation.framework */,
@@ -1759,6 +1781,10 @@
 				FCC885FE19E67BE8005A7074 /* ExpiringCache.m */,
 				FCB2031F19F123BF008ACD19 /* UIImageViewCategory.h */,
 				FCB2032019F123BF008ACD19 /* UIImageViewCategory.m */,
+				FCA14FE819F4AC7A00B0F7F7 /* DSBSecureStorage.h */,
+				FCA14FE919F4AC7A00B0F7F7 /* DSBSecureStorage.m */,
+				FCA14FFD19F4E7FE00B0F7F7 /* NSUserDefaultCategory.h */,
+				FCA14FFE19F4E7FE00B0F7F7 /* NSUserDefaultCategory.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -1766,6 +1792,7 @@
 		FC36E0C719B0673700AF74C1 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				FCA14FEE19F4B8B600B0F7F7 /* Activation */,
 				FCA1285B19EE558E008C3E72 /* Profile */,
 				FCA1284919EE2C06008C3E72 /* Favorited */,
 				FCA1D5FD19EBAC7A00B25A8B /* Etalase */,
@@ -1776,8 +1803,6 @@
 				FC158D9319B8184800F325D8 /* SearchItem */,
 				FCCCB95A19B4474C0077349C /* Paging */,
 				FC36E0C819B0673700AF74C1 /* Hotlist */,
-				FCCB4B0219E7BCE800722891 /* test.h */,
-				FCCB4B0319E7BCE800722891 /* test.m */,
 			);
 			path = Object;
 			sourceTree = "<group>";
@@ -1806,6 +1831,7 @@
 		FC36E0CC19B0673700AF74C1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				FC36E0CD19B0673700AF74C1 /* Activation */,
 				FCA1286519EE61CE008C3E72 /* Profile */,
 				FC3EEA8D19E539B90094F4AE /* GeneralCell */,
 				FC3EEA7119E4E2900094F4AE /* Alert */,
@@ -1814,7 +1840,6 @@
 				FC300B6A19C946360098F0D0 /* SortFilterShare */,
 				FC2F205B19BD5EE900C2B9B5 /* Home */,
 				FC2F204219BD5BEE00C2B9B5 /* Detail */,
-				FC36E0CD19B0673700AF74C1 /* Activation */,
 				FC36E0D519B0673700AF74C1 /* Cart */,
 				FC36E0D919B0673700AF74C1 /* Category */,
 				FC36E0EA19B0673700AF74C1 /* More */,
@@ -1893,6 +1918,7 @@
 		FC36E0EA19B0673700AF74C1 /* More */ = {
 			isa = PBXGroup;
 			children = (
+				FCA1500C19F4FEA700B0F7F7 /* Logout */,
 				FC36E0EB19B0673700AF74C1 /* more.h */,
 				FC36E0EC19B0673700AF74C1 /* MoreViewController.h */,
 				FC36E0ED19B0673700AF74C1 /* MoreViewController.m */,
@@ -2065,6 +2091,7 @@
 		FC36E14A19B0673700AF74C1 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				FCA14FF519F4BB6800B0F7F7 /* Activation */,
 				FCA1286A19EE623A008C3E72 /* Profile */,
 				FC3EEA8E19E539CD0094F4AE /* GeneralCell */,
 				FC3EEA7919E4E5350094F4AE /* Alert */,
@@ -2141,6 +2168,7 @@
 		FC36E15A19B0673800AF74C1 /* More */ = {
 			isa = PBXGroup;
 			children = (
+				FCA1500919F4FE9B00B0F7F7 /* Logout */,
 				FC36E15B19B0673800AF74C1 /* MoreViewController.xib */,
 			);
 			path = More;
@@ -2487,6 +2515,59 @@
 			path = Info;
 			sourceTree = "<group>";
 		};
+		FCA14FEE19F4B8B600B0F7F7 /* Activation */ = {
+			isa = PBXGroup;
+			children = (
+				FCA14FEF19F4B8D300B0F7F7 /* Login.h */,
+				FCA14FF019F4B8D300B0F7F7 /* Login.m */,
+				FCA14FF219F4B8E400B0F7F7 /* LoginResult.h */,
+				FCA14FF319F4B8E400B0F7F7 /* LoginResult.m */,
+			);
+			path = Activation;
+			sourceTree = "<group>";
+		};
+		FCA14FF519F4BB6800B0F7F7 /* Activation */ = {
+			isa = PBXGroup;
+			children = (
+				FCA14FF619F4BB6800B0F7F7 /* Login */,
+				FCA14FF819F4BB6800B0F7F7 /* Register */,
+			);
+			path = Activation;
+			sourceTree = "<group>";
+		};
+		FCA14FF619F4BB6800B0F7F7 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				FCA14FF719F4BB6800B0F7F7 /* LoginViewController.xib */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		FCA14FF819F4BB6800B0F7F7 /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				FCA14FF919F4BB6800B0F7F7 /* RegisterViewController.xib */,
+			);
+			path = Register;
+			sourceTree = "<group>";
+		};
+		FCA1500919F4FE9B00B0F7F7 /* Logout */ = {
+			isa = PBXGroup;
+			children = (
+				FCA1500A19F4FE9B00B0F7F7 /* LogoutViewController.xib */,
+			);
+			path = Logout;
+			sourceTree = "<group>";
+		};
+		FCA1500C19F4FEA700B0F7F7 /* Logout */ = {
+			isa = PBXGroup;
+			children = (
+				FCA1500D19F4FEA700B0F7F7 /* LogoutViewController.h */,
+				FCA1500E19F4FEA700B0F7F7 /* LogoutViewController.m */,
+			);
+			path = Logout;
+			sourceTree = "<group>";
+		};
 		FCA1D5F419EB8A9D00B25A8B /* Etalase */ = {
 			isa = PBXGroup;
 			children = (
@@ -2705,6 +2786,7 @@
 				FC36E19919B0673800AF74C1 /* navigation-chevron@2x.png in Resources */,
 				FC012DCE19BEB2360072A31A /* icon_19.png in Resources */,
 				FC08C6AE19DD39660062FA0C /* DetailListViewController.xib in Resources */,
+				FCA1500B19F4FE9B00B0F7F7 /* LogoutViewController.xib in Resources */,
 				FC012DCD19BEB2360072A31A /* icon_18@2x.png in Resources */,
 				FC36E1B619B0673800AF74C1 /* RegisterViewController.xib in Resources */,
 				FC21F34519BFE5BD00417CA8 /* icon_cart@2x.png in Resources */,
@@ -2821,6 +2903,7 @@
 				FC12A0B319D95E8D0049EB76 /* icon_arrow_white.png in Resources */,
 				FC3E7FE219D041B600053022 /* icon_check.png in Resources */,
 				FC012D8419BEA8A90072A31A /* icon_house@2x.png in Resources */,
+				FCA14FFA19F4BB6800B0F7F7 /* LoginViewController.xib in Resources */,
 				FC36E1A419B0673800AF74C1 /* thumb_product.png in Resources */,
 				FC012DBE19BEB2360072A31A /* icon_11.png in Resources */,
 				FC012DB919BEB2360072A31A /* icon_0.png in Resources */,
@@ -2832,6 +2915,7 @@
 				FC36E1BA19B0673800AF74C1 /* TKPDTabBarController.xib in Resources */,
 				FC18C7A119B581CC00BA162D /* CategoryMenuViewController.xib in Resources */,
 				FC18C78019B568D800BA162D /* CategoryResultViewController.xib in Resources */,
+				FCA14FFB19F4BB6800B0F7F7 /* RegisterViewController.xib in Resources */,
 				FC012DC419BEB2360072A31A /* icon_14.png in Resources */,
 				FC12A0B619D95E8D0049EB76 /* icon_category_white@2x.png in Resources */,
 				FC300B7D19C946430098F0D0 /* FilterViewController.xib in Resources */,
@@ -2945,7 +3029,7 @@
 		};
 		7C3B363ED25146719E39B6B0 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -2976,6 +3060,7 @@
 				FCCB4B2319E7E77200722891 /* ShopNotesDetailViewController.m in Sources */,
 				FC170DAC19E291A0003FF32F /* ShopInfoShipmentCell.m in Sources */,
 				FC3EEA7F19E4EA550094F4AE /* AlertListViewCell.m in Sources */,
+				FCA14FFF19F4E7FE00B0F7F7 /* NSUserDefaultCategory.m in Sources */,
 				FC36E17619B0673800AF74C1 /* CartViewController.m in Sources */,
 				FC28A37A19D3FDD0005815A0 /* ReviewProductOwner.m in Sources */,
 				FCBCCB2219DE53850099246C /* CatalogLocation.m in Sources */,
@@ -3018,7 +3103,6 @@
 				FC18C78E19B57F0D00BA162D /* CategoryViewCell.m in Sources */,
 				FC170D9419E23A8A003FF32F /* DetailCatalogSpecView.m in Sources */,
 				FCA1284F19EE2C32008C3E72 /* FavoritedResult.m in Sources */,
-				FCCB4B0419E7BCE800722891 /* test.m in Sources */,
 				FC53467319DC0AC100E5AAD9 /* CatalogSellerCell.m in Sources */,
 				FCA1287819EE6986008C3E72 /* ProfileFavoriteShopViewController.m in Sources */,
 				FC28A38E19D40454005815A0 /* StarsRateView.m in Sources */,
@@ -3095,8 +3179,10 @@
 				FC5210AD19C6C874004932C5 /* HotlistResult.m in Sources */,
 				FC21F35A19C01B5A00417CA8 /* RKClient.m in Sources */,
 				FCA1288E19EE6F58008C3E72 /* FavoriteShop.m in Sources */,
+				FCA1500F19F4FEA700B0F7F7 /* LogoutViewController.m in Sources */,
 				FC36E17519B0673800AF74C1 /* RegisterViewController.m in Sources */,
 				FC5210BC19C6F61C004932C5 /* HotlistDetailResult.m in Sources */,
+				FCA14FF419F4B8E400B0F7F7 /* LoginResult.m in Sources */,
 				FC36E17219B0673800AF74C1 /* NSStringCategory.m in Sources */,
 				FC53465919DBC2AE00E5AAD9 /* ProductList.m in Sources */,
 				FCCB4B2019E7DB9300722891 /* NotesList.m in Sources */,
@@ -3119,6 +3205,7 @@
 				FCA1D60319EBACAD00B25A8B /* EtalaseResult.m in Sources */,
 				FC196B1019ECE01F00E293CD /* NoteDetails.m in Sources */,
 				FCA1284819EE238D008C3E72 /* ShopFavoritedCell.m in Sources */,
+				FCA14FEA19F4AC7A00B0F7F7 /* DSBSecureStorage.m in Sources */,
 				FC2F207919BD5EE900C2B9B5 /* KatalogViewCell.m in Sources */,
 				FC12A09D19D916540049EB76 /* TalkResult.m in Sources */,
 				FC170DB119E291BE003FF32F /* ShopInfoPaymentCell.m in Sources */,
@@ -3127,6 +3214,7 @@
 				FC18C7A519B5950D00BA162D /* CategoryMenuViewCell.m in Sources */,
 				FC012E4419BEF9210072A31A /* DetailShopResult.m in Sources */,
 				FC53463B19DBBDB300E5AAD9 /* Catalog.m in Sources */,
+				FCA14FF119F4B8D300B0F7F7 /* Login.m in Sources */,
 				FCE0CDCD19E3D9D00006D5DD /* ShopInfoAddressView.m in Sources */,
 				FCA1D60019EBAC9300B25A8B /* Etalase.m in Sources */,
 			);

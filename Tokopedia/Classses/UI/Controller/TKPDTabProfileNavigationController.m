@@ -15,6 +15,8 @@
 #import "SortViewController.h"
 #import "ProductEtalaseViewController.h"
 
+#import "ProfileContactViewController.h"
+
 @interface TKPDTabProfileNavigationController () <UIScrollViewDelegate> {
 	UIView* _tabbar;
 	NSInteger _unloadSelectedIndex;
@@ -331,14 +333,15 @@
     if (selectedIndex<0) {
         selectedIndex = 0;
     }
+    
+    if (!_isnodata) {
+        id userinfo = _profileinfo;
+        [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_SETUSERINFODATANOTIFICATIONNAME object:nil userInfo:userinfo];
+    }
+    
 	if (selectedIndex == _selectedIndex) return;
     
 	if (_viewControllers != nil) {
-        
-        if (!_isnodata) {
-            id userinfo = _profileinfo;
-            [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_SETUSERINFODATANOTIFICATIONNAME object:nil userInfo:userinfo];
-        }
 		
 		//UIView* selecttabbar;
 		CGRect selectframe;

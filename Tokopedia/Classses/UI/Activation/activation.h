@@ -14,8 +14,8 @@
 
 #define kTKPDACTIVATION_APISTATUSDATA @"status"
 
-#define kTKPDACTIVATION_EMAILDATA @"email"
-#define kTKPDACTIVATION_PASSDATA @"password"
+#define kTKPDACTIVATION_DATAEMAILKEY @"email"
+#define kTKPDACTIVATION_DATAPASSKEY @"password"
 
 #define kTKPDACTIVATION_LOGINTITTLE @"HOME"
 
@@ -24,6 +24,16 @@
 
 #define kTKPDACTIVATIONLOGIN_APIRSPONSEFILE @"tmp/login.plist"
 
-#define kTKPDLOGIN_APIPATH @"ws-new/login.pl"
+#define kTKPDLOGIN_APIPATH @"login.pl"
+
+#define kTKPDLOGIN_APIISLOGINKEY @"is_login"
+#define kTKPDLOGIN_APISHOPIDKEY @"shop_id"
+#define kTKPDLOGIN_APIUSERIDKEY @"user_id"
+#define kTKPLOGIN_APIFULLNAMEKEY @"full_name"
+
+#define kTKPDLOGIN_APIUSEREMAILKEY @"user_email"
+#define kTKPDLOGIN_APIUSERPASSKEY @"user_password"
+
+//http://tkpdevel-pg.renny/ws/login.pl?user_email=zhihao_11@yahoo.com&user_password=123456
 
 #endif

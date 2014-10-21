@@ -11,10 +11,6 @@
 
 @interface ProfileContactViewController()
 
-@property (weak, nonatomic) IBOutlet UILabel *labelemail;
-@property (weak, nonatomic) IBOutlet UILabel *labelmesseger;
-@property (weak, nonatomic) IBOutlet UILabel *labelmobile;
-
 @end
 
 @implementation ProfileContactViewController
@@ -29,6 +25,7 @@
 }
 
 #pragma mark - View Life Cycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -40,7 +37,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
 }
 
 

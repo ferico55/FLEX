@@ -5,7 +5,7 @@
 //  Created by IT Tkpd on 8/19/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-#import <AFNetworking/AFNetworkActivityIndicatorManager.h>
+#import <AFNetworking/AFNetworking.h>
 
 #import "AppDelegate.h"
 
@@ -21,17 +21,26 @@
 
 #import "HotlistViewController.h"
 #import "ProductFeedViewController.h"
+#import "LogoutViewController.h"
+
+#import "LoginResult.h"
+#import "activation.h"
 
 @implementation AppDelegate
 {
-    NSMutableArray* viewcontrollers;
+    UITabBarController *_tabBarController;
+    BOOL _isauth;
+    LoginResult *_login;
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    id auth = [defaults loadCustomObjectWithKey:kTKPD_AUTHKEY];
+    _login = auth;
+    _isauth = _login.is_login;
     
     [self adjustnavigationbar];
-    [self adjusttabbar];
     
     // for setting status bar
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
@@ -42,10 +51,12 @@
     self.window.backgroundColor = [UIColor greenColor];
     [self.window makeKeyAndVisible];
     
-    [self createtabbar];
+    [self createtabbarController];
+    [self adjusttabbar];
     
     // Register for changes in network availability
-    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+    NSNotificationCenter* ns = [NSNotificationCenter defaultCenter];
+    [ns addObserver:self selector:@selector(applicationLogin:) name:TKPD_ISLOGINNOTIFICATIONNAME object:nil];
 //    [center addObserver:self selector:@selector(reachabilityDidChange:) name:RKReachabilityDidChangeNotification object:nil];
     
     return YES;
@@ -78,10 +89,10 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
--(void)createtabbar
+#pragma mark - methods
+-(void)createtabbarController
 {
-    UITabBarController *tabBarController = [UITabBarController new];
-    UITabBar *tabbar = tabBarController.tabBar;
+    _tabBarController = [UITabBarController new];
     
     [[UITabBarItem appearance] setTitleTextAttributes:@{ UITextAttributeTextColor : kTKPDNAVIGATION_TABBARTITLECOLOR }
                                              forState:UIControlStateNormal];
@@ -90,16 +101,25 @@
     
     /** TAB BAR INDEX 1 **/
     /** adjust view controllers at tab bar controller **/
-    viewcontrollers = [NSMutableArray new];
+    NSMutableArray *viewcontrollers = [NSMutableArray new];
     /** create new view controller **/
-    HotlistViewController *v = [HotlistViewController new];
-    [viewcontrollers addObject:v];
-    ProductFeedViewController *v1 = [ProductFeedViewController new];
-    [viewcontrollers addObject:v1];
-    ProductFeedViewController *v2 = [ProductFeedViewController new];
-    [viewcontrollers addObject:v2];
-    ProductFeedViewController *v3 = [ProductFeedViewController new];
-    [viewcontrollers addObject:v3];
+    if (!_isauth) {
+        // before login
+        HotlistViewController *v = [HotlistViewController new];
+        [viewcontrollers addObject:v];
+    }
+    else{
+        // after login
+        HotlistViewController *v = [HotlistViewController new];
+        [viewcontrollers addObject:v];
+        ProductFeedViewController *v1 = [ProductFeedViewController new];
+        [viewcontrollers addObject:v1];
+        ProductFeedViewController *v2 = [ProductFeedViewController new];
+        [viewcontrollers addObject:v2];
+        ProductFeedViewController *v3 = [ProductFeedViewController new];
+        [viewcontrollers addObject:v3];
+    }
+
     NSArray *titles = kTKPD_HOMETITLEARRAY;
     /** Adjust View Controller **/
     TKPDTabHomeNavigationController *swipevc = [TKPDTabHomeNavigationController new];
@@ -128,8 +148,15 @@
     [cartNavBar.navigationBar setTranslucent:NO];
     
     /** TAB BAR INDEX 5 **/
-    LoginViewController *more = [LoginViewController new];
-    UINavigationController *moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
+    UINavigationController *moreNavBar;
+    if (!_isauth) {
+        LoginViewController *more = [LoginViewController new];
+        moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
+    }
+    else{
+        LogoutViewController *more = [LogoutViewController new];
+        moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
+    }
     [moreNavBar.navigationBar setTranslucent:NO];
     
     /** for ios 7 need to set automatically adjust scrooll view inset **/
@@ -139,12 +166,20 @@
         categoryvc.extendedLayoutIncludesOpaqueBars = YES;
         search.extendedLayoutIncludesOpaqueBars = YES;
         cart.extendedLayoutIncludesOpaqueBars = YES;
-        more.extendedLayoutIncludesOpaqueBars = YES;
+        //more.extendedLayoutIncludesOpaqueBars = YES;
     }
     
     NSArray* controllers = [NSArray arrayWithObjects:swipevcNav, categoryNavBar, searchNavBar, cartNavBar, moreNavBar, nil];
-    tabBarController.viewControllers = controllers;
+    _tabBarController.viewControllers = controllers;
     //tabBarController.tabBarItem.title = nil;
+
+    _window.rootViewController = _tabBarController;
+    
+}
+
+-(void)adjusttabbar
+{
+    UITabBar *tabbar = _tabBarController.tabBar;
     
     UITabBarItem *tabBarItem1 = [tabbar.items objectAtIndex:0];
     UITabBarItem *tabBarItem2 = [tabbar.items objectAtIndex:1];
@@ -199,7 +234,7 @@
       [UIColor blackColor], UITextAttributeTextColor,
       [UIFont fontWithName:@"GothamLight" size:9.0], UITextAttributeFont,
       nil]
-                                             forState:UIControlStateNormal];
+                               forState:UIControlStateNormal];
     
     /** set tab bar item 3*/
     image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_SEARCH];
@@ -265,17 +300,11 @@
       [UIFont fontWithName:@"GothamLight" size:9.0], UITextAttributeFont,
       nil]
                                forState:UIControlStateNormal];
-
-    _window.rootViewController = tabBarController;
     
-}
-
--(void)adjusttabbar
-{
     #if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
     
     NSBundle* bundle = [NSBundle mainBundle];
-	UIImage* image;
+	//UIImage* image;
 	id proxy = [UITabBar appearance];
     
 	image = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_TABBARBG ofType:@"png"]]; //navigation-bg
@@ -335,11 +364,86 @@
     #endif
 }
 
+#pragma mark - Notification observers
+
+- (void)applicationLogin:(NSNotification*)notification
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    id auth = [defaults loadCustomObjectWithKey:kTKPD_AUTHKEY];
+    _login = auth;
+    _isauth = _login.is_login;
+    
+	// Assume tabController is the tab controller
+    // and newVC is the controller you want to be the new view controller at index 0
+    NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
+    
+    // after login
+    NSMutableArray *viewcontrollers = [NSMutableArray new];
+    if (!_isauth) {
+        // before login
+        HotlistViewController *v = [HotlistViewController new];
+        [viewcontrollers addObject:v];
+    }
+    else{
+        // after login
+        HotlistViewController *v = [HotlistViewController new];
+        [viewcontrollers addObject:v];
+        ProductFeedViewController *v1 = [ProductFeedViewController new];
+        [viewcontrollers addObject:v1];
+        ProductFeedViewController *v2 = [ProductFeedViewController new];
+        [viewcontrollers addObject:v2];
+        ProductFeedViewController *v3 = [ProductFeedViewController new];
+        [viewcontrollers addObject:v3];
+    }
+
+    NSArray *titles = kTKPD_HOMETITLEARRAY;
+    /** Adjust View Controller **/
+    TKPDTabHomeNavigationController *swipevc = [TKPDTabHomeNavigationController new];
+    UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:swipevc];
+    [swipevc setViewControllers:viewcontrollers animated:YES withtitles:titles];
+    [swipevc setSelectedIndex:0];
+    //[swipevc AdjustViewControllers:viewcontrollers withtitles:titles];
+    [swipevcNav.navigationBar setTranslucent:NO];
+    UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
+    [swipevc.navigationItem setTitleView:logo];
+    
+    UINavigationController *moreNavBar;
+    if (!_isauth) {
+        LoginViewController *more = [LoginViewController new];
+        moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
+    }
+    else{
+        LogoutViewController *more = [LogoutViewController new];
+        moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
+    }
+    [moreNavBar.navigationBar setTranslucent:NO];
+    
+    [newControllers replaceObjectAtIndex:0 withObject:swipevcNav];
+    [newControllers replaceObjectAtIndex:4 withObject:moreNavBar];
+    
+    [_tabBarController setViewControllers:newControllers animated:YES];
+    
+    [self adjusttabbar];
+}
+
 #pragma mark -
 #pragma mark Methods availability
 - (void)reachabilityChanged:(NSNotification *)notification
 {
-\
+    RKObjectManager *objectManager =  [RKObjectManager sharedClient];
+
+    //TODO:: set reachability
+    //[objectManager.HTTPClient setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status){
+    //    if (status == AFNetworkReachabilityStatusNotReachable) {
+    //        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No network connection"
+    //                                                        message:@"You must be connected to the internet to use this app."
+    //                                                       delegate:nil
+    //                                              cancelButtonTitle:@"OK"
+    //                                              otherButtonTitles:nil];
+    //        [alert show];
+    //    }
+    //}];
 }
+
 
 @end
