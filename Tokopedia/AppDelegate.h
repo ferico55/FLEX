@@ -15,16 +15,13 @@
 #endif
 #define kTKPD_REACHABILITYDELAY 3.0
 
-#define kJYAPI_REGISTERDEVICETOKEN @"regtoken"
-#define kJYAPI_REGISTERDEVICETOKENKEY @"token"
-
 #define kTKPD_APSKEY @"aps"
 #define kTKPD_BADGEKEY @"badge"
-#define kTKPD_INTERRUPTNOTIFICATIONKEY @"interrupt"
 
 #define kTKPDWINDOW_TINTLCOLOR [UIColor blackColor]
 
-#define kTKPD_HOMETITLEARRAY @[@"Hotlist",@"Produk Feed", @"Terakhir dilihat", @"Toko Favorite"]
+#define kTKPD_HOMETITLEISAUTHARRAY @[@"Hotlist",@"Produk Feed", @"Terakhir dilihat", @"Toko Favorite"]
+#define kTKPD_HOMETITLEARRAY @[@"Hotlist"]
 
 #define kTKPDNAVIGATION_TABBARTITLEARRAY @[@"Home", @"Category", @"Search", @"Cart", @"More"]
 
@@ -39,8 +36,14 @@
 #define kTKPDNAVIGATION_TABBARACTIVETITLECOLOR [UIColor blackColor]
 #define kTKPDNAVIGATION_TABBARTITLECOLOR [UIColor blackColor]
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate>
 
+@property (assign, nonatomic) BOOL isNetworkAvailable;
+@property (assign, nonatomic) BOOL isNetworkWiFi;
 @property (strong, nonatomic) UIWindow *window;
+
+//TODO:: Push Notifiation
+@property (assign, nonatomic) BOOL isPushNotificationRegistered;
+
 
 @end

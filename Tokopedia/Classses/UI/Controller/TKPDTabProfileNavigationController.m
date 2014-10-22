@@ -337,7 +337,7 @@
         
         if (!_isnodata) {
             id userinfo = _profileinfo;
-            [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_SETUSERINFODATANOTIFICATIONNAME object:nil userInfo:userinfo];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
         }
 		
 		//UIView* selecttabbar;
@@ -656,7 +656,7 @@
     
     if (!_isnodata) {
         id userinfo = _profileinfo;
-        [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_SETUSERINFODATANOTIFICATIONNAME object:nil userInfo:userinfo];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
     }
 }
 

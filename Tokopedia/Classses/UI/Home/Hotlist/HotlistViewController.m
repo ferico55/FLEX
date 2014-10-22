@@ -10,7 +10,6 @@
 #import "ExpiringCache.h"
 #import "home.h"
 #import "HotlistViewController.h"
-#import "TraktAPIClient.h"
 #import "HotlistResultViewController.h"
 
 #pragma mark - HotlistView
@@ -267,6 +266,7 @@
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+    
     
 }
 

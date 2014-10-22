@@ -12,11 +12,22 @@
 #import "FilterViewController.h"
 
 #pragma mark Filter View Controller
-@interface FilterViewController ()<FilterLocationViewControllerDelegate,FilterConditionViewControllerDelegate,UITextFieldDelegate>
+@interface FilterViewController ()
+    <FilterLocationViewControllerDelegate,
+    FilterConditionViewControllerDelegate,
+    UITextFieldDelegate,
+    UIScrollViewDelegate,
+    UIAlertViewDelegate>
 {
     UITextField *_activetextfield;
     NSMutableDictionary *_detailfilter;
     NSInteger _type;
+    
+    CGPoint _keyboardPosition;
+    CGSize _keyboardSize;
+    
+    CGRect _containerDefault;
+    CGSize _scrollviewContentSize;
 }
 @property (weak, nonatomic) IBOutlet UITextField *pricemaxcatalog;
 @property (weak, nonatomic) IBOutlet UITextField *pricemincatalog;
@@ -193,19 +204,20 @@
 
     
     /** keyboard notification **/
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(keyboardWillShow:)
-//                                                 name:UIKeyboardWillShowNotification
-//                                               object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(keyboardWillBeHidden:)
-//                                                 name:UIKeyboardWillHideNotification
-//                                               object:nil];
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(keyboardWillShow:)
+                        name:UIKeyboardWillShowNotification
+                        object:nil];
+    [nc addObserver:self selector:@selector(keyboardWillHide:)
+                        name:UIKeyboardWillHideNotification
+                        object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 #pragma mark - Memory Management
@@ -250,19 +262,19 @@
                         case 1:
                         case 2:
                         {   //product
-                            [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_FILTERPRODUCTPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                             break;
                         }
                         case 3:
                         {   //catalog
-                            [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_FILTERCATALOGPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                             break;
                         }
                         case 4:
                         {    //detail catalog
-                            [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                             UINavigationController *nav = (UINavigationController *)self.presentingViewController;
                             [self dismissViewControllerAnimated:NO completion:^{
                                 [nav popViewControllerAnimated:NO];
@@ -271,7 +283,7 @@
                         }
                         case 5:
                         {    //shop
-                            [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_FILTERSHOPPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERSHOPPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                             break;
                         }
@@ -284,7 +296,7 @@
                     }
                 }
                 else{
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"price max < price min" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"price max < price min" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
                     [alertView show];
                 }
                 break;
@@ -441,6 +453,12 @@
     [_detailfilter setObject:[conditiondata objectForKey:kTKPDFILTER_DATASORTNAMEKEY] forKey:kTKPDFILTER_APICONDITIONNAMEKEY];
 }
 
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+
+}
+
 #pragma mark - Text Field Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     _activetextfield = textField;
@@ -467,30 +485,48 @@
 
 #pragma mark - Keyboard Notification
 // Called when the UIKeyboardWillShowNotification is sent
-- (void)keyboardWillShow:(NSNotification *)notification {
-    
-    NSDictionary* info = [notification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-    _container.contentInset = contentInsets;
-    _container.scrollIndicatorInsets = contentInsets;
-    
-    // If active text field is hidden by keyboard, scroll it so it's visible
-    // Your application might not need or want this behavior.
-    CGRect aRect = self.view.frame;
-    aRect.size.height -= kbSize.height;
-    //if (!CGRectContainsPoint(aRect, _activetextfield.frame.origin) ) {
-        CGPoint scrollPoint = CGPointMake(0.0, _activetextfield.frame.origin.y-kbSize.height);
-        [_container setContentOffset:scrollPoint animated:YES];
-    //}
+- (void)keyboardWillShow:(NSNotification *)info {
+    if(_keyboardSize.height < 0){
+        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
+        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+        
+        
+        _scrollviewContentSize = [_container contentSize];
+        _scrollviewContentSize.height += _keyboardSize.height;
+        [_container setContentSize:_scrollviewContentSize];
+    }else{
+        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
+                              delay:0
+                            options: UIViewAnimationCurveEaseOut
+                         animations:^{
+                             _scrollviewContentSize = [_container contentSize];
+                             _scrollviewContentSize.height -= _keyboardSize.height;
+                             
+                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
+                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+                             _scrollviewContentSize.height += _keyboardSize.height;
+                             UIEdgeInsets inset = _container.contentInset;
+                             inset.top += ((_activetextfield.frame.origin.y-_activetextfield.frame.size.height) - _keyboardPosition.y);
+                             [_container setContentSize:_scrollviewContentSize];
+                             [_container setContentInset:inset];
+                         }
+                         completion:^(BOOL finished){
+                         }];
+
+    }
 }
-// Called when the UIKeyboardWillHideNotification is sent
-- (void)keyboardWillBeHidden:(NSNotification*)aNotification
-{
+
+- (void)keyboardWillHide:(NSNotification *)info {
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    _container.contentInset = contentInsets;
-    _container.scrollIndicatorInsets = contentInsets;
-    
+    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
+                          delay:0
+                        options: UIViewAnimationCurveEaseOut
+                     animations:^{
+                         _container.contentInset = contentInsets;
+                         _container.scrollIndicatorInsets = contentInsets;
+                     }
+                     completion:^(BOOL finished){
+                     }];
 }
 
 

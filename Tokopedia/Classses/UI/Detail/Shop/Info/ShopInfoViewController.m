@@ -140,7 +140,7 @@
             {
                 // sold item button action
                 NSDictionary *userinfo = @{kTKPDDETAIL_DATAINDEXKEY:@(0)};
-                [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_ETALASEPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             }

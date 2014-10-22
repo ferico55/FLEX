@@ -1,5 +1,5 @@
 //
-//  TraktAPIClient.m
+//  RKObjectManagerCategory.m
 //  Tokopedia
 //
 //  Created by IT Tkpd on 8/19/14.
@@ -7,7 +7,7 @@
 //
 
 #import "Tkpd.h"
-#import "TraktAPIClient.h"
+#import "RKObjectManagerCategory.h"
 
 // Set this to your Trakt API Key
 NSString * const kTraktAPIKey = @"8b0c367dd3ef0860f5730ec64e3bbdc9";

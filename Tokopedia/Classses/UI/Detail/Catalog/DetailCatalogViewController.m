@@ -90,7 +90,7 @@
     
     // add notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateViewDetailCatalog:) name:TKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAME object:nil];
+    [nc addObserver:self selector:@selector(updateViewDetailCatalog:) name:kTKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAMEKEY object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated

@@ -7,10 +7,10 @@
 //
 
 #import "home.h"
-#import "ProductFeedViewCell.h"
+#import "GeneralProductCell.h"
 #import "ProductFeedViewController.h"
 
-@interface ProductFeedViewController() <UITableViewDataSource, UITableViewDelegate, ProductFeedViewCellDelegate>
+@interface ProductFeedViewController() <UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate>
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UIView *footer;
@@ -134,12 +134,12 @@
     NSLog(@"going here");
     UITableViewCell* cell = nil;
     if (!_isnodata) {
-        NSString *cellid = kTKPDPRODUKFEEDCELL_IDENTIFIER;
+        NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
 		
-		cell = (ProductFeedViewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+		cell = (GeneralProductCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
-			cell = [ProductFeedViewCell newcell];
-			((ProductFeedViewCell*)cell).delegate = self;
+			cell = [GeneralProductCell newcell];
+			((GeneralProductCell*)cell).delegate = self;
 		}
         
         if(_product.count > indexPath.row) {
@@ -163,7 +163,7 @@
             
 		}
         
-        ((ProductFeedViewCell*)cell).data = @{kTKPDHOME_DATAINDEXPATHKEY: indexPath, kTKPDHOME_DATACOLUMNSKEY: itemsForView};
+        ((GeneralProductCell*)cell).data = @{kTKPDHOME_DATAINDEXPATHKEY: indexPath, kTKPDHOME_DATACOLUMNSKEY: itemsForView};
         
 	} else {
 		static NSString *CellIdentifier = kTKPDHOME_STANDARDTABLEVIEWCELLIDENTIFIER;

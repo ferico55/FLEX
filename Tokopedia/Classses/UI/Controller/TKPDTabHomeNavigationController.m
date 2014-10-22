@@ -169,7 +169,12 @@
         }
         
         /** initialization mutable variable **/
-        _buttons = [NSMutableArray new];
+
+        [_buttons removeAllObjects];
+        [_chevrons removeAllObjects];
+        for (UIButton *v in [_scrollviewtop subviews]) {
+            [v removeFromSuperview];
+        }
         
         NSInteger widthcontenttop=0;
         

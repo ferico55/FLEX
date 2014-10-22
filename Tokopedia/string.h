@@ -26,5 +26,10 @@
 #define kTKPD_APIRESULTKEY @"result"
 #define kTKPD_APIURINEXTKEY @"uri_next"
 #define kTKPD_APILISTKEY @"list"
+#define kTKPD_APIERRORMESSAGEKEY @"message_error"
+
+#define kTKPDNETWORK_ERRORTITLE @"ERROR"
+#define kTKPDNETWORK_ERRORDESCS @"Network Error"
+#define kTKPDBUTTON_OKTITLE @"OK"
 
 #endif

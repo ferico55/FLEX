@@ -6,9 +6,10 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+#import "Etalase.h"
+
 #import "detail.h"
 #import "ProductEtalaseCell.h"
-#import "Etalase.h"
 #import "ProductEtalaseViewController.h"
 
 @interface ProductEtalaseViewController ()<UITableViewDataSource, UITableViewDelegate, ProductEtalaseCellDelegate>{
@@ -135,7 +136,7 @@
                 NSIndexPath *indexpath =[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 NSDictionary *orderdict = _datas[indexpath.row];
                 NSDictionary *userinfo = @{kTKPDDETAIL_DATAETALASEKEY:orderdict,kTKPDDETAILETALASE_DATAINDEXPATHKEY:indexpath};
-                [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_ETALASEPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             }

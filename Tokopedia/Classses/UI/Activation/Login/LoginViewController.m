@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+#import "Login.h"
+
 #import "activation.h"
 #import "RegisterViewController.h"
 #import "LoginViewController.h"
@@ -16,22 +18,26 @@
     
     NSMutableDictionary *_activation;
     
-    BOOL _isnodata;
-   // __weak AFHTTPRequestOperation *_requestaction;
+    BOOL _isnodata;    
+    NSInteger _requestcount;
+    NSTimer *_timer;
+    
+    BOOL _isrefreshview;
+    UIRefreshControl *_refreshControl;
+    
+    Login *_login;
+        
+    __weak RKObjectManager *_objectmanager;
+    __weak RKManagedObjectRequestOperation *_request;
+    NSOperationQueue *_operationQueue;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *container;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldemail;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldpass;
-@property (weak, nonatomic) IBOutlet UIButton *buttonsubmit;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 -(void)keyboardWillShow:(NSNotification *)notification;
-
-//-(void)cancelaction;
-//-(void)requestaction:(id)object;
-//-(void)requestactionsuccess:(id)object;
-//-(void)requestactionfailure:(id)object;
-//-(void)requestactionprocess;
 
 @end
 
@@ -64,7 +70,7 @@
     
     UIBarButtonItem* barbutton1;
     
-    [self.navigationController.navigationBar setTranslucent:NO];
+    [self.navigationController.navigationBar setTranslucent:YES];
     
     //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background-light-pt"]];
     
@@ -99,7 +105,7 @@
     [_container setFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height+64, _container.frame.size.width, _container.frame.size.height)];
     
     _activation = [NSMutableDictionary new];
-    
+    _operationQueue = [NSOperationQueue new];
     
     /** keyboard notification **/
 //    [[NSNotificationCenter defaultCenter] addObserver:self
@@ -109,10 +115,24 @@
 //    [[NSNotificationCenter defaultCenter] addObserver:self
 //                                             selector:@selector(keyboardWillBeHidden:)
 //                                                 name:UIKeyboardWillHideNotification
-//                                               object:nil];
+//
 }
 
-#pragma mark - View Gesture
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self configureRestKitLogin];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self cancelLogin];
+    //    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    //    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+#pragma mark - View Actipn
 -(IBAction)tap:(id)sender
 {
     [_activetextfield resignFirstResponder];
@@ -124,14 +144,25 @@
             case 10:
             {
                 /** SIGN IN **/
-                NSString *email = [_activation objectForKey:kTKPDACTIVATION_EMAILDATA];
-                NSString *pass = [_activation objectForKey:kTKPDACTIVATION_PASSDATA];
-                if (![email isEmail]) {
-                    
+                NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
+                NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
+                if (!email) {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Email must be filled" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alertView show];
                 }
-                else if (email && pass && [email isEmail]) {
-                    NSDictionary *userinfo = @{kTKPDACTIVATION_EMAILDATA : email, kTKPDACTIVATION_PASSDATA : pass};
-                    //[self requestaction:userinfo];
+                else if (!pass) {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Password must be filled" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alertView show];
+                }
+                else{
+                    if (![email isEmail]) {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Invalid Email Format" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                    [alertView show];
+                    }
+                    else {
+                        NSDictionary *userinfo = @{kTKPDACTIVATION_DATAEMAILKEY : email, kTKPDACTIVATION_DATAPASSKEY : pass};
+                        [self LoadDataActionLogin:userinfo];
+                    }
                 }
                 break;
             }
@@ -149,17 +180,9 @@
     
 }
 
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-}
-
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-//    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -173,79 +196,141 @@
     data = _data;
 }
 
-//#pragma mark - Request
-//#pragma mark - - Request Action Submit
-//
-//-(void)cancelaction{
-//    [_requestaction cancel];
-//    _requestaction = nil;
-//}
-//
-//-(void)requestaction:(id)object
-//{
-//    //NSDictionary* tkpd = [_data dictionaryForKey:TKPD_AUTHKEY];
-//    NSDictionary *userinfo = object;
-//    NSString *email = [userinfo objectForKey:kTKPDACTIVATION_EMAILDATA];
-//    NSString *pass = [userinfo objectForKey:kTKPDACTIVATION_PASSDATA];
-//    
-//	NSDictionary* param = @{kTKPDACTIVATION_APIEMAILDATA :email?:@""
-//                            ,kTKPDACTIVATION_APIPASSDATA :pass?:@""};
-//	   
-//    /** Use This For Post Param**/
-//    //[Client setParameterEncoding:AFJSONParameterEncoding];
-//    //_requestaction = (AFJSONRequestOperation*)[client postPath:kTKPDLOGIN_APIPATH parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//    
-//    TraktAPIClient *client = [TraktAPIClient sharedClient];
-//    
-//    [client GET:kTKPDLOGIN_APIPATH  parameters:param success:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        
-//        _requestaction = nil;
-//        [self requestactionsuccess:responseObject];
-//        
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        
-//        _requestaction = nil;
-//        [self requestactionfailure:error];
-//        
-//    }];
-//}
-//
-//-(void)requestactionsuccess:(id)object
-//{
-//    NSDictionary *response = (NSDictionary*)object;
-//    [_activation addEntriesFromDictionary:response];
-//    NSString *status = [response objectForKey:kTKPDACTIVATION_APISTATUSDATA];
-//    if (status) {
-//        
-//#ifdef _DEBUG
-//        NSString* path = [NSHomeDirectory() stringByAppendingPathComponent:kTKPDACTIVATIONLOGIN_APIRSPONSEFILE];
-//        [response writeToFile:path atomically:YES];
-//#endif
-//    }else{
-//        [self requestactionfailure:object];
-//    }
-//    
-//    [self requestactionprocess];
-//}
-//
-//-(void)requestactionfailure:(id)object
-//{
-//#ifdef _DEBUG
-//    
-//	NSDictionary* response;
-//	
-//	NSString* path = [NSHomeDirectory() stringByAppendingPathComponent:kTKPDACTIVATIONLOGIN_APIRSPONSEFILE];
-//	response = [NSDictionary dictionaryWithContentsOfFile:path];
-//#endif
-//    
-//    [self requestactionprocess];
-//    
-//}
-//
-//-(void)requestactionprocess
-//{
-//    
-//}
+#pragma mark - Request and Mapping
+-(void)cancelLogin
+{
+    [_request cancel];
+    _request = nil;
+    [_objectmanager.operationQueue cancelAllOperations];
+    _objectmanager = nil;
+}
+
+- (void)configureRestKitLogin
+{
+    // initialize RestKit
+    _objectmanager =  [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Login class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LoginResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDLOGIN_APIISLOGINKEY:kTKPDLOGIN_APIISLOGINKEY,
+                                                       kTKPDLOGIN_APISHOPIDKEY:kTKPDLOGIN_APISHOPIDKEY,
+                                                       kTKPDLOGIN_APIUSERIDKEY:kTKPDLOGIN_APIUSERIDKEY,
+                                                       kTKPDLOGIN_APIFULLNAMEKEY:kTKPDLOGIN_APIFULLNAMEKEY
+                                                        }];
+    //add relationship mapping
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDLOGIN_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+}
+
+- (void)LoadDataActionLogin:(id)userinfo
+{
+    if (_request.isExecuting) return;
+    
+    NSDictionary *data = userinfo;
+    
+    _requestcount++;
+    
+    [_act startAnimating];
+    
+	NSDictionary* param = @{
+                            kTKPDLOGIN_APIUSEREMAILKEY : [data objectForKey:kTKPDACTIVATION_DATAEMAILKEY]?:@(0),
+                            kTKPDLOGIN_APIUSERPASSKEY : [data objectForKey:kTKPDACTIVATION_DATAPASSKEY]?:@(0)
+                            };
+    
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDLOGIN_APIPATH parameters:param];
+    
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [_timer invalidate];
+        _timer = nil;
+        [_act stopAnimating];
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        [self requestsuccessLogin:mappingResult];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+        [_timer invalidate];
+        _timer = nil;
+        [_act stopAnimating];
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        [self requestfailureLogin:error];
+    }];
+    [_operationQueue addOperation:_request];
+    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeoutLogin) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+}
+
+-(void)requestsuccessLogin:(id)object
+{
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    
+    id stats = [result objectForKey:@""];
+    
+    _login = stats;
+    BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    if (status) {
+        _isnodata = NO;
+
+        if (!_login.message_error) {
+            [self.tabBarController setSelectedIndex:0];
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            [defaults saveCustomObject:_login.result key:kTKPD_AUTHKEY];
+            //[[NSUserDefaults standardUserDefaults]setObject:_login.result forKey:kTKPD_AUTHKEY];
+            [defaults synchronize];
+            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+            [nc postNotificationName:kTKPD_ISLOGINNOTIFICATIONNAMEKEY object:nil userInfo:@{}];
+        }
+        else
+        {
+            NSArray *messages = _login.message_error;
+            NSString *message = [[messages valueForKey:@"description"] componentsJoinedByString:@"\n"];
+
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alertView show];
+        }
+    }
+}
+
+-(void)requesttimeoutLogin
+{
+    [self cancelLogin];
+}
+
+-(void)requestfailureLogin:(id)object
+{
+    [self cancelLogin];
+    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
+    if ([(NSError*)object code] == NSURLErrorCancelled) {
+        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+            //_table.tableFooterView = _footer;
+            [_act startAnimating];
+            //[self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            //[self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+        }
+        else
+        {
+            [_act stopAnimating];
+            //_table.tableFooterView = nil;
+        }
+    }
+    else
+    {
+        [_act stopAnimating];
+        //_table.tableFooterView = nil;
+    }
+}
 
 
 #pragma mark - Delegate
@@ -257,10 +342,10 @@
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     if (textField == _textfieldemail) {
-        [_activation setValue:textField.text forKey:kTKPDACTIVATION_EMAILDATA];
+        [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAEMAILKEY];
     }
     else if (textField == _textfieldpass){
-        [_activation setValue:textField.text forKey:kTKPDACTIVATION_PASSDATA];
+        [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAPASSKEY];
     }
 }
 
