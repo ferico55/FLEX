@@ -29,7 +29,7 @@
 #pragma mark TKPDAlertView
 
 @interface TKPDAlertView : UIView {
-    //#if __IPHONE_OS_VERSION_MIN_REQUIRED >= JURY_MINIMUMIOSVERSION
+    //#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
     //	id<TKPDAlertViewDelegate> __weak _delegate;
     //#else
     //	id<TKPDAlertViewDelegate> _delegate;

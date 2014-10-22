@@ -134,19 +134,19 @@
                     case 1:
                     case 2:
                     {   //product
-                        [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_FILTERPRODUCTPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                         break;
                     }
                     case 3:
                     {   //catalog
-                        [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_FILTERCATALOGPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                         break;
                     }
                     case 4:
                     {    //detail catalog
-                        [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                         UINavigationController *nav = (UINavigationController *)self.presentingViewController;
                         [self dismissViewControllerAnimated:NO completion:^{
                             [nav popViewControllerAnimated:NO];
@@ -160,7 +160,7 @@
                     }
                     case 6:
                     {   //shop product
-                        [[NSNotificationCenter defaultCenter] postNotificationName:TKPD_FILTERPRODUCTPOSTNOTIFICATIONNAME object:nil userInfo:userinfo];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                         break;
                     }

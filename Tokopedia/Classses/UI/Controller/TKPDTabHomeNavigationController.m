@@ -161,7 +161,10 @@
         {
             [self.tabBarController.tabBar setTranslucent:NO];
         }
-        
+        if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
+            self.edgesForExtendedLayout = UIRectEdgeNone;
+        }
+                
         /** for ios 7 need to set automatically adjust scrooll view inset**/
         if([self respondsToSelector:@selector(setAutomaticallyAdjustsScrollViewInsets:)])
         {
@@ -169,7 +172,12 @@
         }
         
         /** initialization mutable variable **/
-        _buttons = [NSMutableArray new];
+
+        [_buttons removeAllObjects];
+        [_chevrons removeAllObjects];
+        for (UIButton *v in [_scrollviewtop subviews]) {
+            [v removeFromSuperview];
+        }
         
         NSInteger widthcontenttop=0;
         

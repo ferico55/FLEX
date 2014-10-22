@@ -64,15 +64,17 @@
     
     NSString *cellid = kTKPDALERTLISTVIEWCELL_IDENTIFIER;
     
-    cell = (AlertListViewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-    if (cell == nil) {
-        cell = [AlertListViewCell newcell];
-        ((AlertListViewCell*)cell).delegate = self;
-    }
-    
-    if (_list.count > indexPath.row) {
-        ((AlertListViewCell*)cell).label.text = _list[indexPath.row];
-        ((AlertListViewCell*)cell).indexpath = indexPath;
+    if (_list.count>0) {
+        cell = (AlertListViewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+        if (cell == nil) {
+            cell = [AlertListViewCell newcell];
+            ((AlertListViewCell*)cell).delegate = self;
+        }
+        
+        if (_list.count > indexPath.row) {
+            ((AlertListViewCell*)cell).label.text = _list[indexPath.row];
+            ((AlertListViewCell*)cell).indexpath = indexPath;
+        }
     }
     
     return cell;

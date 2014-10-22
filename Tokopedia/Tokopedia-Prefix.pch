@@ -10,19 +10,23 @@
 #warning "This project uses features only available in iOS SDK 3.0 and later."
 #endif
 
+#import <SystemConfiguration/SystemConfiguration.h>
+
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
     #import <RestKit/RestKit.h>
     #import <CoreData/CoreData.h>
-    #import  <SystemConfiguration/SystemConfiguration.h>
+    #import <MobileCoreServices/MobileCoreServices.h>
 
     #import "TkpdImg.h"
-    #import "TraktAPIClient.h"
+    #import "RKObjectManagerCategory.h"
     #import "NSStringCategory.h"
     #import "NSArrayCategory.h"
     #import "UIImageViewCategory.h"
     #import "UIImageView+AFNetworking.h"
+    #import "NSUserDefaultCategory.h"
+
     #import "Tkpd.h"
     #import "string.h"
 

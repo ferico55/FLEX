@@ -15,18 +15,17 @@
 #endif
 #define kTKPD_REACHABILITYDELAY 3.0
 
-#define kJYAPI_REGISTERDEVICETOKEN @"regtoken"
-#define kJYAPI_REGISTERDEVICETOKENKEY @"token"
-
 #define kTKPD_APSKEY @"aps"
 #define kTKPD_BADGEKEY @"badge"
-#define kTKPD_INTERRUPTNOTIFICATIONKEY @"interrupt"
 
 #define kTKPDWINDOW_TINTLCOLOR [UIColor blackColor]
 
-#define kTKPD_HOMETITLEARRAY @[@"Hotlist",@"Produk Feed", @"Terakhir dilihat", @"Toko Favorite"]
+#define kTKPD_HOMETITLEISAUTHARRAY @[@"Hotlist",@"Produk Feed", @"Terakhir dilihat", @"Toko Favorite"]
+#define kTKPD_HOMETITLEARRAY @[@"Hotlist"]
 
 #define kTKPDNAVIGATION_TABBARTITLEARRAY @[@"Home", @"Category", @"Search", @"Cart", @"More"]
+#define kTKPDNAVIGATION_TABBARACTIVETITLECOLOR [UIColor blackColor]
+#define kTKPDNAVIGATION_TABBARTITLECOLOR [UIColor blackColor]
 
 #define kTKPDNAVIGATION_BACKGROUNDINSET UIEdgeInsetsZero
 #define kTKPDNAVIGATION_TITLEFONT [UIFont fontWithName:@"Lato-Bold" size:16.0f]
@@ -36,11 +35,17 @@
 #define kTKPDNAVIGATION_BACKBUTTONINSET UIEdgeInsetsZero
 
 #define kTKPDNAVIGATION_NAVIGATIONBGCOLOR [UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1]
-#define kTKPDNAVIGATION_TABBARACTIVETITLECOLOR [UIColor blackColor]
-#define kTKPDNAVIGATION_TABBARTITLECOLOR [UIColor blackColor]
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
 
+@interface AppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate>
+
+@property (assign, nonatomic) BOOL isNetworkAvailable;
+@property (assign, nonatomic) BOOL isNetworkWiFi;
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) UIViewController *viewController;
+
+//TODO:: Push Notifiation
+@property (assign, nonatomic) BOOL isPushNotificationRegistered;
+
 
 @end

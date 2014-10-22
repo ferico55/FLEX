@@ -19,6 +19,7 @@ PODS:
   - TransitionKit (1.1.1)
 
 DEPENDENCIES:
+  - AFNetworking (~> 1.3)
   - RestKit (~> 0.20.0)
 
 SPEC CHECKSUMS:

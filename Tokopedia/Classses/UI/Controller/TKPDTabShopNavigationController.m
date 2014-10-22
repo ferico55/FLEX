@@ -188,8 +188,8 @@
     _operationQueue = [NSOperationQueue new];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateView:) name:TKPD_FILTERPRODUCTPOSTNOTIFICATIONNAME object:nil];
-    [nc addObserver:self selector:@selector(updateView:) name:TKPD_ETALASEPOSTNOTIFICATIONNAME object:nil];
+    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil];
+    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY object:nil];
     
     _detailfilter = [NSMutableDictionary new];
 }

@@ -53,7 +53,7 @@
     
     // add notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateView:) name:TKPD_SETUSERINFODATANOTIFICATIONNAME object:nil];
+    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY object:nil];
 
 }
 

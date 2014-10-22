@@ -10,7 +10,6 @@
 #import "ExpiringCache.h"
 #import "home.h"
 #import "HotlistViewController.h"
-#import "TraktAPIClient.h"
 #import "HotlistResultViewController.h"
 
 #pragma mark - HotlistView
@@ -61,6 +60,7 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    [self.navigationController.navigationBar setTranslucent:NO];
     
     _operationQueue = [NSOperationQueue new];
     
@@ -111,6 +111,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
@@ -268,6 +269,7 @@
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+    
     
 }
 

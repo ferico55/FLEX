@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define kTKPDCATALOGSELLERCELL_IDENTIFIER @"CatalogSellerCell"
+#define kTKPDCATALOGSELLERCELL_IDENTIFIER @"CatalogSellerCellIdentifier"
 
 @protocol CatalogSellerCellDelegate <NSObject>
 @required
