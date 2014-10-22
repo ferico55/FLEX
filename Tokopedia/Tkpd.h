@@ -14,6 +14,12 @@
 #define kTkpdAPIkey @"8b0c367dd3ef0860f5730ec64e3bbdc9" //TODO:: Remove api key
 #define kTKPD_AUTHKEY @"auth"
 
+#define kTKPD_AUTHKEY @"auth"
+#define kTKPD_ISLOGINKEY @"is_login"
+#define kTKPD_USERIDKEY @"user_id"
+#define kTKPD_SHOPIDKEY @"shop_id"
+#define kTKPD_FULLNAMEKEY @"full_name"
+
 #define is4inch  ([[UIScreen mainScreen] bounds].size.height == 568)?TRUE:FALSE
 
 #define kTkpdIndexSetStatusCodeOK [NSIndexSet indexSetWithIndex:200] //statuscode 200 = OK
@@ -41,5 +47,7 @@
 #define kTKPD_APPLICATIONKEY @"application"
 #define kTKPD_INSTALLEDKEY @"installed"
 #define kTKPD_INTERRUPTNOTIFICATIONNAMEKEY @"interrupt"
+
+#define TKPD_ISLOGINNOTIFICATIONNAME @"setlogin"
 
 #endif

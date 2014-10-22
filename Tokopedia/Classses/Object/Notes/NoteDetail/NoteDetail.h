@@ -12,6 +12,7 @@
 
 @interface NoteDetail : NSObject
 
+@property (nonatomic, strong) NSArray *message_error;
 @property (nonatomic, strong) NSString *status;
 @property (nonatomic, strong) NSString *server_process_time;
 @property (nonatomic, strong) NoteDetailResult *result;
