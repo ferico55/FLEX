@@ -18,6 +18,7 @@
 
 #import "TKPDAlertView.h"
 #import "AlertListView.h"
+#import "StickyAlert.h"
 
 #pragma mark - Product Review View Controller
 @interface ProductReviewViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, GeneralReviewCellDelegate>
@@ -260,10 +261,17 @@
         UIButton *btn = (UIButton*)sender;
         switch (btn.tag) {
             case 10:
+            {
                 // see more action
 //                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                [self.navigationController popViewControllerAnimated:YES];
+                id stickyalert = [StickyAlert new];
+//                StickyAlert *stickyalert = [[StickyAlert alloc]init];
+                [stickyalert initView:self.view];
+                [stickyalert alertError:[NSArray arrayWithObjects:@"Error 1", @"Error 2", @"Error3",@"Error3",@"Error3",@"Error3",@"Error3", nil]];
+                
+//                [self.navigationController popViewControllerAnimated:YES];
                 break;
+            }
              case 11:
             {
                 // Action Advance Review Quality / Accuracy

@@ -111,6 +111,7 @@
 		85E7ED5E19F5230C00554572 /* ProfileFavoriteShopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85E7ED5819F5230C00554572 /* ProfileFavoriteShopCell.xib */; };
 		85E7ED5F19F5230C00554572 /* ProfileFavoriteShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85E7ED5919F5230C00554572 /* ProfileFavoriteShopViewController.xib */; };
 		85E7ED6119F5266800554572 /* TKPDTabProfileNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85E7ED6019F5266800554572 /* TKPDTabProfileNavigationController.xib */; };
+		85E7ED6419F7836200554572 /* StickyAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E7ED6219F7836200554572 /* StickyAlert.m */; };
 		85E8FBFB19EE121100E12752 /* ProductEtalaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E8FBF819EE121100E12752 /* ProductEtalaseCell.m */; };
 		85E8FBFC19EE121100E12752 /* ProductEtalaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E8FBFA19EE121100E12752 /* ProductEtalaseViewController.m */; };
 		85E8FC0219EE127100E12752 /* HotlistResultViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E8FBFF19EE127100E12752 /* HotlistResultViewCell.m */; };
@@ -594,6 +595,8 @@
 		85E7ED5819F5230C00554572 /* ProfileFavoriteShopCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileFavoriteShopCell.xib; sourceTree = "<group>"; };
 		85E7ED5919F5230C00554572 /* ProfileFavoriteShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileFavoriteShopViewController.xib; sourceTree = "<group>"; };
 		85E7ED6019F5266800554572 /* TKPDTabProfileNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabProfileNavigationController.xib; sourceTree = "<group>"; };
+		85E7ED6219F7836200554572 /* StickyAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyAlert.m; sourceTree = "<group>"; };
+		85E7ED6519F783AA00554572 /* StickyAlert.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StickyAlert.h; sourceTree = "<group>"; };
 		85E8FBF719EE121100E12752 /* ProductEtalaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductEtalaseCell.h; sourceTree = "<group>"; };
 		85E8FBF819EE121100E12752 /* ProductEtalaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductEtalaseCell.m; sourceTree = "<group>"; };
 		85E8FBF919EE121100E12752 /* ProductEtalaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProductEtalaseViewController.h; path = ../ProductEtalaseViewController.h; sourceTree = "<group>"; };
@@ -1148,6 +1151,8 @@
 		85627F2A19E6B1030085DDF5 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				85E7ED6519F783AA00554572 /* StickyAlert.h */,
+				85E7ED6219F7836200554572 /* StickyAlert.m */,
 				85627F2B19E6B1030085DDF5 /* ProgressBarView.h */,
 				85627F2C19E6B1030085DDF5 /* ProgressBarView.m */,
 				85627F2D19E6B1030085DDF5 /* StarsRateView.h */,
@@ -3394,6 +3399,7 @@
 				FC24856A19C16168008755DA /* TKPDTabNavigationController.m in Sources */,
 				85627F3C19E6B1030085DDF5 /* GeneralReviewCell.m in Sources */,
 				FC012DF519BEE5450072A31A /* DetailProductWholesaleCell.m in Sources */,
+				85E7ED6419F7836200554572 /* StickyAlert.m in Sources */,
 				85E8FC2E19EE16AF00E12752 /* NoteDetail.m in Sources */,
 				FC2F207A19BD5EE900C2B9B5 /* KatalogViewController.m in Sources */,
 				FC2F207919BD5EE900C2B9B5 /* KatalogViewCell.m in Sources */,

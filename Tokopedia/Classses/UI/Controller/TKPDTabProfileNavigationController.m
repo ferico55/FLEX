@@ -108,6 +108,7 @@
         
         _requestcount = 0;
         _isnodata = YES;
+        self.title = KTKPDTITLE_PEOPLE;
     }
     return self;
 }
@@ -147,16 +148,16 @@
 	[barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
     
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-    }
-    else
-        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-	[_barbuttoninfo setTag:11];
-    _barbuttoninfo.enabled = NO;
-    self.navigationItem.rightBarButtonItem = _barbuttoninfo;
+//    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+//        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+//    }
+//    else
+//        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+//	[_barbuttoninfo setTag:11];
+//    _barbuttoninfo.enabled = NO;
+//    self.navigationItem.rightBarButtonItem = _barbuttoninfo;
     [_scrollview addSubview:_contentview];
     
     _operationQueue = [NSOperationQueue new];
@@ -293,6 +294,8 @@
 		_selectedIndex = -1;
 		//_navigationIndex = -1;
 	}
+    
+    [self setGreenBorderButton:_chevrons[_selectedIndex]];
 }
 
 - (void)setSelectedViewController:(UIViewController *)selectedViewController
@@ -497,6 +500,8 @@
 		NSInteger index = _selectedIndex;
         index = sender.tag;
         
+        [self setGreenBorderButton:sender];
+        
 		BOOL should = YES;
 		
 		if (([_delegate respondsToSelector:@selector(tabBarController:shouldSelectViewController:)])) {
@@ -513,6 +518,25 @@
 			}
 		}
 	}
+}
+
+-(void) setGreenBorderButton:(UIButton*)sender {
+    for(int i=0;i<3;i++) {
+        CALayer *whiteBorder = [CALayer layer];
+        
+        whiteBorder.backgroundColor = [[UIColor whiteColor] CGColor];
+        whiteBorder.frame = CGRectMake(0, CGRectGetHeight(sender.frame)+4, CGRectGetWidth([_chevrons[i] frame]), 2.0f);
+        [_chevrons[i] setTitleColor:[UIColor colorWithRed:(111/255.0) green:(113/255.0) blue:(121/255.0) alpha:1.0] forState:UIControlStateNormal];
+        
+        [[_chevrons[i] layer] addSublayer:whiteBorder];
+    }
+    
+    CALayer *upperBorder = [CALayer layer];
+    upperBorder.backgroundColor = [[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] CGColor];
+    upperBorder.frame = CGRectMake(0, CGRectGetHeight(sender.frame)+4, CGRectGetWidth(sender.frame), 2.0f);
+    [sender setTitleColor:[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] forState:UIControlStateNormal];
+    
+    [[sender layer] addSublayer:upperBorder];
 }
 
 -(IBAction)tapbutton:(UIButton *)sender
@@ -686,7 +710,8 @@
                                                           kTKPDPROFILE_APIUSERPHONEKEY:kTKPDPROFILE_APIUSERPHONEKEY,
                                                           kTKPDPROFILE_APIUSERIDKEY:kTKPDPROFILE_APIUSERIDKEY,
                                                           kTKPDPROFILE_APIUSERIMAGEKEY:kTKPDPROFILE_APIUSERIMAGEKEY,
-                                                          kTKPDPROFILE_APIUSERNAMEKEY:kTKPDPROFILE_APIUSERNAMEKEY
+                                                          kTKPDPROFILE_APIUSERNAMEKEY:kTKPDPROFILE_APIUSERNAMEKEY,
+                                                          kTKPDPROFILE_APIUSERBIRTHKEY:kTKPDPROFILE_APIUSERBIRTHKEY,
                                                           }];
     
     RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
@@ -731,7 +756,7 @@
     
 	NSDictionary* param = @{
                             kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEINFOKEY,
-                            kTKPDPROFILE_APIUSERIDKEY : @(602) //@([[_data objectForKey:kTKPDPROFILE_APIUSERIDKEY]integerValue])
+                            kTKPDPROFILE_APIUSERIDKEY : @([[_data objectForKey:kTKPDPROFILE_APIUSERIDKEY]integerValue])
                             };
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_PEOPLEAPIPATH parameters:param];
     

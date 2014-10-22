@@ -28,6 +28,8 @@
 #import "CategoryMenuViewController.h"
 #import "DetailProductViewController.h"
 
+#import "StickyAlert.h"
+
 @interface HotlistResultViewController () <UITableViewDataSource,UITableViewDelegate, GeneralProductCellDelegate>
 {
     NSInteger _page;
@@ -97,6 +99,26 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
+    //error experimental
+//    UILabel* errorlabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, 100)];
+//    
+//    NSArray *array1 = [NSArray arrayWithObjects:@"Error 1", @"Error 2", @"Error3", nil];
+//    NSString *joinedstring = [NSString convertHTML:[array1 componentsJoinedByString:@"\n"]];
+//    
+//    CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
+//    CGSize expectedLabelSize = [joinedstring sizeWithFont:errorlabel.font constrainedToSize:maximumLabelSize lineBreakMode:errorlabel.lineBreakMode];
+//    CGRect newFrame = errorlabel.frame;
+//    newFrame.size.height = expectedLabelSize.height;
+//    errorlabel.frame = newFrame;
+//
+//    errorlabel.backgroundColor = [UIColor grayColor];
+//    errorlabel.text = joinedstring;
+//    errorlabel.numberOfLines = 0;
+//    [self.view addSubview: errorlabel];
+    //end of error experimental
+    
+    
     
     // set title navigation
     NSString * title = [_data objectForKey:kTKPDHOME_DATATITLEKEY];

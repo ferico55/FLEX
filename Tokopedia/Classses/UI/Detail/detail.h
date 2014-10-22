@@ -14,6 +14,9 @@
 #define kTKPDTITLE_SHOP_NOTES @"Shop Note"
 #define kTKPDTITLE_SHOP_INFO @"Shop Information"
 #define KTKPDTITLE_FAV_THIS_SHOP @"People who Favorited This Shop"
+#define KTKPDTITLE_PEOPLE @"People Information"
+#define KTKPDTITLE_BIODATA @"Biodata"
+
 
 #define kTKPDDETAIL_DATASHOPSKEY @"shop"
 #define kTKPDDETAIL_DATAINFOSHOPSKEY @"infoshop"

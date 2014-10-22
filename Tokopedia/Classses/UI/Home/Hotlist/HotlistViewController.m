@@ -61,6 +61,7 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
     _operationQueue = [NSOperationQueue new];
     
     /** create new **/

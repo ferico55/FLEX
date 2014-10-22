@@ -9,7 +9,9 @@
 #import "ProfileInfo.h"
 #import "ProfileContactViewController.h"
 
-@interface ProfileContactViewController()
+@interface ProfileContactViewController() {
+    ProfileInfo *_profileinfo;
+}
 
 @property (weak, nonatomic) IBOutlet UILabel *labelemail;
 @property (weak, nonatomic) IBOutlet UILabel *labelmesseger;
@@ -24,6 +26,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateView:) name:TKPD_SETUSERINFODATANOTIFICATIONNAME object:nil];
     }
     return self;
 }
@@ -32,15 +35,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // add notification
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateView:) name:TKPD_SETUSERINFODATANOTIFICATIONNAME object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateView:) name:TKPD_SETUSERINFODATANOTIFICATIONNAME object:nil];
+    
+    _labelemail.text = _profileinfo.result.user_info.user_email?:@"-";
+    _labelmesseger.text = _profileinfo.result.user_info.user_messenger?:@"-";
+    _labelmobile.text = _profileinfo.result.user_info.user_phone?:@"-";
 }
 
 
@@ -48,11 +52,7 @@
 - (void)updateView:(NSNotification *)notification
 {
     id userinfo = notification.userInfo;
-    ProfileInfo *profileinfo = userinfo;
-    _labelemail.text = profileinfo.result.user_info.user_email?:@"-";
-    _labelmesseger.text = profileinfo.result.user_info.user_messenger?:@"-";
-    _labelmobile.text = profileinfo.result.user_info.user_phone?:@"-";
-    
+    _profileinfo = userinfo;
 }
 
 #pragma mark - Memory Management

@@ -362,7 +362,7 @@
 -(void)ShopFavoritedCellDelegate:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     //TODO:: go to profile
-    NSArray *favs = _favorited.result.list;
+    NSArray *favs = _list;
     ListFavorited *fav = favs[indexpath.row];
     NSInteger userid = fav.user_id;
     NSMutableArray *viewcontrollers = [NSMutableArray new];
