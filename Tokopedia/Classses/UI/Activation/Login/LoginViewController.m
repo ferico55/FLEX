@@ -70,8 +70,6 @@
     
     UIBarButtonItem* barbutton1;
     
-    [self.navigationController.navigationBar setTranslucent:YES];
-    
     //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background-light-pt"]];
     
     NSBundle* bundle = [NSBundle mainBundle];
@@ -121,6 +119,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     [self configureRestKitLogin];
 }
 
@@ -146,24 +145,42 @@
                 /** SIGN IN **/
                 NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
                 NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
-                if (!email) {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Email must be filled" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                    [alertView show];
-                }
-                else if (!pass) {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Password must be filled" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                    [alertView show];
-                }
-                else{
-                    if (![email isEmail]) {
-                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Invalid Email Format" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                    [alertView show];
-                    }
-                    else {
+                NSMutableArray *messages = [NSMutableArray new];
+                NSString *message;
+                if (email && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""]) {
+                    if ([email isEmail]) {
                         NSDictionary *userinfo = @{kTKPDACTIVATION_DATAEMAILKEY : email, kTKPDACTIVATION_DATAPASSKEY : pass};
                         [self LoadDataActionLogin:userinfo];
                     }
+                    else {
+                        message = @"Invalid Email Format";
+                        [messages addObject:message];
+                        //UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Invalid Email Format" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        //[alertView show];
+                    }
                 }
+                else{
+                    if (!email||[email isEqualToString:@""]) {
+                        message = @"Email must be filled";
+                        [messages addObject:message];
+                        //UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Email must be filled" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        //[alertView show];
+                    }
+                    else{
+                        if (![email isEmail]) {
+                            message = @"Invalid Email Format";
+                            [messages addObject:message];
+                        }
+                    }
+                    if (!pass || [pass isEqualToString:@""]) {
+                        message = @"Password must be filled";
+                        [messages addObject:message];
+                        //UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Password must be filled" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                        //[alertView show];
+                    }
+                }
+                
+                NSLog(@"message : %@", messages);
                 break;
             }
             case 11:
@@ -342,10 +359,14 @@
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     if (textField == _textfieldemail) {
-        [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAEMAILKEY];
+        //if (![textField.text isEqualToString:@""]) {
+            [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAEMAILKEY];
+        //}
     }
     else if (textField == _textfieldpass){
-        [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAPASSKEY];
+        //if (![textField.text isEqualToString:@""]) {
+            [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAPASSKEY];
+        //}
     }
 }
 

@@ -38,6 +38,8 @@
 
 #define kTKPD_ISLOGINNOTIFICATIONNAMEKEY @"setuserlogin"
 
+#define kTKPD_APPLICATIONKEY @"application"
+#define kTKPD_INSTALLEDKEY @"installed"
 #define kTKPD_INTERRUPTNOTIFICATIONNAMEKEY @"interrupt"
 
 #endif

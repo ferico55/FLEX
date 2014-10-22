@@ -32,4 +32,6 @@
 #define kTKPDNETWORK_ERRORDESCS @"Network Error"
 #define kTKPDBUTTON_OKTITLE @"OK"
 
+#define kTKPD_PARAMETERSKEY @"parameters"
+
 #endif

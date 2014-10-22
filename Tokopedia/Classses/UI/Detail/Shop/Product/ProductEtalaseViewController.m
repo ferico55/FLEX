@@ -82,6 +82,10 @@
     _table.dataSource = self;
     
     [self.navigationController.navigationBar setTranslucent:NO];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
+    
     _etalase = [[Etalase alloc] init];
 
     [_datas addObjectsFromArray:kTKPDSHOP_ETALASEARRAY];

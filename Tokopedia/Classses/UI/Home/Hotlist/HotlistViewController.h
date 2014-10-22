@@ -9,9 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "HotListCell.h"
 
-
 @interface HotlistViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, HotlistCellDelegate>
 
-@property (strong, nonatomic) UINavigationController *navcon;
 
 @end
