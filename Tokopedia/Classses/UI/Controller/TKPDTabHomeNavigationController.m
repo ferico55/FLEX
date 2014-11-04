@@ -192,7 +192,14 @@
             button.backgroundColor = [UIColor clearColor];
             [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             CGSize stringSize = [titles[i] sizeWithFont:kTKPDHOME_FONTSLIDETITLESACTIVE];
-            CGFloat widthlabel = stringSize.width+10;
+            
+            CGFloat widthlabel;
+            if(count == 1) {
+                widthlabel = self.view.frame.size.width;
+            } else {
+                widthlabel = stringSize.width+10;
+            }
+            
             
             button.frame = CGRectMake(widthcontenttop+6,3,widthlabel,(_scrollviewtop.frame.size.height)-30);
             button.tag = i;

@@ -217,6 +217,7 @@
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
 	if (row == indexPath.row) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
+        NSLog(@"%ld", (long)row);
 		
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             /** called if need to load next page **/
@@ -326,8 +327,6 @@
     BOOL status = [hotlist.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [_product addObjectsFromArray: hotlist.result.list];
-        
         [self requestproses:object];
 
         NSString* path = [NSHomeDirectory() stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];

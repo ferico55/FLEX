@@ -264,11 +264,7 @@
             {
                 // see more action
 //                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                id stickyalert = [StickyAlert new];
-//                StickyAlert *stickyalert = [[StickyAlert alloc]init];
-                [stickyalert initView:self.view];
-                [stickyalert alertError:[NSArray arrayWithObjects:@"Error 1", @"Error 2", @"Error3",@"Error3",@"Error3",@"Error3",@"Error3", nil]];
-                
+                 
 //                [self.navigationController popViewControllerAnimated:YES];
                 break;
             }

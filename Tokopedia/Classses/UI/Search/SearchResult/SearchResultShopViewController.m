@@ -221,7 +221,9 @@
             //request.URL = url;
             
             UIImageView *thumb = (UIImageView*)((SearchResultShopCell*)cell).thumb;
+            thumb = [UIImageView circleimageview:thumb];
             thumb.image = nil;
+            
             //thumb.hidden = YES;	//@prepareforreuse then @reset
             
             UIActivityIndicatorView *act = ((SearchResultShopCell*)cell).act;

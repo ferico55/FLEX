@@ -11,6 +11,7 @@
 #import "activation.h"
 #import "RegisterViewController.h"
 #import "LoginViewController.h"
+#import "StickyAlert.h"
 
 @interface LoginViewController (){
     
@@ -79,24 +80,30 @@
     img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+//        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign In" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     }
     else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+//        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign In" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
 
     [barbutton1 setTag:10];
+    [barbutton1 setTintColor:[UIColor whiteColor]];
     self.navigationItem.rightBarButtonItem = barbutton1;
 
     /** GO TO SIGN UP PAGE **/
     img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+//        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     }
     else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+//        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     
     [barbutton1 setTag:11];
+    [barbutton1 setTintColor:[UIColor whiteColor]];
     self.navigationItem.leftBarButtonItem = barbutton1;
 
     
@@ -179,6 +186,13 @@
                         //[alertView show];
                     }
                 }
+                
+                StickyAlert *stickyalert = [[StickyAlert alloc]init];
+                [stickyalert initView:self.view];
+                [stickyalert alertError:messages];
+                
+//                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+
                 
                 NSLog(@"message : %@", messages);
                 break;
@@ -312,9 +326,13 @@
         {
             NSArray *messages = _login.message_error;
             NSString *message = [[messages valueForKey:@"description"] componentsJoinedByString:@"\n"];
+            
+            StickyAlert *stickyalert = [[StickyAlert alloc]init];
+            [stickyalert initView:self.view];
+            [stickyalert alertError:messages];
 
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            [alertView show];
+//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+//            [alertView show];
         }
     }
 }

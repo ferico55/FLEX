@@ -100,24 +100,6 @@
 {
     [super viewDidLoad];
     
-    //error experimental
-//    UILabel* errorlabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, 100)];
-//    
-//    NSArray *array1 = [NSArray arrayWithObjects:@"Error 1", @"Error 2", @"Error3", nil];
-//    NSString *joinedstring = [NSString convertHTML:[array1 componentsJoinedByString:@"\n"]];
-//    
-//    CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
-//    CGSize expectedLabelSize = [joinedstring sizeWithFont:errorlabel.font constrainedToSize:maximumLabelSize lineBreakMode:errorlabel.lineBreakMode];
-//    CGRect newFrame = errorlabel.frame;
-//    newFrame.size.height = expectedLabelSize.height;
-//    errorlabel.frame = newFrame;
-//
-//    errorlabel.backgroundColor = [UIColor grayColor];
-//    errorlabel.text = joinedstring;
-//    errorlabel.numberOfLines = 0;
-//    [self.view addSubview: errorlabel];
-    //end of error experimental
-    
     
     
     // set title navigation
@@ -136,17 +118,6 @@
     
     _page = 1;
     
-    /** set inset table for different size**/
-    //if (is4inch) {
-    //    UIEdgeInsets inset = _table.contentInset;
-    //    inset.bottom += 150;
-    //    _table.contentInset = inset;
-    //}
-    //else{
-    //    UIEdgeInsets inset = _table.contentInset;
-    //    inset.bottom += 240;
-    //    _table.contentInset = inset;
-    //}
     
     _table.tableHeaderView = _header;
     _table.tableFooterView = _footer;
@@ -182,11 +153,6 @@
     _barbuttoncategory.enabled = NO;
     self.navigationItem.rightBarButtonItem = _barbuttoncategory;
     
-    // adjust refresh control
-    //_refreshControl = [[UIRefreshControl alloc] init];
-    //_refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
-    //[_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
-    //[_table addSubview:_refreshControl];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil];
@@ -270,7 +236,14 @@
                 (((GeneralProductCell*)cell).indexpath) = indexPath;
                 
                 ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.catalog_price?:list.product_price;
-                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
+                
+                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.catalog_name?:list.product_name];
+                NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+                [paragrahStyle setLineSpacing:5];
+                [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.catalog_name?:list.product_name length])];
+                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).attributedText = attributedString ;
+                
+//                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
                 ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
                 
                 NSString *urlstring = list.catalog_image?:list.product_image;

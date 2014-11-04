@@ -14,6 +14,7 @@
 #import "BackgroundLayer.h"
 #import "SortViewController.h"
 #import "ProductEtalaseViewController.h"
+#import "SendMessageViewController.h"
 
 @interface TKPDTabShopNavigationController () <UIScrollViewDelegate> {
 	UIView* _tabbar;
@@ -36,6 +37,7 @@
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
     NSTimer *_timer;
+    BOOL is_dismissed;
 }
 @property (weak, nonatomic) IBOutlet UIView *filterview;
 
@@ -140,6 +142,13 @@
 		_unloadSelectedIndex = -1;
 		_unloadViewControllers = nil;
 	}
+    
+    /** set inset table for different size**/
+
+    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
+
     
     CGSize size =_contentview.frame.size;
     size.height = size.height - _tapview.frame.size.height;
@@ -529,43 +538,63 @@
 #pragma mark View actions
 -(IBAction)tap:(UIButton*) sender
 {
-	if (_viewControllers != nil) {
-		
-		NSInteger index = _selectedIndex;
-        index = sender.tag;
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton*)sender;
         
-		BOOL should = YES;
-        
-        //add border green on bottom button
-        CALayer *upperBorder = [CALayer layer];
-        upperBorder.backgroundColor = [[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] CGColor];
-        upperBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[index-10] frame]), 2.0f);
-        
-        
-        for(int i=0;i<4;i++) {
-            CALayer *whiteBorder = [CALayer layer];
-            
-            whiteBorder.backgroundColor = [[UIColor whiteColor] CGColor];
-            whiteBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[i] frame]), 2.0f);
-            [[_chevrons[i] layer] addSublayer:whiteBorder];
+        switch (btn.tag) {
+            case 15:{
+                SendMessageViewController *vc = [SendMessageViewController new];
+                vc.data = @{
+                            kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                            kTKPDDETAIL_APISHOPNAMEKEY:_shop.result.info.shop_name
+                            };
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            default:
+                if (_viewControllers != nil) {
+                    
+                    NSInteger index = _selectedIndex;
+                    index = sender.tag;
+                    
+                    BOOL should = YES;
+                    
+                    //add border green on bottom button
+                    CALayer *upperBorder = [CALayer layer];
+                    upperBorder.backgroundColor = [[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] CGColor];
+                    upperBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[index-10] frame]), 2.0f);
+                    
+                    
+                    for(int i=0;i<4;i++) {
+                        CALayer *whiteBorder = [CALayer layer];
+                        
+                        whiteBorder.backgroundColor = [[UIColor whiteColor] CGColor];
+                        whiteBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[i] frame]), 2.0f);
+                        [[_chevrons[i] layer] addSublayer:whiteBorder];
+                    }
+                    
+                    [[_chevrons[index-10] layer] addSublayer:upperBorder];
+                    if (([_delegate respondsToSelector:@selector(tabBarController:shouldSelectViewController:)])) {
+                        
+                        should  = [_delegate tabBarController:self shouldSelectViewController:_viewControllers[index]];
+                    }
+                    
+                    if (should) {
+                        [self setSelectedIndex:index animated:YES];
+                        
+                        if (([_delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])) {
+                            
+                            [_delegate tabBarController:self didSelectViewController:_viewControllers[index]];
+                            
+                        }
+                    }
+                }
+                break;
         }
-
-        [[_chevrons[index-10] layer] addSublayer:upperBorder];
-		if (([_delegate respondsToSelector:@selector(tabBarController:shouldSelectViewController:)])) {
-			
-			should  = [_delegate tabBarController:self shouldSelectViewController:_viewControllers[index]];
-		}
-		
-		if (should) {
-			[self setSelectedIndex:index animated:YES];
-			
-			if (([_delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])) {
-				
-				[_delegate tabBarController:self didSelectViewController:_viewControllers[index]];
-                
-			}
-		}
-	}
+        
+    }
+    
+	
 }
 
 -(IBAction)tapbutton:(id)sender
@@ -609,7 +638,17 @@
         switch (btn.tag) {
             case 10:
             {
-                [self.navigationController popViewControllerAnimated:YES];
+//                UINavigationController *nav = (UINavigationController *)self.presentingViewController;
+                if (self.presentingViewController != nil) {
+                    if (self.navigationController.viewControllers.count > 1) {
+                        [self.navigationController popViewControllerAnimated:YES];
+                    } else {
+                        [self dismissViewControllerAnimated:YES completion:NULL];
+                    }
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+
                 break;
             }
             case 11:

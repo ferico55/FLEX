@@ -109,7 +109,7 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_arrow_up_28px-01.png" width="276" height="244"/>
+        <image name="icon_arrow_up_28px-01.png" width="14" height="14"/>
         <image name="icon_share_28px-01.png" width="28" height="28"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

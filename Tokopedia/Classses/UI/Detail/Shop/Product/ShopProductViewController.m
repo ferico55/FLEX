@@ -449,14 +449,16 @@
     _requestcount ++;
     
     NSString *querry =[_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
-    NSInteger indexfilter = [[_detailfilter objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+//    NSInteger indexfilter = [[_detailfilter objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+    NSIndexPath *indexpathfilter = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY];
+    NSInteger index = indexpathfilter.row;
     NSInteger sort =  [[_detailfilter objectForKey:kTKPDDETAIL_APIORERBYKEY]integerValue];
     id etalaseid;
-    if (indexfilter && indexfilter==0) {
+    if (index==0) {
         etalaseid = @"sold";
-        sort = 7;
+        if(sort == 0) sort = 7;
     }
-    else if (indexfilter == 1)
+    else if (index == 1)
     {
         etalaseid = @"all";
     }

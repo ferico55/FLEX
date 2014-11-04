@@ -157,7 +157,15 @@
             ReviewList *list = _list[indexPath.row];
             ((GeneralReviewCell*)cell).namelabel.text = list.review_product_name;
             ((GeneralReviewCell*)cell).timelabel.text = list.review_create_time;
-            ((GeneralReviewCell*)cell).commentlabel.text = list.review_message;
+            
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.review_message];
+            NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+            [paragrahStyle setLineSpacing:5];
+            [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.review_message length])];
+            ((GeneralReviewCell*)cell).commentlabel.attributedText = attributedString;
+
+            
+//            ((GeneralReviewCell*)cell).commentlabel.text = list.review_message;
             //TODO:: create see more button
             //UIFont * font = ((ProductReviewCell*)cell).commentlabel.font ;
             //CGSize stringSize = [((ProductReviewCell*)cell).commentlabel.text sizeWithFont:font];

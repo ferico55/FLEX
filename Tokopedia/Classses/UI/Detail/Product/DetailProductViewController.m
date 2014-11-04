@@ -50,6 +50,7 @@
     NSInteger _pageheaderimages;
     NSInteger _heightDescSection;
     Product *_product;
+    BOOL is_dismissed;
     
     __weak RKObjectManager *_objectmanager;
 }
@@ -132,17 +133,26 @@
     self.navigationItem.leftBarButtonItem = barbutton1;
     
     /** set inset table for different size**/
-    if (is4inch) {
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 200;
-        _table.contentInset = inset;
+    is_dismissed = [_data objectForKey:@"is_dismissed"];
+    if(is_dismissed) {
+        if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
+            self.edgesForExtendedLayout = UIRectEdgeNone;
+        }
     }
-    else{
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 120;
-        _table.contentInset = inset;
-    }
+//    if (is4inch) {
+//        UIEdgeInsets inset = _table.contentInset;
+//        inset.bottom += 200;
+//        _table.contentInset = inset;
+//    }
+//    else{
+//        UIEdgeInsets inset = _table.contentInset;
+//        inset.bottom += 120;
+//        _table.contentInset = inset;
+//    }
     
+    UIEdgeInsets inset = _table.contentInset;
+    inset.bottom += 20;
+    _table.contentInset = inset;
     _table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
     
@@ -279,7 +289,12 @@
         switch (btn.tag) {
             case 10:
             {
-                [self.navigationController popViewControllerAnimated:YES];
+                if(is_dismissed) {
+                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                
             }
         }
     }
@@ -290,22 +305,23 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
-    UIView *mView = [[UIView alloc]initWithFrame:CGRectMake(0, 30, 50, 200)];
-    [mView setBackgroundColor:[UIColor whiteColor]];
+    UIView *mView = [[UIView alloc]initWithFrame:CGRectMake(320, 30, 0, 0)];
+    [mView setBackgroundColor:[UIColor lightGrayColor]];
     
-    UIImageView *logoView = [[UIImageView alloc]initWithFrame:CGRectMake(290, 10, 20, 20)];
-    [logoView setImage:[UIImage imageNamed:@"icon_arrow_up.png"]];
     
-    [mView addSubview:logoView];
+//    UIImageView *logoView = [[UIImageView alloc]initWithFrame:CGRectMake(290, 10, 20, 20)];
+//    [logoView setImage:[UIImage imageNamed:@"icon_arrow_up.png"]];
+    
+//    [mView addSubview:logoView];
     
     UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
-    [bt setFrame:CGRectMake(0, 0, 150, 40)];
-    [bt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [bt setFrame:CGRectMake(10, 1, 320, 20)];
+    [bt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [bt setTag:section];
+//    [bt setBackgroundColor:[UIColor redColor]];
     [bt.titleLabel setFont:[UIFont systemFontOfSize:12]];
-    [bt.titleLabel setTextAlignment:NSTextAlignmentLeft];
-    [bt.titleLabel setTextColor:[UIColor blackColor]];
-    [bt.titleLabel setFont: [UIFont fontWithName:@"GothamLight" size:12.0f]];
+    [bt setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    [bt.titleLabel setFont: [UIFont fontWithName:@"GothamMedium" size:12.0f]];
     switch (section) {
         case 0:
             [bt setTitle: @"Product Description" forState: UIControlStateNormal];
@@ -376,6 +392,12 @@
 
     }
     
+    if(!_isnodatawholesale) {
+        if(indexPath.section == 1) {
+            return 150;
+        }
+    }
+    
     return 300;
     
     
@@ -413,7 +435,14 @@
             if(!_isnodata) {
                 NSString *productdesc = _product.result.info.product_description;
                 UILabel *desclabel = ((DetailProductDescriptionCell*)cell).descriptionlabel;
-                desclabel.text = productdesc;
+//                desclabel.text = productdesc;
+                
+                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:productdesc];
+                NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+                [paragrahStyle setLineSpacing:5];
+                [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [productdesc length])];
+                desclabel.attributedText = attributedString ;
+                
                 CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
                 
                 CGSize expectedLabelSize = [productdesc sizeWithFont:desclabel.font constrainedToSize:maximumLabelSize lineBreakMode:desclabel.lineBreakMode];
@@ -537,11 +566,15 @@
                                                            kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY:kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY,
                                                            kTKPDDETAILPRODUCT_APIPRODUCTSUCCESSRATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTSUCCESSRATEKEY,
                                                            kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTRATINGKEY:kTKPDDETAILPRODUCT_APIPRODUCTRATINGKEY,
                                                            kTKPDDETAILPRODUCT_APIPRODUCTCANCELRATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTCANCELRATEKEY,
                                                            kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY:kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY,
                                                            kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY:kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY:kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY
+                                                           kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY:kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY,
+                                                           KTKPDDETAILPRODUCT_APIPRODUCTQUALITYRATEKEY:KTKPDDETAILPRODUCT_APIPRODUCTQUALITYRATEKEY,
+                                                           KTKPDDETAILPRODUCT_APIPRODUCTACCURACYRATEKEY:KTKPDDETAILPRODUCT_APIPRODUCTACCURACYRATEKEY,
+                                                           KTKPDDETAILPRODUCT_APIPRODUCTQUALITYPOINTKEY:KTKPDDETAILPRODUCT_APIPRODUCTQUALITYPOINTKEY,
+                                                           KTKPDDETAILPRODUCT_APIPRODUCTACCURACYPOINTKEY:KTKPDDETAILPRODUCT_APIPRODUCTACCURACYPOINTKEY
+
                                                            }];
     
     RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
@@ -755,8 +788,10 @@
     _countviewlabel.text = [NSString stringWithFormat:@"%@ View", _product.result.statistic.product_view];
     [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Reviews",_product.result.statistic.product_review] forState:UIControlStateNormal];
     [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Talk About it",_product.result.statistic.product_talk] forState:UIControlStateNormal];
-    _qualitynumberlabel.text = [NSString stringWithFormat: @"%d ",_product.result.statistic.product_rating];
-    _productrateview.starscount = _product.result.statistic.product_rating;
+    _qualitynumberlabel.text = _product.result.statistic.product_quality_point;
+    _accuracynumberlabel.text = _product.result.statistic.product_accuracy_point;
+    _productrateview.starscount = _product.result.statistic.product_quality_rate;
+    _accuracyrateview.starscount = _product.result.statistic.product_accuracy_rate;
     
     NSArray *images = _product.result.product_images;
     

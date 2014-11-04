@@ -10,8 +10,4 @@
 
 @interface ProfileContactViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UILabel *labelemail;
-@property (weak, nonatomic) IBOutlet UILabel *labelmesseger;
-@property (weak, nonatomic) IBOutlet UILabel *labelmobile;
-
 @end

@@ -323,7 +323,8 @@
                     kTKPDCATEGORY_DATATITLEKEY : [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY],
                     kTKPDCATEGORY_DATAPUSHCOUNTKEY : @(_pushcount),
                     kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : _choosenindexpaths?:@[],
-                    kTKPDCATEGORY_DATAINDEXPATHKEY : indexpath};
+                    kTKPDCATEGORY_DATAINDEXPATHKEY : indexpath,
+                    kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY]};
         [self.navigationController pushViewController:vc animated:YES];
     }
     else{
