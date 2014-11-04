@@ -1,13 +1,13 @@
 //
-//  DSBSecureStorage.h
+//  AddressFormResult.h
 //  Tokopedia
 //
-//  Created by IT Tkpd on 10/20/14.
+//  Created by IT Tkpd on 11/4/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-@interface DSBSecureStorage : NSObject
+@interface AddressFormResult : NSObject
 
 @end

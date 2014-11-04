@@ -7,9 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CategoryViewCell.h"
-
-#define kTKPDCATEGORYVIEWCELL_IDENTIFIER @"CategoryViewController"
 
 @interface CategoryViewController : UIViewController
 

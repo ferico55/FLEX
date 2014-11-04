@@ -17,6 +17,8 @@
 #import "ProfileBiodataViewController.h"
 #import "ProfileContactViewController.h"
 
+#import "URLCacheController.h"
+
 @interface ShopFavoritedViewController ()<UITableViewDataSource, UITableViewDelegate, ShopFavoritedCellDelegate>
 {
     NSInteger _page;
@@ -35,10 +37,23 @@
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
+    
+    NSString *_cachepath;
+    URLCacheController *_cachecontroller;
+    URLCacheConnection *_cacheconnection;
+    NSTimeInterval _timeinterval;
 }
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+
+-(void)cancel;
+-(void)configureRestKit;
+-(void)loadData;
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
+-(void)requestfailure:(id)object;
+-(void)requestprocess:(id)object;
+-(void)requesttimeout;
 
 @end
 
@@ -60,13 +75,12 @@
 {
     [super viewDidLoad];
     
-    _operationQueue = [NSOperationQueue new];
-    
     _list = [NSMutableArray new];
+    _operationQueue = [NSOperationQueue new];
+    _cachecontroller = [URLCacheController new];
+    _cacheconnection = [URLCacheConnection new];
     
     _page = 1;
-    
-    _table.tableFooterView = _footer;
     
     if (_list.count>2) {
         _isnodata = NO;
@@ -90,6 +104,13 @@
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
+    
+    //cache
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
+    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPFAVORITED_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue]]];
+    _cachecontroller.filePath = _cachepath;
+    _cachecontroller.URLCacheInterval = 86400.0;
+	[_cachecontroller initCacheWithDocumentPath:path];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -257,88 +278,155 @@
     
     _requestcount++;
     
-    if (!_isrefreshview) {
-        _table.tableFooterView = _footer;
-        [_act startAnimating];
-    }
-    
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPFAVORITEDKEY,
                             kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0),
                             kTKPDDETAIL_APIPAGEKEY : @(_page)
                             };
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOP_APIPATH parameters:param];
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        _table.hidden = NO;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [self requestsuccess:mappingResult];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [self requestfailure:error];
-    }];
-    [_operationQueue addOperation:_request];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    [_cachecontroller getFileModificationDate];
+	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+	if (_timeinterval > _cachecontroller.URLCacheInterval || _page>1 || _isrefreshview) {
+        if (!_isrefreshview) {
+            _table.tableFooterView = _footer;
+            [_act startAnimating];
+        }
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOP_APIPATH parameters:param];
+        
+        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            [_timer invalidate];
+            _timer = nil;
+            [_act stopAnimating];
+            _table.hidden = NO;
+            _isrefreshview = NO;
+            [_refreshControl endRefreshing];
+            [self requestsuccess:mappingResult withOperation:operation];
+        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+            /** failure **/
+            [_timer invalidate];
+            _timer = nil;
+            [_act stopAnimating];
+            _isrefreshview = NO;
+            [_refreshControl endRefreshing];
+            [self requestfailure:error];
+        }];
+        [_operationQueue addOperation:_request];
+        
+        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    }else{
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+        NSLog(@"cache and updated in last 24 hours.");
+        [self requestfailure:nil];
+    }
 }
 
--(void)requestsuccess:(id)object
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    
     id stats = [result objectForKey:@""];
-    
     _favorited = stats;
     BOOL status = [_favorited.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        NSArray *list = _favorited.result.list;
-        [_list addObjectsFromArray:list];
-        _isnodata = NO;
+        if (_page<=1) {
+            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+            [_cachecontroller connectionDidFinish:_cacheconnection];
+            //save response data
+            [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+        }
         
-        [_table reloadData];
+        [self requestprocess:object];
+    }
+}
+
+
+-(void)requestfailure:(id)object
+{
+    if (_timeinterval > _cachecontroller.URLCacheInterval || _page>1 || _isrefreshview) {
+        [self requestprocess:object];
+    }
+    else{
+        NSError* error;
+        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
+        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
+        if (parsedData == nil && error) {
+            NSLog(@"parser error");
+        }
+        
+        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
+        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
+            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
+        }
+        
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+        NSError *mappingError = nil;
+        BOOL isMapped = [mapper execute:&mappingError];
+        if (isMapped && !mappingError) {
+            RKMappingResult *mappingresult = [mapper mappingResult];
+            NSDictionary *result = mappingresult.dictionary;
+            id stats = [result objectForKey:@""];
+            _favorited = stats;
+            BOOL status = [_favorited.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                [self requestprocess:mappingresult];
+            }
+        }
+    }
+}
+
+-(void)requestprocess:(id)object
+{
+    if (object) {
+        if ([object isKindOfClass:[RKMappingResult class]]) {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            
+            id stats = [result objectForKey:@""];
+            
+            _favorited = stats;
+            BOOL status = [_favorited.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                NSArray *list = _favorited.result.list;
+                [_list addObjectsFromArray:list];
+                _isnodata = NO;
+                
+                [_table reloadData];
+            }
+        }
+        else{
+            [self cancel];
+            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
+            if ([(NSError*)object code] == NSURLErrorCancelled) {
+                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    _table.tableFooterView = _footer;
+                    [_act startAnimating];
+                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                }
+                else
+                {
+                    [_act stopAnimating];
+                    _table.tableFooterView = nil;
+                }
+            }
+            else
+            {
+                [_act stopAnimating];
+                _table.tableFooterView = nil;
+            }
+        }
     }
 }
 
 -(void)requesttimeout
 {
     [self cancel];
-}
-
--(void)requestfailure:(id)object
-{
-    [self cancel];
-    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-    if ([(NSError*)object code] == NSURLErrorCancelled) {
-        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
-            _table.tableFooterView = _footer;
-            [_act startAnimating];
-            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-        }
-        else
-        {
-            [_act stopAnimating];
-            _table.tableFooterView = nil;
-        }
-    }
-    else
-    {
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
-    }
 }
 
 #pragma mark - Methods
@@ -361,8 +449,8 @@
 #pragma mark - Cell Delegate
 -(void)ShopFavoritedCellDelegate:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
-    //TODO:: go to profile
-    NSArray *favs = _list;
+    //go to profile
+    NSArray *favs = _favorited.result.list;
     ListFavorited *fav = favs[indexpath.row];
     NSInteger userid = fav.user_id;
     NSMutableArray *viewcontrollers = [NSMutableArray new];
@@ -371,13 +459,15 @@
     [viewcontrollers addObject:v];
     ProfileFavoriteShopViewController *v1 = [ProfileFavoriteShopViewController new];
     v1.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(userid),
-                kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue])};
+                kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]),
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
     [viewcontrollers addObject:v1];
     ProfileContactViewController *v2 = [ProfileContactViewController new];
     [viewcontrollers addObject:v2];
     // Adjust View Controller
     TKPDTabProfileNavigationController *tapnavcon = [TKPDTabProfileNavigationController new];
-    tapnavcon.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(userid)};
+    tapnavcon.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(userid),
+                       kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
     [tapnavcon setViewControllers:viewcontrollers animated:YES];
     [tapnavcon setSelectedIndex:0];
     

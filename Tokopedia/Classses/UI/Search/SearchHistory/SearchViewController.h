@@ -10,6 +10,6 @@
 
 @interface SearchViewController : UIViewController
 
-@property (strong, nonatomic) NSDictionary *data;
+@property (strong, nonatomic, setter = setData:) NSDictionary *data;
 
 @end

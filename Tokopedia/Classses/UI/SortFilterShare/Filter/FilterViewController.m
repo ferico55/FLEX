@@ -202,7 +202,6 @@
             break;
     }
 
-    
     /** keyboard notification **/
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:)
@@ -505,10 +504,12 @@
                              _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
                              _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
                              _scrollviewContentSize.height += _keyboardSize.height;
-                             UIEdgeInsets inset = _container.contentInset;
-                             inset.top += ((_activetextfield.frame.origin.y-_activetextfield.frame.size.height) - _keyboardPosition.y);
-                             [_container setContentSize:_scrollviewContentSize];
-                             [_container setContentInset:inset];
+                             if ((self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height)> _keyboardPosition.y) {
+                                 UIEdgeInsets inset = _container.contentInset;
+                                 inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height + 10));
+                                 [_container setContentSize:_scrollviewContentSize];
+                                 [_container setContentInset:inset];
+                             }
                          }
                          completion:^(BOOL finished){
                          }];

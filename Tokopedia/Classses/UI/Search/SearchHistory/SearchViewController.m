@@ -55,6 +55,9 @@
 {
     [super viewDidLoad];
     [self.navigationController.navigationBar setTranslucent:NO];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     
     if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -259,11 +262,17 @@
         
         /** Goto result page **/
         SearchResultViewController *vc = [SearchResultViewController new];
-        vc.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
+        vc.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
+                   kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
+                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
         SearchResultViewController *vc1 = [SearchResultViewController new];
-        vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
+        vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
+                    kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
+                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
         SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-        vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
+        vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
+                    kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
+                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
         NSArray *viewcontrollers = @[vc,vc1,vc2];
         
         TKPDTabNavigationController *c = [TKPDTabNavigationController new];
@@ -284,15 +293,19 @@
 #pragma mark - cell delegate
 -(void)SearchCellDelegate:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withdata:(NSDictionary *)data
 {
-    
-    
     SearchResultViewController *vc = [SearchResultViewController new];
     NSString *searchtext = [data objectForKey:kTKPDSEARCH_DATASEARCHKEY];
-    vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
+    vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchtext?:@"" ,
+               kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
+               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
     SearchResultViewController *vc1 = [SearchResultViewController new];
-    vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
+    vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchtext?:@"" ,
+                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-    vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
+    vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : searchtext?:@"" ,
+                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *c = [TKPDTabNavigationController new];
@@ -302,6 +315,12 @@
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
     [nav.navigationBar setTranslucent:NO];
     [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+#pragma mark - properties
+-(void)setData:(NSDictionary *)data
+{
+    _data = data;
 }
 
 @end

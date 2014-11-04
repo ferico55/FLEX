@@ -13,4 +13,7 @@
 #define kTKPDALERTVIEW_BUTTON1KEY @"button1"
 #define kTKPDALERTVIEW_BUTTON2KEY @"button2"
 
+#define kTKPDALERTVIEW_DATADATEPICKERKEY @"datepicker"
+#define kTKPDALERTVIEW_DATALABELKEY @"label"
+
 #endif

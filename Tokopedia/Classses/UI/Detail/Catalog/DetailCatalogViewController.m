@@ -15,6 +15,8 @@
 #import "CatalogSellerViewController.h"
 #import "DetailCatalogSpecView.h"
 
+#import "URLCacheController.h"
+
 @interface DetailCatalogViewController ()
 {
     NSMutableDictionary *_params;
@@ -31,6 +33,13 @@
     
     Catalog *_catalog;
     __weak RKObjectManager *_objectmanager;
+    __weak RKManagedObjectRequestOperation *_request;
+    NSOperationQueue *_operationQueue;
+    
+    NSString *_cachepath;
+    URLCacheController *_cachecontroller;
+    URLCacheConnection *_cacheconnection;
+    NSTimeInterval _timeinterval;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *headerview;
@@ -52,6 +61,14 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @property (weak, nonatomic) IBOutlet UIButton *buybutton;
+
+-(void)cancel;
+-(void)configureRestKit;
+-(void)loadData;
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
+-(void)requestfailure:(id)object;
+-(void)requestprocess:(id)object;
+-(void)requesttimeout;
 
 - (IBAction)tap:(id)sender;
 
@@ -79,6 +96,9 @@
     
     _headerimages = [NSMutableArray new];
     _params = [NSMutableDictionary new];
+    _operationQueue = [NSOperationQueue new];
+    _cacheconnection = [URLCacheConnection new];
+    _cachecontroller = [URLCacheController new];
     
     _specview = [DetailCatalogSpecView newview];
     
@@ -91,6 +111,13 @@
     // add notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateViewDetailCatalog:) name:kTKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAMEKEY object:nil];
+    
+    //cache
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILCATALOG_CACHEFILEPATH];
+    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILCATALOG_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APICATALOGIDKEY] integerValue]]];
+    _cachecontroller.filePath = _cachepath;
+    _cachecontroller.URLCacheInterval = 86400.0;
+	[_cachecontroller initCacheWithDocumentPath:path];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -240,6 +267,8 @@
 #pragma mark - Request and Mapping
 -(void)cancel
 {
+    [_request cancel];
+    _request = nil;
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
 }
@@ -355,6 +384,8 @@
 
 - (void)loadData
 {
+    if (_request.isExecuting) return;
+    
     _requestcount++;
     
     [_act startAnimating];
@@ -367,51 +398,154 @@
                             kTKPDDETAIL_APICONDITIONKEY : [_params objectForKey:kTKPDDETAIL_APICONDITIONKEY]?:@(0)
                             };
     
-    [_objectmanager getObjectsAtPath:kTKDPDETAILCATALOG_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        [self requestsuccess:mappingResult];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        [self requestfailure:error];
-    }];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    [_cachecontroller getFileModificationDate];
+	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+	if (_timeinterval > _cachecontroller.URLCacheInterval) {
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKDPDETAILCATALOG_APIPATH parameters:param];
+        
+        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        //[_objectmanager getObjectsAtPath:kTKDPDETAILCATALOG_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            [_timer invalidate];
+            _timer = nil;
+            [_act stopAnimating];
+            [self requestsuccess:mappingResult withOperation:operation];
+        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+            /** failure **/
+            [_timer invalidate];
+            _timer = nil;
+            [_act stopAnimating];
+            [self requestfailure:error];
+        }];
+        [_operationQueue addOperation:_request];
+        
+        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        
+    }else{
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+        NSLog(@"cache and updated in last 24 hours.");
+        [self requestfailure:nil];
+    }
 }
 
--(void)requestsuccess:(id)object
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    
     id stats = [result objectForKey:@""];
-    
     _catalog = stats;
     BOOL status = [_catalog.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [self setHeaderviewData];
-        [self setSpecsViewData];
-        _isnodata = NO;
+        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+        [_cachecontroller connectionDidFinish:_cacheconnection];
+        //save response data to plist
+        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
         
-        if(_isrefreshseller)
-        {
-            // go to seller list
-            _isrefreshseller = NO;
-            _continerscrollview.hidden = YES;
-            CatalogSellerViewController *vc = [CatalogSellerViewController new];
-            NSIndexPath *indexpath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-            vc.data = @{kTKPDDETAIL_DATASHOPSKEY: (_catalog.result.catalog_shops),
-                        kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location,
-                        kTKPDFILTERSORT_DATAINDEXPATHKEY: indexpath};
-            [self.navigationController pushViewController:vc animated:NO];
+        [self requestprocess:object];
+    }
+}
+
+-(void)requestfailure:(id)object
+{
+    if (_timeinterval > _cachecontroller.URLCacheInterval) {
+        [self requestprocess:object];
+    }
+    else{
+        NSError* error;
+        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
+        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
+        if (parsedData == nil && error) {
+            NSLog(@"parser error");
+        }
+        
+        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
+        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
+            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
+        }
+        
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+        NSError *mappingError = nil;
+        BOOL isMapped = [mapper execute:&mappingError];
+        if (isMapped && !mappingError) {
+            RKMappingResult *mappingresult = [mapper mappingResult];
+            NSDictionary *result = mappingresult.dictionary;
+            id stats = [result objectForKey:@""];
+            _catalog = stats;
+            BOOL status = [_catalog.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                [self requestprocess:mappingresult];
+            }
+        }
+    }
+}
+
+-(void)requestprocess:(id)object
+{
+    if (object) {
+        if ([object isKindOfClass:[RKMappingResult class]]) {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            
+            id stats = [result objectForKey:@""];
+            
+            _catalog = stats;
+            BOOL status = [_catalog.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                [self setHeaderviewData];
+                [self setSpecsViewData];
+                _isnodata = NO;
+                
+                if(_isrefreshseller)
+                {
+                    // go to seller list
+                    _isrefreshseller = NO;
+                    _continerscrollview.hidden = YES;
+                    CatalogSellerViewController *vc = [CatalogSellerViewController new];
+                    NSIndexPath *indexpath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                    vc.data = @{kTKPDDETAIL_DATASHOPSKEY: (_catalog.result.catalog_shops),
+                                kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location,
+                                kTKPDFILTERSORT_DATAINDEXPATHKEY: indexpath};
+                    [self.navigationController pushViewController:vc animated:NO];
+                }
+                else{
+                    _continerscrollview.hidden = NO;
+                }
+            }
         }
         else{
-            _continerscrollview.hidden = NO;
+            [self cancel];
+            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
+            if ([(NSError*)object code] == NSURLErrorCancelled) {
+                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    //_table.tableFooterView = _footer;
+                    [_act startAnimating];
+                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                }
+                else
+                {
+                    [_act stopAnimating];
+                }
+            }
+            else
+            {
+                [_act stopAnimating];
+                if(_isrefreshseller)
+                {
+                    // go to seller list
+                    _isrefreshseller = NO;
+                    CatalogSellerViewController *vc = [CatalogSellerViewController new];
+                    vc.data = @{kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location,
+                                kTKPDFILTER_DATAINDEXPATHKEY: [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
+                                kTKPDFILTER_DATAFILTERKEY:_params};
+                    [self.navigationController pushViewController:vc animated:NO];
+                }
+            }
         }
     }
 }
@@ -419,39 +553,6 @@
 -(void)requesttimeout
 {
     [self cancel];
-}
-
--(void)requestfailure:(id)object
-{
-    [self cancel];
-    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-    if ([(NSError*)object code] == NSURLErrorCancelled) {
-        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
-            //_table.tableFooterView = _footer;
-            [_act startAnimating];
-            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-        }
-        else
-        {
-            [_act stopAnimating];
-        }
-    }
-    else
-    {
-        [_act stopAnimating];
-        if(_isrefreshseller)
-        {
-            // go to seller list
-            _isrefreshseller = NO;
-            CatalogSellerViewController *vc = [CatalogSellerViewController new];
-            vc.data = @{kTKPDDETAIL_DATALOCATIONARRAYKEY: _catalog.result.catalog_location,
-                        kTKPDFILTER_DATAINDEXPATHKEY: [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
-                        kTKPDFILTER_DATAFILTERKEY:_params};
-            [self.navigationController pushViewController:vc animated:NO];
-        }
-    }
 }
 
 #pragma mark - Methods

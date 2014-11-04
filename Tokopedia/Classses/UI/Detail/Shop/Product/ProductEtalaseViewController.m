@@ -12,6 +12,8 @@
 #import "ProductEtalaseCell.h"
 #import "ProductEtalaseViewController.h"
 
+#import "URLCacheController.h"
+
 @interface ProductEtalaseViewController ()<UITableViewDataSource, UITableViewDelegate, ProductEtalaseCellDelegate>{
     BOOL _isnodata;
     
@@ -26,6 +28,11 @@
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
+    
+    NSString *_cachepath;
+    URLCacheController *_cachecontroller;
+    URLCacheConnection *_cacheconnection;
+    NSTimeInterval _timeinterval;
 }
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -47,9 +54,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     _datas = [NSMutableArray new];
     _selecteddata = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
+    _cacheconnection = [URLCacheConnection new];
+    _cachecontroller = [URLCacheController new];
     
     _table.tableFooterView = _footer;
     UIBarButtonItem *barbutton1;
@@ -92,6 +102,20 @@
     
     NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
+    
+    NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:0
+                                                            diskCapacity:0
+                                                                diskPath:nil];
+    [NSURLCache setSharedURLCache:sharedCache];
+    
+    /* prepare to use our own on-disk cache */
+    //[_cachecontroller initCachePathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILETALASE_CACHEFILEPATH];
+    _cachepath = [path stringByAppendingPathComponent:kTKPDDETAILSHOPETALASE_APIRESPONSEFILE];
+
+    _cachecontroller.filePath = _cachepath;
+    _cachecontroller.URLCacheInterval = 86400.0;
+    [_cachecontroller initCacheWithDocumentPath:path];
 }
 
 - (void)didReceiveMemoryWarning
@@ -262,9 +286,6 @@
     
     if (_request.isExecuting) return;
     
-    _table.tableFooterView = _footer;
-    [_act startAnimating];
-    
     _requestcount ++;
     
 	NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETETALASEKEY,
@@ -273,32 +294,49 @@
     
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOP_APIPATH parameters:param];
     
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestsuccess:mappingResult];
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
-        [_table reloadData];
-        [_timer invalidate];
-        _timer = nil;
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestfailure:error];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"An Error Has Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        //[alertView show];
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
-        [_timer invalidate];
-        _timer = nil;
-    }];
-    [_operationQueue addOperation:_request];
+	[_cachecontroller getFileModificationDate];
+	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+	if (_timeinterval > _cachecontroller.URLCacheInterval) {
+        _table.tableFooterView = _footer;
+        [_act startAnimating];
+        
+        //[_cachecontroller clearCache];
+        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            [self requestsuccess:mappingResult withOperation:operation];
+            [_act stopAnimating];
+            _table.tableFooterView = nil;
+            [_table reloadData];
+            [_timer invalidate];
+            _timer = nil;
+            
+        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+            /** failure **/
+            [self requestfailure:error];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"An Error Has Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            //[alertView show];
+            [_act stopAnimating];
+            _table.tableFooterView = nil;
+            [_timer invalidate];
+            _timer = nil;
+        }];
+        [_operationQueue addOperation:_request];
+        
+        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    }
+    else {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+        NSLog(@"cache and updated in last 24 hours.");
+        [self requestfailure:nil];
+	}
 }
 
 
--(void)requestsuccess:(id)object
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     
@@ -308,11 +346,12 @@
     BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [_datas addObjectsFromArray:_etalase.result.list];
-        if (_datas.count >0) {
-            _isnodata = NO;
-            [_table reloadData];
-        }
+        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+        [_cachecontroller connectionDidFinish:_cacheconnection];
+        //save response data
+        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+    
+        [self requestprocess:object];
     }
 }
 
@@ -323,22 +362,83 @@
 
 -(void)requestfailure:(id)object
 {
-    [self cancel];
-    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-    if ([(NSError*)object code] == NSURLErrorCancelled) {
-        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-            _table.tableFooterView = _footer;
-            [_act startAnimating];
-            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+    if (_timeinterval > _cachecontroller.URLCacheInterval) {
+        [self requestprocess:object];
+    }
+    else{
+        NSError* error;
+        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
+        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
+        if (parsedData == nil && error) {
+            NSLog(@"parser error");
+        }
+        
+        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
+        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
+            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
+        }
+        
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+        NSError *mappingError = nil;
+        BOOL isMapped = [mapper execute:&mappingError];
+        if (isMapped && !mappingError) {
+            NSLog(@"result %@",[mapper mappingResult]);
+            RKMappingResult *mappingresult = [mapper mappingResult];
+            NSDictionary *result = mappingresult.dictionary;
+            id stat = [result objectForKey:@""];
+            _etalase = stat;
+            BOOL status = [_etalase.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                [self requestprocess:mappingresult];
+            }
         }
     }
-    else
-    {
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
+}
+
+-(void)requestprocess:(id)object
+{
+    if (object) {
+        if ([object isKindOfClass:[RKMappingResult class]]) {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            
+            id stat = [result objectForKey:@""];
+            _etalase = stat;
+            NSString *statusstring = _etalase.status;
+            BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                [_datas addObjectsFromArray:_etalase.result.list];
+                if (_datas.count >0) {
+                    _isnodata = NO;
+                    [_table reloadData];
+                }
+            }
+        }
+        else{
+            [self cancel];
+            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
+            if ([(NSError*)object code] == NSURLErrorCancelled) {
+                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    _table.tableFooterView = _footer;
+                    [_act startAnimating];
+                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                }
+                else
+                {
+                    [_act stopAnimating];
+                    _table.tableFooterView = nil;
+                }
+            }
+            else
+            {
+                [_act stopAnimating];
+                _table.tableFooterView = nil;
+            }
+        }
     }
-    
 }
 
 #pragma mark - Cell Delegate

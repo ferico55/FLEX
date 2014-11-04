@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 
 #import "MainViewController.h"
+#import "TKPDSecureStorage.h"
 
 @implementation AppDelegate
 {
@@ -29,7 +30,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
      NSLog(@"path:%@",[[NSBundle mainBundle]bundlePath]);
-    [self monitornetwork];
+    //[self monitornetwork];
     
     [self adjustnavigationbar];
     
@@ -215,7 +216,6 @@
 			
             //TODO::alert view crash customButtonCell
             //UIAlertView* alert = [[UIAlertView alloc] initWithTitle:kTKPDNETWORK_ERRORTITLE message:kTKPDNETWORK_ERRORDESCS delegate:self cancelButtonTitle:kTKPDBUTTON_OKTITLE otherButtonTitles:nil];
-            //alert.delegate = self;
             //[alert show];
             NSLog(@"%@ : %@ NETWORK NOT AVAILABLE",[self class], NSStringFromSelector(_cmd));
 			
@@ -225,7 +225,6 @@
 }
 
 #pragma mark - Methods persistence
-
 - (void)preparepersistencedata
 {
 	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
@@ -240,9 +239,8 @@
 		[defaults setObject:mutable forKey:kTKPD_APPLICATIONKEY];
 		//[defaults synchronize];
 		
-        //TODO:: create secure storage for sensitive user data
-		//TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-		//[storage resetKeychain];	//clear all previous sensitive data
+		TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+		[storage resetKeychain];	//clear all previous sensitive data
 	}
 }
 

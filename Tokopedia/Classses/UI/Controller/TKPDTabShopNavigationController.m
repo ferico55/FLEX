@@ -16,6 +16,8 @@
 #import "ProductEtalaseViewController.h"
 #import "SendMessageViewController.h"
 
+#import "URLCacheController.h"
+
 @interface TKPDTabShopNavigationController () <UIScrollViewDelegate> {
 	UIView* _tabbar;
 	NSInteger _unloadSelectedIndex;
@@ -33,11 +35,17 @@
     BOOL _isnodata;
     NSInteger _requestcount;
     BOOL _isaddressexpanded;
+    
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
     NSTimer *_timer;
     BOOL is_dismissed;
+    
+    NSString *_cachepath;
+    URLCacheController *_cachecontroller;
+    URLCacheConnection *_cacheconnection;
+    NSTimeInterval _timeinterval;
 }
 @property (weak, nonatomic) IBOutlet UIView *filterview;
 
@@ -65,6 +73,14 @@
 @property (strong, nonatomic) IBOutlet UIView *detailview;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *detailscrollview;
+
+-(void)cancel;
+-(void)configureRestKit;
+-(void)loadData;
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
+-(void)requestfailure:(id)object;
+-(void)requestprocess:(id)object;
+-(void)requesttimeout;
 
 - (IBAction)tap:(UIButton* )sender;
 
@@ -132,6 +148,11 @@
     [super viewDidLoad];
     
     [self.navigationController.navigationBar setTranslucent:NO];
+    
+    _operationQueue = [NSOperationQueue new];
+    _detailfilter = [NSMutableDictionary new];
+    _cachecontroller = [URLCacheController new];
+    _cacheconnection = [URLCacheConnection new];
     
     _buttons = [NSArray sortViewsWithTagInArray:_buttons];
     _chevrons = _buttons;
@@ -654,7 +675,8 @@
             case 11:
             {
                 ShopInfoViewController *vc = [ShopInfoViewController new];
-                vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop};
+                vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -937,70 +959,141 @@
                             kTKPDDETAIL_APISHOPIDKEY : @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue])
                             };
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:param];
+    [_cachecontroller getFileModificationDate];
+	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-//    [_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+	if (_timeinterval > _cachecontroller.URLCacheInterval) {
         
-        [self requestsuccess:mappingResult];
-        [_timer invalidate];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:param];
         
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestfailure:error];
-        [_timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            
+            [self requestsuccess:mappingResult withOperation:operation];
+            [_timer invalidate];
+            
+        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+            /** failure **/
+            [self requestfailure:error];
+            [_timer invalidate];
+        }];
+        
+        [_operationQueue addOperation:_request];
+        
+        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    }
+    else {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+        NSLog(@"cache and updated in last 24 hours.");
+        [self requestfailure:nil];
+	}
 }
 
--(void)requestsuccess:(id)object
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    
-    id stats = [result objectForKey:@""];
-    
-    _shop = stats;
-    BOOL status = [_shop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    id info = [result objectForKey:@""];
+    _shop = info;
+    NSString *statusstring = _shop.status;
+    BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        _isnodata = NO;
-        _barbuttoninfo.enabled = YES;
-        [self setDetailData];
+        //only save cache for first page
+        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+        [_cachecontroller connectionDidFinish:_cacheconnection];
+        //save response data
+        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+
+        [self requestprocess:object];
+    }
+}
+
+
+-(void)requestfailure:(id)object
+{
+    if (_timeinterval > _cachecontroller.URLCacheInterval) {
+        [self requestprocess:object];
+    }
+    else{
+        NSError* error;
+        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
+        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
+        if (parsedData == nil && error) {
+            NSLog(@"parser error");
+        }
+        
+        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
+        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
+            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
+        }
+        
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+        NSError *mappingError = nil;
+        BOOL isMapped = [mapper execute:&mappingError];
+        if (isMapped && !mappingError) {
+            RKMappingResult *mappingresult = [mapper mappingResult];
+            NSDictionary *result = mappingresult.dictionary;
+            id info = [result objectForKey:@""];
+            _shop = info;
+            NSString *statusstring = _shop.status;
+            BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                [self requestprocess:mappingresult];
+            }
+        }
+    }
+}
+
+-(void)requestprocess:(id)object
+{
+    if (object) {
+        if ([object isKindOfClass:[RKMappingResult class]]) {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            
+            id stats = [result objectForKey:@""];
+            
+            _shop = stats;
+            BOOL status = [_shop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                _isnodata = NO;
+                _barbuttoninfo.enabled = YES;
+                [self setDetailData];
+            }
+        }
+        else{
+            [self cancel];
+            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
+            if ([(NSError*)object code] == NSURLErrorCancelled) {
+                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    //_table.tableFooterView = _footer;
+                    //[_act startAnimating];
+                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                }
+                else
+                {
+                    //[_act stopAnimating];
+                    //_table.tableFooterView = nil;
+                }
+            }
+            else
+            {
+                //[_act stopAnimating];
+                //_table.tableFooterView = nil;
+            }
+        }
     }
 }
 
 -(void)requesttimeout
 {
     [self cancel];
-}
-
--(void)requestfailure:(id)object
-{
-    [self cancel];
-    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-    if ([(NSError*)object code] == NSURLErrorCancelled) {
-        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
-            //_table.tableFooterView = _footer;
-            //[_act startAnimating];
-            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-        }
-        else
-        {
-            //[_act stopAnimating];
-            //_table.tableFooterView = nil;
-        }
-    }
-    else
-    {
-        //[_act stopAnimating];
-        //_table.tableFooterView = nil;
-    }
 }
 
 #pragma mark - UIScrollView Delegate
@@ -1016,6 +1109,13 @@
 -(void)setData:(NSDictionary *)data
 {
     _data = data;
+    
+    //cache
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
+    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOP_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]]];
+    _cachecontroller.filePath = _cachepath;
+    _cachecontroller.URLCacheInterval = 86400.0;
+	[_cachecontroller initCacheWithDocumentPath:path];
 }
 
 - (void)updateView:(NSNotification *)notification;

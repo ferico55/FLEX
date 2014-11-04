@@ -1,0 +1,30 @@
+//
+//  GeneralList1GestureCell.h
+//  Tokopedia
+//
+//  Created by IT Tkpd on 11/4/14.
+//  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+#define kTKPDGENERALLIST1GESTURECELL_IDENTIFIER @"GeneralList1GeneralCellIdentifier"
+
+#pragma mark - General List 1 Gesture Cell Delegate
+@protocol GeneralList1GestureCellDelegate <NSObject>
+@required
+-(void)GeneralList1GestureCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
+
+@end
+
+@interface GeneralList1GestureCell : UITableViewCell
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+@property (nonatomic, weak) IBOutlet id<GeneralList1GestureCellDelegate> delegate;
+#else
+@property (nonatomic, assign) IBOutlet id<GeneralList1GestureCellDelegate> delegate;
+#endif
+
+@property (strong, nonatomic) NSIndexPath *indexpath;
+
+@end

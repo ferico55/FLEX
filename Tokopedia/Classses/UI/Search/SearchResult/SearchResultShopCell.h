@@ -8,13 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+#define kTKPDSEARCHRESULTSHOPCELL_IDENTIFIER @"SearchResultCellShopIdentifier"
+
 @protocol SearchResultShopCellDelegate <NSObject>
 @required
 -(void)SearchResultShopCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
 
 @end
-
-#define kTKPDSEARCHRESULTSHOPCELL_IDENTIFIER @"SearchResultCellShopIdentifier"
 
 @interface SearchResultShopCell : UITableViewCell
 

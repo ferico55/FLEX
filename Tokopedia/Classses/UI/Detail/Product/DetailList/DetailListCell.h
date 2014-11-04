@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#define kTKPDDETAILLISTCELL_IDENTIFIER @"DetailListCellIdentifier"
 
 @interface DetailListCell : UITableViewCell
 

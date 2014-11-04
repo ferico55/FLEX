@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#define kTKPDCATEGORYVIEWCELL_IDENTIFIER @"CategoryViewCellIdentifier"
 
 @protocol CategoryViewCellDelegate <NSObject>
 @required

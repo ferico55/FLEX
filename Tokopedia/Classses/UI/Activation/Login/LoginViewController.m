@@ -11,7 +11,8 @@
 #import "activation.h"
 #import "RegisterViewController.h"
 #import "LoginViewController.h"
-#import "StickyAlert.h"
+
+#import "TKPDSecureStorage.h"
 
 @interface LoginViewController (){
     
@@ -22,9 +23,6 @@
     BOOL _isnodata;    
     NSInteger _requestcount;
     NSTimer *_timer;
-    
-    BOOL _isrefreshview;
-    UIRefreshControl *_refreshControl;
     
     Login *_login;
         
@@ -38,7 +36,15 @@
 @property (weak, nonatomic) IBOutlet UITextField *textfieldpass;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
--(void)keyboardWillShow:(NSNotification *)notification;
+- (void)cancelLogin;
+- (void)configureRestKitLogin;
+- (void)LoadDataActionLogin:(id)userinfo;
+- (void)requestsuccessLogin:(id)object withOperation:(RKObjectRequestOperation*)operation;
+- (void)requestfailureLogin:(id)object;
+- (void)requesttimeoutLogin;
+
+- (void)keyboardWillShow:(NSNotification *)notification;
+- (void)keyboardWillHidden:(NSNotification*)aNotification;
 
 @end
 
@@ -80,30 +86,24 @@
     img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign In" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
     }
     else
-//        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign In" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
 
     [barbutton1 setTag:10];
-    [barbutton1 setTintColor:[UIColor whiteColor]];
     self.navigationItem.rightBarButtonItem = barbutton1;
 
     /** GO TO SIGN UP PAGE **/
     img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
     }
     else
-//        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
     
     [barbutton1 setTag:11];
-    [barbutton1 setTintColor:[UIColor whiteColor]];
     self.navigationItem.leftBarButtonItem = barbutton1;
 
     
@@ -187,13 +187,6 @@
                     }
                 }
                 
-                StickyAlert *stickyalert = [[StickyAlert alloc]init];
-                [stickyalert initView:self.view];
-                [stickyalert alertError:messages];
-                
-//                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-
-                
                 NSLog(@"message : %@", messages);
                 break;
             }
@@ -255,7 +248,6 @@
                                                         }];
     //add relationship mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-
     
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDLOGIN_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
@@ -284,16 +276,12 @@
         [_timer invalidate];
         _timer = nil;
         [_act stopAnimating];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [self requestsuccessLogin:mappingResult];
+        [self requestsuccessLogin:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [_timer invalidate];
         _timer = nil;
         [_act stopAnimating];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
         [self requestfailureLogin:error];
     }];
     [_operationQueue addOperation:_request];
@@ -302,7 +290,7 @@
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
--(void)requestsuccessLogin:(id)object
+-(void)requestsuccessLogin:(id)object withOperation:(RKObjectRequestOperation*)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     
@@ -315,31 +303,29 @@
 
         if (!_login.message_error) {
             [self.tabBarController setSelectedIndex:0];
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            [defaults saveCustomObject:_login.result key:kTKPD_AUTHKEY];
-            //[[NSUserDefaults standardUserDefaults]setObject:_login.result forKey:kTKPD_AUTHKEY];
-            [defaults synchronize];
+            //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            //[defaults saveCustomObject:_login.result key:kTKPD_AUTHKEY];
+            //[defaults setObject:operation.HTTPRequestOperation.responseData forKey:kTKPD_AUTHKEY];
+            //[defaults synchronize];
+            //TODO:: api key
+            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+            [secureStorage setKeychainWithValue:@(_login.result.user_id) withKey:kTKPD_USERIDKEY];
+            [secureStorage setKeychainWithValue:@(_login.result.shop_id) withKey:kTKPD_SHOPIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
+            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+            
             NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-            [nc postNotificationName:kTKPD_ISLOGINNOTIFICATIONNAMEKEY object:nil userInfo:@{}];
+            [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION object:nil userInfo:@{}];
         }
         else
         {
             NSArray *messages = _login.message_error;
             NSString *message = [[messages valueForKey:@"description"] componentsJoinedByString:@"\n"];
-            
-            StickyAlert *stickyalert = [[StickyAlert alloc]init];
-            [stickyalert initView:self.view];
-            [stickyalert alertError:messages];
 
-//            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-//            [alertView show];
+            //UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            //[alertView show];
         }
     }
-}
-
--(void)requesttimeoutLogin
-{
-    [self cancelLogin];
 }
 
 -(void)requestfailureLogin:(id)object
@@ -367,6 +353,10 @@
     }
 }
 
+-(void)requesttimeoutLogin
+{
+    [self cancelLogin];
+}
 
 #pragma mark - Delegate
 -(void)textFieldDidBeginEditing:(UITextField *)textField
@@ -426,7 +416,7 @@
     }
 }
 // Called when the UIKeyboardWillHideNotification is sent
-- (void)keyboardWillBeHidden:(NSNotification*)aNotification
+- (void)keyboardWillHidden:(NSNotification*)aNotification
 {
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     _container.contentInset = contentInsets;

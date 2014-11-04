@@ -14,6 +14,10 @@
 #import "TKPDTabProfileNavigationController.h"
 #import "SortViewController.h"
 #import "ProductEtalaseViewController.h"
+#import "../Profile/Edit/ProfileEditViewController.h"
+#import "../Profile/Settings/ProfileSettingViewController.h"
+
+#import "URLCacheController.h"
 
 @interface TKPDTabProfileNavigationController () <UIScrollViewDelegate> {
 	UIView* _tabbar;
@@ -36,6 +40,11 @@
     NSOperationQueue *_operationQueue;
     
     NSTimer *_timer;
+    
+    NSString *_cachepath;
+    URLCacheController *_cachecontroller;
+    URLCacheConnection *_cacheconnection;
+    NSTimeInterval _timeinterval;
 }
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
@@ -52,6 +61,19 @@
 @property (weak, nonatomic) IBOutlet UIImageView *thumb;
 
 @property (weak, nonatomic) IBOutlet UIView *headerview;
+
+@property (weak, nonatomic) IBOutlet UIButton *buttonmessage;
+@property (weak, nonatomic) IBOutlet UIButton *buttoneditprofile;
+@property (weak, nonatomic) IBOutlet UIButton *buttonsetting;
+
+
+-(void)cancel;
+-(void)configureRestKit;
+-(void)loadData;
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
+-(void)requestfailure:(id)object;
+-(void)requestprocess:(id)object;
+-(void)requesttimeout;
 
 - (IBAction)tap:(UIButton* )sender;
 
@@ -108,7 +130,6 @@
         
         _requestcount = 0;
         _isnodata = YES;
-        self.title = KTKPDTITLE_PEOPLE;
     }
     return self;
 }
@@ -148,19 +169,21 @@
 	[barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
     
-//    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-//        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-//    }
-//    else
-//        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-//	[_barbuttoninfo setTag:11];
-//    _barbuttoninfo.enabled = NO;
-//    self.navigationItem.rightBarButtonItem = _barbuttoninfo;
+    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+    }
+    else
+        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+	[_barbuttoninfo setTag:11];
+    _barbuttoninfo.enabled = NO;
+    self.navigationItem.rightBarButtonItem = _barbuttoninfo;
     [_scrollview addSubview:_contentview];
     
     _operationQueue = [NSOperationQueue new];
+    _cachecontroller = [URLCacheController new];
+    _cacheconnection = [URLCacheConnection new];
     
 //    CGRect frame = _descriptionview.frame;
 //    frame.origin.x = _detailview.frame.size.width;
@@ -176,6 +199,10 @@
 //    size.width = size.width * _detailscrollview.subviews.count-1;
 //    [_detailscrollview setContentSize:size];
 //    _detailscrollview.pagingEnabled = YES;
+    
+    //cache
+    _cachecontroller.URLCacheInterval = 86400.0;
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -294,8 +321,6 @@
 		_selectedIndex = -1;
 		//_navigationIndex = -1;
 	}
-    
-    [self setGreenBorderButton:_chevrons[_selectedIndex]];
 }
 
 - (void)setSelectedViewController:(UIViewController *)selectedViewController
@@ -500,8 +525,6 @@
 		NSInteger index = _selectedIndex;
         index = sender.tag;
         
-        [self setGreenBorderButton:sender];
-        
 		BOOL should = YES;
 		
 		if (([_delegate respondsToSelector:@selector(tabBarController:shouldSelectViewController:)])) {
@@ -520,31 +543,12 @@
 	}
 }
 
--(void) setGreenBorderButton:(UIButton*)sender {
-    for(int i=0;i<3;i++) {
-        CALayer *whiteBorder = [CALayer layer];
-        
-        whiteBorder.backgroundColor = [[UIColor whiteColor] CGColor];
-        whiteBorder.frame = CGRectMake(0, CGRectGetHeight(sender.frame)+4, CGRectGetWidth([_chevrons[i] frame]), 2.0f);
-        [_chevrons[i] setTitleColor:[UIColor colorWithRed:(111/255.0) green:(113/255.0) blue:(121/255.0) alpha:1.0] forState:UIControlStateNormal];
-        
-        [[_chevrons[i] layer] addSublayer:whiteBorder];
-    }
-    
-    CALayer *upperBorder = [CALayer layer];
-    upperBorder.backgroundColor = [[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] CGColor];
-    upperBorder.frame = CGRectMake(0, CGRectGetHeight(sender.frame)+4, CGRectGetWidth(sender.frame), 2.0f);
-    [sender setTitleColor:[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] forState:UIControlStateNormal];
-    
-    [[sender layer] addSublayer:upperBorder];
-}
-
--(IBAction)tapbutton:(UIButton *)sender
+-(IBAction)tapbutton:(id)sender
 {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         
-        switch (sender.tag) {
+        switch (btn.tag) {
             case 10:
             {
                 [self.navigationController popViewControllerAnimated:YES];
@@ -555,6 +559,36 @@
 //                ShopInfoViewController *vc = [ShopInfoViewController new];
 //                vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop};
 //                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            default:
+                break;
+        }
+    }
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton*)sender;
+        
+        switch (btn.tag) {
+            case 10:
+            {
+                //button message action
+                break;
+            }
+            case 11:
+            {
+                //button edit profile action
+                ProfileEditViewController *vc = [ProfileEditViewController new];
+                vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]
+                            };
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 12:
+            {
+                //setting action
+                ProfileSettingViewController *vc = [ProfileSettingViewController new];
+                vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]};
+                [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
             default:
@@ -687,6 +721,9 @@
 #pragma mark - Request and Mapping
 -(void)cancel
 {
+    [_request cancel];
+    _request = nil;
+    
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
 }
@@ -710,8 +747,7 @@
                                                           kTKPDPROFILE_APIUSERPHONEKEY:kTKPDPROFILE_APIUSERPHONEKEY,
                                                           kTKPDPROFILE_APIUSERIDKEY:kTKPDPROFILE_APIUSERIDKEY,
                                                           kTKPDPROFILE_APIUSERIMAGEKEY:kTKPDPROFILE_APIUSERIMAGEKEY,
-                                                          kTKPDPROFILE_APIUSERNAMEKEY:kTKPDPROFILE_APIUSERNAMEKEY,
-                                                          kTKPDPROFILE_APIUSERBIRTHKEY:kTKPDPROFILE_APIUSERBIRTHKEY,
+                                                          kTKPDPROFILE_APIUSERNAMEKEY:kTKPDPROFILE_APIUSERNAMEKEY
                                                           }];
     
     RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
@@ -752,79 +788,149 @@
 {
     _requestcount ++;
     
-    [_act startAnimating];
-    
 	NSDictionary* param = @{
                             kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEINFOKEY,
                             kTKPDPROFILE_APIUSERIDKEY : @([[_data objectForKey:kTKPDPROFILE_APIUSERIDKEY]integerValue])
                             };
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_PEOPLEAPIPATH parameters:param];
+    [_cachecontroller getFileModificationDate];
+	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-    //[_objectmanager getObjectsAtPath:kTKPDPROFILE_PEOPLEAPIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+	if (_timeinterval > _cachecontroller.URLCacheInterval) {
         
-        [self requestsuccess:mappingResult];
-        [_act stopAnimating];
-        [_timer invalidate];
+        [_act startAnimating];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_PEOPLEAPIPATH parameters:param];
         
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestfailure:error];
-        [_act stopAnimating];
-        [_timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        //[_objectmanager getObjectsAtPath:kTKPDPROFILE_PEOPLEAPIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            
+            [self requestsuccess:mappingResult withOperation:operation];
+            [_act stopAnimating];
+            [_timer invalidate];
+            
+        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+            /** failure **/
+            [self requestfailure:error];
+            [_act stopAnimating];
+            [_timer invalidate];
+        }];
+        
+        [_operationQueue addOperation:_request];
+        
+        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    }else {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+        NSLog(@"cache and updated in last 24 hours.");
+        [self requestfailure:nil];
+	}
 }
 
--(void)requestsuccess:(id)object
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    
-    id stats = [result objectForKey:@""];
-    
-    _profileinfo = stats;
-    BOOL status = [_profileinfo.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    id info = [result objectForKey:@""];
+    _profileinfo = info;
+    NSString *statusstring = _profileinfo.status;
+    BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        _isnodata = NO;
-        _headerview.hidden = NO;
+        //only save cache for first page
+        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+        [_cachecontroller connectionDidFinish:_cacheconnection];
+        //save response data
+        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
         
-        [self setDetailData];
+        [self requestprocess:object];
+    }
+}
+
+-(void)requestfailure:(id)object
+{
+    if (_timeinterval > _cachecontroller.URLCacheInterval) {
+        [self requestprocess:object];
+    }
+    else{
+        NSError* error;
+        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
+        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
+        if (parsedData == nil && error) {
+            NSLog(@"parser error");
+        }
+        
+        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
+        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
+            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
+        }
+        
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+        NSError *mappingError = nil;
+        BOOL isMapped = [mapper execute:&mappingError];
+        if (isMapped && !mappingError) {
+            RKMappingResult *mappingresult = [mapper mappingResult];
+            NSDictionary *result = mappingresult.dictionary;
+            id info = [result objectForKey:@""];
+            _profileinfo = info;
+            NSString *statusstring = _profileinfo.status;
+            BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                [self requestprocess:mappingresult];
+            }
+        }
+    }
+}
+
+-(void)requestprocess:(id)object
+{
+    if (object) {
+        if ([object isKindOfClass:[RKMappingResult class]]) {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            
+            id stats = [result objectForKey:@""];
+            
+            _profileinfo = stats;
+            BOOL status = [_profileinfo.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                _isnodata = NO;
+                _headerview.hidden = NO;
+                
+                [self setDetailData];
+            }
+        }
+        else{
+            
+            [self cancel];
+            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
+            if ([(NSError*)object code] == NSURLErrorCancelled) {
+                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    //_table.tableFooterView = _footer;
+                    //[_act startAnimating];
+                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                }
+                else
+                {
+                    //[_act stopAnimating];
+                    //_table.tableFooterView = nil;
+                }
+            }
+            else
+            {
+                //[_act stopAnimating];
+                //_table.tableFooterView = nil;
+            }
+        }
     }
 }
 
 -(void)requesttimeout
 {
     [self cancel];
-}
-
--(void)requestfailure:(id)object
-{
-    [self cancel];
-    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-    if ([(NSError*)object code] == NSURLErrorCancelled) {
-        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
-            //_table.tableFooterView = _footer;
-            //[_act startAnimating];
-            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-        }
-        else
-        {
-            //[_act stopAnimating];
-            //_table.tableFooterView = nil;
-        }
-    }
-    else
-    {
-        //[_act stopAnimating];
-        //_table.tableFooterView = nil;
-    }
 }
 
 #pragma mark - UIScrollView Delegate
@@ -836,6 +942,29 @@
 -(void)setData:(NSDictionary *)data
 {
     _data = data;
+    
+    if (data) {
+        //cache
+        NSString *path= [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDPROFILE_CACHEFILEPATH];
+        _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDPROFILE_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDPROFILE_APIUSERIDKEY]integerValue]]];
+        _cachecontroller.filePath = _cachepath;
+        [_cachecontroller initCacheWithDocumentPath:path];
+        
+        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+        if (auth && ![auth isEqual:[NSNull null]]) {
+            if ([[_data objectForKey:kTKPD_USERIDKEY]integerValue] == [[auth objectForKey:kTKPD_USERIDKEY]integerValue]) {
+                _buttoneditprofile.hidden = NO;
+                _buttonsetting.hidden = NO;
+                _buttonmessage.hidden = YES;
+            }
+        }
+        else
+        {
+            _buttonmessage.hidden = NO;
+            _buttoneditprofile.hidden = YES;
+            _buttonsetting.hidden = YES;
+        }
+    }
 }
 
 @end

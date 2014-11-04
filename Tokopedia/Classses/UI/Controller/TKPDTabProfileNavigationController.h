@@ -34,7 +34,7 @@
 
 @interface TKPDTabProfileNavigationController : UIViewController
 
-@property (nonatomic, strong) NSDictionary *data;
+@property (nonatomic, strong, setter = setData:) NSDictionary *data;
 
 @property (nonatomic, copy, setter = setViewControllers:) NSArray *viewControllers;
 @property (nonatomic, weak, setter = setSelectedViewController:) UIViewController *selectedViewController;

@@ -9,8 +9,33 @@
 #ifndef Tokopedia_profile_h
 #define Tokopedia_profile_h
 
+#define kTKPDPROFILEEDIT_TITLE @"Edit Profile"
+#define kTKPDPROFILEEDITPHONEVERIFICATION_TITLE @"Verification Phone Number"
+
+#define kTKPDPROFILESETTING_TITLE @"Settings"
+#define kTKPDPROFILESETTINGNOTIFICATION_TITLE @"Setting Notification"
+#define kTKPDPROFILESETTINGPRIVACY_TITLE @"Setting Privacy"
+#define kTKPDPROFILESETTINGPASSWORD_TITLE @"Change Password"
+#define kTKPDPROFILESETTINGBANKACCOUNT_TITLE @"Setting Bank Account"
+#define kTKPDPROFILESETTINGADDRESS_TITLE @"Setting Address"
+
+#define kTKPDPROFILE_DATAPROFILEKEY @"dataprofile"
+#define kTKPDPROFILESETTING_DATAPRIVACYKEY @"dataprivacy"
+#define kTKPDPROFILESETTING_DATAPRIVACYTYPEKEY @"dataprivacytype"
+#define kTKPDPROFILESETTING_DATAPRIVACYTITILEKEY @"dataprivacytitle"
+#define kTKPDPROFILEEDIT_DATAPHONENUMBERKEY @"phonenumber"
+
 #define kTKPDPROFILE_APIGETFAVORITESHOPKEY @"get_favorit_shop"
 #define kTKPDPROFILE_APIGETPROFILEINFOKEY @"get_people_info"
+#define kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY @"upload_profile_image"
+#define kTKPDPROFILE_APIUPLOADGENERATEHOSTKEY @"generate_host"
+#define kTKPDPROFILE_APIGETPROFILEFORMKEY @"get_profile_form"
+#define kTKPDPROFILE_APISETUSERPROFILEKEY @"set_user_profile"
+#define kTKPDPROFILE_APISETPASSWORDKEY @"set_password"
+#define kTKPDPROFILE_APISETEMAILNOTIFKEY @"set_email_notification"
+#define kTKPDPROFILE_APIGETEMAILNOTIFKEY @"get_email_notification_form"
+#define kTKPDPROFILE_APIGETPRIVACYKEY @"get_privacy_form"
+#define kTKPDPROFILE_APISETPRIVACYKEY @"set_user_privacy"
 
 #define kTKPDPROFILE_APIUSERIDKEY @"user_id"
 #define kTKPDPROFILE_APIACTIONKEY @"action"
@@ -25,6 +50,7 @@
 #define kTKPDPROFILE_APISHOPNAMEKEY @"shop_name"
 
 #define kTKPDPROFILE_APIUSERINFOKEY @"user_info"
+#define kTKPDPROFILE_APIDATAUSERKEY @"data_user"
 #define kTKPDPROFILE_APIUSEREMAILKEY @"user_email"
 #define kTKPDPROFILE_APIUSERMESSENGERKEY @"user_messenger"
 #define kTKPDPROFILE_APIUSERHOBBIESKEY @"user_hobbies"
@@ -33,11 +59,63 @@
 #define kTKPDPROFILE_APIUSERIMAGEKEY @"user_image"
 #define kTKPDPROFILE_APIUSERNAMEKEY @"user_name"
 #define kTKPDPROFILE_APIUSERBIRTHKEY @"user_birth"
+#define kTKPDPROFILE_APIPASSKEY @"user_password"
+#define kTKPDPROFILE_APIHOBBYKEY @"hobby"
+#define kTKPDPROFILE_APIBIRTHDAYKEY @"birth_day"
+#define kTKPDPROFILE_APIFULLNAMEKEY @"full_name"
+#define kTKPDPROFILE_APIBIRTHMONTHKEY @"birth_month"
+#define kTKPDPROFILE_APIBIRTHYEARKEY @"birth_year"
+#define kTKPDPROFILE_APIGENDERKEY @"gender"
+
+#define kTKPDPROFILESETTING_APIPASSKEY @"password"
+#define kTKPDPROFILESETTING_APINEWPASSKEY @"new_password"
+#define kTKPDPROFILESETTING_APIPASSCONFIRMKEY @"confirm_password"
+
+#define kTKPDPROFILESETTING_APINOTIFICATIONKEY @"notification"
+#define kTKPDPROFILESETTING_APIFLAGNEWSLATTERKEY @"flag_newsletter"
+#define kTKPDPROFILESETTING_APIFLAGREVIEWKEY @"flag_review"
+#define kTKPDPROFILESETTING_APIFLAGTALKPRODUCTKEY @"flag_talk_product"
+#define kTKPDPROFILESETTING_APIFLAGMESSAGEKEY @"flag_message"
+#define kTKPDPROFILESETTING_APIFLAGADMINMESSAGEKEY @"flag_admin_message"
+
+#define kTKPDPROFILESETTING_APIPRIVACYKEY @"privacy"
+#define kTKPDPROFILESETTING_APIFLAGMESSEGERKEY @"flag_messenger"
+#define kTKPDPROFILESETTING_APIFLAGHPKEY @"flag_hp"
+#define kTKPDPROFILESETTING_APIFLAGEMAILKEY @"flag_email"
+#define kTKPDPROFILESETTING_APIFLAGBIRTHDATEKEY @"flag_birthdate"
+#define kTKPDPROFILESETTING_APIFLAGADDRESSKEY @"flag_address"
+
+#define kTKPDPROFILE_APIISSUCCESSKEY @"is_success"
+
+#define kTKPDPROFILE_APIUPLOADFILEPATHKEY @"file_path"
+#define kTKPDPROFILE_APIUPLOADFILETHUMBKEY @"file_th"
+
+#define kTKPDPROFILE_APIPROFILEPHOTOKEY @"profile_img"
+
+#define kTKPDGENERATEDHOST_APIGENERATEDHOSTKEY @"generated_host"
+#define kTKPDGENERATEDHOST_APISERVERIDKEY @"server_id"
+#define KTKPDGENERATEDHOST_APIUPLOADHOSTKEY @"upload_host"
+#define kTKPDGENERATEDHOST_APIUSERIDKEY @"user_id"
 
 #define kTKPDPROFILE_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define kTKPDPROFILE_NODATACELLTITLE @"no data"
 #define kTKPDPROFILE_NODATACELLDESCS @"no data description"
 
 #define kTKPDPROFILE_PEOPLEAPIPATH @"people.pl"
+#define kTKPDPROFILE_SETTINGAPIPATH @"setting.pl"
+#define kTKPDPROFILE_UPLOADIMAGEAPIPATH @"action/upload-image.pl"
+#define kTKPDPROFILE_PROFILESETTINGAPIPATH @"action/setting.pl"
+
+#define kTKPDPROFILE_CACHEFILEPATH @"profile"
+#define kTKPDPROFILE_APIRESPONSEFILEFORMAT @"profile%d"
+#define kTKPDPFAVORITESHOP_APIRESPONSEFILEFORMAT @"profilefavshop%d"
+
+#define kTKPDPROFILE_DATAGENDERARRAYKEY @[@"Male",@"Female"]
+#define kTKPDPROFILE_DATAGENDERVALUEARRAYKEY @[@"1",@"2"]
+
+#define kTKPDPROFILE_DATAPRIVACYARRAYKEY @[@"Do not show", @"Show to public"]
+#define kTKPDPROFILESETTING_DATAPRIVACYTITILEARRAYKEY @[@"Tampilkan Tanggal Lahir", @"Tampilkan Email", @"Tampilkan YM", @"Tampilkan Nomor HP", @"Tampilkan Alamat"]
+
+#define kTKPDPROFILEEDIT_DATEOFBIRTHFORMAT @"%@ / %@ / %@"
 
 #endif
