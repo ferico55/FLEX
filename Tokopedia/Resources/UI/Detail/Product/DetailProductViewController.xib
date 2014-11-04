@@ -1,32 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBlack.ttf">
-            <string>GothamBlack</string>
-            <string>GothamBlack</string>
-        </mutableArray>
-        <mutableArray key="GothamLight.ttf">
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailProductViewController">
             <connections>
@@ -101,7 +78,6 @@
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <nil key="simulatedStatusBarMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="U7y-jr-OJ5" userLabel="HeaderView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="425"/>
@@ -254,15 +230,13 @@
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="838" y="411.5"/>
         </view>
         <view contentMode="scaleToFill" id="S8c-C2-gKh" userLabel="Shop Information - View">
             <rect key="frame" x="0.0" y="0.0" width="320" height="270"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fWw-Ck-UQr">
+                <view tag="10" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fWw-Ck-UQr">
                     <rect key="frame" x="7" y="11" width="306" height="125"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ml1-bf-Teo">
@@ -397,6 +371,10 @@
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="calibratedRGB"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="shy-zk-4bX" appends="YES" id="3AA-vP-HKb"/>
+                    </connections>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sPl-HV-1Ei">
                     <rect key="frame" x="0.0" y="158" width="320" height="190"/>
@@ -412,11 +390,9 @@
                 </button>
             </subviews>
             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
-            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="91" y="-528"/>
         </view>
-        <view tag="10" contentMode="scaleToFill" id="P75-Lv-uni" userLabel="OtherProductView" customClass="DetailProductOtherView">
+        <view contentMode="scaleToFill" id="P75-Lv-uni" userLabel="OtherProductView" customClass="DetailProductOtherView">
             <rect key="frame" x="0.0" y="0.0" width="145" height="181"/>
             <subviews>
                 <imageView tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="thumb_product.png" translatesAutoresizingMaskIntoConstraints="NO" id="Whf-o7-mYJ">
@@ -439,15 +415,25 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>
-            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="act" destination="oaW-ZO-G2a" id="wOP-YE-DSG"/>
                 <outlet property="namelabel" destination="Q5e-TV-sDK" id="POK-md-cQc"/>
                 <outlet property="pricelabel" destination="Va7-Ts-UVQ" id="gn2-kp-LuS"/>
                 <outlet property="thumb" destination="Whf-o7-mYJ" id="nff-qM-iFa"/>
+                <outletCollection property="gestureRecognizers" destination="n1N-Gx-LcD" appends="YES" id="oVn-ve-1DD"/>
             </connections>
         </view>
+        <tapGestureRecognizer id="n1N-Gx-LcD">
+            <connections>
+                <action selector="gesture:" destination="P75-Lv-uni" id="7BF-SF-lfr"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="shy-zk-4bX">
+            <connections>
+                <action selector="gesture:" destination="-1" id="9Cu-40-dVb"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_location.png" width="14" height="14"/>
@@ -456,9 +442,4 @@
         <image name="icon_view_28px.png" width="28" height="28"/>
         <image name="thumb_product.png" width="276" height="244"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

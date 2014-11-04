@@ -19,6 +19,12 @@
 
 #import "ShopInfoViewController.h"
 
+//profile
+#import "TKPDTabProfileNavigationController.h"
+#import "ProfileBiodataViewController.h"
+#import "ProfileContactViewController.h"
+#import "ProfileFavoriteShopViewController.h"
+
 @interface ShopInfoViewController()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 {
     Shop *_shop;
@@ -61,6 +67,7 @@
 @property (weak, nonatomic) IBOutlet UIView *ownerview;
 @property (weak, nonatomic) IBOutlet UIView *addressoffview;
 @property (weak, nonatomic) IBOutlet UIView *shopdetailview;
+- (IBAction)gesture:(id)sender;
 
 - (IBAction)tap:(id)sender;
 @end
@@ -117,6 +124,44 @@
 }
 
 #pragma mark - View Action
+- (IBAction)gesture:(id)sender {
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                // go to profile
+                NSMutableArray *viewcontrollers = [NSMutableArray new];
+                /** create new view controller **/
+                ProfileBiodataViewController *v = [ProfileBiodataViewController new];
+                [viewcontrollers addObject:v];
+                ProfileFavoriteShopViewController *v1 = [ProfileFavoriteShopViewController new];
+                v1.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(_shop.result.owner.owner_id),
+                            kTKPDDETAIL_APISHOPIDKEY:@(_shop.result.info.shop_id),
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]
+                            };
+                [viewcontrollers addObject:v1];
+                ProfileContactViewController *v2 = [ProfileContactViewController new];
+                [viewcontrollers addObject:v2];
+                // Adjust View Controller
+                TKPDTabProfileNavigationController *tapnavcon = [TKPDTabProfileNavigationController new];
+                tapnavcon.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(_shop.result.owner.owner_id),
+                                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                [tapnavcon setViewControllers:viewcontrollers animated:YES];
+                [tapnavcon setSelectedIndex:0];
+                
+                [self.navigationController pushViewController:tapnavcon animated:YES];
+                break;
+            }
+        }
+    }
+}
+
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
@@ -132,7 +177,8 @@
             {
                 //favorited button action
                 ShopFavoritedViewController *vc = [ShopFavoritedViewController new];
-                vc.data = @{kTKPDDETAIL_APISHOPIDKEY : @(_shop.result.info.shop_id)};
+                vc.data = @{kTKPDDETAIL_APISHOPIDKEY : @(_shop.result.info.shop_id),
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -142,6 +188,31 @@
                 NSDictionary *userinfo = @{kTKPDDETAIL_DATAINDEXKEY:@(0)};
                 [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                 [self.navigationController popViewControllerAnimated:YES];
+                break;
+            }
+            case 13:
+            {
+                // go to pofile shop owner (transparant button)
+                NSMutableArray *viewcontrollers = [NSMutableArray new];
+                /** create new view controller **/
+                ProfileBiodataViewController *v = [ProfileBiodataViewController new];
+                [viewcontrollers addObject:v];
+                ProfileFavoriteShopViewController *v1 = [ProfileFavoriteShopViewController new];
+                v1.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(_shop.result.owner.owner_id),
+                            kTKPDDETAIL_APISHOPIDKEY:@(_shop.result.info.shop_id),
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]
+                            };
+                [viewcontrollers addObject:v1];
+                ProfileContactViewController *v2 = [ProfileContactViewController new];
+                [viewcontrollers addObject:v2];
+                // Adjust View Controller
+                TKPDTabProfileNavigationController *tapnavcon = [TKPDTabProfileNavigationController new];
+                tapnavcon.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(_shop.result.owner.owner_id),
+                                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                [tapnavcon setViewControllers:viewcontrollers animated:YES];
+                [tapnavcon setSelectedIndex:0];
+                
+                [self.navigationController pushViewController:tapnavcon animated:YES];
                 break;
             }
             default:

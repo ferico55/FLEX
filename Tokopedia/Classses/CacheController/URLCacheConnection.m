@@ -117,7 +117,7 @@ Copyright (C) 2008-2010 Apple Inc. All Rights Reserved.
 
 	if ([response isKindOfClass:[NSHTTPURLResponse self]]) {
 		NSDictionary *headers = [(NSHTTPURLResponse *)response allHeaderFields];
-		NSString *modified = [headers objectForKey:@"Last-Modified"];
+		NSString *modified = [headers objectForKey:@"Date"];
 		if (modified) {
 			NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 

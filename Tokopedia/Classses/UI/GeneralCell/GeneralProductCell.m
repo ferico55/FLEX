@@ -31,6 +31,9 @@
     _labelalbum = [NSArray sortViewsWithTagInArray:_labelalbum];
     _labelprice = [NSArray sortViewsWithTagInArray:_labelprice];
     _labeldescription = [NSArray sortViewsWithTagInArray:_labeldescription];
+    
+    [_viewcell makeObjectsPerformSelector:@selector(setExclusiveTouch:) withObject:@(YES)];
+    [_thumb makeObjectsPerformSelector:@selector(setExclusiveTouch:) withObject:@(YES)];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

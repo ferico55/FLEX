@@ -105,6 +105,10 @@
 #define kTKPDSEARCH_NODATACELLTITLE @"no data"
 #define kTKPDSEARCH_NODATACELLDESCS @"no data description"
 
+#define kTKPDSEARCH_CACHEFILEPATH @"search"
+#define kTKPDSEARCHPRODUCT_APIRESPONSEFILEFORMAT @"searchproduct%@"
+#define kTKPDSEARCHCATALOG_APIRESPONSEFILEFORMAT @"searchcatalog%@"
+#define kTKPDSEARCHSHOP_APIRESPONSEFILEFORMAT @"searchshop%@"
 #define kTKPDSEARCH_SEARCHHISTORYPATHKEY @"history_search.plist"
 
 #endif

@@ -17,6 +17,8 @@
 #import "AlertListView.h"
 #import "ShopReviewViewController.h"
 
+#import "URLCacheController.h"
+
 #pragma mark - Shop Review View Controller
 @interface ShopReviewViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate>
 {
@@ -42,6 +44,11 @@
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
+    
+    NSString *_cachepath;
+    URLCacheController *_cachecontroller;
+    URLCacheConnection *_cacheconnection;
+    NSTimeInterval _timeinterval;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *detailstarsandtimesview;
@@ -66,6 +73,14 @@
 
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *ratingviews;
 
+-(void)cancel;
+-(void)configureRestKit;
+-(void)loadData;
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
+-(void)requestfailure:(id)object;
+-(void)requestprocess:(id)object;
+-(void)requesttimeout;
+
 - (IBAction)tap:(id)sender;
 - (IBAction)gesture:(id)sender;
 @end
@@ -89,6 +104,8 @@
     [super viewDidLoad];
     
     _operationQueue = [NSOperationQueue new];
+    _cacheconnection = [URLCacheConnection new];
+    _cachecontroller = [URLCacheController new];
     
     _ratingviews = [NSArray sortViewsWithTagInArray:_ratingviews];
     _labelstars = [NSArray sortViewsWithTagInArray:_labelstars];
@@ -97,7 +114,6 @@
     _list = [NSMutableArray new];
     _param = [NSMutableDictionary new];
     
-    _table.tableFooterView = _footer;
     _table.tableHeaderView = _headerview;
     _headerview.hidden = YES;
     
@@ -112,6 +128,13 @@
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
+    
+    //cache
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
+    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPREVIEW_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue]]];
+    _cachecontroller.filePath = _cachepath;
+    _cachecontroller.URLCacheInterval = 86400.0;
+	[_cachecontroller initCacheWithDocumentPath:path];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -370,10 +393,6 @@
     
     _requestcount++;
     
-    //if (!_isrefreshview) {
-    _table.tableFooterView = _footer;
-    [_act startAnimating];
-    
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPREVIEWKEY,
                             kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0),
@@ -381,98 +400,168 @@
                             kTKPDDETAIL_APILIMITKEY :@(kTKPDDETAILREVIEW_LIMITPAGE),
                             };
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOP_APIPATH parameters:param];
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-    //[_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        _table.hidden = NO;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [self requestsuccess:mappingResult];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [self requestfailure:error];
-    }];
-    [_operationQueue addOperation:_request];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    [_cachecontroller getFileModificationDate];
+	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
+        if (!_isrefreshview) {
+            _table.tableFooterView = _footer;
+            [_act startAnimating];
+        }
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOP_APIPATH parameters:param];
+        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        //[_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            [_timer invalidate];
+            _timer = nil;
+            [_act stopAnimating];
+            _table.hidden = NO;
+            _isrefreshview = NO;
+            [_refreshControl endRefreshing];
+            [self requestsuccess:mappingResult withOperation:operation];
+        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+            /** failure **/
+            [_timer invalidate];
+            _timer = nil;
+            [_act stopAnimating];
+            _isrefreshview = NO;
+            [_refreshControl endRefreshing];
+            [self requestfailure:error];
+        }];
+        [_operationQueue addOperation:_request];
+        
+        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    }else{
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+        NSLog(@"cache and updated in last 24 hours.");
+        [self requestfailure:nil];
+    }
 }
 
--(void)requestsuccess:(id)object
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    
     id stats = [result objectForKey:@""];
-    
     _review = stats;
     BOOL status = [_review.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        NSArray *list = _review.result.list;
-        [_list addObjectsFromArray:list];
-        _headerview.hidden = NO;
-        _isnodata = NO;
-        
-        [self setHeaderData];
-        
-        _urinext =  _review.result.paging.uri_next;
-        NSURL *url = [NSURL URLWithString:_urinext];
-        NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-        
-        NSMutableDictionary *queries = [NSMutableDictionary new];
-        [queries removeAllObjects];
-        for (NSString *keyValuePair in querry)
-        {
-            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-            NSString *key = [pairComponents objectAtIndex:0];
-            NSString *value = [pairComponents objectAtIndex:1];
-            
-            [queries setObject:value forKey:key];
+        if (_page <=1) {
+            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+            [_cachecontroller connectionDidFinish:_cacheconnection];
+            //save response data
+            [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+        }
+        [self requestprocess:object];
+    }
+}
+
+-(void)requestfailure:(id)object
+{
+    if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
+        [self requestprocess:object];
+    }
+    else{
+        NSError* error;
+        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
+        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
+        if (parsedData == nil && error) {
+            NSLog(@"parser error");
         }
         
-        _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-        NSLog(@"next page : %d",_page);
+        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
+        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
+            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
+        }
         
-        [_table reloadData];
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+        NSError *mappingError = nil;
+        BOOL isMapped = [mapper execute:&mappingError];
+        if (isMapped && !mappingError) {
+            RKMappingResult *mappingresult = [mapper mappingResult];
+            NSDictionary *result = mappingresult.dictionary;
+            id stats = [result objectForKey:@""];
+            _review = stats;
+            BOOL status = [_review.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                [self requestprocess:mappingresult];
+            }
+        }
+    }
+}
+
+-(void)requestprocess:(id)object
+{
+    if (object) {
+        if ([object isKindOfClass:[RKMappingResult class]]) {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            
+            id stats = [result objectForKey:@""];
+            
+            _review = stats;
+            BOOL status = [_review.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                NSArray *list = _review.result.list;
+                [_list addObjectsFromArray:list];
+                _headerview.hidden = NO;
+                _isnodata = NO;
+                
+                [self setHeaderData];
+                
+                _urinext =  _review.result.paging.uri_next;
+                NSURL *url = [NSURL URLWithString:_urinext];
+                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                
+                NSMutableDictionary *queries = [NSMutableDictionary new];
+                [queries removeAllObjects];
+                for (NSString *keyValuePair in querry)
+                {
+                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                    NSString *key = [pairComponents objectAtIndex:0];
+                    NSString *value = [pairComponents objectAtIndex:1];
+                    
+                    [queries setObject:value forKey:key];
+                }
+                
+                _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
+                NSLog(@"next page : %d",_page);
+                
+                [_table reloadData];
+            }
+            else{
+                [self cancel];
+                NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
+                if ([(NSError*)object code] == NSURLErrorCancelled) {
+                    if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+                        NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                        _table.tableFooterView = _footer;
+                        [_act startAnimating];
+                        [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                        [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    }
+                    else
+                    {
+                        [_act stopAnimating];
+                        _table.tableFooterView = nil;
+                    }
+                }
+                else
+                {
+                    [_act stopAnimating];
+                    _table.tableFooterView = nil;
+                }
+            }
+        }
     }
 }
 
 -(void)requesttimeout
 {
     [self cancel];
-}
-
--(void)requestfailure:(id)object
-{
-    [self cancel];
-    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-    if ([(NSError*)object code] == NSURLErrorCancelled) {
-        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
-            _table.tableFooterView = _footer;
-            [_act startAnimating];
-            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-        }
-        else
-        {
-            [_act stopAnimating];
-            _table.tableFooterView = nil;
-        }
-    }
-    else
-    {
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
-    }
 }
 
 #pragma mark - Methods

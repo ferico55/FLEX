@@ -43,9 +43,8 @@
         case 10:
         {
             // logout
-            [[NSUserDefaults standardUserDefaults] removeObjectForKey:kTKPD_AUTHKEY];
             NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-            [nc postNotificationName:kTKPD_ISLOGINNOTIFICATIONNAMEKEY object:nil userInfo:@{}];
+            [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil userInfo:@{}];
             break;
         }
         default:

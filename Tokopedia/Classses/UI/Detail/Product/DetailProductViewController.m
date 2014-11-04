@@ -27,8 +27,16 @@
 
 #import "DetailProductOtherView.h"
 
+#import "../../Controller/TKPDTabShopNavigationController.h"
+#import "../../Detail/Shop/Product/ShopProductViewController.h"
+#import "../../Detail/Shop/Talk/ShopTalkViewController.h"
+#import "../../Detail/Shop/Review/ShopReviewViewController.h"
+#import "../../Detail/Shop/Notes/ShopNotesViewController.h"
+
+#import "URLCacheController.h"
+
 #pragma mark - Detail Product View Controller
-@interface DetailProductViewController () <UITableViewDelegate, UITableViewDataSource, DetailProductInfoCellDelegate>
+@interface DetailProductViewController () <UITableViewDelegate, UITableViewDataSource, DetailProductInfoCellDelegate, DetailProductOtherViewDelegate>
 {
     NSMutableDictionary *_datatalk;
     NSMutableArray *_otherproductviews;
@@ -52,6 +60,14 @@
     Product *_product;
     
     __weak RKObjectManager *_objectmanager;
+    __weak RKManagedObjectRequestOperation *_request;
+    RKResponseDescriptor *_responseDescriptor;
+    NSOperationQueue *_operationQueue;
+    
+    NSString *_cachepath;
+    URLCacheController *_cachecontroller;
+    URLCacheConnection *_cacheconnection;
+    NSTimeInterval _timeinterval;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -86,6 +102,13 @@
 
 @property (weak, nonatomic) IBOutlet UIScrollView *otherproductscrollview;
 
+-(void)cancel;
+-(void)configureRestKit;
+-(void)loadData;
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
+-(void)requestfailure:(id)object;
+-(void)requestprocess:(id)object;
+-(void)requesttimeout;
 
 @end
 
@@ -114,9 +137,11 @@
     _datatalk = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
+    _operationQueue = [NSOperationQueue new];
+    _cacheconnection = [URLCacheConnection new];
+    _cachecontroller = [URLCacheController new];
     
     _isexpanded = NO;
-    
     
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
@@ -153,6 +178,13 @@
     
     _imagescrollview.pagingEnabled = YES;
     _imagescrollview.contentMode = UIViewContentModeScaleAspectFit;
+    
+    //cache
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILPRODUCT_CACHEFILEPATH];
+    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILPRODUCT_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue]]];
+    _cachecontroller.filePath = _cachepath;
+    _cachecontroller.URLCacheInterval = 86400.0;
+	[_cachecontroller initCacheWithDocumentPath:path];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -257,6 +289,7 @@
                             kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
                             kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY : _product.result.info.product_name,
                             kTKPDDETAILPRODUCT_APIIMAGESRCKEY : image.image_src,
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]
                             };
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
@@ -266,7 +299,10 @@
                 // got to talk page
                 ProductTalkViewController *vc = [ProductTalkViewController new];
                 [_datatalk setObject:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0) forKey:kTKPDDETAIL_APIPRODUCTIDKEY];
-                vc.data = _datatalk;
+                NSMutableDictionary *data = [NSMutableDictionary new];
+                [data addEntriesFromDictionary:_datatalk];
+                [data setObject:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null] forKey:kTKPD_AUTHKEY];
+                vc.data = data;
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -280,6 +316,52 @@
             case 10:
             {
                 [self.navigationController popViewControllerAnimated:YES];
+            }
+        }
+    }
+}
+
+-(IBAction)gesture:(id)sender
+{
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                // go to shop
+                NSMutableArray *viewcontrollers = [NSMutableArray new];
+                NSInteger shopid = _product.result.shop_info.shop_id;
+                /** create new view controller **/
+                ShopProductViewController *v = [ShopProductViewController new];
+                v.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                           kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                [viewcontrollers addObject:v];
+                ShopTalkViewController *v1 = [ShopTalkViewController new];
+                v1.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                [viewcontrollers addObject:v1];
+                ShopReviewViewController *v2 = [ShopReviewViewController new];
+                v2.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                [viewcontrollers addObject:v2];
+                ShopNotesViewController *v3 = [ShopNotesViewController new];
+                v3.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                [viewcontrollers addObject:v3];
+                /** Adjust View Controller **/
+                TKPDTabShopNavigationController *tapnavcon = [TKPDTabShopNavigationController new];
+                tapnavcon.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                [tapnavcon setViewControllers:viewcontrollers animated:YES];
+                [tapnavcon setSelectedIndex:0];
+                
+                [self.navigationController pushViewController:tapnavcon animated:YES];
+                break;
             }
         }
     }
@@ -605,91 +687,162 @@
 
 - (void)loadData
 {
+    if (_request.isExecuting) return;
+    
     _requestcount++;
-
-    [_act startAnimating];
     
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETDETAILACTIONKEY,
                             kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]
                             };
     
-    [_objectmanager getObjectsAtPath:kTKPDDETAILPRODUCT_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        _table.hidden = NO;
-        [self requestsuccess:mappingResult];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
-        [self requestfailure:error];
-    }];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILPRODUCT_APIPATH parameters:param];
+	[_cachecontroller getFileModificationDate];
+	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+	if (_timeinterval > _cachecontroller.URLCacheInterval) {
+        [_act startAnimating];
+        
+        //[_cachecontroller clearCache];
+        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            [_timer invalidate];
+            _timer = nil;
+            [_act stopAnimating];
+            [self requestsuccess:mappingResult withOperation:operation];
+        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+            /** failure **/
+            [_timer invalidate];
+            _timer = nil;
+            [_act stopAnimating];
+            [self requestfailure:error];
+        }];
+        
+        [_operationQueue addOperation:_request];
     
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        
+    }
+    else {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+        NSLog(@"cache and updated in last 24 hours.");
+        [self requestfailure:nil];
+	}
 }
 
--(void)requestsuccess:(id)object
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    
     id stats = [result objectForKey:@""];
-    
     _product = stats;
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if (_product.result.wholesale_price.count > 0) {
-            _isnodatawholesale = NO;
+        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+        [_cachecontroller connectionDidFinish:_cacheconnection];
+        //save response data to plist
+        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+
+        [self requestprocess:object];
+    }
+}
+
+-(void)requestfailure:(id)object
+{
+    if (_timeinterval > _cachecontroller.URLCacheInterval) {
+        [self requestprocess:object];
+    }
+    else{
+        NSError* error;
+        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
+        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
+        if (parsedData == nil && error) {
+            NSLog(@"parser error");
         }
         
-        //decide description height
-        id cell = [DetailProductDescriptionCell newcell];
-        NSString *productdesc = _product.result.info.product_description;
-        UILabel *desclabel = ((DetailProductDescriptionCell*)cell).descriptionlabel;
-        desclabel.text = productdesc;
-        CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
+        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
+        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
+            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
+        }
         
-        CGSize expectedLabelSize = [productdesc sizeWithFont:desclabel.font constrainedToSize:maximumLabelSize lineBreakMode:desclabel.lineBreakMode];
-        _heightDescSection = lroundf(expectedLabelSize.height);
-        
-        [self setHeaderviewData];
-        [self setFooterViewData];
-        [self setOtherProducts];
-        _isnodata = NO;
-        [_table reloadData];
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+        NSError *mappingError = nil;
+        BOOL isMapped = [mapper execute:&mappingError];
+        if (isMapped && !mappingError) {
+            RKMappingResult *mappingresult = [mapper mappingResult];
+            NSDictionary *result = mappingresult.dictionary;
+            id stats = [result objectForKey:@""];
+            _product = stats;
+            BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                [self requestprocess:mappingresult];
+            }
+        }
+    }
+}
+
+-(void)requestprocess:(id)object
+{
+    if (object) {
+        if ([object isKindOfClass:[RKMappingResult class]]) {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            id stats = [result objectForKey:@""];
+            _product = stats;
+            BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                _table.hidden = NO;
+                
+                if (_product.result.wholesale_price.count > 0) {
+                    _isnodatawholesale = NO;
+                }
+                
+                //decide description height
+                id cell = [DetailProductDescriptionCell newcell];
+                NSString *productdesc = _product.result.info.product_description;
+                UILabel *desclabel = ((DetailProductDescriptionCell*)cell).descriptionlabel;
+                desclabel.text = productdesc;
+                CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
+                
+                CGSize expectedLabelSize = [productdesc sizeWithFont:desclabel.font constrainedToSize:maximumLabelSize lineBreakMode:desclabel.lineBreakMode];
+                _heightDescSection = lroundf(expectedLabelSize.height);
+                
+                [self setHeaderviewData];
+                [self setFooterViewData];
+                [self setOtherProducts];
+                _isnodata = NO;
+                [_table reloadData];
+            }
+        }else{
+            [self cancel];
+            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
+            if ([(NSError*)object code] == NSURLErrorCancelled) {
+                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    //_table.tableFooterView = _footer;
+                    [_act startAnimating];
+                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                }
+                else
+                {
+                    [_act stopAnimating];
+                }
+            }
+            else
+            {
+                [_act stopAnimating];
+            }
+        }
     }
 }
 
 -(void)requesttimeout
 {
     [self cancel];
-}
-
--(void)requestfailure:(id)object
-{
-    [self cancel];
-    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-    if ([(NSError*)object code] == NSURLErrorCancelled) {
-        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
-            //_table.tableFooterView = _footer;
-            [_act startAnimating];
-            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-        }
-        else
-        {
-            [_act stopAnimating];
-        }
-    }
-    else
-    {
-        [_act stopAnimating];
-    }
 }
 
 #pragma mark - UIScrollView Delegate
@@ -719,11 +872,11 @@
             
             SearchResultViewController *vc = [SearchResultViewController new];
             NSString *deptid = breadcrumb.department_id;
-            vc.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
+            vc.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:0};
             SearchResultViewController *vc1 = [SearchResultViewController new];
-            vc1.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
+            vc1.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:0};
             SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-            vc2.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
+            vc2.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:0};
             NSArray *viewcontrollers = @[vc,vc1,vc2];
             
             TKPDTabNavigationController *c = [TKPDTabNavigationController new];
@@ -745,6 +898,17 @@
             break;
     }
 
+}
+
+#pragma mark - View Delegate
+- (void)DetailProductOtherView:(UIView *)view withindex:(NSInteger)index
+{
+    OtherProduct *product = _product.result.other_product[index];
+    if ([[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue] != [product.product_id integerValue]) {
+        DetailProductViewController *vc = [DetailProductViewController new];
+        vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id};
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 #pragma mark - Methods
@@ -850,7 +1014,8 @@
             
             DetailProductOtherView *v = [DetailProductOtherView newview];
             [v setFrame:CGRectMake(y + 7, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
-            
+            v.delegate = self;
+            v.index = i;
             v.namelabel.text = product.product_name;
             v.pricelabel.text = product.product_price;
             //DetailProductOtherView *v = [[DetailProductOtherView alloc]initWithFrame:CGRectMake(y, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];

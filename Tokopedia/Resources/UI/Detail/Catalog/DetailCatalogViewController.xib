@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailCatalogViewController">
@@ -16,7 +17,6 @@
                 <outlet property="namelabel" destination="7Uq-tk-rRZ" id="oW1-L8-x0s"/>
                 <outlet property="pagecontrol" destination="djX-dE-raq" id="4KQ-BF-VDE"/>
                 <outlet property="pricelabel" destination="Cut-Ae-sxZ" id="CjV-y5-jse"/>
-                <outlet property="segmentcontrol" destination="wr7-2y-TAE" id="xDc-Wd-q6U"/>
                 <outlet property="view" destination="3pI-pN-GLh" id="N0i-JD-MeI"/>
             </connections>
         </placeholder>
@@ -120,7 +120,6 @@
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <nil key="simulatedStatusBarMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="3E1-nJ-eNT" userLabel="DescriptionView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
@@ -134,7 +133,6 @@
                 </label>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="jSW-gv-9Gz" userLabel="SpecificationView" customClass="DetailCatalogSpecView">
@@ -152,15 +150,9 @@
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-            <nil key="simulatedStatusBarMetrics"/>
             <connections>
                 <outlet property="_tabel" destination="gs5-R0-UqT" id="KgR-im-40n"/>
             </connections>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

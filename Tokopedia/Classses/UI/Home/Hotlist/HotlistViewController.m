@@ -7,15 +7,22 @@
 //
 
 #import "Hotlist.h"
-#import "ExpiringCache.h"
 #import "home.h"
 #import "HotlistViewController.h"
 #import "HotlistResultViewController.h"
 
+#import "URLCacheController.h"
+
 #pragma mark - HotlistView
+
+/* cache update interval in seconds */
+//const double URLCacheInterval = 86400.0;
+//const double URLCacheInterval = 30.0;
 
 @interface HotlistViewController ()
 {
+    NSMutableArray *_product;
+    
     NSInteger _page;
     NSInteger _limit;
     
@@ -31,15 +38,26 @@
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
-}
+    
+    NSString *_cachepath;
+    URLCacheController *_cachecontroller;
+    URLCacheConnection *_cacheconnection;
+    NSTimeInterval _timeinterval;
 
-@property (nonatomic, strong) ExpiringCache *accountsCache;
+}
 
 @property (strong, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 
-@property (nonatomic, strong) NSMutableArray *product;
+-(void)cancel;
+-(void)configureRestKit;
+-(void)loadData;
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
+-(void)requestfailure:(id)object;
+-(void)requestprocess:(id)object;
+-(void)requesttimeout;
+
 
 @end
 
@@ -62,10 +80,10 @@
     [super viewDidLoad];
     [self.navigationController.navigationBar setTranslucent:NO];
     
-    _operationQueue = [NSOperationQueue new];
-    
-    /** create new **/
     _product = [NSMutableArray new];
+    _operationQueue = [NSOperationQueue new];
+    _cacheconnection = [URLCacheConnection new];
+    _cachecontroller = [URLCacheController new];
     
     /** set first page become 1 **/
     _page = 1;
@@ -102,10 +120,33 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
-    if (!self.accountsCache) {
-        self.accountsCache = [[ExpiringCache alloc] init];
-        self.accountsCache.expiryTimeInterval = 360; // 2 hours
-    }
+    /* By default, the Cocoa URL loading system uses a small shared memory cache.
+	 We don't need this cache, so we set it to zero when the application launches. */
+    
+    /* turn off the NSURLCache shared cache */
+    
+    NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:0
+                                                            diskCapacity:0
+                                                                diskPath:nil];
+    [NSURLCache setSharedURLCache:sharedCache];
+    
+    /* prepare to use our own on-disk cache */
+    //[_cachecontroller initCachePathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDHOMEHOTLIST_CACHEFILEPATH];
+    _cachepath = [path stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
+    _cachecontroller.filePath = _cachepath;
+    _cachecontroller.URLCacheInterval = 86400.0;
+	[_cachecontroller initCacheWithDocumentPath:path];
+    
+    /* create and load the URL array using the strings stored in URLCache.plist */
+    //NSString* path = [[NSBundle mainBundle] pathForResource:@"URLCache" ofType:@"plist"];
+    //if (path) {
+    //    NSArray *array = [[NSArray alloc] initWithContentsOfFile:path];
+    //    _cachecontroller.urlArray = [NSMutableArray array];
+    //    for (NSString *element in array) {
+    //        [_cachecontroller.urlArray addObject:[NSURL URLWithString:element]];
+    //    }
+    //}
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -115,11 +156,7 @@
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            // get an object
-            NSObject *cachedObj = [self.accountsCache objectForKey:@"hotlist"];
-            if (!cachedObj) {
-                [self loadData];
-            }
+            [self loadData];
         }
     }
 }
@@ -266,9 +303,9 @@
     [resultMapping addPropertyMapping:pageRel];
 
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+    [_objectmanager addResponseDescriptor:responseDescriptor];
     
     
 }
@@ -277,10 +314,13 @@
 {
     if (_request.isExecuting) return;
     
-    // create a new one, this one is expired or we've never gotten it
     if (!_isrefreshview) {
         _table.tableFooterView = _footer;
         [_act startAnimating];
+    }
+    else{
+        _table.tableFooterView = nil;
+        [_act stopAnimating];
     }
     
     NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEHOTLISTACT,
@@ -288,33 +328,57 @@
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE)
                             };
     _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDHOMEHOTLIST_APIPATH parameters:param];
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestsuccess:mappingResult withOperation:operation];
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
-        [_table reloadData];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
 
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestfailure:error];
-        //[_act stopAnimating];
-        //_table.tableFooterView = nil;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-    }];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDHOMEHOTLIST_APIPATH parameters:param];
     
-    [_operationQueue addOperation:_request];
+	/* apply daily time interval policy */
     
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+	/* In this program, "update" means to check the last modified date
+	 of the image to see if we need to load a new version. */
+    
+	[_cachecontroller getFileModificationDate];
+
+	/* get the elapsed time since last file update */
+	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+    
+
+	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
+        //[_cachecontroller clearCache];
+		/* file doesn't exist or hasn't been updated */
+        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            [self requestsuccess:mappingResult withOperation:operation];
+            [_act stopAnimating];
+            _table.tableFooterView = nil;
+            [_table reloadData];
+            _isrefreshview = NO;
+            [_refreshControl endRefreshing];
+            [_timer invalidate];
+            _timer = nil;
+            
+        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+            /** failure **/
+            [self requestfailure:error];
+            //[_act stopAnimating];
+            //_table.tableFooterView = nil;
+            _isrefreshview = NO;
+            [_refreshControl endRefreshing];
+            [_timer invalidate];
+            _timer = nil;
+        }];
+        
+        [_operationQueue addOperation:_request];
+        
+        _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+	}
+	else {
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+        NSLog(@"cache and updated in last 24 hours.");
+        [self requestfailure:nil];
+	}
 
 }
 
@@ -326,17 +390,14 @@
     BOOL status = [hotlist.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [_product addObjectsFromArray: hotlist.result.list];
-        
-        [self requestproses:object];
-
-        NSString* path = [NSHomeDirectory() stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
-        NSError *error;
-        BOOL success = [result writeToFile:path atomically:YES];
-        if (!success) {
-            NSLog(@"writeToFile failed with error %@", error);
+        if (_page <=1) {
+            //only save cache for first page
+            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+            [_cachecontroller connectionDidFinish:_cacheconnection];
+            //save response data to plist
+            [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
         }
-        
+        [self requestprocess:object];
     }
 }
 
@@ -349,42 +410,71 @@
 
 -(void)requestfailure:(id)object
 {
-
-    NSDictionary* result;
-	
-	NSString* path = [NSHomeDirectory() stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
-	result = [NSDictionary dictionaryWithContentsOfFile:path];
-    
+    if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
+        [self requestprocess:object];
+    }
+    else{
+        NSError* error;
+        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
+        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
+        if (parsedData == nil && error) {
+            NSLog(@"parser error");
+        }
+        
+        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
+        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
+            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
+        }
+        
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+        NSError *mappingError = nil;
+        BOOL isMapped = [mapper execute:&mappingError];
+        if (isMapped && !mappingError) {
+            NSLog(@"result %@",[mapper mappingResult]);
+            RKMappingResult *mappingresult = [mapper mappingResult];
+            NSDictionary *result = mappingresult.dictionary;
+            id stat = [result objectForKey:@""];
+            Hotlist *hotlist = stat;
+            BOOL status = [hotlist.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                [self requestprocess:mappingresult];
+            }
+        }
+    }
 }
 
--(void)requestproses:(id)object{
+-(void)requestprocess:(id)object
+{
     if (object) {
-        NSDictionary *result = ((RKMappingResult*)object).dictionary;
-        id stat = [result objectForKey:@""];
-        Hotlist *hotlist = stat;
-        BOOL status = [hotlist.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-        
-        if (status) {
-            [_product addObjectsFromArray: hotlist.result.list];
+        if ([object isKindOfClass:[RKMappingResult class]]) {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            id stat = [result objectForKey:@""];
+            Hotlist *hotlist = stat;
+            BOOL status = [hotlist.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
-            if (_product.count >0) {
-                _isnodata = NO;
-                _urinext =  hotlist.result.paging.uri_next;
-                NSURL *url = [NSURL URLWithString:_urinext];
-                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+            if (status) {
+                [_product addObjectsFromArray: hotlist.result.list];
                 
-                NSMutableDictionary *queries = [NSMutableDictionary new];
-                [queries removeAllObjects];
-                for (NSString *keyValuePair in querry)
-                {
-                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                    NSString *key = [pairComponents objectAtIndex:0];
-                    NSString *value = [pairComponents objectAtIndex:1];
+                if (_product.count >0) {
+                    _isnodata = NO;
+                    _urinext =  hotlist.result.paging.uri_next;
+                    NSURL *url = [NSURL URLWithString:_urinext];
+                    NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
                     
-                    [queries setObject:value forKey:key];
+                    NSMutableDictionary *queries = [NSMutableDictionary new];
+                    [queries removeAllObjects];
+                    for (NSString *keyValuePair in querry)
+                    {
+                        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                        NSString *key = [pairComponents objectAtIndex:0];
+                        NSString *value = [pairComponents objectAtIndex:1];
+                        
+                        [queries setObject:value forKey:key];
+                    }
+                    
+                    _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
                 }
-                
-                _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
             }
         }
         else{
@@ -425,7 +515,7 @@
     NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
     
     if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTHOTKEY]) {
-        vc.data = @{kTKPDHOME_DATAQUERYKEY: querry[2]?:@"", kTKPHOME_DATAHEADERIMAGEKEY: imageview};
+        vc.data = @{kTKPDHOME_DATAQUERYKEY: querry[2]?:@"", kTKPHOME_DATAHEADERIMAGEKEY: imageview, kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
         UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
         [self.navigationController presentViewController:nav animated:YES completion:nil];
     }

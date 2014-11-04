@@ -12,14 +12,14 @@
 #define kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER @"GeneralTalkCommentCellIdentifier"
 
 
-#pragma mark - Hotlist Result  Cell Delegate
+#pragma mark - General Talk Comment Cell Delegate
 @protocol GeneralTalkCommentCellDelegate <NSObject>
 @required
 -(void)GeneralTalkCommentCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
 
 @end
 
-#pragma mark - Talk Cell
+#pragma mark - General Talk Comment Cell
 @interface GeneralTalkCommentCell : UITableViewCell
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION

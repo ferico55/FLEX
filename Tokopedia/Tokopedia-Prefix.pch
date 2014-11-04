@@ -25,7 +25,8 @@
     #import "NSArrayCategory.h"
     #import "UIImageViewCategory.h"
     #import "UIImageView+AFNetworking.h"
-    #import "NSUserDefaultCategory.h"
+    #import "NSDictionaryCategory.h"
+    #import "UIViewCategory.h"
 
     #import "Tkpd.h"
     #import "string.h"

@@ -9,7 +9,7 @@
 #ifndef tokopedia_string_h
 #define tokopedia_string_h
 
-#define kTKPDAUTHKEY @"auth"
+#define kTKPD_AUTHKEY @"auth"
 
 #define kTKPDREQUEST_OKSTATUS @"OK"
 #define kTKPDREQUEST_NGSTATUS @"NG"
@@ -28,6 +28,7 @@
 #define kTKPD_APIURINEXTKEY @"uri_next"
 #define kTKPD_APILISTKEY @"list"
 #define kTKPD_APIERRORMESSAGEKEY @"message_error"
+#define kTKPD_APISTATUSMESSAGEKEY @"message_status"
 
 #define kTKPDNETWORK_ERRORTITLE @"ERROR"
 #define kTKPDNETWORK_ERRORDESCS @"Network Error"

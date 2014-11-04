@@ -50,6 +50,7 @@ Copyright (C) 2008-2010 Apple Inc. All Rights Reserved.
 
 void URLCacheAlertWithError(NSError *error)
 {
+    //TODO:: Manage alert error
     NSString *message = [NSString stringWithFormat:@"Error! %@ %@",
 						 [error localizedDescription],
 						 [error localizedFailureReason]];
@@ -61,22 +62,26 @@ void URLCacheAlertWithError(NSError *error)
 void URLCacheAlertWithMessage(NSString *message)
 {
 	/* open an alert with an OK button */
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"URLCache" 
-													message:message
-												   delegate:nil 
-										  cancelButtonTitle:@"OK" 
-										  otherButtonTitles: nil];
-	[alert show];
+    //TODO:: Use custom alert
+//	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"URLCache" 
+//													message:message
+//												   delegate:nil 
+//										  cancelButtonTitle:@"OK" 
+//										  otherButtonTitles: nil];
+//	[alert show];
+    NSLog(@"%@", message);
 }
 
 
 void URLCacheAlertWithMessageAndDelegate(NSString *message, id delegate)
 {
 	/* open an alert with OK and Cancel buttons */
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"URLCache" 
-													message:message
-												   delegate:delegate 
-										  cancelButtonTitle:@"Cancel" 
-										  otherButtonTitles: @"OK", nil];
-	[alert show];
+    //TODO:: Use custom alert
+//	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"URLCache" 
+//													message:message
+//												   delegate:delegate 
+//										  cancelButtonTitle:@"Cancel" 
+//										  otherButtonTitles: @"OK", nil];
+//	[alert show];
+    NSLog(@"%@", message);
 }

@@ -20,15 +20,15 @@
 #import "ProductFeedViewController.h"
 #import "LogoutViewController.h"
 
-#import "LoginResult.h"
 #import "activation.h"
+
+#import "TKPDSecureStorage.h"
 
 @interface MainViewController ()
 {
     UITabBarController *_tabBarController;
     TKPDTabHomeNavigationController *_swipevc;
-    NSDictionary *_auth;
-    LoginResult *_login;
+    NSMutableDictionary *_auth;
 }
 
 @end
@@ -48,10 +48,12 @@
 {
     [super viewDidLoad];
     
-    [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
+    _auth = [NSMutableDictionary new];
     
+    [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(applicationLogin:) name:kTKPD_ISLOGINNOTIFICATIONNAMEKEY object:nil];
+    [center addObserver:self selector:@selector(applicationLogin:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION object:nil];
+    [center addObserver:self selector:@selector(applicationlogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -64,14 +66,13 @@
 
 - (void)viewDidLoadQueued
 {
-	NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];	//TODO: secure storage
-    id auth = [defaults loadCustomObjectWithKey:kTKPD_AUTHKEY];
-    _login = auth;
-    BOOL isauth = _login.is_login;
-	//TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-	//NSDictionary* auth = [secureStorage keychainDictionary];
-	//_auth = [auth mutableCopy];
-	
+	//NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];	//TODO: secure storage
+    //id auth = [defaults loadCustomObjectWithKey:kTKPD_AUTHKEY];
+    //id auth = [defaults objectForKey:kTKPD_AUTHKEY];
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+	NSDictionary* auth = [secureStorage keychainDictionary];
+	_auth = [auth mutableCopy];
+    	
     _data = nil;
     [self presentcontrollers];
 }
@@ -88,7 +89,7 @@
 
 -(void)createtabbarController
 {
-    BOOL isauth = _login.is_login;
+    BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY]boolValue];
     _tabBarController = [UITabBarController new];
     
     [[UITabBarItem appearance] setTitleTextAttributes:@{ UITextAttributeTextColor : kTKPDNAVIGATION_TABBARTITLECOLOR }
@@ -105,12 +106,14 @@
         // before login
         titles = kTKPD_HOMETITLEARRAY;
         HotlistViewController *v = [HotlistViewController new];
+        v.data = @{kTKPD_AUTHKEY : _auth?:@""};
         [viewcontrollers addObject:v];
     }
     else{
         // after login
         titles = kTKPD_HOMETITLEISAUTHARRAY;
         HotlistViewController *v = [HotlistViewController new];
+        v.data = @{kTKPD_AUTHKEY : _auth?:@""};
         [viewcontrollers addObject:v];
         ProductFeedViewController *v1 = [ProductFeedViewController new];
         [viewcontrollers addObject:v1];
@@ -140,6 +143,9 @@
     
     /** TAB BAR INDEX 3 **/
     SearchViewController *search = [SearchViewController new];
+    if (_auth) {
+        search.data = @{kTKPD_AUTHKEY:_auth?:[NSNull null]};
+    }
     UINavigationController *searchNavBar = [[UINavigationController alloc]initWithRootViewController:search];
     [searchNavBar.navigationBar setTranslucent:NO];
     
@@ -328,10 +334,14 @@
 
 - (void)applicationLogin:(NSNotification*)notification
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    id auth = [defaults loadCustomObjectWithKey:kTKPD_AUTHKEY];
-    _login = auth;
-    BOOL isauth = _login.is_login;
+    //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    //id auth = [defaults loadCustomObjectWithKey:kTKPD_AUTHKEY];
+    //_login = auth;
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+	NSDictionary* auth = [secureStorage keychainDictionary];
+	_auth = [auth mutableCopy];
+    
+    BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY]boolValue];
 
 	// Assume tabController is the tab controller
     // and newVC is the controller you want to be the new view controller at index 0
@@ -363,6 +373,12 @@
     UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [_swipevc.navigationItem setTitleView:logo];
 
+    UINavigationController *searchNavBar = newControllers[2];
+    id search = searchNavBar.viewControllers[0];
+    if (_auth) {
+         ((SearchViewController*)search).data = @{kTKPD_AUTHKEY:_auth?:[NSNull null]};
+    }
+    
     UINavigationController *moreNavBar = newControllers[4];
     if (!isauth) {
         LoginViewController *more = [LoginViewController new];
@@ -380,6 +396,21 @@
     [_tabBarController setViewControllers:newControllers animated:YES];
 
     [self adjusttabbar];
+}
+
+- (void)applicationlogout:(NSNotification*)notification
+{
+	//NSDictionary* userinfo = notification.userInfo;
+	
+	TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+	[storage resetKeychain];	//delete all previous sensitive data
+	[_auth removeAllObjects];
+    
+    [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
+	
+    //TODO:: request delayed
+	//[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(requestdelayed) object:nil];
+	//[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(requestdelayedguardian) object:nil];
 }
 
 @end

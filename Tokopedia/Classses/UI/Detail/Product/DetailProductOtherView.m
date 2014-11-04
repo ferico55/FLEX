@@ -8,6 +8,10 @@
 
 #import "DetailProductOtherView.h"
 
+@interface DetailProductOtherView ()
+
+@end
+
 #pragma mark - Detail Product View
 @implementation DetailProductOtherView
 
@@ -33,13 +37,25 @@
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
+#pragma mark - View Action
+-(IBAction)gesture:(id)sender
 {
-    // Drawing code
+    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
+        UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+        switch (gesture.state) {
+            case UIGestureRecognizerStateBegan: {
+                break;
+            }
+            case UIGestureRecognizerStateChanged: {
+                break;
+            }
+            case UIGestureRecognizerStateEnded: {
+                
+                [_delegate DetailProductOtherView:self withindex:_index];
+                break;
+            }
+        }
+    }
 }
-*/
 
 @end

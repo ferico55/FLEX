@@ -17,6 +17,7 @@ NSString * const kTraktBaseURLString = kTkpdBaseURLString;
 
 + (RKObjectManager *)sharedClient {
     static RKObjectManager *_sharedClient = nil;
+    
     static dispatch_once_t oncePredicate;
     dispatch_once(&oncePredicate, ^{
         _sharedClient = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kTraktBaseURLString]];
