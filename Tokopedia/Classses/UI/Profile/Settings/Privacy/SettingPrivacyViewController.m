@@ -12,9 +12,8 @@
 #import "ProfileSettings.h"
 #import "Alert1ButtonView.h"
 #import "SettingPrivacyViewController.h"
-#import "SettingPrivacyListViewController.h"
 
-@interface SettingPrivacyViewController ()<SettingPrivacyListViewControllerDelegate>
+@interface SettingPrivacyViewController ()
 {
     
     BOOL _isnodata;
@@ -34,12 +33,11 @@
     
     PrivacyForm * _form;
 }
-@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
-@property (weak, nonatomic) IBOutlet UIButton *buttonbirthdate;
-@property (weak, nonatomic) IBOutlet UIButton *buttonemail;
-@property (weak, nonatomic) IBOutlet UIButton *buttonmesseger;
-@property (weak, nonatomic) IBOutlet UIButton *buttonhp;
-@property (weak, nonatomic) IBOutlet UIButton *buttonaddress;
+@property (weak, nonatomic) IBOutlet UISwitch *switchbirthdate;
+@property (weak, nonatomic) IBOutlet UISwitch *switchemail;
+@property (weak, nonatomic) IBOutlet UISwitch *switchmesseger;
+@property (weak, nonatomic) IBOutlet UISwitch *switchhp;
+@property (weak, nonatomic) IBOutlet UISwitch *switchaddress;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -97,59 +95,31 @@
 }
 
 #pragma mark - View Action
+- (IBAction)tapswitch:(id)sender {
+    UISwitch *sw = (UISwitch*)sender;
+    if (sw == _switchbirthdate) {
+        [_datainput setObject:@(sw.on) forKey:kTKPDPROFILESETTING_APIFLAGBIRTHDATEKEY];
+    }
+    if (sw == _switchaddress) {
+        [_datainput setObject:@(sw.on) forKey:kTKPDPROFILESETTING_APIFLAGADDRESSKEY];
+    }
+    if (sw == _switchemail) {
+        [_datainput setObject:@(sw.on) forKey:kTKPDPROFILESETTING_APIFLAGEMAILKEY];
+    }
+    if (sw == _switchhp) {
+        [_datainput setObject:@(sw.on) forKey:kTKPDPROFILESETTING_APIFLAGHPKEY];
+    }
+    if (sw == _switchmesseger) {
+        [_datainput setObject:@(sw.on) forKey:kTKPDPROFILESETTING_APIFLAGMESSEGERKEY];
+    }
+}
+
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         [self requestAction:_datainput];
     }
     if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton*)sender;
-        SettingPrivacyListViewController* vc = [SettingPrivacyListViewController new];
-        vc.delegate = self;
-        switch (btn.tag) {
-            case 10:
-            {
-                // birthdate
-                vc.data = @{kTKPDPROFILESETTING_DATAPRIVACYKEY:[_datainput objectForKey:kTKPDPROFILESETTING_APIFLAGBIRTHDATEKEY]?:@(_form.result.privacy.flag_birthdate),
-                            kTKPDPROFILESETTING_DATAPRIVACYTYPEKEY:@(btn.tag-10),
-                            kTKPDPROFILESETTING_DATAPRIVACYTITILEKEY:kTKPDPROFILESETTING_DATAPRIVACYTITILEARRAYKEY[btn.tag-10]};
-                break;
-            }
-            case 11:
-            {
-                //email
-                vc.data = @{kTKPDPROFILESETTING_DATAPRIVACYKEY:[_datainput objectForKey:kTKPDPROFILESETTING_APIFLAGEMAILKEY]?:@(_form.result.privacy.flag_email),
-                            kTKPDPROFILESETTING_DATAPRIVACYTYPEKEY:@(btn.tag-10),
-                            kTKPDPROFILESETTING_DATAPRIVACYTITILEKEY:kTKPDPROFILESETTING_DATAPRIVACYTITILEARRAYKEY[btn.tag-10]};
-                break;
-            }
-            case 12:
-            {
-                //ym
-                vc.data = @{kTKPDPROFILESETTING_DATAPRIVACYKEY:[_datainput objectForKey:kTKPDPROFILESETTING_APIFLAGMESSEGERKEY]?:@(_form.result.privacy.flag_messenger),
-                            kTKPDPROFILESETTING_DATAPRIVACYTYPEKEY:@(btn.tag-10),
-                            kTKPDPROFILESETTING_DATAPRIVACYTITILEKEY:kTKPDPROFILESETTING_DATAPRIVACYTITILEARRAYKEY[btn.tag-10]};
-                break;
-            }
-            case 13:
-            {
-                //hp
-                vc.data = @{kTKPDPROFILESETTING_DATAPRIVACYKEY:[_datainput objectForKey:kTKPDPROFILESETTING_APIFLAGHPKEY]?:@(_form.result.privacy.flag_hp),
-                            kTKPDPROFILESETTING_DATAPRIVACYTYPEKEY:@(btn.tag-10),
-                            kTKPDPROFILESETTING_DATAPRIVACYTITILEKEY:kTKPDPROFILESETTING_DATAPRIVACYTITILEARRAYKEY[btn.tag-10]};
-                break;
-            }
-            case 14:
-            {
-                //address
-                vc.data = @{kTKPDPROFILESETTING_DATAPRIVACYKEY:[_datainput objectForKey:kTKPDPROFILESETTING_APIFLAGADDRESSKEY]?:@(_form.result.privacy.flag_address),
-                          kTKPDPROFILESETTING_DATAPRIVACYTYPEKEY:@(btn.tag-10),
-                          kTKPDPROFILESETTING_DATAPRIVACYTITILEKEY:kTKPDPROFILESETTING_DATAPRIVACYTITILEARRAYKEY[btn.tag-10]};
-                break;
-            }
-            default:
-                break;
-        }
-        [self.navigationController pushViewController:vc animated:YES];
+        
     }
 }
 
@@ -466,78 +436,12 @@
 {
     PrivacyFormPrivacy *privacy = object;
     if (privacy) {
-        if (privacy.flag_hp) {
-            [_buttonhp setTitle:kTKPDPROFILE_DATAPRIVACYARRAYKEY[1] forState:UIControlStateNormal];
-        }else
-        {
-            [_buttonhp setTitle:kTKPDPROFILE_DATAPRIVACYARRAYKEY[0] forState:UIControlStateNormal];
-        }
-        if (privacy.flag_email) {
-            [_buttonemail setTitle:kTKPDPROFILE_DATAPRIVACYARRAYKEY[1] forState:UIControlStateNormal];
-        }else
-        {
-            [_buttonemail setTitle:kTKPDPROFILE_DATAPRIVACYARRAYKEY[0] forState:UIControlStateNormal];
-        }
-        if (privacy.flag_birthdate) {
-            [_buttonbirthdate setTitle:kTKPDPROFILE_DATAPRIVACYARRAYKEY[1] forState:UIControlStateNormal];
-        }else
-        {
-            [_buttonbirthdate setTitle:kTKPDPROFILE_DATAPRIVACYARRAYKEY[0] forState:UIControlStateNormal];
-        }
-        if (privacy.flag_messenger) {
-            [_buttonmesseger setTitle:kTKPDPROFILE_DATAPRIVACYARRAYKEY[1] forState:UIControlStateNormal];
-        }else
-        {
-            [_buttonmesseger setTitle:kTKPDPROFILE_DATAPRIVACYARRAYKEY[0] forState:UIControlStateNormal];
-        }
-        if (privacy.flag_address) {
-            [_buttonaddress setTitle:kTKPDPROFILE_DATAPRIVACYARRAYKEY[1] forState:UIControlStateNormal];
-        }else
-        {
-            [_buttonaddress setTitle:kTKPDPROFILE_DATAPRIVACYARRAYKEY[0] forState:UIControlStateNormal];
-        }
+        _switchbirthdate.on = privacy.flag_birthdate;
+        _switchaddress.on = privacy.flag_address;
+        _switchemail.on = privacy.flag_email;
+        _switchmesseger.on = privacy.flag_messenger;
+        _switchhp.on = privacy.flag_hp;
     }
-}
-
--(void)SettingPrivacyListType:(NSInteger)type withIndex:(NSInteger)index
-{
-    [((UIButton*)_buttons[type]) setTitle:kTKPDPROFILE_DATAPRIVACYARRAYKEY[index] forState:UIControlStateNormal];
-    switch (type) {
-        case 0:
-        {
-            // birthdate
-            [_datainput setObject:@(index) forKey:kTKPDPROFILESETTING_APIFLAGBIRTHDATEKEY];
-            break;
-        }
-        case 1:
-        {
-            //email
-            [_datainput setObject:@(index) forKey:kTKPDPROFILESETTING_APIFLAGEMAILKEY];
-            break;
-        }
-        case 2:
-        {
-            //ym
-            [_datainput setObject:@(index) forKey:kTKPDPROFILESETTING_APIFLAGMESSEGERKEY];
-            break;
-        }
-        case 3:
-        {
-            //hp
-            [_datainput setObject:@(index) forKey:kTKPDPROFILESETTING_APIFLAGHPKEY];
-            break;
-        }
-        case 4:
-        {
-            //address
-            [_datainput setObject:@(index) forKey:kTKPDPROFILESETTING_APIFLAGADDRESSKEY];
-            break;
-        }
-
-        default:
-            break;
-    }
-    
 }
 
 @end

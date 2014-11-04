@@ -389,8 +389,6 @@
 		FCA031061A086CCE00845F5E /* SettingBankAccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA031051A086CCE00845F5E /* SettingBankAccountCell.xib */; };
 		FCA031081A087E0400845F5E /* GeneralList1GestureCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA031071A087E0400845F5E /* GeneralList1GestureCell.xib */; };
 		FCA0310B1A087E4400845F5E /* GeneralList1GestureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA0310A1A087E4400845F5E /* GeneralList1GestureCell.m */; };
-		FCA031191A0896A100845F5E /* SettingPrivacyListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA031181A0896A100845F5E /* SettingPrivacyListViewController.m */; };
-		FCA0311B1A0896C600845F5E /* SettingPrivacyListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA0311A1A0896C600845F5E /* SettingPrivacyListViewController.xib */; };
 		FCA0311F1A08A98400845F5E /* PrivacyForm.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA0311E1A08A98400845F5E /* PrivacyForm.m */; };
 		FCA031221A08A99B00845F5E /* PrivacyFormResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA031211A08A99B00845F5E /* PrivacyFormResult.m */; };
 		FCA031251A08A9BB00845F5E /* PrivacyFormPrivacy.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA031241A08A9BB00845F5E /* PrivacyFormPrivacy.m */; };
@@ -1042,9 +1040,6 @@
 		FCA031071A087E0400845F5E /* GeneralList1GestureCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralList1GestureCell.xib; sourceTree = "<group>"; };
 		FCA031091A087E4400845F5E /* GeneralList1GestureCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralList1GestureCell.h; sourceTree = "<group>"; };
 		FCA0310A1A087E4400845F5E /* GeneralList1GestureCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralList1GestureCell.m; sourceTree = "<group>"; };
-		FCA031171A0896A100845F5E /* SettingPrivacyListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingPrivacyListViewController.h; sourceTree = "<group>"; };
-		FCA031181A0896A100845F5E /* SettingPrivacyListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingPrivacyListViewController.m; sourceTree = "<group>"; };
-		FCA0311A1A0896C600845F5E /* SettingPrivacyListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingPrivacyListViewController.xib; sourceTree = "<group>"; };
 		FCA0311D1A08A98400845F5E /* PrivacyForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivacyForm.h; sourceTree = "<group>"; };
 		FCA0311E1A08A98400845F5E /* PrivacyForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrivacyForm.m; sourceTree = "<group>"; };
 		FCA031201A08A99B00845F5E /* PrivacyFormResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrivacyFormResult.h; sourceTree = "<group>"; };
@@ -3189,8 +3184,6 @@
 			children = (
 				FCA944961A07A271003358BC /* SettingPrivacyViewController.h */,
 				FCA944971A07A271003358BC /* SettingPrivacyViewController.m */,
-				FCA031171A0896A100845F5E /* SettingPrivacyListViewController.h */,
-				FCA031181A0896A100845F5E /* SettingPrivacyListViewController.m */,
 			);
 			path = Privacy;
 			sourceTree = "<group>";
@@ -3199,7 +3192,6 @@
 			isa = PBXGroup;
 			children = (
 				FCA944991A07A28D003358BC /* SettingPrivacyViewController.xib */,
-				FCA0311A1A0896C600845F5E /* SettingPrivacyListViewController.xib */,
 			);
 			path = Privacy;
 			sourceTree = "<group>";
@@ -3535,7 +3527,6 @@
 				FC012D8419BEA8A90072A31A /* icon_house@2x.png in Resources */,
 				FC36E1A419B0673800AF74C1 /* thumb_product.png in Resources */,
 				8598248619EB7066007E71D1 /* icon_telephone.png in Resources */,
-				FCA0311B1A0896C600845F5E /* SettingPrivacyListViewController.xib in Resources */,
 				FC012DBE19BEB2360072A31A /* icon_11.png in Resources */,
 				FC012DB919BEB2360072A31A /* icon_0.png in Resources */,
 				856B7E7F19E7D00900DC3331 /* icon_quote.png in Resources */,
@@ -3902,7 +3893,6 @@
 				FC2F207919BD5EE900C2B9B5 /* KatalogViewCell.m in Sources */,
 				FC12A09D19D916540049EB76 /* TalkResult.m in Sources */,
 				FCA3F2981A0729F800A54671 /* UploadProfileParams.m in Sources */,
-				FCA031191A0896A100845F5E /* SettingPrivacyListViewController.m in Sources */,
 				FC170DB119E291BE003FF32F /* ShopInfoPaymentCell.m in Sources */,
 				FC53464D19DBBE7100E5AAD9 /* CatalogShops.m in Sources */,
 				85E8FC3219EE16AF00E12752 /* NotesList.m in Sources */,
