@@ -49,7 +49,7 @@
     // add notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY object:nil];
-
+    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITPROFILEPOSTNOTIFICATIONNAMEKEY object:nil];
 }
 
 #pragma mark  What will be the height of the section, Make it dynamic

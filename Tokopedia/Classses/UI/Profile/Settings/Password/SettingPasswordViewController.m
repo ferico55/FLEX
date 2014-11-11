@@ -29,12 +29,14 @@
     
     UITextField *_activetextfield;
     NSMutableDictionary *_datainput;
+    
+    UIBarButtonItem *_barbuttonsave;
+    UIActivityIndicatorView *_act;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *textfieldOldPass;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldNewPass;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldConfirmPass;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 -(void)cancelAction;
 -(void)configureActionRestKit;
@@ -70,15 +72,13 @@
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor blackColor]];
-    barbutton1.tag = 11;
-    self.navigationItem.rightBarButtonItem = barbutton1;
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [_barbuttonsave setTintColor:[UIColor blackColor]];
+    _barbuttonsave.tag = 11;
+    _act= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    UIBarButtonItem * barbuttonact = [[UIBarButtonItem alloc] initWithCustomView:_act];
+    self.navigationItem.rightBarButtonItems = @[_barbuttonsave,barbuttonact];
+    [_act setHidesWhenStopped:YES];
     
     [self configureActionRestKit];
 }
@@ -189,6 +189,7 @@
     
     [self.view setUserInteractionEnabled:NO];
     [_act startAnimating];
+    _barbuttonsave.enabled = NO;
     
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APISETPASSWORDKEY,
                             kTKPDPROFILESETTING_APIPASSKEY : [data objectForKey:kTKPDPROFILESETTING_APIPASSKEY],
@@ -204,6 +205,7 @@
     [_requestAction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessAction:mappingResult withOperation:operation];
         [_act stopAnimating];
+        _barbuttonsave.enabled = YES;
         [self.view setUserInteractionEnabled:YES];
         [_timer invalidate];
         _timer = nil;
@@ -212,6 +214,7 @@
         /** failure **/
         [self requestFailureAction:error];
         [_act stopAnimating];
+        _barbuttonsave.enabled = YES;
         [self.view setUserInteractionEnabled:YES];
         [_timer invalidate];
         _timer = nil;
@@ -258,6 +261,7 @@
             if (status) {
                 if (!setting.message_error) {
                     if (setting.result.is_success) {
+                        //TODO:: add alertview
                         Alert1ButtonView *v = [Alert1ButtonView new];
                         v.tag = 10;
                         if (setting.message_status)
@@ -285,17 +289,17 @@
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
                     NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
-                    [_act startAnimating];
+                    //[_act startAnimating];
                     //TODO: Reload handler
                 }
                 else
                 {
-                    [_act stopAnimating];
+                    //[_act stopAnimating];
                 }
             }
             else
             {
-                [_act stopAnimating];
+                //[_act stopAnimating];
             }
             
         }

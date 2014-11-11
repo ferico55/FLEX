@@ -32,6 +32,9 @@
     NSMutableDictionary *_datainput;
     
     PrivacyForm * _form;
+    
+    UIBarButtonItem *_barbuttonsave;
+    UIActivityIndicatorView *_act;
 }
 @property (weak, nonatomic) IBOutlet UISwitch *switchbirthdate;
 @property (weak, nonatomic) IBOutlet UISwitch *switchemail;
@@ -78,10 +81,13 @@
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
-    UIBarButtonItem *barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor blackColor]];
-    barbutton1.tag = 11;
-    self.navigationItem.rightBarButtonItem = barbutton1;
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [_barbuttonsave setTintColor:[UIColor blackColor]];
+    _barbuttonsave.tag = 11;
+    _act= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    UIBarButtonItem * barbuttonact = [[UIBarButtonItem alloc] initWithCustomView:_act];
+    self.navigationItem.rightBarButtonItems = @[_barbuttonsave,barbuttonact];
+    [_act setHidesWhenStopped:YES];
     
     [self configureRestKit];
     [self request];
@@ -176,23 +182,24 @@
                             };
     _requestcount ++;
     
-    [self.view setUserInteractionEnabled:NO];
+    _barbuttonsave.enabled = NO;
+    [_act startAnimating];
     
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_SETTINGAPIPATH parameters:param];
     
     /* file doesn't exist or hasn't been updated */
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];
-        [self.view setUserInteractionEnabled:YES];
-        //[_act stopAnimating];
+        _barbuttonsave.enabled = YES;
+        [_act stopAnimating];
         [_timer invalidate];
         _timer = nil;
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFailure:error];
-        //[_act stopAnimating];
-        [self.view setUserInteractionEnabled:YES];
+        _barbuttonsave.enabled = YES;
+        [_act stopAnimating];
         [_timer invalidate];
         _timer = nil;
     }];
@@ -313,8 +320,8 @@
     
     NSDictionary *data = userinfo;
     
-    [self.view setUserInteractionEnabled:NO];
-    //[_act startAnimating];
+    _barbuttonsave.enabled = NO;
+    [_act startAnimating];
     
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APISETPRIVACYKEY,
                             kTKPDPROFILESETTING_APIFLAGMESSEGERKEY : [data objectForKey:kTKPDPROFILESETTING_APIFLAGMESSEGERKEY]?:@(_form.result.privacy.flag_messenger),
@@ -331,16 +338,16 @@
     /* file doesn't exist or hasn't been updated */
     [_requestAction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessAction:mappingResult withOperation:operation];
-        //[_act stopAnimating];
-        [self.view setUserInteractionEnabled:YES];
+        [_act stopAnimating];
+        _barbuttonsave.enabled = YES;
         [_timer invalidate];
         _timer = nil;
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFailureAction:error];
-        //[_act stopAnimating];
-        [self.view setUserInteractionEnabled:YES];
+        [_act stopAnimating];
+        _barbuttonsave.enabled = YES;
         [_timer invalidate];
         _timer = nil;
     }];

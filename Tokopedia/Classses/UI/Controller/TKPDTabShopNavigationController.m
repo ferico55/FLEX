@@ -539,8 +539,8 @@
 #ifdef _DEBUG
 - (void)dealloc
 {
-	NSLog(@"%@: %@", [self class], NSStringFromSelector(_cmd));
-}
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self];}
 #endif
 
 #pragma mark -

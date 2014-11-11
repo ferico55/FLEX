@@ -124,8 +124,6 @@
 	[barbutton1 setTag:11];
     self.navigationItem.rightBarButtonItem = barbutton1;
     
-    [self configureRestkitUploadPhoto];
-    [self requestActionUploadPhoto:nil];
     [self configureRestkitGenerateHost];
     [self requestGenerateHost];
     [self configureRestkitProfileForm];
@@ -147,6 +145,13 @@
     UIView *stickyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 200)];
     stickyView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
     [self.view insertSubview:stickyView belowSubview:self.scrollview];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 #pragma mark - Memory Management
@@ -405,7 +410,7 @@
     RKObjectMapping *generatedhostMapping = [RKObjectMapping mappingForClass:[GeneratedHost class]];
     [generatedhostMapping addAttributeMappingsFromDictionary:@{
                                                                kTKPDGENERATEDHOST_APISERVERIDKEY:kTKPDGENERATEDHOST_APISERVERIDKEY,
-                                                               KTKPDGENERATEDHOST_APIUPLOADHOSTKEY:KTKPDGENERATEDHOST_APIUPLOADHOSTKEY,
+                                                               kTKPDGENERATEDHOST_APIUPLOADHOSTKEY:kTKPDGENERATEDHOST_APIUPLOADHOSTKEY,
                                                                kTKPDGENERATEDHOST_APIUSERIDKEY:kTKPDGENERATEDHOST_APIUSERIDKEY
                                                                }];
     // Relationship Mapping
@@ -524,25 +529,23 @@
     [_objectmanagerUploadPhoto addResponseDescriptor:responseDescriptor];
     
     // Request Mapping
-//    [_objectmanagerUploadPhoto.router.routeSet addRoute:[RKRoute
-//                                                         routeWithClass:[UploadProfileParams class]
-//                                                         pathPattern:kTKPDPROFILE_UPLOADIMAGEAPIPATH
-//                                                         method:RKRequestMethodPOST]] ;
-//    RKObjectMapping *userRequestMapping = [RKObjectMapping requestMapping];
-//    [userRequestMapping addAttributeMappingsFromDictionary:@{kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIACTIONKEY,
-//                                                             kTKPDPROFILE_APIUSERIDKEY : kTKPDPROFILE_APIUSERIDKEY,
-//                                                             kTKPDGENERATEDHOST_APISERVERIDKEY : kTKPDGENERATEDHOST_APISERVERIDKEY}];
-//
-//    RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:userRequestMapping
-//                                                                                   objectClass:[UploadProfileParams class]
-//                                                                                   rootKeyPath:nil
-//                                                                                        method:RKRequestMethodAny];
-//    [_objectmanagerUploadPhoto addRequestDescriptor:requestDescriptor];
-//    
-//    [_objectmanagerUploadPhoto setAcceptHeaderWithMIMEType:RKMIMETypeJSON];
-//    [_objectmanagerUploadPhoto setRequestSerializationMIMEType:RKMIMETypeJSON];
-//    _objectmanagerUploadPhoto.requestSerializationMIMEType = RKMIMETypeJSON;
-
+    //[_objectmanagerUploadPhoto.router.routeSet addRoute:[RKRoute
+    //                                                     routeWithClass:[UploadProfileParams class]
+    //                                                     pathPattern:kTKPDPROFILE_UPLOADIMAGEAPIPATH
+    //                                                     method:RKRequestMethodPOST]] ;
+    //RKObjectMapping *userRequestMapping = [RKObjectMapping requestMapping];
+    //[userRequestMapping addAttributeMappingsFromDictionary:@{kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIACTIONKEY,
+    //                                                         kTKPDPROFILE_APIUSERIDKEY : kTKPDPROFILE_APIUSERIDKEY,
+    //                                                         kTKPDGENERATEDHOST_APISERVERIDKEY : kTKPDGENERATEDHOST_APISERVERIDKEY}];
+    //
+    //RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:userRequestMapping
+    //                                                                               objectClass:[UploadProfileParams class]
+    //                                                                               rootKeyPath:nil
+    //                                                                                    method:RKRequestMethodAny];
+    //[_objectmanagerUploadPhoto addRequestDescriptor:requestDescriptor];
+    
+    [_objectmanagerUploadPhoto setAcceptHeaderWithMIMEType:RKMIMETypeJSON];
+    [_objectmanagerUploadPhoto setRequestSerializationMIMEType:RKMIMETypeJSON];
 }
 
 
@@ -573,6 +576,7 @@
               };
     
     NSData* imageData;
+    //UIImage *image = [UIImage imageNamed:@"icon_location.png"];
     UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
     [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
@@ -580,193 +584,118 @@
     UIGraphicsEndImageContext();
     
     imageData = UIImagePNGRepresentation(image);
+    //imageData = UIImageJPEGRepresentation(image,1);
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:@"http://www.tkpdevel-pg.renny/ws/action/upload-image.pl"]];
+
+    //Set Params
+    [request setHTTPShouldHandleCookies:NO];
+    [request setTimeoutInterval:60];
     [request setHTTPMethod:@"POST"];
-    
-    NSString *boundary = @"0xKhTmLbOuNdArY"; // This is important! //NSURLConnection is very sensitive to format.
-    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
-    [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
-    
+
+    //Create boundary, it can be anything
+    NSString *boundary = @"------VohpleBoundary4QuqLuM1cE5lMwCy";
+
+    //set Content-Type in HTTP header
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
+    [request setValue:contentType forHTTPHeaderField: @"Content-Type"];
+
+    //post body
     NSMutableData *body = [NSMutableData data];
-    [body appendData:[[NSString stringWithFormat:@"--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[@"Content-Disposition: form-data; name=\"profile_img\"; filename=\"thefilename.png\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
+
+    //Populate a dictionary with all the regular values you would like to send.?action=upload_profile_image?
+    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
+    [parameters setValue:kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY forKeyPath:kTKPDPROFILE_APIACTIONKEY];
+    [parameters setValue:@(602) forKeyPath:kTKPDPROFILE_APIUSERIDKEY];
+    [parameters setValue:@(2) forKeyPath:kTKPDGENERATEDHOST_APISERVERIDKEY];
+
+    //add params (all params are strings)
+    for (NSString *param in parameters) {
+        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", param] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"%@\r\n", [parameters objectForKey:param]] dataUsingEncoding:NSUTF8StringEncoding]];
+        [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    }
+
+    NSString *FileParamConstant = @"profile_img";
+    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[@"Content-Disposition: attachment; name=\"profile_img\"; filename=\"icon_location.png\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[NSData dataWithData:imageData]];
-    [body appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[@"Content-Disposition: form-data; name=\"action\"\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[@"upload_profile_image" dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[[NSString stringWithFormat:@"r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    // setting the body of the post to the reqeust
-    [request setHTTPBody:body];
+    [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     
-    NSString *string = [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding];
-    NSLog(@"request body string : %@", string);
-    
-    // now lets make the connection to the web
-    NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
-    NSString *responsestring = [[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding];
-    
-    NSLog(@"response string : %@", responsestring);
-    
-//    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-//    
-//    //Set Params
-//    [request setHTTPShouldHandleCookies:NO];
-//    [request setTimeoutInterval:60];
-//    [request setHTTPMethod:@"POST"];
-//    
-//    //Create boundary, it can be anything
-//    NSString *boundary = @"------VohpleBoundary4QuqLuM1cE5lMwCy";
-//    
-//    // set Content-Type in HTTP header
-//    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
-//    [request setValue:contentType forHTTPHeaderField: @"Content-Type"];
-//    
-//    // post body
-//    NSMutableData *body = [NSMutableData data];
-//    
-//    //Populate a dictionary with all the regular values you would like to send.?action=upload_profile_image?
-//    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
-//    [parameters setValue:kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY forKeyPath:kTKPDPROFILE_APIACTIONKEY];
-//    
-//    // add params (all params are strings)
-//    for (NSString *param in parameters) {
-//        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-//        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", param] dataUsingEncoding:NSUTF8StringEncoding]];
-//        [body appendData:[[NSString stringWithFormat:@"%@\r\n", [parameters objectForKey:param]] dataUsingEncoding:NSUTF8StringEncoding]];
-//    }
-//    
-//    NSString *FileParamConstant = @"profile_img";
-//    
-//    // add image data
-//    if (imageData) {
-//        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-//        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=%@; filename=imageName.jpg\r\n", @"profile_img"] dataUsingEncoding:NSUTF8StringEncoding]];
-//        [body appendData:[@"Content-Type: image/jpeg\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-//        [body appendData:imageData];
-//        [body appendData:[[NSString stringWithFormat:@"\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
-//    }
-//    
-//    //Close off the request with the boundary
-//    [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-//    
-//    // setting the body of the post to the request
-//    [request setHTTPBody:body];
-//    
-//    // set URL
-//    NSString *url = @"http://www.tkpdevel-pg.renny/ws/action/upload-image.pl";
-//    
-//    [request setURL:[NSURL URLWithString:url]];
-//    
-//    [NSURLConnection sendAsynchronousRequest:request
-//                                       queue:[NSOperationQueue mainQueue]
-//                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-//                               
-//                               NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-//                               
-//                               NSString *responsestring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-//                               if ([httpResponse statusCode] == 200) {
-//                                        NSLog(@"success");
-//                               }
-//                               
-//                           }];
-    
-//    AFHTTPClient *httpClient = [[AFHTTPClient alloc] initWithBaseURL:[NSURL URLWithString:kTkpdBaseURLString]];
-//    [httpClient setParameterEncoding:AFJSONParameterEncoding];
-//    
-// NSMutableURLRequest *request = [httpClient multipartFormRequestWithMethod:@"POST" path:kTKPDPROFILE_UPLOADIMAGEAPIPATH parameters:param
-// constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//        //[formData appendPartWithFileData:imageData name:@"attachment" fileName:@"attachment.jpg" mimeType:@"image/jpg"];
-//    }];
-//    
-//    // You can add then the progressBlock and the completionBlock
-//    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-//    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-//        NSLog(@"%@",operation.responseString);
-//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-//        NSLog(@"%@",operation.responseString);
-//    }];
-//    
-//    [operation start];
-    
-//    UploadProfileParams *params = [UploadProfileParams new];
-//    params.action = kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY;
-//    params.server_id = @(_generatehost.result.generated_host.user_id);
-//    params.user_id = @(_generatehost.result.generated_host.server_id);
-//    
-//        [_act startAnimating];
-//        //[self.view setUserInteractionEnabled:NO];
-//        
-//    // option1
-//    NSMutableURLRequest *request = [_objectmanagerUploadPhoto.HTTPClient multipartFormRequestWithMethod:@"POST" path:kTKPDPROFILE_UPLOADIMAGEAPIPATH parameters:param constructingBodyWithBlock: ^(id <AFMultipartFormData> formData)
-//                                    {
-//                                        [formData appendPartWithFileData:imageData name:kTKPDPROFILE_APIPROFILEPHOTOKEY fileName:@"image.png" mimeType:@"image/png"];
-//                                    }];
-//        // option2
-//        //NSMutableURLRequest *request =
-//        //[_objectmanagerUploadPhoto multipartFormRequestWithObject:params method:RKRequestMethodPOST
-//        //                                                     path:kTKPDPROFILE_UPLOADIMAGEAPIPATH parameters:nil
-//        //                                constructingBodyWithBlock:^(id<AFMultipartFormData> formData)
-//        // {
-//        //     [formData appendPartWithFileData:imageData
-//        //                                 name:kTKPDPROFILE_APIPROFILEPHOTOKEY
-//        //                             fileName:@"image.png"
-//        //                             mimeType:@"image/png"];
-//        //     
-//        // }];
-//        //option3
-//        //NSMutableURLRequest *request = [_objectmanagerUploadPhoto multipartFormRequestWithObject:params
-//        //                                                                                        method:RKRequestMethodPOST
-//        //                                                                                          path:kTKPDPROFILE_UPLOADIMAGEAPIPATH
-//        //                                                                                    parameters:param
-//        //                                                                     constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-//        // [formData appendPartWithFileData:imageData
-//        //                             name:kTKPDPROFILE_APIPROFILEPHOTOKEY
-//        //                         fileName:@"image.png"
-//        //                         mimeType:@"image/png"];
-//        //                                                                     }];
-//    
-//
-//        //_requestActionUploadPhoto = [_objectmanagerUploadPhoto appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_UPLOADIMAGEAPIPATH parameters:param];
-//        //    RKObjectRequestOperation *objectRequestOperation = [[RKObjectRequestOperation alloc] initWithRequest:request responseDescriptors:@[ _responseDescriptor ]];
-//        //objectRequestOperation = [_objectmanagerUploadPhoto appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_UPLOADIMAGEAPIPATH parameters:param];
-//        //[_requestActionUploadPhoto initWithRequest:request responseDescriptors:@[_responseDescriptor]];
-//        //    [objectRequestOperation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-//        ////    _requestActionUploadPhoto =
-//        ////    [_objectmanagerUploadPhoto objectRequestOperationWithRequest:request
-//        ////                                             success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
-//        ////     {
-//        //         [_act stopAnimating];
-//        //         [self requestSuccessUploadPhoto:mappingResult withOperation:operation];
-//        //     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-//        //         [_act stopAnimating];
-//        //         [self requestFailureUploadPhoto:error];
-//        //     }];
-//        RKObjectRequestOperation *operation = [_objectmanagerUploadPhoto objectRequestOperationWithRequest:request success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-//            [self requestSuccessUploadPhoto:mappingResult withOperation:operation];
-//        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-//            
-//        }];
-//        //[_objectmanagerUploadPhoto enqueueObjectRequestOperation:operation];
-//        //[objectRequestOperation start];
-//        [_operationQueue addOperation:operation];
-//    //}
-//    //else
-//    //{
-//        //_requestActionUploadPhoto = [_objectmanagerUploadPhoto appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_UPLOADIMAGEAPIPATH parameters:param];
-//        //[_requestActionUploadPhoto setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-//        //     [_act stopAnimating];
-//        //     [self requestSuccessUploadPhoto:mappingResult withOperation:operation];
-//        // } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-//        //     [_act stopAnimating];
-//        //     [self requestFailureUploadPhoto:error];
-//        // }];
-//        //
-//        //[_operationQueue addOperation:_requestActionUploadPhoto];
-//    //}
 
+    //add image data
+
+    //Close off the request with the boundary
+    [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+
+    //setting the body of the post to the request
+    [request setHTTPBody:body];
+
+    NSString *url = @"http://www.tkpdevel-pg.renny/ws/action/upload-image.pl";
+
+    [request setURL:[NSURL URLWithString:url]];
+
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+                               
+                               NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+                               
+                               NSString *responsestring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                               if ([httpResponse statusCode] == 200) {
+                                        NSLog(@"success");
+                               }
+                               NSLog(@"%@",responsestring);
+                           }];
+    
+    
+    /*
+    // option1
+
+    //NSMutableURLRequest *request = [NSMutableURLRequest new];
+    //request = [_objectmanagerUploadPhoto.HTTPClient multipartFormRequestWithMethod:@"POST" path:kTKPDPROFILE_UPLOADIMAGEAPIPATH parameters:param constructingBodyWithBlock: ^(id <AFMultipartFormData> formData)
+    //                                {
+    //                                    [formData appendPartWithFileData:imageData name:kTKPDPROFILE_APIPROFILEPHOTOKEY fileName:@"image.png" mimeType:@"image/png"];
+    //                                }];
+    // option2
+    UploadProfileParams *obj = [UploadProfileParams new];
+    obj.action = @"upload_profile_image";
+        NSMutableURLRequest *request =
+        [_objectmanagerUploadPhoto multipartFormRequestWithObject:nil method:RKRequestMethodPOST
+                                                             path:kTKPDPROFILE_UPLOADIMAGEAPIPATH parameters:param
+                                        constructingBodyWithBlock:^(id<AFMultipartFormData> formData)
+         {
+             [formData appendPartWithFileData:imageData
+                                         name:kTKPDPROFILE_APIPROFILEPHOTOKEY
+                                     fileName:@"image.png"
+                                     mimeType:@"image/png"];
+             NSLog(@"%@",formData);
+             
+         }];
+        _objectmanagerUploadPhoto.requestSerializationMIMEType = RKMIMETypeFormURLEncoded;
+    
+        //option3
+        //NSMutableURLRequest *request = [_objectmanagerUploadPhoto multipartFormRequestWithObject:params
+        //                                                                                        method:RKRequestMethodPOST
+        //                                                                                          path:kTKPDPROFILE_UPLOADIMAGEAPIPATH
+        //                                                                                    parameters:param
+        //                                                                     constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+        // [formData appendPartWithFileData:imageData
+        //                             name:kTKPDPROFILE_APIPROFILEPHOTOKEY
+        //                         fileName:@"image.png"
+        //                         mimeType:@"image/png"];
+        //                                                                     }];
+    
+        RKObjectRequestOperation *operation = [_objectmanagerUploadPhoto objectRequestOperationWithRequest:request success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            [self requestSuccessUploadPhoto:mappingResult withOperation:operation];
+        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+            [self requestFailureUploadPhoto:error];
+        }];
+
+        [_operationQueue addOperation:operation];
+     */
 }
 
 - (void)requestSuccessUploadPhoto:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -809,13 +738,14 @@
         }
         else
         {
-            
+            //[self performSelector:@selector(configureRestkitProfileForm) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            //[self performSelector:@selector(requestActionUploadPhoto:) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
         }
     }
 }
 -(void)requesttimeoutUploadPhoto
 {
-    [self cancelActionUploadPhoto];
+    //[self cancelActionUploadPhoto];
 }
 
 #pragma mark Request Action Submit
@@ -874,12 +804,19 @@
               kTKPDPROFILE_APIPASSKEY:[userInfo objectForKey:kTKPDPROFILE_APIPASSKEY]
               };
     
+    UIActivityIndicatorView *act= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    UIBarButtonItem * barButton = [[UIBarButtonItem alloc] initWithCustomView:act];
+    [self navigationItem].rightBarButtonItem = barButton;
+    [act startAnimating];
+    
     _requestActionSubmit = [_objectmanagerActionSubmit appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:param];
     [_requestActionSubmit setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-         [_act stopAnimating];
+         [act stopAnimating];
+         act.hidden = YES;
          [self requestSuccessSubmit:mappingResult withOperation:operation];
      } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-         [_act stopAnimating];
+         [act stopAnimating];
+         act.hidden = YES;
          [self requestFailureSubmit:error];
      }];
 
@@ -919,11 +856,14 @@
             
             if (status) {
                 if (!_editform.message_error) {
+                    //TODO:: add alert
                     NSLog(@"%@",_editform.message_status);
                     Alert1ButtonView *v = [Alert1ButtonView newview];
                     v.data = @{kTKPDALERTVIEW_DATALABELKEY: _editform.message_status};
                     v.tag = 12;
                     [v show];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDADDRESSPOSTNOTIFICATIONNAMEKEY object:nil userInfo:nil];
+
                 }
                 else
                 {
@@ -971,7 +911,7 @@
         _textfieldmesseger.text = _profile.result.data_user.user_messenger;
         _textfieldphone.text = _profile.result.data_user.user_phone;
         
-        _labelfullname.text = _profile.result.data_user.full_name;
+        _labelfullname.text = _profile.result.data_user.full_name?:@"";
         
         NSString *dob = [NSString stringWithFormat:kTKPDPROFILEEDIT_DATEOFBIRTHFORMAT,_profile.result.data_user.birth_day,_profile.result.data_user.birth_month, _profile.result.data_user.birth_year];
         [_buttondob setTitle:dob forState:UIControlStateNormal];
@@ -1080,7 +1020,7 @@
 #pragma mark - Delegate Camera Controller
 -(void)didDismissCameraController:(UIViewController *)controller withUserInfo:(NSDictionary *)userinfo
 {
-    //[self configureRestkitUploadPhoto];
+    [self configureRestkitUploadPhoto];
     [self requestActionUploadPhoto:userinfo];
 }
 

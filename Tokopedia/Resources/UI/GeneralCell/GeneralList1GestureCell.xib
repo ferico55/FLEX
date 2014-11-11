@@ -14,7 +14,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wEJ-jw-SGt">
+                    <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wEJ-jw-SGt">
                         <rect key="frame" x="263" y="0.0" width="57" height="44"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.81568627449999997" green="0.090196078430000007" blue="0.086274509799999996" alpha="1" colorSpace="calibratedRGB"/>
@@ -22,8 +22,11 @@
                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <connections>
+                            <action selector="tap:" destination="hlp-qI-BRx" eventType="touchUpInside" id="4jt-D0-HwW"/>
+                        </connections>
                     </button>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Goo-SG-4rw">
+                    <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Goo-SG-4rw">
                         <rect key="frame" x="200" y="0.0" width="64" height="43"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -31,22 +34,59 @@
                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <connections>
+                            <action selector="tap:" destination="hlp-qI-BRx" eventType="touchUpInside" id="4Fm-T8-xuH"/>
+                        </connections>
                     </button>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BBf-Mq-Kjb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0jQ-Yp-iGW">
+                                <rect key="frame" x="6" y="11" width="222" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Default" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x6F-El-BTL">
+                                <rect key="frame" x="242" y="11" width="67" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="ZpN-74-0XL" appends="YES" id="581-Bw-eUW"/>
+                            <outletCollection property="gestureRecognizers" destination="OQa-5A-Laa" appends="YES" id="YeG-uo-TBd"/>
+                        </connections>
                     </view>
                 </subviews>
             </tableViewCellContentView>
             <gestureRecognizers/>
             <connections>
+                <outlet property="buttondefault" destination="Goo-SG-4rw" id="MKZ-T0-And"/>
+                <outlet property="buttondelete" destination="wEJ-jw-SGt" id="L8g-pB-H8u"/>
+                <outlet property="labeldefault" destination="x6F-El-BTL" id="HKW-Lt-vjR"/>
+                <outlet property="labelname" destination="0jQ-Yp-iGW" id="J01-JF-rs2"/>
+                <outlet property="viewcell" destination="BBf-Mq-Kjb" id="L1a-HF-JiP"/>
                 <outletCollection property="gestureRecognizers" destination="eKo-k8-XNP" appends="YES" id="4o8-nH-F9n"/>
             </connections>
         </tableViewCell>
-        <swipeGestureRecognizer direction="right" id="eKo-k8-XNP">
+        <swipeGestureRecognizer direction="left" id="eKo-k8-XNP">
             <connections>
                 <action selector="gesture:" destination="hlp-qI-BRx" id="f54-jE-Axf"/>
+            </connections>
+        </swipeGestureRecognizer>
+        <tapGestureRecognizer id="OQa-5A-Laa">
+            <connections>
+                <action selector="gesture:" destination="hlp-qI-BRx" id="5Pj-k9-uqb"/>
+            </connections>
+        </tapGestureRecognizer>
+        <swipeGestureRecognizer direction="right" id="ZpN-74-0XL">
+            <connections>
+                <action selector="gesture:" destination="hlp-qI-BRx" id="AFk-AJ-sHA"/>
             </connections>
         </swipeGestureRecognizer>
     </objects>
