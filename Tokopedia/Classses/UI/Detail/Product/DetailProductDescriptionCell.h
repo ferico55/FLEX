@@ -11,6 +11,8 @@
 #define kTKPDDETAILPRODUCTCELLIDENTIFIER @"DetailProductDescriptionIdentifier"
 
 @interface DetailProductDescriptionCell : UITableViewCell
+
+@property (weak, nonatomic) NSString *descriptionText;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionlabel;
 
 +(id)newcell;

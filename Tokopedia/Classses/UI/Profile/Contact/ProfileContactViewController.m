@@ -9,14 +9,7 @@
 #import "ProfileInfo.h"
 #import "ProfileContactViewController.h"
 
-
-@interface ProfileContactViewController() {
-    ProfileInfo *_profileinfo;
-}
-
-@property (weak, nonatomic) IBOutlet UILabel *labelemail;
-@property (weak, nonatomic) IBOutlet UILabel *labelmesseger;
-@property (weak, nonatomic) IBOutlet UILabel *labelmobile;
+@interface ProfileContactViewController()
 
 @end
 
@@ -27,25 +20,24 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateView:) name:kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY object:nil];
     }
     return self;
 }
 
 #pragma mark - View Life Cycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    // add notification
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY object:nil];
+    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITPROFILEPOSTNOTIFICATIONNAMEKEY object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateView:) name:kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY object:nil];
-    
-    _labelemail.text = _profileinfo.result.user_info.user_email?:@"-";
-    _labelmesseger.text = _profileinfo.result.user_info.user_messenger?:@"-";
-    _labelmobile.text = _profileinfo.result.user_info.user_phone?:@"-";
 }
 
 
@@ -53,7 +45,11 @@
 - (void)updateView:(NSNotification *)notification
 {
     id userinfo = notification.userInfo;
-    _profileinfo = userinfo;
+    ProfileInfo *profileinfo = userinfo;
+    _labelemail.text = profileinfo.result.user_info.user_email?:@"-";
+    _labelmesseger.text = profileinfo.result.user_info.user_messenger?:@"-";
+    _labelmobile.text = profileinfo.result.user_info.user_phone?:@"-";
+    
 }
 
 #pragma mark - Memory Management

@@ -14,6 +14,8 @@
 #import "AlertDatePickerView.h"
 #import "Alert1ButtonView.h"
 
+#import "TextField.h"
+
 #pragma mark - Register View Controller
 @interface RegisterViewController () <UITextFieldDelegate,UIScrollViewDelegate,UIAlertViewDelegate, TKPDAlertViewDelegate>
 {
@@ -37,14 +39,15 @@
     NSOperationQueue *_operationQueue;
 }
 
-@property (weak, nonatomic) IBOutlet UITextField *texfieldfullname;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldphonenumber;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldemail;
-@property (weak, nonatomic) IBOutlet UITextField *textfielddob;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldpassword;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldconfirmpass;
+@property (weak, nonatomic) IBOutlet TextField *texfieldfullname;
+@property (weak, nonatomic) IBOutlet TextField *textfieldphonenumber;
+@property (weak, nonatomic) IBOutlet TextField *textfieldemail;
+@property (weak, nonatomic) IBOutlet TextField *textfielddob;
+@property (weak, nonatomic) IBOutlet TextField *textfieldpassword;
+@property (weak, nonatomic) IBOutlet TextField *textfieldconfirmpass;
 @property (weak, nonatomic) IBOutlet UIScrollView *container;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (weak, nonatomic) IBOutlet UIButton *buttonagreement;
 
 - (IBAction)tap:(id)sender;
 - (IBAction)tapsegment:(id)sender;
@@ -78,6 +81,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.texfieldfullname.isTopRoundCorner = YES;
+    self.textfielddob.isBottomRoundCorner = YES;    
+    self.textfieldpassword.isTopRoundCorner = YES;
+    self.textfieldconfirmpass.isBottomRoundCorner = YES;
     
     _datainput = [NSMutableDictionary new];
     _operationQueue =[NSOperationQueue new];
@@ -118,6 +126,9 @@
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
+    
+    //set default data
+    [_datainput setObject:@(0) forKey:kTKPDREGISTER_APIGENDERKEY];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -154,38 +165,30 @@
                 NSString *birthyear = [_datainput objectForKey:kTKPDREGISTER_APIBITHYEARKEY];
                 NSString *pass = [_datainput objectForKey:kTKPDREGISTER_APIPASSKEY];
                 NSString *confirmpass = [_datainput objectForKey:kTKPDREGISTER_APICONFIRMPASSKEY];
+                BOOL isagree = [[_datainput objectForKey:kTKPDACTIVATION_DATAISAGREEKEY]boolValue];
                 
                 NSInteger phoneCharCount= [[phone stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
                 NSInteger passCharCount= [[phone stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
                 
-                if (fullname && ![fullname isEqualToString:@""] && phone && email && gender && birthday && birthmonth && birthyear &&pass && ![pass isEqualToString:@""] && confirmpass && ![confirmpass isEqualToString:@""]) {
-                    if ([email isEmail] && [pass isEqualToString:confirmpass] && phoneCharCount>=6 && passCharCount >=6) {
+                if (fullname && ![fullname isEqualToString:@""] &&
+                    phone &&
+                    email && [email isEmail] &&
+                    gender &&
+                    birthday && birthmonth && birthyear &&
+                    pass && ![pass isEqualToString:@""] &&
+                    confirmpass && ![confirmpass isEqualToString:@""]&&
+                    [pass isEqualToString:confirmpass] && phoneCharCount>=6 && passCharCount >=6 &&
+                    isagree) {
                         [self configureRestKit];
                         [self LoadDataAction:_datainput];
                     }
-                    else
-                    {
-                        if (![email isEmail]) {
-                            [messages addObject:@"Invalid email format"];
-                        }
-                        if (![pass isEqualToString:confirmpass]) {
-                            [messages addObject:@"Password and confirm password not macth"];
-                        }
-                        if (phoneCharCount<6) {
-                            [messages addObject:@"phone minimum 6 character"];
-                        }
-                        if (passCharCount < 6) {
-                            [messages addObject:@"password minimum 6 character"];
-                        }
-                    }
-                }
                 else
                 {
                     if (!fullname || [fullname isEqualToString:@""]) {
                         [messages addObject:@"Fullname must be filled"];
                     }
                     if (!phone) {
-                        [messages addObject:@"Phone must be filled"];
+                        [messages addObject:@"Mobile Number must be filled."];
                     }
                     else{
                         if (phoneCharCount<6) {
@@ -225,6 +228,9 @@
                             [messages addObject:@"Password and confirm password not macth"];
                         }
                     }
+                    if (!isagree) {
+                        [messages addObject:@"You have to agree the Terms & Conditions of Tokopedia."];
+                    }
                 }
                 
                 NSLog(@"%@",messages);
@@ -234,9 +240,11 @@
                 
                 break;
             }
+
             default:
                 break;
         }
+
     }
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
@@ -250,6 +258,19 @@
             case 11:
             {
                 // go to terms of service
+                break;
+            }
+            case 12:{
+                // button agreement
+                if (!btn.selected)
+                    btn.selected = YES;
+                else btn.selected = NO;
+                if (_buttonagreement.selected) {
+                    [_datainput setObject:@(YES) forKey:kTKPDACTIVATION_DATAISAGREEKEY];
+                }
+                else{
+                    [_datainput setObject:@(NO) forKey:kTKPDACTIVATION_DATAISAGREEKEY];
+                }
                 break;
             }
             default:
@@ -387,6 +408,7 @@
         }
         else
         {
+            //TODO:: add alert
             NSArray *messages = _register.message_error;
             NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];

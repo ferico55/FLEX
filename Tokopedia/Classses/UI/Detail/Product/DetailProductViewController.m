@@ -41,17 +41,15 @@
     NSMutableDictionary *_datatalk;
     NSMutableArray *_otherproductviews;
     
-    NSMutableIndexSet *expandedSections;
-    BOOL _isexpanded;
-    NSInteger _heightOfSection;
+    NSMutableArray *_expandedSections;
+    CGFloat _descriptionHeight;
+    CGFloat _informationHeight;
     
     BOOL _isnodata;
     BOOL _isnodatawholesale;
     NSTimer *_timer;
     
     NSInteger _requestcount;
-    
-    NSInteger _expandedsection;
     
     NSMutableArray *_headerimages;
     
@@ -85,7 +83,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *accuracynumberlabel;
 @property (weak, nonatomic) IBOutlet UILabel *qualitynumberlabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *imagescrollview;
-@property (weak, nonatomic) IBOutlet StarsRateView *productrateview;
+@property (weak, nonatomic) IBOutlet StarsRateView *qualityrateview;
 @property (weak, nonatomic) IBOutlet StarsRateView *accuracyrateview;
 @property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
 @property (weak, nonatomic) IBOutlet UIButton *backbutton;
@@ -142,7 +140,7 @@
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     
-    _isexpanded = NO;
+//    _isexpanded = NO;
     
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
@@ -176,15 +174,12 @@
 //    }
     
     UIEdgeInsets inset = _table.contentInset;
-    inset.bottom += 20;
+    inset.bottom += 190;
     _table.contentInset = inset;
     _table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
     
-    if (!expandedSections)
-    {
-        expandedSections = [[NSMutableIndexSet alloc] init];
-    }
+    _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:1]]];
     
     _imagescrollview.pagingEnabled = YES;
     _imagescrollview.contentMode = UIViewContentModeScaleAspectFit;
@@ -195,6 +190,14 @@
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
+    
+    // UIView below table view (View More Product button)
+    UIView *backgroundGreyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+100)];
+    backgroundGreyView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
+    [self.view insertSubview:backgroundGreyView belowSubview:self.table];
+
+    //Set initial table view cell for product information
+    _informationHeight = 232;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -203,6 +206,12 @@
     [self configureRestKit];
     if (_isnodata) {
         [self loadData];
+        if (_product.result.wholesale_price) {
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:1], [NSNumber numberWithInteger:2]]];
+        } else {
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:1]]];
+        }
+        [self.table reloadData];
     }
 }
 
@@ -219,47 +228,6 @@
     
     return NO;
 }
-
-//- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if ([self tableView:tableView canCollapseSection:indexPath.section])
-//    {
-//        if (!indexPath.row)
-//        {
-//            // only first row toggles exapand/collapse
-//            [tableView deselectRowAtIndexPath:indexPath animated:YES];
-//            
-//            NSInteger section = indexPath.section;
-//            BOOL currentlyExpanded = [expandedSections containsIndex:section];
-//            NSInteger rows;
-//            
-//            NSMutableArray *tmpArray = [NSMutableArray array];
-//            
-//            if (currentlyExpanded)
-//            {
-//                rows = [self tableView:tableView numberOfRowsInSection:section];
-//                [expandedSections removeIndex:section];
-//                
-//            }
-//            else
-//            {
-//                [expandedSections addIndex:section];
-//                rows = [self tableView:tableView numberOfRowsInSection:section];
-//            }
-//            
-//            if (currentlyExpanded)
-//            {
-//                [tableView deleteRowsAtIndexPaths:tmpArray
-//                                 withRowAnimation:UITableViewRowAnimationTop];
-//            }
-//            else
-//            {
-//                [tableView insertRowsAtIndexPaths:tmpArray
-//                                 withRowAnimation:UITableViewRowAnimationTop];
-//            }
-//        }
-//    }
-//}
 
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
@@ -387,23 +355,33 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
-    UIView *mView = [[UIView alloc]initWithFrame:CGRectMake(320, 30, 0, 0)];
-    [mView setBackgroundColor:[UIColor lightGrayColor]];
+    UIView *mView = [[UIView alloc]initWithFrame:CGRectMake(0, 30, 50, 40)];
+    [mView setBackgroundColor:[UIColor whiteColor]];
     
+    BOOL sectionIsExpanded = [_expandedSections containsObject:[NSNumber numberWithInteger:section]];
     
-//    UIImageView *logoView = [[UIImageView alloc]initWithFrame:CGRectMake(290, 10, 20, 20)];
-//    [logoView setImage:[UIImage imageNamed:@"icon_arrow_up.png"]];
+    UIButton *expandCollapseButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    expandCollapseButton.tag = section;
+    [expandCollapseButton addTarget:self action:@selector(expandCollapseButton:) forControlEvents:UIControlEventTouchUpInside];
+    [expandCollapseButton setFrame:CGRectMake(self.view.frame.size.width-40, 0, 40, 40)];
+    if (sectionIsExpanded) {
+        [expandCollapseButton setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
+    } else {
+        [expandCollapseButton setImage:[UIImage imageNamed:@"icon_arrow_down"] forState:UIControlStateNormal];
+    }
+    [mView addSubview:expandCollapseButton];
     
 //    [mView addSubview:logoView];
     
     UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
-    [bt setFrame:CGRectMake(10, 1, 320, 20)];
-    [bt setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [bt setFrame:CGRectMake(15, 0, 170, 40)];
+    [bt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [bt setTag:section];
 //    [bt setBackgroundColor:[UIColor redColor]];
     [bt.titleLabel setFont:[UIFont systemFontOfSize:12]];
     [bt setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-    [bt.titleLabel setFont: [UIFont fontWithName:@"GothamMedium" size:12.0f]];
+    [bt.titleLabel setFont: [UIFont fontWithName:@"GothamMedium" size:15.0f]];
+    [bt addTarget:self action:@selector(expandCollapseButton:) forControlEvents:UIControlEventTouchUpInside];
     switch (section) {
         case 0:
             [bt setTitle: @"Product Description" forState: UIControlStateNormal];
@@ -421,68 +399,58 @@
         default:
             break;
     }
-    //[bt addTarget:self action:@selector(addCell:) forControlEvents:UIControlEventTouchUpInside];
     [mView addSubview:bt];
-    return mView;
+
+    // Add border bottom if view header section is collapse
+    if (!sectionIsExpanded) {
+        UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 40, self.view.frame.size.width, 1)];
+        bottomBorder.backgroundColor = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1];
+        bottomBorder.tag = 2;
+        [mView addSubview:bottomBorder];
+    } else {
+        UIView *view = [mView viewWithTag:2];
+        [view removeFromSuperview];
+    }
     
+    return mView;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 20;
+    return 40;
 }
 
 #pragma mark - Suppose you want to hide/show section 2... then
 #pragma mark  add or remove the section on toggle the section header for more info
 
-- (void)addCell:(UIButton *)bt{
-    
-    // If section of more information
-    if (bt.tag != 0) {
-        // Initially more info is close, if more info is open
-        if(_isexpanded) {
-            // Set height of section
-            _heightOfSection = 0;
-            // Reset the parameter that more info is closed now
-            _isexpanded = NO;
-        }else {
-            // Set height of section
-            _heightOfSection = 200.0f;
-            // Reset the parameter that more info is closed now
-            _isexpanded = YES;
-        }
-        _expandedsection = bt.tag;
-        [_table reloadData];
-        [_table reloadSections:[NSIndexSet indexSetWithIndex:bt.tag] withRowAnimation:UITableViewRowAnimationFade];
+- (void)expandCollapseButton:(UIButton *)button
+{
+    BOOL sectionIsExanded = [_expandedSections containsObject:[NSNumber numberWithInteger:button.tag]];
+    if (sectionIsExanded) {
+        [_expandedSections removeObject:[NSNumber numberWithInteger:button.tag]];
+    } else {
+        [_expandedSections addObject:[NSNumber numberWithInteger:button.tag]];
     }
+    [self.table reloadData];
 }
 
 #pragma mark -
 #pragma mark  What will be the height of the section, Make it dynamic
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-   
-    
-    if(indexPath.section == 0) {
-        if(!_isnodata) {
-            if(_heightDescSection < 100) {
-                return 100;
-            }
-            return _heightDescSection;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    BOOL sectionIsExanded = [_expandedSections containsObject:[NSNumber numberWithInteger:indexPath.section]];
+    if (sectionIsExanded) {
+        if (indexPath.section == 0) {
+            return _descriptionHeight+50;
+        } else if (indexPath.section == 1 && _product.result.wholesale_price.count > 0) {
+            return 230;
+        } else {
+            return _informationHeight+50;
         }
-//        return 200;
-
+    } else {
+        return 0;
     }
-    
-    if(!_isnodatawholesale) {
-        if(indexPath.section == 1) {
-            return 150;
-        }
-    }
-    
-    return 300;
-    
-    
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -493,92 +461,64 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //if (_isexpanded || section == 0) {
-        return 1;
-    //}
-    //return 0;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell* cell = nil;
-    
+
     // Configure the cell...
     if (indexPath.section == 0) {
-//        //if (_isexpanded) {
-        
-            NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
-            cell = (DetailProductDescriptionCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-            if (cell == nil) {
-                cell = [DetailProductDescriptionCell newcell];
-                //((DetailProductWholesaleCell*)cell).delegate = self;
-            }
-        
+        NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
+        DetailProductDescriptionCell *descriptionCell = (DetailProductDescriptionCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
+        if (descriptionCell == nil) {
+            descriptionCell = [DetailProductDescriptionCell newcell];
             if(!_isnodata) {
-                NSString *productdesc = _product.result.info.product_description;
-                UILabel *desclabel = ((DetailProductDescriptionCell*)cell).descriptionlabel;
-//                desclabel.text = productdesc;
-                
-                NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:productdesc];
-                NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-                [paragrahStyle setLineSpacing:5];
-                [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [productdesc length])];
-                desclabel.attributedText = attributedString ;
-                
-                CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
-                
-                CGSize expectedLabelSize = [productdesc sizeWithFont:desclabel.font constrainedToSize:maximumLabelSize lineBreakMode:desclabel.lineBreakMode];
-                _heightDescSection = lroundf(expectedLabelSize.height);
-                
-
+                descriptionCell.descriptionText = _product.result.info.product_description;
+                _descriptionHeight = descriptionCell.descriptionlabel.frame.size.height;
             }
-        
-
-        
-//        //}
+        }
+        cell = descriptionCell;
         return cell;
     }
     if (!_isnodatawholesale) {
         if (indexPath.section == 1) {
-            //wholesale price view
-            //if (_isexpanded) {
                 NSString *cellid = kTKPDDETAILPRODUCTWHOLESALECELLIDENTIFIER;
                 cell = (DetailProductWholesaleCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
                 if (cell == nil) {
                     cell = [DetailProductWholesaleCell newcell];
-                    //((DetailProductWholesaleCell*)cell).delegate = self;
                 }
             ((DetailProductWholesaleCell*)cell).data = @{kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY : _product.result.wholesale_price};
-            //}
+
             return cell;
         }
         if (indexPath.section == 2) {
-            // if (_isexpanded) {
                 NSString *cellid = kTKPDDETAILPRODUCTINFOCELLIDENTIFIER;
-                cell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-                if (cell == nil) {
-                    cell = [DetailProductInfoCell newcell];
+                DetailProductInfoCell *productInfoCell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+                if (productInfoCell == nil) {
+                    productInfoCell = [DetailProductInfoCell newcell];
                     ((DetailProductInfoCell*)cell).delegate = self;
                 }
-                [self productinfocell:cell withtableview:tableView];
+                [self productinfocell:productInfoCell withtableview:tableView];
+                _informationHeight = productInfoCell.productInformationView.frame.size.height;
+                cell = productInfoCell;
                 return cell;
-            //}
         }
     }
     else
     {
         if (indexPath.section == 1) {
-            //if (_isexpanded) {
             NSString *cellid = kTKPDDETAILPRODUCTINFOCELLIDENTIFIER;
-            cell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-            if (cell == nil) {
-                cell = [DetailProductInfoCell newcell];
+            DetailProductInfoCell *productCell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+            if (productCell == nil) {
+                productCell = [DetailProductInfoCell newcell];
                 ((DetailProductInfoCell*)cell).delegate = self;
+                _informationHeight = productCell.productInformationView.frame.size.height;
             }
-            [self productinfocell:cell withtableview:tableView];
-            
+            [self productinfocell:productCell withtableview:tableView];
+            cell = productCell;
             return cell;
-           // }
         }
 
     }
@@ -946,16 +886,53 @@
 
 #pragma mark - Methods
 -(void)setHeaderviewData{
+
+    CGFloat currentLabelHeight = _productnamelabel.frame.size.height;
     _productnamelabel.text = _product.result.info.product_name;
+
+    NSString *productName = _product.result.info.product_name;
+//    NSString *productName = @"Alice in Wonderland: White Rabbit Tsum Tsum Plush 3.5";
+
+    UIFont *font = [UIFont fontWithName:@"GothamMedium" size:15];
+
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 6.0;
+    
+    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
+                                 NSFontAttributeName: font,
+                                 NSParagraphStyleAttributeName: style,
+                                 };
+    
+    NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:productName
+                                                                   attributes:attributes];
+
+    _productnamelabel.attributedText = productNameAttributedText;
+    _productnamelabel.numberOfLines = 0;
+    [_productnamelabel sizeToFit];
+    
+    //Update header view
+    CGFloat newLabelHeight = _productnamelabel.frame.size.height;
+    CGFloat additionalHeightForHeader = newLabelHeight - currentLabelHeight;
+    CGRect newHeaderFrame = _header.frame;
+    newHeaderFrame.size.height = newHeaderFrame.size.height + additionalHeightForHeader;
+    _header.frame = newHeaderFrame;
+    
     _pricelabel.text = _product.result.info.product_price;
     _countsoldlabel.text = [NSString stringWithFormat:@"%@ Sold", _product.result.statistic.product_sold];
     _countviewlabel.text = [NSString stringWithFormat:@"%@ View", _product.result.statistic.product_view];
+
     [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Reviews",_product.result.statistic.product_review] forState:UIControlStateNormal];
+    [_reviewbutton.layer setBorderWidth:1];
+    [_reviewbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
+    
     [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Talk About it",_product.result.statistic.product_talk] forState:UIControlStateNormal];
-    _qualitynumberlabel.text = _product.result.statistic.product_quality_point;
-    _accuracynumberlabel.text = _product.result.statistic.product_accuracy_point;
-    _productrateview.starscount = _product.result.statistic.product_quality_rate;
-    _accuracyrateview.starscount = _product.result.statistic.product_accuracy_rate;
+    [_talkaboutbutton.layer setBorderWidth:1];
+    [_talkaboutbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
+    
+    _qualitynumberlabel.text = [NSString stringWithFormat: @"%d ",_product.result.statistic.product_rating];
+    _qualityrateview.starscount = _product.result.statistic.product_rating;
+    
+    _accuracynumberlabel.text = [NSString stringWithFormat:@"%d", _product.result.statistic.product_rating];
     
     NSArray *images = _product.result.product_images;
     
@@ -1001,6 +978,7 @@
     
     _imagescrollview.contentSize = CGSizeMake(_headerimages.count*320,0);
     _imagescrollview.contentMode = UIViewContentModeScaleAspectFit;
+    _imagescrollview.showsHorizontalScrollIndicator = NO;
     
     [_datatalk setObject:_product.result.info.product_name forKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
     [_datatalk setObject:_product.result.info.product_price forKey:kTKPDDETAILPRODUCT_APIPRODUCTPRICEKEY];

@@ -9,10 +9,26 @@
 #import "GeneralList1GestureCell.h"
 
 @interface GeneralList1GestureCell ()
+@property (weak, nonatomic) IBOutlet UIButton *buttondelete;
+@property (weak, nonatomic) IBOutlet UIButton *buttondefault;
+@property (weak, nonatomic) IBOutlet UIView *viewcell;
+
 
 @end
 
 @implementation GeneralList1GestureCell
+
+#pragma mark - Factory methods
++ (id)newcell
+{
+    NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"GeneralList1GestureCell" owner:nil options:0];
+    for (id o in a) {
+        if ([o isKindOfClass:[self class]]) {
+            return o;
+        }
+    }
+    return nil;
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -53,8 +69,8 @@
         }
     }
     else if ([sender isKindOfClass:[UISwipeGestureRecognizer class]]) {
-        UISwipeGestureRecognizer *gesture = (UISwipeGestureRecognizer*)sender;
-        switch (gesture.state) {
+        UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer*)sender;
+        switch (swipe.state) {
             case UIGestureRecognizerStateBegan: {
                 break;
             }
@@ -63,10 +79,57 @@
             }
             case UIGestureRecognizerStateEnded: {
                 //TODO
+                if (swipe.direction == UISwipeGestureRecognizerDirectionRight) {
+                    [self viewdetailresetposanimation:YES];
+                }
+                if (swipe.direction == UISwipeGestureRecognizerDirectionLeft) {
+                    [self viewdetailshowanimation:YES];
+                }
+
                 break;
             }
         }
     }
 }
 
+- (IBAction)tap:(id)sender {
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton*)sender;
+        [_delegate DidTapButton:btn atCell:self withindexpath:_indexpath];
+    }
+}
+
+#pragma mark - Methods
+-(void)viewdetailshowanimation:(BOOL)animated
+{
+    if (animated) {
+        [UIView animateWithDuration:0.5
+                              delay:0
+                            options: UIViewAnimationCurveEaseOut
+                         animations:^{
+                             CGRect frame = _viewcell.frame;
+                             if(frame.origin.x == 0){
+                                 frame.origin.x -= (_buttondefault.frame.size.width+_buttondefault.frame.size.width);
+                             }
+                             [_viewcell setFrame:frame];
+                         }
+                         completion:^(BOOL finished){
+                         }];
+    }
+}
+-(void)viewdetailresetposanimation:(BOOL)animated
+{
+    if (animated) {
+        [UIView animateWithDuration:0.5
+                              delay:0
+                            options: UIViewAnimationCurveEaseOut
+                         animations:^{
+                             CGRect frame = _viewcell.frame;
+                             frame.origin.x = 0;
+                             [_viewcell setFrame:frame];
+                         }
+                         completion:^(BOOL finished){
+                         }];
+    }
+}
 @end

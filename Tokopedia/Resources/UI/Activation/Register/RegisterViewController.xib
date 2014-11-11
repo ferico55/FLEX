@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -8,13 +8,14 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegisterViewController">
             <connections>
                 <outlet property="act" destination="9cP-LW-euo" id="8hM-7I-tlN"/>
+                <outlet property="buttonagreement" destination="Om5-rq-kus" id="1id-mj-frG"/>
                 <outlet property="container" destination="5rq-kc-cRU" id="T3H-Vz-fbZ"/>
-                <outlet property="texfieldfullname" destination="W9c-XX-w7W" id="32K-Uh-ZrK"/>
-                <outlet property="textfieldconfirmpass" destination="1GC-F6-b5V" id="07l-l6-7fD"/>
-                <outlet property="textfielddob" destination="4q8-DK-AgL" id="TO4-oB-JLg"/>
-                <outlet property="textfieldemail" destination="ry4-mz-X5c" id="ibT-fd-mqD"/>
-                <outlet property="textfieldpassword" destination="ekn-6v-JpQ" id="4Pu-XK-afr"/>
-                <outlet property="textfieldphonenumber" destination="Kz1-ge-iSa" id="uFH-vX-iAW"/>
+                <outlet property="texfieldfullname" destination="W9c-XX-w7W" id="c7F-Tn-yar"/>
+                <outlet property="textfieldconfirmpass" destination="1GC-F6-b5V" id="jC2-cO-L4F"/>
+                <outlet property="textfielddob" destination="4q8-DK-AgL" id="ZwM-mT-JrE"/>
+                <outlet property="textfieldemail" destination="ry4-mz-X5c" id="k6M-bA-X8c"/>
+                <outlet property="textfieldpassword" destination="ekn-6v-JpQ" id="vMO-FO-9x5"/>
+                <outlet property="textfieldphonenumber" destination="Kz1-ge-iSa" id="ZhL-4e-Be6"/>
                 <outlet property="view" destination="UQr-Xi-rcP" id="fu6-Qh-chq"/>
             </connections>
         </placeholder>
@@ -31,78 +32,86 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Full Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W9c-XX-w7W">
-                                    <rect key="frame" x="37" y="87" width="246" height="30"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Full Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W9c-XX-w7W" customClass="TextField">
+                                    <rect key="frame" x="29" y="87" width="263" height="36"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                     <connections>
                                         <outlet property="delegate" destination="-1" id="Xo9-Cl-Se3"/>
                                     </connections>
                                 </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Phone Number" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Kz1-ge-iSa">
-                                    <rect key="frame" x="37" y="125" width="246" height="30"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Phone Number" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Kz1-ge-iSa" customClass="TextField">
+                                    <rect key="frame" x="29" y="122" width="263" height="36"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next"/>
                                     <connections>
                                         <outlet property="delegate" destination="-1" id="Pod-ep-ncX"/>
                                     </connections>
                                 </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ry4-mz-X5c">
-                                    <rect key="frame" x="37" y="163" width="246" height="30"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ry4-mz-X5c" customClass="TextField">
+                                    <rect key="frame" x="29" y="157" width="263" height="36"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="next"/>
                                     <connections>
                                         <outlet property="delegate" destination="-1" id="PQv-Rd-grX"/>
                                     </connections>
                                 </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Date of birth" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4q8-DK-AgL">
-                                    <rect key="frame" x="37" y="201" width="246" height="30"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Date of birth" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4q8-DK-AgL" customClass="TextField">
+                                    <rect key="frame" x="29" y="192" width="263" height="36"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                     <connections>
                                         <outlet property="delegate" destination="-1" id="imF-hy-4GD"/>
                                     </connections>
                                 </textField>
-                                <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="dh2-Tl-g6u">
-                                    <rect key="frame" x="37" y="245" width="246" height="29"/>
+                                <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="dh2-Tl-g6u">
+                                    <rect key="frame" x="29" y="239" width="263" height="29"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <segments>
-                                        <segment title="Female"/>
-                                        <segment title="Male"/>
+                                        <segment title="Perempuan"/>
+                                        <segment title="Laki-Laki"/>
                                     </segments>
+                                    <color key="tintColor" red="0.31372549019607843" green="0.36862745098039218" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                                     <connections>
                                         <action selector="tapsegment:" destination="-1" eventType="valueChanged" id="CvA-Uh-hkd"/>
                                     </connections>
                                 </segmentedControl>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ekn-6v-JpQ">
-                                    <rect key="frame" x="37" y="286" width="246" height="30"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ekn-6v-JpQ" customClass="TextField">
+                                    <rect key="frame" x="29" y="278" width="263" height="36"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="next" secureTextEntry="YES"/>
                                     <connections>
                                         <outlet property="delegate" destination="-1" id="V2r-Oc-r53"/>
                                     </connections>
                                 </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1GC-F6-b5V">
-                                    <rect key="frame" x="37" y="324" width="246" height="30"/>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirm Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1GC-F6-b5V" customClass="TextField">
+                                    <rect key="frame" x="29" y="313" width="263" height="36"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
                                     <connections>
                                         <outlet property="delegate" destination="-1" id="d6V-jt-pIt"/>
                                     </connections>
                                 </textField>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Already registered on Tokopedia?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RCp-IG-vDy">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sudah terdaftar di Tokopedia?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RCp-IG-vDy">
                                     <rect key="frame" x="37" y="20" width="246" height="21"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sign in" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jgf-Jl-YKA">
-                                    <rect key="frame" x="111" y="39" width="56" height="21"/>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Log in" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jgf-Jl-YKA">
+                                    <rect key="frame" x="113" y="44" width="56" height="21"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yrd-jj-0tD">
-                                    <rect key="frame" x="165" y="35" width="37" height="30"/>
+                                    <rect key="frame" x="167" y="39" width="40" height="32"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                    <state key="normal" title="here">
+                                    <state key="normal" title="Disini">
                                         <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
@@ -111,10 +120,11 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i0v-rs-uOa">
-                                    <rect key="frame" x="37" y="524" width="246" height="30"/>
+                                    <rect key="frame" x="22" y="364" width="276" height="30"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <state key="normal" title="Terms of Service and Privacy Policy">
+                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                                    <state key="normal" title="Syarat dan Ketentuan, serta Kebijakan Privasi">
+                                        <color key="titleColor" red="0.31372549019607843" green="0.36862745098039218" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
@@ -125,8 +135,27 @@
                                     <rect key="frame" x="150" y="239" width="20" height="20"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 </activityIndicatorView>
+                                <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Om5-rq-kus">
+                                    <rect key="frame" x="37" y="412" width="22" height="25"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" red="0.61974774399999999" green="1" blue="0.63670880060000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <state key="normal">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <state key="selected" image="icon_check.png"/>
+                                    <connections>
+                                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="Yyy-0g-hWU"/>
+                                    </connections>
+                                </button>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="I have read and accepted the Terms &amp; Conditions and Privacy Policy." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="233" translatesAutoresizingMaskIntoConstraints="NO" id="95o-gu-FPH">
+                                    <rect key="frame" x="67" y="407" width="233" height="36"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                     </subviews>
                     <connections>
@@ -147,4 +176,7 @@
             </connections>
         </tapGestureRecognizer>
     </objects>
+    <resources>
+        <image name="icon_check.png" width="1024" height="1024"/>
+    </resources>
 </document>

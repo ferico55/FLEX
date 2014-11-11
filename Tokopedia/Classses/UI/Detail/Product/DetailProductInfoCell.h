@@ -26,6 +26,8 @@
 @property (nonatomic, assign) IBOutlet id<DetailProductInfoCellDelegate> delegate;
 #endif
 
+
+@property (weak, nonatomic) IBOutlet UIView *productInformationView;
 @property (weak, nonatomic) IBOutlet UILabel *minorderlabel;
 @property (weak, nonatomic) IBOutlet UILabel *weightlabel;
 @property (weak, nonatomic) IBOutlet UILabel *insurancelabel;
