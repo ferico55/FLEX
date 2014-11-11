@@ -26,7 +26,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPDTabShopNavigationController">
             <connections>
                 <outlet property="actcover" destination="DDl-z9-A7W" id="gUR-HQ-qEI"/>
+                <outlet property="actfav" destination="9FS-hm-LVs" id="1YP-zN-HOl"/>
                 <outlet property="actpp" destination="BNt-0T-WmM" id="wTB-0C-O9U"/>
+                <outlet property="buttonfav" destination="cVc-Hq-EZS" id="zia-JP-3xZ"/>
                 <outlet property="container" destination="abB-jT-cSJ" id="x4v-nW-TEa"/>
                 <outlet property="contentview" destination="i5M-Pr-FkT" id="XhZ-73-dEU"/>
                 <outlet property="coverimage" destination="6bl-5T-dVF" id="tXV-Ha-XeH"/>
@@ -223,7 +225,7 @@
                     <rect key="frame" x="0.0" y="239" width="320" height="1"/>
                     <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cVc-Hq-EZS">
+                <button opaque="NO" tag="16" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cVc-Hq-EZS">
                     <rect key="frame" x="170" y="197" width="128" height="28"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
@@ -249,6 +251,9 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="L8A-HQ-Z0Q"/>
                     </connections>
                 </button>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="9FS-hm-LVs">
+                    <rect key="frame" x="277" y="200" width="20" height="20"/>
+                </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

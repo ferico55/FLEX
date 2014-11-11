@@ -12,6 +12,7 @@
 {
     UIView *_view;
     NSTimer *timer;
+    UIView *bg;
 }
 
 @end
@@ -33,6 +34,7 @@
 
 
 - (void) alertError:(NSArray*)errorArray{
+    //TODO :: Need To Rework, Really Ugly because only placed using Y position
     UILabel* errorlabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 320, 100)];
     NSString *joinedstring = [NSString convertHTML:[errorArray componentsJoinedByString:@"\n"]];
     
@@ -55,7 +57,7 @@
     errorlabel.textColor = [UIColor whiteColor];
     errorlabel.numberOfLines = 0;
     
-    UIView *bg = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 110)];
+    bg = [[UIView alloc]initWithFrame:CGRectMake(0, 63, 320, 110)];
     bg.backgroundColor = [UIColor colorWithRed:(131/255.0) green:(3/255.0) blue:(0/255.0) alpha:1];
     CGRect newFrameBg = bg.frame;
     newFrameBg.size.height = expectedLabelSize.height + 6;
@@ -63,7 +65,7 @@
     bg.tag = 1;
     [bg addSubview:errorlabel];
     
-    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(300, 2, 15, 15)];
+    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(300, 65, 15, 15)];
     [closeButton setBackgroundImage:[UIImage imageNamed:@"icon_cancel.png"] forState:UIControlStateNormal];
     [closeButton addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
     closeButton.tag = 17;
@@ -77,6 +79,11 @@
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     }
     
+}
+
+- (void) alertSuccess :(NSArray*)errorArray{
+    [self alertError:errorArray];
+    bg.backgroundColor = [UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1];
 }
 
 

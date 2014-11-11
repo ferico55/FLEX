@@ -24,6 +24,7 @@
 #define kTKPDDETAIL_DATALOCATIONARRAYKEY @"locationarray"
 #define kTKPDDETAIL_DATAQUERYKEY @"query"
 #define kTKPDDETAIL_DATAETALASEKEY @"etalase"
+#define kTKPDDETAIL_ACTIONKEY @"action"
 #define kTKPDDETAIL_DATAINDEXKEY @"index"
 #define kTKPDDETAIL_DATAINDEXPATHKEY @"indexpath"
 #define kTKPDDETAILETALASE_DATAINDEXPATHKEY @"etalaseindexpath"
@@ -386,7 +387,13 @@
 
 #define kTKPDMESSAGE_KEYSUBJECT @"message_subject"
 #define kTKPDMESSAGE_KEYCONTENT @"message"
-#define kTKPDMESSAGE_KEYSHOPID @"shop_id    "
+#define kTKPDMESSAGE_KEYTOSHOPID @"to_shop_id"
+#define KTKPDMESSAGE_DELIVERED @"Pesan Anda telah terkirim!"
+#define KTKPDMESSAGE_UNDELIVERED @"Pesan Anda gagal terkirim."
+#define KTKPDMESSAGE_EMPTYFORM @"Panjang pesan harus lebih dari 3 karakter."
+
+#define kTKPD_STATUSSUCCESS @"1"
+#define kTKPDMESSAGE_KEYTOUSERID @"to_user_id"
 #define kTKPDMESSAGE_KEYTO @"message_to"
 #define kTKPDMESSAGE_PLACEHOLDER @"Message"
 

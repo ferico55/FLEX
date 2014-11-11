@@ -12,6 +12,7 @@
 
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
+#import "StickyAlert.h"
 
 @implementation AppDelegate
 {
@@ -153,6 +154,48 @@
 
 #endif
 }
+
+- (id) init
+{
+    self = [super init];
+    if (!self) return nil;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receiveStickyMessage:)
+                                                 name:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receiveStickyMessage:)
+                                                 name:kTKPD_SETUSERSTICKYERRORMESSAGEKEY
+                                               object:nil];
+    
+    return self;
+}
+
+- (void) receiveStickyMessage:(NSNotification *) notification
+{
+    
+    StickyAlert *stickyalert = [[StickyAlert alloc]init];
+    
+    UIViewController *topRootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    while (topRootViewController.presentedViewController) {
+        topRootViewController = topRootViewController.presentedViewController;
+    }
+    
+    [stickyalert initView:topRootViewController.view];
+    NSArray *string = [notification.userInfo objectForKey:@"messages"];
+    
+    if ([[notification name] isEqualToString:kTKPD_SETUSERSTICKYERRORMESSAGEKEY]) {
+        [stickyalert alertError:string];
+    }
+    
+    if ([[notification name] isEqualToString:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY]) {
+        [stickyalert alertSuccess:string];
+    }
+
+}
+
 
 
 

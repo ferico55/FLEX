@@ -229,6 +229,9 @@
                 
                 NSLog(@"%@",messages);
                 
+                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                
                 break;
             }
             default:
@@ -385,6 +388,8 @@
         else
         {
             NSArray *messages = _register.message_error;
+            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
         }
     }
 }

@@ -9,6 +9,7 @@
 #import "SendMessageViewController.h"
 #import "detail.h"
 #import "SendMessage.h"
+#import "StickyAlert.h"
 
 @interface SendMessageViewController () <UITextViewDelegate>{
     BOOL _isnodata;
@@ -111,9 +112,9 @@
 -(void)doSendMessage {
     NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY:@"send_message",
-                            kTKPDMESSAGE_KEYCONTENT:@"test",
-                            kTKPDMESSAGE_KEYSUBJECT:@"mantap",
-                            kTKPDMESSAGE_KEYSHOPID:[_data objectForKey:@"shop_id"]
+                            kTKPDMESSAGE_KEYCONTENT:_messagefield.text,
+                            kTKPDMESSAGE_KEYSUBJECT:_messagesubjectfield.text,
+                            kTKPDMESSAGE_KEYTOSHOPID:[_data objectForKey:@"shop_id"]
                             };
     
     _requestcount ++;
@@ -143,6 +144,17 @@
     id info = [result objectForKey:@""];
     
     NSString *is_success = [[info result] is_success];
+    
+    if([is_success isEqualToString:kTKPD_STATUSSUCCESS]) {
+        NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+    } else {
+        
+        NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
+        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+    }
     
 }
 
@@ -181,14 +193,22 @@
         
         switch (button.tag) {
             case 10: {
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                [self.navigationController popViewControllerAnimated:TRUE];
                 break;
             }
             
             case 11 : {
                 if (_request.isExecuting) return;
-                [self configureRestkit];
-                [self doSendMessage];
+                if(_messagefield.text.length < 3 || _messagesubjectfield.text.length < 3) {
+                    NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                } else {
+                    [self configureRestkit];
+                    [self doSendMessage];
+                    [self.navigationController popViewControllerAnimated:TRUE];
+                }
+                
                 break;
             }
                 

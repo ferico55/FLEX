@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Workspace
    version = "1.0">
-   <Group
-      location = "group:Tokopedia/Classses/Object/FavoriteShopAction"
-      name = "FavoriteShopAction">
-      <FileRef
-         location = "group:FavoritedShopActionResult.h">
-      </FileRef>
-      <FileRef
-         location = "group:FavoritedShopActionResult.m">
-      </FileRef>
-      <FileRef
-         location = "group:FavoriteShopAction.h">
-      </FileRef>
-      <FileRef
-         location = "group:FavoriteShopAction.m">
-      </FileRef>
-   </Group>
    <FileRef
       location = "group:Tokopedia.xcodeproj">
    </FileRef>

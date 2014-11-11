@@ -11,6 +11,7 @@
 
 @interface StickyAlert : NSObject
 -(void)alertError:(NSArray*)errorArray;
+-(void)alertSuccess:(NSArray*)errorArray;
 -(void)initView:(UIView*)view;
 
 @end

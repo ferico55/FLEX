@@ -15,6 +15,7 @@
 #import "SortViewController.h"
 #import "ProductEtalaseViewController.h"
 #import "SendMessageViewController.h"
+#import "FavoriteShopAction.h"
 
 #import "URLCacheController.h"
 
@@ -51,6 +52,7 @@
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actpp;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actcover;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actfav;
 
 @property (weak, nonatomic) IBOutlet UIImageView *coverimage;
 @property (weak, nonatomic) IBOutlet UIImageView *ppimage;
@@ -68,6 +70,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *labelfav;
 @property (weak, nonatomic) IBOutlet UILabel *labelsold;
+@property (weak, nonatomic) IBOutlet UIButton *buttonfav;
 
 @property (strong, nonatomic) IBOutlet UIView *descriptionview;
 @property (strong, nonatomic) IBOutlet UIView *detailview;
@@ -198,6 +201,7 @@
 	[_barbuttoninfo setTag:11];
     _barbuttoninfo.enabled = NO;
     self.navigationItem.rightBarButtonItem = _barbuttoninfo;
+    
     [_scrollview addSubview:_contentview];
     
     CGRect frame = _descriptionview.frame;
@@ -227,6 +231,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     //if (!_isrefreshview) {
     [self configureRestKit];
     if (_isnodata) {
@@ -564,12 +569,40 @@
         
         switch (btn.tag) {
             case 15:{
-                SendMessageViewController *vc = [SendMessageViewController new];
-                vc.data = @{
-                            kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
-                            kTKPDDETAIL_APISHOPNAMEKEY:_shop.result.info.shop_name
-                            };
-                [self.navigationController pushViewController:vc animated:YES];
+                if(!_actpp.isAnimating) {
+                    SendMessageViewController *vc = [SendMessageViewController new];
+                    vc.data = @{
+                                kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                                kTKPDDETAIL_APISHOPNAMEKEY:_shop.result.info.shop_name
+                                };
+                    [self.navigationController pushViewController:vc animated:YES];
+                    break;
+                }
+                
+                
+            }
+            case 16 : {
+                if(!_actfav.isAnimating) {
+                    [_actfav startAnimating];
+                    [self configureRestkitFav];
+                    [self doFav:_shop.result.info.shop_id withDefaultButton:btn];
+                    btn.tag = 17;
+                    [btn setTitle:@" UnFavorite" forState:UIControlStateNormal];
+                    [btn setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];
+                    break;
+                }
+                
+            }
+            case 17 : {
+                if(!_actfav.isAnimating) {
+                    
+                    [_actfav startAnimating];
+                    [self configureRestkitFav];
+                    [self doFav:_shop.result.info.shop_id withDefaultButton:btn];
+                    btn.tag = 16;
+                    [btn setTitle:@"  Favorite" forState:UIControlStateNormal];
+                    [btn setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+                }
                 break;
             }
             default:
@@ -616,6 +649,76 @@
     }
     
 	
+}
+
+-(void) configureRestkitFav {
+    // initialize RestKit
+    _objectmanager =  [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[FavoriteShopAction class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[FavoriteShopActionResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"content":@"content",
+                                                        @"is_success":@"is_success"}];
+    
+    //relation
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    //register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:@"action/favorite-shop.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+}
+
+
+-(void) doFav:(NSInteger)shop_id withDefaultButton:(UIButton*)btn{
+    //    if (_request.isExecuting) return;
+    NSString *s_id = [@(shop_id) stringValue];
+    NSDictionary* param = @{
+                            kTKPDDETAIL_ACTIONKEY:@"fav_shop",
+                            @"shop_id":s_id
+                            };
+    
+    _requestcount ++;
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/favorite-shop.pl" parameters:param];
+    
+    
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestsuccessfav:mappingResult withOperation:operation];
+        
+        [_timer invalidate];
+        _timer = nil;
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+        [self requestfailurefav:error];
+        
+        [_timer invalidate];
+        _timer = nil;
+    }];
+    
+    
+    
+    [_operationQueue addOperation:_request];
+    
+    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    
+    
+    
+}
+
+-(void) requestsuccessfav:(id)mappingResult withOperation:(NSOperationQueue*)operation {
+    [_actfav stopAnimating];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
+}
+
+-(void) requestfailurefav:(id)object {
+    
 }
 
 -(IBAction)tapbutton:(id)sender
@@ -782,6 +885,15 @@
     _namelabel.text = _shop.result.info.shop_name;
     _shopdesclabel.text = _shop.result.info.shop_description;
     _locationlabel.text = _shop.result.info.shop_location;
+
+    if([_shop.result.info.shop_already_favorited isEqualToString:@"1"]) {
+        [_buttonfav.imageView setImage:[UIImage imageNamed:@"icon_love_active.png"]];
+        _buttonfav.tag = 17;
+    } else {
+        [_buttonfav.imageView setImage:[UIImage imageNamed:@"icon_love.png"]];
+        _buttonfav.tag = 16;
+    }
+    [_actfav stopAnimating];
     
     _labelfav.text = [NSString stringWithFormat:@"%@ Favorite",_shop.result.info.shop_total_favorit];
     _labelsold.text = [NSString stringWithFormat:@"%@ Sold",_shop.result.stats.shop_item_sold];
@@ -988,7 +1100,7 @@
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
         NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
+//        [self requestfailure:nil];
 	}
 }
 
@@ -1002,10 +1114,10 @@
     
     if (status) {
         //only save cache for first page
-        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-        [_cachecontroller connectionDidFinish:_cacheconnection];
+//        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+//        [_cachecontroller connectionDidFinish:_cacheconnection];
         //save response data
-        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+//        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
 
         [self requestprocess:object];
     }
@@ -1014,6 +1126,7 @@
 
 -(void)requestfailure:(id)object
 {
+    
     if (_timeinterval > _cachecontroller.URLCacheInterval) {
         [self requestprocess:object];
     }

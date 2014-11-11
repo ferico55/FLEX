@@ -52,7 +52,7 @@
     UIRefreshControl *_refreshControl;
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
-   
+    
 }
 
 #pragma mark - Life Cycle
@@ -81,7 +81,7 @@
         inset.bottom += 240;
         _table.contentInset = inset;
     }
-
+    
     
     /** set table view datasource and delegate **/
     _table.delegate = self;
@@ -90,7 +90,7 @@
     /** set table footer view (loading act) **/
     _table.tableFooterView = _footer;
     
-//    [self setHeaderData:_goldshop];
+    //    [self setHeaderData:_goldshop];
     [_act startAnimating];
     
     if (_shop.count > 0) {
@@ -111,6 +111,11 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadFav)
+                                                 name:@"notifyFav"
+                                               object:nil];
     
     if (!_isrefreshview) {
         [self configureRestKit];
@@ -145,7 +150,7 @@
     }
     NSString *sectionTitle = [_shopdictionarytitle objectAtIndex:section];
     NSArray *sectionDictionary = [_shopdictionary objectForKey:sectionTitle];
-
+    
     return [sectionDictionary count];
 }
 
@@ -160,14 +165,14 @@
             cell = [FavoritedShopCell newcell];
             ((FavoritedShopCell*)cell).delegate = self;
         }
-       
+        
         
         if (_shop.count > indexPath.row ) {
             
             NSString *sectionTitle = [_shopdictionarytitle objectAtIndex:indexPath.section];
             NSArray *sectionDictionary = [_shopdictionary objectForKey:sectionTitle];
             FavoritedShopList *shop = sectionDictionary[indexPath.row];
-             NSLog(@"%d %@ %d",((FavoritedShopCell*)cell).isfavoritedshop.tag, shop.shop_name, indexPath.section);
+            NSLog(@"%d %@ %d",((FavoritedShopCell*)cell).isfavoritedshop.tag, shop.shop_name, indexPath.section);
             
             ((FavoritedShopCell*)cell).shopname.text = shop.shop_name;
             ((FavoritedShopCell*)cell).shoplocation.text = shop.shop_location;
@@ -251,7 +256,7 @@
 -(void) removeFavoritedRow:(NSIndexPath*)indexpath{
     is_already_updated = YES;
     if(indexpath.section == 0) {
-
+        
         FavoritedShopList *list = _goldshop[indexpath.row];
         
         [_shop insertObject:_goldshop[indexpath.row] atIndex:0];
@@ -275,9 +280,9 @@
         [_table endUpdates];
         
         
-
+        
     } else {
-        [_shop removeObjectAtIndex:indexpath.row];
+//        [_shop removeObjectAtIndex:indexpath.row];
     }
     
     //TODO ini animation nya masih jelek, yg bagus malah bikin bugs, checkthisout later!!
@@ -297,7 +302,7 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[FavoriteShopActionResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{@"content":@"content",
                                                         @"is_success":@"is_success"}];
-
+    
     //relation
     RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
     [statusMapping addPropertyMapping:resulRel];
@@ -309,7 +314,7 @@
 }
 
 -(void) pressFavoriteAction:(id)shopid withIndexPath:(NSIndexPath*)indexpath{
-//    if (_request.isExecuting) return;
+    //    if (_request.isExecuting) return;
     
     NSDictionary* param = @{
                             kTKPDHOME_APIACTIONKEY:@"fav_shop",
@@ -359,7 +364,7 @@
     
     [_goldshop insertObject:_shop[0] atIndex:0];
     [_shop removeObjectAtIndex:0];
-
+    
     
     NSArray *insertIndexPaths = [NSArray arrayWithObjects:
                                  [NSIndexPath indexPathForRow:0 inSection:0],nil
@@ -402,11 +407,11 @@
     
     RKObjectMapping *listGoldMapping = [RKObjectMapping mappingForClass:[FavoritedShopList class]];
     [listGoldMapping addAttributeMappingsFromArray:@[
-                                                 kTKPDDETAILSHOP_APISHOPIMAGE,
-                                                 kTKPDDETAILSHOP_APISHOPLOCATION,
-                                                 kTKPDDETAILSHOP_APISHOPID,
-                                                 kTKPDDETAILSHOP_APISHOPNAME,
-                                                 ]];
+                                                     kTKPDDETAILSHOP_APISHOPIMAGE,
+                                                     kTKPDDETAILSHOP_APISHOPLOCATION,
+                                                     kTKPDDETAILSHOP_APISHOPID,
+                                                     kTKPDDETAILSHOP_APISHOPNAME,
+                                                     ]];
     
     //relation
     RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
@@ -425,7 +430,7 @@
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
-
+    
 }
 
 -(void) loadData {
@@ -560,7 +565,7 @@
             
         }
     }
-
+    
 }
 
 -(void) requestfailure:(id)error {
@@ -575,9 +580,17 @@
 #pragma mark - Delegate
 -(void)FavoritedShopCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withimageview:(UIImageView *)imageview
 {
-    FavoritedShopList *list = _shop[indexpath.row];
+    NSInteger section = indexpath.section;
+    FavoritedShopList *list;
     
-
+    if(section == 1) {
+        list = _shop[indexpath.row];
+    } else {
+        list = _goldshop[indexpath.row];
+    }
+    
+    
+    
     NSMutableArray *viewcontrollers = [NSMutableArray new];
     /** create new view controller **/
     ShopProductViewController *v = [ShopProductViewController new];
@@ -604,9 +617,9 @@
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:tapnavcon];
     [self.navigationController presentViewController:nav animated:YES completion:nil];
     
-//    [self.navigationController pushViewController:tapnavcon animated:YES];
+    //    [self.navigationController pushViewController:tapnavcon animated:YES];
     
-
+    
 }
 
 
@@ -631,15 +644,31 @@
     
 }
 
+-(void) reloadFav {
+    [self cancel];
+    /** clear object **/
+    [_shop removeAllObjects];
+    [_goldshop removeAllObjects];
+    _page = 1;
+    _requestcount = 0;
+    _isrefreshview = YES;
+    is_already_updated = NO;
+    
+    [_table reloadData];
+    /** request data **/
+    [self configureRestKit];
+    [self loadData];
+}
+
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
