@@ -7,7 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Paging.h"
+#import "AddressFormList.h"
 
 @interface AddressFormResult : NSObject
+
+@property (nonatomic, strong) Paging *paging;
+@property (nonatomic, strong) NSArray *list;
 
 @end

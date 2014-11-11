@@ -72,7 +72,7 @@
     //[_imageViewLarge setHidden:YES];
     //_imageViewLarge.image = nil;
     
-    [_cropAreaView setFrame:kTKPDCAMERACROP_CROPDEFAULTRECT];
+    //[_cropAreaView setFrame:kTKPDCAMERACROP_CROPDEFAULTRECT];
     
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];

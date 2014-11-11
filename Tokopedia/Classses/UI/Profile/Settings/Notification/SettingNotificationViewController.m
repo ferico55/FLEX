@@ -34,6 +34,9 @@
     NSMutableDictionary *_datainput;
     
     NotificationForm * _form;
+    
+    UIBarButtonItem *_barbuttonsave;
+    UIActivityIndicatorView *_act;
 }
 
 @property (weak, nonatomic) IBOutlet UISwitch *switchnewslatter;
@@ -80,12 +83,13 @@
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
-    UIBarButtonItem *barbutton1;
-    
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor blackColor]];
-    barbutton1.tag = 11;
-    self.navigationItem.rightBarButtonItem = barbutton1;
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [_barbuttonsave setTintColor:[UIColor blackColor]];
+    _barbuttonsave.tag = 11;
+    _act= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    UIBarButtonItem * barbuttonact = [[UIBarButtonItem alloc] initWithCustomView:_act];
+    self.navigationItem.rightBarButtonItems = @[_barbuttonsave,barbuttonact];
+    [_act setHidesWhenStopped:YES];
     
     [self configureActionRestKit];
     [self configureRestKit];
@@ -207,7 +211,8 @@
 {
     if (_request.isExecuting) return;
     
-    //[_act startAnimating];
+    [_act startAnimating];
+    _barbuttonsave.enabled = NO;
     
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
     
@@ -221,14 +226,16 @@
     /* file doesn't exist or hasn't been updated */
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];
-        //[_act stopAnimating];
+        [_act stopAnimating];
+        _barbuttonsave.enabled = YES;
         [_timer invalidate];
         _timer = nil;
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFailure:error];
-        //[_act stopAnimating];
+        [_act stopAnimating];
+        _barbuttonsave.enabled = YES;
         [self.view setUserInteractionEnabled:YES];
         [_timer invalidate];
         _timer = nil;
@@ -320,7 +327,6 @@
 
 - (void)configureActionRestKit
 {
-    // initialize AFNetworking HTTPClient + restkit
     //TraktAPIClient *client = [TraktAPIClient sharedClient];
     _objectmanagerAction = [RKObjectManager sharedClient];
     
@@ -351,7 +357,9 @@
     NSDictionary *data = userinfo;
     
     [self.view setUserInteractionEnabled:NO];
-    //[_act startAnimating];
+    [_act startAnimating];
+    _act.hidden = NO;
+    _barbuttonsave.enabled = NO;
     
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APISETEMAILNOTIFKEY,
                             kTKPDPROFILESETTING_APIFLAGNEWSLATTERKEY : [data objectForKey:kTKPDPROFILESETTING_APIFLAGNEWSLATTERKEY]?:@(_form.result.notification.flag_newsletter),
@@ -368,7 +376,9 @@
     /* file doesn't exist or hasn't been updated */
     [_requestAction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessAction:mappingResult withOperation:operation];
-        //[_act stopAnimating];
+        [_act stopAnimating];
+        _act.hidden = YES;
+        _barbuttonsave.enabled = YES;
         [self.view setUserInteractionEnabled:YES];
         [_timer invalidate];
         _timer = nil;
@@ -376,7 +386,9 @@
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFailureAction:error];
-        //[_act stopAnimating];
+        [_act stopAnimating];
+        _act.hidden = YES;
+        _barbuttonsave.enabled = YES;
         [self.view setUserInteractionEnabled:YES];
         [_timer invalidate];
         _timer = nil;

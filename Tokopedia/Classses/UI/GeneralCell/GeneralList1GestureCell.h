@@ -14,7 +14,9 @@
 @protocol GeneralList1GestureCellDelegate <NSObject>
 @required
 -(void)GeneralList1GestureCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
-
+@optional
+-(void)DidTapButton:(UIButton*)button atCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
+-(void)ShouldReloadTableExeptIndexpath:(NSIndexPath*)indexpath;
 @end
 
 @interface GeneralList1GestureCell : UITableViewCell
@@ -25,6 +27,12 @@
 @property (nonatomic, assign) IBOutlet id<GeneralList1GestureCellDelegate> delegate;
 #endif
 
+@property (weak, nonatomic) IBOutlet UILabel *labelname;
+@property (weak, nonatomic) IBOutlet UILabel *labeldefault;
 @property (strong, nonatomic) NSIndexPath *indexpath;
+
++(id)newcell;
+-(void)viewdetailresetposanimation:(BOOL)animated;
+-(void)viewdetailshowanimation:(BOOL)animated;
 
 @end

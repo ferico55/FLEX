@@ -384,9 +384,7 @@
 		FC9FD74619B4277F00CF6CDD /* tab_btm_shadow.png in Resources */ = {isa = PBXBuildFile; fileRef = FC9FD74419B4277F00CF6CDD /* tab_btm_shadow.png */; };
 		FC9FD74719B4277F00CF6CDD /* tab_btm_shadow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC9FD74519B4277F00CF6CDD /* tab_btm_shadow@2x.png */; };
 		FCA030FE1A086C6900845F5E /* SettingBankAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA030FD1A086C6900845F5E /* SettingBankAccountViewController.m */; };
-		FCA031011A086C8A00845F5E /* SettingBankAccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA031001A086C8A00845F5E /* SettingBankAccountCell.m */; };
 		FCA031041A086CB700845F5E /* SettingBankAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA031031A086CB700845F5E /* SettingBankAccountViewController.xib */; };
-		FCA031061A086CCE00845F5E /* SettingBankAccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA031051A086CCE00845F5E /* SettingBankAccountCell.xib */; };
 		FCA031081A087E0400845F5E /* GeneralList1GestureCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA031071A087E0400845F5E /* GeneralList1GestureCell.xib */; };
 		FCA0310B1A087E4400845F5E /* GeneralList1GestureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA0310A1A087E4400845F5E /* GeneralList1GestureCell.m */; };
 		FCA0311F1A08A98400845F5E /* PrivacyForm.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA0311E1A08A98400845F5E /* PrivacyForm.m */; };
@@ -402,6 +400,17 @@
 		FCA1CCD71A034B1C008D71D5 /* DataUser.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA1CCD61A034B1C008D71D5 /* DataUser.m */; };
 		FCA1CCDB1A039BE8008D71D5 /* ProfileEditForm.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA1CCDA1A039BE8008D71D5 /* ProfileEditForm.m */; };
 		FCA1CCDE1A039C02008D71D5 /* ProfileEditFormResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA1CCDD1A039C02008D71D5 /* ProfileEditFormResult.m */; };
+		FCA2E90B1A0CAEE000F6F890 /* SettingBankNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA2E90A1A0CAEE000F6F890 /* SettingBankNameViewController.m */; };
+		FCA2E90E1A0CAEF700F6F890 /* SettingBankNameCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA2E90D1A0CAEF700F6F890 /* SettingBankNameCell.m */; };
+		FCA2E9111A0CBC1500F6F890 /* SettingBankNameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA2E9101A0CBC1500F6F890 /* SettingBankNameViewController.xib */; };
+		FCA2E9131A0CBC3300F6F890 /* SettingBankNameCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA2E9121A0CBC3300F6F890 /* SettingBankNameCell.xib */; };
+		FCA2E9161A0CBC5C00F6F890 /* SettingAddressLocationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA2E9141A0CBC5C00F6F890 /* SettingAddressLocationCell.xib */; };
+		FCA2E9171A0CBC5C00F6F890 /* SettingAddressLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA2E9151A0CBC5C00F6F890 /* SettingAddressLocationViewController.xib */; };
+		FCA3A12F1A09BEE7009C6F2A /* AddressFormList.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA3A12E1A09BEE7009C6F2A /* AddressFormList.m */; };
+		FCA3A1311A09D1F9009C6F2A /* SettingAddressDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA3A1301A09D1F9009C6F2A /* SettingAddressDetailViewController.xib */; };
+		FCA3A1341A09D21E009C6F2A /* SettingAddressDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA3A1331A09D21E009C6F2A /* SettingAddressDetailViewController.m */; };
+		FCA3A1361A0A15D9009C6F2A /* SettingAddressEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA3A1351A0A15D9009C6F2A /* SettingAddressEditViewController.xib */; };
+		FCA3A1391A0A16DE009C6F2A /* SettingAddressEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA3A1381A0A16DE009C6F2A /* SettingAddressEditViewController.m */; };
 		FCA3F2981A0729F800A54671 /* UploadProfileParams.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA3F2971A0729F800A54671 /* UploadProfileParams.m */; };
 		FCA48BA71A008AE5007015E4 /* TKPDSecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA48BA61A008AE5007015E4 /* TKPDSecureStorage.m */; };
 		FCA48BAA1A009838007015E4 /* NSDictionaryCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA48BA91A009838007015E4 /* NSDictionaryCategory.m */; };
@@ -410,8 +419,6 @@
 		FCA48BB41A0101F8007015E4 /* ProfileSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA48BB31A0101F8007015E4 /* ProfileSettingViewController.xib */; };
 		FCA48BB71A01020B007015E4 /* ProfileSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA48BB61A01020B007015E4 /* ProfileSettingViewController.m */; };
 		FCA48BBC1A010353007015E4 /* SettingAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA48BBB1A010353007015E4 /* SettingAddressViewController.m */; };
-		FCA48BBF1A010384007015E4 /* SettingAddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA48BBE1A010384007015E4 /* SettingAddressCell.m */; };
-		FCA48BC11A01039C007015E4 /* SettingAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA48BC01A01039C007015E4 /* SettingAddressCell.xib */; };
 		FCA48BC31A0103B2007015E4 /* SettingAddressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA48BC21A0103B2007015E4 /* SettingAddressViewController.xib */; };
 		FCA774CC19F60C540041CFE1 /* RKObjectManagerCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA774CB19F60C540041CFE1 /* RKObjectManagerCategory.m */; };
 		FCA774CF19F60C930041CFE1 /* LogoutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCA774CE19F60C930041CFE1 /* LogoutViewController.xib */; };
@@ -462,6 +469,10 @@
 		FCB3F09B19FF91F000B6070A /* RegisterResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB3F09A19FF91F000B6070A /* RegisterResult.m */; };
 		FCB3F09E19FFA1D100B6070A /* Alert1ButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB3F09D19FFA1D100B6070A /* Alert1ButtonView.m */; };
 		FCB3F0A319FFA26400B6070A /* Alert1ButtonView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCB3F0A219FFA26400B6070A /* Alert1ButtonView.xib */; };
+		FCB4540B1A0C60BE000274BC /* SettingBankEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB4540A1A0C60BE000274BC /* SettingBankEditViewController.m */; };
+		FCB4540D1A0C60FB000274BC /* SettingBankEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCB4540C1A0C60FB000274BC /* SettingBankEditViewController.xib */; };
+		FCB4540F1A0C6132000274BC /* SettingBankDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCB4540E1A0C6131000274BC /* SettingBankDetailViewController.xib */; };
+		FCB454121A0C61B8000274BC /* SettingBankDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB454111A0C61B8000274BC /* SettingBankDetailViewController.m */; };
 		FCB9F62E1A01DC10005E0B7B /* CameraController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB9F62D1A01DC10005E0B7B /* CameraController.m */; };
 		FCB9F6311A01DCA8005E0B7B /* CameraCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB9F6301A01DCA8005E0B7B /* CameraCropViewController.m */; };
 		FCB9F6341A01DF05005E0B7B /* CameraController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCB9F6331A01DF05005E0B7B /* CameraController.xib */; };
@@ -475,6 +486,11 @@
 		FCBCCB2219DE53850099246C /* CatalogLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = FCBCCB2119DE53850099246C /* CatalogLocation.m */; };
 		FCBCCB2519DE55D70099246C /* SpecChilds.m in Sources */ = {isa = PBXBuildFile; fileRef = FCBCCB2419DE55D70099246C /* SpecChilds.m */; };
 		FCBCCB2819DE954E0099246C /* SearchItem.m in Sources */ = {isa = PBXBuildFile; fileRef = FCBCCB2719DE954E0099246C /* SearchItem.m */; };
+		FCC24CCA1A0B17A600EEF1E1 /* SettingAddressLocationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCC24CC71A0B17A600EEF1E1 /* SettingAddressLocationCell.m */; };
+		FCC24CCB1A0B17A600EEF1E1 /* SettingAddressLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCC24CC91A0B17A600EEF1E1 /* SettingAddressLocationViewController.m */; };
+		FCC24CD21A0B73A400EEF1E1 /* BankAccountForm.m in Sources */ = {isa = PBXBuildFile; fileRef = FCC24CD11A0B73A400EEF1E1 /* BankAccountForm.m */; };
+		FCC24CD51A0B73C500EEF1E1 /* BankAccountFormResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FCC24CD41A0B73C500EEF1E1 /* BankAccountFormResult.m */; };
+		FCC24CD81A0B73F500EEF1E1 /* BankAccountFormList.m in Sources */ = {isa = PBXBuildFile; fileRef = FCC24CD71A0B73F500EEF1E1 /* BankAccountFormList.m */; };
 		FCCCB95D19B4476A0077349C /* Paging.m in Sources */ = {isa = PBXBuildFile; fileRef = FCCCB95C19B4476A0077349C /* Paging.m */; };
 		FF36BD0A6E2A48F0BC3439CF /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 482BA56B21334661A9065EEC /* libPods-TokopediaTests.a */; };
 /* End PBXBuildFile section */
@@ -1033,10 +1049,7 @@
 		FC9FD74519B4277F00CF6CDD /* tab_btm_shadow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab_btm_shadow@2x.png"; sourceTree = "<group>"; };
 		FCA030FC1A086C6900845F5E /* SettingBankAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingBankAccountViewController.h; sourceTree = "<group>"; };
 		FCA030FD1A086C6900845F5E /* SettingBankAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingBankAccountViewController.m; sourceTree = "<group>"; };
-		FCA030FF1A086C8A00845F5E /* SettingBankAccountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingBankAccountCell.h; sourceTree = "<group>"; };
-		FCA031001A086C8A00845F5E /* SettingBankAccountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingBankAccountCell.m; sourceTree = "<group>"; };
 		FCA031031A086CB700845F5E /* SettingBankAccountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingBankAccountViewController.xib; sourceTree = "<group>"; };
-		FCA031051A086CCE00845F5E /* SettingBankAccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingBankAccountCell.xib; sourceTree = "<group>"; };
 		FCA031071A087E0400845F5E /* GeneralList1GestureCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralList1GestureCell.xib; sourceTree = "<group>"; };
 		FCA031091A087E4400845F5E /* GeneralList1GestureCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralList1GestureCell.h; sourceTree = "<group>"; };
 		FCA0310A1A087E4400845F5E /* GeneralList1GestureCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralList1GestureCell.m; sourceTree = "<group>"; };
@@ -1066,6 +1079,22 @@
 		FCA1CCDA1A039BE8008D71D5 /* ProfileEditForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileEditForm.m; sourceTree = "<group>"; };
 		FCA1CCDC1A039C02008D71D5 /* ProfileEditFormResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileEditFormResult.h; sourceTree = "<group>"; };
 		FCA1CCDD1A039C02008D71D5 /* ProfileEditFormResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileEditFormResult.m; sourceTree = "<group>"; };
+		FCA2E9091A0CAEE000F6F890 /* SettingBankNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingBankNameViewController.h; sourceTree = "<group>"; };
+		FCA2E90A1A0CAEE000F6F890 /* SettingBankNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingBankNameViewController.m; sourceTree = "<group>"; };
+		FCA2E90C1A0CAEF700F6F890 /* SettingBankNameCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingBankNameCell.h; sourceTree = "<group>"; };
+		FCA2E90D1A0CAEF700F6F890 /* SettingBankNameCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingBankNameCell.m; sourceTree = "<group>"; };
+		FCA2E9101A0CBC1500F6F890 /* SettingBankNameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingBankNameViewController.xib; sourceTree = "<group>"; };
+		FCA2E9121A0CBC3300F6F890 /* SettingBankNameCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingBankNameCell.xib; sourceTree = "<group>"; };
+		FCA2E9141A0CBC5C00F6F890 /* SettingAddressLocationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingAddressLocationCell.xib; path = Tokopedia/Resources/UI/Detail/Profile/Settings/Address/Location/SettingAddressLocationCell.xib; sourceTree = SOURCE_ROOT; };
+		FCA2E9151A0CBC5C00F6F890 /* SettingAddressLocationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SettingAddressLocationViewController.xib; path = Tokopedia/Resources/UI/Detail/Profile/Settings/Address/Location/SettingAddressLocationViewController.xib; sourceTree = SOURCE_ROOT; };
+		FCA3A12D1A09BEE7009C6F2A /* AddressFormList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressFormList.h; sourceTree = "<group>"; };
+		FCA3A12E1A09BEE7009C6F2A /* AddressFormList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressFormList.m; sourceTree = "<group>"; };
+		FCA3A1301A09D1F9009C6F2A /* SettingAddressDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingAddressDetailViewController.xib; sourceTree = "<group>"; };
+		FCA3A1321A09D21E009C6F2A /* SettingAddressDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAddressDetailViewController.h; sourceTree = "<group>"; };
+		FCA3A1331A09D21E009C6F2A /* SettingAddressDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAddressDetailViewController.m; sourceTree = "<group>"; };
+		FCA3A1351A0A15D9009C6F2A /* SettingAddressEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingAddressEditViewController.xib; sourceTree = "<group>"; };
+		FCA3A1371A0A16DE009C6F2A /* SettingAddressEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAddressEditViewController.h; sourceTree = "<group>"; };
+		FCA3A1381A0A16DE009C6F2A /* SettingAddressEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAddressEditViewController.m; sourceTree = "<group>"; };
 		FCA3F2961A0729F800A54671 /* UploadProfileParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadProfileParams.h; sourceTree = "<group>"; };
 		FCA3F2971A0729F800A54671 /* UploadProfileParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadProfileParams.m; sourceTree = "<group>"; };
 		FCA48BA51A008AE5007015E4 /* TKPDSecureStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDSecureStorage.h; sourceTree = "<group>"; };
@@ -1080,9 +1109,6 @@
 		FCA48BB61A01020B007015E4 /* ProfileSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileSettingViewController.m; sourceTree = "<group>"; };
 		FCA48BBA1A010353007015E4 /* SettingAddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAddressViewController.h; sourceTree = "<group>"; };
 		FCA48BBB1A010353007015E4 /* SettingAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAddressViewController.m; sourceTree = "<group>"; };
-		FCA48BBD1A010384007015E4 /* SettingAddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAddressCell.h; sourceTree = "<group>"; };
-		FCA48BBE1A010384007015E4 /* SettingAddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAddressCell.m; sourceTree = "<group>"; };
-		FCA48BC01A01039C007015E4 /* SettingAddressCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingAddressCell.xib; sourceTree = "<group>"; };
 		FCA48BC21A0103B2007015E4 /* SettingAddressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingAddressViewController.xib; sourceTree = "<group>"; };
 		FCA774CA19F60C540041CFE1 /* RKObjectManagerCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKObjectManagerCategory.h; sourceTree = "<group>"; };
 		FCA774CB19F60C540041CFE1 /* RKObjectManagerCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKObjectManagerCategory.m; sourceTree = "<group>"; };
@@ -1168,6 +1194,12 @@
 		FCB3F09C19FFA1D100B6070A /* Alert1ButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Alert1ButtonView.h; sourceTree = "<group>"; };
 		FCB3F09D19FFA1D100B6070A /* Alert1ButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Alert1ButtonView.m; sourceTree = "<group>"; };
 		FCB3F0A219FFA26400B6070A /* Alert1ButtonView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = Alert1ButtonView.xib; sourceTree = "<group>"; };
+		FCB454091A0C60BE000274BC /* SettingBankEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingBankEditViewController.h; sourceTree = "<group>"; };
+		FCB4540A1A0C60BE000274BC /* SettingBankEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingBankEditViewController.m; sourceTree = "<group>"; };
+		FCB4540C1A0C60FB000274BC /* SettingBankEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingBankEditViewController.xib; sourceTree = "<group>"; };
+		FCB4540E1A0C6131000274BC /* SettingBankDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingBankDetailViewController.xib; sourceTree = "<group>"; };
+		FCB454101A0C61B8000274BC /* SettingBankDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingBankDetailViewController.h; sourceTree = "<group>"; };
+		FCB454111A0C61B8000274BC /* SettingBankDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingBankDetailViewController.m; sourceTree = "<group>"; };
 		FCB9F62B1A01DBEC005E0B7B /* camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = camera.h; sourceTree = "<group>"; };
 		FCB9F62C1A01DC10005E0B7B /* CameraController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraController.h; sourceTree = "<group>"; };
 		FCB9F62D1A01DC10005E0B7B /* CameraController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraController.m; sourceTree = "<group>"; };
@@ -1193,6 +1225,16 @@
 		FCBCCB2419DE55D70099246C /* SpecChilds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpecChilds.m; sourceTree = "<group>"; };
 		FCBCCB2619DE954E0099246C /* SearchItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchItem.h; sourceTree = "<group>"; };
 		FCBCCB2719DE954E0099246C /* SearchItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchItem.m; sourceTree = "<group>"; };
+		FCC24CC61A0B17A600EEF1E1 /* SettingAddressLocationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAddressLocationCell.h; sourceTree = "<group>"; };
+		FCC24CC71A0B17A600EEF1E1 /* SettingAddressLocationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAddressLocationCell.m; sourceTree = "<group>"; };
+		FCC24CC81A0B17A600EEF1E1 /* SettingAddressLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAddressLocationViewController.h; sourceTree = "<group>"; };
+		FCC24CC91A0B17A600EEF1E1 /* SettingAddressLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAddressLocationViewController.m; sourceTree = "<group>"; };
+		FCC24CD01A0B73A400EEF1E1 /* BankAccountForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankAccountForm.h; sourceTree = "<group>"; };
+		FCC24CD11A0B73A400EEF1E1 /* BankAccountForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccountForm.m; sourceTree = "<group>"; };
+		FCC24CD31A0B73C500EEF1E1 /* BankAccountFormResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankAccountFormResult.h; sourceTree = "<group>"; };
+		FCC24CD41A0B73C500EEF1E1 /* BankAccountFormResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccountFormResult.m; sourceTree = "<group>"; };
+		FCC24CD61A0B73F500EEF1E1 /* BankAccountFormList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankAccountFormList.h; sourceTree = "<group>"; };
+		FCC24CD71A0B73F500EEF1E1 /* BankAccountFormList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccountFormList.m; sourceTree = "<group>"; };
 		FCCCB95B19B4476A0077349C /* Paging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paging.h; sourceTree = "<group>"; };
 		FCCCB95C19B4476A0077349C /* Paging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Paging.m; sourceTree = "<group>"; };
 		FCFCC1A619C830280017E211 /* controller.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = controller.h; sourceTree = "<group>"; };
@@ -2848,8 +2890,10 @@
 		FCA031021A086C9900845F5E /* BankAccount */ = {
 			isa = PBXGroup;
 			children = (
+				FCA2E90F1A0CAF0D00F6F890 /* Name */,
 				FCA031031A086CB700845F5E /* SettingBankAccountViewController.xib */,
-				FCA031051A086CCE00845F5E /* SettingBankAccountCell.xib */,
+				FCB4540E1A0C6131000274BC /* SettingBankDetailViewController.xib */,
+				FCB4540C1A0C60FB000274BC /* SettingBankEditViewController.xib */,
 			);
 			path = BankAccount;
 			sourceTree = "<group>";
@@ -2857,6 +2901,7 @@
 		FCA0310C1A0882D100845F5E /* SettingForm */ = {
 			isa = PBXGroup;
 			children = (
+				FCC24CCF1A0B738500EEF1E1 /* BankAccount */,
 				FCA031261A08D11E00845F5E /* Address */,
 				FCA0311C1A08A96C00845F5E /* Privacy */,
 				FCA031271A08D16200845F5E /* Notification */,
@@ -2884,6 +2929,8 @@
 				FCA031321A08D24200845F5E /* AddressForm.m */,
 				FCA031341A08D30D00845F5E /* AddressFormResult.h */,
 				FCA031351A08D30D00845F5E /* AddressFormResult.m */,
+				FCA3A12D1A09BEE7009C6F2A /* AddressFormList.h */,
+				FCA3A12E1A09BEE7009C6F2A /* AddressFormList.m */,
 			);
 			path = Address;
 			sourceTree = "<group>";
@@ -2938,6 +2985,26 @@
 			path = EditForm;
 			sourceTree = "<group>";
 		};
+		FCA2E9081A0CAECE00F6F890 /* Name */ = {
+			isa = PBXGroup;
+			children = (
+				FCA2E9091A0CAEE000F6F890 /* SettingBankNameViewController.h */,
+				FCA2E90A1A0CAEE000F6F890 /* SettingBankNameViewController.m */,
+				FCA2E90C1A0CAEF700F6F890 /* SettingBankNameCell.h */,
+				FCA2E90D1A0CAEF700F6F890 /* SettingBankNameCell.m */,
+			);
+			path = Name;
+			sourceTree = "<group>";
+		};
+		FCA2E90F1A0CAF0D00F6F890 /* Name */ = {
+			isa = PBXGroup;
+			children = (
+				FCA2E9101A0CBC1500F6F890 /* SettingBankNameViewController.xib */,
+				FCA2E9121A0CBC3300F6F890 /* SettingBankNameCell.xib */,
+			);
+			path = Name;
+			sourceTree = "<group>";
+		};
 		FCA48BA41A00899B007015E4 /* Edit */ = {
 			isa = PBXGroup;
 			children = (
@@ -2988,10 +3055,13 @@
 		FCA48BB81A010324007015E4 /* Address */ = {
 			isa = PBXGroup;
 			children = (
+				FCC24CC51A0B17A600EEF1E1 /* Location */,
 				FCA48BBA1A010353007015E4 /* SettingAddressViewController.h */,
 				FCA48BBB1A010353007015E4 /* SettingAddressViewController.m */,
-				FCA48BBD1A010384007015E4 /* SettingAddressCell.h */,
-				FCA48BBE1A010384007015E4 /* SettingAddressCell.m */,
+				FCA3A1321A09D21E009C6F2A /* SettingAddressDetailViewController.h */,
+				FCA3A1331A09D21E009C6F2A /* SettingAddressDetailViewController.m */,
+				FCA3A1371A0A16DE009C6F2A /* SettingAddressEditViewController.h */,
+				FCA3A1381A0A16DE009C6F2A /* SettingAddressEditViewController.m */,
 			);
 			path = Address;
 			sourceTree = "<group>";
@@ -2999,8 +3069,10 @@
 		FCA48BB91A010334007015E4 /* Address */ = {
 			isa = PBXGroup;
 			children = (
+				FCC24CCC1A0B1ECD00EEF1E1 /* Location */,
 				FCA48BC21A0103B2007015E4 /* SettingAddressViewController.xib */,
-				FCA48BC01A01039C007015E4 /* SettingAddressCell.xib */,
+				FCA3A1301A09D1F9009C6F2A /* SettingAddressDetailViewController.xib */,
+				FCA3A1351A0A15D9009C6F2A /* SettingAddressEditViewController.xib */,
 			);
 			path = Address;
 			sourceTree = "<group>";
@@ -3137,10 +3209,13 @@
 		FCA9447A1A076AD9003358BC /* BankAccount */ = {
 			isa = PBXGroup;
 			children = (
+				FCA2E9081A0CAECE00F6F890 /* Name */,
 				FCA030FC1A086C6900845F5E /* SettingBankAccountViewController.h */,
 				FCA030FD1A086C6900845F5E /* SettingBankAccountViewController.m */,
-				FCA030FF1A086C8A00845F5E /* SettingBankAccountCell.h */,
-				FCA031001A086C8A00845F5E /* SettingBankAccountCell.m */,
+				FCB454101A0C61B8000274BC /* SettingBankDetailViewController.h */,
+				FCB454111A0C61B8000274BC /* SettingBankDetailViewController.m */,
+				FCB454091A0C60BE000274BC /* SettingBankEditViewController.h */,
+				FCB4540A1A0C60BE000274BC /* SettingBankEditViewController.m */,
 			);
 			path = BankAccount;
 			sourceTree = "<group>";
@@ -3276,6 +3351,40 @@
 			path = UploadProfile;
 			sourceTree = "<group>";
 		};
+		FCC24CC51A0B17A600EEF1E1 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				FCC24CC81A0B17A600EEF1E1 /* SettingAddressLocationViewController.h */,
+				FCC24CC91A0B17A600EEF1E1 /* SettingAddressLocationViewController.m */,
+				FCC24CC61A0B17A600EEF1E1 /* SettingAddressLocationCell.h */,
+				FCC24CC71A0B17A600EEF1E1 /* SettingAddressLocationCell.m */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
+		FCC24CCC1A0B1ECD00EEF1E1 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				FCA2E9141A0CBC5C00F6F890 /* SettingAddressLocationCell.xib */,
+				FCA2E9151A0CBC5C00F6F890 /* SettingAddressLocationViewController.xib */,
+			);
+			name = Location;
+			path = Loacio;
+			sourceTree = "<group>";
+		};
+		FCC24CCF1A0B738500EEF1E1 /* BankAccount */ = {
+			isa = PBXGroup;
+			children = (
+				FCC24CD01A0B73A400EEF1E1 /* BankAccountForm.h */,
+				FCC24CD11A0B73A400EEF1E1 /* BankAccountForm.m */,
+				FCC24CD31A0B73C500EEF1E1 /* BankAccountFormResult.h */,
+				FCC24CD41A0B73C500EEF1E1 /* BankAccountFormResult.m */,
+				FCC24CD61A0B73F500EEF1E1 /* BankAccountFormList.h */,
+				FCC24CD71A0B73F500EEF1E1 /* BankAccountFormList.m */,
+			);
+			path = BankAccount;
+			sourceTree = "<group>";
+		};
 		FCCCB95A19B4474C0077349C /* Paging */ = {
 			isa = PBXGroup;
 			children = (
@@ -3371,7 +3480,9 @@
 				85FA60CB19ECCC0200E009C0 /* icon_location.png in Resources */,
 				85E7ED4E19F522BE00554572 /* ShopFavoritedCell.xib in Resources */,
 				FCAAEA4719F7534B00904AFB /* MainViewController.xib in Resources */,
+				FCA2E9111A0CBC1500F6F890 /* SettingBankNameViewController.xib in Resources */,
 				FC012DD519BEB2360072A31A /* icon_21@2x.png in Resources */,
+				FCA2E9161A0CBC5C00F6F890 /* SettingAddressLocationCell.xib in Resources */,
 				FC170DB519E2A930003FF32F /* ShopInfoPaymentCell.xib in Resources */,
 				FC18C79719B57F4D00BA162D /* CategoryViewController.xib in Resources */,
 				FC170DA019E24BB8003FF32F /* CatalogSpecViewHeaderView.xib in Resources */,
@@ -3379,7 +3490,6 @@
 				FC21F34619BFE5BD00417CA8 /* icon_cart_active.png in Resources */,
 				855635BB19EB8E5100B03172 /* GeneralReviewCell.xib in Resources */,
 				8502C30119DCFA05002C3569 /* icon_star@2x.png in Resources */,
-				FCA031061A086CCE00845F5E /* SettingBankAccountCell.xib in Resources */,
 				85E7ED5F19F5230C00554572 /* ProfileFavoriteShopViewController.xib in Resources */,
 				FC36DF9119B0656400AF74C1 /* InfoPlist.strings in Resources */,
 				FC012DF219BEE3920072A31A /* DetailProductInfoCell.xib in Resources */,
@@ -3422,6 +3532,7 @@
 				FC012D8319BEA8A90072A31A /* icon_house.png in Resources */,
 				FC21F34B19BFE5BD00417CA8 /* icon_category_active@2x.png in Resources */,
 				FCA944861A0794C7003358BC /* SettingPasswordViewController.xib in Resources */,
+				FCA2E9171A0CBC5C00F6F890 /* SettingAddressLocationViewController.xib in Resources */,
 				8598248419EB7066007E71D1 /* icon_shop.png in Resources */,
 				FC53468619DC10D100E5AAD9 /* CatalogSellerHeaderView.xib in Resources */,
 				FCA48BB41A0101F8007015E4 /* ProfileSettingViewController.xib in Resources */,
@@ -3430,6 +3541,7 @@
 				FC36E19719B0673800AF74C1 /* navigation-button-bg-pt@2x.png in Resources */,
 				FC36E19F19B0673800AF74C1 /* top_bg1.png in Resources */,
 				FC36E1A819B0673800AF74C1 /* active_tab@2x.png in Resources */,
+				FCB4540F1A0C6132000274BC /* SettingBankDetailViewController.xib in Resources */,
 				FC839EB719DAB125002C4FC1 /* DetailProductOtherView.xib in Resources */,
 				FC170D9B19E242B4003FF32F /* DetailCatalogSpecView.xib in Resources */,
 				FC012DDB19BEB2360072A31A /* icon_5.png in Resources */,
@@ -3467,6 +3579,7 @@
 				856B7E8019E7D00900DC3331 /* icon_quote@2x.png in Resources */,
 				85E8FC4719EE1B8B00E12752 /* ProductEtalaseViewController.xib in Resources */,
 				853B991419E3F9CD00604D33 /* icon_report.png in Resources */,
+				FCB4540D1A0C60FB000274BC /* SettingBankEditViewController.xib in Resources */,
 				8500246519DBD2FC00E8463A /* icon_view_14px.png in Resources */,
 				FC12A0B419D95E8D0049EB76 /* icon_arrow_white@2x.png in Resources */,
 				FCA7752219F673030041CFE1 /* AlertListView.xib in Resources */,
@@ -3474,9 +3587,11 @@
 				FC21F34819BFE5BD00417CA8 /* icon_category.png in Resources */,
 				FC36DF9919B0656400AF74C1 /* Images.xcassets in Resources */,
 				FC012DC019BEB2360072A31A /* icon_12.png in Resources */,
+				FCA2E9131A0CBC3300F6F890 /* SettingBankNameCell.xib in Resources */,
 				FC012DDD19BEB2360072A31A /* icon_6.png in Resources */,
 				85CE0D0A19DA8A5900120F14 /* icon_category_white@2x.png in Resources */,
 				FC21F35119BFE5BD00417CA8 /* icon_more@2x.png in Resources */,
+				FCA3A1311A09D1F9009C6F2A /* SettingAddressDetailViewController.xib in Resources */,
 				FC1C95A119C2988B00CF0C53 /* TKPDTabHomeNavigationController.xib in Resources */,
 				85627F7C19E79ABF0085DDF5 /* icon_message@2x.png in Resources */,
 				85627F6B19E78BB10085DDF5 /* ShopInfoAddressView.xib in Resources */,
@@ -3500,9 +3615,9 @@
 				FC2F203B19BD5B7200C2B9B5 /* HotlistResultViewController.xib in Resources */,
 				FC012DC719BEB2360072A31A /* icon_15@2x.png in Resources */,
 				85386DCD19CBE88A00BCA463 /* GothamBlack.ttf in Resources */,
+				FCA3A1361A0A15D9009C6F2A /* SettingAddressEditViewController.xib in Resources */,
 				FC53467E19DC0AFF00E5AAD9 /* CatalogSellerViewController.xib in Resources */,
 				85E8FC4219EE1B7E00E12752 /* ShopTalkViewController.xib in Resources */,
-				FCA48BC11A01039C007015E4 /* SettingAddressCell.xib in Resources */,
 				FC18C79619B57F4D00BA162D /* CategoryViewCell.xib in Resources */,
 				FCA9449A1A07A28D003358BC /* SettingPrivacyViewController.xib in Resources */,
 				FC18C7A819B5955800BA162D /* CategoryMenuViewCell.xib in Resources */,
@@ -3698,6 +3813,7 @@
 				FC08C69819DD093B0062FA0C /* FilterConditionCell.m in Sources */,
 				FC2F209819BD682F00C2B9B5 /* WholesalePrice.m in Sources */,
 				FCB9F6481A025979005E0B7B /* UploadProfile.m in Sources */,
+				FCC24CCA1A0B17A600EEF1E1 /* SettingAddressLocationCell.m in Sources */,
 				85E8FC1C19EE139000E12752 /* ShopNotesCell.m in Sources */,
 				FCA7751D19F672F50041CFE1 /* AlertListView.m in Sources */,
 				85E7ED0619F51BF500554572 /* ShopFavoritedCell.m in Sources */,
@@ -3727,6 +3843,7 @@
 				FC18C78F19B57F0D00BA162D /* CategoryViewController.m in Sources */,
 				FCA9448B1A0796C2003358BC /* ProfileSettings.m in Sources */,
 				FCB3F09B19FF91F000B6070A /* RegisterResult.m in Sources */,
+				FCA3A1341A09D21E009C6F2A /* SettingAddressDetailViewController.m in Sources */,
 				FC170D9E19E24B5E003FF32F /* CatalogSpecViewHeaderView.m in Sources */,
 				FC24857E19C199FC008755DA /* TKPDTabHomeNavigationController.m in Sources */,
 				FC203A1319D1404D005C826C /* DetailProductInfoCell.m in Sources */,
@@ -3738,7 +3855,9 @@
 				FC2F208319BD632D00C2B9B5 /* Statistic.m in Sources */,
 				FC08C69319DD091A0062FA0C /* FilterConditionViewController.m in Sources */,
 				FC170D9719E23ACD003FF32F /* DetailCatalogSpecViewCell.m in Sources */,
+				FCA3A12F1A09BEE7009C6F2A /* AddressFormList.m in Sources */,
 				FCA030FE1A086C6900845F5E /* SettingBankAccountViewController.m in Sources */,
+				FCC24CCB1A0B17A600EEF1E1 /* SettingAddressLocationViewController.m in Sources */,
 				FC2F205719BD5D4300C2B9B5 /* DetailProductDescriptionCell.m in Sources */,
 				FC012E3519BEF5AB0072A31A /* Owner.m in Sources */,
 				8598248D19EB8145007E71D1 /* ImageShaper.m in Sources */,
@@ -3778,6 +3897,7 @@
 				FCB3F08D19FF407500B6070A /* URLCacheAlert.m in Sources */,
 				FC53467519DC0AC100E5AAD9 /* CatalogSellerViewController.m in Sources */,
 				FC53465619DBC0E300E5AAD9 /* CatalogImage.m in Sources */,
+				FCA2E90E1A0CAEF700F6F890 /* SettingBankNameCell.m in Sources */,
 				FCB9F6391A01E665005E0B7B /* UIViewCategory.m in Sources */,
 				FC12A08B19D9084C0049EB76 /* ProductTalkViewController.m in Sources */,
 				85E7ED4519F51CD300554572 /* ProfileBiodataCell.m in Sources */,
@@ -3796,12 +3916,14 @@
 				FCA774EF19F610040041CFE1 /* FavoriteShopResult.m in Sources */,
 				FCA774F919F610620041CFE1 /* AdvanceReview.m in Sources */,
 				85E8FBFC19EE121100E12752 /* ProductEtalaseViewController.m in Sources */,
+				FCB454121A0C61B8000274BC /* SettingBankDetailViewController.m in Sources */,
 				858BDB8719F0CEE3003EAF46 /* GeneralTalkCommentCell.m in Sources */,
 				FCA944901A07A013003358BC /* SettingNotificationViewController.m in Sources */,
 				FC300B7519C946360098F0D0 /* SortCell.m in Sources */,
 				FC012E3819BEF6D50072A31A /* Shipment.m in Sources */,
 				FC2F208F19BD659E00C2B9B5 /* OtherProduct.m in Sources */,
 				FC5210A919C6A48A004932C5 /* SearchResultShopCell.m in Sources */,
+				FCC24CD51A0B73C500EEF1E1 /* BankAccountFormResult.m in Sources */,
 				FCA031301A08D16200845F5E /* NotificationFormResult.m in Sources */,
 				FCA48BB71A01020B007015E4 /* ProfileSettingViewController.m in Sources */,
 				FCA774D819F60D010041CFE1 /* Login.m in Sources */,
@@ -3809,6 +3931,7 @@
 				FC18C78419B56A5000BA162D /* CategoryResultViewCell.m in Sources */,
 				FC012E3B19BEF7B80072A31A /* ShipmentPackage.m in Sources */,
 				FCA48BBC1A010353007015E4 /* SettingAddressViewController.m in Sources */,
+				FCC24CD21A0B73A400EEF1E1 /* BankAccountForm.m in Sources */,
 				FC300B8519C949760098F0D0 /* FilterLocationViewCell.m in Sources */,
 				FC012E4119BEF8910072A31A /* Address.m in Sources */,
 				FC53465319DBC07600E5AAD9 /* CatalogPrice.m in Sources */,
@@ -3851,18 +3974,20 @@
 				FC52109F19C6A428004932C5 /* SearchResultShopViewController.m in Sources */,
 				FC53464119DBBDF300E5AAD9 /* CatalogInfo.m in Sources */,
 				FCA1CCD41A034B12008D71D5 /* ProfileEditResult.m in Sources */,
-				FCA031011A086C8A00845F5E /* SettingBankAccountCell.m in Sources */,
 				FC170DA419E27CBB003FF32F /* ShopInfoViewController.m in Sources */,
 				FC681F6A19B6D6A100C58548 /* DBManager.m in Sources */,
 				FC300B7619C946360098F0D0 /* SortViewController.m in Sources */,
 				FCA48BA71A008AE5007015E4 /* TKPDSecureStorage.m in Sources */,
+				FCB4540B1A0C60BE000274BC /* SettingBankEditViewController.m in Sources */,
 				FC28A37119D3FC25005815A0 /* ReviewResult.m in Sources */,
 				FCA1CCDB1A039BE8008D71D5 /* ProfileEditForm.m in Sources */,
 				85627F5719E6B42A0085DDF5 /* ShopProductViewController.m in Sources */,
 				FC5210AD19C6C874004932C5 /* HotlistResult.m in Sources */,
 				85E7ED4A19F51CD300554572 /* ProfileFavoriteShopViewController.m in Sources */,
 				FCA031361A08D30D00845F5E /* AddressFormResult.m in Sources */,
+				FCC24CD81A0B73F500EEF1E1 /* BankAccountFormList.m in Sources */,
 				FC36E17519B0673800AF74C1 /* RegisterViewController.m in Sources */,
+				FCA2E90B1A0CAEE000F6F890 /* SettingBankNameViewController.m in Sources */,
 				FCA774DB19F60D100041CFE1 /* LoginResult.m in Sources */,
 				FC5210BC19C6F61C004932C5 /* HotlistDetailResult.m in Sources */,
 				858BDB8119EFD977003EAF46 /* TalkComment.m in Sources */,
@@ -3886,7 +4011,6 @@
 				FC158D8C19B80D4100F325D8 /* SearchCell.m in Sources */,
 				FC24856A19C16168008755DA /* TKPDTabNavigationController.m in Sources */,
 				85627F3C19E6B1030085DDF5 /* GeneralReviewCell.m in Sources */,
-				FCA48BBF1A010384007015E4 /* SettingAddressCell.m in Sources */,
 				FC012DF519BEE5450072A31A /* DetailProductWholesaleCell.m in Sources */,
 				85E8FC2E19EE16AF00E12752 /* NoteDetail.m in Sources */,
 				FC2F207A19BD5EE900C2B9B5 /* KatalogViewController.m in Sources */,
@@ -3897,6 +4021,7 @@
 				FC53464D19DBBE7100E5AAD9 /* CatalogShops.m in Sources */,
 				85E8FC3219EE16AF00E12752 /* NotesList.m in Sources */,
 				FCB9F6411A02333F005E0B7B /* GenerateHostResult.m in Sources */,
+				FCA3A1391A0A16DE009C6F2A /* SettingAddressEditViewController.m in Sources */,
 				FC28A37419D3FC69005815A0 /* ReviewList.m in Sources */,
 				FC18C7A519B5950D00BA162D /* CategoryMenuViewCell.m in Sources */,
 				FCA1CCD11A034B02008D71D5 /* ProfileEdit.m in Sources */,

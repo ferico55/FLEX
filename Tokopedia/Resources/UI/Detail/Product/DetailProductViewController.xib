@@ -103,8 +103,12 @@
                     <color key="pageIndicatorTintColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="currentPageIndicatorTintColor" red="0.24313725490196078" green="0.66666666666666663" blue="0.14117647058823529" alpha="1" colorSpace="calibratedRGB"/>
                 </pageControl>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="klK-p8-rjh">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="klK-p8-rjh">
                     <rect key="frame" x="15" y="15" width="292" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="CwQ-ip-Lpe"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="292" id="sHP-X8-dLa"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="15"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
@@ -230,6 +234,10 @@
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="klK-p8-rjh" firstAttribute="leading" secondItem="U7y-jr-OJ5" secondAttribute="leading" constant="15" id="F26-Dr-10N"/>
+                <constraint firstItem="klK-p8-rjh" firstAttribute="top" secondItem="U7y-jr-OJ5" secondAttribute="top" constant="15" id="TId-nK-xU8"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="S8c-C2-gKh" userLabel="Shop Information - View">

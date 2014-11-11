@@ -106,6 +106,12 @@
         
         if (_wholesales.count > 0) {
             _isnodata = NO;
+            [_tabel layoutIfNeeded];
+            CGSize size = _tabel.contentSize;
+            CGRect tableframe = _tabel.frame;
+            tableframe.size.height = size.height;
+            _tabel.frame = tableframe;
+            
         }
     }
 }
