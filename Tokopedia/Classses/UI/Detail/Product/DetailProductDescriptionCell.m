@@ -7,6 +7,7 @@
 //
 
 #import "DetailProductDescriptionCell.h"
+#import "detail.h"
 
 @implementation DetailProductDescriptionCell
 
@@ -25,14 +26,40 @@
 
 - (void)awakeFromNib
 {
-    // Initialization code
+    if (_descriptionText) [self updateLabel];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];
+}
 
-    // Configure the view for the selected state
+- (void)setDescriptionText:(NSString *)descriptionText
+{
+    if ([descriptionText isEqualToString:@"0"]) {
+        _descriptionText = [NSString stringWithFormat:@"%@\n\n", KTKPDETAIL_DESCRIPTION_EMPTY];
+    }
+    else {
+        _descriptionText = [NSString stringWithFormat:@"%@\n\n", descriptionText];
+    }
+    [self updateLabel];
+}
+
+- (void)updateLabel
+{
+
+    UIFont *font = [UIFont fontWithName:@"GothamLight" size:12];
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 6.0;
+    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
+                                 NSFontAttributeName: font,
+                                 NSParagraphStyleAttributeName: style,
+                                 };
+    NSAttributedString *myString = [[NSAttributedString alloc] initWithString:self.descriptionText
+                                                                   attributes:attributes];
+    self.descriptionlabel.attributedText = myString;
+    [self.descriptionlabel sizeToFit];
 }
 
 @end

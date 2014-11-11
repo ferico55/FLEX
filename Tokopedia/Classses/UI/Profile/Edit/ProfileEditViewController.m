@@ -64,7 +64,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelfullname;
 @property (weak, nonatomic) IBOutlet UIButton *buttondob;
 @property (weak, nonatomic) IBOutlet UIButton *buttongender;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldhobbies;
+@property (weak, nonatomic) IBOutlet UITextView *textviewhobbies;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldemail;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldmesseger;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldphone;
@@ -140,6 +140,13 @@
     CGSize size = _vieweditprofile.frame.size;
     size.height += self.view.frame.origin.y;
     [_scrollview setContentSize:size];
+    
+    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1];
+    
+    //Add sticky view
+    UIView *stickyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 200)];
+    stickyView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
+    [self.view insertSubview:stickyView belowSubview:self.scrollview];
 }
 
 #pragma mark - Memory Management
@@ -960,7 +967,7 @@
         }];
         
         _textfieldemail.text = _profile.result.data_user.user_email;
-        _textfieldhobbies.text = _profile.result.data_user.hobby;
+        if (![_profile.result.data_user.hobby isEqualToString:@"none"]) _textviewhobbies.text = _profile.result.data_user.hobby;
         _textfieldmesseger.text = _profile.result.data_user.user_messenger;
         _textfieldphone.text = _profile.result.data_user.user_phone;
         
@@ -973,10 +980,22 @@
     }
 }
 
+#pragma mark - Scroll View delegate
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [_activetextfield resignFirstResponder];
+}
+
 #pragma mark - Textfield Delegate
+
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     [textField resignFirstResponder];
     _activetextfield = textField;
+    
+    self.scrollview.contentInset = UIEdgeInsetsMake(0, 0, 300, 0);
+    [self.scrollview setContentOffset:CGPointMake(0, 330) animated:YES];
+    
     return YES;
 }
 
@@ -993,7 +1012,7 @@
     if (textField == _textfieldemail) {
         [_datainput setObject:textField.text forKey:kTKPDPROFILE_APIUSEREMAILKEY];
     }
-    if (textField == _textfieldhobbies) {
+    if ((UITextView *)textField == _textviewhobbies) {
         [_datainput setObject:textField.text forKey:kTKPDPROFILE_APIHOBBYKEY];
     }
     if (textField == _textfieldphone) {
@@ -1005,6 +1024,7 @@
     if (textField == _textfieldmesseger) {
         [_datainput setObject:textField.text forKey:kTKPDPROFILE_APIUSERMESSENGERKEY];
     }
+
     return YES;
 }
 

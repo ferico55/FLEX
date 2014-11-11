@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28C775F21A11B35C00D77D54 /* TextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C775F11A11B35C00D77D54 /* TextField.m */; };
+		28C775F51A11CEBC00D77D54 /* icon_arrow_right_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28C775F31A11CEBC00D77D54 /* icon_arrow_right_grey@2x.png */; };
+		28C775F61A11CEBC00D77D54 /* icon_arrow_right_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 28C775F41A11CEBC00D77D54 /* icon_arrow_right_grey.png */; };
 		8500246119DBD2FC00E8463A /* icon_location_14px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8500245B19DBD2FC00E8463A /* icon_location_14px.png */; };
 		8500246219DBD2FC00E8463A /* icon_location_28px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8500245C19DBD2FC00E8463A /* icon_location_28px.png */; };
 		8500246319DBD2FC00E8463A /* icon_sold_14px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8500245D19DBD2FC00E8463A /* icon_sold_14px.png */; };
@@ -491,6 +494,10 @@
 
 /* Begin PBXFileReference section */
 		091FB04E48F44F1BBA374E42 /* Pods-Tokopedia.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.xcconfig"; path = "Pods/Pods-Tokopedia.xcconfig"; sourceTree = "<group>"; };
+		28C775F01A11B35C00D77D54 /* TextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextField.h; sourceTree = "<group>"; };
+		28C775F11A11B35C00D77D54 /* TextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextField.m; sourceTree = "<group>"; };
+		28C775F31A11CEBC00D77D54 /* icon_arrow_right_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_arrow_right_grey@2x.png"; sourceTree = "<group>"; };
+		28C775F41A11CEBC00D77D54 /* icon_arrow_right_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_arrow_right_grey.png; sourceTree = "<group>"; };
 		482BA56B21334661A9065EEC /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		62A52619A9614BB78AFC9FF8 /* Pods-TokopediaTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.xcconfig"; path = "Pods/Pods-TokopediaTests.xcconfig"; sourceTree = "<group>"; };
 		8500245B19DBD2FC00E8463A /* icon_location_14px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_location_14px.png; sourceTree = "<group>"; };
@@ -1265,6 +1272,8 @@
 				85CE0D0019DA852800120F14 /* icon_share_28px-01.png */,
 				FC3E7FDF19D041B600053022 /* ic_arrow_right.png */,
 				FC3E7FE019D041B600053022 /* icon_check.png */,
+				28C775F31A11CEBC00D77D54 /* icon_arrow_right_grey@2x.png */,
+				28C775F41A11CEBC00D77D54 /* icon_arrow_right_grey.png */,
 			);
 			name = icon_general;
 			sourceTree = "<group>";
@@ -2041,8 +2050,8 @@
 				FC2F205119BD5CB000C2B9B5 /* DetailProductViewController.xib */,
 				FC2F205919BD5DC600C2B9B5 /* DetailProductDescriptionCell.xib */,
 				FC012DEF19BEE3710072A31A /* DetailProductWholesaleCell.xib */,
-				FC012DF119BEE3920072A31A /* DetailProductInfoCell.xib */,
 				FC203A0C19D12E9C005C826C /* DetailProductWholesaleTableCell.xib */,
+				FC012DF119BEE3920072A31A /* DetailProductInfoCell.xib */,
 				FC839EB619DAB125002C4FC1 /* DetailProductOtherView.xib */,
 			);
 			path = Product;
@@ -2410,6 +2419,8 @@
 			children = (
 				FC36E0D319B0673700AF74C1 /* RegisterViewController.h */,
 				FC36E0D419B0673700AF74C1 /* RegisterViewController.m */,
+				28C775F01A11B35C00D77D54 /* TextField.h */,
+				28C775F11A11B35C00D77D54 /* TextField.m */,
 			);
 			path = Register;
 			sourceTree = "<group>";
@@ -3443,8 +3454,10 @@
 				FC300B7F19C946430098F0D0 /* SortViewController.xib in Resources */,
 				853B991219E3F9CD00604D33 /* icon_comment.png in Resources */,
 				85E8FC3F19EE1B7E00E12752 /* ShopNotesDetailViewController.xib in Resources */,
+				28C775F61A11CEBC00D77D54 /* icon_arrow_right_grey.png in Resources */,
 				FC012DC919BEB2360072A31A /* icon_16@2x.png in Resources */,
 				FC36E1AB19B0673800AF74C1 /* ic_category.png in Resources */,
+				28C775F51A11CEBC00D77D54 /* icon_arrow_right_grey@2x.png in Resources */,
 				FC21F34F19BFE5BD00417CA8 /* icon_home_active@2x.png in Resources */,
 				85E7ED6119F5266800554572 /* TKPDTabProfileNavigationController.xib in Resources */,
 				FC12A0A219D942290049EB76 /* ProgressBarView.xib in Resources */,
@@ -3807,6 +3820,7 @@
 				FCA774D819F60D010041CFE1 /* Login.m in Sources */,
 				FCB9F64B1A025991005E0B7B /* UploadProfileResult.m in Sources */,
 				FC18C78419B56A5000BA162D /* CategoryResultViewCell.m in Sources */,
+				28C775F21A11B35C00D77D54 /* TextField.m in Sources */,
 				FC012E3B19BEF7B80072A31A /* ShipmentPackage.m in Sources */,
 				FCA48BBC1A010353007015E4 /* SettingAddressViewController.m in Sources */,
 				FC300B8519C949760098F0D0 /* FilterLocationViewCell.m in Sources */,
@@ -3977,7 +3991,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4010,7 +4024,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4030,8 +4044,10 @@
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -4049,8 +4065,10 @@
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};

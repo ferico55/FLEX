@@ -28,7 +28,6 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
     }
     return self;
 }
@@ -36,6 +35,8 @@
 - (void)awakeFromNib
 {
     _categorybuttons = [NSArray sortViewsWithTagInArray:_categorybuttons];
+    self.productInformationView.layer.borderWidth = 0.5f;
+    self.productInformationView.layer.borderColor = [UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1].CGColor;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

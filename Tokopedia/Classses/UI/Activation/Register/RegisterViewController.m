@@ -14,6 +14,8 @@
 #import "AlertDatePickerView.h"
 #import "Alert1ButtonView.h"
 
+#import "TextField.h"
+
 #pragma mark - Register View Controller
 @interface RegisterViewController () <UITextFieldDelegate,UIScrollViewDelegate,UIAlertViewDelegate, TKPDAlertViewDelegate>
 {
@@ -37,12 +39,12 @@
     NSOperationQueue *_operationQueue;
 }
 
-@property (weak, nonatomic) IBOutlet UITextField *texfieldfullname;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldphonenumber;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldemail;
-@property (weak, nonatomic) IBOutlet UITextField *textfielddob;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldpassword;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldconfirmpass;
+@property (weak, nonatomic) IBOutlet TextField *texfieldfullname;
+@property (weak, nonatomic) IBOutlet TextField *textfieldphonenumber;
+@property (weak, nonatomic) IBOutlet TextField *textfieldemail;
+@property (weak, nonatomic) IBOutlet TextField *textfielddob;
+@property (weak, nonatomic) IBOutlet TextField *textfieldpassword;
+@property (weak, nonatomic) IBOutlet TextField *textfieldconfirmpass;
 @property (weak, nonatomic) IBOutlet UIScrollView *container;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
@@ -78,6 +80,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.texfieldfullname.isTopRoundCorner = YES;
+    self.textfielddob.isBottomRoundCorner = YES;    
+    self.textfieldpassword.isTopRoundCorner = YES;
+    self.textfieldconfirmpass.isBottomRoundCorner = YES;
     
     _datainput = [NSMutableDictionary new];
     _operationQueue =[NSOperationQueue new];
