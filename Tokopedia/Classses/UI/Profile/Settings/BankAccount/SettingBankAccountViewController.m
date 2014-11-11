@@ -194,6 +194,13 @@
 	}
 }
 
+-(void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
+    id dataObject = [_list objectAtIndex:sourceIndexPath.row];
+    [_list removeObjectAtIndex:sourceIndexPath.row];
+    [_list insertObject:dataObject atIndex:destinationIndexPath.row];
+}
+
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
     //add new address
@@ -695,19 +702,23 @@
         {
             //set as default
             _ismanualsetdefault = YES;
-            [_table reloadData];
+            [self configureRestKitActionSetDefault];
             [self requestActionSetDefault:_datainput];
-            [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHKEY];
+            [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
+            NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:0 inSection:indexpath.section];
+            [self tableView:_table moveRowAtIndexPath:indexpath toIndexPath:indexpath1];
             break;
         }
         case 11:
         {
             //delete
+            [_datainput setObject:_list[indexpath.row] forKey:kTKPDPROFILE_DATADELETEDOBJECTKEY];
             [_list removeObjectAtIndex:indexpath.row];
             [_table beginUpdates];
             [_table deleteRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationFade];
             [_table endUpdates];
             [_table reloadData];
+            [self configureRestKitActionDelete];
             [self requestActionDelete:_datainput];
             [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDELETEKEY];
             break;
@@ -729,8 +740,12 @@
             //set as default
             _ismanualsetdefault = YES;
             [_table reloadData];
+            [self configureRestKitActionSetDefault];
             [self requestActionSetDefault:_datainput];
-            [_datainput setObject:[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY] forKey:kTKPDPROFILE_DATAINDEXPATHKEY];
+            NSIndexPath *indexpath = [data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY];
+            NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:0 inSection:indexpath.section];
+            [self tableView:_table moveRowAtIndexPath:indexpath toIndexPath:indexpath1];
+            [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
             break;
         }
         case 11:
@@ -740,6 +755,7 @@
             [_table beginUpdates];
             [_table deleteRowsAtIndexPaths:@[[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]] withRowAnimation:UITableViewRowAnimationFade];
             [_table endUpdates];
+            [self configureRestKitActionDelete];
             [self requestActionDelete:_datainput];
             [_datainput setObject:[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY] forKey:kTKPDPROFILE_DATAINDEXPATHDELETEKEY];
             break;
