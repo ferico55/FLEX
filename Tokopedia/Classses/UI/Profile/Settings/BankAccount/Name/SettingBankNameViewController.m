@@ -15,6 +15,10 @@
 {
     NSInteger _type;
     NSMutableDictionary *_selectedlocation;
+    NSMutableArray *_searchresultarray;
+    NSMutableArray *_tempresultarray; //for search bar
+    
+    UISearchBar *_activesearchbar;
     
     BOOL _isnodata;
 }
@@ -23,6 +27,7 @@
 @property (nonatomic, strong) NSMutableArray *banknames;
 @property (nonatomic, strong) NSMutableArray *bankvalues;
 @property (weak, nonatomic) IBOutlet UILabel *labeltitle;
+- (IBAction)gesture:(id)sender;
 
 @end
 
@@ -46,7 +51,9 @@
     
     _banknames = [NSMutableArray new];
     _bankvalues = [NSMutableArray new];
+    _searchresultarray = [NSMutableArray new];
     _selectedlocation = [NSMutableDictionary new];
+    _tempresultarray =[NSMutableArray new];
     
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
@@ -88,7 +95,7 @@
     NSIndexPath *indexpath;
     NSInteger index = 0;
     
-    NSInteger bankid = [[_data objectForKey:kTKPDPROFILESETTING_APIPROVINCEKEY]integerValue];
+    NSInteger bankid = [[_data objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY]integerValue];
     name = [[DBManager getSharedInstance]LoadDataQueryLocationName:[NSString stringWithFormat:@"select bank_name from ws_bank order by bank_name"]];
     
     value = [[DBManager getSharedInstance]LoadDataQueryLocationValue:[NSString stringWithFormat:@"select bank_id from ws_bank order by bank_name"]];
@@ -100,7 +107,15 @@
     
     [_selectedlocation setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHKEY];
     
-    if (_banknames.count > 0) {
+    NSDictionary *temp;
+    for (int i=0; i<_banknames.count;i++) {
+        temp = @{kTKPDPROFILESETTING_APIBANKNAMEKEY: _banknames[i], kTKPDPROFILESETTING_APIBANKIDKEY: _bankvalues[i]};
+        [_searchresultarray insertObject:temp atIndex:i];
+    }
+    
+    [_tempresultarray addObjectsFromArray:_searchresultarray];
+    
+    if (_tempresultarray.count > 0) {
         _isnodata = NO;
     }
 }
@@ -113,6 +128,7 @@
 #pragma mark - View Gesture
 -(IBAction)tap:(id)sender
 {
+    [_activesearchbar resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         switch (btn.tag) {
@@ -126,8 +142,8 @@
             {
                 NSDictionary *data;
                 NSIndexPath *indexpath = [_selectedlocation objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                data = @{kTKPDPROFILESETTING_APIBANKIDKEY : _bankvalues[indexpath.row],
-                         kTKPDPROFILESETTING_APIBANKNAMEKEY :  _banknames[indexpath.row],
+                data = @{kTKPDPROFILESETTING_APIBANKIDKEY : [_tempresultarray[indexpath.row] objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY],
+                         kTKPDPROFILESETTING_APIBANKNAMEKEY :  [_tempresultarray[indexpath.row] objectForKey:kTKPDPROFILESETTING_APIBANKNAMEKEY],
                          kTKPDPROFILE_DATABANKINDEXPATHKEY: indexpath,
                          };
                 
@@ -141,13 +157,17 @@
     }
 }
 
+- (IBAction)gesture:(id)sender {
+    [_activesearchbar resignFirstResponder];
+}
+
 #pragma mark - Table View Data Source
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 #ifdef kTKPDmenuLISTHOTLIST_NODATAENABLE
-    return _isnodata ? 1 : _baanknames.count;
+    return _isnodata ? 1 : _tempresultarray.count;
 #else
-    return _isnodata ? 0 : _banknames.count;
+    return _isnodata ? 0 : _tempresultarray.count;
 #endif
 }
 
@@ -168,9 +188,7 @@
         else
             ((SettingBankNameCell*)cell).imageview.hidden = NO;
         
-        //if (indexPath.row>_locationnames.count) {
-        ((SettingBankNameCell*)cell).data = @{kTKPDPROFILE_DATAINDEXPATHKEY: indexPath, kTKPDPROFILE_DATALOCATIONNAMEKEY: _banknames[indexPath.row]};
-        //}
+        ((SettingBankNameCell*)cell).data = @{kTKPDPROFILE_DATAINDEXPATHKEY: indexPath, kTKPDPROFILE_DATALOCATIONNAMEKEY: [_tempresultarray[indexPath.row] objectForKey:kTKPDPROFILESETTING_APIBANKNAMEKEY]};
         
 	} else {
 		static NSString *CellIdentifier = kTKPDPROFILE_STANDARDTABLEVIEWCELLIDENTIFIER;
@@ -205,22 +223,23 @@
 }
 
 #pragma mark - UISearchBar Delegate
--(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
+    _activesearchbar = searchBar;
     if (![searchBar.text isEqualToString: @""]&&![searchBar.text isEqualToString:@" "]) {
-        //_labelsearchfor.text = [NSString stringWithFormat:@"Search for '%@'", searchBar.text];
-        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
-        NSArray *result;
-        result = [_banknames filteredArrayUsingPredicate:resultPredicate];
-        [_banknames addObjectsFromArray:result];
-        [_table reloadData];
-    }
-    else
-    {
-        [_banknames removeAllObjects];
+        [_tempresultarray removeAllObjects];
+        for (int i = 0; i<_searchresultarray.count; i++)
+        {
+            NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchText];
+            BOOL issearch = [resultPredicate evaluateWithObject:[_searchresultarray[i] objectForKey:kTKPDPROFILESETTING_APIBANKNAMEKEY]];
+            if (issearch){
+                NSDictionary *result = @{kTKPDPROFILESETTING_APIBANKNAMEKEY : [_searchresultarray[i] objectForKey:kTKPDPROFILESETTING_APIBANKNAMEKEY],
+                                         kTKPDPROFILESETTING_APIBANKIDKEY: [_searchresultarray[i] objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY]};
+                [_tempresultarray addObject:result];
+            }
+            
+        }
         [_table reloadData];
     }
 }
-
-
 @end

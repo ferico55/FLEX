@@ -108,7 +108,7 @@
     
     //Add observer
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(refreshView:) name:kTKPD_ADDADDRESSPOSTNOTIFICATIONNAMEKEY object:nil];
+    [center addObserver:self selector:@selector(didEditAddress:) name:kTKPD_ADDADDRESSPOSTNOTIFICATIONNAMEKEY object:nil];
 
 }
 
@@ -381,6 +381,22 @@
                     NSLog(@"%d",_page);
                 }
                 [_table reloadData];
+                NSInteger type = [[_datainput objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]integerValue];
+                if (type == 1) {
+                    //TODO: Behavior after edit
+                    NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY];
+                    BOOL isdefault;
+                    AddressFormList *list = _list[indexpath.row];
+                    isdefault = (list.address_status == 2)?YES:NO;
+                    SettingAddressDetailViewController *vc = [SettingAddressDetailViewController new];
+                    vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
+                                kTKPDPROFILE_DATAADDRESSKEY : _list[indexpath.row],
+                                kTKPDPROFILE_DATAINDEXPATHKEY : indexpath,
+                                kTKPDPROFILE_DATAISDEFAULTKEY : @(isdefault)
+                                };
+                    vc.delegate = self;
+                    [self.navigationController pushViewController:vc animated:NO];
+                }
             }
         }
         else{
@@ -671,9 +687,8 @@
 {
     BOOL isdefault;
     AddressFormList *list = _list[indexpath.row];
-    NSIndexPath *indexpath1 = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
     if (_ismanualsetdefault) {
-        isdefault = (indexpath.row == indexpath1.row)?YES:NO;
+        isdefault = (indexpath.row == 0)?YES:NO;
     }
     else
     {
@@ -704,6 +719,7 @@
             [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
             NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:0 inSection:indexpath.section];
             [self tableView:_table moveRowAtIndexPath:indexpath toIndexPath:indexpath1];
+            [_table reloadData];
             break;
         }
         case 11:
@@ -719,6 +735,7 @@
             [self configureRestKitActionDelete];
             [self requestActionDelete:_datainput];
             [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDELETEKEY];
+            [_table reloadData];
             break;
         }
         default:
@@ -744,6 +761,7 @@
             NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:0 inSection:indexpath.section];
             [self tableView:_table moveRowAtIndexPath:indexpath toIndexPath:indexpath1];
             [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
+            [_table reloadData];
             break;
         }
         case 11:
@@ -757,6 +775,7 @@
             [self configureRestKitActionDelete];
             [self requestActionDelete:_datainput];
             [_datainput setObject:[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY] forKey:kTKPDPROFILE_DATAINDEXPATHDELETEKEY];
+            [_table reloadData];
             break;
         }
         default:
@@ -785,6 +804,16 @@
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
     view.backgroundColor = [UIColor clearColor];
     return view;
+}
+
+#pragma mark - Notification
+- (void)didEditAddress:(NSNotification*)notification
+{
+    NSDictionary *userinfo = notification.userInfo;
+    //TODO: Behavior after edit
+    [_datainput setObject:[userinfo objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDPROFILE_DATAINDEXPATHKEY];
+    [_datainput setObject:[userinfo objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]?:@(0) forKey:kTKPDPROFILE_DATAEDITTYPEKEY];
+    [self refreshView:nil];
 }
 
 @end

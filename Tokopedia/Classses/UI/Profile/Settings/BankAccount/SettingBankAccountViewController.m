@@ -148,7 +148,7 @@
             ((GeneralList1GestureCell*)cell).labelname.text = list.bank_account_name;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
             [(GeneralList1GestureCell*)cell viewdetailresetposanimation:YES];
-            if (!_ismanualsetdefault)((GeneralList1GestureCell*)cell).labeldefault.hidden = (list.is_default_bank==2)?NO:YES;
+            if (!_ismanualsetdefault)((GeneralList1GestureCell*)cell).labeldefault.hidden = (list.is_default_bank==1)?NO:YES;
             else {
                 ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
                 NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY];
@@ -439,7 +439,7 @@
     
     
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APISETDEFAULTBANKACCOUNTKEY,
-                            kTKPDPROFILESETTING_APIBANKIDKEY : [userinfo objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY]?:@(0)
+                            kTKPDPROFILESETTING_APIBANKACCOUNTIDKEY : [userinfo objectForKey:kTKPDPROFILESETTING_APIBANKACCOUNTIDKEY]?:@(0)
                             };
     _requestcount ++;
     
@@ -674,14 +674,10 @@
 {
     BOOL isdefault;
     BankAccountFormList *list = _list[indexpath.row];
-    NSIndexPath *indexpath1 = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY];
-    if (_ismanualsetdefault) {
-        isdefault = (indexpath.row == indexpath1.row)?YES:NO;
-    }
+    if (_ismanualsetdefault)
+        isdefault = (indexpath.row == 0)?YES:NO;
     else
-    {
-        isdefault = (list.is_default_bank == 2)?YES:NO;
-    }
+        isdefault = (list.is_default_bank == 1)?YES:NO;
     
     SettingBankDetailViewController *vc = [SettingBankDetailViewController new];
     vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
@@ -689,6 +685,7 @@
                 kTKPDPROFILE_DATAINDEXPATHKEY : indexpath,
                 kTKPDPROFILE_DATAISDEFAULTKEY : @(isdefault)
                 };
+    
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -696,7 +693,7 @@
 -(void)DidTapButton:(UIButton *)button atCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     BankAccountFormList *list = _list[indexpath.row];
-    [_datainput setObject:@(list.bank_id) forKey:kTKPDPROFILESETTING_APIBANKIDKEY];
+    [_datainput setObject:@(list.bank_account_id) forKey:kTKPDPROFILESETTING_APIBANKACCOUNTIDKEY];
     switch (button.tag) {
         case 10:
         {
@@ -707,6 +704,7 @@
             [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
             NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:0 inSection:indexpath.section];
             [self tableView:_table moveRowAtIndexPath:indexpath toIndexPath:indexpath1];
+            [_table reloadData];
             break;
         }
         case 11:
@@ -721,6 +719,7 @@
             [self configureRestKitActionDelete];
             [self requestActionDelete:_datainput];
             [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDELETEKEY];
+            [_table reloadData];
             break;
         }
         default:
@@ -733,7 +732,7 @@
 -(void)DidTapButton:(UIButton *)button withdata:(NSDictionary *)data
 {
     BankAccountFormList *list = [data objectForKey:kTKPDPROFILE_DATABANKKEY];
-    [_datainput setObject:@(list.bank_id) forKey:kTKPDPROFILESETTING_APIBANKIDKEY];
+    [_datainput setObject:@(list.bank_account_id) forKey:kTKPDPROFILESETTING_APIBANKACCOUNTIDKEY];
     switch (button.tag) {
         case 10:
         {
@@ -746,6 +745,7 @@
             NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:0 inSection:indexpath.section];
             [self tableView:_table moveRowAtIndexPath:indexpath toIndexPath:indexpath1];
             [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
+            [_table reloadData];
             break;
         }
         case 11:
@@ -758,6 +758,7 @@
             [self configureRestKitActionDelete];
             [self requestActionDelete:_datainput];
             [_datainput setObject:[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY] forKey:kTKPDPROFILE_DATAINDEXPATHDELETEKEY];
+            [_table reloadData];
             break;
         }
         default:

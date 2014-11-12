@@ -11,7 +11,6 @@
                 <outlet property="actpp" destination="DDl-z9-A7W" id="Yub-Jp-IF2"/>
                 <outlet property="buttoneditprofile" destination="tPC-82-V3D" id="WDP-r5-fTB"/>
                 <outlet property="buttonmessage" destination="7LK-36-qbj" id="x7v-eO-4zK"/>
-                <outlet property="buttonsetting" destination="Usu-hV-hSs" id="Q2X-xX-jlY"/>
                 <outlet property="container" destination="abB-jT-cSJ" id="x4v-nW-TEa"/>
                 <outlet property="contentview" destination="i5M-Pr-FkT" id="XhZ-73-dEU"/>
                 <outlet property="headerview" destination="d9E-tM-MoQ" id="gI5-6L-utW"/>
@@ -82,16 +81,6 @@
                             </state>
                             <connections>
                                 <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="8vk-IU-5dX"/>
-                            </connections>
-                        </button>
-                        <button hidden="YES" opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Usu-hV-hSs">
-                            <rect key="frame" x="249" y="5" width="63" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <state key="normal" title="setting">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="iPX-Vt-Hjr"/>
                             </connections>
                         </button>
                     </subviews>
