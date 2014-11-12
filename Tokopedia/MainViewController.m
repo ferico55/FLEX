@@ -40,6 +40,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
        [self.navigationController.navigationBar setTranslucent:NO];
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     }
     return self;
 }

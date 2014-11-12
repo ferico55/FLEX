@@ -34,14 +34,15 @@
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        // Initialization code
     }
     return self;
 }
 
 - (void)awakeFromNib
 {
-    // Initialization code
+    self.buttondefault.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.buttondefault.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.buttondefault setTitle: @"Set as\nDefault" forState: UIControlStateNormal];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

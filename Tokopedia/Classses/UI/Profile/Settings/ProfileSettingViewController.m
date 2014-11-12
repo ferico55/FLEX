@@ -28,16 +28,28 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
 
 #pragma mark - View Life Cycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.navigationController.navigationItem setTitle:kTKPDPROFILESETTING_TITLE];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"]
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    backBarButtonItem.tintColor = [UIColor whiteColor];
+    self.navigationItem.leftBarButtonItem = backBarButtonItem;
 }
 
 - (void)didReceiveMemoryWarning
@@ -94,6 +106,10 @@
             default:
                 break;
         }
+    }
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        NSLog(@"\n\n\n\nasdsadsdsdasdsadas\n\n\n\n");
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 @end

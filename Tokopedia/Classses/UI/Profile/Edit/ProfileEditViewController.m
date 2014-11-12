@@ -23,6 +23,8 @@
 #import "ProfileEditViewController.h"
 #import "ProfileEditPhoneViewController.h"
 
+#import "UIImage+ImageEffects.h"
+
 @interface ProfileEditViewController ()<CameraControllerDelegate, TKPDAlertViewDelegate, UITextFieldDelegate, UIScrollViewDelegate>
 {
     NSMutableDictionary *_datainput;

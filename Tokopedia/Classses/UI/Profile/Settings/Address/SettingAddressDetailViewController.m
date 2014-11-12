@@ -12,7 +12,7 @@
 #import "SettingAddressEditViewController.h"
 
 #pragma mark - Setting Address Detail View Controller
-@interface SettingAddressDetailViewController ()
+@interface SettingAddressDetailViewController () <UIScrollViewDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *labelreceivername;
 @property (weak, nonatomic) IBOutlet UILabel *labeladdressname;
 @property (weak, nonatomic) IBOutlet UILabel *labeladdress;
@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelphonenumber;
 @property (weak, nonatomic) IBOutlet UIView *viewdefault;
 @property (weak, nonatomic) IBOutlet UIView *viewsetasdefault;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
 
 @end
 
@@ -47,9 +49,25 @@
     UIBarButtonItem *barbutton1;
     
     barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor blackColor]];
+    [barbutton1 setTintColor:[UIColor whiteColor]];
     barbutton1.tag = 11;
     self.navigationItem.rightBarButtonItem = barbutton1;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.scrollView.delegate = self;
+    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, self.contentView.frame.size.height)];
+
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"]
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    backBarButtonItem.tintColor = [UIColor whiteColor];
+    backBarButtonItem.tag = 12;
+    self.navigationItem.leftBarButtonItem = backBarButtonItem;
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -74,6 +92,10 @@
                             };
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
+            }
+            case 12:
+            {
+                [self.navigationController popViewControllerAnimated:YES];
             }
             default:
                 break;

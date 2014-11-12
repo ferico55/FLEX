@@ -41,9 +41,24 @@
     [self setDefaultData:_data];
     UIBarButtonItem *barbutton1;
     barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor blackColor]];
+    [barbutton1 setTintColor:[UIColor whiteColor]];
     barbutton1.tag = 11;
     self.navigationItem.rightBarButtonItem = barbutton1;
+
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"]
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    backBarButtonItem.tintColor = [UIColor whiteColor];
+    backBarButtonItem.tag = 12;
+    self.navigationItem.leftBarButtonItem = backBarButtonItem;
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,6 +82,10 @@
                             };
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
+            }
+            case 12:
+            {
+                [self.navigationController popViewControllerAnimated:YES];
             }
             default:
                 break;
