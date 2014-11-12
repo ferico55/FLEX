@@ -34,7 +34,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                         <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h0K-vZ-QB4">
-                            <rect key="frame" x="58" y="7" width="262" height="30"/>
+                            <rect key="frame" x="46" y="7" width="262" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <state key="normal" title="Change Password">
@@ -45,8 +45,8 @@
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="6en-60-SEi"/>
                             </connections>
                         </button>
-                        <imageView appearanceType="aqua" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="egg-z7-7gN">
-                            <rect key="frame" x="20" y="7" width="30" height="30"/>
+                        <imageView appearanceType="aqua" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_lock_grey" translatesAutoresizingMaskIntoConstraints="NO" id="egg-z7-7gN">
+                            <rect key="frame" x="20" y="13" width="18" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         </imageView>
                     </subviews>
@@ -192,5 +192,6 @@
     </objects>
     <resources>
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>
+        <image name="icon_lock_grey" width="20" height="20"/>
     </resources>
 </document>

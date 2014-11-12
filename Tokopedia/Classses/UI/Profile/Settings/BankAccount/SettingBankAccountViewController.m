@@ -119,6 +119,14 @@
             [self request];
         }
     }
+
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"]
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    backBarButtonItem.tag = 12;
+    backBarButtonItem.tintColor = [UIColor whiteColor];
+    self.navigationItem.leftBarButtonItem = backBarButtonItem;
 }
 
 #pragma mark - Table View Data Source
@@ -148,7 +156,7 @@
             ((GeneralList1GestureCell*)cell).labelname.text = list.bank_account_name;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
             [(GeneralList1GestureCell*)cell viewdetailresetposanimation:YES];
-            if (!_ismanualsetdefault)((GeneralList1GestureCell*)cell).labeldefault.hidden = (list.is_default_bank==2)?NO:YES;
+            if (!_ismanualsetdefault)((GeneralList1GestureCell*)cell).labeldefault.hidden = (list.is_default_bank==1)?NO:YES;
             else {
                 ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
                 NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY];
@@ -175,6 +183,13 @@
     return cell;
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
 #pragma mark - Table View Delegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -196,12 +211,17 @@
 
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
-    //add new address
-    SettingBankEditViewController *vc = [SettingBankEditViewController new];
-    vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
-                kTKPDPROFILE_DATAEDITTYPEKEY : @(kTKPDPROFILESETTINGEDIT_DATATYPENEWVIEWKEY),
-                };
-    [self.navigationController pushViewController:vc animated:YES];
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else {
+        //add new address
+        SettingBankEditViewController *vc = [SettingBankEditViewController new];
+        vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
+                    kTKPDPROFILE_DATAEDITTYPEKEY : @(kTKPDPROFILESETTINGEDIT_DATATYPENEWVIEWKEY),
+                    };
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 #pragma mark - Request
@@ -673,7 +693,7 @@
     }
     else
     {
-        isdefault = (list.is_default_bank == 2)?YES:NO;
+        isdefault = (list.is_default_bank == 1)?YES:NO;
     }
     
     SettingBankDetailViewController *vc = [SettingBankDetailViewController new];

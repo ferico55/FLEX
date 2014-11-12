@@ -45,6 +45,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *container;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldpass;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldotp;
+@property (weak, nonatomic) IBOutlet UIButton *buttonsendotp;
 
 -(void)cancelActionAddBank;
 -(void)configureRestKitActionAddBank;
@@ -70,11 +71,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.buttonsendotp.layer.cornerRadius = 2;
+    
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
     _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonsave setTintColor:[UIColor blackColor]];
+    [_barbuttonsave setTintColor:[UIColor whiteColor]];
     _barbuttonsave.tag = 11;
     _act= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     UIBarButtonItem * barbuttonact = [[UIBarButtonItem alloc] initWithCustomView:_act];
@@ -96,6 +100,20 @@
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"]
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    backBarButtonItem.tintColor = [UIColor whiteColor];
+    backBarButtonItem.tag = 12;
+    self.navigationItem.leftBarButtonItem = backBarButtonItem;
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -141,6 +159,10 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         switch (btn.tag) {
+            case 12:
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
             case 11:
             {
                 //submit

@@ -13,11 +13,8 @@
 #import "SettingAddressLocationViewController.h"
 
 #pragma mark - Setting Address Edit View Controller
-@interface SettingAddressEditViewController ()
-<   SettingAddressLocationViewDelegate,
-    UIScrollViewDelegate,
-    UITextFieldDelegate
->
+
+@interface SettingAddressEditViewController () <SettingAddressLocationViewDelegate, UIScrollViewDelegate, UITextFieldDelegate>
 {
     NSInteger _type;
     
@@ -55,6 +52,8 @@
 @property (weak, nonatomic) IBOutlet UIView *viewpassword;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldpass;
 @property (weak, nonatomic) IBOutlet UIView *viewcontainer;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
 
 -(void)cancelActionAddAddress;
 -(void)configureRestKitActionAddAddress;
@@ -88,7 +87,7 @@
     _operationQueue = [NSOperationQueue new];
     
     _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonsave setTintColor:[UIColor blackColor]];
+    [_barbuttonsave setTintColor:[UIColor whiteColor]];
     _barbuttonsave.tag = 11;
     _act= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     UIBarButtonItem * barbuttonact = [[UIBarButtonItem alloc] initWithCustomView:_act];
@@ -112,6 +111,22 @@
                name:UIKeyboardWillHideNotification
              object:nil];
 }
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.scrollView.delegate = self;
+    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, self.contentView.frame.size.height)];
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"]
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    backBarButtonItem.tintColor = [UIColor whiteColor];
+    backBarButtonItem.tag = 12;
+    self.navigationItem.leftBarButtonItem = backBarButtonItem;
+}
+
 
 -(void)viewWillDisappear:(BOOL)animated
 {
@@ -186,6 +201,10 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         switch (btn.tag) {
+            case 12:
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
             case 11:
             {
                 //submit

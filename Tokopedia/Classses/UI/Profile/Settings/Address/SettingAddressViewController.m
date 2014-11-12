@@ -112,6 +112,7 @@
 
 }
 
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -128,6 +129,14 @@
             [self request];
         }
     }
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"]
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    backBarButtonItem.tintColor = [UIColor whiteColor];
+    self.navigationItem.leftBarButtonItem = backBarButtonItem;
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -656,12 +665,17 @@
 
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
-    //add new address
-    SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
-    vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
-                kTKPDPROFILE_DATAEDITTYPEKEY : @(kTKPDPROFILESETTINGEDIT_DATATYPENEWVIEWKEY)
-                };
-    [self.navigationController pushViewController:vc animated:YES];
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else {
+        //add new address
+        SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
+        vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
+                    kTKPDPROFILE_DATAEDITTYPEKEY : @(kTKPDPROFILESETTINGEDIT_DATATYPENEWVIEWKEY)
+                    };
+        [self.navigationController pushViewController:vc animated:YES];        
+    }
 }
 
 

@@ -18,7 +18,7 @@
 #define kTKPD_APSKEY @"aps"
 #define kTKPD_BADGEKEY @"badge"
 
-#define kTKPDWINDOW_TINTLCOLOR [UIColor blackColor]
+#define kTKPDWINDOW_TINTLCOLOR [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0]
 
 #define kTKPD_HOMETITLEISAUTHARRAY @[@"Hotlist",@"Produk Feed", @"Terakhir dilihat", @"Toko Favorite"]
 #define kTKPD_HOMETITLEARRAY @[@"Hotlist"]
