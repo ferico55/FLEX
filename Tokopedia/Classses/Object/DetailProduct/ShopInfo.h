@@ -18,7 +18,7 @@
 @property (nonatomic, strong) NSString *shop_tagline;
 @property (nonatomic, strong) NSString *shop_name;
 @property (nonatomic, strong) ShopStats *shop_stats;
-@property (nonatomic) BOOL shop_already_favorited;
+@property (nonatomic, strong) NSString *shop_already_favorited;
 @property (nonatomic, strong) NSString *shop_description;
 @property (nonatomic, strong) NSString *shop_avatar;
 @property (nonatomic, strong) NSString *shop_total_favorit;

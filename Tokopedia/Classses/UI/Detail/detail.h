@@ -12,15 +12,20 @@
 #define kTKPDTITLE_TALK @"Talk About It"
 #define kTKPDTITLE_REVIEW @"Review"
 #define kTKPDTITLE_SHOP_NOTES @"Shop Note"
+#define kTKPDTITLE_SEND_MESSAGE @"Send Message"
 #define kTKPDTITLE_SHOP_INFO @"Shop Information"
 #define KTKPDTITLE_FAV_THIS_SHOP @"People who Favorited This Shop"
+#define KTKPDTITLE_PEOPLE @"People Information"
+#define KTKPDTITLE_BIODATA @"Biodata"
 #define KTKPDETAIL_DESCRIPTION_EMPTY @"No description"
+
 
 #define kTKPDDETAIL_DATASHOPSKEY @"shop"
 #define kTKPDDETAIL_DATAINFOSHOPSKEY @"infoshop"
 #define kTKPDDETAIL_DATALOCATIONARRAYKEY @"locationarray"
 #define kTKPDDETAIL_DATAQUERYKEY @"query"
 #define kTKPDDETAIL_DATAETALASEKEY @"etalase"
+#define kTKPDDETAIL_ACTIONKEY @"action"
 #define kTKPDDETAIL_DATAINDEXKEY @"index"
 #define kTKPDDETAIL_DATAINDEXPATHKEY @"indexpath"
 #define kTKPDDETAILETALASE_DATAINDEXPATHKEY @"etalaseindexpath"
@@ -89,6 +94,11 @@
 #define kTKPDDETAILPRODUCT_APIPRODUCTCANCELRATEKEY @"product_cancel_rate"
 #define kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY @"product_talk"
 #define kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY @"product_review"
+#define KTKPDDETAILPRODUCT_APIPRODUCTQUALITYRATEKEY @"product_quality_rate"
+#define KTKPDDETAILPRODUCT_APIPRODUCTACCURACYRATEKEY @"product_accuracy_rate"
+#define KTKPDDETAILPRODUCT_APIPRODUCTQUALITYPOINTKEY @"product_quality_point"
+#define KTKPDDETAILPRODUCT_APIPRODUCTACCURACYPOINTKEY @"product_accuracy_point"
+
 
 #define kTKPDDETAILPRODUCT_APISHOPINFOKEY @"shop_info"
 #define kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY @"shop_open_since"
@@ -153,6 +163,12 @@
 #define kTKPDDETAILSHOP_APIINFOKEY @"info"
 #define kTKPDDETAILSHOP_APICOVERKEY @"shop_cover"
 #define kTKPDDETAILSHOP_APITOTALFAVKEY @"shop_total_favorit"
+
+#define kTKPDDETAILSHOP_APISHOPIMAGE @"shop_image"
+#define kTKPDDETAILSHOP_APISHOPLOCATION @"shop_location"
+#define kTKPDDETAILSHOP_APISHOPID @"shop_id"
+#define kTKPDDETAILSHOP_APISHOPNAME @"shop_name"
+
 
 #define kTKPDDETAILSHOP_APISTATKEY @"stats"
 #define kTKPDDETAILSHOP_APISHIPMENTKEY @"shipment"
@@ -323,6 +339,7 @@
 #define kTKPDDETAILCATALOG_APISHOPRATEACCURACYKEY @"shop_rate_accuracy"
 #define kTKPDDETAILCATALOG_APISHOPIMAGEKEY @"shop_image"
 #define kTKPDDETAIL_APISHOPIDKEY @"shop_id"
+#define kTKPDDETAIL_APISHOPNAMEKEY @"shop_name"
 #define kTKPDDETAILCATALOG_APISHOPLOCATIONKEY @"shop_location"
 #define kTKPDDETAILCATALOG_APISHOPRATESPEEDKEY @"shop_rate_speed"
 #define kTKPDDETAILCATALOG_APIISGOLDSHOPKEY @"is_gold_shop"
@@ -330,6 +347,7 @@
 #define kTKPDDETAILCATALOG_APISHOPTOTALADDRESSKEY @"shop_total_address"
 #define kTKPDDETAILCATALOG_APISHOPTOTALPRODUCTKEY @"shop_total_product"
 #define kTKPDDETAILCATALOG_APISHOPRATESERVICEKEY @"shop_rate_service"
+#define kTKPDDETAILCATALOG_APISHOPGOLDSTATUSKEY @"shop_gold_status"
 
 #define kTKPDDETAILCATALOG_APIPRODUCTPRICEKEY @"product_price"
 #define kTKPDDETAILCATALOG_APIPRODUCTIDKEY @"product_id"
@@ -367,6 +385,19 @@
 #define kTKPDSHOP_APIETALASENAMEKEY @"etalase_name"
 #define kTKPDSHOP_APIETALASEIDKEY @"etalase_id"
 #define kTKPDSHOP_APIETALASETOTALPRODUCTKEY @"etalase_total_product"
+
+#define kTKPDMESSAGE_KEYSUBJECT @"message_subject"
+#define kTKPDMESSAGE_KEYCONTENT @"message"
+#define kTKPDMESSAGE_KEYTOSHOPID @"to_shop_id"
+#define KTKPDMESSAGE_DELIVERED @"Pesan Anda telah terkirim!"
+#define KTKPDMESSAGE_UNDELIVERED @"Pesan Anda gagal terkirim."
+#define KTKPDMESSAGE_EMPTYFORM @"Panjang pesan harus lebih dari 3 karakter."
+
+#define kTKPD_STATUSSUCCESS @"1"
+#define kTKPDMESSAGE_KEYTOUSERID @"to_user_id"
+#define kTKPDMESSAGE_KEYTO @"message_to"
+#define kTKPDMESSAGE_PLACEHOLDER @"Message"
+
 
 #define kTKPDSHOP_ETALASEARRAY @[@{kTKPDSHOP_APIETALASENAMEKEY:@"Produk Terjual",kTKPDSHOP_APIETALASEIDKEY:@(7)}, @{kTKPDSHOP_APIETALASENAMEKEY:@"All Etalase",kTKPDSHOP_APIETALASEIDKEY:@(0)}]
 

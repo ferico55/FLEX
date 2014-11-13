@@ -647,7 +647,32 @@
                                
                                NSString *responsestring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                if ([httpResponse statusCode] == 200) {
-                                        NSLog(@"success");
+                                   id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
+                                   if (parsedData == nil && error) {
+                                       NSLog(@"parser error");
+                                   }
+                                   
+                                   NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
+                                   for (RKResponseDescriptor *descriptor in _objectmanagerUploadPhoto.responseDescriptors) {
+                                       [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
+                                   }
+                                   
+                                   RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+                                   NSError *mappingError = nil;
+                                   BOOL isMapped = [mapper execute:&mappingError];
+                                   if (isMapped && !mappingError) {
+                                       NSLog(@"result %@",[mapper mappingResult]);
+                                       RKMappingResult *mappingresult = [mapper mappingResult];
+                                       NSDictionary *result = mappingresult.dictionary;
+                                       id stat = [result objectForKey:@""];
+                                       _images = stat;
+                                       BOOL status = [_images.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+                                       
+                                       if (status) {
+                                           [self requestProcessUploadPhoto:mappingresult];
+                                       }
+                                   }
+
                                }
                                NSLog(@"%@",responsestring);
                            }];
@@ -730,7 +755,26 @@
             
             if (status) {
                 if (!_images.message_error) {
+                    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_images.result.file_th] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+                    //request.URL = url;
                     
+                    UIImageView *thumb = _thumb;
+                    thumb = [UIImageView circleimageview:thumb];
+                    
+                    thumb.image = nil;
+                    //thumb.hidden = YES;	//@prepareforreuse then @reset
+                    
+                    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                        //NSLOG(@"thumb: %@", thumb);
+                        [thumb setImage:image];
+#pragma clang diagnostic pop
+                        
+                    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                    }];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil userInfo:nil];
                 }
                 else
                 {

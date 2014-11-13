@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tapGestureRecognizer id="MgA-86-nNw">
+            <connections>
+                <action selector="tap:" destination="-1" id="H2M-00-kIT"/>
+            </connections>
+        </tapGestureRecognizer>
+        <view contentMode="scaleToFill" id="Rdy-7Z-OCC">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="login.png" translatesAutoresizingMaskIntoConstraints="NO" id="JiE-M7-7xp">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="519"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="320" id="fvi-se-qc5"/>
+                    </constraints>
+                </imageView>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NAJ-cU-lch">
+                    <rect key="frame" x="33" y="70" width="254" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="a3G-Dn-wZE">
+                    <rect key="frame" x="33" y="115" width="254" height="30"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forgot Password" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E6M-t6-9oW">
+                    <rect key="frame" x="33" y="170" width="254" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="Cxo-8V-WxJ"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Or Sign In with" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jz3-RY-23d">
+                    <rect key="frame" x="33" y="221" width="254" height="21"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="21" id="ifd-qR-zj5"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="E6M-t6-9oW" firstAttribute="trailing" secondItem="a3G-Dn-wZE" secondAttribute="trailing" id="2b9-tg-KPs"/>
+                <constraint firstItem="jz3-RY-23d" firstAttribute="trailing" secondItem="E6M-t6-9oW" secondAttribute="trailing" id="8by-yl-r3p"/>
+                <constraint firstItem="jz3-RY-23d" firstAttribute="leading" secondItem="E6M-t6-9oW" secondAttribute="leading" id="9jY-VL-5oe"/>
+                <constraint firstItem="a3G-Dn-wZE" firstAttribute="width" secondItem="NAJ-cU-lch" secondAttribute="width" id="OGU-Lb-zQM"/>
+                <constraint firstItem="jz3-RY-23d" firstAttribute="top" secondItem="E6M-t6-9oW" secondAttribute="bottom" constant="30" id="P2T-LW-acx"/>
+                <constraint firstItem="E6M-t6-9oW" firstAttribute="leading" secondItem="a3G-Dn-wZE" secondAttribute="leading" id="Rb9-7h-7Xe"/>
+                <constraint firstItem="JiE-M7-7xp" firstAttribute="centerX" secondItem="a3G-Dn-wZE" secondAttribute="centerX" id="X9P-cG-ZvU"/>
+                <constraint firstItem="NAJ-cU-lch" firstAttribute="leading" secondItem="Rdy-7Z-OCC" secondAttribute="leading" constant="33" id="hph-re-B88"/>
+                <constraint firstAttribute="bottom" secondItem="JiE-M7-7xp" secondAttribute="bottom" constant="49" id="msn-zs-A4b"/>
+                <constraint firstItem="a3G-Dn-wZE" firstAttribute="top" secondItem="NAJ-cU-lch" secondAttribute="bottom" constant="15" id="n2h-VS-ESr"/>
+                <constraint firstItem="E6M-t6-9oW" firstAttribute="top" secondItem="a3G-Dn-wZE" secondAttribute="bottom" constant="25" id="nL7-WN-j38"/>
+                <constraint firstAttribute="trailing" secondItem="NAJ-cU-lch" secondAttribute="trailing" constant="33" id="vwE-GP-bDd"/>
+                <constraint firstItem="a3G-Dn-wZE" firstAttribute="leading" secondItem="NAJ-cU-lch" secondAttribute="leading" id="wvc-8P-04a"/>
+                <constraint firstItem="NAJ-cU-lch" firstAttribute="top" secondItem="Rdy-7Z-OCC" secondAttribute="top" constant="70" id="xjC-mu-zlJ"/>
+                <constraint firstItem="JiE-M7-7xp" firstAttribute="top" secondItem="Rdy-7Z-OCC" secondAttribute="top" id="zP9-yu-v4X"/>
+            </constraints>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="login.png" width="320" height="568"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

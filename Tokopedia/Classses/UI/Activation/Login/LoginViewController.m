@@ -13,6 +13,7 @@
 #import "LoginViewController.h"
 
 #import "TKPDSecureStorage.h"
+#import "StickyAlert.h"
 
 @interface LoginViewController (){
     
@@ -86,26 +87,31 @@
     img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        //        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign In" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     }
     else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-
+        //        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign In" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    
     [barbutton1 setTag:10];
+    [barbutton1 setTintColor:[UIColor whiteColor]];
     self.navigationItem.rightBarButtonItem = barbutton1;
-
+    
     /** GO TO SIGN UP PAGE **/
     img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        //        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     }
     else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        //        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     
     [barbutton1 setTag:11];
+    [barbutton1 setTintColor:[UIColor whiteColor]];
     self.navigationItem.leftBarButtonItem = barbutton1;
-
     
     [_container setFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height+64, _container.frame.size.width, _container.frame.size.height)];
     
@@ -137,6 +143,8 @@
     //    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     //    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
+
+#pragma mark - View Action
 
 #pragma mark - View Actipn
 -(IBAction)tap:(id)sender
@@ -187,6 +195,16 @@
                     }
                 }
                 
+//                StickyAlert *stickyalert = [[StickyAlert alloc]init];
+//                [stickyalert initView:self.view];
+//                [stickyalert alertError:messages];
+                
+                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                
+                //                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                
+                
                 NSLog(@"message : %@", messages);
                 break;
             }
@@ -203,7 +221,6 @@
     }
     
 }
-
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
@@ -321,6 +338,13 @@
         {
             NSArray *messages = _login.message_error;
             NSString *message = [[messages valueForKey:@"description"] componentsJoinedByString:@"\n"];
+            
+            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+            
+//            StickyAlert *stickyalert = [[StickyAlert alloc]init];
+//            [stickyalert initView:self.view];
+//            [stickyalert alertError:messages];
 
             //UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             //[alertView show];

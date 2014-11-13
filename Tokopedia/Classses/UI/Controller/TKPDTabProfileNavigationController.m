@@ -169,7 +169,7 @@
 	[barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
     
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
@@ -177,8 +177,8 @@
     else
         _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
 	[_barbuttoninfo setTag:11];
-    _barbuttoninfo.enabled = NO;
-    self.navigationItem.rightBarButtonItem = _barbuttoninfo;
+    
+    
     [_scrollview addSubview:_contentview];
     
     _operationQueue = [NSOperationQueue new];
@@ -321,6 +321,13 @@
 		_selectedIndex = -1;
 		//_navigationIndex = -1;
 	}
+    
+    CALayer *upperBorder = [CALayer layer];
+    upperBorder.backgroundColor = [[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] CGColor];
+    upperBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[_selectedIndex] frame]), 2.0f);
+    
+    [[_chevrons[_selectedIndex] layer] addSublayer:upperBorder];
+
 }
 
 - (void)setSelectedViewController:(UIViewController *)selectedViewController
@@ -525,6 +532,22 @@
 		NSInteger index = _selectedIndex;
         index = sender.tag;
         
+        //add border green on bottom button
+        CALayer *upperBorder = [CALayer layer];
+        upperBorder.backgroundColor = [[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] CGColor];
+        upperBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[index-10] frame]), 2.0f);
+        
+        
+        for(int i=0;i<3;i++) {
+            CALayer *whiteBorder = [CALayer layer];
+            
+            whiteBorder.backgroundColor = [[UIColor whiteColor] CGColor];
+            whiteBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[i] frame]), 2.0f);
+            [[_chevrons[i] layer] addSublayer:whiteBorder];
+        }
+        
+        [[_chevrons[index-10] layer] addSublayer:upperBorder];
+        
 		BOOL should = YES;
 		
 		if (([_delegate respondsToSelector:@selector(tabBarController:shouldSelectViewController:)])) {
@@ -556,9 +579,10 @@
             }
             case 11:
             {
-//                ShopInfoViewController *vc = [ShopInfoViewController new];
-//                vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop};
-//                [self.navigationController pushViewController:vc animated:YES];
+                //setting action
+                ProfileSettingViewController *vc = [ProfileSettingViewController new];
+                vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]};
+                [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
             default:
@@ -583,14 +607,7 @@
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
-            case 12:
-            {
-                //setting action
-                ProfileSettingViewController *vc = [ProfileSettingViewController new];
-                vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]};
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
+
             default:
                 break;
         }
@@ -819,6 +836,7 @@
         _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
     }else {
+        [_act stopAnimating];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
@@ -954,7 +972,8 @@
         if (auth && ![auth isEqual:[NSNull null]]) {
             if ([[_data objectForKey:kTKPD_USERIDKEY]integerValue] == [[auth objectForKey:kTKPD_USERIDKEY]integerValue]) {
                 _buttoneditprofile.hidden = NO;
-                _buttonsetting.hidden = NO;
+                [_barbuttoninfo setEnabled:YES];
+                self.navigationItem.rightBarButtonItem = _barbuttoninfo;
                 _buttonmessage.hidden = YES;
             }
         }
@@ -962,7 +981,8 @@
         {
             _buttonmessage.hidden = NO;
             _buttoneditprofile.hidden = YES;
-            _buttonsetting.hidden = YES;
+            [_barbuttoninfo setEnabled:NO];
+            [_barbuttoninfo setTintColor: [UIColor clearColor]];
         }
     }
 }

@@ -56,6 +56,7 @@
     NSInteger _pageheaderimages;
     NSInteger _heightDescSection;
     Product *_product;
+    BOOL is_dismissed;
     
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -155,10 +156,26 @@
     self.navigationItem.leftBarButtonItem = barbutton1;
     
     /** set inset table for different size**/
+    is_dismissed = [_data objectForKey:@"is_dismissed"];
+    if(is_dismissed) {
+        if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
+            self.edgesForExtendedLayout = UIRectEdgeNone;
+        }
+    }
+//    if (is4inch) {
+//        UIEdgeInsets inset = _table.contentInset;
+//        inset.bottom += 200;
+//        _table.contentInset = inset;
+//    }
+//    else{
+//        UIEdgeInsets inset = _table.contentInset;
+//        inset.bottom += 120;
+//        _table.contentInset = inset;
+//    }
+    
     UIEdgeInsets inset = _table.contentInset;
     inset.bottom += 190;
     _table.contentInset = inset;
-
     _table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
     
@@ -276,7 +293,12 @@
         switch (btn.tag) {
             case 10:
             {
-                [self.navigationController popViewControllerAnimated:YES];
+                if(is_dismissed) {
+                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                
             }
         }
     }
@@ -349,10 +371,13 @@
     }
     [mView addSubview:expandCollapseButton];
     
+//    [mView addSubview:logoView];
+    
     UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
     [bt setFrame:CGRectMake(15, 0, 170, 40)];
     [bt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [bt setTag:section];
+//    [bt setBackgroundColor:[UIColor redColor]];
     [bt.titleLabel setFont:[UIFont systemFontOfSize:12]];
     [bt setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     [bt.titleLabel setFont: [UIFont fontWithName:@"GothamMedium" size:15.0f]];
@@ -563,11 +588,15 @@
                                                            kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY:kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY,
                                                            kTKPDDETAILPRODUCT_APIPRODUCTSUCCESSRATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTSUCCESSRATEKEY,
                                                            kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTRATINGKEY:kTKPDDETAILPRODUCT_APIPRODUCTRATINGKEY,
                                                            kTKPDDETAILPRODUCT_APIPRODUCTCANCELRATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTCANCELRATEKEY,
                                                            kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY:kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY,
                                                            kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY:kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY:kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY
+                                                           kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY:kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY,
+                                                           KTKPDDETAILPRODUCT_APIPRODUCTQUALITYRATEKEY:KTKPDDETAILPRODUCT_APIPRODUCTQUALITYRATEKEY,
+                                                           KTKPDDETAILPRODUCT_APIPRODUCTACCURACYRATEKEY:KTKPDDETAILPRODUCT_APIPRODUCTACCURACYRATEKEY,
+                                                           KTKPDDETAILPRODUCT_APIPRODUCTQUALITYPOINTKEY:KTKPDDETAILPRODUCT_APIPRODUCTQUALITYPOINTKEY,
+                                                           KTKPDDETAILPRODUCT_APIPRODUCTACCURACYPOINTKEY:KTKPDDETAILPRODUCT_APIPRODUCTACCURACYPOINTKEY
+
                                                            }];
     
     RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
@@ -900,10 +929,10 @@
     [_talkaboutbutton.layer setBorderWidth:1];
     [_talkaboutbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
-    _qualitynumberlabel.text = [NSString stringWithFormat: @"%d ",_product.result.statistic.product_rating];
-    _qualityrateview.starscount = _product.result.statistic.product_rating;
+    _qualitynumberlabel.text = [NSString stringWithFormat: @"%d ",_product.result.statistic.product_quality_point];
+    _qualityrateview.starscount = _product.result.statistic.product_quality_rate;
     
-    _accuracynumberlabel.text = [NSString stringWithFormat:@"%d", _product.result.statistic.product_rating];
+    _accuracynumberlabel.text = [NSString stringWithFormat:@"%d", _product.result.statistic.product_accuracy_point];
     
     NSArray *images = _product.result.product_images;
     

@@ -84,7 +84,7 @@
     _operationQueue = [NSOperationQueue new];
     
     _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonsave setTintColor:[UIColor blackColor]];
+    [_barbuttonsave setTintColor:[UIColor whiteColor]];
     _barbuttonsave.tag = 11;
     _act= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     UIBarButtonItem * barbuttonact = [[UIBarButtonItem alloc] initWithCustomView:_act];
@@ -94,6 +94,18 @@
     [self configureActionRestKit];
     [self configureRestKit];
     [self request];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"]
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    backBarButtonItem.tag = 12;
+    backBarButtonItem.tintColor = [UIColor whiteColor];
+    self.navigationItem.leftBarButtonItem = backBarButtonItem;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -123,7 +135,10 @@
                 //Done Button
                 [self requestAction:_datainput];
                 break;
-                
+            case 12:
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
             default:
                 break;
         }

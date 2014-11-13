@@ -47,6 +47,7 @@
     [self setDefaultData:_data];
     
     UIBarButtonItem *barbutton1;
+    
     barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [barbutton1 setTintColor:[UIColor whiteColor]];
     barbutton1.tag = 11;
@@ -86,7 +87,8 @@
                 SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
                 vc.data = @{kTKPDPROFILE_DATAADDRESSKEY : [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY],
                             kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
-                            kTKPDPROFILE_DATAEDITTYPEKEY : @(kTKPDPROFILESETTINGEDIT_DATATYPEEDITVIEWKEY)
+                            kTKPDPROFILE_DATAEDITTYPEKEY : @(kTKPDPROFILESETTINGEDIT_DATATYPEEDITVIEWKEY),
+                            kTKPDPROFILE_DATAINDEXPATHKEY : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]
                             };
                 [self.navigationController pushViewController:vc animated:YES];
                 break;

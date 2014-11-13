@@ -90,7 +90,7 @@
     
     _type = [[_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]integerValue];
     
-    _viewpassword.hidden = (_type == 1)?NO:YES;
+    //_viewpassword.hidden = (_type == 1)?NO:YES;
     
     /** keyboard notification **/
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -144,9 +144,10 @@
             case 10:
             {
                 //name
-                NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATALOCATIONPROVINCEINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATABANKINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 SettingBankNameViewController *vc = [SettingBankNameViewController new];
-                vc.data = @{kTKPDPROFILE_DATAINDEXPATHKEY : indexpath
+                vc.data = @{kTKPDPROFILE_DATAINDEXPATHKEY : indexpath,
+                            kTKPDPROFILESETTING_APIBANKIDKEY : [_datainput objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY]?:@(list.bank_id)
                             };
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
@@ -372,7 +373,7 @@
         _textfieldaccountnumber.text = [NSString stringWithFormat:@"%@",list.bank_account_number?:@""];
         _textfieldaccountowner.text = list.bank_account_name?:@"";
         _textfieldbankbranch.text = list.bank_branch?:@"";
-        [_buttonbankname setTitle:list.bank_account_name?:@"Pilih Bank" forState:UIControlStateNormal];
+        [_buttonbankname setTitle:list.bank_name?:@"Pilih Bank" forState:UIControlStateNormal];
     }
 }
 
@@ -439,7 +440,6 @@
     if(_keyboardSize.height < 0){
         _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
         _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-        
         
         _scrollviewContentSize = [_container contentSize];
         _scrollviewContentSize.height += _keyboardSize.height;

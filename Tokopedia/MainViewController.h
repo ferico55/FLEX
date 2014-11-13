@@ -14,7 +14,7 @@
 #define kTKPD_HOMETITLEISAUTHARRAY @[@"Hotlist",@"Produk Feed", @"Terakhir dilihat", @"Toko Favorite"]
 #define kTKPD_HOMETITLEARRAY @[@"Hotlist"]
 
-#define kTKPDNAVIGATION_TABBARTITLEARRAY @[@"Home", @"Category", @"Search", @"Cart", @"More"]
+#define kTKPDNAVIGATION_TABBARTITLEARRAY @[@"Home", @"Category", @"Search", @"Cart", @"More", @"Login"]
 #define kTKPDNAVIGATION_TABBARACTIVETITLECOLOR [UIColor blackColor]
 #define kTKPDNAVIGATION_TABBARTITLECOLOR [UIColor blackColor]
 
