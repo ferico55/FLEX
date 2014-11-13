@@ -148,52 +148,6 @@
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             }
-            case 11:
-            {
-                //SUBMIT
-                NSIndexPath *indexpath =[_selectedsort objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
-                NSDictionary *orderdict = _sortarray[indexpath.row];
-                NSDictionary *userinfo = @{kTKPDFILTER_APIORDERBYKEY:[orderdict objectForKey:kTKPDFILTER_DATASORTVALUEKEY]?:@"", kTKPDFILTERSORT_DATAINDEXPATHKEY:indexpath?:0};
-                
-                switch (_type) {
-                    case 1:
-                    case 2:
-                    {   //product
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                        break;
-                    }
-                    case 3:
-                    {   //catalog
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                        break;
-                    }
-                    case 4:
-                    {    //detail catalog
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                        UINavigationController *nav = (UINavigationController *)self.presentingViewController;
-                        [self dismissViewControllerAnimated:NO completion:^{
-                            [nav popViewControllerAnimated:NO];
-                        }];
-                        break;
-                    }
-                    case 5:
-                    {    //shop
-
-                        break;
-                    }
-                    case 6:
-                    {   //shop product
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                        break;
-                    }
-                    default:
-                        break;
-                }
-                break;
-            }
             default:
                 break;
         }
@@ -243,6 +197,49 @@
 {
     [_selectedsort setObject:indexpath forKey:kTKPDFILTER_DATAINDEXPATHKEY];
     [_table reloadData];
+
+
+    //SUBMIT
+    NSDictionary *orderdict = _sortarray[indexpath.row];
+    NSDictionary *userinfo = @{kTKPDFILTER_APIORDERBYKEY:[orderdict objectForKey:kTKPDFILTER_DATASORTVALUEKEY]?:@"", kTKPDFILTERSORT_DATAINDEXPATHKEY:indexpath?:0};
+    
+    switch (_type) {
+        case 1:
+        case 2:
+        {   //product
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            break;
+        }
+        case 3:
+        {   //catalog
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            break;
+        }
+        case 4:
+        {    //detail catalog
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+            UINavigationController *nav = (UINavigationController *)self.presentingViewController;
+            [self dismissViewControllerAnimated:NO completion:^{
+                [nav popViewControllerAnimated:NO];
+            }];
+            break;
+        }
+        case 5:
+        {    //shop
+            
+            break;
+        }
+        case 6:
+        {   //shop product
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 @end
