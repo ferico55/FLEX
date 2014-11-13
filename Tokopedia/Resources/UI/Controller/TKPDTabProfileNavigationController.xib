@@ -12,6 +12,7 @@
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
             <string>GothamMedium</string>
+            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -19,6 +20,8 @@
             <connections>
                 <outlet property="act" destination="uuQ-Cd-GqH" id="SHa-O5-YIF"/>
                 <outlet property="actpp" destination="DDl-z9-A7W" id="Yub-Jp-IF2"/>
+                <outlet property="buttoneditprofile" destination="LHV-Kl-kxk" id="kD5-Ar-NVo"/>
+                <outlet property="buttonmessage" destination="7LK-36-qbj" id="Asa-d2-bxj"/>
                 <outlet property="container" destination="abB-jT-cSJ" id="x4v-nW-TEa"/>
                 <outlet property="contentview" destination="i5M-Pr-FkT" id="XhZ-73-dEU"/>
                 <outlet property="headerview" destination="d9E-tM-MoQ" id="gI5-6L-utW"/>
@@ -84,6 +87,19 @@
                             </state>
                             <connections>
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="L8A-HQ-Z0Q"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="LHV-Kl-kxk">
+                            <rect key="frame" x="94" y="181" width="140" height="25"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
+                            <state key="normal" title="  Edit Profile">
+                                <color key="titleColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="qlM-AR-8bS"/>
                             </connections>
                         </button>
                     </subviews>

@@ -137,7 +137,7 @@
     _table.tableFooterView = _footer;
     
     //    [self setHeaderData:_goldshop];
-    [_act startAnimating];
+    //    [_act startAnimating];
     
     if (_messages.count > 0) {
         _isnodata = NO;
@@ -242,7 +242,6 @@
     }
     
     
-    
     NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDMESSAGE_ACTIONGETMESSAGE,
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
                             kTKPDHOME_APIPAGEKEY:@(_page),
@@ -257,8 +256,8 @@
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsuccess:mappingResult withOperation:operation];
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
+//        [_act stopAnimating];
+//        _table.tableFooterView = nil;
         [_table reloadData];
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
@@ -269,7 +268,7 @@
         /** failure **/
         [self requestfailure:error];
         //[_act stopAnimating];
-        _table.tableFooterView = nil;
+//        _table.tableFooterView = nil;
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         [_timer invalidate];
@@ -401,13 +400,21 @@
             InboxMessageList *list = _messages[indexPath.row];
             
             ((InboxMessageCell*)cell).message_title.text = list.message_title;
+            ((InboxMessageCell*)cell).message_create_time.text =list.message_create_time;
+            ((InboxMessageCell*)cell).message_reply.text = list.message_reply;
             ((InboxMessageCell*)cell).multicheckbtn.tag = indexPath.row;
             ((InboxMessageCell*)cell).indexpath = indexPath;
             
+//            if([list.message_read_status isEqualToString:@"1"]) {
+//                ((InboxMessageCell*)cell).is_unread.hidden = NO;
+//            } else {
+//                ((InboxMessageCell*)cell).is_unread.hidden = YES;
+//            }
+//            
             if(_userinfo) {
                 if([_userinfo[@"show_check"] isEqualToString:@"1"]) {
                     ((InboxMessageCell*)cell).multicheckbtn.hidden = NO;
-                    ((InboxMessageCell*)cell).multicheckbtn.imageView.image = [UIImage imageNamed:@"icon_arrow_up.png"];
+                    ((InboxMessageCell*)cell).multicheckbtn.imageView.image = [UIImage imageNamed:@"icon_checkmark_1.png"];
                 } else {
                     ((InboxMessageCell*)cell).multicheckbtn.hidden = YES;
                     [_messages_selected removeAllObjects];
@@ -440,7 +447,7 @@
         }
         else {
 //            cell.accessoryType = UITableViewCellAccessoryNone;
-            ((InboxMessageCell*)cell).multicheckbtn.imageView.image = [UIImage imageNamed:@"icon_arrow_up.png"];
+            ((InboxMessageCell*)cell).multicheckbtn.imageView.image = [UIImage imageNamed:@"icon_checkmark_1.png"];
         }
         
         return cell;
@@ -516,6 +523,9 @@
             [self configureRestKit];
             
             [self loadData];
+        } else {
+            _table.tableFooterView = nil;
+            [_act stopAnimating];
         }
     }
 }
@@ -525,16 +535,48 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) doArchiveMessage:(id)data{
+    
+}
+
+- (void) doTrashMessage:(id)data {
+    
+}
+
 - (IBAction)tap:(id)sender {
     [_searchbar resignFirstResponder];
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
         
         switch (btn.tag) {
+//            archive
             case 10: {
+                NSIndexPath *item;
+                NSMutableArray *arr = [[NSMutableArray alloc] init];
+                NSMutableArray *arrIndexPath = [[NSMutableArray alloc] init];
+                
+                for (item in _messages_selected) {
+                    if(![item row]) {
+                        [_messages removeObjectAtIndex:0];
+                    } else {
+                        [_messages removeObjectAtIndex:[item row]];
+                    }
+                }
+                
+                
+
+                NSString *joinedArr = [arr componentsJoinedByString:@"/and/"];
+
+                
+                [_table beginUpdates];
+//                [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationRight];
+                [_table deleteRowsAtIndexPaths:_messages_selected withRowAnimation:UITableViewRowAnimationFade];
+                [_table endUpdates];
+                [_messages_selected removeAllObjects];
                 
                 break;
             }
+//            trash
             case 11 : {
                 
                 break;

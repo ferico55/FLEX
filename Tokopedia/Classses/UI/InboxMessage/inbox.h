@@ -12,7 +12,7 @@
 #define kTKPDDETAIL_APIURINEXTKEY @"uri_next"
 #define KTKPDMESSAGE_IDKEY @"message_id"
 #define KTKPDMESSAGE_USERFULLNAMEKEY @"user_full_name"
-#define KTKPDMESSAGE_CREATETIMEKEY @"create_time"
+#define KTKPDMESSAGE_CREATETIMEKEY @"message_create_time"
 #define KTKPDMESSAGE_READSTATUSKEY @"message_read_status"
 #define KTKPDMESSAGE_TITLEKEY @"message_title"
 #define KTKPDMESSAGE_USERIDKEY @"user_id"

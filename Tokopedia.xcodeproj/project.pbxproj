@@ -13,6 +13,10 @@
 		8500246419DBD2FC00E8463A /* icon_sold_28px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8500245E19DBD2FC00E8463A /* icon_sold_28px.png */; };
 		8500246519DBD2FC00E8463A /* icon_view_14px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8500245F19DBD2FC00E8463A /* icon_view_14px.png */; };
 		8500246619DBD2FC00E8463A /* icon_view_28px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8500246019DBD2FC00E8463A /* icon_view_28px.png */; };
+		8501FF401A1310CD00463DD7 /* icon_setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 8501FF3C1A1310CD00463DD7 /* icon_setting.png */; };
+		8501FF411A1310CD00463DD7 /* icon_setting@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8501FF3D1A1310CD00463DD7 /* icon_setting@2x.png */; };
+		8501FF481A13114400463DD7 /* icon_checkmark_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 8501FF461A13114400463DD7 /* icon_checkmark_1.png */; };
+		8501FF491A13114400463DD7 /* icon_checkmark_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8501FF471A13114400463DD7 /* icon_checkmark_1@2x.png */; };
 		8502C30019DCFA05002C3569 /* icon_star.png in Resources */ = {isa = PBXBuildFile; fileRef = 8502C2F819DCFA05002C3569 /* icon_star.png */; };
 		8502C30119DCFA05002C3569 /* icon_star@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8502C2F919DCFA05002C3569 /* icon_star@2x.png */; };
 		8502C30219DCFA05002C3569 /* icon_star_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 8502C2FA19DCFA05002C3569 /* icon_star_active.png */; };
@@ -49,9 +53,7 @@
 		854552421A09C25300678144 /* ProfileSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 854552381A09C25300678144 /* ProfileSettingViewController.xib */; };
 		8545525E1A09C27200678144 /* ProfileEditPhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 854552451A09C27200678144 /* ProfileEditPhoneViewController.m */; };
 		8545525F1A09C27200678144 /* ProfileEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 854552471A09C27200678144 /* ProfileEditViewController.m */; };
-		854552601A09C27200678144 /* SettingAddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8545524B1A09C27200678144 /* SettingAddressCell.m */; };
 		854552611A09C27200678144 /* SettingAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8545524D1A09C27200678144 /* SettingAddressViewController.m */; };
-		854552621A09C27200678144 /* SettingBankAccountCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 854552501A09C27200678144 /* SettingBankAccountCell.m */; };
 		854552631A09C27200678144 /* SettingBankAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 854552521A09C27200678144 /* SettingBankAccountViewController.m */; };
 		854552641A09C27200678144 /* SettingNotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 854552551A09C27200678144 /* SettingNotificationViewController.m */; };
 		854552651A09C27200678144 /* SettingPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 854552581A09C27200678144 /* SettingPasswordViewController.m */; };
@@ -117,6 +119,8 @@
 		8568F3AA1A08723200344A5F /* icon_shop_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8568F3A61A08723200344A5F /* icon_shop_grey@2x.png */; };
 		8568F3B11A08BFE400344A5F /* SendMessageResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 8568F3AE1A08BFE400344A5F /* SendMessageResult.m */; };
 		8568F3B21A08BFE400344A5F /* SendMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 8568F3B01A08BFE400344A5F /* SendMessage.m */; };
+		8569E1721A130E65001F757A /* icon_unread.png in Resources */ = {isa = PBXBuildFile; fileRef = 8569E1701A130E65001F757A /* icon_unread.png */; };
+		8569E1731A130E65001F757A /* icon_unread@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8569E1711A130E65001F757A /* icon_unread@2x.png */; };
 		856B7E7F19E7D00900DC3331 /* icon_quote.png in Resources */ = {isa = PBXBuildFile; fileRef = 856B7E7D19E7D00900DC3331 /* icon_quote.png */; };
 		856B7E8019E7D00900DC3331 /* icon_quote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 856B7E7E19E7D00900DC3331 /* icon_quote@2x.png */; };
 		85779C3F1A0CA65D00348FFB /* icon_checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85779C3E1A0CA65D00348FFB /* icon_checkmark@2x.png */; };
@@ -162,6 +166,19 @@
 		85AE65111A1208FF0087216B /* icon_login_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85AE650D1A1208FF0087216B /* icon_login_active@2x.png */; };
 		85AE65121A1208FF0087216B /* icon_login.png in Resources */ = {isa = PBXBuildFile; fileRef = 85AE650E1A1208FF0087216B /* icon_login.png */; };
 		85AE65131A1208FF0087216B /* icon_login@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85AE650F1A1208FF0087216B /* icon_login@2x.png */; };
+		85AE65161A1230D40087216B /* GeneralList1GestureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE65151A1230D40087216B /* GeneralList1GestureCell.m */; };
+		85AE65211A1231200087216B /* SettingBankNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE651B1A1231200087216B /* SettingBankNameViewController.m */; };
+		85AE65221A1231200087216B /* SettingBankDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE651D1A1231200087216B /* SettingBankDetailViewController.m */; };
+		85AE65231A1231200087216B /* SettingBankEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE651F1A1231200087216B /* SettingBankEditViewController.m */; };
+		85AE65291A1231560087216B /* SettingBankNameCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE65261A1231560087216B /* SettingBankNameCell.m */; };
+		85AE65321A1231AE0087216B /* BankAccountForm.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE652D1A1231AE0087216B /* BankAccountForm.m */; };
+		85AE65331A1231AE0087216B /* BankAccountFormList.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE652F1A1231AE0087216B /* BankAccountFormList.m */; };
+		85AE65341A1231AE0087216B /* BankAccountFormResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE65311A1231AE0087216B /* BankAccountFormResult.m */; };
+		85AE65371A1231B60087216B /* AddressFormList.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE65361A1231B60087216B /* AddressFormList.m */; };
+		85AE65411A1232B20087216B /* SettingAddressLocationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE653A1A1232B20087216B /* SettingAddressLocationCell.m */; };
+		85AE65421A1232B20087216B /* SettingAddressLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE653C1A1232B20087216B /* SettingAddressLocationViewController.m */; };
+		85AE65431A1232B20087216B /* SettingAddressDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE653E1A1232B20087216B /* SettingAddressDetailViewController.m */; };
+		85AE65441A1232B20087216B /* SettingAddressEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE65401A1232B20087216B /* SettingAddressEditViewController.m */; };
 		85B495F819F8D88000D46EC2 /* login.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 85B495F519F8D88000D46EC2 /* login.jpg */; };
 		85B495FA19F8DB7600D46EC2 /* login.png in Resources */ = {isa = PBXBuildFile; fileRef = 85B495F919F8DB7600D46EC2 /* login.png */; };
 		85B495FD19F8DE9500D46EC2 /* icon_cancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 85B495FB19F8DE9500D46EC2 /* icon_cancel.png */; };
@@ -557,6 +574,10 @@
 		8500245E19DBD2FC00E8463A /* icon_sold_28px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_sold_28px.png; sourceTree = "<group>"; };
 		8500245F19DBD2FC00E8463A /* icon_view_14px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_view_14px.png; sourceTree = "<group>"; };
 		8500246019DBD2FC00E8463A /* icon_view_28px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_view_28px.png; sourceTree = "<group>"; };
+		8501FF3C1A1310CD00463DD7 /* icon_setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_setting.png; path = "../../../../../Downloads/reicon (12)/icon_setting.png"; sourceTree = "<group>"; };
+		8501FF3D1A1310CD00463DD7 /* icon_setting@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon_setting@2x.png"; path = "../../../../../Downloads/reicon (12)/icon_setting@2x.png"; sourceTree = "<group>"; };
+		8501FF461A13114400463DD7 /* icon_checkmark_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_checkmark_1.png; path = "../../../../../Downloads/reicon (12)/icon_checkmark_1.png"; sourceTree = "<group>"; };
+		8501FF471A13114400463DD7 /* icon_checkmark_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon_checkmark_1@2x.png"; path = "../../../../../Downloads/reicon (12)/icon_checkmark_1@2x.png"; sourceTree = "<group>"; };
 		8502C2F819DCFA05002C3569 /* icon_star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_star.png; sourceTree = "<group>"; };
 		8502C2F919DCFA05002C3569 /* icon_star@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_star@2x.png"; sourceTree = "<group>"; };
 		8502C2FA19DCFA05002C3569 /* icon_star_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_star_active.png; sourceTree = "<group>"; };
@@ -613,12 +634,8 @@
 		854552451A09C27200678144 /* ProfileEditPhoneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileEditPhoneViewController.m; sourceTree = "<group>"; };
 		854552461A09C27200678144 /* ProfileEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileEditViewController.h; sourceTree = "<group>"; };
 		854552471A09C27200678144 /* ProfileEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileEditViewController.m; sourceTree = "<group>"; };
-		8545524A1A09C27200678144 /* SettingAddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAddressCell.h; sourceTree = "<group>"; };
-		8545524B1A09C27200678144 /* SettingAddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAddressCell.m; sourceTree = "<group>"; };
 		8545524C1A09C27200678144 /* SettingAddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAddressViewController.h; sourceTree = "<group>"; };
 		8545524D1A09C27200678144 /* SettingAddressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAddressViewController.m; sourceTree = "<group>"; };
-		8545524F1A09C27200678144 /* SettingBankAccountCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingBankAccountCell.h; sourceTree = "<group>"; };
-		854552501A09C27200678144 /* SettingBankAccountCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingBankAccountCell.m; sourceTree = "<group>"; };
 		854552511A09C27200678144 /* SettingBankAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingBankAccountViewController.h; sourceTree = "<group>"; };
 		854552521A09C27200678144 /* SettingBankAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingBankAccountViewController.m; sourceTree = "<group>"; };
 		854552541A09C27200678144 /* SettingNotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingNotificationViewController.h; sourceTree = "<group>"; };
@@ -736,6 +753,8 @@
 		8568F3AE1A08BFE400344A5F /* SendMessageResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendMessageResult.m; sourceTree = "<group>"; };
 		8568F3AF1A08BFE400344A5F /* SendMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendMessage.h; sourceTree = "<group>"; };
 		8568F3B01A08BFE400344A5F /* SendMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendMessage.m; sourceTree = "<group>"; };
+		8569E1701A130E65001F757A /* icon_unread.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_unread.png; path = ../../../../../Downloads/icon_unread.png; sourceTree = "<group>"; };
+		8569E1711A130E65001F757A /* icon_unread@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon_unread@2x.png"; path = "../../../../../Downloads/icon_unread@2x.png"; sourceTree = "<group>"; };
 		856B7E7D19E7D00900DC3331 /* icon_quote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_quote.png; sourceTree = "<group>"; };
 		856B7E7E19E7D00900DC3331 /* icon_quote@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_quote@2x.png"; sourceTree = "<group>"; };
 		85779C3E1A0CA65D00348FFB /* icon_checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon_checkmark@2x.png"; path = "../../../../../Downloads/icon_checkmark@2x.png"; sourceTree = "<group>"; };
@@ -798,6 +817,36 @@
 		85AE650D1A1208FF0087216B /* icon_login_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon_login_active@2x.png"; path = "../../../../../Downloads/reicon (11)/icon_login_active@2x.png"; sourceTree = "<group>"; };
 		85AE650E1A1208FF0087216B /* icon_login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_login.png; path = "../../../../../Downloads/reicon (11)/icon_login.png"; sourceTree = "<group>"; };
 		85AE650F1A1208FF0087216B /* icon_login@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon_login@2x.png"; path = "../../../../../Downloads/reicon (11)/icon_login@2x.png"; sourceTree = "<group>"; };
+		85AE65141A1230D40087216B /* GeneralList1GestureCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralList1GestureCell.h; sourceTree = "<group>"; };
+		85AE65151A1230D40087216B /* GeneralList1GestureCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralList1GestureCell.m; sourceTree = "<group>"; };
+		85AE65181A1231200087216B /* SettingBankNameCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingBankNameCell.h; sourceTree = "<group>"; };
+		85AE65191A1231200087216B /* SettingBankNameCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingBankNameCell.m; sourceTree = "<group>"; };
+		85AE651A1A1231200087216B /* SettingBankNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingBankNameViewController.h; sourceTree = "<group>"; };
+		85AE651B1A1231200087216B /* SettingBankNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingBankNameViewController.m; sourceTree = "<group>"; };
+		85AE651C1A1231200087216B /* SettingBankDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingBankDetailViewController.h; path = Settings/BankAccount/SettingBankDetailViewController.h; sourceTree = "<group>"; };
+		85AE651D1A1231200087216B /* SettingBankDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingBankDetailViewController.m; path = Settings/BankAccount/SettingBankDetailViewController.m; sourceTree = "<group>"; };
+		85AE651E1A1231200087216B /* SettingBankEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SettingBankEditViewController.h; path = Settings/BankAccount/SettingBankEditViewController.h; sourceTree = "<group>"; };
+		85AE651F1A1231200087216B /* SettingBankEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SettingBankEditViewController.m; path = Settings/BankAccount/SettingBankEditViewController.m; sourceTree = "<group>"; };
+		85AE65251A1231560087216B /* SettingBankNameCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingBankNameCell.h; sourceTree = "<group>"; };
+		85AE65261A1231560087216B /* SettingBankNameCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingBankNameCell.m; sourceTree = "<group>"; };
+		85AE65271A1231560087216B /* SettingBankNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingBankNameViewController.h; sourceTree = "<group>"; };
+		85AE65281A1231560087216B /* SettingBankNameViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingBankNameViewController.m; sourceTree = "<group>"; };
+		85AE652C1A1231AE0087216B /* BankAccountForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankAccountForm.h; sourceTree = "<group>"; };
+		85AE652D1A1231AE0087216B /* BankAccountForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccountForm.m; sourceTree = "<group>"; };
+		85AE652E1A1231AE0087216B /* BankAccountFormList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankAccountFormList.h; sourceTree = "<group>"; };
+		85AE652F1A1231AE0087216B /* BankAccountFormList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccountFormList.m; sourceTree = "<group>"; };
+		85AE65301A1231AE0087216B /* BankAccountFormResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BankAccountFormResult.h; sourceTree = "<group>"; };
+		85AE65311A1231AE0087216B /* BankAccountFormResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BankAccountFormResult.m; sourceTree = "<group>"; };
+		85AE65351A1231B60087216B /* AddressFormList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AddressFormList.h; path = Address/AddressFormList.h; sourceTree = "<group>"; };
+		85AE65361A1231B60087216B /* AddressFormList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AddressFormList.m; path = Address/AddressFormList.m; sourceTree = "<group>"; };
+		85AE65391A1232B20087216B /* SettingAddressLocationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAddressLocationCell.h; sourceTree = "<group>"; };
+		85AE653A1A1232B20087216B /* SettingAddressLocationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAddressLocationCell.m; sourceTree = "<group>"; };
+		85AE653B1A1232B20087216B /* SettingAddressLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAddressLocationViewController.h; sourceTree = "<group>"; };
+		85AE653C1A1232B20087216B /* SettingAddressLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAddressLocationViewController.m; sourceTree = "<group>"; };
+		85AE653D1A1232B20087216B /* SettingAddressDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAddressDetailViewController.h; sourceTree = "<group>"; };
+		85AE653E1A1232B20087216B /* SettingAddressDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAddressDetailViewController.m; sourceTree = "<group>"; };
+		85AE653F1A1232B20087216B /* SettingAddressEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAddressEditViewController.h; sourceTree = "<group>"; };
+		85AE65401A1232B20087216B /* SettingAddressEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAddressEditViewController.m; sourceTree = "<group>"; };
 		85B495F519F8D88000D46EC2 /* login.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = login.jpg; sourceTree = "<group>"; };
 		85B495F919F8DB7600D46EC2 /* login.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = login.png; sourceTree = "<group>"; };
 		85B495FB19F8DE9500D46EC2 /* icon_cancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_cancel.png; sourceTree = "<group>"; };
@@ -1523,8 +1572,11 @@
 		854552491A09C27200678144 /* Address */ = {
 			isa = PBXGroup;
 			children = (
-				8545524A1A09C27200678144 /* SettingAddressCell.h */,
-				8545524B1A09C27200678144 /* SettingAddressCell.m */,
+				85AE65381A1232B20087216B /* Location */,
+				85AE653D1A1232B20087216B /* SettingAddressDetailViewController.h */,
+				85AE653E1A1232B20087216B /* SettingAddressDetailViewController.m */,
+				85AE653F1A1232B20087216B /* SettingAddressEditViewController.h */,
+				85AE65401A1232B20087216B /* SettingAddressEditViewController.m */,
 				8545524C1A09C27200678144 /* SettingAddressViewController.h */,
 				8545524D1A09C27200678144 /* SettingAddressViewController.m */,
 			);
@@ -1534,8 +1586,7 @@
 		8545524E1A09C27200678144 /* BankAccount */ = {
 			isa = PBXGroup;
 			children = (
-				8545524F1A09C27200678144 /* SettingBankAccountCell.h */,
-				854552501A09C27200678144 /* SettingBankAccountCell.m */,
+				85AE65241A1231560087216B /* Name */,
 				854552511A09C27200678144 /* SettingBankAccountViewController.h */,
 				854552521A09C27200678144 /* SettingBankAccountViewController.m */,
 			);
@@ -1611,6 +1662,9 @@
 		854552791A09C28E00678144 /* SettingForm */ = {
 			isa = PBXGroup;
 			children = (
+				85AE65351A1231B60087216B /* AddressFormList.h */,
+				85AE65361A1231B60087216B /* AddressFormList.m */,
+				85AE652B1A1231AE0087216B /* BankAccount */,
 				8545527A1A09C28E00678144 /* Address */,
 				8545527F1A09C28E00678144 /* Notification */,
 				854552861A09C28E00678144 /* Privacy */,
@@ -1743,6 +1797,10 @@
 		8558292419D0212600CFC96B /* icon_general */ = {
 			isa = PBXGroup;
 			children = (
+				8501FF3C1A1310CD00463DD7 /* icon_setting.png */,
+				8501FF461A13114400463DD7 /* icon_checkmark_1.png */,
+				8501FF471A13114400463DD7 /* icon_checkmark_1@2x.png */,
+				8501FF3D1A1310CD00463DD7 /* icon_setting@2x.png */,
 				85779C401A0CA67500348FFB /* icon_checkmark.png */,
 				85779C3E1A0CA65D00348FFB /* icon_checkmark@2x.png */,
 				8568F3A31A08723200344A5F /* icon_people_grey.png */,
@@ -1750,6 +1808,8 @@
 				8568F3A51A08723200344A5F /* icon_shop_grey.png */,
 				8568F3A61A08723200344A5F /* icon_shop_grey@2x.png */,
 				85A0865519FE42610099F617 /* icon_facebook.png */,
+				8569E1701A130E65001F757A /* icon_unread.png */,
+				8569E1711A130E65001F757A /* icon_unread@2x.png */,
 				85A0865619FE42610099F617 /* icon_facebook@2x.png */,
 				85A0865719FE42610099F617 /* icon_google.png */,
 				85A0865819FE42610099F617 /* icon_google@2x.png */,
@@ -1832,6 +1892,8 @@
 		85627F2F19E6B1030085DDF5 /* GeneralCell */ = {
 			isa = PBXGroup;
 			children = (
+				85AE65141A1230D40087216B /* GeneralList1GestureCell.h */,
+				85AE65151A1230D40087216B /* GeneralList1GestureCell.m */,
 				85627F3019E6B1030085DDF5 /* GeneralProductCell.h */,
 				85627F3119E6B1030085DDF5 /* GeneralProductCell.m */,
 				85627F3219E6B1030085DDF5 /* GeneralReviewCell.h */,
@@ -1990,6 +2052,53 @@
 			name = SendMessage;
 			sourceTree = "<group>";
 		};
+		85AE65171A1231200087216B /* Name */ = {
+			isa = PBXGroup;
+			children = (
+				85AE65181A1231200087216B /* SettingBankNameCell.h */,
+				85AE65191A1231200087216B /* SettingBankNameCell.m */,
+				85AE651A1A1231200087216B /* SettingBankNameViewController.h */,
+				85AE651B1A1231200087216B /* SettingBankNameViewController.m */,
+			);
+			name = Name;
+			path = Settings/BankAccount/Name;
+			sourceTree = "<group>";
+		};
+		85AE65241A1231560087216B /* Name */ = {
+			isa = PBXGroup;
+			children = (
+				85AE65251A1231560087216B /* SettingBankNameCell.h */,
+				85AE65261A1231560087216B /* SettingBankNameCell.m */,
+				85AE65271A1231560087216B /* SettingBankNameViewController.h */,
+				85AE65281A1231560087216B /* SettingBankNameViewController.m */,
+			);
+			path = Name;
+			sourceTree = "<group>";
+		};
+		85AE652B1A1231AE0087216B /* BankAccount */ = {
+			isa = PBXGroup;
+			children = (
+				85AE652C1A1231AE0087216B /* BankAccountForm.h */,
+				85AE652D1A1231AE0087216B /* BankAccountForm.m */,
+				85AE652E1A1231AE0087216B /* BankAccountFormList.h */,
+				85AE652F1A1231AE0087216B /* BankAccountFormList.m */,
+				85AE65301A1231AE0087216B /* BankAccountFormResult.h */,
+				85AE65311A1231AE0087216B /* BankAccountFormResult.m */,
+			);
+			path = BankAccount;
+			sourceTree = "<group>";
+		};
+		85AE65381A1232B20087216B /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				85AE65391A1232B20087216B /* SettingAddressLocationCell.h */,
+				85AE653A1A1232B20087216B /* SettingAddressLocationCell.m */,
+				85AE653B1A1232B20087216B /* SettingAddressLocationViewController.h */,
+				85AE653C1A1232B20087216B /* SettingAddressLocationViewController.m */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
 		85E7ED0119F51BF500554572 /* Favorited */ = {
 			isa = PBXGroup;
 			children = (
@@ -2005,6 +2114,11 @@
 		85E7ED3419F51CD300554572 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				85AE65171A1231200087216B /* Name */,
+				85AE651C1A1231200087216B /* SettingBankDetailViewController.h */,
+				85AE651D1A1231200087216B /* SettingBankDetailViewController.m */,
+				85AE651E1A1231200087216B /* SettingBankEditViewController.h */,
+				85AE651F1A1231200087216B /* SettingBankEditViewController.m */,
 				854552431A09C27200678144 /* Edit */,
 				854552481A09C27200678144 /* Settings */,
 				85E7ED3519F51CD300554572 /* Biodata */,
@@ -3827,10 +3941,12 @@
 				85A0865B19FE42620099F617 /* icon_google.png in Resources */,
 				FC36E19719B0673800AF74C1 /* navigation-button-bg-pt@2x.png in Resources */,
 				FC36E19F19B0673800AF74C1 /* top_bg1.png in Resources */,
+				8569E1721A130E65001F757A /* icon_unread.png in Resources */,
 				FC36E1A819B0673800AF74C1 /* active_tab@2x.png in Resources */,
 				FC839EB719DAB125002C4FC1 /* DetailProductOtherView.xib in Resources */,
 				FC170D9B19E242B4003FF32F /* DetailCatalogSpecView.xib in Resources */,
 				FC012DDB19BEB2360072A31A /* icon_5.png in Resources */,
+				8501FF481A13114400463DD7 /* icon_checkmark_1.png in Resources */,
 				FC012DC119BEB2360072A31A /* icon_12@2x.png in Resources */,
 				FC012DDA19BEB2360072A31A /* icon_4@2x.png in Resources */,
 				FC98070219CAA15300DB1089 /* SearchResultShopCell.xib in Resources */,
@@ -3873,6 +3989,7 @@
 				FCA7752219F673030041CFE1 /* AlertListView.xib in Resources */,
 				FC012DBB19BEB2360072A31A /* icon_1.png in Resources */,
 				FC21F34819BFE5BD00417CA8 /* icon_category.png in Resources */,
+				8569E1731A130E65001F757A /* icon_unread@2x.png in Resources */,
 				FC36DF9919B0656400AF74C1 /* Images.xcassets in Resources */,
 				FC012DC019BEB2360072A31A /* icon_12.png in Resources */,
 				FC012DDD19BEB2360072A31A /* icon_6.png in Resources */,
@@ -3907,6 +4024,7 @@
 				FC53467E19DC0AFF00E5AAD9 /* CatalogSellerViewController.xib in Resources */,
 				85E8FC4219EE1B7E00E12752 /* ShopTalkViewController.xib in Resources */,
 				FC18C79619B57F4D00BA162D /* CategoryViewCell.xib in Resources */,
+				8501FF401A1310CD00463DD7 /* icon_setting.png in Resources */,
 				851ECD911A0B54A500E1882E /* InboxMessageCell.xib in Resources */,
 				FC18C7A819B5955800BA162D /* CategoryMenuViewCell.xib in Resources */,
 				85FA60CC19ECCC0200E009C0 /* icon_location@2x.png in Resources */,
@@ -3945,6 +4063,7 @@
 				FC18C7A119B581CC00BA162D /* CategoryMenuViewController.xib in Resources */,
 				FCA7752319F673030041CFE1 /* AlertListViewCell.xib in Resources */,
 				85779C3F1A0CA65D00348FFB /* icon_checkmark@2x.png in Resources */,
+				8501FF491A13114400463DD7 /* icon_checkmark_1@2x.png in Resources */,
 				85E8FC4019EE1B7E00E12752 /* ShopNotesViewController.xib in Resources */,
 				8500246119DBD2FC00E8463A /* icon_location_14px.png in Resources */,
 				854552BA1A09C92600678144 /* Alert1ButtonView.xib in Resources */,
@@ -3963,6 +4082,7 @@
 				FC012DD419BEB2360072A31A /* icon_21.png in Resources */,
 				85C2B9C119F0D54500152B29 /* GeneralTalkCommentCell.xib in Resources */,
 				FC9FD74719B4277F00CF6CDD /* tab_btm_shadow@2x.png in Resources */,
+				8501FF411A1310CD00463DD7 /* icon_setting@2x.png in Resources */,
 				FC21F34C19BFE5BD00417CA8 /* icon_home.png in Resources */,
 				85386DCC19CBE88700BCA463 /* GothamLight.ttf in Resources */,
 				85CE0D0519DA852800120F14 /* icon_share_14px-01.png in Resources */,
@@ -4109,6 +4229,7 @@
 			files = (
 				85A086EB19FF9F1C0099F617 /* FavoriteShop.m in Sources */,
 				8545529A1A09C28E00678144 /* PrivacyFormPrivacy.m in Sources */,
+				85AE65411A1232B20087216B /* SettingAddressLocationCell.m in Sources */,
 				FCA7750C19F612330041CFE1 /* Etalase.m in Sources */,
 				85A0866E19FE5A260099F617 /* ProductFeed.m in Sources */,
 				FC18C77D19B568BB00BA162D /* CategoryResultViewController.m in Sources */,
@@ -4118,6 +4239,7 @@
 				FCA7751D19F672F50041CFE1 /* AlertListView.m in Sources */,
 				85A0867A19FF887B0099F617 /* HistoryProductResult.m in Sources */,
 				85E7ED0619F51BF500554572 /* ShopFavoritedCell.m in Sources */,
+				85AE65441A1232B20087216B /* SettingAddressEditViewController.m in Sources */,
 				FCA7751E19F672F50041CFE1 /* AlertListViewCell.m in Sources */,
 				FC2F209E19BD73F300C2B9B5 /* DetailProductResult.m in Sources */,
 				85E8FC1D19EE139000E12752 /* ShopNotesDetailViewController.m in Sources */,
@@ -4140,6 +4262,7 @@
 				FC53464419DBBE1100E5AAD9 /* CatalogSpecs.m in Sources */,
 				85E8FC0319EE127100E12752 /* HotlistResultViewController.m in Sources */,
 				8568F3B21A08BFE400344A5F /* SendMessage.m in Sources */,
+				85AE65321A1231AE0087216B /* BankAccountForm.m in Sources */,
 				854552651A09C27200678144 /* SettingPasswordViewController.m in Sources */,
 				854552DD1A0B30E900678144 /* InboxMessageList.m in Sources */,
 				FC53468119DC0FDA00E5AAD9 /* CatalogSellerHeaderView.m in Sources */,
@@ -4190,9 +4313,12 @@
 				FC36E18B19B0673800AF74C1 /* SearchResultViewController.m in Sources */,
 				854552A31A09C2BF00678144 /* CameraCropViewController.m in Sources */,
 				85A0866F19FE5A260099F617 /* ProductFeedList.m in Sources */,
+				85AE65341A1231AE0087216B /* BankAccountFormResult.m in Sources */,
 				FC2F209519BD675800C2B9B5 /* Product.m in Sources */,
+				85AE65211A1231200087216B /* SettingBankNameViewController.m in Sources */,
 				FC08C6A819DD39000062FA0C /* DetailListCell.m in Sources */,
 				858BDB8319EFD977003EAF46 /* TalkCommentResult.m in Sources */,
+				85AE65291A1231560087216B /* SettingBankNameCell.m in Sources */,
 				FCA774D319F60CA30041CFE1 /* LogoutViewController.m in Sources */,
 				FC839EB519DA6A3A002C4FC1 /* DetailProductOtherView.m in Sources */,
 				FC2F207419BD5EE900C2B9B5 /* HotlistCell.m in Sources */,
@@ -4202,13 +4328,14 @@
 				854552091A09BF6800678144 /* URLCacheConnection.m in Sources */,
 				FC53467519DC0AC100E5AAD9 /* CatalogSellerViewController.m in Sources */,
 				FC53465619DBC0E300E5AAD9 /* CatalogImage.m in Sources */,
+				85AE65431A1232B20087216B /* SettingAddressDetailViewController.m in Sources */,
 				FC12A08B19D9084C0049EB76 /* ProductTalkViewController.m in Sources */,
 				85E7ED4519F51CD300554572 /* ProfileBiodataCell.m in Sources */,
 				85627F3B19E6B1030085DDF5 /* GeneralProductCell.m in Sources */,
 				8545521B1A09BFD400678144 /* LoginResult.m in Sources */,
-				854552621A09C27200678144 /* SettingBankAccountCell.m in Sources */,
 				FCA774F219F610040041CFE1 /* ProfileInfoResult.m in Sources */,
 				854552971A09C28E00678144 /* NotificationFormNotif.m in Sources */,
+				85AE65221A1231200087216B /* SettingBankDetailViewController.m in Sources */,
 				FCA774F319F610040041CFE1 /* UserInfo.m in Sources */,
 				854551FA1A09BF3300678144 /* NSDictionaryCategory.m in Sources */,
 				8545529B1A09C28E00678144 /* PrivacyFormResult.m in Sources */,
@@ -4234,12 +4361,15 @@
 				854552951A09C28E00678144 /* AddressFormResult.m in Sources */,
 				854552931A09C28E00678144 /* ProfileSettingsResult.m in Sources */,
 				FCA774D819F60D010041CFE1 /* Login.m in Sources */,
+				85AE65371A1231B60087216B /* AddressFormList.m in Sources */,
 				FC18C78419B56A5000BA162D /* CategoryResultViewCell.m in Sources */,
 				FC012E3B19BEF7B80072A31A /* ShipmentPackage.m in Sources */,
 				FC300B8519C949760098F0D0 /* FilterLocationViewCell.m in Sources */,
 				854552981A09C28E00678144 /* NotificationFormResult.m in Sources */,
+				85AE65231A1231200087216B /* SettingBankEditViewController.m in Sources */,
 				854552DE1A0B30E900678144 /* InboxMessageResult.m in Sources */,
 				FC012E4119BEF8910072A31A /* Address.m in Sources */,
+				85AE65421A1232B20087216B /* SettingAddressLocationViewController.m in Sources */,
 				FC53465319DBC07600E5AAD9 /* CatalogPrice.m in Sources */,
 				85E7ED4819F51CD300554572 /* ProfileContactViewController.m in Sources */,
 				FC012E4719BEFA480072A31A /* Shop.m in Sources */,
@@ -4259,7 +4389,6 @@
 				854552671A09C27200678144 /* ProfileSettingViewController.m in Sources */,
 				FC839EB119DA65F6002C4FC1 /* DetailCatalogViewController.m in Sources */,
 				854552921A09C28E00678144 /* ProfileSettings.m in Sources */,
-				854552601A09C27200678144 /* SettingAddressCell.m in Sources */,
 				FC53464A19DBBE4700E5AAD9 /* CatalogMarketPlace.m in Sources */,
 				FCA7750D19F612330041CFE1 /* EtalaseResult.m in Sources */,
 				FC28A37F19D3FFC4005815A0 /* ProductReviewViewController.m in Sources */,
@@ -4328,6 +4457,7 @@
 				854552B31A09C2DF00678144 /* GenerateHost.m in Sources */,
 				85627F3C19E6B1030085DDF5 /* GeneralReviewCell.m in Sources */,
 				FC012DF519BEE5450072A31A /* DetailProductWholesaleCell.m in Sources */,
+				85AE65331A1231AE0087216B /* BankAccountFormList.m in Sources */,
 				85E7ED6419F7836200554572 /* StickyAlert.m in Sources */,
 				85E8FC2E19EE16AF00E12752 /* NoteDetail.m in Sources */,
 				FC2F207A19BD5EE900C2B9B5 /* KatalogViewController.m in Sources */,
@@ -4345,6 +4475,7 @@
 				854552901A09C28E00678144 /* ProfileEdit.m in Sources */,
 				854552B21A09C2DF00678144 /* GeneratedHost.m in Sources */,
 				FC012E4419BEF9210072A31A /* DetailShopResult.m in Sources */,
+				85AE65161A1230D40087216B /* GeneralList1GestureCell.m in Sources */,
 				FC53463B19DBBDB300E5AAD9 /* Catalog.m in Sources */,
 				854552661A09C27200678144 /* SettingPrivacyViewController.m in Sources */,
 				854552641A09C27200678144 /* SettingNotificationViewController.m in Sources */,

@@ -929,10 +929,10 @@
     [_talkaboutbutton.layer setBorderWidth:1];
     [_talkaboutbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
-    _qualitynumberlabel.text = [NSString stringWithFormat: @"%d ",_product.result.statistic.product_rating];
-    _qualityrateview.starscount = _product.result.statistic.product_rating;
+    _qualitynumberlabel.text = [NSString stringWithFormat: @"%d ",_product.result.statistic.product_quality_point];
+    _qualityrateview.starscount = _product.result.statistic.product_quality_rate;
     
-    _accuracynumberlabel.text = [NSString stringWithFormat:@"%d", _product.result.statistic.product_rating];
+    _accuracynumberlabel.text = [NSString stringWithFormat:@"%d", _product.result.statistic.product_accuracy_point];
     
     NSArray *images = _product.result.product_images;
     
