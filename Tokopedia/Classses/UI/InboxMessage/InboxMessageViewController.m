@@ -531,6 +531,7 @@
     [self cancel];
     /** clear object **/
     [_messages removeAllObjects];
+    
     _page = 1;
     _requestcount = 0;
     _isrefreshview = YES;
@@ -548,6 +549,7 @@
     if (_isnodata) {
         cell.backgroundColor = [UIColor whiteColor];
     }
+    
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
