@@ -46,6 +46,7 @@
     UIView *blurBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+64)];
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+64)];
     imageView.image = [self.screenshotImage applyLightEffect];
+    imageView.backgroundColor = [UIColor blackColor];
     [blurBackground addSubview:imageView];
     
     [self.view insertSubview:blurBackground belowSubview:self.table];

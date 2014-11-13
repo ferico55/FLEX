@@ -715,7 +715,6 @@
             [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
             UIImage *screenshotImage = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
-            
             vc.screenshotImage = screenshotImage;
             
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
