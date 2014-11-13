@@ -38,8 +38,6 @@
 		8545521B1A09BFD400678144 /* LoginResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 854552101A09BFD400678144 /* LoginResult.m */; };
 		8545521E1A09BFD400678144 /* Register.m in Sources */ = {isa = PBXBuildFile; fileRef = 854552171A09BFD400678144 /* Register.m */; };
 		8545521F1A09BFD400678144 /* RegisterResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 854552191A09BFD400678144 /* RegisterResult.m */; };
-		854552241A09BFEA00678144 /* Alert1ButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 854552211A09BFEA00678144 /* Alert1ButtonView.m */; };
-		854552251A09BFEA00678144 /* AlertDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 854552231A09BFEA00678144 /* AlertDatePickerView.m */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		854552391A09C25300678144 /* ProfileEditPhoneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 854552291A09C25300678144 /* ProfileEditPhoneViewController.xib */; };
 		8545523A1A09C25300678144 /* ProfileEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8545522A1A09C25300678144 /* ProfileEditViewController.xib */; };
@@ -131,6 +129,8 @@
 		858BDB8219EFD977003EAF46 /* TalkCommentList.m in Sources */ = {isa = PBXBuildFile; fileRef = 858BDB7E19EFD977003EAF46 /* TalkCommentList.m */; };
 		858BDB8319EFD977003EAF46 /* TalkCommentResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 858BDB8019EFD977003EAF46 /* TalkCommentResult.m */; };
 		858BDB8719F0CEE3003EAF46 /* GeneralTalkCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 858BDB8519F0CEE3003EAF46 /* GeneralTalkCommentCell.m */; };
+		858C3DC41A146D3E0062A62E /* Alert1ButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 858C3DC11A146D3E0062A62E /* Alert1ButtonView.m */; };
+		858C3DC51A146D3E0062A62E /* AlertDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 858C3DC31A146D3E0062A62E /* AlertDatePickerView.m */; };
 		8598248019EB7066007E71D1 /* icon_calendar.png in Resources */ = {isa = PBXBuildFile; fileRef = 8598247819EB7066007E71D1 /* icon_calendar.png */; };
 		8598248119EB7066007E71D1 /* icon_calendar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8598247919EB7066007E71D1 /* icon_calendar@2x.png */; };
 		8598248219EB7066007E71D1 /* icon_clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 8598247A19EB7066007E71D1 /* icon_clock.png */; };
@@ -615,10 +615,6 @@
 		854552171A09BFD400678144 /* Register.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Register.m; sourceTree = "<group>"; };
 		854552181A09BFD400678144 /* RegisterResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterResult.h; sourceTree = "<group>"; };
 		854552191A09BFD400678144 /* RegisterResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterResult.m; sourceTree = "<group>"; };
-		854552201A09BFEA00678144 /* Alert1ButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Alert1ButtonView.h; path = ../../Object/Alert1ButtonView.h; sourceTree = "<group>"; };
-		854552211A09BFEA00678144 /* Alert1ButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Alert1ButtonView.m; path = ../../Object/Alert1ButtonView.m; sourceTree = "<group>"; };
-		854552221A09BFEA00678144 /* AlertDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AlertDatePickerView.h; path = ../../Object/AlertDatePickerView.h; sourceTree = "<group>"; };
-		854552231A09BFEA00678144 /* AlertDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AlertDatePickerView.m; path = ../../Object/AlertDatePickerView.m; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		854552291A09C25300678144 /* ProfileEditPhoneViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileEditPhoneViewController.xib; sourceTree = "<group>"; };
 		8545522A1A09C25300678144 /* ProfileEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileEditViewController.xib; sourceTree = "<group>"; };
@@ -770,6 +766,10 @@
 		858BDB8019EFD977003EAF46 /* TalkCommentResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TalkCommentResult.m; sourceTree = "<group>"; };
 		858BDB8419F0CEE3003EAF46 /* GeneralTalkCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralTalkCommentCell.h; sourceTree = "<group>"; };
 		858BDB8519F0CEE3003EAF46 /* GeneralTalkCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralTalkCommentCell.m; sourceTree = "<group>"; };
+		858C3DC01A146D3E0062A62E /* Alert1ButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Alert1ButtonView.h; sourceTree = "<group>"; };
+		858C3DC11A146D3E0062A62E /* Alert1ButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Alert1ButtonView.m; sourceTree = "<group>"; };
+		858C3DC21A146D3E0062A62E /* AlertDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertDatePickerView.h; sourceTree = "<group>"; };
+		858C3DC31A146D3E0062A62E /* AlertDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertDatePickerView.m; sourceTree = "<group>"; };
 		8598247819EB7066007E71D1 /* icon_calendar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_calendar.png; sourceTree = "<group>"; };
 		8598247919EB7066007E71D1 /* icon_calendar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_calendar@2x.png"; sourceTree = "<group>"; };
 		8598247A19EB7066007E71D1 /* icon_clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_clock.png; sourceTree = "<group>"; };
@@ -3762,10 +3762,10 @@
 		FCA7751519F672F50041CFE1 /* Alert */ = {
 			isa = PBXGroup;
 			children = (
-				854552201A09BFEA00678144 /* Alert1ButtonView.h */,
-				854552211A09BFEA00678144 /* Alert1ButtonView.m */,
-				854552221A09BFEA00678144 /* AlertDatePickerView.h */,
-				854552231A09BFEA00678144 /* AlertDatePickerView.m */,
+				858C3DC01A146D3E0062A62E /* Alert1ButtonView.h */,
+				858C3DC11A146D3E0062A62E /* Alert1ButtonView.m */,
+				858C3DC21A146D3E0062A62E /* AlertDatePickerView.h */,
+				858C3DC31A146D3E0062A62E /* AlertDatePickerView.m */,
 				FCA7751619F672F50041CFE1 /* alert.h */,
 				FCA7751719F672F50041CFE1 /* AlertListView.h */,
 				FCA7751819F672F50041CFE1 /* AlertListView.m */,
@@ -4251,7 +4251,6 @@
 				854552B41A09C2DF00678144 /* GenerateHostResult.m in Sources */,
 				FC170DAC19E291A0003FF32F /* ShopInfoShipmentCell.m in Sources */,
 				FC36E17619B0673800AF74C1 /* CartViewController.m in Sources */,
-				854552241A09BFEA00678144 /* Alert1ButtonView.m in Sources */,
 				FC28A37A19D3FDD0005815A0 /* ReviewProductOwner.m in Sources */,
 				FCBCCB2219DE53850099246C /* CatalogLocation.m in Sources */,
 				85A0874819FFA3410099F617 /* FavoritedShopResult.m in Sources */,
@@ -4326,6 +4325,7 @@
 				8568F3B11A08BFE400344A5F /* SendMessageResult.m in Sources */,
 				85E7ED4919F51CD300554572 /* ProfileFavoriteShopCell.m in Sources */,
 				854552091A09BF6800678144 /* URLCacheConnection.m in Sources */,
+				858C3DC51A146D3E0062A62E /* AlertDatePickerView.m in Sources */,
 				FC53467519DC0AC100E5AAD9 /* CatalogSellerViewController.m in Sources */,
 				FC53465619DBC0E300E5AAD9 /* CatalogImage.m in Sources */,
 				85AE65431A1232B20087216B /* SettingAddressDetailViewController.m in Sources */,
@@ -4378,6 +4378,7 @@
 				FCA7750319F610970041CFE1 /* FavoritedResult.m in Sources */,
 				854552941A09C28E00678144 /* AddressForm.m in Sources */,
 				FC12A0A019D916640049EB76 /* TalkList.m in Sources */,
+				858C3DC41A146D3E0062A62E /* Alert1ButtonView.m in Sources */,
 				85E7ED4619F51CD300554572 /* ProfileBiodataShopCell.m in Sources */,
 				854552081A09BF6800678144 /* URLCacheAlert.m in Sources */,
 				FC2F209219BD65EA00C2B9B5 /* ProductImages.m in Sources */,
@@ -4432,7 +4433,6 @@
 				85E8FC3019EE16AF00E12752 /* NoteDetails.m in Sources */,
 				85DB113119F1343300784C0A /* ProductReviewDetailViewController.m in Sources */,
 				854552DC1A0B30E900678144 /* InboxMessage.m in Sources */,
-				854552251A09BFEA00678144 /* AlertDatePickerView.m in Sources */,
 				FC36E17219B0673800AF74C1 /* NSStringCategory.m in Sources */,
 				FC53465919DBC2AE00E5AAD9 /* ProductList.m in Sources */,
 				854552C81A0A1C2D00678144 /* TKPDTabInboxMessageNavigationController.m in Sources */,
