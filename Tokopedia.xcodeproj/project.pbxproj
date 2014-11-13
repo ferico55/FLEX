@@ -185,6 +185,8 @@
 		FC300B7F19C946430098F0D0 /* SortViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC300B7C19C946430098F0D0 /* SortViewController.xib */; };
 		FC300B8A19C949830098F0D0 /* FilterLocationViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC300B8819C949830098F0D0 /* FilterLocationViewCell.xib */; };
 		FC300B8B19C949830098F0D0 /* FilterLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC300B8919C949830098F0D0 /* FilterLocationViewController.xib */; };
+		FC317D361A144ED500CF3DB1 /* AlertCameraView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC317D351A144ED500CF3DB1 /* AlertCameraView.xib */; };
+		FC317D391A144F3F00CF3DB1 /* AlertCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC317D381A144F3F00CF3DB1 /* AlertCameraView.m */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
 		FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */; };
 		FC36DF9119B0656400AF74C1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC36DF8F19B0656400AF74C1 /* InfoPlist.strings */; };
@@ -467,6 +469,7 @@
 		FC4D687F1A1304CB001E3F59 /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4D678A1A1304CB001E3F59 /* FilterViewController.m */; };
 		FC4D68801A1304CB001E3F59 /* SortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4D678D1A1304CB001E3F59 /* SortCell.m */; };
 		FC4D68811A1304CB001E3F59 /* SortViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4D678F1A1304CB001E3F59 /* SortViewController.m */; };
+		FC4D68841A13686C001E3F59 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4D68831A13686C001E3F59 /* UIImage+ImageEffects.m */; };
 		FC53463719DBA47100E5AAD9 /* DetailCatalogViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC53463619DBA47100E5AAD9 /* DetailCatalogViewController.xib */; };
 		FC53467D19DC0AFF00E5AAD9 /* CatalogSellerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC53467B19DC0AFF00E5AAD9 /* CatalogSellerCell.xib */; };
 		FC53467E19DC0AFF00E5AAD9 /* CatalogSellerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC53467C19DC0AFF00E5AAD9 /* CatalogSellerViewController.xib */; };
@@ -704,6 +707,9 @@
 		FC300B7C19C946430098F0D0 /* SortViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SortViewController.xib; sourceTree = "<group>"; };
 		FC300B8819C949830098F0D0 /* FilterLocationViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterLocationViewCell.xib; sourceTree = "<group>"; };
 		FC300B8919C949830098F0D0 /* FilterLocationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterLocationViewController.xib; sourceTree = "<group>"; };
+		FC317D351A144ED500CF3DB1 /* AlertCameraView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertCameraView.xib; sourceTree = "<group>"; };
+		FC317D371A144F3F00CF3DB1 /* AlertCameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertCameraView.h; sourceTree = "<group>"; };
+		FC317D381A144F3F00CF3DB1 /* AlertCameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertCameraView.m; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC36DF8619B0656400AF74C1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1236,6 +1242,8 @@
 		FC4D678E1A1304CB001E3F59 /* SortViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SortViewController.h; sourceTree = "<group>"; };
 		FC4D678F1A1304CB001E3F59 /* SortViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SortViewController.m; sourceTree = "<group>"; };
 		FC4D67901A1304CB001E3F59 /* sortfiltershare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sortfiltershare.h; sourceTree = "<group>"; };
+		FC4D68821A13686C001E3F59 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
+		FC4D68831A13686C001E3F59 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		FC53463619DBA47100E5AAD9 /* DetailCatalogViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailCatalogViewController.xib; sourceTree = "<group>"; };
 		FC53467B19DC0AFF00E5AAD9 /* CatalogSellerCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CatalogSellerCell.xib; sourceTree = "<group>"; };
 		FC53467C19DC0AFF00E5AAD9 /* CatalogSellerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CatalogSellerViewController.xib; sourceTree = "<group>"; };
@@ -1359,6 +1367,7 @@
 				FCA7752119F673030041CFE1 /* AlertListViewCell.xib */,
 				FCB3F09319FF4A8600B6070A /* AlertDatePickerView.xib */,
 				FCB3F0A219FFA26400B6070A /* Alert1ButtonView.xib */,
+				FC317D351A144ED500CF3DB1 /* AlertCameraView.xib */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -2121,6 +2130,8 @@
 		FC4D654E1A1304CB001E3F59 /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
+				FC4D68821A13686C001E3F59 /* UIImage+ImageEffects.h */,
+				FC4D68831A13686C001E3F59 /* UIImage+ImageEffects.m */,
 				FC4D654F1A1304CB001E3F59 /* DBManager.h */,
 				FC4D65501A1304CB001E3F59 /* DBManager.m */,
 				FC4D65511A1304CB001E3F59 /* ExpiringCache.h */,
@@ -2687,6 +2698,8 @@
 				FC4D66731A1304CB001E3F59 /* AlertListViewCell.m */,
 				FC4D66741A1304CB001E3F59 /* TKPDAlertView.h */,
 				FC4D66751A1304CB001E3F59 /* TKPDAlertView.m */,
+				FC317D371A144F3F00CF3DB1 /* AlertCameraView.h */,
+				FC317D381A144F3F00CF3DB1 /* AlertCameraView.m */,
 			);
 			path = Alert;
 			sourceTree = "<group>";
@@ -3685,6 +3698,7 @@
 				85627F7B19E79ABF0085DDF5 /* icon_message.png in Resources */,
 				FC21F35019BFE5BD00417CA8 /* icon_more.png in Resources */,
 				FC21F35219BFE5BD00417CA8 /* icon_more_active.png in Resources */,
+				FC317D361A144ED500CF3DB1 /* AlertCameraView.xib in Resources */,
 				FC36E1AA19B0673800AF74C1 /* ic_cart@2x.png in Resources */,
 				FC012DBC19BEB2360072A31A /* icon_10.png in Resources */,
 				FC012DC519BEB2360072A31A /* icon_14@2x.png in Resources */,
@@ -4010,6 +4024,7 @@
 				FC4D67F01A1304CB001E3F59 /* NotificationForm.m in Sources */,
 				FC4D67EF1A1304CB001E3F59 /* BankAccountFormResult.m in Sources */,
 				FC4D682C1A1304CB001E3F59 /* DetailCatalogViewController.m in Sources */,
+				FC4D68841A13686C001E3F59 /* UIImage+ImageEffects.m in Sources */,
 				FC4D686C1A1304CB001E3F59 /* SettingBankNameCell.m in Sources */,
 				FC4D67FE1A1304CB001E3F59 /* ClosedInfo.m in Sources */,
 				FC4D68651A1304CB001E3F59 /* ProfileFavoriteShopCell.m in Sources */,
@@ -4084,6 +4099,7 @@
 				FC4D685B1A1304CB001E3F59 /* KatalogViewController.m in Sources */,
 				FC4D67E41A1304CB001E3F59 /* ListFavoriteShop.m in Sources */,
 				FC4D67FB1A1304CB001E3F59 /* SearchRedirect.m in Sources */,
+				FC317D391A144F3F00CF3DB1 /* AlertCameraView.m in Sources */,
 				FC36DF9319B0656400AF74C1 /* main.m in Sources */,
 				FC4D67DC1A1304CB001E3F59 /* Paging.m in Sources */,
 				FC4D67B31A1304CB001E3F59 /* Info.m in Sources */,
@@ -4196,7 +4212,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4229,8 +4245,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				ONLY_ACTIVE_ARCH = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -4249,7 +4265,7 @@
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -4270,7 +4286,7 @@
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = 1;

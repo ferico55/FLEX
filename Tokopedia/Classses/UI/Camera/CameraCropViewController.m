@@ -8,6 +8,7 @@
 
 #import "camera.h"
 #import "CameraCropViewController.h"
+#import "AlertCameraView.h"
 
 @interface CameraCropViewController ()
 
@@ -225,7 +226,9 @@
     center.x += deltaCenterx;
     center.y += deltaCentery;
     
-    [_cropAreaView setCenter:center];
+    if (_cropAreaView.frame.origin.x >= self.view.frame.origin.x && _cropAreaView.frame.origin.y >= self.view.frame.origin.y) {
+         [_cropAreaView setCenter:center];
+    }
 }
 
 #pragma mark - Touch Event
