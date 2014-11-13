@@ -11,6 +11,7 @@
 		28C775F51A11CEBC00D77D54 /* icon_arrow_right_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 28C775F31A11CEBC00D77D54 /* icon_arrow_right_grey@2x.png */; };
 		28C775F61A11CEBC00D77D54 /* icon_arrow_right_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 28C775F41A11CEBC00D77D54 /* icon_arrow_right_grey.png */; };
 		28CF2AEE1A13011B00036797 /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CF2AED1A13011B00036797 /* UIImage+ImageEffects.m */; };
+		28CF2AF01A1363BC00036797 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28CF2AEF1A1363BC00036797 /* QuartzCore.framework */; };
 		8500246119DBD2FC00E8463A /* icon_location_14px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8500245B19DBD2FC00E8463A /* icon_location_14px.png */; };
 		8500246219DBD2FC00E8463A /* icon_location_28px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8500245C19DBD2FC00E8463A /* icon_location_28px.png */; };
 		8500246319DBD2FC00E8463A /* icon_sold_14px.png in Resources */ = {isa = PBXBuildFile; fileRef = 8500245D19DBD2FC00E8463A /* icon_sold_14px.png */; };
@@ -517,6 +518,7 @@
 		28C775F41A11CEBC00D77D54 /* icon_arrow_right_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_arrow_right_grey.png; sourceTree = "<group>"; };
 		28CF2AEC1A13011B00036797 /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+ImageEffects.h"; sourceTree = "<group>"; };
 		28CF2AED1A13011B00036797 /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
+		28CF2AEF1A1363BC00036797 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		482BA56B21334661A9065EEC /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		62A52619A9614BB78AFC9FF8 /* Pods-TokopediaTests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.xcconfig"; path = "Pods/Pods-TokopediaTests.xcconfig"; sourceTree = "<group>"; };
 		8500245B19DBD2FC00E8463A /* icon_location_14px.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_location_14px.png; sourceTree = "<group>"; };
@@ -1255,6 +1257,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28CF2AF01A1363BC00036797 /* QuartzCore.framework in Frameworks */,
 				FCAAEA5519F7BE7300904AFB /* UIKit.framework in Frameworks */,
 				FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */,
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
@@ -2281,6 +2284,7 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				28CF2AEF1A1363BC00036797 /* QuartzCore.framework */,
 				FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */,
 				FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */,
 				FC681F6619B6D62200C58548 /* libsqlite3.dylib */,

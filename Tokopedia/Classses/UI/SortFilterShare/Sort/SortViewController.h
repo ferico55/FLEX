@@ -11,5 +11,6 @@
 @interface SortViewController : UIViewController
 
 @property (nonatomic, strong) NSDictionary *data;
+@property (nonatomic, weak) UIImage *screenshotImage;
 
 @end
