@@ -436,6 +436,20 @@
                 if(![_userinfo[@"show_check"] isEqualToString:@"-1"]) {
                     ((InboxMessageCell*)cell).multicheckbtn.hidden = NO;
                     ((InboxMessageCell*)cell).multicheckbtn.imageView.image = [UIImage imageNamed:@"icon_checkmark_1.png"];
+
+                    
+//                    [UIView animateWithDuration:0.5
+//                                          delay:0
+//                                        options: UIViewAnimationCurveEaseOut
+//                                     animations:^{
+//                                         CGRect frame = ((InboxMessageCell*)cell).movingview.frame;
+//                                         frame.origin.x = 100;
+//                                         
+//                                         [((InboxMessageCell*)cell).movingview setFrame:frame];
+//                                     }
+//                                     completion:^(BOOL finished){
+//                                     }];
+                    
                 } else {
                     ((InboxMessageCell*)cell).multicheckbtn.hidden = YES;
                     [_messages_selected removeAllObjects];
@@ -447,6 +461,7 @@
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
             UIImageView *thumb = ((InboxMessageCell*)cell).userimageview;
+            thumb = [UIImageView circleimageview:thumb];
             thumb.image = nil;
             //thumb.hidden = YES;	//@prepareforreuse then @reset
             
