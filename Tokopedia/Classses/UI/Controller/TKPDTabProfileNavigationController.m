@@ -177,8 +177,8 @@
     else
         _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
 	[_barbuttoninfo setTag:11];
-//    _barbuttoninfo.enabled = NO;
-
+    
+    
     [_scrollview addSubview:_contentview];
     
     _operationQueue = [NSOperationQueue new];
@@ -579,12 +579,10 @@
             }
             case 11:
             {
+                //setting action
                 ProfileSettingViewController *vc = [ProfileSettingViewController new];
                 vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]};
                 [self.navigationController pushViewController:vc animated:YES];
-//                ShopInfoViewController *vc = [ShopInfoViewController new];
-//                vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop};
-//                [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
             default:
@@ -609,14 +607,7 @@
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
-            case 12:
-            {
-                //setting action
-                ProfileSettingViewController *vc = [ProfileSettingViewController new];
-                vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]};
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
+
             default:
                 break;
         }
@@ -981,8 +972,8 @@
         if (auth && ![auth isEqual:[NSNull null]]) {
             if ([[_data objectForKey:kTKPD_USERIDKEY]integerValue] == [[auth objectForKey:kTKPD_USERIDKEY]integerValue]) {
                 _buttoneditprofile.hidden = NO;
+                [_barbuttoninfo setEnabled:YES];
                 self.navigationItem.rightBarButtonItem = _barbuttoninfo;
-//                _buttonsetting.hidden = NO;
                 _buttonmessage.hidden = YES;
             }
         }
@@ -990,8 +981,8 @@
         {
             _buttonmessage.hidden = NO;
             _buttoneditprofile.hidden = YES;
-//            _buttonsetting.hidden = YES;
-//            self.navigationItem.rightBarButtonItem = _barbuttoninfo;
+            [_barbuttoninfo setEnabled:NO];
+            [_barbuttoninfo setTintColor: [UIColor clearColor]];
         }
     }
 }

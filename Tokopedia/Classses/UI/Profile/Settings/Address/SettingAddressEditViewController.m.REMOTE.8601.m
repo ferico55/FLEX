@@ -13,12 +13,8 @@
 #import "SettingAddressLocationViewController.h"
 
 #pragma mark - Setting Address Edit View Controller
-@interface SettingAddressEditViewController ()
-<   SettingAddressLocationViewDelegate,
-    UIScrollViewDelegate,
-    UITextFieldDelegate,
-    UITextViewDelegate
->
+
+@interface SettingAddressEditViewController () <SettingAddressLocationViewDelegate, UIScrollViewDelegate, UITextFieldDelegate>
 {
     NSInteger _type;
     
@@ -32,7 +28,6 @@
     NSMutableDictionary *_datainput;
     
     UITextField *_activetextfield;
-    UITextView *_activetextview;
     NSMutableDictionary *_detailfilter;
     
     CGPoint _keyboardPosition;
@@ -48,7 +43,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *container;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldreceivername;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldaddressname;
-@property (weak, nonatomic) IBOutlet UITextView *textviewaddress;
+@property (weak, nonatomic) IBOutlet UITextField *textfieldaddress;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldpostcode;
 @property (weak, nonatomic) IBOutlet UIButton *buttondistrict;
 @property (weak, nonatomic) IBOutlet UIButton *buttoncity;
@@ -99,12 +94,13 @@
     self.navigationItem.rightBarButtonItems = @[_barbuttonsave,barbuttonact];
     [_act setHidesWhenStopped:YES];
     
+    [self configureRestKitActionAddAddress];
+    
     [self setDefaultData:_data];
     
     _type = [[_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]integerValue];
     
     _viewpassword.hidden = (_type == 1)?NO:YES;
-    _textfieldpass.hidden = (_type == 1)?NO:YES;
 
     /** keyboard notification **/
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -135,13 +131,14 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    
 }
 - (void)didReceiveMemoryWarning
 {
@@ -153,7 +150,6 @@
 -(IBAction)tap:(id)sender
 {
     [_activetextfield resignFirstResponder];
-    [_activetextview resignFirstResponder];
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
         AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
@@ -178,7 +174,7 @@
                 vc.data = @{kTKPDPROFILE_DATALOCATIONTYPEKEY : @(kTKPDPROFILESETTINGLOCATION_DATATYPEREGIONKEY),
                             kTKPDPROFILE_DATAINDEXPATHKEY : indexpath,
                             kTKPDPROFILESETTING_APICITYKEY : list.city_id?:@(0),
-                            kTKPDPROFILESETTING_APIPROVINCEKEY : [_datainput objectForKey:kTKPDPROFILESETTING_APIPROVINCEKEY]?:list.province_id?:@(0)
+                            kTKPDPROFILESETTING_APIPROVINCEKEY : list.province_id?:[_datainput objectForKey:kTKPDPROFILESETTING_APIPROVINCEKEY]?:0
                             };
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
@@ -190,8 +186,8 @@
                 SettingAddressLocationViewController *vc = [SettingAddressLocationViewController new];
                 vc.data = @{kTKPDPROFILE_DATALOCATIONTYPEKEY : @(kTKPDPROFILESETTINGLOCATION_DATATYPEDISTICTKEY),
                             kTKPDPROFILE_DATAINDEXPATHKEY : indexpath,
-                            kTKPDPROFILESETTING_APIPROVINCEKEY : [_datainput objectForKey:kTKPDPROFILESETTING_APIPROVINCEKEY]?:list.province_id?:@(0),
-                            kTKPDPROFILESETTING_APICITYKEY : [_datainput objectForKey:kTKPDPROFILESETTING_APICITYKEY]?:list.city_id?:@(0),
+                            kTKPDPROFILESETTING_APIPROVINCEKEY : list.province_id?:[_datainput objectForKey:kTKPDPROFILESETTING_APIPROVINCEKEY]?:@(0),
+                            kTKPDPROFILESETTING_APICITYKEY : list.city_id?:[_datainput objectForKey:kTKPDPROFILESETTING_APICITYKEY]?:@(0),
                             kTKPDPROFILESETTING_APIDISTRICTKEY : list.district_id?:@(0)
                             };
                 vc.delegate = self;
@@ -216,14 +212,14 @@
                 
                 NSMutableArray *messages = [NSMutableArray new];
                     
-                NSString *receivername = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY]?:list.receiver_name;
-                NSString *addressname = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY]?:list.address_name;
-                NSString *address = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY]?:list.address_name;
-                NSInteger postcode = [[_datainput objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY] integerValue]?:list.postal_code;
-                NSString *district = [_datainput objectForKey:kTKPDPROFILESETTING_APIDISTRICNAMEKEY]?:list.district_name;
-                NSString *city = [_datainput objectForKey:kTKPDPROFILESETTING_APICITYNAMEKEY]?:list.city_name;
-                NSString *prov = [_datainput objectForKey:kTKPDPROFILESETTING_APIPROVINCENAMEKEY]?:list.province_name;
-                NSString *phone = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY]?:list.receiver_phone;
+                NSString *receivername = list.receiver_name?:[_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY];
+                NSString *addressname = list.address_name?:[_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY];
+                NSString *address = list.address_name?:[_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY];
+                NSInteger postcode = list.postal_code?:[[_datainput objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY] integerValue];
+                NSString *district = list.district_name?:[_datainput objectForKey:kTKPDPROFILESETTING_APIDISTRICNAMEKEY];
+                NSString *city = list.city_name?:[_datainput objectForKey:kTKPDPROFILESETTING_APICITYNAMEKEY];
+                NSString *prov = list.province_name?:[_datainput objectForKey:kTKPDPROFILESETTING_APIPROVINCENAMEKEY];
+                NSString *phone = list.receiver_phone?:[_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY];
                 NSString *pass = [_datainput objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY];
                 
                 NSInteger phoneCharCount= [[phone stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
@@ -240,7 +236,6 @@
                     
                     if (_type == 1) {
                         if (pass && passCharCount>=6) {
-                            [self configureRestKitActionAddAddress];
                             [self requestActionAddAddress:_datainput];
                         }
                         else
@@ -257,10 +252,7 @@
                         }
                     }
                     else
-                    {
-                        [self configureRestKitActionAddAddress];
                         [self requestActionAddAddress:_datainput];
-                    }
                 }
                 else
                 {
@@ -318,7 +310,6 @@
 }
 - (IBAction)gesture:(id)sender {
     [_activetextfield resignFirstResponder];
-    [_activetextview resignFirstResponder];
 }
 
 #pragma mark - Request Action AddAddress
@@ -374,7 +365,7 @@
     NSString *phone = [userinfo objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY]?:list.receiver_phone?:@(0);
     NSInteger postalcode = [[userinfo objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY]integerValue]?:list.postal_code?:0;
     
-    NSString *addressstreet = [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY]?:list.address_street?:@"";
+    NSString *addressstreet = list.address_street?:[userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY]?:@"";
     NSString *password = [userinfo objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY]?:@"";
     
     
@@ -445,18 +436,8 @@
                 if (!setting.message_error) {
                     if (setting.result.is_success) {
                         //TODO:: add alert
-                        NSDictionary *userinfo;
-                        if (_type == 1){
-                            //TODO: Behavior after edit
-                            NSArray *viewcontrollers = self.navigationController.viewControllers;
-                            NSInteger index = viewcontrollers.count-3;
-                            [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
-                            userinfo = @{kTKPDPROFILE_DATAEDITTYPEKEY:[_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY],
-                                         kTKPDPROFILE_DATAINDEXPATHKEY : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]
-                           };
-                        }
-                        else [self.navigationController popViewControllerAnimated:YES];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDADDRESSPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDADDRESSPOSTNOTIFICATIONNAMEKEY object:nil userInfo:nil];
+                        [self.navigationController popViewControllerAnimated:YES];
                     }
                 }
             }
@@ -494,19 +475,13 @@
         AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
         _textfieldreceivername.text = list.receiver_name?:@"";
         _textfieldaddressname.text = list.address_name?:@"";
-        _textviewaddress.text = list.address_street?:@"Address";
-        if(!list.address_street)_textviewaddress.textColor = [UIColor lightGrayColor];
+        _textfieldaddress.text = list.address_street?:@"";
         NSString *postalcode = list.postal_code?[NSString stringWithFormat:@"%d",list.postal_code]:@"";
         _textfieldpostcode.text = postalcode;
         _textfieldphonenumber.text = list.receiver_phone?:@"";
         [_buttonprovince setTitle:list.province_name?:@"none" forState:UIControlStateNormal];
         [_buttoncity setTitle:list.city_name?:@"none" forState:UIControlStateNormal];
         [_buttondistrict setTitle:list.district_name?:@"none" forState:UIControlStateNormal];
-        
-        if (list.province_id == 0) {
-            _buttondistrict.enabled = NO;
-            _buttoncity.enabled = NO;
-        }
     }
 }
 
@@ -535,9 +510,7 @@
                 
                 [_buttoncity setTitle:@"none" forState:UIControlStateNormal];
                 [_buttondistrict setTitle:@"none" forState:UIControlStateNormal];
-                _buttondistrict.enabled = NO;
             }
-            _buttoncity.enabled = YES;
             [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATALOCATIONPROVINCEINDEXPATHKEY];
             [_buttonprovince setTitle:name forState:UIControlStateNormal];
             [_datainput setObject:name forKey:kTKPDPROFILESETTING_APIPROVINCENAMEKEY];
@@ -560,7 +533,7 @@
                 
                 [_buttondistrict setTitle:@"none" forState:UIControlStateNormal];
             }
-            _buttondistrict.enabled = YES;
+            
             [_buttoncity setTitle:name forState:UIControlStateNormal];
             [_datainput setObject:name forKey:kTKPDPROFILESETTING_APICITYNAMEKEY];
             [_datainput setObject:@(locationid) forKey:kTKPDPROFILESETTING_APICITYKEY];
@@ -593,13 +566,13 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     if([_textfieldreceivername isFirstResponder]){
         
-        [_textviewaddress becomeFirstResponder];
+        [_textfieldaddressname becomeFirstResponder];
     }
     else if ([_textfieldaddressname isFirstResponder]){
         
-        [_textviewaddress becomeFirstResponder];
+        [_textfieldaddress becomeFirstResponder];
     }
-    else if ([_textviewaddress isFirstResponder]){
+    else if ([_textfieldaddress isFirstResponder]){
         
         [_textfieldpostcode becomeFirstResponder];
     }
@@ -619,6 +592,9 @@
     if (textField == _textfieldaddressname) {
         [_datainput setObject:textField.text forKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY];
     }
+    if (textField == _textfieldaddress) {
+        [_datainput setObject:textField.text forKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY];
+    }
     if (textField == _textfieldpostcode) {
         [_datainput setObject:textField.text forKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY];
     }
@@ -631,43 +607,6 @@
     return YES;
 }
 
-#pragma mark - Text View Delegate
--(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
-    [textView resignFirstResponder];
-    [_activetextfield resignFirstResponder];
-    _activetextfield = nil;
-    AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-    if (!list.address_name) {
-        _activetextview = textView;
-        _textviewaddress.text = @"";
-    }
-    _textviewaddress.textColor = [UIColor blackColor];
-    return YES;
-}
-
--(BOOL)textViewShouldReturn:(UITextView *)textView{
-
-    [_activetextfield resignFirstResponder];
-    
-    return YES;
-}
-
--(BOOL)textViewShouldEndEditing:(UITextView *)textView
-{
-    if (textView== _textviewaddress) {
-        [_datainput setObject:textView.text forKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY];
-    }
-    return YES;
-}
-
--(void) textViewDidChange:(UITextView *)textView
-{
-    if(_textviewaddress.text.length == 0){
-        _textviewaddress.textColor = [UIColor lightGrayColor];
-        _textviewaddress.text = @"Address";
-        [_textviewaddress resignFirstResponder];
-    }
-}
 
 #pragma mark - Keyboard Notification
 // Called when the UIKeyboardWillShowNotification is sent
@@ -675,6 +614,7 @@
     if(_keyboardSize.height < 0){
         _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
         _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+        
         
         _scrollviewContentSize = [_container contentSize];
         _scrollviewContentSize.height += _keyboardSize.height;
