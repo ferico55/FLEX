@@ -433,7 +433,7 @@
     
     [self.navigationItem setRightBarButtonItem:barbutton1];
     
-    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"0", @"show_check", nil];
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"-1", @"show_check", nil];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"test" object:nil userInfo:dict];
     if (_viewControllers != nil) {
@@ -506,7 +506,8 @@
                 barbutton1.tintColor = [UIColor blackColor];
                 
                 [self.navigationItem setRightBarButtonItem:barbutton1];
-                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"1", @"show_check", nil];
+                NSString *str_index = [NSString stringWithFormat:@"%d",_selectedIndex];
+                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:str_index, @"show_check", nil];
 
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"test" object:nil userInfo:dict];
                 break;
@@ -518,7 +519,7 @@
 
                 [self.navigationItem setRightBarButtonItem:barbutton1];
                 
-                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"0", @"show_check", nil];
+                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"-1", @"show_check", nil];
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"test" object:nil userInfo:dict];
 
