@@ -64,7 +64,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *buttonmessage;
 @property (weak, nonatomic) IBOutlet UIButton *buttoneditprofile;
-//@property (weak, nonatomic) IBOutlet UIButton *buttonsetting;
+@property (weak, nonatomic) IBOutlet UIButton *buttonsetting;
 
 
 -(void)cancel;
@@ -169,7 +169,7 @@
 	[barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
     
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
@@ -321,6 +321,13 @@
 		_selectedIndex = -1;
 		//_navigationIndex = -1;
 	}
+    
+    CALayer *upperBorder = [CALayer layer];
+    upperBorder.backgroundColor = [[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] CGColor];
+    upperBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[_selectedIndex] frame]), 2.0f);
+    
+    [[_chevrons[_selectedIndex] layer] addSublayer:upperBorder];
+
 }
 
 - (void)setSelectedViewController:(UIViewController *)selectedViewController
@@ -524,6 +531,22 @@
 		
 		NSInteger index = _selectedIndex;
         index = sender.tag;
+        
+        //add border green on bottom button
+        CALayer *upperBorder = [CALayer layer];
+        upperBorder.backgroundColor = [[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] CGColor];
+        upperBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[index-10] frame]), 2.0f);
+        
+        
+        for(int i=0;i<3;i++) {
+            CALayer *whiteBorder = [CALayer layer];
+            
+            whiteBorder.backgroundColor = [[UIColor whiteColor] CGColor];
+            whiteBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[i] frame]), 2.0f);
+            [[_chevrons[i] layer] addSublayer:whiteBorder];
+        }
+        
+        [[_chevrons[index-10] layer] addSublayer:upperBorder];
         
 		BOOL should = YES;
 		
@@ -813,6 +836,7 @@
         _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
     }else {
+        [_act stopAnimating];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];

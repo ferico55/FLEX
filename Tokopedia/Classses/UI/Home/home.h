@@ -15,6 +15,9 @@
 #define kTKPDHOME_DATAQUERYKEY @"key"
 
 #define kTKPDHOMEHOTLISTACT @"get_hotlist"
+#define kTKPDHOMEPRODUCTFEEDACT @"get_product_feed"
+#define kTKPDHOMEHISTORYPRODUCTACT @"get_recent_view_product"
+#define kTKPDHOMEFAVORITESHOPACT @"get_favorite_shop"
 
 #define kTKPDHOMEHOTLIST_LIMITPAGE 5
 #define kTKPDHOMEHOTLISTRESULT_LIMITPAGE 6
@@ -29,6 +32,7 @@
 #define kTKPDHOME_NODATACELLDESCS @"no data description"
 
 #define kTKPDHOME_APILISTKEY @"list"
+#define kTKPDHOME_APILISTGOLDKEY @"list_gold"
 #define kTKPDHOME_APIPAGINGKEY @"paging"
 #define kTKPDHOME_APIPAGEKEY @"page"
 #define kTKPDHOME_APIACTIONKEY @"action"
@@ -111,5 +115,8 @@
 #define kTKPDHOMEHOTLIST_APIRESPONSEFILE @"hotlist"
 #define kTKPDHOMEHOTLISTRESULT_CACHEFILEPATH @"home"
 #define kTKPDHOMEHOTLISTRESULT_APIRESPONSEFILEFORMAT @"hotlistresult%@"
+
+#define kTKPDHOMEHISTORYPRODUCT_APIRESPONSEFILE @"tmp/historyproduct.plist"
+#define kTKPDHOMEPRODUCTFEED_APIRESPONSEFILE @"tmp/productfeed.plist"
 
 #endif

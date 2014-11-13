@@ -9,7 +9,7 @@
 #ifndef Tokopedia_Tkpd_h
 #define Tokopedia_Tkpd_h
 
-#define kTkpdBaseURLString @"http://www.tkpdevel-pg.renny/ws"
+#define kTkpdBaseURLString @"http://www.tkpdevel-pg.tonito/ws"
 
 #define kTkpdAPIkey @"8b0c367dd3ef0860f5730ec64e3bbdc9" //TODO:: Remove api key
 #define kTKPD_AUTHKEY @"auth"
@@ -38,6 +38,9 @@
 #define kTKPD_FILTERCATALOGPOSTNOTIFICATIONNAMEKEY @"setfilterCatalog"
 #define kTKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAMEKEY @"setfilterDetailCatalog"
 #define kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY @"setuserinfo"
+#define kTKPD_SETUSERSTICKYERRORMESSAGEKEY @"stickyerrormessage"
+#define kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY @"stickysuccessmessage"
+
 #define kTKPD_FILTERSHOPPOSTNOTIFICATIONNAMEKEY @"setfilterShop"
 #define kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY @"setsegmentcontrol"
 #define kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY @"setDepartmentID"

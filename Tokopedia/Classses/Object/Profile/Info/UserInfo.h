@@ -19,4 +19,5 @@
 @property (nonatomic, strong) NSString *user_name;
 @property (nonatomic, strong) NSString *user_birth;
 
+
 @end

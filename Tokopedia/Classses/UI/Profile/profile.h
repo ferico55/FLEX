@@ -100,6 +100,7 @@ typedef enum
 #define kTKPDPROFILE_APIUSERIDKEY @"user_id"
 #define kTKPDPROFILE_APIUSERIMAGEKEY @"user_image"
 #define kTKPDPROFILE_APIUSERNAMEKEY @"user_name"
+#define kTKPDPROFILE_APIUSERBIRTHKEY @"user_birth"
 #define kTKPDPROFILE_APIPASSKEY @"user_password"
 #define kTKPDPROFILE_APIHOBBYKEY @"hobby"
 #define kTKPDPROFILE_APIBIRTHDAYKEY @"birth_day"

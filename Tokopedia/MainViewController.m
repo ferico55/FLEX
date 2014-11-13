@@ -18,6 +18,8 @@
 
 #import "HotlistViewController.h"
 #import "ProductFeedViewController.h"
+#import "HistoryProductViewController.h"
+#import "FavoritedShopViewController.h"
 #import "LogoutViewController.h"
 
 #import "activation.h"
@@ -125,9 +127,9 @@
         [viewcontrollers addObject:v];
         ProductFeedViewController *v1 = [ProductFeedViewController new];
         [viewcontrollers addObject:v1];
-        ProductFeedViewController *v2 = [ProductFeedViewController new];
+        HistoryProductViewController *v2 = [HistoryProductViewController new];
         [viewcontrollers addObject:v2];
-        ProductFeedViewController *v3 = [ProductFeedViewController new];
+        FavoritedShopViewController *v3 = [FavoritedShopViewController new];
         [viewcontrollers addObject:v3];
     }
     
@@ -295,8 +297,15 @@
                                forState:UIControlStateNormal];
     
     /** set tab bar item 5*/
-    image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_MORE];
-    image_active =[UIImage imageNamed:kTKPDIMAGE_ICONTABBARACTIVE_MORE];
+    BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY]boolValue];
+    if(isauth) {
+        image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_MORE];
+        image_active =[UIImage imageNamed:kTKPDIMAGE_ICONTABBARACTIVE_MORE];
+    } else {
+        image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_LOGIN];
+        image_active =[UIImage imageNamed:kTKPDIMAGE_ICONTABBARACTIVE_LOGIN];
+    }
+    
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         image_active = [image_active imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
@@ -307,7 +316,12 @@
     else
         [tabBarItem5 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
     //tabBarItem5.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
-    tabBarItem5.title = kTKPDNAVIGATION_TABBARTITLEARRAY[4];
+    if(isauth) {
+        tabBarItem5.title = kTKPDNAVIGATION_TABBARTITLEARRAY[4];
+    } else {
+        tabBarItem5.title = kTKPDNAVIGATION_TABBARTITLEARRAY[5];
+    }
+
     [tabBarItem5 setTitleTextAttributes:
      [NSDictionary dictionaryWithObjectsAndKeys:
       [UIColor blackColor], UITextAttributeTextColor,
@@ -367,9 +381,9 @@
         titles = kTKPD_HOMETITLEISAUTHARRAY;
         ProductFeedViewController *v1 = [ProductFeedViewController new];
         [arrays addObject:v1];
-        ProductFeedViewController *v2 = [ProductFeedViewController new];
+        HistoryProductViewController *v2 = [HistoryProductViewController new];
         [arrays addObject:v2];
-        ProductFeedViewController *v3 = [ProductFeedViewController new];
+        FavoritedShopViewController *v3 = [FavoritedShopViewController new];
         [arrays addObject:v3];
     }
     /** Adjust View Controller **/

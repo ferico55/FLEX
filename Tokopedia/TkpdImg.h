@@ -18,11 +18,13 @@
 #define kTKPDIMAGE_ICONTABBAR_MORE @"icon_more"
 #define kTKPDIMAGE_ICONSTAR @"icon_star"
 #define kTKPDIMAGE_ICONSTAR_ACTIVE @"icon_star_active"
+#define kTKPDIMAGE_ICONTABBAR_LOGIN @"icon_login"
 
 #define kTKPDIMAGE_ICONTABBARACTIVE_HOME @"icon_home_active"
 #define kTKPDIMAGE_ICONTABBARACTIVE_SEARCH @"icon_search_active"
 #define kTKPDIMAGE_ICONTABBARACTIVE_CATEGORY @"icon_category_active"
 #define kTKPDIMAGE_ICONTABBARACTIVE_CART @"icon_cart_active"
+#define kTKPDIMAGE_ICONTABBARACTIVE_LOGIN @"icon_login_active"
 #define kTKPDIMAGE_ICONTABBARACTIVE_MORE @"icon_more_active"
 
 #define kTKPDIMAGE_NAVBARBG @"actionbar_bg"

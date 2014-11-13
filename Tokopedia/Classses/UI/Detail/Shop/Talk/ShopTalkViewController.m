@@ -149,7 +149,12 @@
             TalkList *list = _list[indexPath.row];
             ((GeneralTalkCell*)cell).namelabel.text = list.talk_product_name;
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
-            ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
+
+            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.talk_message];
+            NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
+            [paragrahStyle setLineSpacing:5];
+            [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.talk_message length])];
+            ((GeneralTalkCell*)cell).commentlabel.attributedText = attributedString ;
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;

@@ -18,6 +18,7 @@
 
 #import "TKPDAlertView.h"
 #import "AlertListView.h"
+#import "StickyAlert.h"
 
 #import "URLCacheController.h"
 
@@ -287,10 +288,13 @@
         UIButton *btn = (UIButton*)sender;
         switch (btn.tag) {
             case 10:
+            {
                 // see more action
 //                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                [self.navigationController popViewControllerAnimated:YES];
+                 
+//                [self.navigationController popViewControllerAnimated:YES];
                 break;
+            }
              case 11:
             {
                 // Action Advance Review Quality / Accuracy

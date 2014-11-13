@@ -13,6 +13,7 @@
 
 #import "ProfileBiodataCell.h"
 #import "ProfileBiodataShopCell.h"
+#import "detail.h"
 
 @interface ProfileBiodataViewController ()<UITableViewDataSource, UITableViewDelegate, ProfileBiodataShopCellDelegate>
 {
@@ -39,6 +40,10 @@
     return self;
 }
 
+-(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 30.0f;
+}
+
 #pragma mark - View Life Cycle
 - (void)viewDidLoad
 {
@@ -59,7 +64,7 @@
     if (!_isnodatashop) {
         if (indexPath.section == 0) {
             //height shop
-            return 200;
+            return 150;
         }
         else
             //height biodata
@@ -73,7 +78,18 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (!_isnodatashop)return 2;
-    else return 1;
+    else return 0;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    //For each section, you must return here it's label
+    if(section == 0) {
+        return kTKPDTITLE_SHOP_INFO;
+    } else if (section == 1) {
+        return KTKPDTITLE_BIODATA;
+    }
+    return @"";
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -154,8 +170,7 @@
 
 -(void)ProfileBiodataShopCell:(UITableViewCell*)cell withtableview:(UITableView*)tableView
 {
-    ((ProfileBiodataCell*)cell).labelbirth.text = @"-";
-    ((ProfileBiodataCell*)cell).labelgender.text = @"-";
+    ((ProfileBiodataCell*)cell).labelbirth.text = _profileinfo.result.user_info.user_birth?:@"-";
     ((ProfileBiodataCell*)cell).labelhobbies.text = _profileinfo.result.user_info.user_hobbies?:@"-";
 }
 
