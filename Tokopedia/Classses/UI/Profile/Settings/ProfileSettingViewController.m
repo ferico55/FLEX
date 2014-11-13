@@ -108,7 +108,6 @@
         }
     }
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        NSLog(@"\n\n\n\nasdsadsdsdasdsadas\n\n\n\n");
         [self.navigationController popViewControllerAnimated:YES];
     }
 }

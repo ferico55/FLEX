@@ -105,7 +105,7 @@
 - (UIImage *)applyLightEffect
 {
     UIColor *tintColor = [UIColor colorWithWhite:0.0 alpha:0.2];
-    return [self applyBlurWithRadius:15 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
+    return [self applyBlurWithRadius:30 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
 }
 
 
