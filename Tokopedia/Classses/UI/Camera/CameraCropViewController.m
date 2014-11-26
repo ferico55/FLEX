@@ -157,6 +157,7 @@
                 
                 //TODO::request or delegate
                 [_delegate CameraCropViewController:self didFinishCroppingMediaWithInfo:[_data copy]];
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             }
             default:
@@ -226,9 +227,9 @@
     center.x += deltaCenterx;
     center.y += deltaCentery;
     
-    if (_cropAreaView.frame.origin.x >= self.view.frame.origin.x && _cropAreaView.frame.origin.y >= self.view.frame.origin.y) {
-         [_cropAreaView setCenter:center];
-    }
+    //if (_cropAreaView.frame.origin.x >= self.view.frame.origin.x && _cropAreaView.frame.origin.y >= self.view.frame.origin.y) {
+    [_cropAreaView setCenter:center];
+    //}
 }
 
 #pragma mark - Touch Event

@@ -12,6 +12,7 @@
                 <outlet property="buttonprovince" destination="6bR-MF-IdZ" id="EoM-ea-hNO"/>
                 <outlet property="container" destination="Szx-8I-bmS" id="uUV-8Q-KUE"/>
                 <outlet property="contentView" destination="rcd-tV-rTS" id="6bv-WA-AoQ"/>
+                <outlet property="labeladdressplaceholder" destination="ah4-Ta-Ml5" id="Zzo-bn-DEx"/>
                 <outlet property="scrollView" destination="Szx-8I-bmS" id="N0H-rJ-Ggc"/>
                 <outlet property="textfieldaddressname" destination="Tjw-Pd-Wsf" id="pg1-dJ-nLD"/>
                 <outlet property="textfieldpass" destination="vnx-9N-C8i" id="g09-8b-Mdw"/>
@@ -302,10 +303,19 @@
                                             <rect key="frame" x="20" y="9" width="280" height="105"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <connections>
+                                                <outlet property="delegate" destination="-1" id="rfa-5x-O6u"/>
+                                            </connections>
                                         </textView>
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ah4-Ta-Ml5">
+                                            <rect key="frame" x="20" y="9" width="68" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 </view>
@@ -324,9 +334,6 @@
                             <gestureRecognizers/>
                             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                            <connections>
-                                <outletCollection property="gestureRecognizers" destination="ZxJ-CH-HnQ" appends="YES" id="b4m-mL-oLL"/>
-                            </connections>
                         </view>
                     </subviews>
                     <connections>

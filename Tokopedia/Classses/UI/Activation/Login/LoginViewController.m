@@ -144,8 +144,6 @@
     //    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
-#pragma mark - View Action
-
 #pragma mark - View Actipn
 -(IBAction)tap:(id)sender
 {

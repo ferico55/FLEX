@@ -14,6 +14,8 @@
 #import "FilterLocationViewCell.h"
 #import "FilterLocationViewController.h"
 
+#import "District.h"
+
 #pragma mark - Filter Location View Controller
 @interface FilterLocationViewController () <FilterLocationViewCellDelegate,UITableViewDelegate,UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -23,8 +25,8 @@
 @end
 
 @implementation FilterLocationViewController{
-    NSInteger _page;
-    NSInteger _limit;
+    
+    NSInteger _type;
     
     NSInteger _viewposition;
     
@@ -104,30 +106,52 @@
     _table.delegate = self;
     _table.dataSource = self;
     
-    /** Set isnull value (title and icon for category) **/
-    [_locationvalues addObject:@""];
-    [_locationnames addObject:@"All Location"];
-
-    NSArray *locations =[_data objectForKey:kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY]?:@[];
-    if (locations.count>0) {
-        for (int i = 0; i<locations.count; i++) {
-            CatalogLocation *location = locations[i];
-            [_locationnames addObject:location.location_name];
-            [_locationvalues addObject:@(location.location_id)];
+    _type = [[_data objectForKey:kTKPDFILTER_APITYPEKEY]integerValue];
+    NSInteger index = 0;
+    switch (_type) {
+        case kTKPDFILTER_DATATYPESHOPSHIPPINGPROVINCYKEY:
+        {
+            NSArray *districts = [_data objectForKey:kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY];
+            for (int i=0; i<districts.count; i++) {
+                District *district = districts[i];
+                [_locationnames addObject:district.district_name];
+                [_locationvalues addObject:@(district.district_id)];
+            }
+            NSInteger districtid = [[_data objectForKey:kTKPDFILTER_APISELECTEDDISTRICTIDKEY]integerValue];
+            if (districtid!=0) index = [_locationvalues indexOfObject:@(districtid)];
+            break;
+        }
+        default:
+        {
+            /** Set isnull value (title and icon for category) **/
+            [_locationvalues addObject:@""];
+            [_locationnames addObject:@"All Location"];
+            
+            NSArray *locations =[_data objectForKey:kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY]?:@[];
+            if (locations.count>0) {
+                for (int i = 0; i<locations.count; i++) {
+                    CatalogLocation *location = locations[i];
+                    [_locationnames addObject:location.location_name];
+                    [_locationvalues addObject:@(location.location_id)];
+                }
+            }
+            else{
+                NSArray *name = [[DBManager getSharedInstance]LoadDataQueryLocationName:[NSString stringWithFormat:@"select d.district_name from ws_district d WHERE d.district_id IN (select distinct d.district_id from ws_shipping_city sc LEFT JOIN ws_district d ON sc.district_id = d.district_id order by d.district_name) order by d.district_name"]];
+                
+                NSArray *value = [[DBManager getSharedInstance]LoadDataQueryLocationValue:[NSString stringWithFormat:@"select distinct sc.district_id from ws_shipping_city sc, ws_district d where sc.district_id = d.district_id order by d.district_name"]];
+                
+                [_locationnames addObjectsFromArray:name];
+                [_locationvalues addObjectsFromArray:value];
+            }
+            break;
         }
     }
-    else{
-        NSArray *name = [[DBManager getSharedInstance]LoadDataQueryLocationName:[NSString stringWithFormat:@"select d.district_name from ws_district d WHERE d.district_id IN (select distinct d.district_id from ws_shipping_city sc LEFT JOIN ws_district d ON sc.district_id = d.district_id order by d.district_name) order by d.district_name"]];
-        
-        NSArray *value = [[DBManager getSharedInstance]LoadDataQueryLocationValue:[NSString stringWithFormat:@"select distinct sc.district_id from ws_shipping_city sc, ws_district d where sc.district_id = d.district_id order by d.district_name"]];
-        
-        [_locationnames addObjectsFromArray:name];
-        [_locationvalues addObjectsFromArray:value];
-    }
+    
     if (_locationnames.count > 0) {
         _isnodata = NO;
     }
-    NSIndexPath *indexpath = [_data objectForKey:kTKPDFILTER_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    NSIndexPath *indexpath = (index == 0)?[_data objectForKey:kTKPDFILTER_DATAINDEXPATHKEY]:[NSIndexPath indexPathForRow:index inSection:0];
+    //NSIndexPath *indexpath = [_data objectForKey:kTKPDFILTER_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     [_selectedlocation setObject:indexpath forKey:kTKPDFILTER_DATAINDEXPATHKEY];
 }
 
@@ -144,19 +168,19 @@
         switch (btn.tag) {
             case 10:
             {
-                [self.navigationController popToRootViewControllerAnimated:YES];
+                [self.navigationController popViewControllerAnimated:YES];
                 //[self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             }
             case 11:
             {
                 NSIndexPath *indexpath = [_selectedlocation objectForKey:kTKPDFILTER_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                NSDictionary *data = @{kTKPDFILTER_APILOCATIONKEY : _locationvalues[indexpath.row],
-                                       kTKPDFILTER_APILOCATIONNAMEKEY :  _locationnames[indexpath.row],
+                NSDictionary *data = @{kTKPDFILTER_APILOCATIONKEY : _locationvalues[indexpath.row]?:@(0),
+                                       kTKPDFILTER_APILOCATIONNAMEKEY :  _locationnames[indexpath.row]?:@"none",
                                        kTKPDFILTERLOCATION_DATAINDEXPATHKEY:indexpath
                                        };
                 [_delegate FilterLocationViewController:self withdata:data];
-                [self.navigationController popToRootViewControllerAnimated:YES];
+                [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
             default:

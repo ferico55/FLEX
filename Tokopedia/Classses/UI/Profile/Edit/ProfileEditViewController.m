@@ -25,6 +25,7 @@
 
 #import "UIImage+ImageEffects.h"
 
+#pragma mark - Profile Edit View Controller
 @interface ProfileEditViewController ()<CameraControllerDelegate, TKPDAlertViewDelegate, UITextFieldDelegate, UIScrollViewDelegate>
 {
     NSMutableDictionary *_datainput;
@@ -46,14 +47,15 @@
     NSInteger _requestcount;
     
     BOOL _isaddressexpanded;
+    
+    __weak RKObjectManager *_objectmanagerGenerateHost;
+    __weak RKManagedObjectRequestOperation *_requestGenerateHost;
+    
     __weak RKObjectManager *_objectmanagerUploadPhoto;
     __weak RKManagedObjectRequestOperation *_requestActionUploadPhoto;
     
     __weak RKObjectManager *_objectmanagerActionSubmit;
     __weak RKManagedObjectRequestOperation *_requestActionSubmit;
-    
-    __weak RKObjectManager *_objectmanagerGenerateHost;
-    __weak RKManagedObjectRequestOperation *_requestGenerateHost;
     
     __weak RKObjectManager *_objectmanagerProfileForm;
     __weak RKManagedObjectRequestOperation *_requestProfileForm;
@@ -73,6 +75,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *textfieldpassword;
 @property (weak, nonatomic) IBOutlet UIImageView *thumb;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (weak, nonatomic) IBOutlet UIButton *buttonedit;
 
 - (IBAction)tap:(id)sender;
 - (IBAction)gesture:(id)sender;
@@ -125,6 +128,7 @@
         barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
 	[barbutton1 setTag:11];
     self.navigationItem.rightBarButtonItem = barbutton1;
+    _buttonedit.enabled = NO;
     
     [self configureRestkitGenerateHost];
     [self requestGenerateHost];
@@ -202,12 +206,13 @@
             case 10:
             {   //edit thumbnail
                 CameraController* c = [CameraController new];
-                c.wantsFullScreenLayout = YES;
-                c.modalPresentationStyle = UIModalPresentationFullScreen;
-                c.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 c.delegate = self;
                 //c.data = data;
-                [self.navigationController presentViewController:c animated:YES completion:nil];
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
+                nav.wantsFullScreenLayout = YES;
+                nav.modalPresentationStyle = UIModalPresentationFullScreen;
+                nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
             case 11:
@@ -496,7 +501,7 @@
             BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                
+                _buttonedit.enabled = YES;
             }
         }
     }
@@ -573,8 +578,8 @@
     NSDictionary* param;
     
     param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY,
-              kTKPDPROFILE_APIUSERIDKEY:@(602),//@(_generatehost.result.generated_host.user_id),
-              kTKPDGENERATEDHOST_APISERVERIDKEY :@(2) //@(_generatehost.result.generated_host.server_id),
+              kTKPDPROFILE_APIUSERIDKEY:@(_generatehost.result.generated_host.user_id),
+              kTKPDGENERATEDHOST_APISERVERIDKEY :@(_generatehost.result.generated_host.server_id),
               };
     
     NSData* imageData;
@@ -608,8 +613,8 @@
     //Populate a dictionary with all the regular values you would like to send.?action=upload_profile_image?
     NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
     [parameters setValue:kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY forKeyPath:kTKPDPROFILE_APIACTIONKEY];
-    [parameters setValue:@(602) forKeyPath:kTKPDPROFILE_APIUSERIDKEY];
-    [parameters setValue:@(2) forKeyPath:kTKPDGENERATEDHOST_APISERVERIDKEY];
+    [parameters setValue:@(_generatehost.result.generated_host.user_id) forKeyPath:kTKPDPROFILE_APIUSERIDKEY];
+    [parameters setValue:@(_generatehost.result.generated_host.server_id) forKeyPath:kTKPDGENERATEDHOST_APISERVERIDKEY];
 
     //add params (all params are strings)
     for (NSString *param in parameters) {
@@ -774,7 +779,11 @@
                     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                     }];
                     
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil userInfo:nil];
+                    NSDictionary *userinfo = @{kTKPDPROFILE_APIUPLOADFILETHUMBKEY :_images.result.file_th,
+                                               kTKPDPROFILE_APIUPLOADFILEPATHKEY:_images.result.file_path
+                                               };
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                 }
                 else
                 {
@@ -837,8 +846,6 @@
     NSTimer *timer;
     
     NSDictionary* param;
-    
-    
     
     param = @{kTKPDPROFILE_APIACTIONKEY :kTKPDPROFILE_APISETUSERPROFILEKEY,
               kTKPDPROFILE_APIFULLNAMEKEY:[userInfo objectForKey:kTKPDPROFILE_APIFULLNAMEKEY]?:_profile.result.data_user.full_name,
@@ -974,7 +981,6 @@
 }
 
 #pragma mark - Textfield Delegate
-
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     [textField resignFirstResponder];
     _activetextfield = textField;

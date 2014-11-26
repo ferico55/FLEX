@@ -25,5 +25,6 @@
 @property (nonatomic, strong) NSArray *address;
 @property (nonatomic, strong) ShopInfo *info;
 @property (nonatomic, strong) ShopStats *stats;
+@property (nonatomic, strong) NSNumber *is_open;
 
 @end

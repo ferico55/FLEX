@@ -14,9 +14,10 @@
 @protocol GeneralList1GestureCellDelegate <NSObject>
 @required
 -(void)GeneralList1GestureCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
+-(void)CellDidSwipe;
 @optional
+- (NSString *)tableView:(UITableView *)tableView titleForSwipeAccessoryButtonForRowAtIndexPath:(NSIndexPath *)indexPath;
 -(void)DidTapButton:(UIButton*)button atCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
--(void)ShouldReloadTableExeptIndexpath:(NSIndexPath*)indexpath;
 @end
 
 @interface GeneralList1GestureCell : UITableViewCell
@@ -30,6 +31,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelname;
 @property (weak, nonatomic) IBOutlet UILabel *labeldefault;
 @property (strong, nonatomic) NSIndexPath *indexpath;
+@property (weak, nonatomic) IBOutlet UIButton *buttondefault;
+
+@property (nonatomic) NSInteger type;
 
 +(id)newcell;
 -(void)viewdetailresetposanimation:(BOOL)animated;

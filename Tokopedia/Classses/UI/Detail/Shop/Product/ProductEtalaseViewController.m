@@ -205,7 +205,7 @@
                 }
                 else
                     ((ProductEtalaseCell*)cell).imageview.hidden = NO;
-                ListEtalase *list =_datas[indexPath.row];
+                EtalaseList *list =_datas[indexPath.row];
                 ((ProductEtalaseCell*)cell).label.text = list.etalase_name;
                 ((ProductEtalaseCell*)cell).indexpath = indexPath;
             }
@@ -262,7 +262,7 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[EtalaseResult class]];
     
     // searchs list mapping
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[ListEtalase class]];
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[EtalaseList class]];
     [listMapping addAttributeMappingsFromArray:@[kTKPDSHOP_APIETALASENAMEKEY,
                                                  kTKPDSHOP_APIETALASEIDKEY,
                                                  kTKPDSHOP_APIETALASETOTALPRODUCTKEY
@@ -275,7 +275,7 @@
     [resultMapping addPropertyMapping:listRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOP_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOPETALASE_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     //add response description to object manager
     [_objectmanager addResponseDescriptor:responseDescriptor];
@@ -292,7 +292,7 @@
                             kTKPDDETAIL_APISHOPIDKEY: @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0)
                             };
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOP_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPETALASE_APIPATH parameters:param];
     
 	[_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);

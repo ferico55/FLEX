@@ -266,10 +266,11 @@
     NSString *action = (_type==1)?kTKPDPROFILE_APIEDITBANKKEY:kTKPDPROFILE_APIADDBANKKEY;
     NSInteger bankid = list.bank_id;
     
-    NSString *bankname = [userinfo objectForKey:kTKPDPROFILESETTING_APIBANKNAMEKEY]?:list.bank_name?:0;
-    NSString *accountname = [userinfo objectForKey:kTKPDPROFILESETTING_APIACCOUNTNAMEKEY]?:list.bank_account_name?:0;
-    NSNumber *accountnumber = [userinfo objectForKey:kTKPDPROFILESETTING_APIACCOUNTNUMBERKEY]?:list.bank_account_number?:0;
-    NSString *branchname = [userinfo objectForKey:kTKPDPROFILESETTING_APIBANKBRANCHKEY]?:list.bank_branch?:0;
+    NSString *bankname = [userinfo objectForKey:kTKPDPROFILESETTING_APIBANKNAMEKEY]?:list.bank_name?:@(0);
+    NSString *accountname = [userinfo objectForKey:kTKPDPROFILESETTING_APIACCOUNTNAMEKEY]?:list.bank_account_name?:@(0);
+    NSNumber *accountnumber = [userinfo objectForKey:kTKPDPROFILESETTING_APIACCOUNTNUMBERKEY]?:list.bank_account_number?:@(0);
+    NSString *branchname = [userinfo objectForKey:kTKPDPROFILESETTING_APIBANKBRANCHKEY]?:list.bank_branch?:@(0);
+    NSString *pass = [userinfo objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY];
     
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:action,
                             kTKPDPROFILESETTING_APIBANKIDKEY : @(bankid),
@@ -277,7 +278,8 @@
                             kTKPDPROFILESETTING_APIACCOUNTNAMEKEY : accountname,
                             kTKPDPROFILESETTING_APIACCOUNTNUMBERKEY : accountnumber,
                             kTKPDPROFILESETTING_APIBANKBRANCHKEY : branchname,
-                            kTKPDPROFILESETTING_APIOTPCODEKEY : [userinfo objectForKey:kTKPDPROFILESETTING_APIOTPCODEKEY]?:0
+                            kTKPDPROFILESETTING_APIOTPCODEKEY : [userinfo objectForKey:kTKPDPROFILESETTING_APIOTPCODEKEY]?:@(0),
+                            kTKPDPROFILESETTING_APIUSERPASSWORDKEY : pass?:@""
                             };
     _requestcount ++;
     
@@ -428,6 +430,9 @@
     }
     if (textField == _textfieldbankbranch) {
         [_datainput setObject:textField.text forKey:kTKPDPROFILESETTING_APIBANKBRANCHKEY];
+    }
+    if (textField == _textfieldpass) {
+        [_datainput setObject:textField.text forKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY];
     }
     return YES;
 }

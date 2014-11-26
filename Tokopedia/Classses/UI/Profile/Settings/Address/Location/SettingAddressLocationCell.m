@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "profile.h"
+#import "location.h"
 #import "SettingAddressLocationCell.h"
 
 #pragma mark - SettingAddress Location  Cell
@@ -49,7 +49,7 @@
                 break;
             }
             case UIGestureRecognizerStateEnded: {
-                NSIndexPath *indexpath = [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY];
+                NSIndexPath *indexpath = [_data objectForKey:kTKPDLOCATION_DATAINDEXPATHKEY];
                 [_delegate SettingAddressLocationCell:self withindexpath:indexpath];
                 break;
             }
@@ -63,7 +63,7 @@
     _data = data;
     
     if (data) {
-        _label.text = [_data objectForKey:kTKPDPROFILE_DATALOCATIONNAMEKEY];
+        _label.text = [_data objectForKey:kTKPDLOCATION_DATALOCATIONNAMEKEY];
     }
 }
 
