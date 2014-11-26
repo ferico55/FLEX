@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<<<<<<< HEAD
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+=======
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+>>>>>>> a9c0ddf201a71e76834efe9fda800269f828567c
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
@@ -65,14 +69,18 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="502"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WAa-CY-UR1">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="457"/>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WAa-CY-UR1">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="455"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="320" id="FRh-Wa-SQz"/>
+                        <constraint firstAttribute="height" constant="455" id="TRj-Zn-YcK"/>
+                    </constraints>
                     <connections>
                         <outlet property="delegate" destination="-1" id="EVH-C9-oph"/>
                     </connections>
                 </scrollView>
-                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1gX-pV-G32">
-                    <rect key="frame" x="0.0" y="457" width="320" height="48"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1gX-pV-G32">
+                    <rect key="frame" x="0.0" y="454" width="320" height="48"/>
                     <subviews>
                         <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4V6-FO-MpA">
                             <rect key="frame" x="220" y="2" width="104" height="45"/>
@@ -110,13 +118,18 @@
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="320" id="1Pa-UF-ap8"/>
+                        <constraint firstAttribute="height" constant="48" id="N2B-bH-dIN"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="1gX-pV-G32" firstAttribute="leading" secondItem="Rn0-aK-qZb" secondAttribute="leading" id="8vz-rZ-e1E"/>
-                <constraint firstAttribute="bottom" secondItem="1gX-pV-G32" secondAttribute="bottom" constant="-3" id="Dtm-sk-nwN"/>
-                <constraint firstAttribute="trailing" secondItem="1gX-pV-G32" secondAttribute="trailing" id="G8p-ya-nbk"/>
+                <constraint firstAttribute="bottom" secondItem="1gX-pV-G32" secondAttribute="bottom" id="CHj-LZ-8lf"/>
+                <constraint firstAttribute="bottom" secondItem="WAa-CY-UR1" secondAttribute="bottom" constant="47" id="V1g-32-oHt"/>
+                <constraint firstAttribute="trailing" secondItem="1gX-pV-G32" secondAttribute="trailing" id="jYq-t4-9J1"/>
+                <constraint firstItem="WAa-CY-UR1" firstAttribute="leading" secondItem="Rn0-aK-qZb" secondAttribute="leading" id="xgj-Qp-0d3"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
@@ -328,8 +341,8 @@
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </label>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_location_28px.png" translatesAutoresizingMaskIntoConstraints="NO" id="HxO-Rl-C4M">
-                            <rect key="frame" x="118" y="5" width="15" height="15"/>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_location_white" translatesAutoresizingMaskIntoConstraints="NO" id="HxO-Rl-C4M">
+                            <rect key="frame" x="118" y="6" width="15" height="15"/>
                         </imageView>
                     </subviews>
                 </view>
@@ -341,7 +354,7 @@
     </objects>
     <resources>
         <image name="button_white_rounded_2.png" width="160" height="70"/>
-        <image name="icon_location_28px.png" width="28" height="28"/>
+        <image name="icon_location_white" width="14" height="14"/>
         <image name="icon_love.png" width="20" height="20"/>
         <image name="icon_message.png" width="14" height="14"/>
     </resources>

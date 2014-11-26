@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIView *editarchiveview;
+@property (weak, nonatomic) IBOutlet UIView *trashinboxview;
 
 @property (nonatomic, strong) NSMutableArray *messages;
 @property (nonatomic, strong) NSDictionary *userinfo;
@@ -69,10 +70,17 @@
 
 -(void) showCheckmark:(NSNotification*)notification {
     _userinfo = notification.userInfo;
-    if([_userinfo[@"show_check"] isEqualToString:@"1"]) {
+    //show move to archive + trash
+    if([_userinfo[@"show_check"] isEqualToString:@"0"] || [_userinfo[@"show_check"] isEqualToString:@"1"]) {
         _editarchiveview.hidden = NO;
+        _trashinboxview.hidden = YES;
+    //show move to trash forever + back to inbox
+    } else if ([_userinfo[@"show_check"] isEqualToString:@"2"] || [_userinfo[@"show_check"] isEqualToString:@"3"]){
+        _editarchiveview.hidden = YES;
+        _trashinboxview.hidden = NO;
     } else {
         _editarchiveview.hidden = YES;
+        _trashinboxview.hidden = YES;
     }
     
     [_table reloadData];
@@ -91,6 +99,14 @@
     [self refreshView:nil];
     
     [_table reloadData];
+}
+
+-(void) reloadVc:(NSNotification*)notification {
+//    _userinfo = notification.userInfo;
+    if([[_data objectForKey:@"nav"] isEqualToString:notification.userInfo[@"vc"]]) {
+        [self refreshView:nil];
+        [_table reloadData];
+    }
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -173,6 +189,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showRead:)
                                                  name:@"showRead"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadVc:)
+                                                 name:@"reloadvc"
                                                object:nil];
     
     
@@ -412,9 +433,23 @@
 //            }
 //            
             if(_userinfo) {
-                if([_userinfo[@"show_check"] isEqualToString:@"1"]) {
+                if(![_userinfo[@"show_check"] isEqualToString:@"-1"]) {
                     ((InboxMessageCell*)cell).multicheckbtn.hidden = NO;
                     ((InboxMessageCell*)cell).multicheckbtn.imageView.image = [UIImage imageNamed:@"icon_checkmark_1.png"];
+
+                    
+//                    [UIView animateWithDuration:0.5
+//                                          delay:0
+//                                        options: UIViewAnimationCurveEaseOut
+//                                     animations:^{
+//                                         CGRect frame = ((InboxMessageCell*)cell).movingview.frame;
+//                                         frame.origin.x = 100;
+//                                         
+//                                         [((InboxMessageCell*)cell).movingview setFrame:frame];
+//                                     }
+//                                     completion:^(BOOL finished){
+//                                     }];
+                    
                 } else {
                     ((InboxMessageCell*)cell).multicheckbtn.hidden = YES;
                     [_messages_selected removeAllObjects];
@@ -426,6 +461,7 @@
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
             UIImageView *thumb = ((InboxMessageCell*)cell).userimageview;
+            thumb = [UIImageView circleimageview:thumb];
             thumb.image = nil;
             //thumb.hidden = YES;	//@prepareforreuse then @reset
             
@@ -495,6 +531,7 @@
     [self cancel];
     /** clear object **/
     [_messages removeAllObjects];
+    
     _page = 1;
     _requestcount = 0;
     _isrefreshview = YES;
@@ -512,6 +549,7 @@
     if (_isnodata) {
         cell.backgroundColor = [UIColor whiteColor];
     }
+    
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
@@ -543,6 +581,33 @@
     
 }
 
+- (void) deleteAnimation:(id)vc {
+    NSIndexPath *item;
+    
+    NSMutableArray *arr = [[NSMutableArray alloc] init];
+    NSMutableIndexSet *discardedItems = [NSMutableIndexSet indexSet];
+    NSUInteger index = 1;
+    
+    for (item in _messages_selected) {
+        [discardedItems addIndex:item.row];
+        index++;
+    }
+    
+    [_messages removeObjectsAtIndexes:discardedItems];
+    
+    NSString *joinedArr = [arr componentsJoinedByString:@"/and/"];
+    
+    
+    [_table beginUpdates];
+    [_table deleteRowsAtIndexPaths:_messages_selected withRowAnimation:UITableViewRowAnimationFade];
+    [_table endUpdates];
+    
+    [_messages_selected removeAllObjects];
+    
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:vc, @"vc", nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadvc" object:nil userInfo:dict];
+}
+
 - (IBAction)tap:(id)sender {
     [_searchbar resignFirstResponder];
     if ([sender isKindOfClass:[UIButton class]]) {
@@ -551,37 +616,27 @@
         switch (btn.tag) {
 //            archive
             case 10: {
-                NSIndexPath *item;
-                NSMutableArray *arr = [[NSMutableArray alloc] init];
-                NSMutableArray *arrIndexPath = [[NSMutableArray alloc] init];
-                
-                for (item in _messages_selected) {
-                    if(![item row]) {
-                        [_messages removeObjectAtIndex:0];
-                    } else {
-                        [_messages removeObjectAtIndex:[item row]];
-                    }
-                }
-                
-                
-
-                NSString *joinedArr = [arr componentsJoinedByString:@"/and/"];
-
-                
-                [_table beginUpdates];
-//                [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationRight];
-                [_table deleteRowsAtIndexPaths:_messages_selected withRowAnimation:UITableViewRowAnimationFade];
-                [_table endUpdates];
-                [_messages_selected removeAllObjects];
+                [self deleteAnimation:@"inbox-message-archive"];
                 
                 break;
             }
 //            trash
             case 11 : {
-                
+                [self deleteAnimation:@"inbox-message-trash"];
                 break;
             }
                 
+                
+                
+            case 12 : {
+                [self deleteAnimation:@"inbox-message"];
+                break;
+            }
+                
+            case 13 : {
+                [self deleteAnimation:@""];
+                break;
+            }
             case 15 : {
                 
                 

@@ -9,6 +9,7 @@
 #import "sortfiltershare.h"
 #import "SortViewController.h"
 #import "SortCell.h"
+#import "UIImage+ImageEffects.h"
 
 @interface SortViewController ()<UITableViewDataSource,UITableViewDelegate, SortCellDelegate>
 {
@@ -17,6 +18,7 @@
     NSInteger _type;
 }
 @property (weak, nonatomic) IBOutlet UITableView *table;
+@property (weak, nonatomic) IBOutlet UIButton *cancelButton;
 
 @end
 
@@ -34,6 +36,26 @@
 }
 
 #pragma mark - View Lifecylce
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    self.navigationController.navigationBar.hidden = YES;
+
+    UIView *blurBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+64)];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+64)];
+    imageView.image = [self.screenshotImage applyLightEffect];
+    imageView.backgroundColor = [UIColor blackColor];
+    [blurBackground addSubview:imageView];
+    
+    [self.view insertSubview:blurBackground belowSubview:self.table];
+    
+    self.cancelButton.layer.cornerRadius = 5;
+    self.cancelButton.layer.borderColor = [UIColor whiteColor].CGColor;
+    self.cancelButton.layer.borderWidth = 1;
+}
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -61,7 +83,7 @@
         //UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         //barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
         barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [barbutton1 setTintColor:[UIColor blackColor]];
+        [barbutton1 setTintColor:[UIColor whiteColor]];
     }
     else
         barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
@@ -114,6 +136,9 @@
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
+    if ([sender isKindOfClass:[UIButton class]]) {
+       [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         switch (button.tag) {
@@ -121,52 +146,6 @@
             {
                 //CANCEL
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                break;
-            }
-            case 11:
-            {
-                //SUBMIT
-                NSIndexPath *indexpath =[_selectedsort objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
-                NSDictionary *orderdict = _sortarray[indexpath.row];
-                NSDictionary *userinfo = @{kTKPDFILTER_APIORDERBYKEY:[orderdict objectForKey:kTKPDFILTER_DATASORTVALUEKEY]?:@"", kTKPDFILTERSORT_DATAINDEXPATHKEY:indexpath?:0};
-                
-                switch (_type) {
-                    case 1:
-                    case 2:
-                    {   //product
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                        break;
-                    }
-                    case 3:
-                    {   //catalog
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                        break;
-                    }
-                    case 4:
-                    {    //detail catalog
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                        UINavigationController *nav = (UINavigationController *)self.presentingViewController;
-                        [self dismissViewControllerAnimated:NO completion:^{
-                            [nav popViewControllerAnimated:NO];
-                        }];
-                        break;
-                    }
-                    case 5:
-                    {    //shop
-
-                        break;
-                    }
-                    case 6:
-                    {   //shop product
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                        break;
-                    }
-                    default:
-                        break;
-                }
                 break;
             }
             default:
@@ -218,6 +197,49 @@
 {
     [_selectedsort setObject:indexpath forKey:kTKPDFILTER_DATAINDEXPATHKEY];
     [_table reloadData];
+
+
+    //SUBMIT
+    NSDictionary *orderdict = _sortarray[indexpath.row];
+    NSDictionary *userinfo = @{kTKPDFILTER_APIORDERBYKEY:[orderdict objectForKey:kTKPDFILTER_DATASORTVALUEKEY]?:@"", kTKPDFILTERSORT_DATAINDEXPATHKEY:indexpath?:0};
+    
+    switch (_type) {
+        case 1:
+        case 2:
+        {   //product
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            break;
+        }
+        case 3:
+        {   //catalog
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            break;
+        }
+        case 4:
+        {    //detail catalog
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+            UINavigationController *nav = (UINavigationController *)self.presentingViewController;
+            [self dismissViewControllerAnimated:NO completion:^{
+                [nav popViewControllerAnimated:NO];
+            }];
+            break;
+        }
+        case 5:
+        {    //shop
+            
+            break;
+        }
+        case 6:
+        {   //shop product
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            break;
+        }
+        default:
+            break;
+    }
 }
 
 @end

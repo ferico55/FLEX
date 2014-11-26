@@ -87,7 +87,11 @@
                                 <color key="titleShadowColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
                             <connections>
+<<<<<<< HEAD
                                 <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="Wth-3k-zVP"/>
+=======
+                                <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="ZVS-yQ-xYK"/>
+>>>>>>> a9c0ddf201a71e76834efe9fda800269f828567c
                             </connections>
                         </button>
                     </subviews>

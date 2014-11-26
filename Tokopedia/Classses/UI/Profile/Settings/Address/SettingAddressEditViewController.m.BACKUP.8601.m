@@ -13,17 +13,13 @@
 #import "SettingAddressLocationViewController.h"
 
 #pragma mark - Setting Address Edit View Controller
-<<<<<<< HEAD
+
 @interface SettingAddressEditViewController ()
 <   SettingAddressLocationViewDelegate,
     UIScrollViewDelegate,
     UITextFieldDelegate,
     UITextViewDelegate
 >
-=======
-
-@interface SettingAddressEditViewController () <SettingAddressLocationViewDelegate, UIScrollViewDelegate, UITextFieldDelegate>
->>>>>>> fc4307a68d632fb40939d5b67fa86a0cbe88131c
 {
     NSInteger _type;
     
