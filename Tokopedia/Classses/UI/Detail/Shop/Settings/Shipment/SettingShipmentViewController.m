@@ -27,6 +27,9 @@
 @interface SettingShipmentViewController ()<UITableViewDataSource,UITableViewDelegate, SettingShipmentCellDelegate, SettingShipmentSectionFooterViewDelegate,SettingShipmentSectionFooter2ViewDelegate,SettingShipmentSectionFooter3ViewDelegate,FilterLocationViewControllerDelegate>
 {
     NSMutableDictionary *_datainput;
+    NSMutableArray *_shipmentids;
+    
+    UITextField *_activetextfield;
     
     ShippingInfo *_shippinginfo;
     NSMutableArray *_expandedSections;
@@ -55,9 +58,6 @@
 @property (strong, nonatomic) IBOutlet SettingShipmentSectionFooter3View *viewfooter3;
 @property (weak, nonatomic) IBOutlet UIButton *buttonprovinsi;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldkodepos;
-
-- (IBAction)tap:(id)sender;
-
 @property (weak, nonatomic) IBOutlet UITableView *table;
 
 -(void)cancel;
@@ -75,6 +75,9 @@
 -(void)requestFailureActionShipment:(id)object;
 -(void)requestProcessActionShipment:(id)object;
 -(void)requestTimeoutActionShipment;
+
+-(IBAction)tap:(id)sender;
+- (IBAction)gesture:(id)sender;
 
 @end
 
@@ -96,6 +99,7 @@
     [super viewDidLoad];
     
     _datainput = [NSMutableDictionary new];
+    _shipmentids = [NSMutableArray new];
     _expandedSections = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
@@ -294,8 +298,9 @@
             ((SettingShipmentCell*)cell).labelpackage.text = package.name;
             ((SettingShipmentCell*)cell).indexpath = indexPath;
             ((SettingShipmentCell*)cell).switchpackage.on = package.active;
+            ((SettingShipmentCell*)cell).packageid = package.sp_id;
+            ((SettingShipmentCell*)cell).shipmentid = shipment.shipment_id;
         }
-		
 	} else {
 		static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
 		
@@ -346,6 +351,60 @@
     
     return cell;
 }
+
+#pragma mark - View Action
+- (IBAction)tap:(id)sender {
+    [_activetextfield resignFirstResponder];
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton*)sender;
+        switch (btn.tag) {
+            case 10:
+            {
+                //Select Provincy
+                NSArray *districts = _shippinginfo.result.district;
+                NSInteger districtid = [[_datainput objectForKey:kTKPDFILTER_APISELECTEDDISTRICTIDKEY]integerValue]?:_shippinginfo.result.shop_shipping.district_id;
+                FilterLocationViewController *vc = [FilterLocationViewController new];
+                NSIndexPath *indexpath = [_datainput objectForKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                vc.data = @{kTKPDFILTER_APITYPEKEY:@(kTKPDFILTER_DATATYPESHOPSHIPPINGPROVINCYKEY),
+                            kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY:districts,
+                            kTKPDFILTER_DATAINDEXPATHKEY:indexpath,
+                            kTKPDFILTER_APISELECTEDDISTRICTIDKEY:@(districtid)
+                            };
+                vc.delegate = self;
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            default:
+                break;
+        }
+    }
+    
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *btn = (UIBarButtonItem *)sender;
+        switch (btn.tag) {
+            case 10:
+            {
+                //back
+                [self.navigationController popViewControllerAnimated:YES];
+                break;
+            }
+            case 11:
+            {
+                //submit
+                NSMutableArray *messages = [NSMutableArray new];
+                [self requestActionShipment:_datainput];
+                NSLog(@"%@",messages);
+            }
+            default:
+                break;
+        }
+    }
+}
+
+- (IBAction)gesture:(id)sender {
+    [_activetextfield resignFirstResponder];
+}
+
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -627,10 +686,12 @@
     NSTimer *timer;
     
     NSDictionary *userinfo = (NSDictionary*)object;
+    NSString *postalcode = [userinfo objectForKey:kTKPDSHOPSHIPMENT_APIPOSTALCODEKEY];
+    NSString *origin = [userinfo objectForKey:kTKPDFILTER_APISELECTEDDISTRICTIDKEY];
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIEDITSHIPPINGINFOKEY,
-//                            kTKPDSHOPSHIPMENT_APICOURIRORIGINKEY
-//                            kTKPDSHOPSHIPMENT_APIPOSTALKEY
+                            kTKPDSHOPSHIPMENT_APICOURIRORIGINKEY : origin,
+                            kTKPDSHOPSHIPMENT_APIPOSTALKEY : postalcode
 //                            kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY
 //                            kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY
 //                            kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY
@@ -795,52 +856,33 @@
 #pragma mark - Setting Shipment Cell Delegate
 -(void)SettingShipmentCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
+    NSInteger shipmentid = ((SettingShipmentCell*)cell).shipmentid;
+    NSInteger packageid = ((SettingShipmentCell*)cell).packageid;
     
+    NSMutableDictionary *packages = [NSMutableDictionary new];
+    //packages setObject:@(YES) forKey:
+    //[_shipmentids addObject:shipmentid];
 }
 
-#pragma mark - View Action
-- (IBAction)tap:(id)sender {
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton*)sender;
-        switch (btn.tag) {
-            case 10:
-            {
-                //Select Provincy
-                NSArray *districts = _shippinginfo.result.district;
-                NSInteger districtid = [[_datainput objectForKey:kTKPDFILTER_APISELECTEDDISTRICTIDKEY]integerValue]?:_shippinginfo.result.shop_shipping.district_id;
-                FilterLocationViewController *vc = [FilterLocationViewController new];
-                NSIndexPath *indexpath = [_datainput objectForKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                vc.data = @{kTKPDFILTER_APITYPEKEY:@(kTKPDFILTER_DATATYPESHOPSHIPPINGPROVINCYKEY),
-                            kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY:districts,
-                            kTKPDFILTER_DATAINDEXPATHKEY:indexpath,
-                            kTKPDFILTER_APISELECTEDDISTRICTIDKEY:@(districtid)
-                            };
-                vc.delegate = self;
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            default:
-                break;
-        }
-    }
-    
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *btn = (UIBarButtonItem *)sender;
-        switch (btn.tag) {
-            case 10:
-            {
-                //back
-                [self.navigationController popViewControllerAnimated:YES];
-                break;
-            }
-            case 11:
-            {
-                //submit
-                
-            }
-            default:
-                break;
-        }
-    }
+#pragma mark - Text Field Delegate
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
+    _activetextfield = textField;
+    [textField resignFirstResponder];
+    return YES;
 }
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField{
+    
+    [textField resignFirstResponder];
+    return YES;
+}
+
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    if (textField == _textfieldkodepos) {
+        [_datainput setObject:textField.text forKey:kTKPDSHOPSHIPMENT_APIPOSTALCODEKEY];
+    }
+    return YES;
+}
+
 @end
