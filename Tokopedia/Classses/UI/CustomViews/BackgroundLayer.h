@@ -13,4 +13,5 @@
 +(CAGradientLayer*) greyGradient;
 +(CAGradientLayer*) blueGradient;
 +(CAGradientLayer*) blackGradient;
++(CAGradientLayer *)blackGradientFromTop;
 @end

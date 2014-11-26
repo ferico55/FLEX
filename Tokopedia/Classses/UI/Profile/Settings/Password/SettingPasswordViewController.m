@@ -143,9 +143,11 @@
                     if (!confirmpass) {
                         [message addObject:@"Konfirmasi Kata Sandi Baru harus diisi."];
                     }
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:message ,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    self.navigationItem.rightBarButtonItem = _barbuttonsave;
+                    [_barbuttonsave setEnabled:YES];
                 }
-                
-                NSLog(@"%@", message);
                 break;
             }
             case 12:
@@ -278,24 +280,19 @@
             if (status) {
                 if (!setting.message_error) {
                     if (setting.result.is_success) {
-                        //TODO:: add alertview
-                        Alert1ButtonView *v = [Alert1ButtonView new];
-                        v.tag = 10;
-                        if (setting.message_status)
-                            v.data = @{kTKPDALERTVIEW_DATALABELKEY : setting.message_status};
-                        else
-                            v.data = @{kTKPDALERTVIEW_DATALABELKEY : @"Success"};
-                        v.delegate = self;
-                        [v show];
+                        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:@[@"Anda telah berhasil mengubah password.",] ,@"messages", nil];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                        [self.navigationController popViewControllerAnimated:YES];
+                    } else {
+                        
                     }
                 }
                 else
                 {
-                    Alert1ButtonView *v = [Alert1ButtonView new];
-                    v.tag = 11;
-                    v.data = @{kTKPDALERTVIEW_DATALABELKEY :setting.message_error};
-                    v.delegate = self;
-                    [v show];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:setting.message_error ,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    self.navigationItem.rightBarButtonItem = _barbuttonsave;
+                    [_barbuttonsave setEnabled:YES];
                 }
             }
         }

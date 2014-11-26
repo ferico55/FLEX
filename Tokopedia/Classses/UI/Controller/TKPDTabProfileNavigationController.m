@@ -577,6 +577,7 @@
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
+                
             case 11:
             {
                 //setting action
@@ -585,6 +586,11 @@
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
+                
+            case 20:
+                [self.navigationController popViewControllerAnimated:YES];
+                break;
+                
             default:
                 break;
         }

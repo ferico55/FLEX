@@ -27,5 +27,6 @@
 @property (strong,nonatomic) NSDictionary *data;
 
 +(id)newcell;
+-(void)reset;
 
 @end

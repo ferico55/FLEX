@@ -11,7 +11,7 @@
 #import "SettingBankNameCell.h"
 #import "SettingBankNameViewController.h"
 
-@interface SettingBankNameViewController ()<SettingBankNameCellDelegate>
+@interface SettingBankNameViewController () <UITableViewDelegate, UITableViewDataSource, SettingBankNameCellDelegate>
 {
     NSInteger _type;
     NSMutableDictionary *_selectedlocation;
@@ -45,6 +45,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+ 
+    self.navigationItem.title = @"Choose Bank";
     
     [self.navigationController.navigationBar setTranslucent:NO];
     /** create new **/
@@ -118,6 +120,20 @@
     if (_tempresultarray.count > 0) {
         _isnodata = NO;
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    UIEdgeInsets inset = _table.contentInset;
+    inset.top -= 15;
+    if (is4inch) {
+        inset.bottom += 70;
+    } else {
+        inset.bottom += 150;
+    }
+    _table.contentInset = inset;
 }
 
 #pragma mark - Memory Management
@@ -204,6 +220,11 @@
 	}
 	
 	return cell;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"BANK NAME";
 }
 
 #pragma mark - Table View Delegate

@@ -98,6 +98,8 @@
 @interface UIImage (ImageEffects)
 
 - (UIImage *)applyLightEffect;
+- (UIImage *)applyLightEffectWithRadius:(CGFloat)radius;
+
 - (UIImage *)applyExtraLightEffect;
 - (UIImage *)applyDarkEffect;
 - (UIImage *)applyTintEffectWithColor:(UIColor *)tintColor;

@@ -16,7 +16,7 @@
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 
-@interface CategoryViewController () <CategoryViewCellDelegate>
+@interface CategoryViewController () <CategoryViewCellDelegate, UITableViewDelegate>
 {
     NSMutableArray *_category;
 }
@@ -42,25 +42,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    /** set inset table for different size**/
-    //if (is4inch) {
-    //    UIEdgeInsets inset = _table.contentInset;
-    //    inset.bottom += 150;
-    //    _table.contentInset = inset;
-    //}
-    //else{
-    //    UIEdgeInsets inset = _table.contentInset;
-    //    //inset.bottom += 200;
-    //    _table.contentInset = inset;
-    //}
-    
+
     /** Initialization variable **/
     _category = [NSMutableArray new];
     
     /** Set title and icon for category **/
-    //NSInteger parentid = 0;
-   // NSArray *data = [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name from ws_department where parent=\"%d\" order by weight",parentid]];
     NSArray *titles = kTKPDCATEGORY_TITLEARRAY;
     NSArray *dataids = kTKPDCATEGORY_IDARRAY;
     
@@ -70,8 +56,6 @@
     }
     
 }
-
-
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -96,6 +80,8 @@
         cell = [CategoryViewCell newcell];
         ((CategoryViewCell*)cell).delegate = self;
     }
+
+    [((CategoryViewCell*)cell) reset];
     
     /** Flexible view count **/ //TODO::sederhanakan
     NSInteger countdata;
@@ -108,29 +94,15 @@
         }
         
         NSArray *tempArray = [_category objectsAtIndexes:[[NSIndexSet alloc] initWithIndexesInRange:NSMakeRange(indexPath.row* 3, countdata)]];
-        
-//    NSArray *itemsForView;
-//    NSUInteger kItemsPerView = 3;
-//    NSUInteger startIndex = indexPath.row * kItemsPerView;
-//    NSUInteger count = MIN( _category.count - startIndex, kItemsPerView );
-//    if ((_category.count/3) > indexPath.row &&!((_category.count-1)/3+1 == indexPath.row+1))
-//        itemsForView = [_category subarrayWithRange: NSMakeRange( startIndex, count)];
-//    else if((_category.count-1)/3+1 == indexPath.row+1){
-//        if (_category.count%3==0) {
-//            itemsForView = [_category subarrayWithRange: NSMakeRange( startIndex, count)];
-//        }
-//        else if (_category.count%3==2)
-//        {
-//            itemsForView = [_category subarrayWithRange: NSMakeRange( startIndex, 2)];
-//        }
-//        else
-//            itemsForView = @[_category[_category.count-1]];
-//    }
-    
-    ((CategoryViewCell*)cell).data = @{kTKPDCATEGORY_DATAINDEXPATHKEY: indexPath, kTKPDCATEGORY_DATACOLUMNSKEY: tempArray};
-        
-	}
+        ((CategoryViewCell*)cell).data = @{kTKPDCATEGORY_DATAINDEXPATHKEY: indexPath, kTKPDCATEGORY_DATACOLUMNSKEY: tempArray};
+    }
 	return cell;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 1)];
+    return footerView;
 }
 
 #pragma mark - Table View Delegate
@@ -159,16 +131,6 @@
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
     [nav.navigationBar setTranslucent:NO];
     [self.navigationController presentViewController:nav animated:YES completion:nil];
-
-    
-//    CategoryResultViewController *vc = [CategoryResultViewController new];
-//    UINavigationController *nav =[[UINavigationController alloc]initWithRootViewController:vc];
-//    [nav.navigationBar setTranslucent:NO];
-//    NSInteger index = indexpath.section+3*(indexpath.row);
-//    vc.data = @{@"d_id" : _category[index][@"d_id"]};
-//    [self.navigationController presentViewController:nav animated:YES completion:^{
-//        nil;
-//    }];
 }
 
 @end
