@@ -171,8 +171,8 @@
             AddressFormList *list = _list[indexPath.row];
             ((GeneralList1GestureCell*)cell).labelname.text = list.address_name;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
-
             [(GeneralList1GestureCell*)cell viewdetailresetposanimation:YES];
+
             if (!_ismanualsetdefault)((GeneralList1GestureCell*)cell).labeldefault.hidden = (list.address_status==2)?NO:YES;
             else {
                 if (indexPath.row==0)((GeneralList1GestureCell*)cell).labeldefault.hidden = NO;
@@ -227,6 +227,12 @@
     [_list removeObjectAtIndex:sourceIndexPath.row];
     [_list insertObject:dataObject atIndex:destinationIndexPath.row];
 }
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_table reloadData];
+}
+
 
 #pragma mark - Memory Management
 - (void)dealloc{
@@ -696,7 +702,6 @@
 
 
 #pragma mark - Cell Delegate
-
 -(void)GeneralList1GestureCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     BOOL isdefault;

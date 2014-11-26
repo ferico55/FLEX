@@ -11,6 +11,10 @@
 
 #import "ProgressBarView.h"
 
+#import "CameraAlbumListViewController.h"
+
+#import "SettingShipmentViewController.h"
+
 @interface CartViewController ()
 @property (weak, nonatomic) IBOutlet ProgressBarView *progress;
 
@@ -53,6 +57,18 @@
         case 10:
             [self.navigationController popViewControllerAnimated:YES];
             break;
+        case 100:
+        {
+            CameraAlbumListViewController *vc = [CameraAlbumListViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 200:
+        {
+            SettingShipmentViewController *vc = [SettingShipmentViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
         default:
             break;
     }

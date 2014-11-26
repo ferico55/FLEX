@@ -19,5 +19,6 @@
 @property (nonatomic, strong) NSString *message_reply;
 @property (nonatomic, strong) NSString *message_inbox_id;
 @property (nonatomic, strong) NSString *user_image;
+@property (nonatomic, strong) NSString *json_data_info;
 
 @end

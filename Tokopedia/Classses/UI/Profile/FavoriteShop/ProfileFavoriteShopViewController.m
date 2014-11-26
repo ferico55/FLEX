@@ -489,7 +489,9 @@
         [viewcontrollers addObject:v3];
         /** Adjust View Controller **/
         TKPDTabShopNavigationController *tapnavcon = [TKPDTabShopNavigationController new];
-        tapnavcon.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0};
+        tapnavcon.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
+                           kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
+                           };
         [tapnavcon setViewControllers:viewcontrollers animated:YES];
         [tapnavcon setSelectedIndex:0];
         

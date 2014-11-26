@@ -7,6 +7,7 @@
 //
 
 #import "profile.h"
+#import "Location/location.h"
 #import "ProfileSettings.h"
 #import "AddressFormList.h"
 #import "SettingAddressEditViewController.h"
@@ -59,6 +60,7 @@
 @property (weak, nonatomic) IBOutlet UIView *viewcontainer;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UILabel *labeladdressplaceholder;
 
 -(void)cancelActionAddAddress;
 -(void)configureRestKitActionAddAddress;
@@ -166,11 +168,11 @@
             case 10:
             {
                 //location province
-                NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATALOCATIONPROVINCEINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                NSIndexPath *indexpath = [_datainput objectForKey:kTKPDLOCATION_DATAPROVINCEINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 SettingAddressLocationViewController *vc = [SettingAddressLocationViewController new];
-                vc.data = @{kTKPDPROFILE_DATALOCATIONTYPEKEY : @(kTKPDPROFILESETTINGLOCATION_DATATYPEPROVINCEKEY),
-                            kTKPDPROFILE_DATAINDEXPATHKEY : indexpath,
-                            kTKPDPROFILESETTING_APIPROVINCEKEY : list.province_id?:@(0)
+                vc.data = @{kTKPDLOCATION_DATALOCATIONTYPEKEY : @(kTKPDLOCATION_DATATYPEPROVINCEKEY),
+                            kTKPDLOCATION_DATAINDEXPATHKEY : indexpath,
+                            kTKPDLOCATION_DATAPROVINCEIDKEY : list.province_id?:@(0)
                             };
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
@@ -178,12 +180,12 @@
             }
             case 11:
             {
-                NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATALOCATIONCITYINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                NSIndexPath *indexpath = [_datainput objectForKey:kTKPDLOCATION_DATACITYINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 SettingAddressLocationViewController *vc = [SettingAddressLocationViewController new];
-                vc.data = @{kTKPDPROFILE_DATALOCATIONTYPEKEY : @(kTKPDPROFILESETTINGLOCATION_DATATYPEREGIONKEY),
-                            kTKPDPROFILE_DATAINDEXPATHKEY : indexpath,
-                            kTKPDPROFILESETTING_APICITYKEY : list.city_id?:@(0),
-                            kTKPDPROFILESETTING_APIPROVINCEKEY : [_datainput objectForKey:kTKPDPROFILESETTING_APIPROVINCEKEY]?:list.province_id?:@(0)
+                vc.data = @{kTKPDLOCATION_DATALOCATIONTYPEKEY : @(kTKPDLOCATION_DATATYPEREGIONKEY),
+                            kTKPDLOCATION_DATAINDEXPATHKEY : indexpath,
+                            kTKPDLOCATION_DATACITYIDKEY : list.city_id?:@(0),
+                            kTKPDLOCATION_DATAPROVINCEIDKEY : [_datainput objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]?:list.province_id?:@(0)
                             };
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
@@ -191,13 +193,13 @@
             }
             case 12:
             {
-                NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATALOCATIONDISTRICTINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                NSIndexPath *indexpath = [_datainput objectForKey:kTKPDLOCATION_DATADISTRICTINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 SettingAddressLocationViewController *vc = [SettingAddressLocationViewController new];
-                vc.data = @{kTKPDPROFILE_DATALOCATIONTYPEKEY : @(kTKPDPROFILESETTINGLOCATION_DATATYPEDISTICTKEY),
-                            kTKPDPROFILE_DATAINDEXPATHKEY : indexpath,
-                            kTKPDPROFILESETTING_APIPROVINCEKEY : [_datainput objectForKey:kTKPDPROFILESETTING_APIPROVINCEKEY]?:list.province_id?:@(0),
-                            kTKPDPROFILESETTING_APICITYKEY : [_datainput objectForKey:kTKPDPROFILESETTING_APICITYKEY]?:list.city_id?:@(0),
-                            kTKPDPROFILESETTING_APIDISTRICTKEY : list.district_id?:@(0)
+                vc.data = @{kTKPDLOCATION_DATALOCATIONTYPEKEY : @(kTKPDLOCATION_DATATYPEDISTICTKEY),
+                            kTKPDLOCATION_DATAINDEXPATHKEY : indexpath,
+                            kTKPDLOCATION_DATAPROVINCEIDKEY : [_datainput objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]?:list.province_id?:@(0),
+                            kTKPDLOCATION_DATACITYIDKEY : [_datainput objectForKey:kTKPDLOCATION_DATACITYIDKEY]?:list.city_id?:@(0),
+                            kTKPDLOCATION_DATADISTRICTIDKEY : list.district_id?:@(0)
                             };
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
@@ -370,9 +372,9 @@
     
     NSString *action = (_type==1)?kTKPDPROFILE_APIEDITADDRESSKEY:kTKPDPROFILE_APIADDADDRESSKEY;
     NSInteger addressid = list.address_id?:0;
-    NSNumber *city = [userinfo objectForKey:kTKPDPROFILESETTING_APICITYKEY]?:list.city_id?:@(0);
-    NSNumber *province = [userinfo objectForKey:kTKPDPROFILESETTING_APIPROVINCEKEY]?:list.province_id?:@(0);
-    NSNumber *distric = [userinfo objectForKey:kTKPDPROFILESETTING_APIDISTRICTKEY]?:list.district_id?:@(0);
+    NSNumber *city = [userinfo objectForKey:kTKPDLOCATION_DATACITYIDKEY]?:list.city_id?:@(0);
+    NSNumber *province = [userinfo objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]?:list.province_id?:@(0);
+    NSNumber *distric = [userinfo objectForKey:kTKPDLOCATION_DATADISTRICTIDKEY]?:list.district_id?:@(0);
     
     NSString *recievername = [userinfo objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY]?:list.receiver_name?:@"";
     NSString *addressname = [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY]?:list.address_name?:@"";
@@ -499,8 +501,8 @@
         AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
         _textfieldreceivername.text = list.receiver_name?:@"";
         _textfieldaddressname.text = list.address_name?:@"";
-        _textviewaddress.text = list.address_street?:@"Address";
-        if(!list.address_street)_textviewaddress.textColor = [UIColor lightGrayColor];
+        _textviewaddress.text = list.address_street;
+        _labeladdressplaceholder.hidden = !(!list.address_street);
         NSString *postalcode = list.postal_code?[NSString stringWithFormat:@"%d",list.postal_code]:@"";
         _textfieldpostcode.text = postalcode;
         _textfieldphonenumber.text = list.receiver_phone?:@"";
@@ -523,19 +525,19 @@
     NSInteger locationid;
     
     switch ([[data objectForKey:kTKPDPROFILE_DATALOCATIONTYPEKEY] integerValue]) {
-        case kTKPDPROFILESETTINGLOCATION_DATATYPEPROVINCEKEY:
+        case kTKPDLOCATION_DATATYPEPROVINCEKEY:
         {
-            indexpath = [data objectForKey:kTKPDPROFILE_DATALOCATIONPROVINCEINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-            name = [data objectForKey:kTKPDPROFILE_DATALOCATIONNAMEKEY];
-            locationid = [[data objectForKey:kTKPDPROFILE_DATALOCATIONVALUEKEY] integerValue];
-            if (locationid != [[_datainput objectForKey:kTKPDPROFILESETTING_APIPROVINCEKEY]integerValue]) {
+            indexpath = [data objectForKey:kTKPDLOCATION_DATAPROVINCEINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+            name = [data objectForKey:kTKPDLOCATION_DATALOCATIONNAMEKEY];
+            locationid = [[data objectForKey:kTKPDLOCATION_DATALOCATIONVALUEKEY] integerValue];
+            if (locationid != [[_datainput objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]integerValue]) {
                 //reset city and district
-                [_datainput removeObjectForKey:kTKPDPROFILE_DATALOCATIONCITYINDEXPATHKEY];
-                [_datainput removeObjectForKey:kTKPDPROFILESETTING_APICITYKEY];
+                [_datainput removeObjectForKey:kTKPDLOCATION_DATACITYINDEXPATHKEY];
+                [_datainput removeObjectForKey:kTKPDLOCATION_DATACITYIDKEY];
                 [_datainput removeObjectForKey:kTKPDPROFILESETTING_APICITYNAMEKEY];
                 
-                [_datainput removeObjectForKey:kTKPDPROFILE_DATALOCATIONDISTRICTINDEXPATHKEY];
-                [_datainput removeObjectForKey:kTKPDPROFILESETTING_APIDISTRICTKEY];
+                [_datainput removeObjectForKey:kTKPDLOCATION_DATADISTRICTINDEXPATHKEY];
+                [_datainput removeObjectForKey:kTKPDLOCATION_DATADISTRICTIDKEY];
                 [_datainput removeObjectForKey:kTKPDPROFILESETTING_APIDISTRICNAMEKEY];
                 
                 [_buttoncity setTitle:@"none" forState:UIControlStateNormal];
@@ -543,24 +545,24 @@
                 _buttondistrict.enabled = NO;
             }
             _buttoncity.enabled = YES;
-            [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATALOCATIONPROVINCEINDEXPATHKEY];
+            [_datainput setObject:indexpath forKey:kTKPDLOCATION_DATAPROVINCEINDEXPATHKEY];
             [_buttonprovince setTitle:name forState:UIControlStateNormal];
             [_datainput setObject:name forKey:kTKPDPROFILESETTING_APIPROVINCENAMEKEY];
-            [_datainput setObject:@(locationid) forKey:kTKPDPROFILESETTING_APIPROVINCEKEY];
+            [_datainput setObject:@(locationid) forKey:kTKPDLOCATION_DATAPROVINCEIDKEY];
             
             break;
         }
-        case kTKPDPROFILESETTINGLOCATION_DATATYPEREGIONKEY:
+        case kTKPDLOCATION_DATATYPEREGIONKEY:
         {
-            indexpath = [data objectForKey:kTKPDPROFILE_DATALOCATIONCITYINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-            name = [data objectForKey:kTKPDPROFILE_DATALOCATIONNAMEKEY];
-            locationid = [[data objectForKey:kTKPDPROFILE_DATALOCATIONVALUEKEY] integerValue];
-            [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATALOCATIONCITYINDEXPATHKEY];
+            indexpath = [data objectForKey:kTKPDLOCATION_DATACITYINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+            name = [data objectForKey:kTKPDLOCATION_DATALOCATIONNAMEKEY];
+            locationid = [[data objectForKey:kTKPDLOCATION_DATALOCATIONVALUEKEY] integerValue];
+            [_datainput setObject:indexpath forKey:kTKPDLOCATION_DATACITYINDEXPATHKEY];
             
-            if (locationid != [[_datainput objectForKey:kTKPDPROFILESETTING_APICITYKEY]integerValue]) {
+            if (locationid != [[_datainput objectForKey:kTKPDLOCATION_DATACITYIDKEY]integerValue]) {
                 //reset district
-                [_datainput removeObjectForKey:kTKPDPROFILE_DATALOCATIONDISTRICTINDEXPATHKEY];
-                [_datainput removeObjectForKey:kTKPDPROFILESETTING_APIDISTRICTKEY];
+                [_datainput removeObjectForKey:kTKPDLOCATION_DATADISTRICTINDEXPATHKEY];
+                [_datainput removeObjectForKey:kTKPDLOCATION_DATADISTRICTIDKEY];
                 [_datainput removeObjectForKey:kTKPDPROFILESETTING_APIDISTRICNAMEKEY];
                 
                 [_buttondistrict setTitle:@"none" forState:UIControlStateNormal];
@@ -568,18 +570,18 @@
             _buttondistrict.enabled = YES;
             [_buttoncity setTitle:name forState:UIControlStateNormal];
             [_datainput setObject:name forKey:kTKPDPROFILESETTING_APICITYNAMEKEY];
-            [_datainput setObject:@(locationid) forKey:kTKPDPROFILESETTING_APICITYKEY];
+            [_datainput setObject:@(locationid) forKey:kTKPDLOCATION_DATACITYIDKEY];
             break;
         }
-        case kTKPDPROFILESETTINGLOCATION_DATATYPEDISTICTKEY:
+        case kTKPDLOCATION_DATATYPEDISTICTKEY:
         {
-            indexpath = [data objectForKey:kTKPDPROFILE_DATALOCATIONDISTRICTINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-            name = [data objectForKey:kTKPDPROFILE_DATALOCATIONNAMEKEY];
-            locationid = [[data objectForKey:kTKPDPROFILE_DATALOCATIONVALUEKEY] integerValue];
-            [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATALOCATIONDISTRICTINDEXPATHKEY];
+            indexpath = [data objectForKey:kTKPDLOCATION_DATADISTRICTINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+            name = [data objectForKey:kTKPDLOCATION_DATALOCATIONNAMEKEY];
+            locationid = [[data objectForKey:kTKPDLOCATION_DATALOCATIONVALUEKEY] integerValue];
+            [_datainput setObject:indexpath forKey:kTKPDLOCATION_DATADISTRICTINDEXPATHKEY];
             [_buttondistrict setTitle:name forState:UIControlStateNormal];
             [_datainput setObject:name forKey:kTKPDPROFILESETTING_APIDISTRICNAMEKEY];
-            [_datainput setObject:@(locationid) forKey:kTKPDPROFILESETTING_APIDISTRICTKEY];
+            [_datainput setObject:@(locationid) forKey:kTKPDLOCATION_DATADISTRICTIDKEY];
             break;
         }
         default:
@@ -598,7 +600,7 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     if([_textfieldreceivername isFirstResponder]){
         
-        [_textviewaddress becomeFirstResponder];
+        [_textfieldaddressname becomeFirstResponder];
     }
     else if ([_textfieldaddressname isFirstResponder]){
         
@@ -644,9 +646,8 @@
     AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
     if (!list.address_name) {
         _activetextview = textView;
-        _textviewaddress.text = @"";
+        _labeladdressplaceholder.hidden = YES;
     }
-    _textviewaddress.textColor = [UIColor blackColor];
     return YES;
 }
 
@@ -668,8 +669,7 @@
 -(void) textViewDidChange:(UITextView *)textView
 {
     if(_textviewaddress.text.length == 0){
-        _textviewaddress.textColor = [UIColor lightGrayColor];
-        _textviewaddress.text = @"Address";
+        _labeladdressplaceholder.hidden = NO;
         [_textviewaddress resignFirstResponder];
     }
 }

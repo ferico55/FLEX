@@ -18,5 +18,6 @@
 @property (nonatomic, strong) NSString *create_time;
 @property (nonatomic, strong) NSString *user_image;
 @property (nonatomic, strong) NSString *user_name;
+@property (nonatomic, strong) NSString *is_not_delivered;
 
 @end

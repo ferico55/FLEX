@@ -435,7 +435,7 @@
     
     NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"-1", @"show_check", nil];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"test" object:nil userInfo:dict];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"editModeOn" object:nil userInfo:dict];
     if (_viewControllers != nil) {
         NSInteger index = sender.selectedSegmentIndex;
         [self setSelectedIndex:index animated:NO];
@@ -509,7 +509,7 @@
                 NSString *str_index = [NSString stringWithFormat:@"%d",_selectedIndex];
                 NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:str_index, @"show_check", nil];
 
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"test" object:nil userInfo:dict];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"editModeOn" object:nil userInfo:dict];
                 break;
             }
             case 12: {
@@ -521,7 +521,7 @@
                 
                 NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"-1", @"show_check", nil];
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"test" object:nil userInfo:dict];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"editModeOn" object:nil userInfo:dict];
 
                 break;
             }

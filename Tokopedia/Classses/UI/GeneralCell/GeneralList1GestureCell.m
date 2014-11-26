@@ -6,11 +6,11 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+#import "generalcell.h"
 #import "GeneralList1GestureCell.h"
 
 @interface GeneralList1GestureCell ()
 @property (weak, nonatomic) IBOutlet UIButton *buttondelete;
-@property (weak, nonatomic) IBOutlet UIButton *buttondefault;
 @property (weak, nonatomic) IBOutlet UIView *viewcell;
 
 
@@ -110,7 +110,25 @@
                          animations:^{
                              CGRect frame = _viewcell.frame;
                              if(frame.origin.x == 0){
-                                 frame.origin.x -= (_buttondefault.frame.size.width+_buttondefault.frame.size.width);
+                                 switch (_type) {
+                                     case kTKPDGENERALCELL_DATATYPEONEBUTTONKEY:
+                                         frame.origin.x -= (_buttondelete.frame.size.width);
+                                         _buttondefault.hidden = YES;
+                                         _buttondelete.hidden = NO;
+                                         break;
+                                     case kTKPDGENERALCELL_DATATYPETWOBUTTONKEY:
+                                         frame.origin.x -= (_buttondelete.frame.size.width+_buttondefault.frame.size.width);
+                                         _buttondefault.hidden = NO;
+                                         _buttondelete.hidden = NO;
+                                         break;
+                                     default:
+                                         frame.origin.x -= (_buttondelete.frame.size.width+_buttondefault.frame.size.width);
+                                         _buttondefault.hidden = NO;
+                                         _buttondelete.hidden = NO;
+                                         break;
+                                 }
+                                 
+
                              }
                              [_viewcell setFrame:frame];
                          }
@@ -130,7 +148,28 @@
                              [_viewcell setFrame:frame];
                          }
                          completion:^(BOOL finished){
+                             _buttondefault.hidden = YES;
+                             _buttondelete.hidden = YES;
                          }];
     }
 }
+
+-(void)setType:(NSInteger)type
+{
+    _type = type;
+    switch (type) {
+        case kTKPDGENERALCELL_DATATYPEONEBUTTONKEY:
+            _buttondefault.hidden = YES;
+            _buttondelete.hidden = NO;
+            break;
+        case kTKPDGENERALCELL_DATATYPETWOBUTTONKEY:
+            _buttondefault.hidden = NO;
+            _buttondelete.hidden = NO;
+        default:
+            _buttondefault.hidden = NO;
+            _buttondelete.hidden = NO;
+            break;
+    }
+}
+
 @end

@@ -7,7 +7,6 @@
 //
 
 #import "detail.h"
-#import "ListEtalase.h"
 #import "ProductEtalaseCell.h"
 
 @implementation ProductEtalaseCell

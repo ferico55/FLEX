@@ -144,8 +144,6 @@
     //    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
-#pragma mark - View Action
-
 #pragma mark - View Actipn
 -(IBAction)tap:(id)sender
 {
@@ -337,7 +335,7 @@
         else
         {
             NSArray *messages = _login.message_error;
-            NSString *message = [[messages valueForKey:@"description"] componentsJoinedByString:@"\n"];
+//            NSString *message = [[messages valueForKey:@"description"] componentsJoinedByString:@"\n"];
             
             NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];

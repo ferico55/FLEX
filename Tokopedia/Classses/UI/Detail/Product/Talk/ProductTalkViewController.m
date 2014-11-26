@@ -12,6 +12,7 @@
 #import "ProductTalkViewController.h"
 #import "ProductTalkCell.h"
 #import "ProductTalkDetailViewController.h"
+#import "ProductTalkFormViewController.h"
 
 #import "URLCacheController.h"
 
@@ -105,6 +106,18 @@
     [barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
     
+    //right button
+    UIBarButtonItem *rightbar;
+    UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        rightbar = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    }
+    else
+        rightbar = [[UIBarButtonItem alloc] initWithImage:imgadd style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    [rightbar setTag:11];
+    self.navigationItem.rightBarButtonItem = rightbar;
+    
     if (_list.count>2) {
         _isnodata = NO;
     }
@@ -172,7 +185,7 @@
             
             ((GeneralTalkCell*)cell).indexpath = indexPath;
             
-            NSString *commentstring = [list.talk_total_comment stringByAppendingFormat:
+            NSString *commentstring = [list.talk_total_comment?:0 stringByAppendingFormat:
                                  @" Comment"];
             [((ProductTalkCell*)cell).commentbutton setTitle:commentstring forState:UIControlStateNormal];
             
@@ -243,6 +256,17 @@
             {
                 // back to previous vie controller
                 [self.navigationController popViewControllerAnimated:YES];
+                break;
+            }
+            case 11 : {
+                //add new talk
+                ProductTalkFormViewController *vc = [ProductTalkFormViewController new];
+                vc.data = @{
+                            kTKPDDETAIL_APIPRODUCTIDKEY:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
+                            kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY]?:@(0),
+                            kTKPDDETAILPRODUCT_APIIMAGESRCKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]?:@(0),
+                            };
+                [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
             default:
@@ -523,12 +547,14 @@
     
     TalkList *list = _list[indexpath.row];
     vc.data = @{
-                kTKPDTALK_APITALKMESSAGEKEY:list.talk_message,
-                kTKPDTALK_APITALKUSERIMAGEKEY:list.talk_user_image,
-                kTKPDTALK_APITALKCREATETIMEKEY:list.talk_create_time,
-                kTKPDTALK_APITALKUSERNAMEKEY:list.talk_user_name,
-                kTKPDTALK_APITALKIDKEY:list.talk_id,
-                kTKPDTALK_APITALKSHOPID:list.talk_shop_id
+                kTKPDTALK_APITALKMESSAGEKEY:list.talk_message?:0,
+                kTKPDTALK_APITALKUSERIMAGEKEY:list.talk_user_image?:0,
+                kTKPDTALK_APITALKCREATETIMEKEY:list.talk_create_time?:0,
+                kTKPDTALK_APITALKUSERNAMEKEY:list.talk_user_name?:0,
+                kTKPDTALK_APITALKIDKEY:list.talk_id?:0,
+                kTKPDTALK_APITALKSHOPID:list.talk_shop_id?:0,
+                kTKPDTALK_APITALKTOTALCOMMENTKEY : list.talk_total_comment?:0,
+                kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]?:0
                 };
     [self.navigationController pushViewController:vc animated:YES];
     

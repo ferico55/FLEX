@@ -3,7 +3,6 @@
 
 target "Tokopedia" do
     pod 'RestKit', '~>  0.20.0'
-    pod 
 end
 
 target "TokopediaTests" do

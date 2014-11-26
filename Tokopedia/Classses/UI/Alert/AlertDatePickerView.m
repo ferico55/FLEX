@@ -19,6 +19,9 @@
 @end
 
 @interface AlertDatePickerView ()
+{
+    NSInteger _type;
+}
 @property (weak, nonatomic) IBOutlet UIDatePicker *datepicker;
 
 @end
@@ -36,7 +39,8 @@
 
 - (void)awakeFromNib
 {
-    _datepicker.maximumDate = [NSDate date];
+
+
 }
 
 #pragma mark - View Action
@@ -46,7 +50,7 @@
         //done button
         NSDate *pickerDate = [_datepicker date];
         NSLog(@"%@",pickerDate);
-        self.data = @{kTKPDALERTVIEW_DATADATEPICKERKEY:pickerDate};
+        _data = @{kTKPDALERTVIEW_DATADATEPICKERKEY:pickerDate};
         [self dismissWithClickedButtonIndex:index animated:YES];
     }
 }
@@ -98,6 +102,26 @@
 			[_delegate didPresentAlertView:self];
 		}
 	}];
+    
+    _type = [[_data objectForKey:kTKPDALERTVIEW_DATATYPEKEY]integerValue];
+    switch (_type) {
+        case kTKPDALERT_DATAALERTTYPESHOPEDITKEY:
+        {
+            NSDateComponents* deltaComps = [NSDateComponents new];
+            [deltaComps setDay:1];
+            NSDate* tomorrow = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
+            _datepicker.minimumDate = tomorrow;
+            [deltaComps setDay:7];
+            NSDate* nextweek = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
+            [_datepicker setDate:nextweek];
+            break;
+        }
+        default:
+        {
+            _datepicker.maximumDate = [NSDate date];
+            break;
+        }
+    }
 }
 
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated {

@@ -25,6 +25,10 @@
 #import "ProfileContactViewController.h"
 #import "ProfileFavoriteShopViewController.h"
 
+//edit shop detail
+#import "../Edit/ShopEditViewController.h"
+
+#pragma mark - Shop Info View Controller
 @interface ShopInfoViewController()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 {
     Shop *_shop;
@@ -110,6 +114,22 @@
         barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
     [barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
+    
+    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [barbutton1 setTintColor:[UIColor whiteColor]];
+    barbutton1.tag = 11;
+    NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+    if (auth && ![auth isEqual:[NSNull null]]) {
+        if (_shop.result.owner.owner_id == [[auth objectForKey:kTKPD_USERIDKEY]integerValue]) {
+            [barbutton1 setEnabled:YES];
+            self.navigationItem.rightBarButtonItem = barbutton1;
+        }
+    }
+    else
+    {
+        [barbutton1 setEnabled:NO];
+        [barbutton1 setTintColor: [UIColor clearColor]];
+    }
     
     [self setData:_data];
     [_tablepayment reloadData];
@@ -225,7 +245,16 @@
         switch (btn.tag) {
             case 10:
             {
+                // back
                 [self.navigationController popViewControllerAnimated:YES];
+                break;
+            }
+            case 11:
+            {
+                // edit shop
+                ShopEditViewController *vc = [ShopEditViewController new];
+                vc.data = @{kTKPDDETAIL_DATASHOPSKEY:_shop.result};
+                [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
             default:
