@@ -69,7 +69,7 @@
                 {
                     //Etalase
                     SettingEtalaseViewController *vc = [SettingEtalaseViewController new];
-                    vc.data = @{kTKPDDETAIL_APISHOPIDKEY : @(_shop.info.shop_id), kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]};
+                    vc.data = @{kTKPDDETAIL_APISHOPIDKEY : @(_shop.info.shop_id)?:@(0), kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }
@@ -104,7 +104,7 @@
                 {
                     //Notes
                     SettingNoteViewController *vc = [SettingNoteViewController new];
-                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]};
+                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }
