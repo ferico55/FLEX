@@ -7,7 +7,7 @@
 //
 
 #import "SearchItem.h"
-#import "ListEtalase.h"
+#import "EtalaseList.h"
 
 #import "search.h"
 #import "sortfiltershare.h"
@@ -489,7 +489,7 @@
     }
     else{
         // default
-        ListEtalase *etalase = [_detailfilter objectForKey:kTKPDDETAIL_DATAETALASEKEY];
+        EtalaseList *etalase = [_detailfilter objectForKey:kTKPDDETAIL_DATAETALASEKEY];
         etalaseid = @(etalase.etalase_id);
     }
     

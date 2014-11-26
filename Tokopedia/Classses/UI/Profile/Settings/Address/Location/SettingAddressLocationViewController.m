@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "profile.h"
+#import "location.h"
 #import "DBManager.h"
 #import "SettingAddressLocationCell.h"
 #import "SettingAddressLocationViewController.h"
@@ -88,13 +88,13 @@
     NSArray *name;
     NSArray *value;
     
-    _type =[[_data objectForKey:kTKPDPROFILE_DATALOCATIONTYPEKEY] integerValue];
+    _type =[[_data objectForKey:kTKPDLOCATION_DATALOCATIONTYPEKEY] integerValue];
     NSIndexPath *indexpath;
     NSInteger index = 0;
     switch (_type) {
-        case kTKPDPROFILESETTINGLOCATION_DATATYPEPROVINCEKEY:
+        case kTKPDLOCATION_DATATYPEPROVINCEKEY:
         {
-            NSInteger provid = [[_data objectForKey:kTKPDPROFILESETTING_APIPROVINCEKEY]integerValue];
+            NSInteger provid = [[_data objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]integerValue];
             _labeltitle.text = @"   PROVINCE";
             name = [[DBManager getSharedInstance]LoadDataQueryLocationName:[NSString stringWithFormat:@"select province_name from ws_province order by province_name"]];
             
@@ -104,11 +104,11 @@
             if (provid!=0) index = [_locationvalues indexOfObject:[NSString stringWithFormat:@"%d",provid]];
             break;
         }
-        case kTKPDPROFILESETTINGLOCATION_DATATYPEREGIONKEY:
+        case kTKPDLOCATION_DATATYPEREGIONKEY:
         {
             _labeltitle.text = @"   REGENCY";
-            NSInteger provid = [[_data objectForKey:kTKPDPROFILESETTING_APIPROVINCEKEY]integerValue];
-            NSInteger cityid = [[_data objectForKey:kTKPDPROFILESETTING_APICITYKEY]integerValue];
+            NSInteger provid = [[_data objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]integerValue];
+            NSInteger cityid = [[_data objectForKey:kTKPDLOCATION_DATACITYIDKEY]integerValue];
             name = [[DBManager getSharedInstance]LoadDataQueryLocationName:[NSString stringWithFormat:@"select city_name from ws_city d WHERE province_id = %d order by city_name",provid]];
             
             value = [[DBManager getSharedInstance]LoadDataQueryLocationValue:[NSString stringWithFormat:@"select city_id from ws_city d WHERE province_id = %d order by city_name",provid]];
@@ -117,12 +117,12 @@
             if(cityid!=0) index = [_locationvalues indexOfObject:[NSString stringWithFormat:@"%d",cityid]];
             break;
         }
-        case kTKPDPROFILESETTINGLOCATION_DATATYPEDISTICTKEY:
+        case kTKPDLOCATION_DATATYPEDISTICTKEY:
         {
             _labeltitle.text = @"   SUB DISTRICT";
-            NSInteger provid = [[_data objectForKey:kTKPDPROFILESETTING_APIPROVINCEKEY]integerValue];
-            NSInteger cityid = [[_data objectForKey:kTKPDPROFILESETTING_APICITYKEY]integerValue];
-            NSInteger districtid = [[_data objectForKey:kTKPDPROFILESETTING_APIDISTRICTKEY]integerValue];
+            NSInteger provid = [[_data objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]integerValue];
+            NSInteger cityid = [[_data objectForKey:kTKPDLOCATION_DATACITYIDKEY]integerValue];
+            NSInteger districtid = [[_data objectForKey:kTKPDLOCATION_DATADISTRICTIDKEY]integerValue];
             name = [[DBManager getSharedInstance]LoadDataQueryLocationName:[NSString stringWithFormat:@"select district_name from ws_district d WHERE province_id = %d and city_id=%d order by district_name",provid,cityid]];
             
             value = [[DBManager getSharedInstance]LoadDataQueryLocationValue:[NSString stringWithFormat:@"select district_id from ws_district d WHERE province_id = %d and city_id=%d order by district_id",provid,cityid]];
@@ -135,9 +135,9 @@
             break;
     }
 
-    indexpath = (index == 0)?[_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]:[NSIndexPath indexPathForRow:index inSection:0];
+    indexpath = (index == 0)?[_data objectForKey:kTKPDLOCATION_DATAINDEXPATHKEY]:[NSIndexPath indexPathForRow:index inSection:0];
 
-    [_selectedlocation setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHKEY];
+    [_selectedlocation setObject:indexpath forKey:kTKPDLOCATION_DATAINDEXPATHKEY];
 
     if (_locationnames.count > 0) {
         _isnodata = NO;
@@ -164,32 +164,32 @@
             case 11:
             {
                 NSDictionary *data;
-                NSIndexPath *indexpath = [_selectedlocation objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                NSIndexPath *indexpath = [_selectedlocation objectForKey:kTKPDLOCATION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 switch (_type) {
-                    case kTKPDPROFILESETTINGLOCATION_DATATYPEPROVINCEKEY:
+                    case kTKPDLOCATION_DATATYPEPROVINCEKEY:
                     {
-                        data = @{kTKPDPROFILE_DATALOCATIONVALUEKEY : _locationvalues[indexpath.row],
-                                 kTKPDPROFILE_DATALOCATIONNAMEKEY :  _locationnames[indexpath.row],
-                                 kTKPDPROFILE_DATALOCATIONPROVINCEINDEXPATHKEY:indexpath,
-                                 kTKPDPROFILE_DATALOCATIONTYPEKEY : @(_type)
+                        data = @{kTKPDLOCATION_DATALOCATIONVALUEKEY : _locationvalues[indexpath.row],
+                                 kTKPDLOCATION_DATALOCATIONNAMEKEY :  _locationnames[indexpath.row],
+                                 kTKPDLOCATION_DATAPROVINCEINDEXPATHKEY:indexpath,
+                                 kTKPDLOCATION_DATALOCATIONTYPEKEY : @(_type)
                                  };
                         break;
                     }
-                    case kTKPDPROFILESETTINGLOCATION_DATATYPEREGIONKEY:
+                    case kTKPDLOCATION_DATATYPEREGIONKEY:
                     {
-                        data = @{kTKPDPROFILE_DATALOCATIONVALUEKEY : _locationvalues[indexpath.row],
-                                 kTKPDPROFILE_DATALOCATIONNAMEKEY :  _locationnames[indexpath.row],
-                                 kTKPDPROFILE_DATALOCATIONCITYINDEXPATHKEY:indexpath,
-                                 kTKPDPROFILE_DATALOCATIONTYPEKEY : @(_type)
+                        data = @{kTKPDLOCATION_DATALOCATIONVALUEKEY : _locationvalues[indexpath.row],
+                                 kTKPDLOCATION_DATALOCATIONNAMEKEY :  _locationnames[indexpath.row],
+                                 kTKPDLOCATION_DATACITYINDEXPATHKEY:indexpath,
+                                 kTKPDLOCATION_DATALOCATIONTYPEKEY : @(_type)
                                  };
                         break;
                     }
-                    case kTKPDPROFILESETTINGLOCATION_DATATYPEDISTICTKEY:
+                    case kTKPDLOCATION_DATATYPEDISTICTKEY:
                     {
-                        data = @{kTKPDPROFILE_DATALOCATIONVALUEKEY : _locationvalues[indexpath.row],
-                                 kTKPDPROFILE_DATALOCATIONNAMEKEY :  _locationnames[indexpath.row],
-                                 kTKPDPROFILE_DATALOCATIONCITYINDEXPATHKEY:indexpath,
-                                 kTKPDPROFILE_DATALOCATIONTYPEKEY : @(_type)
+                        data = @{kTKPDLOCATION_DATALOCATIONVALUEKEY : _locationvalues[indexpath.row],
+                                 kTKPDLOCATION_DATALOCATIONNAMEKEY :  _locationnames[indexpath.row],
+                                 kTKPDLOCATION_DATACITYINDEXPATHKEY:indexpath,
+                                 kTKPDLOCATION_DATALOCATIONTYPEKEY : @(_type)
                                  };
                         break;
                     }
@@ -228,18 +228,18 @@
 			cell = [SettingAddressLocationCell newcell];
 			((SettingAddressLocationCell*)cell).delegate = self;
 		}
-        if (indexPath.row != ((NSIndexPath*)[_selectedlocation objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]).row) {
+        if (indexPath.row != ((NSIndexPath*)[_selectedlocation objectForKey:kTKPDLOCATION_DATAINDEXPATHKEY]).row) {
             ((SettingAddressLocationCell*)cell).imageview.hidden = YES;
         }
         else
             ((SettingAddressLocationCell*)cell).imageview.hidden = NO;
         
         //if (indexPath.row>_locationnames.count) {
-            ((SettingAddressLocationCell*)cell).data = @{kTKPDPROFILE_DATAINDEXPATHKEY: indexPath, kTKPDPROFILE_DATALOCATIONNAMEKEY: _locationnames[indexPath.row]};
+            ((SettingAddressLocationCell*)cell).data = @{kTKPDLOCATION_DATAINDEXPATHKEY: indexPath, kTKPDLOCATION_DATALOCATIONNAMEKEY: _locationnames[indexPath.row]};
         //}
         
 	} else {
-		static NSString *CellIdentifier = kTKPDPROFILE_STANDARDTABLEVIEWCELLIDENTIFIER;
+		static NSString *CellIdentifier = kTKPDLOCATION_STANDARDTABLEVIEWCELLIDENTIFIER;
 		
 		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 		if (cell == nil) {
@@ -247,8 +247,8 @@
 			cell.selectionStyle = UITableViewCellSelectionStyleNone;
 		}
         
-		cell.textLabel.text = kTKPDPROFILE_NODATACELLTITLE;
-		cell.detailTextLabel.text = kTKPDPROFILE_NODATACELLDESCS;
+		cell.textLabel.text = kTKPDLOCATION_NODATACELLTITLE;
+		cell.detailTextLabel.text = kTKPDLOCATION_NODATACELLDESCS;
 	}
 	
 	return cell;
@@ -266,7 +266,7 @@
 -(void)SettingAddressLocationCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     //[self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    [_selectedlocation setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHKEY];
+    [_selectedlocation setObject:indexpath forKey:kTKPDLOCATION_DATAINDEXPATHKEY];
     [_table reloadData];
 }
 

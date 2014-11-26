@@ -56,7 +56,7 @@
 
 -(void)cancel;
 -(void)configureRestKit;
--(void)loadData;
+-(void)request;
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
 -(void)requestfailure:(id)object;
 -(void)requestprocess:(id)object;
@@ -111,7 +111,7 @@
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata) {
-            [self loadData];
+            [self request];
         }
     }
 }
@@ -229,7 +229,7 @@
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
 
-- (void)loadData
+- (void)request
 {
     if (_request.isExecuting) return;
     
@@ -357,7 +357,7 @@
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }
                 else
                 {
@@ -392,7 +392,7 @@
     [_table reloadData];
     /** request data **/
     [self configureRestKit];
-    [self loadData];
+    [self request];
 }
 
 #pragma mark - Cell Delegate

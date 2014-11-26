@@ -16,6 +16,7 @@
 #import "ProductEtalaseViewController.h"
 #import "SendMessageViewController.h"
 #import "FavoriteShopAction.h"
+#import "../Detail/Shop/Settings/ShopSettingViewController.h"
 
 #import "URLCacheController.h"
 
@@ -78,6 +79,9 @@
 @property (strong, nonatomic) IBOutlet UIView *detailview;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *detailscrollview;
+@property (weak, nonatomic) IBOutlet UIButton *buttonsetting;
+@property (weak, nonatomic) IBOutlet UIButton *buttonmessage;
+@property (weak, nonatomic) IBOutlet UIButton *buttonaddproduct;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -226,8 +230,15 @@
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY object:nil];
+    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil];
     
     _detailfilter = [NSMutableDictionary new];
+    
+    _buttonfav.enabled = NO;
+    _buttonmessage.enabled = NO;
+    _buttonsetting.enabled = NO;
+    _buttonaddproduct.enabled = NO;
+    //_cachecontroller.URLCacheInterval = 1;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -607,6 +618,19 @@
                 }
                 break;
             }
+            case 18 :
+            {
+                //settings
+                ShopSettingViewController *vc = [ShopSettingViewController new];
+                vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY], kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result};
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 19:
+            {
+                //add produk
+                break;
+            }
             default:
                 if (_viewControllers != nil) {
                     
@@ -968,6 +992,7 @@
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailShopResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APIISOPENKEY:kTKPDDETAILSHOP_APIISOPENKEY}];
     
     RKObjectMapping *closedinfoMapping = [RKObjectMapping mappingForClass:[ClosedInfo class]];
     [closedinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APIUNTILKEY:kTKPDDETAILSHOP_APIUNTILKEY,
@@ -1102,7 +1127,7 @@
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
         NSLog(@"cache and updated in last 24 hours.");
-//        [self requestfailure:nil];
+        [self requestfailure:nil];
 	}
 }
 
@@ -1116,10 +1141,10 @@
     
     if (status) {
         //only save cache for first page
-//        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-//        [_cachecontroller connectionDidFinish:_cacheconnection];
+        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+        [_cachecontroller connectionDidFinish:_cacheconnection];
         //save response data
-//        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
 
         [self requestprocess:object];
     }
@@ -1179,6 +1204,12 @@
                 _barbuttoninfo.enabled = YES;
                 [self setDetailData];
             }
+            
+            //emnable button after request
+            _buttonaddproduct.enabled = YES;
+            _buttonfav.enabled = YES;
+            _buttonmessage.enabled = YES;
+            _buttonsetting.enabled = YES;
         }
         else{
             [self cancel];
