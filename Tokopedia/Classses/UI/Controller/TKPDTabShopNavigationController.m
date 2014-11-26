@@ -79,8 +79,6 @@
 @property (strong, nonatomic) IBOutlet UIView *detailview;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *detailscrollview;
-@property (weak, nonatomic) IBOutlet UIButton *buttonsetting;
-@property (weak, nonatomic) IBOutlet UIButton *buttonmessage;
 @property (weak, nonatomic) IBOutlet UIButton *buttonaddproduct;
 
 -(void)cancel;

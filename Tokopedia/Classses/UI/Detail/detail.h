@@ -435,6 +435,7 @@ typedef enum
 #define kTKPDTALKCOMMENT_CREATETIME @"create_time"
 #define kTKPDTALKCOMMENT_USERIMAGE @"user_image"
 #define kTKPDTALKCOMMENT_USERNAME @"user_name"
+#define kTKPDDETAIL_APIADDCOMMENTTALK @"add_comment_talk"
 
 #pragma mark - Notes
 #define kTKPDNOTES_APINOTEIDKEY @"note_id"
