@@ -13,6 +13,7 @@
 #define kTKPDTITLE_REVIEW @"Review"
 #define kTKPDTITLE_SHOP_NOTES @"Shop Note"
 #define kTKPDTITLE_SEND_MESSAGE @"Send Message"
+#define kTKPDTITLE_NEW_TALK @"New Talk About It"
 #define kTKPDTITLE_SHOP_INFO @"Shop Information"
 #define KTKPDTITLE_FAV_THIS_SHOP @"People who Favorited This Shop"
 #define KTKPDTITLE_PEOPLE @"People Information"
@@ -54,6 +55,7 @@
 #define kTKPDDETAIL_APIGETNOTESDETAILKEY @"get_notes_detail"
 #define kTKPDDETAIL_APIGETETALASEKEY @"get_shop_etalase"
 #define kTKPDDETAIL_APIGETSHOPFAVORITEDKEY @"get_people_who_favorite_myshop"
+#define kTKPDDETAIL_APIADDCOMMENTTALK @"add_comment_talk"
 
 #define kTKPDDETAIL_APIPAGEKEY @"page"
 #define kTKPDDETAIL_APITOTALPAGEKEY @"total_page"
@@ -263,6 +265,7 @@
 #define kTKPDTALK_APITALKMESSAGEKEY @"talk_message"
 #define kTKPDTALK_APITALKFOLLOWSTATUSKEY @"talk_follow_status"
 #define kTKPDTALK_APITALKSHOPID @"talk_shop_id"
+#define kTKPDTALKCOMMENT_APITEXT @"text_comment"
 
 
 #define kTKPDTALK_APITALKPRODUCTNAMEKEY @"talk_product_name"
@@ -368,6 +371,7 @@
 #define kTKPDDETAIL_APIURINEXTKEY @"uri_next"
 
 #define kTKPDDETAILPRODUCT_APIPATH @"product.pl"
+#define kTKPDDETAILACTIONPRODUCT_APIPATH @"action/product.pl"
 #define kTKDPDETAILCATALOG_APIPATH @"catalog.pl"
 #define kTKPDDETAILSHOP_APIPATH @"shop.pl"
 #define kTKPDDETAILNOTES_APIPATH @"notes.pl"

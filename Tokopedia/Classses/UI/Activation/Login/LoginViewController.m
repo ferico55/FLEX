@@ -337,7 +337,7 @@
         else
         {
             NSArray *messages = _login.message_error;
-            NSString *message = [[messages valueForKey:@"description"] componentsJoinedByString:@"\n"];
+//            NSString *message = [[messages valueForKey:@"description"] componentsJoinedByString:@"\n"];
             
             NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];

@@ -32,7 +32,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *user_name;
 @property (weak, nonatomic) IBOutlet UILabel *create_time;
 @property (weak, nonatomic) IBOutlet UIImageView *user_image;
-
+@property (weak, nonatomic) IBOutlet UIImageView *commentfailimage;
 
 
 

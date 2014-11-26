@@ -83,7 +83,7 @@
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
-    
+    _page = 1;
     _table.tableHeaderView = _header;
     
     if (_list.count>2) {
@@ -99,11 +99,11 @@
     [_table addSubview:_refreshControl];
     
     //cache
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPTALK_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue]]];
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
+//    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
+//    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPTALK_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue]]];
+//    _cachecontroller.filePath = _cachepath;
+//    _cachecontroller.URLCacheInterval = 86400.0;
+//	[_cachecontroller initCacheWithDocumentPath:path];
 }
 
 -(void)viewWillAppear:(BOOL)animated

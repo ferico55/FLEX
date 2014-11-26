@@ -25,6 +25,8 @@
 #define kTKPD_APIERRORMESSAGEKEY @"message_error"
 #define kTKPD_APISTATUSKEY @"status"
 #define kTKPD_APISERVERPROCESSTIMEKEY @"server_process_time"
+#define kTKPD_APIISSUCCESSKEY @"is_success"
+
 #define kTKPD_APIRESULTKEY @"result"
 #define kTKPD_APIPAGINGKEY @"paging"
 #define kTKPD_APIURINEXTKEY @"uri_next"

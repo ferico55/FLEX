@@ -71,6 +71,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelfav;
 @property (weak, nonatomic) IBOutlet UILabel *labelsold;
 @property (weak, nonatomic) IBOutlet UIButton *buttonfav;
+@property (weak, nonatomic) IBOutlet UIButton *buttonmessage;
+@property (weak, nonatomic) IBOutlet UIButton *buttonsetting;
 
 @property (strong, nonatomic) IBOutlet UIView *descriptionview;
 @property (strong, nonatomic) IBOutlet UIView *detailview;
@@ -1223,12 +1225,33 @@
 {
     _data = data;
     
-    //cache
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOP_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]]];
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
+    if(_data) {
+        //cache
+        NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
+        _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOP_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]]];
+        _cachecontroller.filePath = _cachepath;
+        _cachecontroller.URLCacheInterval = 86400.0;
+        [_cachecontroller initCacheWithDocumentPath:path];
+        
+        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+        if (auth && ![auth isEqual:[NSNull null]]) {
+            if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
+                _buttonsetting.hidden = NO;
+                _buttonfav.hidden = YES;
+                _buttonmessage.hidden = YES;
+                _actcover.hidden  = YES;
+                _actfav.hidden  = YES;
+            }
+        }
+        else
+        {
+            _buttonsetting.hidden = YES;
+            _buttonfav.hidden = NO;
+            _buttonmessage.hidden = NO;
+        }
+
+    }
+   
 }
 
 - (void)updateView:(NSNotification *)notification;

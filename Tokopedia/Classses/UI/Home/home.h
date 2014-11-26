@@ -35,7 +35,9 @@
 #define kTKPDHOME_APILISTGOLDKEY @"list_gold"
 #define kTKPDHOME_APIPAGINGKEY @"paging"
 #define kTKPDHOME_APIPAGEKEY @"page"
+#define kTKPDHOME_APIMESSAGEREPLYKEY @"reply_message"
 #define kTKPDHOME_APIACTIONKEY @"action"
+
 #define kTKPDHOME_APILIMITPAGEKEY @"per_page"
 #define kTKPDHOME_APIURINEXTKEY @"uri_next"
 
