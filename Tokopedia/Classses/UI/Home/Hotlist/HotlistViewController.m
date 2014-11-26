@@ -92,16 +92,15 @@
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
     
     /** set inset table for different size**/
+    UIEdgeInsets inset = _table.contentInset;
+    inset.top += 2;
     if (is4inch) {
-        UIEdgeInsets inset = _table.contentInset;
         inset.bottom += 115;
-        _table.contentInset = inset;
     }
     else{
-        UIEdgeInsets inset = _table.contentInset;
         inset.bottom += 200;
-        _table.contentInset = inset;
     }
+    _table.contentInset = inset;
     
     /** set table view datasource and delegate **/
     _table.delegate = self;
@@ -147,6 +146,10 @@
     //        [_cachecontroller.urlArray addObject:[NSURL URLWithString:element]];
     //    }
     //}
+    
+    [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
+    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -201,17 +204,12 @@
             ((HotlistCell*)cell).indexpath = indexPath;
             ((HotlistCell*)cell).pricelabel.text = hotlist.price_start;
             ((HotlistCell*)cell).namelabel.text = hotlist.title;
-            
-            //((HotlistCell*)cell).pricelabel.font = font;
-            
             [((HotlistCell*)cell).act startAnimating];
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:hotlist.image_url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            //request.URL = url;
-            
+
             UIImageView *thumb = ((HotlistCell*)cell).productimageview;
             thumb.image = nil;
-            //thumb.hidden = YES;	//@prepareforreuse then @reset
             
             [((HotlistCell*)cell).act startAnimating];
             
@@ -454,6 +452,7 @@
             BOOL status = [hotlist.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
+
                 [_product addObjectsFromArray: hotlist.result.list];
                 
                 if (_product.count >0) {

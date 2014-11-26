@@ -10,6 +10,9 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface StickyAlert : NSObject
+
+@property NSInteger tag;
+
 -(void)alertError:(NSArray*)errorArray;
 -(void)alertSuccess:(NSArray*)errorArray;
 -(void)initView:(UIView*)view;

@@ -28,8 +28,10 @@
 #endif
 
 
-@property (weak, nonatomic) IBOutlet UIImageView *thumb;
-@property (weak, nonatomic) IBOutlet UILabel *namelabel;
+@property (weak, nonatomic) IBOutlet UIImageView *userImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *productImageView;
+@property (weak, nonatomic) IBOutlet UILabel *userNamelabel;
+@property (weak, nonatomic) IBOutlet UILabel *productNamelabel;
 @property (weak, nonatomic) IBOutlet UILabel *timelabel;
 @property (weak, nonatomic) IBOutlet UILabel *commentlabel;
 @property (weak, nonatomic) IBOutlet StarsRateView *qualityrate;

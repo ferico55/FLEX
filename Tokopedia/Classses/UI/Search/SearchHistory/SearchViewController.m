@@ -16,7 +16,6 @@
 
 @interface SearchViewController ()<
     UISearchBarDelegate,
-    UISearchBarDelegate,
     UISearchDisplayDelegate,
     SearchCellDelegate>
 {
@@ -288,6 +287,24 @@
         [_searchresultarray removeAllObjects];
         [_table reloadData];
     }
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [_searchbar setText:@""];
+    [_searchbar resignFirstResponder];
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:NO animated:YES];
+    return YES;
+}
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:YES animated:YES];
+    return YES;
 }
 
 #pragma mark - cell delegate

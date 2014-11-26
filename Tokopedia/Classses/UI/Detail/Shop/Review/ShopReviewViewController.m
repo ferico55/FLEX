@@ -52,7 +52,6 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIView *detailstarsandtimesview;
-@property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *headerview;
 @property (weak, nonatomic) IBOutlet StarsRateView *averagerateview;
 
@@ -129,12 +128,17 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
-    //cache
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPREVIEW_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue]]];
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
+//    //cache
+//    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
+//    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPREVIEW_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue]]];
+//    _cachecontroller.filePath = _cachepath;
+//    _cachecontroller.URLCacheInterval = 86400.0;
+//	[_cachecontroller initCacheWithDocumentPath:path];
+    
+    UIEdgeInsets inset = _table.contentInset;
+    inset.bottom += 50;
+    _table.contentInset = inset;
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -146,6 +150,7 @@
             [self loadData];
         }
     }
+    self.table.contentOffset = CGPointMake(0, 0);
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -173,53 +178,50 @@
 		cell = (GeneralReviewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
 			cell = [GeneralReviewCell newcell];
-			//((GeneralReviewCell*)cell).delegate = self;
 		}
         
         if (_list.count > indexPath.row) {
+            
             ReviewList *list = _list[indexPath.row];
-            ((GeneralReviewCell*)cell).namelabel.text = list.review_product_name;
+            
+            ((GeneralReviewCell*)cell).userNamelabel.text = list.review_user_name;
             ((GeneralReviewCell*)cell).timelabel.text = list.review_create_time;
-            
-            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.review_message];
-            NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-            [paragrahStyle setLineSpacing:5];
-            [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.review_message length])];
-            ((GeneralReviewCell*)cell).commentlabel.attributedText = attributedString;
 
+            ((GeneralReviewCell*)cell).productNamelabel.text = list.review_product_name;
             
-//            ((GeneralReviewCell*)cell).commentlabel.text = list.review_message;
-            //TODO:: create see more button
-            //UIFont * font = ((ProductReviewCell*)cell).commentlabel.font ;
-            //CGSize stringSize = [((ProductReviewCell*)cell).commentlabel.text sizeWithFont:font];
-            //CGFloat widthlabel = stringSize.width;
-            //CGFloat heightlabel = stringSize.height;
-            //UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-            //[button addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
-            //[button setTitle:@"See More" forState:UIControlStateNormal];
-            //[button setFrame:CGRectMake(widthlabel,heightlabel, ((ProductReviewCell*)cell).commentlabel.frame.size.width, ((ProductReviewCell*)cell).commentlabel.frame.size.height)];
-            //button.tag = 10;
+            ((GeneralReviewCell *)cell).productNamelabel.text = list.review_product_name;
+            if ([list.review_message length] > 30) {
+                NSRange stringRange = {0, MIN([list.review_message length], 30)};
+                stringRange = [list.review_message rangeOfComposedCharacterSequencesForRange:stringRange];
+                ((GeneralReviewCell *)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [list.review_message substringWithRange:stringRange]];
+            } else {
+                ((GeneralReviewCell *)cell).commentlabel.text = list.review_message;
+            }
+            
             ((GeneralReviewCell*)cell).qualityrate.starscount = list.review_rate_quality;
             ((GeneralReviewCell*)cell).speedrate.starscount = list.review_rate_speed;
             ((GeneralReviewCell*)cell).servicerate.starscount = list.review_rate_service;
             ((GeneralReviewCell*)cell).accuracyrate.starscount = list.review_rate_accuracy;
             
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            //request.URL = url;
-            UIImageView *thumb = ((GeneralReviewCell*)cell).thumb;
-            thumb.image = nil;
-            //thumb.hidden = YES;	//@prepareforreuse then @reset
-            
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            UIImageView *userImageView = ((GeneralReviewCell *)cell).userImageView;
+            userImageView.image = nil;
+            [userImageView setImageWithURLRequest:userImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                //NSLOG(@"thumb: %@", thumb);
-                [thumb setImage:image];
-                
+                [userImageView setImage:image];
 #pragma clang diagnostic pop
-                
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            }];
+            } failure:nil];
+            
+            NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            UIImageView *productImageView = ((GeneralReviewCell*)cell).productImageView;
+            productImageView.image = nil;
+            [productImageView setImageWithURLRequest:productImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                [productImageView setImage:image];
+#pragma clang diagnostic pop
+            } failure:nil];
         }
         
 		return cell;
@@ -257,6 +259,19 @@
         }
 	}
 }
+
+#pragma mark - Scroll view delegate
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if (scrollView.contentOffset.y < 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"enableParentScroll" object:nil];
+        _table.scrollEnabled = NO;
+    } else {
+        _table.scrollEnabled = YES;
+    }
+}
+
 
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
@@ -374,7 +389,7 @@
                                                  kTKPDREVIEW_APIREVIEWRATEACCURACYKEY,
                                                  kTKPDREVIEW_APIPRODUCTNAMEKEY,
                                                  kTKPDREVIEW_APIPRODUCTIDKEY,
-                                                 kTKPDREVIEW_APIPRODUCTIMAGEKEY
+                                                 kTKPDREVIEW_APIPRODUCTIMAGEKEY,
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];

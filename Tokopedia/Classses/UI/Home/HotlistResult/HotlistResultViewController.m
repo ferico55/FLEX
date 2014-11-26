@@ -290,6 +290,7 @@
     #pragma clang diagnostic ignored "-Warc-retain-cycles"
                     //NSLOG(@"thumb: %@", thumb);
                     [thumb setImage:image];
+                    [thumb setContentMode:UIViewContentModeScaleAspectFill];
                     
                     [act stopAnimating];
                     NSLog(@"============================== DONE GET IMAGE =====================");

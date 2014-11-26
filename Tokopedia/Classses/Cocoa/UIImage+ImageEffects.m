@@ -101,6 +101,11 @@
 
 @implementation UIImage (ImageEffects)
 
+- (UIImage *)applyLightEffectWithRadius:(CGFloat)radius
+{
+    UIColor *tintColor = [UIColor colorWithWhite:0.0 alpha:0.2];
+    return [self applyBlurWithRadius:radius tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
+}
 
 - (UIImage *)applyLightEffect
 {

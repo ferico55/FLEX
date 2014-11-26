@@ -81,16 +81,15 @@
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
     
     /** set inset table for different size**/
+    UIEdgeInsets inset = _table.contentInset;
+    inset.top += 2;    
     if (is4inch) {
-        UIEdgeInsets inset = _table.contentInset;
         inset.bottom += 155;
-        _table.contentInset = inset;
     }
     else{
-        UIEdgeInsets inset = _table.contentInset;
         inset.bottom += 240;
-        _table.contentInset = inset;
     }
+    _table.contentInset = inset;
     
     
     /** set table view datasource and delegate **/
@@ -177,6 +176,7 @@
                 [paragrahStyle setLineSpacing:5];
                 [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.product_name length])];
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).attributedText = attributedString ;
+                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).lineBreakMode = NSLineBreakByTruncatingTail;
                 
                 //                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
                 ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
@@ -188,24 +188,13 @@
                 UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
                 thumb.image = nil;
                 
-                UIActivityIndicatorView *act = (UIActivityIndicatorView*)((GeneralProductCell*)cell).act[i];
-                [act startAnimating];
-                
-                NSLog(@"============================== START GET IMAGE =====================");
                 [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    //NSLOG(@"thumb: %@", thumb);
                     [thumb setImage:image];
-                    
-                    [act stopAnimating];
-                    NSLog(@"============================== DONE GET IMAGE =====================");
+                    [thumb setContentMode:UIViewContentModeScaleAspectFill];
 #pragma clang diagnostic pop
-                    
                 } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                    [act stopAnimating];
-                    
-                    NSLog(@"============================== DONE GET IMAGE =====================");
                 }];
             }
         }
@@ -226,7 +215,10 @@
   
 }
 
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 202;
+}
 
 
 #pragma mark - Memory Management
@@ -467,7 +459,7 @@
 
 -(void)reset:(UITableViewCell*)cell
 {
-    [((GeneralProductCell*)cell).thumb makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
+    [((GeneralProductCell*)cell).thumb makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
     [((GeneralProductCell*)cell).labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
     [((GeneralProductCell*)cell).labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
     [((GeneralProductCell*)cell).labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];

@@ -40,17 +40,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    self.navigationController.navigationBar.hidden = YES;
-
-    UIView *blurBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+64)];
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+64)];
-    imageView.image = [self.screenshotImage applyLightEffect];
-    imageView.backgroundColor = [UIColor blackColor];
-    [blurBackground addSubview:imageView];
-    
-    [self.view insertSubview:blurBackground belowSubview:self.table];
-    
     self.cancelButton.layer.cornerRadius = 5;
     self.cancelButton.layer.borderColor = [UIColor whiteColor].CGColor;
     self.cancelButton.layer.borderWidth = 1;
@@ -136,15 +125,18 @@
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
-    if ([sender isKindOfClass:[UIButton class]]) {
-       [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-    }
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         switch (button.tag) {
             case 10:
             {
                 //CANCEL
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                break;
+            }
+            case 11:
+            {
+                //DONE
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             }

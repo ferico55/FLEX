@@ -133,6 +133,11 @@
     self.navigationItem.leftBarButtonItem = backBarButtonItem;
 }
 
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    _container.contentSize = _contentView.frame.size;
+}
 
 -(void)viewWillDisappear:(BOOL)animated
 {

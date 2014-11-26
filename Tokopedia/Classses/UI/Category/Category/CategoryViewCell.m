@@ -15,7 +15,7 @@
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *lable;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *thumb;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *view;
-
+@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *verticalBorderView;
 
 @end
 
@@ -36,7 +36,7 @@
     [super awakeFromNib];
     
     _view = [NSArray sortViewsWithTagInArray:_view];
-    
+
     for (UIView *view in _view) {
         view.multipleTouchEnabled = NO;
         view.exclusiveTouch = YES;
@@ -89,25 +89,27 @@
         NSArray *column = [_data objectForKey:kTKPDCATEGORY_DATACOLUMNSKEY];
         
         for (int i = 0; i<column.count; i++) {
-            
+            ((UIView *)_verticalBorderView[i]).hidden = NO;
+            ((UIImageView*)_thumb[i]).image = nil;
             ((UIView*)_view[i]).hidden = NO;
-
             NSString *title =[column[i] objectForKey:kTKPDCATEGORY_DATATITLEKEY];
-            
             NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:title];
             NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
             [paragrahStyle setLineSpacing:5];
             [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [title length])];
             ((UILabel*)_lable[i]).attributedText = attributedString ;
             ((UILabel*)_lable[i]).textAlignment = NSTextAlignmentCenter;
-            
-           NSString *icon = [column[i] objectForKey:kTKPDCATEGORY_DATAICONKEY];
+            NSString *icon = [column[i] objectForKey:kTKPDCATEGORY_DATAICONKEY];
             ((UIImageView*)_thumb[i]).image = [UIImage imageNamed:icon];
+        }
+        for (int i = 1; i < (3-column.count); i++) {
+            ((UIView *)_verticalBorderView[i]).hidden = YES;
         }
     }
     else
     {
         [self reset];
+        
     }
 }
 
@@ -115,6 +117,7 @@
 -(void)reset
 {
     [_thumb makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
+    [_lable makeObjectsPerformSelector:@selector(setText:) withObject:nil];
 }
 
 

@@ -46,6 +46,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *textfieldpass;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldotp;
 @property (weak, nonatomic) IBOutlet UIButton *buttonsendotp;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
 
 -(void)cancelActionAddBank;
 -(void)configureRestKitActionAddBank;
@@ -114,6 +115,12 @@
     backBarButtonItem.tag = 12;
     self.navigationItem.leftBarButtonItem = backBarButtonItem;
     
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    _container.contentSize = _contentView.frame.size;
 }
 
 -(void)viewWillDisappear:(BOOL)animated

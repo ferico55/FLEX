@@ -26,7 +26,7 @@
     NSOperationQueue *_operationQueue;
     NSMutableArray *_shop;
     NSMutableArray *_goldshop;
-    NSDictionary *_shopdictionary;
+    NSMutableDictionary *_shopdictionary;
     NSArray *_shopdictionarytitle;
     NSInteger _page;
     NSInteger _limit;
@@ -105,8 +105,7 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
-    NSLog(@"going here first");
-    
+//    [self.table setContentInset:UIEdgeInsetsMake(0, 0, 140, 0)];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -144,17 +143,24 @@
 
 
 #pragma mark - Table View Data Source
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    // Return the number of rows in the section.
-    if(section == 0) {
-        return _goldshop.count;
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    if (_shop.count > 0 && _goldshop.count > 0) {
+        return 2;
+    } else {
+        return 1;
     }
-    NSString *sectionTitle = [_shopdictionarytitle objectAtIndex:section];
-    NSArray *sectionDictionary = [_shopdictionary objectForKey:sectionTitle];
-    
-    return [sectionDictionary count];
 }
 
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (tableView.numberOfSections == 2) {
+        NSArray *keys = [_shopdictionary allKeys];
+        return [[_shopdictionary objectForKey:[keys objectAtIndex:section]] count];
+    } else {
+        return _shop.count;
+    }
+}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = nil;
@@ -173,20 +179,17 @@
             NSString *sectionTitle = [_shopdictionarytitle objectAtIndex:indexPath.section];
             NSArray *sectionDictionary = [_shopdictionary objectForKey:sectionTitle];
             FavoritedShopList *shop = sectionDictionary[indexPath.row];
-            NSLog(@"%d %@ %d",((FavoritedShopCell*)cell).isfavoritedshop.tag, shop.shop_name, indexPath.section);
             
             ((FavoritedShopCell*)cell).shopname.text = shop.shop_name;
             ((FavoritedShopCell*)cell).shoplocation.text = shop.shop_location;
             
-            if(indexPath.section == 0) {
+            if ([sectionTitle isEqualToString:@"Rekomendasi"]) {
                 [((FavoritedShopCell*)cell).isfavoritedshop setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
             } else {
                 [((FavoritedShopCell*)cell).isfavoritedshop setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];
             }
             
-            
             ((FavoritedShopCell*)cell).indexpath = indexPath;
-            
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:shop.shop_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
@@ -224,13 +227,20 @@
     return cell;
 }
 
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return [_shopdictionarytitle count];
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 33;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return [_shopdictionarytitle objectAtIndex:section];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.table.sectionHeaderHeight)];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width, self.table.sectionHeaderHeight)];
+    [label setFont:[UIFont fontWithName:@"GothamBook" size:15]];
+    [label setTextColor:[UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1]];
+    label.text = [_shopdictionarytitle objectAtIndex:section];
+    [view addSubview:label];
+    return view;
 }
 
 #pragma mark - Table View Delegate
@@ -256,6 +266,7 @@
 
 -(void) removeFavoritedRow:(NSIndexPath*)indexpath{
     is_already_updated = YES;
+    
     if(indexpath.section == 0) {
         
         FavoritedShopList *list = _goldshop[indexpath.row];
@@ -280,14 +291,12 @@
         [_table deleteRowsAtIndexPaths:deleteIndexPaths withRowAnimation:UITableViewRowAnimationFade];
         [_table endUpdates];
         
-        
-        
     } else {
 //        [_shop removeObjectAtIndex:indexpath.row];
     }
     
     //TODO ini animation nya masih jelek, yg bagus malah bikin bugs, checkthisout later!!
-    [_table reloadData];
+//    [_table reloadData];
     
 }
 
@@ -324,7 +333,6 @@
     
     _requestcount ++;
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/favorite-shop.pl" parameters:param];
-    
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsuccessfav:mappingResult withOperation:operation];
@@ -511,12 +519,16 @@
             if(!is_already_updated && _page == 1) {
                 [_goldshop addObjectsFromArray: favoritedshop.result.list_gold];
             }
+
+            _shopdictionary = [NSMutableDictionary new];
             
-            
-            _shopdictionary = @{
-                                @"Favorite" : _shop,
-                                @"Rekomendasi" : _goldshop,
-                                };
+            if (_shop.count > 0) {
+                [_shopdictionary setObject:_shop forKey:@"Favorite"];
+            }
+
+            if (_goldshop.count > 0) {
+                [_shopdictionary setObject:_goldshop forKey:@"Rekomendasi"];
+            }
             
             _shopdictionarytitle = [_shopdictionary allKeys];
             
@@ -585,9 +597,9 @@
     FavoritedShopList *list;
     
     if(section == 1) {
-        list = _shop[indexpath.row];
-    } else {
         list = _goldshop[indexpath.row];
+    } else {
+        list = _shop[indexpath.row];
     }
     
     

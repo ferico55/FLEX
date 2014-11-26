@@ -1,0 +1,12 @@
+##
+# Host Database
+#
+# localhost is used to configure the loopback interface
+# when the system is booting.  Do not change this entry.
+##
+127.0.0.1	localhost
+255.255.255.255	broadcasthost
+::1             localhost
+192.168.10.1 tkpdevel-pg.feizal new.tkpdevel-pg.feizal www.tkpdevel-pg.feizal
+192.168.10.1 tkpdevel-pg.renny new.tkpdevel-pg.renny www.tkpdevel-pg.renny
+192.168.10.1 tkpdevel-pg.tonito new.tkpdevel-pg.tonito www.tkpdevel-pg.tonito 

@@ -8,23 +8,16 @@
 
 #import "TKPDTabHomeNavigationController.h"
 
-@interface TKPDTabHomeNavigationController () {
-	UIView* _tabbar;
+@interface TKPDTabHomeNavigationController () <UIScrollViewDelegate> {
+	UIView *_tabbar;
 	NSMutableArray* _buttons;
 	NSInteger _unloadSelectedIndex;
 	NSArray* _unloadViewControllers;
-    
     NSMutableArray *_chevrons;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollviewtop;
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollviewmenu;
-@property (weak, nonatomic) IBOutlet UIButton *buttonfilter;
 @property (weak, nonatomic) IBOutlet UIView *container;
-@property (weak, nonatomic) IBOutlet UIView *tabbarthrees;
-@property (weak, nonatomic) IBOutlet UIView *tabbartwos;
-
-- (IBAction)tap:(UISegmentedControl *)sender;
 
 - (UIEdgeInsets)contentInsetForContainerController;
 - (UIViewController*)isChildViewControllersContainsNavigationController:(UIViewController*)controller;
@@ -43,29 +36,6 @@
 @dynamic contentInsetForChildController;
 
 @synthesize container = _container;
-@synthesize tabbarthrees = _tabbarthrees;
-@synthesize tabbartwos = _tabbartwos;
-
-#pragma mark -
-#pragma mark Factory methods
-
-//+ (id)allocinit
-//{
-//	id o = [[self class] alloc];
-//	if (o != nil) {
-//		o = [o initWithNibName:nil bundle:nil];
-//		return o;
-//	}
-//	return nil;
-//}
-
-#pragma mark -
-#pragma mark Initializations
-
-//- (id)init
-//{
-//	return [self initWithNibName:nil bundle:nil];
-//}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -88,7 +58,6 @@
 {
     [super viewDidLoad];
     
-    
     _buttons = [NSMutableArray new];
     _chevrons = [NSMutableArray new];
 	
@@ -98,29 +67,30 @@
 		_unloadSelectedIndex = -1;
 		_unloadViewControllers = nil;
 	}
+
+    UIImageView *greenArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_green.png"]];
+    CGRect frame = greenArrowImageView.frame;
+    frame.size.width = 13;
+    frame.size.height = 13;
+    frame.origin.x = (self.view.frame.size.width/2) - (frame.size.width/2);
+    greenArrowImageView.frame = frame;
+    [self.view addSubview:greenArrowImageView];
+
+    [_scrollviewtop setContentInset:UIEdgeInsetsMake(0, 106.6f, 0, 106.6f)];
 }
 
 - (void)viewDidLayoutSubviews
 {
 	[super viewDidLayoutSubviews];
-	//CGRect frame = _container.frame;
-	//CGSize size = CGSizeMake((inset.left + inset.right) / 2.0f, (inset.top + inset.bottom) / 2.0f);
-	//frame = CGRectInset(frame, size.width, size.height);
-	//frame = CGRectOffset(frame, inset.left - size.width, inset.top - size.height);
-	//_container.frame = frame;
-	
+
 	_selectedViewController.view.frame = _container.bounds;
 	
 	UIEdgeInsets inset = [self contentInsetForContainerController];
 	
-	UIView* tabbar;
+	UIView *tabbar;
 	CGRect frame;
-	//if (_selectedIndex < 3) {
-	//	tabbar = _tabbars[0];
-	//} else {
-	//	tabbar = _tabbars[1];
-	//}
 	tabbar = _tabbar;
+    
 	frame = tabbar.frame;
 	frame.origin.y = inset.top;
 	
@@ -132,7 +102,6 @@
 			frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
 		}
 	}
-	//tabbar.frame = frame;
 	
 	inset = [self contentInsetForChildController];
 	if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {
@@ -187,21 +156,12 @@
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             [button addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
             [button setTitle:titles[i] forState:UIControlStateNormal];
-            UIFont * font = kTKPDHOME_FONTSLIDETITLES;
-            button.titleLabel.font = font;
+            button.titleLabel.textAlignment = NSTextAlignmentCenter;
             button.backgroundColor = [UIColor clearColor];
             [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            CGSize stringSize = [titles[i] sizeWithFont:kTKPDHOME_FONTSLIDETITLESACTIVE];
             
-            CGFloat widthlabel;
-            if(count == 1) {
-                widthlabel = self.view.frame.size.width;
-            } else {
-                widthlabel = stringSize.width+10;
-            }
-            
-            
-            button.frame = CGRectMake(widthcontenttop+6,3,widthlabel,(_scrollviewtop.frame.size.height)-30);
+            CGFloat widthlabel = (self.view.frame.size.width/3);
+            button.frame = CGRectMake(widthcontenttop, 0, widthlabel, _scrollviewtop.frame.size.height+1);
             button.tag = i;
             
             widthcontenttop +=widthlabel;
@@ -239,9 +199,8 @@
 		_viewControllers = nil;
 		_selectedViewController = nil;
 		_selectedIndex = -1;
-		//_navigationIndex = -1;
 	}
-    [self AdjustPageActive];
+    [self adjustPageActive];
 }
 
 - (void)setSelectedViewController:(UIViewController *)selectedViewController
@@ -280,10 +239,8 @@
 	
 	if (_viewControllers != nil) {
 		
-		//UIView* selecttabbar;
 		CGRect selectframe;
         
-		//selecttabbar = _tabbar;
 		selectframe = _tabbar.frame;
         
 		UIViewController* deselect = _selectedViewController;
@@ -296,21 +253,14 @@
 			if (!n.navigationBarHidden && !n.navigationBar.hidden) {
 				
 				CGRect rect = n.navigationBar.frame;
-				//rect = [self.view convertRect:rect fromView:n.navigationBar.superview];
-				//(*selectframe).origin.y = CGRectGetMaxY(rect);
 				selectframe.origin.y = inset.top;
-				//selectframe = CGRectOffset(selectframe, 0.0f, CGRectGetHeight(rect));
 				selectframe = CGRectZero;
 			} else {
-				//selectframe.origin.y = inset.top;
                 selectframe = CGRectZero;
 			}
 		} else {
             selectframe = CGRectZero;
-			//selectframe.origin.y = inset.top;
 		}
-		
-		//selecttabbar.frame = selectframe;
 		
 		int navigate = 0;
         
@@ -327,12 +277,9 @@
 			
 			if (deselect != nil) {
 				[deselect willMoveToParentViewController:nil];
-				//[deselect.view removeFromSuperview];
-				//[deselect removeFromParentViewController];
 			}
 			
 			[self addChildViewController:select];
-			//select.view.frame = _container.bounds;
 			
 			if (navigate == 0) {
 				select.view.frame = _container.bounds;	//dead code
@@ -388,8 +335,6 @@
 - (UIEdgeInsets)contentInsetForChildController
 {
 	UIEdgeInsets inset = [self contentInsetForContainerController];
-	
-	//CGRect bounds = ((UIView*)_tabbars[0]).bounds;
 	CGRect bounds = _tabbar.bounds;
 	inset.top += CGRectGetHeight(bounds);
 	
@@ -402,21 +347,12 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-	
-	NSLog(@"%@: %@", [self class], NSStringFromSelector(_cmd));
-	
-	NSLog(@"isViewLoaded: %@", self.isViewLoaded ? @"YES" : @"NO");
-	
 	if (self.isViewLoaded && (self.view.window == nil)) {
-		
 		_unloadSelectedIndex = _selectedIndex;
 		_unloadViewControllers = _viewControllers;
 		[self setViewControllers:nil];
-		
 		self.view = nil;
 	}
-	
-	NSLog(@"isViewLoaded: %@", self.isViewLoaded ? @"YES" : @"NO");
 }
 
 #ifdef _DEBUG
@@ -428,7 +364,8 @@
 
 #pragma mark -
 #pragma mark View actions
--(IBAction)tap:(UIButton*) sender
+
+-(void)tap:(UIButton*) sender
 {
 	if (_viewControllers != nil) {
 		
@@ -450,7 +387,9 @@
 				[_delegate tabBarController:self didSelectViewController:_viewControllers[index]];
 			}
 		}
-        [self AdjustPageActive];
+
+        [self adjustPageActive];
+
 	}
 }
 
@@ -482,45 +421,47 @@
 #pragma mark Methods
 
 /** adjust page active behavior **/
--(void)AdjustPageActive
+-(void)adjustPageActive
 {
     /** reset color button **/
     for (UIButton *btn in _buttons) {
         [btn setTitleColor:kTKPDHOME_FONTSLIDETITLESCOLOR forState:UIControlStateNormal];
         [btn.titleLabel setFont:kTKPDHOME_FONTSLIDETITLES];
+        btn.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13];
     }
+
     /** set button active color **/
     NSInteger index = _selectedIndex<0?0:_selectedIndex;
     UIButton *btn = (UIButton*)_buttons[index];
     [btn setTitleColor:kTKPDHOME_FONTSLIDETITLESACTIVECOLOR forState:UIControlStateNormal];
-    [btn.titleLabel setFont:kTKPDHOME_FONTSLIDETITLESACTIVE];
+    btn.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:13];
+    
+    [_scrollviewtop setContentInset:UIEdgeInsetsMake(0, 100, 0, 100)];
     
     /** set menu slide behavior **/
-    if (_selectedIndex>0 && _viewControllers.count>2) {
-        CGFloat offset = 0;
-        UIButton* btn1;
-        UIButton* last;
-        for (int i = 0; i<=_selectedIndex-1; i++) {
-            btn1 = (UIButton*)_buttons[i];
-            last = (UIButton*)_buttons[_selectedIndex-1];
-            offset =  offset + (CGFloat)btn1.frame.size.width;
+    if (_viewControllers.count>2) {
+        CGFloat x;
+        CGFloat y = 0;
+        if (_selectedIndex == 0) {
+            x = (self.view.frame.size.width/3);
+            x = x * (-1);
+        } else {
+            x = (self.view.frame.size.width/3) * (_selectedIndex-1);
         }
-        [_scrollviewtop setContentOffset:CGPointMake(offset-(((CGFloat)btn1.frame.size.width/2+10)*_selectedIndex), 0) animated:YES];
+        [_scrollviewtop setContentOffset:CGPointMake(x, y) animated:YES];
     }
     else
     {
-        [_scrollviewtop setContentOffset:CGPointMake(0, 0) animated:YES];
+        CGFloat x = (self.view.frame.size.width/3);
+        x = x * (-1);
+        [_scrollviewtop setContentOffset:CGPointMake(x, 0) animated:YES];
     }
-    [_scrollviewmenu setContentOffset:CGPointMake(_scrollviewmenu.frame.size.width*_selectedIndex, 0) animated:YES];
 }
-
 
 - (UIEdgeInsets)contentInsetForContainerController
 {
 	UIEdgeInsets inset = UIEdgeInsetsZero;
 	
-	//if (self.parentViewController && [self.parentViewController isKindOfClass:[TKPDTabBarHomeController class]]) {
-	//	UIEdgeInsets bar = self.TKPDTabBarHomeController.contentInsetForChildController;
 	if ((self.parentViewController != nil) && [self.parentViewController respondsToSelector:@selector(contentInsetForChildController)]) {
 		UIEdgeInsets bar = [((id)self.parentViewController) contentInsetForChildController];
 		
@@ -539,7 +480,6 @@
 			UINavigationController* n = (UINavigationController*)[self isChildViewControllersContainsNavigationController:self];
 			if (n != nil) {
 				UINavigationBar* nbar = n.navigationBar;
-				//if (!n.navigationBarHidden && !nbar.hidden && nbar.translucent) {
 				if ((nbar != nil) && !n.navigationBarHidden && !nbar.hidden && nbar.translucent) {
 					
 					if (_selectedViewController.view.window != nil) {	//TODO:
@@ -576,6 +516,21 @@
 	return nil;
 }
 
+#pragma mark - Scroll view delegate
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset
+{
+    CGPoint translation = [scrollView.panGestureRecognizer translationInView:scrollView.superview];
+    if(translation.x < 0)
+    {
+        //scroll to right
+        UIButton *button = (UIButton*)_buttons[3];
+    } else
+    {
+        //scroll to left
+    }
+}
+
 @end
 
 #pragma mark -
@@ -588,32 +543,24 @@
 - (TKPDTabHomeNavigationController*)TKPDTabHomeNavigationController
 {
 	UIViewController* c = self.parentViewController;
-	
 	while (c != nil) {
 		if ([c isKindOfClass:[TKPDTabHomeNavigationController class]]) {
 			return  (TKPDTabHomeNavigationController*)c;
 		}
-		
 		c = c.parentViewController;
 	}
-	
 	return nil;
 }
-
-//static void* const kTKPDTabHomeNavigationItemKey = (void*)&kTKPDTabHomeNavigationItemKey;
 
 @dynamic TKPDTabHomeNavigationItem;
 
 - (TKPDTabHomeNavigationItem *)TKPDTabHomeNavigationItem
 {
-	//return objc_getAssociatedObject(self, @selector(TKPDTabHomeNavigationItem));
 	id o = objc_getAssociatedObject(self, @selector(TKPDTabHomeNavigationItem));
-	
 	if (o == nil) {
 		o = self.tabBarItem;
 		[self setTKPDTabHomeNavigationItem:o];
-	}
-	
+	}	
 	return o;
 }
 

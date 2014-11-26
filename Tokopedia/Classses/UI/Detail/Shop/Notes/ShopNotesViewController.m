@@ -50,7 +50,6 @@
     NSTimeInterval _timeinterval;
 }
 
-@property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
@@ -179,6 +178,17 @@
 	}
 }
 
+#pragma mark - Scroll view delegate
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if (scrollView.contentOffset.y < 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"enableParentScroll" object:nil];
+        _table.scrollEnabled = NO;
+    } else {
+        _table.scrollEnabled = YES;
+    }
+}
 
 #pragma mark - Memory Management
 - (void)dealloc{

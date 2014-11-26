@@ -39,7 +39,6 @@
     NSTimeInterval _timeinterval;
 }
 
-@property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
@@ -104,17 +103,26 @@
 //    _cachecontroller.filePath = _cachepath;
 //    _cachecontroller.URLCacheInterval = 86400.0;
 //	[_cachecontroller initCacheWithDocumentPath:path];
+    
+    UIEdgeInsets inset = _table.contentInset;
+    inset.bottom += 50;
+    _table.contentInset = inset;
+    
+    
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
             [self loadData];
         }
     }
+    self.table.contentOffset = CGPointMake(0, 0);
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -147,34 +155,45 @@
         
         if (_list.count > indexPath.row) {
             TalkList *list = _list[indexPath.row];
-            ((GeneralTalkCell*)cell).namelabel.text = list.talk_product_name;
+            
+            ((GeneralTalkCell*)cell).namelabel.text = list.talk_user_name;
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
 
-            NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:list.talk_message];
-            NSMutableParagraphStyle *paragrahStyle = [[NSMutableParagraphStyle alloc] init];
-            [paragrahStyle setLineSpacing:5];
-            [attributedString addAttribute:NSParagraphStyleAttributeName value:paragrahStyle range:NSMakeRange(0, [list.talk_message length])];
-            ((GeneralTalkCell*)cell).commentlabel.attributedText = attributedString ;
+            ((GeneralTalkCell *)cell).productNameLabel.text = list.talk_product_name;
+            if ([list.talk_message length] > 30) {
+                NSRange stringRange = {0, MIN([list.talk_message length], 30)};
+                stringRange = [list.talk_message rangeOfComposedCharacterSequencesForRange:stringRange];
+                ((GeneralTalkCell*)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [list.talk_message substringWithRange:stringRange]];
+            } else {
+                ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
+            }
             
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            //request.URL = url;
-            UIImageView *thumb = ((GeneralTalkCell*)cell).thumb;
-            thumb.image = nil;
-            //thumb.hidden = YES;	//@prepareforreuse then @reset
-            
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            UIImageView *userImageView = ((GeneralTalkCell*)cell).thumb;
+            userImageView.image = nil;
+            [userImageView setImageWithURLRequest:userImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                //NSLOG(@"thumb: %@", thumb);
-                [thumb setImage:image];
-                
+                [userImageView setImage:image];
+                userImageView.layer.cornerRadius = userImageView.frame.size.width/2;
 #pragma clang diagnostic pop
-                
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            }];
+            } failure:nil];
+
+            NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            UIImageView *productImageView = ((GeneralTalkCell*)cell).productImageView;
+            productImageView.image = nil;
+            [productImageView setImageWithURLRequest:productImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                [productImageView setImage:image];
+                productImageView.layer.cornerRadius = productImageView.frame.size.width/2;
+#pragma clang diagnostic pop
+            } failure:nil];
+            
         }
         
 		return cell;
+
     } else {
         static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
         
@@ -187,6 +206,7 @@
         cell.textLabel.text = kTKPDDETAIL_NODATACELLTITLE;
         cell.detailTextLabel.text = kTKPDDETAIL_NODATACELLDESCS;
     }
+    
     return cell;
 }
 
@@ -292,7 +312,9 @@
                                                  kTKPDTALK_APITALKPRODUCTIMAGEKEY,
                                                  kTKPDTALK_APITALKPRODUCTIDKEY,
                                                  kTKPDTALK_APITALKOWNKEY,
-                                                 kTKPDTALK_APITALKUSERIDKEY
+                                                 kTKPDTALK_APITALKUSERIDKEY,
+                                                 kTKPDTALK_APITALKUSERNAMEKEY,
+                                                 kTKPDTALK_APITALKUSERIMAGEKEY,
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -342,6 +364,7 @@
             _isrefreshview = NO;
             [_refreshControl endRefreshing];
             [self requestsuccess:mappingResult withOperation:operation];
+            
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             [_timer invalidate];
             _timer = nil;
@@ -427,11 +450,13 @@
             id stats = [result objectForKey:@""];
             
             _talk = stats;
+            
             BOOL status = [_talk.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
                 
                 NSArray *list = _talk.result.list;
+                
                 [_list addObjectsFromArray:list];
                 
                 _urinext =  _talk.result.paging.uri_next;
@@ -450,8 +475,7 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                NSLog(@"next page : %d",_page);
-                
+                NSLog(@"next page shop talk : %d",_page);
                 
                 _isnodata = NO;
                 [_table reloadData];
@@ -499,6 +523,17 @@
     _backbutton.hidden = (_pageheaderimages == 0)?YES:NO;
 }
 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if (scrollView.contentOffset.y < 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"enableParentScroll" object:nil];
+        _table.scrollEnabled = NO;
+    } else {
+        _table.scrollEnabled = YES;
+    }
+}
+
+
 #pragma mark - Methods
 -(void)setHeaderData:(NSDictionary*)data
 {
@@ -538,6 +573,5 @@
     [self configureRestKit];
     [self loadData];
 }
-
 
 @end

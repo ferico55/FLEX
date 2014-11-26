@@ -14,4 +14,8 @@
 @property (weak, nonatomic) IBOutlet UIImage *image;
 @property (strong, nonatomic) NSDictionary *data;
 
+@property (weak, nonatomic) IBOutlet UITableView *table;
+
+@property (strong, nonatomic) UISearchBar *searchbaractive;
+
 @end
