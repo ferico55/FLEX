@@ -9,26 +9,57 @@
 #ifndef Tokopedia_detail_h
 #define Tokopedia_detail_h
 
+typedef enum
+{
+    kTKPDDETAIL_DATASTATUSSHOPDELETED = 0,
+    kTKPDDETAIL_DATASTATUSSHOPOPEN,
+    kTKPDDETAIL_DATASTATUSSHOPCLOSED,
+    kTKPDDETAIL_DATASTATUSMODERATED,
+    KTKPDDETAIL_DATASTATUSINACTIVE
+} kTKPDDETAIL_DATASTATUSSHOPTYPE;
+
+typedef enum
+{
+    kTKPDSETTINGEDIT_DATATYPEDEFAULTVIEWKEY = 0,
+    kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY,
+    kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY,
+    kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY,
+    kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY
+} kTKPDEDITSHOPTYPE;
+
+
 #define kTKPDTITLE_TALK @"Talk About It"
 #define kTKPDTITLE_REVIEW @"Review"
 #define kTKPDTITLE_SHOP_NOTES @"Shop Note"
 #define kTKPDTITLE_SEND_MESSAGE @"Send Message"
+#define kTKPDTITLE_NEW_TALK @"New Talk About It"
 #define kTKPDTITLE_SHOP_INFO @"Shop Information"
 #define KTKPDTITLE_FAV_THIS_SHOP @"People who Favorited This Shop"
 #define KTKPDTITLE_PEOPLE @"People Information"
 #define KTKPDTITLE_BIODATA @"Biodata"
+#define kTKPDTITLE_LOCATION @"Lokasi"
 #define KTKPDETAIL_DESCRIPTION_EMPTY @"No description"
 
-
 #define kTKPDDETAIL_DATASHOPSKEY @"shop"
+#define kTKPDDETAIL_DATANOTEKEY @"note"
+#define kTKPDDETAIL_DATASTATUSSHOPKEY @"statusshop"
 #define kTKPDDETAIL_DATAINFOSHOPSKEY @"infoshop"
+#define kTKPDDETAIL_DATAINFOLOGISTICKEY @"infologistic"
+#define kTKPDDETAIL_DATATYPEKEY @"type"
 #define kTKPDDETAIL_DATALOCATIONARRAYKEY @"locationarray"
 #define kTKPDDETAIL_DATAQUERYKEY @"query"
 #define kTKPDDETAIL_DATAETALASEKEY @"etalase"
 #define kTKPDDETAIL_ACTIONKEY @"action"
 #define kTKPDDETAIL_DATAINDEXKEY @"index"
 #define kTKPDDETAIL_DATAINDEXPATHKEY @"indexpath"
+#define kTKPDDETAIL_DATAADDRESSKEY @"dataaddress" //for address detail delegate
+#define kTKPDDETAIL_DATAISDEFAULTKEY @"isdefault" //for manual set default data
+#define kTKPDDETAIL_DATAINDEXPATHDEFAULTKEY @"indexpathdefault"
+#define kTKPDDETAIL_DATAINDEXPATHDELETEKEY @"indexpathdelete"
+#define kTKPDDETAIL_DATADELETEDOBJECTKEY @"datadeletedobject"
+
 #define kTKPDDETAILETALASE_DATAINDEXPATHKEY @"etalaseindexpath"
+
 #define kTKPDDETAIL_DATACOLUMNKEY @"column"
 
 #define kTKPDDETAIL_APILISTKEYPATH @"result.list"
@@ -40,6 +71,7 @@
 #define kTKPDDETAIL_APICATALOGIDKEY @"catalog_id"
 #define kTKPDDETAIL_APISHOPIDKEY @"shop_id"
 
+
 #pragma mark - Get Action
 #define kTKPDDETAIL_APIGETDETAILACTIONKEY @"get_detail"
 #define kTKPDDETAIL_APIGETPRODUCTREVIEWKEY @"get_product_review"
@@ -50,10 +82,32 @@
 #define kTKPDDETAIL_APIGETSHOPPRODUCTKEY @"get_shop_product"
 #define kTKPDDETAIL_APIGETSHOPTALKKEY @"get_shop_talk"
 #define kTKPDDETAIL_APIGETSHOPREVIEWKEY @"get_shop_review"
+
 #define kTKPDDETAIL_APIGETSHOPNOTESKEY @"get_shop_notes"
-#define kTKPDDETAIL_APIGETNOTESDETAILKEY @"get_notes_detail"
-#define kTKPDDETAIL_APIGETETALASEKEY @"get_shop_etalase"
+#define kTKPDDETAIL_APIGETSHOPNOTEKEY @"get_shop_note"
+
 #define kTKPDDETAIL_APIGETSHOPFAVORITEDKEY @"get_people_who_favorite_myshop"
+#define kTKPDDETAIL_APISETSHOPINFOKEY @"event_update_shop_info"
+#define kTKPDDETAIL_APIUPLOADGENERATEHOSTKEY @"generate_host"
+#define kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY @"upload_shop_image"
+//Shop Setting Shipping
+#define kTKPDDETAIL_APIGETSHOPSHIPPINGINFOKEY @"get_shop_shipping_info"
+#define kTKPDDETAIL_APIEDITSHIPPINGINFOKEY @"event_update_shipping_info"
+//Shop Setting Etalase
+#define kTKPDDETAIL_APIGETETALASEKEY @"get_shop_etalase"
+#define kTKPDDETAIL_APIDELETEETALASEKEY @"event_shop_delete_etalase"
+#define kTKPDDETAIL_APIADDETALASEKEY @"event_shop_add_etalase"
+#define kTKPDDETAIL_APIEDITETALASEKEY @"event_shop_edit_etalase"
+//Shop Setting Location
+#define kTKPDDETAIL_APIGETSHOPLOCATIONKEY @"get_location"
+#define kTKPDDETAIL_APIADDSHOPLOCATIONKEY @"add_location"
+#define kTKPDDETAIL_APIEDITSHOPLOCATIONKEY @"edit_location"
+#define kTKPDDETAIL_APIDELETESHOPLOCATIONKEY @"delete_location"
+//Shop Setting Note
+#define kTKPDDETAIL_APIGETNOTESDETAILKEY @"get_notes_detail"
+#define kTKPDDETAIL_APIADDNOTESDETAILKEY @"add_shop_note"
+#define kTKPDDETAIL_APIEDITNOTESDETAILKEY @"edit_shop_note"
+#define kTKPDDETAIL_APIDELETENOTESDETAILKEY @"delete_shop_note"
 
 #define kTKPDDETAIL_APIPAGEKEY @"page"
 #define kTKPDDETAIL_APITOTALPAGEKEY @"total_page"
@@ -65,8 +119,10 @@
 #define kTKPDDETAIL_APIKEYWORDKEY @"keyword"
 #define kTKPDDETAIL_APIETALASEIDKEY @"menu_id"
 
+#define kTKPDDETAILDEFAULT_LIMITPAGE 5
 #define kTKPDDETAILREVIEW_LIMITPAGE 5
 #define kTKPDSHOPPRODUCT_LIMITPAGE 6
+#define kTKPDSHOPETALASE_LIMITPAGE 5
 
 #define kTKPDDETAIL_DATASHOPTITLEKEY @"Shop"
 
@@ -147,6 +203,7 @@
 #define kTKPDDETAIL_APICATALOGSPECCHILDSPATHKEY @"spec_childs"
 
 #pragma mark - Shop
+#define kTKPDDETAILSHOP_APIISOPENKEY @"is_open"
 
 #define kTKPDDETAILSHOP_APICLOSEDINFOKEY @"closed_info"
 #define kTKPDDETAILSHOP_APIUNTILKEY @"until"
@@ -196,6 +253,8 @@
 #define kTKPDDETAILSHOP_APIADDRESSEMAILKEY @"address_email"
 #define kTKPDDETAILSHOP_APIADDRESSPROVINCEKEY @"address_province"
 
+#define kTKPDDETAILSHOP_APICLOSEDUNTILKEY @"closed_until"
+
 #define kTKPDSHOP_APISHOPTOTALTRANSACTIONKEY @"shop_total_transaction"
 #define kTKPDSHOP_APISHOPTOTALETALASEKEY @"shop_total_etalase"
 #define kTKPDSHOP_APISHOPTOTALPRODUCTKEY @"shop_total_product"
@@ -204,6 +263,101 @@
 #define kTKPDSHOP_APIETALASENAMEKEY @"etalase_name"
 #define kTKPDSHOP_APIETALASEIDKEY @"etalase_id"
 #define kTKPDSHOP_APIETALASETOTALPRODUCTKEY @"etalase_total_product"
+
+#pragma mark - -Shop Shipment
+#define kTKPDSHOPSHIPMENT_APIDISTRICTKEY @"district"
+#define kTKPDSHOPSHIPMENT_APISHIPMENTSKEY @"shipments"
+
+#define kTKPDSHOPSHIPMENT_APIISALLOWKEY @"is_allow"
+
+#define kTKPDSHOPSHIPMENT_APISHOPNAMEKEY @"shop_name"
+
+#define kTKPDSHOPSHIPMENT_APISHOPSHIPPINGKEY @"shop_shipping"
+
+#define kTKPDSHOPSHIPMENT_APIDISTRICTIDKEY @"district_id"
+#define kTKPDSHOPSHIPMENT_APIDISTRICTSHIPPINGSUPPORTEDKEY @"district_shipping_supported"
+#define kTKPDSHOPSHIPMENT_APIDISTRICTNAMEKEY @"district_name"
+
+#define kTKPDSHOPSHIPMENT_APISHIPMENTKEY @"shipment"
+#define kTKPDSHOPSHIPMENT_APISHIPMENTNAMEKEY @"shipment_name"
+#define kTKPDSHOPSHIPMENT_APISHIPPINGIDKEY @"shipping_id"
+#define kTKPDSHOPSHIPMENT_APISHIPMENTIMAGEKEY @"shipment_image"
+#define kTKPDSHOPSHIPMENT_APISHIPMENTPACKAGEKEY @"shipment_package"
+
+#define kTKPDSHOPSHIPMENT_APIDESCKEY @"desc"
+#define kTKPDSHOPSHIPMENT_APIACTIVEKEY @"active"
+#define kTKPDSHOPSHIPMENT_APINAMEKEY @"name"
+#define kTKPDSHOPSHIPMENT_APISPIDKEY @"sp_id"
+
+#define kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY @"min_weight"
+#define kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY @"min_weight_value"
+#define kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY @"diff_district"
+
+#define kTKPDSHOPSHIPMENT_APIDISTRICTIDKEY @"district_id"
+#define kTKPDSHOPSHIPMENT_APIPOSTALCODEKEY @"postal_code"
+#define kTKPDSHOPSHIPMENT_APIPOSTALKEY @"postal"
+#define kTKPDSHOPSHIPMENT_APIORIGINKEY @"origin"
+#define kTKPDSHOPSHIPMENT_APISHIPMENTIDKEY @"shipment_id"
+#define kTKPDSHOPSHIPMENT_APIDISTRICTNAMEKEY @"district_name"
+#define kTKPDSHOPSHIPMENT_APIDISCTRICTSUPPORTEDKEY @"district_shipping_supported"
+
+#define kTKPDSHOPSHIPMENT_APICOURIRORIGINKEY @"courier_origin"
+
+#define kTKPDSHOPSHIPMENT_APISHIPMENTIDS @"shipment_ids"
+
+//JNE
+#define kTKPDSHOPSHIPMENT_APIJNEFEEKEY @"jne_fee"
+#define kTKPDSHOPSHIPMENT_APIJNEFEEVALUEKEY @"jne_fee_value"
+#define kTKPDSHOPSHIPMENT_APIJNETICKETKEY @"jne_tiket"
+//POS
+#define kTKPDSHOPSHIPMENT_APIPOSFEEKEY @"pos_fee"
+#define kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY @"pos_fee_value"
+#define kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY @"pos_min_weight"
+#define kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY @"pos_min_weight_value"
+//TIKI
+#define kTKPDSHOPSHIPMENT_APITIKIFEEKEY @"tiki_fee"
+#define kTKPDSHOPSHIPMENT_APITIKIFEEVALUEKEY @"tiki_fee_value"
+//RPX
+#define kTKPDSHOPSHIPMENT_APIRPXPACKETKEY @"i_paket"
+#define kTKPDSHOPSHIPMENT_APIRPXTICKETKEY @"rpx_tiket"
+
+#pragma mark -- Shop Edit Info
+
+#define kTKPDSHOPEDIT_APISHOPNAMEKEY @"shop_name"
+#define kTKPDSHOPEDIT_APISHORTDESCKEY @"short_desc"
+#define kTKPDSHOPEDIT_APITAGLINEKEY @"tag_line"
+#define kTKPDSHOPEDIT_APISTATUSKEY @"status"
+#define kTKPDSHOPEDIT_APICLOSEUNTILKEY @"closed_until"
+#define kTKPDSHOPEDIT_APICLOSEDNOTEKEY @"closed_note"
+#define kTKPDSHOPEDIT_APIDEFAULTSORTKEY @"default_sort"
+#define kTKPDSHOPEDIT_APIREASONKEY @"reason"
+
+#define kTKPDSHOPEDIT_APIUSERIDKEY @"user_id"
+
+#define kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY @"file_path"
+#define kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY @"file_th"
+
+#pragma mark -- Shop Setting Location
+#define kTKPDSHOPSETTING_APICITYNAMEKEY @"location_city_name"
+#define kTKPDSHOPSETTING_APIEMAILKEY @"location_email"
+#define kTKPDSHOPSETTING_APIADDRESSKEY @"location_address"
+#define kTKPDSHOPSETTING_APIPOSTALCODEKEY @"location_postal_code"
+#define kTKPDSHOPSETTING_APICITYIDKEY @"location_city_id"
+#define kTKPDSHOPSETTING_APILOCATIONAREAKEY @"location_area"
+#define kTKPDSHOPSETTING_APIPHONEKEY @"location_phone"
+#define kTKPDSHOPSETTING_APIDISTRICTIDKEY @"location_district_id"
+#define kTKPDSHOPSETTING_APIPROVINCENAMEKEY @"location_province_name"
+#define kTKPDSHOPSETTING_APIPROVINCEIDKEY @"location_province_id"
+#define kTKPDSHOPSETTING_APIDISTRICTNAMEKEY @"location_district_name"
+#define kTKPDSHOPSETTING_APIADDRESSIDKEY @"location_addr_id"
+#define kTKPDSHOPSETTING_APIFAXKEY @"location_fax"
+#define kTKPDSHOPSETTING_APIADDRESSNAMEKEY @"location_addr_name"
+
+
+#define kTKPDGENERATEDHOST_APIGENERATEDHOSTKEY @"generated_host"
+#define kTKPDGENERATEDHOST_APISERVERIDKEY @"server_id"
+#define kTKPDGENERATEDHOST_APIUPLOADHOSTKEY @"upload_host"
+#define kTKPDGENERATEDHOST_APIUSERIDKEY @"user_id"
 
 #pragma mark - Review
 
@@ -263,6 +417,7 @@
 #define kTKPDTALK_APITALKMESSAGEKEY @"talk_message"
 #define kTKPDTALK_APITALKFOLLOWSTATUSKEY @"talk_follow_status"
 #define kTKPDTALK_APITALKSHOPID @"talk_shop_id"
+#define kTKPDTALKCOMMENT_APITEXT @"text_comment"
 
 
 #define kTKPDTALK_APITALKPRODUCTNAMEKEY @"talk_product_name"
@@ -280,6 +435,7 @@
 #define kTKPDTALKCOMMENT_CREATETIME @"create_time"
 #define kTKPDTALKCOMMENT_USERIMAGE @"user_image"
 #define kTKPDTALKCOMMENT_USERNAME @"user_name"
+#define kTKPDDETAIL_APIADDCOMMENTTALK @"add_comment_talk"
 
 #pragma mark - Notes
 #define kTKPDNOTES_APINOTEIDKEY @"note_id"
@@ -366,12 +522,26 @@
 #define kTKPDDETAILCATALOG_APITOTALSHOPKEY @"total_shop"
 
 #define kTKPDDETAIL_APIURINEXTKEY @"uri_next"
+#define kTKPDDETAIL_APIISSUCCESSKEY @"is_success"
 
 #define kTKPDDETAILPRODUCT_APIPATH @"product.pl"
+#define kTKPDDETAILACTIONPRODUCT_APIPATH @"action/product.pl"
 #define kTKDPDETAILCATALOG_APIPATH @"catalog.pl"
 #define kTKPDDETAILSHOP_APIPATH @"shop.pl"
 #define kTKPDDETAILNOTES_APIPATH @"notes.pl"
 #define kTKPDDETAILTALK_APIPATH @"talk.pl"
+#define kTKPDDETAILSHOPEDITOR_APIPATH @"myshop-editor.pl"
+#define kTKPDDETAILSHOPEDITORACTION_APIPATH @"action/myshop-editor.pl"
+#define kTKPDDETAILSHOPNOTE_APIPATH @"myshop-note.pl"
+#define kTKPDDETAILSHOPNOTEACTION_APIPATH @"action/myshop-note.pl"
+
+#define kTKPDDETAILSHOPADDRESS_APIPATH @"myshop-address.pl"
+#define kTKPDDETAILSHOPADDRESSACTION_APIPATH @"action/myshop-address.pl"
+
+#define kTKPDDETAIL_UPLOADIMAGEAPIPATH @"action/upload-image.pl"
+
+#define kTKPDDETAILSHOPETALASE_APIPATH @"myshop-etalase.pl"
+#define kTKPDDETAILSHOPETALASEACTION_APIPATH @"action/myshop-etalase.pl"
 
 #define kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define kTKPDDETAIL_NODATACELLTITLE @"no data"
@@ -384,6 +554,7 @@
 
 #define kTKPDSHOP_APIETALASENAMEKEY @"etalase_name"
 #define kTKPDSHOP_APIETALASEIDKEY @"etalase_id"
+#define kTKPDSHOP_APIETALASENUMPRODUCTKEY @"etalase_num_product"
 #define kTKPDSHOP_APIETALASETOTALPRODUCTKEY @"etalase_total_product"
 
 #define kTKPDMESSAGE_KEYSUBJECT @"message_subject"
@@ -403,6 +574,7 @@
 
 #define kTKPDDETAILCATALOG_CACHEFILEPATH @"catalog"
 #define kTKPDDETAILSHOP_CACHEFILEPATH @"shop"
+#define kTKPDDETAILSHOPEDIT_CACHEFILEPATH @"shopedit"
 #define kTKPDDETAILPRODUCT_CACHEFILEPATH @"product"
 #define kTKPDDETAILETALASE_CACHEFILEPATH @"etalase"
 
@@ -414,12 +586,17 @@
 #define kTKPDDETAILPRODUCTREVIEW_APIRESPONSEFILEFORMAT @"productreview%d"
 
 #define kTKPDDETAILSHOP_APIRESPONSEFILEFORMAT @"shopdetail%d"
+#define kTKPDDETAILSHOPEDIT_APIRESPONSEFILEFORMAT @"shopedit%d"
 #define kTKPDDETAILSHOPPRODUCT_APIRESPONSEFILEFORMAT @"shopproduct%d"
 #define kTKPDDETAILSHOPTALK_APIRESPONSEFILEFORMAT @"shoptalk%d"
 #define kTKPDDETAILSHOPREVIEW_APIRESPONSEFILEFORMAT @"shopreview%d"
 #define kTKPDDETAILSHOPNOTES_APIRESPONSEFILEFORMAT @"shopnotes%d"
 #define kTKPDDETAILSHOPFAVORITED_APIRESPONSEFILEFORMAT @"shopfavorited%d"
 #define kTKPDDETAILSHOPNOTEDETAIL_APIRESPONSEFILEFORMAT @"shopnotedetail%d"
+#define kTKPDDETAILSHOPETALASE_APIRESPONSEFILEFORMAT @"shopetalase%d"
+#define kTKPDDETAILSHOPLOCATION_APIRESPONSEFILEFORMAT @"shoplocation%d"
+
+#define kTKPDDETAILSHOPSHIPPING_APIRESPONSEFILEFORMAT @"shopshipping%d"
 
 #define kTKPDDETAILCATALOG_APIRESPONSEFILEFORMAT @"catalogdetail%d.plist"
 

@@ -19,13 +19,43 @@
 #define KTKPDMESSAGE_MESSAGEREPLYKEY @"message_reply"
 #define KTKPDMESSAGE_INBOXIDKEY @"message_inbox_id"
 #define KTKPDMESSAGE_USERIMAGEKEY @"user_image"
+#define KTKPDMESSAGE_JSONDATAKEY @"json_data_info"
+
+#define KTKPDMESSAGE_ACTIONKEY @"message_action"
+#define KTKPDMESSAGE_CREATEBYKEY @"message_create_by"
+#define KTKPDMESSAGE_REPLYKEY @"message_reply"
+#define KTKPDMESSAGE_REPLYIDKEY @"message_reply_id"
+#define KTKPDMESSAGE_BUTTONSPAMKEY @"message_button_spam"
+#define KTKPDMESSAGE_REPLYTIMEKEY @"message_reply_time_fmt"
+#define KTKPDMESSAGE_ISMODKEY @"is_moderator"
+#define KTKPDMESSAGE_REPLYTIMEKEY @"message_reply_time_fmt"
+#define KTKPDMESSAGE_USERNAMEKEY @"user_name"
+#define KTKPDMESSAGE_BETWEENCONVERSATIONKEY @"conversation_between"
+
+#define KTKPDMESSAGE_
+
+
 
 #define KTKPDMESSAGE_ACTIONGETMESSAGE @"get_inbox_message"
+#define KTKPDMESSAGE_ACTIONARCHIVEMESSAGE @"archive_messages"
+#define KTKPDMESSAGE_ACTIONDELETEFOREVERMESSAGE @"delete_forever_messages"
+#define KTKPDMESSAGE_ACTIONDELETEMESSAGE @"delete_messages"
+
+#define KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE @"move_to_inbox"
+#define KTKPDMESSAGE_ACTIONGETDETAIL @"get_inbox_detail_message"
+#define KTKPDMESSAGE_ACTIONREPLYMESSAGE @"reply_message"
+
+#define KTKPDMESSAGE_LIMITVALUE @"10"
+
 #define KTKPDMESSAGE_PATHURL @"inbox-message.pl"
+#define KTKPDMESSAGEACTION_PATHURL @"action/inbox-message.pl"
 #define KTKPDMESSAGE_CELLIDENTIFIER @"inbox-message.pl"
 #define KTKPDMESSAGE_NAVKEY @"nav"
+#define KTKPDMESSAGE_DATAELEMENTKEY @"data_element"
 #define KTKPDMESSAGE_FILTERKEY @"filter"
 #define KTKPDMESSAGE_KEYWORDKEY @"keyword"
+
+#define KTKPDTALKACTION_PATHURL @"action/inbox-talk.pl"
 
 
 #endif

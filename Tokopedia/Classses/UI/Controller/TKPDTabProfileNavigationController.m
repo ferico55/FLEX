@@ -33,6 +33,7 @@
     ProfileInfo *_profileinfo;
     
     BOOL _isnodata;
+    BOOL _isrefreshview;
     NSInteger _requestcount;
     BOOL _isaddressexpanded;
     __weak RKObjectManager *_objectmanager;
@@ -184,6 +185,9 @@
     _operationQueue = [NSOperationQueue new];
     _cachecontroller = [URLCacheController new];
     _cacheconnection = [URLCacheConnection new];
+    // add notification
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil];
     
 //    CGRect frame = _descriptionview.frame;
 //    frame.origin.x = _detailview.frame.size.width;
@@ -208,12 +212,12 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    //if (!_isrefreshview) {
+    if (!_isrefreshview) {
     [self configureRestKit];
     if (_isnodata) {
         [self loadData];
     }
-    //}
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -516,12 +520,12 @@
 	NSLog(@"isViewLoaded: %@", self.isViewLoaded ? @"YES" : @"NO");
 }
 
-#ifdef _DEBUG
 - (void)dealloc
 {
 	NSLog(@"%@: %@", [self class], NSStringFromSelector(_cmd));
+    _cachecontroller = nil;
+    _cacheconnection = nil;
 }
-#endif
 
 #pragma mark -
 #pragma mark View actions
@@ -741,6 +745,23 @@
     }
 }
 
+-(void)refreshView
+{
+    [self cancel];
+    /** clear object **/
+    _requestcount = 0;
+    _isrefreshview = YES;
+    /** request data **/
+    [self configureRestKit];
+    [self loadData];
+}
+
+#pragma mark - Notification Methods
+-(void)updateView:(NSUserDefaults*)userdefault
+{
+    [self refreshView];
+}
+
 #pragma mark - Request and Mapping
 -(void)cancel
 {
@@ -818,7 +839,7 @@
     [_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
-	if (_timeinterval > _cachecontroller.URLCacheInterval) {
+	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
         
         [_act startAnimating];
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_PEOPLEAPIPATH parameters:param];
@@ -873,7 +894,7 @@
 
 -(void)requestfailure:(id)object
 {
-    if (_timeinterval > _cachecontroller.URLCacheInterval) {
+    if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
         [self requestprocess:object];
     }
     else{

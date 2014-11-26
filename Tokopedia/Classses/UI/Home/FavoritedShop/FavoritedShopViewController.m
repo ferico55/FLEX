@@ -18,19 +18,8 @@
 #import "FavoritedShop.h"
 #import "FavoriteShopAction.h"
 
-@interface FavoritedShopViewController ()
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-
-@property (strong, nonatomic) IBOutlet UIView *footer;
-@property (strong, nonatomic) IBOutlet UITableView *table;
-
-@property (nonatomic, strong) NSMutableArray *shop;
-@property (nonatomic, strong) NSMutableArray *goldshop;
-@property (nonatomic, strong) NSDictionary *shopdictionary;
-@end
-
-@implementation FavoritedShopViewController {
-    
+@interface FavoritedShopViewController ()<UITableViewDataSource, UITableViewDelegate, FavoritedShopCellDelegate>
+{
     BOOL _isnodata;
     BOOL _isrefreshview;
     
@@ -54,6 +43,18 @@
     __weak RKManagedObjectRequestOperation *_request;
     
 }
+
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+
+@property (strong, nonatomic) IBOutlet UIView *footer;
+@property (strong, nonatomic) IBOutlet UITableView *table;
+
+@property (nonatomic, strong) NSMutableArray *shop;
+@property (nonatomic, strong) NSMutableArray *goldshop;
+@property (nonatomic, strong) NSDictionary *shopdictionary;
+@end
+
+@implementation FavoritedShopViewController
 
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
@@ -621,6 +622,7 @@
     TKPDTabShopNavigationController *tapnavcon = [TKPDTabShopNavigationController new];
     tapnavcon.data = @{
                        kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
+                       kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
                        @"is_dismissed" : @YES
                        };
     [tapnavcon setViewControllers:viewcontrollers animated:YES];

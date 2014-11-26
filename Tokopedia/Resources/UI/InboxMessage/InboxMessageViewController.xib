@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
@@ -20,8 +21,9 @@
                 <outlet property="buttontrash" destination="ldk-ez-GG3" id="mHk-vX-l3Q"/>
                 <outlet property="editarchiveview" destination="nhx-qz-HLc" id="D42-vL-Wl0"/>
                 <outlet property="footer" destination="IYn-Ei-4nj" id="AX1-g3-oXt"/>
+                <outlet property="inboxtrashforeverview" destination="ChV-Rg-oR3" id="wEB-cf-LkL"/>
+                <outlet property="inboxtrashview" destination="p7g-6U-lVD" id="gjZ-La-b15"/>
                 <outlet property="table" destination="ARs-yN-1Zc" id="qvI-Ff-tZJ"/>
-                <outlet property="trashinboxview" destination="ChV-Rg-oR3" id="i3U-hN-reE"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -36,6 +38,38 @@
                     <inset key="separatorInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                     <color key="sectionIndexBackgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 </tableView>
+                <view hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p7g-6U-lVD">
+                    <rect key="frame" x="0.0" y="423" width="320" height="40"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V8E-Wf-h3X">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        </view>
+                        <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S8m-HU-9Zd">
+                            <rect key="frame" x="8" y="8" width="178" height="30"/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                            <state key="normal" title="Pindah ke Kotak Masuk">
+                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="V99-eN-DLW"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M6f-lP-GOv">
+                            <rect key="frame" x="160" y="8" width="150" height="30"/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                            <state key="normal" title="Hapus">
+                                <color key="titleColor" red="0.81568627449999997" green="0.090196078430000007" blue="0.086274509799999996" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="7zc-sM-lH7"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
                 <view hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ChV-Rg-oR3">
                     <rect key="frame" x="0.0" y="423" width="320" height="40"/>
                     <subviews>

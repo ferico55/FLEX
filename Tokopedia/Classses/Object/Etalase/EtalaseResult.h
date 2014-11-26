@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ListEtalase.h"
+#import "EtalaseList.h"
+#import "Paging.h"
 
 @interface EtalaseResult : NSObject
 
 @property (strong, nonatomic) NSArray *list;
+@property (nonatomic, strong) Paging *paging;
 
 @end

@@ -82,7 +82,7 @@
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
-    
+    _page = 1;
     _table.tableHeaderView = _header;
     
     if (_list.count>2) {

@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfileEditViewController">
             <connections>
                 <outlet property="act" destination="PIA-Wl-ChN" id="FKn-lv-bu5"/>
                 <outlet property="buttondob" destination="9rh-98-DCi" id="jNm-dm-ZTk"/>
+                <outlet property="buttonedit" destination="xAJ-dZ-vVL" id="PWc-zv-mwL"/>
                 <outlet property="buttongender" destination="Wzp-Mx-PgF" id="Sq5-PL-pLj"/>
                 <outlet property="labelfullname" destination="8so-tt-Cl2" id="RGl-Gp-ST7"/>
                 <outlet property="scrollview" destination="RbN-I6-OOT" id="BPF-46-pLu"/>
@@ -354,7 +356,6 @@
             </subviews>
             <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
             <gestureRecognizers/>
-            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="zpu-vr-SDC" appends="YES" id="ZD1-z6-Bgs"/>
@@ -369,9 +370,4 @@
     <resources>
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

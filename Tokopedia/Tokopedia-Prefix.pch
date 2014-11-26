@@ -23,10 +23,9 @@
     #import "RKObjectManagerCategory.h"
     #import "NSStringCategory.h"
     #import "NSArrayCategory.h"
-    #import "UIImageViewCategory.h"
     #import "UIImageView+AFNetworking.h"
     #import "NSDictionaryCategory.h"
-    #import "UIViewCategory.h"
+    #import "UIKitCategory.h"
 
     #import "Tkpd.h"
     #import "string.h"

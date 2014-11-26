@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "FavoritedShopCell.h"
 
-@interface FavoritedShopViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, FavoritedShopCellDelegate>
+@interface FavoritedShopViewController : UIViewController
+
+@property (strong, nonatomic)NSDictionary *data;
 
 @end
