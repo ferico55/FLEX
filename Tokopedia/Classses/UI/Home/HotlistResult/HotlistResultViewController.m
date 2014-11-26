@@ -290,6 +290,7 @@
     #pragma clang diagnostic ignored "-Warc-retain-cycles"
                     //NSLOG(@"thumb: %@", thumb);
                     [thumb setImage:image];
+                    [thumb setContentMode:UIViewContentModeScaleAspectFill];
                     
                     [act stopAnimating];
                     NSLog(@"============================== DONE GET IMAGE =====================");
@@ -419,12 +420,6 @@
                     vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY),
                                 kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
 
-                    UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, 0);
-                    [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
-                    UIImage *screenshotImage = UIGraphicsGetImageFromCurrentImageContext();
-                    UIGraphicsEndImageContext();
-                    vc.screenshotImage = screenshotImage;
-                    
                     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                     [self.navigationController presentViewController:nav animated:YES completion:nil];
                     break;

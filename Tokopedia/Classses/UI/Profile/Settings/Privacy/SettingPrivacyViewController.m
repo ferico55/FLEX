@@ -12,10 +12,10 @@
 #import "ProfileSettings.h"
 #import "Alert1ButtonView.h"
 #import "SettingPrivacyViewController.h"
+#import "StickyAlert.h"
 
 @interface SettingPrivacyViewController ()
 {
-    
     BOOL _isnodata;
     
     UIRefreshControl *_refreshControl;
@@ -34,13 +34,14 @@
     PrivacyForm * _form;
     
     UIBarButtonItem *_barbuttonsave;
-    UIActivityIndicatorView *_act;
 }
+
 @property (weak, nonatomic) IBOutlet UISwitch *switchbirthdate;
 @property (weak, nonatomic) IBOutlet UISwitch *switchemail;
 @property (weak, nonatomic) IBOutlet UISwitch *switchmesseger;
 @property (weak, nonatomic) IBOutlet UISwitch *switchhp;
 @property (weak, nonatomic) IBOutlet UISwitch *switchaddress;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -76,18 +77,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.navigationController.navigationItem setTitle:kTKPDPROFILESETTINGPRIVACY_TITLE];
-    
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
     _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [_barbuttonsave setTintColor:[UIColor whiteColor]];
     _barbuttonsave.tag = 11;
-    _act= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    UIBarButtonItem * barbuttonact = [[UIBarButtonItem alloc] initWithCustomView:_act];
-    self.navigationItem.rightBarButtonItems = @[_barbuttonsave,barbuttonact];
-    [_act setHidesWhenStopped:YES];
     
     [self configureRestKit];
     [self request];
@@ -97,6 +92,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [self.navigationController.navigationItem setTitle:kTKPDPROFILESETTINGPRIVACY_TITLE];
+    
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"]
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
@@ -104,6 +102,16 @@
     backBarButtonItem.tag = 12;
     backBarButtonItem.tintColor = [UIColor whiteColor];
     self.navigationItem.leftBarButtonItem = backBarButtonItem;
+
+    self.navigationItem.rightBarButtonItem = _barbuttonsave;
+
+    [self.act setHidesWhenStopped:YES];
+
+    for (id view in self.view.subviews) {
+        if (![view isKindOfClass:[UIActivityIndicatorView class]]) {
+            [view setHidden:YES];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -191,8 +199,6 @@
 {
     if (_request.isExecuting) return;
     
-    //[_act startAnimating];
-    
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
     
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIGETPRIVACYKEY,
@@ -201,7 +207,7 @@
     _requestcount ++;
     
     _barbuttonsave.enabled = NO;
-    [_act startAnimating];
+    [self.act startAnimating];
     
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_SETTINGAPIPATH parameters:param];
     
@@ -209,7 +215,8 @@
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];
         _barbuttonsave.enabled = YES;
-        [_act stopAnimating];
+        [self.act stopAnimating];
+        [self showSubviews];
         [_timer invalidate];
         _timer = nil;
         
@@ -217,7 +224,7 @@
         /** failure **/
         [self requestFailure:error];
         _barbuttonsave.enabled = YES;
-        [_act stopAnimating];
+        [self.act stopAnimating];
         [_timer invalidate];
         _timer = nil;
     }];
@@ -260,11 +267,10 @@
                 }
                 else
                 {
-                    Alert1ButtonView *v = [Alert1ButtonView new];
-                    v.tag = 11;
-                    v.data = @{kTKPDALERTVIEW_DATALABELKEY :_form.message_error};
-                    v.delegate = self;
-                    [v show];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:_form.message_error ,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    self.navigationItem.rightBarButtonItem = _barbuttonsave;
+                    [_barbuttonsave setEnabled:YES];
                 }
             }
         }
@@ -275,17 +281,17 @@
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
                     NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
-                    //[_act startAnimating];
+                    //[self.act startAnimating];
                     //TODO: Reload handler
                 }
                 else
                 {
-                    //[_act stopAnimating];
+                    //[self.act stopAnimating];
                 }
             }
             else
             {
-                //[_act stopAnimating];
+                //[self.act stopAnimating];
             }
             
         }
@@ -339,7 +345,11 @@
     NSDictionary *data = userinfo;
     
     _barbuttonsave.enabled = NO;
-    [_act startAnimating];
+    
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    UIBarButtonItem *activityIndicatorButton = [[UIBarButtonItem alloc] initWithCustomView:activityIndicator];
+    [activityIndicator startAnimating];
+    self.navigationItem.rightBarButtonItem = activityIndicatorButton;
     
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APISETPRIVACYKEY,
                             kTKPDPROFILESETTING_APIFLAGMESSEGERKEY : [data objectForKey:kTKPDPROFILESETTING_APIFLAGMESSEGERKEY]?:@(_form.result.privacy.flag_messenger),
@@ -356,7 +366,7 @@
     /* file doesn't exist or hasn't been updated */
     [_requestAction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessAction:mappingResult withOperation:operation];
-        [_act stopAnimating];
+        [activityIndicator stopAnimating];
         _barbuttonsave.enabled = YES;
         [_timer invalidate];
         _timer = nil;
@@ -364,7 +374,7 @@
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFailureAction:error];
-        [_act stopAnimating];
+        [activityIndicator stopAnimating];
         _barbuttonsave.enabled = YES;
         [_timer invalidate];
         _timer = nil;
@@ -411,23 +421,17 @@
             if (status) {
                 if (!setting.message_error) {
                     if (setting.result.is_success) {
-                        Alert1ButtonView *v = [Alert1ButtonView new];
-                        v.tag = 10;
-                        if (setting.message_status)
-                            v.data = @{kTKPDALERTVIEW_DATALABELKEY : setting.message_status};
-                        else
-                            v.data = @{kTKPDALERTVIEW_DATALABELKEY : @"Success"};
-                        v.delegate = self;
-                        [v show];
+                        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:setting.message_status ,@"messages", nil];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                        [self.navigationController popViewControllerAnimated:YES];
                     }
                 }
                 else
                 {
-                    Alert1ButtonView *v = [Alert1ButtonView new];
-                    v.tag = 11;
-                    v.data = @{kTKPDALERTVIEW_DATALABELKEY :setting.message_error};
-                    v.delegate = self;
-                    [v show];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:setting.message_error ,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    self.navigationItem.rightBarButtonItem = _barbuttonsave;
+                    [_barbuttonsave setEnabled:YES];
                 }
             }
         }
@@ -438,17 +442,17 @@
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
                     NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
-                    //[_act startAnimating];
+                    //[self.act startAnimating];
                     //TODO: Reload handler
                 }
                 else
                 {
-                    //[_act stopAnimating];
+                    //[self.act stopAnimating];
                 }
             }
             else
             {
-                //[_act stopAnimating];
+                //[self.act stopAnimating];
             }
             
         }
@@ -466,6 +470,15 @@
         _switchemail.on = privacy.flag_email;
         _switchmesseger.on = privacy.flag_messenger;
         _switchhp.on = privacy.flag_hp;
+    }
+}
+
+- (void)showSubviews
+{
+    for (id subview in self.view.subviews) {
+        if (![subview isKindOfClass:[UIActivityIndicatorView class]]) {
+            [subview setHidden:NO];
+        }
     }
 }
 

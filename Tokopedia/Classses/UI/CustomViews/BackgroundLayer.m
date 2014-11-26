@@ -57,8 +57,6 @@
 
 //Blue gradient background
 + (CAGradientLayer*) blackGradient {
-    
-
     UIColor *colorTwo = [UIColor colorWithRed:(0/255.0)  green:(0/255.0)  blue:(0/255.0)  alpha:1.0];
     UIColor *colorTransparent = [UIColor clearColor];
     
@@ -73,7 +71,24 @@
     headerLayer.locations = locations;
     
     return headerLayer;
+}
+
+//Black gradient to transparent from top to bottom
++ (CAGradientLayer *)blackGradientFromTop {
+    UIColor *colorBlack = [UIColor colorWithRed:0/255.0  green:0/255.0  blue:0/255.0  alpha:0.4];
+    UIColor *colorTransparent = [UIColor clearColor];
     
+    NSArray *colors = [NSArray arrayWithObjects:(id)colorBlack.CGColor, colorTransparent.CGColor, colorBlack.CGColor, nil];
+    NSNumber *stopOne = [NSNumber numberWithFloat:0.0];
+    NSNumber *stopTwo = [NSNumber numberWithFloat:1.0];
+    
+    NSArray *locations = [NSArray arrayWithObjects:stopOne, stopTwo, nil];
+    
+    CAGradientLayer *headerLayer = [CAGradientLayer layer];
+    headerLayer.colors = colors;
+    headerLayer.locations = locations;
+    
+    return headerLayer;
 }
 
 

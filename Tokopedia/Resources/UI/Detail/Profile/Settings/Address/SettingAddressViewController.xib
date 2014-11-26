@@ -18,18 +18,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="40" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="YWE-3l-Kil">
-                    <rect key="frame" x="0.0" y="44" width="320" height="524"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <color key="separatorColor" red="0.78431372549019607" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
-                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    <connections>
-                        <outlet property="dataSource" destination="-1" id="Rye-92-3rK"/>
-                        <outlet property="delegate" destination="-1" id="YiO-HX-eVW"/>
-                    </connections>
-                </tableView>
-                <view appearanceType="aqua" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IzA-Ue-aRU">
+                <view appearanceType="aqua" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IzA-Ue-aRU">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
@@ -54,9 +43,37 @@
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="320" id="9nL-yL-WZa"/>
+                        <constraint firstAttribute="height" constant="44" id="Foj-iO-ONc"/>
+                    </constraints>
                 </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="40" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="YWE-3l-Kil">
+                    <rect key="frame" x="0.0" y="44" width="320" height="524"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="320" id="YjR-ql-bL7"/>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="524" id="eoM-jC-8Rv"/>
+                    </constraints>
+                    <color key="separatorColor" red="0.78431372549019607" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
+                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Rye-92-3rK"/>
+                        <outlet property="delegate" destination="-1" id="YiO-HX-eVW"/>
+                    </connections>
+                </tableView>
             </subviews>
             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="deviceRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="YWE-3l-Kil" secondAttribute="bottom" id="1Hm-0D-l0Q"/>
+                <constraint firstItem="IzA-Ue-aRU" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ElD-Dg-zdN"/>
+                <constraint firstItem="YWE-3l-Kil" firstAttribute="top" secondItem="IzA-Ue-aRU" secondAttribute="bottom" id="Vtl-Ub-2kw"/>
+                <constraint firstItem="IzA-Ue-aRU" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="cJj-EX-9Rm"/>
+                <constraint firstItem="YWE-3l-Kil" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="nVt-8c-Me9"/>
+                <constraint firstAttribute="trailing" secondItem="YWE-3l-Kil" secondAttribute="trailing" id="rb7-7c-EDk"/>
+                <constraint firstAttribute="trailing" secondItem="IzA-Ue-aRU" secondAttribute="trailing" id="tdh-aW-XbF"/>
+            </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>

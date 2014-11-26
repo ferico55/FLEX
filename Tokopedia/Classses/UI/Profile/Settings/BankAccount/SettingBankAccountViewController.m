@@ -15,7 +15,7 @@
 #import "SettingBankAccountViewController.h"
 
 #pragma mark - Setting Bank Account View Controller
-@interface SettingBankAccountViewController ()<SettingBankDetailViewControllerDelegate>
+@interface SettingBankAccountViewController () <UITableViewDataSource, UITableViewDelegate, SettingBankDetailViewControllerDelegate>
 {
     BOOL _isnodata;
     
@@ -104,6 +104,7 @@
     _operationQueue = [NSOperationQueue new];
     
     _page = 1;
+    _table.delegate = self;
     
     [self configureRestKitActionSetDefault];
     [self configureRestKitActionDelete];
@@ -216,7 +217,7 @@
     [_list insertObject:dataObject atIndex:destinationIndexPath.row];
 }
 
-#pragma mark - View Action
+#pragma mark - View Action 
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         [self.navigationController popViewControllerAnimated:YES];

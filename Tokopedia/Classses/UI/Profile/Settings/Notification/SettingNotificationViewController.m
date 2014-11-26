@@ -36,7 +36,6 @@
     NotificationForm * _form;
     
     UIBarButtonItem *_barbuttonsave;
-    UIActivityIndicatorView *_act;
 }
 
 @property (weak, nonatomic) IBOutlet UISwitch *switchnewslatter;
@@ -44,6 +43,9 @@
 @property (weak, nonatomic) IBOutlet UISwitch *switchproduct;
 @property (weak, nonatomic) IBOutlet UISwitch *switchpm;
 @property (weak, nonatomic) IBOutlet UISwitch *switchpmadmin;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIView *viewContent;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -78,27 +80,30 @@
 {
     [super viewDidLoad];
     
-    [self.navigationController.navigationItem setTitle:kTKPDPROFILESETTINGNOTIFICATION_TITLE];
-    
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
     _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [_barbuttonsave setTintColor:[UIColor whiteColor]];
     _barbuttonsave.tag = 11;
-    _act= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    UIBarButtonItem * barbuttonact = [[UIBarButtonItem alloc] initWithCustomView:_act];
-    self.navigationItem.rightBarButtonItems = @[_barbuttonsave,barbuttonact];
-    [_act setHidesWhenStopped:YES];
     
     [self configureActionRestKit];
     [self configureRestKit];
     [self request];
 }
 
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    _scrollView.contentSize = _viewContent.frame.size;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [self.navigationController.navigationItem setTitle:kTKPDPROFILESETTINGNOTIFICATION_TITLE];
+
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"]
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
@@ -106,6 +111,16 @@
     backBarButtonItem.tag = 12;
     backBarButtonItem.tintColor = [UIColor whiteColor];
     self.navigationItem.leftBarButtonItem = backBarButtonItem;
+    
+    self.navigationItem.rightBarButtonItem = _barbuttonsave;
+
+    [_act setHidesWhenStopped:YES];
+
+    for (id view in _viewContent.subviews) {
+        if (![view isKindOfClass:[UIActivityIndicatorView class]]) {
+            [view setHidden:YES];
+        }
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -243,6 +258,7 @@
         [self requestSuccess:mappingResult withOperation:operation];
         [_act stopAnimating];
         _barbuttonsave.enabled = YES;
+        [self showSubviews];
         [_timer invalidate];
         _timer = nil;
         
@@ -294,11 +310,10 @@
                 }
                 else
                 {
-                    Alert1ButtonView *v = [Alert1ButtonView new];
-                    v.tag = 11;
-                    v.data = @{kTKPDALERTVIEW_DATALABELKEY :_form.message_error};
-                    v.delegate = self;
-                    [v show];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:_form.message_error ,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    self.navigationItem.rightBarButtonItem = _barbuttonsave;
+                    [_barbuttonsave setEnabled:YES];
                 }
             }
         }
@@ -372,8 +387,13 @@
     NSDictionary *data = userinfo;
     
     [self.view setUserInteractionEnabled:NO];
-    [_act startAnimating];
-    _act.hidden = NO;
+
+    
+    UIActivityIndicatorView *activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    UIBarButtonItem *activityIndicatorButton = [[UIBarButtonItem alloc] initWithCustomView:activityIndicator];
+    [activityIndicator startAnimating];
+    self.navigationItem.rightBarButtonItem = activityIndicatorButton;
+    
     _barbuttonsave.enabled = NO;
     
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APISETEMAILNOTIFKEY,
@@ -394,6 +414,7 @@
         [_act stopAnimating];
         _act.hidden = YES;
         _barbuttonsave.enabled = YES;
+        [self showSubviews];
         [self.view setUserInteractionEnabled:YES];
         [_timer invalidate];
         _timer = nil;
@@ -451,24 +472,17 @@
             if (status) {
                 if (!setting.message_error) {
                     if (setting.result.is_success) {
-                        Alert1ButtonView *v = [Alert1ButtonView new];
-                        v.tag = 10;
-                        if (setting.message_status)
-                            v.data = @{kTKPDALERTVIEW_DATALABELKEY : setting.message_status};
-                        else
-                            v.data = @{kTKPDALERTVIEW_DATALABELKEY : @"Success"};
-                        v.delegate = self;
-                        [v show];
+                        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:setting.message_status ,@"messages", nil];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                        [self.navigationController popViewControllerAnimated:YES];
                     }
                 }
                 else
                 {
-                    Alert1ButtonView *v = [Alert1ButtonView new];
-                    v.tag = 11;
-                    NSString * message = [[setting.message_error valueForKey:@"description"] componentsJoinedByString:@"\n"];
-                    v.data = @{kTKPDALERTVIEW_DATALABELKEY :message};
-                    v.delegate = self;
-                    [v show];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:setting.message_error ,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    self.navigationItem.rightBarButtonItem = _barbuttonsave;
+                    [_barbuttonsave setEnabled:YES];
                 }
             }
         }
@@ -498,6 +512,7 @@
 
 
 #pragma mark - Methods
+
 -(void)setDefaultData:(id)object
 {
     NotificationFormNotif *notif = object;
@@ -507,6 +522,15 @@
         _switchproduct.on = notif.flag_talk_product;
         _switchpmadmin.on = notif.flag_admin_message;
         _switchreview.on = notif.flag_review;
+    }
+}
+
+- (void)showSubviews
+{
+    for (id subview in _viewContent.subviews) {
+        if (![subview isKindOfClass:[UIActivityIndicatorView class]]) {
+            [subview setHidden:NO];
+        }
     }
 }
 

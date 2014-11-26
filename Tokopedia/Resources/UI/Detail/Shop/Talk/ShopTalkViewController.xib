@@ -8,7 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShopTalkViewController">
             <connections>
                 <outlet property="footer" destination="cp5-iM-TFo" id="Wsr-hS-ZyQ"/>
-                <outlet property="table" destination="z45-Yn-SVX" id="3DW-62-4ie"/>
+                <outlet property="table" destination="z45-Yn-SVX" id="mbF-oA-yzc"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Bfg-JO-CEw"/>
             </connections>
         </placeholder>
@@ -17,23 +17,30 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="162" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="z45-Yn-SVX">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" pagingEnabled="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="244" sectionHeaderHeight="22" sectionFooterHeight="34" translatesAutoresizingMaskIntoConstraints="NO" id="z45-Yn-SVX">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="J15-tM-5P9"/>
                         <outlet property="delegate" destination="-1" id="XMa-Xf-Ugs"/>
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="deviceRGB"/>
+            <constraints>
+                <constraint firstItem="z45-Yn-SVX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fR5-63-Z01"/>
+                <constraint firstAttribute="trailing" secondItem="z45-Yn-SVX" secondAttribute="trailing" id="qPV-LC-Pw5"/>
+                <constraint firstItem="z45-Yn-SVX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="r6z-ya-aW0"/>
+                <constraint firstAttribute="bottom" secondItem="z45-Yn-SVX" secondAttribute="bottom" constant="64" id="xk6-CB-t5U"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="cp5-iM-TFo" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="319" height="34"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="2Hb-jN-o3n">
-                    <rect key="frame" x="150" y="7" width="20" height="20"/>
+                    <rect key="frame" x="149" y="7" width="20" height="20"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                 </activityIndicatorView>

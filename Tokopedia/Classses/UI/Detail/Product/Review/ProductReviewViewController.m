@@ -14,7 +14,7 @@
 #import "ProgressBarView.h"
 #import "ProductReviewViewController.h"
 #import "ProductReviewDetailViewController.h"
-#import "GeneralReviewCell.h"
+#import "GeneralProductReviewCell.h"
 
 #import "TKPDAlertView.h"
 #import "AlertListView.h"
@@ -23,7 +23,7 @@
 #import "URLCacheController.h"
 
 #pragma mark - Product Review View Controller
-@interface ProductReviewViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, GeneralReviewCellDelegate>
+@interface ProductReviewViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, GeneralProductReviewCellDelegate>
 {
     NSMutableDictionary *_param;
     NSMutableArray *_list;
@@ -191,57 +191,40 @@
         
         NSString *cellid = kTKPDGENERALREVIEWCELLIDENTIFIER;
 		
-		cell = (GeneralReviewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+		cell = (GeneralProductReviewCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
-			cell = [GeneralReviewCell newcell];
-			((GeneralReviewCell*)cell).delegate = self;
+			cell = [GeneralProductReviewCell newcell];
+			((GeneralProductReviewCell *)cell).delegate = self;
 		}
         
         if (_list.count > indexPath.row) {
             ReviewList *list = _list[indexPath.row];
 
             
-            ((GeneralReviewCell*)cell).namelabel.text = list.review_user_name;
-            ((GeneralReviewCell*)cell).timelabel.text = list.review_create_time;
-            ((GeneralReviewCell*)cell).commentlabel.text = list.review_message;
-            ((GeneralReviewCell*)cell).indexpath = indexPath;
+            ((GeneralProductReviewCell *)cell).namelabel.text = list.review_user_name;
+            ((GeneralProductReviewCell *)cell).timelabel.text = list.review_create_time;
+            ((GeneralProductReviewCell *)cell).commentlabel.text = list.review_message;
+            ((GeneralProductReviewCell *)cell).indexpath = indexPath;
             
             
             ReviewResponse *review_response = list.review_response;
-            [((GeneralReviewCell*)cell).commentbutton setTitle:([review_response.response_message isEqualToString:@"0"] ? @"0 Comment" : @"1 Comment") forState:UIControlStateNormal];
+            [((GeneralProductReviewCell *)cell).commentbutton setTitle:([review_response.response_message isEqualToString:@"0"] ? @"0 Comment" : @"1 Comment") forState:UIControlStateNormal];
             
-            
-            //TODO:: create see more button
-            //UIFont * font = ((ProductReviewCell*)cell).commentlabel.font ;
-            //CGSize stringSize = [((ProductReviewCell*)cell).commentlabel.text sizeWithFont:font];
-            //CGFloat widthlabel = stringSize.width;
-            //CGFloat heightlabel = stringSize.height;
-            //UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-            //[button addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
-            //[button setTitle:@"See More" forState:UIControlStateNormal];
-            //[button setFrame:CGRectMake(widthlabel,heightlabel, ((ProductReviewCell*)cell).commentlabel.frame.size.width, ((ProductReviewCell*)cell).commentlabel.frame.size.height)];
-            //button.tag = 10;
-            ((GeneralReviewCell*)cell).qualityrate.starscount = list.review_rate_quality;
-            ((GeneralReviewCell*)cell).speedrate.starscount = list.review_rate_speed;
-            ((GeneralReviewCell*)cell).servicerate.starscount = list.review_rate_service;
-            ((GeneralReviewCell*)cell).accuracyrate.starscount = list.review_rate_accuracy;
+            ((GeneralProductReviewCell *)cell).qualityrate.starscount = list.review_rate_quality;
+            ((GeneralProductReviewCell *)cell).speedrate.starscount = list.review_rate_speed;
+            ((GeneralProductReviewCell *)cell).servicerate.starscount = list.review_rate_service;
+            ((GeneralProductReviewCell *)cell).accuracyrate.starscount = list.review_rate_accuracy;
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            //request.URL = url;
-            UIImageView *thumb = ((GeneralReviewCell*)cell).thumb;
+            UIImageView *thumb = ((GeneralProductReviewCell *)cell).thumb;
             thumb.image = nil;
-            //thumb.hidden = YES;	//@prepareforreuse then @reset
-            
             [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                //NSLOG(@"thumb: %@", thumb);
                 [thumb setImage:image];
-                
 #pragma clang diagnostic pop
-                
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            }];
+
+            } failure:nil];
         }
         
 		return cell;

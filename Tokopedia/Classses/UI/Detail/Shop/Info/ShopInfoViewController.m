@@ -378,6 +378,7 @@
     //request.URL = url;
     
     UIImageView *thumb = _thumb;
+    thumb.layer.cornerRadius = thumb.frame.size.width/2;
     thumb.image = nil;
     //thumb.hidden = YES;	//@prepareforreuse then @reset
     

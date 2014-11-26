@@ -10,6 +10,7 @@
 
 @interface ShopNotesViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UITableView *table;
 @property (nonatomic, strong) NSDictionary *data;
 
 @end

@@ -59,8 +59,6 @@
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
     
-    UISearchBar *_searchbaractive;
-    
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
@@ -70,7 +68,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) IBOutlet UIView *footer;
-@property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UIScrollView *hashtagsscrollview;
 @property (strong, nonatomic) IBOutlet UIView *descriptionview;
@@ -133,18 +130,10 @@
     
     _page = 1;
     
-    /** set inset table for different size**/
-    //if (is4inch) {
-    //    UIEdgeInsets inset = _table.contentInset;
-    //    inset.bottom += 150;
-    //    _table.contentInset = inset;
-    //}
-    //else{
-    //    UIEdgeInsets inset = _table.contentInset;
-    //    inset.bottom += 240;
-    //    _table.contentInset = inset;
-    //}
-    
+    UIEdgeInsets inset = _table.contentInset;
+    inset.bottom += 100;
+    _table.contentInset = inset;
+
     _table.tableHeaderView = _header;
     _table.tableFooterView = _footer;
     [_act startAnimating];
@@ -195,6 +184,10 @@
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
+    
+    self.table.scrollEnabled = NO;
+    
+    self.table.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -207,6 +200,9 @@
             [self loadData];
         }
     }
+    
+    self.table.scrollEnabled = NO;
+    self.table.contentOffset = CGPointMake(0, 0);
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -229,6 +225,11 @@
 #else
     return _isnodata?0:count;
 #endif
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 200;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -271,22 +272,12 @@
                 
                 UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
                 thumb.image = nil;
-                
-                UIActivityIndicatorView *act = (UIActivityIndicatorView*)((GeneralProductCell*)cell).act[i];
-                [act startAnimating];
-                
                 [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    //NSLOG(@"thumb: %@", thumb);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
                     [thumb setImage:image];
-                    
-                    [act stopAnimating];
-    #pragma clang diagnostic pop
-                    
-                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                    [act stopAnimating];
-                }];
+#pragma clang diagnostic pop
+                } failure:nil];
             }
         }
 	} else {
@@ -324,7 +315,6 @@
         }
 	}
 }
-
 
 #pragma mark - Action View
 -(IBAction)tap:(id)sender{
@@ -717,7 +707,20 @@
     [self loadData];
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [_searchbaractive resignFirstResponder];
+    _table.scrollEnabled = YES;
+}
+
 #pragma mark - UISearchBar Delegate
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"scrollToTop" object:nil];
+    return YES;
+}
+
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
     _searchbaractive = searchBar;
@@ -730,6 +733,23 @@
     [self refreshView:nil];
 }
 
+#pragma mark - UIScrollView Delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [_searchbaractive resignFirstResponder];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+//    if (scrollView.contentOffset.y <= -64) {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"enableParentScroll" object:nil];
+//        _table.scrollEnabled = NO;
+//    } else {
+//        _table.scrollEnabled = YES;
+//    }
+//    NSLog(@"\n\n%f\n\n", scrollView.contentOffset.y);
+}
 
 #pragma mark - Post Notification Methods
 

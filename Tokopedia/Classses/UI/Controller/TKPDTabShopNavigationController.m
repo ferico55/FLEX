@@ -16,8 +16,12 @@
 #import "ProductEtalaseViewController.h"
 #import "SendMessageViewController.h"
 #import "FavoriteShopAction.h"
-
+#import "ShopProductViewController.h"
+#import "ShopTalkViewController.h"
+#import "ShopReviewViewController.h"
+#import "ShopNotesViewController.h"
 #import "URLCacheController.h"
+#import "UIImage+ImageEffects.h"
 
 @interface TKPDTabShopNavigationController () <UIScrollViewDelegate> {
 	UIView* _tabbar;
@@ -27,6 +31,7 @@
     NSArray *_chevrons;
     
     UIBarButtonItem *_barbuttoninfo;
+    UIBarButtonItem *_backBarButton;
     
     NSInteger _pagedetail;
     
@@ -47,14 +52,16 @@
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    
+    BOOL navigationBarAnimated;
 }
+
 @property (weak, nonatomic) IBOutlet UIView *filterview;
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actpp;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actcover;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actfav;
 
-@property (weak, nonatomic) IBOutlet UIImageView *coverimage;
+@property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *ppimage;
 @property (weak, nonatomic) IBOutlet UILabel *namelabel;
 @property (weak, nonatomic) IBOutlet UILabel *shopdesclabel;
@@ -64,18 +71,26 @@
 @property (strong, nonatomic) IBOutlet UIView *contentview;
 
 @property (weak, nonatomic) IBOutlet UIView *container;
-@property (weak, nonatomic) IBOutlet UIView *gradient;
 @property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
 @property (weak, nonatomic) IBOutlet UIView *tapview;
+@property (strong, nonatomic) IBOutlet UIView *stickyTapView;
 
-@property (weak, nonatomic) IBOutlet UILabel *labelfav;
-@property (weak, nonatomic) IBOutlet UILabel *labelsold;
+@property (weak, nonatomic) IBOutlet UILabel *labelFavAndSold;
+@property (weak, nonatomic) IBOutlet UILabel *labelLastOnline;
 @property (weak, nonatomic) IBOutlet UIButton *buttonfav;
+@property (weak, nonatomic) IBOutlet UIButton *buttonMessage;
 
 @property (strong, nonatomic) IBOutlet UIView *descriptionview;
 @property (strong, nonatomic) IBOutlet UIView *detailview;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *detailscrollview;
+
+@property (strong, nonatomic) IBOutlet UIButton *backButtonCustom;
+@property (strong, nonatomic) IBOutlet UIButton *infoButtonCustom;
+@property (weak, nonatomic) IBOutlet UIImageView *blurCoverImage;
+@property (weak, nonatomic) IBOutlet UILabel *navigationTitleLabel;
+
+@property (weak, nonatomic) IBOutlet UIImageView *badgeGoldMerchant;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -150,6 +165,8 @@
 {
     [super viewDidLoad];
     
+    self.title = @"Shop";
+    
     [self.navigationController.navigationBar setTranslucent:NO];
     
     _operationQueue = [NSOperationQueue new];
@@ -162,7 +179,6 @@
 	
 	if (_unloadSelectedIndex != -1) {
 		[self setViewControllers:_unloadViewControllers];
-		
 		_unloadSelectedIndex = -1;
 		_unloadViewControllers = nil;
 	}
@@ -173,34 +189,35 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
 
-    
     CGSize size =_contentview.frame.size;
     size.height = size.height - _tapview.frame.size.height;
     _scrollview.contentSize = size;
     
-    UIBarButtonItem *barbutton1;
+    //set back bar button
+    UIBarButtonItem *backBarButton;
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+        backBarButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
     }
     else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-	[barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
+        backBarButton = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+	[backBarButton setTag:10];
+    self.navigationItem.leftBarButtonItem = backBarButton;
     
+    //set info bar button as right bar button item
     img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+        _backBarButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
     }
     else
-        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-	[_barbuttoninfo setTag:11];
-    _barbuttoninfo.enabled = NO;
-    self.navigationItem.rightBarButtonItem = _barbuttoninfo;
+        _backBarButton = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+	[_backBarButton setTag:11];
+    _backBarButton.enabled = NO;
+    self.navigationItem.rightBarButtonItem = _backBarButton;
     
     [_scrollview addSubview:_contentview];
     
@@ -224,36 +241,99 @@
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY object:nil];
+    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil];
     
     _detailfilter = [NSMutableDictionary new];
+    
+    _cachecontroller.URLCacheInterval = 86400.0;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(scrollToTop)
+                                                 name:@"scrollToTop" object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(enableScroll)
+                                                 name:@"enableParentScroll" object:nil];
+    
+    navigationBarAnimated = false;
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"NavigationShouldHide"
+                                                      object:nil
+                                                       queue:nil
+                                                  usingBlock:^(NSNotification *note) {
+
+                                                      [UIView animateWithDuration:0.3 animations:^(void) {
+                                                          _blurCoverImage.alpha = 0;
+                                                          _ppimage.alpha = 1;
+                                                      } completion:^(BOOL finished) {
+                                                          navigationBarAnimated = false;
+                                                      }];
+
+                                                  }];
+
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"NavigationShouldUnhide"
+                                                      object:nil
+                                                       queue:nil
+                                                  usingBlock:^(NSNotification *note) {
+
+                                                      [UIView animateWithDuration:0.3 animations:^(void) {
+                                                          _blurCoverImage.alpha = 1;
+                                                          _ppimage.alpha = 0;
+                                                      } completion:^(BOOL finished) {
+                                                          navigationBarAnimated = false;
+                                                      }];
+                                                  
+                                                  }];
+    
+    _buttonfav.layer.cornerRadius = 3;
+    _buttonfav.layer.borderWidth = 1;
+    _buttonfav.layer.borderColor = [UIColor colorWithRed:218.0/255.0 green:218.0/255.0 blue:218.0/255.0 alpha:1].CGColor;
+    
+    _buttonMessage.layer.cornerRadius = 3;
+    _buttonMessage.layer.borderWidth = 1;
+    _buttonMessage.layer.borderColor = [UIColor colorWithRed:218.0/255.0 green:218.0/255.0 blue:218.0/255.0 alpha:1].CGColor;
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    //if (!_isrefreshview) {
     [self configureRestKit];
+    
     if (_isnodata) {
         [self loadData];
     }
-    //}
+    
+    if (_shop.result.info.shop_is_gold) {
+        self.navigationController.navigationBarHidden = YES;
+    }
+    
+    
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self cancel];
+    
+    if (_shop.result.info.shop_is_gold) {
+        self.navigationController.navigationBarHidden = NO;
+    }
+    
 }
 
 - (void)viewDidLayoutSubviews
 {
 	[super viewDidLayoutSubviews];
-	//CGRect frame = _container.frame;
-	//CGSize size = CGSizeMake((inset.left + inset.right) / 2.0f, (inset.top + inset.bottom) / 2.0f);
-	//frame = CGRectInset(frame, size.width, size.height);
-	//frame = CGRectOffset(frame, inset.left - size.width, inset.top - size.height);
-	//_container.frame = frame;
+    
+    CGRect containerFrame = _container.frame;
+    containerFrame.size.height = self.view.frame.size.height - 94;
+    _container.frame = containerFrame;
+    
+    CGRect contentFrame = _contentview.frame;
+    contentFrame.size.height = 318 + containerFrame.size.height;
+    _contentview.frame = contentFrame;
 	
 	_selectedViewController.view.frame = _container.bounds;
 	
@@ -261,24 +341,17 @@
 	
 	UIView* tabbar;
 	CGRect frame;
-	//if (_selectedIndex < 3) {
-	//	tabbar = _tabbars[0];
-	//} else {
-	//	tabbar = _tabbars[1];
-	//}
 	tabbar = _tabbar;
 	frame = tabbar.frame;
 	frame.origin.y = inset.top;
 	
 	if ([_selectedViewController isKindOfClass:[UINavigationController class]]) {	//TODO: bars
 		UINavigationController* n = (UINavigationController*)_selectedViewController;
-		
 		if ((n != nil) && !n.navigationBarHidden && !n.navigationBar.hidden) {
 			CGRect rect = n.navigationBar.frame;
 			frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
 		}
 	}
-	//tabbar.frame = frame;
 	
 	inset = [self contentInsetForChildController];
 	if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {
@@ -317,9 +390,6 @@
         /** initialization mutable variable **/
         _buttons = [NSMutableArray new];
         
-        NSInteger widthcontenttop=0;
-        
-		
 		UIViewController* c;
 		for (NSInteger i = 0; i < count; i++) {
 			c = viewControllers[i];
@@ -351,14 +421,12 @@
 		//_navigationIndex = -1;
 	}
     
-
-        CALayer *upperBorder = [CALayer layer];
-        upperBorder.backgroundColor = [[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] CGColor];
-        upperBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[_selectedIndex] frame]), 2.0f);
-        
-        [[_chevrons[_selectedIndex] layer] addSublayer:upperBorder];
-
+    CALayer *upperBorder = [CALayer layer];
+    upperBorder.backgroundColor = [[UIColor colorWithRed:(18.0/255.0) green:(199.0/255.0) blue:(0.0/255.0) alpha:1.0] CGColor];
+    upperBorder.frame = CGRectMake(0, 42.0f, CGRectGetWidth([_chevrons[_selectedIndex] frame]), 2.0f);
+    [[_chevrons[_selectedIndex] layer] addSublayer:upperBorder];
     
+    [self updateTabColor];
 }
 
 - (void)setSelectedViewController:(UIViewController *)selectedViewController
@@ -392,59 +460,54 @@
 }
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated
-{
+{    
     selectedIndex = selectedIndex-10;
     if (selectedIndex<0) {
         selectedIndex = 0;
     }
 	if (selectedIndex == _selectedIndex) return;
-    
+
     if (selectedIndex != 0) {
         _filterview.hidden = YES;
+    } else {
+        _filterview.hidden = NO;
         CGRect scrollFrame;
         scrollFrame.origin = _scrollview.frame.origin;
-        scrollFrame.size = CGSizeMake(_scrollview.frame.size.width, _scrollview.frame.size.height+_filterview.frame.size.height);
-        
+        scrollFrame.size = CGSizeMake(_scrollview.frame.size.width, _scrollview.frame.size.height);
         _scrollview.frame = scrollFrame;
     }
-    else
-        _filterview.hidden = NO;
-	
+    
+    CGRect containerFrame = _container.frame;
+    CGFloat prevContainerHeight = containerFrame.size.height;
+    CGFloat newContainerHeight = self.view.frame.size.height - 108;
+    containerFrame.size.height = newContainerHeight;
+    _container.frame = containerFrame;
+    
+    CGRect contentViewFrame = _contentview.frame;
+    contentViewFrame.size.height = containerFrame.size.height - (prevContainerHeight - newContainerHeight);
+    _contentview.frame = contentViewFrame;
+    
 	if (_viewControllers != nil) {
-		
-		//UIView* selecttabbar;
-		CGRect selectframe;
-        
-		//selecttabbar = _tabbar;
+        CGRect selectframe;
 		selectframe = _tabbar.frame;
         
 		UIViewController* deselect = _selectedViewController;
-        
-
 		UIViewController* select = _viewControllers[selectedIndex];
 		
 		UIEdgeInsets inset = [self contentInsetForContainerController];
+
 		if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
 			
 			UINavigationController* n = (UINavigationController*)select;
 			if (!n.navigationBarHidden && !n.navigationBar.hidden) {
-				
-				CGRect rect = n.navigationBar.frame;
-				//rect = [self.view convertRect:rect fromView:n.navigationBar.superview];
-				//(*selectframe).origin.y = CGRectGetMaxY(rect);
 				selectframe.origin.y = inset.top;
-				//selectframe = CGRectOffset(selectframe, 0.0f, CGRectGetHeight(rect));
 				selectframe = CGRectZero;
 			} else {
-				//selectframe.origin.y = inset.top;
                 selectframe = CGRectZero;
 			}
 		} else {
             selectframe = CGRectZero;
-			//selectframe.origin.y = inset.top;
 		}
-		
-		//selecttabbar.frame = selectframe;
 		
 		int navigate = 0;
         
@@ -457,16 +520,15 @@
 		_selectedIndex = selectedIndex;
 		_selectedViewController = _viewControllers[selectedIndex];
         
+        [self updateTabColor];
+        
 		if (animated && (deselect != nil) && (navigate != 0)) {
 			
 			if (deselect != nil) {
 				[deselect willMoveToParentViewController:nil];
-				//[deselect.view removeFromSuperview];
-				//[deselect removeFromParentViewController];
 			}
 			
 			[self addChildViewController:select];
-			//select.view.frame = _container.bounds;
 			
 			if (navigate == 0) {
 				select.view.frame = _container.bounds;	//dead code
@@ -478,12 +540,8 @@
 				}
 			}
 			
-			[self transitionFromViewController:deselect toViewController:select duration:0.3 options:(0 /*UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionFlipFromLeft*/) animations:^{
-				
+			[self transitionFromViewController:deselect toViewController:select duration:0.3 options:(0) animations:^{
 				if (navigate != 0) {
-					//tabbar0.frame = frame0;
-					//tabbar1.frame = frame1;
-					
 					if (navigate > 0) {
 						deselect.view.frame = CGRectOffset(_container.bounds, -(CGRectGetWidth(_container.bounds)), 0.0f);
 					} else {
@@ -491,14 +549,11 @@
 					}
 					select.view.frame = _container.bounds;
 				}
-				
-				_tabbar.userInteractionEnabled = NO;	//race condition
-				
+                _tabbar.userInteractionEnabled = NO;	//race condition
+            
 			} completion:^(BOOL finished) {
-				
 				[deselect removeFromParentViewController];
 				[select didMoveToParentViewController:self];
-				
 				_tabbar.userInteractionEnabled = YES;	//race condition
 			}];
 			
@@ -516,17 +571,14 @@
 			[_container addSubview:select.view];
 			[select didMoveToParentViewController:self];
 		}
-	}
+	}    
 }
 
 - (UIEdgeInsets)contentInsetForChildController
 {
 	UIEdgeInsets inset = [self contentInsetForContainerController];
-	
-	//CGRect bounds = ((UIView*)_tabbars[0]).bounds;
 	CGRect bounds = _tabbar.bounds;
 	inset.top += CGRectGetHeight(bounds);
-	
 	return inset;
 }
 
@@ -568,7 +620,8 @@
         UIButton *btn = (UIButton*)sender;
         
         switch (btn.tag) {
-            case 15:{
+            case 15:
+            {
                 if(!_actpp.isAnimating) {
                     SendMessageViewController *vc = [SendMessageViewController new];
                     vc.data = @{
@@ -581,27 +634,49 @@
                 
                 
             }
-            case 16 : {
-                if(!_actfav.isAnimating) {
-                    [_actfav startAnimating];
-                    [self configureRestkitFav];
-                    [self doFav:_shop.result.info.shop_id withDefaultButton:btn];
-                    btn.tag = 17;
-                    [btn setTitle:@" UnFavorite" forState:UIControlStateNormal];
-                    [btn setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];
-                    break;
-                }
-                
+            case 16 :
+            {
+                [self configureRestkitFav];
+                [self doFav:_shop.result.info.shop_id withDefaultButton:btn];
+                btn.tag = 17;
+                [btn setTitle:@"Unfavorite" forState:UIControlStateNormal];
+                [btn setImage:[UIImage imageNamed:@"icon_love_white.png"] forState:UIControlStateNormal];
+                [btn.layer setBorderWidth:0];
+                [UIView animateWithDuration:0.3 animations:^(void) {
+                    [btn setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
+                    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+                }];
+                break;
             }
-            case 17 : {
-                if(!_actfav.isAnimating) {
-                    
-                    [_actfav startAnimating];
-                    [self configureRestkitFav];
-                    [self doFav:_shop.result.info.shop_id withDefaultButton:btn];
-                    btn.tag = 16;
-                    [btn setTitle:@"  Favorite" forState:UIControlStateNormal];
-                    [btn setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+            case 17 :
+            {
+                [self configureRestkitFav];
+                [self doFav:_shop.result.info.shop_id withDefaultButton:btn];
+                btn.tag = 16;
+                [btn setTitle:@"Favorite" forState:UIControlStateNormal];
+                [btn setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+                [btn.layer setBorderWidth:1];
+                [UIView animateWithDuration:0.3 animations:^(void) {
+                    [btn setBackgroundColor:[UIColor whiteColor]];
+                    [btn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                }];
+            }
+            case 19:
+            {
+                //add produk
+                break;
+            }
+            case 20:
+            {
+                // back button action
+                if (self.presentingViewController != nil) {
+                    if (self.navigationController.viewControllers.count > 1) {
+                        [self.navigationController popViewControllerAnimated:YES];
+                    } else {
+                        [self dismissViewControllerAnimated:YES completion:NULL];
+                    }
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
                 }
                 break;
             }
@@ -615,15 +690,13 @@
                     
                     //add border green on bottom button
                     CALayer *upperBorder = [CALayer layer];
-                    upperBorder.backgroundColor = [[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] CGColor];
-                    upperBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[index-10] frame]), 2.0f);
-                    
+                    upperBorder.backgroundColor = [[UIColor colorWithRed:(18.0/255.0) green:(199.0/255.0) blue:(0.0/255.0) alpha:1.0] CGColor];
+                    upperBorder.frame = CGRectMake(0, 42.0f, CGRectGetWidth([_chevrons[index-10] frame]), 2.0f);
                     
                     for(int i=0;i<4;i++) {
                         CALayer *whiteBorder = [CALayer layer];
-                        
                         whiteBorder.backgroundColor = [[UIColor whiteColor] CGColor];
-                        whiteBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[i] frame]), 2.0f);
+                        whiteBorder.frame = CGRectMake(0, 42.0f, CGRectGetWidth([_chevrons[i] frame]), 2.0f);
                         [[_chevrons[i] layer] addSublayer:whiteBorder];
                     }
                     
@@ -713,7 +786,6 @@
 }
 
 -(void) requestsuccessfav:(id)mappingResult withOperation:(NSOperationQueue*)operation {
-    [_actfav stopAnimating];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
 }
 
@@ -753,16 +825,8 @@
                 //SHARE
                 break;
             }
-            default:
-                break;
-        }    }
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
-        
-        switch (btn.tag) {
-            case 10:
+            case 13:
             {
-//                UINavigationController *nav = (UINavigationController *)self.presentingViewController;
                 if (self.presentingViewController != nil) {
                     if (self.navigationController.viewControllers.count > 1) {
                         [self.navigationController popViewControllerAnimated:YES];
@@ -772,7 +836,35 @@
                 } else {
                     [self.navigationController popViewControllerAnimated:YES];
                 }
-
+                break;                
+            }
+            case 14:
+            {
+                ShopInfoViewController *vc = [ShopInfoViewController new];
+                vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                [self.navigationController pushViewController:vc animated:YES];
+                break;                
+            }
+            default:
+                break;
+        }
+    }
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
+        
+        switch (btn.tag) {
+            case 10:
+            {
+                if (self.presentingViewController != nil) {
+                    if (self.navigationController.viewControllers.count > 1) {
+                        [self.navigationController popViewControllerAnimated:YES];
+                    } else {
+                        [self dismissViewControllerAnimated:YES completion:NULL];
+                    }
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
                 break;
             }
             case 11:
@@ -823,8 +915,8 @@
 	//if (self.parentViewController && [self.parentViewController isKindOfClass:[TKPDTabBarShopController class]]) {
 	//	UIEdgeInsets bar = self.TKPDTabBarShopController.contentInsetForChildController;
 	if ((self.parentViewController != nil) && [self.parentViewController respondsToSelector:@selector(contentInsetForChildController)]) {
-		UIEdgeInsets bar = [((id)self.parentViewController) contentInsetForChildController];
-		
+	
+        UIEdgeInsets bar = [((id)self.parentViewController) contentInsetForChildController];
 		inset.top += bar.top;
 		inset.bottom += bar.bottom;
 		inset.left += bar.left;
@@ -877,7 +969,8 @@
 	return nil;
 }
 
--(void)setDetailData{
+-(void)setDetailData
+{
     _detailview.hidden = NO;
     _descriptionview.hidden = NO;
     _pagecontrol.hidden = NO;
@@ -887,22 +980,32 @@
     _locationlabel.text = _shop.result.info.shop_location;
 
     if([_shop.result.info.shop_already_favorited isEqualToString:@"1"]) {
-        [_buttonfav.imageView setImage:[UIImage imageNamed:@"icon_love_active.png"]];
+        [_buttonfav setImage:[UIImage imageNamed:@"icon_love_white.png"] forState:UIControlStateNormal];
+        [_buttonfav setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
+        [_buttonfav setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [_buttonfav setTitle:@"Unfavorite" forState:UIControlStateNormal];
+        [_buttonfav.layer setBorderWidth:0];
         _buttonfav.tag = 17;
     } else {
-        [_buttonfav.imageView setImage:[UIImage imageNamed:@"icon_love.png"]];
+        [_buttonfav setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+        [_buttonfav setBackgroundColor:[UIColor whiteColor]];
+        [_buttonfav setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _buttonfav.tag = 16;
     }
-    [_actfav stopAnimating];
+
+    _labelFavAndSold.text = [NSString stringWithFormat:@"%@ Favorited  %@ Sold Items", _shop.result.info.shop_total_favorit, _shop.result.stats.shop_item_sold];
     
-    _labelfav.text = [NSString stringWithFormat:@"%@ Favorite",_shop.result.info.shop_total_favorit];
-    _labelsold.text = [NSString stringWithFormat:@"%@ Sold",_shop.result.stats.shop_item_sold];
+    _labelLastOnline.text = [NSString stringWithFormat:@"Last Online : %@", _shop.result.info.shop_owner_last_login];
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     //request.URL = url;
     
     UIImageView *thumb = _ppimage;
     thumb.image = nil;
+    thumb.layer.cornerRadius = thumb.frame.size.width/2;
+    thumb.layer.borderColor = [UIColor whiteColor].CGColor;
+    thumb.layer.borderWidth = 3;
+
     //thumb.hidden = YES;	//@prepareforreuse then @reset
     
     [_actpp startAnimating];
@@ -919,33 +1022,152 @@
         [_actpp stopAnimating];
     }];
     
-    request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_cover] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    //request.URL = url;
-    
-    thumb = _coverimage;
-    thumb.image = nil;
-    //thumb.hidden = YES;	//@prepareforreuse then @reset
-    
-    [_actcover startAnimating];
-    
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        //NSLOG(@"thumb: %@", thumb);
-        [thumb setImage:image];
-        
-        [_actcover stopAnimating];
-#pragma clang diagnostic pop
-        
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [_actcover stopAnimating];
-    }];
-    
-    
-    CAGradientLayer *bgLayer = [BackgroundLayer blackGradient];
-    bgLayer.frame = _gradient.bounds;
-    [_gradient.layer insertSublayer:bgLayer atIndex:0];
 
+    if (_shop.result.info.shop_is_gold) {
+        self.navigationController.navigationBarHidden = YES;
+        
+        self.view.clipsToBounds = NO;
+        self.contentview.clipsToBounds = NO;
+        
+        if ([_shop.result.info.shop_name length] > 18) {
+            NSRange stringRange = {0, MIN([_shop.result.info.shop_name length], 18)};
+            stringRange = [_shop.result.info.shop_name rangeOfComposedCharacterSequencesForRange:stringRange];
+            _navigationTitleLabel.text = [NSString stringWithFormat:@"%@...", [_shop.result.info.shop_name substringWithRange:stringRange]];
+        } else {
+            _navigationTitleLabel.text = _shop.result.info.shop_name;
+        }
+        
+        self.coverImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:_shop.result.info.shop_cover]]];
+        self.blurCoverImage.image = [self.coverImageView.image applyLightEffect];
+        
+        //add gradient in cover image
+        CAGradientLayer *gradientLayer = [BackgroundLayer blackGradientFromTop];
+        gradientLayer.frame = _coverImageView.bounds;
+        [_coverImageView.layer insertSublayer:gradientLayer atIndex:0];
+        
+        [_namelabel sizeToFit];
+        [_shopdesclabel sizeToFit];
+    }
+    else {
+        _backButtonCustom.hidden = YES;
+        _infoButtonCustom.hidden = YES;
+        _navigationTitleLabel.hidden = YES;
+
+        [_stickyTapView layoutIfNeeded];
+        CGRect stickyTabFrame = _stickyTapView.frame;
+        stickyTabFrame.origin.y = 0;
+        [UIView animateWithDuration:0.3 animations:^(void) {
+            _stickyTapView.frame = stickyTabFrame;
+        }];
+        [_stickyTapView layoutIfNeeded];
+        
+        _scrollview.contentOffset = CGPointMake(0, -50);
+        _scrollview.contentInset = UIEdgeInsetsMake(-50, 0, 0, 0);
+        
+        _badgeGoldMerchant.hidden = YES;
+    }
+}
+
+- (void)scrollContainer
+{
+    CGFloat offset;
+    if (_shop.result.info.shop_is_gold) {
+        offset = 320.0;
+    } else {
+        offset = 378.0;
+    }
+    if (_scrollview.contentOffset.y < offset) {
+        _stickyTapView.hidden = YES;
+        [self disableScrollAtIndex:_selectedIndex];
+    } else {
+        _stickyTapView.hidden = NO;
+        [self enableScrollAtIndex:_selectedIndex];
+    }
+}
+
+- (void)disableScrollAtIndex:(int)index
+{
+    switch (index) {
+        case 0:
+            ((ShopProductViewController *)_selectedViewController).table.scrollEnabled = NO;
+            break;
+        case 1:
+            ((ShopTalkViewController *)_selectedViewController).table.scrollEnabled = NO;
+            break;
+        case 2:
+            ((ShopReviewViewController *)_selectedViewController).table.scrollEnabled = NO;
+            break;
+        case 3:
+            ((ShopNotesViewController *)_selectedViewController).table.scrollEnabled = NO;
+            break;
+        default:
+            ((ShopProductViewController *)_selectedViewController).table.scrollEnabled = NO;
+            break;
+    }
+}
+
+- (void)enableScrollAtIndex:(int)index
+{
+    switch (index) {
+        case 0:
+            ((ShopProductViewController *)_selectedViewController).table.scrollEnabled = YES;
+            break;
+        case 1:
+            ((ShopTalkViewController *)_selectedViewController).table.scrollEnabled = YES;
+            break;
+        case 2:
+            ((ShopReviewViewController *)_selectedViewController).table.scrollEnabled = YES;
+            break;
+        case 3:
+            ((ShopNotesViewController *)_selectedViewController).table.scrollEnabled = YES;
+            break;
+        default:
+            ((ShopProductViewController *)_selectedViewController).table.scrollEnabled = YES;
+            break;
+    }
+}
+
+- (void)scrollToTop
+{
+    CGFloat y;
+    if (_shop.result.info.shop_is_gold) {
+        y = 314;
+    } else {
+        y = 379;
+    }
+    [self.scrollview setContentOffset:CGPointMake(0, y) animated:YES];
+
+}
+
+- (void)enableScroll
+{
+    _scrollview.scrollEnabled = YES;
+}
+
+- (void)updateTabColor
+{
+    // Tab View
+    for (int i = 10; i < 14; i++) {
+        UIButton *selectedButton = (UIButton *)[_tapview viewWithTag:i];
+        [selectedButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    }
+    UIButton *selectedTabButton = (UIButton *)[_tapview viewWithTag:10+_selectedIndex];
+    [selectedTabButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1] forState:UIControlStateNormal];
+    
+    // Sticky Tab View
+    for (int i = 10; i < 14; i++) {
+        UIButton *selectedButton = (UIButton *)[_stickyTapView viewWithTag:i];
+        [selectedButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+
+        UIView *border = [_stickyTapView viewWithTag:10+i];
+        border.hidden = YES;
+    }
+    
+    UIButton *selectedStickyTabButton = (UIButton *)[_stickyTapView viewWithTag:10+_selectedIndex];
+    [selectedStickyTabButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1] forState:UIControlStateNormal];
+
+    UIView *selectedBorder = (UIView *)[_stickyTapView viewWithTag:20+_selectedIndex];
+    selectedBorder.hidden = NO;
 }
 
 #pragma mark - Request and Mapping
@@ -995,7 +1217,8 @@
                                                           kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY,
                                                           kTKPDDETAILSHOP_APICOVERKEY:kTKPDDETAILSHOP_APICOVERKEY,
                                                           kTKPDDETAILSHOP_APITOTALFAVKEY:kTKPDDETAILSHOP_APITOTALFAVKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY
+                                                          kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
+                                                          kTKPDDETAILSHOP_APISHOPISGOLD:kTKPDDETAILSHOP_APISHOPISGOLD,
                                                           }];
     
     RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
@@ -1100,7 +1323,7 @@
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
         NSLog(@"cache and updated in last 24 hours.");
-//        [self requestfailure:nil];
+        [self requestfailure:nil];
 	}
 }
 
@@ -1114,10 +1337,10 @@
     
     if (status) {
         //only save cache for first page
-//        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-//        [_cachecontroller connectionDidFinish:_cacheconnection];
+        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+        [_cachecontroller connectionDidFinish:_cacheconnection];
         //save response data
-//        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
 
         [self requestprocess:object];
     }
@@ -1170,6 +1393,9 @@
             id stats = [result objectForKey:@""];
             
             _shop = stats;
+            
+            _shop.result.info.shop_is_gold = true;
+            
             BOOL status = [_shop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
@@ -1216,7 +1442,47 @@
     CGFloat pageWidth = _detailscrollview.frame.size.width;
     _pagedetail = floor((_detailscrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     _pagecontrol.currentPage = _pagedetail;
+
+    [self scrollContainer];
+    
+    if (sender.contentOffset.y > self.view.frame.size.height) {
+        _scrollview.scrollEnabled = NO;
+    } else {
+        _scrollview.scrollEnabled = YES;
+    }
+    
+    if (sender.contentOffset.y < 0) {
+        CGRect frame = _coverImageView.frame;
+        CGPoint translation = [sender.panGestureRecognizer translationInView:sender.superview];
+        if(translation.y > 0)
+        {
+            frame.origin.y = sender.contentOffset.y;
+            frame.size.height =  149 + fabsf(sender.contentOffset.y);
+        } else {
+            frame.origin.y = 0;
+            frame.size.height = 149;
+        }
+        _coverImageView.frame = frame;
+    }
+
+    if (_shop.result.info.shop_is_gold) {
+        if (!navigationBarAnimated) {
+            navigationBarAnimated = true;
+            if (sender.contentOffset.y > 82) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NavigationShouldUnhide" object:self];
+            } else {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NavigationShouldHide" object:self];
+            }
+        }
+        if (sender.contentOffset.y > 170) {
+            _navigationTitleLabel.hidden = NO;
+        } else {
+            _navigationTitleLabel.hidden = YES;
+        }
+    }
 }
+
+
 
 #pragma mark - Properties
 -(void)setData:(NSDictionary *)data
