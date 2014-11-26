@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<<<<<<< HEAD
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
-=======
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
->>>>>>> a1ab3ded1763dede9555379ecdec46e6e7ca8861
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingBankEditViewController">
@@ -29,21 +24,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-<<<<<<< HEAD
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NqZ-n7-OkZ">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iN0-l3-epB">
-=======
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="NqZ-n7-OkZ">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                    <subviews>
-                        <view contentMode="scaleToFill" id="iN0-l3-epB">
->>>>>>> a1ab3ded1763dede9555379ecdec46e6e7ca8861
                             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <view tag="7" contentMode="scaleToFill" id="uwm-wv-N5P">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -66,7 +51,7 @@
                                                 <outlet property="delegate" destination="-1" id="XUQ-Gk-Eni"/>
                                             </connections>
                                         </textField>
-                                        <view appearanceType="aqua" contentMode="scaleToFill" id="8JS-ok-wrd" userLabel="Border Bottom">
+                                        <view contentMode="scaleToFill" id="8JS-ok-wrd" userLabel="Border Bottom">
                                             <rect key="frame" x="0.0" y="43" width="320" height="1"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
@@ -95,7 +80,7 @@
                                                 <outlet property="delegate" destination="-1" id="iLL-Wk-uTD"/>
                                             </connections>
                                         </textField>
-                                        <view appearanceType="aqua" contentMode="scaleToFill" id="X4H-xd-WIg" userLabel="Border Bottom">
+                                        <view contentMode="scaleToFill" id="X4H-xd-WIg" userLabel="Border Bottom">
                                             <rect key="frame" x="0.0" y="43" width="320" height="1"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
@@ -124,7 +109,7 @@
                                                 <outlet property="delegate" destination="-1" id="xA2-3p-Vyn"/>
                                             </connections>
                                         </textField>
-                                        <view appearanceType="aqua" contentMode="scaleToFill" id="k7g-Jc-uvq" userLabel="Border Bottom">
+                                        <view contentMode="scaleToFill" id="k7g-Jc-uvq" userLabel="Border Bottom">
                                             <rect key="frame" x="0.0" y="43" width="320" height="1"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
@@ -143,13 +128,8 @@
                                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-<<<<<<< HEAD
                                         <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uxK-Dt-HgQ">
-=======
-                                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="uxK-Dt-HgQ">
->>>>>>> a1ab3ded1763dede9555379ecdec46e6e7ca8861
                                             <rect key="frame" x="168" y="6" width="111" height="30"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <state key="normal" title="Pilih Bank">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
@@ -157,12 +137,12 @@
                                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="l01-eF-0v0"/>
                                             </connections>
                                         </button>
-                                        <view appearanceType="aqua" contentMode="scaleToFill" id="08t-oM-rbg" userLabel="Border Bottom">
+                                        <view contentMode="scaleToFill" id="08t-oM-rbg" userLabel="Border Bottom">
                                             <rect key="frame" x="0.0" y="43" width="320" height="1"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
                                         </view>
-                                        <imageView appearanceType="aqua" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_right_grey.png" id="nIn-GR-1iT">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_right_grey.png" id="nIn-GR-1iT">
                                             <rect key="frame" x="287" y="11" width="13" height="20"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
@@ -173,7 +153,7 @@
                                     <rect key="frame" x="0.0" y="421" width="320" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <view appearanceType="aqua" contentMode="scaleToFill" id="GUL-IM-2B8" userLabel="Border Bottom">
+                                        <view contentMode="scaleToFill" id="GUL-IM-2B8" userLabel="Border Bottom">
                                             <rect key="frame" x="0.0" y="43" width="320" height="1"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
@@ -194,12 +174,12 @@
                                     <rect key="frame" x="0.0" y="362" width="320" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <view appearanceType="aqua" contentMode="scaleToFill" id="qxc-Yu-Hlu" userLabel="Border Bottom">
+                                        <view contentMode="scaleToFill" id="qxc-Yu-Hlu" userLabel="Border Bottom">
                                             <rect key="frame" x="0.0" y="43" width="320" height="1"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
                                         </view>
-                                        <view appearanceType="aqua" contentMode="scaleToFill" id="kfE-M9-0HJ" userLabel="Border Bottom">
+                                        <view contentMode="scaleToFill" id="kfE-M9-0HJ" userLabel="Border Bottom">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
@@ -223,7 +203,7 @@
                                     <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Untuk bank selain BCA, isilah Kantor Cabang dengan kota dimana bank tersebut berada.Contoh : Pondok Indah - Jakarta Selatan" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ImT-1D-3sw">
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Untuk bank selain BCA, isilah Kantor Cabang dengan kota dimana bank tersebut berada.Contoh : Pondok Indah - Jakarta Selatan" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ImT-1D-3sw">
                                     <rect key="frame" x="9" y="300" width="303" height="54"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
@@ -247,8 +227,6 @@
                                 <constraint firstAttribute="height" constant="568" id="9Sg-Qp-qoj"/>
                                 <constraint firstAttribute="width" constant="320" id="O3k-Ue-ZXQ"/>
                             </constraints>
-                            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
-                            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                             <connections>
                                 <outletCollection property="gestureRecognizers" destination="yLf-tS-J9a" appends="YES" id="g8u-eg-A4d"/>
                             </connections>
@@ -273,7 +251,7 @@
                 <constraint firstAttribute="bottom" secondItem="NqZ-n7-OkZ" secondAttribute="bottom" id="v6x-D4-rTk"/>
                 <constraint firstAttribute="trailing" secondItem="NqZ-n7-OkZ" secondAttribute="trailing" id="x0T-wE-F6D"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <nil key="simulatedStatusBarMetrics"/>
         </view>
         <tapGestureRecognizer id="yLf-tS-J9a">
             <connections>
@@ -284,4 +262,9 @@
     <resources>
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

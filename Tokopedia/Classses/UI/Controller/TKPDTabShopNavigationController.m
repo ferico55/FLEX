@@ -689,11 +689,7 @@
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
-            case 19:
-            {
-                //add produk
-                break;
-            }
+            
             default:
                 if (_viewControllers != nil) {
                     
@@ -1422,8 +1418,8 @@
             //emnable button after request
             _buttonaddproduct.enabled = YES;
             _buttonfav.enabled = YES;
-            _buttonmessage.enabled = YES;
-            _buttonsetting.enabled = YES;
+//            _buttonmessage.enabled = YES;
+//            _buttonsetting.enabled = YES;
         }
         else{
             [self cancel];
@@ -1521,18 +1517,18 @@
         NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
         if (auth && ![auth isEqual:[NSNull null]]) {
             if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
-                _buttonsetting.hidden = NO;
+//                _buttonsetting.hidden = NO;
                 _buttonfav.hidden = YES;
-                _buttonmessage.hidden = YES;
+//                _buttonmessage.hidden = YES;
                 _actcover.hidden  = YES;
-                _actfav.hidden  = YES;
+//                _actfav.hidden  = YES;
             }
         }
         else
         {
-            _buttonsetting.hidden = YES;
+//            _buttonsetting.hidden = YES;
             _buttonfav.hidden = NO;
-            _buttonmessage.hidden = NO;
+//            _buttonmessage.hidden = NO;
         }
 
     }

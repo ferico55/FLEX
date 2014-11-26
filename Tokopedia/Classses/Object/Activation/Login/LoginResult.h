@@ -14,6 +14,7 @@
 @property (nonatomic) NSInteger shop_id;
 @property (nonatomic) NSInteger user_id;
 @property (nonatomic, strong) NSString *full_name;
+@property (nonatomic, strong) NSString *user_image;
 
 //- (void)encodeWithCoder:(NSCoder *)encoder;
 //- (id)initWithCoder:(NSCoder *)decoder;

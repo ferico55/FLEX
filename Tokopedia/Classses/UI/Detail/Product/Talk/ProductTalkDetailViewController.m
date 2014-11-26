@@ -190,6 +190,7 @@
 #pragma clang diagnostic pop
                 
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                
             }];
         }
         
@@ -510,6 +511,7 @@
                 TalkCommentList *commentlist = [TalkCommentList new];
                 commentlist.comment_message =_talktextfield.text;
                 commentlist.user_name = [_auth objectForKey:@"full_name"];
+                commentlist.user_image = [_auth objectForKey:@"user_image"];
                 
                 
                 NSDate *today = [NSDate date];

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShopTalkViewController">
@@ -17,8 +17,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="244" sectionHeaderHeight="22" sectionFooterHeight="34" translatesAutoresizingMaskIntoConstraints="NO" id="z45-Yn-SVX">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" pagingEnabled="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="244" sectionHeaderHeight="22" sectionFooterHeight="34" translatesAutoresizingMaskIntoConstraints="NO" id="z45-Yn-SVX">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="J15-tM-5P9"/>
@@ -26,19 +26,15 @@
                     </connections>
                 </tableView>
             </subviews>
-<<<<<<< HEAD
             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="deviceRGB"/>
             <constraints>
-                <constraint firstItem="z45-Yn-SVX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="316-CY-aAE"/>
-                <constraint firstItem="z45-Yn-SVX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="YvQ-Ku-cYE"/>
-                <constraint firstAttribute="trailing" secondItem="z45-Yn-SVX" secondAttribute="trailing" id="b7x-JX-yBp"/>
-                <constraint firstAttribute="bottom" secondItem="z45-Yn-SVX" secondAttribute="bottom" id="ez8-xn-yn4"/>
+                <constraint firstItem="z45-Yn-SVX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fR5-63-Z01"/>
+                <constraint firstAttribute="trailing" secondItem="z45-Yn-SVX" secondAttribute="trailing" id="qPV-LC-Pw5"/>
+                <constraint firstItem="z45-Yn-SVX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="r6z-ya-aW0"/>
+                <constraint firstAttribute="bottom" secondItem="z45-Yn-SVX" secondAttribute="bottom" constant="64" id="xk6-CB-t5U"/>
             </constraints>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-=======
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <nil key="simulatedStatusBarMetrics"/>
->>>>>>> a1ab3ded1763dede9555379ecdec46e6e7ca8861
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="cp5-iM-TFo" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="319" height="34"/>
