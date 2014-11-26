@@ -32,6 +32,7 @@ typedef enum
 #define kTKPDTITLE_REVIEW @"Review"
 #define kTKPDTITLE_SHOP_NOTES @"Shop Note"
 #define kTKPDTITLE_SEND_MESSAGE @"Send Message"
+#define kTKPDTITLE_NEW_TALK @"New Talk About It"
 #define kTKPDTITLE_SHOP_INFO @"Shop Information"
 #define KTKPDTITLE_FAV_THIS_SHOP @"People who Favorited This Shop"
 #define KTKPDTITLE_PEOPLE @"People Information"
@@ -416,6 +417,7 @@ typedef enum
 #define kTKPDTALK_APITALKMESSAGEKEY @"talk_message"
 #define kTKPDTALK_APITALKFOLLOWSTATUSKEY @"talk_follow_status"
 #define kTKPDTALK_APITALKSHOPID @"talk_shop_id"
+#define kTKPDTALKCOMMENT_APITEXT @"text_comment"
 
 
 #define kTKPDTALK_APITALKPRODUCTNAMEKEY @"talk_product_name"
@@ -433,6 +435,7 @@ typedef enum
 #define kTKPDTALKCOMMENT_CREATETIME @"create_time"
 #define kTKPDTALKCOMMENT_USERIMAGE @"user_image"
 #define kTKPDTALKCOMMENT_USERNAME @"user_name"
+#define kTKPDDETAIL_APIADDCOMMENTTALK @"add_comment_talk"
 
 #pragma mark - Notes
 #define kTKPDNOTES_APINOTEIDKEY @"note_id"
@@ -522,6 +525,7 @@ typedef enum
 #define kTKPDDETAIL_APIISSUCCESSKEY @"is_success"
 
 #define kTKPDDETAILPRODUCT_APIPATH @"product.pl"
+#define kTKPDDETAILACTIONPRODUCT_APIPATH @"action/product.pl"
 #define kTKDPDETAILCATALOG_APIPATH @"catalog.pl"
 #define kTKPDDETAILSHOP_APIPATH @"shop.pl"
 #define kTKPDDETAILNOTES_APIPATH @"notes.pl"

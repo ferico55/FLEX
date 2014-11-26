@@ -59,7 +59,7 @@
                 break;
             }
             case UIGestureRecognizerStateEnded: {
-                [_delegate InboxMessageCell:self withindexpath:_indexpath withimageview:_userimageview];
+                [_delegate InboxMessageCell:self withindexpath:_indexpath];
                 break;
             }
         }

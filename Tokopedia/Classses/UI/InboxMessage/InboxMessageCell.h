@@ -12,7 +12,7 @@
 
 @protocol InboxMessageCellDelegate <NSObject>
 @required
--(void)InboxMessageCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath withimageview:(UIImageView *)imageview;
+-(void)InboxMessageCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
 
 @end
 

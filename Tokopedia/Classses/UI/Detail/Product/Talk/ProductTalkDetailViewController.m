@@ -10,7 +10,8 @@
 #import "TalkComment.h"
 #import "detail.h"
 #import "GeneralTalkCommentCell.h"
-
+#import "ProductTalkCommentAction.h"
+#import "TKPDSecureStorage.h"
 #import "URLCacheController.h"
 
 @interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
@@ -20,20 +21,28 @@
     BOOL _isrefreshview;
     UIRefreshControl *_refreshControl;
     NSString *_urinext;
-    NSInteger _requestcount;
+    
     NSTimer *_timer;
     NSInteger _page;
     NSInteger _limit;
 
+    NSInteger _requestcount;
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
+    
+    NSInteger _requestactioncount;
+    __weak RKObjectManager *_objectactionmanager;
+    __weak RKManagedObjectRequestOperation *_requestaction;
+    
     NSOperationQueue *_operationQueue;
+    NSOperationQueue *_operationActionQueue;
     TalkComment *_talkcomment;
 
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    NSMutableDictionary *_auth;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -42,6 +51,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *talkmessagelabel;
 @property (weak, nonatomic) IBOutlet UILabel *talkcreatetimelabel;
 @property (weak, nonatomic) IBOutlet UILabel *talkusernamelabel;
+@property (weak, nonatomic) IBOutlet UILabel *talktotalcommentlabel;
+@property (weak, nonatomic) IBOutlet UITextField *talktextfield;
 @property (weak, nonatomic) IBOutlet UIImageView *talkuserimage;
 
 @property (strong, nonatomic) IBOutlet UIView *header;
@@ -53,6 +64,7 @@
 -(void)requestfailure:(id)object;
 -(void)requestprocess:(id)object;
 -(void)requesttimeout;
+-(void)configureActionRestkit;
 
 @end
 
@@ -75,10 +87,13 @@
     // Do any additional setup after loading the view from its nib.
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
+    _operationActionQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     
     _table.tableHeaderView = _header;
+    _page = 1;
+    _auth = [NSMutableDictionary new];
     
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
@@ -142,7 +157,7 @@
         cell = (GeneralTalkCommentCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
         if (cell == nil) {
             cell = [GeneralTalkCommentCell newcell];
-//            ((GeneralTalkCommentCell*)cell).delegate = self;
+            ((GeneralTalkCommentCell*)cell).delegate = self;
         }
         
         if (_list.count > indexPath.row) {
@@ -153,6 +168,13 @@
            
             ((GeneralTalkCommentCell*)cell).indexpath = indexPath;
             
+            if(list.is_not_delivered) {
+                ((GeneralTalkCommentCell*)cell).commentfailimage.hidden = NO;
+            } else {
+                ((GeneralTalkCommentCell*)cell).commentfailimage.hidden = YES;
+            }
+        
+        
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *user_image = ((GeneralTalkCommentCell*)cell).user_image;
@@ -216,6 +238,8 @@
     _talkmessagelabel.text = [data objectForKey:kTKPDTALK_APITALKMESSAGEKEY];
     _talkcreatetimelabel.text = [data objectForKey:kTKPDTALK_APITALKCREATETIMEKEY];
     _talkusernamelabel.text = [data objectForKey:kTKPDTALK_APITALKUSERNAMEKEY];
+    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Comment",[data objectForKey:kTKPDTALK_APITALKTOTALCOMMENTKEY]];
+    
     
     NSURL * imageURL = [NSURL URLWithString:[data objectForKey:kTKPDTALK_APITALKUSERIMAGEKEY]];
     NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
@@ -299,11 +323,12 @@
     NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETCOMMENTBYTALKID,
                             kTKPDTALK_APITALKIDKEY : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
-                            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDTALK_APITALKSHOPID]?:@(0)
+                            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDTALK_APITALKSHOPID]?:@(0),
+                            kTKPDDETAIL_APIPAGEKEY : @(_page)
                             };
-    [_cachecontroller getFileModificationDate];
-	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
+//    [_cachecontroller getFileModificationDate];
+//	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+//	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILTALK_APIPATH parameters:param];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         //[_objectmanager getObjectsAtPath:kTKPDDETAILTALK_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -327,14 +352,14 @@
         
         _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    }else{
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-        NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
-    }
+//    }else{
+//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+//        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+//        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+//        NSLog(@"cache and updated in last 24 hours.");
+//        [self requestfailure:nil];
+//    }
 }
 
 -(void) requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -460,11 +485,10 @@
 -(IBAction)tap:(id)sender {
     
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIButton *btn = (UIButton *)sender;
+        UIBarButtonItem *btn = (UIBarButtonItem *)sender;
         switch (btn.tag) {
             case 10:
             {
-            
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
@@ -473,7 +497,132 @@
             break;
         }
     }
+    
+    if([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton *)sender;
+        switch (btn.tag) {
+            case 10: {
+                NSInteger lastindexpathrow = [_list count];
+                TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+                NSDictionary* auth = [secureStorage keychainDictionary];
+                _auth = [auth mutableCopy];
+                
+                TalkCommentList *commentlist = [TalkCommentList new];
+                commentlist.comment_message =_talktextfield.text;
+                commentlist.user_name = [_auth objectForKey:@"full_name"];
+                
+                
+                NSDate *today = [NSDate date];
+                NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
+                NSString *dateString = [dateFormat stringFromDate:today];
+                
+                commentlist.create_time = [dateString stringByAppendingString:@"WIB"];
+                
+                [_list insertObject:commentlist atIndex:lastindexpathrow];
+                NSArray *insertIndexPaths = [NSArray arrayWithObjects:
+                                             [NSIndexPath indexPathForRow:lastindexpathrow inSection:0],nil
+                                             ];
+                
+                [_table beginUpdates];
+                [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+                [_table endUpdates];
+                
+                NSIndexPath *indexpath = [NSIndexPath indexPathForRow:lastindexpathrow inSection:0];
+                [_table scrollToRowAtIndexPath:indexpath
+                              atScrollPosition:UITableViewScrollPositionTop
+                                      animated:YES];
+                
+                //connect action to web service
+                [self configureActionRestkit];
+                [self addProductCommentTalk];
+                
+                _talktextfield.text = nil;
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
 
+#pragma mark - Action Send Comment Talk
+- (void)configureActionRestkit {
+    // initialize RestKit
+    _objectactionmanager =  [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProductTalkCommentAction class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProductTalkCommentActionResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success"}];
+    
+    //relation
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    //register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectactionmanager addResponseDescriptor:responseDescriptorStatus];
+}
+
+-(void)addProductCommentTalk{
+    NSDictionary* param = @{
+                            kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIADDCOMMENTTALK,
+                            kTKPDTALK_APITALKIDKEY:[_data objectForKey:kTKPDTALK_APITALKIDKEY],
+                            kTKPDTALKCOMMENT_APITEXT:_talktextfield.text,
+                            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]
+                            };
+    
+    _requestactioncount ++;
+    _requestaction = [_objectactionmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param];
+    
+    
+    [_requestaction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestactionsuccess:mappingResult withOperation:operation];
+        [_table reloadData];
+        [_refreshControl endRefreshing];
+        [_timer invalidate];
+        _timer = nil;
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+        [self requestfailure:error];
+        
+        _table.tableFooterView = nil;
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        [_timer invalidate];
+        _timer = nil;
+        
+    }];
+    
+    [_operationActionQueue addOperation:_requestaction];
+    
+    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+
+}
+
+- (void)requestactionsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation {
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    id info = [result objectForKey:@""];
+    ProductTalkCommentAction *commentaction = info;
+    BOOL status = [commentaction.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if(status) {
+        //if success
+        if([commentaction.result.is_success isEqualToString:@"0"]) {
+            TalkCommentList *commentlist = _list[_list.count-1];
+            commentlist.is_not_delivered = @"1";
+        }
+    }
+}
+
+- (void)requestactionfailure:(id)error {
     
 }
 
