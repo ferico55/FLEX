@@ -58,7 +58,7 @@
     
     UIBarButtonItem *barbuttonleft;
     UIBarButtonItem *barbuttonright;
-    NSBundle* bundle = [NSBundle mainBundle];
+    //NSBundle* bundle = [NSBundle mainBundle];
     
     barbuttonleft = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [barbuttonleft setTintColor:[UIColor whiteColor]];

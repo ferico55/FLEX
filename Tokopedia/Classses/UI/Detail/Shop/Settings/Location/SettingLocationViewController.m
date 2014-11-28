@@ -188,7 +188,7 @@
 		}
         
         if (_list.count > indexPath.row) {
-            SettingLocations *list = _list[indexPath.row];
+            Address *list = _list[indexPath.row];
             ((GeneralList1GestureCell*)cell).labelname.text = list.location_address_name;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
             ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
@@ -271,21 +271,21 @@
 
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SettingLocationResult class]];
     
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SettingLocations class]];
-    [listMapping addAttributeMappingsFromArray:@[kTKPDSHOPSETTING_APICITYNAMEKEY,
-                                                 kTKPDSHOPSETTING_APIEMAILKEY,
-                                                 kTKPDSHOPSETTING_APIADDRESSKEY,
-                                                 kTKPDSHOPSETTING_APIPOSTALCODEKEY,
-                                                 kTKPDSHOPSETTING_APICITYIDKEY,
-                                                 kTKPDSHOPSETTING_APILOCATIONAREAKEY,
-                                                 kTKPDSHOPSETTING_APIPHONEKEY,
-                                                 kTKPDSHOPSETTING_APIDISTRICTIDKEY,
-                                                 kTKPDSHOPSETTING_APIPROVINCENAMEKEY,
-                                                 kTKPDSHOPSETTING_APIPROVINCEIDKEY,
-                                                 kTKPDSHOPSETTING_APIDISTRICTNAMEKEY,
-                                                 kTKPDSHOPSETTING_APIADDRESSIDKEY,
-                                                 kTKPDSHOPSETTING_APIFAXKEY,
-                                                 kTKPDSHOPSETTING_APIADDRESSNAMEKEY
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[Address class]];
+    [listMapping addAttributeMappingsFromArray:@[kTKPDSHOP_APICITYNAMEKEY,
+                                                 kTKPDSHOP_APIEMAILKEY,
+                                                 kTKPDSHOP_APIADDRESSKEY,
+                                                 kTKPDSHOP_APIPOSTALCODEKEY,
+                                                 kTKPDSHOP_APICITYIDKEY,
+                                                 kTKPDSHOP_APILOCATIONAREAKEY,
+                                                 kTKPDSHOP_APIPHONEKEY,
+                                                 kTKPDSHOP_APIDISTRICTIDKEY,
+                                                 kTKPDSHOP_APIPROVINCENAMEKEY,
+                                                 kTKPDSHOP_APIPROVINCEIDKEY,
+                                                 kTKPDSHOP_APIDISTRICTNAMEKEY,
+                                                 kTKPDSHOP_APIADDRESSIDKEY,
+                                                 kTKPDSHOP_APIFAXKEY,
+                                                 kTKPDSHOP_APIADDRESSNAMEKEY
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -545,7 +545,7 @@
     NSDictionary *userinfo = (NSDictionary*)object;
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIDELETESHOPLOCATIONKEY,
-                            kTKPDSHOPSETTING_APIADDRESSIDKEY : [userinfo objectForKey:kTKPDSHOPSETTING_APIADDRESSIDKEY]
+                            kTKPDSHOP_APIADDRESSIDKEY : [userinfo objectForKey:kTKPDSHOP_APIADDRESSIDKEY]
                             };
     _requestcount ++;
     
@@ -655,7 +655,7 @@
 -(void)GeneralList1GestureCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     BOOL isdefault;
-    SettingLocations *list = _list[indexpath.row];
+    Address *list = _list[indexpath.row];
     if (_ismanualsetdefault) {
         isdefault = (indexpath.row == 0)?YES:NO;
     }
@@ -676,8 +676,8 @@
 
 -(void)DidTapButton:(UIButton *)button atCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
-    SettingLocations *list = _list[indexpath.row];
-    [_datainput setObject:list.location_address_id forKey:kTKPDSHOPSETTING_APIADDRESSIDKEY];
+    Address *list = _list[indexpath.row];
+    [_datainput setObject:list.location_address_id forKey:kTKPDSHOP_APIADDRESSIDKEY];
     switch (button.tag) {
         case 10:
         {
@@ -700,7 +700,7 @@
 #pragma mark - delegate address detail
 -(void)DidTapButton:(UIButton *)button withdata:(NSDictionary *)data
 {
-    SettingLocations *list = [data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+    Address *list = [data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
     //[_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
     switch (button.tag) {
         case 10:

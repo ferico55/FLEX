@@ -1,5 +1,5 @@
 //
-//  UploadProfileResult.h
+//  UploadImageResult.h
 //  Tokopedia
 //
 //  Created by IT Tkpd on 10/30/14.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface UploadProfileResult : NSObject
+@interface UploadImageResult : NSObject
 
 @property (nonatomic, strong) NSString *file_path;
 @property (nonatomic, strong) NSString *file_th;

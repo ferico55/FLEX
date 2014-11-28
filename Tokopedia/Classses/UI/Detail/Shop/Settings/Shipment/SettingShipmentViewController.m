@@ -228,8 +228,6 @@
     if (sectionIsExanded) {
         NSArray *shipments = _shippinginfo.result.shipment;
         ShippingInfoShipments *shipment = shipments[section];
-        NSString *origin = [_datainput objectForKey:kTKPDFILTER_APISELECTEDDISTRICTIDKEY];
-        NSDictionary *shipmentids = [_datainput objectForKey:kTKPDSHOPSHIPMENT_APISHIPMENTIDS];
         BOOL jneminweight = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY] boolValue];
         NSInteger jneminweightvalue = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY] integerValue];
         BOOL jnefee = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APIJNEFEEKEY] boolValue];
@@ -466,6 +464,10 @@
                         [messages addObject:@"Biaya JNE harus diisi."];
                         submit = NO;
                     }
+                    if (jnefeevalue > 5000) {
+                        [messages addObject:@"Maksimum Biaya Pos adalah Rp 5.000,-"];
+                        submit = NO;
+                    }
 
                 }
                 if (tikifee) {
@@ -473,10 +475,18 @@
                         [messages addObject:@"Biaya TIKI harus diisi."];
                         submit = NO;
                     }
+                    if (jnefeevalue > 5000) {
+                        [messages addObject:@"Maksimum Biaya TIKI adalah Rp 5.000,-"];
+                        submit = NO;
+                    }
                 }
                 if (posfee) {
                     if (posfeevalue == 0) {
-                        [messages addObject:@"Biaya POS Indonesia harus diisi."];
+                        [messages addObject:@"Biaya Pos Indonesia harus diisi."];
+                        submit = NO;
+                    }
+                    if (jnefeevalue > 5000) {
+                        [messages addObject:@"Maksimum Biaya Pos Indonesia adalah Rp 5.000,-"];
                         submit = NO;
                     }
                 }
@@ -484,6 +494,11 @@
                 if (submit) {
                     [self configureRestKitActionShipment];
                     [self requestActionShipment:_datainput];
+                }
+                else
+                {
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
 
                 NSLog(@"%@",messages);
@@ -709,6 +724,7 @@
                 [_buttonprovinsi setTitle:_shippinginfo.result.shop_shipping.district_name?:@"Pilih Provinsi" forState:UIControlStateNormal];
                 _textfieldkodepos.text = _shippinginfo.result.shop_shipping.postal_code;
                 [self updateLogisticDistrictSupporteds:_shippinginfo.result.shop_shipping.district_shipping_supported];
+                [_table reloadData];
             }
         }else{
             [self cancel];

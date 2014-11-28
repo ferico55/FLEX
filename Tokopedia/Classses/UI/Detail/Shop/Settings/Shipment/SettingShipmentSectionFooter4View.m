@@ -98,6 +98,11 @@
     return YES;
 }
 
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    [_delegate SettingShipmentSectionFooterView:self];
+    return YES;
+}
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
     [_delegate SettingShipmentSectionFooterView:self];

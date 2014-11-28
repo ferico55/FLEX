@@ -10,10 +10,10 @@
 #import "alert.h"
 #import "profile.h"
 #import "GenerateHost.h"
-#import "UploadProfile.h"
+#import "UploadImage.h"
 #import "ProfileEdit.h"
 #import "ProfileEditForm.h"
-#import "UploadProfileParams.h"
+#import "UploadImageParams.h"
 
 #import "../../Alert/AlertDatePickerView.h"
 #import "../../Alert/AlertListView.h"
@@ -32,7 +32,7 @@
     
     ProfileEdit *_profile;
     GenerateHost *_generatehost;
-    UploadProfile *_images;
+    UploadImage *_images;
     ProfileEditForm *_editform;
     
     UITextField *_activetextfield;
@@ -518,12 +518,12 @@
     _objectmanagerUploadPhoto =  [RKObjectManager sharedClient];
     
     // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[UploadProfile class]];
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[UploadImage class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
                                                         kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
 
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[UploadProfileResult class]];
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[UploadImageResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPDPROFILE_APIUPLOADFILEPATHKEY:kTKPDPROFILE_APIUPLOADFILEPATHKEY,
                                                         kTKPDPROFILE_APIUPLOADFILETHUMBKEY:kTKPDPROFILE_APIUPLOADFILETHUMBKEY
                                                         }];
@@ -572,7 +572,7 @@
     
 	NSDictionary* userInfo = object;
     
-    NSDictionary* camera = [userInfo objectForKey:kTKPDCAMERA_DATACAMERAKEY];
+    //NSDictionary* camera = [userInfo objectForKey:kTKPDCAMERA_DATACAMERAKEY];
     NSDictionary* photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     
     NSDictionary* param;
@@ -624,7 +624,7 @@
         [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     }
 
-    NSString *FileParamConstant = @"profile_img";
+    //NSString *FileParamConstant = @"profile_img";
     [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[@"Content-Disposition: attachment; name=\"profile_img\"; filename=\"icon_location.png\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];

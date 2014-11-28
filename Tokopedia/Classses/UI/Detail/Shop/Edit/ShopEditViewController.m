@@ -12,7 +12,7 @@
 #import "Shop.h"
 #import "ShopSettings.h"
 #import "GenerateHost.h"
-#import "UploadProfile.h"
+#import "UploadImage.h"
 
 #import "ShopEditViewController.h"
 #import "ShopEditStatusViewController.h"
@@ -34,7 +34,7 @@
     GenerateHost *_generatehost;
     DetailShopResult *_shop;
     ShopSettings *_settings;
-    UploadProfile *_images;
+    UploadImage *_images;
     
     BOOL _isnodata;
     NSInteger _requestcount;
@@ -182,7 +182,6 @@
 {
     [super viewWillLayoutSubviews];
     _scrollview.contentSize = _viewcontent.frame.size;
-    //[self setDefaultData];
 }
 
 #pragma mark - Memory Management
@@ -235,7 +234,7 @@
     
     NSDictionary *data = (NSDictionary *)object;
     NSString *shopdesc = [data objectForKey:kTKPDSHOPEDIT_APISHORTDESCKEY]?:_shop.info.shop_description?:@"";
-    NSString *tagline = [data objectForKey:kTKPDSHOPEDIT_APITAGLINEKEY]?:_shop.info.shop_description?:@"";
+    NSString *tagline = [data objectForKey:kTKPDSHOPEDIT_APITAGLINEKEY]?:_shop.info.shop_tagline?:@"";
     NSDate *closeuntil = [data objectForKey:kTKPDSHOPEDIT_APICLOSEUNTILKEY]?:_shop.closed_info.until?:@"";
     NSString *closenote = [data objectForKey:kTKPDSHOPEDIT_APICLOSEDNOTEKEY]?:_shop.closed_info.reason?:@"";
     NSInteger status = [[data objectForKey:kTKPDSHOPEDIT_APISTATUSKEY] integerValue]?:[_shop.is_open integerValue]?:0;
@@ -310,6 +309,9 @@
                 NSArray *array = _settings.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
                 NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+            }
+            if (_settings.result.is_success) {
+                //[[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil userInfo:nil];
             }
         }
         }else{
@@ -455,12 +457,12 @@
     _objectmanagerUploadPhoto =  [RKObjectManager sharedClient];
     
     // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[UploadProfile class]];
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[UploadImage class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
                                                         kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[UploadProfileResult class]];
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[UploadImageResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY,
                                                         kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY:kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY
                                                         }];
@@ -545,14 +547,12 @@
         [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     }
     
+    //add image data
     [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[@"Content-Disposition: attachment; name=\"logo\"; filename=\"icon_location.png\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[NSData dataWithData:imageData]];
     [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    
-    //add image data
     
     //Close off the request with the boundary
     [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
@@ -652,11 +652,11 @@
                     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                     }];
                     
-                    NSDictionary *userinfo = @{kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY :_images.result.file_th,
-                                               kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:_images.result.file_path
+                    NSDictionary *userinfo = @{kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY :_images.result.file_th?:@"",
+                                               kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:_images.result.file_path?:@""
                                                };
                     
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                 }
                 else
                 {
@@ -807,7 +807,7 @@
             [_actthumb stopAnimating];
         }];
         
-        NSUInteger type = [_shop.is_open integerValue];
+        NSUInteger type = [[_datainput objectForKey:kTKPDSHOPEDIT_APISTATUSKEY]integerValue]?:[_shop.is_open integerValue];
         NSString *status;
         switch (type) {
             case kTKPDDETAIL_DATASTATUSSHOPCLOSED:
@@ -843,7 +843,6 @@
             _labelregularmembership.hidden = YES;
             _buttonlearnmore.hidden = YES;
         }
-
     }
 }
 
@@ -902,13 +901,16 @@
     int limit = 0;
     if (textView == _textviewslogan) {
         limit = 48;
-        _labelslogancharcount.text = [NSString stringWithFormat:@"%d", limit - textView.text.length + (text.length - range.length)];
-
+        if (textView.text.length + (text.length - range.length) <= limit) {
+            _labelslogancharcount.text = [NSString stringWithFormat:@"%d", limit - (textView.text.length + (text.length - range.length))];
+        }
     }
     else if (textView == _textviewdesc)
     {
         limit = 140;
-        _labeldesccharcount.text = [NSString stringWithFormat:@"%d",limit - textView.text.length + (text.length - range.length)];
+        if (textView.text.length + (text.length - range.length) <= limit) {
+            _labeldesccharcount.text = [NSString stringWithFormat:@"%d",limit - (textView.text.length + (text.length - range.length))];
+        }
     }
     return textView.text.length + (text.length - range.length) <= limit;
 }
@@ -917,22 +919,7 @@
 -(void)ShopEditStatusViewController:(UIViewController *)vc withData:(NSDictionary *)data
 {
     [_datainput addEntriesFromDictionary:data];
-    NSString *status;
-    NSUInteger type = [[data objectForKey:kTKPDSHOPEDIT_APISTATUSKEY]integerValue];
-    switch (type) {
-        case kTKPDDETAIL_DATASTATUSSHOPCLOSED:
-            status = @"Tutup";
-            break;
-        case kTKPDDETAIL_DATASTATUSSHOPOPEN:
-            status = @"Buka";
-            break;
-        case kTKPDDETAIL_DATASTATUSMODERATED:
-            status = @"Moderated";
-            break;
-        default:
-            break;
-    }
-    [_buttonshopstatus setTitle:status forState:UIControlStateNormal];
+    [self setDefaultData:_data];
 }
 
 #pragma mark - Delegate Camera Controller

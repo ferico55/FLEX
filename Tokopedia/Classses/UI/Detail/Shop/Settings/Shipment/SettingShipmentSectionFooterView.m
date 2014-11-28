@@ -111,10 +111,19 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
     
     [textField resignFirstResponder];
-    
     return YES;
 }
-
+-(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if(range.length + range.location > textField.text.length)
+    {
+        return NO;
+    }
+    
+    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+    [_delegate SettingShipmentSectionFooterView:self];
+    return (newLength > 4) ? NO : YES;
+}
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
     [_delegate SettingShipmentSectionFooterView:self];

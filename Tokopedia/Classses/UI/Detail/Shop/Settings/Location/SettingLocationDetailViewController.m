@@ -7,7 +7,7 @@
 //
 
 #import "detail.h"
-#import "SettingLocations.h"
+#import "Address.h"
 #import "SettingLocationDetailViewController.h"
 #import "SettingLocationEditViewController.h"
 
@@ -124,10 +124,11 @@
 {
     _data = data;
     if (data) {
-        SettingLocations *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+        Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
         
         _labeladdressname.text = list.location_address_name;
-        _labeladdress.text = [NSString stringWithFormat:@"%@\n%@",list.location_address,list.location_area];
+        NSString *address = [NSString convertHTML:list.location_address];
+        _labeladdress.text = [NSString stringWithFormat:@"%@\n%@",address,list.location_area];
         _labelcity.text = list.location_city_name;
         _labeldistrict.text = list.location_district_name;
         _labelphonenumber.text = list.location_phone;

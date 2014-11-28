@@ -1,13 +1,13 @@
 //
-//  UploadProfileResult.m
+//  UploadImageResult.m
 //  Tokopedia
 //
 //  Created by IT Tkpd on 10/30/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "UploadProfileResult.h"
+#import "UploadImageResult.h"
 
-@implementation UploadProfileResult
+@implementation UploadImageResult
 
 @end

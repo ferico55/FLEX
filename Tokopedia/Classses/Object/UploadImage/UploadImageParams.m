@@ -1,13 +1,13 @@
 //
-//  UploadProfileParams.m
+//  UploadImageParams.m
 //  Tokopedia
 //
 //  Created by IT Tkpd on 11/3/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "UploadProfileParams.h"
+#import "UploadImageParams.h"
 
-@implementation UploadProfileParams
+@implementation UploadImageParams
 
 @end

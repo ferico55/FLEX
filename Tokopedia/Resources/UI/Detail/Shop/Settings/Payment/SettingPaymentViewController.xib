@@ -7,9 +7,10 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingPaymentViewController">
             <connections>
-                <outlet property="scrollview" destination="Gqt-QW-m1y" id="FKj-kL-5db"/>
-                <outlet property="view" destination="PAP-dl-ELL" id="q9b-Pv-w6Q"/>
-                <outlet property="viewcontent" destination="iN0-l3-epB" id="TGx-3z-4Ua"/>
+                <outlet property="act" destination="X4E-fG-VSR" id="oOs-xE-5cw"/>
+                <outlet property="footer" destination="0af-Lj-BSb" id="nIa-bN-sfr"/>
+                <outlet property="table" destination="rZn-YP-NCF" id="s1k-21-GJB"/>
+                <outlet property="view" destination="sBK-Yc-2Cj" id="fWT-hY-Y2x"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -129,9 +130,6 @@
                                     <state key="normal" title="Baca syarat dan ketentuannya disini">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
-                                    <connections>
-                                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="zwJ-Vm-YY0"/>
-                                    </connections>
                                 </button>
                                 <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fvy-FU-4Ec">
                                     <rect key="frame" x="11" y="398" width="193" height="30"/>
@@ -140,9 +138,6 @@
                                     <state key="normal" title="Baca syarat dan ketentuannya disini">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
-                                    <connections>
-                                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="nC5-Zx-vsg"/>
-                                    </connections>
                                 </button>
                                 <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AvN-mt-Lmr">
                                     <rect key="frame" x="11" y="531" width="193" height="30"/>
@@ -151,9 +146,6 @@
                                     <state key="normal" title="Baca syarat dan ketentuannya disini">
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
-                                    <connections>
-                                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="HDs-VC-cxe"/>
-                                    </connections>
                                 </button>
                             </subviews>
                             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -171,9 +163,6 @@
                         <constraint firstItem="iN0-l3-epB" firstAttribute="top" secondItem="Gqt-QW-m1y" secondAttribute="top" id="rfh-Vi-Nl9"/>
                         <constraint firstItem="iN0-l3-epB" firstAttribute="leading" secondItem="Gqt-QW-m1y" secondAttribute="leading" id="suC-qu-bYb"/>
                     </constraints>
-                    <connections>
-                        <outlet property="delegate" destination="-1" id="ZAk-zD-wXj"/>
-                    </connections>
                 </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -184,6 +173,35 @@
                 <constraint firstItem="Gqt-QW-m1y" firstAttribute="top" secondItem="PAP-dl-ELL" secondAttribute="top" id="yb1-ro-oOs"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+        <view contentMode="scaleToFill" id="sBK-Yc-2Cj">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="rZn-YP-NCF">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="KZp-pB-uTd"/>
+                        <outlet property="delegate" destination="-1" id="rst-Uh-Z0M"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+        <view contentMode="scaleToFill" id="0af-Lj-BSb" userLabel="FooterView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="X4E-fG-VSR">
+                    <rect key="frame" x="150" y="7" width="20" height="20"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </activityIndicatorView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
 </document>

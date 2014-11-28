@@ -20,16 +20,9 @@
     NSMutableDictionary *_datainput;
     NSMutableArray *_list;
     NSInteger _requestcount;
-    NSTimer *_timer;
     BOOL _isnodata;
     
-    NSInteger _starcount;
-    
     BOOL _isrefreshview;
-    UIRefreshControl *_refreshControl;
-    
-    BOOL _isadvreviewquality;
-    BOOL _isalltimes;
     
     Notes *_notes;
     
@@ -90,10 +83,10 @@
     }
     
     /** adjust refresh control **/
-    _refreshControl = [[UIRefreshControl alloc] init];
-    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
-    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
-    [_table addSubview:_refreshControl];
+    //_refreshControl = [[UIRefreshControl alloc] init];
+    //_refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    //[_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    //[_table addSubview:_refreshControl];
     
     //cache
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
@@ -265,29 +258,27 @@
             _table.tableFooterView = _footer;
             [_act startAnimating];
         }
-        
+        NSTimer *timer;
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPNOTE_APIPATH parameters:param];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            [_timer invalidate];
-            _timer = nil;
+            [timer invalidate];
             _table.hidden = NO;
             _isrefreshview = NO;
-            [_refreshControl endRefreshing];
+            //[_refreshControl endRefreshing];
             [_act stopAnimating];
             [self requestsuccess:mappingResult withOperation:operation];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
-            [_timer invalidate];
-            _timer = nil;
+            [timer invalidate];
             _isrefreshview = NO;
-            [_refreshControl endRefreshing];
+            //[_refreshControl endRefreshing];
             [_act stopAnimating];
             [self requestfailure:error];
         }];
         [_operationQueue addOperation:_request];
         
-        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     }else{
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
@@ -451,14 +442,12 @@
         [self requestSuccessActionDelete:mappingResult withOperation:operation];
         [_act stopAnimating];
         _isrefreshview = NO;
-        [_refreshControl endRefreshing];
         [timer invalidate];
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFailureActionDelete:error];
         _isrefreshview = NO;
-        [_refreshControl endRefreshing];
         [timer invalidate];
     }];
     

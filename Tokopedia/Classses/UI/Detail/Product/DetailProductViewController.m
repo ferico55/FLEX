@@ -156,7 +156,7 @@
     self.navigationItem.leftBarButtonItem = barbutton1;
     
     /** set inset table for different size**/
-    is_dismissed = [_data objectForKey:@"is_dismissed"];
+    is_dismissed = [[_data objectForKey:@"is_dismissed"] boolValue];
     if(is_dismissed) {
         if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
             self.edgesForExtendedLayout = UIRectEdgeNone;

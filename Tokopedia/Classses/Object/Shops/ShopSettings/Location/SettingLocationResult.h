@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "SettingLocations.h"
+#import "Address.h"
 
 @interface SettingLocationResult : NSObject
 

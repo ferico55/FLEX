@@ -43,6 +43,7 @@
     BOOL _isnodata;
     NSInteger _requestcount;
     BOOL _isaddressexpanded;
+    BOOL _isrefreshview;
     
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -98,7 +99,7 @@
 
 -(void)cancel;
 -(void)configureRestKit;
--(void)loadData;
+-(void)request;
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
 -(void)requestfailure:(id)object;
 -(void)requestprocess:(id)object;
@@ -159,6 +160,7 @@
         
         _requestcount = 0;
         _isnodata = YES;
+        _isrefreshview = NO;
     }
     return self;
 }
@@ -246,6 +248,7 @@
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil];
+    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil];
     
     _detailfilter = [NSMutableDictionary new];
     
@@ -305,7 +308,7 @@
     [self configureRestKit];
     
     if (_isnodata) {
-        [self loadData];
+        [self request];
     }
     
     if (_shop.result.info.shop_is_gold) {
@@ -607,12 +610,11 @@
 	NSLog(@"isViewLoaded: %@", self.isViewLoaded ? @"YES" : @"NO");
 }
 
-#ifdef _DEBUG
 - (void)dealloc
 {
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [[NSNotificationCenter defaultCenter] removeObserver:self];}
-#endif
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 #pragma mark -
 #pragma mark View actions
@@ -1261,16 +1263,16 @@
                                                     kTKPDDETAILSHOP_APIPAYMENTNAMEKEY]];
     
     RKObjectMapping *addressMapping = [RKObjectMapping mappingForClass:[Address class]];
-    [addressMapping addAttributeMappingsFromArray:@[kTKPDDETAILSHOP_APIADDRESSKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSNAMEKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSIDKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSPOSTALKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSDISTRICTKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSFAXKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSCITYKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSPHONEKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSEMAILKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSPROVINCEKEY
+    [addressMapping addAttributeMappingsFromArray:@[kTKPDDETAIL_APILOCATIONKEY,
+                                                    kTKPDSHOP_APIADDRESSNAMEKEY,
+                                                    kTKPDSHOP_APIADDRESSIDKEY,
+                                                    kTKPDSHOP_APIPOSTALCODEKEY,
+                                                    kTKPDSHOP_APIDISTRICTIDKEY,
+                                                    kTKPDSHOP_APIFAXKEY,
+                                                    kTKPDSHOP_APICITYIDKEY,
+                                                    kTKPDSHOP_APIPHONEKEY,
+                                                    kTKPDSHOP_APIEMAILKEY,
+                                                    kTKPDSHOP_APIPROVINCEIDKEY
                                                     ]];
     // Relationship Mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
@@ -1288,7 +1290,7 @@
     RKRelationshipMapping *paymentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APIPAYMENTKEY toKeyPath:kTKPDDETAILSHOP_APIPAYMENTKEY withMapping:paymentMapping];
     [resultMapping addPropertyMapping:paymentRel];
     
-    RKRelationshipMapping *addressRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APIADDRESSKEY toKeyPath:kTKPDDETAILSHOP_APIADDRESSKEY withMapping:addressMapping];
+    RKRelationshipMapping *addressRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIADDRESSKEY toKeyPath:kTKPDDETAIL_APIADDRESSKEY withMapping:addressMapping];
     [resultMapping addPropertyMapping:addressRel];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOP_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
@@ -1296,7 +1298,7 @@
     [_objectmanager addResponseDescriptor:responseDescriptor];
 }
 
-- (void)loadData
+- (void)request
 {
     _requestcount ++;
     
@@ -1308,7 +1310,7 @@
     [_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
-	if (_timeinterval > _cachecontroller.URLCacheInterval) {
+	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
         
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:param];
         
@@ -1361,7 +1363,7 @@
 -(void)requestfailure:(id)object
 {
     
-    if (_timeinterval > _cachecontroller.URLCacheInterval) {
+    if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
         [self requestprocess:object];
     }
     else{
@@ -1415,7 +1417,7 @@
                 [self setDetailData];
             }
             
-            //emnable button after request
+            //enable button after request
             _buttonaddproduct.enabled = YES;
             _buttonfav.enabled = YES;
             _buttonMessage.enabled = YES;
@@ -1430,7 +1432,7 @@
                     //_table.tableFooterView = _footer;
                     //[_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }
                 else
                 {
@@ -1535,11 +1537,27 @@
    
 }
 
+-(void)refreshView:(UIRefreshControl*)refresh
+{
+    [self cancel];
+    /** clear object **/
+    _requestcount = 0;
+    _isrefreshview = YES;
+    
+    /** request data **/
+    [self configureRestKit];
+    [self request];
+}
+
+
+#pragma mark - Notification
 - (void)updateView:(NSNotification *)notification;
 {
     [self cancel];
     NSDictionary *userinfo = notification.userInfo;
     [_detailfilter addEntriesFromDictionary:userinfo];
+    
+    [self refreshView:nil];
 }
 
 @end

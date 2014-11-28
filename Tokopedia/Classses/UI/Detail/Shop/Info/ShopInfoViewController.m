@@ -525,14 +525,14 @@
 -(void)setAddressDataView:(ShopInfoAddressView*)view withData:(id)data
 {
     Address *address = data;
-    view.labelname.text = (address.address_name == 0)?@"-":address.address_name;
-    view.labelDistric.text = (address.address_district == 0)?@"-":address.address_district;
-    view.labelcity.text = (address.address_city ==0)?@"-":address.address_city;
-    view.labelprov.text = (address.address_province ==0)?@"-":address.address_province;
-    view.labelpostal.text = (address.address_postal ==0)?@"-":address.address_postal;
-    view.labelemail.text = (address.address_email ==0)?@"-":address.address_email;
-    view.labelfax.text = (address.address_fax ==0)?@"-":address.address_fax;
-    view.labelphone.text = (address.address_phone ==0)?@"-":address.address_phone;
+    view.labelname.text = address.location_address_name?:@"-";
+    view.labelDistric.text = address.location_district_name?:@"-";
+    view.labelcity.text = address.location_district_name?:@"-";
+    view.labelprov.text = address.location_province_name?:@"";
+    view.labelpostal.text = address.location_postal_code?:@"-";
+    view.labelemail.text = address.location_email?:@"-";
+    view.labelfax.text = address.location_fax?:@"-";
+    view.labelphone.text = address.location_phone?:@"-";
 }
 
 #pragma mark - Properties
