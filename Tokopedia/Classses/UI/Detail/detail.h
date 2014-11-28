@@ -289,10 +289,6 @@ typedef enum
 #define kTKPDSHOPSHIPMENT_APINAMEKEY @"name"
 #define kTKPDSHOPSHIPMENT_APISPIDKEY @"sp_id"
 
-#define kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY @"min_weight"
-#define kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY @"min_weight_value"
-#define kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY @"diff_district"
-
 #define kTKPDSHOPSHIPMENT_APIDISTRICTIDKEY @"district_id"
 #define kTKPDSHOPSHIPMENT_APIPOSTALCODEKEY @"postal_code"
 #define kTKPDSHOPSHIPMENT_APIPOSTALKEY @"postal"
@@ -309,6 +305,10 @@ typedef enum
 #define kTKPDSHOPSHIPMENT_APIJNEFEEKEY @"jne_fee"
 #define kTKPDSHOPSHIPMENT_APIJNEFEEVALUEKEY @"jne_fee_value"
 #define kTKPDSHOPSHIPMENT_APIJNETICKETKEY @"jne_tiket"
+#define kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY @"min_weight"
+#define kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY @"min_weight_value"
+#define kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY @"diff_district"
+
 //POS
 #define kTKPDSHOPSHIPMENT_APIPOSFEEKEY @"pos_fee"
 #define kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY @"pos_fee_value"
@@ -349,11 +349,20 @@ typedef enum
 #define kTKPDSHOPSETTING_APIPROVINCENAMEKEY @"location_province_name"
 #define kTKPDSHOPSETTING_APIPROVINCEIDKEY @"location_province_id"
 #define kTKPDSHOPSETTING_APIDISTRICTNAMEKEY @"location_district_name"
-#define kTKPDSHOPSETTING_APIADDRESSIDKEY @"location_addr_id"
+#define kTKPDSHOPSETTING_APIADDRESSIDKEY @"location_address_id"
 #define kTKPDSHOPSETTING_APIFAXKEY @"location_fax"
-#define kTKPDSHOPSETTING_APIADDRESSNAMEKEY @"location_addr_name"
+#define kTKPDSHOPSETTING_APIADDRESSNAMEKEY @"location_address_name"
 
+#pragma mark -- Shop Setting Location Action
+#define kTKPDSHOPSETTINGACTION_APIPROVINCEIDKEY @"location_address_province"
+#define kTKPDSHOPSETTINGACTION_APICITYIDKEY @"location_address_city"
+#define kTKPDSHOPSETTINGACTION_APIDISTRICTIDKEY @"location_address_district"
+#define kTKPDSHOPSETTINGACTION_APIPOSTALKEY @"location_address_postal"
+#define kTKPDSHOPSETTINGACTION_APIEMAILKEY @"location_address_email"
+#define kTKPDSHOPSETTINGACTION_APIPHONEKEY @"location_address_phone"
+#define kTKPDSHOPSETTINGACTION_APIFAXKEY @"location_address_fax"
 
+#pragma mark -- GENERATED HOST
 #define kTKPDGENERATEDHOST_APIGENERATEDHOSTKEY @"generated_host"
 #define kTKPDGENERATEDHOST_APISERVERIDKEY @"server_id"
 #define kTKPDGENERATEDHOST_APIUPLOADHOSTKEY @"upload_host"
@@ -439,6 +448,10 @@ typedef enum
 
 #pragma mark - Notes
 #define kTKPDNOTES_APINOTEIDKEY @"note_id"
+#define kTKPDNOTES_APINOTESTATUSKEY @"note_status"
+#define kTKPDNOTES_APINOTETITLEKEY @"note_title"
+#define kTKPDNOTES_APINOTECONTENTKEY @"note_content"
+
 #define kTKPDNOTES_APINOTESIDKEY @"notes_id"
 #define kTKPDNOTES_APINOTESSTATUSKEY @"notes_status"
 #define kTKPDNOTES_APINOTESTITLEKEY @"notes_title"
@@ -532,6 +545,7 @@ typedef enum
 #define kTKPDDETAILTALK_APIPATH @"talk.pl"
 #define kTKPDDETAILSHOPEDITOR_APIPATH @"myshop-editor.pl"
 #define kTKPDDETAILSHOPEDITORACTION_APIPATH @"action/myshop-editor.pl"
+
 #define kTKPDDETAILSHOPNOTE_APIPATH @"myshop-note.pl"
 #define kTKPDDETAILSHOPNOTEACTION_APIPATH @"action/myshop-note.pl"
 

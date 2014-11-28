@@ -81,6 +81,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelLastOnline;
 @property (weak, nonatomic) IBOutlet UIButton *buttonfav;
 @property (weak, nonatomic) IBOutlet UIButton *buttonMessage;
+@property (weak, nonatomic) IBOutlet UIButton *buttonsetting;
 
 @property (strong, nonatomic) IBOutlet UIView *descriptionview;
 @property (strong, nonatomic) IBOutlet UIView *detailview;
@@ -687,11 +688,6 @@
                 ShopSettingViewController *vc = [ShopSettingViewController new];
                 vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY], kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result};
                 [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            case 19:
-            {
-                //add produk
                 break;
             }
             default:
@@ -1422,7 +1418,7 @@
             //emnable button after request
             _buttonaddproduct.enabled = YES;
             _buttonfav.enabled = YES;
-            _buttonmessage.enabled = YES;
+            _buttonMessage.enabled = YES;
             _buttonsetting.enabled = YES;
         }
         else{
@@ -1523,16 +1519,16 @@
             if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
                 _buttonsetting.hidden = NO;
                 _buttonfav.hidden = YES;
-                _buttonmessage.hidden = YES;
+                _buttonMessage.hidden = YES;
                 _actcover.hidden  = YES;
-                _actfav.hidden  = YES;
+                //_actfav.hidden  = YES;
             }
         }
         else
         {
             _buttonsetting.hidden = YES;
             _buttonfav.hidden = NO;
-            _buttonmessage.hidden = NO;
+            _buttonMessage.hidden = NO;
         }
 
     }

@@ -7,12 +7,22 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SettingShipmentSectionFooterView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="310"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+        <tapGestureRecognizer id="blz-8H-jS7">
+            <connections>
+                <action selector="gesture:" destination="6vj-Mb-Hmb" id="Thj-1S-p8I"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="3rH-Qn-dNx">
+            <connections>
+                <action selector="gesture:" destination="6vj-Mb-Hmb" id="Nhb-Sg-V7Q"/>
+            </connections>
+        </tapGestureRecognizer>
+        <view contentMode="scaleToFill" id="6vj-Mb-Hmb" customClass="SettingShipmentSectionFooterView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="316"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view tag="7" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dRp-TQ-1Bd">
-                    <rect key="frame" x="0.0" y="10" width="320" height="45"/>
+                    <rect key="frame" x="0.0" y="12" width="320" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Minimum Pengiriman Layanan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ukR-sw-UBg">
@@ -27,15 +37,18 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
                         </view>
-                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E2P-oS-lJ8">
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="E2P-oS-lJ8">
                             <rect key="frame" x="257" y="6" width="51" height="31"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <connections>
+                                <action selector="tap:" destination="6vj-Mb-Hmb" eventType="valueChanged" id="OKY-5K-5LJ"/>
+                            </connections>
                         </switch>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
                 <view tag="7" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8eG-cf-R05">
-                    <rect key="frame" x="0.0" y="54" width="320" height="45"/>
+                    <rect key="frame" x="0.0" y="56" width="320" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Berat Minimum (kg)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FzX-76-iey">
@@ -46,15 +59,18 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view appearanceType="aqua" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b1J-Gt-MOo" userLabel="Border Bottom">
-                            <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                            <rect key="frame" x="0.0" y="44" width="320" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
                         </view>
-                        <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" maximumValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="I7K-Qd-EAT">
+                        <stepper opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="I7K-Qd-EAT">
                             <rect key="frame" x="218" y="8" width="94" height="29"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                            <connections>
+                                <action selector="valuechange:" destination="6vj-Mb-Hmb" eventType="valueChanged" id="yyG-QW-c6d"/>
+                            </connections>
                         </stepper>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5QR-sC-hWd">
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5QR-sC-hWd">
                             <rect key="frame" x="173" y="11" width="42" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -64,7 +80,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
                 <view tag="7" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p1o-5H-aIa">
-                    <rect key="frame" x="0.0" y="108" width="320" height="53"/>
+                    <rect key="frame" x="0.0" y="110" width="320" height="53"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hanya dapat melayani pengiriman luar kota" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="229" translatesAutoresizingMaskIntoConstraints="NO" id="l1u-b3-WjI">
@@ -79,18 +95,18 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
                         </view>
-                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Ut-6I-Nrw">
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="1Ut-6I-Nrw">
                             <rect key="frame" x="257" y="6" width="51" height="31"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <connections>
-                                <action selector="switchoutsidecity:" destination="iN0-l3-epB" eventType="touchUpInside" id="0qk-wq-oPx"/>
+                                <action selector="tap:" destination="6vj-Mb-Hmb" eventType="valueChanged" id="h3U-am-mqw"/>
                             </connections>
                         </switch>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
                 <view tag="7" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0cu-dC-QZL">
-                    <rect key="frame" x="0.0" y="159" width="320" height="45"/>
+                    <rect key="frame" x="0.0" y="161" width="320" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Biaya tambahan pengiriman JNE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RzU-P7-sm0">
@@ -105,15 +121,18 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
                         </view>
-                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GBg-nq-WOt">
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="GBg-nq-WOt">
                             <rect key="frame" x="257" y="6" width="51" height="31"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <connections>
+                                <action selector="tap:" destination="6vj-Mb-Hmb" eventType="valueChanged" id="scA-JB-EKv"/>
+                            </connections>
                         </switch>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
                 <view tag="7" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="meB-RE-pQn">
-                    <rect key="frame" x="0.0" y="204" width="320" height="45"/>
+                    <rect key="frame" x="0.0" y="206" width="320" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nW1-Mc-gKb">
@@ -132,13 +151,16 @@
                             <rect key="frame" x="52" y="7" width="257" height="30"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
+                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                            <connections>
+                                <outlet property="delegate" destination="6vj-Mb-Hmb" id="klk-5O-oMT"/>
+                            </connections>
                         </textField>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
                 <view tag="10" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ibB-ID-afq">
-                    <rect key="frame" x="0.0" y="256" width="320" height="45"/>
+                    <rect key="frame" x="0.0" y="258" width="320" height="45"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Info tentang JNE" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NWK-os-O5a">
@@ -149,7 +171,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view appearanceType="aqua" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iia-4W-dWP" userLabel="Border Bottom">
-                            <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                            <rect key="frame" x="0.0" y="44" width="320" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
                         </view>
@@ -166,23 +188,22 @@
                 </view>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-            <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="labelinfo" destination="NWK-os-O5a" id="nVa-KD-Xfi"/>
-                <outlet property="labelweightmin" destination="5QR-sC-hWd" id="IUY-W8-LDg"/>
-                <outlet property="stepperminweight" destination="I7K-Qd-EAT" id="Opo-J9-bfz"/>
-                <outlet property="switchfee" destination="GBg-nq-WOt" id="4Pp-0u-mgD"/>
-                <outlet property="switchweightmin" destination="E2P-oS-lJ8" id="T3l-Op-sHz"/>
-                <outlet property="textfieldfee" destination="QL6-98-W4a" id="TUM-bQ-yyj"/>
-                <outlet property="viewinfo" destination="ibB-ID-afq" id="Ofb-Fc-mQh"/>
+                <outlet property="labelinfo" destination="NWK-os-O5a" id="IvN-S3-O3K"/>
+                <outlet property="labelweightmin" destination="5QR-sC-hWd" id="cVT-7t-EoD"/>
+                <outlet property="stepperminweight" destination="I7K-Qd-EAT" id="GEZ-BS-CjB"/>
+                <outlet property="switchdiffdistrict" destination="1Ut-6I-Nrw" id="luc-7y-LLo"/>
+                <outlet property="switchfee" destination="GBg-nq-WOt" id="erU-PM-EMH"/>
+                <outlet property="switchweightmin" destination="E2P-oS-lJ8" id="urx-PJ-Em8"/>
+                <outlet property="textfieldfee" destination="QL6-98-W4a" id="g0I-Ja-CUx"/>
+                <outlet property="viewdiffcity" destination="p1o-5H-aIa" id="DEc-2d-kf3"/>
+                <outlet property="viewfee" destination="meB-RE-pQn" id="vzh-sa-NQN"/>
+                <outlet property="viewinfo" destination="ibB-ID-afq" id="RBV-Bq-efo"/>
+                <outlet property="viewminweight" destination="8eG-cf-R05" id="FtE-ux-2Ic"/>
+                <outlet property="viewswitchfee" destination="0cu-dC-QZL" id="C3f-fH-FIN"/>
             </connections>
         </view>
-        <tapGestureRecognizer id="blz-8H-jS7">
-            <connections>
-                <action selector="gesture:" destination="iN0-l3-epB" id="TI2-45-0G2"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>

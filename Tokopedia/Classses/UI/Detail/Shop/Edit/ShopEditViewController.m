@@ -131,8 +131,6 @@
     
     _shop = [_data objectForKey:kTKPDDETAIL_DATASHOPSKEY];
     
-    [self setDefaultData];
-    
     [self configureRestkitGenerateHost];
     [self requestGenerateHost];
     _buttoneditimage.enabled = NO;
@@ -158,9 +156,16 @@
 
 }
 
+-(void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self setDefaultData:_data];
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -295,21 +300,17 @@
         BOOL status = [_settings.status isEqualToString:kTKPDREQUEST_OKSTATUS];
 
         if (status) {
-            NSDictionary *info;
-            if (!_settings.message_error) {
-                if (!_settings.message_status) {
-                    info = @{@"message":@[@"Sukses"]};
-                }
-                else
-                {
-                    info = @{@"message":_settings.message_status};
-                }
+            if (_settings.message_status) {
+                NSArray *array = _settings.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
             }
-            else{
-                info = @{@"message":_settings.message_error};
+            else if(_settings.message_error)
+            {
+                NSArray *array = _settings.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
+                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
             }
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-
         }
         }else{
             [self cancel];
@@ -559,7 +560,7 @@
     //setting the body of the post to the request
     [request setHTTPBody:body];
     
-    NSString *url = @"http://www.tkpdevel-pg.renny/ws/action/upload-image.pl";
+    NSString *url = @"http://www.tkpdevel-pg.api/ws/action/upload-image.pl";
     
     [request setURL:[NSURL URLWithString:url]];
     
@@ -672,7 +673,7 @@
 }
 -(void)requesttimeoutUploadPhoto
 {
-    //[self cancelActionUploadPhoto];
+    [self cancelActionUploadPhoto];
 }
 
 
@@ -711,7 +712,10 @@
                         [message addObject:@"Deskripsi harus diisi."];
                     }
                 }
-                
+                if (message.count>0) {
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:message ,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                }
                 break;
             }
             default:
@@ -758,77 +762,89 @@
 }
 
 #pragma mark - Methods
--(void)setDefaultData
+-(void)setDefaultData:(NSDictionary*)data
 {
-    _labelshopname.text = _shop.info.shop_name?:@"";
-    NSInteger limit = 48;
-    NSString *string = _shop.info.shop_tagline;
-    _textviewslogan.text = string?:@"";
-    if (string) {
-        _labelsloganplaceholder.hidden = YES;
-        _labelslogancharcount.text = [NSString stringWithFormat:@"%d", limit - _textviewslogan.text.length + (string.length - string.length)];
-    }
-    else _labelsloganplaceholder.hidden = NO;
-    
-    limit = 140;
-    string = _shop.info.shop_description;
-    _textviewdesc.text = string?:@"";
-    if (string) {
-        _labeldeskripsiplaceholder.hidden = YES;
-        _labeldesccharcount.text = [NSString stringWithFormat:@"%d", limit - _textviewslogan.text.length + (string.length - string.length)];
-    }
-    else _labeldeskripsiplaceholder.hidden = NO;
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    //request.URL = url;
-    
-    UIImageView *thumb = _thumb;
-    thumb.image = nil;
-    //thumb.hidden = YES;	//@prepareforreuse then @reset
-    
-    [_actthumb startAnimating];
-    
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    _data = data;
+    if (data) {
+        _labelshopname.text = _shop.info.shop_name?:@"";
+        NSInteger limit = 48;
+        NSString *string = _shop.info.shop_tagline;
+        _textviewslogan.text = string?:@"";
+        if (string) {
+            _labelsloganplaceholder.hidden = YES;
+            _labelslogancharcount.text = [NSString stringWithFormat:@"%d", limit - _textviewslogan.text.length + (string.length - string.length)];
+        }
+        else _labelsloganplaceholder.hidden = NO;
+        
+        limit = 140;
+        string = _shop.info.shop_description;
+        _textviewdesc.text = string?:@"";
+        if (string) {
+            _labeldeskripsiplaceholder.hidden = YES;
+            _labeldesccharcount.text = [NSString stringWithFormat:@"%d", limit - _textviewslogan.text.length + (string.length - string.length)];
+        }
+        else _labeldeskripsiplaceholder.hidden = NO;
+        
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        //request.URL = url;
+        
+        UIImageView *thumb = _thumb;
+        thumb.image = nil;
+        //thumb.hidden = YES;	//@prepareforreuse then @reset
+        
+        [_actthumb startAnimating];
+        
+        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        //NSLOG(@"thumb: %@", thumb);
-        [thumb setImage:image animated:YES];
-        
-        [_actthumb stopAnimating];
+            //NSLOG(@"thumb: %@", thumb);
+            [thumb setImage:image animated:YES];
+            
+            [_actthumb stopAnimating];
 #pragma clang diagnosti c pop
+            
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            [_actthumb stopAnimating];
+        }];
         
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [_actthumb stopAnimating];
-    }];
-    
-    NSUInteger type = [_shop.is_open integerValue];
-    NSString *status;
-    switch (type) {
-        case kTKPDDETAIL_DATASTATUSSHOPCLOSED:
-            status = @"Tutup";
-            break;
-        case kTKPDDETAIL_DATASTATUSSHOPOPEN:
-            status = @"Buka";
-            break;
-        case kTKPDDETAIL_DATASTATUSMODERATED:
-            status = @"Moderated";
-            break;
-        default:
-            break;
+        NSUInteger type = [_shop.is_open integerValue];
+        NSString *status;
+        switch (type) {
+            case kTKPDDETAIL_DATASTATUSSHOPCLOSED:
+                status = @"Tutup";
+                break;
+            case kTKPDDETAIL_DATASTATUSSHOPOPEN:
+                status = @"Buka";
+                break;
+            case kTKPDDETAIL_DATASTATUSMODERATED:
+                status = @"Moderated";
+                break;
+            default:
+                break;
+        }
+        [_buttonshopstatus setTitle:status forState:UIControlStateNormal];
+        
+        //TODO:: if gold merchant
+        if (!_shop.info.shop_is_gold) {
+            CGRect frame = _viewmembership.frame;
+            frame.size.height = 90;
+            _viewmembership.frame = frame;
+            _labelmembership.text = @"Regular Merchant";
+            _labelregularmembership.hidden = NO;
+            _buttonlearnmore.hidden = NO;
+            
+            frame = _viewotherdesc.frame;
+            frame.origin.y = _viewmembership.frame.origin.y+_viewmembership.frame.size.height;
+            _viewotherdesc.frame = frame;
+        }
+        else
+        {
+            _labelmembership.text = @"Gold Merchant";
+            _labelregularmembership.hidden = YES;
+            _buttonlearnmore.hidden = YES;
+        }
+
     }
-    [_buttonshopstatus setTitle:status forState:UIControlStateNormal];
-    
-    //TODO:: if gold merchant
-    //CGRect frame = _viewmembership.frame;
-    //frame.size.height = 35;
-    //_viewmembership.frame = frame;
-    //_labelregularmembership.hidden = YES;
-    //_buttonlearnmore.hidden = YES;
-    //
-    //frame = _viewotherdesc.frame;
-    //frame.origin.y = _viewmembership.frame.origin.y+_viewmembership.frame.size.height;
-    //_viewotherdesc.frame = frame;
-    
 }
 
 #pragma mark - TextView Delegate
@@ -950,7 +966,7 @@
                              if ((self.view.frame.origin.y + _activetextview.frame.origin.y+_activetextview.frame.size.height)> _keyboardPosition.y) {
                                  UIEdgeInsets inset = _scrollview.contentInset;
                                  inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activetextview.frame.origin.y+_activetextview.frame.size.height + 10));
-                                 [_scrollview setContentSize:_scrollviewContentSize];
+                                 //[_scrollview setContentSize:_scrollviewContentSize];
                                  [_scrollview setContentInset:inset];
                              }
                          }

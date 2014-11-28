@@ -158,7 +158,7 @@
             case 11:
             {
                 //save
-                NSMutableArray *message;
+                NSMutableArray *messages;
                 NSString *notetitle = [_datainput objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:_note.result.detail.notes_title?:@"";
                 NSString *content = [_datainput objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:_note.result.detail.notes_content;
                 
@@ -171,11 +171,16 @@
                 else
                 {
                     if (!notetitle || [notetitle isEqualToString:@""]) {
-                        [message addObject:@"Title harus diisi."];
+                        [messages addObject:@"Title harus diisi."];
                     }
                     if (!content || [content isEqualToString:@""]) {
-                        [message addObject:@"Content harus diisi."];
+                        [messages addObject:@"Content harus diisi."];
                     }
+                }
+                if (messages) {
+                    NSArray *array = messages;
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
                 }
                 break;
             }
@@ -183,10 +188,10 @@
             {
                 //edit
                 SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
-                vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
+                vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                             kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY),
-                            kTKPDDETAIL_DATANOTEKEY : _note,
-                            kTKPDNOTES_APINOTEIDKEY : [_data objectForKey:kTKPDNOTES_APINOTEIDKEY]
+                            kTKPDDETAIL_DATANOTEKEY : _note?:@"",
+                            kTKPDNOTES_APINOTEIDKEY : [_data objectForKey:kTKPDNOTES_APINOTEIDKEY]?:@(0)
                             };
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
@@ -253,16 +258,18 @@
                             kTKPDNOTES_APINOTEIDKEY : [_data objectForKey:kTKPDNOTES_APINOTEIDKEY]?:@(0)
                             };
     NSTimer *timer;
+    _barbuttonedit.enabled = NO;
     [_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
 	if (_timeinterval > _cachecontroller.URLCacheInterval) {
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILNOTES_APIPATH parameters:param];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            //[_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [timer invalidate];
+            _barbuttonedit.enabled = YES;
             [self requestsuccess:mappingResult withOperation:operation];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
+            _barbuttonedit.enabled = YES;
             [timer invalidate];
             [self requestfailure:error];
         }];
@@ -276,6 +283,7 @@
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
         NSLog(@"cache and updated in last 24 hours.");
+        _barbuttonedit.enabled = YES;
         [self requestfailure:nil];
     }
 }
@@ -348,7 +356,7 @@
                 _labeltitle.text = _note.result.detail.notes_title;
                 _labeltime.text = _note.result.detail.notes_update_time;
                 _textfieldtitle.text = _note.result.detail.notes_title;
-                _textviewcontent.text = _note.result.detail.notes_content;
+                _textviewcontent.text = [NSString convertHTML:_note.result.detail.notes_content];
                 
                 _labelcontent.text = [NSString convertHTML:_note.result.detail.notes_content];
                 [_labelcontent sizeToFit];
@@ -424,28 +432,31 @@
     
     NSDictionary *userinfo = (NSDictionary*)object;
     
+    NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
     NSString *action = (_type==2)?kTKPDDETAIL_APIADDNOTESDETAILKEY:kTKPDDETAIL_APIEDITNOTESDETAILKEY;
     NSInteger noteid = [[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue];
     NSString *notetitle = [userinfo objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:_note.result.detail.notes_title?:@"";
-    NSString *time = [userinfo objectForKey:kTKPDNOTE_APINOTESUPDATETIMEKEY]?:_note.result.detail.notes_update_time?:@"";
     NSString *content = [userinfo objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:[NSString convertHTML:_note.result.detail.notes_content]?:@"";
-    
+    NSInteger userid = [[auth objectForKey: kTKPD_USERIDKEY]integerValue]?:0;
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action,
                             kTKPDNOTES_APINOTEIDKEY : @(noteid),
-                            kTKPDNOTE_APINOTESTITLEKEY : notetitle,
-                            kTKPDNOTE_APINOTESUPDATETIMEKEY : time,
-                            kTKPDNOTE_APINOTESCONTENTKEY : content
+                            kTKPDNOTES_APINOTETITLEKEY : notetitle,
+                            kTKPDNOTES_APINOTECONTENTKEY : content,
+                            kTKPD_USERIDKEY : @(userid)
                             };
     _requestcount ++;
+    _barbuttonedit.enabled = NO;
     
     _requestActionNote = [_objectmanagerActionNote appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPNOTEACTION_APIPATH parameters:param];
     
     [_requestActionNote setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionNote:mappingResult withOperation:operation];
         [timer invalidate];
+        _barbuttonedit.enabled = YES;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionNote:error];
         [timer invalidate];
+        _barbuttonedit.enabled = YES;
     }];
     
     [_operationQueue addOperation:_requestActionNote];
@@ -483,21 +494,32 @@
             if (status) {
                 if (!setting.message_error) {
                     if (setting.result.is_success) {
-                        //TODO:: add alert
                         NSDictionary *userinfo;
                         if (_type == 1){
                             //TODO: Behavior after edit
                             NSArray *viewcontrollers = self.navigationController.viewControllers;
                             NSInteger index = viewcontrollers.count-3;
                             [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
-                            userinfo = @{kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY],
-                                         kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
+                            userinfo = @{kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY]?:@(0),
+                                         kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0]
                                          };
                         }
                         else [self.navigationController popViewControllerAnimated:YES];
                         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDNOTEPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                     }
                 }
+                if (setting.message_status) {
+                    NSArray *array = setting.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                }
+                else if(setting.message_error)
+                {
+                    NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                }
+                
             }
         }
         else{
@@ -548,7 +570,6 @@
 
 #pragma mark - Text View Delegate
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
-    [textView resignFirstResponder];
     [_activetextfield resignFirstResponder];
     _activetextfield = nil;
     _activetextview = textView;

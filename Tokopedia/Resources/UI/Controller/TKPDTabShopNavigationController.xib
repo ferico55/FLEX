@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
@@ -13,8 +14,7 @@
                 <outlet property="blurCoverImage" destination="teS-AC-Jf8" id="wjx-Wx-L97"/>
                 <outlet property="buttonMessage" destination="7LK-36-qbj" id="L0C-HG-yBw"/>
                 <outlet property="buttonfav" destination="cVc-Hq-EZS" id="zia-JP-3xZ"/>
-                <outlet property="buttonmessage" destination="7LK-36-qbj" id="FqP-FP-7et"/>
-                <outlet property="buttonsetting" destination="3ps-tf-8v2" id="HV9-gl-irO"/>
+                <outlet property="buttonsetting" destination="TtJ-e9-jbE" id="bmX-aB-GRh"/>
                 <outlet property="container" destination="abB-jT-cSJ" id="x4v-nW-TEa"/>
                 <outlet property="contentview" destination="i5M-Pr-FkT" id="XhZ-73-dEU"/>
                 <outlet property="coverImageView" destination="Up4-ff-lh2" id="Y1i-J0-rbu"/>
@@ -323,6 +323,21 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="L8A-HQ-Z0Q"/>
                     </connections>
                 </button>
+                <button opaque="NO" clipsSubviews="YES" tag="18" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TtJ-e9-jbE">
+                    <rect key="frame" x="21" y="330" width="128" height="33"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                    <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
+                    <state key="normal" title="Settings" image="icon_message_grey">
+                        <color key="titleColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected">
+                        <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="g91-ct-Wz2"/>
+                    </connections>
+                </button>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cVu-HK-Fzk" userLabel="Horizontal Border">
                     <rect key="frame" x="0.0" y="378" width="320" height="1"/>
                     <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -389,53 +404,6 @@
                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="deviceRGB"/>
                         </view>
                     </subviews>
-<<<<<<< HEAD
-=======
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="abB-jT-cSJ" userLabel="Container-View">
-                    <rect key="frame" x="0.0" y="282" width="320" height="567"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-                    <gestureRecognizers/>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="APh-NK-HnG" appends="YES" id="tUJ-0m-Uc2"/>
-                        <outletCollection property="gestureRecognizers" destination="X8P-TM-e1C" appends="YES" id="4MC-Ri-bOx"/>
-                    </connections>
-                </view>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="DDl-z9-A7W">
-                    <rect key="frame" x="150" y="80" width="20" height="20"/>
-                </activityIndicatorView>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cVu-HK-Fzk">
-                    <rect key="frame" x="0.0" y="239" width="320" height="1"/>
-                    <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
-                </view>
-                <button opaque="NO" tag="16" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cVc-Hq-EZS">
-                    <rect key="frame" x="170" y="197" width="128" height="28"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                    <state key="normal" title=" Favorite" image="icon_love.png" backgroundImage="button_white_rounded_2.png">
-                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="8nH-8o-A5h"/>
-                    </connections>
-                </button>
-                <button hidden="YES" opaque="NO" tag="16" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3ps-tf-8v2">
-                    <rect key="frame" x="96" y="197" width="160" height="70"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                    <state key="normal" title=" Setting" image="icon_setting.png" backgroundImage="button_white_rounded_2.png">
-                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="o42-02-bIj"/>
-                    </connections>
-                </button>
-                <button opaque="NO" tag="15" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7LK-36-qbj">
-                    <rect key="frame" x="20" y="197" width="128" height="28"/>
->>>>>>> a1ab3ded1763dede9555379ecdec46e6e7ca8861
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
                 <imageView appearanceType="aqua" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Up4-ff-lh2">
@@ -536,10 +504,6 @@
         <image name="icon_location.png" width="14" height="14"/>
         <image name="icon_love.png" width="20" height="20"/>
         <image name="icon_message.png" width="14" height="14"/>
-<<<<<<< HEAD
         <image name="icon_message_grey" width="20" height="20"/>
-=======
-        <image name="icon_setting.png" width="40" height="40"/>
->>>>>>> a1ab3ded1763dede9555379ecdec46e6e7ca8861
     </resources>
 </document>

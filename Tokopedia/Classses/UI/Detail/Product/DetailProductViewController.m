@@ -893,9 +893,9 @@
 -(void)setHeaderviewData{
 
     CGFloat currentLabelHeight = _productnamelabel.frame.size.height;
-    _productnamelabel.text = _product.result.info.product_name;
+    _productnamelabel.text = _product.result.info.product_name?:@"";
 
-    NSString *productName = _product.result.info.product_name;
+    NSString *productName = _product.result.info.product_name?:@"";
 //    NSString *productName = @"Alice in Wonderland: White Rabbit Tsum Tsum Plush 3.5";
 
     UIFont *font = [UIFont fontWithName:@"GothamMedium" size:15];
@@ -985,9 +985,9 @@
     _imagescrollview.contentMode = UIViewContentModeScaleAspectFit;
     _imagescrollview.showsHorizontalScrollIndicator = NO;
     
-    [_datatalk setObject:_product.result.info.product_name forKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
-    [_datatalk setObject:_product.result.info.product_price forKey:kTKPDDETAILPRODUCT_APIPRODUCTPRICEKEY];
-    [_datatalk setObject:_headerimages forKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
+    [_datatalk setObject:_product.result.info.product_name?:@"" forKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
+    [_datatalk setObject:_product.result.info.product_price?:@"" forKey:kTKPDDETAILPRODUCT_APIPRODUCTPRICEKEY];
+    [_datatalk setObject:_headerimages?:@"" forKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
 }
 
 -(void)setFooterViewData

@@ -373,30 +373,6 @@
 		FC0D93341A257C58007BD69F /* ProductReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D926A1A257C57007BD69F /* ProductReviewViewController.xib */; };
 		FC0D93351A257C58007BD69F /* ProductTalkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D926C1A257C57007BD69F /* ProductTalkCell.xib */; };
 		FC0D93361A257C58007BD69F /* ProductTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D926D1A257C57007BD69F /* ProductTalkViewController.xib */; };
-		FC0D93371A257C58007BD69F /* ProfileBiodataCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92701A257C57007BD69F /* ProfileBiodataCell.xib */; };
-		FC0D93381A257C58007BD69F /* ProfileBiodataShopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92711A257C57007BD69F /* ProfileBiodataShopCell.xib */; };
-		FC0D93391A257C58007BD69F /* ProfileBiodataViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92721A257C57007BD69F /* ProfileBiodataViewController.xib */; };
-		FC0D933A1A257C58007BD69F /* ProfileContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92741A257C57007BD69F /* ProfileContactViewController.xib */; };
-		FC0D933B1A257C58007BD69F /* ProfileEditPhoneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92761A257C57007BD69F /* ProfileEditPhoneViewController.xib */; };
-		FC0D933C1A257C58007BD69F /* ProfileEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92771A257C57007BD69F /* ProfileEditViewController.xib */; };
-		FC0D933D1A257C58007BD69F /* ProfileFavoriteShopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92791A257C57007BD69F /* ProfileFavoriteShopCell.xib */; };
-		FC0D933E1A257C58007BD69F /* ProfileFavoriteShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D927A1A257C57007BD69F /* ProfileFavoriteShopViewController.xib */; };
-		FC0D933F1A257C58007BD69F /* SettingAddressLocationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D927E1A257C57007BD69F /* SettingAddressLocationCell.xib */; };
-		FC0D93401A257C58007BD69F /* SettingAddressLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D927F1A257C57007BD69F /* SettingAddressLocationViewController.xib */; };
-		FC0D93411A257C58007BD69F /* SettingAddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92801A257C57007BD69F /* SettingAddressCell.xib */; };
-		FC0D93421A257C58007BD69F /* SettingAddressDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92811A257C57007BD69F /* SettingAddressDetailViewController.xib */; };
-		FC0D93431A257C58007BD69F /* SettingAddressEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92821A257C57007BD69F /* SettingAddressEditViewController.xib */; };
-		FC0D93441A257C58007BD69F /* SettingAddressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92831A257C57007BD69F /* SettingAddressViewController.xib */; };
-		FC0D93451A257C58007BD69F /* SettingBankNameCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92861A257C57007BD69F /* SettingBankNameCell.xib */; };
-		FC0D93461A257C58007BD69F /* SettingBankNameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92871A257C57007BD69F /* SettingBankNameViewController.xib */; };
-		FC0D93471A257C58007BD69F /* SettingBankAccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92881A257C57007BD69F /* SettingBankAccountCell.xib */; };
-		FC0D93481A257C58007BD69F /* SettingBankAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92891A257C57007BD69F /* SettingBankAccountViewController.xib */; };
-		FC0D93491A257C58007BD69F /* SettingBankDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D928A1A257C57007BD69F /* SettingBankDetailViewController.xib */; };
-		FC0D934A1A257C58007BD69F /* SettingBankEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D928B1A257C57007BD69F /* SettingBankEditViewController.xib */; };
-		FC0D934B1A257C58007BD69F /* SettingNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D928D1A257C57007BD69F /* SettingNotificationViewController.xib */; };
-		FC0D934C1A257C58007BD69F /* SettingPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D928F1A257C57007BD69F /* SettingPasswordViewController.xib */; };
-		FC0D934D1A257C58007BD69F /* SettingPrivacyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92911A257C57007BD69F /* SettingPrivacyViewController.xib */; };
-		FC0D934E1A257C58007BD69F /* ProfileSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92921A257C57007BD69F /* ProfileSettingViewController.xib */; };
 		FC0D934F1A257C58007BD69F /* DetailShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92941A257C57007BD69F /* DetailShopViewController.xib */; };
 		FC0D93501A257C58007BD69F /* ShopEditStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92961A257C57007BD69F /* ShopEditStatusViewController.xib */; };
 		FC0D93511A257C58007BD69F /* ShopEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92971A257C57007BD69F /* ShopEditViewController.xib */; };
@@ -443,7 +419,6 @@
 		FC0D937B1A257C58007BD69F /* FavoritedShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92D21A257C57007BD69F /* FavoritedShopViewController.xib */; };
 		FC0D937C1A257C58007BD69F /* HistoryProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92D41A257C57007BD69F /* HistoryProductViewController.xib */; };
 		FC0D937D1A257C58007BD69F /* HotlistCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92D61A257C57007BD69F /* HotlistCell.xib */; };
-		FC0D937E1A257C58007BD69F /* HotlistCell.xib.orig in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92D71A257C57007BD69F /* HotlistCell.xib.orig */; };
 		FC0D937F1A257C58007BD69F /* HotlistViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92D81A257C57007BD69F /* HotlistViewController.xib */; };
 		FC0D93801A257C58007BD69F /* HotlistResultViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92DA1A257C57007BD69F /* HotlistResultViewCell.xib */; };
 		FC0D93811A257C58007BD69F /* HotlistResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D92DB1A257C57007BD69F /* HotlistResultViewController.xib */; };
@@ -643,6 +618,10 @@
 		FC0D96B61A25800D007BD69F /* GeneralList1GestureCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D96B51A25800D007BD69F /* GeneralList1GestureCell.xib */; };
 		FC0D96B81A25805E007BD69F /* TKPDTabShopNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D96B71A25805E007BD69F /* TKPDTabShopNavigationController.xib */; };
 		FC0D96BC1A25816E007BD69F /* TKPDTabProfileNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D96BB1A25816E007BD69F /* TKPDTabProfileNavigationController.xib */; };
+		FC0D96BF1A259955007BD69F /* GeneralProductReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC0D96BE1A259955007BD69F /* GeneralProductReviewCell.m */; };
+		FC0D96C11A259964007BD69F /* GeneralProductReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D96C01A259964007BD69F /* GeneralProductReviewCell.xib */; };
+		FC0D96C31A25D11C007BD69F /* SettingShipmentSectionFooter4View.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC0D96C21A25D11C007BD69F /* SettingShipmentSectionFooter4View.xib */; };
+		FC0D96C61A25D155007BD69F /* SettingShipmentSectionFooter4View.m in Sources */ = {isa = PBXBuildFile; fileRef = FC0D96C51A25D155007BD69F /* SettingShipmentSectionFooter4View.m */; };
 		FC266D5E19D2CF3B002912EC /* NSArrayCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FC266D5D19D2CF3B002912EC /* NSArrayCategory.m */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
 		FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */; };
@@ -1396,30 +1375,6 @@
 		FC0D926A1A257C57007BD69F /* ProductReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductReviewViewController.xib; sourceTree = "<group>"; };
 		FC0D926C1A257C57007BD69F /* ProductTalkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkCell.xib; sourceTree = "<group>"; };
 		FC0D926D1A257C57007BD69F /* ProductTalkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkViewController.xib; sourceTree = "<group>"; };
-		FC0D92701A257C57007BD69F /* ProfileBiodataCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileBiodataCell.xib; sourceTree = "<group>"; };
-		FC0D92711A257C57007BD69F /* ProfileBiodataShopCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileBiodataShopCell.xib; sourceTree = "<group>"; };
-		FC0D92721A257C57007BD69F /* ProfileBiodataViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileBiodataViewController.xib; sourceTree = "<group>"; };
-		FC0D92741A257C57007BD69F /* ProfileContactViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileContactViewController.xib; sourceTree = "<group>"; };
-		FC0D92761A257C57007BD69F /* ProfileEditPhoneViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileEditPhoneViewController.xib; sourceTree = "<group>"; };
-		FC0D92771A257C57007BD69F /* ProfileEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileEditViewController.xib; sourceTree = "<group>"; };
-		FC0D92791A257C57007BD69F /* ProfileFavoriteShopCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileFavoriteShopCell.xib; sourceTree = "<group>"; };
-		FC0D927A1A257C57007BD69F /* ProfileFavoriteShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileFavoriteShopViewController.xib; sourceTree = "<group>"; };
-		FC0D927E1A257C57007BD69F /* SettingAddressLocationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingAddressLocationCell.xib; sourceTree = "<group>"; };
-		FC0D927F1A257C57007BD69F /* SettingAddressLocationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingAddressLocationViewController.xib; sourceTree = "<group>"; };
-		FC0D92801A257C57007BD69F /* SettingAddressCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingAddressCell.xib; sourceTree = "<group>"; };
-		FC0D92811A257C57007BD69F /* SettingAddressDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingAddressDetailViewController.xib; sourceTree = "<group>"; };
-		FC0D92821A257C57007BD69F /* SettingAddressEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingAddressEditViewController.xib; sourceTree = "<group>"; };
-		FC0D92831A257C57007BD69F /* SettingAddressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingAddressViewController.xib; sourceTree = "<group>"; };
-		FC0D92861A257C57007BD69F /* SettingBankNameCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingBankNameCell.xib; sourceTree = "<group>"; };
-		FC0D92871A257C57007BD69F /* SettingBankNameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingBankNameViewController.xib; sourceTree = "<group>"; };
-		FC0D92881A257C57007BD69F /* SettingBankAccountCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingBankAccountCell.xib; sourceTree = "<group>"; };
-		FC0D92891A257C57007BD69F /* SettingBankAccountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingBankAccountViewController.xib; sourceTree = "<group>"; };
-		FC0D928A1A257C57007BD69F /* SettingBankDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingBankDetailViewController.xib; sourceTree = "<group>"; };
-		FC0D928B1A257C57007BD69F /* SettingBankEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingBankEditViewController.xib; sourceTree = "<group>"; };
-		FC0D928D1A257C57007BD69F /* SettingNotificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingNotificationViewController.xib; sourceTree = "<group>"; };
-		FC0D928F1A257C57007BD69F /* SettingPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingPasswordViewController.xib; sourceTree = "<group>"; };
-		FC0D92911A257C57007BD69F /* SettingPrivacyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingPrivacyViewController.xib; sourceTree = "<group>"; };
-		FC0D92921A257C57007BD69F /* ProfileSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileSettingViewController.xib; sourceTree = "<group>"; };
 		FC0D92941A257C57007BD69F /* DetailShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailShopViewController.xib; sourceTree = "<group>"; };
 		FC0D92961A257C57007BD69F /* ShopEditStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopEditStatusViewController.xib; sourceTree = "<group>"; };
 		FC0D92971A257C57007BD69F /* ShopEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopEditViewController.xib; sourceTree = "<group>"; };
@@ -1466,7 +1421,6 @@
 		FC0D92D21A257C57007BD69F /* FavoritedShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoritedShopViewController.xib; sourceTree = "<group>"; };
 		FC0D92D41A257C57007BD69F /* HistoryProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryProductViewController.xib; sourceTree = "<group>"; };
 		FC0D92D61A257C57007BD69F /* HotlistCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotlistCell.xib; sourceTree = "<group>"; };
-		FC0D92D71A257C57007BD69F /* HotlistCell.xib.orig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = HotlistCell.xib.orig; sourceTree = "<group>"; };
 		FC0D92D81A257C57007BD69F /* HotlistViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotlistViewController.xib; sourceTree = "<group>"; };
 		FC0D92DA1A257C57007BD69F /* HotlistResultViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotlistResultViewCell.xib; sourceTree = "<group>"; };
 		FC0D92DB1A257C57007BD69F /* HotlistResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotlistResultViewController.xib; sourceTree = "<group>"; };
@@ -1666,6 +1620,12 @@
 		FC0D96B51A25800D007BD69F /* GeneralList1GestureCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralList1GestureCell.xib; sourceTree = "<group>"; };
 		FC0D96B71A25805E007BD69F /* TKPDTabShopNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabShopNavigationController.xib; sourceTree = "<group>"; };
 		FC0D96BB1A25816E007BD69F /* TKPDTabProfileNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabProfileNavigationController.xib; sourceTree = "<group>"; };
+		FC0D96BD1A259955007BD69F /* GeneralProductReviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralProductReviewCell.h; sourceTree = "<group>"; };
+		FC0D96BE1A259955007BD69F /* GeneralProductReviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralProductReviewCell.m; sourceTree = "<group>"; };
+		FC0D96C01A259964007BD69F /* GeneralProductReviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralProductReviewCell.xib; sourceTree = "<group>"; };
+		FC0D96C21A25D11C007BD69F /* SettingShipmentSectionFooter4View.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingShipmentSectionFooter4View.xib; sourceTree = "<group>"; };
+		FC0D96C41A25D155007BD69F /* SettingShipmentSectionFooter4View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingShipmentSectionFooter4View.h; sourceTree = "<group>"; };
+		FC0D96C51A25D155007BD69F /* SettingShipmentSectionFooter4View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingShipmentSectionFooter4View.m; sourceTree = "<group>"; };
 		FC266D5C19D2CF3B002912EC /* NSArrayCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArrayCategory.h; sourceTree = "<group>"; };
 		FC266D5D19D2CF3B002912EC /* NSArrayCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSArrayCategory.m; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2929,12 +2889,14 @@
 				FC0D90D91A257C41007BD69F /* SettingShipmentCell.m */,
 				FC0D90DA1A257C41007BD69F /* SettingShipmentInfoViewController.h */,
 				FC0D90DB1A257C41007BD69F /* SettingShipmentInfoViewController.m */,
+				FC0D90E01A257C41007BD69F /* SettingShipmentSectionFooterView.h */,
+				FC0D90E11A257C41007BD69F /* SettingShipmentSectionFooterView.m */,
 				FC0D90DC1A257C41007BD69F /* SettingShipmentSectionFooter2View.h */,
 				FC0D90DD1A257C41007BD69F /* SettingShipmentSectionFooter2View.m */,
 				FC0D90DE1A257C41007BD69F /* SettingShipmentSectionFooter3View.h */,
 				FC0D90DF1A257C41007BD69F /* SettingShipmentSectionFooter3View.m */,
-				FC0D90E01A257C41007BD69F /* SettingShipmentSectionFooterView.h */,
-				FC0D90E11A257C41007BD69F /* SettingShipmentSectionFooterView.m */,
+				FC0D96C41A25D155007BD69F /* SettingShipmentSectionFooter4View.h */,
+				FC0D96C51A25D155007BD69F /* SettingShipmentSectionFooter4View.m */,
 				FC0D90E21A257C41007BD69F /* SettingShipmentSectionHeaderView.h */,
 				FC0D90E31A257C41007BD69F /* SettingShipmentSectionHeaderView.m */,
 				FC0D90E41A257C41007BD69F /* SettingShipmentViewController.h */,
@@ -2955,6 +2917,8 @@
 		FC0D90EB1A257C41007BD69F /* GeneralCell */ = {
 			isa = PBXGroup;
 			children = (
+				FC0D96BD1A259955007BD69F /* GeneralProductReviewCell.h */,
+				FC0D96BE1A259955007BD69F /* GeneralProductReviewCell.m */,
 				FC0D90EC1A257C41007BD69F /* generalcell.h */,
 				FC0D90ED1A257C41007BD69F /* GeneralList1GestureCell.h */,
 				FC0D90EE1A257C41007BD69F /* GeneralList1GestureCell.m */,
@@ -3472,7 +3436,6 @@
 			children = (
 				FC0D92541A257C57007BD69F /* Catalog */,
 				FC0D925D1A257C57007BD69F /* Product */,
-				FC0D926E1A257C57007BD69F /* Profile */,
 				FC0D92931A257C57007BD69F /* Shop */,
 			);
 			path = Detail;
@@ -3542,133 +3505,6 @@
 				FC0D926D1A257C57007BD69F /* ProductTalkViewController.xib */,
 			);
 			path = Talk;
-			sourceTree = "<group>";
-		};
-		FC0D926E1A257C57007BD69F /* Profile */ = {
-			isa = PBXGroup;
-			children = (
-				FC0D926F1A257C57007BD69F /* Biodata */,
-				FC0D92731A257C57007BD69F /* Contact */,
-				FC0D92751A257C57007BD69F /* Edit */,
-				FC0D92781A257C57007BD69F /* FavoriteShop */,
-				FC0D927B1A257C57007BD69F /* Settings */,
-			);
-			path = Profile;
-			sourceTree = "<group>";
-		};
-		FC0D926F1A257C57007BD69F /* Biodata */ = {
-			isa = PBXGroup;
-			children = (
-				FC0D92701A257C57007BD69F /* ProfileBiodataCell.xib */,
-				FC0D92711A257C57007BD69F /* ProfileBiodataShopCell.xib */,
-				FC0D92721A257C57007BD69F /* ProfileBiodataViewController.xib */,
-			);
-			path = Biodata;
-			sourceTree = "<group>";
-		};
-		FC0D92731A257C57007BD69F /* Contact */ = {
-			isa = PBXGroup;
-			children = (
-				FC0D92741A257C57007BD69F /* ProfileContactViewController.xib */,
-			);
-			path = Contact;
-			sourceTree = "<group>";
-		};
-		FC0D92751A257C57007BD69F /* Edit */ = {
-			isa = PBXGroup;
-			children = (
-				FC0D92761A257C57007BD69F /* ProfileEditPhoneViewController.xib */,
-				FC0D92771A257C57007BD69F /* ProfileEditViewController.xib */,
-			);
-			path = Edit;
-			sourceTree = "<group>";
-		};
-		FC0D92781A257C57007BD69F /* FavoriteShop */ = {
-			isa = PBXGroup;
-			children = (
-				FC0D92791A257C57007BD69F /* ProfileFavoriteShopCell.xib */,
-				FC0D927A1A257C57007BD69F /* ProfileFavoriteShopViewController.xib */,
-			);
-			path = FavoriteShop;
-			sourceTree = "<group>";
-		};
-		FC0D927B1A257C57007BD69F /* Settings */ = {
-			isa = PBXGroup;
-			children = (
-				FC0D927C1A257C57007BD69F /* Address */,
-				FC0D92841A257C57007BD69F /* BankAccount */,
-				FC0D928C1A257C57007BD69F /* Notification */,
-				FC0D928E1A257C57007BD69F /* Password */,
-				FC0D92901A257C57007BD69F /* Privacy */,
-				FC0D92921A257C57007BD69F /* ProfileSettingViewController.xib */,
-			);
-			path = Settings;
-			sourceTree = "<group>";
-		};
-		FC0D927C1A257C57007BD69F /* Address */ = {
-			isa = PBXGroup;
-			children = (
-				FC0D927D1A257C57007BD69F /* Location */,
-				FC0D92801A257C57007BD69F /* SettingAddressCell.xib */,
-				FC0D92811A257C57007BD69F /* SettingAddressDetailViewController.xib */,
-				FC0D92821A257C57007BD69F /* SettingAddressEditViewController.xib */,
-				FC0D92831A257C57007BD69F /* SettingAddressViewController.xib */,
-			);
-			path = Address;
-			sourceTree = "<group>";
-		};
-		FC0D927D1A257C57007BD69F /* Location */ = {
-			isa = PBXGroup;
-			children = (
-				FC0D927E1A257C57007BD69F /* SettingAddressLocationCell.xib */,
-				FC0D927F1A257C57007BD69F /* SettingAddressLocationViewController.xib */,
-			);
-			path = Location;
-			sourceTree = "<group>";
-		};
-		FC0D92841A257C57007BD69F /* BankAccount */ = {
-			isa = PBXGroup;
-			children = (
-				FC0D92851A257C57007BD69F /* Name */,
-				FC0D92881A257C57007BD69F /* SettingBankAccountCell.xib */,
-				FC0D92891A257C57007BD69F /* SettingBankAccountViewController.xib */,
-				FC0D928A1A257C57007BD69F /* SettingBankDetailViewController.xib */,
-				FC0D928B1A257C57007BD69F /* SettingBankEditViewController.xib */,
-			);
-			path = BankAccount;
-			sourceTree = "<group>";
-		};
-		FC0D92851A257C57007BD69F /* Name */ = {
-			isa = PBXGroup;
-			children = (
-				FC0D92861A257C57007BD69F /* SettingBankNameCell.xib */,
-				FC0D92871A257C57007BD69F /* SettingBankNameViewController.xib */,
-			);
-			path = Name;
-			sourceTree = "<group>";
-		};
-		FC0D928C1A257C57007BD69F /* Notification */ = {
-			isa = PBXGroup;
-			children = (
-				FC0D928D1A257C57007BD69F /* SettingNotificationViewController.xib */,
-			);
-			path = Notification;
-			sourceTree = "<group>";
-		};
-		FC0D928E1A257C57007BD69F /* Password */ = {
-			isa = PBXGroup;
-			children = (
-				FC0D928F1A257C57007BD69F /* SettingPasswordViewController.xib */,
-			);
-			path = Password;
-			sourceTree = "<group>";
-		};
-		FC0D92901A257C57007BD69F /* Privacy */ = {
-			isa = PBXGroup;
-			children = (
-				FC0D92911A257C57007BD69F /* SettingPrivacyViewController.xib */,
-			);
-			path = Privacy;
 			sourceTree = "<group>";
 		};
 		FC0D92931A257C57007BD69F /* Shop */ = {
@@ -3817,9 +3653,10 @@
 			children = (
 				FC0D92BD1A257C57007BD69F /* SettingShipmentCell.xib */,
 				FC0D92BE1A257C57007BD69F /* SettingShipmentInfoViewController.xib */,
+				FC0D92C11A257C57007BD69F /* SettingShipmentSectionFooterView.xib */,
 				FC0D92BF1A257C57007BD69F /* SettingShipmentSectionFooter2View.xib */,
 				FC0D92C01A257C57007BD69F /* SettingShipmentSectionFooter3View.xib */,
-				FC0D92C11A257C57007BD69F /* SettingShipmentSectionFooterView.xib */,
+				FC0D96C21A25D11C007BD69F /* SettingShipmentSectionFooter4View.xib */,
 				FC0D92C21A257C57007BD69F /* SettingShipmentSectionHeaderView.xib */,
 				FC0D92C31A257C57007BD69F /* SettingShipmentViewController.xib */,
 			);
@@ -3837,6 +3674,7 @@
 		FC0D92C71A257C57007BD69F /* GeneralCell */ = {
 			isa = PBXGroup;
 			children = (
+				FC0D96C01A259964007BD69F /* GeneralProductReviewCell.xib */,
 				FC0D96B51A25800D007BD69F /* GeneralList1GestureCell.xib */,
 				FC0D92C91A257C57007BD69F /* GeneralProductCell.xib */,
 				FC0D92CA1A257C57007BD69F /* GeneralReviewCell.xib */,
@@ -3882,7 +3720,6 @@
 			isa = PBXGroup;
 			children = (
 				FC0D92D61A257C57007BD69F /* HotlistCell.xib */,
-				FC0D92D71A257C57007BD69F /* HotlistCell.xib.orig */,
 				FC0D92D81A257C57007BD69F /* HotlistViewController.xib */,
 			);
 			path = Hotlist;
@@ -4576,7 +4413,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FC0D965F1A257EAC007BD69F /* icon_love.png in Resources */,
-				FC0D93421A257C58007BD69F /* SettingAddressDetailViewController.xib in Resources */,
 				FC0D96281A257EAC007BD69F /* icon_20.png in Resources */,
 				FCAAEA4719F7534B00904AFB /* MainViewController.xib in Resources */,
 				FC0D93631A257C58007BD69F /* SettingLocationEditViewController.xib in Resources */,
@@ -4595,15 +4431,12 @@
 				FC0D962A1A257EAC007BD69F /* icon_21.png in Resources */,
 				FC0D96101A257EAC007BD69F /* icon_0@2x.png in Resources */,
 				FC0D96AA1A257EAC007BD69F /* icon_home_active@2x.png in Resources */,
-				FC0D93411A257C58007BD69F /* SettingAddressCell.xib in Resources */,
 				FC0D938B1A257C58007BD69F /* ProfileBiodataViewController.xib in Resources */,
 				FC0D96601A257EAC007BD69F /* icon_love@2x.png in Resources */,
-				FC0D93481A257C58007BD69F /* SettingBankAccountViewController.xib in Resources */,
 				FC0D965E1A257EAC007BD69F /* icon_login_active@2x.png in Resources */,
 				FC0D96411A257EAC007BD69F /* icon_arrow_down@2x.png in Resources */,
 				FC0D962F1A257EAC007BD69F /* icon_4.png in Resources */,
 				FC36DF9119B0656400AF74C1 /* InfoPlist.strings in Resources */,
-				FC0D934B1A257C58007BD69F /* SettingNotificationViewController.xib in Resources */,
 				FC0D936A1A257C58007BD69F /* SettingShipmentCell.xib in Resources */,
 				FC0D92151A257C41007BD69F /* SettingBankAccountViewController.m.orig in Resources */,
 				FC0D936E1A257C58007BD69F /* SettingShipmentSectionFooterView.xib in Resources */,
@@ -4616,7 +4449,6 @@
 				FC0D934F1A257C58007BD69F /* DetailShopViewController.xib in Resources */,
 				FC0D96611A257EAC007BD69F /* icon_love_active.png in Resources */,
 				FC0D96431A257EAC007BD69F /* icon_arrow_right_grey@2x.png in Resources */,
-				FC0D93461A257C58007BD69F /* SettingBankNameViewController.xib in Resources */,
 				FC0D937B1A257C58007BD69F /* FavoritedShopViewController.xib in Resources */,
 				FC0D96841A257EAC007BD69F /* icon_view_14px.png in Resources */,
 				FC0D930A1A257C58007BD69F /* AlertCameraView.xib in Resources */,
@@ -4624,7 +4456,6 @@
 				FC0D93131A257C58007BD69F /* CameraCropViewController.xib in Resources */,
 				FC0D93521A257C58007BD69F /* ShopFavoritedCell.xib in Resources */,
 				FC0D96A11A257EAC007BD69F /* icon_cart_active.png in Resources */,
-				FC0D934C1A257C58007BD69F /* SettingPasswordViewController.xib in Resources */,
 				FC0D968F1A257EAC007BD69F /* top_bg1.png in Resources */,
 				FC0D963E1A257EAC007BD69F /* tab_btm_shadow@2x.png in Resources */,
 				FC0D96651A257EAC007BD69F /* icon_people_grey.png in Resources */,
@@ -4641,14 +4472,12 @@
 				FC0D931A1A257C58007BD69F /* CategoryResultViewController.xib in Resources */,
 				FC0D96681A257EAC007BD69F /* icon_plus_blue@2x.png in Resources */,
 				FC0D960D1A257EAC007BD69F /* button_white.png in Resources */,
-				FC0D937E1A257C58007BD69F /* HotlistCell.xib.orig in Resources */,
 				FC0D966A1A257EAC007BD69F /* icon_quote@2x.png in Resources */,
 				FC0D93541A257C58007BD69F /* ShopInfoAddressView.xib in Resources */,
 				FC0D93571A257C58007BD69F /* ShopInfoViewController.xib in Resources */,
 				FC0D939A1A257C58007BD69F /* SortViewController.xib in Resources */,
 				FC0D96671A257EAC007BD69F /* icon_plus_blue.png in Resources */,
 				FC0D93701A257C58007BD69F /* SettingShipmentViewController.xib in Resources */,
-				FC0D933E1A257C58007BD69F /* ProfileFavoriteShopViewController.xib in Resources */,
 				FC0D96761A257EAC007BD69F /* icon_star_active@2x.png in Resources */,
 				FC0D964E1A257EAC007BD69F /* icon_clock@2x.png in Resources */,
 				FC0D93111A257C58007BD69F /* CameraCollectionViewController.xib in Resources */,
@@ -4657,14 +4486,11 @@
 				FC0D936D1A257C58007BD69F /* SettingShipmentSectionFooter3View.xib in Resources */,
 				FC0D932D1A257C58007BD69F /* DetailProductInfoCell.xib in Resources */,
 				FC0D96901A257EAC007BD69F /* top_bg1@2x.png in Resources */,
-				FC0D93381A257C58007BD69F /* ProfileBiodataShopCell.xib in Resources */,
-				FC0D93471A257C58007BD69F /* SettingBankAccountCell.xib in Resources */,
 				FC0D93581A257C58007BD69F /* ShopNotesCell.xib in Resources */,
 				FC0D935A1A257C58007BD69F /* ShopNotesViewController.xib in Resources */,
 				FC0D96891A257EAC007BD69F /* logo@2x.png in Resources */,
 				FC0D96BC1A25816E007BD69F /* TKPDTabProfileNavigationController.xib in Resources */,
 				FC0D93821A257C58007BD69F /* KatalogListViewCell.xib in Resources */,
-				FC0D93431A257C58007BD69F /* SettingAddressEditViewController.xib in Resources */,
 				FC0D93351A257C58007BD69F /* ProductTalkCell.xib in Resources */,
 				FC0D96481A257EAC007BD69F /* icon_cancel.png in Resources */,
 				FC0D966F1A257EAC007BD69F /* icon_shop.png in Resources */,
@@ -4682,16 +4508,13 @@
 				FC0D96711A257EAC007BD69F /* icon_shop_grey.png in Resources */,
 				FC0D964A1A257EAC007BD69F /* icon_category_white.png in Resources */,
 				FC0D96121A257EAC007BD69F /* icon_10.png in Resources */,
-				FC0D933D1A257C58007BD69F /* ProfileFavoriteShopCell.xib in Resources */,
 				FC0D937F1A257C58007BD69F /* HotlistViewController.xib in Resources */,
 				FC0D936B1A257C58007BD69F /* SettingShipmentInfoViewController.xib in Resources */,
-				FC0D934E1A257C58007BD69F /* ProfileSettingViewController.xib in Resources */,
 				FC0D936F1A257C58007BD69F /* SettingShipmentSectionHeaderView.xib in Resources */,
 				FC0D96161A257EAC007BD69F /* icon_12.png in Resources */,
 				FC0D960E1A257EAC007BD69F /* button_white_rounded_2.png in Resources */,
 				FC0D937C1A257C58007BD69F /* HistoryProductViewController.xib in Resources */,
 				FC36E19019B0673800AF74C1 /* Lato-Regular.ttf in Resources */,
-				FC0D934D1A257C58007BD69F /* SettingPrivacyViewController.xib in Resources */,
 				FC0D93061A257C58007BD69F /* LoginViewController copy.xib in Resources */,
 				FC0D96A91A257EAC007BD69F /* icon_home_active.png in Resources */,
 				FC0D96231A257EAC007BD69F /* icon_18@2x.png in Resources */,
@@ -4701,6 +4524,7 @@
 				FC0D93551A257C58007BD69F /* ShopInfoPaymentCell.xib in Resources */,
 				FC0D96111A257EAC007BD69F /* icon_1.png in Resources */,
 				FC0D93651A257C58007BD69F /* SettingNoteDetailViewController.xib in Resources */,
+				FC0D96C11A259964007BD69F /* GeneralProductReviewCell.xib in Resources */,
 				FC0D96831A257EAC007BD69F /* icon_sold_28px.png in Resources */,
 				FC0D966B1A257EAC007BD69F /* icon_report.png in Resources */,
 				FC0D96391A257EAC007BD69F /* icon_9.png in Resources */,
@@ -4710,7 +4534,6 @@
 				FC0D93811A257C58007BD69F /* HotlistResultViewController.xib in Resources */,
 				FC0D93751A257C58007BD69F /* GeneralReviewCell.xib in Resources */,
 				FC0D969E1A257EAC007BD69F /* ic_search@2x.png in Resources */,
-				FC0D93401A257C58007BD69F /* SettingAddressLocationViewController.xib in Resources */,
 				FC0D96171A257EAC007BD69F /* icon_12@2x.png in Resources */,
 				FC0D96871A257EAC007BD69F /* image-1@2x.png in Resources */,
 				FC0D961B1A257EAC007BD69F /* icon_14@2x.png in Resources */,
@@ -4737,16 +4560,13 @@
 				FC0D93561A257C58007BD69F /* ShopInfoShipmentCell.xib in Resources */,
 				FC0D93181A257C58007BD69F /* CategoryMenuViewController.xib in Resources */,
 				FC0D967E1A257EAC007BD69F /* icon_category_white.png in Resources */,
-				FC0D93371A257C58007BD69F /* ProfileBiodataCell.xib in Resources */,
 				FC0D93211A257C58007BD69F /* ProgressBarView.xib in Resources */,
-				FC0D933C1A257C58007BD69F /* ProfileEditViewController.xib in Resources */,
 				FC0D96561A257EAC007BD69F /* icon_info@2x.png in Resources */,
 				FC0D96821A257EAC007BD69F /* icon_sold_14px.png in Resources */,
 				FC0D93861A257C58007BD69F /* InboxMessageViewController.xib in Resources */,
 				FC0D96381A257EAC007BD69F /* icon_8@2x.png in Resources */,
 				85FA60D919ED258B00E009C0 /* GothamBook.ttf in Resources */,
 				FC0D93741A257C58007BD69F /* GeneralProductCell.xib in Resources */,
-				FC0D934A1A257C58007BD69F /* SettingBankEditViewController.xib in Resources */,
 				FC0D965A1A257EAC007BD69F /* icon_lock_grey@2x.png in Resources */,
 				FC0D96951A257EAC007BD69F /* ic_cart.png in Resources */,
 				FC0D93951A257C58007BD69F /* FilterConditionViewController.xib in Resources */,
@@ -4759,7 +4579,6 @@
 				FC0D968C1A257EAC007BD69F /* navigation-chevron.png in Resources */,
 				FC0D93311A257C58007BD69F /* DetailProductWholesaleTableCell.xib in Resources */,
 				FC0D966C1A257EAC007BD69F /* icon_report@2x.png in Resources */,
-				FC0D93451A257C58007BD69F /* SettingBankNameCell.xib in Resources */,
 				FC0D93191A257C58007BD69F /* CategoryResultViewCell.xib in Resources */,
 				FC0D93771A257C58007BD69F /* GeneralTalkCell.xib in Resources */,
 				FC0D96571A257EAC007BD69F /* icon_location.png in Resources */,
@@ -4782,14 +4601,11 @@
 				FC0D96581A257EAC007BD69F /* icon_location@2x.png in Resources */,
 				FC0D932C1A257C58007BD69F /* DetailProductDescriptionCell.xib in Resources */,
 				FC681F6D19B6DDBD00C58548 /* TokopediaDB.db in Resources */,
-				FC0D93391A257C58007BD69F /* ProfileBiodataViewController.xib in Resources */,
 				FC0D96131A257EAC007BD69F /* icon_10@2x.png in Resources */,
-				FC0D93491A257C58007BD69F /* SettingBankDetailViewController.xib in Resources */,
 				FC0D93871A257C58007BD69F /* LogoutViewController.xib in Resources */,
 				FC0D93141A257C58007BD69F /* CartViewController.xib in Resources */,
 				FC0D936C1A257C58007BD69F /* SettingShipmentSectionFooter2View.xib in Resources */,
 				FC0D93101A257C58007BD69F /* CameraCollectionCell.xib in Resources */,
-				FC0D933B1A257C58007BD69F /* ProfileEditPhoneViewController.xib in Resources */,
 				FC0D96881A257EAC007BD69F /* logo.png in Resources */,
 				FC0D96AE1A257EAC007BD69F /* icon_more_active@2x.png in Resources */,
 				FC0D969F1A257EAC007BD69F /* icon_cart.png in Resources */,
@@ -4850,12 +4666,12 @@
 				FC0D96931A257EAC007BD69F /* active_tab.png in Resources */,
 				FC0D93711A257C58007BD69F /* ShopSettingViewController.xib in Resources */,
 				FC0D93071A257C58007BD69F /* LoginViewController.xib in Resources */,
+				FC0D96C31A25D11C007BD69F /* SettingShipmentSectionFooter4View.xib in Resources */,
 				FC0D961A1A257EAC007BD69F /* icon_14.png in Resources */,
 				FC0D93891A257C58007BD69F /* ProfileBiodataCell.xib in Resources */,
 				FC0D932B1A257C58007BD69F /* DetailListViewController.xib in Resources */,
 				FC0D965D1A257EAC007BD69F /* icon_login_active.png in Resources */,
 				FC0D967C1A257EAC007BD69F /* icon_arrow_white.png in Resources */,
-				FC0D933F1A257C58007BD69F /* SettingAddressLocationCell.xib in Resources */,
 				FC0D96441A257EAC007BD69F /* icon_arrow_up.png in Resources */,
 				85386DCC19CBE88700BCA463 /* GothamLight.ttf in Resources */,
 				FC0D966D1A257EAC007BD69F /* icon_share_14px-01.png in Resources */,
@@ -4884,7 +4700,6 @@
 				FC0D969D1A257EAC007BD69F /* ic_search.png in Resources */,
 				FC0D93601A257C58007BD69F /* SettingEtalaseEditViewController.xib in Resources */,
 				FC0D968A1A257EAC007BD69F /* navigation-button-bg-pt.png in Resources */,
-				FC0D933A1A257C58007BD69F /* ProfileContactViewController.xib in Resources */,
 				FC0D96941A257EAC007BD69F /* active_tab@2x.png in Resources */,
 				FC0D93501A257C58007BD69F /* ShopEditStatusViewController.xib in Resources */,
 				FC0D93271A257C58007BD69F /* CatalogSellerCell.xib in Resources */,
@@ -4902,7 +4717,6 @@
 				FC0D937A1A257C58007BD69F /* FavoritedShopCell.xib in Resources */,
 				FC0D93671A257C58007BD69F /* SettingPaymentViewController.xib in Resources */,
 				FC0D93341A257C58007BD69F /* ProductReviewViewController.xib in Resources */,
-				FC0D93441A257C58007BD69F /* SettingAddressViewController.xib in Resources */,
 				FC0D96421A257EAC007BD69F /* icon_arrow_right_grey.png in Resources */,
 				FC0D96B61A25800D007BD69F /* GeneralList1GestureCell.xib in Resources */,
 				FC0D93291A257C58007BD69F /* CatalogSellerViewController.xib in Resources */,
@@ -5215,6 +5029,7 @@
 				FC0D91F71A257C41007BD69F /* KatalogViewController.m in Sources */,
 				85AAEE671A2587CF0064A518 /* ReviewResult.m in Sources */,
 				FC0D91AB1A257C41007BD69F /* BackgroundLayer.m in Sources */,
+				FC0D96C61A25D155007BD69F /* SettingShipmentSectionFooter4View.m in Sources */,
 				FC0D91961A257C41007BD69F /* CameraAlbumListCell.m in Sources */,
 				FC0D92001A257C41007BD69F /* ProfileBiodataShopCell.m in Sources */,
 				FC0D91EE1A257C41007BD69F /* GeneralTalkCommentCell.m in Sources */,
@@ -5286,6 +5101,7 @@
 				85AAEE981A2587D00064A518 /* ProductFeed.m in Sources */,
 				FC0D91B91A257C41007BD69F /* DetailProductDescriptionCell.m in Sources */,
 				85AAEECF1A2587D00064A518 /* PosMinWeight.m in Sources */,
+				FC0D96BF1A259955007BD69F /* GeneralProductReviewCell.m in Sources */,
 				FC0D91FA1A257C41007BD69F /* InboxMessageCell.m in Sources */,
 				85AAEE761A2587CF0064A518 /* FavoritedResult.m in Sources */,
 				85AAEE6F1A2587CF0064A518 /* TalkList.m in Sources */,
@@ -5360,7 +5176,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -5378,6 +5194,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "38508ba6-3f02-480f-bbf2-d7f767500f66";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -5399,7 +5216,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -5411,6 +5228,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "38508ba6-3f02-480f-bbf2-d7f767500f66";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -5423,14 +5241,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "38508ba6-3f02-480f-bbf2-d7f767500f66";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5442,14 +5260,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
 				INFOPLIST_FILE = "Tokopedia/Tokopedia-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "38508ba6-3f02-480f-bbf2-d7f767500f66";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};

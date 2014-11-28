@@ -21,8 +21,8 @@
 @property (nonatomic, strong) NSString *location_province_name;
 @property (nonatomic, strong) NSString *location_province_id;
 @property (nonatomic, strong) NSString *location_district_name;
-@property (nonatomic, strong) NSString *location_addr_id;
+@property (nonatomic, strong) NSString *location_address_id;
 @property (nonatomic, strong) NSString *location_fax;
-@property (nonatomic, strong) NSString *location_addr_name;
+@property (nonatomic, strong) NSString *location_address_name;
 
 @end

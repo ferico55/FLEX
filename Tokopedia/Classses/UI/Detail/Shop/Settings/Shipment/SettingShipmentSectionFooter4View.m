@@ -1,14 +1,14 @@
 //
-//  SettingShipmentSectionFooter3View.m
+//  SettingShipmentSectionFooter4View.m
 //  Tokopedia
 //
 //  Created by IT Tkpd on 11/20/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "SettingShipmentSectionFooter3View.h"
+#import "SettingShipmentSectionFooter4View.h"
 
-@interface SettingShipmentSectionFooter3View ()
+@interface SettingShipmentSectionFooter4View ()
 
 @property (weak, nonatomic) IBOutlet UIView *viewfee;
 @property (weak, nonatomic) IBOutlet UIView *viewminweight;
@@ -16,7 +16,7 @@
 
 @end
 
-@implementation SettingShipmentSectionFooter3View
+@implementation SettingShipmentSectionFooter4View
 {
     UITextField *_activetextfield;
 }
@@ -45,27 +45,14 @@
 -(void)awakeFromNib
 {
     [super awakeFromNib];
-    double value = [_stepperminweight value];
-    [_labelweightmin setText:[NSString stringWithFormat:@"%d", (int)value]];
-    //[self updateViewMinWeight];
     //[self updateViewFee];
 }
 
 #pragma mark - View Action
-- (IBAction)valuechange:(UIStepper*)sender {
-    [_activetextfield resignFirstResponder];
-    double value = [sender value];
-    
-    [_labelweightmin setText:[NSString stringWithFormat:@"%d", (int)value]];
-    [_delegate SettingShipmentSectionFooterView:self];
-}
 
 - (IBAction)tap:(id)sender {
     [_activetextfield resignFirstResponder];
     if ([sender isKindOfClass:[UISwitch class]]) {
-        if ((UISwitch*)sender == _switchweightmin) {
-            //[self updateViewMinWeight];
-        }
         if ((UISwitch*)sender == _switchfee) {
             //[self updateViewFee];
         }
@@ -119,35 +106,6 @@
 
 #pragma mark - Methods
 
--(void)updateViewMinWeight
-{
-    _viewminweight.hidden = (!_switchweightmin.on);
-    if (!_switchweightmin.on) {
-        CGRect frame = _viewswitchfee.frame;
-        frame.origin.y -= _viewminweight.frame.size.height;
-        [_viewswitchfee setFrame:frame];
-        frame = _viewfee.frame;
-        frame.origin.y -= _viewminweight.frame.size.height;
-        [_viewfee setFrame:frame];
-        frame = _viewinfo.frame;
-        frame.origin.y -= _viewminweight.frame.size.height;
-        [_viewinfo setFrame:frame];
-    }
-    else
-    {
-        CGRect frame = _viewswitchfee.frame;
-        frame.origin.y += _viewminweight.frame.size.height;
-        [_viewswitchfee setFrame:frame];
-        frame = _viewfee.frame;
-        frame.origin.y += _viewminweight.frame.size.height;
-        [_viewfee setFrame:frame];
-        frame = _viewinfo.frame;
-        frame.origin.y += _viewminweight.frame.size.height;
-        [_viewinfo setFrame:frame];
-    }
-    
-}
-
 -(void)updateViewFee
 {
     _viewfee.hidden = (!_switchfee.on);
@@ -164,5 +122,4 @@
     }
     
 }
-
 @end

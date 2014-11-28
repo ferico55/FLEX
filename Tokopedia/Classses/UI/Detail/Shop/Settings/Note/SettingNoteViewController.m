@@ -102,6 +102,10 @@
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
+    
+    //Add observer
+    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(didEditNote:) name:kTKPD_ADDNOTEPOSTNOTIFICATIONNAMEKEY object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -145,7 +149,7 @@
         
         if (_list.count > indexPath.row) {
             NotesList *list = _list[indexPath.row];
-            ((GeneralList1GestureCell*)cell).labelname.text = list.notes_title;
+            ((GeneralList1GestureCell*)cell).labelname.text = list.note_title;
             ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
             [((GeneralList1GestureCell*)cell).buttondefault setTitle:@"Ubah\nCatatan" forState:UIControlStateNormal];
@@ -228,9 +232,9 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResult class]];
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[NotesList class]];
-    [listMapping addAttributeMappingsFromArray:@[kTKPDNOTES_APINOTESIDKEY,
-                                                 kTKPDNOTES_APINOTESSTATUSKEY,
-                                                 kTKPDNOTES_APINOTESTITLEKEY
+    [listMapping addAttributeMappingsFromArray:@[kTKPDNOTES_APINOTEIDKEY,
+                                                 kTKPDNOTES_APINOTESTATUSKEY,
+                                                 kTKPDNOTES_APINOTETITLEKEY
                                                  ]];
     
     //add relationship mapping
@@ -254,10 +258,9 @@
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPNOTEKEY,
                             kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0),
                             };
-    
     [_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-	if (_timeinterval > _cachecontroller.URLCacheInterval ) {
+	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
         if (!_isrefreshview) {
             _table.tableFooterView = _footer;
             [_act startAnimating];
@@ -314,7 +317,7 @@
 
 -(void)requestfailure:(id)object
 {
-    if (_timeinterval > _cachecontroller.URLCacheInterval) {
+    if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
         [self requestprocess:object];
     }
     else{
@@ -424,7 +427,7 @@
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOPADDRESS_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOPNOTEACTION_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanagerActionDelete addResponseDescriptor:responseDescriptor];
     
@@ -437,12 +440,12 @@
     
     NSDictionary *userinfo = (NSDictionary*)object;
     
-    NSDictionary* param = @{//kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIDELETEADDRESSKEY,
-                            //kTKPDPROFILESETTING_APIADDRESSIDKEY : [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSIDKEY]
+    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIDELETENOTESDETAILKEY,
+                            kTKPDNOTES_APINOTEIDKEY : [userinfo objectForKey:kTKPDNOTES_APINOTEIDKEY]?:0
                             };
     _requestcount ++;
     
-    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPADDRESS_APIPATH parameters:param]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
+    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPNOTEACTION_APIPATH parameters:param]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
     
     [_requestActionDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionDelete:mappingResult withOperation:operation];
@@ -492,16 +495,27 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (!setting.message_error) {
-                    if (setting.result.is_success) {
-                        //TODO:: add alert
-                        
-                    }
+                if (setting.message_status) {
+                    NSArray *array = setting.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                }
+                else if(setting.message_error)
+                {
+                    NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                }
+                if (!setting.result.is_success) {
+                    [self cancelActionDelete];
+                    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
+                    NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
+                    [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
+                    [_table reloadData];
                 }
             }
         }
         else{
-            
             [self cancelActionDelete];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
@@ -524,14 +538,14 @@
     SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
     vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
                 kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
-                kTKPDNOTES_APINOTEIDKEY:list.notes_id};
+                kTKPDNOTES_APINOTEIDKEY:list.note_id};
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)DidTapButton:(UIButton *)button atCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     NotesList *list = _list[indexpath.row];
-    //[_datainput setObject:@(list.location_addr_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
+    [_datainput setObject:list.note_id forKey:kTKPDNOTES_APINOTEIDKEY];
     switch (button.tag) {
         case 10:
         {
@@ -539,7 +553,7 @@
             SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
             vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
                         kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY),
-                        kTKPDNOTES_APINOTEIDKEY : list.notes_id
+                        kTKPDNOTES_APINOTEIDKEY : list.note_id
                         };
             [self.navigationController pushViewController:vc animated:YES];
             break;
@@ -547,7 +561,7 @@
         case 11:
         {
             //delete
-            //[_datainput setObject:_list[indexpath.row] forKey:kTKPDPROFILE_DATADELETEDOBJECTKEY];
+            [_datainput setObject:_list[indexpath.row] forKey:kTKPDDETAIL_DATADELETEDOBJECTKEY];
             [_list removeObjectAtIndex:indexpath.row];
             [_table beginUpdates];
             [_table deleteRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationFade];
@@ -555,7 +569,7 @@
             [_table reloadData];
             [self configureRestKitActionDelete];
             [self requestActionDelete:_datainput];
-            //[_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDELETEKEY];
+            [_datainput setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
             [_table reloadData];
             break;
         }
@@ -580,4 +594,15 @@
     [self configureRestKit];
     [self request];
 }
+
+#pragma mark - Notification
+- (void)didEditNote:(NSNotification*)notification
+{
+    NSDictionary *userinfo = notification.userInfo;
+    //TODO: Behavior after edit
+    [_datainput setObject:[userinfo objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
+    //[_datainput setObject:[userinfo objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]?:@(0) forKey:kTKPDPROFILE_DATAEDITTYPEKEY];
+    [self refreshView:nil];
+}
+
 @end

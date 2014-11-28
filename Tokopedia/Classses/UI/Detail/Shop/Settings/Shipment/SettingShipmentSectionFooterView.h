@@ -11,10 +11,11 @@
 @protocol SettingShipmentSectionFooterViewDelegate <NSObject>
 @required
 -(void)SettingShipmentSectionFooterView:(UIView*)view;
+-(void)MoveToInfoView:(UIView*)view;
 
 @end
 
-@interface SettingShipmentSectionFooterView : UIView
+@interface SettingShipmentSectionFooterView : UIView <UITextFieldDelegate>
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
 @property (nonatomic, weak) IBOutlet id<SettingShipmentSectionFooterViewDelegate> delegate;
@@ -23,15 +24,14 @@
 #endif
 
 @property (weak, nonatomic) IBOutlet UILabel *labelinfo;
-@property (weak, nonatomic) IBOutlet UIView *viewinfo;
 @property (weak, nonatomic) IBOutlet UISwitch *switchweightmin;
 @property (weak, nonatomic) IBOutlet UILabel *labelweightmin;
 @property (weak, nonatomic) IBOutlet UIStepper *stepperminweight;
 @property (weak, nonatomic) IBOutlet UISwitch *switchfee;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldfee;
+@property (weak, nonatomic) IBOutlet UISwitch *switchdiffdistrict;
 
-- (IBAction)switchoutsidecity:(id)sender;
-
+@property (weak, nonatomic) IBOutlet UIView *viewinfo;
 + (id)newview;
 
 @end

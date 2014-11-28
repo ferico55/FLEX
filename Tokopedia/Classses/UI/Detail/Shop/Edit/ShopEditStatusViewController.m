@@ -146,6 +146,7 @@
             case 11:
             {
                 //save
+                NSMutableArray *messages = [NSMutableArray new];
                 NSInteger status = [[_datainput objectForKey:kTKPDSHOPEDIT_APISTATUSKEY]integerValue];
                 if (status==kTKPDDETAIL_DATASTATUSSHOPCLOSED) {
                     NSString *reason = [_datainput objectForKey:kTKPDSHOPEDIT_APICLOSEDNOTEKEY];
@@ -156,8 +157,10 @@
                     }
                     else
                     {
-                        NSArray *message = @[@"Catatan harus diisi."];
-                        NSDictionary *info = @{@"message":message};
+                        [messages addObject:@"Catatan harus diisi."];
+                    }
+                    if (messages.count>0) {
+                        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages ,@"messages", nil];
                         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                     }
     
