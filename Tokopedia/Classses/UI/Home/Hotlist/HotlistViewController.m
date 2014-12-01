@@ -216,8 +216,8 @@
             [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                //NSLOG(@"thumb: %@", thumb);
-                [thumb setImage:image animated:YES];
+                [thumb setImage:image];
+                [thumb setContentMode:UIViewContentModeScaleAspectFill];
                 
                 [((HotlistCell*)cell).act stopAnimating];
 #pragma clang diagnosti c pop

@@ -88,7 +88,6 @@
 @property (strong, nonatomic) IBOutlet UIView *detailview;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *detailscrollview;
-@property (weak, nonatomic) IBOutlet UIButton *buttonaddproduct;
 
 @property (strong, nonatomic) IBOutlet UIButton *backButtonCustom;
 @property (strong, nonatomic) IBOutlet UIButton *infoButtonCustom;
@@ -314,6 +313,8 @@
     if (_shop.result.info.shop_is_gold) {
         self.navigationController.navigationBarHidden = YES;
     }
+    
+    
     
 }
 
@@ -682,14 +683,6 @@
                 } else {
                     [self.navigationController popViewControllerAnimated:YES];
                 }
-                break;
-            }
-            case 18 :
-            {
-                //settings
-                ShopSettingViewController *vc = [ShopSettingViewController new];
-                vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY], kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result};
-                [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
             default:
@@ -1084,7 +1077,7 @@
 {
     CGFloat offset;
     if (_shop.result.info.shop_is_gold) {
-        offset = 317.0;
+        offset = 320.0;
     } else {
         offset = 378.0;
     }
@@ -1200,7 +1193,6 @@
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailShopResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APIISOPENKEY:kTKPDDETAILSHOP_APIISOPENKEY}];
     
     RKObjectMapping *closedinfoMapping = [RKObjectMapping mappingForClass:[ClosedInfo class]];
     [closedinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APIUNTILKEY:kTKPDDETAILSHOP_APIUNTILKEY,
@@ -1416,12 +1408,6 @@
                 _barbuttoninfo.enabled = YES;
                 [self setDetailData];
             }
-            
-            //enable button after request
-            _buttonaddproduct.enabled = YES;
-            _buttonfav.enabled = YES;
-            _buttonMessage.enabled = YES;
-            _buttonsetting.enabled = YES;
         }
         else{
             [self cancel];
@@ -1508,33 +1494,12 @@
 {
     _data = data;
     
-    if(_data) {
-        //cache
-        NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
-        _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOP_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]]];
-        _cachecontroller.filePath = _cachepath;
-        _cachecontroller.URLCacheInterval = 86400.0;
-        [_cachecontroller initCacheWithDocumentPath:path];
-        
-        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-        if (auth && ![auth isEqual:[NSNull null]]) {
-            if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
-                _buttonsetting.hidden = NO;
-                _buttonfav.hidden = YES;
-                _buttonMessage.hidden = YES;
-                _actcover.hidden  = YES;
-                //_actfav.hidden  = YES;
-            }
-        }
-        else
-        {
-            _buttonsetting.hidden = YES;
-            _buttonfav.hidden = NO;
-            _buttonMessage.hidden = NO;
-        }
-
-    }
-   
+    //cache
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
+    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOP_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]]];
+    _cachecontroller.filePath = _cachepath;
+    _cachecontroller.URLCacheInterval = 86400.0;
+	[_cachecontroller initCacheWithDocumentPath:path];
 }
 
 -(void)refreshView:(UIRefreshControl*)refresh
