@@ -282,20 +282,20 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SettingLocationResult class]];
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SettingLocations class]];
-    [listMapping addAttributeMappingsFromArray:@[kTKPDSHOPSETTING_APICITYNAMEKEY,
-                                                 kTKPDSHOPSETTING_APIEMAILKEY,
-                                                 kTKPDSHOPSETTING_APIADDRESSKEY,
-                                                 kTKPDSHOPSETTING_APIPOSTALCODEKEY,
-                                                 kTKPDSHOPSETTING_APICITYIDKEY,
-                                                 kTKPDSHOPSETTING_APILOCATIONAREAKEY,
-                                                 kTKPDSHOPSETTING_APIPHONEKEY,
-                                                 kTKPDSHOPSETTING_APIDISTRICTIDKEY,
-                                                 kTKPDSHOPSETTING_APIPROVINCENAMEKEY,
-                                                 kTKPDSHOPSETTING_APIPROVINCEIDKEY,
-                                                 kTKPDSHOPSETTING_APIDISTRICTNAMEKEY,
-                                                 kTKPDSHOPSETTING_APIADDRESSIDKEY,
-                                                 kTKPDSHOPSETTING_APIFAXKEY,
-                                                 kTKPDSHOPSETTING_APIADDRESSNAMEKEY
+    [listMapping addAttributeMappingsFromArray:@[kTKPDSHOP_APICITYNAMEKEY,
+                                                 kTKPDSHOP_APIEMAILKEY,
+                                                 kTKPDSHOP_APIADDRESSKEY,
+                                                 kTKPDSHOP_APIPOSTALCODEKEY,
+                                                 kTKPDSHOP_APICITYIDKEY,
+                                                 kTKPDSHOP_APILOCATIONAREAKEY,
+                                                 kTKPDSHOP_APIPHONEKEY,
+                                                 kTKPDSHOP_APIDISTRICTIDKEY,
+                                                 kTKPDSHOP_APIPROVINCENAMEKEY,
+                                                 kTKPDSHOP_APIPROVINCEIDKEY,
+                                                 kTKPDSHOP_APIDISTRICTNAMEKEY,
+                                                 kTKPDSHOP_APIADDRESSIDKEY,
+                                                 kTKPDSHOP_APIFAXKEY,
+                                                 kTKPDSHOP_APIADDRESSNAMEKEY
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -794,7 +794,7 @@
 -(void)DidTapButton:(UIButton *)button atCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     SettingLocations *list = _list[indexpath.row];
-    [_datainput setObject:list.location_addr_id forKey:kTKPDSHOPSETTING_APIADDRESSIDKEY];
+    [_datainput setObject:list.location_addr_id forKey:kTKPDSHOP_APIADDRESSIDKEY];
     switch (button.tag) {
         case 10:
         {

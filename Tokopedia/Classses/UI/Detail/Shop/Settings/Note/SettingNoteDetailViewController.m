@@ -124,7 +124,7 @@
     self.navigationItem.rightBarButtonItem = _barbuttonedit;
     
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTES_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue]]];
+    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTES_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDNOTE_APINOTEIDKEY]integerValue]]];
     
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 86400.0;
@@ -186,7 +186,7 @@
                 vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
                             kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY),
                             kTKPDDETAIL_DATANOTEKEY : _note,
-                            kTKPDNOTES_APINOTEIDKEY : [_data objectForKey:kTKPDNOTES_APINOTEIDKEY]
+                            kTKPDNOTE_APINOTEIDKEY : [_data objectForKey:kTKPDNOTE_APINOTEIDKEY]
                             };
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
@@ -250,7 +250,7 @@
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETNOTESDETAILKEY,
                             kTKPDDETAIL_APISHOPIDKEY : [auth objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0),
-                            kTKPDNOTES_APINOTEIDKEY : [_data objectForKey:kTKPDNOTES_APINOTEIDKEY]?:@(0)
+                            kTKPDNOTE_APINOTEIDKEY : [_data objectForKey:kTKPDNOTE_APINOTEIDKEY]?:@(0)
                             };
     NSTimer *timer;
     [_cachecontroller getFileModificationDate];
@@ -425,13 +425,13 @@
     NSDictionary *userinfo = (NSDictionary*)object;
     
     NSString *action = (_type==2)?kTKPDDETAIL_APIADDNOTESDETAILKEY:kTKPDDETAIL_APIEDITNOTESDETAILKEY;
-    NSInteger noteid = [[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue];
+    NSInteger noteid = [[_data objectForKey:kTKPDNOTE_APINOTEIDKEY]integerValue];
     NSString *notetitle = [userinfo objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:_note.result.detail.notes_title?:@"";
     NSString *time = [userinfo objectForKey:kTKPDNOTE_APINOTESUPDATETIMEKEY]?:_note.result.detail.notes_update_time?:@"";
     NSString *content = [userinfo objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:[NSString convertHTML:_note.result.detail.notes_content]?:@"";
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action,
-                            kTKPDNOTES_APINOTEIDKEY : @(noteid),
+                            kTKPDNOTE_APINOTEIDKEY : @(noteid),
                             kTKPDNOTE_APINOTESTITLEKEY : notetitle,
                             kTKPDNOTE_APINOTESUPDATETIMEKEY : time,
                             kTKPDNOTE_APINOTESCONTENTKEY : content

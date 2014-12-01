@@ -338,20 +338,20 @@ typedef enum
 #define kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY @"file_th"
 
 #pragma mark -- Shop Setting Location
-#define kTKPDSHOPSETTING_APICITYNAMEKEY @"location_city_name"
-#define kTKPDSHOPSETTING_APIEMAILKEY @"location_email"
-#define kTKPDSHOPSETTING_APIADDRESSKEY @"location_address"
-#define kTKPDSHOPSETTING_APIPOSTALCODEKEY @"location_postal_code"
-#define kTKPDSHOPSETTING_APICITYIDKEY @"location_city_id"
-#define kTKPDSHOPSETTING_APILOCATIONAREAKEY @"location_area"
-#define kTKPDSHOPSETTING_APIPHONEKEY @"location_phone"
-#define kTKPDSHOPSETTING_APIDISTRICTIDKEY @"location_district_id"
-#define kTKPDSHOPSETTING_APIPROVINCENAMEKEY @"location_province_name"
-#define kTKPDSHOPSETTING_APIPROVINCEIDKEY @"location_province_id"
-#define kTKPDSHOPSETTING_APIDISTRICTNAMEKEY @"location_district_name"
-#define kTKPDSHOPSETTING_APIADDRESSIDKEY @"location_addr_id"
-#define kTKPDSHOPSETTING_APIFAXKEY @"location_fax"
-#define kTKPDSHOPSETTING_APIADDRESSNAMEKEY @"location_addr_name"
+#define kTKPDSHOP_APIADDRESSIDKEY @"location_addr_id"
+#define kTKPDSHOP_APIADDRESSNAMEKEY @"location_addr_name"
+#define kTKPDSHOP_APIADDRESSKEY @"location_address"
+#define kTKPDSHOP_APICITYIDKEY @"location_city_id"
+#define kTKPDSHOP_APICITYNAMEKEY @"location_city_name"
+#define kTKPDSHOP_APIPOSTALCODEKEY @"location_postal_code"
+#define kTKPDSHOP_APILOCATIONAREAKEY @"location_area"
+#define kTKPDSHOP_APIPHONEKEY @"location_phone"
+#define kTKPDSHOP_APIEMAILKEY @"location_email"
+#define kTKPDSHOP_APIFAXKEY @"location_fax"
+#define kTKPDSHOP_APIDISTRICTIDKEY @"location_district_id"
+#define kTKPDSHOP_APIDISTRICTNAMEKEY @"location_district_name"
+#define kTKPDSHOP_APIPROVINCEIDKEY @"location_province_id"
+#define kTKPDSHOP_APIPROVINCENAMEKEY @"location_province_name"
 
 
 #define kTKPDGENERATEDHOST_APIGENERATEDHOSTKEY @"generated_host"
@@ -438,10 +438,9 @@ typedef enum
 #define kTKPDDETAIL_APIADDCOMMENTTALK @"add_comment_talk"
 
 #pragma mark - Notes
-#define kTKPDNOTES_APINOTEIDKEY @"note_id"
-#define kTKPDNOTES_APINOTESIDKEY @"notes_id"
-#define kTKPDNOTES_APINOTESSTATUSKEY @"notes_status"
-#define kTKPDNOTES_APINOTESTITLEKEY @"notes_title"
+#define kTKPDNOTE_APINOTEIDKEY @"note_id"
+#define kTKPDNOTE_APINOTESSTATUSKEY @"note_status"
+#define kTKPDNOTE_APINOTESTITLEKEY @"note_title"
 
 #define kTKPDNOTE_APINOTESTITLEKEY @"notes_title"
 #define kTKPDNOTE_APINOTESUPDATETIMEKEY @"notes_update_time"

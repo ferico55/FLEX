@@ -25,10 +25,8 @@
 #import "ProfileContactViewController.h"
 #import "ProfileFavoriteShopViewController.h"
 
-//edit shop detail
-#import "../Edit/ShopEditViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
-#pragma mark - Shop Info View Controller
 @interface ShopInfoViewController()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 {
     Shop *_shop;
@@ -52,6 +50,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labellastlogin;
 @property (weak, nonatomic) IBOutlet UILabel *labelopensince;
 @property (weak, nonatomic) IBOutlet UIButton *buttonofflocation;
+@property (weak, nonatomic) IBOutlet UIButton *buttonArrowLocation;
 
 
 @property (weak, nonatomic) IBOutlet UILabel *labelsuccessfulltransaction;
@@ -69,7 +68,7 @@
 @property (weak, nonatomic) IBOutlet UIView *shipmentview;
 @property (weak, nonatomic) IBOutlet UIView *paymentview;
 @property (weak, nonatomic) IBOutlet UIView *ownerview;
-@property (weak, nonatomic) IBOutlet UIView *addressoffview;
+@property (strong, nonatomic) IBOutlet UIView *addressoffview;
 @property (weak, nonatomic) IBOutlet UIView *shopdetailview;
 - (IBAction)gesture:(id)sender;
 
@@ -114,22 +113,6 @@
         barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
     [barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
-    
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor whiteColor]];
-    barbutton1.tag = 11;
-    NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-    if (auth && ![auth isEqual:[NSNull null]]) {
-        if (_shop.result.owner.owner_id == [[auth objectForKey:kTKPD_USERIDKEY]integerValue]) {
-            [barbutton1 setEnabled:YES];
-            self.navigationItem.rightBarButtonItem = barbutton1;
-        }
-    }
-    else
-    {
-        [barbutton1 setEnabled:NO];
-        [barbutton1 setTintColor: [UIColor clearColor]];
-    }
     
     [self setData:_data];
     [_tablepayment reloadData];
@@ -189,7 +172,26 @@
             case 10:
             {
                 //expand location
-                _isaddressexpanded = _isaddressexpanded?NO:YES;
+                if (_isaddressexpanded) {
+                    _isaddressexpanded = NO;
+                    [_buttonArrowLocation setImage:[UIImage imageNamed:@"icon_arrow_down"] forState:UIControlStateNormal];
+                } else {
+                    _isaddressexpanded = YES;
+                    [_buttonArrowLocation setImage:[UIImage imageNamed:@"icon_arrow_up"] forState:UIControlStateNormal];
+                }
+                [self setDetailFrame];
+                break;
+            }
+            case 14:
+            {
+                //expand location
+                if (_isaddressexpanded) {
+                    _isaddressexpanded = NO;
+                    [_buttonArrowLocation setImage:[UIImage imageNamed:@"icon_arrow_down"] forState:UIControlStateNormal];
+                } else {
+                    _isaddressexpanded = YES;
+                    [_buttonArrowLocation setImage:[UIImage imageNamed:@"icon_arrow_up"] forState:UIControlStateNormal];
+                }
                 [self setDetailFrame];
                 break;
             }
@@ -245,16 +247,7 @@
         switch (btn.tag) {
             case 10:
             {
-                // back
                 [self.navigationController popViewControllerAnimated:YES];
-                break;
-            }
-            case 11:
-            {
-                // edit shop
-                ShopEditViewController *vc = [ShopEditViewController new];
-                vc.data = @{kTKPDDETAIL_DATASHOPSKEY:_shop.result};
-                [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
             default:
@@ -266,13 +259,29 @@
 }
 
 #pragma mark - Table View Data Source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    // Table Shipment
+    if (tableView == _tableshipment)
+    {
+        #ifdef kTKPDSHOPINFO_NODATAENABLE
+            return _isnodata ? 1 : _shop.result.shipment.count;
+        #else
+            return _isnodata ? 0 : _shop.result.shipment.count;
+        #endif
+    }
+    return 1;
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     if (tableView == _tableshipment) {
         // Table Shipment
+        NSArray *packages = ((Shipment *)[_shop.result.shipment objectAtIndex:section]).shipment_package;
 #ifdef kTKPDSHOPINFO_NODATAENABLE
-        return _isnodata ? 1 : _shop.result.shipment.count;
+        return _isnodata ? 1 : packages.count;
 #else
-        return _isnodata ? 0 : _shop.result.shipment.count;
+        return _isnodata ? 0 : packages.count;
 #endif
     }
     else if (tableView == _tablepayment){
@@ -292,7 +301,6 @@
     if (!_isnodata) {
         if (tableView == _tableshipment) {
             // Table Shipment
-        
             NSString *cellid = kTKPDSHOPINFOPAYMENTCELL_IDENTIFIER;
             
             cell = (ShopInfoShipmentCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
@@ -300,16 +308,15 @@
                 cell = [ShopInfoShipmentCell newcell];
             }
             
-            if (_shop.result.shipment.count > indexPath.row) {
-                
-                Shipment *shipment = _shop.result.shipment[indexPath.row];
-                ((ShopInfoShipmentCell*)cell).labelshipment.text = shipment.shipment_name;
-                NSArray *packages = shipment.shipment_package;
-                for (int i = 0; i<packages.count; i++) {
-                    ShipmentPackage *package = packages[i];
-                    ((UILabel*)((ShopInfoShipmentCell*)cell).labelpackage[i]).text = package.product_name;
-                    ((UIView*)((ShopInfoShipmentCell*)cell).viewpackage[i]).hidden = NO;
-                }
+            Shipment *shipment = _shop.result.shipment[indexPath.section];
+            ((ShopInfoShipmentCell*)cell).labelshipment.text = shipment.shipment_name;
+            ShipmentPackage *package = [shipment.shipment_package objectAtIndex:indexPath.row];
+            ((UILabel*)((ShopInfoShipmentCell*)cell).packageLabel).text = package.product_name;
+            
+            NSLog(@"\n\n%d %d %@\n\n", indexPath.section, indexPath.row, package.product_name);
+            
+            if (indexPath.row > 0) {
+                ((UILabel*)((ShopInfoShipmentCell*)cell).labelshipment).hidden = YES;
             }
         }
         else if (tableView == _tablepayment){
@@ -396,6 +403,7 @@
     _labelopensince.text = _shop.result.info.shop_open_since;
     _nameowner.text = _shop.result.owner.owner_name;
     NSInteger totallocation = _shop.result.address.count;
+    
     [_buttonofflocation setTitle:[NSString stringWithFormat:@"%d Offline", totallocation] forState:UIControlStateNormal];
     
     _labelsuccessfulltransaction.text = _shop.result.stats.shop_total_transaction;
@@ -430,6 +438,7 @@
     //request.URL = url;
     
     thumb = _thumbowner;
+    thumb.layer.cornerRadius = thumb.frame.size.width/2;
     thumb.image = nil;
     //thumb.hidden = YES;	//@prepareforreuse then @reset
     
@@ -452,88 +461,112 @@
 
 -(void)setDetailFrame
 {
-    NSInteger delta = 50;
+    CGFloat height = 0;
     
-    CGRect frame;
+    [_containerview layoutIfNeeded];
     
     [_labelshopdescription sizeToFit];
     
-    frame = _shopdetailview.frame;
-    frame.origin.y = _labelshopdescription.frame.size.height + _labelshopdescription.frame.origin.y + 20;
-    _shopdetailview.frame = frame;
+    height += _labelshopdescription.frame.size.height + _labelshopdescription.frame.origin.y + 18;
     
-    NSArray * address = _shop.result.address;
-
-    for (int i = 0; i<address.count; i++) {
-        if (_isaddressexpanded) {
-            ShopInfoAddressView *v = [ShopInfoAddressView newview];
-            frame = _addressoffview.frame;
-            frame.size.height = v.frame.size.height * address.count;
-            
-            _addressoffview.frame = frame;
-            frame = v.frame;
-            frame.origin.y = v.frame.size.height*i;
-            [_addressoffview addSubview:v];
-            v.frame = frame;
+    [_labelshopdescription layoutIfNeeded];
+    CGRect shopDetailFrame = _shopdetailview.frame;
+    shopDetailFrame.origin.y = height;
+    
+    if (_isaddressexpanded) {
+        
+        [_shopdetailview layoutIfNeeded];
+        [_addressoffview layoutIfNeeded];
+        
+        CGFloat totalHeight = 0;
+        NSArray * addresses = _shop.result.address;
+        for (int i = 0; i < addresses.count; i++) {
+            Address *address = [addresses objectAtIndex:i];
+            ShopInfoAddressView *addressView = [ShopInfoAddressView newview];
+            [self setAddressDataView:addressView withData:address];
             _addressoffview.hidden = NO;
-            [self setAddressDataView:v withData:address[i]];
+            [_addressoffview addSubview:addressView];
+
+            [addressView layoutIfNeeded];
+            CGRect addressFrame = addressView.frame;
+            addressFrame.origin.x -= 15;
+            addressFrame.origin.y = totalHeight;
+            addressFrame.size.height = addressView.horizontalBorder.frame.origin.y + 2;
+            addressView.frame = addressFrame;
+            
+            totalHeight += addressFrame.size.height;
+            
         }
-        else{
-            frame = _addressoffview.frame;
-            frame.size.height = 0;
-            frame.origin.y = _shopdetailview.frame.size.height + _shopdetailview.frame.origin.y ;
-            _addressoffview.frame = frame;
-            _addressoffview.hidden = YES;
-        }
+        
+        CGRect newAddressFrame = _addressoffview.frame;
+        newAddressFrame.size.height = totalHeight;
+        _addressoffview.frame = newAddressFrame;
+        
+        shopDetailFrame.size.height += newAddressFrame.size.height - 2;
+
+    } else {
+        shopDetailFrame.size.height -= _addressoffview.frame.size.height;
     }
     
-    frame = _transactionview.frame;
-    frame.origin.y = _addressoffview.frame.size.height + _addressoffview.frame.origin.y ;
-    _transactionview.frame = frame;
+    _shopdetailview.frame = shopDetailFrame;
     
+    height += _shopdetailview.frame.size.height;
+
+    [_transactionview layoutIfNeeded];
+    CGRect transactionViewFrame = _transactionview.frame;
+    transactionViewFrame.origin.y = height;
+    _transactionview.frame = transactionViewFrame;
+    
+    height += _transactionview.frame.size.height;
+
     [_tableshipment layoutIfNeeded];
-    CGSize size = _tableshipment.contentSize;
-    CGRect tableframe = _tableshipment.frame;
-    tableframe.size.height = size.height;
-    _tableshipment.frame = tableframe;
-    frame = _shipmentview.frame;
-    frame.origin.y = _transactionview.frame.size.height + _transactionview.frame.origin.y;
-    frame.size.height = size.height + delta;
-    _shipmentview.frame = frame;
+    CGRect shipmentViewFrame = _shipmentview.frame;
+    shipmentViewFrame.origin.y = height;
+    NSInteger numberOfShipments = 0;
+    for (int i = 0; i < _shop.result.shipment.count; i++) {
+        NSArray *packages = ((Shipment *)[_shop.result.shipment objectAtIndex:i]).shipment_package;
+        numberOfShipments += packages.count;
+    }
+    shipmentViewFrame.size.height = (numberOfShipments * 43) + 39;
+    _shipmentview.frame = shipmentViewFrame;
+    
+    height += _shipmentview.frame.size.height;
     
     [_tablepayment layoutIfNeeded];
-    size = _tablepayment.contentSize;
-    tableframe = _tablepayment.frame;
-    tableframe.size.height = size.height;
-    _tablepayment.frame = tableframe;
-    frame = _paymentview.frame;
-    frame.origin.y = _shipmentview.frame.size.height + _shipmentview.frame.origin.y;
-    frame.size.height = size.height+ delta;
-    _paymentview.frame = frame;
+    CGRect paymentViewFrame = _paymentview.frame;
+    paymentViewFrame.origin.y = height;
+    NSInteger numberOfPaymets = _shop.result.payment.count;
+    paymentViewFrame.size.height = (numberOfPaymets * 43) + 39;
+    _paymentview.frame = paymentViewFrame;
     
-    frame = _ownerview.frame;
-    frame.origin.y = _paymentview.frame.size.height + _paymentview.frame.origin.y ;
-    _ownerview.frame = frame;
+    height += _paymentview.frame.size.height;
     
-    frame = _containerview.frame;
-    frame.size.height = _ownerview.frame.origin.y + _ownerview.frame.size.height + delta;
-   _containerview.frame = frame;
+    CGRect ownerViewFrame = _ownerview.frame;
+    ownerViewFrame.origin.y = height;
+    _ownerview.frame = ownerViewFrame;
     
-    CGSize viewsize = frame.size;
-    [_scrollview setContentSize:viewsize];
+    height += _ownerview.frame.size.height;
+    
+    CGRect containerViewFrame = _containerview.frame;
+    containerViewFrame.size.height = height;
+    _containerview.frame = containerViewFrame;
+    
+    _scrollview.contentSize = CGSizeMake(self.view.frame.size.width, height);
+    _scrollview.contentInset = UIEdgeInsetsMake(0, 0, -130, 0);
+
 }
 
 -(void)setAddressDataView:(ShopInfoAddressView*)view withData:(id)data
 {
     Address *address = data;
-    view.labelname.text = (address.address_name == 0)?@"-":address.address_name;
-    view.labelDistric.text = (address.address_district == 0)?@"-":address.address_district;
-    view.labelcity.text = (address.address_city ==0)?@"-":address.address_city;
-    view.labelprov.text = (address.address_province ==0)?@"-":address.address_province;
-    view.labelpostal.text = (address.address_postal ==0)?@"-":address.address_postal;
-    view.labelemail.text = (address.address_email ==0)?@"-":address.address_email;
-    view.labelfax.text = (address.address_fax ==0)?@"-":address.address_fax;
-    view.labelphone.text = (address.address_phone ==0)?@"-":address.address_phone;
+    view.labelname.text = (address.location_address == 0) ? @"-" : [NSString convertHTML:address.location_address];
+    view.labelDistric.text = (address.location_district_name == 0) ? @"-" : address.location_district_name;
+    view.labelcity.text = (address.location_city_name ==0) ? @"-" : address.location_city_name;
+    view.labelprov.text = (address.location_province_name ==0) ? @"-" : address.location_province_name;
+    view.labelpostal.text = (address.location_postal_code ==0) ? @"-" : address.location_postal_code;
+    view.labelemail.text = (address.location_email ==0) ? @"-" : address.location_email;
+    view.labelfax.text = (address.location_fax ==0) ? @"-" : address.location_fax;
+    view.labelphone.text = (address.location_phone ==0) ? @"-" : address.location_phone;
 }
 
 #pragma mark - Properties

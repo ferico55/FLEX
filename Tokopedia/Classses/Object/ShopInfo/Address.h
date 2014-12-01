@@ -10,14 +10,25 @@
 
 @interface Address : NSObject
 
-@property (nonatomic, strong) NSString *address_name;
-@property (nonatomic, strong) NSString *address_id;
-@property (nonatomic, strong) NSString *address_postal;
-@property (nonatomic, strong) NSString *address_district;
-@property (nonatomic, strong) NSString *address_fax;
-@property (nonatomic, strong) NSString *address_city;
-@property (nonatomic, strong) NSString *address_phone;
-@property (nonatomic, strong) NSString *address_email;
-@property (nonatomic, strong) NSString *address_province;
+@property (nonatomic, strong) NSString *location_addr_id;
+@property (nonatomic, strong) NSString *location_addr_name;
+
+@property (nonatomic, strong) NSString *location_address;
+
+@property (nonatomic, strong) NSString *location_city_id;
+@property (nonatomic, strong) NSString *location_city_name;
+
+@property (nonatomic, strong) NSString *location_postal_code;
+@property (nonatomic, strong) NSString *location_area;
+
+@property (nonatomic, strong) NSString *location_phone;
+@property (nonatomic, strong) NSString *location_email;
+@property (nonatomic, strong) NSString *location_fax;
+
+@property (nonatomic, strong) NSString *location_district_id;
+@property (nonatomic, strong) NSString *location_district_name;
+
+@property (nonatomic, strong) NSString *location_province_id;
+@property (nonatomic, strong) NSString *location_province_name;
 
 @end

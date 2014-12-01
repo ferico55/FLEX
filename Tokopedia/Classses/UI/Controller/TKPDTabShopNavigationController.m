@@ -1250,16 +1250,20 @@
                                                     kTKPDDETAILSHOP_APIPAYMENTNAMEKEY]];
     
     RKObjectMapping *addressMapping = [RKObjectMapping mappingForClass:[Address class]];
-    [addressMapping addAttributeMappingsFromArray:@[kTKPDDETAILSHOP_APIADDRESSKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSNAMEKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSIDKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSPOSTALKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSDISTRICTKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSFAXKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSCITYKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSPHONEKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSEMAILKEY,
-                                                    kTKPDDETAILSHOP_APIADDRESSPROVINCEKEY
+    [addressMapping addAttributeMappingsFromArray:@[kTKPDSHOP_APIADDRESSIDKEY,
+                                                    kTKPDSHOP_APIADDRESSNAMEKEY,
+                                                    kTKPDSHOP_APIADDRESSKEY,
+                                                    kTKPDSHOP_APICITYIDKEY,
+                                                    kTKPDSHOP_APICITYNAMEKEY,
+                                                    kTKPDSHOP_APIPOSTALCODEKEY,
+                                                    kTKPDSHOP_APILOCATIONAREAKEY,
+                                                    kTKPDSHOP_APIPHONEKEY,
+                                                    kTKPDSHOP_APIEMAILKEY,
+                                                    kTKPDSHOP_APIDISTRICTIDKEY,
+                                                    kTKPDSHOP_APIDISTRICTNAMEKEY,
+                                                    kTKPDSHOP_APIPROVINCEIDKEY,
+                                                    kTKPDSHOP_APIPROVINCENAMEKEY,
+                                                    kTKPDSHOP_APIFAXKEY,
                                                     ]];
     // Relationship Mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];

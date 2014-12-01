@@ -143,11 +143,11 @@
 			((ShopNotesCell*)cell).delegate = self;
 		}
         
-        if (_list.count > indexPath.row) {
-            NotesList *list = _list[indexPath.row];
-            ((ShopNotesCell*)cell).label.text = list.notes_title;
-            ((ShopNotesCell*)cell).indexpath = indexPath;
-        }
+        NotesList *list = _list[indexPath.row];
+        ((ShopNotesCell*)cell).label.text = list.note_title;
+        ((ShopNotesCell*)cell).indexpath = indexPath;
+
+        NSLog(@"%@", list);
         
 		return cell;
     } else {
@@ -162,6 +162,9 @@
         cell.textLabel.text = kTKPDDETAIL_NODATACELLTITLE;
         cell.detailTextLabel.text = kTKPDDETAIL_NODATACELLDESCS;
     }
+
+    NSLog(@"asdasd");
+    
     return cell;
 }
 
@@ -223,9 +226,9 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResult class]];
 
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[NotesList class]];
-    [listMapping addAttributeMappingsFromArray:@[kTKPDNOTES_APINOTESIDKEY,
-                                                 kTKPDNOTES_APINOTESSTATUSKEY,
-                                                 kTKPDNOTES_APINOTESTITLEKEY
+    [listMapping addAttributeMappingsFromArray:@[kTKPDNOTE_APINOTEIDKEY,
+                                                 kTKPDNOTE_APINOTESSTATUSKEY,
+                                                 kTKPDNOTE_APINOTESTITLEKEY
                                                        ]];
     
     //add relationship mapping
@@ -410,7 +413,7 @@
 {
     ShopNotesDetailViewController *vc = [ShopNotesDetailViewController new];
     NotesList *list = _list[indexpath.row];
-    vc.data = @{kTKPDNOTES_APINOTESIDKEY:list.notes_id,kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)};
+    vc.data = @{kTKPDNOTE_APINOTEIDKEY:list.note_id,kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)};
     [self.navigationController pushViewController:vc animated:YES];
 }
 

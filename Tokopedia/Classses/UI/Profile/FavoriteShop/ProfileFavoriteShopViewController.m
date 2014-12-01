@@ -433,6 +433,8 @@
             }
         }
     }
+    [_act stopAnimating];
+    _table.tableFooterView = nil;
 }
 
 -(void)requesttimeout

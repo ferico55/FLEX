@@ -82,7 +82,7 @@
     
     //cache
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTEDETAIL_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDNOTES_APINOTESIDKEY] integerValue]]];
+    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTEDETAIL_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDNOTE_APINOTEIDKEY] integerValue]]];
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
@@ -158,7 +158,7 @@
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETNOTESDETAILKEY,
                             kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0),
-                            kTKPDNOTES_APINOTEIDKEY : [_data objectForKey:kTKPDNOTES_APINOTESIDKEY]?:@(0)
+                            kTKPDNOTE_APINOTEIDKEY : [_data objectForKey:kTKPDNOTE_APINOTEIDKEY]?:@(0)
                             };
     
     [_cachecontroller getFileModificationDate];

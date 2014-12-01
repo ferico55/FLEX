@@ -228,9 +228,9 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResult class]];
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[NotesList class]];
-    [listMapping addAttributeMappingsFromArray:@[kTKPDNOTES_APINOTESIDKEY,
-                                                 kTKPDNOTES_APINOTESSTATUSKEY,
-                                                 kTKPDNOTES_APINOTESTITLEKEY
+    [listMapping addAttributeMappingsFromArray:@[kTKPDNOTE_APINOTEIDKEY,
+                                                 kTKPDNOTE_APINOTESSTATUSKEY,
+                                                 kTKPDNOTE_APINOTESTITLEKEY
                                                  ]];
     
     //add relationship mapping
@@ -524,7 +524,7 @@
     SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
     vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
                 kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
-                kTKPDNOTES_APINOTEIDKEY:list.notes_id};
+                kTKPDNOTE_APINOTEIDKEY:list.notes_id};
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -539,7 +539,7 @@
             SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
             vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
                         kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY),
-                        kTKPDNOTES_APINOTEIDKEY : list.notes_id
+                        kTKPDNOTE_APINOTEIDKEY : list.notes_id
                         };
             [self.navigationController pushViewController:vc animated:YES];
             break;
