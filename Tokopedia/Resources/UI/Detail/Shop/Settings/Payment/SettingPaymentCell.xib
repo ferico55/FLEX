@@ -26,6 +26,10 @@
                                 <rect key="frame" x="251" y="11" width="51" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </switch>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="a0t-uF-bHA">
+                                <rect key="frame" x="88" y="18" width="20" height="20"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                     </view>
@@ -43,10 +47,14 @@
                         <state key="normal" title="Baca syarat dan ketentuannya disini">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
+                        <connections>
+                            <action selector="tap:" destination="kqP-WY-wxe" eventType="touchUpInside" id="rqW-cM-Wta"/>
+                        </connections>
                     </button>
                 </subviews>
             </tableViewCellContentView>
             <connections>
+                <outlet property="act" destination="a0t-uF-bHA" id="yYF-J5-wRp"/>
                 <outlet property="buttonterms" destination="EZL-AC-2X8" id="hRh-To-tM2"/>
                 <outlet property="labeldescription" destination="C1w-Qe-oqf" id="wPB-ih-5bk"/>
                 <outlet property="switchpayment" destination="Wr0-D4-usW" id="ZUT-dU-wkO"/>

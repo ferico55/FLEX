@@ -10,10 +10,6 @@
 
 @interface NotesList : NSObject
 
-@property (strong, nonatomic) NSString *notes_id;
-@property (strong, nonatomic) NSString *notes_status;
-@property (strong, nonatomic) NSString *notes_title;
-
 @property (strong, nonatomic) NSString *note_id;
 @property (strong, nonatomic) NSString *note_status;
 @property (strong, nonatomic) NSString *note_title;

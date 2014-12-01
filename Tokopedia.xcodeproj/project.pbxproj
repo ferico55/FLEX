@@ -639,6 +639,8 @@
 		FC36E17219B0673800AF74C1 /* NSStringCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36E0C619B0673700AF74C1 /* NSStringCategory.m */; };
 		FC36E18F19B0673800AF74C1 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC36E11919B0673700AF74C1 /* Lato-Bold.ttf */; };
 		FC36E19019B0673800AF74C1 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FC36E11A19B0673700AF74C1 /* Lato-Regular.ttf */; };
+		FC3A65251A2C0B4100DED271 /* SettingPayment.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3A65241A2C0B4100DED271 /* SettingPayment.m */; };
+		FC3A65281A2C0B8800DED271 /* SettingPaymentResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3A65271A2C0B8800DED271 /* SettingPaymentResult.m */; };
 		FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FC681F6619B6D62200C58548 /* libsqlite3.dylib */; };
 		FC681F6D19B6DDBD00C58548 /* TokopediaDB.db in Resources */ = {isa = PBXBuildFile; fileRef = FC681F6C19B6DDBD00C58548 /* TokopediaDB.db */; };
 		FCA774CC19F60C540041CFE1 /* RKObjectManagerCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA774CB19F60C540041CFE1 /* RKObjectManagerCategory.m */; };
@@ -972,8 +974,6 @@
 		FC0D901D1A257C41007BD69F /* AlertListViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertListViewCell.m; sourceTree = "<group>"; };
 		FC0D901E1A257C41007BD69F /* TKPDAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDAlertView.h; sourceTree = "<group>"; };
 		FC0D901F1A257C41007BD69F /* TKPDAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDAlertView.m; sourceTree = "<group>"; };
-		FC0D90211A257C41007BD69F /* AlertCameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertCameraView.h; sourceTree = "<group>"; };
-		FC0D90221A257C41007BD69F /* AlertCameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertCameraView.m; sourceTree = "<group>"; };
 		FC0D90231A257C41007BD69F /* camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camera.h; sourceTree = "<group>"; };
 		FC0D90241A257C41007BD69F /* CameraAlbumListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraAlbumListCell.h; sourceTree = "<group>"; };
 		FC0D90251A257C41007BD69F /* CameraAlbumListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraAlbumListCell.m; sourceTree = "<group>"; };
@@ -1652,6 +1652,10 @@
 		FC36E11A19B0673700AF74C1 /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
 		FC36E1CD19B067AD00AF74C1 /* Tkpd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tkpd.h; sourceTree = "<group>"; };
 		FC36E1CE19B067AD00AF74C1 /* TkpdImg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TkpdImg.h; sourceTree = "<group>"; };
+		FC3A65231A2C0B4100DED271 /* SettingPayment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingPayment.h; sourceTree = "<group>"; };
+		FC3A65241A2C0B4100DED271 /* SettingPayment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingPayment.m; sourceTree = "<group>"; };
+		FC3A65261A2C0B8800DED271 /* SettingPaymentResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingPaymentResult.h; sourceTree = "<group>"; };
+		FC3A65271A2C0B8800DED271 /* SettingPaymentResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingPaymentResult.m; sourceTree = "<group>"; };
 		FC681F6619B6D62200C58548 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		FC681F6819B6D6A100C58548 /* DBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DBManager.h; sourceTree = "<group>"; };
 		FC681F6919B6D6A100C58548 /* DBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DBManager.m; sourceTree = "<group>"; };
@@ -2379,8 +2383,6 @@
 		FC0D90201A257C41007BD69F /* Camera */ = {
 			isa = PBXGroup;
 			children = (
-				FC0D90211A257C41007BD69F /* AlertCameraView.h */,
-				FC0D90221A257C41007BD69F /* AlertCameraView.m */,
 				FC0D90231A257C41007BD69F /* camera.h */,
 				FC0D90241A257C41007BD69F /* CameraAlbumListCell.h */,
 				FC0D90251A257C41007BD69F /* CameraAlbumListCell.m */,
@@ -2598,6 +2600,7 @@
 		FC0D90941A257C41007BD69F /* Shop */ = {
 			isa = PBXGroup;
 			children = (
+				FC0D90BD1A257C41007BD69F /* Settings */,
 				FC0D90951A257C41007BD69F /* Edit */,
 				FC0D909A1A257C41007BD69F /* Favorited */,
 				FC0D909F1A257C41007BD69F /* Info */,
@@ -2607,7 +2610,6 @@
 				FC0D90BA1A257C41007BD69F /* SendMessageViewController.h */,
 				FC0D90BB1A257C41007BD69F /* SendMessageViewController.m */,
 				FC0D90BC1A257C41007BD69F /* SendMessageViewController.xib */,
-				FC0D90BD1A257C41007BD69F /* Settings */,
 				FC0D90E81A257C41007BD69F /* Talk */,
 			);
 			path = Shop;
@@ -4089,6 +4091,7 @@
 		FC0E49231A285B1A00BAC3E7 /* ShopSettings */ = {
 			isa = PBXGroup;
 			children = (
+				FC3A65221A2C0B4100DED271 /* Payment */,
 				FC0E49241A285B1A00BAC3E7 /* Location */,
 				FC0E49291A285B1A00BAC3E7 /* ShopSettings.h */,
 				FC0E492A1A285B1A00BAC3E7 /* ShopSettings.m */,
@@ -4323,6 +4326,17 @@
 			children = (
 			);
 			path = Sound;
+			sourceTree = "<group>";
+		};
+		FC3A65221A2C0B4100DED271 /* Payment */ = {
+			isa = PBXGroup;
+			children = (
+				FC3A65231A2C0B4100DED271 /* SettingPayment.h */,
+				FC3A65241A2C0B4100DED271 /* SettingPayment.m */,
+				FC3A65261A2C0B8800DED271 /* SettingPaymentResult.h */,
+				FC3A65271A2C0B8800DED271 /* SettingPaymentResult.m */,
+			);
+			path = Payment;
 			sourceTree = "<group>";
 		};
 		FC681F6B19B6DDBD00C58548 /* Database */ = {
@@ -4977,6 +4991,7 @@
 				FC0E49421A285B1A00BAC3E7 /* ShipmentPackage.m in Sources */,
 				FC0D91F31A257C41007BD69F /* HotlistViewController.m in Sources */,
 				FC0D91AF1A257C41007BD69F /* StickyAlert.m in Sources */,
+				FC3A65281A2C0B8800DED271 /* SettingPaymentResult.m in Sources */,
 				85AAEEE71A2589460064A518 /* HPTextViewInternal.m in Sources */,
 				FC0D92171A257C41007BD69F /* SettingBankEditViewController.m in Sources */,
 				FC0D91EC1A257C41007BD69F /* GeneralReviewCell.m in Sources */,
@@ -4987,6 +5002,7 @@
 				85AAEE5B1A2587CF0064A518 /* Breadcrumb.m in Sources */,
 				FC0D92141A257C41007BD69F /* SettingBankAccountViewController.m in Sources */,
 				85AAEE8F1A2587D00064A518 /* InboxMessageList.m in Sources */,
+				FC3A65251A2C0B4100DED271 /* SettingPayment.m in Sources */,
 				85AAEED51A2587D00064A518 /* GeneratedHost.m in Sources */,
 				FC0D91D81A257C41007BD69F /* SettingEtalaseEditViewController.m in Sources */,
 				FC0D91A51A257C41007BD69F /* TKPDTabBarController.m in Sources */,

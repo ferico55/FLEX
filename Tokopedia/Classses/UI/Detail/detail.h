@@ -41,6 +41,7 @@ typedef enum
 #define KTKPDETAIL_DESCRIPTION_EMPTY @"No description"
 
 #define kTKPDDETAIL_DATASHOPSKEY @"shop"
+#define kTKPDDETAIL_DATACLOSEDINFOKEY @"closedifo"
 #define kTKPDDETAIL_DATANOTEKEY @"note"
 #define kTKPDDETAIL_DATASTATUSSHOPKEY @"statusshop"
 #define kTKPDDETAIL_DATAINFOSHOPSKEY @"infoshop"
@@ -85,6 +86,8 @@ typedef enum
 
 #define kTKPDDETAIL_APIGETSHOPNOTESKEY @"get_shop_notes"
 #define kTKPDDETAIL_APIGETSHOPNOTEKEY @"get_shop_note"
+
+#define kTKPDDETAIL_APIGETPAYMENTINFOKEY @"get_payment_info"
 
 #define kTKPDDETAIL_APIGETSHOPFAVORITEDKEY @"get_people_who_favorite_myshop"
 #define kTKPDDETAIL_APISETSHOPINFOKEY @"event_update_shop_info"
@@ -240,8 +243,12 @@ typedef enum
 #define kTKPDDETAILSHOP_APISHIPMENTNAMEKEY @"shipment_name"
 
 #define kTKPDDETAILSHOP_APIPAYMENTKEY @"payment"
+#define kTKPDDETAILSHOP_APIPAYMENTOPTIONKEY @"payment_options"
 #define kTKPDDETAILSHOP_APIPAYMENTIMAGEKEY @"payment_image"
+#define kTKPDDETAILSHOP_APIPAYMENTIDKEY @"payment_id"
 #define kTKPDDETAILSHOP_APIPAYMENTNAMEKEY @"payment_name"
+#define kTKPDDETAILSHOP_APIPAYMENTINFOKEY @"payment_info"
+#define kTKPDDETAILSHOP_APIPAYMENTDEFAULTSTATUSKEY @"payment_default_status"
 
 #define kTKPDDETAILSHOP_APICLOSEDUNTILKEY @"closed_until"
 
@@ -442,10 +449,6 @@ typedef enum
 #define kTKPDNOTES_APINOTETITLEKEY @"note_title"
 #define kTKPDNOTES_APINOTECONTENTKEY @"note_content"
 
-#define kTKPDNOTES_APINOTESIDKEY @"notes_id"
-#define kTKPDNOTES_APINOTESSTATUSKEY @"notes_status"
-#define kTKPDNOTES_APINOTESTITLEKEY @"notes_title"
-
 #define kTKPDNOTE_APINOTESTITLEKEY @"notes_title"
 #define kTKPDNOTE_APINOTESUPDATETIMEKEY @"notes_update_time"
 #define kTKPDNOTE_APINOTESCONTENTKEY @"notes_content"
@@ -490,7 +493,6 @@ typedef enum
 #define kTKPDDETAILCATALOG_APINAMEKEY @"name"
 #define kTKPDDETAILCATALOG_APIMINPRICEKEY @"min_price"
 
-#define kTKPDDETAIL_APILISTKEY @"list"
 #define kTKPDDETAIL_APIPAGINGKEY @"paging"
 #define kTKPDDETAIL_APIDETAILKEY @"detail"
 
@@ -599,7 +601,7 @@ typedef enum
 #define kTKPDDETAILSHOPNOTEDETAIL_APIRESPONSEFILEFORMAT @"shopnotedetail%d"
 #define kTKPDDETAILSHOPETALASE_APIRESPONSEFILEFORMAT @"shopetalase%d"
 #define kTKPDDETAILSHOPLOCATION_APIRESPONSEFILEFORMAT @"shoplocation%d"
-
+#define kTKPDDETAILSHOPPAYMENT_APIRESPONSEFILEFORMAT @"shoppayment%d"
 #define kTKPDDETAILSHOPSHIPPING_APIRESPONSEFILEFORMAT @"shopshipping%d"
 
 #define kTKPDDETAILCATALOG_APIRESPONSEFILEFORMAT @"catalogdetail%d.plist"

@@ -49,4 +49,29 @@
     return html;
 }
 
++(NSString *)getLinkFromHTMLString:(NSString*)html
+{
+    NSScanner *myScanner;
+    NSString *text = nil;
+    myScanner = [NSScanner scannerWithString:html];
+    
+    while ([myScanner isAtEnd] == NO) {
+        
+        [myScanner scanUpToString:@"<" intoString:NULL] ;
+        
+        [myScanner scanUpToString:@">" intoString:&text] ;
+        
+        if ([text rangeOfString:@"a href="].location == NSNotFound) {
+        } else {
+            text = [text stringByReplacingOccurrencesOfString:@"<a href="
+                                                   withString:@""];
+            text = [text stringByReplacingOccurrencesOfString:@" target=" withString:@""];
+            text = [text stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+            text = [text stringByReplacingOccurrencesOfString:@"_blank" withString:@""];
+            return text;
+        }
+    }
+    return nil;
+}
+
 @end

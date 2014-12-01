@@ -18,14 +18,11 @@
 #import "SettingShipmentInfoViewController.h"
 #import "SettingShipmentCell.h"
 #import "SettingShipmentSectionFooterView.h"
-#import "SettingShipmentSectionFooter2View.h"
-#import "SettingShipmentSectionFooter3View.h"
-#import "SettingShipmentSectionFooter4View.h"
 
 #import "../../../../SortFilterShare/sortfiltershare.h"
 #import "../../../../SortFilterShare/Filter/FilterLocation/FilterLocationViewController.h"
 
-@interface SettingShipmentViewController ()<UITableViewDataSource,UITableViewDelegate, SettingShipmentCellDelegate, SettingShipmentSectionFooterViewDelegate,SettingShipmentSectionFooter2ViewDelegate,SettingShipmentSectionFooter3ViewDelegate,SettingShipmentSectionFooter4ViewDelegate,FilterLocationViewControllerDelegate>
+@interface SettingShipmentViewController ()<UITableViewDataSource,UITableViewDelegate, SettingShipmentCellDelegate, SettingShipmentSectionFooterViewDelegate,FilterLocationViewControllerDelegate>
 {
     
     NSInteger _footerheightjne;
@@ -63,9 +60,6 @@
 @property (strong, nonatomic) IBOutlet UIView *viewheader;
 @property (strong, nonatomic) IBOutlet SettingShipmentSectionHeaderView *viewsectionheader;
 @property (strong, nonatomic) IBOutlet SettingShipmentSectionFooterView *viewfooter;
-@property (strong, nonatomic) IBOutlet SettingShipmentSectionFooter2View *viewfooter2;
-@property (strong, nonatomic) IBOutlet SettingShipmentSectionFooter3View *viewfooter3;
-@property (strong, nonatomic) IBOutlet SettingShipmentSectionFooter4View *viewfooter4;
 @property (weak, nonatomic) IBOutlet UIButton *buttonprovinsi;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldkodepos;
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -149,8 +143,8 @@
     self.navigationItem.rightBarButtonItem = _barbuttonsave;
     
     _footerheightjne = _viewfooter.frame.size.height;
-    _footerheightpos = _viewfooter3.frame.size.height;
-    _footerheighttiki = _viewfooter4.frame.size.height;
+    
+    _buttonprovinsi.enabled = NO;
     
     [self configureRestKit];
     [self request];
@@ -239,8 +233,9 @@
         NSInteger posminweightvalue = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY] integerValue];
         BOOL posfee = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APIPOSFEEKEY] boolValue];
         NSInteger posfeevalue = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY] integerValue];
+
+        SettingShipmentSectionFooterView *v = [SettingShipmentSectionFooterView newview];
         if ([shipment.shipment_name isEqualToString:@"JNE"]) {
-            SettingShipmentSectionFooterView *v = [SettingShipmentSectionFooterView newview];
             //TODO::
             v.stepperminweight.value = jneminweightvalue;
             v.switchweightmin.on = jneminweight;
@@ -251,11 +246,15 @@
             v.tag = section+10;
             v.labelinfo.text = [NSString stringWithFormat:@"Info Tentang %@",shipment.shipment_name];
             v.delegate = self;
+            [v updateView];
             return v;
         }
         else if ([shipment.shipment_name isEqualToString:@"Tiki"])
         {
-            SettingShipmentSectionFooter4View *v = [SettingShipmentSectionFooter4View newview];
+            //SettingShipmentSectionFooter4View *v = [SettingShipmentSectionFooter4View newview];
+            v.viewminweightflag.hidden = YES;
+            v.viewminweight.hidden = YES;
+            v.viewdiffcity.hidden = YES;
             
             v.switchfee.on = tikifee;
             v.textfieldfee.text = [NSString stringWithFormat:@"%d",tikifeevalue];
@@ -267,27 +266,34 @@
             v.switchfee.on = tikifee;
             v.textfieldfee.text = [NSString stringWithFormat:@"%d",tikifeevalue?:_shippinginfo.result.tiki_fee];
             v.labelfee.text = [NSString stringWithFormat:@"Biaya tambahan pengiriman TIKI"];
+            [v updateView];
             return v;
         }
         else if ([shipment.shipment_name isEqualToString:@"Pos Indonesia"])
         {
-            SettingShipmentSectionFooter3View *v = [SettingShipmentSectionFooter3View newview];
+            //SettingShipmentSectionFooter3View *v = [SettingShipmentSectionFooter3View newview];
+            v.viewdiffcity.hidden = YES;
             v.tag = section+10;
             v.labelinfo.text = [NSString stringWithFormat:@"Info Tentang %@",shipment.shipment_name];
             v.delegate = self;
             
-            //TODO::
             v.stepperminweight.value = posminweightvalue?:_shippinginfo.result.pos_min_weight.min_weight;
             v.switchweightmin.on = posminweight;
             v.switchfee.on = posfee;
             v.textfieldfee.text = [NSString stringWithFormat:@"%d",posfeevalue?:_shippinginfo.result.pos_fee];
             
             v.labelfee.text = [NSString stringWithFormat:@"Biaya tambahan pengiriman POS"];
+            [v updateView];
             return v;
         }
         else
         {
-            SettingShipmentSectionFooter2View *v = [SettingShipmentSectionFooter2View newview];
+            v.viewminweightflag.hidden = YES;
+            v.viewminweight.hidden = YES;
+            v.viewdiffcity.hidden = YES;
+            v.viewfee.hidden = YES;
+            v.viewswitchfee.hidden = YES;
+            //SettingShipmentSectionFooter2View *v = [SettingShipmentSectionFooter2View newview];
             v.tag = section+10;
             v.labelinfo.text = [NSString stringWithFormat:@"Info Tentang %@",shipment.shipment_name];
             v.delegate = self;
@@ -312,23 +318,25 @@
 {
     BOOL sectionIsExanded = [_expandedSections containsObject:[NSNumber numberWithInteger:section]];
     if (sectionIsExanded) {
-        id shipment = _shippinginfo.result.shipment;
-        ShippingInfoShipments *shipments = shipment[section];
-        if ([shipments.shipment_name isEqualToString:@"JNE"]) {
-            return _footerheightjne;
-        }
-        else if ([shipments.shipment_name isEqualToString:@"Tiki"])
-        {
-            return _footerheighttiki;
-        }
-        else if ([shipments.shipment_name isEqualToString:@"Pos Indonesia"])
-        {
-            return _footerheightpos;
-        }
-        else
-        {
-            return _viewfooter2.frame.size.height;
-        }
+        //id shipment = _shippinginfo.result.shipment;
+        //ShippingInfoShipments *shipments = shipment[section];
+        //
+        //if ([shipments.shipment_name isEqualToString:@"JNE"]) {
+        //    return _footerheightjne;
+        //}
+        //else if ([shipments.shipment_name isEqualToString:@"Tiki"])
+        //{
+        //    return _footerheighttiki;
+        //}
+        //else if ([shipments.shipment_name isEqualToString:@"Pos Indonesia"])
+        //{
+        //    return _footerheightpos;
+        //}
+        //else
+        //{
+        //    return _viewfooter2.frame.size.height;
+        //}
+        return _footerheightjne;
     } else return 0;
     
 
@@ -721,6 +729,7 @@
                 for (int i = 0; i<shipment.count; i++) {
                     [_expandedSections addObject:@(i)];
                 }
+                _buttonprovinsi.enabled = YES;
                 [_buttonprovinsi setTitle:_shippinginfo.result.shop_shipping.district_name?:@"Pilih Provinsi" forState:UIControlStateNormal];
                 _textfieldkodepos.text = _shippinginfo.result.shop_shipping.postal_code;
                 [self updateLogisticDistrictSupporteds:_shippinginfo.result.shop_shipping.district_shipping_supported];
@@ -964,22 +973,22 @@
         case 11:
         {
             //TIKI
-            BOOL fee = ((SettingShipmentSectionFooter4View*)view).switchfee.on;
+            BOOL fee = ((SettingShipmentSectionFooterView*)view).switchfee.on;
             [_datainput setObject:@(fee) forKey:kTKPDSHOPSHIPMENT_APITIKIFEEKEY];
-            NSInteger feevalue = [((SettingShipmentSectionFooter4View*)view).textfieldfee.text integerValue];
+            NSInteger feevalue = [((SettingShipmentSectionFooterView*)view).textfieldfee.text integerValue];
             [_datainput setObject:@(feevalue) forKey:kTKPDSHOPSHIPMENT_APITIKIFEEVALUEKEY];
             break;
         }
         case 12:
         {
             //POS
-            BOOL fee = ((SettingShipmentSectionFooter3View*)view).switchfee.on;
+            BOOL fee = ((SettingShipmentSectionFooterView*)view).switchfee.on;
             [_datainput setObject:@(fee) forKey:kTKPDSHOPSHIPMENT_APIPOSFEEKEY];
-            NSInteger feevalue = [((SettingShipmentSectionFooter3View*)view).textfieldfee.text integerValue];
+            NSInteger feevalue = [((SettingShipmentSectionFooterView*)view).textfieldfee.text integerValue];
             [_datainput setObject:@(feevalue) forKey:kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY];
-            BOOL minweight = ((SettingShipmentSectionFooter3View*)view).switchweightmin.on;
+            BOOL minweight = ((SettingShipmentSectionFooterView*)view).switchweightmin.on;
             [_datainput setObject:@(minweight) forKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY];
-            NSInteger minweightvalue = [((SettingShipmentSectionFooter3View*)view).labelweightmin.text integerValue];
+            NSInteger minweightvalue = [((SettingShipmentSectionFooterView*)view).labelweightmin.text integerValue];
             [_datainput setObject:@(minweightvalue) forKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY];
             break;
         }

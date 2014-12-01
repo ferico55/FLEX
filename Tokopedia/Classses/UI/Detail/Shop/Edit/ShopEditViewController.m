@@ -746,7 +746,8 @@
             {
                 // adjust shop status
                 ShopEditStatusViewController *vc = [ShopEditStatusViewController new];
-                vc.data = @{kTKPDDETAIL_DATASTATUSSHOPKEY: _shop.is_open?:@(0)};
+                vc.data = @{kTKPDDETAIL_DATASTATUSSHOPKEY: _shop.is_open?:@(0),
+                            kTKPDDETAIL_DATACLOSEDINFOKEY: _shop.closed_info};
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
                 break;

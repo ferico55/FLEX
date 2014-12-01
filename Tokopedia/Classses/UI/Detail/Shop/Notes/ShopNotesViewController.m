@@ -145,7 +145,7 @@
         
         if (_list.count > indexPath.row) {
             NotesList *list = _list[indexPath.row];
-            ((ShopNotesCell*)cell).label.text = list.notes_title;
+            ((ShopNotesCell*)cell).label.text = list.note_title;
             ((ShopNotesCell*)cell).indexpath = indexPath;
         }
         
@@ -223,14 +223,14 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[NotesResult class]];
 
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[NotesList class]];
-    [listMapping addAttributeMappingsFromArray:@[kTKPDNOTES_APINOTESIDKEY,
-                                                 kTKPDNOTES_APINOTESSTATUSKEY,
-                                                 kTKPDNOTES_APINOTESTITLEKEY
+    [listMapping addAttributeMappingsFromArray:@[kTKPDNOTES_APINOTEIDKEY,
+                                                 kTKPDNOTES_APINOTESTATUSKEY,
+                                                 kTKPDNOTES_APINOTETITLEKEY
                                                        ]];
     
     //add relationship mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APILISTKEY toKeyPath:kTKPDDETAIL_APILISTKEY withMapping:listMapping];
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];
     
     // register mappings with the provider using a response descriptor
@@ -410,7 +410,7 @@
 {
     ShopNotesDetailViewController *vc = [ShopNotesDetailViewController new];
     NotesList *list = _list[indexpath.row];
-    vc.data = @{kTKPDNOTES_APINOTESIDKEY:list.notes_id,kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)};
+    vc.data = @{kTKPDNOTES_APINOTEIDKEY:list.note_id,kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)};
     [self.navigationController pushViewController:vc animated:YES];
 }
 

@@ -16,9 +16,6 @@
                 <outlet property="thumbheaderjne" destination="dRO-Q6-UZm" id="oge-J1-AcL"/>
                 <outlet property="view" destination="iN0-l3-epB" id="dQ9-X6-ZSx"/>
                 <outlet property="viewfooter" destination="jZg-vu-MDD" id="SQP-hn-DXt"/>
-                <outlet property="viewfooter2" destination="Wt6-Ti-5Kj" id="1ik-tv-n0o"/>
-                <outlet property="viewfooter3" destination="dbO-8s-WEy" id="gpV-eu-r4M"/>
-                <outlet property="viewfooter4" destination="Mjo-Oo-l8G" id="4W5-A0-C5y"/>
                 <outlet property="viewheader" destination="EX2-TJ-iHe" id="D7Y-fC-5fH"/>
                 <outlet property="viewsectionheader" destination="Yb4-NI-9Od" id="Wll-K8-aBx"/>
             </connections>

@@ -13,5 +13,7 @@
 @property (nonatomic, strong) NSString *payment_image;
 @property (nonatomic, strong) NSString *payment_id;
 @property (nonatomic, strong) NSString *payment_name;
+@property (nonatomic, strong) NSString *payment_info;
+@property (nonatomic, strong) NSString *payment_default_status;
 
 @end

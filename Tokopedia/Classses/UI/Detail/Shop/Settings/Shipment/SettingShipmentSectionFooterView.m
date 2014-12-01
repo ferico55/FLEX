@@ -10,11 +10,6 @@
 
 @interface SettingShipmentSectionFooterView ()
 
-@property (weak, nonatomic) IBOutlet UIView *viewfee;
-@property (weak, nonatomic) IBOutlet UIView *viewdiffcity;
-@property (weak, nonatomic) IBOutlet UIView *viewminweight;
-@property (weak, nonatomic) IBOutlet UIView *viewswitchfee;
-
 @end
 
 @implementation SettingShipmentSectionFooterView
@@ -51,9 +46,9 @@
     [super awakeFromNib];
     double value = [_stepperminweight value];
     [_labelweightmin setText:[NSString stringWithFormat:@"%d", (int)value]];
-    //[self updateViewMinWeight];
-    //[self updateViewFee];
+    [self updateView];
 }
+
 
 #pragma mark - View Action
 - (IBAction)valuechange:(UIStepper*)sender {
@@ -67,12 +62,9 @@
 - (IBAction)tap:(id)sender {
     [_activetextfield resignFirstResponder];
     if ([sender isKindOfClass:[UISwitch class]]) {
-        if ((UISwitch*)sender == _switchweightmin) {
-            //[self updateViewMinWeight];
-        }
-        if ((UISwitch*)sender == _switchfee) {
-            //[self updateViewFee];
-        }
+        _viewminweight.hidden = !(!_switchweightmin);
+        _viewfee.hidden = (!_switchfee.on);
+        [self updateView];
     }
     [_delegate SettingShipmentSectionFooterView:self];
 }
@@ -131,6 +123,47 @@
 }
 
 #pragma mark - Methods
+
+-(void)adjustView:(UIView*)view1 withView:(UIView*)view2
+{
+    CGRect frame = view1.frame;
+    frame.origin.y -= view2.frame.size.height;
+    [view1 setFrame:frame];
+}
+
+-(void)updateView
+{
+    if(_viewminweightflag.hidden)
+    {
+        [self adjustView:_viewminweight withView:_viewminweightflag];
+        [self adjustView:_viewdiffcity withView:_viewminweightflag];
+        [self adjustView:_viewswitchfee withView:_viewminweightflag];
+        [self adjustView:_viewfee withView:_viewminweightflag];
+        [self adjustView:_viewinfo withView:_viewminweightflag];
+    }
+    if(_viewminweight.hidden)
+    {
+        [self adjustView:_viewdiffcity withView:_viewminweight];
+        [self adjustView:_viewswitchfee withView:_viewminweight];
+        [self adjustView:_viewfee withView:_viewminweight];
+        [self adjustView:_viewinfo withView:_viewminweight];
+    }
+    if(_viewdiffcity.hidden)
+    {
+        [self adjustView:_viewswitchfee withView:_viewdiffcity];
+        [self adjustView:_viewfee withView:_viewdiffcity];
+        [self adjustView:_viewinfo withView:_viewdiffcity];
+    }
+    if(_viewswitchfee.hidden)
+    {
+        [self adjustView:_viewfee withView:_viewswitchfee];
+        [self adjustView:_viewinfo withView:_viewswitchfee];
+    }
+    if(_viewfee.hidden)
+    {
+        [self adjustView:_viewinfo withView:_viewfee];
+    }
+}
 
 -(void)updateViewMinWeight
 {

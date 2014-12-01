@@ -74,7 +74,7 @@
 
 -(void)cancel;
 -(void)configureRestKit;
--(void)loadData;
+-(void)request;
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
 -(void)requestfailure:(id)object;
 -(void)requestprocess:(id)object;
@@ -147,7 +147,7 @@
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self loadData];
+            [self request];
         }
     }
     self.table.contentOffset = CGPointMake(0, 0);
@@ -255,7 +255,7 @@
             /** called if need to load next page **/
             //NSLog(@"%@", NSStringFromSelector(_cmd));
             [self configureRestKit];
-            [self loadData];
+            [self request];
         }
 	}
 }
@@ -397,7 +397,7 @@
     
     //add relationship mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APILISTKEY toKeyPath:kTKPDDETAIL_APILISTKEY withMapping:listMapping];
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];
     
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPAGINGKEY toKeyPath:kTKPDDETAIL_APIPAGINGKEY withMapping:pagingMapping];
@@ -405,12 +405,12 @@
     
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOP_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOPEDITOR_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
 
-- (void)loadData
+- (void)request
 {
     if (_request.isExecuting) return;
     
@@ -430,9 +430,8 @@
             _table.tableFooterView = _footer;
             [_act startAnimating];
         }
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOP_APIPATH parameters:param];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPEDITOR_APIPATH parameters:param];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        //[_objectmanager getObjectsAtPath:kTKPDDETAILSHOP_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [_timer invalidate];
             _timer = nil;
             [_act stopAnimating];
@@ -564,7 +563,7 @@
                         _table.tableFooterView = _footer;
                         [_act startAnimating];
                         [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                        [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                        [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                     }
                     else
                     {
@@ -620,7 +619,7 @@
     [_table reloadData];
     /** request data **/
     [self configureRestKit];
-    [self loadData];
+    [self request];
 }
 
 #pragma mark - Alert View Delegate

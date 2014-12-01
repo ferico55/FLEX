@@ -190,6 +190,7 @@
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="labelfee" destination="RzU-P7-sm0" id="5oj-v4-aru"/>
                 <outlet property="labelinfo" destination="NWK-os-O5a" id="IvN-S3-O3K"/>
                 <outlet property="labelweightmin" destination="5QR-sC-hWd" id="cVT-7t-EoD"/>
                 <outlet property="stepperminweight" destination="I7K-Qd-EAT" id="GEZ-BS-CjB"/>
@@ -201,6 +202,7 @@
                 <outlet property="viewfee" destination="meB-RE-pQn" id="vzh-sa-NQN"/>
                 <outlet property="viewinfo" destination="ibB-ID-afq" id="RBV-Bq-efo"/>
                 <outlet property="viewminweight" destination="8eG-cf-R05" id="FtE-ux-2Ic"/>
+                <outlet property="viewminweightflag" destination="dRp-TQ-1Bd" id="HL9-sD-6j0"/>
                 <outlet property="viewswitchfee" destination="0cu-dC-QZL" id="C3f-fH-FIN"/>
             </connections>
         </view>

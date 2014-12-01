@@ -30,8 +30,16 @@
 @property (weak, nonatomic) IBOutlet UISwitch *switchfee;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldfee;
 @property (weak, nonatomic) IBOutlet UISwitch *switchdiffdistrict;
+@property (weak, nonatomic) IBOutlet UILabel *labelfee;
 
 @property (weak, nonatomic) IBOutlet UIView *viewinfo;
+
+@property (weak, nonatomic) IBOutlet UIView *viewfee;
+@property (weak, nonatomic) IBOutlet UIView *viewminweightflag;
+@property (weak, nonatomic) IBOutlet UIView *viewdiffcity;
+@property (weak, nonatomic) IBOutlet UIView *viewminweight;
+@property (weak, nonatomic) IBOutlet UIView *viewswitchfee;
 + (id)newview;
 
+-(void)updateView;
 @end
