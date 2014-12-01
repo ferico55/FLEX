@@ -46,6 +46,7 @@
     [super awakeFromNib];
     double value = [_stepperminweight value];
     [_labelweightmin setText:[NSString stringWithFormat:@"%d", (int)value]];
+    [self layoutIfNeeded];
     [self updateView];
 }
 
