@@ -1,27 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-            <string>GothamBook</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPDTabShopNavigationController">
             <connections>
@@ -32,6 +13,7 @@
                 <outlet property="blurCoverImage" destination="teS-AC-Jf8" id="wjx-Wx-L97"/>
                 <outlet property="buttonMessage" destination="7LK-36-qbj" id="L0C-HG-yBw"/>
                 <outlet property="buttonfav" destination="cVc-Hq-EZS" id="zia-JP-3xZ"/>
+                <outlet property="buttonsetting" destination="fcF-dz-rqL" id="XyK-Kc-rC9"/>
                 <outlet property="container" destination="abB-jT-cSJ" id="x4v-nW-TEa"/>
                 <outlet property="contentview" destination="i5M-Pr-FkT" id="XhZ-73-dEU"/>
                 <outlet property="coverImageView" destination="Up4-ff-lh2" id="Y1i-J0-rbu"/>
@@ -101,7 +83,6 @@
                 <constraint firstItem="WHJ-eR-QYb" firstAttribute="top" secondItem="LRr-3G-JLn" secondAttribute="bottom" constant="10" id="p5p-9S-3Eh"/>
                 <constraint firstItem="a4r-gX-jed" firstAttribute="top" secondItem="2th-5G-Eec" secondAttribute="top" constant="8" id="sj4-iK-DqG"/>
             </constraints>
-            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="Rn0-aK-qZb">
@@ -280,8 +261,6 @@
                 <constraint firstAttribute="bottom" secondItem="1gX-pV-G32" secondAttribute="bottom" id="suV-Iv-uCt"/>
                 <constraint firstItem="WAa-CY-UR1" firstAttribute="leading" secondItem="Rn0-aK-qZb" secondAttribute="leading" id="wea-eg-cc9"/>
             </constraints>
-            <nil key="simulatedStatusBarMetrics"/>
-            <point key="canvasLocation" x="851" y="733"/>
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT" userLabel="contentView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="943"/>
@@ -315,7 +294,7 @@
                     </connections>
                 </button>
                 <button opaque="NO" clipsSubviews="YES" tag="15" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7LK-36-qbj">
-                    <rect key="frame" x="21" y="330" width="128" height="33"/>
+                    <rect key="frame" x="20" y="330" width="128" height="33"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
@@ -327,6 +306,21 @@
                     </state>
                     <connections>
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="L8A-HQ-Z0Q"/>
+                    </connections>
+                </button>
+                <button appearanceType="aqua" opaque="NO" clipsSubviews="YES" tag="16" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fcF-dz-rqL">
+                    <rect key="frame" x="20" y="330" width="128" height="33"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                    <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
+                    <state key="normal" title="Setting" image="icon_message_grey">
+                        <color key="titleColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected">
+                        <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="fe7-L0-RHD"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cVu-HK-Fzk" userLabel="Horizontal Border">
@@ -404,7 +398,6 @@
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="8ke-SH-1gU">
@@ -428,7 +421,6 @@
                 </button>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-            <nil key="simulatedStatusBarMetrics"/>
         </view>
         <swipeGestureRecognizer direction="left" id="APh-NK-HnG">
             <connections>
@@ -484,7 +476,6 @@
                 <constraint firstItem="F6R-Pu-avF" firstAttribute="leading" secondItem="0rY-ov-LFU" secondAttribute="trailing" constant="5" id="oqu-tc-CQe"/>
                 <constraint firstItem="F6R-Pu-avF" firstAttribute="top" secondItem="3Mp-3B-wFr" secondAttribute="top" constant="17" id="rme-CA-oJM"/>
             </constraints>
-            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
@@ -497,9 +488,4 @@
         <image name="icon_message.png" width="14" height="14"/>
         <image name="icon_message_grey" width="20" height="20"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

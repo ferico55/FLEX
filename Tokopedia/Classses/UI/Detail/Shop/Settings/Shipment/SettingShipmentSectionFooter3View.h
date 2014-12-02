@@ -10,11 +10,11 @@
 
 @protocol SettingShipmentSectionFooter3ViewDelegate <NSObject>
 @required
--(void)SettingShipmentSectionFooter3View:(UIView*)view;
-
+-(void)SettingShipmentSectionFooterView:(UIView*)view;
+-(void)MoveToInfoView:(UIView*)view;
 @end
 
-@interface SettingShipmentSectionFooter3View : UIView
+@interface SettingShipmentSectionFooter3View : UIView <UITextFieldDelegate>
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
 @property (nonatomic, weak) IBOutlet id<SettingShipmentSectionFooter3ViewDelegate> delegate;
@@ -26,9 +26,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelinfo;
 @property (weak, nonatomic) IBOutlet UIView *viewinfo;
 @property (weak, nonatomic) IBOutlet UISwitch *switchweightmin;
-@property (weak, nonatomic) IBOutlet UIStepper *stepperweightmin;
 @property (weak, nonatomic) IBOutlet UILabel *labelweightmin;
+@property (weak, nonatomic) IBOutlet UIStepper *stepperminweight;
 @property (weak, nonatomic) IBOutlet UISwitch *switchfee;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldfee;
+@property (weak, nonatomic) IBOutlet UILabel *labelfee;
 
 @end

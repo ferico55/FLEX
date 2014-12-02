@@ -15,7 +15,7 @@
 #import "SettingBankAccountViewController.h"
 
 #pragma mark - Setting Bank Account View Controller
-@interface SettingBankAccountViewController () <UITableViewDataSource, UITableViewDelegate, SettingBankDetailViewControllerDelegate>
+@interface SettingBankAccountViewController () <UITableViewDataSource, UITableViewDelegate, SettingBankDetailViewControllerDelegate, GeneralList1GestureCellDelegate>
 {
     BOOL _isnodata;
     

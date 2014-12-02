@@ -41,6 +41,7 @@ typedef enum
 #define KTKPDETAIL_DESCRIPTION_EMPTY @"No description"
 
 #define kTKPDDETAIL_DATASHOPSKEY @"shop"
+#define kTKPDDETAIL_DATACLOSEDINFOKEY @"closedifo"
 #define kTKPDDETAIL_DATANOTEKEY @"note"
 #define kTKPDDETAIL_DATASTATUSSHOPKEY @"statusshop"
 #define kTKPDDETAIL_DATAINFOSHOPSKEY @"infoshop"
@@ -86,6 +87,8 @@ typedef enum
 #define kTKPDDETAIL_APIGETSHOPNOTESKEY @"get_shop_notes"
 #define kTKPDDETAIL_APIGETSHOPNOTEKEY @"get_shop_note"
 
+#define kTKPDDETAIL_APIGETPAYMENTINFOKEY @"get_payment_info"
+
 #define kTKPDDETAIL_APIGETSHOPFAVORITEDKEY @"get_people_who_favorite_myshop"
 #define kTKPDDETAIL_APISETSHOPINFOKEY @"event_update_shop_info"
 #define kTKPDDETAIL_APIUPLOADGENERATEHOSTKEY @"generate_host"
@@ -113,6 +116,7 @@ typedef enum
 #define kTKPDDETAIL_APITOTALPAGEKEY @"total_page"
 #define kTKPDDETAIL_APILIMITKEY @"per_page"
 #define kTKPDDETAIL_APILOCATIONKEY @"location"
+#define kTKPDDETAIL_APIADDRESSKEY @"address"
 #define kTKPDDETAIL_APICONDITIONKEY @"condition"
 #define kTKPDDETAIL_APIORERBYKEY @"order_by"
 #define kTKPDDETAIL_APISORTKEY @"sort"
@@ -239,19 +243,12 @@ typedef enum
 #define kTKPDDETAILSHOP_APISHIPMENTNAMEKEY @"shipment_name"
 
 #define kTKPDDETAILSHOP_APIPAYMENTKEY @"payment"
+#define kTKPDDETAILSHOP_APIPAYMENTOPTIONKEY @"payment_options"
 #define kTKPDDETAILSHOP_APIPAYMENTIMAGEKEY @"payment_image"
+#define kTKPDDETAILSHOP_APIPAYMENTIDKEY @"payment_id"
 #define kTKPDDETAILSHOP_APIPAYMENTNAMEKEY @"payment_name"
-
-#define kTKPDDETAILSHOP_APIADDRESSKEY @"address"
-#define kTKPDDETAILSHOP_APIADDRESSNAMEKEY @"address_name"
-#define kTKPDDETAILSHOP_APIADDRESSIDKEY @"address_id"
-#define kTKPDDETAILSHOP_APIADDRESSPOSTALKEY @"address_postal"
-#define kTKPDDETAILSHOP_APIADDRESSDISTRICTKEY @"address_district"
-#define kTKPDDETAILSHOP_APIADDRESSFAXKEY @"address_fax"
-#define kTKPDDETAILSHOP_APIADDRESSCITYKEY @"address_city"
-#define kTKPDDETAILSHOP_APIADDRESSPHONEKEY @"address_phone"
-#define kTKPDDETAILSHOP_APIADDRESSEMAILKEY @"address_email"
-#define kTKPDDETAILSHOP_APIADDRESSPROVINCEKEY @"address_province"
+#define kTKPDDETAILSHOP_APIPAYMENTINFOKEY @"payment_info"
+#define kTKPDDETAILSHOP_APIPAYMENTDEFAULTSTATUSKEY @"payment_default_status"
 
 #define kTKPDDETAILSHOP_APICLOSEDUNTILKEY @"closed_until"
 
@@ -289,10 +286,6 @@ typedef enum
 #define kTKPDSHOPSHIPMENT_APINAMEKEY @"name"
 #define kTKPDSHOPSHIPMENT_APISPIDKEY @"sp_id"
 
-#define kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY @"min_weight"
-#define kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY @"min_weight_value"
-#define kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY @"diff_district"
-
 #define kTKPDSHOPSHIPMENT_APIDISTRICTIDKEY @"district_id"
 #define kTKPDSHOPSHIPMENT_APIPOSTALCODEKEY @"postal_code"
 #define kTKPDSHOPSHIPMENT_APIPOSTALKEY @"postal"
@@ -309,6 +302,10 @@ typedef enum
 #define kTKPDSHOPSHIPMENT_APIJNEFEEKEY @"jne_fee"
 #define kTKPDSHOPSHIPMENT_APIJNEFEEVALUEKEY @"jne_fee_value"
 #define kTKPDSHOPSHIPMENT_APIJNETICKETKEY @"jne_tiket"
+#define kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY @"min_weight"
+#define kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY @"min_weight_value"
+#define kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY @"diff_district"
+
 //POS
 #define kTKPDSHOPSHIPMENT_APIPOSFEEKEY @"pos_fee"
 #define kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY @"pos_fee_value"
@@ -337,23 +334,32 @@ typedef enum
 #define kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY @"file_path"
 #define kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY @"file_th"
 
-#pragma mark -- Shop Setting Location
-#define kTKPDSHOP_APIADDRESSIDKEY @"location_addr_id"
-#define kTKPDSHOP_APIADDRESSNAMEKEY @"location_addr_name"
-#define kTKPDSHOP_APIADDRESSKEY @"location_address"
-#define kTKPDSHOP_APICITYIDKEY @"location_city_id"
+#pragma mark -- Shop  Location
 #define kTKPDSHOP_APICITYNAMEKEY @"location_city_name"
+#define kTKPDSHOP_APIEMAILKEY @"location_email"
+#define kTKPDSHOP_APIADDRESSKEY @"location_address"
 #define kTKPDSHOP_APIPOSTALCODEKEY @"location_postal_code"
+#define kTKPDSHOP_APICITYIDKEY @"location_city_id"
 #define kTKPDSHOP_APILOCATIONAREAKEY @"location_area"
 #define kTKPDSHOP_APIPHONEKEY @"location_phone"
-#define kTKPDSHOP_APIEMAILKEY @"location_email"
-#define kTKPDSHOP_APIFAXKEY @"location_fax"
 #define kTKPDSHOP_APIDISTRICTIDKEY @"location_district_id"
-#define kTKPDSHOP_APIDISTRICTNAMEKEY @"location_district_name"
-#define kTKPDSHOP_APIPROVINCEIDKEY @"location_province_id"
 #define kTKPDSHOP_APIPROVINCENAMEKEY @"location_province_name"
+#define kTKPDSHOP_APIPROVINCEIDKEY @"location_province_id"
+#define kTKPDSHOP_APIDISTRICTNAMEKEY @"location_district_name"
+#define kTKPDSHOP_APIADDRESSIDKEY @"location_address_id"
+#define kTKPDSHOP_APIFAXKEY @"location_fax"
+#define kTKPDSHOP_APIADDRESSNAMEKEY @"location_address_name"
 
+#pragma mark -- Shop Setting Location Action
+#define kTKPDSHOPSETTINGACTION_APIPROVINCEIDKEY @"location_address_province"
+#define kTKPDSHOPSETTINGACTION_APICITYIDKEY @"location_address_city"
+#define kTKPDSHOPSETTINGACTION_APIDISTRICTIDKEY @"location_address_district"
+#define kTKPDSHOPSETTINGACTION_APIPOSTALKEY @"location_address_postal"
+#define kTKPDSHOPSETTINGACTION_APIEMAILKEY @"location_address_email"
+#define kTKPDSHOPSETTINGACTION_APIPHONEKEY @"location_address_phone"
+#define kTKPDSHOPSETTINGACTION_APIFAXKEY @"location_address_fax"
 
+#pragma mark -- GENERATED HOST
 #define kTKPDGENERATEDHOST_APIGENERATEDHOSTKEY @"generated_host"
 #define kTKPDGENERATEDHOST_APISERVERIDKEY @"server_id"
 #define kTKPDGENERATEDHOST_APIUPLOADHOSTKEY @"upload_host"
@@ -438,9 +444,10 @@ typedef enum
 #define kTKPDDETAIL_APIADDCOMMENTTALK @"add_comment_talk"
 
 #pragma mark - Notes
-#define kTKPDNOTE_APINOTEIDKEY @"note_id"
-#define kTKPDNOTE_APINOTESSTATUSKEY @"note_status"
-#define kTKPDNOTE_APINOTESTITLEKEY @"note_title"
+#define kTKPDNOTES_APINOTEIDKEY @"note_id"
+#define kTKPDNOTES_APINOTESTATUSKEY @"note_status"
+#define kTKPDNOTES_APINOTETITLEKEY @"note_title"
+#define kTKPDNOTES_APINOTECONTENTKEY @"note_content"
 
 #define kTKPDNOTE_APINOTESTITLEKEY @"notes_title"
 #define kTKPDNOTE_APINOTESUPDATETIMEKEY @"notes_update_time"
@@ -486,7 +493,6 @@ typedef enum
 #define kTKPDDETAILCATALOG_APINAMEKEY @"name"
 #define kTKPDDETAILCATALOG_APIMINPRICEKEY @"min_price"
 
-#define kTKPDDETAIL_APILISTKEY @"list"
 #define kTKPDDETAIL_APIPAGINGKEY @"paging"
 #define kTKPDDETAIL_APIDETAILKEY @"detail"
 
@@ -531,6 +537,7 @@ typedef enum
 #define kTKPDDETAILTALK_APIPATH @"talk.pl"
 #define kTKPDDETAILSHOPEDITOR_APIPATH @"myshop-editor.pl"
 #define kTKPDDETAILSHOPEDITORACTION_APIPATH @"action/myshop-editor.pl"
+
 #define kTKPDDETAILSHOPNOTE_APIPATH @"myshop-note.pl"
 #define kTKPDDETAILSHOPNOTEACTION_APIPATH @"action/myshop-note.pl"
 
@@ -594,7 +601,7 @@ typedef enum
 #define kTKPDDETAILSHOPNOTEDETAIL_APIRESPONSEFILEFORMAT @"shopnotedetail%d"
 #define kTKPDDETAILSHOPETALASE_APIRESPONSEFILEFORMAT @"shopetalase%d"
 #define kTKPDDETAILSHOPLOCATION_APIRESPONSEFILEFORMAT @"shoplocation%d"
-
+#define kTKPDDETAILSHOPPAYMENT_APIRESPONSEFILEFORMAT @"shoppayment%d"
 #define kTKPDDETAILSHOPSHIPPING_APIRESPONSEFILEFORMAT @"shopshipping%d"
 
 #define kTKPDDETAILCATALOG_APIRESPONSEFILEFORMAT @"catalogdetail%d.plist"

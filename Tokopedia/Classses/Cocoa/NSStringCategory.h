@@ -12,5 +12,6 @@
 
 -(NSString *)isEmail;
 +(NSString *)convertHTML:(NSString *)html;
++(NSString *)getLinkFromHTMLString:(NSString*)html;
 
 @end

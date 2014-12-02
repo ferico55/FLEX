@@ -46,7 +46,7 @@
         }
         case UIGestureRecognizerStateEnded:
         {
-            [_delegate SettingShipmentSectionFooter2View:self];
+            [_delegate MoveToInfoView:self];
             break;
         }
         default:

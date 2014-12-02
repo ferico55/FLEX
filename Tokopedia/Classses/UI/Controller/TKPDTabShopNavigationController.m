@@ -20,6 +20,8 @@
 #import "ShopTalkViewController.h"
 #import "ShopReviewViewController.h"
 #import "ShopNotesViewController.h"
+#import "../Detail/Shop/Settings/ShopSettingViewController.h"
+
 #import "URLCacheController.h"
 #import "UIImage+ImageEffects.h"
 
@@ -41,6 +43,7 @@
     BOOL _isnodata;
     NSInteger _requestcount;
     BOOL _isaddressexpanded;
+    BOOL _isrefreshview;
     
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -79,6 +82,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelLastOnline;
 @property (weak, nonatomic) IBOutlet UIButton *buttonfav;
 @property (weak, nonatomic) IBOutlet UIButton *buttonMessage;
+@property (weak, nonatomic) IBOutlet UIButton *buttonsetting;
 
 @property (strong, nonatomic) IBOutlet UIView *descriptionview;
 @property (strong, nonatomic) IBOutlet UIView *detailview;
@@ -94,7 +98,7 @@
 
 -(void)cancel;
 -(void)configureRestKit;
--(void)loadData;
+-(void)request;
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
 -(void)requestfailure:(id)object;
 -(void)requestprocess:(id)object;
@@ -155,6 +159,7 @@
         
         _requestcount = 0;
         _isnodata = YES;
+        _isrefreshview = NO;
     }
     return self;
 }
@@ -242,6 +247,7 @@
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil];
+    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil];
     
     _detailfilter = [NSMutableDictionary new];
     
@@ -301,7 +307,7 @@
     [self configureRestKit];
     
     if (_isnodata) {
-        [self loadData];
+        [self request];
     }
     
     if (_shop.result.info.shop_is_gold) {
@@ -605,12 +611,11 @@
 	NSLog(@"isViewLoaded: %@", self.isViewLoaded ? @"YES" : @"NO");
 }
 
-#ifdef _DEBUG
 - (void)dealloc
 {
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [[NSNotificationCenter defaultCenter] removeObserver:self];}
-#endif
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 #pragma mark -
 #pragma mark View actions
@@ -718,12 +723,123 @@
                 }
                 break;
         }
-        
     }
-    
-	
 }
 
+-(IBAction)tapbutton:(id)sender
+{
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton*)sender;
+        switch (btn.tag) {
+            case 10:
+            {
+                // sort button action
+                NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                SortViewController *vc = [SortViewController new];
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY),
+                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                break;
+            }
+            case 11:
+            {
+                // etalase button action
+                NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
+                vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                break;
+            }
+            case 12:
+            {
+                //SHARE
+                break;
+            }
+            case 13:
+            {
+                if (self.presentingViewController != nil) {
+                    if (self.navigationController.viewControllers.count > 1) {
+                        [self.navigationController popViewControllerAnimated:YES];
+                    } else {
+                        [self dismissViewControllerAnimated:YES completion:NULL];
+                    }
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                break;
+            }
+            case 14:
+            {
+                ShopInfoViewController *vc = [ShopInfoViewController new];
+                vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            default:
+                break;
+        }
+    }
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
+        
+        switch (btn.tag) {
+            case 10:
+            {
+                if (self.presentingViewController != nil) {
+                    if (self.navigationController.viewControllers.count > 1) {
+                        [self.navigationController popViewControllerAnimated:YES];
+                    } else {
+                        [self dismissViewControllerAnimated:YES completion:NULL];
+                    }
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                break;
+            }
+            case 11:
+            {
+                ShopInfoViewController *vc = [ShopInfoViewController new];
+                vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
+
+- (IBAction)gesture:(UISwipeGestureRecognizer *)sender
+{
+	switch (sender.state) {
+		case UIGestureRecognizerStateEnded: {
+			id o;
+			if (sender.direction == UISwipeGestureRecognizerDirectionRight) {
+                if (_selectedIndex > 0) {
+                    o = _chevrons[_selectedIndex - 1];
+                    [self tap:o];
+				}
+			} else if (sender.direction == UISwipeGestureRecognizerDirectionLeft) {
+				if (_selectedIndex < _chevrons.count -1) {
+                    o = _chevrons[_selectedIndex + 1];
+                    [self tap:o];
+                }
+			}
+			break;
+		}
+			
+		default:
+			break;
+	}
+}
+
+
+#pragma mark - Request
 -(void) configureRestkitFav {
     // initialize RestKit
     _objectmanager =  [RKObjectManager sharedClient];
@@ -791,118 +907,6 @@
 
 -(void) requestfailurefav:(id)object {
     
-}
-
--(IBAction)tapbutton:(id)sender
-{
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton*)sender;
-        switch (btn.tag) {
-            case 10:
-            {
-                // sort button action
-                NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                SortViewController *vc = [SortViewController new];
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
-                break;
-            }
-            case 11:
-            {
-                // etalase button action
-                NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
-                vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
-                break;
-            }
-            case 12:
-            {
-                //SHARE
-                break;
-            }
-            case 13:
-            {
-                if (self.presentingViewController != nil) {
-                    if (self.navigationController.viewControllers.count > 1) {
-                        [self.navigationController popViewControllerAnimated:YES];
-                    } else {
-                        [self dismissViewControllerAnimated:YES completion:NULL];
-                    }
-                } else {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-                break;                
-            }
-            case 14:
-            {
-                ShopInfoViewController *vc = [ShopInfoViewController new];
-                vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                [self.navigationController pushViewController:vc animated:YES];
-                break;                
-            }
-            default:
-                break;
-        }
-    }
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
-        
-        switch (btn.tag) {
-            case 10:
-            {
-                if (self.presentingViewController != nil) {
-                    if (self.navigationController.viewControllers.count > 1) {
-                        [self.navigationController popViewControllerAnimated:YES];
-                    } else {
-                        [self dismissViewControllerAnimated:YES completion:NULL];
-                    }
-                } else {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-                break;
-            }
-            case 11:
-            {
-                ShopInfoViewController *vc = [ShopInfoViewController new];
-                vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            default:
-                break;
-        }
-    }
-}
-
-- (IBAction)gesture:(UISwipeGestureRecognizer *)sender
-{
-	switch (sender.state) {
-		case UIGestureRecognizerStateEnded: {
-			id o;
-			if (sender.direction == UISwipeGestureRecognizerDirectionRight) {
-                if (_selectedIndex > 0) {
-                    o = _chevrons[_selectedIndex - 1];
-                    [self tap:o];
-				}
-			} else if (sender.direction == UISwipeGestureRecognizerDirectionLeft) {
-				if (_selectedIndex < _chevrons.count -1) {
-                    o = _chevrons[_selectedIndex + 1];
-                    [self tap:o];
-                }
-			}
-			break;
-		}
-			
-		default:
-			break;
-	}
 }
 
 #pragma mark -
@@ -1250,20 +1254,16 @@
                                                     kTKPDDETAILSHOP_APIPAYMENTNAMEKEY]];
     
     RKObjectMapping *addressMapping = [RKObjectMapping mappingForClass:[Address class]];
-    [addressMapping addAttributeMappingsFromArray:@[kTKPDSHOP_APIADDRESSIDKEY,
+    [addressMapping addAttributeMappingsFromArray:@[kTKPDDETAIL_APILOCATIONKEY,
                                                     kTKPDSHOP_APIADDRESSNAMEKEY,
-                                                    kTKPDSHOP_APIADDRESSKEY,
-                                                    kTKPDSHOP_APICITYIDKEY,
-                                                    kTKPDSHOP_APICITYNAMEKEY,
+                                                    kTKPDSHOP_APIADDRESSIDKEY,
                                                     kTKPDSHOP_APIPOSTALCODEKEY,
-                                                    kTKPDSHOP_APILOCATIONAREAKEY,
+                                                    kTKPDSHOP_APIDISTRICTIDKEY,
+                                                    kTKPDSHOP_APIFAXKEY,
+                                                    kTKPDSHOP_APICITYIDKEY,
                                                     kTKPDSHOP_APIPHONEKEY,
                                                     kTKPDSHOP_APIEMAILKEY,
-                                                    kTKPDSHOP_APIDISTRICTIDKEY,
-                                                    kTKPDSHOP_APIDISTRICTNAMEKEY,
-                                                    kTKPDSHOP_APIPROVINCEIDKEY,
-                                                    kTKPDSHOP_APIPROVINCENAMEKEY,
-                                                    kTKPDSHOP_APIFAXKEY,
+                                                    kTKPDSHOP_APIPROVINCEIDKEY
                                                     ]];
     // Relationship Mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
@@ -1281,7 +1281,7 @@
     RKRelationshipMapping *paymentRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APIPAYMENTKEY toKeyPath:kTKPDDETAILSHOP_APIPAYMENTKEY withMapping:paymentMapping];
     [resultMapping addPropertyMapping:paymentRel];
     
-    RKRelationshipMapping *addressRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APIADDRESSKEY toKeyPath:kTKPDDETAILSHOP_APIADDRESSKEY withMapping:addressMapping];
+    RKRelationshipMapping *addressRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIADDRESSKEY toKeyPath:kTKPDDETAIL_APIADDRESSKEY withMapping:addressMapping];
     [resultMapping addPropertyMapping:addressRel];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOP_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
@@ -1289,7 +1289,7 @@
     [_objectmanager addResponseDescriptor:responseDescriptor];
 }
 
-- (void)loadData
+- (void)request
 {
     _requestcount ++;
     
@@ -1301,7 +1301,7 @@
     [_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
-	if (_timeinterval > _cachecontroller.URLCacheInterval) {
+	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
         
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:param];
         
@@ -1354,7 +1354,7 @@
 -(void)requestfailure:(id)object
 {
     
-    if (_timeinterval > _cachecontroller.URLCacheInterval) {
+    if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
         [self requestprocess:object];
     }
     else{
@@ -1417,7 +1417,7 @@
                     //_table.tableFooterView = _footer;
                     //[_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }
                 else
                 {
@@ -1501,11 +1501,27 @@
 	[_cachecontroller initCacheWithDocumentPath:path];
 }
 
+-(void)refreshView:(UIRefreshControl*)refresh
+{
+    [self cancel];
+    /** clear object **/
+    _requestcount = 0;
+    _isrefreshview = YES;
+    
+    /** request data **/
+    [self configureRestKit];
+    [self request];
+}
+
+
+#pragma mark - Notification
 - (void)updateView:(NSNotification *)notification;
 {
     [self cancel];
     NSDictionary *userinfo = notification.userInfo;
     [_detailfilter addEntriesFromDictionary:userinfo];
+    
+    [self refreshView:nil];
 }
 
 @end

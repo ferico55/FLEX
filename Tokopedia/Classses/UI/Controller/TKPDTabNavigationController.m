@@ -313,7 +313,7 @@
 			UINavigationController* n = (UINavigationController*)select;
 			if (!n.navigationBarHidden && !n.navigationBar.hidden) {
 				
-				CGRect rect = n.navigationBar.frame;
+				//CGRect rect = n.navigationBar.frame;
 				//rect = [self.view convertRect:rect fromView:n.navigationBar.superview];
 				//(*selectframe).origin.y = CGRectGetMaxY(rect);
 				selectframe.origin.y = inset.top;

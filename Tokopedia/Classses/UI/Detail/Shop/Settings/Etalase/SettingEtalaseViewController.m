@@ -32,7 +32,6 @@
     NSOperationQueue *_operationQueue;
     UIRefreshControl *_refreshControl;
     NSInteger _requestcount;
-    NSTimer *_timer;
     
     NSMutableDictionary *_datainput;
     
@@ -58,10 +57,10 @@
 -(void)cancel;
 -(void)configureRestKit;
 -(void)request;
--(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailure:(id)object;
--(void)requestProcess:(id)object;
--(void)requestTimeout;
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
+-(void)requestfailure:(id)object;
+-(void)requestprocess:(id)object;
+-(void)requesttimeout;
 
 @end
 
@@ -89,6 +88,12 @@
     
     _page = 1;
     _limit = kTKPDSHOPETALASE_LIMITPAGE;
+    
+    /// adjust refresh control
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_table addSubview:_refreshControl];
 
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
@@ -223,6 +228,7 @@
     return cell;
 }
 
+#pragma mark - Table View Delegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (_isnodata) {
@@ -305,15 +311,14 @@
         _table.tableFooterView = _footer;
         [_act startAnimating];
         
+        NSTimer *timer;
         //[_cachecontroller clearCache];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [self requestsuccess:mappingResult withOperation:operation];
             [_act stopAnimating];
             _table.tableFooterView = nil;
             [_table reloadData];
-            [_timer invalidate];
-            _timer = nil;
-            
+            [timer invalidate];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
             [self requestfailure:error];
@@ -321,13 +326,12 @@
             //[alertView show];
             [_act stopAnimating];
             _table.tableFooterView = nil;
-            [_timer invalidate];
-            _timer = nil;
+            [timer invalidate];
         }];
         [_operationQueue addOperation:_request];
         
-        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     }
     else {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -560,11 +564,16 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (!setting.message_error) {
-                    if (setting.result.is_success) {
-                        //TODO:: add alert
-                        
-                    }
+                if (setting.message_status) {
+                    NSArray *array = setting.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                }
+                else if(setting.message_error)
+                {
+                    NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
             }
         }

@@ -10,8 +10,8 @@
 
 @protocol SettingShipmentSectionFooter2ViewDelegate <NSObject>
 @required
--(void)SettingShipmentSectionFooter2View:(UIView*)view;
-
+-(void)SettingShipmentSectionFooterView:(UIView*)view;
+-(void)MoveToInfoView:(UIView*)view;
 @end
 
 @interface SettingShipmentSectionFooter2View : UIView

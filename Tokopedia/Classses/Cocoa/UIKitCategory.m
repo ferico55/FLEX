@@ -93,4 +93,16 @@
 		self.text = text;
 	}
 }
+
+- (void)attributedLabel:(UILabel *)label didSelectLinkWithURL:(NSURL *)url {
+    if ([[url scheme] hasPrefix:@"action"]) {
+        if ([[url host] hasPrefix:@"show-help"]) {
+            /* load help screen */
+        } else if ([[url host] hasPrefix:@"show-settings"]) {
+            /* load settings screen */
+        }
+    } else {
+        /* deal with http links here */
+    }
+}
 @end

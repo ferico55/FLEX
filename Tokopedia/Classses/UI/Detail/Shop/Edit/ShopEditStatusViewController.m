@@ -8,6 +8,8 @@
 
 #import "alert.h"
 #import "detail.h"
+
+#import "ClosedInfo.h"
 #import "ShopEditStatusViewController.h"
 
 #import "../../../../CacheController/URLCacheController.h"
@@ -95,7 +97,7 @@
     
     _type = [[_data objectForKey:kTKPDDETAIL_DATASTATUSSHOPKEY]integerValue];
     
-    [self setDefaultData];
+    [self setDefaultData:_data];
     // register for keyboard notifications
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
     //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardDidHideNotification object:nil];
@@ -146,7 +148,8 @@
             case 11:
             {
                 //save
-                NSInteger status = [[_datainput objectForKey:kTKPDSHOPEDIT_APISTATUSKEY]integerValue];
+                NSMutableArray *messages = [NSMutableArray new];
+                NSInteger status = [[_datainput objectForKey:kTKPDSHOPEDIT_APISTATUSKEY]integerValue]?:_type;
                 if (status==kTKPDDETAIL_DATASTATUSSHOPCLOSED) {
                     NSString *reason = [_datainput objectForKey:kTKPDSHOPEDIT_APICLOSEDNOTEKEY];
                     if (reason && ![reason isEqualToString:@""]) {
@@ -156,8 +159,10 @@
                     }
                     else
                     {
-                        NSArray *message = @[@"Catatan harus diisi."];
-                        NSDictionary *info = @{@"message":message};
+                        [messages addObject:@"Catatan harus diisi."];
+                    }
+                    if (messages.count>0) {
+                        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages ,@"messages", nil];
                         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                     }
     
@@ -189,7 +194,7 @@
                 if (gesture.view.tag) {
                     _type = gesture.view.tag - 9;
                     [_datainput setObject:@(_type) forKey:kTKPDSHOPEDIT_APISTATUSKEY];
-                    [self setDefaultData];
+                    [self setDefaultData:_data];
                 }
                 break;
             }
@@ -198,36 +203,45 @@
 }
 
 #pragma mark - Methods
--(void)setDefaultData
+-(void)setDefaultData:(NSDictionary*)data
 {
-    switch (_type) {
-        case kTKPDDETAIL_DATASTATUSSHOPOPEN:
-        {
-            _viewcontentclose.hidden = YES;
-            ((UIImageView*)_thumbicon[0]).hidden = NO;
-            ((UIImageView*)_thumbicon[1]).hidden = YES;
-            break;
+    _data = data;
+    if (data) {
+        switch (_type) {
+            case kTKPDDETAIL_DATASTATUSSHOPOPEN:
+            {
+                _viewcontentclose.hidden = YES;
+                ((UIImageView*)_thumbicon[0]).hidden = NO;
+                ((UIImageView*)_thumbicon[1]).hidden = YES;
+                break;
+            }
+            case kTKPDDETAIL_DATASTATUSSHOPCLOSED:
+            {
+                NSString *note = [_datainput objectForKey:kTKPDSHOPEDIT_APICLOSEDNOTEKEY];
+                ClosedInfo *closedinfo = [_data objectForKey:kTKPDDETAIL_DATACLOSEDINFOKEY];
+                _viewcontentclose.hidden = NO;
+                _textviewnote.text = note?:closedinfo.reason;
+                _labelcatatan.hidden = !(!closedinfo.reason);
+                
+                ((UIImageView*)_thumbicon[0]).hidden = YES;
+                ((UIImageView*)_thumbicon[1]).hidden = NO;
+                
+                NSDateComponents* deltaComps = [NSDateComponents new];
+                [deltaComps setDay:7];
+                NSDate* tomorrow = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
+                NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:tomorrow];
+                int year = [components year];
+                int month = [components month];
+                int day = [components day];
+                NSString *datestring = [NSString stringWithFormat:@"%d/%d/%d",day,month,year];
+                [_datainput setObject:datestring forKey:kTKPDDETAILSHOP_APICLOSEDUNTILKEY];
+                
+                [_buttondate setTitle:closedinfo.until?:datestring forState:UIControlStateNormal];
+                break;
+            }
+            default:
+                break;
         }
-        case kTKPDDETAIL_DATASTATUSSHOPCLOSED:
-        {
-            _viewcontentclose.hidden = NO;
-            ((UIImageView*)_thumbicon[0]).hidden = YES;
-            ((UIImageView*)_thumbicon[1]).hidden = NO;
-            
-            NSDateComponents* deltaComps = [NSDateComponents new];
-            [deltaComps setDay:7];
-            NSDate* tomorrow = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
-            NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:tomorrow];
-            int year = [components year];
-            int month = [components month];
-            int day = [components day];
-            NSString *datestring = [NSString stringWithFormat:@"%d/%d/%d",day,month,year];
-            [_datainput setObject:datestring forKey:kTKPDDETAILSHOP_APICLOSEDUNTILKEY];
-            [_buttondate setTitle:datestring forState:UIControlStateNormal];
-            break;
-        }
-        default:
-            break;
     }
 }
 
@@ -269,7 +283,7 @@
 {
     if (textView == _textviewnote) {
         if(_textviewnote.text.length == 0){
-            _labelcatatan.hidden = NO;
+            _labelcatatan.hidden = YES;
         }
     }
 }

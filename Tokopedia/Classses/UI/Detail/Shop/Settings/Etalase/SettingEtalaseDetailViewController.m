@@ -11,6 +11,7 @@
 #import "SettingEtalaseDetailViewController.h"
 #import "SettingEtalaseEditViewController.h"
 
+#pragma mark - Setting Etalase Detail View Controller
 @interface SettingEtalaseDetailViewController ()
 {
     EtalaseList *_etalase;
@@ -25,6 +26,7 @@
 
 @implementation SettingEtalaseDetailViewController
 
+#pragma mark - Initialization
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -34,6 +36,7 @@
     return self;
 }
 
+#pragma mark - View Lifecycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -41,7 +44,7 @@
     _etalase = [_data objectForKey:kTKPDDETAIL_DATAETALASEKEY];
     
     [self setDefaultData:_data];
-    
+        
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
@@ -60,6 +63,10 @@
     self.navigationItem.rightBarButtonItem = barbutton1;
 }
 
+#pragma mark - Memory Management
+-(void)dealloc{
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
