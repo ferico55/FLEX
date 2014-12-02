@@ -19,7 +19,7 @@
 #import "CameraController.h"
 
 #pragma mark - Shop Edit View Controller
-@interface ShopEditViewController () <UITextViewDelegate, ShopEditStatusViewControllerDelegate,CameraControllerDelegate>
+@interface ShopEditViewController () <UITableViewDataSource, UITextViewDelegate, ShopEditStatusViewControllerDelegate,CameraControllerDelegate>
 {
     UITextView *_activetextview;
     
@@ -225,6 +225,7 @@
     
     [_objectmanager addResponseDescriptor:responseDescriptor];
 }
+
 
 - (void)requestaction:(id)object
 {

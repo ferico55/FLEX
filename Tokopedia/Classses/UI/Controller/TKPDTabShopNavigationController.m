@@ -88,6 +88,7 @@
 @property (strong, nonatomic) IBOutlet UIView *detailview;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *detailscrollview;
+@property (weak, nonatomic) IBOutlet UIButton *buttonaddproduct;
 
 @property (strong, nonatomic) IBOutlet UIButton *backButtonCustom;
 @property (strong, nonatomic) IBOutlet UIButton *infoButtonCustom;
@@ -189,11 +190,11 @@
 	}
     
     /** set inset table for different size**/
-
+    
     if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-
+    
     CGSize size =_contentview.frame.size;
     size.height = size.height - _tapview.frame.size.height;
     _scrollview.contentSize = size;
@@ -256,7 +257,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(scrollToTop)
                                                  name:@"scrollToTop" object:nil];
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(enableScroll)
                                                  name:@"enableParentScroll" object:nil];
@@ -267,28 +268,28 @@
                                                       object:nil
                                                        queue:nil
                                                   usingBlock:^(NSNotification *note) {
-
+                                                      
                                                       [UIView animateWithDuration:0.3 animations:^(void) {
                                                           _blurCoverImage.alpha = 0;
                                                           _ppimage.alpha = 1;
                                                       } completion:^(BOOL finished) {
                                                           navigationBarAnimated = false;
                                                       }];
-
+                                                      
                                                   }];
-
+    
     [[NSNotificationCenter defaultCenter] addObserverForName:@"NavigationShouldUnhide"
                                                       object:nil
                                                        queue:nil
                                                   usingBlock:^(NSNotification *note) {
-
+                                                      
                                                       [UIView animateWithDuration:0.3 animations:^(void) {
                                                           _blurCoverImage.alpha = 1;
                                                           _ppimage.alpha = 0;
                                                       } completion:^(BOOL finished) {
                                                           navigationBarAnimated = false;
                                                       }];
-                                                  
+                                                      
                                                   }];
     
     _buttonfav.layer.cornerRadius = 3;
@@ -313,8 +314,6 @@
     if (_shop.result.info.shop_is_gold) {
         self.navigationController.navigationBarHidden = YES;
     }
-    
-    
     
 }
 
@@ -466,13 +465,13 @@
 }
 
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated
-{    
+{
     selectedIndex = selectedIndex-10;
     if (selectedIndex<0) {
         selectedIndex = 0;
     }
 	if (selectedIndex == _selectedIndex) return;
-
+    
     if (selectedIndex != 0) {
         _filterview.hidden = YES;
     } else {
@@ -501,7 +500,7 @@
 		UIViewController* select = _viewControllers[selectedIndex];
 		
 		UIEdgeInsets inset = [self contentInsetForContainerController];
-
+        
 		if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars
 			
 			UINavigationController* n = (UINavigationController*)select;
@@ -556,7 +555,7 @@
 					select.view.frame = _container.bounds;
 				}
                 _tabbar.userInteractionEnabled = NO;	//race condition
-            
+                
 			} completion:^(BOOL finished) {
 				[deselect removeFromParentViewController];
 				[select didMoveToParentViewController:self];
@@ -577,7 +576,7 @@
 			[_container addSubview:select.view];
 			[select didMoveToParentViewController:self];
 		}
-	}    
+	}
 }
 
 - (UIEdgeInsets)contentInsetForChildController
@@ -683,6 +682,14 @@
                 } else {
                     [self.navigationController popViewControllerAnimated:YES];
                 }
+                break;
+            }
+            case 18 :
+            {
+                //settings
+                ShopSettingViewController *vc = [ShopSettingViewController new];
+                vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY], kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result};
+                [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
             default:
@@ -841,15 +848,15 @@
                 } else {
                     [self.navigationController popViewControllerAnimated:YES];
                 }
-                break;                
+                break;
             }
             case 14:
             {
                 ShopInfoViewController *vc = [ShopInfoViewController new];
                 vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                 [self.navigationController pushViewController:vc animated:YES];
-                break;                
+                break;
             }
             default:
                 break;
@@ -876,7 +883,7 @@
             {
                 ShopInfoViewController *vc = [ShopInfoViewController new];
                 vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -920,7 +927,7 @@
 	//if (self.parentViewController && [self.parentViewController isKindOfClass:[TKPDTabBarShopController class]]) {
 	//	UIEdgeInsets bar = self.TKPDTabBarShopController.contentInsetForChildController;
 	if ((self.parentViewController != nil) && [self.parentViewController respondsToSelector:@selector(contentInsetForChildController)]) {
-	
+        
         UIEdgeInsets bar = [((id)self.parentViewController) contentInsetForChildController];
 		inset.top += bar.top;
 		inset.bottom += bar.bottom;
@@ -983,7 +990,7 @@
     _namelabel.text = _shop.result.info.shop_name;
     _shopdesclabel.text = _shop.result.info.shop_description;
     _locationlabel.text = _shop.result.info.shop_location;
-
+    
     if([_shop.result.info.shop_already_favorited isEqualToString:@"1"]) {
         [_buttonfav setImage:[UIImage imageNamed:@"icon_love_white.png"] forState:UIControlStateNormal];
         [_buttonfav setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
@@ -997,7 +1004,7 @@
         [_buttonfav setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         _buttonfav.tag = 16;
     }
-
+    
     _labelFavAndSold.text = [NSString stringWithFormat:@"%@ Favorited  %@ Sold Items", _shop.result.info.shop_total_favorit, _shop.result.stats.shop_item_sold];
     
     _labelLastOnline.text = [NSString stringWithFormat:@"Last Online : %@", _shop.result.info.shop_owner_last_login];
@@ -1010,7 +1017,7 @@
     thumb.layer.cornerRadius = thumb.frame.size.width/2;
     thumb.layer.borderColor = [UIColor whiteColor].CGColor;
     thumb.layer.borderWidth = 3;
-
+    
     //thumb.hidden = YES;	//@prepareforreuse then @reset
     
     [_actpp startAnimating];
@@ -1027,7 +1034,7 @@
         [_actpp stopAnimating];
     }];
     
-
+    
     if (_shop.result.info.shop_is_gold) {
         self.navigationController.navigationBarHidden = YES;
         
@@ -1057,7 +1064,7 @@
         _backButtonCustom.hidden = YES;
         _infoButtonCustom.hidden = YES;
         _navigationTitleLabel.hidden = YES;
-
+        
         [_stickyTapView layoutIfNeeded];
         CGRect stickyTabFrame = _stickyTapView.frame;
         stickyTabFrame.origin.y = 0;
@@ -1077,7 +1084,7 @@
 {
     CGFloat offset;
     if (_shop.result.info.shop_is_gold) {
-        offset = 320.0;
+        offset = 317.0;
     } else {
         offset = 378.0;
     }
@@ -1141,7 +1148,7 @@
         y = 379;
     }
     [self.scrollview setContentOffset:CGPointMake(0, y) animated:YES];
-
+    
 }
 
 - (void)enableScroll
@@ -1163,14 +1170,14 @@
     for (int i = 10; i < 14; i++) {
         UIButton *selectedButton = (UIButton *)[_stickyTapView viewWithTag:i];
         [selectedButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-
+        
         UIView *border = [_stickyTapView viewWithTag:10+i];
         border.hidden = YES;
     }
     
     UIButton *selectedStickyTabButton = (UIButton *)[_stickyTapView viewWithTag:10+_selectedIndex];
     [selectedStickyTabButton setTitleColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1] forState:UIControlStateNormal];
-
+    
     UIView *selectedBorder = (UIView *)[_stickyTapView viewWithTag:20+_selectedIndex];
     selectedBorder.hidden = NO;
 }
@@ -1193,6 +1200,7 @@
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailShopResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APIISOPENKEY:kTKPDDETAILSHOP_APIISOPENKEY}];
     
     RKObjectMapping *closedinfoMapping = [RKObjectMapping mappingForClass:[ClosedInfo class]];
     [closedinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APIUNTILKEY:kTKPDDETAILSHOP_APIUNTILKEY,
@@ -1346,7 +1354,7 @@
         [_cachecontroller connectionDidFinish:_cacheconnection];
         //save response data
         [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-
+        
         [self requestprocess:object];
     }
 }
@@ -1408,6 +1416,12 @@
                 _barbuttoninfo.enabled = YES;
                 [self setDetailData];
             }
+            
+            //enable button after request
+            _buttonaddproduct.enabled = YES;
+            _buttonfav.enabled = YES;
+            _buttonMessage.enabled = YES;
+            _buttonsetting.enabled = YES;
         }
         else{
             [self cancel];
@@ -1447,7 +1461,7 @@
     CGFloat pageWidth = _detailscrollview.frame.size.width;
     _pagedetail = floor((_detailscrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     _pagecontrol.currentPage = _pagedetail;
-
+    
     [self scrollContainer];
     
     if (sender.contentOffset.y > self.view.frame.size.height) {
@@ -1469,7 +1483,7 @@
         }
         _coverImageView.frame = frame;
     }
-
+    
     if (_shop.result.info.shop_is_gold) {
         if (!navigationBarAnimated) {
             navigationBarAnimated = true;
@@ -1494,12 +1508,33 @@
 {
     _data = data;
     
-    //cache
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOP_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]]];
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
+    if(_data) {
+        //cache
+        NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
+        _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOP_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]]];
+        _cachecontroller.filePath = _cachepath;
+        _cachecontroller.URLCacheInterval = 86400.0;
+        [_cachecontroller initCacheWithDocumentPath:path];
+        
+        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+        if (auth && ![auth isEqual:[NSNull null]]) {
+            if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
+                _buttonsetting.hidden = NO;
+                _buttonfav.hidden = YES;
+                _buttonMessage.hidden = YES;
+                _actcover.hidden  = YES;
+                //_actfav.hidden  = YES;
+            }
+        }
+        else
+        {
+            _buttonsetting.hidden = YES;
+            _buttonfav.hidden = NO;
+            _buttonMessage.hidden = NO;
+        }
+        
+    }
+    
 }
 
 -(void)refreshView:(UIRefreshControl*)refresh

@@ -11,7 +11,7 @@
 @interface ShippingInfoShipmentPackage : NSObject
 
 @property (nonatomic, strong) NSString *desc;
-@property (nonatomic) BOOL active;
+@property (nonatomic) NSInteger active;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic) NSInteger sp_id;
 

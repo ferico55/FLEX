@@ -88,6 +88,7 @@ typedef enum
 #define kTKPDDETAIL_APIGETSHOPNOTEKEY @"get_shop_note"
 
 #define kTKPDDETAIL_APIGETPAYMENTINFOKEY @"get_payment_info"
+#define kTKPDDETAIL_APIUPDATEPAYMENTINFOKEY @"event_update_payment_info"
 
 #define kTKPDDETAIL_APIGETSHOPFAVORITEDKEY @"get_people_who_favorite_myshop"
 #define kTKPDDETAIL_APISETSHOPINFOKEY @"event_update_shop_info"

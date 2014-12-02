@@ -201,8 +201,8 @@
                 <outlet property="viewdiffcity" destination="p1o-5H-aIa" id="DEc-2d-kf3"/>
                 <outlet property="viewfee" destination="meB-RE-pQn" id="vzh-sa-NQN"/>
                 <outlet property="viewinfo" destination="ibB-ID-afq" id="RBV-Bq-efo"/>
-                <outlet property="viewminweight" destination="8eG-cf-R05" id="FtE-ux-2Ic"/>
-                <outlet property="viewminweightflag" destination="dRp-TQ-1Bd" id="HL9-sD-6j0"/>
+                <outlet property="viewminweight" destination="8eG-cf-R05" id="CP2-eg-0Ye"/>
+                <outlet property="viewminweightflag" destination="dRp-TQ-1Bd" id="wg6-Jq-6Qx"/>
                 <outlet property="viewswitchfee" destination="0cu-dC-QZL" id="C3f-fH-FIN"/>
             </connections>
         </view>

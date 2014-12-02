@@ -131,9 +131,6 @@
 		FC7B903F1A2C4F8600D24DE6 /* SettingPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F2E1A2C4F8600D24DE6 /* SettingPaymentViewController.m */; };
 		FC7B90401A2C4F8600D24DE6 /* SettingShipmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F321A2C4F8600D24DE6 /* SettingShipmentCell.m */; };
 		FC7B90411A2C4F8600D24DE6 /* SettingShipmentInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F341A2C4F8600D24DE6 /* SettingShipmentInfoViewController.m */; };
-		FC7B90421A2C4F8600D24DE6 /* SettingShipmentSectionFooter2View.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F361A2C4F8600D24DE6 /* SettingShipmentSectionFooter2View.m */; };
-		FC7B90431A2C4F8600D24DE6 /* SettingShipmentSectionFooter3View.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F381A2C4F8600D24DE6 /* SettingShipmentSectionFooter3View.m */; };
-		FC7B90441A2C4F8600D24DE6 /* SettingShipmentSectionFooter4View.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F3A1A2C4F8600D24DE6 /* SettingShipmentSectionFooter4View.m */; };
 		FC7B90451A2C4F8600D24DE6 /* SettingShipmentSectionFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F3C1A2C4F8600D24DE6 /* SettingShipmentSectionFooterView.m */; };
 		FC7B90461A2C4F8600D24DE6 /* SettingShipmentSectionHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F3E1A2C4F8600D24DE6 /* SettingShipmentSectionHeaderView.m */; };
 		FC7B90471A2C4F8600D24DE6 /* SettingShipmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F401A2C4F8600D24DE6 /* SettingShipmentViewController.m */; };
@@ -427,9 +424,6 @@
 		FC7B939A1A2C501100D24DE6 /* SettingProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92E01A2C500D00D24DE6 /* SettingProductViewController.xib */; };
 		FC7B939B1A2C501100D24DE6 /* SettingShipmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92E21A2C500D00D24DE6 /* SettingShipmentCell.xib */; };
 		FC7B939C1A2C501100D24DE6 /* SettingShipmentInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92E31A2C500D00D24DE6 /* SettingShipmentInfoViewController.xib */; };
-		FC7B939D1A2C501100D24DE6 /* SettingShipmentSectionFooter2View.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92E41A2C500D00D24DE6 /* SettingShipmentSectionFooter2View.xib */; };
-		FC7B939E1A2C501100D24DE6 /* SettingShipmentSectionFooter3View.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92E51A2C500D00D24DE6 /* SettingShipmentSectionFooter3View.xib */; };
-		FC7B939F1A2C501100D24DE6 /* SettingShipmentSectionFooter4View.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92E61A2C500D00D24DE6 /* SettingShipmentSectionFooter4View.xib */; };
 		FC7B93A01A2C501100D24DE6 /* SettingShipmentSectionFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92E71A2C500D00D24DE6 /* SettingShipmentSectionFooterView.xib */; };
 		FC7B93A11A2C501100D24DE6 /* SettingShipmentSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92E81A2C500D00D24DE6 /* SettingShipmentSectionHeaderView.xib */; };
 		FC7B93A21A2C501100D24DE6 /* SettingShipmentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92E91A2C500D00D24DE6 /* SettingShipmentViewController.xib */; };
@@ -498,6 +492,7 @@
 		FC7B93E11A2C501100D24DE6 /* FilterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B93481A2C501100D24DE6 /* FilterViewController.xib */; };
 		FC7B93E21A2C501100D24DE6 /* SortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B934A1A2C501100D24DE6 /* SortCell.xib */; };
 		FC7B93E31A2C501100D24DE6 /* SortViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B934B1A2C501100D24DE6 /* SortViewController.xib */; };
+		FC7B93E51A2C528D00D24DE6 /* TKPDTabShopNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B93E41A2C528D00D24DE6 /* TKPDTabShopNavigationController.xib */; };
 		FCA774CC19F60C540041CFE1 /* RKObjectManagerCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA774CB19F60C540041CFE1 /* RKObjectManagerCategory.m */; };
 		FCA774DE19F60EEB0041CFE1 /* NSUserDefaultCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA774DD19F60EEB0041CFE1 /* NSUserDefaultCategory.m */; };
 		FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
@@ -931,12 +926,6 @@
 		FC7B8F321A2C4F8600D24DE6 /* SettingShipmentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingShipmentCell.m; sourceTree = "<group>"; };
 		FC7B8F331A2C4F8600D24DE6 /* SettingShipmentInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingShipmentInfoViewController.h; sourceTree = "<group>"; };
 		FC7B8F341A2C4F8600D24DE6 /* SettingShipmentInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingShipmentInfoViewController.m; sourceTree = "<group>"; };
-		FC7B8F351A2C4F8600D24DE6 /* SettingShipmentSectionFooter2View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingShipmentSectionFooter2View.h; sourceTree = "<group>"; };
-		FC7B8F361A2C4F8600D24DE6 /* SettingShipmentSectionFooter2View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingShipmentSectionFooter2View.m; sourceTree = "<group>"; };
-		FC7B8F371A2C4F8600D24DE6 /* SettingShipmentSectionFooter3View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingShipmentSectionFooter3View.h; sourceTree = "<group>"; };
-		FC7B8F381A2C4F8600D24DE6 /* SettingShipmentSectionFooter3View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingShipmentSectionFooter3View.m; sourceTree = "<group>"; };
-		FC7B8F391A2C4F8600D24DE6 /* SettingShipmentSectionFooter4View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingShipmentSectionFooter4View.h; sourceTree = "<group>"; };
-		FC7B8F3A1A2C4F8600D24DE6 /* SettingShipmentSectionFooter4View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingShipmentSectionFooter4View.m; sourceTree = "<group>"; };
 		FC7B8F3B1A2C4F8600D24DE6 /* SettingShipmentSectionFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingShipmentSectionFooterView.h; sourceTree = "<group>"; };
 		FC7B8F3C1A2C4F8600D24DE6 /* SettingShipmentSectionFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingShipmentSectionFooterView.m; sourceTree = "<group>"; };
 		FC7B8F3D1A2C4F8600D24DE6 /* SettingShipmentSectionHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingShipmentSectionHeaderView.h; sourceTree = "<group>"; };
@@ -1449,9 +1438,6 @@
 		FC7B92E01A2C500D00D24DE6 /* SettingProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingProductViewController.xib; sourceTree = "<group>"; };
 		FC7B92E21A2C500D00D24DE6 /* SettingShipmentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingShipmentCell.xib; sourceTree = "<group>"; };
 		FC7B92E31A2C500D00D24DE6 /* SettingShipmentInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingShipmentInfoViewController.xib; sourceTree = "<group>"; };
-		FC7B92E41A2C500D00D24DE6 /* SettingShipmentSectionFooter2View.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingShipmentSectionFooter2View.xib; sourceTree = "<group>"; };
-		FC7B92E51A2C500D00D24DE6 /* SettingShipmentSectionFooter3View.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingShipmentSectionFooter3View.xib; sourceTree = "<group>"; };
-		FC7B92E61A2C500D00D24DE6 /* SettingShipmentSectionFooter4View.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingShipmentSectionFooter4View.xib; sourceTree = "<group>"; };
 		FC7B92E71A2C500D00D24DE6 /* SettingShipmentSectionFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingShipmentSectionFooterView.xib; sourceTree = "<group>"; };
 		FC7B92E81A2C500D00D24DE6 /* SettingShipmentSectionHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingShipmentSectionHeaderView.xib; sourceTree = "<group>"; };
 		FC7B92E91A2C500D00D24DE6 /* SettingShipmentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SettingShipmentViewController.xib; sourceTree = "<group>"; };
@@ -1520,6 +1506,7 @@
 		FC7B93481A2C501100D24DE6 /* FilterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterViewController.xib; sourceTree = "<group>"; };
 		FC7B934A1A2C501100D24DE6 /* SortCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SortCell.xib; sourceTree = "<group>"; };
 		FC7B934B1A2C501100D24DE6 /* SortViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SortViewController.xib; sourceTree = "<group>"; };
+		FC7B93E41A2C528D00D24DE6 /* TKPDTabShopNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TKPDTabShopNavigationController.xib; path = "../../../../../Tokopedia 2/Tokopedia/Resources/UI/Controller/TKPDTabShopNavigationController.xib"; sourceTree = "<group>"; };
 		FCA774CA19F60C540041CFE1 /* RKObjectManagerCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKObjectManagerCategory.h; sourceTree = "<group>"; };
 		FCA774CB19F60C540041CFE1 /* RKObjectManagerCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKObjectManagerCategory.m; sourceTree = "<group>"; };
 		FCA774DC19F60EEB0041CFE1 /* NSUserDefaultCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUserDefaultCategory.h; sourceTree = "<group>"; };
@@ -2505,12 +2492,6 @@
 				FC7B8F321A2C4F8600D24DE6 /* SettingShipmentCell.m */,
 				FC7B8F331A2C4F8600D24DE6 /* SettingShipmentInfoViewController.h */,
 				FC7B8F341A2C4F8600D24DE6 /* SettingShipmentInfoViewController.m */,
-				FC7B8F351A2C4F8600D24DE6 /* SettingShipmentSectionFooter2View.h */,
-				FC7B8F361A2C4F8600D24DE6 /* SettingShipmentSectionFooter2View.m */,
-				FC7B8F371A2C4F8600D24DE6 /* SettingShipmentSectionFooter3View.h */,
-				FC7B8F381A2C4F8600D24DE6 /* SettingShipmentSectionFooter3View.m */,
-				FC7B8F391A2C4F8600D24DE6 /* SettingShipmentSectionFooter4View.h */,
-				FC7B8F3A1A2C4F8600D24DE6 /* SettingShipmentSectionFooter4View.m */,
 				FC7B8F3B1A2C4F8600D24DE6 /* SettingShipmentSectionFooterView.h */,
 				FC7B8F3C1A2C4F8600D24DE6 /* SettingShipmentSectionFooterView.m */,
 				FC7B8F3D1A2C4F8600D24DE6 /* SettingShipmentSectionHeaderView.h */,
@@ -3697,6 +3678,7 @@
 		FC7B92901A2C500B00D24DE6 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				FC7B93E41A2C528D00D24DE6 /* TKPDTabShopNavigationController.xib */,
 				FC7B92911A2C500B00D24DE6 /* TKPDTabBarController.xib */,
 				FC7B92921A2C500B00D24DE6 /* TKPDTabHomeNavigationController.xib */,
 				FC7B92931A2C500B00D24DE6 /* TKPDTabInboxMessageNavigationController.xib */,
@@ -3939,9 +3921,6 @@
 			children = (
 				FC7B92E21A2C500D00D24DE6 /* SettingShipmentCell.xib */,
 				FC7B92E31A2C500D00D24DE6 /* SettingShipmentInfoViewController.xib */,
-				FC7B92E41A2C500D00D24DE6 /* SettingShipmentSectionFooter2View.xib */,
-				FC7B92E51A2C500D00D24DE6 /* SettingShipmentSectionFooter3View.xib */,
-				FC7B92E61A2C500D00D24DE6 /* SettingShipmentSectionFooter4View.xib */,
 				FC7B92E71A2C500D00D24DE6 /* SettingShipmentSectionFooterView.xib */,
 				FC7B92E81A2C500D00D24DE6 /* SettingShipmentSectionHeaderView.xib */,
 				FC7B92E91A2C500D00D24DE6 /* SettingShipmentViewController.xib */,
@@ -4400,7 +4379,6 @@
 				FC7B90741A2C4F8600D24DE6 /* SettingBankAccountViewController.m.orig in Resources */,
 				FC7B938F1A2C501100D24DE6 /* SettingEtalaseDetailViewController.xib in Resources */,
 				FC7B90011A2C4F8600D24DE6 /* TKPDTabHomeNavigationController.backup in Resources */,
-				FC7B939F1A2C501100D24DE6 /* SettingShipmentSectionFooter4View.xib in Resources */,
 				FC7B93E21A2C501100D24DE6 /* SortCell.xib in Resources */,
 				FC7B93C11A2C501100D24DE6 /* ProfileBiodataViewController.xib in Resources */,
 				FC7B93871A2C501100D24DE6 /* ShopInfoViewController.xib in Resources */,
@@ -4432,11 +4410,9 @@
 				85386DCD19CBE88A00BCA463 /* GothamBlack.ttf in Resources */,
 				FC7B93CB1A2C501100D24DE6 /* SettingAddressEditViewController.xib in Resources */,
 				FC7B93941A2C501100D24DE6 /* SettingLocationViewController.xib in Resources */,
-				FC7B939E1A2C501100D24DE6 /* SettingShipmentSectionFooter3View.xib in Resources */,
 				FC7B93BF1A2C501100D24DE6 /* ProfileBiodataCell.xib in Resources */,
 				FC7B93B61A2C501100D24DE6 /* KatalogViewCell.xib in Resources */,
 				FC7B90341A2C4F8600D24DE6 /* SendMessageViewController.xib in Resources */,
-				FC7B939D1A2C501100D24DE6 /* SettingShipmentSectionFooter2View.xib in Resources */,
 				FC7B90221A2C4F8600D24DE6 /* ProductTalkFormViewController.xib in Resources */,
 				FC7B93CD1A2C501100D24DE6 /* SettingBankNameCell.xib in Resources */,
 				FC7B93621A2C501100D24DE6 /* TKPDTabHomeNavigationController.xib in Resources */,
@@ -4500,6 +4476,7 @@
 				FC7B93891A2C501100D24DE6 /* ShopNotesDetailViewController.xib in Resources */,
 				FC7B93B71A2C501100D24DE6 /* KatalogViewController.xib in Resources */,
 				FC7B93921A2C501100D24DE6 /* SettingLocationDetailViewController.xib in Resources */,
+				FC7B93E51A2C528D00D24DE6 /* TKPDTabShopNavigationController.xib in Resources */,
 				FC7B93DD1A2C501100D24DE6 /* FilterConditionCell.xib in Resources */,
 				FC7B93751A2C501100D24DE6 /* DetailProductOtherView.xib in Resources */,
 				FC7B935F1A2C501100D24DE6 /* CategoryResultViewCell.xib in Resources */,
@@ -4608,7 +4585,6 @@
 				FC7B91DB1A2C4F9F00D24DE6 /* RegisterResult.m in Sources */,
 				FC7B92131A2C4F9F00D24DE6 /* InboxMessageAction.m in Sources */,
 				FC7B90251A2C4F8600D24DE6 /* ShopEditViewController.m in Sources */,
-				FC7B90441A2C4F8600D24DE6 /* SettingShipmentSectionFooter4View.m in Sources */,
 				FC7B92361A2C4F9F00D24DE6 /* NotificationForm.m in Sources */,
 				FC7B901E1A2C4F8600D24DE6 /* ProductReviewViewController.m in Sources */,
 				FC7B91E41A2C4F9F00D24DE6 /* CatalogSpecs.m in Sources */,
@@ -4672,7 +4648,6 @@
 				FC7B92231A2C4F9F00D24DE6 /* DataUser.m in Sources */,
 				FC7B91E21A2C4F9F00D24DE6 /* CatalogReview.m in Sources */,
 				858C3DCB1A14847A0062A62E /* UIImage+ImageEffects.m in Sources */,
-				FC7B90421A2C4F8600D24DE6 /* SettingShipmentSectionFooter2View.m in Sources */,
 				FC7B907A1A2C4F8600D24DE6 /* ProfileSettingViewController.m in Sources */,
 				FC7B92561A2C4F9F00D24DE6 /* SettingLocation.m in Sources */,
 				FC7B907C1A2C4F8600D24DE6 /* SearchViewController.m in Sources */,
@@ -4811,7 +4786,6 @@
 				FC7B90671A2C4F8600D24DE6 /* ProfileEditPhoneViewController.m in Sources */,
 				FC7B90871A2C4F8600D24DE6 /* SortViewController.m in Sources */,
 				FC7B92591A2C4F9F00D24DE6 /* SettingPaymentResult.m in Sources */,
-				FC7B90431A2C4F8600D24DE6 /* SettingShipmentSectionFooter3View.m in Sources */,
 				FC7B92681A2C4F9F00D24DE6 /* UploadImageResult.m in Sources */,
 				FC7B90761A2C4F8600D24DE6 /* SettingBankEditViewController.m in Sources */,
 				FC7B90551A2C4F8600D24DE6 /* HotlistViewController.m in Sources */,

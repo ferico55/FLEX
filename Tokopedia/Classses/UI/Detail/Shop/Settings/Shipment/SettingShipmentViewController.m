@@ -24,10 +24,7 @@
 
 @interface SettingShipmentViewController ()<UITableViewDataSource,UITableViewDelegate, SettingShipmentCellDelegate, SettingShipmentSectionFooterViewDelegate,FilterLocationViewControllerDelegate>
 {
-    
-    NSInteger _footerheightjne;
-    NSInteger _footerheightpos;
-    NSInteger _footerheighttiki;
+    NSMutableArray *_heightfooters;
     
     NSMutableDictionary *_datainput;
     NSMutableDictionary *_shipments;
@@ -114,6 +111,8 @@
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
+    
+    _heightfooters = [NSMutableArray new];
 
     _table.tableHeaderView = _viewheader;
     
@@ -141,8 +140,6 @@
     [_barbuttonsave setTintColor:[UIColor blackColor]];
     _barbuttonsave.tag = 11;
     self.navigationItem.rightBarButtonItem = _barbuttonsave;
-    
-    _footerheightjne = _viewfooter.frame.size.height;
     
     _buttonprovinsi.enabled = NO;
     
@@ -224,10 +221,10 @@
         ShippingInfoShipments *shipment = shipments[section];
         BOOL jneminweight = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY] boolValue];
         NSInteger jneminweightvalue = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY] integerValue];
-        BOOL jnefee = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APIJNEFEEKEY] boolValue];
+        NSInteger jnefee = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APIJNEFEEKEY] integerValue];
         NSInteger jnefeevalue = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APIJNEFEEVALUEKEY] integerValue];
-        BOOL diffdistrict = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY] boolValue];
-        BOOL tikifee = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APITIKIFEEKEY] boolValue];
+        NSInteger diffdistrict = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY] integerValue]?:_shippinginfo.result.diff_district;
+        NSInteger tikifee = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APITIKIFEEKEY] integerValue]?:_shippinginfo.result.tiki_fee;
         NSInteger tikifeevalue = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APITIKIFEEVALUEKEY] integerValue];
         BOOL posminweight = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY] boolValue];
         NSInteger posminweightvalue = [[_datainput objectForKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY] integerValue];
@@ -246,7 +243,7 @@
             v.tag = section+10;
             v.labelinfo.text = [NSString stringWithFormat:@"Info Tentang %@",shipment.shipment_name];
             v.delegate = self;
-            [v updateView];
+            
             return v;
         }
         else if ([shipment.shipment_name isEqualToString:@"Tiki"])
@@ -266,13 +263,14 @@
             v.switchfee.on = tikifee;
             v.textfieldfee.text = [NSString stringWithFormat:@"%d",tikifeevalue?:_shippinginfo.result.tiki_fee];
             v.labelfee.text = [NSString stringWithFormat:@"Biaya tambahan pengiriman TIKI"];
-            [v updateView];
+            
             return v;
         }
         else if ([shipment.shipment_name isEqualToString:@"Pos Indonesia"])
         {
             //SettingShipmentSectionFooter3View *v = [SettingShipmentSectionFooter3View newview];
             v.viewdiffcity.hidden = YES;
+            
             v.tag = section+10;
             v.labelinfo.text = [NSString stringWithFormat:@"Info Tentang %@",shipment.shipment_name];
             v.delegate = self;
@@ -283,7 +281,6 @@
             v.textfieldfee.text = [NSString stringWithFormat:@"%d",posfeevalue?:_shippinginfo.result.pos_fee];
             
             v.labelfee.text = [NSString stringWithFormat:@"Biaya tambahan pengiriman POS"];
-            [v updateView];
             return v;
         }
         else
@@ -291,12 +288,14 @@
             v.viewminweightflag.hidden = YES;
             v.viewminweight.hidden = YES;
             v.viewdiffcity.hidden = YES;
-            v.viewfee.hidden = YES;
             v.viewswitchfee.hidden = YES;
+            v.viewfee.hidden = YES;
+            
             //SettingShipmentSectionFooter2View *v = [SettingShipmentSectionFooter2View newview];
             v.tag = section+10;
             v.labelinfo.text = [NSString stringWithFormat:@"Info Tentang %@",shipment.shipment_name];
             v.delegate = self;
+            
             return v;
         }
     }
@@ -318,25 +317,30 @@
 {
     BOOL sectionIsExanded = [_expandedSections containsObject:[NSNumber numberWithInteger:section]];
     if (sectionIsExanded) {
-        //id shipment = _shippinginfo.result.shipment;
-        //ShippingInfoShipments *shipments = shipment[section];
-        //
-        //if ([shipments.shipment_name isEqualToString:@"JNE"]) {
-        //    return _footerheightjne;
-        //}
-        //else if ([shipments.shipment_name isEqualToString:@"Tiki"])
-        //{
-        //    return _footerheighttiki;
-        //}
-        //else if ([shipments.shipment_name isEqualToString:@"Pos Indonesia"])
-        //{
-        //    return _footerheightpos;
-        //}
-        //else
-        //{
-        //    return _viewfooter2.frame.size.height;
-        //}
-        return _footerheightjne;
+        id shipment = _shippinginfo.result.shipment;
+        ShippingInfoShipments *shipments = shipment[section];
+
+        if ([shipments.shipment_name isEqualToString:@"JNE"]) {
+        }
+        else if ([shipments.shipment_name isEqualToString:@"Tiki"])
+        {
+            NSInteger footerheight = _viewfooter.frame.size.height-3*45;
+            [_heightfooters replaceObjectAtIndex:section withObject:@(footerheight)];
+            return footerheight;
+        }
+        else if ([shipments.shipment_name isEqualToString:@"Pos Indonesia"])
+        {
+            NSInteger footerheight = _viewfooter.frame.size.height-1*45;
+            [_heightfooters replaceObjectAtIndex:section withObject:@(footerheight)];
+            return footerheight;
+        }
+        else
+        {
+            NSInteger footerheight = _viewfooter.frame.size.height-5*45;
+            [_heightfooters replaceObjectAtIndex:section withObject:@(footerheight)];
+            
+        }
+        return [_heightfooters[section] integerValue];
     } else return 0;
     
 
@@ -393,7 +397,7 @@
             ((SettingShipmentCell*)cell).indexpath = indexPath;
             NSDictionary *activeshipments = [_shipments objectForKey:[@(shipment.shipment_id)stringValue]];
             BOOL isactive = [[activeshipments objectForKey:[@(package.sp_id)stringValue]] boolValue];
-            ((SettingShipmentCell*)cell).switchpackage.on = isactive;
+            ((SettingShipmentCell*)cell).switchpackage.on = package.active;
             ((SettingShipmentCell*)cell).packageid = package.sp_id;
             ((SettingShipmentCell*)cell).shipmentid = shipment.shipment_id;
             
@@ -554,6 +558,7 @@
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ShippingInfoResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSHOPSHIPMENT_APITIKIFEEKEY:kTKPDSHOPSHIPMENT_APITIKIFEEKEY,
+                                                        kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY:kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY,
                                                       kTKPDSHOPSHIPMENT_APIISALLOWKEY:kTKPDSHOPSHIPMENT_APIISALLOWKEY,
                                                       kTKPDSHOPSHIPMENT_APIPOSFEEKEY:kTKPDSHOPSHIPMENT_APIPOSFEEKEY,
                                                       kTKPDSHOPSHIPMENT_APISHOPNAMEKEY:kTKPDSHOPSHIPMENT_APISHOPNAMEKEY,
@@ -628,7 +633,7 @@
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPEDITOR_APIPATH parameters:param];
 	[_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
+	//if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
         
         NSTimer *timer;
         
@@ -650,15 +655,15 @@
         timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
         
-    }
-    else {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-        NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
-	}
+//    }
+//    else {
+//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+//        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+//        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+//        NSLog(@"cache and updated in last 24 hours.");
+//        [self requestfailure:nil];
+//	}
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -669,48 +674,49 @@
     BOOL status = [_shippinginfo.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-        [_cachecontroller connectionDidFinish:_cacheconnection];
-        //save response data to plist
-        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+//        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+//        [_cachecontroller connectionDidFinish:_cacheconnection];
+//        //save response data to plist
+//        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
         
         [self requestprocess:object];
     }
 }
 
+
 -(void)requestfailure:(id)object
 {
-    if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
+//    if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
         [self requestprocess:object];
-    }
-    else{
-        NSError* error;
-        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
-        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-        if (parsedData == nil && error) {
-            NSLog(@"parser error");
-        }
-        
-        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
-            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-        }
-        
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-        NSError *mappingError = nil;
-        BOOL isMapped = [mapper execute:&mappingError];
-        if (isMapped && !mappingError) {
-            RKMappingResult *mappingresult = [mapper mappingResult];
-            NSDictionary *result = mappingresult.dictionary;
-            id stats = [result objectForKey:@""];
-            _shippinginfo = stats;
-            BOOL status = [_shippinginfo.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [self requestprocess:mappingresult];
-            }
-        }
-    }
+//    }
+//    else{
+//        NSError* error;
+//        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
+//        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
+//        if (parsedData == nil && error) {
+//            NSLog(@"parser error");
+//        }
+//        
+//        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
+//        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
+//            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
+//        }
+//        
+//        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+//        NSError *mappingError = nil;
+//        BOOL isMapped = [mapper execute:&mappingError];
+//        if (isMapped && !mappingError) {
+//            RKMappingResult *mappingresult = [mapper mappingResult];
+//            NSDictionary *result = mappingresult.dictionary;
+//            id stats = [result objectForKey:@""];
+//            _shippinginfo = stats;
+//            BOOL status = [_shippinginfo.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+//            
+//            if (status) {
+//                [self requestprocess:mappingresult];
+//            }
+//        }
+//    }
 }
 
 -(void)requestprocess:(id)object
@@ -728,7 +734,11 @@
                 NSArray *shipment = _shippinginfo.result.shipment;
                 for (int i = 0; i<shipment.count; i++) {
                     [_expandedSections addObject:@(i)];
+                    [_heightfooters addObject:@(_viewfooter.frame.size.height)];
+                    NSInteger footerheight = _viewfooter.frame.size.height;
+                    [_heightfooters replaceObjectAtIndex:i withObject:@(footerheight)];
                 }
+                
                 _buttonprovinsi.enabled = YES;
                 [_buttonprovinsi setTitle:_shippinginfo.result.shop_shipping.district_name?:@"Pilih Provinsi" forState:UIControlStateNormal];
                 _textfieldkodepos.text = _shippinginfo.result.shop_shipping.postal_code;
@@ -952,12 +962,28 @@
         {
             //JNE
             BOOL fee = ((SettingShipmentSectionFooterView*)view).switchfee.on;
+            if (fee) {
+                NSInteger footerheight = _viewfooter.frame.size.height-1*45;
+                [_heightfooters replaceObjectAtIndex:view.tag-10 withObject:@(footerheight)];
+            }
+            else{
+                NSInteger footerheight = _viewfooter.frame.size.height+1*45;
+                [_heightfooters replaceObjectAtIndex:view.tag-10 withObject:@(footerheight)];
+            }
             //if (fee) _footerheightjne += ((SettingShipmentSectionFooterView*)view).viewswitchfee.frame.size.height;
             //else _footerheightjne -= ((SettingShipmentSectionFooterView*)view).viewswitchfee.frame.size.height;
             [_datainput setObject:@(fee) forKey:kTKPDSHOPSHIPMENT_APIJNEFEEKEY];
             NSInteger feevalue = [((SettingShipmentSectionFooterView*)view).textfieldfee.text integerValue];
             [_datainput setObject:@(feevalue) forKey:kTKPDSHOPSHIPMENT_APIJNEFEEVALUEKEY];
             BOOL minweight = ((SettingShipmentSectionFooterView*)view).switchweightmin.on;
+            if (minweight) {
+                NSInteger footerheight = _viewfooter.frame.size.height-1*45;
+                [_heightfooters replaceObjectAtIndex:view.tag-10 withObject:@(footerheight)];
+            }
+            else{
+                NSInteger footerheight = _viewfooter.frame.size.height+1*45;
+                [_heightfooters replaceObjectAtIndex:view.tag-10 withObject:@(footerheight)];
+            }
             //if (minweight)_footerheightjne += ((SettingShipmentSectionFooterView*)view).viewminweight.frame.size.height;
             //else _footerheightjne -= ((SettingShipmentSectionFooterView*)view).viewminweight.frame.size.height;
             [_datainput setObject:@(minweight) forKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY];
@@ -965,15 +991,21 @@
             [_datainput setObject:@(minweightvalue) forKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY];
             BOOL diffdistrict = ((SettingShipmentSectionFooterView*)view).switchdiffdistrict.on;
             [_datainput setObject:@(diffdistrict) forKey:kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY];
-            CGRect frame = ((SettingShipmentSectionFooterView*)view).viewinfo.frame;
-            _footerheightjne = frame.origin.y + frame.size.height + 20;
-            [[_table footerViewForSection:0] setFrame:frame];
+            [_table reloadData];
             break;
         }
         case 11:
         {
             //TIKI
             BOOL fee = ((SettingShipmentSectionFooterView*)view).switchfee.on;
+            if (fee) {
+                NSInteger footerheight = _viewfooter.frame.size.height-1*45;
+                [_heightfooters replaceObjectAtIndex:view.tag-10 withObject:@(footerheight)];
+            }
+            else{
+                NSInteger footerheight = _viewfooter.frame.size.height+1*45;
+                [_heightfooters replaceObjectAtIndex:view.tag-10 withObject:@(footerheight)];
+            }
             [_datainput setObject:@(fee) forKey:kTKPDSHOPSHIPMENT_APITIKIFEEKEY];
             NSInteger feevalue = [((SettingShipmentSectionFooterView*)view).textfieldfee.text integerValue];
             [_datainput setObject:@(feevalue) forKey:kTKPDSHOPSHIPMENT_APITIKIFEEVALUEKEY];
@@ -983,10 +1015,26 @@
         {
             //POS
             BOOL fee = ((SettingShipmentSectionFooterView*)view).switchfee.on;
+            if (fee) {
+                NSInteger footerheight = _viewfooter.frame.size.height-1*45;
+                [_heightfooters replaceObjectAtIndex:view.tag-10 withObject:@(footerheight)];
+            }
+            else{
+                NSInteger footerheight = _viewfooter.frame.size.height+1*45;
+                [_heightfooters replaceObjectAtIndex:view.tag-10 withObject:@(footerheight)];
+            }
             [_datainput setObject:@(fee) forKey:kTKPDSHOPSHIPMENT_APIPOSFEEKEY];
             NSInteger feevalue = [((SettingShipmentSectionFooterView*)view).textfieldfee.text integerValue];
             [_datainput setObject:@(feevalue) forKey:kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY];
             BOOL minweight = ((SettingShipmentSectionFooterView*)view).switchweightmin.on;
+            if (minweight) {
+                NSInteger footerheight = _viewfooter.frame.size.height-1*45;
+                [_heightfooters replaceObjectAtIndex:view.tag-10 withObject:@(footerheight)];
+            }
+            else{
+                NSInteger footerheight = _viewfooter.frame.size.height+1*45;
+                [_heightfooters replaceObjectAtIndex:view.tag-10 withObject:@(footerheight)];
+            }
             [_datainput setObject:@(minweight) forKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY];
             NSInteger minweightvalue = [((SettingShipmentSectionFooterView*)view).labelweightmin.text integerValue];
             [_datainput setObject:@(minweightvalue) forKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY];
@@ -995,7 +1043,6 @@
         default:
             break;
     }
-    
 }
 
 #pragma mark - Filter Delegate

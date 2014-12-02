@@ -8,6 +8,7 @@
 
 #import "detail.h"
 #import "SettingPayment.h"
+#import "ShopSettings.h"
 #import "SettingPaymentViewController.h"
 #import "SettingPaymentCell.h"
 #import "URLCacheController.h"
@@ -27,6 +28,9 @@
     
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
+    
+    __weak RKObjectManager *_objectmanagerActionPayment;
+    __weak RKManagedObjectRequestOperation *_requestActionPayment;
     
     NSOperationQueue *_operationQueue;
     
@@ -405,6 +409,140 @@
 {
     [self cancel];
 }
+
+#pragma mark - Request Action Payment
+-(void)cancelActionPayment
+{
+    [_requestActionPayment cancel];
+    _requestActionPayment = nil;
+    [_objectmanagerActionPayment.operationQueue cancelAllOperations];
+    _objectmanagerActionPayment = nil;
+}
+
+-(void)configureRestKitActionPayment
+{
+    _objectmanagerActionPayment = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ShopSettingsResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIISSUCCESSKEY:kTKPDDETAIL_APIISSUCCESSKEY}];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOPEDITORACTION_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectmanagerActionPayment addResponseDescriptor:responseDescriptor];
+    
+}
+
+-(void)requestActionPayment:(id)object
+{
+    if (_requestActionPayment.isExecuting) return;
+    NSTimer *timer;
+    
+    NSDictionary *userinfo = (NSDictionary*)object;
+    
+    NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
+    NSString *action = kTKPDDETAIL_APIUPDATEPAYMENTINFOKEY;
+    
+    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action,
+                            };
+    _requestcount ++;
+    
+    _requestActionPayment = [_objectmanagerActionPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPEDITORACTION_APIPATH parameters:param];
+    
+    [_requestActionPayment setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestSuccessActionPayment:mappingResult withOperation:operation];
+        [timer invalidate];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [self requestFailureActionPayment:error];
+        [timer invalidate];
+    }];
+    
+    [_operationQueue addOperation:_requestActionPayment];
+    
+    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionPayment) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+}
+
+-(void)requestSuccessActionPayment:(id)object withOperation:(RKObjectRequestOperation *)operation
+{
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    id stat = [result objectForKey:@""];
+    ShopSettings *setting = stat;
+    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+        [self requestProcessActionPayment:object];
+    }
+}
+
+-(void)requestFailureActionPayment:(id)object
+{
+    [self requestProcessActionPayment:object];
+}
+
+-(void)requestProcessActionPayment:(id)object
+{
+    if (object) {
+        if ([object isKindOfClass:[RKMappingResult class]]) {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            id stat = [result objectForKey:@""];
+            ShopSettings *setting = stat;
+            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                if (!setting.message_error) {
+                    if (setting.result.is_success) {
+                    }
+                }
+                if (setting.message_status) {
+                    NSArray *array = setting.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                }
+                else if(setting.message_error)
+                {
+                    NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                }
+                
+            }
+        }
+        else{
+            
+            [self cancelActionPayment];
+            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
+            if ([(NSError*)object code] == NSURLErrorCancelled) {
+                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    //TODO:: Reload handler
+                }
+                else
+                {
+                }
+            }
+            else
+            {
+            }
+        }
+    }
+}
+
+-(void)requestTimeoutActionPayment
+{
+    [self cancelActionPayment];
+}
+
 
 #pragma mark - Cell Delegate
 -(void)SettingPaymentCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath

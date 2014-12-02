@@ -20,6 +20,7 @@
 @property (nonatomic) BOOL is_allow;
 @property (nonatomic) NSInteger pos_fee;
 @property (nonatomic, strong) NSString *shop_name;
+@property (nonatomic) NSInteger diff_district;
 @property (nonatomic, strong) PosMinWeight *pos_min_weight;
 @property (nonatomic, strong) ShopShipping *shop_shipping;
 
