@@ -34,7 +34,6 @@
     CGSize _scrollviewContentSize;
     
     UIBarButtonItem *_barbuttonsave;
-    UIActivityIndicatorView *_act;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *textfieldname;
@@ -82,7 +81,7 @@
     self.navigationItem.leftBarButtonItem = barbutton1;
     
     _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonsave setTintColor:[UIColor whiteColor]];
+    [_barbuttonsave setTintColor:[UIColor blackColor]];
     _barbuttonsave.tag = 11;
     self.navigationItem.rightBarButtonItem = _barbuttonsave;
 }
@@ -199,19 +198,21 @@
     _requestcount ++;
     
     _barbuttonsave.enabled = NO;
-    [_act startAnimating];
+    
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
     
     _requestActionAddEtalase = [_objectmanagerActionAddEtalase appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPETALASEACTION_APIPATH parameters:param];
     
     [_requestActionAddEtalase setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionAddEtalase:mappingResult withOperation:operation];
         [timer invalidate];
-        [_act stopAnimating];
+        app.networkActivityIndicatorVisible = NO;
         _barbuttonsave.enabled = YES;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionAddEtalase:error];
         [timer invalidate];
-        [_act stopAnimating];
+        app.networkActivityIndicatorVisible = NO;
         _barbuttonsave.enabled = YES;
     }];
     
@@ -248,32 +249,29 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (!setting.message_error) {
-                    if (setting.result.is_success) {
-                        //TODO:: add alert
-                        NSDictionary *userinfo;
-                        if (_type == 1){
-                            //TODO: Behavior after edit
-                            NSArray *viewcontrollers = self.navigationController.viewControllers;
-                            NSInteger index = viewcontrollers.count-3;
-                            [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
-                            userinfo = @{kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY],
-                                         kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
-                                         };
-                        }
-                        else [self.navigationController popViewControllerAnimated:YES];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDETALASEPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+                if (setting.result.is_success) {
+                    NSArray *array = setting.message_status?:[[NSArray alloc]initWithObjects:@"Anda telah sukses memperbaharui informasi etalase.",nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    //TODO:: add alert
+                    NSDictionary *userinfo;
+                    if (_type == 1){
+                        //TODO: Behavior after edit
+                        NSArray *viewcontrollers = self.navigationController.viewControllers;
+                        NSInteger index = viewcontrollers.count-3;
+                        [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
+                        userinfo = @{kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY],
+                                     kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
+                                     };
                     }
+                    else [self.navigationController popViewControllerAnimated:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDETALASEPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                 }
             }
-            if (setting.message_status) {
-                NSArray *array = setting.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
-                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-            }
-            else if(setting.message_error)
+
+            if(setting.message_error)
             {
-                NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
+                NSArray *array = setting.message_error;
                 NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
             }
@@ -286,9 +284,9 @@
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
                     NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
                     //TODO:: Reload handler
-                }
-                else
-                {
+                        NSArray *array = [[NSArray alloc] initWithObjects:@"Error", nil];
+                        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
             }
             else
@@ -331,6 +329,21 @@
     _data = data;
     if (data) {
         _type = [[_data objectForKey:kTKPDDETAIL_DATATYPEKEY]integerValue]?:0;
+        NSString *title;
+        switch (_type) {
+            case kTKPDSETTINGEDIT_DATATYPEDEFAULTVIEWKEY:
+                title = kTKPDTITLE_ETALASE;
+                break;
+            case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:
+                title = kTKPDTITLE_EDIT_ETALASE;
+                break;
+            case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
+                title = kTKPDTITLE_NEW_ETALASE;
+                break;
+            default:
+                break;
+        }
+        self.title = title;
         id etalaselist = [_data objectForKey:kTKPDDETAIL_DATAETALASEKEY];
         if (etalaselist && ![etalaselist isEqual:[NSNull null]]) {
             EtalaseList *list = etalaselist;

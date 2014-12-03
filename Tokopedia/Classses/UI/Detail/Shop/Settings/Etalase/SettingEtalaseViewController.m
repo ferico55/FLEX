@@ -71,6 +71,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isnodata = YES;
+        self.title = kTKPDTITLE_ETALASE;
     }
     return self;
 }
@@ -208,8 +209,8 @@
             ((GeneralList1GestureCell*)cell).labelname.text = list.etalase_name;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
             ((GeneralList1GestureCell*)cell).type = kTKPDGENERALCELL_DATATYPEONEBUTTONKEY;
-            ((GeneralList1GestureCell*)cell).labeldefault.hidden = NO;
-            ((GeneralList1GestureCell*)cell).labeldefault.text = [NSString stringWithFormat:@"%@ Produk",list.etalase_total_product];
+            ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
+            ((GeneralList1GestureCell*)cell).labelvalue.text = [NSString stringWithFormat:@"%@ Produk",list.etalase_total_product];
         }
         
 		return cell;
@@ -229,6 +230,36 @@
 }
 
 #pragma mark - Table View Delegate
+
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        EtalaseList *list = _list[indexPath.row];
+        if ([list.etalase_total_product isEqualToString:@"0"]) {
+            [self deleteListAtIndexPath:indexPath];
+        }
+        else
+        {
+            NSArray *array = [[NSArray alloc]initWithObjects:@"Tidak dapat menghapus etalase. \nSilahkan pindahkan product ke etalase lain terlebih dahulu.",nil];
+            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        }
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (_isnodata) {
@@ -308,8 +339,11 @@
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
 	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
-        _table.tableFooterView = _footer;
-        [_act startAnimating];
+        
+        if (!_isrefreshview) {
+            _table.tableFooterView = _footer;
+            [_act startAnimating];
+        }
         
         NSTimer *timer;
         //[_cachecontroller clearCache];
@@ -319,14 +353,15 @@
             _table.tableFooterView = nil;
             [_table reloadData];
             [timer invalidate];
+            [_refreshControl endRefreshing];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
             [self requestfailure:error];
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"An Error Has Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             //[alertView show];
             [_act stopAnimating];
             _table.tableFooterView = nil;
             [timer invalidate];
+            [_refreshControl endRefreshing];
         }];
         [_operationQueue addOperation:_request];
         
@@ -571,6 +606,7 @@
                 }
                 else if(setting.message_error)
                 {
+                    [self cancelDeleteData];
                     NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
@@ -581,9 +617,7 @@
             
             [self cancelActionDelete];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
-            [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
-            [_table reloadData];
+            [self cancelDeleteData];
         }
     }
 }
@@ -664,6 +698,12 @@
     [_datainput setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
     [self configureRestKitActionDelete];
     [self requestActionDelete:_datainput];
+}
+-(void)cancelDeleteData
+{
+    NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
+    [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
+    [_table reloadData];
 }
 
 #pragma mark - Notification

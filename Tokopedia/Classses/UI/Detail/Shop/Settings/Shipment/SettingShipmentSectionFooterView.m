@@ -18,9 +18,6 @@
 }
 
 #pragma mark - Factory Method
-- (IBAction)switchoutsidecity:(id)sender {
-}
-
 + (id)newview
 {
 	NSArray* views = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([self class]) owner:nil options:nil];
@@ -41,13 +38,19 @@
     return self;
 }
 
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self updateView];
+}
+
 -(void)awakeFromNib
 {
     [super awakeFromNib];
     double value = [_stepperminweight value];
     [_labelweightmin setText:[NSString stringWithFormat:@"%d", (int)value]];
-    [self layoutIfNeeded];
-    [self updateView];
+    _viewminweight.hidden = (!_switchweightmin.on);
+    _viewfee.hidden = (!_switchfee.on);
 }
 
 
@@ -63,9 +66,13 @@
 - (IBAction)tap:(id)sender {
     [_activetextfield resignFirstResponder];
     if ([sender isKindOfClass:[UISwitch class]]) {
-        _viewminweight.hidden = !(!_switchweightmin);
-        _viewfee.hidden = (!_switchfee.on);
-        [self updateView];
+        if ((UISwitch*)sender == _switchweightmin) {
+            [self updateViewMinWeight];
+        }
+        else if ((UISwitch*)sender == _switchfee) {
+            [self updateViewFee];
+        }
+        //[self updateView];
     }
     [_delegate SettingShipmentSectionFooterView:self];
 }
@@ -125,10 +132,11 @@
 
 #pragma mark - Methods
 
--(void)adjustView:(UIView*)view1 withView:(UIView*)view2
+-(void)adjustView:(UIView*)view1 withView:(UIView*)view2 isHidden:(BOOL)hidden
 {
     CGRect frame = view1.frame;
-    frame.origin.y -= view2.frame.size.height;
+    if(hidden)frame.origin.y -= view2.frame.size.height;
+    else frame.origin.y += view2.frame.size.height;
     [view1 setFrame:frame];
 }
 
@@ -136,67 +144,81 @@
 {
     if(_viewminweightflag.hidden)
     {
-        [self adjustView:_viewminweight withView:_viewminweightflag];
-        [self adjustView:_viewdiffcity withView:_viewminweightflag];
-        [self adjustView:_viewswitchfee withView:_viewminweightflag];
-        [self adjustView:_viewfee withView:_viewminweightflag];
-        [self adjustView:_viewinfo withView:_viewminweightflag];
+        [self adjustView:_viewminweight withView:_viewminweightflag isHidden:YES];
+        [self adjustView:_viewdiffcity withView:_viewminweightflag isHidden:YES];
+        [self adjustView:_viewswitchfee withView:_viewminweightflag isHidden:YES];
+        [self adjustView:_viewfee withView:_viewminweightflag isHidden:YES];
+        [self adjustView:_viewinfo withView:_viewminweightflag isHidden:YES];
     }
+//    else
+//    {
+//        [self adjustView:_viewminweight withView:_viewminweightflag isHidden:NO];
+//        [self adjustView:_viewdiffcity withView:_viewminweightflag isHidden:NO];
+//        [self adjustView:_viewswitchfee withView:_viewminweightflag isHidden:NO];
+//        [self adjustView:_viewfee withView:_viewminweightflag isHidden:NO];
+//        [self adjustView:_viewinfo withView:_viewminweightflag isHidden:NO];
+//    }
     if(_viewminweight.hidden)
     {
-        [self adjustView:_viewdiffcity withView:_viewminweight];
-        [self adjustView:_viewswitchfee withView:_viewminweight];
-        [self adjustView:_viewfee withView:_viewminweight];
-        [self adjustView:_viewinfo withView:_viewminweight];
+        [self adjustView:_viewdiffcity withView:_viewminweight isHidden:YES];
+        [self adjustView:_viewswitchfee withView:_viewminweight isHidden:YES];
+        [self adjustView:_viewfee withView:_viewminweight isHidden:YES];
+        [self adjustView:_viewinfo withView:_viewminweight isHidden:YES];
     }
+//    else
+//    {
+//        [self adjustView:_viewdiffcity withView:_viewminweight isHidden:NO];
+//        [self adjustView:_viewswitchfee withView:_viewminweight isHidden:NO];
+//        [self adjustView:_viewfee withView:_viewminweight isHidden:NO];
+//        [self adjustView:_viewinfo withView:_viewminweight isHidden:NO];
+//    }
     if(_viewdiffcity.hidden)
     {
-        [self adjustView:_viewswitchfee withView:_viewdiffcity];
-        [self adjustView:_viewfee withView:_viewdiffcity];
-        [self adjustView:_viewinfo withView:_viewdiffcity];
+        [self adjustView:_viewswitchfee withView:_viewdiffcity isHidden:YES];
+        [self adjustView:_viewfee withView:_viewdiffcity isHidden:YES];
+        [self adjustView:_viewinfo withView:_viewdiffcity isHidden:YES];
     }
+//    else
+//    {
+//        [self adjustView:_viewswitchfee withView:_viewdiffcity isHidden:NO];
+//        [self adjustView:_viewfee withView:_viewdiffcity isHidden:NO];
+//        [self adjustView:_viewinfo withView:_viewdiffcity isHidden:NO];
+//    }
     if(_viewswitchfee.hidden)
     {
-        [self adjustView:_viewfee withView:_viewswitchfee];
-        [self adjustView:_viewinfo withView:_viewswitchfee];
+        [self adjustView:_viewfee withView:_viewswitchfee isHidden:YES];
+        [self adjustView:_viewinfo withView:_viewswitchfee isHidden:YES];
     }
+//    else
+//    {
+//        [self adjustView:_viewfee withView:_viewswitchfee isHidden:NO];
+//        [self adjustView:_viewinfo withView:_viewswitchfee isHidden:NO];
+//    }
     if(_viewfee.hidden)
     {
-        [self adjustView:_viewinfo withView:_viewfee];
+        [self adjustView:_viewinfo withView:_viewfee isHidden:YES];
     }
+//    else
+//    {
+//        [self adjustView:_viewinfo withView:_viewfee isHidden:NO];
+//    }
 }
 
 -(void)updateViewMinWeight
 {
     _viewminweight.hidden = (!_switchweightmin.on);
     if (!_switchweightmin.on) {
-        CGRect frame = _viewdiffcity.frame;
-        frame.origin.y -= _viewminweight.frame.size.height;
-        [_viewdiffcity setFrame:frame];
-        frame = _viewswitchfee.frame;
-        frame.origin.y -= _viewminweight.frame.size.height;
-        [_viewswitchfee setFrame:frame];
-        frame = _viewfee.frame;
-        frame.origin.y -= _viewminweight.frame.size.height;
-        [_viewfee setFrame:frame];
-        frame = _viewinfo.frame;
-        frame.origin.y -= _viewminweight.frame.size.height;
-        [_viewinfo setFrame:frame];
+        [self adjustView:_viewdiffcity withView:_viewminweight isHidden:YES];
+        [self adjustView:_viewswitchfee withView:_viewminweight isHidden:YES];
+        [self adjustView:_viewfee withView:_viewminweight isHidden:YES];
+        [self adjustView:_viewinfo withView:_viewminweight isHidden:YES];
     }
     else
     {
-        CGRect frame = _viewdiffcity.frame;
-        frame.origin.y += _viewminweight.frame.size.height;
-        [_viewdiffcity setFrame:frame];
-        frame = _viewswitchfee.frame;
-        frame.origin.y += _viewminweight.frame.size.height;
-        [_viewswitchfee setFrame:frame];
-        frame = _viewfee.frame;
-        frame.origin.y += _viewminweight.frame.size.height;
-        [_viewfee setFrame:frame];
-        frame = _viewinfo.frame;
-        frame.origin.y += _viewminweight.frame.size.height;
-        [_viewinfo setFrame:frame];
+        [self adjustView:_viewdiffcity withView:_viewminweight isHidden:NO];
+        [self adjustView:_viewswitchfee withView:_viewminweight isHidden:NO];
+        [self adjustView:_viewfee withView:_viewminweight isHidden:NO];
+        [self adjustView:_viewinfo withView:_viewminweight isHidden:NO];
     }
 
 }
@@ -205,15 +227,11 @@
 {
     _viewfee.hidden = (!_switchfee.on);
     if (!_switchfee.on) {
-        CGRect frame = _viewinfo.frame;
-        frame.origin.y -= _viewfee.frame.size.height;
-        [_viewinfo setFrame:frame];
+        [self adjustView:_viewinfo withView:_viewfee isHidden:YES];
     }
     else
     {
-        CGRect frame = _viewinfo.frame;
-        frame.origin.y += _viewfee.frame.size.height;
-        [_viewinfo setFrame:frame];
+        [self adjustView:_viewinfo withView:_viewfee isHidden:NO];
     }
     
 }

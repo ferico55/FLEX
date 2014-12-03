@@ -247,7 +247,6 @@ UITextViewDelegate
                 }
                 else
                 {
-
                     if (!addressname || [addressname isEqualToString:@""]) {
                         [messages addObject:@"Nama Alamat harus diisi."];
                     }
@@ -264,15 +263,23 @@ UITextViewDelegate
                         [messages addObject:@"Provinsi harus diisi."];
                     }
                     if (!city) {
-                        [messages addObject:@"kota harus diisi."];
+                        [messages addObject:@"Kota harus diisi."];
                     }
                     if (!phone || [phone isEqualToString:@""]) {
-                        [messages addObject:@"telepon harus diisi."];
+                        [messages addObject:@"Telepon harus diisi."];
                     }
                     else
                     {
                         if (phoneCharCount<6) {
                             [messages addObject:@"Phone minimum 6 Character"];
+                        }
+                    }
+                    if (!email) {
+                        [messages addObject:@"Email harus diisi."];
+                    }
+                    else{
+                        if (![email isEmail]) {
+                            [messages addObject:@"Format email harus benar."];
                         }
                     }
                 }
@@ -281,7 +288,7 @@ UITextViewDelegate
                 if (messages) {
                     NSArray *array = messages;
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
                 break;
             }
@@ -364,17 +371,20 @@ UITextViewDelegate
     _requestcount ++;
     
     _barbuttonsave.enabled = NO;
-    [_act startAnimating];
+    
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
     
     _requestActionAddAddress = [_objectmanagerActionAddAddress appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPADDRESSACTION_APIPATH parameters:param];
     
     [_requestActionAddAddress setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionAddAddress:mappingResult withOperation:operation];
         [timer invalidate];
-        [_act stopAnimating];
+        app.networkActivityIndicatorVisible = NO;
         _barbuttonsave.enabled = YES;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionAddAddress:error];
+        app.networkActivityIndicatorVisible = NO;
         [timer invalidate];
         [_act stopAnimating];
         _barbuttonsave.enabled = YES;
@@ -413,28 +423,25 @@ UITextViewDelegate
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (!setting.message_error) {
-                    if (setting.result.is_success) {
-                        NSDictionary *userinfo;
-                        if (_type == kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY){
-                            //TODO: Behavior after edit
-                            NSArray *viewcontrollers = self.navigationController.viewControllers;
-                            NSInteger index = viewcontrollers.count-3;
-                            [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
-                            userinfo = @{kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY],
-                                         kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
-                                         };
-                        }
-                        else [self.navigationController popViewControllerAnimated:YES];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDLOCATIONPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                    }
-                }
-                if (setting.message_status) {
-                    NSArray *array = setting.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                if (setting.result.is_success) {
+                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    
+                    NSDictionary *userinfo;
+                    if (_type == kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY){
+                        //TODO: Behavior after edit
+                        NSArray *viewcontrollers = self.navigationController.viewControllers;
+                        NSInteger index = viewcontrollers.count-3;
+                        [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
+                        userinfo = @{kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY],
+                                     kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
+                                     };
+                    }
+                    else [self.navigationController popViewControllerAnimated:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDLOCATIONPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                 }
-                else if(setting.message_error)
+                if(setting.message_error)
                 {
                     NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];

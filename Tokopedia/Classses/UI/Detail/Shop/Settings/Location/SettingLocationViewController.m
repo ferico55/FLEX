@@ -98,6 +98,7 @@
         _isrefreshview = NO;
         _ismanualsetdefault = NO;
         _ismanualdelete = NO;
+        self.title = kTKPDTITLE_LOCATION;
     }
     return self;
 }
@@ -130,6 +131,28 @@
     _cachecontroller.URLCacheInterval = 86400.0;
     [_cachecontroller initCacheWithDocumentPath:path];
     
+    UIBarButtonItem *barbutton1;
+    NSBundle* bundle = [NSBundle mainBundle];
+    //TODO:: Change image
+    //UIImage *img= [[UIImage imageNamed:kTKPDIMAGE_ICONBACK] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    //img = [[UIImage imageNamed:kTKPDIMAGE_ICONBACK] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 100.0f, 0.0f, 100.0f) resizingMode:UIImageResizingModeStretch];
+
+
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    img = [[[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 100.0f, 0.0f, 100.0f)];
+
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    }
+    else
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    [barbutton1 setTag:10];
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    //self.navigationItem.leftBarButtonItem = barbutton1;
 }
 
 
@@ -149,14 +172,6 @@
             [self request];
         }
     }
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"]
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:@selector(tap:)];
-    backBarButtonItem.tintColor = [UIColor whiteColor];
-    self.navigationItem.leftBarButtonItem = backBarButtonItem;
-    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -192,6 +207,7 @@
             ((GeneralList1GestureCell*)cell).labelname.text = list.location_address_name;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
             ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
+            ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
             ((GeneralList1GestureCell*)cell).type = kTKPDGENERALCELL_DATATYPEONEBUTTONKEY;
         }
         
@@ -212,6 +228,27 @@
 }
 
 #pragma mark - Table View Delegate
+
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [self deleteListAtIndexPath:indexPath];
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (_isnodata) {
@@ -549,11 +586,14 @@
                             };
     _requestcount ++;
     
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
+    
     _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPADDRESSACTION_APIPATH parameters:param]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
     
     [_requestActionDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionDelete:mappingResult withOperation:operation];
-        [_act stopAnimating];
+        app.networkActivityIndicatorVisible = NO;
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         [timer invalidate];
@@ -561,6 +601,7 @@
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFailureActionDelete:error];
+        app.networkActivityIndicatorVisible = NO;
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         [timer invalidate];
@@ -606,6 +647,7 @@
                 }
                 else if(setting.message_error)
                 {
+                    [self cancelDeleteData];
                     NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
@@ -622,9 +664,7 @@
             
             [self cancelActionDelete];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
-            [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
-            [_table reloadData];
+            [self cancelDeleteData];
         }
     }
 }
@@ -739,12 +779,6 @@
     [self request];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    view.backgroundColor = [UIColor clearColor];
-    return view;
-}
 
 -(void)deleteListAtIndexPath:(NSIndexPath*)indexpath
 {
@@ -758,6 +792,13 @@
     [self configureRestKitActionDelete];
     [self requestActionDelete:_datainput];
     [_datainput setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
+    [_table reloadData];
+}
+
+-(void)cancelDeleteData
+{
+    NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
+    [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
     [_table reloadData];
 }
 

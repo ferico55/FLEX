@@ -12,6 +12,7 @@
 #import "ShopTalkViewController.h"
 #import "InboxMessageViewController.h"
 #import "ShopSettingViewController.h"
+#import "ShopInfoViewController.h"
 
 @interface LogoutViewController ()
 {
@@ -96,6 +97,12 @@
             //settings
             ShopSettingViewController *vc = [ShopSettingViewController new];
 //            vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY], kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result};
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 13:
+        {
+            ShopInfoViewController *vc = [ShopInfoViewController new];
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }

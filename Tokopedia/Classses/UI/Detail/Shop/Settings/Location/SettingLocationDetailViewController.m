@@ -62,6 +62,12 @@
     self.navigationItem.rightBarButtonItem = barbutton1;
 }
 
+-(void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    _scrollView.contentSize = _contentView.frame.size;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

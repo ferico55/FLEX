@@ -18,6 +18,8 @@
 @optional
 - (NSString *)tableView:(UITableView *)tableView titleForSwipeAccessoryButtonForRowAtIndexPath:(NSIndexPath *)indexPath;
 -(void)DidTapButton:(UIButton*)button atCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
+- (void)cellDidOpen:(UITableViewCell *)cell;
+- (void)cellDidClose:(UITableViewCell *)cell;
 @end
 
 @interface GeneralList1GestureCell : UITableViewCell
@@ -32,6 +34,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labeldefault;
 @property (strong, nonatomic) NSIndexPath *indexpath;
 @property (weak, nonatomic) IBOutlet UIButton *buttondefault;
+@property (weak, nonatomic) IBOutlet UILabel *labelvalue;
 
 @property (nonatomic) NSInteger type;
 

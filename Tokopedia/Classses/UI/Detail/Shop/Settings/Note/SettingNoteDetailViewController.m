@@ -127,7 +127,7 @@
     _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTES_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue]]];
     
     _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
+    _cachecontroller.URLCacheInterval = 0;
     [_cachecontroller initCacheWithDocumentPath:path];
     
 }
@@ -446,14 +446,19 @@
     _requestcount ++;
     _barbuttonedit.enabled = NO;
     
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
+    
     _requestActionNote = [_objectmanagerActionNote appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPNOTEACTION_APIPATH parameters:param];
     
     [_requestActionNote setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionNote:mappingResult withOperation:operation];
         [timer invalidate];
+        app.networkActivityIndicatorVisible = NO;
         _barbuttonedit.enabled = YES;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionNote:error];
+        app.networkActivityIndicatorVisible = NO;
         [timer invalidate];
         _barbuttonedit.enabled = YES;
     }];
@@ -491,34 +496,31 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (!setting.message_error) {
-                    if (setting.result.is_success) {
-                        NSDictionary *userinfo;
-                        if (_type == 1){
-                            //TODO: Behavior after edit
-                            NSArray *viewcontrollers = self.navigationController.viewControllers;
-                            NSInteger index = viewcontrollers.count-3;
-                            [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
-                            userinfo = @{kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY]?:@(0),
-                                         kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0]
-                                         };
-                        }
-                        else [self.navigationController popViewControllerAnimated:YES];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDNOTEPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+                if (setting.result.is_success) {
+                    NSDictionary *userinfo;
+                    if (_type == 1){
+                        //TODO: Behavior after edit
+                        NSArray *viewcontrollers = self.navigationController.viewControllers;
+                        NSInteger index = viewcontrollers.count-3;
+                        [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
+                        userinfo = @{kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY]?:@(0),
+                                     kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0]
+                                     };
                     }
-                }
-                if (setting.message_status) {
-                    NSArray *array = setting.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                    else [self.navigationController popViewControllerAnimated:YES];
+                        
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDNOTEPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+
+                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
                 }
-                else if(setting.message_error)
-                {
-                    NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                }
-                
+            }
+            if(setting.message_error)
+            {
+                NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
             }
         }
         else{

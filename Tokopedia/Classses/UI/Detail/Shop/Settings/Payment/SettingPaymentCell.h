@@ -31,6 +31,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labeldescription;
 @property (weak, nonatomic) IBOutlet UIButton *buttonterms;
 @property (strong, nonatomic) NSIndexPath *indexpath;
+@property (weak, nonatomic) IBOutlet UITextView *textviewdesc;
 
 + (id)newcell;
 

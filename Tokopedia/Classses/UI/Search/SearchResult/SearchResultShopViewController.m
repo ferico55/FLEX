@@ -605,26 +605,26 @@
     /** create new view controller **/
     ShopProductViewController *v = [ShopProductViewController new];
     v.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0),
-               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     [viewcontrollers addObject:v];
     ShopTalkViewController *v1 = [ShopTalkViewController new];
     v1.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0),
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     [viewcontrollers addObject:v1];
     ShopReviewViewController *v2 = [ShopReviewViewController new];
     v2.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0),
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     [viewcontrollers addObject:v2];
     ShopNotesViewController *v3 = [ShopNotesViewController new];
     v3.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0),
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     [viewcontrollers addObject:v3];
     /** Adjust View Controller **/
     TKPDTabShopNavigationController *tapnavcon = [TKPDTabShopNavigationController new];
     NSIndexPath *indexpathparam = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     tapnavcon.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id,
                        kTKPDFILTERSORT_DATAINDEXPATHKEY: indexpathparam?:0,
-                       kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                       kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     [tapnavcon setViewControllers:viewcontrollers animated:YES];
     [tapnavcon setSelectedIndex:0];
 

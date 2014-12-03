@@ -142,14 +142,17 @@
 	[proxy setTitleTextAttributes:[[NSDictionary alloc] initWithObjectsAndKeys:kTKPDNAVIGATION_TITLEFONT, UITextAttributeFont,kTKPDNAVIGATION_TITLECOLOR, UITextAttributeTextColor, kTKPDNAVIGATION_TITLESHADOWCOLOR, UITextAttributeTextShadowColor, nil]];
 	
 	proxy = [UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil];
-	image = [[[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"navigation-button-bg-pt" ofType:@"png"]] resizableImageWithCapInsets:kTKPDNAVIGATION_BUTTONINSET]; //navigation button bg pt
-	[proxy setBackgroundImage:image forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-	[proxy setBackgroundImage:image forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
-	//[proxy setBackgroundVerticalPositionAdjustment:kJYNAVIGATION_ITEMVERTICALADJUSTMENT forBarMetrics:UIBarMetricsDefault];	//TODO: navigation bar animation corruption
 	
-	image = [[[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"navigation-button" ofType:@"png"]] resizableImageWithCapInsets:kTKPDNAVIGATION_BACKBUTTONINSET];
-	[proxy setBackButtonBackgroundImage:image forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-	[proxy setBackButtonBackgroundImage:image forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    if ([UINavigationBar instancesRespondToSelector:@selector(setBackIndicatorImage:)]) {
+        [[UINavigationBar appearance] setBackIndicatorImage:[[UIImage alloc] init]];
+        [[UINavigationBar appearance] setBackIndicatorTransitionMaskImage:[[UIImage alloc] init]];
+    }
+    image = [[[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]] resizableImageWithCapInsets:kTKPDNAVIGATION_BACKBUTTONINSET];
+    [proxy setBackButtonBackgroundImage:image forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    [proxy setBackButtonBackgroundImage:image forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    
+    //[proxy setBackButtonBackgroundVerticalPositionAdjustment:5 forBarMetrics:UIBarMetricsDefault];
+
 	//[proxy setBackButtonBackgroundVerticalPositionAdjustment:kJYNAVIGATION_ITEMVERTICALADJUSTMENT forBarMetrics:UIBarMetricsDefault];	//TODO: navigation bar animation corruption
 
 #endif

@@ -7,6 +7,7 @@
 //
 
 #import "detail.h"
+#import "generalcell.h"
 #import "Notes.h"
 #import "ShopSettings.h"
 #import "URLCacheController.h"
@@ -144,8 +145,11 @@
             NotesList *list = _list[indexPath.row];
             ((GeneralList1GestureCell*)cell).labelname.text = list.note_title;
             ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
+            ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
+            ((GeneralList1GestureCell*)cell).type = kTKPDGENERALCELL_DATATYPETWOBUTTONKEY;
             [((GeneralList1GestureCell*)cell).buttondefault setTitle:@"Ubah\nCatatan" forState:UIControlStateNormal];
+            
         }
         
 		return cell;
@@ -165,6 +169,14 @@
 }
 
 #pragma mark - Table View Delegate
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (_isnodata) {
@@ -297,11 +309,12 @@
     BOOL status = [_notes.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status && _notes.result) {
-        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-        [_cachecontroller connectionDidFinish:_cacheconnection];
-        //save response data
-        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-        
+        if (_notes.result.list > 0) {
+            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+            [_cachecontroller connectionDidFinish:_cacheconnection];
+            //save response data
+            [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+        }
         [self requestprocess:object];
     }
 }
@@ -436,6 +449,9 @@
                             };
     _requestcount ++;
     
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
+    
     _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPNOTEACTION_APIPATH parameters:param]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
     
     [_requestActionDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -443,12 +459,13 @@
         [_act stopAnimating];
         _isrefreshview = NO;
         [timer invalidate];
-        
+        app.networkActivityIndicatorVisible = NO;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFailureActionDelete:error];
         _isrefreshview = NO;
         [timer invalidate];
+        app.networkActivityIndicatorVisible = NO;
     }];
     
     [_operationQueue addOperation:_requestActionDelete];
@@ -484,32 +501,24 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (setting.message_status) {
-                    NSArray *array = setting.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-                }
-                else if(setting.message_error)
+                if(setting.message_error)
                 {
+                    [self cancelDeleteRow];
                     NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
                 if (!setting.result.is_success) {
-                    [self cancelActionDelete];
-                    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-                    NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
-                    [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
-                    [_table reloadData];
+                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
                 }
             }
         }
         else{
             [self cancelActionDelete];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
-            [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
-            [_table reloadData];
+            [self cancelDeleteRow];
         }
     }
 }
@@ -550,25 +559,37 @@
         case 11:
         {
             //delete
-            [_datainput setObject:_list[indexpath.row] forKey:kTKPDDETAIL_DATADELETEDOBJECTKEY];
-            [_list removeObjectAtIndex:indexpath.row];
-            [_table beginUpdates];
-            [_table deleteRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationFade];
-            [_table endUpdates];
-            [_table reloadData];
-            [self configureRestKitActionDelete];
-            [self requestActionDelete:_datainput];
-            [_datainput setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
-            [_table reloadData];
+            [self deleteListAtIndexPath:indexpath];
             break;
         }
         default:
             break;
     }
-    
 }
 
+
 #pragma mark - Methods
+
+-(void)deleteListAtIndexPath:(NSIndexPath*)indexpath
+{
+    [_datainput setObject:_list[indexpath.row] forKey:kTKPDDETAIL_DATADELETEDOBJECTKEY];
+    [_list removeObjectAtIndex:indexpath.row];
+    [_table beginUpdates];
+    [_table deleteRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationFade];
+    [_table endUpdates];
+    [self configureRestKitActionDelete];
+    [self requestActionDelete:_datainput];
+    [_datainput setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
+    [_table reloadData];
+}
+
+-(void)cancelDeleteRow
+{
+    NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
+    [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
+    [_table reloadData];
+}
+
 
 -(void)refreshView:(UIRefreshControl*)refresh
 {

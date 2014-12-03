@@ -38,6 +38,13 @@ typedef enum
 #define KTKPDTITLE_PEOPLE @"People Information"
 #define KTKPDTITLE_BIODATA @"Biodata"
 #define kTKPDTITLE_LOCATION @"Lokasi"
+
+#define kTKPDTITLE_ETALASE @"Etalase"
+#define kTKPDTITLE_NEW_ETALASE @"New Etalase"
+#define kTKPDTITLE_EDIT_ETALASE @"Edit Etalase"
+
+#define kTKPTITLE_PAYMENT @"Pembayaran"
+
 #define KTKPDETAIL_DESCRIPTION_EMPTY @"No description"
 
 #define kTKPDDETAIL_DATASHOPSKEY @"shop"
@@ -88,6 +95,7 @@ typedef enum
 #define kTKPDDETAIL_APIGETSHOPNOTEKEY @"get_shop_note"
 
 #define kTKPDDETAIL_APIGETPAYMENTINFOKEY @"get_payment_info"
+#define kTKPDDETAIL_APIUPDATEPAYMENTINFOKEY @"event_update_payment_info"
 
 #define kTKPDDETAIL_APIGETSHOPFAVORITEDKEY @"get_people_who_favorite_myshop"
 #define kTKPDDETAIL_APISETSHOPINFOKEY @"event_update_shop_info"
@@ -569,6 +577,9 @@ typedef enum
 #define KTKPDMESSAGE_DELIVERED @"Pesan Anda telah terkirim!"
 #define KTKPDMESSAGE_UNDELIVERED @"Pesan Anda gagal terkirim."
 #define KTKPDMESSAGE_EMPTYFORM @"Panjang pesan harus lebih dari 3 karakter."
+
+#define kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY @"Sukses"
+#define kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY @"Error"
 
 #define kTKPD_STATUSSUCCESS @"1"
 #define kTKPDMESSAGE_KEYTOUSERID @"to_user_id"

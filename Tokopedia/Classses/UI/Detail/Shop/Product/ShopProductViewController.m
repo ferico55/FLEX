@@ -679,7 +679,8 @@
     NSInteger index = indexpath.section+2*(indexpath.row);
     List *list = _product[index];
     DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id};
+    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id,
+                kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]};
     [self.navigationController pushViewController:vc animated:YES];
 }
 

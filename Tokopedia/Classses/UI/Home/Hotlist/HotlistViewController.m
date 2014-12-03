@@ -150,17 +150,16 @@
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     
+    [self configureRestKit];
+    [self loadData];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    if (!_isrefreshview) {
-        [self configureRestKit];
-        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self loadData];
-        }
+    [self configureRestKit];
+    if (_isnodata && !_isrefreshview && _page<1) {
+        [self loadData];
     }
 }
 
@@ -210,20 +209,14 @@
 
             UIImageView *thumb = ((HotlistCell*)cell).productimageview;
             thumb.image = nil;
-            
-            [((HotlistCell*)cell).act startAnimating];
-            
             [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image];
+                [thumb setImage:image animated:YES];
                 [thumb setContentMode:UIViewContentModeScaleAspectFill];
-                
-                [((HotlistCell*)cell).act stopAnimating];
 #pragma clang diagnosti c pop
                 
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                [((HotlistCell*)cell).act stopAnimating];
             }];
             
 		}else [self reset:((HotlistCell*)cell)];
