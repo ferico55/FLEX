@@ -247,7 +247,15 @@
             
             if (status) {
                 if (setting.result.is_success) {
-                    NSArray *array = setting.message_status?:[[NSArray alloc]initWithObjects:@"Anda telah sukses memperbaharui informasi etalase.",nil];
+                    NSString *message;
+                    if (_type == kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY) {
+                        message = @"Anda telah sukses memperbaharui informasi etalase.";
+                    }
+                    else
+                    {
+                        message = @"anda telah berhasil menambah etalase";
+                    }
+                    NSArray *array = setting.message_status?:[[NSArray alloc]initWithObjects:message,nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
                     //TODO:: add alert

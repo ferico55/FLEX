@@ -105,7 +105,7 @@
             break;
     }
     _barbuttonedit = [[UIBarButtonItem alloc] initWithTitle:barbuttontitle style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonedit setTintColor:[UIColor whiteColor]];
+    [_barbuttonedit setTintColor:[UIColor blackColor]];
     switch (_type) {
         case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
         case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:

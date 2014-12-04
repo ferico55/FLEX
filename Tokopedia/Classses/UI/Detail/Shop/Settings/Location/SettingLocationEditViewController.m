@@ -100,14 +100,18 @@ UITextViewDelegate
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonsave setTintColor:[UIColor whiteColor]];
+    [_barbuttonsave setTintColor:[UIColor blackColor]];
     _barbuttonsave.tag = 11;
     self.navigationItem.rightBarButtonItem = _barbuttonsave;
     
     [self setDefaultData:_data];
     
     _type = [[_data objectForKey:kTKPDDETAIL_DATATYPEKEY]integerValue];
-    
+    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY) {
+        self.title = kTKPDTITLE_NEW_LOCATION;
+    }
+    else
+        self.title = kTKPDTITLE_EDIT_LOCATION;
     
     /** keyboard notification **/
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -253,14 +257,14 @@ UITextViewDelegate
                     if (!postcode) {
                         [messages addObject:@"Kode Pos harus diisi."];
                     }
-                    if (!district) {
-                        [messages addObject:@"Distric harus diisi."];
-                    }
                     if (!prov) {
                         [messages addObject:@"Provinsi harus diisi."];
                     }
                     if (!city) {
                         [messages addObject:@"Kota harus diisi."];
+                    }
+                    if (!district) {
+                        [messages addObject:@"Kecamatan harus diisi."];
                     }
                     if (!phone || [phone isEqualToString:@""]) {
                         [messages addObject:@"Telepon harus diisi."];
@@ -421,7 +425,7 @@ UITextViewDelegate
             
             if (status) {
                 if (setting.result.is_success) {
-                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil menambah lokasi.", nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
                     

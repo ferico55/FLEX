@@ -37,11 +37,14 @@ typedef enum
 #define KTKPDTITLE_FAV_THIS_SHOP @"People who Favorited This Shop"
 #define KTKPDTITLE_PEOPLE @"People Information"
 #define KTKPDTITLE_BIODATA @"Biodata"
-#define kTKPDTITLE_LOCATION @"Lokasi"
+
+#define kTKPDTITLE_LOCATION @"Lokasi Toko"
+#define kTKPDTITLE_NEW_LOCATION @"Tambah Lokasi Toko"
+#define kTKPDTITLE_EDIT_LOCATION @"Ubah Lokasi Toko"
 
 #define kTKPDTITLE_ETALASE @"Etalase"
-#define kTKPDTITLE_NEW_ETALASE @"New Etalase"
-#define kTKPDTITLE_EDIT_ETALASE @"Edit Etalase"
+#define kTKPDTITLE_NEW_ETALASE @"Tambah Etalase"
+#define kTKPDTITLE_EDIT_ETALASE @"Ubah Etalase"
 
 #define kTKPTITLE_PAYMENT @"Pembayaran"
 

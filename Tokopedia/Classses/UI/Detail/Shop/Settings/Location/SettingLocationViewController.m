@@ -106,7 +106,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.navigationController.navigationItem setTitle:kTKPDTITLE_LOCATION];
     
     _list = [NSMutableArray new];
     _datainput = [NSMutableDictionary new];

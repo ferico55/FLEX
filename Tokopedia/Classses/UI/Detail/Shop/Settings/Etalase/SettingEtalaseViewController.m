@@ -547,12 +547,16 @@
     
     _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPETALASEACTION_APIPATH parameters:param]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
     
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
+    
     [_requestActionDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionDelete:mappingResult withOperation:operation];
         [_act stopAnimating];
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         [timer invalidate];
+        app.networkActivityIndicatorVisible = NO;
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
@@ -560,6 +564,7 @@
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         [timer invalidate];
+        app.networkActivityIndicatorVisible = NO;
     }];
     
     [_operationQueue addOperation:_requestActionDelete];
