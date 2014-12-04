@@ -11,6 +11,7 @@
 #import "ShopSettingViewController.h"
 #import "Etalase/SettingEtalaseViewController.h"
 #import "Shipment/SettingShipmentViewController.h"
+#import "ShipmentSettingViewController.h"
 #import "Payment/SettingPaymentViewController.h"
 #import "Note/SettingNoteViewController.h"
 #import "Location/SettingLocationViewController.h"
@@ -97,10 +98,12 @@
                 case 13:
                 {
                     //Shipment
-                    SettingShipmentViewController *vc = [SettingShipmentViewController new];
-                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                                
-                                };
+//                    SettingShipmentViewController *vc = [SettingShipmentViewController new];
+//                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
+//                                };
+//                    [self.navigationController pushViewController:vc animated:YES];
+                    
+                    ShipmentSettingViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ShipmentSettingViewController"];
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }

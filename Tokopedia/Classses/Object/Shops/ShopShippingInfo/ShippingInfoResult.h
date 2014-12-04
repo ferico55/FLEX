@@ -11,6 +11,9 @@
 #import "PosMinWeight.h"
 #import "ShippingInfoShipments.h"
 #import "ShopShipping.h"
+#import "JNE.h"
+#import "POSIndonesia.h"
+#import "Tiki.h"
 
 @interface ShippingInfoResult : NSObject
 
@@ -23,5 +26,9 @@
 @property (nonatomic) NSInteger diff_district;
 @property (nonatomic, strong) PosMinWeight *pos_min_weight;
 @property (nonatomic, strong) ShopShipping *shop_shipping;
+
+@property (nonatomic, strong) JNE *jne;
+@property (nonatomic, strong) POSIndonesia *pos;
+@property (nonatomic, strong) Tiki *tiki;
 
 @end

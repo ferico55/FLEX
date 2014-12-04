@@ -105,8 +105,8 @@ typedef enum
 #define kTKPDDETAIL_APIUPLOADGENERATEHOSTKEY @"generate_host"
 #define kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY @"upload_shop_image"
 //Shop Setting Shipping
-#define kTKPDDETAIL_APIGETSHOPSHIPPINGINFOKEY @"get_shop_shipping_info"
-#define kTKPDDETAIL_APIEDITSHIPPINGINFOKEY @"event_update_shipping_info"
+#define kTKPDDETAIL_APIGETSHOPSHIPPINGINFOKEY @"get_shipping_info"
+#define kTKPDDETAIL_APIEDITSHIPPINGINFOKEY @"update_shipping_info"
 //Shop Setting Etalase
 #define kTKPDDETAIL_APIGETETALASEKEY @"get_shop_etalase"
 #define kTKPDDETAIL_APIDELETEETALASEKEY @"event_shop_delete_etalase"
@@ -273,6 +273,9 @@ typedef enum
 #define kTKPDSHOP_APIETALASETOTALPRODUCTKEY @"etalase_total_product"
 
 #pragma mark - -Shop Shipment
+
+#define kTKPDSHOPSHIPMENT_APIPATH @"myshop-shipment.pl"
+
 #define kTKPDSHOPSHIPMENT_APIDISTRICTKEY @"district"
 #define kTKPDSHOPSHIPMENT_APISHIPMENTSKEY @"shipments"
 
@@ -310,24 +313,30 @@ typedef enum
 #define kTKPDSHOPSHIPMENT_APISHIPMENTIDS @"shipment_ids"
 
 //JNE
+#define kTKPDSHOPSHIPMENT_APIJNEKEY @"jne"
 #define kTKPDSHOPSHIPMENT_APIJNEFEEKEY @"jne_fee"
 #define kTKPDSHOPSHIPMENT_APIJNEFEEVALUEKEY @"jne_fee_value"
 #define kTKPDSHOPSHIPMENT_APIJNETICKETKEY @"jne_tiket"
-#define kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY @"min_weight"
-#define kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY @"min_weight_value"
-#define kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY @"diff_district"
+#define kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY @"jne_min_weight"
+#define kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY @"jne_min_weight_value"
+#define kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY @"jne_diff_district"
 
 //POS
+#define kTKPDSHOPSHIPMENT_APIPOSKEY @"pos"
 #define kTKPDSHOPSHIPMENT_APIPOSFEEKEY @"pos_fee"
 #define kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY @"pos_fee_value"
 #define kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY @"pos_min_weight"
 #define kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY @"pos_min_weight_value"
+
 //TIKI
+#define kTKPDSHOPSHIPMENT_APITIKIKEY @"tiki"
 #define kTKPDSHOPSHIPMENT_APITIKIFEEKEY @"tiki_fee"
 #define kTKPDSHOPSHIPMENT_APITIKIFEEVALUEKEY @"tiki_fee_value"
+
 //RPX
 #define kTKPDSHOPSHIPMENT_APIRPXPACKETKEY @"i_paket"
 #define kTKPDSHOPSHIPMENT_APIRPXTICKETKEY @"rpx_tiket"
+
 
 #pragma mark -- Shop Edit Info
 
@@ -548,6 +557,8 @@ typedef enum
 #define kTKPDDETAILTALK_APIPATH @"talk.pl"
 #define kTKPDDETAILSHOPEDITOR_APIPATH @"myshop-editor.pl"
 #define kTKPDDETAILSHOPEDITORACTION_APIPATH @"action/myshop-editor.pl"
+#define kTKPDDETAILSHOPACTIONEDITOR_APIPATH @"action/myshop-shipment.pl"
+
 
 #define kTKPDDETAILSHOPNOTE_APIPATH @"myshop-note.pl"
 #define kTKPDDETAILSHOPNOTEACTION_APIPATH @"action/myshop-note.pl"
