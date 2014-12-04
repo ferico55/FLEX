@@ -41,7 +41,7 @@
 }
 
 -(CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 30.0f;
+    return 33.0f;
 }
 
 #pragma mark - View Life Cycle
@@ -64,7 +64,7 @@
     if (!_isnodatashop) {
         if (indexPath.section == 0) {
             //height shop
-            return 150;
+            return 130;
         }
         else
             //height biodata
@@ -81,16 +81,32 @@
     else return 0;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    //For each section, you must return here it's label
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+//    //For each section, you must return here it's label
+//    if(section == 0) {
+//        return kTKPDTITLE_SHOP_INFO;
+//    } else if (section == 1) {
+//        return KTKPDTITLE_BIODATA;
+//    }
+//    return @"";
+//}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, tableView.sectionHeaderHeight)];
+
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width, tableView.sectionHeaderHeight)];
+    titleLabel.font = [UIFont fontWithName:@"GothamLight" size:15];
     if(section == 0) {
-        return kTKPDTITLE_SHOP_INFO;
+        titleLabel.text = kTKPDTITLE_SHOP_INFO;
     } else if (section == 1) {
-        return KTKPDTITLE_BIODATA;
+        titleLabel.text = KTKPDTITLE_BIODATA;
     }
-    return @"";
-    
+    [headerView addSubview:titleLabel];
+
+    return headerView;
 }
+
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

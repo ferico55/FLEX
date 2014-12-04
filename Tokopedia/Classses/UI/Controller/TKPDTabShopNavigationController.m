@@ -33,7 +33,6 @@
     NSArray *_chevrons;
     
     UIBarButtonItem *_barbuttoninfo;
-    UIBarButtonItem *_backBarButton;
     
     NSInteger _pagedetail;
     
@@ -200,30 +199,25 @@
     _scrollview.contentSize = size;
     
     //set back bar button
-    UIBarButtonItem *backBarButton;
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        backBarButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-    }
-    else
-        backBarButton = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-	[backBarButton setTag:10];
-    self.navigationItem.leftBarButtonItem = backBarButton;
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tapbutton:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     //set info bar button as right bar button item
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        _backBarButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
     }
     else
-        _backBarButton = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-	[_backBarButton setTag:11];
-    _backBarButton.enabled = NO;
-    self.navigationItem.rightBarButtonItem = _backBarButton;
+        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+	[_barbuttoninfo setTag:11];
+    _barbuttoninfo.enabled = NO;
+    self.navigationItem.rightBarButtonItem = _barbuttoninfo;
     
     [_scrollview addSubview:_contentview];
     
@@ -299,6 +293,8 @@
     _buttonMessage.layer.cornerRadius = 3;
     _buttonMessage.layer.borderWidth = 1;
     _buttonMessage.layer.borderColor = [UIColor colorWithRed:218.0/255.0 green:218.0/255.0 blue:218.0/255.0 alpha:1].CGColor;
+    
+    _buttonsetting.enabled = NO;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -626,17 +622,13 @@
         switch (btn.tag) {
             case 15:
             {
-                if(!_actpp.isAnimating) {
-                    SendMessageViewController *vc = [SendMessageViewController new];
-                    vc.data = @{
-                                kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
-                                kTKPDDETAIL_APISHOPNAMEKEY:_shop.result.info.shop_name
-                                };
-                    [self.navigationController pushViewController:vc animated:YES];
-                    break;
-                }
-                
-                
+                SendMessageViewController *vc = [SendMessageViewController new];
+                vc.data = @{
+                            kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                            kTKPDDETAIL_APISHOPNAMEKEY:_shop.result.info.shop_name
+                            };
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
             }
             case 16 :
             {
@@ -730,12 +722,123 @@
                 }
                 break;
         }
-        
     }
-    
-	
 }
 
+-(IBAction)tapbutton:(id)sender
+{
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton*)sender;
+        switch (btn.tag) {
+            case 10:
+            {
+                // sort button action
+                NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                SortViewController *vc = [SortViewController new];
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY),
+                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                break;
+            }
+            case 11:
+            {
+                // etalase button action
+                NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
+                vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                break;
+            }
+            case 12:
+            {
+                //SHARE
+                break;
+            }
+            case 13:
+            {
+                if (self.presentingViewController != nil) {
+                    if (self.navigationController.viewControllers.count > 1) {
+                        [self.navigationController popViewControllerAnimated:YES];
+                    } else {
+                        [self dismissViewControllerAnimated:YES completion:NULL];
+                    }
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                break;
+            }
+            case 14:
+            {
+                ShopInfoViewController *vc = [ShopInfoViewController new];
+                //vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
+                 //           kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            default:
+                break;
+        }
+    }
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
+        
+        switch (btn.tag) {
+            case 10:
+            {
+                if (self.presentingViewController != nil) {
+                    if (self.navigationController.viewControllers.count > 1) {
+                        [self.navigationController popViewControllerAnimated:YES];
+                    } else {
+                        [self dismissViewControllerAnimated:YES completion:NULL];
+                    }
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                break;
+            }
+            case 11:
+            {
+                ShopInfoViewController *vc = [ShopInfoViewController new];
+                //vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
+                //            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
+
+- (IBAction)gesture:(UISwipeGestureRecognizer *)sender
+{
+	switch (sender.state) {
+		case UIGestureRecognizerStateEnded: {
+			id o;
+			if (sender.direction == UISwipeGestureRecognizerDirectionRight) {
+                if (_selectedIndex > 0) {
+                    o = _chevrons[_selectedIndex - 1];
+                    [self tap:o];
+				}
+			} else if (sender.direction == UISwipeGestureRecognizerDirectionLeft) {
+				if (_selectedIndex < _chevrons.count -1) {
+                    o = _chevrons[_selectedIndex + 1];
+                    [self tap:o];
+                }
+			}
+			break;
+		}
+			
+		default:
+			break;
+	}
+}
+
+
+#pragma mark - Request
 -(void) configureRestkitFav {
     // initialize RestKit
     _objectmanager =  [RKObjectManager sharedClient];
@@ -803,118 +906,6 @@
 
 -(void) requestfailurefav:(id)object {
     
-}
-
--(IBAction)tapbutton:(id)sender
-{
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton*)sender;
-        switch (btn.tag) {
-            case 10:
-            {
-                // sort button action
-                NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                SortViewController *vc = [SortViewController new];
-                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
-                break;
-            }
-            case 11:
-            {
-                // etalase button action
-                NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
-                vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
-                break;
-            }
-            case 12:
-            {
-                //SHARE
-                break;
-            }
-            case 13:
-            {
-                if (self.presentingViewController != nil) {
-                    if (self.navigationController.viewControllers.count > 1) {
-                        [self.navigationController popViewControllerAnimated:YES];
-                    } else {
-                        [self dismissViewControllerAnimated:YES completion:NULL];
-                    }
-                } else {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-                break;
-            }
-            case 14:
-            {
-                ShopInfoViewController *vc = [ShopInfoViewController new];
-                vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            default:
-                break;
-        }
-    }
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
-        
-        switch (btn.tag) {
-            case 10:
-            {
-                if (self.presentingViewController != nil) {
-                    if (self.navigationController.viewControllers.count > 1) {
-                        [self.navigationController popViewControllerAnimated:YES];
-                    } else {
-                        [self dismissViewControllerAnimated:YES completion:NULL];
-                    }
-                } else {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-                break;
-            }
-            case 11:
-            {
-                ShopInfoViewController *vc = [ShopInfoViewController new];
-                vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            default:
-                break;
-        }
-    }
-}
-
-- (IBAction)gesture:(UISwipeGestureRecognizer *)sender
-{
-	switch (sender.state) {
-		case UIGestureRecognizerStateEnded: {
-			id o;
-			if (sender.direction == UISwipeGestureRecognizerDirectionRight) {
-                if (_selectedIndex > 0) {
-                    o = _chevrons[_selectedIndex - 1];
-                    [self tap:o];
-				}
-			} else if (sender.direction == UISwipeGestureRecognizerDirectionLeft) {
-				if (_selectedIndex < _chevrons.count -1) {
-                    o = _chevrons[_selectedIndex + 1];
-                    [self tap:o];
-                }
-			}
-			break;
-		}
-			
-		default:
-			break;
-	}
 }
 
 #pragma mark -
@@ -1020,18 +1011,14 @@
     
     //thumb.hidden = YES;	//@prepareforreuse then @reset
     
-    [_actpp startAnimating];
-    
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         //NSLOG(@"thumb: %@", thumb);
-        [thumb setImage:image];
-        [_actpp stopAnimating];
+        [thumb setImage:image animated:YES];
 #pragma clang diagnostic pop
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        [_actpp stopAnimating];
     }];
     
     
@@ -1048,9 +1035,19 @@
         } else {
             _navigationTitleLabel.text = _shop.result.info.shop_name;
         }
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_cover] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         
-        self.coverImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:_shop.result.info.shop_cover]]];
-        self.blurCoverImage.image = [self.coverImageView.image applyLightEffect];
+        UIImageView *thumb = self.coverImageView ;
+        thumb.image = nil;
+        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+            [thumb setImage:image];
+            self.blurCoverImage.image = [self.coverImageView.image applyLightEffect];
+#pragma clang diagnostic pop
+        } failure:nil];
+        
+        //self.coverImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:_shop.result.info.shop_cover]]];
         
         //add gradient in cover image
         CAGradientLayer *gradientLayer = [BackgroundLayer blackGradientFromTop];
@@ -1312,17 +1309,22 @@
     
 	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
         
+        UIApplication* app = [UIApplication sharedApplication];
+        app.networkActivityIndicatorVisible = YES;
+        
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:param];
         
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            
+            app.networkActivityIndicatorVisible = NO;
             [self requestsuccess:mappingResult withOperation:operation];
             [_timer invalidate];
-            
+            _buttonsetting.enabled = YES;
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
+            app.networkActivityIndicatorVisible = NO;
             [self requestfailure:error];
             [_timer invalidate];
+            _buttonsetting.enabled = NO;
         }];
         
         [_operationQueue addOperation:_request];
@@ -1331,6 +1333,7 @@
         [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
     }
     else {
+        _buttonsetting.enabled = YES;
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
@@ -1429,21 +1432,9 @@
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
                     NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
-                    //_table.tableFooterView = _footer;
-                    //[_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                     [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }
-                else
-                {
-                    //[_act stopAnimating];
-                    //_table.tableFooterView = nil;
-                }
-            }
-            else
-            {
-                //[_act stopAnimating];
-                //_table.tableFooterView = nil;
             }
         }
     }
@@ -1522,8 +1513,6 @@
                 _buttonsetting.hidden = NO;
                 _buttonfav.hidden = YES;
                 _buttonMessage.hidden = YES;
-                _actcover.hidden  = YES;
-                //_actfav.hidden  = YES;
             }
         }
         else

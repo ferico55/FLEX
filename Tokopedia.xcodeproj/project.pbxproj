@@ -68,13 +68,10 @@
 		FC7B8FFD1A2C4F8600D24DE6 /* CategoryMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8E951A2C4F8500D24DE6 /* CategoryMenuViewController.m */; };
 		FC7B8FFE1A2C4F8600D24DE6 /* CategoryResultViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8E981A2C4F8500D24DE6 /* CategoryResultViewCell.m */; };
 		FC7B8FFF1A2C4F8600D24DE6 /* CategoryResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8E9A1A2C4F8500D24DE6 /* CategoryResultViewController.m */; };
-		FC7B90001A2C4F8600D24DE6 /* TKPDTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8E9E1A2C4F8500D24DE6 /* TKPDTabBarController.m */; };
-		FC7B90011A2C4F8600D24DE6 /* TKPDTabHomeNavigationController.backup in Resources */ = {isa = PBXBuildFile; fileRef = FC7B8E9F1A2C4F8500D24DE6 /* TKPDTabHomeNavigationController.backup */; };
 		FC7B90021A2C4F8600D24DE6 /* TKPDTabHomeNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8EA11A2C4F8500D24DE6 /* TKPDTabHomeNavigationController.m */; };
 		FC7B90031A2C4F8600D24DE6 /* TKPDTabInboxMessageNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8EA31A2C4F8500D24DE6 /* TKPDTabInboxMessageNavigationController.m */; };
 		FC7B90041A2C4F8600D24DE6 /* TKPDTabNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8EA51A2C4F8500D24DE6 /* TKPDTabNavigationController.m */; };
 		FC7B90051A2C4F8600D24DE6 /* TKPDTabProfileNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8EA71A2C4F8500D24DE6 /* TKPDTabProfileNavigationController.m */; };
-		FC7B90061A2C4F8600D24DE6 /* TKPDTabShopNavigationController.backup in Resources */ = {isa = PBXBuildFile; fileRef = FC7B8EA81A2C4F8500D24DE6 /* TKPDTabShopNavigationController.backup */; };
 		FC7B90071A2C4F8600D24DE6 /* TKPDTabShopNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8EAA1A2C4F8500D24DE6 /* TKPDTabShopNavigationController.m */; };
 		FC7B90081A2C4F8600D24DE6 /* BackgroundLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8EAD1A2C4F8500D24DE6 /* BackgroundLayer.m */; };
 		FC7B90091A2C4F8600D24DE6 /* ImageShaper.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8EAF1A2C4F8500D24DE6 /* ImageShaper.m */; };
@@ -139,7 +136,6 @@
 		FC7B90471A2C4F8600D24DE6 /* SettingShipmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F401A2C4F8600D24DE6 /* SettingShipmentViewController.m */; };
 		FC7B90481A2C4F8600D24DE6 /* ShopSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F421A2C4F8600D24DE6 /* ShopSettingViewController.m */; };
 		FC7B90491A2C4F8600D24DE6 /* ShopTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F451A2C4F8600D24DE6 /* ShopTalkViewController.m */; };
-		FC7B904A1A2C4F8600D24DE6 /* ShopTalkViewController.m.orig in Resources */ = {isa = PBXBuildFile; fileRef = FC7B8F461A2C4F8600D24DE6 /* ShopTalkViewController.m.orig */; };
 		FC7B904B1A2C4F8600D24DE6 /* GeneralList1GestureCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F4A1A2C4F8600D24DE6 /* GeneralList1GestureCell.m */; };
 		FC7B904C1A2C4F8600D24DE6 /* GeneralProductCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F4C1A2C4F8600D24DE6 /* GeneralProductCell.m */; };
 		FC7B904D1A2C4F8600D24DE6 /* GeneralProductReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F4E1A2C4F8600D24DE6 /* GeneralProductReviewCell.m */; };
@@ -151,7 +147,6 @@
 		FC7B90531A2C4F8600D24DE6 /* HistoryProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F5D1A2C4F8600D24DE6 /* HistoryProductViewController.m */; };
 		FC7B90541A2C4F8600D24DE6 /* HotlistCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F611A2C4F8600D24DE6 /* HotlistCell.m */; };
 		FC7B90551A2C4F8600D24DE6 /* HotlistViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F631A2C4F8600D24DE6 /* HotlistViewController.m */; };
-		FC7B90561A2C4F8600D24DE6 /* HotlistViewController.m.orig in Resources */ = {isa = PBXBuildFile; fileRef = FC7B8F641A2C4F8600D24DE6 /* HotlistViewController.m.orig */; };
 		FC7B90571A2C4F8600D24DE6 /* HotlistResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F671A2C4F8600D24DE6 /* HotlistResultViewController.m */; };
 		FC7B90581A2C4F8600D24DE6 /* KatalogListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F6B1A2C4F8600D24DE6 /* KatalogListViewCell.m */; };
 		FC7B90591A2C4F8600D24DE6 /* KatalogViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC7B8F6D1A2C4F8600D24DE6 /* KatalogViewCell.m */; };
@@ -397,7 +392,6 @@
 		FC7B937C1A2C501100D24DE6 /* ProductTalkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92B41A2C500C00D24DE6 /* ProductTalkCell.xib */; };
 		FC7B937D1A2C501100D24DE6 /* ProductTalkDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92B51A2C500C00D24DE6 /* ProductTalkDetailViewController.xib */; };
 		FC7B937E1A2C501100D24DE6 /* ProductTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92B61A2C500C00D24DE6 /* ProductTalkViewController.xib */; };
-		FC7B937F1A2C501100D24DE6 /* DetailShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92B81A2C500C00D24DE6 /* DetailShopViewController.xib */; };
 		FC7B93801A2C501100D24DE6 /* ShopEditStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92BA1A2C500C00D24DE6 /* ShopEditStatusViewController.xib */; };
 		FC7B93811A2C501100D24DE6 /* ShopEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92BB1A2C500C00D24DE6 /* ShopEditViewController.xib */; };
 		FC7B93821A2C501100D24DE6 /* ShopFavoritedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92BD1A2C500C00D24DE6 /* ShopFavoritedCell.xib */; };
@@ -432,7 +426,6 @@
 		FC7B93A21A2C501100D24DE6 /* SettingShipmentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92E91A2C500D00D24DE6 /* SettingShipmentViewController.xib */; };
 		FC7B93A31A2C501100D24DE6 /* ShopSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92EA1A2C500D00D24DE6 /* ShopSettingViewController.xib */; };
 		FC7B93A41A2C501100D24DE6 /* ShopTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92EC1A2C500D00D24DE6 /* ShopTalkViewController.xib */; };
-		FC7B93A51A2C501100D24DE6 /* ShopTalkViewController.xib.orig in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92ED1A2C500D00D24DE6 /* ShopTalkViewController.xib.orig */; };
 		FC7B93A61A2C501100D24DE6 /* GeneralList1GestureCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92EF1A2C500D00D24DE6 /* GeneralList1GestureCell.xib */; };
 		FC7B93A71A2C501100D24DE6 /* GeneralProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92F01A2C500D00D24DE6 /* GeneralProductCell.xib */; };
 		FC7B93A81A2C501100D24DE6 /* GeneralProductReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B92F11A2C500D00D24DE6 /* GeneralProductReviewCell.xib */; };
@@ -478,7 +471,6 @@
 		FC7B93D01A2C501100D24DE6 /* SettingBankAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B932D1A2C501000D24DE6 /* SettingBankAccountViewController.xib */; };
 		FC7B93D11A2C501100D24DE6 /* SettingBankDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B932E1A2C501000D24DE6 /* SettingBankDetailViewController.xib */; };
 		FC7B93D21A2C501100D24DE6 /* SettingBankEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B932F1A2C501000D24DE6 /* SettingBankEditViewController.xib */; };
-		FC7B93D31A2C501100D24DE6 /* SettingBankEditViewController.xib.orig in Resources */ = {isa = PBXBuildFile; fileRef = FC7B93301A2C501000D24DE6 /* SettingBankEditViewController.xib.orig */; };
 		FC7B93D41A2C501100D24DE6 /* SettingNotificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B93321A2C501000D24DE6 /* SettingNotificationViewController.xib */; };
 		FC7B93D51A2C501100D24DE6 /* SettingPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B93341A2C501000D24DE6 /* SettingPasswordViewController.xib */; };
 		FC7B93D61A2C501100D24DE6 /* SettingPrivacyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B93361A2C501000D24DE6 /* SettingPrivacyViewController.xib */; };
@@ -808,9 +800,6 @@
 		FC7B8E991A2C4F8500D24DE6 /* CategoryResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryResultViewController.h; sourceTree = "<group>"; };
 		FC7B8E9A1A2C4F8500D24DE6 /* CategoryResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryResultViewController.m; sourceTree = "<group>"; };
 		FC7B8E9C1A2C4F8500D24DE6 /* controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = controller.h; sourceTree = "<group>"; };
-		FC7B8E9D1A2C4F8500D24DE6 /* TKPDTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabBarController.h; sourceTree = "<group>"; };
-		FC7B8E9E1A2C4F8500D24DE6 /* TKPDTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabBarController.m; sourceTree = "<group>"; };
-		FC7B8E9F1A2C4F8500D24DE6 /* TKPDTabHomeNavigationController.backup */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TKPDTabHomeNavigationController.backup; sourceTree = "<group>"; };
 		FC7B8EA01A2C4F8500D24DE6 /* TKPDTabHomeNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabHomeNavigationController.h; sourceTree = "<group>"; };
 		FC7B8EA11A2C4F8500D24DE6 /* TKPDTabHomeNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabHomeNavigationController.m; sourceTree = "<group>"; };
 		FC7B8EA21A2C4F8500D24DE6 /* TKPDTabInboxMessageNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabInboxMessageNavigationController.h; sourceTree = "<group>"; };
@@ -819,7 +808,6 @@
 		FC7B8EA51A2C4F8500D24DE6 /* TKPDTabNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabNavigationController.m; sourceTree = "<group>"; };
 		FC7B8EA61A2C4F8500D24DE6 /* TKPDTabProfileNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabProfileNavigationController.h; sourceTree = "<group>"; };
 		FC7B8EA71A2C4F8500D24DE6 /* TKPDTabProfileNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabProfileNavigationController.m; sourceTree = "<group>"; };
-		FC7B8EA81A2C4F8500D24DE6 /* TKPDTabShopNavigationController.backup */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TKPDTabShopNavigationController.backup; sourceTree = "<group>"; };
 		FC7B8EA91A2C4F8500D24DE6 /* TKPDTabShopNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabShopNavigationController.h; sourceTree = "<group>"; };
 		FC7B8EAA1A2C4F8500D24DE6 /* TKPDTabShopNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabShopNavigationController.m; sourceTree = "<group>"; };
 		FC7B8EAC1A2C4F8500D24DE6 /* BackgroundLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackgroundLayer.h; sourceTree = "<group>"; };
@@ -2192,9 +2180,6 @@
 			isa = PBXGroup;
 			children = (
 				FC7B8E9C1A2C4F8500D24DE6 /* controller.h */,
-				FC7B8E9D1A2C4F8500D24DE6 /* TKPDTabBarController.h */,
-				FC7B8E9E1A2C4F8500D24DE6 /* TKPDTabBarController.m */,
-				FC7B8E9F1A2C4F8500D24DE6 /* TKPDTabHomeNavigationController.backup */,
 				FC7B8EA01A2C4F8500D24DE6 /* TKPDTabHomeNavigationController.h */,
 				FC7B8EA11A2C4F8500D24DE6 /* TKPDTabHomeNavigationController.m */,
 				FC7B8EA21A2C4F8500D24DE6 /* TKPDTabInboxMessageNavigationController.h */,
@@ -2203,7 +2188,6 @@
 				FC7B8EA51A2C4F8500D24DE6 /* TKPDTabNavigationController.m */,
 				FC7B8EA61A2C4F8500D24DE6 /* TKPDTabProfileNavigationController.h */,
 				FC7B8EA71A2C4F8500D24DE6 /* TKPDTabProfileNavigationController.m */,
-				FC7B8EA81A2C4F8500D24DE6 /* TKPDTabShopNavigationController.backup */,
 				FC7B8EA91A2C4F8500D24DE6 /* TKPDTabShopNavigationController.h */,
 				FC7B8EAA1A2C4F8500D24DE6 /* TKPDTabShopNavigationController.m */,
 			);
@@ -4355,17 +4339,14 @@
 			files = (
 				FC7B93D11A2C501100D24DE6 /* SettingBankDetailViewController.xib in Resources */,
 				FC7B93561A2C501100D24DE6 /* CameraCollectionCell.xib in Resources */,
-				FC7B937F1A2C501100D24DE6 /* DetailShopViewController.xib in Resources */,
 				FC7B93A61A2C501100D24DE6 /* GeneralList1GestureCell.xib in Resources */,
 				FC7B93C61A2C501100D24DE6 /* ProfileFavoriteShopViewController.xib in Resources */,
 				FC7B939A1A2C501100D24DE6 /* SettingProductViewController.xib in Resources */,
 				FC7B93AE1A2C501100D24DE6 /* FavoritedShopCell.xib in Resources */,
-				FC7B93D31A2C501100D24DE6 /* SettingBankEditViewController.xib.orig in Resources */,
 				FC7B93A41A2C501100D24DE6 /* ShopTalkViewController.xib in Resources */,
 				FC7B93BA1A2C501100D24DE6 /* InboxMessageDetailCell.xib in Resources */,
 				FC7B93B41A2C501100D24DE6 /* HotlistResultViewController.xib in Resources */,
 				FC7B93D41A2C501100D24DE6 /* SettingNotificationViewController.xib in Resources */,
-				FC7B93A51A2C501100D24DE6 /* ShopTalkViewController.xib.orig in Resources */,
 				FC7B93811A2C501100D24DE6 /* ShopEditViewController.xib in Resources */,
 				FC7B93BB1A2C501100D24DE6 /* InboxMessageDetailViewController.xib in Resources */,
 				FC7B93C71A2C501100D24DE6 /* SettingAddressLocationCell.xib in Resources */,
@@ -4401,7 +4382,6 @@
 				FC7B93B21A2C501100D24DE6 /* HotlistViewController.xib in Resources */,
 				FC7B90741A2C4F8600D24DE6 /* SettingBankAccountViewController.m.orig in Resources */,
 				FC7B938F1A2C501100D24DE6 /* SettingEtalaseDetailViewController.xib in Resources */,
-				FC7B90011A2C4F8600D24DE6 /* TKPDTabHomeNavigationController.backup in Resources */,
 				FC7B93E21A2C501100D24DE6 /* SortCell.xib in Resources */,
 				FC7B93C11A2C501100D24DE6 /* ProfileBiodataViewController.xib in Resources */,
 				FC7B93871A2C501100D24DE6 /* ShopInfoViewController.xib in Resources */,
@@ -4418,7 +4398,6 @@
 				FC7B93C51A2C501100D24DE6 /* ProfileFavoriteShopCell.xib in Resources */,
 				FC7B93791A2C501100D24DE6 /* ProductReviewCell.xib in Resources */,
 				FC7B93551A2C501100D24DE6 /* CameraAlbumListViewController.xib in Resources */,
-				FC7B90561A2C4F8600D24DE6 /* HotlistViewController.m.orig in Resources */,
 				FC7B93DA1A2C501100D24DE6 /* SearchResultShopCell.xib in Resources */,
 				FC7B93CC1A2C501100D24DE6 /* SettingAddressViewController.xib in Resources */,
 				FC7B93B11A2C501100D24DE6 /* HotlistCell.xib in Resources */,
@@ -4457,7 +4436,6 @@
 				FC7B93A11A2C501100D24DE6 /* SettingShipmentSectionHeaderView.xib in Resources */,
 				FC9EEBFD1A2DC20B00D0651A /* Main.storyboard in Resources */,
 				FC7B93D01A2C501100D24DE6 /* SettingBankAccountViewController.xib in Resources */,
-				FC7B90061A2C4F8600D24DE6 /* TKPDTabShopNavigationController.backup in Resources */,
 				FC7B93821A2C501100D24DE6 /* ShopFavoritedCell.xib in Resources */,
 				85F7832319EE7C7C00BEC7D7 /* GothamMedium.ttf in Resources */,
 				FC7B934C1A2C501100D24DE6 /* LoginViewController copy.xib in Resources */,
@@ -4483,7 +4461,6 @@
 				FC7B93A01A2C501100D24DE6 /* SettingShipmentSectionFooterView.xib in Resources */,
 				FC7B93B81A2C501100D24DE6 /* ProductFeedViewController.xib in Resources */,
 				FC7B938D1A2C501100D24DE6 /* ShopProductViewController.xib in Resources */,
-				FC7B904A1A2C4F8600D24DE6 /* ShopTalkViewController.m.orig in Resources */,
 				FC7B939C1A2C501100D24DE6 /* SettingShipmentInfoViewController.xib in Resources */,
 				FC7B937C1A2C501100D24DE6 /* ProductTalkCell.xib in Resources */,
 				FC7B937A1A2C501100D24DE6 /* ProductReviewDetailViewController.xib in Resources */,
@@ -4651,7 +4628,6 @@
 				FC7B901F1A2C4F8600D24DE6 /* ProductTalkCell.m in Sources */,
 				FC7B921C1A2C4F9F00D24DE6 /* ProductFeed.m in Sources */,
 				FC7B906E1A2C4F8600D24DE6 /* SettingAddressDetailViewController.m in Sources */,
-				FC7B90001A2C4F8600D24DE6 /* TKPDTabBarController.m in Sources */,
 				FC7B90211A2C4F8600D24DE6 /* ProductTalkFormViewController.m in Sources */,
 				FC7B91EE1A2C4F9F00D24DE6 /* AdvanceReview.m in Sources */,
 				FC7B907E1A2C4F8600D24DE6 /* SearchResultShopCell.m in Sources */,

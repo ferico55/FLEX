@@ -45,6 +45,7 @@
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UITableView *table;
+@property (strong, nonatomic) IBOutlet UIView *headerview;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -66,6 +67,8 @@
     if (self) {
         _isnodata = YES;
         _isrefreshview = NO;
+        self.title = kTKPTITLE_PAYMENT;
+        
     }
     return self;
 }
@@ -87,6 +90,14 @@
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
+    
+    _table.tableHeaderView = _headerview;
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -156,8 +167,10 @@
                                                            withString:@""];
                 ((SettingPaymentCell*)cell).buttonterms.hidden = NO;
             }
-            
             ((SettingPaymentCell*)cell).labeldescription.text = string;
+            
+            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[payment.payment_info dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+            ((SettingPaymentCell*)cell).textviewdesc.attributedText = attributedString;
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:payment.payment_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             
@@ -209,6 +222,12 @@
 	if (row == indexPath.row) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
+}
+#pragma mark - View Action
+- (IBAction)tap:(id)sender {
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark - Request and Mapping

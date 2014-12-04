@@ -32,6 +32,8 @@
 #define kTKPDIMAGE_ICONBACK @"icon_arrow_white"
 #define kTKPDIMAGE_ICONINFO @"icon_info"
 
+#define kTKPDIMAGE_ICONTOPED @"icon_toped_loading_grey.png"
+
 #define kTKPDIMAGE_ICONMORECATEGORY @"icon_category_white"
 
 #define kTKPDIMAGE_TABBARACTIVEBG @"active_tab"

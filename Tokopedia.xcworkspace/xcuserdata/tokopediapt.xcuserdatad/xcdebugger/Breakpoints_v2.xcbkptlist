@@ -4,66 +4,76 @@
    version = "2.0">
    <Breakpoints>
       <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         BreakpointExtensionID = "Xcode.Breakpoint.ExceptionBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UI/Controller/TKPDTabShopNavigationController.m"
-            timestampString = "438667941.258996"
+            scope = "0"
+            stopOnStyle = "0">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UI/Activation/Login/LoginViewController.m"
+            timestampString = "439361675.368515"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1096"
-            endingLineNumber = "1096"
-            landmarkName = "-disableScrollAtIndex:"
+            startingLineNumber = "260"
+            endingLineNumber = "260"
+            landmarkName = "-requestActionLogin:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UI/Controller/TKPDTabShopNavigationController.m"
-            timestampString = "438667998.803504"
+            filePath = "Tokopedia/Classses/UI/Activation/Login/LoginViewController.m"
+            timestampString = "439361676.549947"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1117"
-            endingLineNumber = "1117"
-            landmarkName = "-enableScrollAtIndex:"
+            startingLineNumber = "266"
+            endingLineNumber = "266"
+            landmarkName = "-requestActionLogin:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UI/Controller/TKPDTabShopNavigationController.m"
-            timestampString = "438668088.510926"
+            filePath = "Tokopedia/Classses/UI/Activation/Login/LoginViewController.m"
+            timestampString = "439361682.46254"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1329"
-            endingLineNumber = "1329"
-            landmarkName = "@implementation TKPDTabShopNavigationController"
-            landmarkType = "3">
+            startingLineNumber = "290"
+            endingLineNumber = "290"
+            landmarkName = "-requestsuccessLogin:withOperation:"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UI/Controller/TKPDTabShopNavigationController.m"
-            timestampString = "438668090.243708"
+            filePath = "Tokopedia/Classses/UI/Activation/Login/LoginViewController.m"
+            timestampString = "439361687.339185"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1328"
-            endingLineNumber = "1328"
-            landmarkName = "-loadData"
+            startingLineNumber = "306"
+            endingLineNumber = "306"
+            landmarkName = "-requestsuccessLogin:withOperation:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

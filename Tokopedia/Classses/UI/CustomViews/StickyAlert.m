@@ -67,7 +67,7 @@
     
     UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(300, 65, 15, 15)];
     [closeButton setBackgroundImage:[UIImage imageNamed:@"icon_cancel.png"] forState:UIControlStateNormal];
-    [closeButton addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
+    //[closeButton addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
     closeButton.tag = 17;
 //    closeButton.backgroundColor = [UIColor greenColor];   
     

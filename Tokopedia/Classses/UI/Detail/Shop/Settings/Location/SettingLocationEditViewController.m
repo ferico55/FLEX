@@ -93,24 +93,25 @@ UITextViewDelegate
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-	[barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonsave setTintColor:[UIColor whiteColor]];
+    [_barbuttonsave setTintColor:[UIColor blackColor]];
     _barbuttonsave.tag = 11;
     self.navigationItem.rightBarButtonItem = _barbuttonsave;
     
     [self setDefaultData:_data];
     
     _type = [[_data objectForKey:kTKPDDETAIL_DATATYPEKEY]integerValue];
-    
+    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY) {
+        self.title = kTKPDTITLE_NEW_LOCATION;
+    }
+    else
+        self.title = kTKPDTITLE_EDIT_LOCATION;
     
     /** keyboard notification **/
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -247,7 +248,6 @@ UITextViewDelegate
                 }
                 else
                 {
-
                     if (!addressname || [addressname isEqualToString:@""]) {
                         [messages addObject:@"Nama Alamat harus diisi."];
                     }
@@ -257,22 +257,30 @@ UITextViewDelegate
                     if (!postcode) {
                         [messages addObject:@"Kode Pos harus diisi."];
                     }
-                    if (!district) {
-                        [messages addObject:@"Distric harus diisi."];
-                    }
                     if (!prov) {
                         [messages addObject:@"Provinsi harus diisi."];
                     }
                     if (!city) {
-                        [messages addObject:@"kota harus diisi."];
+                        [messages addObject:@"Kota harus diisi."];
+                    }
+                    if (!district) {
+                        [messages addObject:@"Kecamatan harus diisi."];
                     }
                     if (!phone || [phone isEqualToString:@""]) {
-                        [messages addObject:@"telepon harus diisi."];
+                        [messages addObject:@"Telepon harus diisi."];
                     }
                     else
                     {
                         if (phoneCharCount<6) {
                             [messages addObject:@"Phone minimum 6 Character"];
+                        }
+                    }
+                    if (!email) {
+                        [messages addObject:@"Email harus diisi."];
+                    }
+                    else{
+                        if (![email isEmail]) {
+                            [messages addObject:@"Format email harus benar."];
                         }
                     }
                 }
@@ -281,7 +289,7 @@ UITextViewDelegate
                 if (messages) {
                     NSArray *array = messages;
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
                 break;
             }
@@ -339,7 +347,7 @@ UITextViewDelegate
     
     NSString *action = (_type==2)?kTKPDDETAIL_APIADDSHOPLOCATIONKEY:kTKPDDETAIL_APIEDITSHOPLOCATIONKEY;
     NSInteger addressid = [list.location_address_id integerValue];
-    NSString *addressname = [userinfo objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:list.location_address_name;
+    NSString *addressname = [userinfo objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:list.location_address_id;
     NSString *address = [userinfo objectForKey:kTKPDSHOP_APIADDRESSKEY]?:list.location_address;
     NSInteger postcode = [[userinfo objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] integerValue]?:[list.location_postal_code integerValue];
     NSString *district = [userinfo objectForKey:kTKPDLOCATION_DATADISTRICTIDKEY]?:list.location_district_id;
@@ -364,17 +372,20 @@ UITextViewDelegate
     _requestcount ++;
     
     _barbuttonsave.enabled = NO;
-    [_act startAnimating];
+    
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
     
     _requestActionAddAddress = [_objectmanagerActionAddAddress appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPADDRESSACTION_APIPATH parameters:param];
     
     [_requestActionAddAddress setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionAddAddress:mappingResult withOperation:operation];
         [timer invalidate];
-        [_act stopAnimating];
+        app.networkActivityIndicatorVisible = NO;
         _barbuttonsave.enabled = YES;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionAddAddress:error];
+        app.networkActivityIndicatorVisible = NO;
         [timer invalidate];
         [_act stopAnimating];
         _barbuttonsave.enabled = YES;
@@ -413,28 +424,25 @@ UITextViewDelegate
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (!setting.message_error) {
-                    if (setting.result.is_success) {
-                        NSDictionary *userinfo;
-                        if (_type == kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY){
-                            //TODO: Behavior after edit
-                            NSArray *viewcontrollers = self.navigationController.viewControllers;
-                            NSInteger index = viewcontrollers.count-3;
-                            [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
-                            userinfo = @{kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY],
-                                         kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
-                                         };
-                        }
-                        else [self.navigationController popViewControllerAnimated:YES];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDLOCATIONPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                    }
-                }
-                if (setting.message_status) {
-                    NSArray *array = setting.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                if (setting.result.is_success) {
+                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil menambah lokasi.", nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    
+                    NSDictionary *userinfo;
+                    if (_type == kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY){
+                        //TODO: Behavior after edit
+                        NSArray *viewcontrollers = self.navigationController.viewControllers;
+                        NSInteger index = viewcontrollers.count-3;
+                        [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
+                        userinfo = @{kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY],
+                                     kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
+                                     };
+                    }
+                    else [self.navigationController popViewControllerAnimated:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDLOCATIONPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                 }
-                else if(setting.message_error)
+                if(setting.message_error)
                 {
                     NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];

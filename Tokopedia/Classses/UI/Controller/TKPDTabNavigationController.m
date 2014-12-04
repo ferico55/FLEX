@@ -97,8 +97,6 @@
 {
     [super viewDidLoad];
     
-    self.navigationItem.title = kTKPDCONTROLLER_TITLESEARCHKEY;
-    
 	if (_unloadSelectedIndex != -1) {
 		[self setViewControllers:_unloadViewControllers];
 		
@@ -134,6 +132,11 @@
     //}
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.navigationItem.title = self.navigationTitle;
+}
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -150,11 +153,6 @@
 	
 	UIView* tabbar;
 	CGRect frame;
-	//if (_selectedIndex < 3) {
-	//	tabbar = _tabbars[0];
-	//} else {
-	//	tabbar = _tabbars[1];
-	//}
 	tabbar = _tabbar;
 	frame = tabbar.frame;
 	frame.origin.y = inset.top;
@@ -167,7 +165,6 @@
 			frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
 		}
 	}
-	//tabbar.frame = frame;
 	
 	inset = [self contentInsetForChildController];
 	if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {

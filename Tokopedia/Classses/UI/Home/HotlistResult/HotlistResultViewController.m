@@ -823,7 +823,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             //NSLOG(@"thumb: %@", thumb);
-            [thumb setImage:image];
+            [thumb setImage:image animated:YES];
             
             [_act stopAnimating];
 #pragma clang diagnostic pop
@@ -839,7 +839,6 @@
 
 -(void)setHashtags
 {
-
     NSInteger widthcontenttop=0;
     _buttons = [NSMutableArray new];
     

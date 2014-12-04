@@ -289,12 +289,15 @@
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
-         
+            case 14:
+            {
+                
+            }
             default:
                 break;
         }
     } else {
-        UIButton *btn = (UIButton *)sender;
+        UIBarButtonItem *btn = (UIBarButtonItem *)sender;
         switch (btn.tag) {
             case 10:
             {
@@ -324,31 +327,38 @@
                 // go to shop
                 NSMutableArray *viewcontrollers = [NSMutableArray new];
                 NSInteger shopid = _product.result.shop_info.shop_id;
-                /** create new view controller **/
-                ShopProductViewController *v = [ShopProductViewController new];
-                v.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
-                           kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                [viewcontrollers addObject:v];
-                ShopTalkViewController *v1 = [ShopTalkViewController new];
-                v1.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                [viewcontrollers addObject:v1];
-                ShopReviewViewController *v2 = [ShopReviewViewController new];
-                v2.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                [viewcontrollers addObject:v2];
-                ShopNotesViewController *v3 = [ShopNotesViewController new];
-                v3.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                [viewcontrollers addObject:v3];
-                /** Adjust View Controller **/
-                TKPDTabShopNavigationController *tapnavcon = [TKPDTabShopNavigationController new];
-                tapnavcon.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
-                                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                [tapnavcon setViewControllers:viewcontrollers animated:YES];
-                [tapnavcon setSelectedIndex:0];
-                
-                [self.navigationController pushViewController:tapnavcon animated:YES];
+                if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]==shopid) {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                else{
+                    // create new view controller
+                    ShopProductViewController *v = [ShopProductViewController new];
+                    v.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                               kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0)
+                               };
+                    [viewcontrollers addObject:v];
+                    ShopTalkViewController *v1 = [ShopTalkViewController new];
+                    v1.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    [viewcontrollers addObject:v1];
+                    ShopReviewViewController *v2 = [ShopReviewViewController new];
+                    v2.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    [viewcontrollers addObject:v2];
+                    ShopNotesViewController *v3 = [ShopNotesViewController new];
+                    v3.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    [viewcontrollers addObject:v3];
+                    /** Adjust View Controller **/
+                    TKPDTabShopNavigationController *tapnavcon = [TKPDTabShopNavigationController new];
+                    tapnavcon.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                                       kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    [tapnavcon setViewControllers:viewcontrollers animated:YES];
+                    [tapnavcon setSelectedIndex:0];
+                    
+                    [self.navigationController pushViewController:tapnavcon animated:YES];
+                }
                 break;
             }
         }

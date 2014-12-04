@@ -15,10 +15,10 @@
 #import "ProfileEditForm.h"
 #import "UploadImageParams.h"
 
-#import "../../Alert/AlertDatePickerView.h"
-#import "../../Alert/AlertListView.h"
-#import "../../Alert/Alert1ButtonView.h"
-#import "../../Camera/CameraController.h"
+#import "AlertDatePickerView.h"
+#import "AlertListView.h"
+#import "Alert1ButtonView.h"
+#import "CameraController.h"
 
 #import "ProfileEditViewController.h"
 #import "ProfileEditPhoneViewController.h"

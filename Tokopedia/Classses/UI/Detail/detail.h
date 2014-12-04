@@ -37,7 +37,17 @@ typedef enum
 #define KTKPDTITLE_FAV_THIS_SHOP @"People who Favorited This Shop"
 #define KTKPDTITLE_PEOPLE @"People Information"
 #define KTKPDTITLE_BIODATA @"Biodata"
-#define kTKPDTITLE_LOCATION @"Lokasi"
+
+#define kTKPDTITLE_LOCATION @"Lokasi Toko"
+#define kTKPDTITLE_NEW_LOCATION @"Tambah Lokasi Toko"
+#define kTKPDTITLE_EDIT_LOCATION @"Ubah Lokasi Toko"
+
+#define kTKPDTITLE_ETALASE @"Etalase"
+#define kTKPDTITLE_NEW_ETALASE @"Tambah Etalase"
+#define kTKPDTITLE_EDIT_ETALASE @"Ubah Etalase"
+
+#define kTKPTITLE_PAYMENT @"Pembayaran"
+
 #define KTKPDETAIL_DESCRIPTION_EMPTY @"No description"
 
 #define kTKPDDETAIL_DATASHOPSKEY @"shop"
@@ -581,6 +591,9 @@ typedef enum
 #define KTKPDMESSAGE_DELIVERED @"Pesan Anda telah terkirim!"
 #define KTKPDMESSAGE_UNDELIVERED @"Pesan Anda gagal terkirim."
 #define KTKPDMESSAGE_EMPTYFORM @"Panjang pesan harus lebih dari 3 karakter."
+
+#define kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY @"Sukses"
+#define kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY @"Error"
 
 #define kTKPD_STATUSSUCCESS @"1"
 #define kTKPDMESSAGE_KEYTOUSERID @"to_user_id"

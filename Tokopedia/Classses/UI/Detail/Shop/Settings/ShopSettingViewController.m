@@ -40,7 +40,15 @@
 {
     [super viewDidLoad];
     
+    self.title = @"Pengaturan Toko";
+    
     _shop = [_data objectForKey:kTKPDDETAIL_DATAINFOSHOPSKEY];
+
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -129,4 +137,18 @@
             break;
     }
 }
+
+-(IBAction)tap:(id)sender
+{
+    UIButton *button = (UIButton *)sender;
+    switch (button.tag) {
+        case 10:
+            [self.navigationController popViewControllerAnimated:YES];
+            break;
+            
+        default:
+            break;
+    }
+}
+
 @end
