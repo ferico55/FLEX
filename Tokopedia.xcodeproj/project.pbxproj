@@ -22,6 +22,9 @@
 		85FA60D919ED258B00E009C0 /* GothamBook.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85FA60D519ED202800E009C0 /* GothamBook.ttf */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC266D5E19D2CF3B002912EC /* NSArrayCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FC266D5D19D2CF3B002912EC /* NSArrayCategory.m */; };
+		FC2CA6571A2F34A300BFE659 /* JNE.m in Sources */ = {isa = PBXBuildFile; fileRef = FC2CA6561A2F34A300BFE659 /* JNE.m */; };
+		FC2CA65A1A2F34E700BFE659 /* POSIndonesia.m in Sources */ = {isa = PBXBuildFile; fileRef = FC2CA6591A2F34E700BFE659 /* POSIndonesia.m */; };
+		FC2CA65D1A2F350900BFE659 /* Tiki.m in Sources */ = {isa = PBXBuildFile; fileRef = FC2CA65C1A2F350900BFE659 /* Tiki.m */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
 		FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */; };
 		FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8A19B0656400AF74C1 /* UIKit.framework */; };
@@ -493,6 +496,8 @@
 		FC7B93E21A2C501100D24DE6 /* SortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B934A1A2C501100D24DE6 /* SortCell.xib */; };
 		FC7B93E31A2C501100D24DE6 /* SortViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B934B1A2C501100D24DE6 /* SortViewController.xib */; };
 		FC7B93E51A2C528D00D24DE6 /* TKPDTabShopNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B93E41A2C528D00D24DE6 /* TKPDTabShopNavigationController.xib */; };
+		FC9EEBFD1A2DC20B00D0651A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC9EEBFC1A2DC20B00D0651A /* Main.storyboard */; };
+		FC9EEC001A2DC21700D0651A /* ShipmentSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC9EEBFF1A2DC21700D0651A /* ShipmentSettingViewController.m */; };
 		FCA774CC19F60C540041CFE1 /* RKObjectManagerCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA774CB19F60C540041CFE1 /* RKObjectManagerCategory.m */; };
 		FCA774DE19F60EEB0041CFE1 /* NSUserDefaultCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA774DD19F60EEB0041CFE1 /* NSUserDefaultCategory.m */; };
 		FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
@@ -716,6 +721,12 @@
 		FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC266D5C19D2CF3B002912EC /* NSArrayCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSArrayCategory.h; sourceTree = "<group>"; };
 		FC266D5D19D2CF3B002912EC /* NSArrayCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSArrayCategory.m; sourceTree = "<group>"; };
+		FC2CA6551A2F34A300BFE659 /* JNE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNE.h; sourceTree = "<group>"; };
+		FC2CA6561A2F34A300BFE659 /* JNE.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNE.m; sourceTree = "<group>"; };
+		FC2CA6581A2F34E700BFE659 /* POSIndonesia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = POSIndonesia.h; sourceTree = "<group>"; };
+		FC2CA6591A2F34E700BFE659 /* POSIndonesia.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = POSIndonesia.m; sourceTree = "<group>"; };
+		FC2CA65B1A2F350900BFE659 /* Tiki.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tiki.h; sourceTree = "<group>"; };
+		FC2CA65C1A2F350900BFE659 /* Tiki.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Tiki.m; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC36DF8619B0656400AF74C1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1507,6 +1518,9 @@
 		FC7B934A1A2C501100D24DE6 /* SortCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SortCell.xib; sourceTree = "<group>"; };
 		FC7B934B1A2C501100D24DE6 /* SortViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SortViewController.xib; sourceTree = "<group>"; };
 		FC7B93E41A2C528D00D24DE6 /* TKPDTabShopNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = TKPDTabShopNavigationController.xib; path = "../../../../../Tokopedia 2/Tokopedia/Resources/UI/Controller/TKPDTabShopNavigationController.xib"; sourceTree = "<group>"; };
+		FC9EEBFC1A2DC20B00D0651A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		FC9EEBFE1A2DC21700D0651A /* ShipmentSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipmentSettingViewController.h; sourceTree = "<group>"; };
+		FC9EEBFF1A2DC21700D0651A /* ShipmentSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentSettingViewController.m; sourceTree = "<group>"; };
 		FCA774CA19F60C540041CFE1 /* RKObjectManagerCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RKObjectManagerCategory.h; sourceTree = "<group>"; };
 		FCA774CB19F60C540041CFE1 /* RKObjectManagerCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RKObjectManagerCategory.m; sourceTree = "<group>"; };
 		FCA774DC19F60EEB0041CFE1 /* NSUserDefaultCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSUserDefaultCategory.h; sourceTree = "<group>"; };
@@ -2496,6 +2510,8 @@
 				FC7B8F3C1A2C4F8600D24DE6 /* SettingShipmentSectionFooterView.m */,
 				FC7B8F3D1A2C4F8600D24DE6 /* SettingShipmentSectionHeaderView.h */,
 				FC7B8F3E1A2C4F8600D24DE6 /* SettingShipmentSectionHeaderView.m */,
+				FC9EEBFE1A2DC21700D0651A /* ShipmentSettingViewController.h */,
+				FC9EEBFF1A2DC21700D0651A /* ShipmentSettingViewController.m */,
 				FC7B8F3F1A2C4F8600D24DE6 /* SettingShipmentViewController.h */,
 				FC7B8F401A2C4F8600D24DE6 /* SettingShipmentViewController.m */,
 			);
@@ -3515,6 +3531,12 @@
 				FC7B91C71A2C4F9F00D24DE6 /* ShippingInfoShipments.m */,
 				FC7B91C81A2C4F9F00D24DE6 /* ShopShipping.h */,
 				FC7B91C91A2C4F9F00D24DE6 /* ShopShipping.m */,
+				FC2CA6551A2F34A300BFE659 /* JNE.h */,
+				FC2CA6561A2F34A300BFE659 /* JNE.m */,
+				FC2CA6581A2F34E700BFE659 /* POSIndonesia.h */,
+				FC2CA6591A2F34E700BFE659 /* POSIndonesia.m */,
+				FC2CA65B1A2F350900BFE659 /* Tiki.h */,
+				FC2CA65C1A2F350900BFE659 /* Tiki.m */,
 			);
 			path = ShopShippingInfo;
 			sourceTree = "<group>";
@@ -3560,6 +3582,7 @@
 		FC7B92701A2C500B00D24DE6 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				FC9EEBFC1A2DC20B00D0651A /* Main.storyboard */,
 				FC7B92711A2C500B00D24DE6 /* Activation */,
 				FC7B92771A2C500B00D24DE6 /* Alert */,
 				FC7B927D1A2C500B00D24DE6 /* Camera */,
@@ -4432,6 +4455,7 @@
 				FC681F6D19B6DDBD00C58548 /* TokopediaDB.db in Resources */,
 				FC7B93C81A2C501100D24DE6 /* SettingAddressLocationViewController.xib in Resources */,
 				FC7B93A11A2C501100D24DE6 /* SettingShipmentSectionHeaderView.xib in Resources */,
+				FC9EEBFD1A2DC20B00D0651A /* Main.storyboard in Resources */,
 				FC7B93D01A2C501100D24DE6 /* SettingBankAccountViewController.xib in Resources */,
 				FC7B90061A2C4F8600D24DE6 /* TKPDTabShopNavigationController.backup in Resources */,
 				FC7B93821A2C501100D24DE6 /* ShopFavoritedCell.xib in Resources */,
@@ -4663,6 +4687,7 @@
 				FC7B923D1A2C4F9F00D24DE6 /* List.m in Sources */,
 				FC7B91F01A2C4F9F00D24DE6 /* Review.m in Sources */,
 				FC7B924E1A2C4F9F00D24DE6 /* Address.m in Sources */,
+				FC2CA65D1A2F350900BFE659 /* Tiki.m in Sources */,
 				FC7B90201A2C4F8600D24DE6 /* ProductTalkDetailViewController.m in Sources */,
 				FC7B92121A2C4F9F00D24DE6 /* InboxMessage.m in Sources */,
 				FC7B91DA1A2C4F9F00D24DE6 /* Register.m in Sources */,
@@ -4746,6 +4771,7 @@
 				FC7B925E1A2C4F9F00D24DE6 /* ShippingInfo.m in Sources */,
 				FC7B8FF71A2C4F8600D24DE6 /* CammeraCollectionCell.m in Sources */,
 				FC7B92551A2C4F9F00D24DE6 /* Shop.m in Sources */,
+				FC2CA6571A2F34A300BFE659 /* JNE.m in Sources */,
 				FC7B92671A2C4F9F00D24DE6 /* UploadImageParams.m in Sources */,
 				FC7B90801A2C4F8600D24DE6 /* SearchResultViewController.m in Sources */,
 				854552081A09BF6800678144 /* URLCacheAlert.m in Sources */,
@@ -4782,6 +4808,7 @@
 				FC7B91E81A2C4F9F00D24DE6 /* Breadcrumb.m in Sources */,
 				FC7B90591A2C4F8600D24DE6 /* KatalogViewCell.m in Sources */,
 				FC7B902B1A2C4F8600D24DE6 /* ShopInfoViewController.m in Sources */,
+				FC9EEC001A2DC21700D0651A /* ShipmentSettingViewController.m in Sources */,
 				FC7B923A1A2C4F9F00D24DE6 /* PrivacyFormPrivacy.m in Sources */,
 				FC7B90671A2C4F8600D24DE6 /* ProfileEditPhoneViewController.m in Sources */,
 				FC7B90871A2C4F8600D24DE6 /* SortViewController.m in Sources */,
@@ -4835,6 +4862,7 @@
 				FC7B92391A2C4F9F00D24DE6 /* PrivacyForm.m in Sources */,
 				FC7B90331A2C4F8600D24DE6 /* SendMessageViewController.m in Sources */,
 				FC7B90071A2C4F8600D24DE6 /* TKPDTabShopNavigationController.m in Sources */,
+				FC2CA65A1A2F34E700BFE659 /* POSIndonesia.m in Sources */,
 				FCA774DE19F60EEB0041CFE1 /* NSUserDefaultCategory.m in Sources */,
 				FC7B90191A2C4F8600D24DE6 /* DetailProductViewController.m in Sources */,
 				FC7B92351A2C4F9F00D24DE6 /* BankAccountFormResult.m in Sources */,
@@ -5011,8 +5039,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
@@ -5025,7 +5053,7 @@
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "38508ba6-3f02-480f-bbf2-d7f767500f66";
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -5037,8 +5065,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
@@ -5051,7 +5079,7 @@
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "38508ba6-3f02-480f-bbf2-d7f767500f66";
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};

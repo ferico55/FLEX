@@ -217,7 +217,7 @@
             }
             case kTKPDDETAIL_DATASTATUSSHOPCLOSED:
             {
-                NSString *note = [_datainput objectForKey:kTKPDSHOPEDIT_APICLOSEDNOTEKEY];
+                NSString *note = [_datainput objectForKey:kTKPDSHOPEDIT_APIREASONKEY];
                 ClosedInfo *closedinfo = [_data objectForKey:kTKPDDETAIL_DATACLOSEDINFOKEY];
                 _viewcontentclose.hidden = NO;
                 _textviewnote.text = note?:closedinfo.reason;

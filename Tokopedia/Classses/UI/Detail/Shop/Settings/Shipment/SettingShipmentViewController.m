@@ -477,7 +477,7 @@
                         submit = NO;
                     }
                     if (jnefeevalue > 5000) {
-                        [messages addObject:@"Maksimum Biaya Pos adalah Rp 5.000,-"];
+                        [messages addObject:@"Maksimum Biaya JNE adalah Rp 5.000,-"];
                         submit = NO;
                     }
 
@@ -813,6 +813,7 @@
     NSTimer *timer;
     
     NSDictionary *userinfo = (NSDictionary*)object;
+    
     NSString *postalcode = [userinfo objectForKey:kTKPDSHOPSHIPMENT_APIPOSTALCODEKEY]?:_shippinginfo.result.shop_shipping.postal_code?:@"";
     NSString *origin = [userinfo objectForKey:kTKPDFILTER_APISELECTEDDISTRICTIDKEY]?:@(_shippinginfo.result.shop_shipping.origin)?:@"";
     NSDictionary *shipmentids = [userinfo objectForKey:kTKPDSHOPSHIPMENT_APISHIPMENTIDS];
