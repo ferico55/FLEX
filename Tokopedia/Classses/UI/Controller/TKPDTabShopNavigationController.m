@@ -33,7 +33,6 @@
     NSArray *_chevrons;
     
     UIBarButtonItem *_barbuttoninfo;
-    UIBarButtonItem *_backBarButton;
     
     NSInteger _pagedetail;
     
@@ -200,30 +199,25 @@
     _scrollview.contentSize = size;
     
     //set back bar button
-    UIBarButtonItem *backBarButton;
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        backBarButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-    }
-    else
-        backBarButton = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-	[backBarButton setTag:10];
-    self.navigationItem.leftBarButtonItem = backBarButton;
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tapbutton:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     //set info bar button as right bar button item
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        _backBarButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
     }
     else
-        _backBarButton = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-	[_backBarButton setTag:11];
-    _backBarButton.enabled = NO;
-    self.navigationItem.rightBarButtonItem = _backBarButton;
+        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+	[_barbuttoninfo setTag:11];
+    _barbuttoninfo.enabled = NO;
+    self.navigationItem.rightBarButtonItem = _barbuttoninfo;
     
     [_scrollview addSubview:_contentview];
     

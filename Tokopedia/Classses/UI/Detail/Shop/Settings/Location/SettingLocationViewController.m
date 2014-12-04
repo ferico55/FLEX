@@ -139,20 +139,14 @@
 
 
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    img = [[[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 100.0f, 0.0f, 100.0f)];
+    //img = [[[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 100.0f, 0.0f, 100.0f)];
 
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    [barbutton1 setTag:10];
-    
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    //self.navigationItem.leftBarButtonItem = barbutton1;
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
 }
 
 

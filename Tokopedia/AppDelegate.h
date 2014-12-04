@@ -32,7 +32,7 @@
 #define kTKPDNAVIGATION_TITLECOLOR [UIColor whiteColor]
 #define kTKPDNAVIGATION_TITLESHADOWCOLOR [UIColor clearColor]
 #define kTKPDNAVIGATION_BUTTONINSET UIEdgeInsetsZero
-#define kTKPDNAVIGATION_BACKBUTTONINSET UIEdgeInsetsMake(0.0f, 10.0f, 0.0f, 10.0f)
+#define kTKPDNAVIGATION_BACKBUTTONINSET UIEdgeInsetsMake(0.0f, 35.0f, 0.0f, 0.0f)
 #define kTKPD_SETUSERSTICKYMESSAGEKEY @"stickymessage"
 
 #define kTKPDNAVIGATION_NAVIGATIONBGCOLOR [UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1]

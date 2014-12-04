@@ -95,6 +95,12 @@
 {
     [super viewDidLoad];
     
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
