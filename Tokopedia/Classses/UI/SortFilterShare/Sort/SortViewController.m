@@ -52,15 +52,20 @@
     [self.navigationController.navigationBar setTranslucent:NO];
     _selectedsort = [NSMutableDictionary new];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+//    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+//    barButtonItem.tag = 10;
+//    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
-    UIBarButtonItem *barbutton1;
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [barbutton1 setTintColor:[UIColor whiteColor]];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    barButtonItem.image = [UIImage imageNamed:@"icon_cancel_white"];
+    barButtonItem.style = UIBarButtonItemStyleBordered;
+    barButtonItem.tag = 10;
+    self.navigationItem.leftBarButtonItem = barButtonItem;
+    
+    UIBarButtonItem *barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [barbutton1 setTintColor:[UIColor whiteColor]];
 	[barbutton1 setTag:11];
     self.navigationItem.rightBarButtonItem = barbutton1;
     
@@ -115,13 +120,13 @@
         switch (button.tag) {
             case 10:
             {
-                //CANCEL
+                // CANCEL
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             }
             case 11:
             {
-                //DONE
+                // DONE
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             }
@@ -185,22 +190,16 @@
         case 2:
         {   //product
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             break;
         }
         case 3:
         {   //catalog
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             break;
         }
         case 4:
         {    //detail catalog
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            UINavigationController *nav = (UINavigationController *)self.presentingViewController;
-            [self dismissViewControllerAnimated:NO completion:^{
-                [nav popViewControllerAnimated:NO];
-            }];
             break;
         }
         case 5:
@@ -211,7 +210,6 @@
         case 6:
         {   //shop product
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             break;
         }
         default:

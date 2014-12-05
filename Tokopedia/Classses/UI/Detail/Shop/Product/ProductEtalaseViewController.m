@@ -62,36 +62,28 @@
     _cachecontroller = [URLCacheController new];
     
     _table.tableFooterView = _footer;
-    UIBarButtonItem *barbutton1;
+    _table.contentInset = UIEdgeInsetsMake(0, 0, 16, 0);
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    barButtonItem.image = [UIImage imageNamed:@"icon_cancel_white"];
+    barButtonItem.style = UIBarButtonItemStyleBordered;
+    barButtonItem.tag = 10;
+    self.navigationItem.leftBarButtonItem = barButtonItem;
+
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    //if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-    //    UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    //    barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    //}
-    //else
-    //    barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    //[barbutton1 setTag:10];
-    //self.navigationItem.leftBarButtonItem = barbutton1;
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    //TODO:: Change image
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"]];
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"]];
+    UIBarButtonItem *rightBarButton = nil;
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         //UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         //barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [barbutton1 setTintColor:[UIColor blackColor]];
+        rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        [rightBarButton setTintColor:[UIColor blackColor]];
     }
     else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-	[barbutton1 setTag:11];
-    self.navigationItem.rightBarButtonItem = barbutton1;
+        rightBarButton = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+	[rightBarButton setTag:11];
+    self.navigationItem.rightBarButtonItem = rightBarButton;
     
     // set table view datasource and delegate
     _table.delegate = self;

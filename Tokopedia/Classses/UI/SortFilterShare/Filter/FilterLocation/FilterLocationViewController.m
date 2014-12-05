@@ -58,6 +58,7 @@
     [super viewDidLoad];
     
     [self.navigationController.navigationBar setTranslucent:NO];
+    
     /** create new **/
     _paging = [NSMutableDictionary new];
     _locationnames = [NSMutableArray new];
