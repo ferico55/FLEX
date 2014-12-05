@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-<<<<<<< HEAD
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
-=======
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
->>>>>>> ca8a02ea778aa3d7e51410230da5fcb979dcb842
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -57,23 +53,17 @@
                         </attributedString>
                         <nil key="highlightedColor"/>
                     </label>
-<<<<<<< HEAD
                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="F7EC8F35-4493-405C-B52E-DA2B9A420009" id="yFi-cx-NSp">
                         <rect key="frame" x="297" y="10" width="15" height="15"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-=======
->>>>>>> ca8a02ea778aa3d7e51410230da5fcb979dcb842
                 </subviews>
                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 <color key="tintColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
-<<<<<<< HEAD
                 <outlet property="commentfailimage" destination="yFi-cx-NSp" id="Cce-XO-o7B"/>
-=======
->>>>>>> ca8a02ea778aa3d7e51410230da5fcb979dcb842
                 <outlet property="commentlabel" destination="Ju3-7W-SNy" id="ZUu-uJ-9Cc"/>
                 <outlet property="create_time" destination="0Dn-bB-6Dv" id="el3-b8-rg0"/>
                 <outlet property="user_image" destination="arr-7l-tfF" id="99p-X6-E1B"/>
@@ -81,7 +71,6 @@
             </connections>
         </tableViewCell>
     </objects>
-<<<<<<< HEAD
     <resources>
         <image name="F7EC8F35-4493-405C-B52E-DA2B9A420009" width="14" height="14">
             <mutableData key="keyedArchiveRepresentation">
@@ -172,6 +161,4 @@ AAAAAAAAAgEAAAAAAAAAPwAAAAAAAAAAAAAAAAAAEco
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
-=======
->>>>>>> ca8a02ea778aa3d7e51410230da5fcb979dcb842
 </document>
