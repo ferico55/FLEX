@@ -486,7 +486,6 @@
 		FC7B93E11A2C501100D24DE6 /* FilterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B93481A2C501100D24DE6 /* FilterViewController.xib */; };
 		FC7B93E21A2C501100D24DE6 /* SortCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B934A1A2C501100D24DE6 /* SortCell.xib */; };
 		FC7B93E31A2C501100D24DE6 /* SortViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B934B1A2C501100D24DE6 /* SortViewController.xib */; };
-		FC7B93E51A2C528D00D24DE6 /* TKPDTabShopNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC7B93E41A2C528D00D24DE6 /* TKPDTabShopNavigationController.xib */; };
 		FC9EEBFD1A2DC20B00D0651A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC9EEBFC1A2DC20B00D0651A /* Main.storyboard */; };
 		FC9EEC001A2DC21700D0651A /* ShipmentSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC9EEBFF1A2DC21700D0651A /* ShipmentSettingViewController.m */; };
 		FCA774CC19F60C540041CFE1 /* RKObjectManagerCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FCA774CB19F60C540041CFE1 /* RKObjectManagerCategory.m */; };
@@ -4856,7 +4855,6 @@
 				FC7B93B71A2C501100D24DE6 /* KatalogViewController.xib in Resources */,
 				FC7B93921A2C501100D24DE6 /* SettingLocationDetailViewController.xib in Resources */,
 				FCD1A3C21A30454B006DF0ED /* icon_16.png in Resources */,
-				FC7B93E51A2C528D00D24DE6 /* TKPDTabShopNavigationController.xib in Resources */,
 				FCD1A40B1A30454B006DF0ED /* icon_plus_blue.png in Resources */,
 				FC7B93DD1A2C501100D24DE6 /* FilterConditionCell.xib in Resources */,
 				FCD1A3DC1A30454B006DF0ED /* icon_8@2x.png in Resources */,
