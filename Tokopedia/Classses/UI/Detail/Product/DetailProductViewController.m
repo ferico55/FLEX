@@ -8,6 +8,7 @@
 
 #import "detail.h"
 #import "search.h"
+#import "stringrestkit.h"
 
 #import "Product.h"
 
@@ -158,8 +159,11 @@
     /** set inset table for different size**/
     is_dismissed = [_data objectForKey:@"is_dismissed"];
     if(is_dismissed) {
+        [self.navigationController.navigationBar setTranslucent:NO];
+        
         if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
             self.edgesForExtendedLayout = UIRectEdgeNone;
+            
         }
     }
 //    if (is4inch) {
@@ -281,6 +285,7 @@
                 
                 [_datatalk setObject:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0) forKey:kTKPDDETAIL_APIPRODUCTIDKEY];
                 [_datatalk setObject:image.image_src?:@(0) forKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
+                [_datatalk setObject:@(_product.result.shop_info.shop_id) forKey:TKPD_TALK_SHOP_ID];
                 
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:_datatalk];

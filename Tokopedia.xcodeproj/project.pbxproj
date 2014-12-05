@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		851216BD1A2F2958007231AE /* ProductTalkDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 851216BC1A2F2958007231AE /* ProductTalkDetailViewController.xib */; };
+		851216C31A300239007231AE /* ProductTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC0D90931A257C41007BD69F /* ProductTalkViewController.m */; };
+		851216EB1A3158E1007231AE /* GeneralAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 851216E81A3158E1007231AE /* GeneralAction.m */; };
+		851216EC1A3158E1007231AE /* GeneralActionResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 851216EA1A3158E1007231AE /* GeneralActionResult.m */; };
 		851EC3441A25B435004B2F35 /* balloon_read_left.png in Resources */ = {isa = PBXBuildFile; fileRef = 851EC2841A25B434004B2F35 /* balloon_read_left.png */; };
 		851EC3451A25B435004B2F35 /* balloon_read_right.png in Resources */ = {isa = PBXBuildFile; fileRef = 851EC2851A25B434004B2F35 /* balloon_read_right.png */; };
 		851EC3461A25B435004B2F35 /* button_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 851EC2861A25B434004B2F35 /* button_white.png */; };
@@ -186,6 +190,17 @@
 		851EC3F41A25B435004B2F35 /* icon_green_2.png in Resources */ = {isa = PBXBuildFile; fileRef = 851EC3411A25B434004B2F35 /* icon_green_2.png */; };
 		851EC3F51A25B435004B2F35 /* tabnav_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 851EC3421A25B434004B2F35 /* tabnav_bg.png */; };
 		851EC3F61A25B435004B2F35 /* tabnav_bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 851EC3431A25B434004B2F35 /* tabnav_bg@2x.png */; };
+		851EC3FB1A25D71E004B2F35 /* icon_checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 851EC3F71A25D71E004B2F35 /* icon_checkmark.png */; };
+		851EC3FC1A25D71E004B2F35 /* icon_checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 851EC3F81A25D71E004B2F35 /* icon_checkmark@2x.png */; };
+		851EC3FD1A25D71E004B2F35 /* icon_unread.png in Resources */ = {isa = PBXBuildFile; fileRef = 851EC3F91A25D71E004B2F35 /* icon_unread.png */; };
+		851EC3FE1A25D71E004B2F35 /* icon_unread@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 851EC3FA1A25D71E004B2F35 /* icon_unread@2x.png */; };
+		851EC4011A25D766004B2F35 /* icon_checkmark_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 851EC3FF1A25D766004B2F35 /* icon_checkmark_1.png */; };
+		851EC4021A25D766004B2F35 /* icon_checkmark_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 851EC4001A25D766004B2F35 /* icon_checkmark_1@2x.png */; };
+		851EC4051A25D7B1004B2F35 /* icon_checkmark.png in Resources */ = {isa = PBXBuildFile; fileRef = 851EC4031A25D7B1004B2F35 /* icon_checkmark.png */; };
+		851EC4061A25D7B1004B2F35 /* icon_checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 851EC4041A25D7B1004B2F35 /* icon_checkmark@2x.png */; };
+		851EC40A1A25D848004B2F35 /* InboxMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 851EC4071A25D848004B2F35 /* InboxMessageCell.xib */; };
+		851EC40B1A25D848004B2F35 /* InboxMessageDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 851EC4081A25D848004B2F35 /* InboxMessageDetailCell.xib */; };
+		851EC40C1A25D848004B2F35 /* InboxMessageDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 851EC4091A25D848004B2F35 /* InboxMessageDetailViewController.xib */; };
 		85386DCC19CBE88700BCA463 /* GothamLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCA19CBD8E500BCA463 /* GothamLight.ttf */; };
 		85386DCD19CBE88A00BCA463 /* GothamBlack.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCB19CBD92900BCA463 /* GothamBlack.ttf */; };
 		854551FA1A09BF3300678144 /* NSDictionaryCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 854551F91A09BF3300678144 /* NSDictionaryCategory.m */; };
@@ -342,10 +357,15 @@
 		85AAEEE61A2589460064A518 /* HPGrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AAEEE31A2589460064A518 /* HPGrowingTextView.m */; };
 		85AAEEE71A2589460064A518 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AAEEE51A2589460064A518 /* HPTextViewInternal.m */; };
 		85AAEEEB1A2589880064A518 /* ProductTalkFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AAEEE91A2589880064A518 /* ProductTalkFormViewController.m */; };
-		85AAEEF71A2589B90064A518 /* ProductTalkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AAEEEF1A2589B90064A518 /* ProductTalkCell.m */; };
-		85AAEEFA1A2589B90064A518 /* ProductTalkFormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85AAEEF41A2589B90064A518 /* ProductTalkFormViewController.xib */; };
-		85AAEEFB1A2589B90064A518 /* ProductTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AAEEF61A2589B90064A518 /* ProductTalkViewController.m */; };
 		85AAEEFE1A25AA430064A518 /* GeneralProductReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AAEEFD1A25AA430064A518 /* GeneralProductReviewCell.m */; };
+		85C812621A2834DC001016B8 /* InboxTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C812601A2834DC001016B8 /* InboxTalkViewController.m */; };
+		85C812631A2834DC001016B8 /* InboxTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C812611A2834DC001016B8 /* InboxTalkViewController.xib */; };
+		85C812671A283884001016B8 /* TKPDTabInboxTalkNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C812651A283884001016B8 /* TKPDTabInboxTalkNavigationController.m */; };
+		85C812681A283884001016B8 /* TKPDTabInboxTalkNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C812661A283884001016B8 /* TKPDTabInboxTalkNavigationController.xib */; };
+		85C8126B1A28518A001016B8 /* NSArray+PerformSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C8126A1A28518A001016B8 /* NSArray+PerformSelector.m */; };
+		85C812741A286C8A001016B8 /* InboxTalk.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C8126F1A286C8A001016B8 /* InboxTalk.m */; };
+		85C812751A286C8A001016B8 /* InboxTalkList.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C812711A286C8A001016B8 /* InboxTalkList.m */; };
+		85C812761A286C8A001016B8 /* InboxTalkResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C812731A286C8A001016B8 /* InboxTalkResult.m */; };
 		85F7832319EE7C7C00BEC7D7 /* GothamMedium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85F7832219EE7C7A00BEC7D7 /* GothamMedium.ttf */; };
 		85FA60D919ED258B00E009C0 /* GothamBook.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85FA60D519ED202800E009C0 /* GothamBook.ttf */; };
 		F3B587558A434636B6275320 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EDC5E5AE50A14C3FB286B367 /* libPods-Tokopedia.a */; };
@@ -696,6 +716,11 @@
 		45532E882537C03204A946C3 /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		482BA56B21334661A9065EEC /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		48923BEAFFAFC584DD635FC6 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
+		851216BC1A2F2958007231AE /* ProductTalkDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkDetailViewController.xib; sourceTree = "<group>"; };
+		851216E71A3158E1007231AE /* GeneralAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralAction.h; sourceTree = "<group>"; };
+		851216E81A3158E1007231AE /* GeneralAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralAction.m; sourceTree = "<group>"; };
+		851216E91A3158E1007231AE /* GeneralActionResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralActionResult.h; sourceTree = "<group>"; };
+		851216EA1A3158E1007231AE /* GeneralActionResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralActionResult.m; sourceTree = "<group>"; };
 		851EC2841A25B434004B2F35 /* balloon_read_left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = balloon_read_left.png; sourceTree = "<group>"; };
 		851EC2851A25B434004B2F35 /* balloon_read_right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = balloon_read_right.png; sourceTree = "<group>"; };
 		851EC2861A25B434004B2F35 /* button_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_white.png; sourceTree = "<group>"; };
@@ -875,6 +900,17 @@
 		851EC3411A25B434004B2F35 /* icon_green_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_green_2.png; sourceTree = "<group>"; };
 		851EC3421A25B434004B2F35 /* tabnav_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tabnav_bg.png; sourceTree = "<group>"; };
 		851EC3431A25B434004B2F35 /* tabnav_bg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tabnav_bg@2x.png"; sourceTree = "<group>"; };
+		851EC3F71A25D71E004B2F35 /* icon_checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_checkmark.png; sourceTree = "<group>"; };
+		851EC3F81A25D71E004B2F35 /* icon_checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_checkmark@2x.png"; sourceTree = "<group>"; };
+		851EC3F91A25D71E004B2F35 /* icon_unread.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_unread.png; sourceTree = "<group>"; };
+		851EC3FA1A25D71E004B2F35 /* icon_unread@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_unread@2x.png"; sourceTree = "<group>"; };
+		851EC3FF1A25D766004B2F35 /* icon_checkmark_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_checkmark_1.png; sourceTree = "<group>"; };
+		851EC4001A25D766004B2F35 /* icon_checkmark_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_checkmark_1@2x.png"; sourceTree = "<group>"; };
+		851EC4031A25D7B1004B2F35 /* icon_checkmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_checkmark.png; sourceTree = "<group>"; };
+		851EC4041A25D7B1004B2F35 /* icon_checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_checkmark@2x.png"; sourceTree = "<group>"; };
+		851EC4071A25D848004B2F35 /* InboxMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxMessageCell.xib; sourceTree = "<group>"; };
+		851EC4081A25D848004B2F35 /* InboxMessageDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxMessageDetailCell.xib; sourceTree = "<group>"; };
+		851EC4091A25D848004B2F35 /* InboxMessageDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxMessageDetailViewController.xib; sourceTree = "<group>"; };
 		85386DCA19CBD8E500BCA463 /* GothamLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamLight.ttf; sourceTree = "<group>"; };
 		85386DCB19CBD92900BCA463 /* GothamBlack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamBlack.ttf; sourceTree = "<group>"; };
 		854551F81A09BF3300678144 /* NSDictionaryCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDictionaryCategory.h; sourceTree = "<group>"; };
@@ -890,6 +926,7 @@
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		85627F4019E6B2050085DDF5 /* ExpiringCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpiringCache.h; sourceTree = "<group>"; };
 		85627F4119E6B2050085DDF5 /* ExpiringCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpiringCache.m; sourceTree = "<group>"; };
+		856CFA9F1A2DE07A00D618C4 /* stringrestkit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stringrestkit.h; sourceTree = "<group>"; };
 		85AAED011A2587CF0064A518 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
 		85AAED021A2587CF0064A518 /* Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Login.m; sourceTree = "<group>"; };
 		85AAED031A2587CF0064A518 /* LoginResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginResult.h; sourceTree = "<group>"; };
@@ -1188,17 +1225,22 @@
 		85AAEEE81A2589880064A518 /* ProductTalkFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkFormViewController.h; sourceTree = "<group>"; };
 		85AAEEE91A2589880064A518 /* ProductTalkFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkFormViewController.m; sourceTree = "<group>"; };
 		85AAEEEA1A2589880064A518 /* ProductTalkFormViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkFormViewController.xib; sourceTree = "<group>"; };
-		85AAEEEE1A2589B90064A518 /* ProductTalkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkCell.h; sourceTree = "<group>"; };
-		85AAEEEF1A2589B90064A518 /* ProductTalkCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkCell.m; sourceTree = "<group>"; };
-		85AAEEF01A2589B90064A518 /* ProductTalkDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkDetailViewController.h; sourceTree = "<group>"; };
-		85AAEEF11A2589B90064A518 /* ProductTalkDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkDetailViewController.m; sourceTree = "<group>"; };
-		85AAEEF21A2589B90064A518 /* ProductTalkFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkFormViewController.h; sourceTree = "<group>"; };
-		85AAEEF31A2589B90064A518 /* ProductTalkFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkFormViewController.m; sourceTree = "<group>"; };
-		85AAEEF41A2589B90064A518 /* ProductTalkFormViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkFormViewController.xib; sourceTree = "<group>"; };
-		85AAEEF51A2589B90064A518 /* ProductTalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkViewController.h; sourceTree = "<group>"; };
-		85AAEEF61A2589B90064A518 /* ProductTalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkViewController.m; sourceTree = "<group>"; };
 		85AAEEFC1A25AA430064A518 /* GeneralProductReviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralProductReviewCell.h; sourceTree = "<group>"; };
 		85AAEEFD1A25AA430064A518 /* GeneralProductReviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralProductReviewCell.m; sourceTree = "<group>"; };
+		85C8125F1A2834DC001016B8 /* InboxTalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTalkViewController.h; sourceTree = "<group>"; };
+		85C812601A2834DC001016B8 /* InboxTalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxTalkViewController.m; sourceTree = "<group>"; };
+		85C812611A2834DC001016B8 /* InboxTalkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxTalkViewController.xib; sourceTree = "<group>"; };
+		85C812641A283884001016B8 /* TKPDTabInboxTalkNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabInboxTalkNavigationController.h; sourceTree = "<group>"; };
+		85C812651A283884001016B8 /* TKPDTabInboxTalkNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabInboxTalkNavigationController.m; sourceTree = "<group>"; };
+		85C812661A283884001016B8 /* TKPDTabInboxTalkNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabInboxTalkNavigationController.xib; sourceTree = "<group>"; };
+		85C812691A28518A001016B8 /* NSArray+PerformSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+PerformSelector.h"; sourceTree = "<group>"; };
+		85C8126A1A28518A001016B8 /* NSArray+PerformSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+PerformSelector.m"; sourceTree = "<group>"; };
+		85C8126E1A286C8A001016B8 /* InboxTalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTalk.h; sourceTree = "<group>"; };
+		85C8126F1A286C8A001016B8 /* InboxTalk.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxTalk.m; sourceTree = "<group>"; };
+		85C812701A286C8A001016B8 /* InboxTalkList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTalkList.h; sourceTree = "<group>"; };
+		85C812711A286C8A001016B8 /* InboxTalkList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxTalkList.m; sourceTree = "<group>"; };
+		85C812721A286C8A001016B8 /* InboxTalkResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTalkResult.h; sourceTree = "<group>"; };
+		85C812731A286C8A001016B8 /* InboxTalkResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxTalkResult.m; sourceTree = "<group>"; };
 		85F7832219EE7C7A00BEC7D7 /* GothamMedium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamMedium.ttf; sourceTree = "<group>"; };
 		85FA60D519ED202800E009C0 /* GothamBook.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamBook.ttf; sourceTree = "<group>"; };
 		AE905DD1A94FE459CBC5926C /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1771,12 +1813,29 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		851216E61A3158E1007231AE /* GeneralAction */ = {
+			isa = PBXGroup;
+			children = (
+				851216E71A3158E1007231AE /* GeneralAction.h */,
+				851216E81A3158E1007231AE /* GeneralAction.m */,
+				851216E91A3158E1007231AE /* GeneralActionResult.h */,
+				851216EA1A3158E1007231AE /* GeneralActionResult.m */,
+			);
+			path = GeneralAction;
+			sourceTree = "<group>";
+		};
 		851EC2831A25B434004B2F35 /* Images */ = {
 			isa = PBXGroup;
 			children = (
 				851EC2841A25B434004B2F35 /* balloon_read_left.png */,
+				851EC3F71A25D71E004B2F35 /* icon_checkmark.png */,
+				851EC3F81A25D71E004B2F35 /* icon_checkmark@2x.png */,
+				851EC3F91A25D71E004B2F35 /* icon_unread.png */,
+				851EC3FA1A25D71E004B2F35 /* icon_unread@2x.png */,
 				851EC2851A25B434004B2F35 /* balloon_read_right.png */,
 				851EC2861A25B434004B2F35 /* button_white.png */,
+				851EC3FF1A25D766004B2F35 /* icon_checkmark_1.png */,
+				851EC4001A25D766004B2F35 /* icon_checkmark_1@2x.png */,
 				851EC2871A25B434004B2F35 /* button_white_rounded_2.png */,
 				851EC2881A25B434004B2F35 /* Category */,
 				851EC2B81A25B434004B2F35 /* Controller */,
@@ -1796,6 +1855,8 @@
 				851EC2C91A25B434004B2F35 /* icon_check.png */,
 				851EC2CA1A25B434004B2F35 /* icon_clock.png */,
 				851EC2CB1A25B434004B2F35 /* icon_clock@2x.png */,
+				851EC4031A25D7B1004B2F35 /* icon_checkmark.png */,
+				851EC4041A25D7B1004B2F35 /* icon_checkmark@2x.png */,
 				851EC2CC1A25B434004B2F35 /* icon_comment.png */,
 				851EC2CD1A25B434004B2F35 /* icon_comment@2x.png */,
 				851EC2CE1A25B434004B2F35 /* icon_facebook.png */,
@@ -2077,6 +2138,8 @@
 		85AAECFE1A2587CF0064A518 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				851216E61A3158E1007231AE /* GeneralAction */,
+				85C8126D1A286C8A001016B8 /* InboxTalk */,
 				85AAECFF1A2587CF0064A518 /* Activation */,
 				85AAED0A1A2587CF0064A518 /* DetailCatalog */,
 				85AAED231A2587CF0064A518 /* DetailProduct */,
@@ -2731,20 +2794,27 @@
 			path = Libraries;
 			sourceTree = "<group>";
 		};
-		85AAEEED1A2589B90064A518 /* Talk */ = {
+		85C8125E1A2834C1001016B8 /* InboxTalk */ = {
 			isa = PBXGroup;
 			children = (
-				85AAEEEE1A2589B90064A518 /* ProductTalkCell.h */,
-				85AAEEEF1A2589B90064A518 /* ProductTalkCell.m */,
-				85AAEEF01A2589B90064A518 /* ProductTalkDetailViewController.h */,
-				85AAEEF11A2589B90064A518 /* ProductTalkDetailViewController.m */,
-				85AAEEF21A2589B90064A518 /* ProductTalkFormViewController.h */,
-				85AAEEF31A2589B90064A518 /* ProductTalkFormViewController.m */,
-				85AAEEF41A2589B90064A518 /* ProductTalkFormViewController.xib */,
-				85AAEEF51A2589B90064A518 /* ProductTalkViewController.h */,
-				85AAEEF61A2589B90064A518 /* ProductTalkViewController.m */,
+				85C8125F1A2834DC001016B8 /* InboxTalkViewController.h */,
+				85C812601A2834DC001016B8 /* InboxTalkViewController.m */,
+				85C812611A2834DC001016B8 /* InboxTalkViewController.xib */,
 			);
-			name = Talk;
+			path = InboxTalk;
+			sourceTree = "<group>";
+		};
+		85C8126D1A286C8A001016B8 /* InboxTalk */ = {
+			isa = PBXGroup;
+			children = (
+				85C8126E1A286C8A001016B8 /* InboxTalk.h */,
+				85C8126F1A286C8A001016B8 /* InboxTalk.m */,
+				85C812701A286C8A001016B8 /* InboxTalkList.h */,
+				85C812711A286C8A001016B8 /* InboxTalkList.m */,
+				85C812721A286C8A001016B8 /* InboxTalkResult.h */,
+				85C812731A286C8A001016B8 /* InboxTalkResult.m */,
+			);
+			path = InboxTalk;
 			sourceTree = "<group>";
 		};
 		FC0D8FCF1A257BFF007BD69F /* Cocoa */ = {
@@ -2779,6 +2849,7 @@
 		FC0D90061A257C40007BD69F /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				85C8125E1A2834C1001016B8 /* InboxTalk */,
 				FC0D90081A257C40007BD69F /* Activation */,
 				FC0D90121A257C41007BD69F /* Alert */,
 				FC0D90201A257C41007BD69F /* Camera */,
@@ -2943,6 +3014,9 @@
 				FC0D90531A257C41007BD69F /* TKPDTabProfileNavigationController.m */,
 				FC0D90541A257C41007BD69F /* TKPDTabShopNavigationController.h */,
 				FC0D90551A257C41007BD69F /* TKPDTabShopNavigationController.m */,
+				85C812641A283884001016B8 /* TKPDTabInboxTalkNavigationController.h */,
+				85C812651A283884001016B8 /* TKPDTabInboxTalkNavigationController.m */,
+				85C812661A283884001016B8 /* TKPDTabInboxTalkNavigationController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -3053,7 +3127,6 @@
 		FC0D908C1A257C41007BD69F /* Talk */ = {
 			isa = PBXGroup;
 			children = (
-				85AAEEED1A2589B90064A518 /* Talk */,
 				85AAEEE81A2589880064A518 /* ProductTalkFormViewController.h */,
 				85AAEEE91A2589880064A518 /* ProductTalkFormViewController.m */,
 				85AAEEEA1A2589880064A518 /* ProductTalkFormViewController.xib */,
@@ -3853,6 +3926,7 @@
 		FC0D926B1A257C57007BD69F /* Talk */ = {
 			isa = PBXGroup;
 			children = (
+				851216BC1A2F2958007231AE /* ProductTalkDetailViewController.xib */,
 				FC0D926C1A257C57007BD69F /* ProductTalkCell.xib */,
 				FC0D926D1A257C57007BD69F /* ProductTalkViewController.xib */,
 			);
@@ -4232,6 +4306,9 @@
 		FC0D92E21A257C57007BD69F /* InboxMessage */ = {
 			isa = PBXGroup;
 			children = (
+				851EC4071A25D848004B2F35 /* InboxMessageCell.xib */,
+				851EC4081A25D848004B2F35 /* InboxMessageDetailCell.xib */,
+				851EC4091A25D848004B2F35 /* InboxMessageDetailViewController.xib */,
 				FC0D92E31A257C57007BD69F /* InboxMessageViewController.xib */,
 			);
 			path = InboxMessage;
@@ -4405,6 +4482,7 @@
 		FC36DF8C19B0656400AF74C1 /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
+				856CFA9F1A2DE07A00D618C4 /* stringrestkit.h */,
 				FCAAEA4319F7534B00904AFB /* MainViewController.h */,
 				FCAAEA4419F7534B00904AFB /* MainViewController.m */,
 				FCAAEA4519F7534B00904AFB /* MainViewController.xib */,
@@ -4464,6 +4542,8 @@
 		FC36E0C219B0673700AF74C1 /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
+				85C812691A28518A001016B8 /* NSArray+PerformSelector.h */,
+				85C8126A1A28518A001016B8 /* NSArray+PerformSelector.m */,
 				FC0D8FCF1A257BFF007BD69F /* Cocoa */,
 				FC0D8FE61A257BFF007BD69F /* UIKitCategory.h */,
 				FC0D8FE71A257BFF007BD69F /* UIKitCategory.m */,
@@ -4620,7 +4700,6 @@
 				FC0D930F1A257C58007BD69F /* CameraAlbumListViewController.xib in Resources */,
 				851EC3451A25B435004B2F35 /* balloon_read_right.png in Resources */,
 				851EC3921A25B435004B2F35 /* icon_lock_grey.png in Resources */,
-				85AAEEFA1A2589B90064A518 /* ProductTalkFormViewController.xib in Resources */,
 				851EC3E61A25B435004B2F35 /* icon_category_active@2x.png in Resources */,
 				FC0D93921A257C58007BD69F /* SearchResultShopViewController.xib in Resources */,
 				FC0D930D1A257C58007BD69F /* AlertListViewCell.xib in Resources */,
@@ -4654,6 +4733,7 @@
 				851EC3B01A25B435004B2F35 /* icon_telephone.png in Resources */,
 				851EC3861A25B435004B2F35 /* icon_clock.png in Resources */,
 				FC0D930A1A257C58007BD69F /* AlertCameraView.xib in Resources */,
+				851EC4011A25D766004B2F35 /* icon_checkmark_1.png in Resources */,
 				851EC3B41A25B435004B2F35 /* icon_toped_loading_grey-02@2x.png in Resources */,
 				FC0D93251A257C58007BD69F /* DetailCatalogSpecViewCell.xib in Resources */,
 				851EC37F1A25B435004B2F35 /* icon_calendar.png in Resources */,
@@ -4714,15 +4794,19 @@
 				851EC3AC1A25B435004B2F35 /* icon_star.png in Resources */,
 				FC0D93261A257C58007BD69F /* DetailCatalogViewController.xib in Resources */,
 				FC0D938F1A257C58007BD69F /* SearchCell.xib in Resources */,
+				85C812631A2834DC001016B8 /* InboxTalkViewController.xib in Resources */,
 				FC0D93781A257C58007BD69F /* GeneralTalkCellOld.xib in Resources */,
 				FC0D93831A257C58007BD69F /* KatalogViewCell.xib in Resources */,
+				851EC4021A25D766004B2F35 /* icon_checkmark_1@2x.png in Resources */,
 				851EC38B1A25B435004B2F35 /* icon_facebook@2x.png in Resources */,
 				851EC3BA1A25B435004B2F35 /* icon_arrow_white.png in Resources */,
 				FC0D930C1A257C58007BD69F /* AlertListView.xib in Resources */,
 				FC0D933D1A257C58007BD69F /* ProfileFavoriteShopCell.xib in Resources */,
+				851EC3FE1A25D71E004B2F35 /* icon_unread@2x.png in Resources */,
 				FC0D937F1A257C58007BD69F /* HotlistViewController.xib in Resources */,
 				851EC3A01A25B435004B2F35 /* icon_plus_blue.png in Resources */,
 				851EC3CE1A25B435004B2F35 /* top_bg1@2x.png in Resources */,
+				851EC4061A25D7B1004B2F35 /* icon_checkmark@2x.png in Resources */,
 				FC0D936B1A257C58007BD69F /* SettingShipmentInfoViewController.xib in Resources */,
 				851EC3711A25B435004B2F35 /* icon_8@2x.png in Resources */,
 				851EC35F1A25B435004B2F35 /* icon_1@2x.png in Resources */,
@@ -4764,6 +4848,7 @@
 				FC0D93151A257C58007BD69F /* CategoryViewCell.xib in Resources */,
 				851EC3DF1A25B435004B2F35 /* icon_cart.png in Resources */,
 				851EC3E81A25B435004B2F35 /* icon_home@2x.png in Resources */,
+				851EC3FB1A25D71E004B2F35 /* icon_checkmark.png in Resources */,
 				FC0D931B1A257C58007BD69F /* TKPDTabBarController.xib in Resources */,
 				FC0D93841A257C58007BD69F /* KatalogViewController.xib in Resources */,
 				851EC3C81A25B435004B2F35 /* navigation-button-bg-pt.png in Resources */,
@@ -4775,8 +4860,11 @@
 				851EC3C31A25B435004B2F35 /* icon_view_28px.png in Resources */,
 				851EC3BB1A25B435004B2F35 /* icon_arrow_white@2x.png in Resources */,
 				FC0D932A1A257C58007BD69F /* DetailListCell.xib in Resources */,
+				851EC3FC1A25D71E004B2F35 /* icon_checkmark@2x.png in Resources */,
 				FC0D93561A257C58007BD69F /* ShopInfoShipmentCell.xib in Resources */,
+				851EC40C1A25D848004B2F35 /* InboxMessageDetailViewController.xib in Resources */,
 				851EC37C1A25B435004B2F35 /* icon_arrow_right_grey@2x.png in Resources */,
+				851216BD1A2F2958007231AE /* ProductTalkDetailViewController.xib in Resources */,
 				851EC3C61A25B435004B2F35 /* logo.png in Resources */,
 				851EC36C1A25B435004B2F35 /* icon_6.png in Resources */,
 				851EC3821A25B435004B2F35 /* icon_cancel@2x.png in Resources */,
@@ -4856,6 +4944,7 @@
 				FC0D936C1A257C58007BD69F /* SettingShipmentSectionFooter2View.xib in Resources */,
 				851EC3DC1A25B435004B2F35 /* ic_more@2x.png in Resources */,
 				851EC3F11A25B435004B2F35 /* icon_search_active.png in Resources */,
+				851EC40A1A25D848004B2F35 /* InboxMessageCell.xib in Resources */,
 				FC0D93101A257C58007BD69F /* CameraCollectionCell.xib in Resources */,
 				851EC3D71A25B435004B2F35 /* ic_category.png in Resources */,
 				FC0D933B1A257C58007BD69F /* ProfileEditPhoneViewController.xib in Resources */,
@@ -4939,17 +5028,21 @@
 				FC0D93161A257C58007BD69F /* CategoryViewController.xib in Resources */,
 				FC0D93591A257C58007BD69F /* ShopNotesDetailViewController.xib in Resources */,
 				FC0D931E1A257C58007BD69F /* TKPDTabNavigationController.xib in Resources */,
+				851EC40B1A25D848004B2F35 /* InboxMessageDetailCell.xib in Resources */,
 				FC0D937A1A257C58007BD69F /* FavoritedShopCell.xib in Resources */,
 				851EC3ED1A25B435004B2F35 /* icon_more_active.png in Resources */,
 				FC0D93671A257C58007BD69F /* SettingPaymentViewController.xib in Resources */,
+				85C812681A283884001016B8 /* TKPDTabInboxTalkNavigationController.xib in Resources */,
 				851EC3D41A25B435004B2F35 /* active_tab@2x.png in Resources */,
 				851EC39B1A25B435004B2F35 /* icon_love_active@2x.png in Resources */,
 				FC0D93341A257C58007BD69F /* ProductReviewViewController.xib in Resources */,
+				851EC3FD1A25D71E004B2F35 /* icon_unread.png in Resources */,
 				851EC34E1A25B435004B2F35 /* icon_11@2x.png in Resources */,
 				FC0D93441A257C58007BD69F /* SettingAddressViewController.xib in Resources */,
 				FC0D96B61A25800D007BD69F /* GeneralList1GestureCell.xib in Resources */,
 				851EC3A41A25B435004B2F35 /* icon_report.png in Resources */,
 				851EC3941A25B435004B2F35 /* icon_login.png in Resources */,
+				851EC4051A25D7B1004B2F35 /* icon_checkmark.png in Resources */,
 				FC0D93291A257C58007BD69F /* CatalogSellerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5032,6 +5125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				851216C31A300239007231AE /* ProductTalkViewController.m in Sources */,
 				FC0D92041A257C41007BD69F /* ProfileEditViewController.m in Sources */,
 				FC0D91FE1A257C41007BD69F /* MoreViewController.m in Sources */,
 				85AAEE891A2587D00064A518 /* InboxMessageAction.m in Sources */,
@@ -5066,7 +5160,6 @@
 				85AAEE631A2587CF0064A518 /* Review.m in Sources */,
 				FC0D91A81A257C41007BD69F /* TKPDTabNavigationController.m in Sources */,
 				FC0D91A91A257C41007BD69F /* TKPDTabProfileNavigationController.m in Sources */,
-				85AAEEFB1A2589B90064A518 /* ProductTalkViewController.m in Sources */,
 				85AAEEA11A2587D00064A518 /* ProfileEditFormResult.m in Sources */,
 				85AAEE501A2587CF0064A518 /* CatalogImage.m in Sources */,
 				85AAEE971A2587D00064A518 /* Paging.m in Sources */,
@@ -5103,6 +5196,8 @@
 				FC0D92081A257C41007BD69F /* SettingAddressLocationCell.m in Sources */,
 				85AAEED91A2587D00064A518 /* UploadProfileParams.m in Sources */,
 				85AAEE591A2587CF0064A518 /* ProductList.m in Sources */,
+				851216EB1A3158E1007231AE /* GeneralAction.m in Sources */,
+				85C812761A286C8A001016B8 /* InboxTalkResult.m in Sources */,
 				85AAEED81A2587D00064A518 /* UploadProfile.m in Sources */,
 				85AAEEBF1A2587D00064A518 /* SendMessage.m in Sources */,
 				FC0D91B31A257C41007BD69F /* DetailCatalogViewController.m in Sources */,
@@ -5123,10 +5218,10 @@
 				85AAEE8A1A2587D00064A518 /* InboxMessageActionResult.m in Sources */,
 				85AAEE941A2587D00064A518 /* Notes.m in Sources */,
 				85AAEEC61A2587D00064A518 /* Shipment.m in Sources */,
+				85C8126B1A28518A001016B8 /* NSArray+PerformSelector.m in Sources */,
 				85AAEE551A2587CF0064A518 /* CatalogReview.m in Sources */,
 				FC0D91C61A257C41007BD69F /* ShopEditStatusViewController.m in Sources */,
 				FC0D91E71A257C41007BD69F /* SettingShipmentViewController.m in Sources */,
-				85AAEEF71A2589B90064A518 /* ProductTalkCell.m in Sources */,
 				FC0D91D11A257C41007BD69F /* ProductEtalaseCell.m in Sources */,
 				FC0D91F51A257C41007BD69F /* KatalogListViewCell.m in Sources */,
 				FC0D91C11A257C41007BD69F /* ProductReviewViewController.m in Sources */,
@@ -5140,6 +5235,7 @@
 				85AAEE931A2587D00064A518 /* NoteDetails.m in Sources */,
 				FC0D91BD1A257C41007BD69F /* DetailProductWholesaleCell.m in Sources */,
 				FC0D92201A257C41007BD69F /* SearchResultShopViewController.m in Sources */,
+				85C812671A283884001016B8 /* TKPDTabInboxTalkNavigationController.m in Sources */,
 				FC0D921D1A257C41007BD69F /* SearchViewController.m in Sources */,
 				85AAEEA81A2587D00064A518 /* ProfileInfoResult.m in Sources */,
 				85AAEE821A2587D00064A518 /* DepartmentTree.m in Sources */,
@@ -5185,6 +5281,7 @@
 				85AAEE8B1A2587D00064A518 /* InboxMessageDetail.m in Sources */,
 				854551FA1A09BF3300678144 /* NSDictionaryCategory.m in Sources */,
 				85AAEE661A2587CF0064A518 /* ReviewResponse.m in Sources */,
+				85C812621A2834DC001016B8 /* InboxTalkViewController.m in Sources */,
 				85AAEE4E1A2587CF0064A518 /* RegisterResult.m in Sources */,
 				FC0D92211A257C41007BD69F /* SearchResultViewController.m in Sources */,
 				85AAEED41A2587D00064A518 /* ShopShipping.m in Sources */,
@@ -5219,6 +5316,7 @@
 				FC0D92141A257C41007BD69F /* SettingBankAccountViewController.m in Sources */,
 				85AAEE8F1A2587D00064A518 /* InboxMessageList.m in Sources */,
 				85AAEED51A2587D00064A518 /* GeneratedHost.m in Sources */,
+				851216EC1A3158E1007231AE /* GeneralActionResult.m in Sources */,
 				FC0D91D81A257C41007BD69F /* SettingEtalaseEditViewController.m in Sources */,
 				FC0D91A51A257C41007BD69F /* TKPDTabBarController.m in Sources */,
 				FC0D91CC1A257C41007BD69F /* ShopInfoShipmentCell.m in Sources */,
@@ -5314,10 +5412,12 @@
 				85AAEEC41A2587D00064A518 /* Owner.m in Sources */,
 				85AAEEB91A2587D00064A518 /* List.m in Sources */,
 				FC0D91D91A257C41007BD69F /* SettingEtalaseViewController.m in Sources */,
+				85C812741A286C8A001016B8 /* InboxTalk.m in Sources */,
 				FC0D91F81A257C41007BD69F /* ProductFeedViewController.m in Sources */,
 				FC0D92071A257C41007BD69F /* ProfileFavoriteShopViewController.m in Sources */,
 				85AAEEAC1A2587D00064A518 /* AddressForm.m in Sources */,
 				FC0D91FC1A257C41007BD69F /* InboxMessageViewController.m in Sources */,
+				85C812751A286C8A001016B8 /* InboxTalkList.m in Sources */,
 				FC0D91DA1A257C41007BD69F /* SettingLocationCell.m in Sources */,
 				85AAEED21A2587D00064A518 /* ShippingInfoShipmentPackage.m in Sources */,
 				FC0D92161A257C41007BD69F /* SettingBankDetailViewController.m in Sources */,

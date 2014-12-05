@@ -8,6 +8,17 @@
 
 #import "GeneralTalkCell.h"
 #import "ProductTalkDetailViewController.h"
+#import "ProfileBiodataViewController.h"
+#import "ProfileFavoriteShopViewController.h"
+#import "ProfileContactViewController.h"
+#import "TKPDTabProfileNavigationController.h"
+
+#import "TalkList.h"
+#import "TKPDSecureStorage.h"
+
+#import "DetailProductViewController.h"
+
+#import "detail.h"
 
 @implementation GeneralTalkCell
 
@@ -39,14 +50,80 @@
 {
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton *)sender;
+        NSIndexPath* indexpath = _indexpath;
         switch (btn.tag) {
             case 10:
             {
-                NSIndexPath* indexpath = _indexpath;
                 [_delegate GeneralTalkCell:self withindexpath:indexpath];
                 break;
             }
-            
+                
+            case 11 :
+            {
+                [_delegate unfollowTalk:self withindexpath:indexpath withButton:_unfollowButton];
+                NSLog(@"Running this");
+                break;
+            }
+                
+            case 12 :
+            {
+                [_delegate reportTalk:self withindexpath:indexpath];
+                break;
+            }
+                
+            case 13 :
+            {
+                [_delegate deleteTalk:self withindexpath:indexpath];
+                break;
+            }
+            //click user
+            case 14 :
+            {
+                TalkList *list = [_delegate clickUserId:self withindexpath:indexpath];
+                TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+                NSDictionary* auth = [secureStorage keychainDictionary];
+                auth = [auth mutableCopy];
+
+                NSMutableArray *viewcontrollers = [NSMutableArray new];
+    
+                /** create new view controller **/
+                ProfileBiodataViewController *v = [ProfileBiodataViewController new];
+                [viewcontrollers addObject:v];
+                
+                ProfileFavoriteShopViewController *v1 = [ProfileFavoriteShopViewController new];
+                v1.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(list.talk_user_id),
+                            kTKPDDETAIL_APISHOPIDKEY:list.talk_shop_id,
+                            kTKPD_AUTHKEY:auth};
+                [viewcontrollers addObject:v1];
+                
+                ProfileContactViewController *v2 = [ProfileContactViewController new];
+                [viewcontrollers addObject:v2];
+
+                TKPDTabProfileNavigationController *tapnavcon = [TKPDTabProfileNavigationController new];
+                tapnavcon.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(list.talk_user_id),
+                                   kTKPD_AUTHKEY:auth};
+                [tapnavcon setViewControllers:viewcontrollers animated:YES];
+                [tapnavcon setSelectedIndex:0];
+                
+                UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
+                
+                [nav.navigationController pushViewController:tapnavcon animated:YES];
+                break;
+            }
+                
+            //click product
+            case 15 :
+            {
+                NSString *productId = [_delegate clickProductId:self withindexpath:indexpath];
+                UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
+                
+                DetailProductViewController *vc = [DetailProductViewController new];
+                vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : productId};
+                [nav.navigationController pushViewController:vc animated:YES];
+                
+                break;
+            }
+        
             default:
                 break;
         }

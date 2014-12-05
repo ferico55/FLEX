@@ -13,6 +13,7 @@
 #import "ProductTalkCommentAction.h"
 #import "TKPDSecureStorage.h"
 #import "URLCacheController.h"
+#import "stringrestkit.h"
 
 @interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 {
@@ -163,8 +164,8 @@
         if (_list.count > indexPath.row) {
             TalkCommentList *list = _list[indexPath.row];
             ((GeneralTalkCommentCell*)cell).commentlabel.text = list.comment_message;
-            ((GeneralTalkCommentCell*)cell).user_name.text = list.user_name;
-            ((GeneralTalkCommentCell*)cell).create_time.text = list.create_time;
+            ((GeneralTalkCommentCell*)cell).user_name.text = list.comment_user_name;
+            ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
            
             ((GeneralTalkCommentCell*)cell).indexpath = indexPath;
             
@@ -174,9 +175,7 @@
                 ((GeneralTalkCommentCell*)cell).commentfailimage.hidden = YES;
             }
         
-        
-            
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.comment_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *user_image = ((GeneralTalkCommentCell*)cell).user_image;
             user_image.image = nil;
 
@@ -236,13 +235,13 @@
 #pragma mark - Methods
 -(void)setHeaderData:(NSDictionary*)data
 {
-    _talkmessagelabel.text = [data objectForKey:kTKPDTALK_APITALKMESSAGEKEY];
-    _talkcreatetimelabel.text = [data objectForKey:kTKPDTALK_APITALKCREATETIMEKEY];
-    _talkusernamelabel.text = [data objectForKey:kTKPDTALK_APITALKUSERNAMEKEY];
-    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Comment",[data objectForKey:kTKPDTALK_APITALKTOTALCOMMENTKEY]];
+    _talkmessagelabel.text = [data objectForKey:TKPD_TALK_MESSAGE];
+    _talkcreatetimelabel.text = [data objectForKey:TKPD_TALK_CREATE_TIME];
+    _talkusernamelabel.text = [data objectForKey:TKPD_TALK_USER_NAME];
+    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Comment",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]];
     
     
-    NSURL * imageURL = [NSURL URLWithString:[data objectForKey:kTKPDTALK_APITALKUSERIMAGEKEY]];
+    NSURL * imageURL = [NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]];
     NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
     UIImage * image = [UIImage imageWithData:imageData];
     
@@ -285,15 +284,16 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TalkCommentResult class]];
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TalkCommentList class]];
+
     [listMapping addAttributeMappingsFromArray:@[
-                                                 kTKPDTALKCOMMENT_TALKID,
-                                                 kTKPDTALKCOMMENT_MESSAGE,
-                                                 kTKPDTALKCOMMENT_ID,
-                                                 kTKPDTALKCOMMENT_ISMOD,
-                                                 kTKPDTALKCOMMENT_ISSELLER,
-                                                 kTKPDTALKCOMMENT_CREATETIME,
-                                                 kTKPDTALKCOMMENT_USERIMAGE,
-                                                 kTKPDTALKCOMMENT_USERNAME,
+                                                 TKPD_TALK_COMMENT_ID,
+                                                 TKPD_TALK_COMMENT_MESSAGE,
+                                                 TKPD_COMMENT_ID,
+                                                 TKPD_TALK_COMMENT_ISMOD,
+                                                 TKPD_TALK_COMMENT_ISSELLER,
+                                                 TKPD_TALK_COMMENT_CREATETIME,
+                                                 TKPD_TALK_COMMENT_USERIMG,
+                                                 TKPD_TALK_COMMENT_USERNAME,
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -323,8 +323,8 @@
     
     NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETCOMMENTBYTALKID,
-                            kTKPDTALK_APITALKIDKEY : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
-                            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDTALK_APITALKSHOPID]?:@(0),
+                            TKPD_TALK_ID : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
+                            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
                             kTKPDDETAIL_APIPAGEKEY : @(_page)
                             };
 //    [_cachecontroller getFileModificationDate];
@@ -510,8 +510,8 @@
                 
                 TalkCommentList *commentlist = [TalkCommentList new];
                 commentlist.comment_message =_talktextfield.text;
-                commentlist.user_name = [_auth objectForKey:@"full_name"];
-                commentlist.user_image = [_auth objectForKey:@"user_image"];
+                commentlist.comment_user_name = [_auth objectForKey:@"full_name"];
+                commentlist.comment_user_image = [_auth objectForKey:@"user_image"];
                 
                 
                 NSDate *today = [NSDate date];
@@ -519,7 +519,7 @@
                 [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
                 NSString *dateString = [dateFormat stringFromDate:today];
                 
-                commentlist.create_time = [dateString stringByAppendingString:@"WIB"];
+                commentlist.comment_create_time = [dateString stringByAppendingString:@"WIB"];
                 
                 [_list insertObject:commentlist atIndex:lastindexpathrow];
                 NSArray *insertIndexPaths = [NSArray arrayWithObjects:
@@ -566,7 +566,7 @@
     [statusMapping addPropertyMapping:resulRel];
     
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDACTIONTALK_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectactionmanager addResponseDescriptor:responseDescriptorStatus];
 }
@@ -574,13 +574,13 @@
 -(void)addProductCommentTalk{
     NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIADDCOMMENTTALK,
-                            kTKPDTALK_APITALKIDKEY:[_data objectForKey:kTKPDTALK_APITALKIDKEY],
+                            TKPD_TALK_ID:[_data objectForKey:TKPD_TALK_ID],
                             kTKPDTALKCOMMENT_APITEXT:_talktextfield.text,
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]
                             };
     
     _requestactioncount ++;
-    _requestaction = [_objectactionmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param];
+    _requestaction = [_objectactionmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDACTIONTALK_APIPATH parameters:param];
     
     
     [_requestaction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -620,6 +620,15 @@
         if([commentaction.result.is_success isEqualToString:@"0"]) {
             TalkCommentList *commentlist = _list[_list.count-1];
             commentlist.is_not_delivered = @"1";
+        } else {
+            NSString *totalcomment = [NSString stringWithFormat:@"%d %@",_list.count, @"Comment"];
+            _talktotalcommentlabel.text = totalcomment;
+            
+            NSDictionary *userinfo;
+            userinfo = @{TKPD_TALK_TOTAL_COMMENT:@(_list.count)?:0, kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment" object:nil userInfo:userinfo];
+            
         }
     }
 }

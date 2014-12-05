@@ -11,6 +11,7 @@
 #import "StickyAlert.h"
 #import "ProductTalkForm.h"
 #import "inbox.h"
+#import "stringrestkit.h"
 
 @interface ProductTalkFormViewController () <UITextViewDelegate>{
     BOOL _isnodata;
@@ -134,14 +135,13 @@
 
 -(void)doProductTalkForm {
     NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY:@"send_message",
-                            kTKPDMESSAGE_KEYCONTENT:_talkfield.text,
-                            kTKPDMESSAGE_KEYSUBJECT:_talksubjectfield.text,
-                            kTKPDMESSAGE_KEYTOSHOPID:[_data objectForKey:@"shop_id"]
+                            kTKPDDETAIL_APIACTIONKEY:kTKPDTALK_ADDTALK,
+                            kTKPDTALK_TALKMESSAGE:_talkfield.text,
+                            kTKPDMESSAGE_PRODUCTIDKEY:[_data objectForKey:kTKPDMESSAGE_PRODUCTIDKEY]
                             };
     
     _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDTALKACTION_PATHURL parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/talk.pl" parameters:param];
     
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -167,14 +167,25 @@
     id info = [result objectForKey:@""];
     
     NSString *is_success = [[info result] is_success];
+    //TODO ini jgn pake new_talk_id 
+    NSString *talk_id = [[info result] talk_id];
     
     if([is_success isEqualToString:kTKPD_STATUSSUCCESS]) {
-        NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+        NSArray *array = [[NSArray alloc] initWithObjects:KTKPDTALK_DELIVERED, nil];
         NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+        
+        //enable comment button talk
+        NSDictionary *userinfo;
+        userinfo = @{TKPD_TALK_MESSAGE:_talkfield.text,
+                     TKPD_TALK_ID:talk_id,
+                     TKPD_TALK_SHOP_ID:[_data objectForKey:TKPD_TALK_SHOP_ID]
+                     };
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTalk" object:nil userInfo:userinfo];
     } else {
         
-        NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
+        NSArray *array = [[NSArray alloc] initWithObjects:KTKPDTALK_UNDELIVERED, nil];
         NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
     }
@@ -191,14 +202,14 @@
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProductTalkFormResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success"}];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success", @"talk_id":@"talk_id"}];
     
     //relation
     RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
     [statusMapping addPropertyMapping:resulRel];
     
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:@"action/people.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:@"action/talk.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
@@ -222,12 +233,16 @@
             
             case 11 : {
                 if (_request.isExecuting) return;
-                if(_talkfield.text.length < 3 || _talksubjectfield.text.length < 3) {
+                if(_talkfield.text.length < 3) {
                     NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 } else {
-//                    [self configureRestkit];
+                    NSDictionary *userinfo;
+                    userinfo = @{TKPD_TALK_MESSAGE:_talkfield.text};
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTalk" object:nil userInfo:userinfo];
+                    [self configureRestkit];
                     [self doProductTalkForm];
                     [self.navigationController popViewControllerAnimated:TRUE];
                 }

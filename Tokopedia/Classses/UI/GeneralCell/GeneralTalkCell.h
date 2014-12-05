@@ -15,7 +15,17 @@
 #pragma mark - General Talk Cell Delegate
 @protocol GeneralTalkCellDelegate <NSObject>
 @required
--(void)GeneralTalkCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
+- (void)GeneralTalkCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
+- (NSString*)clickProductId:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
+- (id)clickUserId:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
+
+@optional
+- (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
+- (void)unfollowTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withButton:(UIButton *)buttonUnfollow;
+- (void)deleteTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
+
+//harus include ini kalo mau click user / product
+- (id)navigationController:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
 
 @end
 
@@ -35,6 +45,15 @@
 @property (weak, nonatomic) IBOutlet UIButton *commentbutton;
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
+@property (weak, nonatomic) IBOutlet UIView *middleView;
+@property (weak, nonatomic) IBOutlet UIView *topView;
+
+@property (weak, nonatomic) IBOutlet UIView *reportView;
+@property (weak, nonatomic) IBOutlet UIButton *reportButton;
+@property (weak, nonatomic) IBOutlet UIButton *unfollowButton;
+@property (weak, nonatomic) IBOutlet UIButton *deleteButton;
+@property (weak, nonatomic) IBOutlet UIButton *userButton;
+@property (weak, nonatomic) IBOutlet UIButton *productButton;
 
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong, nonatomic) NSIndexPath *indexpath;

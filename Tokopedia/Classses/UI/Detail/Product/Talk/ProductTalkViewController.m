@@ -13,7 +13,8 @@
 #import "ProductTalkCell.h"
 #import "ProductTalkDetailViewController.h"
 #import "ProductTalkFormViewController.h"
-
+#import "TKPDSecureStorage.h"
+#import "stringrestkit.h"
 #import "URLCacheController.h"
 
 #pragma mark - Product Talk View Controller
@@ -41,6 +42,8 @@
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    NSString *product_id;
+    NSMutableDictionary *_auth;
     
 }
 
@@ -49,6 +52,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @property (strong, nonatomic) IBOutlet UIView *header;
+
 @property (weak, nonatomic) IBOutlet UILabel *productnamelabel;
 @property (weak, nonatomic) IBOutlet UILabel *pricelabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *imagescrollview;
@@ -78,6 +82,7 @@
         _isnodata = YES;
         self.title = kTKPDTITLE_TALK;
     }
+    
     return self;
 }
 
@@ -107,16 +112,24 @@
     self.navigationItem.leftBarButtonItem = barbutton1;
     
     //right button
-    UIBarButtonItem *rightbar;
-    UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        rightbar = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    _auth = [auth mutableCopy];
+    
+    if(![[_auth objectForKey:@"shop_id"] isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
+
+        UIBarButtonItem *rightbar;
+        UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+            UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            rightbar = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        }
+        else
+            rightbar = [[UIBarButtonItem alloc] initWithImage:imgadd style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        [rightbar setTag:11];
+        self.navigationItem.rightBarButtonItem = rightbar;
     }
-    else
-        rightbar = [[UIBarButtonItem alloc] initWithImage:imgadd style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    [rightbar setTag:11];
-    self.navigationItem.rightBarButtonItem = rightbar;
+    
     
     if (_list.count>2) {
         _isnodata = NO;
@@ -130,12 +143,24 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
+    /** init notification*/
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateTotalComment:)
+                                                 name:@"UpdateTotalComment" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateTalk:)
+                                                 name:@"UpdateTalk" object:nil];
+    
+    
     //cache
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILPRODUCT_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILPRODUCTTALK_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue]]];
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
+//    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILPRODUCT_CACHEFILEPATH];
+//    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILPRODUCTTALK_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue]]];
+//    _cachecontroller.filePath = _cachepath;
+//    _cachecontroller.URLCacheInterval = 86400.0;
+//	[_cachecontroller initCacheWithDocumentPath:path];
+    
+    product_id = [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]?:0;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -183,11 +208,18 @@
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             
+            ((GeneralTalkCell*)cell).middleView.hidden = YES;
             ((GeneralTalkCell*)cell).indexpath = indexPath;
+            
+            if(list.disable_comment) {
+                ((GeneralTalkCell*)cell).commentbutton.enabled = NO;
+            } else {
+                ((GeneralTalkCell*)cell).commentbutton.enabled = YES;
+            }
             
             NSString *commentstring = [list.talk_total_comment?:0 stringByAppendingFormat:
                                  @" Comment"];
-            [((ProductTalkCell*)cell).commentbutton setTitle:commentstring forState:UIControlStateNormal];
+            [((GeneralTalkCell*)cell).commentbutton setTitle:commentstring forState:UIControlStateNormal];
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
@@ -265,6 +297,8 @@
                             kTKPDDETAIL_APIPRODUCTIDKEY:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
                             kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY]?:@(0),
                             kTKPDDETAILPRODUCT_APIIMAGESRCKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]?:@(0),
+                            TKPD_TALK_SHOP_ID:[_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
+                            
                             };
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
@@ -342,14 +376,15 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TalkResult class]];
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TalkList class]];
-    [listMapping addAttributeMappingsFromArray:@[kTKPDTALK_APITALKTOTALCOMMENTKEY,
-                                                 kTKPDTALK_APITALKUSERIMAGEKEY,
-                                                 kTKPDTALK_APITALKUSERNAMEKEY,
-                                                 kTKPDTALK_APITALKIDKEY,
-                                                 kTKPDTALK_APITALKCREATETIMEKEY,
-                                                 kTKPDTALK_APITALKMESSAGEKEY,
-                                                 kTKPDTALK_APITALKFOLLOWSTATUSKEY,
-                                                 kTKPDTALK_APITALKSHOPID
+    [listMapping addAttributeMappingsFromArray:@[
+                                                 TKPD_TALK_TOTAL_COMMENT,
+                                                 TKPD_TALK_USER_IMG,
+                                                 TKPD_TALK_USER_NAME,
+                                                 TKPD_TALK_ID,
+                                                 TKPD_TALK_CREATE_TIME,
+                                                 TKPD_TALK_MESSAGE,
+                                                 TKPD_TALK_FOLLOW_STATUS,
+                                                 TKPD_TALK_SHOP_ID
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -376,7 +411,9 @@
     
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETPRODUCTTALKKEY,
-                            kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0)
+                            kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
+                            kTKPDDETAIL_APIPAGEKEY : @(_page)?:@1,
+                            kTKPDDETAIL_APILIMITKEY : @kTKPDDETAILDEFAULT_LIMITPAGE
                             };
     
     [_cachecontroller getFileModificationDate];
@@ -544,17 +581,19 @@
 #pragma mark - Delegate
 - (void)GeneralTalkCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
-    
-    TalkList *list = _list[indexpath.row];
+    NSInteger row = indexpath.row;
+    TalkList *list = _list[row];
     vc.data = @{
-                kTKPDTALK_APITALKMESSAGEKEY:list.talk_message?:0,
-                kTKPDTALK_APITALKUSERIMAGEKEY:list.talk_user_image?:0,
-                kTKPDTALK_APITALKCREATETIMEKEY:list.talk_create_time?:0,
-                kTKPDTALK_APITALKUSERNAMEKEY:list.talk_user_name?:0,
-                kTKPDTALK_APITALKIDKEY:list.talk_id?:0,
-                kTKPDTALK_APITALKSHOPID:list.talk_shop_id?:0,
-                kTKPDTALK_APITALKTOTALCOMMENTKEY : list.talk_total_comment?:0,
-                kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]?:0
+                TKPD_TALK_MESSAGE:list.talk_message?:0,
+                TKPD_TALK_USER_IMG:list.talk_user_image?:0,
+                TKPD_TALK_CREATE_TIME:list.talk_create_time?:0,
+                TKPD_TALK_USER_NAME:list.talk_user_name?:0,
+                TKPD_TALK_ID:list.talk_id?:0,
+                TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:0,
+                kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product_id,
+                TKPD_TALK_SHOP_ID:list.talk_shop_id?:0,
+                //utk notification, apabila total comment bertambah, maka list ke INDEX akan berubah pula
+                kTKPDDETAIL_DATAINDEXKEY : @(row)?:0
                 };
     [self.navigationController pushViewController:vc animated:YES];
     
@@ -614,6 +653,65 @@
     [self loadData];
 }
 
+#pragma mark - Notification Handler
+-(void) updateTotalComment:(NSNotification*)notification{
+    NSDictionary *userinfo = notification.userInfo;
+    NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+    
+    TalkList *list = _list[index];
+    list.talk_total_comment = [NSString stringWithFormat:@"%@",[userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT]];
+    [_table reloadData];
+}
+
+- (void) updateTalk:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    
+   
+    
+    if([userinfo objectForKey:@"talk_id"]) {
+        NSInteger row = 0;
+        TalkList *list = _list[row];
+        
+        list.talk_id = [userinfo objectForKey:TKPD_TALK_ID];
+        list.talk_shop_id = [userinfo objectForKey:TKPD_TALK_SHOP_ID];
+        list.disable_comment = NO;
+    } else {
+        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+        NSDictionary* auth = [secureStorage keychainDictionary];
+        auth = [auth mutableCopy];
+        
+        
+        TalkList *list = [TalkList new];
+        list.talk_user_name = [auth objectForKey:kTKPD_FULLNAMEKEY];
+        list.talk_total_comment = kTKPD_NULLCOMMENTKEY;
+        list.talk_user_image = [auth objectForKey:kTKPD_USERIMAGEKEY];
+        
+        NSDate *today = [NSDate date];
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
+        NSString *dateString = [dateFormat stringFromDate:today];
+        
+        list.talk_create_time = [dateString stringByAppendingString:@" WIB"];
+        list.talk_message = [userinfo objectForKey:TKPD_TALK_MESSAGE];
+        
+        list.disable_comment = YES;
+        [_list insertObject:list atIndex:0];
+    }
+    
+    
+    
+    [_table reloadData];
+    
+}
+
+#pragma mark - General Cell Comment Delegate
+- (void)unfollowTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withButton:(UIButton *)buttonUnfollow {
+    
+}
+
+- (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    
+}
 
 
 @end
