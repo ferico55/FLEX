@@ -104,6 +104,7 @@
 //                    [self.navigationController pushViewController:vc animated:YES];
                     
                     ShipmentSettingViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ShipmentSettingViewController"];
+                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},};
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }

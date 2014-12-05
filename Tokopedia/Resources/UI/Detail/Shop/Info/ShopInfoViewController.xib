@@ -1,39 +1,74 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamLight.ttf">
+            <string>GothamLight</string>
+            <string>GothamLight</string>
+            <string>GothamLight</string>
+            <string>GothamLight</string>
+            <string>GothamLight</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShopInfoViewController">
             <connections>
-                <outlet property="accuracyrate" destination="S2d-VZ-Pcd" id="VHn-vc-pWW"/>
-                <outlet property="buttonitemsold" destination="8uq-Zo-ZDV" id="i8H-D7-geN"/>
-                <outlet property="buttonofflocation" destination="NXr-90-gzo" id="PLw-IA-fV6"/>
-                <outlet property="containerview" destination="SPN-F6-FwN" id="XNs-Y6-dgw"/>
-                <outlet property="labeletalase" destination="LKB-Ns-97P" id="cHe-vw-Srg"/>
-                <outlet property="labellastlogin" destination="aIz-fv-w5w" id="PRG-ct-Uwg"/>
-                <outlet property="labelopensince" destination="oVt-Rr-DLk" id="jaN-lG-P5v"/>
-                <outlet property="labelshopdescription" destination="UD9-tw-o55" id="6ZS-G1-Ud2"/>
-                <outlet property="labelshopname" destination="ukE-HA-cQ2" id="Iel-us-p5t"/>
-                <outlet property="labelshoptagline" destination="rw6-Yv-5Ru" id="Mwd-fh-n92"/>
-                <outlet property="labelsold" destination="ygU-xD-eMA" id="gdd-xK-V3l"/>
-                <outlet property="labelsuccessfulltransaction" destination="ll6-uN-c85" id="Fhl-Rd-dX4"/>
-                <outlet property="labeltotalproduct" destination="EGr-EL-EE7" id="KBk-Go-qjG"/>
-                <outlet property="nameowner" destination="WCf-qe-SxT" id="0Yf-qX-uxP"/>
-                <outlet property="ownerview" destination="bRy-VV-ib4" id="xpw-07-uao"/>
-                <outlet property="paymentview" destination="gj0-7v-eQs" id="pnV-sL-Wj1"/>
-                <outlet property="scrollview" destination="vuZ-Gn-rAL" id="VIS-HU-PJq"/>
-                <outlet property="servicerate" destination="V6D-GS-Ql4" id="tHg-cB-62X"/>
-                <outlet property="shipmentview" destination="f9V-q9-aGh" id="yrE-PV-BdO"/>
-                <outlet property="shopdetailview" destination="M8M-ob-9hd" id="0pB-Fg-pe4"/>
-                <outlet property="speedrate" destination="gYq-KI-Fst" id="nNf-v2-ki5"/>
-                <outlet property="tablepayment" destination="NrB-zQ-arg" id="yIc-mI-nGl"/>
-                <outlet property="tableshipment" destination="hc8-NA-vsK" id="5ab-eb-zfR"/>
-                <outlet property="thumb" destination="2jX-38-4zq" id="uVz-SP-oKr"/>
-                <outlet property="thumbowner" destination="rDN-rf-PRV" id="SUK-Nf-qia"/>
-                <outlet property="transactionview" destination="70s-EG-QPn" id="Jp9-2X-Q4W"/>
-                <outlet property="view" destination="O2l-50-tn2" id="VIE-EV-Bbr"/>
+                <outlet property="accuracyrate" destination="S2d-VZ-Pcd" id="urS-ri-XaY"/>
+                <outlet property="addressoffview" destination="Yyz-rC-cuj" id="946-Y2-X3D"/>
+                <outlet property="buttonArrowLocation" destination="nQA-wk-ijR" id="hqL-Rf-Btl"/>
+                <outlet property="buttonfav" destination="Twr-cV-LWn" id="pS7-sO-sZY"/>
+                <outlet property="buttonitemsold" destination="8uq-Zo-ZDV" id="AYn-Tg-rVd"/>
+                <outlet property="buttonofflocation" destination="NXr-90-gzo" id="EWR-Mm-kDF"/>
+                <outlet property="containerview" destination="SPN-F6-FwN" id="Ava-I5-27P"/>
+                <outlet property="labeletalase" destination="LKB-Ns-97P" id="U9S-tV-GqZ"/>
+                <outlet property="labellastlogin" destination="aIz-fv-w5w" id="zfM-0o-qgC"/>
+                <outlet property="labellocation" destination="elH-5F-6s9" id="dUj-vr-8xv"/>
+                <outlet property="labelopensince" destination="oVt-Rr-DLk" id="So5-RD-50V"/>
+                <outlet property="labelshopdescription" destination="UD9-tw-o55" id="JYv-EV-cOb"/>
+                <outlet property="labelshopname" destination="ukE-HA-cQ2" id="Nez-bo-eAo"/>
+                <outlet property="labelshoptagline" destination="rw6-Yv-5Ru" id="Zdm-Jq-55Y"/>
+                <outlet property="labelsold" destination="ygU-xD-eMA" id="o47-PE-2gR"/>
+                <outlet property="labelsuccessfulltransaction" destination="ll6-uN-c85" id="dwu-YH-Ncq"/>
+                <outlet property="labeltotalproduct" destination="EGr-EL-EE7" id="quC-gf-mL8"/>
+                <outlet property="nameowner" destination="WCf-qe-SxT" id="Kob-X3-lIX"/>
+                <outlet property="ownerview" destination="bRy-VV-ib4" id="NaD-0G-HUJ"/>
+                <outlet property="paymentview" destination="gj0-7v-eQs" id="pca-BS-flj"/>
+                <outlet property="scrollview" destination="vuZ-Gn-rAL" id="XiF-Ko-6ea"/>
+                <outlet property="servicerate" destination="V6D-GS-Ql4" id="8oN-Yt-iu0"/>
+                <outlet property="shipmentview" destination="f9V-q9-aGh" id="yxb-tj-ssW"/>
+                <outlet property="shopdetailview" destination="M8M-ob-9hd" id="3fn-Vb-j98"/>
+                <outlet property="speedrate" destination="gYq-KI-Fst" id="cHq-Tc-kJZ"/>
+                <outlet property="tablepayment" destination="NrB-zQ-arg" id="2Uo-kV-Gfn"/>
+                <outlet property="tableshipment" destination="hc8-NA-vsK" id="pEk-Sm-eqI"/>
+                <outlet property="thumb" destination="2jX-38-4zq" id="X7H-01-wwc"/>
+                <outlet property="thumbowner" destination="rDN-rf-PRV" id="5dI-35-P0o"/>
+                <outlet property="transactionview" destination="70s-EG-QPn" id="bWQ-qb-8Al"/>
+                <outlet property="view" destination="O2l-50-tn2" id="xpY-7r-UFg"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -47,12 +82,8 @@
                 </scrollView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <nil key="simulatedStatusBarMetrics"/>
         </view>
-        <tapGestureRecognizer id="wbn-ab-5NJ">
-            <connections>
-                <action selector="gesture:" destination="-1" id="Qzz-k2-P1v"/>
-            </connections>
-        </tapGestureRecognizer>
         <view autoresizesSubviews="NO" contentMode="scaleToFill" id="SPN-F6-FwN">
             <rect key="frame" x="0.0" y="0.0" width="320" height="1102"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -111,7 +142,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="th3-eU-69g"/>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="pDp-lr-xkh"/>
                             </connections>
                         </button>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorited" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="I4A-Ey-pbS">
@@ -135,7 +166,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="5We-MU-zhb"/>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="CSw-af-WEH"/>
                             </connections>
                         </button>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Item Sold" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="s7m-SU-M1n">
@@ -359,7 +390,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="LFi-Rw-RxX"/>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="Yvr-yh-tl6"/>
                             </connections>
                         </button>
                         <button opaque="NO" tag="14" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="nQA-wk-ijR">
@@ -368,6 +399,9 @@
                             <state key="normal" image="icon_arrow_down">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="W4i-L7-3Bd"/>
+                            </connections>
                         </button>
                     </subviews>
                 </view>
@@ -487,8 +521,8 @@
                             <color key="separatorColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <connections>
-                                <outlet property="dataSource" destination="-1" id="SU6-bF-ksQ"/>
-                                <outlet property="delegate" destination="-1" id="Sqn-ev-D5a"/>
+                                <outlet property="dataSource" destination="-1" id="PHz-Lh-C3J"/>
+                                <outlet property="delegate" destination="-1" id="6Az-tI-pQm"/>
                             </connections>
                         </tableView>
                     </subviews>
@@ -518,8 +552,8 @@
                             <color key="separatorColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                             <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <connections>
-                                <outlet property="dataSource" destination="-1" id="gmg-bL-ndP"/>
-                                <outlet property="delegate" destination="-1" id="dmh-RY-kvH"/>
+                                <outlet property="dataSource" destination="-1" id="BVD-pC-WB4"/>
+                                <outlet property="delegate" destination="-1" id="15S-9h-Mca"/>
                             </connections>
                         </tableView>
                     </subviews>
@@ -573,8 +607,14 @@
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
+        <tapGestureRecognizer id="wbn-ab-5NJ">
+            <connections>
+                <action selector="gesture:" destination="-1" id="23T-yA-ypJ"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="ic_arrow_right.png" width="1024" height="1024"/>
@@ -585,4 +625,9 @@
         <image name="icon_quote.png" width="14" height="14"/>
         <image name="icon_shop.png" width="14" height="14"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

@@ -18,6 +18,7 @@
 #import "sortfiltershare.h"
 #import "FilterLocationViewController.h"
 #import "SettingShipmentInfoViewController.h"
+#import "ShipmentInfoViewController.h"
 
 @interface ShipmentSettingViewController () <FilterLocationViewControllerDelegate> {
 
@@ -175,22 +176,24 @@
         
         UILabel *subTitleLabel = (UILabel *)[cell viewWithTag:3];
         subTitleLabel.text = [row objectForKey:@"subtitle"];
-
-        UILabel *valueLabel = (UILabel *)[cell viewWithTag:4];
-        valueLabel.text = [[row objectForKey:@"value"] stringValue];
         
         UIStepper *stepper = (UIStepper *)[cell viewWithTag:5];
         stepper.value = [[row objectForKey:@"value"] intValue];
         [stepper addTarget:self action:@selector(changeValueStepper:) forControlEvents:UIControlEventValueChanged];
-        
+
+        UILabel *valueLabel = (UILabel *)[cell viewWithTag:4];
+        valueLabel.text = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:stepper.value]];
+
         if ([[row objectForKey:@"expand"] boolValue]) {
             [switchButton setOn:YES];
         } else {
             [switchButton setOn:NO];
         }
 
+        NSLog(@"%@", row);
+
     } else {
-        if ([[row objectForKey:@"value"] boolValue]) {
+        if ([[row objectForKey:@"value"] integerValue] > 0) {
             [switchButton setOn:YES];
         } else {
             [switchButton setOn:NO];
@@ -244,6 +247,15 @@
         if ([sender isOn]) {
             [row setObject:[NSNumber numberWithBool:YES] forKey:@"expand"];
             [row setObject:[NSNumber numberWithInt:88] forKey:@"rowHeight"];
+
+            if ([type isEqualToString:@"Stepper"]) {
+                if (indexPath.section == 0) {
+                    [_values setObject:[NSNumber numberWithInteger:1] forKey:@"MinimumPengirimanJNE"];
+                }
+                if (indexPath.section == 2) {
+                    [_values setObject:[NSNumber numberWithInteger:1] forKey:@"MinimumPengirimanPos"];
+                }
+            }
             
         // update dictionary. collapse row
         } else {
@@ -271,6 +283,16 @@
                 UIStepper *stepper = (UIStepper *)[cell viewWithTag:5];
                 stepper.value = 1;
                 [row setObject:[NSNumber numberWithInt:1] forKey:@"value"];
+
+                // RESET VALUE IN VALUEDICTIONARY
+                if (indexPath.section == 0) {
+                    [_values setObject:[NSNumber numberWithInteger:0] forKey:@"MinimumPengirimanJNE"];
+                }
+                
+                // RESET VALUE IN VALUEDICTIONARY
+                if (indexPath.section == 2) {
+                    [_values setObject:[NSNumber numberWithInteger:0] forKey:@"MinimumPengirimanPos"];
+                }
             }
 
         }
@@ -361,24 +383,6 @@
     } failure:nil];
 
     return headerView;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if ([cell.reuseIdentifier isEqualToString:@"Info"]) {
-        ShippingInfoShipments *shipment = [_shipments objectAtIndex:indexPath.section];
-        NSMutableArray *infoarray = [NSMutableArray new];
-        for (int i = 0; i<shipment.shipment_package.count; i++) {
-            ShippingInfoShipmentPackage *packages = shipment.shipment_package[i];
-            [infoarray addObject:packages.desc];
-        }
-        
-        SettingShipmentInfoViewController *vc = [SettingShipmentInfoViewController new];
-        NSString * info = [NSString stringWithFormat:@"Jenis Paket %@\n\n %@",shipment.shipment_name,[[infoarray valueForKey:@"description"] componentsJoinedByString:@"\n\n"]];
-        vc.data = @{kTKPDDETAIL_DATAINFOLOGISTICKEY:info?:@"-"};
-        [self.navigationController pushViewController:vc animated:YES];
-    }
 }
 
 #pragma mark - Request and Mapping
@@ -571,6 +575,7 @@
     for (ShippingInfoShipments *shipment in _shipments) {
         NSMutableArray *rows = [[NSMutableArray alloc] init];
         if ([_availableCourierId containsObject:[NSNumber numberWithInteger:shipment.shipment_id]]) {
+            BOOL OKE = false;
             for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
                 [rows addObject:@{
                                   @"title" : package.name,
@@ -581,6 +586,9 @@
                                   @"packageId" : [NSNumber numberWithInteger:package.sp_id],
                                   @"shipmentId" : [NSNumber numberWithInteger:shipment.shipment_id],
                                   }];
+                if ([package.name isEqualToString:@"OKE"] && package.active > 0) {
+                    OKE = YES;
+                }
             }
             if (rows.count == 0) {
                 [rows addObject:@{
@@ -591,11 +599,19 @@
                                   }];
             } else {
                 if ([shipment.shipment_name isEqualToString:@"JNE"]) {
-                    NSInteger heightForMinWeightRow = 44;
+
+                    NSInteger heightForMinWeightRow = 0;
                     BOOL showMinWeightRow = NO;
-                    if (_shippinginfo.result.jne.jne_min_weight > 0) {
+                    BOOL expandMinWeightRow = NO;
+                    if (OKE) {
                         showMinWeightRow = YES;
-                        heightForMinWeightRow = 88;
+                        if (_shippinginfo.result.jne.jne_min_weight > 0) {
+                            heightForMinWeightRow = 88;
+                            expandMinWeightRow = YES;
+                        } else {
+                            expandMinWeightRow = NO;
+                            heightForMinWeightRow = 44;
+                        }
                     }
                     
                     NSInteger heightForExtraFee = 44;
@@ -603,6 +619,11 @@
                     if (_shippinginfo.result.jne.jne_fee > 0) {
                         heightForExtraFee = 88;
                         showExtraFeeRow = YES;
+                    }
+                    
+                    NSInteger heightForRow3 = 0;
+                    if (_shippinginfo.result.jne.jne_diff_district > 0 || OKE) {
+                        heightForRow3 = 64;
                     }
                     
                     [rows addObject:[NSMutableDictionary dictionaryWithDictionary:@{
@@ -618,7 +639,7 @@
                                                                                     @"subtitle" : @"Berat Minimum (Kg)",
                                                                                     @"type" : @"Stepper",
                                                                                     @"value" : [NSNumber numberWithInteger:_shippinginfo.result.jne.jne_min_weight],
-                                                                                    @"expand" : [NSNumber numberWithBool:showMinWeightRow],
+                                                                                    @"expand" : [NSNumber numberWithInteger:expandMinWeightRow],
                                                                                     @"rowHeight" : [NSNumber numberWithInteger:heightForMinWeightRow],
                                                                                     @"shipmentName" : shipment.shipment_name,
                                                                                     @"shipmentId" : [NSNumber numberWithInteger:shipment.shipment_id],
@@ -627,7 +648,7 @@
                                                                                     @"title" : @"Hanya Dapat Melayani Pengiriman Luar Kota",
                                                                                     @"type" : @"SwitchTwoLines",
                                                                                     @"value" : [NSNumber numberWithInteger:_shippinginfo.result.jne.jne_diff_district],
-                                                                                    @"rowHeight" : [NSNumber numberWithInteger:64],
+                                                                                    @"rowHeight" : [NSNumber numberWithFloat:heightForRow3],
                                                                                     @"shipmentName" : shipment.shipment_name,
                                                                                     @"shipmentId" : [NSNumber numberWithInteger:shipment.shipment_id],
                                                                                     }]];
@@ -664,7 +685,7 @@
                 
                 if ([shipment.shipment_name isEqualToString:@"Pos Indonesia"]) {
                     
-                    NSInteger heightForMinWeightRow = 0;
+                    NSInteger heightForMinWeightRow = 44;
                     BOOL showMinWeightRow = NO;
                     if (_shippinginfo.result.pos.pos_min_weight > 0) {
                         showMinWeightRow = YES;
@@ -816,7 +837,8 @@
     if ([[_sections objectAtIndex:0] count] > 1) {
         NSDictionary *biayaTambahanJNE = [[_sections objectAtIndex:0] objectAtIndex:6];
         if ([[biayaTambahanJNE objectForKey:@"expand"] boolValue]) {
-            if ([[_values objectForKey:@"BiayaTambahanJNE"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
+            if ([[_values objectForKey:@"BiayaTambahanJNE"] isEqual:[NSNull null]] ||
+                [[_values objectForKey:@"BiayaTambahanJNE"] integerValue] == 0) {
                 [messages addObject:@"Biaya Tambahan JNE harus diisi."];
                 valid = NO;
             }
@@ -831,7 +853,8 @@
     if ([[_sections objectAtIndex:1] count] > 1) {
         NSDictionary *biayaTambahanTiki = [[_sections objectAtIndex:1] objectAtIndex:1];
         if ([[biayaTambahanTiki objectForKey:@"expand"] boolValue]) {
-            if ([[_values objectForKey:@"BiayaTambahanTiki"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
+            if ([[_values objectForKey:@"BiayaTambahanTiki"] isEqual:[NSNull null]] ||
+                [[_values objectForKey:@"BiayaTambahanTiki"] integerValue] == 0) {
                 [messages addObject:@"Biaya Tambahan Tiki harus diisi."];
                 valid = NO;
             }
@@ -846,7 +869,8 @@
     if ([[_sections objectAtIndex:2] count] > 1) {
         NSDictionary *biayaTambahanPos = [[_sections objectAtIndex:2] objectAtIndex:3];
         if ([[biayaTambahanPos objectForKey:@"expand"] boolValue]) {
-            if ([[_values objectForKey:@"BiayaTambahanPos"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
+            if ([[_values objectForKey:@"BiayaTambahanPos"] isEqual:[NSNull null]] ||
+                [[_values objectForKey:@"BiayaTambahanPos"] integerValue] == 0) {
                 [messages addObject:@"Biaya Tambahan Pos Indonesia harus diisi."];
                 valid = NO;
             }
@@ -1141,14 +1165,17 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-/*
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"Description"]) {
+        UITableViewCell *cell = (UITableViewCell *)sender;
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+        ShippingInfoShipments *shipment = [_shipments objectAtIndex:indexPath.section];
+        ShipmentInfoViewController *controller = (ShipmentInfoViewController *)segue.destinationViewController;
+        controller.shipment_packages = shipment.shipment_package;
+    }
 }
-*/
 
 @end

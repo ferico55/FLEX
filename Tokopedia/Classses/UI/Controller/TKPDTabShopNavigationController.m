@@ -422,10 +422,12 @@
 		//_navigationIndex = -1;
 	}
     
-    CALayer *upperBorder = [CALayer layer];
-    upperBorder.backgroundColor = [[UIColor colorWithRed:(18.0/255.0) green:(199.0/255.0) blue:(0.0/255.0) alpha:1.0] CGColor];
-    upperBorder.frame = CGRectMake(0, 42.0f, CGRectGetWidth([_chevrons[_selectedIndex] frame]), 2.0f);
-    [[_chevrons[_selectedIndex] layer] addSublayer:upperBorder];
+    if (_selectedIndex >= 0) {
+        CALayer *upperBorder = [CALayer layer];
+        upperBorder.backgroundColor = [[UIColor colorWithRed:(18.0/255.0) green:(199.0/255.0) blue:(0.0/255.0) alpha:1.0] CGColor];
+        upperBorder.frame = CGRectMake(0, 42.0f, CGRectGetWidth([_chevrons[_selectedIndex?:0] frame]), 2.0f);
+        [[_chevrons[_selectedIndex] layer] addSublayer:upperBorder];
+    }
     
     [self updateTabColor];
 }
@@ -772,10 +774,11 @@
             }
             case 14:
             {
-                ShopInfoViewController *vc = [ShopInfoViewController new];
+                ShopInfoViewController *vc = [[ShopInfoViewController alloc] init];
                 vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                           kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                 [self.navigationController pushViewController:vc animated:YES];
+                
                 break;
             }
             default:
@@ -801,9 +804,9 @@
             }
             case 11:
             {
-                ShopInfoViewController *vc = [ShopInfoViewController new];
-                //vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
-                //            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                ShopInfoViewController *vc = [[ShopInfoViewController alloc] init];
+                vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }

@@ -10,6 +10,6 @@
 
 @interface ShopSettingViewController : UIViewController
 
-@property (nonatomic,strong)NSDictionary *data;
+@property (nonatomic,strong) NSDictionary *data;
 
 @end
