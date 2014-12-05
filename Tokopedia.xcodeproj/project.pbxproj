@@ -358,6 +358,7 @@
 		85AAEEE71A2589460064A518 /* HPTextViewInternal.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AAEEE51A2589460064A518 /* HPTextViewInternal.m */; };
 		85AAEEEB1A2589880064A518 /* ProductTalkFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AAEEE91A2589880064A518 /* ProductTalkFormViewController.m */; };
 		85AAEEFE1A25AA430064A518 /* GeneralProductReviewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AAEEFD1A25AA430064A518 /* GeneralProductReviewCell.m */; };
+		85B5478B1A318D2200D317A0 /* TokopediaSimpleCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B5478A1A318D2200D317A0 /* TokopediaSimpleCache.m */; };
 		85C812621A2834DC001016B8 /* InboxTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C812601A2834DC001016B8 /* InboxTalkViewController.m */; };
 		85C812631A2834DC001016B8 /* InboxTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C812611A2834DC001016B8 /* InboxTalkViewController.xib */; };
 		85C812671A283884001016B8 /* TKPDTabInboxTalkNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C812651A283884001016B8 /* TKPDTabInboxTalkNavigationController.m */; };
@@ -1227,6 +1228,8 @@
 		85AAEEEA1A2589880064A518 /* ProductTalkFormViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkFormViewController.xib; sourceTree = "<group>"; };
 		85AAEEFC1A25AA430064A518 /* GeneralProductReviewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralProductReviewCell.h; sourceTree = "<group>"; };
 		85AAEEFD1A25AA430064A518 /* GeneralProductReviewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralProductReviewCell.m; sourceTree = "<group>"; };
+		85B547891A318D2200D317A0 /* TokopediaSimpleCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokopediaSimpleCache.h; sourceTree = "<group>"; };
+		85B5478A1A318D2200D317A0 /* TokopediaSimpleCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TokopediaSimpleCache.m; sourceTree = "<group>"; };
 		85C8125F1A2834DC001016B8 /* InboxTalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTalkViewController.h; sourceTree = "<group>"; };
 		85C812601A2834DC001016B8 /* InboxTalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxTalkViewController.m; sourceTree = "<group>"; };
 		85C812611A2834DC001016B8 /* InboxTalkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxTalkViewController.xib; sourceTree = "<group>"; };
@@ -2800,6 +2803,8 @@
 				85C8125F1A2834DC001016B8 /* InboxTalkViewController.h */,
 				85C812601A2834DC001016B8 /* InboxTalkViewController.m */,
 				85C812611A2834DC001016B8 /* InboxTalkViewController.xib */,
+				85B547891A318D2200D317A0 /* TokopediaSimpleCache.h */,
+				85B5478A1A318D2200D317A0 /* TokopediaSimpleCache.m */,
 			);
 			path = InboxTalk;
 			sourceTree = "<group>";
@@ -5213,6 +5218,7 @@
 				FC0D91E41A257C41007BD69F /* SettingShipmentSectionFooter3View.m in Sources */,
 				85AAEECB1A2587D00064A518 /* SettingLocations.m in Sources */,
 				85AAEE951A2587D00064A518 /* NotesList.m in Sources */,
+				85B5478B1A318D2200D317A0 /* TokopediaSimpleCache.m in Sources */,
 				85AAEE601A2587CF0064A518 /* ProductImages.m in Sources */,
 				FC0D91DC1A257C41007BD69F /* SettingLocationEditViewController.m in Sources */,
 				85AAEE8A1A2587D00064A518 /* InboxMessageActionResult.m in Sources */,

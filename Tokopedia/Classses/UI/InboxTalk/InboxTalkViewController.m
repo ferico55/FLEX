@@ -22,6 +22,8 @@
 #import "stringrestkit.h"
 #import "detail.h"
 
+#import "URLCacheController.h"
+
 @interface InboxTalkViewController () <UITableViewDataSource,
                                         UITableViewDelegate,
                                         TKPDTabInboxTalkNavigationControllerDelegate,
@@ -62,6 +64,8 @@
     NSString *_readstatus;
     NSString *_navthatwillrefresh;
     BOOL _isrefreshnav;
+    BOOL _isNeedToInsertCache;
+    BOOL _isLoadFromCache;
     
     
     __weak RKObjectManager *_objectmanager;
@@ -76,6 +80,11 @@
     NSOperationQueue *_operationUnfollowQueue;
     NSOperationQueue *_operationDeleteQueue;
     
+    
+    NSString *_cachepath;
+    URLCacheController *_cachecontroller;
+    URLCacheConnection *_cacheconnection;
+    NSTimeInterval _timeinterval;
 }
 
 #pragma mark - Initialization
@@ -99,6 +108,10 @@
     _operationQueue = [NSOperationQueue new];
     _operationUnfollowQueue = [NSOperationQueue new];
     _operationDeleteQueue = [NSOperationQueue new];
+    
+    /** construct cache con */
+    _cacheconnection = [URLCacheConnection new];
+    _cachecontroller = [URLCacheController new];
     
     /** create new **/
     _talks = [NSMutableArray new];
@@ -144,12 +157,38 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
+    /** init cache */
+    [self initCache];
+    
     /**init view*/
     [self configureRestKit];
+    
+    //TODO::
+    //gimana kalo di balikin sama server data kosong
+    //gimana kalo di balikin error sama server
+    //cache filter
+    //cache sorting
+    //cache tab
+    if(_page == 1) {
+        _isLoadFromCache = YES;
+        [self loadDataFromCache];
+
+    }
+
+    _isLoadFromCache = NO;
     [self loadData];
 
     
     NSLog(@"going here first");
+}
+
+- (void)initCache {
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:TKPD_INBOXTALK_CACHE];
+    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%d ", TKPD_INBOXTALK_RESPONSEFILEFORMAT, [_data objectForKey:@"nav"], _readstatus]];
+    
+    _cachecontroller.filePath = _cachepath;
+    _cachecontroller.URLCacheInterval = 86400.0;
+    [_cachecontroller initCacheWithDocumentPath:path];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -341,6 +380,37 @@
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
 
+- (void)loadDataFromCache {
+    [_cachecontroller getFileModificationDate];
+    _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+    
+
+    NSError* error;
+    NSData *data = [NSData dataWithContentsOfFile:_cachepath];
+    
+    if(data) {
+        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
+        if (parsedData == nil && error) {
+            NSLog(@"parser error");
+        }
+        
+        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
+        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
+            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
+        }
+        
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+        NSError *mappingError = nil;
+        BOOL isMapped = [mapper execute:&mappingError];
+        if (isMapped && !mappingError) {
+            RKMappingResult *mappingresult = [mapper mappingResult];
+//            _isNeedToInsertCache = NO;
+            _isrefreshview = YES;
+            [self requestsuccess:mappingresult withOperation:nil];
+        }
+    }
+}
+
 - (void)loadData {
     if (_request.isExecuting) return;
     
@@ -348,7 +418,6 @@
         _table.tableFooterView = _footer;
         [_act startAnimating];
     }
-    
     
     NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDTALK_ACTIONGET,
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
@@ -363,6 +432,7 @@
     
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+//        _isNeedToInsertCache = YES;
         [self requestsuccess:mappingResult withOperation:operation];
         
         [_table reloadData];
@@ -385,9 +455,11 @@
     
     _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+
+
 }
 
--(void)requestsuccess:(id)object withOperation:(NSOperationQueue*)operation {
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
     if (object) {
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
         id stat = [result objectForKey:@""];
@@ -400,6 +472,14 @@
             }
             
             [_talks addObjectsFromArray: inboxtalk.result.list];
+
+            //save only page 1 to cache
+            if(_page == 1) {
+                [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+                [_cachecontroller connectionDidFinish:_cacheconnection];
+                [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+            }
+            
             
             if (_talks.count >0) {
                 _isnodata = NO;
@@ -417,8 +497,14 @@
                     
                     [queries setObject:value forKey:key];
                 }
+
+                if(!_isLoadFromCache) {
+                    _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
+                }
+
                 
-                _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
+                
+                
             } else {
                 _isnodata = YES;
                 _table.tableFooterView = nil;
@@ -701,6 +787,7 @@
     _page = 1;
     _table.tableFooterView = _footer;
     [self configureRestKit];
+    [self initCache];
     [self loadData];
     
     [_table reloadData];
