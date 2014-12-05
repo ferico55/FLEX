@@ -96,25 +96,23 @@
     
     /** BACK **/
     img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    
-    [barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
+    //if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+    //    UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    //    barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    //}
+    //else
+    //    barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    //
+    //[barbutton1 setTag:10];
+    //self.navigationItem.leftBarButtonItem = barbutton1;
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     /** SIGN UP **/
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    
+    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [barbutton1 setTag:11];
     self.navigationItem.rightBarButtonItem = barbutton1;
     
@@ -366,6 +364,9 @@
                             kTKPDREGISTER_APICONFIRMPASSKEY:[data objectForKey:kTKPDREGISTER_APICONFIRMPASSKEY]
                             };
     
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
+    
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDREGISTER_APIPATH parameters:param];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -373,11 +374,13 @@
         _timer = nil;
         [_act stopAnimating];
         [self requestsuccess:mappingResult withOperation:operation];
+        app.networkActivityIndicatorVisible = NO;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [_timer invalidate];
         _timer = nil;
         [_act stopAnimating];
         [self requestfailure:error];
+        app.networkActivityIndicatorVisible = NO;
     }];
     [_operationQueue addOperation:_request];
     

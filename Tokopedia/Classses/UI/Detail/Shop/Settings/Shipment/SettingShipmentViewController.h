@@ -10,4 +10,6 @@
 
 @interface SettingShipmentViewController : UIViewController
 
+@property (nonatomic, strong) NSDictionary *data;
+
 @end

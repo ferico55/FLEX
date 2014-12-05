@@ -34,6 +34,10 @@
                 <constraint firstAttribute="bottom" secondItem="z45-Yn-SVX" secondAttribute="bottom" constant="64" id="xk6-CB-t5U"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
+<<<<<<< HEAD
+=======
+
+>>>>>>> ca8a02ea778aa3d7e51410230da5fcb979dcb842
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="cp5-iM-TFo" userLabel="FooterView">
@@ -47,13 +51,7 @@
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

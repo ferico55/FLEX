@@ -11,10 +11,9 @@
 #import <UIKit/UIKit.h>
 
 @interface ShopInfoShipmentCell : UITableViewCell
+
 @property (weak, nonatomic) IBOutlet UILabel *labelshipment;
-@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labelpackage;
-@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *image;
-@property (strong, nonatomic) IBOutletCollection(UIView) NSArray *viewpackage;
+@property (weak, nonatomic) IBOutlet UILabel *packageLabel;
 
 +(id)newcell;
 

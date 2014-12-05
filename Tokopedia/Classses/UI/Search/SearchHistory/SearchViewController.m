@@ -326,9 +326,10 @@
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *c = [TKPDTabNavigationController new];
-    
     [c setSelectedIndex:0];
     [c setViewControllers:viewcontrollers];
+    [c setNavigationTitle:searchtext];
+    
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
     [nav.navigationBar setTranslucent:NO];
     [self.navigationController presentViewController:nav animated:YES completion:nil];

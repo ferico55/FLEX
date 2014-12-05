@@ -47,11 +47,11 @@
 	_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	_window.tag = 0xCAFEBABE;	//used globally to identify main application window
 	_window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
-#ifdef __IPHONE_7_0
-	if ([_window respondsToSelector:@selector(setTintColor:)]) {
-		_window.tintColor = kTKPDWINDOW_TINTLCOLOR;	//compatibility
-	}
-#endif
+//#ifdef __IPHONE_7_0
+//	if ([_window respondsToSelector:@selector(setTintColor:)]) {
+//		_window.tintColor = kTKPDWINDOW_TINTLCOLOR;	//compatibility
+//	}
+//#endif
 	
     _viewController = [MainViewController new];
 
@@ -125,7 +125,6 @@
 	id proxy = [UINavigationBar appearance];
 
 	image = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"]]; //navigation-bg
-	//image = [[[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"image-1" ofType:@"png"]] resizableImageWithCapInsets:kJYNAVIGATION_BACKGROUNDINSET];
     
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) { // iOS 7
         [proxy setBarTintColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
@@ -142,14 +141,12 @@
 	[proxy setTitleTextAttributes:[[NSDictionary alloc] initWithObjectsAndKeys:kTKPDNAVIGATION_TITLEFONT, UITextAttributeFont,kTKPDNAVIGATION_TITLECOLOR, UITextAttributeTextColor, kTKPDNAVIGATION_TITLESHADOWCOLOR, UITextAttributeTextShadowColor, nil]];
 	
 	proxy = [UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil];
-	image = [[[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"navigation-button-bg-pt" ofType:@"png"]] resizableImageWithCapInsets:kTKPDNAVIGATION_BUTTONINSET]; //navigation button bg pt
-	[proxy setBackgroundImage:image forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-	[proxy setBackgroundImage:image forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
-	//[proxy setBackgroundVerticalPositionAdjustment:kJYNAVIGATION_ITEMVERTICALADJUSTMENT forBarMetrics:UIBarMetricsDefault];	//TODO: navigation bar animation corruption
-	
-	image = [[[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"navigation-button" ofType:@"png"]] resizableImageWithCapInsets:kTKPDNAVIGATION_BACKBUTTONINSET];
-	[proxy setBackButtonBackgroundImage:image forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-	[proxy setBackButtonBackgroundImage:image forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+    [proxy setTintColor:[UIColor whiteColor]];
+    //image = [[[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"]] resizableImageWithCapInsets:kTKPDNAVIGATION_BUTTONINSET resizingMode:UIImageResizingModeStretch];
+    //
+    //[proxy setBackButtonBackgroundImage:image forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    //[proxy setBackButtonBackgroundImage:image forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
+
 	//[proxy setBackButtonBackgroundVerticalPositionAdjustment:kJYNAVIGATION_ITEMVERTICALADJUSTMENT forBarMetrics:UIBarMetricsDefault];	//TODO: navigation bar animation corruption
 
 #endif

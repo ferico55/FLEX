@@ -142,18 +142,11 @@
         _isnodata = NO;
     }
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-	[barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     // adjust refresh control
     //_refreshControl = [[UIRefreshControl alloc] init];
@@ -185,20 +178,23 @@
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
     
-    self.table.scrollEnabled = NO;
+    _table.scrollEnabled = NO;
     
-    self.table.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    if ([_table respondsToSelector:@selector(setKeyboardDismissMode:)]) {
+        _table.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    }
+    
+    [self configureRestKit];
+    [self loadData];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    if (!_isrefreshview) {
-        [self configureRestKit];
-        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self loadData];
-        }
+    [self configureRestKit];
+    if (_isnodata && !_isrefreshview && _page<1) {
+        [self loadData];
     }
     
     self.table.scrollEnabled = NO;
@@ -679,7 +675,8 @@
     NSInteger index = indexpath.section+2*(indexpath.row);
     List *list = _product[index];
     DetailProductViewController *vc = [DetailProductViewController new];
-    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id};
+    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id,
+                kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]};
     [self.navigationController pushViewController:vc animated:YES];
 }
 

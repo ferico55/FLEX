@@ -18,8 +18,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="325" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="TVd-jj-Fdv">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" pagingEnabled="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="325" sectionHeaderHeight="22" sectionFooterHeight="34" translatesAutoresizingMaskIntoConstraints="NO" id="TVd-jj-Fdv">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="deviceRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Phz-Ut-TRm"/>
@@ -32,9 +32,8 @@
                 <constraint firstAttribute="trailing" secondItem="TVd-jj-Fdv" secondAttribute="trailing" id="PnC-wU-TLS"/>
                 <constraint firstItem="TVd-jj-Fdv" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="SX8-gw-EZA"/>
                 <constraint firstItem="TVd-jj-Fdv" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="nQ5-OX-XIZ"/>
-                <constraint firstAttribute="bottom" secondItem="TVd-jj-Fdv" secondAttribute="bottom" id="uz3-Cu-gHe"/>
+                <constraint firstAttribute="bottom" secondItem="TVd-jj-Fdv" secondAttribute="bottom" constant="64" id="uz3-Cu-gHe"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
         <view contentMode="scaleToFill" id="d3p-cz-3cT" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="319" height="34"/>

@@ -64,30 +64,34 @@
                 break;
             }
             case UIGestureRecognizerStateEnded: {
-                [_delegate GeneralList1GestureCell:self withindexpath:_indexpath];
+                //[_delegate GeneralList1GestureCell:self withindexpath:_indexpath];
                 break;
             }
         }
     }
-    else if ([sender isKindOfClass:[UISwipeGestureRecognizer class]]) {
-        UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer*)sender;
-        switch (swipe.state) {
-            case UIGestureRecognizerStateBegan: {
-                break;
-            }
-            case UIGestureRecognizerStateChanged: {
-                break;
-            }
-            case UIGestureRecognizerStateEnded: {
-                //TODO
-                if (swipe.direction == UISwipeGestureRecognizerDirectionRight) {
-                    [self viewdetailresetposanimation:YES];
-                }
-                if (swipe.direction == UISwipeGestureRecognizerDirectionLeft) {
-                    [self viewdetailshowanimation:YES];
-                }
 
-                break;
+    if (_type==kTKPDGENERALCELL_DATATYPETWOBUTTONKEY)
+    {
+       if ([sender isKindOfClass:[UISwipeGestureRecognizer class]]) {
+            UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer*)sender;
+            switch (swipe.state) {
+                case UIGestureRecognizerStateBegan: {
+                    break;
+                }
+                case UIGestureRecognizerStateChanged: {
+                    break;
+                }
+                case UIGestureRecognizerStateEnded: {
+                    //TODO
+                    if (swipe.direction == UISwipeGestureRecognizerDirectionRight) {
+                        [self viewdetailresetposanimation:YES];
+                    }
+                    if (swipe.direction == UISwipeGestureRecognizerDirectionLeft) {
+                        [self viewdetailshowanimation:YES];
+                    }
+
+                    break;
+                }
             }
         }
     }
@@ -96,7 +100,7 @@
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
-        [_delegate DidTapButton:btn atCell:self withindexpath:_indexpath];
+        //[_delegate DidTapButton:btn atCell:self withindexpath:_indexpath];
     }
 }
 
@@ -160,14 +164,14 @@
     switch (type) {
         case kTKPDGENERALCELL_DATATYPEONEBUTTONKEY:
             _buttondefault.hidden = YES;
-            _buttondelete.hidden = NO;
+            _buttondelete.hidden = YES;
             break;
         case kTKPDGENERALCELL_DATATYPETWOBUTTONKEY:
             _buttondefault.hidden = NO;
             _buttondelete.hidden = NO;
         default:
-            _buttondefault.hidden = NO;
-            _buttondelete.hidden = NO;
+            _buttondefault.hidden = YES;
+            _buttondelete.hidden = YES;
             break;
     }
 }

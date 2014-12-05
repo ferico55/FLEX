@@ -62,11 +62,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *thumb;
 
 @property (weak, nonatomic) IBOutlet UIView *headerview;
-
-@property (weak, nonatomic) IBOutlet UIButton *buttonmessage;
-@property (weak, nonatomic) IBOutlet UIButton *buttoneditprofile;
-@property (weak, nonatomic) IBOutlet UIButton *buttonsetting;
-
+@property (weak, nonatomic) IBOutlet UIButton *button;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -161,14 +157,11 @@
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-	[barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
@@ -206,17 +199,17 @@
     
     //cache
     _cachecontroller.URLCacheInterval = 86400.0;
-    
+    _button.layer.cornerRadius = 2;    
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     if (!_isrefreshview) {
-    [self configureRestKit];
-    if (_isnodata) {
-        [self loadData];
-    }
+        [self configureRestKit];
+        if (_isnodata) {
+            [self loadData];
+        }
     }
 }
 
@@ -294,8 +287,8 @@
             self.automaticallyAdjustsScrollViewInsets = NO;
         }
         
-        /** initialization mutable variable **/
-        _buttons = [NSMutableArray new];
+//        /** initialization mutable variable **/
+//        _buttons = [NSMutableArray new];
 		
 		UIViewController* c;
 		for (NSInteger i = 0; i < count; i++) {
@@ -327,8 +320,8 @@
 	}
     
     CALayer *upperBorder = [CALayer layer];
-    upperBorder.backgroundColor = [[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] CGColor];
-    upperBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[_selectedIndex] frame]), 2.0f);
+    upperBorder.backgroundColor = [[UIColor colorWithRed:(18.0/255.0) green:(199.0/255.0) blue:(0.0/255.0) alpha:1.0] CGColor];
+    upperBorder.frame = CGRectMake(0, 42.0f, CGRectGetWidth([_chevrons[_selectedIndex] frame]), 2.0f);
     
     [[_chevrons[_selectedIndex] layer] addSublayer:upperBorder];
 
@@ -378,7 +371,7 @@
             id userinfo = _profileinfo;
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
         }
-		
+        
 		//UIView* selecttabbar;
 		CGRect selectframe;
         
@@ -536,21 +529,25 @@
 		NSInteger index = _selectedIndex;
         index = sender.tag;
         
-        //add border green on bottom button
-        CALayer *upperBorder = [CALayer layer];
-        upperBorder.backgroundColor = [[UIColor colorWithRed:(10/255.0) green:(126/255.0) blue:(7/255.0) alpha:1.0] CGColor];
-        upperBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[index-10] frame]), 2.0f);
-        
-        
+        //reset tab border color and text color
         for(int i=0;i<3;i++) {
             CALayer *whiteBorder = [CALayer layer];
-            
             whiteBorder.backgroundColor = [[UIColor whiteColor] CGColor];
-            whiteBorder.frame = CGRectMake(0, 28.0f, CGRectGetWidth([_chevrons[i] frame]), 2.0f);
+            whiteBorder.frame = CGRectMake(0, 42.0f, CGRectGetWidth([_chevrons[i] frame]), 2.0f);
             [[_chevrons[i] layer] addSublayer:whiteBorder];
+            UIButton *button = (UIButton *)[_chevrons objectAtIndex:i];
+            [button setTitleColor:[UIColor colorWithRed:111.0/255.0 green:113.0/255.0 blue:121.0/255.0 alpha:1] forState:UIControlStateNormal];
         }
+
+        //set button text color to green
+        [sender setTitleColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1] forState:UIControlStateNormal];
         
+        //add border green on bottom button
+        CALayer *upperBorder = [CALayer layer];
+        upperBorder.backgroundColor = [[UIColor colorWithRed:(18.0/255.0) green:(199.0/255.0) blue:(0.0/255.0) alpha:1.0] CGColor];
+        upperBorder.frame = CGRectMake(0, 42.0f, CGRectGetWidth([_chevrons[index-10] frame]), 2.0f);
         [[_chevrons[index-10] layer] addSublayer:upperBorder];
+
         
 		BOOL should = YES;
 		
@@ -567,6 +564,7 @@
 				[_delegate tabBarController:self didSelectViewController:_viewControllers[index]];
 			}
 		}
+        
 	}
 }
 
@@ -721,7 +719,8 @@
     
     UIImageView *thumb = _thumb;
     thumb = [UIImageView circleimageview:thumb];
-    
+    thumb.layer.borderColor = [UIColor whiteColor].CGColor;
+    thumb.layer.borderWidth = 2;
     thumb.image = nil;
     //thumb.hidden = YES;	//@prepareforreuse then @reset
     
@@ -981,6 +980,22 @@
 #pragma mark - UIScrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)sender
 {
+    if (sender.contentOffset.y <= _headerview.frame.size.height) {
+        CGFloat opacity = 1.0f - (sender.contentOffset.y / _headerview.frame.size.height);
+        _namelabel.layer.opacity = opacity;
+        _button.layer.opacity = opacity;
+    }
+    
+    if (sender.contentOffset.y <= 70.0f) {
+        CGFloat opacity = 1.0f - (sender.contentOffset.y / 70.0f);
+        _thumb.layer.opacity = opacity;
+    }
+    
+    if (sender.contentOffset.y > 138.0f) {
+        self.title = _profileinfo.result.user_info.user_name;
+    } else {
+        self.title = @"";
+    }
 }
 
 #pragma mark - Properties
@@ -998,16 +1013,20 @@
         NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
         if (auth && ![auth isEqual:[NSNull null]]) {
             if ([[_data objectForKey:kTKPD_USERIDKEY]integerValue] == [[auth objectForKey:kTKPD_USERIDKEY]integerValue]) {
-                _buttoneditprofile.hidden = NO;
-                [_barbuttoninfo setEnabled:YES];
+                
+                [_button setTitle:@"Edit Profile" forState:UIControlStateNormal];
+                [_button setImage:nil forState:UIControlStateNormal];
+                
                 self.navigationItem.rightBarButtonItem = _barbuttoninfo;
-                _buttonmessage.hidden = YES;
+                
             }
         }
         else
         {
-            _buttonmessage.hidden = NO;
-            _buttoneditprofile.hidden = YES;
+            [_button setTitle:@"Message" forState:UIControlStateNormal];
+            [_button setImageEdgeInsets:UIEdgeInsetsMake(0, 18, 0, 18)];
+            [_button setImage:[UIImage imageNamed:@"icon_message.png"] forState:UIControlStateNormal];
+            
             [_barbuttoninfo setEnabled:NO];
             [_barbuttoninfo setTintColor: [UIColor clearColor]];
         }

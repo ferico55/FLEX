@@ -524,7 +524,7 @@
     if(translation.x < 0)
     {
         //scroll to right
-        UIButton *button = (UIButton*)_buttons[3];
+//        UIButton *button = (UIButton*)_buttons[3];
     } else
     {
         //scroll to left

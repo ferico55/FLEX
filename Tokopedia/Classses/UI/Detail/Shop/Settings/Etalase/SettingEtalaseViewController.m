@@ -32,7 +32,6 @@
     NSOperationQueue *_operationQueue;
     UIRefreshControl *_refreshControl;
     NSInteger _requestcount;
-    NSTimer *_timer;
     
     NSMutableDictionary *_datainput;
     
@@ -58,10 +57,10 @@
 -(void)cancel;
 -(void)configureRestKit;
 -(void)request;
--(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailure:(id)object;
--(void)requestProcess:(id)object;
--(void)requestTimeout;
+-(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
+-(void)requestfailure:(id)object;
+-(void)requestprocess:(id)object;
+-(void)requesttimeout;
 
 @end
 
@@ -72,6 +71,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isnodata = YES;
+        self.title = kTKPDTITLE_ETALASE;
     }
     return self;
 }
@@ -89,19 +89,21 @@
     
     _page = 1;
     _limit = kTKPDSHOPETALASE_LIMITPAGE;
+    
+    /// adjust refresh control
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_table addSubview:_refreshControl];
 
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-	[barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
     
@@ -203,8 +205,8 @@
             ((GeneralList1GestureCell*)cell).labelname.text = list.etalase_name;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
             ((GeneralList1GestureCell*)cell).type = kTKPDGENERALCELL_DATATYPEONEBUTTONKEY;
-            ((GeneralList1GestureCell*)cell).labeldefault.hidden = NO;
-            ((GeneralList1GestureCell*)cell).labeldefault.text = [NSString stringWithFormat:@"%@ Produk",list.etalase_total_product];
+            ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
+            ((GeneralList1GestureCell*)cell).labelvalue.text = [NSString stringWithFormat:@"%@ Produk",list.etalase_total_product];
         }
         
 		return cell;
@@ -221,6 +223,37 @@
         cell.detailTextLabel.text = kTKPDDETAIL_NODATACELLDESCS;
     }
     return cell;
+}
+
+#pragma mark - Table View Delegate
+
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        EtalaseList *list = _list[indexPath.row];
+        if ([list.etalase_total_product isEqualToString:@"0"]) {
+            [self deleteListAtIndexPath:indexPath];
+        }
+        else
+        {
+            NSArray *array = [[NSArray alloc]initWithObjects:@"Tidak dapat menghapus etalase. \nSilahkan pindahkan product ke etalase lain terlebih dahulu.",nil];
+            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        }
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -302,32 +335,34 @@
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
 	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
-        _table.tableFooterView = _footer;
-        [_act startAnimating];
         
+        if (!_isrefreshview) {
+            _table.tableFooterView = _footer;
+            [_act startAnimating];
+        }
+        
+        NSTimer *timer;
         //[_cachecontroller clearCache];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [self requestsuccess:mappingResult withOperation:operation];
             [_act stopAnimating];
             _table.tableFooterView = nil;
             [_table reloadData];
-            [_timer invalidate];
-            _timer = nil;
-            
+            [timer invalidate];
+            [_refreshControl endRefreshing];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
             [self requestfailure:error];
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"An Error Has Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             //[alertView show];
             [_act stopAnimating];
             _table.tableFooterView = nil;
-            [_timer invalidate];
-            _timer = nil;
+            [timer invalidate];
+            [_refreshControl endRefreshing];
         }];
         [_operationQueue addOperation:_request];
         
-        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     }
     else {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -512,12 +547,16 @@
     
     _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPETALASEACTION_APIPATH parameters:param]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
     
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
+    
     [_requestActionDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionDelete:mappingResult withOperation:operation];
         [_act stopAnimating];
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         [timer invalidate];
+        app.networkActivityIndicatorVisible = NO;
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
@@ -525,6 +564,7 @@
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         [timer invalidate];
+        app.networkActivityIndicatorVisible = NO;
     }];
     
     [_operationQueue addOperation:_requestActionDelete];
@@ -560,11 +600,17 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (!setting.message_error) {
-                    if (setting.result.is_success) {
-                        //TODO:: add alert
-                        
-                    }
+                if (setting.message_status) {
+                    NSArray *array = setting.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                }
+                else if(setting.message_error)
+                {
+                    [self cancelDeleteData];
+                    NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
             }
         }
@@ -572,9 +618,7 @@
             
             [self cancelActionDelete];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
-            [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
-            [_table reloadData];
+            [self cancelDeleteData];
         }
     }
 }
@@ -655,6 +699,12 @@
     [_datainput setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
     [self configureRestKitActionDelete];
     [self requestActionDelete:_datainput];
+}
+-(void)cancelDeleteData
+{
+    NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
+    [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
+    [_table reloadData];
 }
 
 #pragma mark - Notification

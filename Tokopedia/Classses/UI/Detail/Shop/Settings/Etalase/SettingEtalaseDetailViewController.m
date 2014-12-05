@@ -11,6 +11,7 @@
 #import "SettingEtalaseDetailViewController.h"
 #import "SettingEtalaseEditViewController.h"
 
+#pragma mark - Setting Etalase Detail View Controller
 @interface SettingEtalaseDetailViewController ()
 {
     EtalaseList *_etalase;
@@ -25,6 +26,7 @@
 
 @implementation SettingEtalaseDetailViewController
 
+#pragma mark - Initialization
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -34,32 +36,34 @@
     return self;
 }
 
+#pragma mark - View Lifecycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
     _etalase = [_data objectForKey:kTKPDDETAIL_DATAETALASEKEY];
-    
+    self.title = _etalase.etalase_name;
     [self setDefaultData:_data];
-    
+        
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-	[barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor whiteColor]];
+    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Ubah" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [barbutton1 setTintColor:[UIColor blackColor]];
     barbutton1.tag = 11;
     self.navigationItem.rightBarButtonItem = barbutton1;
 }
 
+#pragma mark - Memory Management
+-(void)dealloc{
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -98,9 +102,17 @@
         switch (btn.tag) {
             case 11:
             {
-                //delete address
-                [_delegate DidTapButton:btn withdata:_data];
-                [self.navigationController popViewControllerAnimated:YES];
+                //delete etalase
+                if ([_etalase.etalase_total_product isEqualToString:@"0"]) {
+                    [_delegate DidTapButton:btn withdata:_data];
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                else
+                {
+                    NSArray *array = [[NSArray alloc]initWithObjects:@"Tidak dapat menghapus etalase. \nSilahkan pindahkan product ke etalase lainnya terlebih dahulu.",nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                }
                 break;
             }
             default:

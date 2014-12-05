@@ -9,7 +9,7 @@
 #import "detail.h"
 #import "../../../../Profile/Settings/Address/Location/location.h"
 #import "ShopSettings.h"
-#import "SettingLocations.h"
+#import "Address.h"
 #import "SettingLocationEditViewController.h"
 #import "SettingAddressLocationViewController.h"
 
@@ -93,24 +93,25 @@ UITextViewDelegate
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-	[barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor whiteColor]];
-    barbutton1.tag = 11;
-    self.navigationItem.rightBarButtonItem = barbutton1;
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [_barbuttonsave setTintColor:[UIColor blackColor]];
+    _barbuttonsave.tag = 11;
+    self.navigationItem.rightBarButtonItem = _barbuttonsave;
     
     [self setDefaultData:_data];
     
     _type = [[_data objectForKey:kTKPDDETAIL_DATATYPEKEY]integerValue];
-    
+    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY) {
+        self.title = kTKPDTITLE_NEW_LOCATION;
+    }
+    else
+        self.title = kTKPDTITLE_EDIT_LOCATION;
     
     /** keyboard notification **/
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -160,7 +161,7 @@ UITextViewDelegate
     [_activetextview resignFirstResponder];
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
-        SettingLocations *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+        Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
         switch (btn.tag) {
             case 10:
             {
@@ -217,19 +218,19 @@ UITextViewDelegate
             case 11:
             {
                 //submit
-                SettingLocations *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+                Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
                 
                 NSMutableArray *messages = [NSMutableArray new];
                 
-                NSString *addressname = [_datainput objectForKey:kTKPDSHOPSETTING_APIADDRESSNAMEKEY]?:list.location_addr_name;
-                NSString *address = [_datainput objectForKey:kTKPDSHOPSETTING_APIADDRESSKEY]?:list.location_address;
-                NSInteger postcode = [[_datainput objectForKey:kTKPDSHOPSETTING_APIPOSTALCODEKEY] integerValue]?:[list.location_postal_code integerValue];
+                NSString *addressname = [_datainput objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:list.location_address_name;
+                NSString *address = [_datainput objectForKey:kTKPDSHOP_APIADDRESSKEY]?:list.location_address;
+                NSInteger postcode = [[_datainput objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] integerValue]?:[list.location_postal_code integerValue];
                 NSString *district = [_datainput objectForKey:kTKPDLOCATION_DATADISTRICTIDKEY]?:list.location_district_id;
                 NSString *city = [_datainput objectForKey:kTKPDLOCATION_DATACITYIDKEY]?:list.location_city_id;
                 NSString *prov = [_datainput objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]?:list.location_province_id;
-                NSString *phone = [_datainput objectForKey:kTKPDSHOPSETTING_APIPHONEKEY]?:list.location_phone;
-                NSString *email = [_datainput objectForKey:kTKPDSHOPSETTING_APIEMAILKEY]?:list.location_email;
-                //NSString *fax = [_datainput objectForKey:kTKPDSHOPSETTING_APIFAXKEY]?:list.location_fax;
+                NSString *phone = [_datainput objectForKey:kTKPDSHOP_APIPHONEKEY]?:list.location_phone;
+                NSString *email = [_datainput objectForKey:kTKPDSHOP_APIEMAILKEY]?:list.location_email;
+                //NSString *fax = [_datainput objectForKey:kTKPDSHOP_APIFAXKEY]?:list.location_fax;
                 
                 NSInteger phoneCharCount= [[phone stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
                 
@@ -247,7 +248,6 @@ UITextViewDelegate
                 }
                 else
                 {
-
                     if (!addressname || [addressname isEqualToString:@""]) {
                         [messages addObject:@"Nama Alamat harus diisi."];
                     }
@@ -257,17 +257,17 @@ UITextViewDelegate
                     if (!postcode) {
                         [messages addObject:@"Kode Pos harus diisi."];
                     }
-                    if (!district) {
-                        [messages addObject:@"Distric harus diisi."];
-                    }
                     if (!prov) {
                         [messages addObject:@"Provinsi harus diisi."];
                     }
                     if (!city) {
-                        [messages addObject:@"kota harus diisi."];
+                        [messages addObject:@"Kota harus diisi."];
+                    }
+                    if (!district) {
+                        [messages addObject:@"Kecamatan harus diisi."];
                     }
                     if (!phone || [phone isEqualToString:@""]) {
-                        [messages addObject:@"telepon harus diisi."];
+                        [messages addObject:@"Telepon harus diisi."];
                     }
                     else
                     {
@@ -275,9 +275,22 @@ UITextViewDelegate
                             [messages addObject:@"Phone minimum 6 Character"];
                         }
                     }
+                    if (!email) {
+                        [messages addObject:@"Email harus diisi."];
+                    }
+                    else{
+                        if (![email isEmail]) {
+                            [messages addObject:@"Format email harus benar."];
+                        }
+                    }
                 }
                 
                 NSLog(@"%@",messages);
+                if (messages) {
+                    NSArray *array = messages;
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                }
                 break;
             }
             default:
@@ -330,46 +343,49 @@ UITextViewDelegate
     
     NSDictionary *userinfo = (NSDictionary*)object;
     
-    SettingLocations *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+    Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
     
     NSString *action = (_type==2)?kTKPDDETAIL_APIADDSHOPLOCATIONKEY:kTKPDDETAIL_APIEDITSHOPLOCATIONKEY;
-    NSInteger addressid = [list.location_addr_id integerValue];
-    NSString *addressname = [userinfo objectForKey:kTKPDSHOPSETTING_APIADDRESSNAMEKEY]?:list.location_addr_name;
-    NSString *address = [userinfo objectForKey:kTKPDSHOPSETTING_APIADDRESSKEY]?:list.location_address;
-    NSInteger postcode = [[userinfo objectForKey:kTKPDSHOPSETTING_APIPOSTALCODEKEY] integerValue]?:[list.location_postal_code integerValue];
+    NSInteger addressid = [list.location_address_id integerValue];
+    NSString *addressname = [userinfo objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:list.location_address_id;
+    NSString *address = [userinfo objectForKey:kTKPDSHOP_APIADDRESSKEY]?:list.location_address;
+    NSInteger postcode = [[userinfo objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] integerValue]?:[list.location_postal_code integerValue];
     NSString *district = [userinfo objectForKey:kTKPDLOCATION_DATADISTRICTIDKEY]?:list.location_district_id;
     NSString *city = [userinfo objectForKey:kTKPDLOCATION_DATACITYIDKEY]?:list.location_city_id;
     NSString *prov = [userinfo objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]?:list.location_province_id;
-    NSString *phone = [userinfo objectForKey:kTKPDSHOPSETTING_APIPHONEKEY]?:list.location_phone;
-    NSString *email = [userinfo objectForKey:kTKPDSHOPSETTING_APIEMAILKEY]?:list.location_email;
-    NSString *fax = [userinfo objectForKey:kTKPDSHOPSETTING_APIFAXKEY]?:list.location_fax?:@"";
+    NSString *phone = [userinfo objectForKey:kTKPDSHOP_APIPHONEKEY]?:list.location_phone;
+    NSString *email = [userinfo objectForKey:kTKPDSHOP_APIEMAILKEY]?:list.location_email;
+    NSString *fax = [userinfo objectForKey:kTKPDSHOP_APIFAXKEY]?:list.location_fax?:@"";
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action,
-                            kTKPDSHOPSETTING_APIADDRESSIDKEY : @(addressid),
-                            kTKPDSHOPSETTING_APICITYIDKEY : city,
-                            kTKPDSHOPSETTING_APIADDRESSNAMEKEY : addressname,
-                            kTKPDSHOPSETTING_APIPHONEKEY : phone,
-                            kTKPDSHOPSETTING_APIPROVINCEIDKEY : prov,
-                            kTKPDSHOPSETTING_APIPOSTALCODEKEY : @(postcode),
-                            kTKPDSHOPSETTING_APIADDRESSKEY : address,
-                            kTKPDSHOPSETTING_APIDISTRICTIDKEY : district,
-                            kTKPDSHOPSETTING_APIEMAILKEY: email,
-                            kTKPDSHOPSETTING_APIFAXKEY:fax
+                            kTKPDSHOP_APIADDRESSIDKEY : @(addressid),
+                            kTKPDSHOPSETTINGACTION_APICITYIDKEY : city,
+                            kTKPDSHOP_APIADDRESSNAMEKEY : addressname,
+                            kTKPDSHOPSETTINGACTION_APIPHONEKEY : phone,
+                            kTKPDSHOPSETTINGACTION_APIPROVINCEIDKEY : prov,
+                            kTKPDSHOPSETTINGACTION_APIPOSTALKEY : @(postcode),
+                            kTKPDSHOP_APIADDRESSKEY : address,
+                            kTKPDSHOPSETTINGACTION_APIDISTRICTIDKEY : district,
+                            kTKPDSHOPSETTINGACTION_APIEMAILKEY: email,
+                            kTKPDSHOPSETTINGACTION_APIFAXKEY:fax
                             };
     _requestcount ++;
     
     _barbuttonsave.enabled = NO;
-    [_act startAnimating];
+    
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
     
     _requestActionAddAddress = [_objectmanagerActionAddAddress appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPADDRESSACTION_APIPATH parameters:param];
     
     [_requestActionAddAddress setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionAddAddress:mappingResult withOperation:operation];
         [timer invalidate];
-        [_act stopAnimating];
+        app.networkActivityIndicatorVisible = NO;
         _barbuttonsave.enabled = YES;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionAddAddress:error];
+        app.networkActivityIndicatorVisible = NO;
         [timer invalidate];
         [_act stopAnimating];
         _barbuttonsave.enabled = YES;
@@ -408,22 +424,29 @@ UITextViewDelegate
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (!setting.message_error) {
-                    if (setting.result.is_success) {
-                        //TODO:: add alert
-                        NSDictionary *userinfo;
-                        if (_type == 1){
-                            //TODO: Behavior after edit
-                            NSArray *viewcontrollers = self.navigationController.viewControllers;
-                            NSInteger index = viewcontrollers.count-3;
-                            [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
-                            userinfo = @{kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY],
-                                         kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
-                                         };
-                        }
-                        else [self.navigationController popViewControllerAnimated:YES];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDLOCATIONPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+                if (setting.result.is_success) {
+                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil menambah lokasi.", nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    
+                    NSDictionary *userinfo;
+                    if (_type == kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY){
+                        //TODO: Behavior after edit
+                        NSArray *viewcontrollers = self.navigationController.viewControllers;
+                        NSInteger index = viewcontrollers.count-3;
+                        [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
+                        userinfo = @{kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY],
+                                     kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
+                                     };
                     }
+                    else [self.navigationController popViewControllerAnimated:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDLOCATIONPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+                }
+                if(setting.message_error)
+                {
+                    NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
             }
         }
@@ -457,9 +480,9 @@ UITextViewDelegate
 {
     _data = data;
     if (data) {
-        SettingLocations *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
-        _textfieldaddressname.text = list.location_addr_name?:@"";
-        _textviewaddress.text = list.location_address;
+        Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+        _textfieldaddressname.text = list.location_address_name?:@"";
+        _textviewaddress.text = [NSString convertHTML:list.location_address];
         _labeladdressplaceholder.hidden = !(!list.location_address);
         NSString *postalcode = list.location_postal_code?:@"";
         _textfieldpostcode.text = postalcode;
@@ -494,11 +517,11 @@ UITextViewDelegate
                 //reset city and district
                 [_datainput removeObjectForKey:kTKPDLOCATION_DATACITYINDEXPATHKEY];
                 [_datainput removeObjectForKey:kTKPDLOCATION_DATACITYIDKEY];
-                [_datainput removeObjectForKey:kTKPDSHOPSETTING_APICITYNAMEKEY];
+                [_datainput removeObjectForKey:kTKPDSHOP_APICITYNAMEKEY];
                 
                 [_datainput removeObjectForKey:kTKPDLOCATION_DATADISTRICTINDEXPATHKEY];
                 [_datainput removeObjectForKey:kTKPDLOCATION_DATADISTRICTIDKEY];
-                [_datainput removeObjectForKey:kTKPDSHOPSETTING_APIDISTRICTNAMEKEY];
+                [_datainput removeObjectForKey:kTKPDSHOP_APIDISTRICTNAMEKEY];
                 
                 [_buttoncity setTitle:@"none" forState:UIControlStateNormal];
                 [_buttondistrict setTitle:@"none" forState:UIControlStateNormal];
@@ -507,7 +530,7 @@ UITextViewDelegate
             _buttoncity.enabled = YES;
             [_datainput setObject:indexpath forKey:kTKPDLOCATION_DATAPROVINCEINDEXPATHKEY];
             [_buttonprovince setTitle:name forState:UIControlStateNormal];
-            [_datainput setObject:name forKey:kTKPDSHOPSETTING_APIPROVINCENAMEKEY];
+            [_datainput setObject:name forKey:kTKPDSHOP_APIPROVINCENAMEKEY];
             [_datainput setObject:@(locationid) forKey:kTKPDLOCATION_DATAPROVINCEIDKEY];
             
             break;
@@ -523,13 +546,13 @@ UITextViewDelegate
                 //reset district
                 [_datainput removeObjectForKey:kTKPDLOCATION_DATADISTRICTINDEXPATHKEY];
                 [_datainput removeObjectForKey:kTKPDLOCATION_DATADISTRICTIDKEY];
-                [_datainput removeObjectForKey:kTKPDSHOPSETTING_APIDISTRICTNAMEKEY];
+                [_datainput removeObjectForKey:kTKPDSHOP_APIDISTRICTNAMEKEY];
                 
                 [_buttondistrict setTitle:@"none" forState:UIControlStateNormal];
             }
             _buttondistrict.enabled = YES;
             [_buttoncity setTitle:name forState:UIControlStateNormal];
-            [_datainput setObject:name forKey:kTKPDSHOPSETTING_APICITYNAMEKEY];
+            [_datainput setObject:name forKey:kTKPDSHOP_APICITYNAMEKEY];
             [_datainput setObject:@(locationid) forKey:kTKPDLOCATION_DATACITYIDKEY];
             break;
         }
@@ -540,7 +563,7 @@ UITextViewDelegate
             locationid = [[data objectForKey:kTKPDLOCATION_DATALOCATIONVALUEKEY] integerValue];
             [_datainput setObject:indexpath forKey:kTKPDLOCATION_DATADISTRICTINDEXPATHKEY];
             [_buttondistrict setTitle:name forState:UIControlStateNormal];
-            [_datainput setObject:name forKey:kTKPDSHOPSETTING_APIDISTRICTNAMEKEY];
+            [_datainput setObject:name forKey:kTKPDSHOP_APIDISTRICTNAMEKEY];
             [_datainput setObject:@(locationid) forKey:kTKPDLOCATION_DATADISTRICTIDKEY];
             break;
         }
@@ -579,20 +602,20 @@ UITextViewDelegate
 {
 
     if (textField == _textfieldaddressname) {
-        [_datainput setObject:textField.text forKey:kTKPDSHOPSETTING_APIADDRESSNAMEKEY];
+        [_datainput setObject:textField.text forKey:kTKPDSHOP_APIADDRESSNAMEKEY];
     }
     if (textField == _textfieldpostcode) {
-        [_datainput setObject:textField.text forKey:kTKPDSHOPSETTING_APIPOSTALCODEKEY];
+        [_datainput setObject:textField.text forKey:kTKPDSHOP_APIPOSTALCODEKEY];
     }
     if (textField == _textfieldphonenumber) {
-        [_datainput setObject:textField.text forKey:kTKPDSHOPSETTING_APIPHONEKEY];
+        [_datainput setObject:textField.text forKey:kTKPDSHOP_APIPHONEKEY];
     }
     if (textField == _textfieldemail)
     {
-        [_datainput setObject:textField.text forKey:kTKPDSHOPSETTING_APIEMAILKEY];
+        [_datainput setObject:textField.text forKey:kTKPDSHOP_APIEMAILKEY];
     }
     if (textField == _textfieldfax) {
-        [_datainput setObject:textField.text forKey:kTKPDSHOPSETTING_APIFAXKEY];
+        [_datainput setObject:textField.text forKey:kTKPDSHOP_APIFAXKEY];
     }
     return YES;
 }
@@ -602,8 +625,8 @@ UITextViewDelegate
     [textView resignFirstResponder];
     [_activetextfield resignFirstResponder];
     _activetextfield = nil;
-    SettingLocations *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
-    if (!list.location_addr_name) {
+    Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+    if (!list.location_address_name) {
         _labeladdressplaceholder.hidden = YES;
         _activetextview = textView;
     }
@@ -620,7 +643,7 @@ UITextViewDelegate
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
     if (textView== _textviewaddress) {
-        [_datainput setObject:textView.text forKey:kTKPDSHOPSETTING_APIADDRESSKEY];
+        [_datainput setObject:textView.text forKey:kTKPDSHOP_APIADDRESSKEY];
     }
     return YES;
 }

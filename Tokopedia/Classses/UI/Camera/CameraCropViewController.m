@@ -39,8 +39,8 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    _cropAreaView.layer.borderColor = [UIColor blueColor].CGColor;
-    _cropAreaView.layer.borderWidth = 1;
+    //_cropAreaView.layer.borderColor = [UIColor blueColor].CGColor;
+    //_cropAreaView.layer.borderWidth = 1;
     
     if(![_data isMutable])
     {
@@ -55,6 +55,7 @@
     //[_scrollViewImageSmall setDelegate:self];
     //[_scrollViewImageLarge setDelegate:self];
     
+    
     NSDictionary* camera = [_data objectForKey:kTKPDCAMERA_DATACAMERAKEY];
     NSDictionary* photo = [_data objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     
@@ -62,6 +63,7 @@
     
     self.title = kTKPDCAMERACROP_ZOOMANDCROPTITLE;
     [_imageView setImage:rawPhoto];
+    
     //[_scrollViewImageSmall setHidden:NO];
     //[_imageViewSmall setHidden:NO];
     //[_imageViewSmall setImage:rawPhoto];
@@ -88,16 +90,10 @@
     //[barbutton1 setTag:10];
     //self.navigationItem.leftBarButtonItem = barbutton1;
     
-    //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-	[barbutton1 setTag:11];
-    self.navigationItem.rightBarButtonItem = barbutton1;
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 }
 
 - (void)viewDidLayoutSubviews
@@ -144,7 +140,7 @@
                 cropRect = CGRectApplyAffineTransform(cropRect, rectTransform);
                 
                 CGImageRef imageRef;
-                imageRef = CGImageCreateWithImageInRect(result.CGImage, frame);
+                imageRef = CGImageCreateWithImageInRect(result.CGImage, cropRect);
                 result = [UIImage imageWithCGImage:imageRef scale:result.scale orientation:result.imageOrientation];
                 
                 if(imageRef)CGImageRelease(imageRef);

@@ -65,7 +65,7 @@
     /** create new **/
     _shop = [NSMutableArray new];
     _goldshop = [NSMutableArray new];
-    _shopdictionary = [NSDictionary new];
+    _shopdictionary = [NSMutableDictionary new];
     
     /** set first page become 1 **/
     _page = 1;

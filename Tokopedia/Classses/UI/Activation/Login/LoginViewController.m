@@ -23,9 +23,10 @@
     
     BOOL _isnodata;    
     NSInteger _requestcount;
-    NSTimer *_timer;
     
     Login *_login;
+    
+    UIBarButtonItem *_barbuttonsignin;
         
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -39,7 +40,7 @@
 
 - (void)cancelLogin;
 - (void)configureRestKitLogin;
-- (void)LoadDataActionLogin:(id)userinfo;
+- (void)requestActionLogin:(id)userinfo;
 - (void)requestsuccessLogin:(id)object withOperation:(RKObjectRequestOperation*)operation;
 - (void)requestfailureLogin:(id)object;
 - (void)requesttimeoutLogin;
@@ -78,37 +79,14 @@
     
     UIBarButtonItem* barbutton1;
     
-    //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"background-light-pt"]];
-    
-    NSBundle* bundle = [NSBundle mainBundle];
-    UIImage *img;
-    
     /** SIGN IN **/
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        //        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign In" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    }
-    else
-        //        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign In" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    
-    [barbutton1 setTag:10];
-    [barbutton1 setTintColor:[UIColor whiteColor]];
-    self.navigationItem.rightBarButtonItem = barbutton1;
+    _barbuttonsignin = [[UIBarButtonItem alloc] initWithTitle:@"Sign In" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [_barbuttonsignin setTag:10];
+    [_barbuttonsignin setTintColor:[UIColor whiteColor]];
+    self.navigationItem.rightBarButtonItem = _barbuttonsignin;
     
     /** GO TO SIGN UP PAGE **/
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        //        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    }
-    else
-        //        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    
+    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [barbutton1 setTag:11];
     [barbutton1 setTintColor:[UIColor whiteColor]];
     self.navigationItem.leftBarButtonItem = barbutton1;
@@ -159,51 +137,39 @@
                 NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
                 NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
                 NSMutableArray *messages = [NSMutableArray new];
+                BOOL valid = NO;
                 NSString *message;
-                if (email && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""]) {
-                    if ([email isEmail]) {
-                        NSDictionary *userinfo = @{kTKPDACTIVATION_DATAEMAILKEY : email, kTKPDACTIVATION_DATAPASSKEY : pass};
-                        [self LoadDataActionLogin:userinfo];
-                    }
-                    else {
-                        message = @"Invalid Email Format";
+                if (email && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""] && [email isEmail]) {
+                    valid = YES;
+                }
+                if (!email||[email isEqualToString:@""]) {
+                    message = @"Email harus diisi.";
+                    [messages addObject:message];
+                    valid = NO;
+                }
+                if (email) {
+                    if (![email isEmail]) {
+                        message = @"Format email salah.";
                         [messages addObject:message];
-                        //UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Invalid Email Format" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                        //[alertView show];
+                        valid = NO;
                     }
+                }
+                if (!pass || [pass isEqualToString:@""]) {
+                    message = @"Password harus diisi";
+                    [messages addObject:message];
+                    valid = NO;
+                }
+                
+                if (valid) {
+                    NSDictionary *userinfo = @{kTKPDACTIVATION_DATAEMAILKEY : email, kTKPDACTIVATION_DATAPASSKEY : pass};
+                    [self requestActionLogin:userinfo];
                 }
                 else{
-                    if (!email||[email isEqualToString:@""]) {
-                        message = @"Email must be filled";
-                        [messages addObject:message];
-                        //UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Email must be filled" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                        //[alertView show];
-                    }
-                    else{
-                        if (![email isEmail]) {
-                            message = @"Invalid Email Format";
-                            [messages addObject:message];
-                        }
-                    }
-                    if (!pass || [pass isEqualToString:@""]) {
-                        message = @"Password must be filled";
-                        [messages addObject:message];
-                        //UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"Password must be filled" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-                        //[alertView show];
-                    }
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
-                
-//                StickyAlert *stickyalert = [[StickyAlert alloc]init];
-//                [stickyalert initView:self.view];
-//                [stickyalert alertError:messages];
-                
-                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                
-                //                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                
-                
-                NSLog(@"message : %@", messages);
+                    
+                    NSLog(@"message : %@", messages);
                 break;
             }
             case 11:
@@ -271,7 +237,7 @@
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
 
-- (void)LoadDataActionLogin:(id)userinfo
+- (void)requestActionLogin:(id)userinfo
 {
     if (_request.isExecuting) return;
     
@@ -279,31 +245,35 @@
     
     _requestcount++;
     
-    [_act startAnimating];
-    
 	NSDictionary* param = @{
                             kTKPDLOGIN_APIUSEREMAILKEY : [data objectForKey:kTKPDACTIVATION_DATAEMAILKEY]?:@(0),
                             kTKPDLOGIN_APIUSERPASSKEY : [data objectForKey:kTKPDACTIVATION_DATAPASSKEY]?:@(0)
                             };
     
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
+    _barbuttonsignin.enabled = NO;
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDLOGIN_APIPATH parameters:param];
     
+    NSTimer *timer;
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
+        [timer invalidate];
+        //[_act stopAnimating];
+        app.networkActivityIndicatorVisible = NO;
+        _barbuttonsignin.enabled = YES;
         [self requestsuccessLogin:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
-        [_timer invalidate];
-        _timer = nil;
-        [_act stopAnimating];
+        [timer invalidate];
+        //[_act stopAnimating];
+        _barbuttonsignin.enabled =YES;
+        app.networkActivityIndicatorVisible = NO;
         [self requestfailureLogin:error];
     }];
     [_operationQueue addOperation:_request];
     
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeoutLogin) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeoutLogin) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)requestsuccessLogin:(id)object withOperation:(RKObjectRequestOperation*)operation
@@ -359,21 +329,21 @@
     if ([(NSError*)object code] == NSURLErrorCancelled) {
         if (_requestcount<kTKPDREQUESTCOUNTMAX) {
             NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
-            //_table.tableFooterView = _footer;
-            [_act startAnimating];
-            //[self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            //[self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            [self performSelector:@selector(configureRestKitLogin) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            [self performSelector:@selector(requestActionLogin:) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
         }
         else
         {
-            [_act stopAnimating];
-            //_table.tableFooterView = nil;
+            NSArray *messages = [NSArray arrayWithObjects:@"Sign in gagal silahkan coba lagi.", nil];
+            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
         }
     }
     else
     {
-        [_act stopAnimating];
-        //_table.tableFooterView = nil;
+        NSArray *messages = [NSArray arrayWithObjects:@"Sign in gagal silahkan coba lagi.", nil];
+        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
     }
 }
 

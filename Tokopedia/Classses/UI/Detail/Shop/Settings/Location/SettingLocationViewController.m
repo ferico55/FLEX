@@ -7,6 +7,7 @@
 //
 
 #import "detail.h"
+#import "generalcell.h"
 #import "SettingLocation.h"
 #import "ShopSettings.h"
 #import "Paging.h"
@@ -97,6 +98,7 @@
         _isrefreshview = NO;
         _ismanualsetdefault = NO;
         _ismanualdelete = NO;
+        self.title = kTKPDTITLE_LOCATION;
     }
     return self;
 }
@@ -104,7 +106,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.navigationController.navigationItem setTitle:kTKPDTITLE_LOCATION];
     
     _list = [NSMutableArray new];
     _datainput = [NSMutableDictionary new];
@@ -129,6 +130,22 @@
     _cachecontroller.URLCacheInterval = 86400.0;
     [_cachecontroller initCacheWithDocumentPath:path];
     
+    UIBarButtonItem *barbutton1;
+    NSBundle* bundle = [NSBundle mainBundle];
+    //TODO:: Change image
+    //UIImage *img= [[UIImage imageNamed:kTKPDIMAGE_ICONBACK] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    //img = [[UIImage imageNamed:kTKPDIMAGE_ICONBACK] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 100.0f, 0.0f, 100.0f) resizingMode:UIImageResizingModeStretch];
+
+
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    //img = [[[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]] resizableImageWithCapInsets:UIEdgeInsetsMake(0.0f, 100.0f, 0.0f, 100.0f)];
+
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
 }
 
 
@@ -148,14 +165,6 @@
             [self request];
         }
     }
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"]
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:@selector(tap:)];
-    backBarButtonItem.tintColor = [UIColor whiteColor];
-    self.navigationItem.leftBarButtonItem = backBarButtonItem;
-    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -187,22 +196,12 @@
 		}
         
         if (_list.count > indexPath.row) {
-            SettingLocations *list = _list[indexPath.row];
-            ((GeneralList1GestureCell*)cell).labelname.text = list.location_addr_name;
+            Address *list = _list[indexPath.row];
+            ((GeneralList1GestureCell*)cell).labelname.text = list.location_address_name;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
-            [(GeneralList1GestureCell*)cell viewdetailresetposanimation:YES];
-            
-            if (!_ismanualsetdefault)((GeneralList1GestureCell*)cell).labeldefault.hidden = NO; //(list.address_status==2)?NO:YES;
-            else {
-                if (indexPath.row==0)((GeneralList1GestureCell*)cell).labeldefault.hidden = NO;
-                else ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
-                
-                //NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
-                //if (indexPath.row == indexpath.row) {
-                //    ((GeneralList1GestureCell*)cell).labeldefault.hidden = NO;
-                //}
-            }
-            
+            ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
+            ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
+            ((GeneralList1GestureCell*)cell).type = kTKPDGENERALCELL_DATATYPEONEBUTTONKEY;
         }
         
 		return cell;
@@ -222,6 +221,27 @@
 }
 
 #pragma mark - Table View Delegate
+
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [self deleteListAtIndexPath:indexPath];
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (_isnodata) {
@@ -281,21 +301,21 @@
 
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SettingLocationResult class]];
     
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[SettingLocations class]];
-    [listMapping addAttributeMappingsFromArray:@[kTKPDSHOPSETTING_APICITYNAMEKEY,
-                                                 kTKPDSHOPSETTING_APIEMAILKEY,
-                                                 kTKPDSHOPSETTING_APIADDRESSKEY,
-                                                 kTKPDSHOPSETTING_APIPOSTALCODEKEY,
-                                                 kTKPDSHOPSETTING_APICITYIDKEY,
-                                                 kTKPDSHOPSETTING_APILOCATIONAREAKEY,
-                                                 kTKPDSHOPSETTING_APIPHONEKEY,
-                                                 kTKPDSHOPSETTING_APIDISTRICTIDKEY,
-                                                 kTKPDSHOPSETTING_APIPROVINCENAMEKEY,
-                                                 kTKPDSHOPSETTING_APIPROVINCEIDKEY,
-                                                 kTKPDSHOPSETTING_APIDISTRICTNAMEKEY,
-                                                 kTKPDSHOPSETTING_APIADDRESSIDKEY,
-                                                 kTKPDSHOPSETTING_APIFAXKEY,
-                                                 kTKPDSHOPSETTING_APIADDRESSNAMEKEY
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[Address class]];
+    [listMapping addAttributeMappingsFromArray:@[kTKPDSHOP_APICITYNAMEKEY,
+                                                 kTKPDSHOP_APIEMAILKEY,
+                                                 kTKPDSHOP_APIADDRESSKEY,
+                                                 kTKPDSHOP_APIPOSTALCODEKEY,
+                                                 kTKPDSHOP_APICITYIDKEY,
+                                                 kTKPDSHOP_APILOCATIONAREAKEY,
+                                                 kTKPDSHOP_APIPHONEKEY,
+                                                 kTKPDSHOP_APIDISTRICTIDKEY,
+                                                 kTKPDSHOP_APIPROVINCENAMEKEY,
+                                                 kTKPDSHOP_APIPROVINCEIDKEY,
+                                                 kTKPDSHOP_APIDISTRICTNAMEKEY,
+                                                 kTKPDSHOP_APIADDRESSIDKEY,
+                                                 kTKPDSHOP_APIFAXKEY,
+                                                 kTKPDSHOP_APIADDRESSNAMEKEY
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -514,124 +534,6 @@
     [self cancel];
 }
 
-#pragma mark Request Action Set Default
--(void)cancelActionSetDefault
-{
-    [_requestActionSetDefault cancel];
-    _requestActionSetDefault = nil;
-    [_objectmanagerActionSetDefault.operationQueue cancelAllOperations];
-    _objectmanagerActionSetDefault = nil;
-}
-
--(void)configureRestKitActionSetDefault
-{
-    _objectmanagerActionSetDefault = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ShopSettingsResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIISSUCCESSKEY:kTKPDDETAIL_APIISSUCCESSKEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOPADDRESS_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanagerActionSetDefault addResponseDescriptor:responseDescriptor];
-    
-}
-
--(void)requestActionSetDefault:(id)object
-{
-    if (_requestActionSetDefault.isExecuting) return;
-    NSTimer *timer;
-    
-    NSDictionary *userinfo = (NSDictionary*)object;
-    
-    NSDictionary* param = @{//kTKPDDETAIL_APIACTIONKEY:kTKPDPROFILE_APISETDEFAULTADDRESSKEY,
-                            //kTKPDPROFILESETTING_APIADDRESSIDKEY : [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSIDKEY]?:0
-                            };
-    _requestcount ++;
-    
-    _requestActionSetDefault = [_objectmanagerActionSetDefault appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPADDRESS_APIPATH parameters:param];
-    
-    [_requestActionSetDefault setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionSetDefault:mappingResult withOperation:operation];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [timer invalidate];
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestFailureActionSetDefault:error];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_requestActionSetDefault];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionSetDefault) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestSuccessActionSetDefault:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    ShopSettings *setting = stat;
-    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessActionSetDefault:object];
-    }
-}
-
--(void)requestFailureActionSetDefault:(id)object
-{
-    [self requestProcessActionSetDefault:object];
-}
-
--(void)requestProcessActionSetDefault:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            ShopSettings *setting = stat;
-            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if (!setting.message_error) {
-                    if (setting.result.is_success) {
-                        //TODO:: add alert
-                        
-                    }
-                }
-            }
-        }
-        else{
-            
-            [self cancelActionSetDefault];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDEFAULTKEY];
-            NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:0 inSection:indexpath.section];
-            [self tableView:_table moveRowAtIndexPath:indexpath1 toIndexPath:indexpath];
-        }
-    }
-}
-
--(void)requestTimeoutActionSetDefault
-{
-    [self cancelActionSetDefault];
-}
-
 #pragma mark Request Action Delete
 -(void)cancelActionDelete
 {
@@ -659,7 +561,7 @@
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOPADDRESS_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOPADDRESSACTION_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanagerActionDelete addResponseDescriptor:responseDescriptor];
     
@@ -672,16 +574,19 @@
     
     NSDictionary *userinfo = (NSDictionary*)object;
     
-    NSDictionary* param = @{//kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIDELETEADDRESSKEY,
-                            //kTKPDPROFILESETTING_APIADDRESSIDKEY : [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSIDKEY]
+    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIDELETESHOPLOCATIONKEY,
+                            kTKPDSHOP_APIADDRESSIDKEY : [userinfo objectForKey:kTKPDSHOP_APIADDRESSIDKEY]
                             };
     _requestcount ++;
     
-    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPADDRESS_APIPATH parameters:param]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
+    
+    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPADDRESSACTION_APIPATH parameters:param]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
     
     [_requestActionDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionDelete:mappingResult withOperation:operation];
-        [_act stopAnimating];
+        app.networkActivityIndicatorVisible = NO;
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         [timer invalidate];
@@ -689,6 +594,7 @@
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFailureActionDelete:error];
+        app.networkActivityIndicatorVisible = NO;
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         [timer invalidate];
@@ -727,11 +633,23 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (!setting.message_error) {
-                    if (setting.result.is_success) {
-                        //TODO:: add alert
-                        
-                    }
+                if (setting.message_status) {
+                    NSArray *array = setting.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                }
+                else if(setting.message_error)
+                {
+                    [self cancelDeleteData];
+                    NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                }
+                if (!setting.result.is_success) {
+                    [self cancelActionDelete];
+                    NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
+                    [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
+                    [_table reloadData];
                 }
             }
         }
@@ -739,9 +657,7 @@
             
             [self cancelActionDelete];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
-            [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
-            [_table reloadData];
+            [self cancelDeleteData];
         }
     }
 }
@@ -772,7 +688,7 @@
 -(void)GeneralList1GestureCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     BOOL isdefault;
-    SettingLocations *list = _list[indexpath.row];
+    Address *list = _list[indexpath.row];
     if (_ismanualsetdefault) {
         isdefault = (indexpath.row == 0)?YES:NO;
     }
@@ -793,8 +709,8 @@
 
 -(void)DidTapButton:(UIButton *)button atCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
-    SettingLocations *list = _list[indexpath.row];
-    [_datainput setObject:list.location_addr_id forKey:kTKPDSHOPSETTING_APIADDRESSIDKEY];
+    Address *list = _list[indexpath.row];
+    [_datainput setObject:list.location_address_id forKey:kTKPDSHOP_APIADDRESSIDKEY];
     switch (button.tag) {
         case 10:
         {
@@ -817,7 +733,7 @@
 #pragma mark - delegate address detail
 -(void)DidTapButton:(UIButton *)button withdata:(NSDictionary *)data
 {
-    SettingLocations *list = [data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+    Address *list = [data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
     //[_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
     switch (button.tag) {
         case 10:
@@ -856,12 +772,6 @@
     [self request];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    view.backgroundColor = [UIColor clearColor];
-    return view;
-}
 
 -(void)deleteListAtIndexPath:(NSIndexPath*)indexpath
 {
@@ -875,6 +785,13 @@
     [self configureRestKitActionDelete];
     [self requestActionDelete:_datainput];
     [_datainput setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
+    [_table reloadData];
+}
+
+-(void)cancelDeleteData
+{
+    NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
+    [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
     [_table reloadData];
 }
 

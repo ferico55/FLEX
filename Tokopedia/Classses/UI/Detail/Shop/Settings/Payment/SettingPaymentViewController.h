@@ -10,4 +10,6 @@
 
 @interface SettingPaymentViewController : UIViewController
 
+@property (nonatomic, strong)NSDictionary *data;
+
 @end

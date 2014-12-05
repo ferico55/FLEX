@@ -11,6 +11,7 @@
 #import "ShopSettingViewController.h"
 #import "Etalase/SettingEtalaseViewController.h"
 #import "Shipment/SettingShipmentViewController.h"
+#import "ShipmentSettingViewController.h"
 #import "Payment/SettingPaymentViewController.h"
 #import "Note/SettingNoteViewController.h"
 #import "Location/SettingLocationViewController.h"
@@ -39,7 +40,15 @@
 {
     [super viewDidLoad];
     
+    self.title = @"Pengaturan Toko";
+    
     _shop = [_data objectForKey:kTKPDDETAIL_DATAINFOSHOPSKEY];
+
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -82,14 +91,20 @@
                 {
                     //Location
                     SettingLocationViewController *vc = [SettingLocationViewController new];
-                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]};
+                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }
                 case 13:
                 {
                     //Shipment
-                    SettingShipmentViewController *vc = [SettingShipmentViewController new];
+//                    SettingShipmentViewController *vc = [SettingShipmentViewController new];
+//                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
+//                                };
+//                    [self.navigationController pushViewController:vc animated:YES];
+                    
+                    ShipmentSettingViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ShipmentSettingViewController"];
+                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},};
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }
@@ -97,6 +112,7 @@
                 {
                     //Payment
                     SettingPaymentViewController *vc = [SettingPaymentViewController new];
+                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }
@@ -122,4 +138,18 @@
             break;
     }
 }
+
+-(IBAction)tap:(id)sender
+{
+    UIButton *button = (UIButton *)sender;
+    switch (button.tag) {
+        case 10:
+            [self.navigationController popViewControllerAnimated:YES];
+            break;
+            
+        default:
+            break;
+    }
+}
+
 @end

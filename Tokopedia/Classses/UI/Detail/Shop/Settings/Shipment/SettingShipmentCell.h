@@ -26,6 +26,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *labelpackage;
 @property (weak, nonatomic) IBOutlet UISwitch *switchpackage;
+@property (nonatomic) NSInteger shipmentid;
+@property (nonatomic) NSInteger packageid;
 @property (strong, nonatomic) NSIndexPath *indexpath;
 
 + (id)newcell;

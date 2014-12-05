@@ -24,9 +24,6 @@
 
 - (void)awakeFromNib
 {
-    _viewpackage = [NSArray sortViewsWithTagInArray:_viewpackage];
-    _labelpackage = [NSArray sortViewsWithTagInArray:_labelpackage];
-    _image = [NSArray sortViewsWithTagInArray:_image];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

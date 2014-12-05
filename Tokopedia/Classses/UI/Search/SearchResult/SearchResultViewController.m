@@ -95,6 +95,12 @@
 {
     [super viewDidLoad];
     
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
@@ -155,16 +161,17 @@
     
     //cache
     NSString* path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDSEARCH_CACHEFILEPATH];
-    NSString *querry =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
+    NSString *query =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *deptid =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
-        _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDSEARCHPRODUCT_APIRESPONSEFILEFORMAT,querry?:deptid]];
+        _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDSEARCHPRODUCT_APIRESPONSEFILEFORMAT,query?:deptid]];
     }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-         _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDSEARCHCATALOG_APIRESPONSEFILEFORMAT,querry?:deptid]];
+         _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDSEARCHCATALOG_APIRESPONSEFILEFORMAT,query?:deptid]];
     }
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -413,16 +420,16 @@
     
     NSLog(@"========= Request Count : %d ==============", _requestcount);
     
-    NSString *querry =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
+    NSString *query =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *type = [_params objectForKey:kTKPDSEARCH_DATATYPE];
     NSString *deptid =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     BOOL isredirect = [[_params objectForKey:kTKPDSEARCH_DATAISREDIRECTKEY] boolValue];
     NSDictionary* param;
     
-    if (querry != nil && ![querry isEqualToString:@""] && !isredirect) {
+    if (query != nil && ![query isEqualToString:@""] && !isredirect) {
         param = @{
                 //@"auth":@(1),
-                kTKPDSEARCH_APIQUERYKEY : querry?:@"",
+                kTKPDSEARCH_APIQUERYKEY : query?:@"",
                 kTKPDSEARCH_APIACTIONTYPEKEY : type?:@"",
                 kTKPDSEARCH_APIPAGEKEY : @(_page),
                 kTKPDSEARCH_APILIMITKEY : @(kTKPDSEARCH_LIMITPAGE),
@@ -592,11 +599,11 @@
                         _urinext = _searchitem.result.paging.uri_next;
                         
                         NSURL *url = [NSURL URLWithString:_urinext];
-                        NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                        NSArray* query = [[url query] componentsSeparatedByString: @"&"];
                         
                         NSMutableDictionary *queries = [NSMutableDictionary new];
                         [queries removeAllObjects];
-                        for (NSString *keyValuePair in querry)
+                        for (NSString *keyValuePair in query)
                         {
                             NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
                             NSString *key = [pairComponents objectAtIndex:0];
@@ -615,16 +622,16 @@
                 else{
                     _uriredirect =  uriredirect;
                     NSURL *url = [NSURL URLWithString:_uriredirect];
-                    NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
+                    NSArray* query = [[url path] componentsSeparatedByString: @"/"];
                     
                     // Redirect URI to hotlist
-                    if ([querry[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
+                    if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
                         HotlistResultViewController *vc = [HotlistResultViewController new];
-                        vc.data = @{kTKPDSEARCH_DATAISSEARCHHOTLISTKEY : @(YES), kTKPDSEARCHHOTLIST_APIQUERYKEY : querry[2]};
+                        vc.data = @{kTKPDSEARCH_DATAISSEARCHHOTLISTKEY : @(YES), kTKPDSEARCHHOTLIST_APIQUERYKEY : query[2]};
                         [self.navigationController pushViewController:vc animated:NO];
                     }
                     // redirect uri to search category
-                    if ([querry[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
+                    if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
                         NSString *deptid = _searchitem.result.redirect_url.department_id;
                         [_params setObject:deptid forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
                         [_params setObject:@(YES) forKey:kTKPDSEARCH_DATAISREDIRECTKEY];
@@ -712,7 +719,9 @@
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:0};
 
             UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, 0);
-            [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
+            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
+                [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
+            }
             UIImage *screenshotImage = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
             vc.screenshotImage = screenshotImage;

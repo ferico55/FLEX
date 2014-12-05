@@ -157,7 +157,7 @@
     self.navigationItem.leftBarButtonItem = barbutton1;
     
     /** set inset table for different size**/
-    is_dismissed = [_data objectForKey:@"is_dismissed"];
+    is_dismissed = [[_data objectForKey:@"is_dismissed"] boolValue];
     if(is_dismissed) {
         [self.navigationController.navigationBar setTranslucent:NO];
         
@@ -294,12 +294,15 @@
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
-         
+            case 14:
+            {
+                
+            }
             default:
                 break;
         }
     } else {
-        UIButton *btn = (UIButton *)sender;
+        UIBarButtonItem *btn = (UIBarButtonItem *)sender;
         switch (btn.tag) {
             case 10:
             {
@@ -329,31 +332,38 @@
                 // go to shop
                 NSMutableArray *viewcontrollers = [NSMutableArray new];
                 NSInteger shopid = _product.result.shop_info.shop_id;
-                /** create new view controller **/
-                ShopProductViewController *v = [ShopProductViewController new];
-                v.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
-                           kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                [viewcontrollers addObject:v];
-                ShopTalkViewController *v1 = [ShopTalkViewController new];
-                v1.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                [viewcontrollers addObject:v1];
-                ShopReviewViewController *v2 = [ShopReviewViewController new];
-                v2.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                [viewcontrollers addObject:v2];
-                ShopNotesViewController *v3 = [ShopNotesViewController new];
-                v3.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                [viewcontrollers addObject:v3];
-                /** Adjust View Controller **/
-                TKPDTabShopNavigationController *tapnavcon = [TKPDTabShopNavigationController new];
-                tapnavcon.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
-                                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                [tapnavcon setViewControllers:viewcontrollers animated:YES];
-                [tapnavcon setSelectedIndex:0];
-                
-                [self.navigationController pushViewController:tapnavcon animated:YES];
+                if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]==shopid) {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                else{
+                    // create new view controller
+                    ShopProductViewController *v = [ShopProductViewController new];
+                    v.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                               kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0)
+                               };
+                    [viewcontrollers addObject:v];
+                    ShopTalkViewController *v1 = [ShopTalkViewController new];
+                    v1.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    [viewcontrollers addObject:v1];
+                    ShopReviewViewController *v2 = [ShopReviewViewController new];
+                    v2.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    [viewcontrollers addObject:v2];
+                    ShopNotesViewController *v3 = [ShopNotesViewController new];
+                    v3.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    [viewcontrollers addObject:v3];
+                    /** Adjust View Controller **/
+                    TKPDTabShopNavigationController *tapnavcon = [TKPDTabShopNavigationController new];
+                    tapnavcon.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                                       kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    [tapnavcon setViewControllers:viewcontrollers animated:YES];
+                    [tapnavcon setSelectedIndex:0];
+                    
+                    [self.navigationController pushViewController:tapnavcon animated:YES];
+                }
                 break;
             }
         }
@@ -898,9 +908,9 @@
 -(void)setHeaderviewData{
 
     CGFloat currentLabelHeight = _productnamelabel.frame.size.height;
-    _productnamelabel.text = _product.result.info.product_name;
+    _productnamelabel.text = _product.result.info.product_name?:@"";
 
-    NSString *productName = _product.result.info.product_name;
+    NSString *productName = _product.result.info.product_name?:@"";
 //    NSString *productName = @"Alice in Wonderland: White Rabbit Tsum Tsum Plush 3.5";
 
     UIFont *font = [UIFont fontWithName:@"GothamMedium" size:15];
@@ -990,9 +1000,9 @@
     _imagescrollview.contentMode = UIViewContentModeScaleAspectFit;
     _imagescrollview.showsHorizontalScrollIndicator = NO;
     
-    [_datatalk setObject:_product.result.info.product_name forKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
-    [_datatalk setObject:_product.result.info.product_price forKey:kTKPDDETAILPRODUCT_APIPRODUCTPRICEKEY];
-    [_datatalk setObject:_headerimages forKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
+    [_datatalk setObject:_product.result.info.product_name?:@"" forKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
+    [_datatalk setObject:_product.result.info.product_price?:@"" forKey:kTKPDDETAILPRODUCT_APIPRODUCTPRICEKEY];
+    [_datatalk setObject:_headerimages?:@"" forKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
 }
 
 -(void)setFooterViewData

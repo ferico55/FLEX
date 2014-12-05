@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "profile.h"
-#import "SettingLocations.h"
+#import "detail.h"
+#import "Address.h"
 #import "SettingLocationDetailViewController.h"
 #import "SettingLocationEditViewController.h"
 
@@ -43,23 +43,25 @@
     
     [self setDefaultData:_data];
     
-    UIBarButtonItem *barbutton1;
+    Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+    self.title = list.location_address_name;
     
-    NSBundle* bundle = [NSBundle mainBundle];
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-	[barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor whiteColor]];
+    UIBarButtonItem *barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [barbutton1 setTintColor:[UIColor blackColor]];
     barbutton1.tag = 11;
     self.navigationItem.rightBarButtonItem = barbutton1;
+}
+
+-(void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    _scrollView.contentSize = _contentView.frame.size;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -90,10 +92,10 @@
             case 11:
             {   //Edit
                 SettingLocationEditViewController *vc = [SettingLocationEditViewController new];
-                vc.data = @{kTKPDPROFILE_DATAADDRESSKEY : [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY],
+                vc.data = @{kTKPDDETAIL_DATAADDRESSKEY : [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY],
                             kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
-                            kTKPDPROFILE_DATAEDITTYPEKEY : @(kTKPDPROFILESETTINGEDIT_DATATYPEEDITVIEWKEY),
-                            kTKPDPROFILE_DATAINDEXPATHKEY : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]
+                            kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY),
+                            kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
                             };
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
@@ -124,10 +126,11 @@
 {
     _data = data;
     if (data) {
-        SettingLocations *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+        Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
         
-        _labeladdressname.text = list.location_addr_name;
-        _labeladdress.text = [NSString stringWithFormat:@"%@\n%@",list.location_address,list.location_area];
+        _labeladdressname.text = list.location_address_name;
+        NSString *address = [NSString convertHTML:list.location_address];
+        _labeladdress.text = [NSString stringWithFormat:@"%@\n%@",address,list.location_area];
         _labelcity.text = list.location_city_name;
         _labeldistrict.text = list.location_district_name;
         _labelphonenumber.text = list.location_phone;
