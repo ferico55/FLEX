@@ -773,8 +773,8 @@
             case 14:
             {
                 ShopInfoViewController *vc = [ShopInfoViewController new];
-                //vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
-                 //           kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
+                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }

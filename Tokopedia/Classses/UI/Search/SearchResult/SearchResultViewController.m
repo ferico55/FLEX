@@ -719,7 +719,9 @@
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:0};
 
             UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, 0);
-            [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
+            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
+                [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
+            }
             UIImage *screenshotImage = UIGraphicsGetImageFromCurrentImageContext();
             UIGraphicsEndImageContext();
             vc.screenshotImage = screenshotImage;

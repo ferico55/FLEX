@@ -178,20 +178,23 @@
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
     
-    self.table.scrollEnabled = NO;
+    _table.scrollEnabled = NO;
     
-    self.table.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    if ([_table respondsToSelector:@selector(setKeyboardDismissMode:)]) {
+        _table.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    }
+    
+    [self configureRestKit];
+    [self loadData];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    if (!_isrefreshview) {
-        [self configureRestKit];
-        if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self loadData];
-        }
+    [self configureRestKit];
+    if (_isnodata && !_isrefreshview && _page<1) {
+        [self loadData];
     }
     
     self.table.scrollEnabled = NO;

@@ -98,10 +98,10 @@ typedef enum
 #define kTKPDDETAIL_APIGETSHOPNOTEKEY @"get_shop_note"
 
 #define kTKPDDETAIL_APIGETPAYMENTINFOKEY @"get_payment_info"
-#define kTKPDDETAIL_APIUPDATEPAYMENTINFOKEY @"event_update_payment_info"
+#define kTKPDDETAIL_APIUPDATEPAYMENTINFOKEY @"update_payment_info"
 
 #define kTKPDDETAIL_APIGETSHOPFAVORITEDKEY @"get_people_who_favorite_myshop"
-#define kTKPDDETAIL_APISETSHOPINFOKEY @"event_update_shop_info"
+#define kTKPDDETAIL_APISETSHOPINFOKEY @"update_shop_info"
 #define kTKPDDETAIL_APIUPLOADGENERATEHOSTKEY @"generate_host"
 #define kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY @"upload_shop_image"
 //Shop Setting Shipping
@@ -557,6 +557,7 @@ typedef enum
 #define kTKPDDETAILTALK_APIPATH @"talk.pl"
 #define kTKPDDETAILSHOPEDITOR_APIPATH @"myshop-editor.pl"
 #define kTKPDDETAILSHOPEDITORACTION_APIPATH @"action/myshop-editor.pl"
+#define kTKPDDETAILSHOPPAYMENT_APIPATH @"myshop-payment.pl"
 #define kTKPDDETAILSHOPACTIONEDITOR_APIPATH @"action/myshop-shipment.pl"
 
 

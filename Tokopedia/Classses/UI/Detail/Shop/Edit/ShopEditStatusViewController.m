@@ -213,7 +213,7 @@
                 NSString *note = [_datainput objectForKey:kTKPDSHOPEDIT_APIREASONKEY];
                 ClosedInfo *closedinfo = [_data objectForKey:kTKPDDETAIL_DATACLOSEDINFOKEY];
                 _viewcontentclose.hidden = NO;
-                _textviewnote.text = note?:closedinfo.reason;
+                _textviewnote.text = (note && ![note isEqualToString:@""])?note:closedinfo.reason;
                 _labelcatatan.hidden = !(!closedinfo.reason);
                 
                 ((UIImageView*)_thumbicon[0]).hidden = YES;
@@ -228,8 +228,8 @@
                 int day = [components day];
                 NSString *datestring = [NSString stringWithFormat:@"%d/%d/%d",day,month,year];
                 [_datainput setObject:datestring forKey:kTKPDDETAILSHOP_APICLOSEDUNTILKEY];
-                
-                [_buttondate setTitle:closedinfo.until?:datestring forState:UIControlStateNormal];
+                NSString *until = [closedinfo.until isEqualToString:@"0"]?datestring:closedinfo.until;
+                [_buttondate setTitle:until forState:UIControlStateNormal];
                 break;
             }
             default:
