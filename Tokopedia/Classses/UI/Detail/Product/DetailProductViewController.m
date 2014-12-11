@@ -28,11 +28,11 @@
 
 #import "DetailProductOtherView.h"
 
-#import "../../Controller/TKPDTabShopNavigationController.h"
-#import "../../Detail/Shop/Product/ShopProductViewController.h"
-#import "../../Detail/Shop/Talk/ShopTalkViewController.h"
-#import "../../Detail/Shop/Review/ShopReviewViewController.h"
-#import "../../Detail/Shop/Notes/ShopNotesViewController.h"
+#import "TKPDTabShopNavigationController.h"
+#import "ShopProductViewController.h"
+#import "ShopTalkViewController.h"
+#import "ShopReviewViewController.h"
+#import "ShopNotesViewController.h"
 
 #import "URLCacheController.h"
 

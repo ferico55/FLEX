@@ -65,20 +65,6 @@
     }
     
     _messages = [NSMutableArray new];
-    
-//    _messages = [[NSMutableArray alloc] initWithObjects:
-//                 @"6,8. Thanks! You too. Cuu soon.",
-//                 @"6,7. Thanks! You too. Cuu soon.",
-//                 @"6,6. Thanks! You too. Cuu soon.",
-//                 @"6,5. Thanks! You too. Cuu soon.",
-//                  @"6. Thanks! You too. Cuu soon.",
-//                  @"5. Oh that sucks. A pitty, well then - have a nice day.."
-//                  @"4. Glad to hear. No sorry, I have to work.",
-//                  @"3. I'm fine, thanks. Up for dinner tonight?",
-//                  @"2. I'm great, how are you?",
-//                  @"1. Hello, how are you.",
-//                 nil];
-    
     if(self){
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillShow:)
@@ -91,8 +77,7 @@
                                                    object:nil];		
     }
     
-   
-    
+
     return self;
 }
 
@@ -107,17 +92,7 @@
     _operationQueue = [NSOperationQueue new];
     _page = 1;
     
-    //UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    //if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-    //    UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    //    barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    //}
-    //else {
-    //    barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    //}
-    //
-    //[barbutton1 setTag:10];
-    //self.navigationItem.leftBarButtonItem = barbutton1;
+    
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
     barButtonItem.tag = 10;
@@ -154,6 +129,10 @@
         }
     }
     
+}
+
+- (void)dealloc{
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 
 - (void)didReceiveMemoryWarning {
@@ -345,6 +324,7 @@
     
     _requestcount ++;
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGE_PATHURL parameters:param];
+    
     
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -572,6 +552,7 @@
     CGRect r = _messagingview.frame;
     r.size.height -= diff;
     r.origin.y += diff;
+    
     _messagingview.frame = r;
 }
 
@@ -610,7 +591,7 @@
     NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
     
     // get a rect for the textView frame
-    self.view.backgroundColor = [UIColor clearColor];
+    self.view.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1.0];
     CGRect containerFrame = self.view.frame;
     
     containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height + 65;
@@ -647,7 +628,7 @@
     
     
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:KTKPDMESSAGEACTION_PATHURL keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:KTKPDMESSAGEPRODUCTACTION_PATHURL keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanageraction addResponseDescriptor:responseDescriptorStatus];
 }
@@ -675,8 +656,11 @@
                             };
     
     _requestsendcount ++;
-    _requestsend = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGEACTION_PATHURL parameters:param];
+    _requestsend = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGEPRODUCTACTION_PATHURL parameters:param];
     
+    NSDictionary *userinfo;
+    userinfo = @{MESSAGE_INDEX_PATH : [_data objectForKey:MESSAGE_INDEX_PATH], KTKPDMESSAGE_MESSAGEREPLYKEY : _growingtextview.text};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessageWithIndex" object:nil userInfo:userinfo];
     
     [_requestsend setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsendmessage:mappingResult withOperation:operation];

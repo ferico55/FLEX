@@ -7,10 +7,8 @@
 //
 
 #import "TKPDTabInboxTalkNavigationController.h"
-
 #import "InboxTalkViewController.h"
 #import "ProductTalkDetailViewController.h"
-
 #import "GeneralTalkCell.h"
 
 #import "Talk.h"
@@ -20,6 +18,7 @@
 #import "inbox.h"
 #import "home.h"
 #import "stringrestkit.h"
+#import "string_inbox_talk.h"
 #import "detail.h"
 
 #import "URLCacheController.h"
@@ -33,7 +32,7 @@
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (nonatomic, strong) NSDictionary *userinfo;
-@property (nonatomic, strong) NSMutableArray *talks;
+@property (nonatomic, strong) NSMutableArray *talkList;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @end
@@ -44,14 +43,14 @@
     BOOL _isrefreshview;
     BOOL _iseditmode;
     
-    NSInteger _page;
+    NSInteger _talkListPage;
     NSInteger _limit;
     NSInteger _viewposition;
     
     NSMutableDictionary *_paging;
     
     NSString *_urinext;
-    NSString *nav;
+    NSString *_talkNavigationFlag;
     
     UIRefreshControl *_refreshControl;
     NSInteger _requestcount;
@@ -88,7 +87,6 @@
 }
 
 #pragma mark - Initialization
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -100,26 +98,36 @@
     return self;
 }
 
+
+- (void)initNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateTotalComment:)
+                                                 name:@"UpdateTotalComment" object:nil];
+    
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showTalkWithFilter:)
+                                                 name:[NSString stringWithFormat:@"%@%@", @"showRead", _talkNavigationFlag]
+                                               object:nil];
+    }
+
+- (void)initCache {
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:TKPD_INBOXTALK_CACHE];
+    
+    if(_userinfo[@"show_read"] == nil) {
+        _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_all",[_data objectForKey:@"nav"]]];
+    } else {
+        _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@_%@",[_data objectForKey:@"nav"], _readstatus]];
+    }
+    
+    _cachecontroller.filePath = _cachepath;
+    _cachecontroller.URLCacheInterval = 86400.0;
+    [_cachecontroller initCacheWithDocumentPath:path];
+}
+
 #pragma mark - Life Cycle
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    nav = [_data objectForKey:@"nav"];
-    _operationQueue = [NSOperationQueue new];
-    _operationUnfollowQueue = [NSOperationQueue new];
-    _operationDeleteQueue = [NSOperationQueue new];
-    
-    /** construct cache con */
-    _cacheconnection = [URLCacheConnection new];
-    _cachecontroller = [URLCacheController new];
-    
-    /** create new **/
-    _talks = [NSMutableArray new];
-    
-    /** set first page become 1 **/
-    _page = 1;
-    
-    /** set inset table for different size**/
+- (void)addBottomInsetWhen14inch {
     if (is4inch) {
         UIEdgeInsets inset = _table.contentInset;
         inset.bottom += 155;
@@ -130,66 +138,52 @@
         inset.bottom += 240;
         _table.contentInset = inset;
     }
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
     
-    /** set table view datasource and delegate **/
+    [self addBottomInsetWhen14inch];
+    _talkNavigationFlag = [_data objectForKey:@"nav"];
+    _talkListPage = 1;
+    
+    _operationQueue = [NSOperationQueue new];
+    _operationUnfollowQueue = [NSOperationQueue new];
+    _operationDeleteQueue = [NSOperationQueue new];
+    _cacheconnection = [URLCacheConnection new];
+    _cachecontroller = [URLCacheController new];
+    _talkList = [NSMutableArray new];
+    _refreshControl = [[UIRefreshControl alloc] init];
+
+    
     _table.delegate = self;
     _table.dataSource = self;
-    
-    /** set table footer view (loading act) **/
     _table.tableFooterView = _footer;
     
-    if (_talks.count > 0) {
-        _isnodata = NO;
-    }
-    
-    /** init notification*/
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(updateTotalComment:)
-                                                 name:@"UpdateTotalComment" object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(showRead:)
-                                                 name:@"showRead"
-                                               object:nil];
-    
-    /** adjust refresh control **/
-    _refreshControl = [[UIRefreshControl alloc] init];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
-    /** init cache */
-    [self initCache];
+    if (_talkList.count > 0) {
+        _isnodata = NO;
+    }
     
-    /**init view*/
+    [self initNotification];
+    [self initCache];
     [self configureRestKit];
     
     //TODO::
     //gimana kalo di balikin sama server data kosong
     //gimana kalo di balikin error sama server
-    //cache filter
-    //cache sorting
-    //cache tab
-    if(_page == 1) {
+    if(_talkListPage == 1) {
         _isLoadFromCache = YES;
         [self loadDataFromCache];
-
     }
 
     _isLoadFromCache = NO;
     [self loadData];
 
-    
-    NSLog(@"going here first");
 }
 
-- (void)initCache {
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:TKPD_INBOXTALK_CACHE];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%d ", TKPD_INBOXTALK_RESPONSEFILEFORMAT, [_data objectForKey:@"nav"], _readstatus]];
-    
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-    [_cachecontroller initCacheWithDocumentPath:path];
-}
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -197,7 +191,7 @@
     if (!_isrefreshview) {
         [self configureRestKit];
         
-        if (_isnodata && _page < 1) {
+        if (_isnodata && _talkListPage < 1) {
             [self loadData];
         }
     }
@@ -237,7 +231,7 @@
 
 #pragma mark - TableView Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _isnodata ? 0 : _talks.count;
+    return _isnodata ? 0 : _talkList.count;
 }
 
 
@@ -253,23 +247,23 @@
             ((GeneralTalkCell*)cell).delegate = self;
         }
         
-        if (_talks.count > indexPath.row) {
-            TalkList *list = _talks[indexPath.row];
+        if (_talkList.count > indexPath.row) {
+            TalkList *list = _talkList[indexPath.row];
             
-            ((GeneralTalkCell*)cell).deleteButton.hidden = NO;
-            ((GeneralTalkCell*)cell).reportView.hidden = YES;
+//            ((GeneralTalkCell*)cell).deleteButton.hidden = NO;
+//            ((GeneralTalkCell*)cell).reportView.hidden = YES;
             ((GeneralTalkCell*)cell).indexpath = indexPath;
+            ((GeneralTalkCell*)cell).data = list;
             [((GeneralTalkCell*)cell).userButton setTitle:list.talk_user_name forState:UIControlStateNormal];
             [((GeneralTalkCell*)cell).productButton setTitle:list.talk_product_name forState:UIControlStateNormal];
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
-            [((GeneralTalkCell*)cell).commentbutton setTitle:[NSString stringWithFormat:@"%@ Comment", list.talk_total_comment] forState:UIControlStateNormal];
+            [((GeneralTalkCell*)cell).commentbutton setTitle:[NSString stringWithFormat:@"%@ %@", list.talk_total_comment, COMMENT_TALK] forState:UIControlStateNormal];
             
-            if([[_data objectForKey:@"nav"] isEqualToString:@"inbox-talk-my-product"]) {
+            if([[_data objectForKey:@"nav"] isEqualToString:NAV_TALK_MYPRODUCT]) {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
             } else {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = NO;
             }
-
             
             if ([list.talk_message length] > 30) {
                 NSRange stringRange = {0, MIN([list.talk_message length], 30)};
@@ -285,7 +279,6 @@
                 ((GeneralTalkCell*)cell).commentbutton.enabled = YES;
             }
             
-            //load user image
             NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *userImageView = ((GeneralTalkCell*)cell).thumb;
             userImageView.image = nil;
@@ -297,7 +290,6 @@
 #pragma clang diagnostic pop
             } failure:nil];
             
-            //load product image
             NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *productImageView = ((GeneralTalkCell*)cell).productImageView;
             productImageView.image = nil;
@@ -314,11 +306,11 @@
         return cell;
         
     } else {
-        static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
+        static NSString *cellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
         
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
         
@@ -332,17 +324,13 @@
 #pragma mark - Request + Mapping
 - (void)configureRestKit
 {
-    // initialize RestKit
     _objectmanager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Talk class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TalkResult class]];
-    
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TalkList class]];
 
     [listMapping addAttributeMappingsFromArray:@[
@@ -367,15 +355,26 @@
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
     
     // Relationship Mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
+                                                                                 toKeyPath:kTKPD_APILISTKEY
+                                                                               withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];
     
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPAGINGKEY toKeyPath:kTKPDDETAIL_APIPAGINGKEY withMapping:pagingMapping];
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPAGINGKEY
+                                                                                 toKeyPath:kTKPDDETAIL_APIPAGINGKEY
+                                                                               withMapping:pagingMapping];
     [resultMapping addPropertyMapping:pageRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDINBOX_TALK_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodGET
+                                                                                             pathPattern:kTKPDINBOX_TALK_APIPATH
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
@@ -388,8 +387,10 @@
     NSError* error;
     NSData *data = [NSData dataWithContentsOfFile:_cachepath];
     
-    if(data) {
-        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
+    if(data.length) {
+        id parsedData = [RKMIMETypeSerialization objectFromData:data
+                                                       MIMEType:RKMIMETypeJSON
+                                                          error:&error];
         if (parsedData == nil && error) {
             NSLog(@"parser error");
         }
@@ -399,13 +400,14 @@
             [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
         }
         
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData
+                                                                   mappingsDictionary:mappingsDictionary];
         NSError *mappingError = nil;
         BOOL isMapped = [mapper execute:&mappingError];
         if (isMapped && !mappingError) {
             RKMappingResult *mappingresult = [mapper mappingResult];
-//            _isNeedToInsertCache = NO;
             _isrefreshview = YES;
+            _isNeedToInsertCache = NO;
             [self requestsuccess:mappingresult withOperation:nil];
         }
     }
@@ -421,20 +423,25 @@
     
     NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDTALK_ACTIONGET,
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
-                            kTKPDHOME_APIPAGEKEY:@(_page),
+                            kTKPDHOME_APIPAGEKEY:@(_talkListPage),
                             KTKPDMESSAGE_FILTERKEY:_readstatus?_readstatus:@"",
                             KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
                             KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]
                             };
     
     _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGE_TALK parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:KTKPDMESSAGE_TALK
+                                                                parameters:param];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-//        _isNeedToInsertCache = YES;
-        [self requestsuccess:mappingResult withOperation:operation];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
+        _isNeedToInsertCache = YES;
         
+        [self requestsuccess:mappingResult withOperation:operation];
         [_table reloadData];
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
@@ -468,20 +475,21 @@
         
         if (status) {
             if(_isrefreshview) {
-                [_talks removeAllObjects];
+                [_talkList removeAllObjects];
             }
             
-            [_talks addObjectsFromArray: inboxtalk.result.list];
+            [_talkList addObjectsFromArray: inboxtalk.result.list];
 
-            //save only page 1 to cache
-            if(_page == 1) {
-                [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+            if(_talkListPage == PAGE_TO_CACHE && _isNeedToInsertCache) {
+                [_cacheconnection connection:operation.HTTPRequestOperation.request
+                          didReceiveResponse:operation.HTTPRequestOperation.response];
                 [_cachecontroller connectionDidFinish:_cacheconnection];
+                
                 [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
             }
             
             
-            if (_talks.count >0) {
+            if (_talkList.count >0) {
                 _isnodata = NO;
                 _urinext =  inboxtalk.result.paging.uri_next;
                 NSURL *url = [NSURL URLWithString:_urinext];
@@ -499,11 +507,8 @@
                 }
 
                 if(!_isLoadFromCache) {
-                    _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
+                    _talkListPage = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
                 }
-
-                
-                
                 
             } else {
                 _isnodata = YES;
@@ -561,7 +566,7 @@
 - (void)GeneralTalkCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
     NSInteger row = indexpath.row;
-    TalkList *list = _talks[row];
+    TalkList *list = _talkList[row];
     vc.data = @{
                 TKPD_TALK_MESSAGE:list.talk_message?:0,
                 TKPD_TALK_USER_IMG:list.talk_user_image?:0,
@@ -571,8 +576,6 @@
                 TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:0,
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
                 TKPD_TALK_SHOP_ID:list.talk_shop_id?:0,
-                
-                //utk notification, apabila total comment bertambah, maka list ke INDEX akan berubah pula
                 kTKPDDETAIL_DATAINDEXKEY : @(row)?:0
                 };
     [self.navigationController pushViewController:vc animated:YES];
@@ -626,10 +629,9 @@
     [_objectDeletemanager addResponseDescriptor:responseDescriptorStatus];
 }
 
-- (void)unfollowTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withButton:(UIButton *)buttonUnfollow {
+- (void)followAnimateZoomOut:(UIButton*)buttonUnfollow {
     double delayInSeconds = 2.0;
     if([[buttonUnfollow currentTitle] isEqualToString:TKPD_TALK_FOLLOW]) {
-//        [buttonUnfollow setTitle:TKPD_TALK_UNFOLLOW forState:UIControlStateNormal];
         [UIView beginAnimations:nil context:NULL];
         [UIView setAnimationDuration:0.3];
         buttonUnfollow.transform = CGAffineTransformMakeScale(1.3,1.3);
@@ -643,11 +645,20 @@
         [buttonUnfollow setTitle:TKPD_TALK_FOLLOW forState:UIControlStateNormal];
         buttonUnfollow.transform = CGAffineTransformMakeScale(1,1);
         [UIView commitAnimations];
-        
     }
-    [self configureUnfollowRestkit];
     
-    TalkList *list = _talks[indexpath.row];
+    buttonUnfollow.enabled = NO;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        buttonUnfollow.enabled = YES;
+    });
+}
+
+- (void)unfollowTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withButton:(UIButton *)buttonUnfollow {
+    [self configureUnfollowRestkit];
+    [self followAnimateZoomOut:buttonUnfollow];
+    
+    TalkList *list = _talkList[indexpath.row];
     if (_requestUnfollow.isExecuting) return;
     
     NSDictionary* param = @{
@@ -667,32 +678,26 @@
     }];
     
     [_operationUnfollowQueue addOperation:_requestUnfollow];
-    
-    buttonUnfollow.enabled = NO;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        buttonUnfollow.enabled = YES;
-    });
-    
+
 }
 
 - (void)deleteTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     UIAlertView *alert = [[UIAlertView alloc]
-                          initWithTitle:@"Apakah Anda yakin ingin menghapus diskusi ini ?"
-                          message:@"Diskusi yg sudah dihapus, tidak dapat dikembalikan"
+                          initWithTitle:PROMPT_DELETE_TALK
+                          message:PROMPT_DELETE_TALK_MESSAGE
                           delegate:self
-                          cancelButtonTitle:@"Tidak"
+                          cancelButtonTitle:BUTTON_CANCEL
                           otherButtonTitles:nil];
     
-    [alert addButtonWithTitle:@"Ya"];
+    [alert addButtonWithTitle:BUTTON_OK];
     [alert show];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     //delete talk
     if(buttonIndex == 1) {
-        TalkList *list = _talks[buttonIndex - 1];
-        [_talks removeObjectAtIndex:buttonIndex-1];
+        TalkList *list = _talkList[buttonIndex];
+        [_talkList removeObjectAtIndex:buttonIndex];
         [_table reloadData];
         [self configureDeleteRestkit];
         
@@ -706,7 +711,10 @@
                                 };
         
         _requestDeleteCount ++;
-        _requestDelete = [_objectDeletemanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:TKPD_MESSAGE_TALK_ACTION parameters:param];
+        _requestDelete = [_objectDeletemanager appropriateObjectRequestOperationWithObject:self
+                                                                                    method:RKRequestMethodPOST
+                                                                                      path:TKPD_MESSAGE_TALK_ACTION
+                                                                                parameters:param];
         
         [_requestDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             
@@ -724,20 +732,6 @@
     
 }
 
-- (id)clickUserId:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-{
-    TalkList *list = _talks[indexpath.row];
-    
-    return list;
-}
-
-
-- (NSString*)clickProductId:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-{
-    TalkList *list = _talks[indexpath.row];
-    
-    return list.talk_product_id;
-}
 
 - (id)navigationController:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
@@ -751,7 +745,7 @@
     [self cancel];
     _requestcount = 0;
 //    [_talks removeAllObjects];
-    _page = 1;
+    _talkListPage = 1;
     _isrefreshview = YES;
     
     [_table reloadData];
@@ -765,13 +759,13 @@
     NSDictionary *userinfo = notification.userInfo;
     NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
     
-    TalkList *list = _talks[index];
+    TalkList *list = _talkList[index];
     list.talk_total_comment = [NSString stringWithFormat:@"%@",[userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT]];
     [_table reloadData];
 }
 
 
--(void) showRead:(NSNotification*)notification {
+-(void) showTalkWithFilter:(NSNotification*)notification {
     if (_request.isExecuting) return;
     _userinfo = notification.userInfo;
     
@@ -782,17 +776,33 @@
     }
     
     [self cancel];
-    [_talks removeAllObjects];
-    [_table reloadData];
-    _page = 1;
-    _table.tableFooterView = _footer;
+    _talkListPage = 1;
+    
+    
+    /**init view*/
     [self configureRestKit];
     [self initCache];
-    [self loadData];
     
-    [_table reloadData];
+    NSData *data = [NSData dataWithContentsOfFile:_cachepath];
+    if(_talkListPage == 1 && data.length) {
+        _isLoadFromCache = YES;
+        [self loadDataFromCache];
+        [_table reloadData];
+    } else {
+        [_talkList removeAllObjects];
+        [_table reloadData];
+         _table.tableFooterView = _footer;
+    }
+    
+    _isLoadFromCache = NO;
+    [self loadData];
 }
 
+#pragma mark - Memory Management
+-(void)dealloc{
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
 
 
 

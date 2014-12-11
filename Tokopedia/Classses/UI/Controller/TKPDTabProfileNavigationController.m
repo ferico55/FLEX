@@ -63,6 +63,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *headerview;
 @property (weak, nonatomic) IBOutlet UIButton *button;
+@property (weak, nonatomic) IBOutlet UIButton *buttoneditprofile;
+@property (weak, nonatomic) IBOutlet UIButton *buttonmessage;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -838,8 +840,8 @@
     [_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
-	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
-        
+//	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
+    
         [_act startAnimating];
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_PEOPLEAPIPATH parameters:param];
         
@@ -861,15 +863,15 @@
         
         _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    }else {
-        [_act stopAnimating];
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-        NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
-	}
+////    }else {
+//        [_act stopAnimating];
+//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+//        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+//        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+//        NSLog(@"cache and updated in last 24 hours.");
+//        [self requestfailure:nil];
+//	}
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation

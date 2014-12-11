@@ -90,6 +90,26 @@
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }
+            
+        case 14 : {
+            InboxTalkViewController *vc = [InboxTalkViewController new];
+            vc.data=@{@"nav":@"inbox-talk"};
+            
+            InboxTalkViewController *vc1 = [InboxTalkViewController new];
+            vc1.data=@{@"nav":@"inbox-talk-my-product"};
+            
+            InboxTalkViewController *vc2 = [InboxTalkViewController new];
+            vc2.data=@{@"nav":@"inbox-talk-following"};
+            
+            NSArray *vcs = @[vc,vc1, vc2];
+            
+            TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
+            [nc setSelectedIndex:2];
+            [nc setViewControllers:vcs];
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+            [nav.navigationBar setTranslucent:NO];
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+        }
         default:
             break;
     }

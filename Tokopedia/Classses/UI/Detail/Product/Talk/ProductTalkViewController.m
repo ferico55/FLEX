@@ -200,7 +200,7 @@
         
         if (_list.count > indexPath.row) {
             TalkList *list = _list[indexPath.row];
-            ((GeneralTalkCell*)cell).namelabel.text = list.talk_user_name;
+            ((GeneralTalkCell*)cell).namelabel.titleLabel.text = list.talk_user_name;
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             

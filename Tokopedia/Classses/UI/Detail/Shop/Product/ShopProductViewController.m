@@ -72,6 +72,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *hashtagsscrollview;
 @property (strong, nonatomic) IBOutlet UIView *descriptionview;
 @property (weak, nonatomic) IBOutlet UIScrollView *imagescrollview;
+@property (weak, nonatomic) IBOutlet UIScrollView *productScroll;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionlabel;
 @property (weak, nonatomic) IBOutlet UIView *filterview;
 @property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
@@ -178,7 +179,8 @@
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
     
-    _table.scrollEnabled = NO;
+//    _table.scrollEnabled = NO;
+    _productScroll.scrollEnabled = NO;
     
     if ([_table respondsToSelector:@selector(setKeyboardDismissMode:)]) {
         _table.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
@@ -764,6 +766,14 @@
     NSDictionary *userinfo = notification.userInfo;
     [_detailfilter addEntriesFromDictionary:userinfo];
     [self refreshView:nil];
+}
+
+- (void)disableProductScroll:(NSNotification *)notification {
+    _productScroll.scrollEnabled = NO;
+}
+
+- (void)enableProductScroll:(NSNotification *)notification{
+    _productScroll.scrollEnabled = YES;
 }
 
 @end

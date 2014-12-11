@@ -16,8 +16,6 @@
 @protocol GeneralTalkCellDelegate <NSObject>
 @required
 - (void)GeneralTalkCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
-- (NSString*)clickProductId:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
-- (id)clickUserId:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
 
 @optional
 - (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
@@ -38,26 +36,32 @@
 @property (nonatomic, assign) IBOutlet id<GeneralTalkCellDelegate> delegate;
 #endif
 
+@property (strong, nonatomic) IBOutlet UIView *subContentView;
+
 @property (weak, nonatomic) IBOutlet UIImageView *thumb;
 @property (weak, nonatomic) IBOutlet UILabel *namelabel;
 @property (weak, nonatomic) IBOutlet UILabel *timelabel;
 @property (weak, nonatomic) IBOutlet UILabel *commentlabel;
 @property (weak, nonatomic) IBOutlet UIButton *commentbutton;
-@property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *productImageView;
 @property (weak, nonatomic) IBOutlet UIView *middleView;
 @property (weak, nonatomic) IBOutlet UIView *topView;
+@property (strong, nonatomic) IBOutlet UIView *buttonsView;
 
-@property (weak, nonatomic) IBOutlet UIView *reportView;
-@property (weak, nonatomic) IBOutlet UIButton *reportButton;
 @property (weak, nonatomic) IBOutlet UIButton *unfollowButton;
-@property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 @property (weak, nonatomic) IBOutlet UIButton *userButton;
 @property (weak, nonatomic) IBOutlet UIButton *productButton;
+@property (weak, nonatomic) IBOutlet UIButton *moreActionButton;
 
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong, nonatomic) NSIndexPath *indexpath;
 
+@property (nonatomic) BOOL talkFollowStatus;
+@property (nonatomic) BOOL productViewIsHidden;
+
+@property (weak, nonatomic) IBOutlet UIView *buttonsDividers;
+
 + (id)newcell;
+
 
 @end

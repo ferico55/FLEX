@@ -54,6 +54,7 @@
 
 #define KTKPDMESSAGE_CELLIDENTIFIER @"inbox-message.pl"
 #define KTKPDMESSAGE_NAVKEY @"nav"
+#define MESSAGE_INDEX_PATH @"index_path"
 #define KTKPDMESSAGE_DATAELEMENTKEY @"data_element"
 #define KTKPDMESSAGE_FILTERKEY @"filter"
 #define KTKPDMESSAGE_KEYWORDKEY @"keyword"
