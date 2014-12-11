@@ -91,9 +91,13 @@
 
 
 #pragma mark - Life Cycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    self.navigationController.navigationBarHidden = NO;
+
     _scrollview.delegate = self;
     _scrollview.scrollEnabled = YES;
     CGSize viewsize = _containerview.frame.size;

@@ -21,5 +21,6 @@
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) NSArray *departmenttree;
 @property (nonatomic, strong) NSString *has_catalog;
+@property (nonatomic, strong) NSString *search_url;
 
 @end

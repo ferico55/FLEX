@@ -11,6 +11,7 @@
 #import "StickyAlert.h"
 #import "ProductTalkForm.h"
 #import "inbox.h"
+#import "UITextView+UITextView_Placeholder.h"
 #import "stringrestkit.h"
 
 @interface ProductTalkFormViewController () <UITextViewDelegate>{
@@ -20,8 +21,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *productlabel;
 
-@property (weak, nonatomic) IBOutlet UITextView *talkfield;
-@property (weak, nonatomic) IBOutlet UITextField *talksubjectfield;
+@property (strong, nonatomic) IBOutlet UITextView *commentTextView;
+@property (weak, nonatomic) IBOutlet UITextField *subjectTextField;
 @property (weak, nonatomic) IBOutlet UIImageView *productimage;
 
 
@@ -72,31 +73,13 @@
     
     self.navigationItem.rightBarButtonItem = barbuttonright;
     
-    _talkfield.delegate = self;
-    _talkfield.text = kTKPDMESSAGE_PLACEHOLDER;
-    _talkfield.textColor = [UIColor lightGrayColor]; //optional
+    _commentTextView.textColor = [UIColor lightGrayColor];
+    [_commentTextView setPlaceholder:@"Message"];
+
+    [_commentTextView becomeFirstResponder];
     
     _operationQueue = [NSOperationQueue new];
-    
-    
-}
 
-- (void)textViewDidBeginEditing:(UITextView *)textView
-{
-    if ([textView.text isEqualToString:kTKPDMESSAGE_PLACEHOLDER]) {
-        textView.text = @"";
-        textView.textColor = [UIColor blackColor]; //optional
-    }
-    [textView becomeFirstResponder];
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-    if ([textView.text isEqualToString:@""]) {
-        textView.text = kTKPDMESSAGE_PLACEHOLDER;
-        textView.textColor = [UIColor lightGrayColor]; //optional
-    }
-    [textView resignFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -136,7 +119,7 @@
 -(void)doProductTalkForm {
     NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY:kTKPDTALK_ADDTALK,
-                            kTKPDTALK_TALKMESSAGE:_talkfield.text,
+                            kTKPDTALK_TALKMESSAGE: _commentTextView.text,
                             kTKPDMESSAGE_PRODUCTIDKEY:[_data objectForKey:kTKPDMESSAGE_PRODUCTIDKEY]
                             };
     
@@ -233,7 +216,7 @@
             
             case 11 : {
                 if (_request.isExecuting) return;
-                if(_talkfield.text.length < 3) {
+                if(_commentTextView.text.length < 3) {
                     NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];

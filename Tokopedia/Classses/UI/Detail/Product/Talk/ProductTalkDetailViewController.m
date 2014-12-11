@@ -55,6 +55,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *talktotalcommentlabel;
 @property (weak, nonatomic) IBOutlet UITextField *talktextfield;
 @property (weak, nonatomic) IBOutlet UIImageView *talkuserimage;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
 @property (strong, nonatomic) IBOutlet UIView *header;
 
@@ -93,11 +94,16 @@
     _cachecontroller = [URLCacheController new];
     
     _table.tableHeaderView = _header;
+    
     _page = 1;
     _auth = [NSMutableDictionary new];
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
+    _talktextfield.layer.cornerRadius = 2;
+    _talktextfield.layer.borderWidth = 0.5f;
+    _talktextfield.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
+    
+    _sendButton.layer.cornerRadius = 2;
+    
     //TODO:: Change image
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
@@ -114,7 +120,6 @@
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
 }
-
 
 #pragma mark - Memory Management
 - (void)dealloc{
@@ -142,7 +147,12 @@
 #endif
 }
 
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TalkCommentList *list = _list[indexPath.row];
+    CGSize messageSize = [GeneralTalkCommentCell messageSize:list.comment_message];
+    return messageSize.height + 2 * [GeneralTalkCommentCell textMarginVertical];
+}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -159,7 +169,23 @@
         
         if (_list.count > indexPath.row) {
             TalkCommentList *list = _list[indexPath.row];
-            ((GeneralTalkCommentCell*)cell).commentlabel.text = list.comment_message;
+            
+            UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+            NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
+            style.lineSpacing = 5.0f;
+            NSDictionary *attributes = @{NSFontAttributeName : font, NSParagraphStyleAttributeName : style};
+            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:list.comment_message
+                                                                                   attributes:attributes];
+            ((GeneralTalkCommentCell *)cell).commentlabel.attributedText = attributedString;
+            
+            CGFloat commentLabelWidth = ((GeneralTalkCommentCell*)cell).commentlabel.frame.size.width;
+            
+            [((GeneralTalkCommentCell*)cell).commentlabel sizeToFit];
+
+            CGRect commentLabelFrame = ((GeneralTalkCommentCell*)cell).commentlabel.frame;
+            commentLabelFrame.size.width = commentLabelWidth;
+            ((GeneralTalkCommentCell*)cell).commentlabel.frame = commentLabelFrame;
+                                        
             ((GeneralTalkCommentCell*)cell).user_name.text = list.comment_user_name;
             ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
            
@@ -175,8 +201,9 @@
             UIImageView *user_image = ((GeneralTalkCommentCell*)cell).user_image;
             user_image.image = nil;
 
-
-            [user_image setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [user_image setImageWithURLRequest:request
+                              placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
+                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 //NSLOG(@"thumb: %@", thumb);
@@ -184,12 +211,9 @@
             
 #pragma clang diagnostic pop
                 
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                
-            }];
+            } failure:nil];
         }
         
-        return cell;
     } else {
         static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
         
@@ -202,6 +226,7 @@
         cell.textLabel.text = kTKPDDETAIL_NODATACELLTITLE;
         cell.detailTextLabel.text = kTKPDDETAIL_NODATACELLDESCS;
     }
+    
     return cell;
 }
 
@@ -232,6 +257,8 @@
 -(void)setHeaderData:(NSDictionary*)data
 {
     _talkmessagelabel.text = [data objectForKey:TKPD_TALK_MESSAGE];
+	[_talkmessagelabel sizeToFit];
+
     _talkcreatetimelabel.text = [data objectForKey:TKPD_TALK_CREATE_TIME];
     _talkusernamelabel.text = [data objectForKey:TKPD_TALK_USER_NAME];
     _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Comment",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]];
@@ -242,14 +269,19 @@
     UIImage * image = [UIImage imageWithData:imageData];
     
     _talkuserimage.image = image;
+    _talkuserimage.layer.cornerRadius = _talkuserimage.frame.size.width/2;
     
+//    CGFloat newHeaderHeight = _talktotalcommentlabel.frame.size.height + _talktotalcommentlabel.frame.origin.y + 7;
+//    CGRect newHeaderFrame = _header.frame;
+//    newHeaderFrame.size.height = newHeaderHeight;
+//    _header.frame = newHeaderFrame;
+//    [_header layoutIfNeeded];
 }
 
 #pragma mark - Life Cycle
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
@@ -505,6 +537,7 @@
                 _auth = [auth mutableCopy];
                 
                 TalkCommentList *commentlist = [TalkCommentList new];
+                
                 commentlist.comment_message =_talktextfield.text;
                 commentlist.comment_user_name = [_auth objectForKey:@"full_name"];
                 commentlist.comment_user_image = [_auth objectForKey:@"user_image"];

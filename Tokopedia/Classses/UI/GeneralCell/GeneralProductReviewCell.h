@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-
 #import "StarsRateView.h"
 
 #define kTKPDGENERALREVIEWCELLIDENTIFIER @"GeneralProductReviewCellIdentifier"

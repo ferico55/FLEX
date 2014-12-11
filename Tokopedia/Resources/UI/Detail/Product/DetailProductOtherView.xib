@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamLight.ttf">
@@ -22,13 +23,13 @@
                             <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
                         </imageView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rp. 75.000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4PO-g8-fRS">
-                            <rect key="frame" x="8" y="167" width="103" height="16"/>
+                            <rect key="frame" x="8" y="169" width="103" height="16"/>
                             <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="11"/>
                             <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Model Baju Korea Yang Keren" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qAZ-I6-m7k">
-                            <rect key="frame" x="8" y="147" width="133" height="19"/>
+                            <rect key="frame" x="8" y="149" width="133" height="19"/>
                             <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="11"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -49,6 +50,7 @@
                 <outlet property="thumb" destination="jUW-a0-vrN" id="buF-Ag-azE"/>
                 <outletCollection property="gestureRecognizers" destination="ldh-8I-pSh" appends="YES" id="AtW-2l-OYn"/>
             </connections>
+            <point key="canvasLocation" x="426" y="286"/>
         </view>
         <tapGestureRecognizer id="ldh-8I-pSh">
             <connections>

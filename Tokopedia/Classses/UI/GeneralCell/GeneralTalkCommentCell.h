@@ -34,12 +34,12 @@
 @property (weak, nonatomic) IBOutlet UIImageView *user_image;
 @property (weak, nonatomic) IBOutlet UIImageView *commentfailimage;
 
-
-
-
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong, nonatomic) NSIndexPath *indexpath;
 
 + (id)newcell;
++ (CGSize)messageSize:(NSString*)message;
++ (CGFloat)maxTextWidth;
++ (CGFloat)textMarginVertical;
 
 @end

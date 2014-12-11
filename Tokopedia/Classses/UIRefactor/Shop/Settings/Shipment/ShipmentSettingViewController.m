@@ -886,7 +886,7 @@
 
     // set data input for jne weight value and key
     if ([[_values objectForKey:@"MinimumPengirimanJNE"] isEqual:[NSNull null]] ||
-        [[_values objectForKey:@"MinimumPengirimanJNE"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
+        [[[[_sections objectAtIndex:0] objectAtIndex:4] objectForKey:@"expand"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
         [_dataInput setObject:[NSNumber numberWithBool:NO] forKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY];
         [_dataInput setObject:[NSNumber numberWithInteger:0] forKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY];
     } else {
@@ -912,7 +912,7 @@
 
     // set data input for "Biaya Tambahan Pengiriman TIKI"
     if ([[_values objectForKey:@"BiayaTambahanTiki"] isEqual:[NSNull null]] ||
-        [[[[_sections objectAtIndex:2] objectAtIndex:3] objectForKey:@"expand"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
+        [[[[_sections objectAtIndex:1] objectAtIndex:1] objectForKey:@"expand"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
         [_dataInput setObject:[NSNumber numberWithBool:NO] forKey:kTKPDSHOPSHIPMENT_APITIKIFEEKEY];
         [_dataInput setObject:[NSNumber numberWithInteger:0] forKey:kTKPDSHOPSHIPMENT_APITIKIFEEVALUEKEY];
     } else {
@@ -922,7 +922,7 @@
 
     // set data input for POS INDONESIA weight value and key
     if ([[_values objectForKey:@"MinimumPengirimanPos"] isEqual:[NSNull null]] ||
-        [[_values objectForKey:@"MinimumPengirimanPos"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
+        [[[[_sections objectAtIndex:2] objectAtIndex:2] objectForKey:@"expand"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
         [_dataInput setObject:[NSNumber numberWithBool:NO] forKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY];
         [_dataInput setObject:[NSNumber numberWithInteger:0] forKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY];
     } else {
@@ -932,7 +932,7 @@
     
     // set data input for POS INDONESIA fee value and key
     if ([[_values objectForKey:@"BiayaTambahanPos"] isEqual:[NSNull null]] ||
-        [[[[_sections objectAtIndex:0] objectAtIndex:6] objectForKey:@"expand"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
+        [[[[_sections objectAtIndex:2] objectAtIndex:3] objectForKey:@"expand"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
         [_dataInput setObject:[NSNumber numberWithBool:NO] forKey:kTKPDSHOPSHIPMENT_APIPOSFEEKEY];
         [_dataInput setObject:[NSNumber numberWithInteger:0] forKey:kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY];
     } else {
@@ -1005,7 +1005,7 @@
     NSInteger tikifeevalue = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APITIKIFEEVALUEKEY] integerValue];
     BOOL posminweight = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY] boolValue];
     NSInteger posminweightvalue = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY] integerValue];
-    BOOL posfee = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIPOSFEEKEY] boolValue];
+    BOOL posfee = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIPOSFEEKEY] integerValue];
     NSInteger posfeevalue = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY] integerValue];
     
     NSError *error;
@@ -1173,8 +1173,8 @@
         UITableViewCell *cell = (UITableViewCell *)sender;
         NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
         ShippingInfoShipments *shipment = [_shipments objectAtIndex:indexPath.section];
-        ShipmentInfoViewController *controller = (ShipmentInfoViewController *)segue.destinationViewController;
-        controller.shipment_packages = shipment.shipment_package;
+        ShipmentInfoViewController *infoViewController = (ShipmentInfoViewController *)segue.destinationViewController;
+        infoViewController.shipment_packages = shipment.shipment_package;
     }
 }
 

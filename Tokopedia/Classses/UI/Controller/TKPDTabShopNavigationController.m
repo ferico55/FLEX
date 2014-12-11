@@ -301,28 +301,18 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self configureRestKit];
-    
     if (_isnodata) {
         [self request];
     }
-    
-    if (_shop.result.info.shop_is_gold) {
-        self.navigationController.navigationBarHidden = YES;
-    }
-    
+    self.navigationController.navigationBarHidden = _shop.result.info.shop_is_gold;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self cancel];
-    
-    if (_shop.result.info.shop_is_gold) {
-        self.navigationController.navigationBarHidden = NO;
-    }
-    
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)viewDidLayoutSubviews
@@ -757,7 +747,12 @@
             }
             case 12:
             {
-                //SHARE
+                NSString *activityItem = [NSString stringWithFormat:@"%@ - %@ | Tokopedia %@", _shop.result.info.shop_name,
+                                          _shop.result.info.shop_location, _shop.result.info.shop_url];
+                UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
+                                                                                                 applicationActivities:nil];
+                activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                [self presentViewController:activityController animated:YES completion:nil];
                 break;
             }
             case 13:
@@ -1025,8 +1020,14 @@
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
     
+    _shop.result.info.shop_is_gold = true;
     
-    if (_shop.result.info.shop_is_gold) {
+    if (_shop.result.info.shop_is_gold == true) {
+        
+        _backButtonCustom.hidden = NO;
+        _infoButtonCustom.hidden = NO;
+        _navigationTitleLabel.hidden = YES;
+
         self.navigationController.navigationBarHidden = YES;
         
         self.view.clipsToBounds = NO;
@@ -1041,19 +1042,19 @@
         }
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_cover] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         
-        UIImageView *thumb = self.coverImageView ;
-        thumb.image = nil;
-        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        [self.coverImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-            [thumb setImage:image];
+            self.coverImageView.image = image;
+            self.coverImageView.hidden = NO;
+            self.coverImageView.backgroundColor = [UIColor blackColor];
             self.blurCoverImage.image = [self.coverImageView.image applyLightEffect];
+            self.blurCoverImage.hidden = NO;
 #pragma clang diagnostic pop
         } failure:nil];
         
-        //self.coverImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:_shop.result.info.shop_cover]]];
-        
         //add gradient in cover image
+        _coverImageView.layer.sublayers = nil;
         CAGradientLayer *gradientLayer = [BackgroundLayer blackGradientFromTop];
         gradientLayer.frame = _coverImageView.bounds;
         [_coverImageView.layer insertSublayer:gradientLayer atIndex:0];
@@ -1065,6 +1066,11 @@
         _backButtonCustom.hidden = YES;
         _infoButtonCustom.hidden = YES;
         _navigationTitleLabel.hidden = YES;
+        
+        self.blurCoverImage.hidden = NO;
+        self.coverImageView.hidden = NO;
+        
+        self.navigationController.navigationBarHidden = NO;
         
         [_stickyTapView layoutIfNeeded];
         CGRect stickyTabFrame = _stickyTapView.frame;
@@ -1246,6 +1252,7 @@
                                                           kTKPDDETAILSHOP_APITOTALFAVKEY:kTKPDDETAILSHOP_APITOTALFAVKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
                                                           kTKPDDETAILSHOP_APISHOPISGOLD:kTKPDDETAILSHOP_APISHOPISGOLD,
+                                                          kTKPDDETAILSHOP_APISHOPURLKEY:kTKPDDETAILSHOP_APISHOPURLKEY,                                                          
                                                           }];
     
     RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
@@ -1422,13 +1429,8 @@
     if (object) {
         if ([object isKindOfClass:[RKMappingResult class]]) {
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            
             id stats = [result objectForKey:@""];
-            
             _shop = stats;
-            
-            _shop.result.info.shop_is_gold = true;
-            
             BOOL status = [_shop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
@@ -1442,6 +1444,7 @@
             _buttonfav.enabled = YES;
             _buttonMessage.enabled = YES;
             _buttonsetting.enabled = YES;
+
         }
         else{
             [self cancel];
@@ -1493,6 +1496,7 @@
     }
     
     if (_shop.result.info.shop_is_gold) {
+
         if (!navigationBarAnimated) {
             navigationBarAnimated = true;
             if (sender.contentOffset.y > 82) {
@@ -1524,7 +1528,7 @@
         _cachecontroller.URLCacheInterval = 86400.0;
         [_cachecontroller initCacheWithDocumentPath:path];
         
-        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+        NSDictionary *auth = (NSDictionary *)[_data objectForKey:kTKPD_AUTHKEY];
         if (auth && ![auth isEqual:[NSNull null]]) {
             if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
 //                _buttonsetting.hidden = NO;

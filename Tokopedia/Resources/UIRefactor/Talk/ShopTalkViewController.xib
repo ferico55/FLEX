@@ -17,8 +17,8 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" pagingEnabled="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="244" sectionHeaderHeight="22" sectionFooterHeight="34" translatesAutoresizingMaskIntoConstraints="NO" id="z45-Yn-SVX">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" pagingEnabled="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="257" sectionHeaderHeight="22" sectionFooterHeight="34" translatesAutoresizingMaskIntoConstraints="NO" id="z45-Yn-SVX">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="J15-tM-5P9"/>
@@ -28,10 +28,10 @@
             </subviews>
             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="deviceRGB"/>
             <constraints>
-                <constraint firstItem="z45-Yn-SVX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="fR5-63-Z01"/>
-                <constraint firstAttribute="trailing" secondItem="z45-Yn-SVX" secondAttribute="trailing" id="qPV-LC-Pw5"/>
-                <constraint firstItem="z45-Yn-SVX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="r6z-ya-aW0"/>
-                <constraint firstAttribute="bottom" secondItem="z45-Yn-SVX" secondAttribute="bottom" constant="64" id="xk6-CB-t5U"/>
+                <constraint firstAttribute="trailing" secondItem="z45-Yn-SVX" secondAttribute="trailing" id="8MP-TZ-7js"/>
+                <constraint firstItem="z45-Yn-SVX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="NJ6-DJ-23l"/>
+                <constraint firstItem="z45-Yn-SVX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eUE-X3-v9l"/>
+                <constraint firstAttribute="bottom" secondItem="z45-Yn-SVX" secondAttribute="bottom" id="oVl-ON-heI"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

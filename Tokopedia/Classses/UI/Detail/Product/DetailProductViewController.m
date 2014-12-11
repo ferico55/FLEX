@@ -134,6 +134,8 @@
 {
     [super viewDidLoad];
     
+    self.title = @"Detail Produk";
+    
     _datatalk = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
@@ -285,6 +287,8 @@
                 
                 [_datatalk setObject:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0) forKey:kTKPDDETAIL_APIPRODUCTIDKEY];
                 [_datatalk setObject:image.image_src?:@(0) forKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
+                [_datatalk setObject:_product.result.statistic.product_sold forKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY];
+                [_datatalk setObject:_product.result.statistic.product_view forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
                 [_datatalk setObject:@(_product.result.shop_info.shop_id) forKey:TKPD_TALK_SHOP_ID];
                 
                 NSMutableDictionary *data = [NSMutableDictionary new];
@@ -297,6 +301,20 @@
             case 14:
             {
                 
+            }
+            case 15:
+            {
+                NSString *activityItem = [NSString stringWithFormat:@"Jual %@ - %@ | Tokopedia %@", _product.result.info.product_name,
+                                          _product.result.shop_info.shop_name, _product.result.info.product_url];
+                UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
+                                                                                                 applicationActivities:nil];
+                activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                [self presentViewController:activityController animated:YES completion:nil];
+                break;
+            }
+            case 16:
+            {
+                break;
             }
             default:
                 break;
@@ -599,7 +617,8 @@
                                                       kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY:kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY,
                                                       kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY,
                                                       kTKPDDETAILPRODUCT_APIPRODUCTIDKEY:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY:kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY
+                                                      kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY:kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY,
+                                                      kTKPDDETAILPRODUCT_APIPRODUCTURLKEY:kTKPDDETAILPRODUCT_APIPRODUCTURLKEY,
                                                       }];
     
     RKObjectMapping *statisticMapping = [RKObjectMapping mappingForClass:[Statistic class]];
@@ -1020,7 +1039,7 @@
     //request.URL = url;
     
     thumb.image = nil;
-    //thumb.hidden = YES;	//@prepareforreuse then @reset
+    thumb.layer.cornerRadius = thumb.layer.frame.size.width/2;
     
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
@@ -1041,12 +1060,12 @@
 
         for(int i = 0; i< _product.result.other_product.count; i++)
         {
-            CGFloat y = i * 160;
+            CGFloat y = i * 155;
             
             OtherProduct *product = _product.result.other_product[i];
             
             DetailProductOtherView *v = [DetailProductOtherView newview];
-            [v setFrame:CGRectMake(y + 7, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
+            [v setFrame:CGRectMake(y + 10, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
             v.delegate = self;
             v.index = i;
             v.namelabel.text = product.product_name;

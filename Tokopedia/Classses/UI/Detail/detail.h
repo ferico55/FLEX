@@ -155,6 +155,7 @@ typedef enum
 #define kTKPDDETAILPRODUCT_APIPRODUCTIDKEY @"product_id"
 #define kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY @"product_price_alert"
 #define kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY @"product_name"
+#define kTKPDDETAILPRODUCT_APIPRODUCTURLKEY @"product_url"
 
 #define kTKPDDETAILPRODUCT_APISTATISTICKEY @"statistic"
 #define kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY @"product_sold"
@@ -241,6 +242,7 @@ typedef enum
 #define kTKPDDETAILSHOP_APISHOPID @"shop_id"
 #define kTKPDDETAILSHOP_APISHOPNAME @"shop_name"
 #define kTKPDDETAILSHOP_APISHOPISGOLD @"shop_is_gold"
+#define kTKPDDETAILSHOP_APISHOPURLKEY @"shop_url"
 
 #define kTKPDDETAILSHOP_APISTATKEY @"stats"
 #define kTKPDDETAILSHOP_APISHIPMENTKEY @"shipment"
@@ -462,9 +464,9 @@ typedef enum
 #define kTKPDTALKCOMMENT_ID @"comment_id"
 #define kTKPDTALKCOMMENT_ISMOD @"is_moderator"
 #define kTKPDTALKCOMMENT_ISSELLER @"is_seller"
-#define kTKPDTALKCOMMENT_CREATETIME @"create_time"
-#define kTKPDTALKCOMMENT_USERIMAGE @"user_image"
-#define kTKPDTALKCOMMENT_USERNAME @"user_name"
+#define kTKPDTALKCOMMENT_CREATETIME @"comment_create_time"
+#define kTKPDTALKCOMMENT_USERIMAGE @"comment_user_image"
+#define kTKPDTALKCOMMENT_USERNAME @"comment_user_name"
 #define kTKPDDETAIL_APIADDCOMMENTTALK @"add_comment_talk"
 
 #pragma mark - Notes
@@ -497,6 +499,7 @@ typedef enum
 #define kTKPDDETAILCATALOG_APICATALOGNAMEKEY @"catalog_name"
 #define kTKPDDETAILCATALOG_APICATALOGPRICEKEY @"catalog_price"
 #define kTKPDDETAILCATALOG_APICATALOGIMAGESKEY @"catalog_image"
+#define kTKPDDETAILCATALOG_APICATALOGURIKEY @"catalog_uri"
 
 #define kTKPDDETAILCATALOG_APIIMAGEPRIMARYKEY @"image_primary"
 #define kTKPDDETAILCATALOG_APIIMAGESRCKEY @"image_src"

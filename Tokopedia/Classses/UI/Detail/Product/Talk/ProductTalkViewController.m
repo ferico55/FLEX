@@ -60,6 +60,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *backbutton;
 @property (weak, nonatomic) IBOutlet UIButton *nextbutton;
 
+@property (weak, nonatomic) IBOutlet UILabel *productSoldLabel;
+@property (weak, nonatomic) IBOutlet UILabel *productViewLabel;
+
 -(void)cancel;
 -(void)configureRestKit;
 -(void)loadData;
@@ -98,7 +101,10 @@
     
     _table.tableHeaderView = _header;
     
-    UIBarButtonItem *barbutton1;
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    _auth = [secureStorage keychainDictionary];
+    _auth = [_auth mutableCopy];
+    
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
@@ -115,7 +121,7 @@
     if(![[_auth objectForKey:@"shop_id"] isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
 
         UIBarButtonItem *rightbar;
-        UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
+        UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:ICON_TALK ofType:@"png"]];
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
             UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
             rightbar = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
@@ -200,12 +206,30 @@
         
         if (_list.count > indexPath.row) {
             TalkList *list = _list[indexPath.row];
-            ((GeneralTalkCell*)cell).namelabel.titleLabel.text = list.talk_user_name;
-            ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
-            ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             
             ((GeneralTalkCell*)cell).middleView.hidden = YES;
             ((GeneralTalkCell*)cell).indexpath = indexPath;
+            ((GeneralTalkCell*)cell).data = _list[indexPath.row];
+            
+            [((GeneralTalkCell*)cell).userButton setTitle:list.talk_user_name forState:UIControlStateNormal];
+            ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
+            
+            NSString *reviewMessage;
+            if (list.talk_message.length > 60) {
+                NSRange stringRange = {0, MIN(list.talk_message.length, 60)};
+                stringRange = [list.talk_message rangeOfComposedCharacterSequencesForRange:stringRange];
+                reviewMessage = [NSString stringWithFormat:@"%@...", [list.talk_message substringWithRange:stringRange]];
+            } else {
+                reviewMessage = list.talk_message;
+            }
+            
+            UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+            NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
+            style.lineSpacing = 10.f;
+            NSDictionary *attributes = @{NSFontAttributeName : font, NSParagraphStyleAttributeName : style};
+            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:reviewMessage
+                                                                                   attributes:attributes];
+            ((GeneralTalkCell*)cell).commentlabel.attributedText = attributedString;
             
             if(list.disable_comment) {
                 ((GeneralTalkCell*)cell).commentbutton.enabled = NO;
@@ -218,24 +242,25 @@
             [((GeneralTalkCell*)cell).commentbutton setTitle:commentstring forState:UIControlStateNormal];
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            //request.URL = url;
             UIImageView *thumb = ((GeneralTalkCell*)cell).thumb;
             thumb.image = nil;
-            //thumb.hidden = YES;	//@prepareforreuse then @reset
-            
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [thumb setImageWithURLRequest:request
+                         placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
+                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 //NSLOG(@"thumb: %@", thumb);
                 [thumb setImage:image];
-                
 #pragma clang diagnostic pop
-                
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            }];
-        }
+            } failure:nil];
+            
+            ((GeneralTalkCell *)cell).productViewIsHidden = YES;
+            ((GeneralTalkCell *)cell).talkFollowStatus = list.talk_follow_status;
         
-		return cell;
+            if (!_auth || ![[[_auth objectForKey:@"shop_id"] stringValue] isEqualToString:list.talk_shop_id]) {
+                ((GeneralTalkCell *)cell).moreActionButton.hidden = YES;
+            }
+        }
     } else {
         static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
         
@@ -612,6 +637,10 @@
 {
     _productnamelabel.text = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
     _pricelabel.text = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTPRICEKEY];
+    _productSoldLabel.text = [NSString stringWithFormat:@"%@ Sold", [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY]];
+    ;
+    _productViewLabel.text = [NSString stringWithFormat:@"%@ View", [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY]];
+    
     _headerimages = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
     for (int i = 0; i<_headerimages.count; i++) {
         CGFloat y = i * 320;

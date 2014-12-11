@@ -21,6 +21,7 @@
 #import "StickyAlert.h"
 
 #import "URLCacheController.h"
+#import "TKPDSecureStorage.h"
 
 #pragma mark - Product Review View Controller
 @interface ProductReviewViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, GeneralProductReviewCellDelegate>
@@ -196,7 +197,23 @@
             
             ((GeneralProductReviewCell *)cell).namelabel.text = list.review_user_name;
             ((GeneralProductReviewCell *)cell).timelabel.text = list.review_create_time;
-            ((GeneralProductReviewCell *)cell).commentlabel.text = list.review_message;
+            
+            NSString *reviewMessage;
+            if (list.review_message.length > 60) {
+                NSRange stringRange = {0, MIN(list.review_message.length, 60)};
+                stringRange = [list.review_message rangeOfComposedCharacterSequencesForRange:stringRange];
+                reviewMessage = [NSString stringWithFormat:@"%@... See more", [list.review_message substringWithRange:stringRange]];
+            } else {
+                reviewMessage = list.review_message;
+            }
+            
+            UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+            NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
+            style.lineSpacing = 10.f;
+            NSDictionary *attributes = @{NSFontAttributeName : font, NSParagraphStyleAttributeName : style};
+            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:reviewMessage
+                                                                             attributes:attributes];
+            ((GeneralProductReviewCell *)cell).commentlabel.attributedText = attributedString;
             ((GeneralProductReviewCell *)cell).indexpath = indexPath;
             
             
