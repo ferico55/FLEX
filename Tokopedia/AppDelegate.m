@@ -134,14 +134,20 @@
         [proxy setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
         //[proxy setTintColor:[UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1]];
     }
-	//[proxy setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
+	
+    [proxy setBarTintColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
+    [proxy setBackgroundColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
+    [proxy setTintColor:[UIColor whiteColor]];
+    
+    //[proxy setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
     
 	//[proxy setTitleVerticalPositionAdjustment:kJYNAVIGATION_ITEMVERTICALADJUSTMENT forBarMetrics:UIBarMetricsDefault];	//TODO: navigation bar animation corruption
         
 	[proxy setTitleTextAttributes:[[NSDictionary alloc] initWithObjectsAndKeys:kTKPDNAVIGATION_TITLEFONT, UITextAttributeFont,kTKPDNAVIGATION_TITLECOLOR, UITextAttributeTextColor, kTKPDNAVIGATION_TITLESHADOWCOLOR, UITextAttributeTextShadowColor, nil]];
 	
 	proxy = [UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil];
-    [proxy setTintColor:[UIColor whiteColor]];
+    
+    //    [proxy setTintColor:[UIColor whiteColor]];
     //image = [[[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"]] resizableImageWithCapInsets:kTKPDNAVIGATION_BUTTONINSET resizingMode:UIImageResizingModeStretch];
     //
     //[proxy setBackButtonBackgroundImage:image forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];

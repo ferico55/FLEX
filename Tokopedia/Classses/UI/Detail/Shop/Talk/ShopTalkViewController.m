@@ -13,6 +13,8 @@
 
 #import "URLCacheController.h"
 
+#import "TKPDSecureStorage.h"
+
 @interface ShopTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
 {
     NSMutableArray *_list;
@@ -37,6 +39,8 @@
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+
+    NSDictionary *_auth;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -85,6 +89,10 @@
     _page = 1;
     _table.tableHeaderView = _header;
     
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    _auth = [secureStorage keychainDictionary];
+    _auth = [_auth mutableCopy];
+    
     if (_list.count>2) {
         _isnodata = NO;
     }
@@ -122,7 +130,7 @@
             [self loadData];
         }
     }
-    self.table.contentOffset = CGPointMake(0, 0);
+    self.table.contentOffset = CGPointMake(0, 100);
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -156,10 +164,10 @@
         if (_list.count > indexPath.row) {
             TalkList *list = _list[indexPath.row];
             
-            ((GeneralTalkCell*)cell).namelabel.text = list.talk_user_name;
+            [((GeneralTalkCell*)cell).userButton setTitle:list.talk_user_name forState:UIControlStateNormal];
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
 
-            ((GeneralTalkCell *)cell).productNameLabel.text = list.talk_product_name;
+            [((GeneralTalkCell *)cell).productButton setTitle:list.talk_product_name forState:UIControlStateNormal];
             if ([list.talk_message length] > 30) {
                 NSRange stringRange = {0, MIN([list.talk_message length], 30)};
                 stringRange = [list.talk_message rangeOfComposedCharacterSequencesForRange:stringRange];
@@ -171,11 +179,12 @@
             NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.talk_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *userImageView = ((GeneralTalkCell*)cell).thumb;
             userImageView.image = nil;
-            [userImageView setImageWithURLRequest:userImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [userImageView setImageWithURLRequest:userImageRequest
+                                 placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
+                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 [userImageView setImage:image];
-                userImageView.layer.cornerRadius = userImageView.frame.size.width/2;
 #pragma clang diagnostic pop
             } failure:nil];
 
@@ -186,13 +195,17 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 [productImageView setImage:image];
-                productImageView.layer.cornerRadius = productImageView.frame.size.width/2;
 #pragma clang diagnostic pop
             } failure:nil];
+         
+
+            ((GeneralTalkCell *)cell).talkFollowStatus = list.talk_follow_status;
+            
+            if (!_auth || ![[[_auth objectForKey:@"shop_id"] stringValue] isEqualToString:list.talk_shop_id]) {
+                ((GeneralTalkCell *)cell).moreActionButton.hidden = YES;
+            }
             
         }
-        
-		return cell;
 
     } else {
         static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
@@ -315,6 +328,7 @@
                                                  kTKPDTALK_APITALKUSERIDKEY,
                                                  kTKPDTALK_APITALKUSERNAMEKEY,
                                                  kTKPDTALK_APITALKUSERIMAGEKEY,
+                                                 kTKPDTALK_APITALKSHOPID,
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];

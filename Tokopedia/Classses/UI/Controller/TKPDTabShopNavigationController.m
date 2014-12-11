@@ -305,7 +305,7 @@
     if (_isnodata) {
         [self request];
     }
-    self.navigationController.navigationBarHidden = !_shop.result.info.shop_is_gold;
+    self.navigationController.navigationBarHidden = _shop.result.info.shop_is_gold;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -747,7 +747,12 @@
             }
             case 12:
             {
-                //SHARE
+                NSString *activityItem = [NSString stringWithFormat:@"%@ - %@ | Tokopedia %@", _shop.result.info.shop_name,
+                                          _shop.result.info.shop_location, _shop.result.info.shop_url];
+                UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
+                                                                                                 applicationActivities:nil];
+                activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                [self presentViewController:activityController animated:YES completion:nil];
                 break;
             }
             case 13:
@@ -1234,6 +1239,7 @@
                                                           kTKPDDETAILSHOP_APITOTALFAVKEY:kTKPDDETAILSHOP_APITOTALFAVKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
                                                           kTKPDDETAILSHOP_APISHOPISGOLD:kTKPDDETAILSHOP_APISHOPISGOLD,
+                                                          kTKPDDETAILSHOP_APISHOPURLKEY:kTKPDDETAILSHOP_APISHOPURLKEY,                                                          
                                                           }];
     
     RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
@@ -1509,7 +1515,7 @@
         _cachecontroller.URLCacheInterval = 86400.0;
         [_cachecontroller initCacheWithDocumentPath:path];
         
-        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+        NSDictionary *auth = (NSDictionary *)[_data objectForKey:kTKPD_AUTHKEY];
         if (auth && ![auth isEqual:[NSNull null]]) {
             if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
                 _buttonsetting.hidden = NO;

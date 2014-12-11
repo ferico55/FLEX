@@ -21,5 +21,6 @@
 @property (nonatomic) NSInteger product_id;
 @property (nonatomic) NSInteger product_price_alert;
 @property (nonatomic, strong) NSString *product_name;
+@property (nonatomic, strong) NSString *product_url;
 
 @end

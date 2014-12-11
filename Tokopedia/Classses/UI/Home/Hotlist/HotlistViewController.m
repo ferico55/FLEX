@@ -507,7 +507,12 @@
     NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
     
     if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTHOTKEY]) {
-        vc.data = @{kTKPDHOME_DATAQUERYKEY: querry[2]?:@"", kTKPHOME_DATAHEADERIMAGEKEY: imageview, kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+        vc.data = @{kTKPDHOME_DATAQUERYKEY : querry[2]?:@"",
+                    kTKPHOME_DATAHEADERIMAGEKEY : imageview,
+                    kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
+                    kTKPDHOME_APIURLKEY : hotlist.url,
+                    kTKPDHOME_APITITLEKEY : hotlist.title,
+                    };
         UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
         [self.navigationController presentViewController:nav animated:YES completion:nil];
     }

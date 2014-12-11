@@ -251,8 +251,6 @@
 			
 			UINavigationController* n = (UINavigationController*)select;
 			if (!n.navigationBarHidden && !n.navigationBar.hidden) {
-				
-				CGRect rect = n.navigationBar.frame;
 				selectframe.origin.y = inset.top;
 				selectframe = CGRectZero;
 			} else {
@@ -291,12 +289,9 @@
 				}
 			}
 			
-			[self transitionFromViewController:deselect toViewController:select duration:0.3 options:(0 /*UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionFlipFromLeft*/) animations:^{
+			[self transitionFromViewController:deselect toViewController:select duration:0.3 options:(0) animations:^{
 				
 				if (navigate != 0) {
-					//tabbar0.frame = frame0;
-					//tabbar1.frame = frame1;
-					
 					if (navigate > 0) {
 						deselect.view.frame = CGRectOffset(_container.bounds, -(CGRectGetWidth(_container.bounds)), 0.0f);
 					} else {

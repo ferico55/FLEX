@@ -69,10 +69,14 @@
 /** redirect url **/
 #define kTKPDSEARCH_APIREDIRECTURLKEY @"redirect_url"
 #define kTKPDSEARCH_APIDEPARTEMENTIDKEY @"department_id"
+#define kTKPDSEARCH_APIDEPARTEMENTTITLEKEY @"department_title"
 #define kTKPDSEARCH_APIDIDKEY @"d_id"
 
 /** has catalog **/
 #define kTKPDSEARCH_APIHASCATALOGKEY @"has_catalog"
+
+/** search url **/
+#define kTKPDSEARCH_APISEARCH_URLKEY @"search_url"
 
 // department tree
 #define kTKPDSEARCH_APIDEPARTMENTTREEKEY @"department_tree"

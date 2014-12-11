@@ -38,6 +38,9 @@
 @property (weak, nonatomic) IBOutlet UIView *catalogproductview;
 @property (weak, nonatomic) IBOutlet UIView *shopview;
 
+//toolbar view without share button
+@property (weak, nonatomic) IBOutlet UIView *toolbarView;
+
 -(void)cancel;
 -(void)configureRestKit;
 -(void)loadData;
@@ -95,11 +98,11 @@
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+//    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+//    barButtonItem.tag = 10;
+//    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+//    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
@@ -172,6 +175,9 @@
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
     
+    if ([_data objectForKey:kTKPDDETAILPRODUCT_APIDEPARTMENTIDKEY]) {
+        self.toolbarView.hidden = YES;
+    }    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -367,7 +373,9 @@
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY}];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
+                                                        kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
+                                                        }];
     
     // searchs list mapping
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[List class]];
@@ -616,6 +624,7 @@
                         
                         NSLog(@"next page : %d",_page);
                         _isnodata = NO;
+                        
                     }
                     
                 }
@@ -741,6 +750,21 @@
                             kTKPDFILTER_DATAFILTERKEY: _params};
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
+            break;
+        }
+        case 12:
+        {
+            NSString *shareText = @"";
+            if ([_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTTITLEKEY]) {
+                shareText = [_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTTITLEKEY];
+            } else if ([_data objectForKey:kTKPDSEARCH_DATASEARCHKEY]) {
+                shareText = [[_data objectForKey:kTKPDSEARCH_DATASEARCHKEY] capitalizedString];
+            }
+            NSString *activityItem = [NSString stringWithFormat:@"Jual %@ | Tokopedia %@", shareText, _searchitem.result.search_url?:@"www.tokopedia.com"];
+            UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
+                                                                                             applicationActivities:nil];
+            activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+            [self presentViewController:activityController animated:YES completion:nil];
             break;
         }
         default:

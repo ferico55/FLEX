@@ -39,4 +39,6 @@
 #define kTKPDIMAGE_TABBARACTIVEBG @"active_tab"
 #define kTKPDIMAGE_TABBARBG @"tabnav_bg"
 
+#define ICON_TALK @"icon_new_talk_white"
+
 #endif
