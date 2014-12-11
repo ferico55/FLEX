@@ -11,6 +11,8 @@
 		8530E7421A39737E00A76C1B /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8530E7411A39737E00A76C1B /* libPods-TokopediaTests.a */; };
 		8530E7451A3975EA00A76C1B /* icon_diskusi_unfollow_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 8530E7431A3975EA00A76C1B /* icon_diskusi_unfollow_grey.png */; };
 		8530E7461A3975EA00A76C1B /* icon_diskusi_unfollow_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8530E7441A3975EA00A76C1B /* icon_diskusi_unfollow_grey@2x.png */; };
+		8530E74D1A39A71F00A76C1B /* InboxReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8530E74B1A39A71F00A76C1B /* InboxReviewViewController.m */; };
+		8530E74E1A39A71F00A76C1B /* InboxReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8530E74C1A39A71F00A76C1B /* InboxReviewViewController.xib */; };
 		85386DCC19CBE88700BCA463 /* GothamLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCA19CBD8E500BCA463 /* GothamLight.ttf */; };
 		85386DCD19CBE88A00BCA463 /* GothamBlack.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCB19CBD92900BCA463 /* GothamBlack.ttf */; };
 		8539F8911A31DE5C00818ED8 /* GeneralAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8539F88E1A31DE5C00818ED8 /* GeneralAction.m */; };
@@ -115,8 +117,6 @@
 		85AFE3B41A370E7A005F3792 /* InboxMessageDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AFE29C1A370E7A005F3792 /* InboxMessageDetailCell.m */; };
 		85AFE3B51A370E7A005F3792 /* InboxMessageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AFE29E1A370E7A005F3792 /* InboxMessageDetailViewController.m */; };
 		85AFE3B61A370E7A005F3792 /* InboxMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AFE2A01A370E7A005F3792 /* InboxMessageViewController.m */; };
-		85AFE3B71A370E7A005F3792 /* InboxTalkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AFE2A31A370E7A005F3792 /* InboxTalkCell.m */; };
-		85AFE3B81A370E7A005F3792 /* InboxTalkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85AFE2A41A370E7A005F3792 /* InboxTalkCell.xib */; };
 		85AFE3BA1A370E7A005F3792 /* InboxTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AFE2A81A370E7A005F3792 /* InboxTalkViewController.m */; };
 		85AFE3BB1A370E7A005F3792 /* InboxTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85AFE2A91A370E7A005F3792 /* InboxTalkViewController.xib */; };
 		85AFE3BD1A370E7A005F3792 /* LogoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AFE2B01A370E7A005F3792 /* LogoutViewController.m */; };
@@ -725,6 +725,9 @@
 		8530E7411A39737E00A76C1B /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-TokopediaTests.a"; path = "Pods/build/Debug-iphoneos/libPods-TokopediaTests.a"; sourceTree = "<group>"; };
 		8530E7431A3975EA00A76C1B /* icon_diskusi_unfollow_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_diskusi_unfollow_grey.png; sourceTree = "<group>"; };
 		8530E7441A3975EA00A76C1B /* icon_diskusi_unfollow_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_diskusi_unfollow_grey@2x.png"; sourceTree = "<group>"; };
+		8530E74A1A39A71F00A76C1B /* InboxReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReviewViewController.h; sourceTree = "<group>"; };
+		8530E74B1A39A71F00A76C1B /* InboxReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReviewViewController.m; sourceTree = "<group>"; };
+		8530E74C1A39A71F00A76C1B /* InboxReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxReviewViewController.xib; sourceTree = "<group>"; };
 		85386DCA19CBD8E500BCA463 /* GothamLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamLight.ttf; sourceTree = "<group>"; };
 		85386DCB19CBD92900BCA463 /* GothamBlack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamBlack.ttf; sourceTree = "<group>"; };
 		8539F88B1A31DE2E00818ED8 /* stringrestkit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stringrestkit.h; path = Tokopedia/stringrestkit.h; sourceTree = SOURCE_ROOT; };
@@ -941,9 +944,6 @@
 		85AFE29E1A370E7A005F3792 /* InboxMessageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxMessageDetailViewController.m; sourceTree = "<group>"; };
 		85AFE29F1A370E7A005F3792 /* InboxMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxMessageViewController.h; sourceTree = "<group>"; };
 		85AFE2A01A370E7A005F3792 /* InboxMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxMessageViewController.m; sourceTree = "<group>"; };
-		85AFE2A21A370E7A005F3792 /* InboxTalkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTalkCell.h; sourceTree = "<group>"; };
-		85AFE2A31A370E7A005F3792 /* InboxTalkCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxTalkCell.m; sourceTree = "<group>"; };
-		85AFE2A41A370E7A005F3792 /* InboxTalkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxTalkCell.xib; sourceTree = "<group>"; };
 		85AFE2A71A370E7A005F3792 /* InboxTalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTalkViewController.h; sourceTree = "<group>"; };
 		85AFE2A81A370E7A005F3792 /* InboxTalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxTalkViewController.m; sourceTree = "<group>"; };
 		85AFE2A91A370E7A005F3792 /* InboxTalkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxTalkViewController.xib; sourceTree = "<group>"; };
@@ -1826,6 +1826,16 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		8530E7491A39A71F00A76C1B /* InboxReview */ = {
+			isa = PBXGroup;
+			children = (
+				8530E74A1A39A71F00A76C1B /* InboxReviewViewController.h */,
+				8530E74B1A39A71F00A76C1B /* InboxReviewViewController.m */,
+				8530E74C1A39A71F00A76C1B /* InboxReviewViewController.xib */,
+			);
+			path = InboxReview;
+			sourceTree = "<group>";
+		};
 		8539F88C1A31DE5C00818ED8 /* GeneralAction */ = {
 			isa = PBXGroup;
 			children = (
@@ -2348,13 +2358,10 @@
 		85AFE2A11A370E7A005F3792 /* InboxTalk */ = {
 			isa = PBXGroup;
 			children = (
-				85AFE2A21A370E7A005F3792 /* InboxTalkCell.h */,
-				85AFE2A31A370E7A005F3792 /* InboxTalkCell.m */,
-				85AFE2A41A370E7A005F3792 /* InboxTalkCell.xib */,
+				85AFE5821A37127B005F3792 /* string_inbox_talk.h */,
 				85AFE2A71A370E7A005F3792 /* InboxTalkViewController.h */,
 				85AFE2A81A370E7A005F3792 /* InboxTalkViewController.m */,
 				85AFE2A91A370E7A005F3792 /* InboxTalkViewController.xib */,
-				85AFE5821A37127B005F3792 /* string_inbox_talk.h */,
 			);
 			path = InboxTalk;
 			sourceTree = "<group>";
@@ -2623,6 +2630,7 @@
 		85AFE3161A370E7A005F3792 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				8530E7491A39A71F00A76C1B /* InboxReview */,
 				85AFE3171A370E7A005F3792 /* Shop */,
 				85AFE34C1A370E7A005F3792 /* Talk */,
 			);
@@ -3582,18 +3590,18 @@
 		FC36DF8C19B0656400AF74C1 /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
+				FC36DF9519B0656400AF74C1 /* AppDelegate.h */,
+				FC36DF9619B0656400AF74C1 /* AppDelegate.m */,
+				FC36E0C119B0673700AF74C1 /* Classses */,
+				FC36DF9819B0656400AF74C1 /* Images.xcassets */,
 				FCAAEA4319F7534B00904AFB /* MainViewController.h */,
 				FCAAEA4419F7534B00904AFB /* MainViewController.m */,
 				FCAAEA4519F7534B00904AFB /* MainViewController.xib */,
-				FC36DF9519B0656400AF74C1 /* AppDelegate.h */,
-				FC36DF9619B0656400AF74C1 /* AppDelegate.m */,
-				FC36E1CD19B067AD00AF74C1 /* Tkpd.h */,
-				FCAAEA4819F7536D00904AFB /* string.h */,
-				FC36E1CE19B067AD00AF74C1 /* TkpdImg.h */,
-				FC36E0C119B0673700AF74C1 /* Classses */,
 				FC36E11719B0673700AF74C1 /* Resources */,
-				FC36DF9819B0656400AF74C1 /* Images.xcassets */,
+				FCAAEA4819F7536D00904AFB /* string.h */,
 				FC36DF8D19B0656400AF74C1 /* Supporting Files */,
+				FC36E1CD19B067AD00AF74C1 /* Tkpd.h */,
+				FC36E1CE19B067AD00AF74C1 /* TkpdImg.h */,
 			);
 			path = Tokopedia;
 			sourceTree = "<group>";
@@ -4797,6 +4805,7 @@
 				85AFE5491A370E83005F3792 /* ProfileBiodataViewController.xib in Resources */,
 				FCD1A3EA1A30454B006DF0ED /* icon_calendar.png in Resources */,
 				FCD1A3D71A30454B006DF0ED /* icon_6.png in Resources */,
+				8530E74E1A39A71F00A76C1B /* InboxReviewViewController.xib in Resources */,
 				FCD1A3E81A30454B006DF0ED /* icon_arrow_up.png in Resources */,
 				FCD1A3EE1A30454B006DF0ED /* icon_category_white.png in Resources */,
 				FCD1A3C41A30454B006DF0ED /* icon_17.png in Resources */,
@@ -5092,7 +5101,6 @@
 				FCD1A4081A30454B006DF0ED /* icon_message@2x.png in Resources */,
 				85AFE5091A370E83005F3792 /* CatalogSellerHeaderView.xib in Resources */,
 				85AFE5221A370E83005F3792 /* ShopInfoPaymentCell.xib in Resources */,
-				85AFE3B81A370E7A005F3792 /* InboxTalkCell.xib in Resources */,
 				85AFE5311A370E83005F3792 /* GeneralReviewCellOld.xib in Resources */,
 				85AFE5651A370E83005F3792 /* FilterConditionViewController.xib in Resources */,
 				85AFE5381A370E83005F3792 /* HotlistCell.xib in Resources */,
@@ -5445,7 +5453,6 @@
 				FC7B920B1A2C4F9F00D24DE6 /* DepartmentChild2.m in Sources */,
 				85AFE3AF1A370E7A005F3792 /* KatalogViewCell.m in Sources */,
 				85AFE3741A370E7A005F3792 /* TKPDTabProfileNavigationController.m in Sources */,
-				85AFE3B71A370E7A005F3792 /* InboxTalkCell.m in Sources */,
 				85AFE3E21A370E7A005F3792 /* SortViewController.m in Sources */,
 				FC7B92281A2C4F9F00D24DE6 /* FavoriteShop.m in Sources */,
 				FC7B924F1A2C4F9F00D24DE6 /* ClosedInfo.m in Sources */,
@@ -5474,6 +5481,7 @@
 				FC7B92181A2C4F9F00D24DE6 /* InboxMessageDetailResult.m in Sources */,
 				85AFE3B61A370E7A005F3792 /* InboxMessageViewController.m in Sources */,
 				FC7B921F1A2C4F9F00D24DE6 /* ProductTalkCommentAction.m in Sources */,
+				8530E74D1A39A71F00A76C1B /* InboxReviewViewController.m in Sources */,
 				FC36E17219B0673800AF74C1 /* NSStringCategory.m in Sources */,
 				85AFE37D1A370E7A005F3792 /* DetailCatalogSpecViewCell.m in Sources */,
 				85AFE3761A370E7A005F3792 /* BackgroundLayer.m in Sources */,
