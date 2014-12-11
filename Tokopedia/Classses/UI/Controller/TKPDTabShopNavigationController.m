@@ -20,7 +20,6 @@
 #import "ShopTalkViewController.h"
 #import "ShopReviewViewController.h"
 #import "ShopNotesViewController.h"
-#import "ShopInfoViewController.h"
 #import "../Detail/Shop/Settings/ShopSettingViewController.h"
 
 #import "URLCacheController.h"
@@ -1518,14 +1517,14 @@
         NSDictionary *auth = (NSDictionary *)[_data objectForKey:kTKPD_AUTHKEY];
         if (auth && ![auth isEqual:[NSNull null]]) {
             if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
-                _buttonsetting.hidden = NO;
+//                _buttonsetting.hidden = NO;
                 _buttonfav.hidden = YES;
                 _buttonMessage.hidden = YES;
             }
         }
         else
         {
-            _buttonsetting.hidden = YES;
+//            _buttonsetting.hidden = YES;
             _buttonfav.hidden = NO;
             _buttonMessage.hidden = NO;
         }

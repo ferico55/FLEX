@@ -1,15 +1,14 @@
-//
-//  ShopInfoViewController.m
-//  Tokopedia
-//
-//  Created by IT Tkpd on 10/6/14.
-//  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
-//
+////
+////  ShopInfoViewController.m
+////  Tokopedia
+////
+////  Created by IT Tkpd on 10/6/14.
+////  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
+////
 
 #import "detail.h"
-
 #import "Shop.h"
-
+#import "Payment.h"
 #import "StarsRateView.h"
 #import "ShopInfoShipmentCell.h"
 #import "ShopInfoPaymentCell.h"

@@ -64,7 +64,7 @@
                 break;
             }
             case UIGestureRecognizerStateEnded: {
-                [_delegate GeneralList1GestureCell:self withindexpath:_indexpath];
+                //[_delegate GeneralList1GestureCell:self withindexpath:_indexpath];
                 break;
             }
         }
@@ -100,7 +100,7 @@
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
-        [_delegate DidTapButton:btn atCell:self withindexpath:_indexpath];
+        //[_delegate DidTapButton:btn atCell:self withindexpath:_indexpath];
     }
 }
 

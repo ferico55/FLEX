@@ -34,6 +34,7 @@
 #define kTKPDLOGIN_APISHOPIDKEY @"shop_id"
 #define kTKPDLOGIN_APIUSERIDKEY @"user_id"
 #define kTKPDLOGIN_APIFULLNAMEKEY @"full_name"
+#define kTKPDLOGIN_APIIMAGEKEY @"user_image"
 
 #define kTKPDREGISTER_APIACTIONKEY @"action"
 #define kTKPDREGISTER_APIDOREGISTERKEY @"do_register"

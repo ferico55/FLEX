@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -68,10 +68,6 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="ZpN-74-0XL" appends="YES" id="581-Bw-eUW"/>
-                            <outletCollection property="gestureRecognizers" destination="OQa-5A-Laa" appends="YES" id="YeG-uo-TBd"/>
-                        </connections>
                     </view>
                 </subviews>
             </tableViewCellContentView>
@@ -83,31 +79,10 @@
                 <outlet property="labelname" destination="0jQ-Yp-iGW" id="J01-JF-rs2"/>
                 <outlet property="labelvalue" destination="daH-W3-qWe" id="Cnm-Ri-S4D"/>
                 <outlet property="viewcell" destination="BBf-Mq-Kjb" id="L1a-HF-JiP"/>
-                <outletCollection property="gestureRecognizers" destination="eKo-k8-XNP" appends="YES" id="4o8-nH-F9n"/>
             </connections>
         </tableViewCell>
-        <swipeGestureRecognizer direction="left" id="eKo-k8-XNP">
-            <connections>
-                <action selector="gesture:" destination="hlp-qI-BRx" id="f54-jE-Axf"/>
-            </connections>
-        </swipeGestureRecognizer>
-        <tapGestureRecognizer id="OQa-5A-Laa">
-            <connections>
-                <action selector="gesture:" destination="hlp-qI-BRx" id="5Pj-k9-uqb"/>
-            </connections>
-        </tapGestureRecognizer>
-        <swipeGestureRecognizer direction="right" id="ZpN-74-0XL">
-            <connections>
-                <action selector="gesture:" destination="hlp-qI-BRx" id="AFk-AJ-sHA"/>
-            </connections>
-        </swipeGestureRecognizer>
     </objects>
     <resources>
         <image name="ic_arrow_right.png" width="1024" height="1024"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

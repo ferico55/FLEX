@@ -223,9 +223,10 @@
 
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LoginResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPDLOGIN_APIISLOGINKEY:kTKPDLOGIN_APIISLOGINKEY,
-                                                       kTKPDLOGIN_APISHOPIDKEY:kTKPDLOGIN_APISHOPIDKEY,
-                                                       kTKPDLOGIN_APIUSERIDKEY:kTKPDLOGIN_APIUSERIDKEY,
-                                                       kTKPDLOGIN_APIFULLNAMEKEY:kTKPDLOGIN_APIFULLNAMEKEY
+                                                        kTKPDLOGIN_APISHOPIDKEY:kTKPDLOGIN_APISHOPIDKEY,
+                                                        kTKPDLOGIN_APIUSERIDKEY:kTKPDLOGIN_APIUSERIDKEY,
+                                                        kTKPDLOGIN_APIFULLNAMEKEY:kTKPDLOGIN_APIFULLNAMEKEY,
+                                                        kTKPDLOGIN_APIIMAGEKEY:kTKPDLOGIN_APIIMAGEKEY
                                                         }];
     //add relationship mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
@@ -298,6 +299,7 @@
             [secureStorage setKeychainWithValue:@(_login.result.shop_id) withKey:kTKPD_SHOPIDKEY];
             [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+            [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
             
             NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
             [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION object:nil userInfo:@{}];

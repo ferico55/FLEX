@@ -253,6 +253,7 @@
     
     [self configureactionrestkit];
     [self doactionmessage:joinedArr withAction:action];
+    [_messages_selected removeAllObjects];
 
 }
 
@@ -289,13 +290,13 @@
             ((InboxMessageCell*)cell).indexpath = indexPath;
             
             
-            if(!_iseditmode) {
+//            if(!_iseditmode) {
                 if([list.message_read_status isEqualToString:@"1"]) {
                     ((InboxMessageCell*)cell).is_unread.hidden = YES;
                 } else {
                     ((InboxMessageCell*)cell).is_unread.hidden = NO;
                 }
-            }
+//            }
             
             
             if(_userinfo) {
@@ -435,6 +436,7 @@
     [_messages removeAllObjects];
     [_table reloadData];
     _table.tableFooterView = _footer;
+    _page = 1;
     [self configureRestKit];
     [self loadData];
     
@@ -448,8 +450,7 @@
         [_table reloadData];
         _table.tableFooterView = _footer;
         [self configureRestKit];
-        [self loadData];
-        
+        [self loadData]; 
     }
 }
 
@@ -701,7 +702,7 @@
     
     
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:KTKPDMESSAGEACTION_PATHURL keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:KTKPDMESSAGEPRODUCTACTION_PATHURL keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanagerarchive addResponseDescriptor:responseDescriptorStatus];
 }
@@ -717,7 +718,7 @@
                             };
     
     _requestarchivecount ++;
-    _requestarchive = [_objectmanagerarchive appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGEACTION_PATHURL parameters:param];
+    _requestarchive = [_objectmanagerarchive appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGEPRODUCTACTION_PATHURL parameters:param];
     
     
     [_requestarchive setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -761,9 +762,6 @@
         if([inboxmessageaction.result.is_success isEqualToString:@"1"]) {
             NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:_navthatwillrefresh, @"vc", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadvc" object:nil userInfo:dict];
-            
-            [_messages_selected removeAllObjects];
-            
         } else {
             [self undoactionmessage];
         }
@@ -776,6 +774,7 @@
 
 -(void) requestactionfailure:(id)error {
     [self undoactionmessage];
+    [self cancel];
 }
 -(void) requestactiontimeout {
     [self undoactionmessage];
@@ -815,11 +814,12 @@
         vc.data = @{KTKPDMESSAGE_IDKEY : list.message_id, KTKPDMESSAGE_TITLEKEY : list.message_title, KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]};
         
         //mark as read
-        ((InboxMessageCell*)cell).is_unread.hidden = YES;
+//        ((InboxMessageCell*)cell).is_unread.hidden = YES;
         
 //        
-        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
+//        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+//        [self.navigationController presentViewController:nav animated:YES completion:nil];
+        [self.navigationController pushViewController:vc animated:YES];
     }
     
     

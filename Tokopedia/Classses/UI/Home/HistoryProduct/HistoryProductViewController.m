@@ -41,6 +41,8 @@
     BOOL _isnodata;
     
     BOOL _isrefreshview;
+    NSMutableArray *_lastStoredArray;
+    NSMutableArray *_refreshedArray;
     
     UIRefreshControl *_refreshControl;
     NSInteger _requestcount;
@@ -73,6 +75,8 @@
     
     /** create new **/
     _product = [NSMutableArray new];
+    _lastStoredArray = [NSMutableArray new];
+    _refreshedArray = [NSMutableArray new];
     
     /** set first page become 1 **/
     _page = 1;
@@ -329,7 +333,11 @@
         BOOL status = [HistoryProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         
         if (status) {
-            [_product addObjectsFromArray: HistoryProduct.result.list];
+            if(_isrefreshview) {
+                [_product removeAllObjects];
+            }
+            
+            [_product addObjectsFromArray:HistoryProduct.result.list];
             
             if (_product.count >0) {
                 _isnodata = NO;
@@ -445,7 +453,7 @@
 {
     [self cancel];
     /** clear object **/
-    [_product removeAllObjects];
+//    [_product removeAllObjects];
     _page = 1;
     _requestcount = 0;
     _isrefreshview = YES;

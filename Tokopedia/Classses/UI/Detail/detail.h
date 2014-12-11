@@ -98,10 +98,10 @@ typedef enum
 #define kTKPDDETAIL_APIGETSHOPNOTEKEY @"get_shop_note"
 
 #define kTKPDDETAIL_APIGETPAYMENTINFOKEY @"get_payment_info"
-#define kTKPDDETAIL_APIUPDATEPAYMENTINFOKEY @"event_update_payment_info"
+#define kTKPDDETAIL_APIUPDATEPAYMENTINFOKEY @"update_payment_info"
 
 #define kTKPDDETAIL_APIGETSHOPFAVORITEDKEY @"get_people_who_favorite_myshop"
-#define kTKPDDETAIL_APISETSHOPINFOKEY @"event_update_shop_info"
+#define kTKPDDETAIL_APISETSHOPINFOKEY @"update_shop_info"
 #define kTKPDDETAIL_APIUPLOADGENERATEHOSTKEY @"generate_host"
 #define kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY @"upload_shop_image"
 //Shop Setting Shipping
@@ -437,22 +437,26 @@ typedef enum
 #define kTKPDTEVIEW_APIRATEQUALITYKEY @"shop_quality"
 
 #pragma mark - Talk
-#define kTKPDTALK_APITALKTOTALCOMMENTKEY @"talk_total_comment"
-#define kTKPDTALK_APITALKUSERIMAGEKEY @"talk_user_image"
-#define kTKPDTALK_APITALKUSERNAMEKEY @"talk_user_name"
-#define kTKPDTALK_APITALKIDKEY @"talk_id"
-#define kTKPDTALK_APITALKCREATETIMEKEY @"talk_create_time"
-#define kTKPDTALK_APITALKMESSAGEKEY @"talk_message"
-#define kTKPDTALK_APITALKFOLLOWSTATUSKEY @"talk_follow_status"
-#define kTKPDTALK_APITALKSHOPID @"talk_shop_id"
+//#define kTKPDTALK_APITALKTOTALCOMMENTKEY @"talk_total_comment"
+//#define kTKPDTALK_APITALKUSERIMAGEKEY @"talk_user_image"
+//#define kTKPDTALK_APITALKUSERNAMEKEY @"talk_user_name"
+//#define kTKPDTALK_APITALKIDKEY @"talk_id"
+//#define kTKPDTALK_APITALKCREATETIMEKEY @"talk_create_time"
+//#define kTKPDTALK_APITALKMESSAGEKEY @"talk_message"
+//#define kTKPDTALK_APITALKFOLLOWSTATUSKEY @"talk_follow_status"
+//#define kTKPDTALK_APITALKREADSTATUSKEY @"talk_read_status"
+#define kTKPDTALK_APITALKINBOXIDKEY @"talk_inbox_id"
+
+//#define kTKPDTALK_APITALKSHOPID @"talk_shop_id"
 #define kTKPDTALKCOMMENT_APITEXT @"text_comment"
 
 
-#define kTKPDTALK_APITALKPRODUCTNAMEKEY @"talk_product_name"
-#define kTKPDTALK_APITALKPRODUCTIMAGEKEY @"talk_product_image"
-#define kTKPDTALK_APITALKPRODUCTIDKEY @"talk_product_id"
-#define kTKPDTALK_APITALKOWNKEY @"talk_own"
-#define kTKPDTALK_APITALKUSERIDKEY @"talk_user_id"
+//#define kTKPDTALK_APITALKPRODUCTNAMEKEY @"talk_product_name"
+//#define kTKPDTALK_APITALKPRODUCTIMAGEKEY @"talk_product_image"
+//#define kTKPDTALK_APITALKPRODUCTIDKEY @"talk_product_id"
+#define kTKPDTALK_APITALKPRODUCTSTATUSKEY @"talk_product_status"
+//#define kTKPDTALK_APITALKOWNKEY @"talk_own"
+//#define kTKPDTALK_APITALKUSERIDKEY @"talk_user_id"
 
 #pragma mark - Talk Comment
 #define kTKPDTALKCOMMENT_TALKID @"talk_id"
@@ -558,13 +562,16 @@ typedef enum
 #define kTKPDDETAILSHOP_APIPATH @"shop.pl"
 #define kTKPDDETAILNOTES_APIPATH @"notes.pl"
 #define kTKPDDETAILTALK_APIPATH @"talk.pl"
+#define kTKPDACTIONTALK_APIPATH @"action/talk.pl"
 #define kTKPDDETAILSHOPEDITOR_APIPATH @"myshop-editor.pl"
 #define kTKPDDETAILSHOPEDITORACTION_APIPATH @"action/myshop-editor.pl"
+#define kTKPDDETAILSHOPPAYMENT_APIPATH @"myshop-payment.pl"
 #define kTKPDDETAILSHOPACTIONEDITOR_APIPATH @"action/myshop-shipment.pl"
 
 
 #define kTKPDDETAILSHOPNOTE_APIPATH @"myshop-note.pl"
 #define kTKPDDETAILSHOPNOTEACTION_APIPATH @"action/myshop-note.pl"
+#define kTKPDINBOX_TALK_APIPATH @"inbox-talk.pl"
 
 #define kTKPDDETAILSHOPADDRESS_APIPATH @"myshop-address.pl"
 #define kTKPDDETAILSHOPADDRESSACTION_APIPATH @"action/myshop-address.pl"
@@ -590,9 +597,12 @@ typedef enum
 
 #define kTKPDMESSAGE_KEYSUBJECT @"message_subject"
 #define kTKPDMESSAGE_KEYCONTENT @"message"
+#define kTKPDMESSAGE_PRODUCTIDKEY @"product_id"
 #define kTKPDMESSAGE_KEYTOSHOPID @"to_shop_id"
 #define KTKPDMESSAGE_DELIVERED @"Pesan Anda telah terkirim!"
+#define KTKPDTALK_DELIVERED @"Diskusi Anda telah terkirim!"
 #define KTKPDMESSAGE_UNDELIVERED @"Pesan Anda gagal terkirim."
+#define KTKPDTALK_UNDELIVERED @"Diskusi Anda gagal terkirim."
 #define KTKPDMESSAGE_EMPTYFORM @"Panjang pesan harus lebih dari 3 karakter."
 
 #define kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY @"Sukses"
@@ -603,6 +613,8 @@ typedef enum
 #define kTKPDMESSAGE_KEYTO @"message_to"
 #define kTKPDMESSAGE_PLACEHOLDER @"Message"
 
+#define kTKPDTALK_ADDTALK @"add_product_talk"
+#define kTKPDTALK_TALKMESSAGE @"text_comment"
 
 #define kTKPDSHOP_ETALASEARRAY @[@{kTKPDSHOP_APIETALASENAMEKEY:@"Produk Terjual",kTKPDSHOP_APIETALASEIDKEY:@(7)}, @{kTKPDSHOP_APIETALASENAMEKEY:@"All Etalase",kTKPDSHOP_APIETALASEIDKEY:@(0)}]
 
@@ -612,9 +624,13 @@ typedef enum
 #define kTKPDDETAILPRODUCT_CACHEFILEPATH @"product"
 #define kTKPDDETAILETALASE_CACHEFILEPATH @"etalase"
 
+#define TKPD_INBOXTALK_CACHE @"inbox-talk"
+
 #define kTKPDDETAILSHOPETALASE_APIRESPONSEFILE @"etalase"
 
 #define kTKPDDETAILPRODUCT_APIRESPONSEFILEFORMAT @"productdetail%d"
+#define TKPD_INBOXTALK_RESPONSEFILEFORMAT @"inbox-talk%d"
+
 #define kTKPDDETAILPRODUCTTALK_APIRESPONSEFILEFORMAT @"producttalk%d"
 #define kTKPDDETAILPRODUCTTALKDETAIL_APIRESPONSEFILEFORMAT @"producttalkdetail%d"
 #define kTKPDDETAILPRODUCTREVIEW_APIRESPONSEFILEFORMAT @"productreview%d"

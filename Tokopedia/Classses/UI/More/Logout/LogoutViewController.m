@@ -8,9 +8,11 @@
 
 #import "LogoutViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
+#import "TKPDTabInboxTalkNavigationController.h"
 #import "ShopProductViewController.h"
 #import "ShopTalkViewController.h"
 #import "InboxMessageViewController.h"
+#import "InboxTalkViewController.h"
 #import "ShopSettingViewController.h"
 #import "ShopInfoViewController.h"
 
@@ -55,24 +57,6 @@
         }
             
         case 11 : {
-//            NSInteger index = indexpath.section+3*(indexpath.row);
-//            
-//            SearchResultViewController *vc = [SearchResultViewController new];
-//            vc.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
-//            SearchResultViewController *vc1 = [SearchResultViewController new];
-//            vc1.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
-//            SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-//            vc2.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
-//            NSArray *viewcontrollers = @[vc,vc1,vc2];
-//            
-//            TKPDTabNavigationController *c = [TKPDTabNavigationController new];
-//            [c setData:@{kTKPDCATEGORY_DATATYPEKEY: @(kTKPDCATEGORY_DATATYPECATEGORYKEY), kTKPDSEARCH_APIDEPARTEMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"", }];
-//            [c setSelectedIndex:0];
-//            [c setViewControllers:viewcontrollers];
-//            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-//            [nav.navigationBar setTranslucent:NO];
-//            [self.navigationController presentViewController:nav animated:YES completion:nil];
-            
             InboxMessageViewController *vc = [InboxMessageViewController new];
             vc.data=@{@"nav":@"inbox-message"};
             
@@ -92,11 +76,11 @@
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
             [nav.navigationBar setTranslucent:NO];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
+            break;
         }
         case 12:{
             //settings
             ShopSettingViewController *vc = [ShopSettingViewController new];
-//            vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY], kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result};
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }

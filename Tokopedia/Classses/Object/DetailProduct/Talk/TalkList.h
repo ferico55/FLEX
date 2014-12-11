@@ -23,10 +23,13 @@
 
 // shop + product
 @property (nonatomic, strong) NSString *talk_id;
+@property (nonatomic, strong) NSString *talk_read_status;
+@property (nonatomic, strong) NSString *talk_product_status;
 @property (nonatomic, strong) NSString *talk_create_time;
 @property (nonatomic, strong) NSString *talk_message;
 @property (nonatomic) NSInteger talk_follow_status;
 @property (nonatomic, strong) NSString *talk_total_comment;
 @property (nonatomic, strong) NSString *talk_shop_id;
+@property (nonatomic) bool *disable_comment;
 
 @end

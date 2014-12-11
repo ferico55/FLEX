@@ -639,7 +639,6 @@
                 _labeltime.text = [NSString stringWithFormat:@"%d %@ %d, %@",day, monthString,year,currentTime];
                 [_datainput setObject:_labeltime.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
 
-                
                 _textviewcontent.text = [NSString convertHTML:_note.result.detail.notes_content];
                 [_labelcontent sizeToFit];
                 [_labelcontent setNumberOfLines:0];

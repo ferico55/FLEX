@@ -15,8 +15,10 @@
 #import "SettingNoteDetailViewController.h"
 #import "GeneralList1GestureCell.h"
 
+#import "MGSwipeButton.h"
+
 #pragma mark - Setting Note View Controller
-@interface SettingNoteViewController () <UITableViewDataSource,UITableViewDelegate,GeneralList1GestureCellDelegate>
+@interface SettingNoteViewController () <UITableViewDataSource,UITableViewDelegate,GeneralList1GestureCellDelegate,MGSwipeTableCellDelegate>
 {
     NSMutableDictionary *_datainput;
     NSMutableArray *_list;
@@ -169,6 +171,15 @@
 }
 
 #pragma mark - Table View Delegate
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NotesList *list = _list[indexPath.row];
+    SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
+    vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
+                kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
+                kTKPDNOTES_APINOTEIDKEY:list.note_id};
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -504,11 +515,11 @@
                 if(setting.message_error)
                 {
                     [self cancelDeleteRow];
-                    NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
+                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
-                if (!setting.result.is_success) {
+                if (setting.result.is_success) {
                     NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
@@ -613,6 +624,51 @@
     [_datainput setObject:[userinfo objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
     //[_datainput setObject:[userinfo objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]?:@(0) forKey:kTKPDPROFILE_DATAEDITTYPEKEY];
     [self refreshView:nil];
+}
+
+#pragma mark Swipe Delegate
+
+-(BOOL) swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction;
+{
+    return YES;
+}
+
+-(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
+             swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
+{
+    
+    swipeSettings.transition = MGSwipeTransitionBorder;
+    expansionSettings.buttonIndex = -1; //-1 not expand, 0 expand
+    
+    
+    if (direction == MGSwipeDirectionRightToLeft) {
+        expansionSettings.fillOnTrigger = YES;
+        expansionSettings.threshold = 1.1;
+        
+        CGFloat padding = 15;
+        NSIndexPath *indexpath = ((GeneralList1GestureCell*) cell).indexpath;
+        NotesList *list = _list[indexpath.row];
+        [_datainput setObject:list.note_id forKey:kTKPDNOTES_APINOTEIDKEY];
+        
+        MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Delete" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+            [self deleteListAtIndexPath:indexpath];
+            return YES;
+        }];
+        MGSwipeButton * flag = [MGSwipeButton buttonWithTitle:@"Ubah\nCatatan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+            //edit
+            SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
+            vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
+                        kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY),
+                        kTKPDNOTES_APINOTEIDKEY : list.note_id
+                        };
+            [self.navigationController pushViewController:vc animated:YES];
+            return YES;
+        }];
+        return @[trash, flag];
+    }
+    
+    return nil;
+    
 }
 
 @end

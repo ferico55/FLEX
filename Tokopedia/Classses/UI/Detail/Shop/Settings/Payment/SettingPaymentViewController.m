@@ -157,19 +157,23 @@
             ((SettingPaymentCell*)cell).indexpath= indexPath;
             ((SettingPaymentCell*)cell).switchpayment.on = [payment.payment_default_status boolValue];
             
-            NSString *string = [NSString convertHTML: payment.payment_info];
-            if ([string rangeOfString:@"Baca syarat dan ketentuannya disini."].location == NSNotFound) {
-                NSLog(@"string does not contain");
-                ((SettingPaymentCell*)cell).buttonterms.hidden = YES;
-            } else {
-                NSLog(@"string contains!");
-                string = [string stringByReplacingOccurrencesOfString:@"Baca syarat dan ketentuannya disini."
-                                                           withString:@""];
-                ((SettingPaymentCell*)cell).buttonterms.hidden = NO;
-            }
-            ((SettingPaymentCell*)cell).labeldescription.text = string;
+            //NSString *string = [NSString convertHTML: payment.payment_info];
+            //if ([string rangeOfString:@"Baca syarat dan ketentuannya disini."].location == NSNotFound) {
+            //    NSLog(@"string does not contain");
+            //    ((SettingPaymentCell*)cell).buttonterms.hidden = YES;
+            //} else {
+            //    NSLog(@"string contains!");
+            //    string = [string stringByReplacingOccurrencesOfString:@"Baca syarat dan ketentuannya disini."
+            //                                               withString:@""];
+            //    ((SettingPaymentCell*)cell).buttonterms.hidden = NO;
+            //}
+            //((SettingPaymentCell*)cell).labeldescription.text = string;
             
-            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[payment.payment_info dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+            UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+            NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+            [attributes setObject:font forKey:NSFontAttributeName];
+            
+            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[payment.payment_info dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:&attributes error:nil];
             ((SettingPaymentCell*)cell).textviewdesc.attributedText = attributedString;
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:payment.payment_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -270,7 +274,7 @@
     
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOPEDITOR_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOPPAYMENT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
@@ -295,7 +299,7 @@
             [_act startAnimating];
         }
         
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPEDITOR_APIPATH parameters:param];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPPAYMENT_APIPATH parameters:param];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [_timer invalidate];
             _timer = nil;

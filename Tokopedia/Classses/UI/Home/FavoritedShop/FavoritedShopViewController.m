@@ -191,7 +191,7 @@
             
             ((FavoritedShopCell*)cell).indexpath = indexPath;
             
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:shop.shop_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:shop.shop_image?:nil] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
             UIImageView *thumb = ((FavoritedShopCell*)cell).shopimageview;
             thumb.image = nil;
@@ -461,6 +461,7 @@
     
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        
         [self requestsuccess:mappingResult withOperation:operation];
         [_act stopAnimating];
         _table.tableFooterView = nil;
@@ -586,7 +587,7 @@
 }
 
 -(void) requesttimeout {
-    
+    [self cancel];
 }
 
 
@@ -655,7 +656,10 @@
 }
 
 -(void)cancel {
-    
+    [_request cancel];
+    _request = nil;
+    [_objectmanager.operationQueue cancelAllOperations];
+    _objectmanager = nil;
 }
 
 -(void) reloadFav {

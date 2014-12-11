@@ -499,7 +499,8 @@
         
         switch (btn.tag) {
             case 10:{
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+//                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
             default:
@@ -587,12 +588,14 @@
     
     // get a rect for the textView frame
     CGRect containerFrame = self.view.frame;
-    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height);
+    
+    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height - 65);
     // animations settings
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationBeginsFromCurrentState:YES];
     [UIView setAnimationDuration:[duration doubleValue]];
     [UIView setAnimationCurve:[curve intValue]];
+    
     
     // set views with new info
     self.view.frame = containerFrame;
@@ -607,8 +610,10 @@
     NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
     
     // get a rect for the textView frame
+    self.view.backgroundColor = [UIColor clearColor];
     CGRect containerFrame = self.view.frame;
-    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height;
+    
+    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height + 65;
     
     // animations settings
     [UIView beginAnimations:nil context:NULL];

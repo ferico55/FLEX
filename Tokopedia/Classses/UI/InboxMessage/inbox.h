@@ -48,7 +48,10 @@
 #define KTKPDMESSAGE_LIMITVALUE @"10"
 
 #define KTKPDMESSAGE_PATHURL @"inbox-message.pl"
+#define KTKPDMESSAGE_PRODUCTPATHURL @"message.pl"
 #define KTKPDMESSAGEACTION_PATHURL @"action/inbox-message.pl"
+#define KTKPDMESSAGEPRODUCTACTION_PATHURL @"action/message.pl"
+
 #define KTKPDMESSAGE_CELLIDENTIFIER @"inbox-message.pl"
 #define KTKPDMESSAGE_NAVKEY @"nav"
 #define KTKPDMESSAGE_DATAELEMENTKEY @"data_element"
@@ -56,6 +59,11 @@
 #define KTKPDMESSAGE_KEYWORDKEY @"keyword"
 
 #define KTKPDTALKACTION_PATHURL @"action/inbox-talk.pl"
+#define KTKPDTALK_ACTIONGET @"get_inbox_talk"
+#define KTKPDMESSAGE_TALK @"inbox-talk.pl"
+
+
+#define TKPD_MESSAGE_TALK_ACTION @"action/talk.pl"
 
 
 #endif

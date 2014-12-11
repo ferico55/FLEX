@@ -10,7 +10,7 @@
 #import "detail.h"
 #import "GeneralTalkCell.h"
 #import "ShopTalkViewController.h"
-
+#import "stringrestkit.h"
 #import "URLCacheController.h"
 
 #import "TKPDSecureStorage.h"
@@ -316,19 +316,18 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TalkResult class]];
 
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TalkList class]];
-    [listMapping addAttributeMappingsFromArray:@[kTKPDTALK_APITALKTOTALCOMMENTKEY,
-                                                 kTKPDTALK_APITALKIDKEY,
-                                                 kTKPDTALK_APITALKCREATETIMEKEY,
-                                                 kTKPDTALK_APITALKMESSAGEKEY,
-                                                 kTKPDTALK_APITALKFOLLOWSTATUSKEY,
-                                                 kTKPDTALK_APITALKPRODUCTNAMEKEY,
-                                                 kTKPDTALK_APITALKPRODUCTIMAGEKEY,
-                                                 kTKPDTALK_APITALKPRODUCTIDKEY,
-                                                 kTKPDTALK_APITALKOWNKEY,
-                                                 kTKPDTALK_APITALKUSERIDKEY,
-                                                 kTKPDTALK_APITALKUSERNAMEKEY,
-                                                 kTKPDTALK_APITALKUSERIMAGEKEY,
-                                                 kTKPDTALK_APITALKSHOPID,
+    [listMapping addAttributeMappingsFromArray:@[TKPD_TALK_TOTAL_COMMENT,
+                                                 TKPD_TALK_ID,
+                                                 TKPD_TALK_CREATE_TIME,
+                                                 TKPD_TALK_MESSAGE,
+                                                 TKPD_TALK_FOLLOW_STATUS,
+                                                 TKPD_TALK_PRODUCT_NAME,
+                                                 TKPD_TALK_PRODUCT_IMAGE,
+                                                 TKPD_TALK_PRODUCT_ID,
+                                                 TKPD_TALK_OWN,
+                                                 TKPD_TALK_USER_ID,
+                                                 TKPD_TALK_USER_NAME,
+                                                 TKPD_TALK_USER_IMG,
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
