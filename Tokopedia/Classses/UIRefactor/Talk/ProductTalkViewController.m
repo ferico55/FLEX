@@ -16,6 +16,9 @@
 #import "TKPDSecureStorage.h"
 #import "stringrestkit.h"
 #import "URLCacheController.h"
+#import "GeneralAction.h"
+#import "stringrestkit.h"
+#import "inbox.h"
 
 #pragma mark - Product Talk View Controller
 @interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, GeneralTalkCellDelegate>
@@ -23,6 +26,7 @@
     NSMutableArray *_list;
     NSArray *_headerimages;
     NSInteger _requestcount;
+    NSInteger _requestUnfollowCount;
     NSInteger _pageheaderimages;
     NSTimer *_timer;
     BOOL _isnodata;
@@ -35,8 +39,16 @@
     
     Talk *_talk;
     __weak RKObjectManager *_objectmanager;
+    __weak RKObjectManager *_objectUnfollowmanager;
+    __weak RKObjectManager *_objectDeletemanager;
+    
     __weak RKManagedObjectRequestOperation *_request;
+    __weak RKManagedObjectRequestOperation *_requestUnfollow;
+    __weak RKManagedObjectRequestOperation *_requestDelete;
+    
     NSOperationQueue *_operationQueue;
+    NSOperationQueue *_operationUnfollowQueue;
+    NSOperationQueue *_operationDeleteQueue;
     
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
@@ -59,6 +71,9 @@
 @property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
 @property (weak, nonatomic) IBOutlet UIButton *backbutton;
 @property (weak, nonatomic) IBOutlet UIButton *nextbutton;
+@property (weak, nonatomic) IBOutlet UILabel *productSoldLabel;
+@property (weak, nonatomic) IBOutlet UILabel *productViewLabel;
+
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -93,6 +108,7 @@
     
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
+    _operationUnfollowQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     
@@ -205,7 +221,14 @@
             ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             ((GeneralTalkCell*)cell).data = list;
             
-            ((GeneralTalkCell*)cell).middleView.hidden = YES;
+            NSString *followStatus;
+            if(!list.talk_follow_status) {
+                followStatus = TKPD_TALK_FOLLOW;
+            } else {
+                followStatus = TKPD_TALK_UNFOLLOW;
+            }
+            [((GeneralTalkCell*)cell).unfollowButton setTitle:followStatus forState:UIControlStateNormal];
+            ((GeneralTalkCell*)cell).productViewIsHidden = YES;
             ((GeneralTalkCell*)cell).indexpath = indexPath;
             
             if(list.disable_comment) {
@@ -337,6 +360,81 @@
                 break;
         }
     }
+}
+
+- (void)followAnimateZoomOut:(UIButton*)buttonUnfollow {
+    double delayInSeconds = 2.0;
+    if([[buttonUnfollow currentTitle] isEqualToString:TKPD_TALK_FOLLOW]) {
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:0.3];
+        buttonUnfollow.transform = CGAffineTransformMakeScale(1.3,1.3);
+        [buttonUnfollow setTitle:TKPD_TALK_UNFOLLOW forState:UIControlStateNormal];
+        buttonUnfollow.transform = CGAffineTransformMakeScale(1,1);
+        [UIView commitAnimations];
+    } else {
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:0.3];
+        buttonUnfollow.transform = CGAffineTransformMakeScale(1.3,1.3);
+        [buttonUnfollow setTitle:TKPD_TALK_FOLLOW forState:UIControlStateNormal];
+        buttonUnfollow.transform = CGAffineTransformMakeScale(1,1);
+        [UIView commitAnimations];
+    }
+    
+    buttonUnfollow.enabled = NO;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        buttonUnfollow.enabled = YES;
+    });
+}
+
+-(void) configureUnfollowRestkit {
+    _objectUnfollowmanager =  [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
+    
+    //relation
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    
+    //register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:TKPD_MESSAGE_TALK_ACTION keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectUnfollowmanager addResponseDescriptor:responseDescriptorStatus];
+}
+
+- (void)unfollowTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withButton:(UIButton *)buttonUnfollow {
+    [self configureUnfollowRestkit];
+    [self followAnimateZoomOut:buttonUnfollow];
+    
+    TalkList *list = _list[indexpath.row];
+    if (_requestUnfollow.isExecuting) return;
+    
+    NSDictionary* param = @{
+                            kTKPDDETAIL_ACTIONKEY : TKPD_FOLLOW_TALK_ACTION,
+                            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product_id,
+                            TKPD_TALK_ID:list.talk_id?:0,
+                            };
+    
+    _requestUnfollowCount ++;
+    _requestUnfollow = [_objectUnfollowmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:TKPD_MESSAGE_TALK_ACTION parameters:param];
+    
+    [_requestUnfollow setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        
+    }];
+    
+    [_operationUnfollowQueue addOperation:_requestUnfollow];
+    
 }
 
 #pragma mark - Memory Management
@@ -625,6 +723,10 @@
         [_imagescrollview addSubview:thumb];
     }
     
+    _productSoldLabel.text = [NSString stringWithFormat:@"%@ Sold", [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY]];
+    ;
+    _productViewLabel.text = [NSString stringWithFormat:@"%@ View", [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY]];
+    
     _imagescrollview.contentSize = CGSizeMake(_headerimages.count*320,0);
     _imagescrollview.pagingEnabled = YES;
     
@@ -705,10 +807,6 @@
 }
 
 #pragma mark - General Cell Comment Delegate
-- (void)unfollowTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withButton:(UIButton *)buttonUnfollow {
-    
-}
-
 - (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     
 }

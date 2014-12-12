@@ -39,7 +39,7 @@
 #define TKPD_TALK_COMMENT_USERNAME @"comment_user_name"
 
 #define TKPD_TALK_FOLLOW @"Ikuti"
-#define TKPD_TALK_UNFOLLOW @"Batal Ikuti"
+#define TKPD_TALK_UNFOLLOW @"Berhenti Ikuti"
 #define TKPD_FOLLOW_TALK_ACTION @"follow_product_talk"
 #define TKPD_DELETE_TALK_ACTION @"delete_product_talk"
 

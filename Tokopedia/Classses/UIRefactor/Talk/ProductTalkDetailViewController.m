@@ -57,9 +57,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *talkcreatetimelabel;
 @property (weak, nonatomic) IBOutlet UILabel *talkusernamelabel;
 @property (weak, nonatomic) IBOutlet UILabel *talktotalcommentlabel;
-@property (weak, nonatomic) IBOutlet UITextField *talktextfield;
 @property (weak, nonatomic) IBOutlet UIImageView *talkuserimage;
 @property (weak, nonatomic) IBOutlet UIView *talkInputView;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
 @property (strong, nonatomic) IBOutlet UIView *header;
 
@@ -174,7 +174,12 @@
 #endif
 }
 
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TalkCommentList *list = _list[indexPath.row];
+    CGSize messageSize = [GeneralTalkCommentCell messageSize:list.comment_message];
+    return messageSize.height + 2 * [GeneralTalkCommentCell textMarginVertical];
+}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -191,10 +196,26 @@
         
         if (_list.count > indexPath.row) {
             TalkCommentList *list = _list[indexPath.row];
-            ((GeneralTalkCommentCell*)cell).commentlabel.text = list.comment_message;
+            
+            UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+            NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
+            style.lineSpacing = 5.0f;
+            NSDictionary *attributes = @{NSFontAttributeName : font, NSParagraphStyleAttributeName : style};
+            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:list.comment_message
+                                                                                   attributes:attributes];
+            ((GeneralTalkCommentCell *)cell).commentlabel.attributedText = attributedString;
+            
+            CGFloat commentLabelWidth = ((GeneralTalkCommentCell*)cell).commentlabel.frame.size.width;
+            
+            [((GeneralTalkCommentCell*)cell).commentlabel sizeToFit];
+            
+            CGRect commentLabelFrame = ((GeneralTalkCommentCell*)cell).commentlabel.frame;
+            commentLabelFrame.size.width = commentLabelWidth;
+            ((GeneralTalkCommentCell*)cell).commentlabel.frame = commentLabelFrame;
+            
             ((GeneralTalkCommentCell*)cell).user_name.text = list.comment_user_name;
             ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
-           
+            
             ((GeneralTalkCommentCell*)cell).indexpath = indexPath;
             
             if(list.is_not_delivered) {
@@ -283,7 +304,7 @@
 }
 
 - (void) initTalkInputView {
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(5, 5, 265, 45)];
+    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(5, 5, 240, 45)];
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
     
