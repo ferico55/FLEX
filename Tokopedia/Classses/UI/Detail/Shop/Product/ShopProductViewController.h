@@ -16,6 +16,6 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 
-@property (strong, nonatomic) UISearchBar *searchbaractive;
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
 
 @end

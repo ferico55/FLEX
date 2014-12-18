@@ -22,6 +22,7 @@
 @property (nonatomic, strong) NSNumber *product_id;
 @property (nonatomic) NSInteger product_price_alert;
 @property (nonatomic, strong) NSString *product_name;
+@property (nonatomic, strong) NSString *product_url;
 
 @property (nonatomic, strong) NSString *product_currency_id;
 @property (nonatomic, strong) NSString *product_currency;

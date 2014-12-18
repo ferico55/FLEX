@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSString *shop_total_favorit;
 @property (nonatomic, strong) NSString *shop_cover;
 @property (nonatomic, strong) NSString *shop_domain;
+@property (nonatomic, strong) NSString *shop_url;
 @property BOOL shop_is_gold;
 
 @end

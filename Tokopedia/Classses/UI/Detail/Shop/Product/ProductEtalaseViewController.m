@@ -64,9 +64,28 @@
     _cachecontroller = [URLCacheController new];
     
     _table.tableFooterView = _footer;
+    _table.contentInset = UIEdgeInsetsMake(0, 0, 16, 0);
     
-    [self adjustNavigationBar];
-    [self adjustCacheController];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    barButtonItem.image = [UIImage imageNamed:@"icon_cancel_white"];
+    barButtonItem.style = UIBarButtonItemStyleBordered;
+    barButtonItem.tag = 10;
+    self.navigationItem.leftBarButtonItem = barButtonItem;
+
+    NSBundle* bundle = [NSBundle mainBundle];
+    //TODO:: Change image
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"]];
+    UIBarButtonItem *rightBarButton = nil;
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        //UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        //barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        [rightBarButton setTintColor:[UIColor blackColor]];
+    }
+    else
+        rightBarButton = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+	[rightBarButton setTag:11];
+    self.navigationItem.rightBarButtonItem = rightBarButton;
     
     _etalase = [[Etalase alloc] init];
     NSInteger presentedEtalaseType = [[_data objectForKey:DATA_PRESENTED_ETALASE_TYPE_KEY]integerValue];

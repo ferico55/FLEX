@@ -7,6 +7,8 @@
 //
 
 #import "GeneralReviewCell.h"
+#import "ReviewFormViewController.h"
+#import "ReviewList.h"
 
 #pragma mark - General Review Cell
 @implementation GeneralReviewCell
@@ -46,6 +48,32 @@
                 NSIndexPath* indexpath = _indexpath;
                 [_delegate GeneralReviewCell:self withindexpath:indexpath];
                 break;
+            }
+            case 11 :
+            {
+                
+                NSIndexPath* indexpath = _indexpath;
+
+                ReviewFormViewController *vc = [ReviewFormViewController new];
+                
+                UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
+                vc.data = _data;
+                [nav.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+                
+            case 15 :
+            {
+                NSIndexPath* indexpath = _indexpath;
+                
+                ReviewFormViewController *vc = [ReviewFormViewController new];
+                
+                UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
+                vc.data = _data;
+                vc.isEditForm = YES;
+                [nav.navigationController pushViewController:vc animated:YES];
+                break;
+
             }
                 
             default:

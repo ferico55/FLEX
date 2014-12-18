@@ -13,6 +13,7 @@
 @interface ProductTalkFormResult : NSObject
 
 @property (nonatomic, strong) NSString *is_success;
+@property (nonatomic, strong) NSString *talk_id;
 
 
 @end

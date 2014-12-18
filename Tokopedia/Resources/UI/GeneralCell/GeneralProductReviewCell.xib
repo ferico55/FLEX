@@ -1,74 +1,128 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GeneralReviewCellIdentifier" rowHeight="245" id="KGk-i7-Jjw" customClass="GeneralProductReviewCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="244"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GeneralReviewCellIdentifier" rowHeight="252" id="KGk-i7-Jjw" customClass="GeneralProductReviewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="245"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="243"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Xl-wK-C6H">
-                        <rect key="frame" x="10" y="9" width="300" height="226"/>
+                        <rect key="frame" x="10" y="10" width="300" height="226"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BF2-9t-61W">
-                                <rect key="frame" x="10" y="10" width="50" height="50"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BF2-9t-61W">
+                                <rect key="frame" x="8" y="8" width="60" height="60"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nFC-df-PN8" userLabel="user_name">
-                                <rect key="frame" x="74" y="15" width="214" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <rect key="frame" x="76" y="18" width="214" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                 <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9aw-P8-EwF" userLabel="create_time">
-                                <rect key="frame" x="74" y="33" width="214" height="21"/>
+                                <rect key="frame" x="76" y="36" width="214" height="21"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="74s-oq-gaN" userLabel="comment">
-                                <rect key="frame" x="10" y="62" width="280" height="50"/>
-                                <string key="text">LabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabelLabel</string>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="74s-oq-gaN" userLabel="comment" customClass="ParagraphLabel">
+                                <rect key="frame" x="10" y="73" width="280" height="50"/>
+                                <attributedString key="attributedText"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view appearanceType="aqua" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eYA-SP-qxu" userLabel="View Rating">
-                                <rect key="frame" x="0.0" y="111" width="300" height="67"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kEh-bU-gCX" userLabel="View Bottom">
+                                <rect key="frame" x="0.0" y="186" width="300" height="40"/>
                                 <subviews>
-                                    <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Quality" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSz-CT-VKi">
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZnH-fS-j9N" userLabel="Vertical Border">
+                                        <rect key="frame" x="10" y="0.0" width="280" height="1"/>
+                                        <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                    <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SYO-33-ezC">
+                                        <rect key="frame" x="10" y="9" width="99" height="22"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <state key="normal" title="Comment" image="icon_diskusi_comment_grey.png">
+                                            <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eYA-SP-qxu" userLabel="View Rating">
+                                <rect key="frame" x="0.0" y="113" width="300" height="67"/>
+                                <subviews>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Quality" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FSz-CT-VKi">
                                         <rect key="frame" x="10" y="12" width="60" height="21"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Accuracy" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yA8-Ac-ODh">
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OEY-CI-0aS" userLabel="Quality Rate View" customClass="StarsRateView">
+                                        <rect key="frame" x="73" y="15" width="75" height="15"/>
+                                        <subviews>
+                                            <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pMW-aW-ke1">
+                                                <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xpg-9z-t2m">
+                                                <rect key="frame" x="15" y="0.0" width="15" height="15"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zwt-i0-1iI">
+                                                <rect key="frame" x="30" y="0.0" width="15" height="15"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hbB-CJ-bgZ">
+                                                <rect key="frame" x="45" y="0.0" width="15" height="15"/>
+                                            </imageView>
+                                            <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3bO-TY-4u0">
+                                                <rect key="frame" x="60" y="0.0" width="15" height="15"/>
+                                            </imageView>
+                                        </subviews>
+                                        <connections>
+                                            <outletCollection property="starimages" destination="pMW-aW-ke1" id="7g9-nR-o9U"/>
+                                            <outletCollection property="starimages" destination="Xpg-9z-t2m" id="OUk-Ju-A3u"/>
+                                            <outletCollection property="starimages" destination="Zwt-i0-1iI" id="57H-VY-cLZ"/>
+                                            <outletCollection property="starimages" destination="hbB-CJ-bgZ" id="jKC-bd-i8u"/>
+                                            <outletCollection property="starimages" destination="3bO-TY-4u0" id="Kem-Yd-1TJ"/>
+                                        </connections>
+                                    </view>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Accuracy" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yA8-Ac-ODh">
                                         <rect key="frame" x="10" y="43" width="66" height="21"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view appearanceType="aqua" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mly-Fa-Wgm" userLabel="Accuracy Rate View" customClass="StarsRateView">
-                                        <rect key="frame" x="73" y="45" width="100" height="20"/>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Mly-Fa-Wgm" userLabel="Accuracy Rate View" customClass="StarsRateView">
+                                        <rect key="frame" x="73" y="46" width="75" height="15"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iE5-df-Ngv">
-                                                <rect key="frame" x="2" y="2" width="13" height="13"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1a2-wo-wXX">
-                                                <rect key="frame" x="18" y="2" width="13" height="13"/>
+                                                <rect key="frame" x="15" y="0.0" width="15" height="15"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zrx-Qi-zRI">
-                                                <rect key="frame" x="34" y="2" width="13" height="13"/>
+                                                <rect key="frame" x="30" y="0.0" width="15" height="15"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i93-4l-cIV">
-                                                <rect key="frame" x="50" y="2" width="13" height="13"/>
+                                                <rect key="frame" x="45" y="0.0" width="15" height="15"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D4l-hE-OFu">
-                                                <rect key="frame" x="66" y="2" width="13" height="13"/>
+                                                <rect key="frame" x="60" y="0.0" width="15" height="15"/>
                                             </imageView>
                                         </subviews>
                                         <connections>
@@ -79,48 +133,28 @@
                                             <outletCollection property="starimages" destination="1a2-wo-wXX" id="T10-qE-utO"/>
                                         </connections>
                                     </view>
-                                    <view appearanceType="aqua" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OEY-CI-0aS" userLabel="Quality Rate View" customClass="StarsRateView">
-                                        <rect key="frame" x="73" y="14" width="100" height="20"/>
-                                        <subviews>
-                                            <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pMW-aW-ke1">
-                                                <rect key="frame" x="2" y="2" width="13" height="13"/>
-                                            </imageView>
-                                            <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xpg-9z-t2m">
-                                                <rect key="frame" x="18" y="2" width="13" height="13"/>
-                                            </imageView>
-                                            <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zwt-i0-1iI">
-                                                <rect key="frame" x="34" y="2" width="13" height="13"/>
-                                            </imageView>
-                                            <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hbB-CJ-bgZ">
-                                                <rect key="frame" x="50" y="2" width="13" height="13"/>
-                                            </imageView>
-                                            <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3bO-TY-4u0">
-                                                <rect key="frame" x="66" y="2" width="13" height="13"/>
-                                            </imageView>
-                                        </subviews>
-                                    </view>
-                                    <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Speed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bKp-mq-B1o">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Speed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bKp-mq-B1o">
                                         <rect key="frame" x="161" y="12" width="50" height="21"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view appearanceType="aqua" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NGX-yJ-PKV" userLabel="Speed Rate View" customClass="StarsRateView">
-                                        <rect key="frame" x="213" y="14" width="77" height="22"/>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NGX-yJ-PKV" userLabel="Speed Rate View" customClass="StarsRateView">
+                                        <rect key="frame" x="212" y="15" width="75" height="15"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zcq-Vc-46b">
-                                                <rect key="frame" x="0.0" y="2" width="13" height="13"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S70-64-ds0">
-                                                <rect key="frame" x="16" y="2" width="13" height="13"/>
+                                                <rect key="frame" x="15" y="0.0" width="15" height="15"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JhI-ib-hyf">
-                                                <rect key="frame" x="32" y="2" width="13" height="13"/>
+                                                <rect key="frame" x="30" y="0.0" width="15" height="15"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JNB-ff-Tdu">
-                                                <rect key="frame" x="48" y="2" width="13" height="13"/>
+                                                <rect key="frame" x="45" y="0.0" width="15" height="15"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vr7-nK-PZM">
-                                                <rect key="frame" x="64" y="2" width="13" height="13"/>
+                                                <rect key="frame" x="60" y="0.0" width="15" height="15"/>
                                             </imageView>
                                         </subviews>
                                         <connections>
@@ -131,28 +165,28 @@
                                             <outletCollection property="starimages" destination="S70-64-ds0" id="wTW-t3-xpU"/>
                                         </connections>
                                     </view>
-                                    <label appearanceType="aqua" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Service" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pts-bK-nhl">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Service" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pts-bK-nhl">
                                         <rect key="frame" x="161" y="43" width="48" height="21"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view appearanceType="aqua" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hhY-OU-d5i" userLabel="Service Rate View" customClass="StarsRateView">
-                                        <rect key="frame" x="213" y="45" width="77" height="22"/>
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hhY-OU-d5i" userLabel="Service Rate View" customClass="StarsRateView">
+                                        <rect key="frame" x="212" y="46" width="75" height="15"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G3L-hG-M8v">
-                                                <rect key="frame" x="0.0" y="2" width="13" height="13"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VMf-B4-di5">
-                                                <rect key="frame" x="16" y="2" width="13" height="13"/>
+                                                <rect key="frame" x="15" y="0.0" width="15" height="15"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dd0-3f-VIg">
-                                                <rect key="frame" x="32" y="2" width="13" height="13"/>
+                                                <rect key="frame" x="30" y="0.0" width="15" height="15"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eao-rE-cps">
-                                                <rect key="frame" x="48" y="2" width="13" height="13"/>
+                                                <rect key="frame" x="45" y="0.0" width="15" height="15"/>
                                             </imageView>
                                             <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0Vv-Xz-GHC">
-                                                <rect key="frame" x="64" y="2" width="13" height="13"/>
+                                                <rect key="frame" x="60" y="0.0" width="15" height="15"/>
                                             </imageView>
                                         </subviews>
                                         <connections>
@@ -166,36 +200,16 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
-                            <view appearanceType="aqua" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kEh-bU-gCX" userLabel="View Bottom">
-                                <rect key="frame" x="0.0" y="186" width="300" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <view appearanceType="aqua" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZnH-fS-j9N" userLabel="Vertical Border">
-                                        <rect key="frame" x="10" y="0.0" width="280" height="1"/>
-                                        <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-                                    </view>
-                                    <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SYO-33-ezC">
-                                        <rect key="frame" x="10" y="9" width="99" height="22"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                        <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Comment" image="icon_comment.png">
-                                            <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                 </subviews>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="accuracyrate" destination="Mly-Fa-Wgm" id="vei-9S-cu2"/>
                 <outlet property="commentbutton" destination="SYO-33-ezC" id="tno-DY-slY"/>
-                <outlet property="commentlabel" destination="74s-oq-gaN" id="iNL-9M-Jrz"/>
+                <outlet property="commentlabel" destination="74s-oq-gaN" id="lXm-gQ-QcO"/>
                 <outlet property="namelabel" destination="nFC-df-PN8" id="hV4-JX-4ht"/>
                 <outlet property="qualityrate" destination="OEY-CI-0aS" id="tXU-n1-VuJ"/>
                 <outlet property="servicerate" destination="hhY-OU-d5i" id="ucw-Gx-PHg"/>
@@ -203,9 +217,15 @@
                 <outlet property="thumb" destination="BF2-9t-61W" id="JYm-D7-8nP"/>
                 <outlet property="timelabel" destination="9aw-P8-EwF" id="Qu2-Le-8Fo"/>
             </connections>
+            <point key="canvasLocation" x="424" y="221.5"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="icon_comment.png" width="14" height="14"/>
+        <image name="icon_diskusi_comment_grey.png" width="14" height="14"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

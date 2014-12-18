@@ -92,11 +92,15 @@
 
 
 #pragma mark - Life Cycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title = kTKPDTITLE_SHOP_INFO;
     
+
+    self.navigationController.navigationBarHidden = NO;
+
     _scrollview.delegate = self;
     _scrollview.scrollEnabled = YES;
     CGSize viewsize = _containerview.frame.size;
@@ -532,7 +536,7 @@
         NSArray *packages = ((Shipment *)[_shop.result.shipment objectAtIndex:i]).shipment_package;
         numberOfShipments += packages.count;
     }
-    shipmentViewFrame.size.height = (numberOfShipments * 43) + 39;
+    shipmentViewFrame.size.height = (numberOfShipments * 43) + 48;
     _shipmentview.frame = shipmentViewFrame;
     
     height += _shipmentview.frame.size.height;
@@ -541,7 +545,7 @@
     CGRect paymentViewFrame = _paymentview.frame;
     paymentViewFrame.origin.y = height;
     NSInteger numberOfPaymets = _shop.result.payment.count;
-    paymentViewFrame.size.height = (numberOfPaymets * 43) + 39;
+    paymentViewFrame.size.height = (numberOfPaymets * 43) + 43;
     _paymentview.frame = paymentViewFrame;
     
     height += _paymentview.frame.size.height;

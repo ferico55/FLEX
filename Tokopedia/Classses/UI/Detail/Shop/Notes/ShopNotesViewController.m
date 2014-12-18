@@ -20,6 +20,7 @@
 #import "ShopNotesDetailViewController.h"
 
 #import "URLCacheController.h"
+#import "SettingNoteDetailViewController.h"
 
 #pragma mark - Shop Notes View Controller
 @interface ShopNotesViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, ShopNotesCellDelegate>
@@ -390,6 +391,16 @@
 }
 
 #pragma mark - Methods
+
+- (IBAction)addNewNoteDidTap:(id)sender {
+    //add new notes
+    SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
+    vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
+                kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY)
+                };
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 -(void)refreshView:(UIRefreshControl*)refresh
 {

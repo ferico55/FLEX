@@ -22,16 +22,19 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Fz9-tI-DuS">
-                    <rect key="frame" x="0.0" y="60" width="320" height="468"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Fz9-tI-DuS">
+                    <rect key="frame" x="0.0" y="50" width="320" height="480"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="480" id="Prr-j5-AUH"/>
+                    </constraints>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="qif-eV-03W"/>
                         <outlet property="delegate" destination="-1" id="fTu-mC-fbs"/>
                     </connections>
                 </tableView>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iUI-vq-CYd">
-                    <rect key="frame" x="0.0" y="60" width="320" height="51"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iUI-vq-CYd">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="51"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title Kucing" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RZV-fU-zKw">
                             <rect key="frame" x="10" y="4" width="300" height="20"/>
@@ -50,9 +53,12 @@
                             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="51" id="Ygq-t5-O3S"/>
+                    </constraints>
                 </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b1X-S7-W2F">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="b1X-S7-W2F">
                     <rect key="frame" x="0.0" y="528" width="320" height="40"/>
                     <subviews>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jF6-3R-5KB">
@@ -72,9 +78,27 @@
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="XRv-mg-1tl"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="b1X-S7-W2F" firstAttribute="leading" secondItem="iUI-vq-CYd" secondAttribute="leading" id="15p-ik-6Ld"/>
+                <constraint firstItem="b1X-S7-W2F" firstAttribute="trailing" secondItem="iUI-vq-CYd" secondAttribute="trailing" id="3RD-Ds-iU7"/>
+                <constraint firstItem="b1X-S7-W2F" firstAttribute="trailing" secondItem="Fz9-tI-DuS" secondAttribute="trailing" id="9ae-EH-EHR"/>
+                <constraint firstItem="b1X-S7-W2F" firstAttribute="top" secondItem="Fz9-tI-DuS" secondAttribute="bottom" constant="-2" id="F7z-vg-GCN"/>
+                <constraint firstItem="iUI-vq-CYd" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="JWw-O4-N8k"/>
+                <constraint firstAttribute="trailing" secondItem="b1X-S7-W2F" secondAttribute="trailing" id="Roj-EL-fph"/>
+                <constraint firstAttribute="bottom" secondItem="iUI-vq-CYd" secondAttribute="bottom" constant="517" id="Um3-rY-OP0"/>
+                <constraint firstAttribute="bottom" secondItem="b1X-S7-W2F" secondAttribute="bottom" id="Unu-KE-WhY"/>
+                <constraint firstItem="b1X-S7-W2F" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ZSf-55-s7R"/>
+                <constraint firstAttribute="bottom" secondItem="b1X-S7-W2F" secondAttribute="bottom" id="Zdr-40-6ue"/>
+                <constraint firstItem="b1X-S7-W2F" firstAttribute="leading" secondItem="Fz9-tI-DuS" secondAttribute="leading" id="aA0-OI-lRx"/>
+                <constraint firstItem="Fz9-tI-DuS" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="50" id="tQD-uO-HDI"/>
+                <constraint firstItem="Fz9-tI-DuS" firstAttribute="top" secondItem="iUI-vq-CYd" secondAttribute="top" constant="50" id="xRF-pZ-pux"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="733" y="440"/>
         </view>

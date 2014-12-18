@@ -16,9 +16,14 @@
 
 #define kTKPD_AUTHKEY @"auth"
 #define kTKPD_ISLOGINKEY @"is_login"
+#define kTKPD_USERIMAGEKEY @"user_image"
 #define kTKPD_USERIDKEY @"user_id"
-#define kTKPD_SHOPIDKEY @"shop_id"
 #define kTKPD_FULLNAMEKEY @"full_name"
+#define kTKPD_SHOPIDKEY @"shop_id"
+#define kTKPD_SHOPNAMEKEY @"shop_name"
+#define kTKPD_SHOPIMAGEKEY @"shop_avatar"
+#define kTKPD_SHOPISGOLD @"shop_is_gold"
+#define kTKPD_NULLCOMMENTKEY @"0"
 
 #define is4inch  ([[UIScreen mainScreen] bounds].size.height == 568)?TRUE:FALSE
 

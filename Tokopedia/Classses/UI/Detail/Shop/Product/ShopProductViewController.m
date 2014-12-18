@@ -27,7 +27,7 @@
 
 #import "URLCacheController.h"
 
-@interface ShopProductViewController () <UITableViewDataSource,UITableViewDelegate, GeneralProductCellDelegate, UISearchBarDelegate>
+@interface ShopProductViewController () <UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate, UISearchBarDelegate>
 {
     NSInteger _page;
     NSInteger _limit;
@@ -72,6 +72,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *hashtagsscrollview;
 @property (strong, nonatomic) IBOutlet UIView *descriptionview;
 @property (weak, nonatomic) IBOutlet UIScrollView *imagescrollview;
+@property (weak, nonatomic) IBOutlet UIScrollView *productScroll;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionlabel;
 @property (weak, nonatomic) IBOutlet UIView *filterview;
 @property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
@@ -148,25 +149,10 @@
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    // adjust refresh control
-    //_refreshControl = [[UIRefreshControl alloc] init];
-    //_refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Pull to Refresh"];
-    //[_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
-    //[_table addSubview:_refreshControl];
-    
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(setDepartmentID:) name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY object:nil];
-    
-//    UIImageView *imageview = [_data objectForKey:kTKPDETAIL_DATAHEADERIMAGEKEY];
-//    if (imageview) {
-//        _imageview.image = imageview.image;
-//        _header.hidden = NO;
-//        _pagecontrol.hidden = YES;
-//        _swipegestureleft.enabled = NO;
-//        _swipegestureright.enabled = NO;
-//    }
     
     [_descriptionview setFrame:CGRectMake(350, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
     [_pagecontrol bringSubviewToFront:_descriptionview];
@@ -178,7 +164,8 @@
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
     
-    _table.scrollEnabled = NO;
+//    _table.scrollEnabled = NO;
+    _productScroll.scrollEnabled = NO;
     
     if ([_table respondsToSelector:@selector(setKeyboardDismissMode:)]) {
         _table.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
@@ -199,6 +186,7 @@
     
     self.table.scrollEnabled = NO;
     self.table.contentOffset = CGPointMake(0, 0);
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -314,7 +302,7 @@
 
 #pragma mark - Action View
 -(IBAction)tap:(id)sender{
-    [_searchbaractive resignFirstResponder];
+    [_searchBar resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         
@@ -331,7 +319,7 @@
     }
 }
 - (IBAction)gesture:(id)sender {
-    [_searchbaractive resignFirstResponder];
+    [_searchBar resignFirstResponder];
     if ([sender isKindOfClass:[UISwipeGestureRecognizer class]]) {
         UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer*)sender;
         switch (swipe.state) {
@@ -666,7 +654,7 @@
 #pragma mark - Cell Delegate
 -(void)GeneralProductCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
-    [_searchbaractive resignFirstResponder];
+    [_searchBar resignFirstResponder];
     NSInteger index = indexpath.section+2*(indexpath.row);
     List *list = _product[index];
     DetailProductViewController *vc = [DetailProductViewController new];
@@ -701,7 +689,7 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    [_searchbaractive resignFirstResponder];
+    [_searchBar resignFirstResponder];
     _table.scrollEnabled = YES;
 }
 
@@ -710,26 +698,39 @@
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"scrollToTop" object:nil];
+    searchBar.showsCancelButton = YES;
+    return YES;
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
+    searchBar.showsCancelButton = NO;
     return YES;
 }
 
 -(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    _searchbaractive = searchBar;
+    _searchBar = searchBar;
 }
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [_searchbaractive resignFirstResponder];
+    [_searchBar resignFirstResponder];
     [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
     [self refreshView:nil];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [_searchBar resignFirstResponder];
+    _searchBar.showsCancelButton = NO;
 }
 
 #pragma mark - UIScrollView Delegate
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    [_searchbaractive resignFirstResponder];
+    [_searchBar resignFirstResponder];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -759,6 +760,14 @@
     NSDictionary *userinfo = notification.userInfo;
     [_detailfilter addEntriesFromDictionary:userinfo];
     [self refreshView:nil];
+}
+
+- (void)disableProductScroll:(NSNotification *)notification {
+    _productScroll.scrollEnabled = NO;
+}
+
+- (void)enableProductScroll:(NSNotification *)notification{
+    _productScroll.scrollEnabled = YES;
 }
 
 @end

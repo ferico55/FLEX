@@ -8,6 +8,7 @@
 
 #import "detail.h"
 #import "search.h"
+#import "stringrestkit.h"
 
 #import "Product.h"
 
@@ -27,11 +28,11 @@
 
 #import "DetailProductOtherView.h"
 
-#import "../../Controller/TKPDTabShopNavigationController.h"
-#import "../../Detail/Shop/Product/ShopProductViewController.h"
-#import "../../Detail/Shop/Talk/ShopTalkViewController.h"
-#import "../../Detail/Shop/Review/ShopReviewViewController.h"
-#import "../../Detail/Shop/Notes/ShopNotesViewController.h"
+#import "TKPDTabShopNavigationController.h"
+#import "ShopProductViewController.h"
+#import "ShopTalkViewController.h"
+#import "ShopReviewViewController.h"
+#import "ShopNotesViewController.h"
 
 #import "URLCacheController.h"
 
@@ -133,6 +134,8 @@
 {
     [super viewDidLoad];
     
+    self.title = @"Detail Produk";
+    
     _datatalk = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
@@ -158,8 +161,11 @@
     /** set inset table for different size**/
     is_dismissed = [[_data objectForKey:@"is_dismissed"] boolValue];
     if(is_dismissed) {
+        [self.navigationController.navigationBar setTranslucent:NO];
+        
         if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
             self.edgesForExtendedLayout = UIRectEdgeNone;
+            
         }
     }
 //    if (is4inch) {
@@ -281,6 +287,9 @@
                 
                 [_datatalk setObject:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0) forKey:kTKPDDETAIL_APIPRODUCTIDKEY];
                 [_datatalk setObject:image.image_src?:@(0) forKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
+                [_datatalk setObject:_product.result.statistic.product_sold forKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY];
+                [_datatalk setObject:_product.result.statistic.product_view forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
+                [_datatalk setObject:@(_product.result.shop_info.shop_id) forKey:TKPD_TALK_SHOP_ID];
                 
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:_datatalk];
@@ -292,6 +301,20 @@
             case 14:
             {
                 
+            }
+            case 15:
+            {
+                NSString *activityItem = [NSString stringWithFormat:@"Jual %@ - %@ | Tokopedia %@", _product.result.info.product_name,
+                                          _product.result.shop_info.shop_name, _product.result.info.product_url];
+                UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
+                                                                                                 applicationActivities:nil];
+                activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                [self presentViewController:activityController animated:YES completion:nil];
+                break;
+            }
+            case 16:
+            {
+                break;
             }
             default:
                 break;
@@ -386,13 +409,10 @@
     }
     [mView addSubview:expandCollapseButton];
     
-//    [mView addSubview:logoView];
-    
     UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
     [bt setFrame:CGRectMake(15, 0, 170, 40)];
     [bt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [bt setTag:section];
-//    [bt setBackgroundColor:[UIColor redColor]];
     [bt.titleLabel setFont:[UIFont systemFontOfSize:12]];
     [bt setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     [bt.titleLabel setFont: [UIFont fontWithName:@"GothamMedium" size:15.0f]];
@@ -420,10 +440,10 @@
     if (!sectionIsExpanded) {
         UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 40, self.view.frame.size.width, 1)];
         bottomBorder.backgroundColor = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1];
-        bottomBorder.tag = 2;
+        bottomBorder.tag = 22;
         [mView addSubview:bottomBorder];
     } else {
-        UIView *view = [mView viewWithTag:2];
+        UIView *view = [mView viewWithTag:22];
         [view removeFromSuperview];
     }
     
@@ -594,7 +614,8 @@
                                                       kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY:kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY,
                                                       kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY,
                                                       kTKPDDETAILPRODUCT_APIPRODUCTIDKEY:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY:kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY
+                                                      kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY:kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY,
+                                                      kTKPDDETAILPRODUCT_APIPRODUCTURLKEY:kTKPDDETAILPRODUCT_APIPRODUCTURLKEY,
                                                       }];
     
     RKObjectMapping *statisticMapping = [RKObjectMapping mappingForClass:[Statistic class]];
@@ -958,7 +979,6 @@
         ProductImages *image = images[i];
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        //request.URL = url;
         
         UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
         
@@ -1015,7 +1035,7 @@
     //request.URL = url;
     
     thumb.image = nil;
-    //thumb.hidden = YES;	//@prepareforreuse then @reset
+    thumb.layer.cornerRadius = thumb.layer.frame.size.width/2;
     
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
@@ -1036,12 +1056,12 @@
 
         for(int i = 0; i< _product.result.other_product.count; i++)
         {
-            CGFloat y = i * 160;
+            CGFloat y = i * 155;
             
             OtherProduct *product = _product.result.other_product[i];
             
             DetailProductOtherView *v = [DetailProductOtherView newview];
-            [v setFrame:CGRectMake(y + 7, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
+            [v setFrame:CGRectMake(y + 10, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
             v.delegate = self;
             v.index = i;
             v.namelabel.text = product.product_name;

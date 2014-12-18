@@ -83,6 +83,7 @@
 #define kTKPDHOME_APITREEKEY @"tree"
 #define kTKPDHOME_APIDIDKEY @"d_id"
 #define kTKPDHOME_APITITLEKEY @"title"
+#define kTKPDHOME_APIURLKEY @"url"
 
 #define kTKPDHOME_APIHASHTAGSNAMEKEY @"name"
 #define kTKPDHOME_APIHASHTAGSURLKEY @"url"

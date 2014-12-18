@@ -219,6 +219,17 @@
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
+            case 16:
+            {
+                NSString *activityItem = [NSString stringWithFormat:@"Jual %@ | Tokopedia %@",
+                                          _catalog.result.catalog_info.catalog_name,
+                                          _catalog.result.catalog_info.catalog_uri?:@"www.tokopedia.com"];
+                UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
+                                                                                                 applicationActivities:nil];
+                activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                [self presentViewController:activityController animated:YES completion:nil];
+                break;
+            }
             default:
                 break;
         }
@@ -291,7 +302,8 @@
                                                       kTKPDDETAILCATALOG_APICATALOGKEYKEY:kTKPDDETAILCATALOG_APICATALOGKEYKEY,
                                                       kTKPDDETAILCATALOG_APICATALOGDEPARTMENTIDKEY:kTKPDDETAILCATALOG_APICATALOGDEPARTMENTIDKEY,
                                                       kTKPDDETAILCATALOG_APICATALOGIDKEY:kTKPDDETAILCATALOG_APICATALOGIDKEY,
-                                                      kTKPDDETAILCATALOG_APICATALOGNAMEKEY:kTKPDDETAILCATALOG_APICATALOGNAMEKEY
+                                                      kTKPDDETAILCATALOG_APICATALOGNAMEKEY:kTKPDDETAILCATALOG_APICATALOGNAMEKEY,
+                                                      kTKPDDETAILCATALOG_APICATALOGURIKEY:kTKPDDETAILCATALOG_APICATALOGURIKEY
                                                       }];
     
     RKObjectMapping *priceMapping = [RKObjectMapping mappingForClass:[CatalogPrice class]];

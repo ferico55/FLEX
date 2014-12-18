@@ -7,33 +7,33 @@
 //
 
 #import "controller.h"
-#import "category.h"
+#import "string_inbox_message.h"
 #import "TKPDTabInboxMessageNavigationController.h"
-#import "CategoryMenuViewController.h"
+
 
 @interface TKPDTabInboxMessageNavigationController () {
     UIView* _tabbar;
     NSArray* _buttons;
     NSInteger _unloadSelectedIndex;
     NSArray* _unloadViewControllers;
-    BOOL _hascatalog;
     
-    UIBarButtonItem *_barbuttoncategory;
+    NSString *_titleNavMessage;
+    NSString *_titleNavMessageSent;
+    NSString *_titleNavMessageArchive;
+    NSString *_titleNavMessageTrash;
 }
 
-@property (weak, nonatomic) IBOutlet UIButton *buttonlocation;
 
-@property (weak, nonatomic) IBOutlet UIButton *buttonfilter;
 @property (weak, nonatomic) IBOutlet UIView *container;
-@property (weak, nonatomic) IBOutlet UIView *tabbarthrees;
-@property (weak, nonatomic) IBOutlet UIView *tabbartwos;
-@property (weak, nonatomic) IBOutlet UIView *catalogproductbuttonview;
-@property (weak, nonatomic) IBOutlet UIView *shopbuttonview;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentcontrol;
-@property (weak, nonatomic) IBOutlet UIView *viewtop;
+@property (weak, nonatomic) IBOutlet UIView *readOption;
+@property (weak, nonatomic) IBOutlet UIButton *allBtn;
+@property (weak, nonatomic) IBOutlet UIButton *unreadBtn;
+@property (weak, nonatomic) IBOutlet UIView *allSign;
+@property (weak, nonatomic) IBOutlet UIView *unreadSign;
+
 
 - (IBAction)tap:(UISegmentedControl *)sender;
-
 - (UIEdgeInsets)contentInsetForContainerController;
 - (UIViewController*)isChildViewControllersContainsNavigationController:(UIViewController*)controller;
 
@@ -51,37 +51,14 @@
 @dynamic contentInsetForChildController;
 
 @synthesize container = _container;
-@synthesize tabbarthrees = _tabbarthrees;
-@synthesize tabbartwos = _tabbartwos;
 
-#pragma mark -
-#pragma mark Factory methods
 
-//+ (id)allocinit
-//{
-//	id o = [[self class] alloc];
-//	if (o != nil) {
-//		o = [o initWithNibName:nil bundle:nil];
-//		return o;
-//	}
-//	return nil;
-//}
-
-#pragma mark -
-#pragma mark Initializations
-
-//- (id)init
-//{
-//	return [self initWithNibName:nil bundle:nil];
-//}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _hascatalog = NO;
         _selectedIndex = -1;
-        //_navigationIndex = -1;
         _unloadSelectedIndex = -1;
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value"
@@ -93,24 +70,17 @@
 
 #pragma mark - View lifecycle
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+- (void)initNotificationCenter {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(enableButtonRead:)
+                                                 name:@"enableButtonRead" object:nil];
     
-    UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
-    [titleLabel setTitle:@"All" forState:UIControlStateNormal];
-    titleLabel.frame = CGRectMake(0, 0, 70, 44);
-    titleLabel.tag = 15;
-    [titleLabel addTarget:self action:@selector(tapbutton:) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.titleView = titleLabel;
-    
-    if (_unloadSelectedIndex != -1) {
-        [self setViewControllers:_unloadViewControllers];
-        
-        _unloadSelectedIndex = -1;
-        _unloadViewControllers = nil;
-    }
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(disableButtonRead:)
+                                                 name:@"disableButtonRead" object:nil];
+}
+
+- (void)initUINavigationBar {
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
@@ -125,11 +95,7 @@
     self.navigationItem.leftBarButtonItem = barbutton1;
     
     //TODO:: Change image
-    //if ([[_data objectForKey:kTKPDCONTROLLER_DATATYPEKEY]  isEqual: @(kTKPDCONTROLLER_DATATYPECATEGORYKEY)]) {
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-//        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-//        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
         barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tapbutton:)];
         [barbutton1 setTintColor:[UIColor blackColor]];
     }
@@ -137,9 +103,34 @@
         barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tapbutton:)];
     [barbutton1 setTintColor:[UIColor blackColor]];
     [barbutton1 setTag:11];
-//    [barbutton1 setEnabled:NO];
     self.navigationItem.rightBarButtonItem = barbutton1;
-    //}
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    _titleNavMessage = ALL_MESSAGE;
+    _titleNavMessageSent = ALL_MESSAGE;
+    _titleNavMessageArchive = ALL_MESSAGE;
+    _titleNavMessageTrash = ALL_MESSAGE;
+    
+    
+    _readOption.backgroundColor = [UIColor colorWithRed:0/255 green:0/255 blue:0/255  alpha:0.5];
+    _allSign.hidden = NO;
+    _unreadSign.hidden = YES;
+    
+    if (_unloadSelectedIndex != -1) {
+        [self setViewControllers:_unloadViewControllers];
+        
+        _unloadSelectedIndex = -1;
+        _unloadViewControllers = nil;
+    }
+    
+    [self initNotificationCenter];
+    [self initUINavigationBar];
+    
+
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -158,11 +149,7 @@
     
     UIView* tabbar;
     CGRect frame;
-    //if (_selectedIndex < 3) {
-    //	tabbar = _tabbars[0];
-    //} else {
-    //	tabbar = _tabbars[1];
-    //}
+
     tabbar = _tabbar;
     frame = tabbar.frame;
     frame.origin.y = inset.top;
@@ -175,7 +162,6 @@
             frame = CGRectOffset(frame, 0.0f, CGRectGetHeight(rect));
         }
     }
-    //tabbar.frame = frame;
     
     inset = [self contentInsetForChildController];
     if ((_delegate != nil) && ([_delegate respondsToSelector:@selector(tabBarController:childControllerContentInset:)])) {
@@ -189,22 +175,15 @@
 -(void)setData:(NSDictionary *)data
 {
     _data = data;
-    
-    if (data) {
-        
-    }
 }
 
 - (void)setViewControllers:(NSArray *)viewControllers
 {
-    [self setViewControllers:viewControllers animated:NO];
+    [self setViewControllers:viewControllers animated:YES];
 }
 
 - (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(SetHiddenSegmentController:)
-                                                 name:@"setsegmentcontrol" object:nil];
     if (viewControllers != nil) {
         NSUInteger count = viewControllers.count;
         [_segmentcontrol setSelectedSegmentIndex:0];
@@ -235,7 +214,6 @@
         _viewControllers = nil;
         _selectedViewController = nil;
         _selectedIndex = -1;
-        //_navigationIndex = -1;
     }
 }
 
@@ -269,6 +247,26 @@
     [self setSelectedIndex:selectedIndex animated:NO];
 }
 
+
+- (void)setSelectedindexTitle {
+    UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    if(_selectedIndex == SEGMENT_MESSAGE) {
+        [titleLabel setTitle:_titleNavMessage forState:UIControlStateNormal];
+        if([_titleNavMessage isEqualToString:ALL_MESSAGE]) {
+            [self markAllTalkButton];
+        } else {
+            [self markUnreadTalkButton];
+        }
+    }
+    
+    
+    titleLabel.frame = CGRectMake(0, 0, 70, 44);
+    [titleLabel addTarget:self action:@selector(tapbutton:) forControlEvents:UIControlEventTouchUpInside];
+    titleLabel.tag = 15;
+    self.navigationItem.titleView = titleLabel;
+}
+
 - (void)setSelectedIndex:(NSInteger)selectedIndex animated:(BOOL)animated
 {
     
@@ -291,9 +289,7 @@
             UINavigationController* n = (UINavigationController*)select;
             if (!n.navigationBarHidden && !n.navigationBar.hidden) {
                 
-                //CGRect rect = n.navigationBar.frame;
-                //rect = [self.view convertRect:rect fromView:n.navigationBar.superview];
-                //(*selectframe).origin.y = CGRectGetMaxY(rect);
+                CGRect rect = n.navigationBar.frame;
                 selectframe.origin.y = inset.top;
                 //selectframe = CGRectOffset(selectframe, 0.0f, CGRectGetHeight(rect));
                 selectframe = CGRectZero;
@@ -318,13 +314,12 @@
         
         _selectedIndex = selectedIndex;
         _selectedViewController = _viewControllers[selectedIndex];
+        [self setSelectedindexTitle];
         
         if (animated && (deselect != nil) && (navigate != 0)) {
             
             if (deselect != nil) {
                 [deselect willMoveToParentViewController:nil];
-                //[deselect.view removeFromSuperview];
-                //[deselect removeFromParentViewController];
             }
             
             [self addChildViewController:select];
@@ -384,8 +379,6 @@
 - (UIEdgeInsets)contentInsetForChildController
 {
     UIEdgeInsets inset = [self contentInsetForContainerController];
-    
-    //CGRect bounds = ((UIView*)_tabbars[0]).bounds;
     CGRect bounds = _tabbar.bounds;
     inset.top += CGRectGetHeight(bounds);
     
@@ -460,33 +453,123 @@
 {
     if([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
+        NSString *showReadSubfix;
+        
+        if(!_selectedIndex) {
+            showReadSubfix = NAV_MESSAGE;
+        } else if (_selectedIndex == SEGMENT_MESSAGE_SENT) {
+            showReadSubfix = NAV_MESSAGE_SENT;
+        } else if (_selectedIndex == SEGMENT_MESSAGE_ARCHIVE) {
+            showReadSubfix = NAV_MESSAGE_ARCHIVE;
+        } else if (_selectedIndex == SEGMENT_MESSAGE_TRASH) {
+            showReadSubfix = NAV_MESSAGE_TRASH;
+        }
         
         switch (btn.tag) {
             case 15: {
-                UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
-                [titleLabel setTitle:@"Unread" forState:UIControlStateNormal];
-                titleLabel.frame = CGRectMake(0, 0, 70, 44);
-                titleLabel.tag = 16;
-                [titleLabel addTarget:self action:@selector(tapbutton:) forControlEvents:UIControlEventTouchUpInside];
-                self.navigationItem.titleView = titleLabel;
-                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"1", @"show_read", nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"showRead" object:nil userInfo:dict];
+                if(_selectedIndex == SEGMENT_MESSAGE) {
+                    if(_readOption.isHidden) {
+                        _readOption.hidden = NO;
+                    } else {
+                        _readOption.hidden = YES;
+                    }
+                }
+                
+                
                 break;
             }
+                
             case 16: {
                 UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
-                [titleLabel setTitle:@"All" forState:UIControlStateNormal];
+                
+                if(_selectedIndex == SEGMENT_MESSAGE) {
+                    _titleNavMessage = ALL_MESSAGE;
+                    [titleLabel setTitle:_titleNavMessage forState:UIControlStateNormal];
+                } else if (_selectedIndex == SEGMENT_MESSAGE_SENT) {
+                    _titleNavMessageSent = ALL_MESSAGE;
+                    [titleLabel setTitle:_titleNavMessageSent forState:UIControlStateNormal];
+                } else if (_selectedIndex == SEGMENT_MESSAGE_ARCHIVE) {
+                    _titleNavMessageArchive = ALL_MESSAGE;
+                    [titleLabel setTitle:_titleNavMessageArchive forState:UIControlStateNormal];
+                } else if (_selectedIndex == SEGMENT_MESSAGE_TRASH) {
+                    _titleNavMessageTrash = ALL_MESSAGE;
+                    [titleLabel setTitle:_titleNavMessageTrash forState:UIControlStateNormal];
+                }
+                
                 titleLabel.frame = CGRectMake(0, 0, 70, 44);
-                titleLabel.tag = 15;
                 [titleLabel addTarget:self action:@selector(tapbutton:) forControlEvents:UIControlEventTouchUpInside];
+                titleLabel.tag = 15;
+                self.navigationItem.titleView = titleLabel;
+                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"1", @"show_read", nil];
+                NSString *notifName = [NSString stringWithFormat:@"%@%@", @"showRead", showReadSubfix];
+                [[NSNotificationCenter defaultCenter] postNotificationName:notifName object:nil userInfo:dict];
+                
+                _readOption.hidden = YES;
+                _allSign.hidden = NO;
+                _unreadSign.hidden = YES;
+                break;
+            }
+            case 17: {
+                UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
+
+                if(_selectedIndex == SEGMENT_MESSAGE) {
+                    _titleNavMessage = UNREAD_MESSAGE;
+                    [titleLabel setTitle:_titleNavMessage forState:UIControlStateNormal];
+                } else if (_selectedIndex == SEGMENT_MESSAGE_SENT) {
+                    _titleNavMessageSent = UNREAD_MESSAGE;
+                    [titleLabel setTitle:_titleNavMessageSent forState:UIControlStateNormal];
+                } else if (_selectedIndex == SEGMENT_MESSAGE_ARCHIVE) {
+                    _titleNavMessageArchive = UNREAD_MESSAGE;
+                    [titleLabel setTitle:_titleNavMessageArchive forState:UIControlStateNormal];
+                } else if (_selectedIndex == SEGMENT_MESSAGE_TRASH) {
+                    _titleNavMessageTrash = UNREAD_MESSAGE;
+                    [titleLabel setTitle:_titleNavMessageTrash forState:UIControlStateNormal];
+                }
+                
+                titleLabel.frame = CGRectMake(0, 0, 70, 44);
+                [titleLabel addTarget:self action:@selector(tapbutton:) forControlEvents:UIControlEventTouchUpInside];
+                titleLabel.tag = 15;
                 self.navigationItem.titleView = titleLabel;
                 NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"0", @"show_read", nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"showRead" object:nil userInfo:dict];
+                NSString *notifName = [NSString stringWithFormat:@"%@%@", @"showRead", showReadSubfix];
+                [[NSNotificationCenter defaultCenter] postNotificationName:notifName object:nil userInfo:dict];
+                
+                _readOption.hidden = YES;
+                _allSign.hidden = YES;
+                _unreadSign.hidden = NO;
                 break;
             }
             default:
+                
                 break;
         }
+        
+//        switch (btn.tag) {
+//            case 15: {
+//                UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
+//                [titleLabel setTitle:@"Unread" forState:UIControlStateNormal];
+//                titleLabel.frame = CGRectMake(0, 0, 70, 44);
+//                titleLabel.tag = 16;
+//                [titleLabel addTarget:self action:@selector(tapbutton:) forControlEvents:UIControlEventTouchUpInside];
+//                self.navigationItem.titleView = titleLabel;
+//                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"1", @"show_read", nil];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"showRead" object:nil userInfo:dict];
+//                break;
+//            }
+//            case 16: {
+//                UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
+//                [titleLabel setTitle:@"All" forState:UIControlStateNormal];
+//                titleLabel.frame = CGRectMake(0, 0, 70, 44);
+//                titleLabel.tag = 15;
+//                [titleLabel addTarget:self action:@selector(tapbutton:) forControlEvents:UIControlEventTouchUpInside];
+//                self.navigationItem.titleView = titleLabel;
+//                NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"0", @"show_read", nil];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"showRead" object:nil userInfo:dict];
+//                break;
+//            }
+//            default:
+//                break;
+//        }
     }
     
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
@@ -497,6 +580,7 @@
             case 10:
             {
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+//                [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
             case 11:
@@ -597,106 +681,35 @@
     return nil;
 }
 
-#pragma mark - Notification setsegmentcontroll
--(void)SetHiddenSegmentController:(NSNotification*)notification
-{
-    NSDictionary *userinfo = notification.userInfo;
-    NSInteger count = [[userinfo objectForKey:@"count"]integerValue];
-    
-    if (count == 2) {
-        _segmentcontrol.hidden = NO;
-        [_segmentcontrol removeAllSegments];
-        [_segmentcontrol insertSegmentWithTitle:@"Product" atIndex:0 animated:NO];
-        [_segmentcontrol insertSegmentWithTitle:@"Shop" atIndex:1 animated:NO];
-        _tabbar = _segmentcontrol;
-        [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
-        //_tabbar.hidden = NO;
-        //_tabbarthrees.hidden = YES;
-        _hascatalog = NO;
-        _catalogproductbuttonview.hidden = NO;
-    } else if (count == 3) {	//not default to 3
-        _segmentcontrol.hidden = NO;
-        [_segmentcontrol removeAllSegments];
-        [_segmentcontrol insertSegmentWithTitle:@"Product" atIndex:0 animated:NO];
-        [_segmentcontrol insertSegmentWithTitle:@"Catalog" atIndex:1 animated:NO];
-        [_segmentcontrol insertSegmentWithTitle:@"Shop" atIndex:2 animated:NO];
-        _tabbar = _segmentcontrol;
-        [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
-        //_tabbar.hidden = NO;
-        //_tabbartwos.hidden = YES;
-        _hascatalog = YES;
-    }
-    if ( [[_data objectForKey:kTKPDCATEGORY_DATATYPEKEY]  isEqual: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)]) {
-        if (count == 2) {
-            _segmentcontrol.hidden = NO;
-            [_segmentcontrol removeAllSegments];
-            [_segmentcontrol insertSegmentWithTitle:@"Product" atIndex:0 animated:NO];
-            _tabbar = _segmentcontrol;
-            [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
-            //_tabbar.hidden = NO;
-            //_tabbarthrees.hidden = YES;
-            _hascatalog = NO;
-            _catalogproductbuttonview.hidden = NO;
-        } else if (count == 3) {	//not default to 3
-            _segmentcontrol.hidden = NO;
-            [_segmentcontrol removeAllSegments];
-            [_segmentcontrol insertSegmentWithTitle:@"Product" atIndex:0 animated:NO];
-            [_segmentcontrol insertSegmentWithTitle:@"Catalog" atIndex:1 animated:NO];
-            _tabbar = _segmentcontrol;
-            [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
-            //_tabbar.hidden = NO;
-            //_tabbartwos.hidden = YES;
-            _hascatalog = YES;
-        }
-    }
-    _barbuttoncategory.enabled = YES;
+#pragma mark - Notification
+- (void)enableButtonRead:(NSNotification*)notification{
+    _allBtn.enabled = YES;
+    _unreadBtn.enabled = YES;
+    [_allBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_unreadBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
 }
 
-@end
-
-#pragma mark -
-#pragma mark UIViewController category
-
-#import <objc/runtime.h>
-
-@implementation UIViewController (TKPDTabInboxMessageNavigationController)
-
-- (TKPDTabInboxMessageNavigationController*)TKPDTabInboxMessageNavigationController
-{
-    UIViewController* c = self.parentViewController;
+- (void)disableButtonRead:(NSNotification*)notification{
+    _allBtn.enabled = NO;
+    _unreadBtn.enabled = NO;
+    [_allBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [_unreadBtn setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     
-    while (c != nil) {
-        if ([c isKindOfClass:[TKPDTabInboxMessageNavigationController class]]) {
-            return  (TKPDTabInboxMessageNavigationController*)c;
-        }
-        
-        c = c.parentViewController;
-    }
-    
-    return nil;
 }
 
-//static void* const kTKPDTabNavigationItemKey = (void*)&kTKPDTabNavigationItemKey;
-
-@dynamic TKPDTabNavigationItem;
-
-- (TKPDTabNavigationItem *)TKPDTabNavigationItem
-{
-    //return objc_getAssociatedObject(self, @selector(TKPDTabNavigationItem));
-    id o = objc_getAssociatedObject(self, @selector(TKPDTabNavigationItem));
-    
-    if (o == nil) {
-        o = self.tabBarItem;
-        [self setTKPDTabNavigationItem:o];
-    }
-    
-    return o;
+#pragma mark - Button Read Action
+- (void)markAllTalkButton {
+    _readOption.hidden = YES;
+    _allSign.hidden = NO;
+    _unreadSign.hidden = YES;
 }
 
-- (void)setTKPDTabNavigationItem:(TKPDTabNavigationItem *)TKPDTabNavigationItem
-{
-    objc_setAssociatedObject(self, @selector(TKPDTabNavigationItem), TKPDTabNavigationItem, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+- (void)markUnreadTalkButton {
+    _readOption.hidden = YES;
+    _allSign.hidden = YES;
+    _unreadSign.hidden = NO;
 }
+
 
 
 @end

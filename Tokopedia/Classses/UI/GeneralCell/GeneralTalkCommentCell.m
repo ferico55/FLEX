@@ -10,14 +10,15 @@
 
 @implementation GeneralTalkCommentCell
 
+static CGFloat messageTextSize = 14.0;
+static CGFloat textMarginVertical = 30.0f;
+
 - (void)awakeFromNib {
-    // Initialization code
+    self.user_image.layer.cornerRadius = self.user_image.frame.size.width/2;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 #pragma mark - Factory Methods
@@ -31,5 +32,24 @@
     }
     return nil;
 }
+
++ (CGSize)messageSize:(NSString*)message {
+    return [message sizeWithFont:[UIFont systemFontOfSize:messageTextSize]
+               constrainedToSize:CGSizeMake([self maxTextWidth], CGFLOAT_MAX)
+                   lineBreakMode:NSLineBreakByWordWrapping];
+}
+
++ (CGFloat)maxTextWidth {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        return 220.0f;
+    } else {
+        return 400.0f;
+    }
+}
+
++ (CGFloat)textMarginVertical {
+    return textMarginVertical;
+}
+
 
 @end

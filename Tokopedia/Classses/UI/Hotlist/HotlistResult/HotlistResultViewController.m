@@ -437,7 +437,12 @@
                 }
                 case 12:
                 {
-                    //SHARE
+                    // SHARE
+                    NSString *activityItem = [NSString stringWithFormat:@"Jual %@ | Tokopedia %@", [_data objectForKey:@"title"], [_data objectForKey:@"url"]];
+                    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
+                                                                                                     applicationActivities:nil];
+                    activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                    [self presentViewController:activityController animated:YES completion:nil];
                     break;
                 }
                 default:
@@ -848,7 +853,7 @@
     /** Adjust hashtags to Scrollview **/
     for (int i = 0; i<array.count; i++) {
         Hashtags *hashtag =array[i];
-        NSString *name = [@"# " stringByAppendingFormat:hashtag.name];
+        NSString *name = [NSString stringWithFormat:@"#%@", hashtag.name];
         
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         [button addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];

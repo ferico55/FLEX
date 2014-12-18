@@ -14,10 +14,16 @@
 #import "TKPDTabNavigationController.h"
 #import "ProductFeedViewController.h"
 
+#import "Notification.h"
+#import "NotificationViewController.h"
+#import "NotificationBarButton.h"
+#import "NotificationRequest.h"
+
 @interface SearchViewController ()<
     UISearchBarDelegate,
     UISearchDisplayDelegate,
-    SearchCellDelegate>
+    SearchCellDelegate,
+    NotificationDelegate>
 {
     /** real time search result array **/
     NSMutableArray *_searchresultarray;
@@ -25,6 +31,8 @@
     NSString *_filter;
     /** all histories from property list **/
     NSMutableArray *_historysearch;
+    
+    Notification *_notification;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -33,6 +41,10 @@
 @property (weak, nonatomic) IBOutlet UIView *searchhistoryview;
 @property (weak, nonatomic) IBOutlet UILabel *labelsearchfor;
 
+@property (strong, nonatomic) UIWindow *notificationWindow;
+@property (strong, nonatomic) NotificationBarButton *notificationButton;
+@property (strong, nonatomic) UIImageView *notificationArrowImageView;
+@property (strong, nonatomic) NotificationViewController *notificationController;
 
 @end
 
@@ -62,8 +74,6 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    
-    
     _historysearch =[NSMutableArray new];
     _searchresultarray = [NSMutableArray new];
     
@@ -81,6 +91,28 @@
 {
     [super viewWillAppear:animated];
     [_searchbar becomeFirstResponder];
+    
+    _notificationWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
+    _notificationWindow.clipsToBounds = YES;
+    
+    // Notification button
+    _notificationButton = [[NotificationBarButton alloc] init];
+    UIButton *button = (UIButton *)_notificationButton.customView;
+    [button addTarget:self action:@selector(barButtonDidTap) forControlEvents:UIControlEventTouchUpInside];
+    self.navigationItem.rightBarButtonItem = _notificationButton;
+    
+    _notificationArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_triangle_grey"]];
+    _notificationArrowImageView.contentMode = UIViewContentModeScaleAspectFill;
+    _notificationArrowImageView.clipsToBounds = YES;
+    _notificationArrowImageView.frame = CGRectMake(_notificationButton.customView.frame.origin.x+12, 60, 10, 5);
+    _notificationArrowImageView.alpha = 0;
+    [_notificationWindow addSubview:_notificationArrowImageView];
+    
+    NotificationRequest *notificationRequest = [NotificationRequest new];
+    notificationRequest.delegate = self;
+    [notificationRequest loadNotification];
+
 }
 
 #pragma mark - Memory Management
@@ -161,6 +193,69 @@
         _searchhistoryview.hidden = NO;
     }
 }
+
+#pragma mark - Notification methods
+
+- (void)barButtonDidTap
+{
+    [_searchbar resignFirstResponder];
+    
+    [_notificationWindow makeKeyAndVisible];
+    
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(windowDidTap)];
+    [_notificationWindow addGestureRecognizer:tapRecognizer];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+    _notificationController = [storyboard instantiateViewControllerWithIdentifier:@"NotificationViewController"];
+    _notificationController.notification = _notification;
+    
+    [_notificationController.tableView beginUpdates];
+    CGRect notificationTableFrame = _notificationController.tableView.frame;
+    notificationTableFrame.origin.y = 64;
+    notificationTableFrame.size.height = 300;
+    _notificationController.tableView.frame = notificationTableFrame;
+    [_notificationController.tableView endUpdates];
+    
+    _notificationController.tableView.contentInset = UIEdgeInsetsMake(0, 0, 355, 0);
+    
+    CGRect windowFrame = _notificationWindow.frame;
+    windowFrame.size.height = 0;
+    _notificationWindow.frame = windowFrame;
+    
+    windowFrame.size.height = self.view.frame.size.height-64;
+    
+    [_notificationWindow addSubview:_notificationController.view];
+    
+    _notificationArrowImageView.alpha = 1;
+    
+    [UIView animateWithDuration:0.7 animations:^{
+        _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
+    }];
+    
+    [UIView animateWithDuration:0.55 animations:^{
+        _notificationWindow.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+112);
+    }];
+    
+}
+
+- (void)windowDidTap
+{
+    CGRect windowFrame = _notificationWindow.frame;
+    windowFrame.size.height = 0;
+    
+    [UIView animateWithDuration:0.15 animations:^{
+        _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
+        _notificationArrowImageView.alpha = 0;
+    }];
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        _notificationWindow.frame = windowFrame;
+    } completion:^(BOOL finished) {
+        _notificationWindow.hidden = YES;
+    }];
+    
+}
+
 
 #pragma mark - View Gesture
 - (IBAction)tap:(id)sender {
@@ -333,6 +428,54 @@
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
     [nav.navigationBar setTranslucent:NO];
     [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+#pragma mark - Notification delegate
+
+- (void)didReceiveNotification:(Notification *)notification
+{
+    _notification = notification;
+    
+    if ([_notification.result.total_notif integerValue] == 0) {
+        
+        _notificationButton.badgeLabel.hidden = YES;
+        
+    } else {
+        
+        _notificationButton.enabled = YES;
+        
+        _notificationButton.badgeLabel.hidden = NO;
+        _notificationButton.badgeLabel.text = _notification.result.total_notif;
+        
+        NSInteger totalNotif = [_notification.result.total_notif integerValue];
+        
+        CGRect badgeLabelFrame = _notificationButton.badgeLabel.frame;
+        
+        if (totalNotif >= 10 && totalNotif < 100) {
+            
+            badgeLabelFrame.origin.x -= 6;
+            badgeLabelFrame.size.width += 11;
+            
+        } else if (totalNotif >= 100 && totalNotif < 1000) {
+            
+            badgeLabelFrame.origin.x -= 7;
+            badgeLabelFrame.size.width += 14;
+            
+        } else if (totalNotif >= 1000 && totalNotif < 10000) {
+            
+            badgeLabelFrame.origin.x -= 11;
+            badgeLabelFrame.size.width += 22;
+            
+        } else if (totalNotif >= 10000 && totalNotif < 100000) {
+            
+            badgeLabelFrame.origin.x -= 17;
+            badgeLabelFrame.size.width += 30;
+            
+        }
+        
+        _notificationButton.badgeLabel.frame = badgeLabelFrame;
+        
+    }
 }
 
 #pragma mark - properties

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShopReviewViewController">
@@ -19,7 +19,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" pagingEnabled="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="325" sectionHeaderHeight="22" sectionFooterHeight="34" translatesAutoresizingMaskIntoConstraints="NO" id="TVd-jj-Fdv">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="deviceRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Phz-Ut-TRm"/>
@@ -29,11 +29,13 @@
             </subviews>
             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="deviceRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="TVd-jj-Fdv" secondAttribute="trailing" id="PnC-wU-TLS"/>
-                <constraint firstItem="TVd-jj-Fdv" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="SX8-gw-EZA"/>
-                <constraint firstItem="TVd-jj-Fdv" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="nQ5-OX-XIZ"/>
-                <constraint firstAttribute="bottom" secondItem="TVd-jj-Fdv" secondAttribute="bottom" constant="64" id="uz3-Cu-gHe"/>
+                <constraint firstItem="TVd-jj-Fdv" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="7mO-v0-TNN"/>
+                <constraint firstAttribute="bottom" secondItem="TVd-jj-Fdv" secondAttribute="bottom" id="TQ7-VW-Yv6"/>
+                <constraint firstAttribute="trailing" secondItem="TVd-jj-Fdv" secondAttribute="trailing" id="blg-gc-NpD"/>
+                <constraint firstItem="TVd-jj-Fdv" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gUB-60-Ruh"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="d3p-cz-3cT" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="319" height="34"/>
@@ -46,7 +48,13 @@
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

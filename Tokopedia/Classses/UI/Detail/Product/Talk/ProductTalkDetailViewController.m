@@ -13,8 +13,11 @@
 #import "ProductTalkCommentAction.h"
 #import "TKPDSecureStorage.h"
 #import "URLCacheController.h"
+#import "HPGrowingTextView.h"
 
-@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
+#import "stringrestkit.h"
+
+@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, HPGrowingTextViewDelegate>
 {
     BOOL _isnodata;
     NSMutableArray *_list;
@@ -41,6 +44,8 @@
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
+    HPGrowingTextView *_growingtextview;
+    
     NSTimeInterval _timeinterval;
     NSMutableDictionary *_auth;
 }
@@ -52,8 +57,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *talkcreatetimelabel;
 @property (weak, nonatomic) IBOutlet UILabel *talkusernamelabel;
 @property (weak, nonatomic) IBOutlet UILabel *talktotalcommentlabel;
-@property (weak, nonatomic) IBOutlet UITextField *talktextfield;
 @property (weak, nonatomic) IBOutlet UIImageView *talkuserimage;
+@property (weak, nonatomic) IBOutlet UIView *talkInputView;
+@property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
 @property (strong, nonatomic) IBOutlet UIView *header;
 
@@ -78,7 +84,33 @@
         _isnodata = YES;
         self.title = kTKPDTITLE_TALK;
     }
+    
+    if(self){
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillShow:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillHide:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+    }
+
     return self;
+}
+
+- (void)addBottomInsetWhen14inch {
+    if (is4inch) {
+        UIEdgeInsets inset = _table.contentInset;
+        inset.bottom += 155;
+        _table.contentInset = inset;
+    }
+    else{
+        UIEdgeInsets inset = _table.contentInset;
+        inset.bottom += 240;
+        _table.contentInset = inset;
+    }
 }
 
 #pragma mark - View Life Cycle
@@ -103,6 +135,7 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     [self setHeaderData:_data];
+    [self initTalkInputView];
     
     //cache
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILPRODUCT_CACHEFILEPATH];
@@ -139,7 +172,12 @@
 #endif
 }
 
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    TalkCommentList *list = _list[indexPath.row];
+    CGSize messageSize = [GeneralTalkCommentCell messageSize:list.comment_message];
+    return messageSize.height + 2 * [GeneralTalkCommentCell textMarginVertical];
+}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
@@ -156,10 +194,26 @@
         
         if (_list.count > indexPath.row) {
             TalkCommentList *list = _list[indexPath.row];
-            ((GeneralTalkCommentCell*)cell).commentlabel.text = list.comment_message;
-            ((GeneralTalkCommentCell*)cell).user_name.text = list.user_name;
-            ((GeneralTalkCommentCell*)cell).create_time.text = list.create_time;
-           
+            
+            UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+            NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
+            style.lineSpacing = 5.0f;
+            NSDictionary *attributes = @{NSFontAttributeName : font, NSParagraphStyleAttributeName : style};
+            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:list.comment_message
+                                                                                   attributes:attributes];
+            ((GeneralTalkCommentCell *)cell).commentlabel.attributedText = attributedString;
+            
+            CGFloat commentLabelWidth = ((GeneralTalkCommentCell*)cell).commentlabel.frame.size.width;
+            
+            [((GeneralTalkCommentCell*)cell).commentlabel sizeToFit];
+            
+            CGRect commentLabelFrame = ((GeneralTalkCommentCell*)cell).commentlabel.frame;
+            commentLabelFrame.size.width = commentLabelWidth;
+            ((GeneralTalkCommentCell*)cell).commentlabel.frame = commentLabelFrame;
+            
+            ((GeneralTalkCommentCell*)cell).user_name.text = list.comment_user_name;
+            ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
+            
             ((GeneralTalkCommentCell*)cell).indexpath = indexPath;
             
             if(list.is_not_delivered) {
@@ -168,9 +222,7 @@
                 ((GeneralTalkCommentCell*)cell).commentfailimage.hidden = YES;
             }
         
-        
-            
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.comment_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *user_image = ((GeneralTalkCommentCell*)cell).user_image;
             user_image.image = nil;
 
@@ -184,6 +236,7 @@
 #pragma clang diagnostic pop
                 
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                
             }];
         }
         
@@ -225,23 +278,48 @@
     }
 }
 
+-(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [_growingtextview resignFirstResponder];
+}
+
+
 
 #pragma mark - Methods
 -(void)setHeaderData:(NSDictionary*)data
 {
-    _talkmessagelabel.text = [data objectForKey:kTKPDTALK_APITALKMESSAGEKEY];
-    _talkcreatetimelabel.text = [data objectForKey:kTKPDTALK_APITALKCREATETIMEKEY];
-    _talkusernamelabel.text = [data objectForKey:kTKPDTALK_APITALKUSERNAMEKEY];
-    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Comment",[data objectForKey:kTKPDTALK_APITALKTOTALCOMMENTKEY]];
+    _talkmessagelabel.text = [data objectForKey:TKPD_TALK_MESSAGE];
+    _talkcreatetimelabel.text = [data objectForKey:TKPD_TALK_CREATE_TIME];
+    _talkusernamelabel.text = [data objectForKey:TKPD_TALK_USER_NAME];
+    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Comment",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]];
     
     
-    NSURL * imageURL = [NSURL URLWithString:[data objectForKey:kTKPDTALK_APITALKUSERIMAGEKEY]];
+    NSURL * imageURL = [NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]];
     NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
     UIImage * image = [UIImage imageWithData:imageData];
     
     _talkuserimage.image = image;
     
 }
+
+- (void) initTalkInputView {
+    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(5, 5, 240, 45)];
+    _growingtextview.isScrollable = NO;
+    _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
+    
+    _growingtextview.minNumberOfLines = 1;
+    _growingtextview.maxNumberOfLines = 6;
+    _growingtextview.returnKeyType = UIReturnKeyGo; //just as an example
+    _growingtextview.delegate = self;
+    _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
+    _growingtextview.backgroundColor = [UIColor colorWithRed:249.0/255.0 green:249.0/255.0 blue:249.0/255.0 alpha:1];
+    _growingtextview.placeholder = @"Kirim pesanmu di sini..";
+    _growingtextview.layer.cornerRadius = 2;
+    _growingtextview.clipsToBounds = YES;
+    
+    [_talkInputView addSubview:_growingtextview];
+    _talkInputView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+}
+
 
 #pragma mark - Life Cycle
 -(void)viewWillAppear:(BOOL)animated
@@ -278,15 +356,16 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TalkCommentResult class]];
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TalkCommentList class]];
+
     [listMapping addAttributeMappingsFromArray:@[
-                                                 kTKPDTALKCOMMENT_TALKID,
-                                                 kTKPDTALKCOMMENT_MESSAGE,
-                                                 kTKPDTALKCOMMENT_ID,
-                                                 kTKPDTALKCOMMENT_ISMOD,
-                                                 kTKPDTALKCOMMENT_ISSELLER,
-                                                 kTKPDTALKCOMMENT_CREATETIME,
-                                                 kTKPDTALKCOMMENT_USERIMAGE,
-                                                 kTKPDTALKCOMMENT_USERNAME,
+                                                 TKPD_TALK_COMMENT_ID,
+                                                 TKPD_TALK_COMMENT_MESSAGE,
+                                                 TKPD_COMMENT_ID,
+                                                 TKPD_TALK_COMMENT_ISMOD,
+                                                 TKPD_TALK_COMMENT_ISSELLER,
+                                                 TKPD_TALK_COMMENT_CREATETIME,
+                                                 TKPD_TALK_COMMENT_USERIMG,
+                                                 TKPD_TALK_COMMENT_USERNAME,
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -316,8 +395,8 @@
     
     NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETCOMMENTBYTALKID,
-                            kTKPDTALK_APITALKIDKEY : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
-                            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDTALK_APITALKSHOPID]?:@(0),
+                            TKPD_TALK_ID : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
+                            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
                             kTKPDDETAIL_APIPAGEKEY : @(_page)
                             };
 //    [_cachecontroller getFileModificationDate];
@@ -496,14 +575,16 @@
         UIButton *btn = (UIButton *)sender;
         switch (btn.tag) {
             case 10: {
+                
                 NSInteger lastindexpathrow = [_list count];
                 TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
                 NSDictionary* auth = [secureStorage keychainDictionary];
                 _auth = [auth mutableCopy];
                 
                 TalkCommentList *commentlist = [TalkCommentList new];
-                commentlist.comment_message =_talktextfield.text;
-                commentlist.user_name = [_auth objectForKey:@"full_name"];
+                commentlist.comment_message =_growingtextview.text;
+                commentlist.comment_user_name = [_auth objectForKey:@"full_name"];
+                commentlist.comment_user_image = [_auth objectForKey:@"user_image"];
                 
                 
                 NSDate *today = [NSDate date];
@@ -511,11 +592,11 @@
                 [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
                 NSString *dateString = [dateFormat stringFromDate:today];
                 
-                commentlist.create_time = [dateString stringByAppendingString:@"WIB"];
+                commentlist.comment_create_time = [dateString stringByAppendingString:@"WIB"];
                 
-                [_list insertObject:commentlist atIndex:lastindexpathrow];
+                [_list insertObject:commentlist atIndex:lastindexpathrow?:0];
                 NSArray *insertIndexPaths = [NSArray arrayWithObjects:
-                                             [NSIndexPath indexPathForRow:lastindexpathrow inSection:0],nil
+                                             [NSIndexPath indexPathForRow:lastindexpathrow?:0 inSection:0],nil
                                              ];
                 
                 [_table beginUpdates];
@@ -531,7 +612,8 @@
                 [self configureActionRestkit];
                 [self addProductCommentTalk];
                 
-                _talktextfield.text = nil;
+                 _growingtextview.text = nil;
+                [_growingtextview resignFirstResponder];
                 break;
             }
             default:
@@ -558,7 +640,7 @@
     [statusMapping addPropertyMapping:resulRel];
     
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDACTIONTALK_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectactionmanager addResponseDescriptor:responseDescriptorStatus];
 }
@@ -566,13 +648,13 @@
 -(void)addProductCommentTalk{
     NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIADDCOMMENTTALK,
-                            kTKPDTALK_APITALKIDKEY:[_data objectForKey:kTKPDTALK_APITALKIDKEY],
-                            kTKPDTALKCOMMENT_APITEXT:_talktextfield.text,
+                            TKPD_TALK_ID:[_data objectForKey:TKPD_TALK_ID],
+                            kTKPDTALKCOMMENT_APITEXT:_growingtextview.text,
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]
                             };
     
     _requestactioncount ++;
-    _requestaction = [_objectactionmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param];
+    _requestaction = [_objectactionmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDACTIONTALK_APIPATH parameters:param];
     
     
     [_requestaction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -612,6 +694,15 @@
         if([commentaction.result.is_success isEqualToString:@"0"]) {
             TalkCommentList *commentlist = _list[_list.count-1];
             commentlist.is_not_delivered = @"1";
+        } else {
+            NSString *totalcomment = [NSString stringWithFormat:@"%d %@",_list.count, @"Comment"];
+            _talktotalcommentlabel.text = totalcomment;
+            
+            NSDictionary *userinfo;
+            userinfo = @{TKPD_TALK_TOTAL_COMMENT:@(_list.count)?:0, kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment" object:nil userInfo:userinfo];
+            
         }
     }
 }
@@ -619,6 +710,74 @@
 - (void)requestactionfailure:(id)error {
     
 }
+
+#pragma mark - UITextView Delegate
+- (void)growingTextView:(HPGrowingTextView *)growingTextView willChangeHeight:(float)height
+{
+    float diff = (growingTextView.frame.size.height - height);
+    
+    CGRect r = _talkInputView.frame;
+    r.size.height -= diff;
+    r.origin.y += diff;
+    _talkInputView.frame = r;
+}
+
+-(void) keyboardWillShow:(NSNotification *)note{
+    // get keyboard size and loctaion
+    CGRect keyboardBounds;
+    [[note.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] getValue: &keyboardBounds];
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    
+    // Need to translate the bounds to account for rotation.
+    keyboardBounds = [self.view convertRect:keyboardBounds toView:nil];
+    
+    // get a rect for the textView frame
+    CGRect containerFrame = self.view.frame;
+    
+    containerFrame.origin.y = self.view.bounds.size.height - (keyboardBounds.size.height + containerFrame.size.height - 65);
+    // animations settings
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:[duration doubleValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+    
+    
+    // set views with new info
+    self.view.frame = containerFrame;
+    
+    [_talkInputView becomeFirstResponder];
+    // commit animations
+    [UIView commitAnimations];
+}
+
+-(void) keyboardWillHide:(NSNotification *)note{
+    NSNumber *duration = [note.userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
+    NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
+    
+    // get a rect for the textView frame
+    self.view.backgroundColor = [UIColor clearColor];
+    CGRect containerFrame = self.view.frame;
+    
+    containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height + 65;
+    
+    // animations settings
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    [UIView setAnimationDuration:[duration doubleValue]];
+    [UIView setAnimationCurve:[curve intValue]];
+    
+    // set views with new info
+    self.view.frame = containerFrame;
+    
+    // commit animations
+    [UIView commitAnimations];
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+}
+
 
 
 /*

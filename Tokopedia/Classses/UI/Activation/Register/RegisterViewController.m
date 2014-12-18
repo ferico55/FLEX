@@ -129,6 +129,14 @@
     [_datainput setObject:@(0) forKey:kTKPDREGISTER_APIGENDERKEY];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    _buttonagreement.layer.borderColor = [UIColor blackColor].CGColor;
+    _buttonagreement.layer.borderWidth = 1;
+    _buttonagreement.layer.cornerRadius = 2;
+}
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];

@@ -40,6 +40,7 @@
     
     Shop *_shop;
     BOOL _isnodata;
+    BOOL _isAlreadySticky;
     NSInteger _requestcount;
     BOOL _isaddressexpanded;
     BOOL _isrefreshview;
@@ -61,8 +62,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *filterview;
 
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actpp;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actcover;
+//@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actpp;
+//@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actcover;
 
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *ppimage;
@@ -294,6 +295,16 @@
     _buttonMessage.layer.cornerRadius = 3;
     _buttonMessage.layer.borderWidth = 1;
     _buttonMessage.layer.borderColor = [UIColor colorWithRed:218.0/255.0 green:218.0/255.0 blue:218.0/255.0 alpha:1].CGColor;
+
+    _buttonsetting.layer.cornerRadius = 3;
+    _buttonsetting.layer.borderWidth = 1;
+    _buttonsetting.layer.borderColor = [UIColor colorWithRed:218.0/255.0 green:218.0/255.0 blue:218.0/255.0 alpha:1].CGColor;
+    
+    _buttonaddproduct.layer.cornerRadius = 3;
+    _buttonaddproduct.layer.borderWidth = 1;
+    _buttonaddproduct.layer.borderColor = [UIColor colorWithRed:218.0/255.0 green:218.0/255.0 blue:218.0/255.0 alpha:1].CGColor;
+    _buttonaddproduct.imageEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 0);
+    _buttonaddproduct.titleEdgeInsets = UIEdgeInsetsMake(2, 4, 0, 0);
     
     _buttonsetting.enabled = NO;
 }
@@ -301,13 +312,10 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self configureRestKit];
-    
     if (_isnodata) {
         [self request];
     }
-    
     self.navigationController.navigationBarHidden = _shop.result.info.shop_is_gold;
 }
 
@@ -315,8 +323,7 @@
 {
     [super viewWillDisappear:animated];
     [self cancel];
-    
-    self.navigationController.navigationBarHidden = !_shop.result.info.shop_is_gold;
+    self.navigationController.navigationBarHidden = NO;
 }
 
 - (void)viewDidLayoutSubviews
@@ -754,7 +761,12 @@
             }
             case 12:
             {
-                //SHARE
+                NSString *activityItem = [NSString stringWithFormat:@"%@ - %@ | Tokopedia %@", _shop.result.info.shop_name,
+                                          _shop.result.info.shop_location, _shop.result.info.shop_url];
+                UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
+                                                                                                 applicationActivities:nil];
+                activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                [self presentViewController:activityController animated:YES completion:nil];
                 break;
             }
             case 13:
@@ -1023,8 +1035,14 @@
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
     
+    _shop.result.info.shop_is_gold = true;
     
-    if (_shop.result.info.shop_is_gold) {
+    if (_shop.result.info.shop_is_gold == true) {
+        
+        _backButtonCustom.hidden = NO;
+        _infoButtonCustom.hidden = NO;
+        _navigationTitleLabel.hidden = YES;
+
         self.navigationController.navigationBarHidden = YES;
         
         self.view.clipsToBounds = NO;
@@ -1039,25 +1057,22 @@
         }
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_cover] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         
-        UIImageView *thumb = self.coverImageView ;
-        thumb.image = nil;
-        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        [self.coverImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-            [thumb setImage:image];
+            self.coverImageView.image = image;
+            self.coverImageView.hidden = NO;
+            self.coverImageView.backgroundColor = [UIColor blackColor];
             self.blurCoverImage.image = [self.coverImageView.image applyLightEffect];
+            self.blurCoverImage.hidden = NO;
 #pragma clang diagnostic pop
         } failure:nil];
         
-        //self.coverImageView.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:_shop.result.info.shop_cover]]];
-        
         //add gradient in cover image
-        if (_isinsertgradientlayer) {
-            CAGradientLayer *gradientLayer = [BackgroundLayer blackGradientFromTop];
-            gradientLayer.frame = _coverImageView.bounds;
-            [_coverImageView.layer insertSublayer:gradientLayer atIndex:0];
-            _isinsertgradientlayer = NO;
-        }
+        _coverImageView.layer.sublayers = nil;
+        CAGradientLayer *gradientLayer = [BackgroundLayer blackGradientFromTop];
+        gradientLayer.frame = _coverImageView.bounds;
+        [_coverImageView.layer insertSublayer:gradientLayer atIndex:0];
         
         [_namelabel sizeToFit];
         [_shopdesclabel sizeToFit];
@@ -1066,6 +1081,11 @@
         _backButtonCustom.hidden = YES;
         _infoButtonCustom.hidden = YES;
         _navigationTitleLabel.hidden = YES;
+        
+        self.blurCoverImage.hidden = NO;
+        self.coverImageView.hidden = NO;
+        
+        self.navigationController.navigationBarHidden = NO;
         
         [_stickyTapView layoutIfNeeded];
         CGRect stickyTabFrame = _stickyTapView.frame;
@@ -1090,12 +1110,23 @@
     } else {
         offset = 378.0;
     }
+    
+    
     if (_scrollview.contentOffset.y < offset) {
-        _stickyTapView.hidden = YES;
-        [self disableScrollAtIndex:_selectedIndex];
+        if(_isAlreadySticky) {
+            _stickyTapView.hidden = YES;
+            [self disableScrollAtIndex:_selectedIndex];
+            _scrollview.scrollEnabled = YES;
+            _isAlreadySticky = NO;
+        }
     } else {
-        _stickyTapView.hidden = NO;
-        [self enableScrollAtIndex:_selectedIndex];
+        if(!_isAlreadySticky) {
+            _stickyTapView.hidden = NO;
+            [self enableScrollAtIndex:_selectedIndex];
+            _scrollview.scrollEnabled = NO;
+            _isAlreadySticky = YES;
+        }
+        
     }
 }
 
@@ -1104,6 +1135,8 @@
     switch (index) {
         case 0:
             ((ShopProductViewController *)_selectedViewController).table.scrollEnabled = NO;
+            
+            
             break;
         case 1:
             ((ShopTalkViewController *)_selectedViewController).table.scrollEnabled = NO;
@@ -1235,6 +1268,7 @@
                                                           kTKPDDETAILSHOP_APITOTALFAVKEY:kTKPDDETAILSHOP_APITOTALFAVKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
                                                           kTKPDDETAILSHOP_APISHOPISGOLD:kTKPDDETAILSHOP_APISHOPISGOLD,
+                                                          kTKPDDETAILSHOP_APISHOPURLKEY:kTKPDDETAILSHOP_APISHOPURLKEY,                                                          
                                                           }];
     
     RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
@@ -1411,13 +1445,8 @@
     if (object) {
         if ([object isKindOfClass:[RKMappingResult class]]) {
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            
             id stats = [result objectForKey:@""];
-            
             _shop = stats;
-            
-            _shop.result.info.shop_is_gold = true;
-            
             BOOL status = [_shop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
@@ -1431,7 +1460,7 @@
             _buttonfav.enabled = YES;
             _buttonMessage.enabled = YES;
             _buttonsetting.enabled = YES;
-            self.navigationController.navigationBarHidden = _shop.result.info.shop_is_gold;
+
         }
         else{
             [self cancel];
@@ -1483,6 +1512,7 @@
     }
     
     if (_shop.result.info.shop_is_gold) {
+
         if (!navigationBarAnimated) {
             navigationBarAnimated = true;
             if (sender.contentOffset.y > 82) {
@@ -1514,10 +1544,12 @@
         _cachecontroller.URLCacheInterval = 86400.0;
         [_cachecontroller initCacheWithDocumentPath:path];
         
-        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+        NSDictionary *auth = (NSDictionary *)[_data objectForKey:kTKPD_AUTHKEY];
         if (auth && ![auth isEqual:[NSNull null]]) {
             if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
                 _buttonsetting.hidden = NO;
+                _buttonaddproduct.hidden = NO;
+
                 _buttonfav.hidden = YES;
                 _buttonMessage.hidden = YES;
             }
@@ -1525,6 +1557,8 @@
         else
         {
             _buttonsetting.hidden = YES;
+            _buttonaddproduct.hidden = YES;
+            
             _buttonfav.hidden = NO;
             _buttonMessage.hidden = NO;
         }

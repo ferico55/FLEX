@@ -10,13 +10,15 @@
 #import "InboxMessage.h"
 #import "InboxMessageAction.h"
 #import "inbox.h"
+#import "home.h"
+#import "string_inbox_message.h"
 #import "stringhome.h"
 #import "InboxMessageCell.h"
 #import "InboxMessageDetailViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 
 
-@interface InboxMessageViewController () <UITableViewDataSource, UITableViewDelegate, InboxMessageCellDelegate, TKPDTabInboxMessageNavigationControllerDelegate, UISearchBarDelegate>
+@interface InboxMessageViewController () <UITableViewDataSource, UITableViewDelegate, InboxMessageCellDelegate, TKPDTabInboxMessageNavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -63,6 +65,8 @@
     NSString *_keyword;
     NSString *_readstatus;
     NSString *_navthatwillrefresh;
+    NSString *_messageNavigationFlag;
+    
     BOOL _isrefreshnav;
     
     
@@ -75,8 +79,8 @@
     
 }
 
-#pragma mark - UIViewController
 
+#pragma mark - Initialization
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -88,6 +92,33 @@
     return self;
 }
 
+- (void)initNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showCheckmark:)
+                                                 name:@"editModeOn"
+                                               object:nil];
+    
+    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(showMessageWithFilter:)
+                                                 name:[NSString stringWithFormat:@"%@%@", @"showRead", _messageNavigationFlag]
+                                               object:nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadVc:)
+                                                 name:@"reloadvc"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateMessageWithIndex:)
+                                                 name:@"updateMessageWithIndex"
+                                               object:nil];
+    
+}
+
+#pragma mark - UIViewController
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -96,9 +127,11 @@
     /** create new **/
     _messages = [NSMutableArray new];
     _messages_selected = [NSMutableArray new];
+    _messageNavigationFlag = [_data objectForKey:@"nav"];
     
     /** set first page become 1 **/
     _page = 1;
+    [self initNotification];
     
     /** set inset table for different size**/
     if (is4inch) {
@@ -148,24 +181,6 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    //initiate notification center
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(showCheckmark:)
-                                                 name:@"editModeOn"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(showRead:)
-                                                 name:@"showRead"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadVc:)
-                                                 name:@"reloadvc"
-                                               object:nil];
-    
-    
     if (!_isrefreshview) {
         [self configureRestKit];
         
@@ -253,6 +268,7 @@
     
     [self configureactionrestkit];
     [self doactionmessage:joinedArr withAction:action];
+    [_messages_selected removeAllObjects];
 
 }
 
@@ -289,7 +305,7 @@
             ((InboxMessageCell*)cell).indexpath = indexPath;
             
             
-            if(!_iseditmode) {
+            if([[_data objectForKey:@"nav"] isEqualToString:NAV_MESSAGE]) {
                 if([list.message_read_status isEqualToString:@"1"]) {
                     ((InboxMessageCell*)cell).is_unread.hidden = YES;
                 } else {
@@ -421,7 +437,7 @@
     [_table reloadData];
 }
 
--(void) showRead:(NSNotification*)notification {
+-(void) showMessageWithFilter:(NSNotification*)notification {
     if (_request.isExecuting) return;
     _userinfo = notification.userInfo;
     
@@ -435,6 +451,7 @@
     [_messages removeAllObjects];
     [_table reloadData];
     _table.tableFooterView = _footer;
+    _page = 1;
     [self configureRestKit];
     [self loadData];
     
@@ -448,14 +465,23 @@
         [_table reloadData];
         _table.tableFooterView = _footer;
         [self configureRestKit];
-        [self loadData];
-        
+        [self loadData]; 
     }
 }
 
+-(void) updateMessageWithIndex:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    NSIndexPath *indexpath = [userinfo objectForKey:MESSAGE_INDEX_PATH];
+    NSString *messageReply = [userinfo objectForKey:KTKPDMESSAGE_MESSAGEREPLYKEY];
+    
+    if(messageReply) {
+        InboxMessageList *list = _messages[indexpath.row];
+        
+        list.message_reply = [NSString stringWithFormat:@"%@",messageReply];
+        [_table reloadData];
+    }
 
-
-
+}
 
 #pragma mark - Request and Mapping
 
@@ -487,10 +513,6 @@
                                                  KTKPDMESSAGE_JSONDATAKEY
                                                  ]];
 
-    
-
-    
-    //relation
     RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
     [statusMapping addPropertyMapping:resulRel];
     
@@ -527,9 +549,10 @@
     
     _requestcount ++;
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGE_PATHURL parameters:param];
-    
+     [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
         [self requestsuccess:mappingResult withOperation:operation];
 
         [_table reloadData];
@@ -681,6 +704,33 @@
     [self undoactionmessage];
 }
 
+-(void)searchBarCancelButtonClicked:(UISearchBar *)searchBar {
+    
+    [searchBar resignFirstResponder];
+    
+    _searchbar.text = nil;
+    _keyword = _searchbar.text;
+    _page = 1;
+    
+    [_messages removeAllObjects];
+
+    [self configureRestKit];
+    [self loadData];
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:NO animated:YES];
+    return YES;
+}
+
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    [searchBar setShowsCancelButton:YES animated:YES];
+    return YES;
+}
+
+
 #pragma mark - Message Action
 
 -(void) configureactionrestkit {
@@ -701,7 +751,7 @@
     
     
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:KTKPDMESSAGEACTION_PATHURL keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:KTKPDMESSAGEPRODUCTACTION_PATHURL keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanagerarchive addResponseDescriptor:responseDescriptorStatus];
 }
@@ -717,7 +767,7 @@
                             };
     
     _requestarchivecount ++;
-    _requestarchive = [_objectmanagerarchive appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGEACTION_PATHURL parameters:param];
+    _requestarchive = [_objectmanagerarchive appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGEPRODUCTACTION_PATHURL parameters:param];
     
     
     [_requestarchive setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -761,9 +811,6 @@
         if([inboxmessageaction.result.is_success isEqualToString:@"1"]) {
             NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:_navthatwillrefresh, @"vc", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadvc" object:nil userInfo:dict];
-            
-            [_messages_selected removeAllObjects];
-            
         } else {
             [self undoactionmessage];
         }
@@ -776,6 +823,7 @@
 
 -(void) requestactionfailure:(id)error {
     [self undoactionmessage];
+    [self cancel];
 }
 -(void) requestactiontimeout {
     [self undoactionmessage];
@@ -812,14 +860,12 @@
         NSInteger index = indexpath.row;
         InboxMessageList *list = _messages[index];
         InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
-        vc.data = @{KTKPDMESSAGE_IDKEY : list.message_id, KTKPDMESSAGE_TITLEKEY : list.message_title, KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"]};
-        
-        //mark as read
-        ((InboxMessageCell*)cell).is_unread.hidden = YES;
-        
-//        
-        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
+        vc.data = @{KTKPDMESSAGE_IDKEY : list.message_id,
+                    KTKPDMESSAGE_TITLEKEY : list.message_title,
+                    KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"],
+                    MESSAGE_INDEX_PATH : indexpath
+                    };
+        [self.navigationController pushViewController:vc animated:YES];
     }
     
     

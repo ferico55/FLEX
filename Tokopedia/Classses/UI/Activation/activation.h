@@ -31,9 +31,15 @@
 #define kTKPDLOGIN_APIUSEREMAILKEY @"user_email"
 #define kTKPDLOGIN_APIUSERPASSKEY @"user_password"
 #define kTKPDLOGIN_APIISLOGINKEY @"is_login"
-#define kTKPDLOGIN_APISHOPIDKEY @"shop_id"
+
 #define kTKPDLOGIN_APIUSERIDKEY @"user_id"
 #define kTKPDLOGIN_APIFULLNAMEKEY @"full_name"
+#define kTKPDLOGIN_APIIMAGEKEY @"user_image"
+
+#define kTKPDLOGIN_APISHOPIDKEY @"shop_id"
+#define kTKPDLOGIN_APISHOPNAMEKEY @"shop_name"
+#define kTKPDLOGIN_APISHOPAVATARKEY @"shop_avatar"
+#define kTKPDLOGIN_APISHOPISGOLDKEY @"shop_is_gold"
 
 #define kTKPDREGISTER_APIACTIONKEY @"action"
 #define kTKPDREGISTER_APIDOREGISTERKEY @"do_register"

@@ -12,8 +12,13 @@
 
 @property (nonatomic) BOOL is_login;
 @property (nonatomic) NSInteger shop_id;
+@property (nonatomic, strong) NSString *shop_name;
+@property (nonatomic, strong) NSString *shop_avatar;
+@property (nonatomic) NSInteger shop_is_gold;
+
 @property (nonatomic) NSInteger user_id;
 @property (nonatomic, strong) NSString *full_name;
+@property (nonatomic, strong) NSString *user_image;
 
 //- (void)encodeWithCoder:(NSCoder *)encoder;
 //- (id)initWithCoder:(NSCoder *)decoder;

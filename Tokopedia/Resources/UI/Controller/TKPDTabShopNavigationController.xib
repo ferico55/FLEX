@@ -1,18 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPDTabShopNavigationController">
             <connections>
+                <outlet property="actcover" destination="DDl-z9-A7W" id="gUR-HQ-qEI"/>
+                <outlet property="actpp" destination="BNt-0T-WmM" id="wTB-0C-O9U"/>
                 <outlet property="backButtonCustom" destination="qw2-ox-Po3" id="mg2-ip-LQq"/>
                 <outlet property="badgeGoldMerchant" destination="0rY-ov-LFU" id="r88-vj-rE9"/>
                 <outlet property="blurCoverImage" destination="teS-AC-Jf8" id="wjx-Wx-L97"/>
                 <outlet property="buttonMessage" destination="7LK-36-qbj" id="L0C-HG-yBw"/>
+                <outlet property="buttonaddproduct" destination="UYF-ea-OeU" id="mIv-wJ-tQn"/>
                 <outlet property="buttonfav" destination="cVc-Hq-EZS" id="zia-JP-3xZ"/>
-                <outlet property="buttonsetting" destination="fcF-dz-rqL" id="XyK-Kc-rC9"/>
+                <outlet property="buttonsetting" destination="gpn-Gd-nay" id="4Zo-6p-fBF"/>
                 <outlet property="container" destination="abB-jT-cSJ" id="x4v-nW-TEa"/>
                 <outlet property="contentview" destination="i5M-Pr-FkT" id="XhZ-73-dEU"/>
                 <outlet property="coverImageView" destination="Up4-ff-lh2" id="Y1i-J0-rbu"/>
@@ -82,6 +105,7 @@
                 <constraint firstItem="WHJ-eR-QYb" firstAttribute="top" secondItem="LRr-3G-JLn" secondAttribute="bottom" constant="10" id="p5p-9S-3Eh"/>
                 <constraint firstItem="a4r-gX-jed" firstAttribute="top" secondItem="2th-5G-Eec" secondAttribute="top" constant="8" id="sj4-iK-DqG"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="Rn0-aK-qZb">
@@ -172,23 +196,6 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                             <color key="backgroundColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="0.28000000000000003" colorSpace="deviceRGB"/>
                         </view>
-                        <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P6B-qX-U3z">
-                            <rect key="frame" x="0.0" y="2" width="109" height="45"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <rect key="contentStretch" x="1" y="0.0" width="1" height="1"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <state key="normal" title="Urutkan">
-                                <color key="titleColor" red="0.25882352941176473" green="0.25882352941176473" blue="0.25882352941176473" alpha="1" colorSpace="deviceRGB"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="joR-Yr-iUI"/>
-                            </connections>
-                        </button>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l3d-4t-XTI" userLabel="Vertical Border">
-                            <rect key="frame" x="109" y="11" width="1" height="25"/>
-                            <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
-                        </view>
                         <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4V6-FO-MpA">
                             <rect key="frame" x="220" y="2" width="104" height="45"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -197,9 +204,12 @@
                                 <color key="titleColor" red="0.25882352941176473" green="0.25882352941176473" blue="0.25882352941176473" alpha="1" colorSpace="deviceRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="y1M-Xt-0Yx"/>
+                            </connections>
                         </button>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5na-e7-RTR" userLabel="Vertical Border">
-                            <rect key="frame" x="219" y="11" width="1" height="25"/>
+                            <rect key="frame" x="109" y="10" width="1" height="28"/>
                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ltJ-zF-bUo">
@@ -214,6 +224,23 @@
                                 <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="Rly-tV-sB3"/>
                             </connections>
                         </button>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="l3d-4t-XTI" userLabel="Vertical Border">
+                            <rect key="frame" x="218" y="10" width="1" height="28"/>
+                            <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                        </view>
+                        <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="P6B-qX-U3z">
+                            <rect key="frame" x="0.0" y="2" width="109" height="45"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <rect key="contentStretch" x="1" y="0.0" width="1" height="1"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <state key="normal" title="Urutkan">
+                                <color key="titleColor" red="0.25882352941176473" green="0.25882352941176473" blue="0.25882352941176473" alpha="1" colorSpace="deviceRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="joR-Yr-iUI"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -225,8 +252,18 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 </imageView>
+                <button opaque="NO" tag="14" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O90-Y4-0xY">
+                    <rect key="frame" x="286" y="34" width="20" height="22"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <state key="normal" image="icon_info.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="8sq-G0-YIz"/>
+                    </connections>
+                </button>
                 <button opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qw2-ox-Po3" userLabel="Back Button">
-                    <rect key="frame" x="0.0" y="18" width="50" height="50"/>
+                    <rect key="frame" x="15" y="35" width="20" height="20"/>
                     <state key="normal" image="icon_arrow_white">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -240,16 +277,6 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" tag="14" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O90-Y4-0xY">
-                    <rect key="frame" x="270" y="18" width="50" height="50"/>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <state key="normal" image="icon_info.png">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="8sq-G0-YIz"/>
-                    </connections>
-                </button>
             </subviews>
             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
@@ -260,11 +287,15 @@
                 <constraint firstAttribute="bottom" secondItem="1gX-pV-G32" secondAttribute="bottom" id="suV-Iv-uCt"/>
                 <constraint firstItem="WAa-CY-UR1" firstAttribute="leading" secondItem="Rn0-aK-qZb" secondAttribute="leading" id="wea-eg-cc9"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT" userLabel="contentView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="943"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="DDl-z9-A7W" userLabel="actCover">
+                    <rect key="frame" x="150" y="524" width="20" height="20"/>
+                </activityIndicatorView>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zcg-61-pM2" userLabel="detailScrollView">
                     <rect key="frame" x="0.0" y="206" width="320" height="109"/>
                     <connections>
@@ -279,7 +310,7 @@
                 <button opaque="NO" clipsSubviews="YES" tag="16" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cVc-Hq-EZS" userLabel="buttonFav">
                     <rect key="frame" x="171" y="330" width="128" height="33"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                    <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <inset key="titleEdgeInsets" minX="10" minY="2" maxX="0.0" maxY="0.0"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
                     <state key="normal" title="Favorite" image="icon_love.png">
                         <color key="titleColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -290,9 +321,9 @@
                     </connections>
                 </button>
                 <button opaque="NO" clipsSubviews="YES" tag="15" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7LK-36-qbj">
-                    <rect key="frame" x="20" y="330" width="128" height="33"/>
+                    <rect key="frame" x="21" y="330" width="128" height="33"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                    <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <inset key="titleEdgeInsets" minX="10" minY="2" maxX="0.0" maxY="0.0"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
                     <state key="normal" title="Message" image="icon_message_grey">
                         <color key="titleColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -304,19 +335,19 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="L8A-HQ-Z0Q"/>
                     </connections>
                 </button>
-                <button opaque="NO" clipsSubviews="YES" tag="18" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fcF-dz-rqL">
-                    <rect key="frame" x="20" y="330" width="128" height="33"/>
+                <button opaque="NO" clipsSubviews="YES" tag="15" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gpn-Gd-nay">
+                    <rect key="frame" x="21" y="330" width="128" height="33"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                    <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <inset key="titleEdgeInsets" minX="10" minY="2" maxX="0.0" maxY="0.0"/>
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
-                    <state key="normal" title="Setting" image="icon_message_grey">
+                    <state key="normal" title="Settings" image="icon_setting_grey">
                         <color key="titleColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <state key="selected">
                         <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="fe7-L0-RHD"/>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="0Sa-qI-ICj"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cVu-HK-Fzk" userLabel="Horizontal Border">
@@ -389,11 +420,30 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Up4-ff-lh2">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="149"/>
                 </imageView>
-                <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="31Y-2q-Ggi" userLabel="ppImage">
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="BNt-0T-WmM">
+                    <rect key="frame" x="150" y="140" width="20" height="20"/>
+                </activityIndicatorView>
+                <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="31Y-2q-Ggi" userLabel="ppImage">
                     <rect key="frame" x="109" y="96" width="102" height="102"/>
                 </imageView>
+                <button opaque="NO" clipsSubviews="YES" tag="15" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UYF-ea-OeU">
+                    <rect key="frame" x="171" y="330" width="128" height="33"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                    <inset key="titleEdgeInsets" minX="10" minY="2" maxX="0.0" maxY="0.0"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
+                    <state key="normal" title="Add Product" image="icon_plus_grey">
+                        <color key="titleColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected">
+                        <color key="titleColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="LYv-z2-4OO"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="8ke-SH-1gU">
@@ -417,6 +467,7 @@
                 </button>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <nil key="simulatedStatusBarMetrics"/>
         </view>
         <swipeGestureRecognizer direction="left" id="APh-NK-HnG">
             <connections>
@@ -469,6 +520,7 @@
                 <constraint firstItem="F6R-Pu-avF" firstAttribute="leading" secondItem="0rY-ov-LFU" secondAttribute="trailing" constant="5" id="oqu-tc-CQe"/>
                 <constraint firstItem="F6R-Pu-avF" firstAttribute="top" secondItem="3Mp-3B-wFr" secondAttribute="top" constant="17" id="rme-CA-oJM"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
@@ -480,5 +532,12 @@
         <image name="icon_love.png" width="20" height="20"/>
         <image name="icon_message.png" width="14" height="14"/>
         <image name="icon_message_grey" width="20" height="20"/>
+        <image name="icon_plus_grey" width="20" height="20"/>
+        <image name="icon_setting_grey" width="20" height="20"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

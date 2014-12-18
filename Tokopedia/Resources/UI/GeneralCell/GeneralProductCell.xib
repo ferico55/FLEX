@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -32,7 +33,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="211"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view tag="10" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bcb-32-YCv">
+                    <view tag="10" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bcb-32-YCv">
                         <rect key="frame" x="11" y="9" width="145" height="193"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_toped_loading_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="wGP-qo-mui" userLabel="Icon Toped">
@@ -57,11 +58,15 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="145" id="6tx-gK-GT3"/>
+                            <constraint firstAttribute="height" constant="193" id="TXh-yc-hco"/>
+                        </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="zX6-Io-410" appends="YES" id="aRI-dt-jmL"/>
                         </connections>
                     </view>
-                    <view tag="11" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EJe-fO-eTj">
+                    <view tag="11" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EJe-fO-eTj">
                         <rect key="frame" x="164" y="9" width="145" height="193"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_toped_loading_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="jZD-bT-Z8K" userLabel="Icon Toped">
@@ -86,11 +91,21 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="193" id="Eta-DN-Db6"/>
+                            <constraint firstAttribute="width" constant="145" id="skY-Hd-O1m"/>
+                        </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="cYy-qa-248" appends="YES" id="MC6-bg-gDr"/>
                         </connections>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailingMargin" secondItem="EJe-fO-eTj" secondAttribute="trailing" constant="3" id="MZc-aU-dzo"/>
+                    <constraint firstItem="Bcb-32-YCv" firstAttribute="top" secondItem="GDt-tA-anA" secondAttribute="topMargin" constant="1" id="aeP-I6-HwQ"/>
+                    <constraint firstItem="EJe-fO-eTj" firstAttribute="top" secondItem="GDt-tA-anA" secondAttribute="topMargin" constant="1" id="cHj-Nn-zwP"/>
+                    <constraint firstItem="Bcb-32-YCv" firstAttribute="leading" secondItem="GDt-tA-anA" secondAttribute="leadingMargin" constant="3" id="lZV-Bu-k6O"/>
+                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>

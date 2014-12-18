@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductEtalaseViewController">
             <connections>
@@ -22,14 +27,14 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="36" id="iDe-a8-bbT"/>
-                        <constraint firstAttribute="width" constant="320" id="mkV-d7-GsC"/>
+                        <constraint firstAttribute="width" constant="320" id="43k-rX-KeN"/>
+                        <constraint firstAttribute="height" constant="36" id="IWL-WP-tre"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="GdX-Jc-Qjs">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" allowsSelection="NO" allowsSelectionDuringEditing="YES" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="GdX-Jc-Qjs">
                     <rect key="frame" x="0.0" y="36" width="320" height="532"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="separatorColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -41,30 +46,33 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="GdX-Jc-Qjs" secondAttribute="bottom" id="7uP-zG-k5G"/>
-                <constraint firstAttribute="trailing" secondItem="6BE-7z-I0r" secondAttribute="trailing" id="87k-8d-UjM"/>
-                <constraint firstItem="GdX-Jc-Qjs" firstAttribute="top" secondItem="6BE-7z-I0r" secondAttribute="bottom" id="HIT-wq-zQf"/>
-                <constraint firstItem="GdX-Jc-Qjs" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="L12-36-HqU"/>
-                <constraint firstItem="GdX-Jc-Qjs" firstAttribute="top" secondItem="6BE-7z-I0r" secondAttribute="bottom" id="Ori-At-Bf2"/>
-                <constraint firstItem="6BE-7z-I0r" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="PW8-iK-4Nq"/>
-                <constraint firstItem="6BE-7z-I0r" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="PxZ-cE-dbk"/>
-                <constraint firstItem="6BE-7z-I0r" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="U56-iI-2Zc"/>
-                <constraint firstAttribute="trailing" secondItem="GdX-Jc-Qjs" secondAttribute="trailing" id="e8L-RW-qEX"/>
-                <constraint firstItem="6BE-7z-I0r" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="u6e-l7-h96"/>
+                <constraint firstItem="GdX-Jc-Qjs" firstAttribute="top" secondItem="6BE-7z-I0r" secondAttribute="bottom" id="25K-tv-p59"/>
+                <constraint firstItem="6BE-7z-I0r" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="2wS-2U-sGG"/>
+                <constraint firstAttribute="trailing" secondItem="GdX-Jc-Qjs" secondAttribute="trailing" id="O20-Lb-Zn9"/>
+                <constraint firstAttribute="trailing" secondItem="6BE-7z-I0r" secondAttribute="trailing" id="RAM-UY-nr5"/>
+                <constraint firstItem="GdX-Jc-Qjs" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="f0i-NU-rCs"/>
+                <constraint firstAttribute="bottom" secondItem="GdX-Jc-Qjs" secondAttribute="bottom" id="nuP-zU-j5g"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="XuX-tx-aMd" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="319" height="34"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="HxN-i3-Qop">
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="HxN-i3-Qop">
                     <rect key="frame" x="150" y="7" width="20" height="20"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

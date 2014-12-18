@@ -44,7 +44,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="141"/>
                                 <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wAf-xN-EU4">
+                            <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wAf-xN-EU4">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="141"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
@@ -78,6 +78,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="act" destination="Nsd-Xa-ZQO" id="NS6-pY-jzH"/>
+                <outlet property="contentSubview" destination="Wkt-6B-BtT" id="I0o-xA-myO"/>
                 <outlet property="pricelabel" destination="j8t-Vu-9rj" id="SYA-o7-uuX"/>
                 <outlet property="productimageview" destination="wAf-xN-EU4" id="JnX-Nw-vk6"/>
             </connections>

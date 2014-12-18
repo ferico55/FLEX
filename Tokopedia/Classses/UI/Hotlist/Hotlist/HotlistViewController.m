@@ -131,11 +131,11 @@
     
     /* prepare to use our own on-disk cache */
     //[_cachecontroller initCachePathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDHOMEHOTLIST_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
+//    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDHOMEHOTLIST_CACHEFILEPATH];
+//    _cachepath = [path stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
+//    _cachecontroller.filePath = _cachepath;
+//    _cachecontroller.URLCacheInterval = 86400.0;
+//	[_cachecontroller initCacheWithDocumentPath:path];
     
     /* create and load the URL array using the strings stored in URLCache.plist */
     //NSString* path = [[NSBundle mainBundle] pathForResource:@"URLCache" ofType:@"plist"];
@@ -445,7 +445,10 @@
             BOOL status = [hotlist.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-
+                if(_isrefreshview) {
+                    [_product removeAllObjects];
+                }
+                
                 [_product addObjectsFromArray: hotlist.result.list];
                 
                 if (_product.count >0) {
@@ -507,7 +510,12 @@
     NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
     
     if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTHOTKEY]) {
-        vc.data = @{kTKPDHOME_DATAQUERYKEY: querry[2]?:@"", kTKPHOME_DATAHEADERIMAGEKEY: imageview, kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+        vc.data = @{kTKPDHOME_DATAQUERYKEY : querry[2]?:@"",
+                    kTKPHOME_DATAHEADERIMAGEKEY : imageview,
+                    kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
+                    kTKPDHOME_APIURLKEY : hotlist.url,
+                    kTKPDHOME_APITITLEKEY : hotlist.title,
+                    };
         UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
         [self.navigationController presentViewController:nav animated:YES completion:nil];
     }
@@ -550,7 +558,7 @@
     /** clear object **/
     [self cancel];
     _requestcount = 0;
-    [_product removeAllObjects];
+//    [_product removeAllObjects];
     _page = 1;
     _isrefreshview = YES;
     

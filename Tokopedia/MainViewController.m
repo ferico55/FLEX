@@ -161,7 +161,6 @@
     
     /** TAB BAR INDEX 4 **/
     CartViewController *cart = [CartViewController new];
-    cart.data = @{kTKPD_AUTHKEY : _auth?:@{}};
     UINavigationController *cartNavBar = [[UINavigationController alloc]initWithRootViewController:cart];
     [cartNavBar.navigationBar setTranslucent:NO];
     
@@ -172,9 +171,8 @@
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
     }
     else{
-        LogoutViewController *more = [LogoutViewController new];
-        more.data = @{kTKPD_AUTHKEY : _auth?:@{}};
-        moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+        moreNavBar = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
     }
 
     [moreNavBar.navigationBar setTranslucent:NO];
@@ -409,8 +407,8 @@
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
     }
     else{
-        LogoutViewController *more = [LogoutViewController new];
-        moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+        moreNavBar = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
     }
     [moreNavBar.navigationBar setTranslucent:NO];
 
