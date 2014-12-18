@@ -21,7 +21,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button hidden="YES" opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rfL-I8-0t5">
-                        <rect key="frame" x="8" y="42" width="14" height="15"/>
+                        <rect key="frame" x="8" y="42" width="20" height="20"/>
                         <state key="normal" image="icon_checkmark_1.png">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
@@ -36,9 +36,9 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nak-wQ-3zr">
-                        <rect key="frame" x="25" y="22" width="306" height="56"/>
+                        <rect key="frame" x="28" y="22" width="306" height="56"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_unread.png" translatesAutoresizingMaskIntoConstraints="NO" id="X5m-Tj-hJr">
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_unread.png" translatesAutoresizingMaskIntoConstraints="NO" id="X5m-Tj-hJr">
                                 <rect key="frame" x="4" y="23" width="10" height="10"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TeN-Bj-M3D">
@@ -83,7 +83,7 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="icon_checkmark_1.png" width="40" height="40"/>
+        <image name="icon_checkmark_1.png" width="14" height="14"/>
         <image name="icon_unread.png" width="40" height="40"/>
     </resources>
 </document>

@@ -117,7 +117,7 @@
             //click user
             case 14 :
             {
-                TalkList *list = [_delegate clickUserId:self withindexpath:indexpath];
+                TalkList *talkList = (TalkList *)_data;
 
                 TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
                 NSDictionary* auth = [secureStorage keychainDictionary];
@@ -130,8 +130,8 @@
                 [viewcontrollers addObject:v];
                 
                 ProfileFavoriteShopViewController *v1 = [ProfileFavoriteShopViewController new];
-                v1.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(list.talk_user_id),
-                            kTKPDDETAIL_APISHOPIDKEY:list.talk_shop_id,
+                v1.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(talkList.talk_user_id),
+                            kTKPDDETAIL_APISHOPIDKEY:talkList.talk_shop_id,
                             kTKPD_AUTHKEY:auth};
                 [viewcontrollers addObject:v1];
                 
@@ -139,7 +139,7 @@
                 [viewcontrollers addObject:v2];
 
                 TKPDTabProfileNavigationController *tapnavcon = [TKPDTabProfileNavigationController new];
-                tapnavcon.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(list.talk_user_id),
+                tapnavcon.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(talkList.talk_user_id),
                                    kTKPD_AUTHKEY:auth};
                 [tapnavcon setViewControllers:viewcontrollers animated:YES];
                 [tapnavcon setSelectedIndex:0];
@@ -153,7 +153,8 @@
             //click product
             case 15 :
             {
-                NSString *productId = [_delegate clickProductId:self withindexpath:indexpath];
+                TalkList *talkList = (TalkList *)_data;
+                NSString *productId = talkList.talk_product_id;
                 UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
                 
                 DetailProductViewController *vc = [DetailProductViewController new];
@@ -174,13 +175,17 @@
                 NSMutableArray *buttonTitles = [[NSMutableArray alloc] init];
                 // Check whether the comment is belong to the logged in user,
                 // or the comment is on the user's shop
-                if (talkList.talk_shop_id == [[auth objectForKey:@"shop_id"] stringValue] ||
-                    talkList.talk_user_id == [[auth objectForKey:@"user_id"] integerValue]) {
+                NSInteger loginUserId = [[auth objectForKey:@"user_id"] integerValue];
+                NSString *talkIsOwner = talkList.talk_own;
+                
+                if ((loginUserId == talkList.talk_user_id && talkList.talk_user_id)
+                    || talkIsOwner.length > 0
+                    ) {
                     [buttonTitles addObject:@"Delete"];
                 }
                 
                 // If the comment is not user's comment, Report button added
-                if (talkList.talk_user_id != [[auth objectForKey:@"user_id"] integerValue]) {
+                if (loginUserId && loginUserId != talkList.talk_user_id && !talkIsOwner.length) {
                     [buttonTitles addObject:@"Report"];
                 }
                 
@@ -208,7 +213,8 @@
     auth = [auth mutableCopy];
     
     TalkList *talkList = (TalkList *)_data;
-    
+    NSInteger cancelButtonIndex = actionSheet.cancelButtonIndex;
+
     if (buttonIndex == 0) {
         // if the comment is belong to the logged in user, the cliked button is delete button
         if (talkList.talk_shop_id == [[auth objectForKey:@"shop_id"] stringValue] ||
@@ -220,12 +226,13 @@
         } else {
             [_delegate reportTalk:self withindexpath:_indexpath];
         }
-
-    // if button index is 2, then the cliked button at index 1 is report button
-    } else {
-        [_delegate reportTalk:self withindexpath:_indexpath];
     }
-    
+    // if button index is 2, then the cliked button at index 1 is report button
+    else if (buttonIndex != cancelButtonIndex) {
+         [_delegate reportTalk:self withindexpath:_indexpath];
+    }
+
 }
+
 
 @end

@@ -1,14 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<<<<<<< HEAD
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="2Kq-eg-CQr">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+=======
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2Kq-eg-CQr">
+    <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+>>>>>>> cd03ffaafa5fcf94554e4189a65ebad62b1a36dc
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+<<<<<<< HEAD
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
@@ -52,11 +60,14 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+=======
+>>>>>>> cd03ffaafa5fcf94554e4189a65ebad62b1a36dc
         </mutableArray>
         <mutableArray key="GothamLight.ttf">
             <string>GothamLight</string>
             <string>GothamLight</string>
             <string>GothamLight</string>
+<<<<<<< HEAD
             <string>GothamLight</string>
             <string>GothamLight</string>
         </mutableArray>
@@ -70,6 +81,8 @@
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
+=======
+>>>>>>> cd03ffaafa5fcf94554e4189a65ebad62b1a36dc
         </mutableArray>
     </customFonts>
     <scenes>

@@ -16,8 +16,6 @@
 @protocol GeneralTalkCellDelegate <NSObject>
 @required
 - (void)GeneralTalkCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
-- (NSString*)clickProductId:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
-- (id)clickUserId:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
 
 @optional
 - (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;

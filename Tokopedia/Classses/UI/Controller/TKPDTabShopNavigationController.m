@@ -20,7 +20,7 @@
 #import "ShopTalkViewController.h"
 #import "ShopReviewViewController.h"
 #import "ShopNotesViewController.h"
-#import "../Detail/Shop/Settings/ShopSettingViewController.h"
+#import "ShopSettingViewController.h"
 
 #import "URLCacheController.h"
 #import "UIImage+ImageEffects.h"
@@ -40,6 +40,7 @@
     
     Shop *_shop;
     BOOL _isnodata;
+    BOOL _isAlreadySticky;
     NSInteger _requestcount;
     BOOL _isaddressexpanded;
     BOOL _isrefreshview;
@@ -1104,12 +1105,23 @@
     } else {
         offset = 378.0;
     }
+    
+    
     if (_scrollview.contentOffset.y < offset) {
-        _stickyTapView.hidden = YES;
-        [self disableScrollAtIndex:_selectedIndex];
+        if(_isAlreadySticky) {
+            _stickyTapView.hidden = YES;
+            [self disableScrollAtIndex:_selectedIndex];
+            _scrollview.scrollEnabled = YES;
+            _isAlreadySticky = NO;
+        }
     } else {
-        _stickyTapView.hidden = NO;
-        [self enableScrollAtIndex:_selectedIndex];
+        if(!_isAlreadySticky) {
+            _stickyTapView.hidden = NO;
+            [self enableScrollAtIndex:_selectedIndex];
+            _scrollview.scrollEnabled = NO;
+            _isAlreadySticky = YES;
+        }
+        
     }
 }
 
@@ -1118,6 +1130,8 @@
     switch (index) {
         case 0:
             ((ShopProductViewController *)_selectedViewController).table.scrollEnabled = NO;
+            
+            
             break;
         case 1:
             ((ShopTalkViewController *)_selectedViewController).table.scrollEnabled = NO;
