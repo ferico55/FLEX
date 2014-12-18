@@ -1,11 +1,79 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2Kq-eg-CQr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="2Kq-eg-CQr">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamLight.ttf">
+            <string>GothamLight</string>
+            <string>GothamLight</string>
+            <string>GothamLight</string>
+            <string>GothamLight</string>
+            <string>GothamLight</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
     <scenes>
-        <!--Shipment Setting View Controller - Pengiriman-->
+        <!--Pengiriman-->
         <scene sceneID="CDn-5X-dWQ">
             <objects>
                 <tableViewController storyboardIdentifier="ShipmentSettingViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ykq-Mk-Fne" customClass="ShipmentSettingViewController" sceneMemberID="viewController">
@@ -19,28 +87,34 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="138"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cJA-om-idY" userLabel="Kota Asal">
+                                <view contentMode="scaleToFill" id="cJA-om-idY" userLabel="Kota Asal">
                                     <rect key="frame" x="0.0" y="20" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EMP-PQ-Npf" userLabel="Horizontal Border">
+                                        <view contentMode="scaleToFill" id="EMP-PQ-Npf" userLabel="Horizontal Border">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                         </view>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OQd-DO-t3x" userLabel="Horizontal Border">
+                                        <view contentMode="scaleToFill" id="OQd-DO-t3x" userLabel="Horizontal Border">
                                             <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.78431372549019607" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                         </view>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Kota Asal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HfB-GC-5WK">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kota Asal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HfB-GC-5WK">
                                             <rect key="frame" x="15" y="11" width="73" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_arrow_right_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="TKY-ik-dUN">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_right_grey.png" id="TKY-ik-dUN">
                                             <rect key="frame" x="290" y="14" width="15" height="15"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </imageView>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pilih Provinsi" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Xc-FE-XDd">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pilih Provinsi" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7Xc-FE-XDd">
                                             <rect key="frame" x="96" y="11" width="186" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -48,21 +122,25 @@
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 </view>
-                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GZo-WM-j2u" userLabel="Kode Pos">
+                                <view contentMode="scaleToFill" id="GZo-WM-j2u" userLabel="Kode Pos">
                                     <rect key="frame" x="0.0" y="64" width="320" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kF1-Kg-6ma" userLabel="Horizontal Border">
+                                        <view contentMode="scaleToFill" id="kF1-Kg-6ma" userLabel="Horizontal Border">
                                             <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                         </view>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Kode Pos" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rEP-IB-wU5">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kode Pos" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rEP-IB-wU5">
                                             <rect key="frame" x="15" y="11" width="81" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QIw-vo-FS7">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" id="QIw-vo-FS7">
                                             <rect key="frame" x="104" y="0.0" width="196" height="44"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                         </textField>
@@ -80,17 +158,20 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lYn-aU-6Qo">
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lYn-aU-6Qo">
                                             <rect key="frame" x="15" y="11" width="202" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <switch opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DLP-8Z-Zya">
+                                        <switch opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="DLP-8Z-Zya">
                                             <rect key="frame" x="256" y="6" width="51" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </switch>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UpM-lQ-c0j" userLabel="Horizontal Border">
+                                        <view contentMode="scaleToFill" id="UpM-lQ-c0j" userLabel="Horizontal Border">
                                             <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                     </subviews>
@@ -103,24 +184,29 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OEf-Kc-UQB" userLabel="Content Subview">
+                                        <view contentMode="scaleToFill" id="OEf-Kc-UQB" userLabel="Content Subview">
                                             <rect key="frame" x="0.0" y="12" width="320" height="44"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j75-t5-hSb">
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="j75-t5-hSb">
                                                     <rect key="frame" x="15" y="11" width="202" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <switch opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YDR-M1-Qrd">
+                                                <switch opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="YDR-M1-Qrd">
                                                     <rect key="frame" x="256" y="6" width="51" height="31"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </switch>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2rd-6Q-XQT" userLabel="Horizontal Border">
+                                                <view contentMode="scaleToFill" id="2rd-6Q-XQT" userLabel="Horizontal Border">
                                                     <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fxR-LM-606" userLabel="Horizontal Border">
+                                                <view contentMode="scaleToFill" id="fxR-LM-606" userLabel="Horizontal Border">
                                                     <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
                                             </subviews>
@@ -137,17 +223,20 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Hanya dapat melayani pengiriman luar kota" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="202" translatesAutoresizingMaskIntoConstraints="NO" id="AOa-p8-JAg">
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hanya dapat melayani pengiriman luar kota" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="AOa-p8-JAg">
                                             <rect key="frame" x="15" y="9" width="202" height="45"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <switch opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gIu-jI-6cH">
+                                        <switch opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="gIu-jI-6cH">
                                             <rect key="frame" x="256" y="16" width="51" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         </switch>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rmE-gS-DY5" userLabel="Horizontal Border">
+                                        <view contentMode="scaleToFill" id="rmE-gS-DY5" userLabel="Horizontal Border">
                                             <rect key="frame" x="0.0" y="63" width="320" height="1"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                     </subviews>
@@ -160,14 +249,16 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3aM-He-uDl">
+                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3aM-He-uDl">
                                             <rect key="frame" x="15" y="11" width="290" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="im6-F8-gTp" userLabel="Horizontal Border">
+                                        <view contentMode="scaleToFill" id="im6-F8-gTp" userLabel="Horizontal Border">
                                             <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </view>
                                     </subviews>
@@ -180,96 +271,68 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="87"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3gu-hm-PE3" userLabel="Content Subview">
+                                        <view contentMode="scaleToFill" id="3gu-hm-PE3" userLabel="Content Subview">
                                             <rect key="frame" x="0.0" y="-1" width="320" height="88"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lYu-2g-USf">
+                                                <view contentMode="scaleToFill" id="lYu-2g-USf">
                                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WAz-rj-uXR">
+                                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WAz-rj-uXR">
                                                             <rect key="frame" x="15" y="11" width="236" height="21"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <switch opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="r3W-r2-e0D">
+                                                        <switch opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="r3W-r2-e0D">
                                                             <rect key="frame" x="256" y="6" width="51" height="31"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         </switch>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="44" id="1wG-tr-rYj"/>
-                                                        <constraint firstAttribute="width" constant="320" id="6P4-ex-aal"/>
-                                                    </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G2W-aK-Uak">
+                                                <view contentMode="scaleToFill" id="G2W-aK-Uak">
                                                     <rect key="frame" x="0.0" y="44" width="320" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xLl-w8-gP0">
+                                                        <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xLl-w8-gP0">
                                                             <rect key="frame" x="15" y="11" width="166" height="21"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <stepper opaque="NO" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="Aaf-Uz-QU8">
+                                                        <stepper opaque="NO" tag="5" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minimumValue="1" maximumValue="5" id="Aaf-Uz-QU8">
                                                             <rect key="frame" x="211" y="7" width="94" height="29"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="29" id="E1l-Yy-INM"/>
-                                                                <constraint firstAttribute="width" constant="94" id="Un4-v0-1Ft"/>
-                                                            </constraints>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         </stepper>
-                                                        <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VTO-8i-Rl2">
+                                                        <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VTO-8i-Rl2">
                                                             <rect key="frame" x="187" y="11" width="16" height="21"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="21" id="FST-sV-Swj"/>
-                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="16" id="Jre-ka-JC5"/>
-                                                            </constraints>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="bottom" secondItem="VTO-8i-Rl2" secondAttribute="bottom" constant="12" id="1V7-kO-f8g"/>
-                                                        <constraint firstItem="Aaf-Uz-QU8" firstAttribute="leading" secondItem="VTO-8i-Rl2" secondAttribute="trailing" constant="8" id="1sz-1A-He0"/>
-                                                        <constraint firstAttribute="width" constant="320" id="5OV-9k-kkP"/>
-                                                        <constraint firstAttribute="bottom" secondItem="Aaf-Uz-QU8" secondAttribute="bottom" constant="8" id="6Zr-RG-s74"/>
-                                                        <constraint firstAttribute="height" constant="44" id="NGr-AU-5LY"/>
-                                                        <constraint firstAttribute="trailing" secondItem="Aaf-Uz-QU8" secondAttribute="trailing" constant="15" id="a2Y-Sd-4Vx"/>
-                                                    </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="da5-8J-VMW" userLabel="Horizontal Border">
+                                                <view contentMode="scaleToFill" id="da5-8J-VMW" userLabel="Horizontal Border">
                                                     <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="1" id="bWl-AL-x19"/>
-                                                        <constraint firstAttribute="width" constant="320" id="rgG-5d-Cpf"/>
-                                                    </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e5p-wY-b5u" userLabel="Horizontal Border">
+                                                <view contentMode="scaleToFill" id="e5p-wY-b5u" userLabel="Horizontal Border">
                                                     <rect key="frame" x="0.0" y="88" width="320" height="1"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstItem="lYu-2g-USf" firstAttribute="top" secondItem="3gu-hm-PE3" secondAttribute="top" id="G6e-h5-8Mt"/>
-                                                <constraint firstItem="lYu-2g-USf" firstAttribute="leading" secondItem="3gu-hm-PE3" secondAttribute="leading" id="HPg-xU-2IZ"/>
-                                                <constraint firstItem="G2W-aK-Uak" firstAttribute="top" secondItem="da5-8J-VMW" secondAttribute="bottom" id="JUH-lS-5an"/>
-                                                <constraint firstAttribute="width" constant="320" id="LFV-hu-5FD"/>
-                                                <constraint firstItem="G2W-aK-Uak" firstAttribute="leading" secondItem="3gu-hm-PE3" secondAttribute="leading" id="UVN-Q5-XXf"/>
-                                                <constraint firstItem="da5-8J-VMW" firstAttribute="leading" secondItem="3gu-hm-PE3" secondAttribute="leading" id="Vil-sb-HZ9"/>
-                                                <constraint firstAttribute="height" constant="88" id="bVX-kS-nwq"/>
-                                                <constraint firstItem="da5-8J-VMW" firstAttribute="top" secondItem="3gu-hm-PE3" secondAttribute="top" constant="43" id="q6u-a1-Jjc"/>
-                                            </constraints>
                                         </view>
                                     </subviews>
                                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstItem="3gu-hm-PE3" firstAttribute="leading" secondItem="HfU-Ob-cSU" secondAttribute="leading" id="kHJ-Z5-S7W"/>
-                                        <constraint firstItem="3gu-hm-PE3" firstAttribute="top" secondItem="HfU-Ob-cSU" secondAttribute="top" constant="-1" id="qvo-hg-LNC"/>
-                                    </constraints>
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </tableViewCell>
@@ -280,57 +343,68 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="87"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9wD-9Q-Hzc" userLabel="Content Subview">
+                                        <view clipsSubviews="YES" contentMode="scaleToFill" id="9wD-9Q-Hzc" userLabel="Content Subview">
                                             <rect key="frame" x="0.0" y="-1" width="320" height="88"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
-                                                <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mbK-bY-qWw">
+                                                <view clipsSubviews="YES" contentMode="scaleToFill" id="mbK-bY-qWw">
                                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kVW-kN-4mg">
+                                                        <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kVW-kN-4mg">
                                                             <rect key="frame" x="15" y="11" width="236" height="21"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <switch opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YnM-HQ-eMS">
+                                                        <switch opaque="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="YnM-HQ-eMS">
                                                             <rect key="frame" x="256" y="6" width="51" height="31"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         </switch>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </view>
-                                                <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xc0-xI-UAr">
+                                                <view clipsSubviews="YES" contentMode="scaleToFill" id="xc0-xI-UAr">
                                                     <rect key="frame" x="0.0" y="44" width="320" height="44"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <subviews>
-                                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bqc-OQ-q3r">
+                                                        <view contentMode="scaleToFill" id="bqc-OQ-q3r">
                                                             <rect key="frame" x="0.0" y="0.0" width="60" height="44"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rp." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6z7-rM-a4X">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6z7-rM-a4X">
                                                                     <rect key="frame" x="15" y="11" width="42" height="21"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ez0-Lc-Bgk">
+                                                                <view contentMode="scaleToFill" id="Ez0-Lc-Bgk">
                                                                     <rect key="frame" x="59" y="0.0" width="1" height="44"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </view>
                                                             </subviews>
                                                             <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </view>
-                                                        <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8D0-X0-FmR">
+                                                        <textField opaque="NO" clipsSubviews="YES" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" id="8D0-X0-FmR">
                                                             <rect key="frame" x="61" y="0.0" width="244" height="44"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                         </textField>
                                                     </subviews>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </view>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sVq-N4-C6X" userLabel="Horizontal Border">
+                                                <view contentMode="scaleToFill" id="sVq-N4-C6X" userLabel="Horizontal Border">
                                                     <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="h2V-Bw-vxs" userLabel="Horizontal Border">
+                                                <view contentMode="scaleToFill" id="h2V-Bw-vxs" userLabel="Horizontal Border">
                                                     <rect key="frame" x="0.0" y="87" width="320" height="1"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
                                             </subviews>
@@ -348,24 +422,29 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="67"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="q48-bz-2rC" userLabel="Content Subview">
+                                        <view contentMode="scaleToFill" id="q48-bz-2rC" userLabel="Content Subview">
                                             <rect key="frame" x="0.0" y="12" width="320" height="44"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Info" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MFu-mU-Qsx">
+                                                <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Info" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MFu-mU-Qsx">
                                                     <rect key="frame" x="48" y="11" width="246" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yOu-PJ-Jug" userLabel="Horizontal Border">
+                                                <view contentMode="scaleToFill" id="yOu-PJ-Jug" userLabel="Horizontal Border">
                                                     <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 </view>
-                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_info_grey" translatesAutoresizingMaskIntoConstraints="NO" id="O1Y-XM-Fz6">
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_info_grey" id="O1Y-XM-Fz6">
                                                     <rect key="frame" x="15" y="9" width="25" height="25"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_arrow_right_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="Vlo-6J-vsq">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_right_grey.png" id="Vlo-6J-vsq">
                                                     <rect key="frame" x="290" y="14" width="15" height="15"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -409,90 +488,54 @@
         <scene sceneID="qgQ-xp-34Z">
             <objects>
                 <viewController id="gOX-FI-IgF" customClass="ShipmentInfoViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="xhI-w7-tN8"/>
-                        <viewControllerLayoutGuide type="bottom" id="3am-Li-Sy9"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="fv5-RM-b0r">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TPW-hc-oJT">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TPW-hc-oJT">
                                 <rect key="frame" x="15" y="20" width="289" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="IYu-Ou-1BM"/>
-                                    <constraint firstAttribute="width" constant="289" id="aBl-XZ-sF1"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="17"/>
                                 <color key="textColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7X6-Jo-PwN">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7X6-Jo-PwN">
                                 <rect key="frame" x="15" y="49" width="288" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="288" id="ZIT-D7-b8s"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="xsr-8f-MgC"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                                 <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NWD-xQ-sA2">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="NWD-xQ-sA2">
                                 <rect key="frame" x="15" y="90" width="289" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="LCL-ry-lwg"/>
-                                    <constraint firstAttribute="width" constant="289" id="fl0-t2-lWy"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="17"/>
                                 <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oX7-7a-n0h">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oX7-7a-n0h">
                                 <rect key="frame" x="15" y="119" width="288" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="0Xn-0d-fRL"/>
-                                    <constraint firstAttribute="width" constant="288" id="DzS-rS-zcf"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                                 <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g6D-rM-qmU">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="g6D-rM-qmU">
                                 <rect key="frame" x="15" y="160" width="289" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="4EI-x7-maD"/>
-                                    <constraint firstAttribute="width" constant="289" id="ilO-ZO-SuD"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="17"/>
                                 <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AdX-aD-99d">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="AdX-aD-99d">
                                 <rect key="frame" x="15" y="189" width="288" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="7lK-A3-3ni"/>
-                                    <constraint firstAttribute="width" constant="288" id="kx6-mk-86x"/>
-                                </constraints>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
                                 <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="7X6-Jo-PwN" firstAttribute="top" secondItem="TPW-hc-oJT" secondAttribute="bottom" constant="8" id="LPk-mA-YY9"/>
-                            <constraint firstItem="g6D-rM-qmU" firstAttribute="leading" secondItem="fv5-RM-b0r" secondAttribute="leading" constant="15" id="NQj-5v-AyP"/>
-                            <constraint firstItem="AdX-aD-99d" firstAttribute="leading" secondItem="fv5-RM-b0r" secondAttribute="leading" constant="15" id="ShE-6Y-Rj3"/>
-                            <constraint firstItem="g6D-rM-qmU" firstAttribute="top" secondItem="oX7-7a-n0h" secondAttribute="bottom" constant="20" id="WLa-UG-Pnq"/>
-                            <constraint firstItem="AdX-aD-99d" firstAttribute="top" secondItem="g6D-rM-qmU" secondAttribute="bottom" constant="8" id="Y5m-jC-ZFr"/>
-                            <constraint firstItem="oX7-7a-n0h" firstAttribute="leading" secondItem="fv5-RM-b0r" secondAttribute="leading" constant="15" id="ZAj-O0-LAH"/>
-                            <constraint firstItem="NWD-xQ-sA2" firstAttribute="top" secondItem="7X6-Jo-PwN" secondAttribute="bottom" constant="20" id="d2Q-mt-u8a"/>
-                            <constraint firstItem="oX7-7a-n0h" firstAttribute="top" secondItem="NWD-xQ-sA2" secondAttribute="bottom" constant="8" id="dDj-zb-kPb"/>
-                            <constraint firstItem="7X6-Jo-PwN" firstAttribute="leading" secondItem="fv5-RM-b0r" secondAttribute="leading" constant="15" id="dn1-x4-j1o"/>
-                            <constraint firstItem="TPW-hc-oJT" firstAttribute="leading" secondItem="fv5-RM-b0r" secondAttribute="leading" constant="15" id="lZA-92-CQ4"/>
-                            <constraint firstItem="NWD-xQ-sA2" firstAttribute="leading" secondItem="fv5-RM-b0r" secondAttribute="leading" constant="15" id="udY-FD-plY"/>
-                            <constraint firstItem="TPW-hc-oJT" firstAttribute="top" secondItem="xhI-w7-tN8" secondAttribute="bottom" constant="20" id="wNG-JZ-IH1"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qII-fb-E9N"/>
                     <connections>
@@ -507,6 +550,401 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fC7-YS-LNn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2046" y="-1064"/>
+        </scene>
+        <!--More View Controller-->
+        <scene sceneID="mse-Re-x0R">
+            <objects>
+                <tableViewController storyboardIdentifier="MoreViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zwO-iX-RIY" customClass="MoreViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="phw-2g-xsD">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <sections>
+                            <tableViewSection id="uHH-OO-s4G">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="77" id="cRX-yO-BDp">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cRX-yO-BDp" id="scf-vK-ulA">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saldo Tokopedia" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kpy-ST-tBs">
+                                                    <rect key="frame" x="15" y="20" width="251" height="13"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="12"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp. 94.500.000,-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="P4a-Ew-kRS">
+                                                    <rect key="frame" x="15" y="35" width="290" height="27"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="17"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="PROFIL SAYA" id="QFJ-rT-zaq">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="84" id="QyQ-pe-BYF">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QyQ-pe-BYF" id="BEX-HN-elU">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_profile_picture.jpeg" id="7rT-h3-2GE">
+                                                    <rect key="frame" x="15" y="12" width="60" height="60"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Thomas Djorgi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zS1-Sd-l5d">
+                                                    <rect key="frame" x="83" y="28" width="200" height="27"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="16"/>
+                                                    <color key="textColor" red="0.24471801360000001" green="0.66666666669999997" blue="0.14011867850000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="hXP-pR-E8s" style="IBUITableViewCellStyleDefault" id="scC-kP-Ge9">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="scC-kP-Ge9" id="XYQ-2C-efh">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pembelian" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hXP-pR-E8s">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="wcV-Pf-iXA" kind="push" identifier="Purchase" id="DNV-ZC-GVl"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Toko Saya" id="IFd-vc-P4d">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="84" id="lVm-Ld-6SW">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lVm-Ld-6SW" id="Mjz-RO-epD">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tora Store" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oUN-ui-gC8">
+                                                    <rect key="frame" x="83" y="20" width="200" height="27"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="16"/>
+                                                    <color key="textColor" red="0.24471801360000001" green="0.66666666669999997" blue="0.14011867850000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_default_shop.jpg" id="QKf-vE-6ME">
+                                                    <rect key="frame" x="15" y="12" width="60" height="60"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Regular Merchant" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Dh2-ka-A8J">
+                                                    <rect key="frame" x="112" y="44" width="149" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="12"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" id="Hdw-Vi-POr">
+                                                    <rect key="frame" x="83" y="44" width="22" height="22"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="UiX-dz-F7y" style="IBUITableViewCellStyleDefault" id="S6p-8h-nJq">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="S6p-8h-nJq" id="vgZ-an-KOg">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Penjualan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UiX-dz-F7y">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="S6g-13-WGh" kind="push" identifier="Sales" id="IdZ-0i-Vi6"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="TOKO SAYA" id="1Kj-y4-nPe">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="102" id="Ajr-Kh-eil">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ajr-Kh-eil" id="7vs-gx-FjG">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ojV-HK-y8A">
+                                                    <rect key="frame" x="15" y="46" width="290" height="41"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="backgroundColor" red="0.24471801360000001" green="0.66666666669999997" blue="0.14011867850000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <state key="normal" title="Buka Toko">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                    </state>
+                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anda belum memiliki Toko" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JCD-Wi-qkn">
+                                                    <rect key="frame" x="15" y="18" width="290" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="" id="1bG-is-hIi">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Nrw-0e-hXi" style="IBUITableViewCellStyleDefault" id="0NH-cL-ssx">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0NH-cL-ssx" id="k1H-05-TTJ">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pengaturan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Nrw-0e-hXi">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="kEU-zT-vLw" style="IBUITableViewCellStyleDefault" id="dSL-Nw-Ac2">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dSL-Nw-Ac2" id="sBm-Tk-mSy">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pusat Bantuan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kEU-zT-vLw">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="HNb-5B-9US" style="IBUITableViewCellStyleDefault" id="aH0-L9-L8Y">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aH0-L9-L8Y" id="ZDQ-ea-7x6">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Kebijakan &amp; Privasi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HNb-5B-9US">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="" id="GNg-gM-WOW">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="E38-IG-C20" style="IBUITableViewCellStyleDefault" id="w07-bF-TKo">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="w07-bF-TKo" id="8al-Bu-S2c">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Log Out" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="E38-IG-C20">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="zwO-iX-RIY" id="mUG-gd-6XF"/>
+                            <outlet property="delegate" destination="zwO-iX-RIY" id="iNe-YD-GCl"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="f5B-CQ-Rdf">
+                        <barButtonItem key="backBarButtonItem" title=" " id="PLj-mS-IUX"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="createShopButton" destination="ojV-HK-y8A" id="aj1-gK-SCD"/>
+                        <outlet property="depositLabel" destination="P4a-Ew-kRS" id="b28-bD-Mp9"/>
+                        <outlet property="fullNameLabel" destination="zS1-Sd-l5d" id="4rB-zu-sqS"/>
+                        <outlet property="profilePictureImageView" destination="7rT-h3-2GE" id="3Kf-Ny-nTf"/>
+                        <outlet property="shopImageView" destination="QKf-vE-6ME" id="e46-Un-xfy"/>
+                        <outlet property="shopIsGoldBadge" destination="Hdw-Vi-POr" id="mOe-En-f61"/>
+                        <outlet property="shopIsGoldLabel" destination="Dh2-ka-A8J" id="emH-hp-WL5"/>
+                        <outlet property="shopNameLabel" destination="oUN-ui-gC8" id="BSH-hd-Cq5"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="3Bb-rc-Ecw" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1650" y="-436"/>
+        </scene>
+        <!--Pembelian-->
+        <scene sceneID="oxh-tw-K0U">
+            <objects>
+                <viewController id="wcV-Pf-iXA" customClass="PurchaseViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QAv-MB-0VF">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="1us-s4-a8d">
+                                <rect key="frame" x="10" y="10" width="145" height="145"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ltV-2I-cAi">
+                                        <rect key="frame" x="0.0" y="40" width="145" height="26"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="28"/>
+                                        <color key="textColor" red="1" green="0.3411764705882353" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Konfirmasi Pembayaran" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PN1-xy-KoF">
+                                        <rect key="frame" x="0.0" y="74" width="145" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                        <color key="textColor" red="0.039215686274509803" green="0.49411764705882355" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="QaV-j3-sOI">
+                                        <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="paymentConfirmationDidTap:" destination="wcV-Pf-iXA" eventType="touchUpInside" id="tcY-yG-jep"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" id="41x-en-SWg">
+                                <rect key="frame" x="165" y="10" width="145" height="145"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8rF-8I-hft">
+                                        <rect key="frame" x="0.0" y="40" width="145" height="26"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="28"/>
+                                        <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status Pemesanan" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fbP-6Q-Wo9">
+                                        <rect key="frame" x="15" y="74" width="114" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                        <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6B5-Ct-SrO">
+                                        <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="orderStatusDidTap:" destination="wcV-Pf-iXA" eventType="touchUpInside" id="Rpu-oi-bDX"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" id="bMD-sT-O2R">
+                                <rect key="frame" x="165" y="165" width="145" height="145"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daftar Transaksi" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vqX-oL-Ajd">
+                                        <rect key="frame" x="25" y="57" width="95" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                        <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="UWW-6q-weD">
+                                        <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="listTransactionDidTap:" destination="wcV-Pf-iXA" eventType="touchUpInside" id="4dW-BC-bJ6"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" id="6Bf-bX-avQ">
+                                <rect key="frame" x="10" y="165" width="145" height="145"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="53S-41-TqD">
+                                        <rect key="frame" x="0.0" y="40" width="145" height="26"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="28"/>
+                                        <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Konfirmasi Penerimaan" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ups-QM-Vww">
+                                        <rect key="frame" x="7" y="74" width="131" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                        <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="hZP-c7-1O3">
+                                        <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="receiveConfirmationDidTap:" destination="wcV-Pf-iXA" eventType="touchUpInside" id="3rZ-CP-IkF"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Pembelian" id="Eo3-Ua-Diy">
+                        <barButtonItem key="backBarButtonItem" title=" " id="YRK-ff-fhd"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="orderStatusLabel" destination="8rF-8I-hft" id="vmW-DC-5gq"/>
+                        <outlet property="orderStatusView" destination="41x-en-SWg" id="CeT-ks-WIE"/>
+                        <outlet property="paymentConfirmationLabel" destination="ltV-2I-cAi" id="yWa-8h-Oen"/>
+                        <outlet property="paymentConfirmationView" destination="1us-s4-a8d" id="I93-RY-Rd1"/>
+                        <outlet property="receiveConfirmationLabel" destination="53S-41-TqD" id="dUi-kU-5jo"/>
+                        <outlet property="receiveConfirmationView" destination="6Bf-bX-avQ" id="ctA-xP-q1S"/>
+                        <outlet property="transactionListView" destination="bMD-sT-O2R" id="UaG-g8-Mkx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DGM-fK-iPk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2423" y="-435"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="HJF-nv-1WO">
@@ -532,10 +970,560 @@
             </objects>
             <point key="canvasLocation" x="1229" y="-1064"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="c2T-4U-cOe">
+            <objects>
+                <navigationController storyboardIdentifier="MoreNavigationViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7PW-b2-mbI" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="jdf-CP-FAZ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="0.24471801360000001" green="0.66666666669999997" blue="0.14011867850000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="barTintColor" red="0.24471801360000001" green="0.66666666669999997" blue="0.14011867850000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="zwO-iX-RIY" kind="relationship" relationship="rootViewController" id="ZBC-4q-EIh"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5Tb-dS-n4w" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1229" y="-435"/>
+        </scene>
+        <!--Notification View Controller-->
+        <scene sceneID="1Lg-5Y-Ie1">
+            <objects>
+                <tableViewController storyboardIdentifier="NotificationViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="2L8-Jc-aXE" customClass="NotificationViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="W9e-vg-i5s">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="aY9-qa-cdw">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </view>
+                        <sections>
+                            <tableViewSection headerTitle="Kotak Masuk" id="69m-Ii-9nX">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="ret-YT-WeU">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ret-YT-WeU" id="fV0-Yy-0SH">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pesan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UV3-EC-Shd">
+                                                    <rect key="frame" x="15" y="0.0" width="145" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TxM-hZ-8iB">
+                                                    <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="sa1-80-BoH">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sa1-80-BoH" id="9eu-Rr-Dzp">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Diskusi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="0Zs-dn-5nO">
+                                                    <rect key="frame" x="15" y="0.0" width="145" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6L8-pJ-HnF">
+                                                    <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="nuc-da-GJH">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nuc-da-GJH" id="wTn-Um-RCN">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ulasan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fqB-nA-e2J">
+                                                    <rect key="frame" x="15" y="0.0" width="145" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5Kt-UC-SF9">
+                                                    <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="xSv-Hg-B6d">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xSv-Hg-B6d" id="U9b-UA-OP7">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notifikasi Harga" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="XFO-LH-o7h">
+                                                    <rect key="frame" x="15" y="0.0" width="145" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="CCR-Wb-EnL">
+                                                    <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="nu4-wW-uM4">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nu4-wW-uM4" id="TnY-dC-CbM">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Layanan Pengguna" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lRM-4T-yR0">
+                                                    <rect key="frame" x="15" y="0.0" width="145" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="InK-WJ-kJn">
+                                                    <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="3e4-5T-dso">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3e4-5T-dso" id="buq-l7-Jy8">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pusat Resolusi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mQp-lE-jqR">
+                                                    <rect key="frame" x="15" y="0.0" width="145" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sVr-fM-naf">
+                                                    <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Penjualan" id="J2I-2h-Mwl">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="iN2-7A-Xxx">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iN2-7A-Xxx" id="EAp-Za-J8G">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order Baru" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PuP-qU-dSp">
+                                                    <rect key="frame" x="15" y="0.0" width="145" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9Oh-50-UTG">
+                                                    <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="TEv-87-j3Y">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TEv-87-j3Y" id="Chb-2U-o9k">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Konfirmasi Pengiriman" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="D5C-j5-nKB">
+                                                    <rect key="frame" x="15" y="0.0" width="169" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fOf-C1-gSn">
+                                                    <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="vxc-XL-N2V">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vxc-XL-N2V" id="c36-pk-jam">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status Pengiriman" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4cV-cJ-Jvo">
+                                                    <rect key="frame" x="15" y="0.0" width="145" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lGZ-JE-mCT">
+                                                    <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="I80-Yw-F2f">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="I80-Yw-F2f" id="I7f-52-vPs">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daftar Transaksi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yjB-HG-ykO">
+                                                    <rect key="frame" x="15" y="0.0" width="145" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="N62-eS-ZlM">
+                                                    <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                            <tableViewSection headerTitle="Pembelian" id="gY7-st-alL">
+                                <cells>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="3Mg-91-72Q">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3Mg-91-72Q" id="e38-P8-uDn">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Konfirmasi Pembayan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cl9-Tq-hLu">
+                                                    <rect key="frame" x="15" y="0.0" width="163" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="S0i-rh-Hfs">
+                                                    <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="r8K-DU-Gt7">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="r8K-DU-Gt7" id="4jC-g3-Yry">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status Pemesanan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7oM-7d-FN2">
+                                                    <rect key="frame" x="15" y="0.0" width="169" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kUg-PO-kvQ">
+                                                    <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="OdX-Ho-xGt">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OdX-Ho-xGt" id="47I-kq-Sbi">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Konfirmasi Penerimaan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="TWD-SZ-DRs">
+                                                    <rect key="frame" x="15" y="0.0" width="173" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nzS-0h-AaV">
+                                                    <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="FPH-i8-0IG">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FPH-i8-0IG" id="sNr-Tf-JpQ">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daftar Transaksi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ZH0-AF-CXq">
+                                                    <rect key="frame" x="15" y="0.0" width="145" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="xnc-us-OGw">
+                                                    <rect key="frame" x="213" y="0.0" width="72" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                                    <color key="textColor" red="0.78039215689999997" green="0.78039215689999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="2L8-Jc-aXE" id="aA5-FY-T07"/>
+                            <outlet property="delegate" destination="2L8-Jc-aXE" id="n1c-P3-2x2"/>
+                        </connections>
+                    </tableView>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="480"/>
+                    <connections>
+                        <outlet property="customerCareCountLabel" destination="InK-WJ-kJn" id="7xx-iZ-cVp"/>
+                        <outlet property="discussionCountLabel" destination="6L8-pJ-HnF" id="cNT-Jq-T4a"/>
+                        <outlet property="messageCountLabel" destination="TxM-hZ-8iB" id="4Eo-Ag-ejs"/>
+                        <outlet property="orderStatusCountLabel" destination="kUg-PO-kvQ" id="Ln4-pc-kbR"/>
+                        <outlet property="paymentConfirmationLabel" destination="S0i-rh-Hfs" id="Gih-mk-ziy"/>
+                        <outlet property="paymentListCountLabel" destination="xnc-us-OGw" id="vD4-kF-w3k"/>
+                        <outlet property="priceNotificationCountLabel" destination="CCR-Wb-EnL" id="BhA-rz-Zl1"/>
+                        <outlet property="receiveConfirmationCountLabel" destination="nzS-0h-AaV" id="qOw-EH-G5E"/>
+                        <outlet property="resolutionCenterCountLabel" destination="sVr-fM-naf" id="b1u-h5-N2W"/>
+                        <outlet property="reviewCountLabel" destination="5Kt-UC-SF9" id="jKe-lH-Ac8"/>
+                        <outlet property="salesListCountLabel" destination="N62-eS-ZlM" id="5rF-rC-a4G"/>
+                        <outlet property="salesOrderLabel" destination="9Oh-50-UTG" id="ShY-iJ-ksT"/>
+                        <outlet property="shippingConfirmationCountLabel" destination="fOf-C1-gSn" id="AC2-gL-uRD"/>
+                        <outlet property="shippingStatusCountLabel" destination="lGZ-JE-mCT" id="a48-cu-7ds"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5e6-Ru-KIG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1229" y="107"/>
+        </scene>
+        <!--Penjualan-->
+        <scene sceneID="euT-rN-CY8">
+            <objects>
+                <viewController id="S6g-13-WGh" customClass="SalesViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="WOB-I2-YQV">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" id="nnH-IK-LDL">
+                                <rect key="frame" x="10" y="10" width="145" height="145"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LCW-YV-pjf">
+                                        <rect key="frame" x="0.0" y="40" width="145" height="26"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="28"/>
+                                        <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pesanan Baru" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="JnU-SW-TiF">
+                                        <rect key="frame" x="25" y="74" width="94" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                        <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="N6L-aQ-p51">
+                                        <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="newOrderDidTap:" destination="S6g-13-WGh" eventType="touchUpInside" id="q4t-vj-Rj8"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" id="mwS-qg-Bv6">
+                                <rect key="frame" x="165" y="10" width="145" height="145"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mUC-k9-ECd">
+                                        <rect key="frame" x="0.0" y="40" width="145" height="26"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="28"/>
+                                        <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Konfirmasi Pengiriman" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="EJm-9e-eci">
+                                        <rect key="frame" x="6" y="74" width="132" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                        <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="hpi-Vd-AKj">
+                                        <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="shipmentConfirmationDidTap:" destination="S6g-13-WGh" eventType="touchUpInside" id="Hjt-nK-fMM"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" id="fOz-ZA-kSg">
+                                <rect key="frame" x="10" y="165" width="145" height="145"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="04N-oo-v0c">
+                                        <rect key="frame" x="0.0" y="40" width="145" height="26"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="28"/>
+                                        <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status Pengiriman" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ScJ-1H-D5A">
+                                        <rect key="frame" x="16" y="74" width="113" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                        <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CXX-Xr-zaz">
+                                        <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="shipmentStatusDidTap:" destination="S6g-13-WGh" eventType="touchUpInside" id="4Dk-tQ-Zgw"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" id="mat-4F-cw9">
+                                <rect key="frame" x="165" y="165" width="145" height="145"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Daftar Transaksi" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4fy-SD-3Jj">
+                                        <rect key="frame" x="25" y="57" width="95" height="32"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                        <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="HbF-1r-sxh">
+                                        <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="listTransactionDidTap:" destination="S6g-13-WGh" eventType="touchUpInside" id="8CO-mo-8s8"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Penjualan" id="eC2-pz-aDI">
+                        <barButtonItem key="backBarButtonItem" title=" " id="2a7-Qd-ixk"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="orderCountLabel" destination="LCW-YV-pjf" id="Vg9-hv-6bR"/>
+                        <outlet property="orderView" destination="nnH-IK-LDL" id="teZ-XH-MaO"/>
+                        <outlet property="shipmentConfirmationLabel" destination="mUC-k9-ECd" id="Zv7-Q4-gyv"/>
+                        <outlet property="shipmentConfirmationView" destination="mwS-qg-Bv6" id="WSZ-rR-Yhg"/>
+                        <outlet property="shipmentStatusLabel" destination="04N-oo-v0c" id="Cr6-Ko-pWE"/>
+                        <outlet property="shipmentStatusView" destination="fOz-ZA-kSg" id="kT3-Zl-AFN"/>
+                        <outlet property="transactionListView" destination="mat-4F-cw9" id="bVO-Jn-Gpx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sgP-Gc-Anf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2046" y="-122"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="Badges_gold_merchant" width="40" height="40"/>
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>
+        <image name="icon_default_shop.jpg" width="80" height="80"/>
         <image name="icon_info_grey" width="14" height="14"/>
+        <image name="icon_profile_picture.jpeg" width="200" height="200"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

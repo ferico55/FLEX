@@ -62,6 +62,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *thumb;
 
 @property (weak, nonatomic) IBOutlet UIView *headerview;
+
 @property (weak, nonatomic) IBOutlet UIButton *button;
 
 -(void)cancel;
@@ -120,6 +121,7 @@
 		_selectedIndex = -1;
 		//_navigationIndex = -1;
 		_unloadSelectedIndex = -1;
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-value"
 		self.view;
@@ -153,7 +155,6 @@
     size.height = size.height - _tapview.frame.size.height-64;
     _scrollview.contentSize = size;
     
-    UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
@@ -182,24 +183,11 @@
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil];
     
-//    CGRect frame = _descriptionview.frame;
-//    frame.origin.x = _detailview.frame.size.width;
-//    _descriptionview.frame = frame;
-//    [_detailscrollview addSubview:_descriptionview];
-//    
-//    frame = _detailview.frame;
-//    frame.origin.x = 0;
-//    _detailview.frame = frame;
-//    [_detailscrollview addSubview:_detailview];
-//    
-//    size = _detailscrollview.frame.size;
-//    size.width = size.width * _detailscrollview.subviews.count-1;
-//    [_detailscrollview setContentSize:size];
-//    _detailscrollview.pagingEnabled = YES;
-    
     //cache
     _cachecontroller.URLCacheInterval = 86400.0;
-    _button.layer.cornerRadius = 2;    
+
+    _button.layer.cornerRadius = 2;
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -222,11 +210,6 @@
 - (void)viewDidLayoutSubviews
 {
 	[super viewDidLayoutSubviews];
-	//CGRect frame = _container.frame;
-	//CGSize size = CGSizeMake((inset.left + inset.right) / 2.0f, (inset.top + inset.bottom) / 2.0f);
-	//frame = CGRectInset(frame, size.width, size.height);
-	//frame = CGRectOffset(frame, inset.left - size.width, inset.top - size.height);
-	//_container.frame = frame;
     
 	_selectedViewController.view.frame = _container.bounds;
 	
@@ -234,11 +217,6 @@
 	
 	UIView* tabbar;
 	CGRect frame;
-	//if (_selectedIndex < 3) {
-	//	tabbar = _tabbars[0];
-	//} else {
-	//	tabbar = _tabbars[1];
-	//}
 	tabbar = _tabbar;
 	frame = tabbar.frame;
 	frame.origin.y = inset.top;
@@ -321,7 +299,7 @@
     
     CALayer *upperBorder = [CALayer layer];
     upperBorder.backgroundColor = [[UIColor colorWithRed:(18.0/255.0) green:(199.0/255.0) blue:(0.0/255.0) alpha:1.0] CGColor];
-    upperBorder.frame = CGRectMake(0, 42.0f, CGRectGetWidth([_chevrons[_selectedIndex] frame]), 2.0f);
+    upperBorder.frame = CGRectMake(0, 41.0f, CGRectGetWidth([_chevrons[_selectedIndex] frame]), 3.0f);
     
     [[_chevrons[_selectedIndex] layer] addSublayer:upperBorder];
 
@@ -533,7 +511,7 @@
         for(int i=0;i<3;i++) {
             CALayer *whiteBorder = [CALayer layer];
             whiteBorder.backgroundColor = [[UIColor whiteColor] CGColor];
-            whiteBorder.frame = CGRectMake(0, 42.0f, CGRectGetWidth([_chevrons[i] frame]), 2.0f);
+            whiteBorder.frame = CGRectMake(0, 41.0f, CGRectGetWidth([_chevrons[i] frame]), 3.0f);
             [[_chevrons[i] layer] addSublayer:whiteBorder];
             UIButton *button = (UIButton *)[_chevrons objectAtIndex:i];
             [button setTitleColor:[UIColor colorWithRed:111.0/255.0 green:113.0/255.0 blue:121.0/255.0 alpha:1] forState:UIControlStateNormal];
@@ -545,7 +523,7 @@
         //add border green on bottom button
         CALayer *upperBorder = [CALayer layer];
         upperBorder.backgroundColor = [[UIColor colorWithRed:(18.0/255.0) green:(199.0/255.0) blue:(0.0/255.0) alpha:1.0] CGColor];
-        upperBorder.frame = CGRectMake(0, 42.0f, CGRectGetWidth([_chevrons[index-10] frame]), 2.0f);
+        upperBorder.frame = CGRectMake(0, 41.0f, CGRectGetWidth([_chevrons[index-10] frame]), 3.0f);
         [[_chevrons[index-10] layer] addSublayer:upperBorder];
 
         
@@ -1024,7 +1002,8 @@
         else
         {
             [_button setTitle:@"Message" forState:UIControlStateNormal];
-            [_button setImageEdgeInsets:UIEdgeInsetsMake(0, 18, 0, 18)];
+            [_button setTitleEdgeInsets:UIEdgeInsetsMake(0, 8, 0, 0)];
+            [_button setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 8)];
             [_button setImage:[UIImage imageNamed:@"icon_message.png"] forState:UIControlStateNormal];
             
             [_barbuttoninfo setEnabled:NO];

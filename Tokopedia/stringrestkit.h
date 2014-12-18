@@ -11,7 +11,10 @@
 
 #define kTKPD_AUTHKEY @"auth"
 
+
 /** string for inbox talk */
+#pragma mark - Inbox Talk
+
 #define TKPD_TALK_PRODUCT_NAME @"talk_product_name"
 #define TKPD_TALK_SHOP_ID @"talk_shop_id"
 #define TKPD_TALK_USER_IMG @"talk_user_image"
@@ -28,7 +31,10 @@
 #define TKPD_TALK_OWN @"talk_own"
 #define TKPD_TALK_USER_ID @"talk_user_id"
 
+
 /** string for comment talk */
+#pragma mark - Comment Talk
+
 #define TKPD_TALK_COMMENT_ID @"comment_talk_id"
 #define TKPD_TALK_COMMENT_MESSAGE @"comment_message"
 #define TKPD_COMMENT_ID @"comment_id"
@@ -37,21 +43,15 @@
 #define TKPD_TALK_COMMENT_CREATETIME @"comment_create_time"
 #define TKPD_TALK_COMMENT_USERIMG @"comment_user_image"
 #define TKPD_TALK_COMMENT_USERNAME @"comment_user_name"
-
 #define TKPD_TALK_FOLLOW @"Ikuti"
 #define TKPD_TALK_UNFOLLOW @"Batal Ikuti"
 #define TKPD_FOLLOW_TALK_ACTION @"follow_product_talk"
 #define TKPD_DELETE_TALK_ACTION @"delete_product_talk"
 
 
+#pragma mark - Deposit
 
-
-
-
-
-
-
-
+#define TKPD_DEPOSIT_TOTAL @"deposit_total"
 
 
 #endif

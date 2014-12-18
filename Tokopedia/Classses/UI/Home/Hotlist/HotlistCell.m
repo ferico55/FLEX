@@ -9,6 +9,12 @@
 #import "home.h"
 #import "HotlistCell.h"
 
+@interface HotlistCell ()
+
+@property (weak, nonatomic) IBOutlet UIView *contentSubview;
+
+@end
+
 @implementation HotlistCell
 
 @synthesize delegate = _delegate;
@@ -33,6 +39,10 @@
     _productimageview.multipleTouchEnabled = NO;
     _productimageview.exclusiveTouch = YES;
     
+    _contentSubview.layer.shadowColor = [UIColor blackColor].CGColor;
+    _contentSubview.layer.shadowOffset = CGSizeMake(0, 0.3);
+    _contentSubview.layer.shadowOpacity = 0.2;
+    _contentSubview.layer.shadowRadius = 0.5;
     
 //    _viewcontainer.layer.borderColor = [UIColor colorWithRed:200.0f/255.0f green:200.0f/255.0f blue:200.0f/255.0f alpha:0.5f].CGColor;
 //    _viewcontainer.layer.borderWidth = 1.0f;

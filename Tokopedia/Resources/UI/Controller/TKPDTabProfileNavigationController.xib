@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -12,7 +13,6 @@
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
             <string>GothamMedium</string>
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -20,8 +20,7 @@
             <connections>
                 <outlet property="act" destination="uuQ-Cd-GqH" id="SHa-O5-YIF"/>
                 <outlet property="actpp" destination="DDl-z9-A7W" id="Yub-Jp-IF2"/>
-                <outlet property="buttoneditprofile" destination="LHV-Kl-kxk" id="kD5-Ar-NVo"/>
-                <outlet property="buttonmessage" destination="7LK-36-qbj" id="Asa-d2-bxj"/>
+                <outlet property="button" destination="LHV-Kl-kxk" id="tz1-Oc-xFR"/>
                 <outlet property="container" destination="abB-jT-cSJ" id="x4v-nW-TEa"/>
                 <outlet property="contentview" destination="i5M-Pr-FkT" id="XhZ-73-dEU"/>
                 <outlet property="headerview" destination="d9E-tM-MoQ" id="gI5-6L-utW"/>
@@ -76,21 +75,8 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         </activityIndicatorView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="7LK-36-qbj">
-                            <rect key="frame" x="94" y="148" width="140" height="25"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
-                            <state key="normal" title="  Message" image="icon_message.png">
-                                <color key="titleColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="titleShadowColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            </state>
-                            <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="L8A-HQ-Z0Q"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="LHV-Kl-kxk">
-                            <rect key="frame" x="94" y="181" width="140" height="25"/>
+                            <rect key="frame" x="90" y="160" width="140" height="31"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
@@ -98,9 +84,6 @@
                                 <color key="titleColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </state>
-                            <connections>
-                                <action selector="tapbutton:" destination="-1" eventType="touchUpInside" id="ZVS-yQ-xYK"/>
-                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" red="0.25882352939999997" green="0.74117647060000003" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -109,9 +92,15 @@
                     <rect key="frame" x="0.0" y="218" width="320" height="43"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6q2-xK-i3h">
-                            <rect key="frame" x="10" y="7" width="100" height="30"/>
+                        <view contentMode="scaleToFill" id="Kdi-36-5CP">
+                            <rect key="frame" x="0.0" y="42" width="320" height="1"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="deviceRGB"/>
+                        </view>
+                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6q2-xK-i3h">
+                            <rect key="frame" x="0.0" y="0.0" width="106" height="43"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <state key="normal" title="Biodata">
                                 <color key="titleColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -121,21 +110,10 @@
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="UyQ-HK-ooH"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ol2-ob-zWC">
-                            <rect key="frame" x="220" y="7" width="90" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                            <state key="normal" title="Contact">
-                                <color key="titleColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="FAM-kj-S3b"/>
-                            </connections>
-                        </button>
                         <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="BYS-gx-9Xv">
-                            <rect key="frame" x="110" y="7" width="110" height="30"/>
+                            <rect key="frame" x="107" y="0.0" width="106" height="43"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <state key="normal" title="Favorite Shop">
                                 <color key="titleColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
@@ -143,6 +121,19 @@
                             </state>
                             <connections>
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="9Ny-OD-l0n"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ol2-ob-zWC">
+                            <rect key="frame" x="214" y="0.0" width="106" height="43"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                            <state key="normal" title="Contact">
+                                <color key="titleColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="FAM-kj-S3b"/>
                             </connections>
                         </button>
                     </subviews>
@@ -177,9 +168,6 @@
             </connections>
         </swipeGestureRecognizer>
     </objects>
-    <resources>
-        <image name="icon_message.png" width="14" height="14"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -112,12 +112,7 @@
     barButtonItem.tag = 10;
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    //right button
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    _auth = [auth mutableCopy];
-    
+        
     if(![[_auth objectForKey:@"shop_id"] isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
 
         UIBarButtonItem *rightbar;

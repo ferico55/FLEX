@@ -52,9 +52,9 @@
     [self.navigationController.navigationBar setTranslucent:NO];
     _selectedsort = [NSMutableDictionary new];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     barButtonItem.tag = 10;
-    [self.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationItem.leftBarButtonItem = barButtonItem;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
     UIBarButtonItem *barbutton1;

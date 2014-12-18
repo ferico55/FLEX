@@ -5,15 +5,16 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="HotlistResultViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShopProductViewController">
             <connections>
-                <outlet property="act" destination="Nhx-0E-74X" id="Uo2-pK-c1B"/>
-                <outlet property="footer" destination="ZTM-NR-ebR" id="b1t-OG-YwW"/>
-                <outlet property="header" destination="HKl-uZ-hi3" id="arn-Kv-qgv"/>
-                <outlet property="swipegestureleft" destination="pSV-5V-5RB" id="c4J-rH-uJ4"/>
-                <outlet property="swipegestureright" destination="fyb-L5-qaN" id="Nh9-MH-mwo"/>
-                <outlet property="table" destination="NpJ-7r-c1k" id="t3M-2x-FZ0"/>
-                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outlet property="act" destination="Nhx-0E-74X" id="cv1-xK-09g"/>
+                <outlet property="footer" destination="ZTM-NR-ebR" id="01L-N7-QPD"/>
+                <outlet property="header" destination="HKl-uZ-hi3" id="cSa-W7-bpD"/>
+                <outlet property="searchBar" destination="mJV-kv-NXO" id="URA-k3-kyR"/>
+                <outlet property="swipegestureleft" destination="pSV-5V-5RB" id="dcp-Dn-Ywu"/>
+                <outlet property="swipegestureright" destination="fyb-L5-qaN" id="q4v-tL-x37"/>
+                <outlet property="table" destination="NpJ-7r-c1k" id="6ht-KM-3zS"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="njp-8t-0iW"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -25,8 +26,8 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="0.0" colorSpace="deviceRGB"/>
                     <connections>
-                        <outlet property="dataSource" destination="-1" id="pfk-Fo-J5i"/>
-                        <outlet property="delegate" destination="-1" id="l59-D3-irF"/>
+                        <outlet property="dataSource" destination="-1" id="hZw-aP-cjb"/>
+                        <outlet property="delegate" destination="-1" id="BJz-OG-dAk"/>
                     </connections>
                 </tableView>
             </subviews>
@@ -58,14 +59,14 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="42"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <searchBar contentMode="redraw" fixedFrame="YES" placeholder="Search Product" translatesAutoresizingMaskIntoConstraints="NO" id="mJV-kv-NXO">
+                <searchBar contentMode="redraw" fixedFrame="YES" text="" placeholder="Search Product" translatesAutoresizingMaskIntoConstraints="NO" id="mJV-kv-NXO">
                     <rect key="frame" x="0.0" y="-1" width="320" height="44"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="deviceRGB"/>
-                    <color key="tintColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="barTintColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="deviceRGB"/>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
-                        <outlet property="delegate" destination="-1" id="ea8-XR-sWI"/>
+                        <outlet property="delegate" destination="-1" id="s9U-Dd-MnT"/>
                     </connections>
                 </searchBar>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hqx-d5-OCD" userLabel="Border Bottom">
@@ -77,16 +78,8 @@
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <swipeGestureRecognizer direction="left" id="pSV-5V-5RB">
-            <connections>
-                <action selector="gesture:" destination="-1" id="3uq-NO-1UN"/>
-            </connections>
-        </swipeGestureRecognizer>
-        <swipeGestureRecognizer direction="right" id="fyb-L5-qaN">
-            <connections>
-                <action selector="gesture:" destination="-1" id="M4i-Wp-gFm"/>
-            </connections>
-        </swipeGestureRecognizer>
+        <swipeGestureRecognizer direction="left" id="pSV-5V-5RB"/>
+        <swipeGestureRecognizer direction="right" id="fyb-L5-qaN"/>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

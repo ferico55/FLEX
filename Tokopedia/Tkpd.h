@@ -9,7 +9,7 @@
 #ifndef Tokopedia_Tkpd_h
 #define Tokopedia_Tkpd_h
 
-#define kTkpdBaseURLString @"http://www.tkpdevel-pg.tonito/ws"
+#define kTkpdBaseURLString @"http://www.tkpdevel-pg.api/ws"
 
 #define kTkpdAPIkey @"8b0c367dd3ef0860f5730ec64e3bbdc9" //TODO:: Remove api key
 #define kTKPD_AUTHKEY @"auth"
@@ -18,8 +18,11 @@
 #define kTKPD_ISLOGINKEY @"is_login"
 #define kTKPD_USERIMAGEKEY @"user_image"
 #define kTKPD_USERIDKEY @"user_id"
-#define kTKPD_SHOPIDKEY @"shop_id"
 #define kTKPD_FULLNAMEKEY @"full_name"
+#define kTKPD_SHOPIDKEY @"shop_id"
+#define kTKPD_SHOPNAMEKEY @"shop_name"
+#define kTKPD_SHOPIMAGEKEY @"shop_avatar"
+#define kTKPD_SHOPISGOLD @"shop_is_gold"
 #define kTKPD_NULLCOMMENTKEY @"0"
 
 #define is4inch  ([[UIScreen mainScreen] bounds].size.height == 568)?TRUE:FALSE

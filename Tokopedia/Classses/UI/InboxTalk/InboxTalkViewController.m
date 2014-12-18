@@ -256,8 +256,8 @@
         if (_talks.count > indexPath.row) {
             TalkList *list = _talks[indexPath.row];
             
-            ((GeneralTalkCell*)cell).deleteButton.hidden = NO;
-            ((GeneralTalkCell*)cell).reportView.hidden = YES;
+//            ((GeneralTalkCell*)cell).deleteButton.hidden = NO;
+//            ((GeneralTalkCell*)cell).reportView.hidden = YES;
             ((GeneralTalkCell*)cell).indexpath = indexPath;
             [((GeneralTalkCell*)cell).userButton setTitle:list.talk_user_name forState:UIControlStateNormal];
             [((GeneralTalkCell*)cell).productButton setTitle:list.talk_product_name forState:UIControlStateNormal];

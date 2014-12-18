@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5056" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegisterViewController">
             <connections>
@@ -26,11 +35,9 @@
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5rq-kc-cRU">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i5M-Pr-FkT">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Full Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W9c-XX-w7W" customClass="TextField">
                                     <rect key="frame" x="29" y="87" width="263" height="36"/>
@@ -75,7 +82,6 @@
                                         <segment title="Perempuan"/>
                                         <segment title="Laki-Laki"/>
                                     </segments>
-                                    <color key="tintColor" red="0.31372549019607843" green="0.36862745098039218" blue="0.90196078431372551" alpha="1" colorSpace="calibratedRGB"/>
                                     <connections>
                                         <action selector="tapsegment:" destination="-1" eventType="valueChanged" id="CvA-Uh-hkd"/>
                                     </connections>
@@ -99,18 +105,18 @@
                                     </connections>
                                 </textField>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sudah terdaftar di Tokopedia?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RCp-IG-vDy">
-                                    <rect key="frame" x="37" y="20" width="246" height="21"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <rect key="frame" x="37" y="21" width="246" height="21"/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Log in" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jgf-Jl-YKA">
-                                    <rect key="frame" x="113" y="44" width="56" height="21"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <rect key="frame" x="108" y="45" width="56" height="21"/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yrd-jj-0tD">
-                                    <rect key="frame" x="167" y="39" width="40" height="32"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <rect key="frame" x="162" y="40" width="50" height="32"/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                     <state key="normal" title="Disini">
                                         <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -119,41 +125,36 @@
                                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="Er4-hJ-k02"/>
                                     </connections>
                                 </button>
+                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="9cP-LW-euo">
+                                    <rect key="frame" x="150" y="239" width="20" height="20"/>
+                                </activityIndicatorView>
+                                <button opaque="NO" tag="12" contentMode="scaleAspectFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Om5-rq-kus">
+                                    <rect key="frame" x="29" y="364" width="18" height="18"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                    <state key="normal">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <state key="selected" image="icon_check_orange.png"/>
+                                    <connections>
+                                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="Yyy-0g-hWU"/>
+                                    </connections>
+                                </button>
+                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="I have read and accepted the Terms &amp; Conditions and Privacy Policy." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="233" translatesAutoresizingMaskIntoConstraints="NO" id="95o-gu-FPH">
+                                    <rect key="frame" x="64" y="357" width="228" height="36"/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                                 <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i0v-rs-uOa">
-                                    <rect key="frame" x="22" y="364" width="276" height="30"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="13"/>
+                                    <rect key="frame" x="0.0" y="403" width="320" height="43"/>
+                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                     <state key="normal" title="Syarat dan Ketentuan, serta Kebijakan Privasi">
-                                        <color key="titleColor" red="0.31372549019607843" green="0.36862745098039218" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
                                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="vaD-Te-sHA"/>
                                     </connections>
                                 </button>
-                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="9cP-LW-euo">
-                                    <rect key="frame" x="150" y="239" width="20" height="20"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                </activityIndicatorView>
-                                <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Om5-rq-kus">
-                                    <rect key="frame" x="37" y="412" width="22" height="25"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <color key="backgroundColor" red="0.61974774399999999" green="1" blue="0.63670880060000001" alpha="1" colorSpace="calibratedRGB"/>
-                                    <state key="normal">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <state key="selected" image="icon_check.png"/>
-                                    <connections>
-                                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="Yyy-0g-hWU"/>
-                                    </connections>
-                                </button>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="I have read and accepted the Terms &amp; Conditions and Privacy Policy." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="233" translatesAutoresizingMaskIntoConstraints="NO" id="95o-gu-FPH">
-                                    <rect key="frame" x="67" y="407" width="233" height="36"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
                             </subviews>
                             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
@@ -165,7 +166,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <gestureRecognizers/>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <nil key="simulatedStatusBarMetrics"/>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="EI6-qX-7SG" appends="YES" id="eiD-QW-SSC"/>
             </connections>
@@ -177,6 +178,11 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="icon_check.png" width="1024" height="1024"/>
+        <image name="icon_check_orange.png" width="14" height="14"/>
     </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
 </document>

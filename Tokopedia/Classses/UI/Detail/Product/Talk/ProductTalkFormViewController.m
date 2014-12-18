@@ -14,15 +14,13 @@
 #import "UITextView+UITextView_Placeholder.h"
 #import "stringrestkit.h"
 
-@interface ProductTalkFormViewController () <UITextViewDelegate>{
+@interface ProductTalkFormViewController () <UITextViewDelegate> {
     BOOL _isnodata;
-    
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *productlabel;
 
 @property (strong, nonatomic) IBOutlet UITextView *commentTextView;
-@property (weak, nonatomic) IBOutlet UITextField *subjectTextField;
 @property (weak, nonatomic) IBOutlet UIImageView *productimage;
 
 
@@ -74,8 +72,8 @@
     self.navigationItem.rightBarButtonItem = barbuttonright;
     
     _commentTextView.textColor = [UIColor lightGrayColor];
+    _commentTextView.delegate = self;
     [_commentTextView setPlaceholder:@"Message"];
-
     [_commentTextView becomeFirstResponder];
     
     _operationQueue = [NSOperationQueue new];
@@ -159,13 +157,13 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
         
         //enable comment button talk
-        NSDictionary *userinfo;
-        userinfo = @{TKPD_TALK_MESSAGE:_talkfield.text,
-                     TKPD_TALK_ID:talk_id,
-                     TKPD_TALK_SHOP_ID:[_data objectForKey:TKPD_TALK_SHOP_ID]
-                     };
+//        NSDictionary *userinfo;
+//        userinfo = @{TKPD_TALK_MESSAGE:_talkfield.text,
+//                     TKPD_TALK_ID:talk_id,
+//                     TKPD_TALK_SHOP_ID:[_data objectForKey:TKPD_TALK_SHOP_ID]
+//                     };
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTalk" object:nil userInfo:userinfo];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTalk" object:nil userInfo:userinfo];
     } else {
         
         NSArray *array = [[NSArray alloc] initWithObjects:KTKPDTALK_UNDELIVERED, nil];
@@ -222,7 +220,7 @@
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 } else {
                     NSDictionary *userinfo;
-                    userinfo = @{TKPD_TALK_MESSAGE:_talkfield.text};
+//                    userinfo = @{TKPD_TALK_MESSAGE:_talkfield.text};
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTalk" object:nil userInfo:userinfo];
                     [self configureRestkit];
