@@ -212,17 +212,23 @@
             NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *userImageView = ((GeneralReviewCell *)cell).userImageView;
             userImageView.image = nil;
-            [userImageView setImageWithURLRequest:userImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [userImageView setImageWithURLRequest:userImageRequest
+                                 placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
+                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 [userImageView setImage:image];
 #pragma clang diagnostic pop
             } failure:nil];
             
-            NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_product_image]
+                                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *productImageView = ((GeneralReviewCell*)cell).productImageView;
             productImageView.image = nil;
-            [productImageView setImageWithURLRequest:productImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [productImageView setImageWithURLRequest:productImageRequest
+                                    placeholderImage:nil
+                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 [productImageView setImage:image];
@@ -411,7 +417,11 @@
     
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOP_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodGET
+                                                                                             pathPattern:kTKPDDETAILSHOP_APIPATH
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
@@ -436,7 +446,10 @@
             _table.tableFooterView = _footer;
             [_act startAnimating];
         }
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOP_APIPATH parameters:param];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                        method:RKRequestMethodGET
+                                                                          path:kTKPDDETAILSHOP_APIPATH
+                                                                    parameters:param];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [_timer invalidate];
             _timer = nil;

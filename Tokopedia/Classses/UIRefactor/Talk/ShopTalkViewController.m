@@ -130,7 +130,6 @@
             [self loadData];
         }
     }
-    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -335,6 +334,7 @@
     
     // Relationship Mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+
     RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];
     

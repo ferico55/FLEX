@@ -409,13 +409,10 @@
     }
     [mView addSubview:expandCollapseButton];
     
-//    [mView addSubview:logoView];
-    
     UIButton *bt = [UIButton buttonWithType:UIButtonTypeCustom];
     [bt setFrame:CGRectMake(15, 0, 170, 40)];
     [bt setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [bt setTag:section];
-//    [bt setBackgroundColor:[UIColor redColor]];
     [bt.titleLabel setFont:[UIFont systemFontOfSize:12]];
     [bt setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     [bt.titleLabel setFont: [UIFont fontWithName:@"GothamMedium" size:15.0f]];
@@ -443,10 +440,10 @@
     if (!sectionIsExpanded) {
         UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 40, self.view.frame.size.width, 1)];
         bottomBorder.backgroundColor = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1];
-        bottomBorder.tag = 2;
+        bottomBorder.tag = 22;
         [mView addSubview:bottomBorder];
     } else {
-        UIView *view = [mView viewWithTag:2];
+        UIView *view = [mView viewWithTag:22];
         [view removeFromSuperview];
     }
     
@@ -982,7 +979,6 @@
         ProductImages *image = images[i];
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        //request.URL = url;
         
         UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
         

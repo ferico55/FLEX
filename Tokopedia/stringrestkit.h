@@ -15,7 +15,10 @@
 #define LIST_API @"list"
 #define PAGING_API @"paging"
 
+
 /** string for inbox talk */
+#pragma mark - Inbox Talk
+
 #define TKPD_TALK_PRODUCT_NAME @"talk_product_name"
 #define TKPD_TALK_SHOP_ID @"talk_shop_id"
 #define TKPD_TALK_USER_IMG @"talk_user_image"
@@ -32,7 +35,10 @@
 #define TKPD_TALK_OWN @"talk_own"
 #define TKPD_TALK_USER_ID @"talk_user_id"
 
+
 /** string for comment talk */
+#pragma mark - Comment Talk
+
 #define TKPD_TALK_COMMENT_ID @"comment_talk_id"
 #define TKPD_TALK_COMMENT_MESSAGE @"comment_message"
 #define TKPD_COMMENT_ID @"comment_id"
@@ -41,7 +47,6 @@
 #define TKPD_TALK_COMMENT_CREATETIME @"comment_create_time"
 #define TKPD_TALK_COMMENT_USERIMG @"comment_user_image"
 #define TKPD_TALK_COMMENT_USERNAME @"comment_user_name"
-
 #define TKPD_TALK_FOLLOW @"Ikuti"
 #define TKPD_TALK_UNFOLLOW @"Berhenti Ikuti"
 #define TKPD_FOLLOW_TALK_ACTION @"follow_product_talk"
@@ -67,6 +72,7 @@
 #define REVIEW_USER_ID @"review_user_id"
 #define REVIEW_IS_ALLOW_EDIT @"review_is_allow_edit"
 #define REVIEW_PRODUCT_STATUS @"review_product_status"
+#pragma mark - Deposit
 
 #define REVIEW_RESPONSE @"review_response"
 #define REVIEW_RESPONSE_CREATE_TIME @"response_create_time"
@@ -75,19 +81,8 @@
 #define REVIEW_PRODUCT_OWNER_USER_ID @"user_id"
 #define REVIEW_PRODUCT_OWNER_USER_IMAGE @"user_image"
 #define REVIEW_PRODUCT_OWNER_USER_NAME @"user_name"
+#define TKPD_DEPOSIT_TOTAL @"deposit_total"
 
 #define NEW_REVIEW_STATE @"0" 
-
-#define STATE_PRODUCT_BANNED @"-2"
-#define STATE_PRODUCT_DELETED @"0"
-
-
-
-
-
-
-
-
-
 
 #endif

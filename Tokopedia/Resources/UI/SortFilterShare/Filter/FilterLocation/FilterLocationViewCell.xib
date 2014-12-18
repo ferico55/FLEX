@@ -20,14 +20,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0R9-Q9-iC4">
-                        <rect key="frame" x="20" y="20" width="227" height="21"/>
+                        <rect key="frame" x="15" y="19" width="227" height="21"/>
                         <gestureRecognizers/>
-                        <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="17"/>
+                        <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="16"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_check.png" translatesAutoresizingMaskIntoConstraints="NO" id="GbF-Cf-Apr">
-                        <rect key="frame" x="265" y="17" width="24" height="24"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_check_orange.png" translatesAutoresizingMaskIntoConstraints="NO" id="GbF-Cf-Apr">
+                        <rect key="frame" x="290" y="22" width="15" height="15"/>
                     </imageView>
                 </subviews>
                 <connections>
@@ -48,7 +48,7 @@
         </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="icon_check.png" width="1024" height="1024"/>
+        <image name="icon_check_orange.png" width="14" height="14"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

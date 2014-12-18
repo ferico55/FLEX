@@ -19,9 +19,9 @@
 @interface SearchResultShopCell : UITableViewCell
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-@property (nonatomic, weak) IBOutlet id<SearchResultShopCellDelegate> delegate;
+@property (nonatomic, weak) id<SearchResultShopCellDelegate> delegate;
 #else
-@property (nonatomic, assign) IBOutlet id<SearchResultShopCellDelegate> delegate;
+@property (nonatomic, assign) id<SearchResultShopCellDelegate> delegate;
 #endif
 
 @property (weak, nonatomic) IBOutlet UIImageView *thumb;

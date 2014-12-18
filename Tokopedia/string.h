@@ -41,4 +41,7 @@
 
 #define kTKPD_PARAMETERSKEY @"parameters"
 
+#define kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY @"Sukses"
+#define kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY @"Error"
+
 #endif

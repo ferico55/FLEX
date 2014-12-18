@@ -287,7 +287,7 @@
         if (_menu.count > indexPath.row) {
             NSIndexPath *selectedindex =[_selectedcategory objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY];
             if (indexPath.row == selectedindex.row) {
-                [((CategoryMenuViewCell*)cell).imagenext setImage:[UIImage imageNamed:@"icon_check.png"]];
+                [((CategoryMenuViewCell*)cell).imagenext setImage:[UIImage imageNamed:@"icon_check_orange.png"]];
             }
             else{
                 if ([[_menu[indexPath.row] objectForKey:kTKPDCATEGORY_DATAISNULLCHILD] isEqual:@(0)]) {

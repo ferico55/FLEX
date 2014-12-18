@@ -294,6 +294,16 @@
     _buttonMessage.layer.cornerRadius = 3;
     _buttonMessage.layer.borderWidth = 1;
     _buttonMessage.layer.borderColor = [UIColor colorWithRed:218.0/255.0 green:218.0/255.0 blue:218.0/255.0 alpha:1].CGColor;
+
+    _buttonsetting.layer.cornerRadius = 3;
+    _buttonsetting.layer.borderWidth = 1;
+    _buttonsetting.layer.borderColor = [UIColor colorWithRed:218.0/255.0 green:218.0/255.0 blue:218.0/255.0 alpha:1].CGColor;
+    
+    _buttonaddproduct.layer.cornerRadius = 3;
+    _buttonaddproduct.layer.borderWidth = 1;
+    _buttonaddproduct.layer.borderColor = [UIColor colorWithRed:218.0/255.0 green:218.0/255.0 blue:218.0/255.0 alpha:1].CGColor;
+    _buttonaddproduct.imageEdgeInsets = UIEdgeInsetsMake(0, -2, 0, 0);
+    _buttonaddproduct.titleEdgeInsets = UIEdgeInsetsMake(2, 4, 0, 0);
     
     _buttonsetting.enabled = NO;
 }
@@ -1531,14 +1541,18 @@
         NSDictionary *auth = (NSDictionary *)[_data objectForKey:kTKPD_AUTHKEY];
         if (auth && ![auth isEqual:[NSNull null]]) {
             if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
-//                _buttonsetting.hidden = NO;
+                _buttonsetting.hidden = NO;
+                _buttonaddproduct.hidden = NO;
+
                 _buttonfav.hidden = YES;
                 _buttonMessage.hidden = YES;
             }
         }
         else
         {
-//            _buttonsetting.hidden = YES;
+            _buttonsetting.hidden = YES;
+            _buttonaddproduct.hidden = YES;
+            
             _buttonfav.hidden = NO;
             _buttonMessage.hidden = NO;
         }

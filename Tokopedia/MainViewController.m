@@ -171,8 +171,8 @@
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
     }
     else{
-        LogoutViewController *more = [LogoutViewController new];
-        moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+        moreNavBar = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
     }
 
     [moreNavBar.navigationBar setTranslucent:NO];
@@ -407,8 +407,8 @@
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
     }
     else{
-        LogoutViewController *more = [LogoutViewController new];
-        moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+        moreNavBar = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
     }
     [moreNavBar.navigationBar setTranslucent:NO];
 

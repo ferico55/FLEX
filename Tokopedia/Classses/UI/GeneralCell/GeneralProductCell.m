@@ -9,6 +9,13 @@
 #import "home.h"
 #import "GeneralProductCell.h"
 
+@interface GeneralProductCell ()
+
+@property (strong, nonatomic) IBOutlet UIView *firstContentSubview;
+@property (strong, nonatomic) IBOutlet UIView *secondContentSubview;
+
+@end
+
 @implementation GeneralProductCell
 
 #pragma mark - Factory Methods
@@ -25,6 +32,16 @@
 
 - (void)awakeFromNib
 {
+//    _firstContentSubview.layer.shadowColor = [UIColor blackColor].CGColor;
+//    _firstContentSubview.layer.shadowOffset = CGSizeMake(0, 0.3);
+//    _firstContentSubview.layer.shadowOpacity = 0.2;
+//    _firstContentSubview.layer.shadowRadius = 0.5;
+//
+//    _secondContentSubview.layer.shadowColor = [UIColor blackColor].CGColor;
+//    _secondContentSubview.layer.shadowOffset = CGSizeMake(0, 0.3);
+//    _secondContentSubview.layer.shadowOpacity = 0.2;
+//    _secondContentSubview.layer.shadowRadius = 0.5;
+    
     _viewcell = [NSArray sortViewsWithTagInArray:_viewcell];
     _act = [NSArray sortViewsWithTagInArray:_act];
     _thumb = [NSArray sortViewsWithTagInArray:_thumb];

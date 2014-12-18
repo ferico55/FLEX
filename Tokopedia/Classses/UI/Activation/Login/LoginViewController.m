@@ -14,6 +14,7 @@
 
 #import "TKPDSecureStorage.h"
 #import "StickyAlert.h"
+#import "TextField.h"
 
 @interface LoginViewController (){
     
@@ -34,8 +35,8 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *container;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldemail;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldpass;
+@property (strong, nonatomic) IBOutlet TextField *emailTextField;
+@property (strong, nonatomic) IBOutlet TextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 - (void)cancelLogin;
@@ -53,8 +54,8 @@
 @implementation LoginViewController
 
 @synthesize data = _data;
-@synthesize textfieldemail = _textfieldemail;
-@synthesize textfieldpass = _textfieldpass;
+@synthesize emailTextField = _emailTextField;
+@synthesize passwordTextField = _passwordTextField;
 
 #pragma mark - Initialization
 
@@ -110,6 +111,9 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    _emailTextField.isTopRoundCorner = YES;
+    _passwordTextField.isBottomRoundCorner = YES;
     
     [self configureRestKitLogin];
 }
@@ -226,7 +230,10 @@
                                                         kTKPDLOGIN_APISHOPIDKEY:kTKPDLOGIN_APISHOPIDKEY,
                                                         kTKPDLOGIN_APIUSERIDKEY:kTKPDLOGIN_APIUSERIDKEY,
                                                         kTKPDLOGIN_APIFULLNAMEKEY:kTKPDLOGIN_APIFULLNAMEKEY,
-                                                        kTKPDLOGIN_APIIMAGEKEY:kTKPDLOGIN_APIIMAGEKEY
+                                                        kTKPDLOGIN_APIIMAGEKEY:kTKPDLOGIN_APIIMAGEKEY,
+                                                        kTKPDLOGIN_APISHOPNAMEKEY:kTKPDLOGIN_APISHOPNAMEKEY,
+                                                        kTKPDLOGIN_APISHOPAVATARKEY:kTKPDLOGIN_APISHOPAVATARKEY,
+                                                        kTKPDLOGIN_APISHOPISGOLDKEY:kTKPDLOGIN_APISHOPISGOLDKEY,
                                                         }];
     //add relationship mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
@@ -295,11 +302,18 @@
             //[defaults synchronize];
             //TODO:: api key
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-            [secureStorage setKeychainWithValue:@(_login.result.user_id) withKey:kTKPD_USERIDKEY];
-            [secureStorage setKeychainWithValue:@(_login.result.shop_id) withKey:kTKPD_SHOPIDKEY];
-            [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
+            
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+        
+            [secureStorage setKeychainWithValue:@(_login.result.user_id) withKey:kTKPD_USERIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
             [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+            
+            [secureStorage setKeychainWithValue:@(_login.result.shop_id) withKey:kTKPD_SHOPIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
             
             NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
             [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION object:nil userInfo:@{}];
@@ -360,12 +374,12 @@
 
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if (textField == _textfieldemail) {
+    if (textField == _emailTextField) {
         //if (![textField.text isEqualToString:@""]) {
             [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAEMAILKEY];
         //}
     }
-    else if (textField == _textfieldpass){
+    else if (textField == _passwordTextField){
         //if (![textField.text isEqualToString:@""]) {
             [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAPASSKEY];
         //}
@@ -380,13 +394,13 @@
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if([_textfieldemail isFirstResponder]){
+    if([_emailTextField isFirstResponder]){
         
-        [_textfieldpass becomeFirstResponder];
+        [_passwordTextField becomeFirstResponder];
     }
-    else if ([_textfieldpass isFirstResponder]){
+    else if ([_passwordTextField isFirstResponder]){
         
-        [_textfieldpass resignFirstResponder];
+        [_passwordTextField resignFirstResponder];
     }
     return YES;
 }

@@ -60,10 +60,10 @@
                         </view>
                         <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I0F-UY-vER">
                             <rect key="frame" x="250" y="5" width="65" height="30"/>
-                            <color key="backgroundColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                             <state key="normal" title="Send">
-                                <color key="titleColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -71,7 +71,7 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="320" id="Nhj-i0-fkl"/>
                         <constraint firstAttribute="height" constant="40" id="m36-uU-Ta3"/>
@@ -138,7 +138,7 @@
                         <constraint firstAttribute="height" constant="1" id="Sjf-JG-TbN"/>
                     </constraints>
                 </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_comment.png" translatesAutoresizingMaskIntoConstraints="NO" id="y2i-en-h5n">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_diskusi_comment_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="y2i-en-h5n">
                     <rect key="frame" x="15" y="115" width="15" height="15"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="15" id="6mo-2S-7cG"/>
@@ -152,10 +152,10 @@
                         <constraint firstAttribute="width" constant="86" id="OyV-rE-qfs"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_report.png" translatesAutoresizingMaskIntoConstraints="NO" id="CNS-9R-VTx">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_diskusi_report_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="CNS-9R-VTx">
                     <rect key="frame" x="239" y="115" width="15" height="15"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="15" id="1j4-uQ-Ox9"/>
@@ -169,7 +169,7 @@
                         <constraint firstAttribute="width" constant="48" id="sMU-Mq-SaO"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B9F-7D-dov" userLabel="Horizontal Border">
@@ -223,8 +223,8 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_comment.png" width="14" height="14"/>
-        <image name="icon_report.png" width="14" height="14"/>
+        <image name="icon_diskusi_comment_grey.png" width="14" height="14"/>
+        <image name="icon_diskusi_report_grey.png" width="14" height="14"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
