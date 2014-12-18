@@ -50,6 +50,15 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="pc0-Ib-HPE"/>
                     </connections>
                 </button>
+                <button opaque="NO" tag="15" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="050-ov-cz6">
+                    <rect key="frame" x="77" y="302" width="136" height="30"/>
+                    <state key="normal" title="Inbox Review">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="G2p-z6-MwV"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <nil key="simulatedStatusBarMetrics"/>

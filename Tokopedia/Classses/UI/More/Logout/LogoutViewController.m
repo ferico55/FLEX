@@ -15,6 +15,8 @@
 #import "InboxTalkViewController.h"
 #import "ShopSettingViewController.h"
 #import "ShopInfoViewController.h"
+//#import "InboxReviewViewController.h"
+#import "InboxReviewViewController.h"
 
 @interface LogoutViewController ()
 {
@@ -109,6 +111,15 @@
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
             [nav.navigationBar setTranslucent:NO];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
+            break;
+        }
+            
+        case 15  : {
+            InboxReviewViewController *vc = [InboxReviewViewController new];
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+            [nav.navigationBar setTranslucent:NO];
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            break;
         }
         default:
             break;

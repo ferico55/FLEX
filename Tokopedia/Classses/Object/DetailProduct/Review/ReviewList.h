@@ -25,10 +25,13 @@
 @property (nonatomic, strong) NSString *review_user_id;
 
 // product
-@property (nonatomic) NSInteger review_rate_quality;
-@property (nonatomic) NSInteger review_rate_speed;
-@property (nonatomic) NSInteger review_rate_service;
-@property (nonatomic) NSInteger review_rate_accuracy;
+@property (nonatomic) NSString* review_rate_quality;
+@property (nonatomic) NSString* review_rate_speed;
+@property (nonatomic) NSString* review_rate_service;
+@property (nonatomic) NSString* review_rate_accuracy;
+
+@property (nonatomic) NSString* review_product_status;
+@property (nonatomic) NSString* review_is_allow_edit;
 
 
 @property (nonatomic, strong) NSString *review_product_name;

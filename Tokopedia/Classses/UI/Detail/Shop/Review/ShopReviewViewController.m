@@ -185,23 +185,29 @@
             ReviewList *list = _list[indexPath.row];
             
             ((GeneralReviewCell*)cell).userNamelabel.text = list.review_user_name;
-            ((GeneralReviewCell*)cell).timelabel.text = list.review_create_time;
+            ((GeneralReviewCell*)cell).timelabel.text = list.review_create_time?:@"";
 
             ((GeneralReviewCell*)cell).productNamelabel.text = list.review_product_name;
             
-            ((GeneralReviewCell *)cell).productNamelabel.text = list.review_product_name;
+            if([list.review_response.response_message isEqualToString:@"0"]) {
+                [((GeneralReviewCell*)cell).commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];
+            } else {
+                [((GeneralReviewCell*)cell).commentbutton setTitle:@"1 Comment" forState:UIControlStateNormal];
+            }
+            
+    
             if ([list.review_message length] > 30) {
                 NSRange stringRange = {0, MIN([list.review_message length], 30)};
                 stringRange = [list.review_message rangeOfComposedCharacterSequencesForRange:stringRange];
                 ((GeneralReviewCell *)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [list.review_message substringWithRange:stringRange]];
             } else {
-                ((GeneralReviewCell *)cell).commentlabel.text = list.review_message;
+                ((GeneralReviewCell *)cell).commentlabel.text = list.review_message?:@"";
             }
             
-            ((GeneralReviewCell*)cell).qualityrate.starscount = list.review_rate_quality;
-            ((GeneralReviewCell*)cell).speedrate.starscount = list.review_rate_speed;
-            ((GeneralReviewCell*)cell).servicerate.starscount = list.review_rate_service;
-            ((GeneralReviewCell*)cell).accuracyrate.starscount = list.review_rate_accuracy;
+            ((GeneralReviewCell*)cell).qualityrate.starscount = [list.review_rate_quality integerValue];
+            ((GeneralReviewCell*)cell).speedrate.starscount = [list.review_rate_speed integerValue];
+            ((GeneralReviewCell*)cell).servicerate.starscount = [list.review_rate_service integerValue];
+            ((GeneralReviewCell*)cell).accuracyrate.starscount = [list.review_rate_accuracy integerValue];
             
             NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *userImageView = ((GeneralReviewCell *)cell).userImageView;

@@ -11,8 +11,6 @@
 		8530E7421A39737E00A76C1B /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8530E7411A39737E00A76C1B /* libPods-TokopediaTests.a */; };
 		8530E7451A3975EA00A76C1B /* icon_diskusi_unfollow_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 8530E7431A3975EA00A76C1B /* icon_diskusi_unfollow_grey.png */; };
 		8530E7461A3975EA00A76C1B /* icon_diskusi_unfollow_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8530E7441A3975EA00A76C1B /* icon_diskusi_unfollow_grey@2x.png */; };
-		8530E74D1A39A71F00A76C1B /* InboxReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8530E74B1A39A71F00A76C1B /* InboxReviewViewController.m */; };
-		8530E74E1A39A71F00A76C1B /* InboxReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8530E74C1A39A71F00A76C1B /* InboxReviewViewController.xib */; };
 		85386DCC19CBE88700BCA463 /* GothamLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCA19CBD8E500BCA463 /* GothamLight.ttf */; };
 		85386DCD19CBE88A00BCA463 /* GothamBlack.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 85386DCB19CBD92900BCA463 /* GothamBlack.ttf */; };
 		8539F8911A31DE5C00818ED8 /* GeneralAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 8539F88E1A31DE5C00818ED8 /* GeneralAction.m */; };
@@ -28,6 +26,7 @@
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		85627F4719E6B2050085DDF5 /* ExpiringCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 85627F4119E6B2050085DDF5 /* ExpiringCache.m */; };
 		858C3DCB1A14847A0062A62E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = 858C3DCA1A14847A0062A62E /* UIImage+ImageEffects.m */; };
+		85A1A2481A3F0B01001463E1 /* UITextView+UITextView_Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A1A2471A3F0B01001463E1 /* UITextView+UITextView_Placeholder.m */; };
 		85AFE3571A370E7A005F3792 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AFE1B91A370E7A005F3792 /* LoginViewController.m */; };
 		85AFE3581A370E7A005F3792 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AFE1BC1A370E7A005F3792 /* RegisterViewController.m */; };
 		85AFE3591A370E7A005F3792 /* TextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AFE1BE1A370E7A005F3792 /* TextField.m */; };
@@ -339,6 +338,11 @@
 		85AFE57F1A370E83005F3792 /* ShopSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85AFE4E21A370E83005F3792 /* ShopSettingViewController.xib */; };
 		85AFE5801A370E83005F3792 /* ProductTalkFormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85AFE4E41A370E83005F3792 /* ProductTalkFormViewController.xib */; };
 		85AFE5811A370E83005F3792 /* ShopTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85AFE4E51A370E83005F3792 /* ShopTalkViewController.xib */; };
+		85C4E9CB1A3E8A62003389D7 /* InboxReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C4E9C91A3E8A62003389D7 /* InboxReviewViewController.m */; };
+		85C4E9CC1A3E8A62003389D7 /* InboxReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C4E9CA1A3E8A62003389D7 /* InboxReviewViewController.xib */; };
+		85C4E9D11A3EE05A003389D7 /* ReviewFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C4E9CF1A3EE05A003389D7 /* ReviewFormViewController.m */; };
+		85C4E9D21A3EE05A003389D7 /* ReviewFormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C4E9D01A3EE05A003389D7 /* ReviewFormViewController.xib */; };
+		85C4E9D81A3EE1BB003389D7 /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C4E9D71A3EE1BB003389D7 /* RateView.m */; };
 		85DF90891A38769100538E02 /* InboxReview.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DF90841A38769100538E02 /* InboxReview.m */; };
 		85DF908A1A38769100538E02 /* InboxReviewList.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DF90861A38769100538E02 /* InboxReviewList.m */; };
 		85DF908B1A38769100538E02 /* InboxReviewResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DF90881A38769100538E02 /* InboxReviewResult.m */; };
@@ -725,9 +729,6 @@
 		8530E7411A39737E00A76C1B /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-TokopediaTests.a"; path = "Pods/build/Debug-iphoneos/libPods-TokopediaTests.a"; sourceTree = "<group>"; };
 		8530E7431A3975EA00A76C1B /* icon_diskusi_unfollow_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_diskusi_unfollow_grey.png; sourceTree = "<group>"; };
 		8530E7441A3975EA00A76C1B /* icon_diskusi_unfollow_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_diskusi_unfollow_grey@2x.png"; sourceTree = "<group>"; };
-		8530E74A1A39A71F00A76C1B /* InboxReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReviewViewController.h; sourceTree = "<group>"; };
-		8530E74B1A39A71F00A76C1B /* InboxReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReviewViewController.m; sourceTree = "<group>"; };
-		8530E74C1A39A71F00A76C1B /* InboxReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxReviewViewController.xib; sourceTree = "<group>"; };
 		85386DCA19CBD8E500BCA463 /* GothamLight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamLight.ttf; sourceTree = "<group>"; };
 		85386DCB19CBD92900BCA463 /* GothamBlack.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = GothamBlack.ttf; sourceTree = "<group>"; };
 		8539F88B1A31DE2E00818ED8 /* stringrestkit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stringrestkit.h; path = Tokopedia/stringrestkit.h; sourceTree = SOURCE_ROOT; };
@@ -756,6 +757,8 @@
 		85627F4119E6B2050085DDF5 /* ExpiringCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpiringCache.m; sourceTree = "<group>"; };
 		858C3DC91A14847A0062A62E /* UIImage+ImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+ImageEffects.h"; path = "Tokopedia/Classses/Cocoa/UIImage+ImageEffects.h"; sourceTree = SOURCE_ROOT; };
 		858C3DCA1A14847A0062A62E /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+ImageEffects.m"; path = "Tokopedia/Classses/Cocoa/UIImage+ImageEffects.m"; sourceTree = SOURCE_ROOT; };
+		85A1A2461A3F0B01001463E1 /* UITextView+UITextView_Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+UITextView_Placeholder.h"; sourceTree = "<group>"; };
+		85A1A2471A3F0B01001463E1 /* UITextView+UITextView_Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+UITextView_Placeholder.m"; sourceTree = "<group>"; };
 		85AFE1B61A370E7A005F3792 /* activation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = activation.h; sourceTree = "<group>"; };
 		85AFE1B81A370E7A005F3792 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		85AFE1B91A370E7A005F3792 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
@@ -1239,6 +1242,15 @@
 		85AFE4E51A370E83005F3792 /* ShopTalkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopTalkViewController.xib; sourceTree = "<group>"; };
 		85AFE5821A37127B005F3792 /* string_inbox_talk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_inbox_talk.h; sourceTree = "<group>"; };
 		85AFE5851A381A29005F3792 /* string_inbox_message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = string_inbox_message.h; sourceTree = "<group>"; };
+		85C4E9C81A3E8A62003389D7 /* InboxReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReviewViewController.h; sourceTree = "<group>"; };
+		85C4E9C91A3E8A62003389D7 /* InboxReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReviewViewController.m; sourceTree = "<group>"; };
+		85C4E9CA1A3E8A62003389D7 /* InboxReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxReviewViewController.xib; sourceTree = "<group>"; };
+		85C4E9CD1A3E8BA6003389D7 /* string_inbox_review.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_inbox_review.h; sourceTree = "<group>"; };
+		85C4E9CE1A3EE05A003389D7 /* ReviewFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReviewFormViewController.h; sourceTree = "<group>"; };
+		85C4E9CF1A3EE05A003389D7 /* ReviewFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReviewFormViewController.m; sourceTree = "<group>"; };
+		85C4E9D01A3EE05A003389D7 /* ReviewFormViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewFormViewController.xib; sourceTree = "<group>"; };
+		85C4E9D61A3EE1BB003389D7 /* RateView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RateView.h; sourceTree = "<group>"; };
+		85C4E9D71A3EE1BB003389D7 /* RateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RateView.m; sourceTree = "<group>"; };
 		85DF90831A38769100538E02 /* InboxReview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReview.h; sourceTree = "<group>"; };
 		85DF90841A38769100538E02 /* InboxReview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReview.m; sourceTree = "<group>"; };
 		85DF90851A38769100538E02 /* InboxReviewList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReviewList.h; sourceTree = "<group>"; };
@@ -1826,16 +1838,6 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		8530E7491A39A71F00A76C1B /* InboxReview */ = {
-			isa = PBXGroup;
-			children = (
-				8530E74A1A39A71F00A76C1B /* InboxReviewViewController.h */,
-				8530E74B1A39A71F00A76C1B /* InboxReviewViewController.m */,
-				8530E74C1A39A71F00A76C1B /* InboxReviewViewController.xib */,
-			);
-			path = InboxReview;
-			sourceTree = "<group>";
-		};
 		8539F88C1A31DE5C00818ED8 /* GeneralAction */ = {
 			isa = PBXGroup;
 			children = (
@@ -2049,6 +2051,10 @@
 		85AFE2031A370E7A005F3792 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				85A1A2461A3F0B01001463E1 /* UITextView+UITextView_Placeholder.h */,
+				85A1A2471A3F0B01001463E1 /* UITextView+UITextView_Placeholder.m */,
+				85C4E9D61A3EE1BB003389D7 /* RateView.h */,
+				85C4E9D71A3EE1BB003389D7 /* RateView.m */,
 				85AFE2041A370E7A005F3792 /* BackgroundLayer.h */,
 				85AFE2051A370E7A005F3792 /* BackgroundLayer.m */,
 				85AFE2061A370E7A005F3792 /* ImageShaper.h */,
@@ -2630,7 +2636,7 @@
 		85AFE3161A370E7A005F3792 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
-				8530E7491A39A71F00A76C1B /* InboxReview */,
+				85C4E9C71A3E8A52003389D7 /* InboxReview */,
 				85AFE3171A370E7A005F3792 /* Shop */,
 				85AFE34C1A370E7A005F3792 /* Talk */,
 			);
@@ -3528,6 +3534,21 @@
 				85AFE4E51A370E83005F3792 /* ShopTalkViewController.xib */,
 			);
 			path = Talk;
+			sourceTree = "<group>";
+		};
+		85C4E9C71A3E8A52003389D7 /* InboxReview */ = {
+			isa = PBXGroup;
+			children = (
+				85C4E9CD1A3E8BA6003389D7 /* string_inbox_review.h */,
+				85C4E9C81A3E8A62003389D7 /* InboxReviewViewController.h */,
+				85C4E9C91A3E8A62003389D7 /* InboxReviewViewController.m */,
+				85C4E9CA1A3E8A62003389D7 /* InboxReviewViewController.xib */,
+				85C4E9CE1A3EE05A003389D7 /* ReviewFormViewController.h */,
+				85C4E9CF1A3EE05A003389D7 /* ReviewFormViewController.m */,
+				85C4E9D01A3EE05A003389D7 /* ReviewFormViewController.xib */,
+			);
+			name = InboxReview;
+			path = ApaAja;
 			sourceTree = "<group>";
 		};
 		85DF90821A38763000538E02 /* InboxReview */ = {
@@ -4805,7 +4826,6 @@
 				85AFE5491A370E83005F3792 /* ProfileBiodataViewController.xib in Resources */,
 				FCD1A3EA1A30454B006DF0ED /* icon_calendar.png in Resources */,
 				FCD1A3D71A30454B006DF0ED /* icon_6.png in Resources */,
-				8530E74E1A39A71F00A76C1B /* InboxReviewViewController.xib in Resources */,
 				FCD1A3E81A30454B006DF0ED /* icon_arrow_up.png in Resources */,
 				FCD1A3EE1A30454B006DF0ED /* icon_category_white.png in Resources */,
 				FCD1A3C41A30454B006DF0ED /* icon_17.png in Resources */,
@@ -4830,6 +4850,7 @@
 				FCD1A4381A30454B006DF0ED /* top_bg1.png in Resources */,
 				FCD1A3F31A30454B006DF0ED /* icon_comment.png in Resources */,
 				FCD1A3F91A30454B006DF0ED /* icon_info.png in Resources */,
+				85C4E9D21A3EE05A003389D7 /* ReviewFormViewController.xib in Resources */,
 				85AFE54E1A370E83005F3792 /* ProfileFavoriteShopViewController.xib in Resources */,
 				85AFE5581A370E83005F3792 /* SettingBankAccountViewController.xib in Resources */,
 				FCD1A4151A30454B006DF0ED /* icon_shop_grey.png in Resources */,
@@ -4991,6 +5012,7 @@
 				85AFE5211A370E83005F3792 /* ShopInfoAddressView.xib in Resources */,
 				85AFE50B1A370E83005F3792 /* DetailListCell.xib in Resources */,
 				85AFE4E71A370E83005F3792 /* LoginViewController.xib in Resources */,
+				85C4E9CC1A3E8A62003389D7 /* InboxReviewViewController.xib in Resources */,
 				FCD1A3D51A30454B006DF0ED /* icon_5.png in Resources */,
 				85AFE5661A370E83005F3792 /* FilterLocationViewCell.xib in Resources */,
 				85AFE5301A370E83005F3792 /* GeneralReviewCell.xib in Resources */,
@@ -5261,6 +5283,7 @@
 				85AFE38B1A370E7A005F3792 /* ProductReviewDetailViewController.m in Sources */,
 				FC7B925F1A2C4F9F00D24DE6 /* ShippingInfoResult.m in Sources */,
 				FC7B91FE1A2C4F9F00D24DE6 /* WholesalePrice.m in Sources */,
+				85C4E9CB1A3E8A62003389D7 /* InboxReviewViewController.m in Sources */,
 				85AFE3C61A370E7A005F3792 /* ProfileFavoriteShopCell.m in Sources */,
 				FCD1A46C1A30660D006DF0ED /* MGSwipeButton.m in Sources */,
 				85AFE3F11A370E7A005F3792 /* SettingShipmentCell.m in Sources */,
@@ -5338,6 +5361,7 @@
 				85AFE3891A370E7A005F3792 /* DetailProductWholesaleTableCell.m in Sources */,
 				FC7B91F11A2C4F9F00D24DE6 /* ReviewList.m in Sources */,
 				FC7B922F1A2C4F9F00D24DE6 /* ProfileSettingsResult.m in Sources */,
+				85C4E9D11A3EE05A003389D7 /* ReviewFormViewController.m in Sources */,
 				85AFE36F1A370E7A005F3792 /* TKPDTabHomeNavigationController.m in Sources */,
 				85AFE3AE1A370E7A005F3792 /* KatalogListViewCell.m in Sources */,
 				FC7B922D1A2C4F9F00D24DE6 /* UserInfo.m in Sources */,
@@ -5380,6 +5404,7 @@
 				FC7B91EF1A2C4F9F00D24DE6 /* RatingList.m in Sources */,
 				FC7B922E1A2C4F9F00D24DE6 /* ProfileSettings.m in Sources */,
 				85AFE39B1A370E7A005F3792 /* ShopNotesCell.m in Sources */,
+				85A1A2481A3F0B01001463E1 /* UITextView+UITextView_Placeholder.m in Sources */,
 				FC7B925E1A2C4F9F00D24DE6 /* ShippingInfo.m in Sources */,
 				FC7B92551A2C4F9F00D24DE6 /* Shop.m in Sources */,
 				FC2CA6571A2F34A300BFE659 /* JNE.m in Sources */,
@@ -5414,6 +5439,7 @@
 				85AFE3831A370E7A005F3792 /* DetailListViewController.m in Sources */,
 				FC7B921D1A2C4F9F00D24DE6 /* ProductFeedList.m in Sources */,
 				85AFE3E91A370E7A005F3792 /* SettingLocationCell.m in Sources */,
+				85C4E9D81A3EE1BB003389D7 /* RateView.m in Sources */,
 				85DF90911A3878C400538E02 /* InboxReviewProductOwner.m in Sources */,
 				FC7B92661A2C4F9F00D24DE6 /* UploadImage.m in Sources */,
 				85AFE3691A370E7A005F3792 /* CategoryViewController.m in Sources */,
@@ -5481,7 +5507,6 @@
 				FC7B92181A2C4F9F00D24DE6 /* InboxMessageDetailResult.m in Sources */,
 				85AFE3B61A370E7A005F3792 /* InboxMessageViewController.m in Sources */,
 				FC7B921F1A2C4F9F00D24DE6 /* ProductTalkCommentAction.m in Sources */,
-				8530E74D1A39A71F00A76C1B /* InboxReviewViewController.m in Sources */,
 				FC36E17219B0673800AF74C1 /* NSStringCategory.m in Sources */,
 				85AFE37D1A370E7A005F3792 /* DetailCatalogSpecViewCell.m in Sources */,
 				85AFE3761A370E7A005F3792 /* BackgroundLayer.m in Sources */,

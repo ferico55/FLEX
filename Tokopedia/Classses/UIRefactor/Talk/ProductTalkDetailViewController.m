@@ -774,6 +774,10 @@
     [UIView commitAnimations];
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+}
+
 
 
 /*

@@ -17,6 +17,9 @@
 @required
 -(void)GeneralTalkCommentCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
 
+@optional
+- (id)navigationController:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
+
 @end
 
 #pragma mark - General Talk Comment Cell

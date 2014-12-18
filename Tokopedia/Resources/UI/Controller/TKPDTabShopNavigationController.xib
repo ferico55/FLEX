@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
+        <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -24,8 +25,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPDTabShopNavigationController">
             <connections>
-                <outlet property="actcover" destination="DDl-z9-A7W" id="gUR-HQ-qEI"/>
-                <outlet property="actpp" destination="BNt-0T-WmM" id="wTB-0C-O9U"/>
                 <outlet property="backButtonCustom" destination="qw2-ox-Po3" id="mg2-ip-LQq"/>
                 <outlet property="badgeGoldMerchant" destination="0rY-ov-LFU" id="r88-vj-rE9"/>
                 <outlet property="blurCoverImage" destination="teS-AC-Jf8" id="wjx-Wx-L97"/>
@@ -288,9 +287,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="943"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="DDl-z9-A7W" userLabel="actCover">
-                    <rect key="frame" x="150" y="524" width="20" height="20"/>
-                </activityIndicatorView>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" tag="1" contentMode="scaleToFill" fixedFrame="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zcg-61-pM2" userLabel="detailScrollView">
                     <rect key="frame" x="0.0" y="206" width="320" height="109"/>
                     <connections>
@@ -445,9 +441,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="BNt-0T-WmM">
-                    <rect key="frame" x="150" y="45" width="20" height="20"/>
-                </activityIndicatorView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F6R-Pu-avF" userLabel="namelabel">
                     <rect key="frame" x="135" y="17" width="50" height="21"/>
                     <constraints>

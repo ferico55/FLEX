@@ -61,8 +61,8 @@
 
 @property (weak, nonatomic) IBOutlet UIView *filterview;
 
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actpp;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actcover;
+//@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actpp;
+//@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actcover;
 
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *ppimage;
