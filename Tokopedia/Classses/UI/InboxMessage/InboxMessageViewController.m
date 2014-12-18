@@ -10,7 +10,7 @@
 #import "InboxMessage.h"
 #import "InboxMessageAction.h"
 #import "inbox.h"
-#import "home.h"
+#import "stringhome.h"
 #import "string_inbox_message.h"
 #import "stringhome.h"
 #import "InboxMessageCell.h"

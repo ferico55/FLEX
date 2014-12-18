@@ -169,7 +169,7 @@
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
     
-    if ([_data objectForKey:kTKPDDETAILPRODUCT_APIDEPARTMENTIDKEY]) {
+    if ([_data objectForKey:API_DEPARTMENT_ID_KEY]) {
         self.toolbarView.hidden = YES;
     }    
 }

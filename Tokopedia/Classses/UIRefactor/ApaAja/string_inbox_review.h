@@ -44,4 +44,7 @@
 
 #define ADD_REVIEW_PATH @"action/review.pl"
 
+#define STATE_PRODUCT_DELETED @"0"
+#define STATE_PRODUCT_BANNED @"-2"
+
 #endif

@@ -31,7 +31,6 @@
 @property (nonatomic) NSString *product_short_desc;
 @property (nonatomic) NSInteger product_department_tree;
 @property (nonatomic, strong) NSString *product_must_insurance;
-@property (nonatomic, strong) NSString *product_url;
 @property (nonatomic) NSInteger product_returnable;
 
 @end
