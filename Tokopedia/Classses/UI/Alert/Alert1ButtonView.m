@@ -22,13 +22,13 @@
     _data = data;
     if (data) {
         NSString *message;
-        if ([[_data objectForKey:kTKPDALERTVIEW_DATALABELKEY] isKindOfClass:[NSArray class]]) {
-            NSArray *messages =[_data objectForKey:kTKPDALERTVIEW_DATALABELKEY];
+        if ([[_data objectForKey:DATA_LABEL_KEY] isKindOfClass:[NSArray class]]) {
+            NSArray *messages =[_data objectForKey:DATA_LABEL_KEY];
             message = [[messages valueForKey:@"description"] componentsJoinedByString:@"\n"];
         }
         else
         {
-            message = [_data objectForKey:kTKPDALERTVIEW_DATALABELKEY];
+            message = [_data objectForKey:DATA_LABEL_KEY];
         }
     
         _labelmessage.text = message;

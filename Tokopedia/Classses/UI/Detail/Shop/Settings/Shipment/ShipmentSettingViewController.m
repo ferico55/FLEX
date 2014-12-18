@@ -1097,7 +1097,7 @@
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
-                if (setting.result.is_success) {
+                if (setting.result.is_success == 1) {
                     [self refreshView:nil];
                 }
                 

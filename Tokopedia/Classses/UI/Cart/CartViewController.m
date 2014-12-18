@@ -8,10 +8,10 @@
 
 #import "cart.h"
 #import "CartViewController.h"
-
+#import "ProductAddEditViewController.h"
 #import "ProgressBarView.h"
 
-#import "CameraAlbumListViewController.h"
+#import "ProductEditWholesaleViewController.h"
 
 #import "SettingShipmentViewController.h"
 
@@ -49,6 +49,15 @@
 //		self.navigationItem.leftBarButtonItem = barbutton1;
 //	}
 }
+- (IBAction)addProduct:(id)sender {
+    ProductAddEditViewController *vc = [ProductAddEditViewController new];
+    vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    [self.navigationController pushViewController:vc animated:YES];
+}
+- (IBAction)addWholesale:(id)sender {
+    ProductEditWholesaleViewController *vc = [ProductEditWholesaleViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 -(IBAction)tap:(id)sender
 {
@@ -59,9 +68,9 @@
             break;
         case 100:
         {
-            CameraAlbumListViewController *vc = [CameraAlbumListViewController new];
-            [self.navigationController pushViewController:vc animated:YES];
-            break;
+            //CameraAlbumListViewController *vc = [CameraAlbumListViewController new];
+            //[self.navigationController pushViewController:vc animated:YES];
+            //break;
         }
         case 200:
         {

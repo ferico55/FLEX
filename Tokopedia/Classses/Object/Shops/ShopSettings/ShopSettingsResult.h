@@ -10,6 +10,6 @@
 
 @interface ShopSettingsResult : NSObject
 
-@property (nonatomic) BOOL is_success;
+@property (nonatomic) NSInteger is_success;
 
 @end

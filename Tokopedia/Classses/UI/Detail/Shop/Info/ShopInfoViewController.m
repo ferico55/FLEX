@@ -15,7 +15,7 @@
 #import "ShopInfoAddressView.h"
 
 #import "ShopFavoritedViewController.h"
-
+#import "ShopEditViewController.h"
 #import "ShopInfoViewController.h"
 
 //profile
@@ -83,7 +83,8 @@
     if (self) {
         _isnodata = YES;
         _isaddressexpanded = NO;
-        self.title = kTKPDTITLE_SHOP_INFO;
+        self.navigationController.navigationBarHidden = NO;
+
     }
     return self;
 }
@@ -94,24 +95,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = kTKPDTITLE_SHOP_INFO;
+    
     _scrollview.delegate = self;
     _scrollview.scrollEnabled = YES;
     CGSize viewsize = _containerview.frame.size;
     [_scrollview setContentSize:viewsize];
     [_scrollview addSubview:_containerview];
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    [barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     [self setData:_data];
     [_tablepayment reloadData];
@@ -247,6 +243,16 @@
             case 10:
             {
                 [self.navigationController popViewControllerAnimated:YES];
+                break;
+            }
+            case 11:
+            {
+                ShopEditViewController *vc = [ShopEditViewController new];
+                vc.data = @{
+                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                            kTKPDDETAIL_DATASHOPSKEY : _shop.result?:@{}
+                            };
+                [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
             default:
@@ -577,6 +583,16 @@
         _shop = [_data objectForKey:kTKPDDETAIL_DATAINFOSHOPSKEY];
         [self setShopInfoData];
         [self setDetailFrame];
+        
+        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+        NSInteger shop_id = [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue];
+        if (_shop.result.info.shop_id==shop_id)
+        {
+            UIBarButtonItem *barbutton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+            [barbutton setTintColor:[UIColor blackColor]];
+            barbutton.tag = 11;
+            self.navigationItem.rightBarButtonItem = barbutton;
+        }
     }
 }
 

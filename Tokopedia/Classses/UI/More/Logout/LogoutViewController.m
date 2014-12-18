@@ -96,7 +96,9 @@
         case 12:{
             //settings
             ShopSettingViewController *vc = [ShopSettingViewController new];
-//            vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY], kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result};
+            vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                        //kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result
+                        };
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }

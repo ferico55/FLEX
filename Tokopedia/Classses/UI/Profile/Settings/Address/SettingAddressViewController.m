@@ -14,7 +14,9 @@
 #import "SettingAddressDetailViewController.h"
 #import "SettingAddressEditViewController.h"
 
-@interface SettingAddressViewController ()<UITableViewDataSource, UITableViewDelegate, GeneralList1GestureCellDelegate, SettingAddressDetailViewControllerDelegate, UIScrollViewDelegate>
+#import "MGSwipeButton.h"
+
+@interface SettingAddressViewController ()<UITableViewDataSource, UITableViewDelegate, SettingAddressDetailViewControllerDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate>
 {
     NSInteger _page;
     NSInteger _limit;
@@ -171,7 +173,7 @@
             ((GeneralList1GestureCell*)cell).labelname.text = list.address_name;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
             [(GeneralList1GestureCell*)cell viewdetailresetposanimation:YES];
-
+            ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
             if (!_ismanualsetdefault)((GeneralList1GestureCell*)cell).labeldefault.hidden = (list.address_status==2)?NO:YES;
             else {
                 if (indexPath.row==0)((GeneralList1GestureCell*)cell).labeldefault.hidden = NO;
@@ -202,6 +204,35 @@
 }
 
 #pragma mark - Table View Delegate
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    BOOL isdefault;
+    AddressFormList *list = _list[indexPath.row];
+    if (_ismanualsetdefault) {
+        isdefault = (indexPath.row == 0)?YES:NO;
+    }
+    else
+    {
+        isdefault = (list.address_status == 2)?YES:NO;
+    }
+    
+    SettingAddressDetailViewController *vc = [SettingAddressDetailViewController new];
+    vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
+                kTKPDPROFILE_DATAADDRESSKEY : _list[indexPath.row],
+                kTKPDPROFILE_DATAINDEXPATHKEY : indexPath,
+                kTKPDPROFILE_DATAISDEFAULTKEY : @(isdefault)
+                };
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (_isnodata) {
@@ -225,6 +256,7 @@
     id dataObject = [_list objectAtIndex:sourceIndexPath.row];
     [_list removeObjectAtIndex:sourceIndexPath.row];
     [_list insertObject:dataObject atIndex:destinationIndexPath.row];
+    
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -540,11 +572,21 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (!setting.message_error) {
-                    if (setting.result.is_success) {
-                       //TODO:: add alert
-                        
-                    }
+                if(setting.message_error)
+                {
+                    [self cancelSetAsDefault];
+                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                }
+                if (setting.result.is_success == 1) {
+                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                }
+                else
+                {
+                    [self cancelSetAsDefault];
                 }
             }
         }
@@ -552,9 +594,7 @@
             
             [self cancelActionSetDefault];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
-            NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:0 inSection:indexpath.section];
-            [self tableView:_table moveRowAtIndexPath:indexpath1 toIndexPath:indexpath];
+            [self cancelSetAsDefault];
         }
     }
 }
@@ -609,6 +649,9 @@
                             };
     _requestcount ++;
     
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
+    
     _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:param]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
     
     [_requestActionDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -617,12 +660,13 @@
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         [timer invalidate];
-        
+        app.networkActivityIndicatorVisible = NO;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFailureActionDelete:error];
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
+        app.networkActivityIndicatorVisible = NO;
         [timer invalidate];
     }];
     
@@ -659,11 +703,21 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (!setting.message_error) {
-                    if (setting.result.is_success) {
-                        //TODO:: add alert
-                        
-                    }
+                if(setting.message_error)
+                {
+                    [self cancelDeleteRow];
+                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                }
+                if (setting.result.is_success == 1) {
+                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                }
+                else
+                {
+                    [self cancelDeleteRow];
                 }
             }
         }
@@ -671,9 +725,7 @@
             
             [self cancelActionDelete];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHDELETEKEY];
-            [_list insertObject:[_datainput objectForKey:kTKPDPROFILE_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
-            [_table reloadData];
+            [self cancelDeleteRow];
         }
     }
 }
@@ -701,99 +753,69 @@
 
 
 #pragma mark - Cell Delegate
--(void)GeneralList1GestureCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-{
-    BOOL isdefault;
-    AddressFormList *list = _list[indexpath.row];
-    if (_ismanualsetdefault) {
-        isdefault = (indexpath.row == 0)?YES:NO;
-    }
-    else
-    {
-        isdefault = (list.address_status == 2)?YES:NO;
-    }
-
-    SettingAddressDetailViewController *vc = [SettingAddressDetailViewController new];
-    vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
-                kTKPDPROFILE_DATAADDRESSKEY : _list[indexpath.row],
-                kTKPDPROFILE_DATAINDEXPATHKEY : indexpath,
-                kTKPDPROFILE_DATAISDEFAULTKEY : @(isdefault)
-                };
-    vc.delegate = self;
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
--(void)DidTapButton:(UIButton *)button atCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-{
-    AddressFormList *list = _list[indexpath.row];
-    [_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
-    switch (button.tag) {
-        case 10:
-        {
-            //set as default
-            _ismanualsetdefault = YES;
-            [self configureRestKitActionSetDefault];
-            [self requestActionSetDefault:_datainput];
-            [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
-            NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:0 inSection:indexpath.section];
-            [self tableView:_table moveRowAtIndexPath:indexpath toIndexPath:indexpath1];
-            [_table reloadData];
-            break;
-        }
-        case 11:
-        {
-            //delete
-            _ismanualdelete = YES;
-            [_datainput setObject:_list[indexpath.row] forKey:kTKPDPROFILE_DATADELETEDOBJECTKEY];
-            [_list removeObjectAtIndex:indexpath.row];
-            [_table beginUpdates];
-            [_table deleteRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationFade];
-            [_table endUpdates];
-            [_table reloadData];
-            [self configureRestKitActionDelete];
-            [self requestActionDelete:_datainput];
-            [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDELETEKEY];
-            [_table reloadData];
-            break;
-        }
-        default:
-            break;
-    }
-    
-}
+//-(void)GeneralList1GestureCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+//{
+//    BOOL isdefault;
+//    AddressFormList *list = _list[indexpath.row];
+//    if (_ismanualsetdefault) {
+//        isdefault = (indexpath.row == 0)?YES:NO;
+//    }
+//    else
+//    {
+//        isdefault = (list.address_status == 2)?YES:NO;
+//    }
+//
+//    SettingAddressDetailViewController *vc = [SettingAddressDetailViewController new];
+//    vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
+//                kTKPDPROFILE_DATAADDRESSKEY : _list[indexpath.row],
+//                kTKPDPROFILE_DATAINDEXPATHKEY : indexpath,
+//                kTKPDPROFILE_DATAISDEFAULTKEY : @(isdefault)
+//                };
+//    vc.delegate = self;
+//    [self.navigationController pushViewController:vc animated:YES];
+//}
+//-(void)DidTapButton:(UIButton *)button atCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+//{
+//    AddressFormList *list = _list[indexpath.row];
+//    [_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
+//    switch (button.tag) {
+//        case 10:
+//        {
+//            //set as default
+//            NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:0 inSection:indexpath.section];
+//            [self setAsDefaultAtIndexPath:indexpath1];
+//            break;
+//        }
+//        case 11:
+//        {
+//            //delete
+//            [self deleteListAtIndexPath:indexpath];
+//            break;
+//        }
+//        default:
+//            break;
+//    }
+//    
+//}
 
 #pragma mark - delegate address detail
 -(void)DidTapButton:(UIButton *)button withdata:(NSDictionary *)data
 {
     AddressFormList *list = [data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
     [_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
+    NSIndexPath *indexpath = [data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     switch (button.tag) {
         case 10:
         {
             //set as default
-            _ismanualsetdefault = YES;
-            [_table reloadData];
-            [self configureRestKitActionSetDefault];
-            [self requestActionSetDefault:_datainput];
-            NSIndexPath *indexpath = [data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY];
-            NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:0 inSection:indexpath.section];
-            [self tableView:_table moveRowAtIndexPath:indexpath toIndexPath:indexpath1];
-            [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
-            [_table reloadData];
+            //NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:0 inSection:indexpath.section];
+            [self setAsDefaultAtIndexPath:indexpath];
             break;
         }
         case 11:
         {
             //delete
-            _ismanualdelete = YES;
-            [_list removeObjectAtIndex:((NSIndexPath*)[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]).row];
-            [_table beginUpdates];
-            [_table deleteRowsAtIndexPaths:@[[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]] withRowAnimation:UITableViewRowAnimationFade];
-            [_table endUpdates];
-            [self configureRestKitActionDelete];
-            [self requestActionDelete:_datainput];
-            [_datainput setObject:[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY] forKey:kTKPDPROFILE_DATAINDEXPATHDELETEKEY];
-            [_table reloadData];
+            [self deleteListAtIndexPath:indexpath];
             break;
         }
         default:
@@ -802,6 +824,45 @@
 }
 
 #pragma mark - Methods
+-(void)setAsDefaultAtIndexPath:(NSIndexPath*)indexpath
+{
+    _ismanualsetdefault = YES;
+    [self configureRestKitActionSetDefault];
+    [self requestActionSetDefault:_datainput];
+    [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
+    NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:0 inSection:indexpath.section];
+    [self tableView:_table moveRowAtIndexPath:indexpath toIndexPath:indexpath1];
+    [_table reloadData];
+}
+-(void)cancelSetAsDefault
+{
+    NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
+    NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:0 inSection:indexpath.section];
+    [self tableView:_table moveRowAtIndexPath:indexpath1 toIndexPath:indexpath];
+    _ismanualsetdefault = NO;
+    [_table reloadData];
+}
+
+-(void)deleteListAtIndexPath:(NSIndexPath*)indexpath
+{
+    [_datainput setObject:_list[indexpath.row] forKey:kTKPDPROFILE_DATADELETEDOBJECTKEY];
+    [_list removeObjectAtIndex:indexpath.row];
+    [_table beginUpdates];
+    [_table deleteRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationFade];
+    [_table endUpdates];
+    [self configureRestKitActionDelete];
+    [self requestActionDelete:_datainput];
+    [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDELETEKEY];
+    [_table reloadData];
+}
+
+-(void)cancelDeleteRow
+{
+    NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHDELETEKEY];
+    [_list insertObject:[_datainput objectForKey:kTKPDPROFILE_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
+    [_table reloadData];
+}
+
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     [self cancel];
@@ -817,12 +878,6 @@
     [self request];
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    view.backgroundColor = [UIColor clearColor];
-    return view;
-}
 
 #pragma mark - Notification
 - (void)didEditAddress:(NSNotification*)notification
@@ -833,5 +888,45 @@
     [_datainput setObject:[userinfo objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]?:@(0) forKey:kTKPDPROFILE_DATAEDITTYPEKEY];
     [self refreshView:nil];
 }
+
+#pragma mark - Swipe Delegate
+
+-(BOOL) swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction;
+{
+    return YES;
+}
+
+-(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
+             swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
+{
+    
+    swipeSettings.transition = MGSwipeTransitionBorder;
+    expansionSettings.buttonIndex = -1; //-1 not expand, 0 expand
+    
+    
+    if (direction == MGSwipeDirectionRightToLeft) {
+        expansionSettings.fillOnTrigger = YES;
+        expansionSettings.threshold = 1.1;
+        
+        CGFloat padding = 15;
+        NSIndexPath *indexpath = ((GeneralList1GestureCell*) cell).indexpath;
+        AddressFormList *list = _list[indexpath.row];
+        [_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
+        
+        MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Delete" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+            [self deleteListAtIndexPath:indexpath];
+            return YES;
+        }];
+        MGSwipeButton * flag = [MGSwipeButton buttonWithTitle:@"Set As\nDefault" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+            [self setAsDefaultAtIndexPath:indexpath];
+            return YES;
+        }];
+        return @[trash, flag];
+    }
+    
+    return nil;
+    
+}
+
 
 @end

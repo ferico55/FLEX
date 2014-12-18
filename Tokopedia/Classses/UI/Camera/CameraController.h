@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+@class CameraController;
 
 @protocol CameraControllerDelegate <NSObject>
 @optional
-- (void)didDismissCameraController:(UIViewController*)controller withUserInfo:(NSDictionary*)userinfo;
+- (void)didDismissCameraController:(CameraController*)controller withUserInfo:(NSDictionary*)userinfo;
 @end
 
 @interface CameraController : UIViewController
@@ -21,5 +22,8 @@
 @property (assign, nonatomic) id<CameraControllerDelegate> delegate;
 #endif
 @property (nonatomic, strong) NSDictionary *data;
+@property (nonatomic, strong) UIImage* snappedImage;
+
+-(void)snap;
 
 @end

@@ -471,9 +471,9 @@
     if (_requestActionPayment.isExecuting) return;
     NSTimer *timer;
     
-    NSDictionary *userinfo = (NSDictionary*)object;
+    //NSDictionary *userinfo = (NSDictionary*)object;
     
-    NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
+    //NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
     NSString *action = kTKPDDETAIL_APIUPDATEPAYMENTINFOKEY;
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action,
@@ -524,7 +524,7 @@
             
             if (status) {
                 if (!setting.message_error) {
-                    if (setting.result.is_success) {
+                    if (setting.result.is_success == 1) {
                     }
                 }
                 if (setting.message_status) {

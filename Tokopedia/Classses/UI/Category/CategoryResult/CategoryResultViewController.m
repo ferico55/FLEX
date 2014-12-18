@@ -12,7 +12,7 @@
 #import "CategoryResultViewController.h"
 #import "CategoryMenuViewController.h"
 
-@interface CategoryResultViewController () <CategoryResultViewCellDelegate, UITableViewDataSource,UITableViewDelegate>
+@interface CategoryResultViewController () <CategoryResultViewCellDelegate, UITableViewDataSource,UITableViewDelegate, CategoryMenuViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentcontrol;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
@@ -149,6 +149,7 @@
             {
                 CategoryMenuViewController *vc = [CategoryMenuViewController new];
                 vc.data = @{kTKPDCATEGORY_DATADIDKEY:@(_d_id)};
+                vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -238,5 +239,7 @@
 {
     
 }
+
+
 
 @end

@@ -19,7 +19,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="40" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="l8P-HU-gKh">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="40" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="l8P-HU-gKh">
                     <rect key="frame" x="0.0" y="44" width="320" height="524"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="separatorColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
@@ -29,7 +29,7 @@
                         <outlet property="delegate" destination="-1" id="t2k-vm-gRm"/>
                     </connections>
                 </tableView>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rTu-ez-bao">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rTu-ez-bao">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_plus_blue" translatesAutoresizingMaskIntoConstraints="NO" id="4Yo-G4-XEh">
@@ -49,9 +49,21 @@
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="P4E-7l-sYO"/>
+                    </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="l8P-HU-gKh" secondAttribute="trailing" id="4m6-ej-qLR"/>
+                <constraint firstItem="l8P-HU-gKh" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="9RF-YJ-2Aa"/>
+                <constraint firstItem="rTu-ez-bao" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="FKX-5X-cPH"/>
+                <constraint firstAttribute="trailing" secondItem="rTu-ez-bao" secondAttribute="trailing" id="axR-Cr-oFL"/>
+                <constraint firstItem="rTu-ez-bao" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="vB5-xa-neO"/>
+                <constraint firstAttribute="bottom" secondItem="l8P-HU-gKh" secondAttribute="bottom" id="yjR-BY-3FP"/>
+                <constraint firstItem="l8P-HU-gKh" firstAttribute="top" secondItem="rTu-ez-bao" secondAttribute="bottom" id="zuw-TQ-YeH"/>
+            </constraints>
         </view>
         <view contentMode="scaleToFill" id="Dgl-b9-W32" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>

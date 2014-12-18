@@ -160,7 +160,6 @@
             UIActivityIndicatorView *act = (UIActivityIndicatorView*)((ShopFavoritedCell*)cell).act;
             [act startAnimating];
             
-            NSLog(@"============================== START GET IMAGE =====================");
             [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -168,13 +167,11 @@
                 [thumb setImage:image];
                 
                 [act stopAnimating];
-                NSLog(@"============================== DONE GET IMAGE =====================");
 #pragma clang diagnostic pop
                 
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                 [act stopAnimating];
                 
-                NSLog(@"============================== DONE GET IMAGE =====================");
             }];
         }
         
@@ -476,11 +473,9 @@
         UIButton *btn = (UIButton*)sender;
         switch (btn.tag) {
             case 10:
-                // see more action
-                //                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
-                        default:
+        default:
             break;
         }
     }

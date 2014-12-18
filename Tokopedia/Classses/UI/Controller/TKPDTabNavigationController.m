@@ -11,7 +11,7 @@
 #import "TKPDTabNavigationController.h"
 #import "CategoryMenuViewController.h"
 
-@interface TKPDTabNavigationController () {
+@interface TKPDTabNavigationController () <CategoryMenuViewDelegate>{
 	UIView* _tabbar;
 	NSArray* _buttons;
 	NSInteger _unloadSelectedIndex;
@@ -523,6 +523,7 @@
                 CategoryMenuViewController *vc = [CategoryMenuViewController new];
                 NSInteger d_id = [[_data objectForKey:kTKPDCONTROLLER_DATADEPARTMENTIDKEY] integerValue];
                 vc.data = @{kTKPDCONTROLLER_DATADEPARTMENTIDKEY:@(d_id)};
+                vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
             }
             default:
@@ -594,6 +595,12 @@
 		}
 	}
 	return nil;
+}
+
+#pragma mark - Category delegate
+-(void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
 }
 
 #pragma mark - Notification setsegmentcontroll

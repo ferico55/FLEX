@@ -57,7 +57,7 @@
 
 	//_viewController.data = _parameters;
 	//_parameters = nil;
-    _window.backgroundColor = [UIColor greenColor];
+    _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
 	_window.rootViewController = _viewController;
 	[_window makeKeyAndVisible];
 	
@@ -141,7 +141,7 @@
 	[proxy setTitleTextAttributes:[[NSDictionary alloc] initWithObjectsAndKeys:kTKPDNAVIGATION_TITLEFONT, UITextAttributeFont,kTKPDNAVIGATION_TITLECOLOR, UITextAttributeTextColor, kTKPDNAVIGATION_TITLESHADOWCOLOR, UITextAttributeTextShadowColor, nil]];
 	
 	proxy = [UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil];
-    [proxy setTintColor:[UIColor whiteColor]];
+
     //image = [[[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"]] resizableImageWithCapInsets:kTKPDNAVIGATION_BUTTONINSET resizingMode:UIImageResizingModeStretch];
     //
     //[proxy setBackButtonBackgroundImage:image forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];

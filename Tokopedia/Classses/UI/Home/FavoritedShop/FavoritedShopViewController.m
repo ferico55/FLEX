@@ -7,7 +7,7 @@
 //
 
 #import "FavoritedShopViewController.h"
-#import "home.h"
+#import "stringhome.h"
 #import "detail.h"
 #import "ShopProductViewController.h"
 #import "ShopTalkViewController.h"
@@ -113,14 +113,14 @@
     [super viewWillAppear:animated];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadFav)
+                                             selector:@selector(refreshView:)
                                                  name:@"notifyFav"
                                                object:nil];
     
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self loadData];
+            [self request];
         }
     }
 }
@@ -201,7 +201,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 //NSLOG(@"thumb: %@", thumb);
-                [thumb setImage:image];
+                [thumb setImage:image animated:YES];
                 
 #pragma clang diagnostic pop
                 
@@ -258,7 +258,7 @@
         
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             [self configureRestKit];
-            [self loadData];
+            [self request];
         }
     }
 }
@@ -442,7 +442,7 @@
     
 }
 
--(void) loadData {
+-(void) request {
     if (_request.isExecuting) return;
     
     // create a new one, this one is expired or we've never gotten it
@@ -562,7 +562,7 @@
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }
                 else
                 {
@@ -651,38 +651,12 @@
     [_table reloadData];
     /** request data **/
     [self configureRestKit];
-    [self loadData];
+    [self request];
 }
 
 -(void)cancel {
     
 }
 
--(void) reloadFav {
-    [self cancel];
-    /** clear object **/
-    [_shop removeAllObjects];
-    [_goldshop removeAllObjects];
-    _page = 1;
-    _requestcount = 0;
-    _isrefreshview = YES;
-    is_already_updated = NO;
-    
-    [_table reloadData];
-    /** request data **/
-    [self configureRestKit];
-    [self loadData];
-}
-
-
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
 
 @end

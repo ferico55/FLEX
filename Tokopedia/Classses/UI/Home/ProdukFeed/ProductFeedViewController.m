@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "home.h"
+#import "stringhome.h"
 #import "detail.h"
 #import "GeneralProductCell.h"
 #import "ProductFeedViewController.h"
@@ -405,7 +405,7 @@
                                                  kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
                                                  kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
                                                  kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY,
-                                                 kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY
+                                                 API_PRODUCT_NAME_KEY
                                                 ]];
     
     //relation

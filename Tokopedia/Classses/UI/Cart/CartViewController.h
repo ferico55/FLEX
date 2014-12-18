@@ -10,4 +10,6 @@
 
 @interface CartViewController : UIViewController
 
+@property (nonatomic,strong)NSDictionary *data;
+
 @end

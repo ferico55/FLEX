@@ -51,7 +51,7 @@
     NSArray *dataids = kTKPDCATEGORY_IDARRAY;
     
     for (int i = 0; i<22; i++) {
-        NSString * imagename = [NSString stringWithFormat:@"icon_%d",i];
+        NSString * imagename = [NSString stringWithFormat:@"icon_%zd",i];
         [_category addObject:@{kTKPDCATEGORY_DATATITLEKEY : titles[i], kTKPDCATEGORY_DATADIDKEY : dataids[i],kTKPDCATEGORY_DATAICONKEY:imagename}];
     }
     

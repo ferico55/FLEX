@@ -339,7 +339,7 @@
             
             if (status) {
                 if (!setting.message_error) {
-                    if (setting.result.is_success) {
+                    if (setting.result.is_success == 1) {
                         //TODO:: add alert
                         
                     }

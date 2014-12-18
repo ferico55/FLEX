@@ -10,7 +10,7 @@
 #import "InboxMessage.h"
 #import "InboxMessageAction.h"
 #import "inbox.h"
-#import "home.h"
+#import "stringhome.h"
 #import "InboxMessageCell.h"
 #import "InboxMessageDetailViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"

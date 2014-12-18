@@ -649,7 +649,7 @@
     ReviewList *list = _list[indexpath.row];
 
     vc.data = @{
-                kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY]?:@(""),
+                API_PRODUCT_NAME_KEY:[_data objectForKey:API_PRODUCT_NAME_KEY]?:@(""),
                 kTKPDDETAILPRODUCT_APIIMAGESRCKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]?:@(""),
                 //ini untuk review
                 kTKPDREVIEW_APIREVIEWMESSAGEKEY:list.review_message,

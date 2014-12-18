@@ -390,7 +390,7 @@
             ((SettingShipmentCell*)cell).labelpackage.text = package.name;
             ((SettingShipmentCell*)cell).indexpath = indexPath;
             NSDictionary *activeshipments = [_shipments objectForKey:[@(shipment.shipment_id)stringValue]];
-            BOOL isactive = [[activeshipments objectForKey:[@(package.sp_id)stringValue]] boolValue];
+            //BOOL isactive = [[activeshipments objectForKey:[@(package.sp_id)stringValue]] boolValue];
             ((SettingShipmentCell*)cell).switchpackage.on = package.active;
             ((SettingShipmentCell*)cell).packageid = package.sp_id;
             ((SettingShipmentCell*)cell).shipmentid = shipment.shipment_id;
@@ -914,7 +914,7 @@
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
-                if (setting.result.is_success) {
+                if (setting.result.is_success == 1) {
                     [self refreshView:nil];
                 }
             }

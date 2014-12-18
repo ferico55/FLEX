@@ -10,6 +10,7 @@
 
 @interface UploadImageResult : NSObject
 
+@property (nonatomic) NSInteger pic_id;
 @property (nonatomic, strong) NSString *file_path;
 @property (nonatomic, strong) NSString *file_th;
 

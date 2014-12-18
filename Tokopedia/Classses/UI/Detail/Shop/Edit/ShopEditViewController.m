@@ -19,7 +19,7 @@
 #import "CameraController.h"
 
 #pragma mark - Shop Edit View Controller
-@interface ShopEditViewController () <UITableViewDataSource, UITextViewDelegate, ShopEditStatusViewControllerDelegate,CameraControllerDelegate>
+@interface ShopEditViewController () <UITextViewDelegate, ShopEditStatusViewControllerDelegate,CameraControllerDelegate>
 {
     UITextView *_activetextview;
     
@@ -38,6 +38,7 @@
     
     BOOL _isnodata;
     NSInteger _requestcount;
+    UIBarButtonItem *_barbuttonsave;
     
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -50,6 +51,8 @@
     
     RKResponseDescriptor *_responseDescriptor;
     NSOperationQueue *_operationQueue;
+    
+    UIImage *_snappedImage;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *viewmembership;
@@ -91,7 +94,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        self.title = kTKPDTITLE_EDIT_INFO;
     }
     return self;
 }
@@ -110,10 +113,10 @@
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    UIBarButtonItem *barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor whiteColor]];
-    barbutton1.tag = 11;
-    self.navigationItem.rightBarButtonItem = barbutton1;
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [_barbuttonsave setTintColor:[UIColor blackColor]];
+    _barbuttonsave.tag = 11;
+    self.navigationItem.rightBarButtonItem = _barbuttonsave;
     
     // register for keyboard notifications
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
@@ -214,7 +217,7 @@
     // Relationship Mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
 
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOPEDITORACTION_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOPEDITINFO_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptor];
 }
@@ -242,20 +245,23 @@
                             kTKPDSHOPEDIT_APICLOSEDNOTEKEY: closenote
                             };
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPEDITORACTION_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPEDITINFO_APIPATH parameters:param];
 
     NSTimer *timer;
+    _barbuttonsave.enabled = NO;
     
-    //[_act startAnimating];
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [timer invalidate];
-        //[_act stopAnimating];
+        app.networkActivityIndicatorVisible = NO;
+        _barbuttonsave.enabled = YES;
         [self requestsuccessaction:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
         [timer invalidate];
-        //[_act stopAnimating];
+        _barbuttonsave.enabled = YES;
+        app.networkActivityIndicatorVisible = NO;
         [self requestfailureaction:error];
     }];
     
@@ -305,7 +311,9 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
             }
             if (_settings.result.is_success) {
-                //[[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil userInfo:nil];
+                UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 3];
+                [self.navigationController popToViewController:previousVC animated:NO];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil userInfo:nil];
             }
         }
         }else{
@@ -313,7 +321,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     //_table.tableFooterView = _footer;
                     //[_act startAnimating];
                     //[self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -489,75 +497,20 @@
     
 	NSDictionary* userInfo = object;
     
-    NSDictionary* camera = [userInfo objectForKey:kTKPDCAMERA_DATACAMERAKEY];
     NSDictionary* photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    NSData* imageData = [photo objectForKey:DATA_CAMERA_IMAGEDATA];
+    NSString* imageName = [photo objectForKey:DATA_CAMERA_IMAGENAME];
     
-    NSDictionary* param;
-    
-    param = @{kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY,
+    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY,
               kTKPDSHOPEDIT_APIUSERIDKEY:@(_generatehost.result.generated_host.user_id),
               kTKPDGENERATEDHOST_APISERVERIDKEY :@(_generatehost.result.generated_host.server_id),
               };
     
-    NSData* imageData;
-    //UIImage *image = [UIImage imageNamed:@"icon_location.png"];
-    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
-    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    imageData = UIImagePNGRepresentation(image);
-    //imageData = UIImageJPEGRepresentation(image,1);
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    
-    //Set Params
-    [request setHTTPShouldHandleCookies:NO];
-    [request setTimeoutInterval:60];
-    [request setHTTPMethod:@"POST"];
-    
-    //Create boundary, it can be anything
-    NSString *boundary = @"------VohpleBoundary4QuqLuM1cE5lMwCy";
-    
-    //set Content-Type in HTTP header
-    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
-    [request setValue:contentType forHTTPHeaderField: @"Content-Type"];
-    
-    //post body
-    NSMutableData *body = [NSMutableData data];
-    
-    //Populate a dictionary with all the regular values you would like to send.?action=upload_profile_image?
-    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
-    [parameters setValue:kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY forKeyPath:kTKPDDETAIL_APIACTIONKEY];
-    [parameters setValue:@(_generatehost.result.generated_host.user_id) forKeyPath:kTKPDSHOPEDIT_APIUSERIDKEY];
-    [parameters setValue:@(_generatehost.result.generated_host.server_id) forKeyPath:kTKPDGENERATEDHOST_APISERVERIDKEY];
-    
-    //add params (all params are strings)
-    for (NSString *param in parameters) {
-        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", param] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"%@\r\n", [parameters objectForKey:param]] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    }
-    
-    //add image data
-    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[@"Content-Disposition: attachment; name=\"logo\"; filename=\"icon_location.png\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[NSData dataWithData:imageData]];
-    [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    //Close off the request with the boundary
-    [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    
-    //setting the body of the post to the request
-    [request setHTTPBody:body];
-    
-    NSString *url = @"http://www.tkpdevel-pg.api/ws/action/upload-image.pl";
-    
-    [request setURL:[NSURL URLWithString:url]];
-    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestUploadImageData:imageData
+                                                                      withName:API_UPLOAD_SHOP_IMAGE_FORM_FIELD_NAME
+                                                                   andFileName:imageName
+                                                         withRequestParameters:param
+                                    ];
     [NSURLConnection sendAsynchronousRequest:request
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
@@ -649,7 +602,6 @@
                     NSDictionary *userinfo = @{kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY :_images.result.file_th?:@"",
                                                kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:_images.result.file_path?:@""
                                                };
-                    
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                 }
                 else
@@ -669,7 +621,6 @@
 {
     [self cancelActionUploadPhoto];
 }
-
 
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
@@ -727,8 +678,9 @@
             case 11:
             {   //edit thumbnail
                 CameraController* c = [CameraController new];
+                [c snap];
                 c.delegate = self;
-                //c.data = data;
+                
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
                 nav.wantsFullScreenLayout = YES;
                 nav.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -767,7 +719,7 @@
         _textviewslogan.text = string?:@"";
         if (string) {
             _labelsloganplaceholder.hidden = YES;
-            _labelslogancharcount.text = [NSString stringWithFormat:@"%d", limit - _textviewslogan.text.length + (string.length - string.length)];
+            _labelslogancharcount.text = [NSString stringWithFormat:@"%zd", limit - _textviewslogan.text.length + (string.length - string.length)];
         }
         else _labelsloganplaceholder.hidden = NO;
         
@@ -776,7 +728,7 @@
         _textviewdesc.text = string?:@"";
         if (string) {
             _labeldeskripsiplaceholder.hidden = YES;
-            _labeldesccharcount.text = [NSString stringWithFormat:@"%d", limit - _textviewslogan.text.length + (string.length - string.length)];
+            _labeldesccharcount.text = [NSString stringWithFormat:@"%zd", limit - _textviewslogan.text.length + (string.length - string.length)];
         }
         else _labeldeskripsiplaceholder.hidden = NO;
         
@@ -819,7 +771,7 @@
         }
         [_buttonshopstatus setTitle:status forState:UIControlStateNormal];
         
-        //TODO:: if gold merchant
+        //if gold merchant
         if (!_shop.info.shop_is_gold) {
             CGRect frame = _viewmembership.frame;
             frame.size.height = 90;
@@ -897,14 +849,14 @@
     if (textView == _textviewslogan) {
         limit = 48;
         if (textView.text.length + (text.length - range.length) <= limit) {
-            _labelslogancharcount.text = [NSString stringWithFormat:@"%d", limit - (textView.text.length + (text.length - range.length))];
+            _labelslogancharcount.text = [NSString stringWithFormat:@"%zd", limit - (textView.text.length + (text.length - range.length))];
         }
     }
     else if (textView == _textviewdesc)
     {
         limit = 140;
         if (textView.text.length + (text.length - range.length) <= limit) {
-            _labeldesccharcount.text = [NSString stringWithFormat:@"%d",limit - (textView.text.length + (text.length - range.length))];
+            _labeldesccharcount.text = [NSString stringWithFormat:@"%zd",limit - (textView.text.length + (text.length - range.length))];
         }
     }
     return textView.text.length + (text.length - range.length) <= limit;
@@ -918,7 +870,7 @@
 }
 
 #pragma mark - Delegate Camera Controller
--(void)didDismissCameraController:(UIViewController *)controller withUserInfo:(NSDictionary *)userinfo
+-(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
 {
     [self configureRestkitUploadPhoto];
     [self requestActionUploadPhoto:userinfo];
@@ -937,7 +889,7 @@
     }else{
         [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                               delay:0
-                            options: UIViewAnimationCurveEaseOut
+                            options: UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              _scrollviewContentSize = [_scrollview contentSize];
                              _scrollviewContentSize.height -= _keyboardSize.height;
@@ -963,7 +915,7 @@
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                           delay:0
-                        options: UIViewAnimationCurveEaseOut
+                        options: UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          _scrollview.contentInset = contentInsets;
                          _scrollview.scrollIndicatorInsets = contentInsets;

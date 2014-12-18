@@ -93,7 +93,6 @@
     
     _table.tableHeaderView = _header;
     
-    UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
@@ -259,7 +258,7 @@
                 ProductTalkFormViewController *vc = [ProductTalkFormViewController new];
                 vc.data = @{
                             kTKPDDETAIL_APIPRODUCTIDKEY:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
-                            kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY]?:@(0),
+                            API_PRODUCT_NAME_KEY:[_data objectForKey:API_PRODUCT_NAME_KEY]?:@(0),
                             kTKPDDETAILPRODUCT_APIIMAGESRCKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]?:@(0),
                             };
                 [self.navigationController pushViewController:vc animated:YES];
@@ -571,8 +570,8 @@
 #pragma mark - Methods
 -(void)setHeaderData:(NSDictionary*)data
 {
-    _productnamelabel.text = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
-    _pricelabel.text = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTPRICEKEY];
+    _productnamelabel.text = [data objectForKey:API_PRODUCT_NAME_KEY];
+    _pricelabel.text = [data objectForKey:API_PRODUCT_PRICE_KEY];
     _headerimages = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
     for (int i = 0; i<_headerimages.count; i++) {
         CGFloat y = i * 320;

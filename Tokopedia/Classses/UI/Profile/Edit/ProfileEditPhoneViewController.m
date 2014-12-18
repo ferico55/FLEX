@@ -94,6 +94,12 @@
     // Dispose of any resources that can be recreated.
 }
 
+#pragma mark - View Action
+-(IBAction)tap:(id)sender
+{
+
+}
+
 #pragma mark - Request + Mapping
 -(void)cancelAction
 {
@@ -187,25 +193,16 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (!setting.message_error) {
-                    if (setting.result.is_success) {
-                        Alert1ButtonView *v = [Alert1ButtonView new];
-                        v.tag = 10;
-                        if (setting.message_status)
-                            v.data = @{kTKPDALERTVIEW_DATALABELKEY : setting.message_status};
-                        else
-                            v.data = @{kTKPDALERTVIEW_DATALABELKEY : @"Success"};
-                        v.delegate = self;
-                        [v show];
-                    }
-                }
-                else
+                if(setting.message_error)
                 {
-                    Alert1ButtonView *v = [Alert1ButtonView new];
-                    v.tag = 11;
-                    v.data = @{kTKPDALERTVIEW_DATALABELKEY :setting.message_error};
-                    v.delegate = self;
-                    [v show];
+                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                }
+                if (setting.result.is_success == 1) {
+                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
                 }
             }
         }

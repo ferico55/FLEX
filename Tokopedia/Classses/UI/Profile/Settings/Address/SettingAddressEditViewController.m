@@ -398,19 +398,21 @@
     _requestcount ++;
     
     _barbuttonsave.enabled = NO;
-    [_act startAnimating];
+    
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
     
     _requestActionAddAddress = [_objectmanagerActionAddAddress appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:param];
     
     [_requestActionAddAddress setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionAddAddress:mappingResult withOperation:operation];
         [timer invalidate];
-        [_act stopAnimating];
+        app.networkActivityIndicatorVisible = NO;
         _barbuttonsave.enabled = YES;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionAddAddress:error];
         [timer invalidate];
-        [_act stopAnimating];
+        app.networkActivityIndicatorVisible = NO;
         _barbuttonsave.enabled = YES;
     }];
     
@@ -448,7 +450,7 @@
             
             if (status) {
                 if (!setting.message_error) {
-                    if (setting.result.is_success) {
+                    if (setting.result.is_success == 1) {
                         //TODO:: add alert
                         NSDictionary *userinfo;
                         if (_type == 1){
@@ -522,7 +524,7 @@
     NSString *name;
     NSInteger locationid;
     
-    switch ([[data objectForKey:kTKPDPROFILE_DATALOCATIONTYPEKEY] integerValue]) {
+    switch ([[data objectForKey:kTKPDLOCATION_DATALOCATIONTYPEKEY] integerValue]) {
         case kTKPDLOCATION_DATATYPEPROVINCEKEY:
         {
             indexpath = [data objectForKey:kTKPDLOCATION_DATAPROVINCEINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
@@ -685,7 +687,7 @@
     }else{
         [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                               delay:0
-                            options: UIViewAnimationCurveEaseOut
+                            options: UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              _scrollviewContentSize = [_container contentSize];
                              _scrollviewContentSize.height -= _keyboardSize.height;
@@ -710,7 +712,7 @@
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                           delay:0
-                        options: UIViewAnimationCurveEaseOut
+                        options: UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          _container.contentInset = contentInsets;
                          _container.scrollIndicatorInsets = contentInsets;

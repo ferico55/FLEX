@@ -357,7 +357,7 @@
     if (animated) {
         [UIView animateWithDuration:0.5
                               delay:0
-                            options: UIViewAnimationCurveEaseOut
+                            options: UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              [_descriptionview setFrame:CGRectMake(_imageview.frame.origin.x, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
                              [self.view addSubview:_descriptionview];
@@ -371,7 +371,7 @@
     if (animated) {
         [UIView animateWithDuration:0.5
                               delay:0
-                            options: UIViewAnimationCurveEaseOut
+                            options: UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              [_descriptionview setFrame:CGRectMake(350, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
                              [self.view addSubview:_descriptionview];
@@ -458,33 +458,30 @@
     _requestcount ++;
     
     NSString *querry =[_detailfilter objectForKey:kTKPDDETAIL_DATAQUERYKEY]?:@"";
-    NSIndexPath *indexpathetalase = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY];
-    NSInteger index = indexpathetalase.row;
-    
     NSInteger sort =  [[_detailfilter objectForKey:kTKPDDETAIL_APIORERBYKEY]integerValue];
+    NSInteger shopID = [[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0;
+    EtalaseList *etalase = [_detailfilter objectForKey:DATA_ETALASE_KEY];
+    BOOL isSoldProduct = (etalase.etalase_id == 7);
+    BOOL isAllEtalase = (etalase.etalase_id == 0);
+    
     id etalaseid;
-    if (index==0) {
-        // ketika pada etalase memilih produk terjual
+    
+    if (isSoldProduct) {
         etalaseid = @"sold";
-        if(sort == 0)sort = 7;
+        if(sort == 0)sort = etalase.etalase_id;
     }
-    else if (index == 1)
-    {
-        // ketika pada etalase memilih semua etalase
+    else if (isAllEtalase)
         etalaseid = @"all";
-    }
     else{
-        // default
-        EtalaseList *etalase = [_detailfilter objectForKey:kTKPDDETAIL_DATAETALASEKEY];
         etalaseid = @(etalase.etalase_id);
     }
     
 	NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPPRODUCTKEY,
-                            kTKPDDETAIL_APISHOPIDKEY: @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                            kTKPDDETAIL_APISHOPIDKEY: @(shopID),
                             kTKPDDETAIL_APIPAGEKEY : @(_page),
                             kTKPDDETAIL_APILIMITKEY : @(_limit),
-                            kTKPDDETAIL_APIORERBYKEY : @(sort?:0),
-                            kTKPDDETAIL_APIKEYWORDKEY : querry?:@"",
+                            kTKPDDETAIL_APIORERBYKEY : @(sort),
+                            kTKPDDETAIL_APIKEYWORDKEY : querry,
                             kTKPDDETAIL_APIETALASEIDKEY :etalaseid?:0
                             };
     
@@ -506,8 +503,6 @@
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
             [self requestfailure:error];
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"An Error Has Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            //[alertView show];
             [_act stopAnimating];
             _table.tableFooterView = nil;
             [_refreshControl endRefreshing];
@@ -633,7 +628,7 @@
                     
                     _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
                     
-                    NSLog(@"next page : %d",_page);
+                    NSLog(@"next page : %zd",_page);
                     
                     _isnodata = NO;
                     
