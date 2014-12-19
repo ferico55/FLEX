@@ -26,6 +26,7 @@
     #import "UIImageView+AFNetworking.h"
     #import "NSDictionaryCategory.h"
     #import "UIKitCategory.h"
+    #import "NSMutableURLRequest+TKPDURLRequestUploadImage.h"
 
     #import "Tkpd.h"
     #import "string.h"

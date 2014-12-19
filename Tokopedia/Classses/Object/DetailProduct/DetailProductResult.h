@@ -19,6 +19,9 @@
 @interface DetailProductResult : NSObject
 
 @property (nonatomic, strong) Info *info;
+@property (nonatomic, strong) Info *product;
+@property (nonatomic) NSInteger server_id;
+@property (nonatomic) NSInteger shop_is_gold;
 @property (nonatomic, strong) Statistic *statistic;
 @property (nonatomic, strong) ShopInfo *shop_info;
 @property (nonatomic, strong) NSArray *wholesale_price;

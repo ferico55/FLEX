@@ -311,7 +311,7 @@
                 ProductTalkFormViewController *vc = [ProductTalkFormViewController new];
                 vc.data = @{
                             kTKPDDETAIL_APIPRODUCTIDKEY:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0),
-                            kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY]?:@(0),
+                            API_PRODUCT_NAME_KEY:[_data objectForKey:API_PRODUCT_NAME_KEY]?:@(0),
                             kTKPDDETAILPRODUCT_APIIMAGESRCKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]?:@(0),
                             TKPD_TALK_SHOP_ID:[_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
                             
@@ -630,8 +630,8 @@
 #pragma mark - Methods
 -(void)setHeaderData:(NSDictionary*)data
 {
-    _productnamelabel.text = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
-    _pricelabel.text = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTPRICEKEY];
+    _productnamelabel.text = [data objectForKey:API_PRODUCT_NAME_KEY];
+    _pricelabel.text = [data objectForKey:API_PRODUCT_PRICE_KEY];
     _productSoldLabel.text = [NSString stringWithFormat:@"%@ Sold", [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY]];
     ;
     _productViewLabel.text = [NSString stringWithFormat:@"%@ View", [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY]];

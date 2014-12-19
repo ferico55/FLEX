@@ -16,7 +16,7 @@
 #pragma mark - SettingNoteDetailViewController
 @interface SettingNoteDetailViewController ()
 {
-    NSInteger *_requestcount;
+    NSInteger _requestcount;
     NoteDetail *_note;
     
     NSInteger _type;
@@ -85,8 +85,6 @@
     
     NSString *barbuttontitle;
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
     barButtonItem.tag = 10;
@@ -101,6 +99,7 @@
             break;
         case kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY:
             barbuttontitle = @"Edit";
+            _barbuttonedit.enabled = NO;
         default:
             break;
     }
@@ -108,16 +107,27 @@
     [_barbuttonedit setTintColor:[UIColor blackColor]];
     switch (_type) {
         case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
-        case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:
-        case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
+            self.title = kTKPDTITLE_NEW_NOTE;
             _barbuttonedit.tag = 11;
             break;
+        case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:
+            self.title = kTKPDTILTE_EDIT_NOTE;
+            _barbuttonedit.tag = 11;
+            break;
+        case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
+            self.title = kTKPDTILTE_EDIT_NOTE;
+            _barbuttonedit.tag = 11;
+            _barbuttonedit.enabled = NO;
+            break;
         case kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY:
+            self.title = [_data objectForKey:kTKPDNOTES_APINOTETITLEKEY];
             _barbuttonedit.tag = 12;
+            _barbuttonedit.enabled = NO;
         default:
             break;
     }
     self.navigationItem.rightBarButtonItem = _barbuttonedit;
+
     
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
     _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTES_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue]]];
@@ -126,12 +136,13 @@
     _cachecontroller.URLCacheInterval = 0;
     [_cachecontroller initCacheWithDocumentPath:path];
     
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self cancel];
+    //[self cancel];
 }
 
 #pragma mark - Memory Management
@@ -253,20 +264,23 @@
                             kTKPDNOTES_APINOTEIDKEY : [_data objectForKey:kTKPDNOTES_APINOTEIDKEY]?:@(0)
                             };
     NSTimer *timer;
-    _barbuttonedit.enabled = NO;
+    
     [_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
 	if (_timeinterval > _cachecontroller.URLCacheInterval) {
+        
+        UIApplication* app = [UIApplication sharedApplication];
+        app.networkActivityIndicatorVisible = YES;
+        
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILNOTES_APIPATH parameters:param];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [timer invalidate];
-            _barbuttonedit.enabled = YES;
+            app.networkActivityIndicatorVisible = NO;
             [self requestsuccess:mappingResult withOperation:operation];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            /** failure **/
-            _barbuttonedit.enabled = YES;
             [timer invalidate];
             [self requestfailure:error];
+            app.networkActivityIndicatorVisible = NO;
         }];
         [_operationQueue addOperation:_request];
         
@@ -278,7 +292,6 @@
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
         NSLog(@"cache and updated in last 24 hours.");
-        _barbuttonedit.enabled = YES;
         [self requestfailure:nil];
     }
 }
@@ -440,7 +453,6 @@
                             kTKPD_USERIDKEY : @(userid)
                             };
     _requestcount ++;
-    _barbuttonedit.enabled = NO;
     
     UIApplication* app = [UIApplication sharedApplication];
     app.networkActivityIndicatorVisible = YES;
@@ -451,12 +463,10 @@
         [self requestSuccessActionNote:mappingResult withOperation:operation];
         [timer invalidate];
         app.networkActivityIndicatorVisible = NO;
-        _barbuttonedit.enabled = YES;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionNote:error];
         app.networkActivityIndicatorVisible = NO;
         [timer invalidate];
-        _barbuttonedit.enabled = YES;
     }];
     
     [_operationQueue addOperation:_requestActionNote];
@@ -492,7 +502,7 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (setting.result.is_success) {
+                if (setting.result.is_success == 1) {
                     NSDictionary *userinfo;
                     if (_type == 1){
                         //TODO: Behavior after edit
@@ -602,9 +612,7 @@
         _type = [[_data objectForKey:kTKPDDETAIL_DATATYPEKEY] integerValue];
         switch (_type) {
             case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
-                _barbuttonedit.enabled = YES;
             case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:{
-                _barbuttonedit.enabled = NO;
                 _labeltitle.hidden = YES;
                 _labelcontent.hidden = YES;
                 _textviewcontent.hidden = NO;
@@ -639,14 +647,16 @@
                 _labeltime.text = [NSString stringWithFormat:@"%d %@ %d, %@",day, monthString,year,currentTime];
                 [_datainput setObject:_labeltime.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
 
-                _textviewcontent.text = [NSString convertHTML:_note.result.detail.notes_content];
-                [_labelcontent sizeToFit];
-                [_labelcontent setNumberOfLines:0];
+                //_textviewcontent.text = [NSString convertHTML:_note.result.detail.notes_content];
+                UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+                NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+                [attributes setObject:font forKey:NSFontAttributeName];
                 
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:&attributes error:nil];
+                _textviewcontent.attributedText = attributedString;
                 break;
             }
             case kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY:
-                _barbuttonedit.enabled = NO;
                 _textfieldtitle.hidden = YES;
                 _textviewcontent.hidden = YES;
                 _labelcontent.hidden = NO;
@@ -655,7 +665,6 @@
                 [self request];
                 break;
             case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
-                _barbuttonedit.enabled = NO;
                 _labeltitle.hidden = YES;
                 _labelcontent.hidden = YES;
                 _textviewcontent.hidden = NO;

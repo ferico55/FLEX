@@ -418,7 +418,7 @@
             
             if (status) {
                 if (!setting.message_error) {
-                    if (setting.result.is_success) {
+                    if (setting.result.is_success == 1) {
                         NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:setting.message_status ,@"messages", nil];
                         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
                         [self.navigationController popViewControllerAnimated:YES];

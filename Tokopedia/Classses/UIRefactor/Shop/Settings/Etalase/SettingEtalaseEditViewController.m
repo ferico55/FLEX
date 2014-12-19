@@ -7,6 +7,7 @@
 //
 
 #import "detail.h"
+#import "stringetalase.h"
 #import "EtalaseList.h"
 #import "ShopSettings.h"
 #import "SettingEtalaseEditViewController.h"
@@ -68,9 +69,6 @@
     
     [self setDefaultData:_data];
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
     barButtonItem.tag = 10;
@@ -105,29 +103,25 @@
             case 11:
             {
                 //submit
-                EtalaseList *list = [_data objectForKey:kTKPDDETAIL_DATAETALASEKEY];
-                
-                NSMutableArray *messages = [NSMutableArray new];
-                
-                NSString *etalasename = [_datainput objectForKey:kTKPDSHOP_APIETALASENAMEKEY]?:list.etalase_name?:@"";
-                
-                if (etalasename && ![etalasename isEqualToString:@""]) {
+                EtalaseList *list = [_data objectForKey:DATA_ETALASE_KEY];
+
+                if ([self isValidEtalaseName] && list.etalase_id != DATA_ADD_NEW_ETALASE_ID) {
                     [self configureRestKitActionAddEtalase];
                     [self requestActionAddEtalase:_datainput];
                 }
-                else
-                {
-                    if (!etalasename || [etalasename isEqualToString:@""]) {
-                        [messages addObject:@"Nama Etalase harus diisi."];
-                    }
+                
+                if ([self isValidEtalaseName] && list.etalase_id == DATA_ADD_NEW_ETALASE_ID) {
+                    EtalaseList *list = [_data objectForKey:DATA_ETALASE_KEY];
+                    NSString *etalasename = [_datainput objectForKey:kTKPDSHOP_APIETALASENAMEKEY]?:list.etalase_name?:@"";
+                    list.etalase_name = etalasename;
+                    NSDictionary *userInfo = @{DATA_ETALASE_KEY: list};
+                    [_delegate SettingEtalaseEditViewController:self withUserInfo:userInfo];
+                    
+                    NSInteger indexPopViewController = self.navigationController.viewControllers.count -3;
+                    UIViewController *popToViewController = self.navigationController.viewControllers[indexPopViewController];
+                    [self.navigationController popToViewController:popToViewController animated:YES];
                 }
                 
-                NSLog(@"%@",messages);
-                if (messages) {
-                    NSArray *array = messages;
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-                }
                 break;
             }
             default:
@@ -179,7 +173,7 @@
     NSTimer *timer;
     
     NSDictionary *userinfo = (NSDictionary*)object;
-    EtalaseList *list = [_data objectForKey:kTKPDDETAIL_DATAETALASEKEY];
+    EtalaseList *list = [_data objectForKey:DATA_ETALASE_KEY];
     
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
     NSInteger shopid = [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]?:0;
@@ -246,7 +240,7 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (setting.result.is_success) {
+                if (setting.result.is_success == 1) {
                     NSString *message;
                     if (_type == kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY) {
                         message = @"Anda telah sukses memperbaharui informasi etalase.";
@@ -343,18 +337,41 @@
                 title = kTKPDTITLE_EDIT_ETALASE;
                 break;
             case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
+            case kTKPDSETTINGEDIT_DATATYPENEWVIEWADDPRODUCTKEY:
                 title = kTKPDTITLE_NEW_ETALASE;
                 break;
             default:
                 break;
         }
         self.title = title;
-        id etalaselist = [_data objectForKey:kTKPDDETAIL_DATAETALASEKEY];
-        if (etalaselist && ![etalaselist isEqual:[NSNull null]]) {
+        id etalaselist = [_data objectForKey:DATA_ETALASE_KEY];
+        if (etalaselist && ![etalaselist isEqual:[NSNull null]] && _type != kTKPDSETTINGEDIT_DATATYPENEWVIEWADDPRODUCTKEY) {
             EtalaseList *list = etalaselist;
             _textfieldname.text = list.etalase_name;
         }
     }
+}
+
+-(BOOL)isValidEtalaseName
+{
+    BOOL isValid = YES;
+    NSMutableArray *messages = [NSMutableArray new];
+
+    EtalaseList *list = [_data objectForKey:DATA_ETALASE_KEY];
+    NSString *etalasename = [_datainput objectForKey:kTKPDSHOP_APIETALASENAMEKEY]?:list.etalase_name?:@"";
+
+    if (!etalasename || [etalasename isEqualToString:@""]) {
+        isValid = NO;
+        [messages addObject:ERRORMESSAGE_NULL_ETALASE_NAME];
+    }
+    
+    if (!isValid) {
+        NSArray *array = messages;
+        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+    }
+
+    return isValid;
 }
 
 @end

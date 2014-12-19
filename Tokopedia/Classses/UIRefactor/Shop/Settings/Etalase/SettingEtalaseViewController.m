@@ -17,7 +17,7 @@
 
 #import "URLCacheController.h"
 
-@interface SettingEtalaseViewController ()<UITableViewDataSource,UITableViewDelegate, GeneralList1GestureCellDelegate, SettingEtalaseDetailViewControllerDelegate>
+@interface SettingEtalaseViewController ()<UITableViewDataSource,UITableViewDelegate, SettingEtalaseDetailViewControllerDelegate>
 {
     NSInteger _page;
     NSInteger _limit;
@@ -26,7 +26,6 @@
     
     BOOL _isrefreshview;
     BOOL _ismanualsetdefault;
-    BOOL _ismanualdelete;
     BOOL _isnodata;
     
     NSOperationQueue *_operationQueue;
@@ -96,9 +95,6 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
 
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
     barButtonItem.tag = 10;
@@ -118,6 +114,7 @@
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(didEditEtalase:) name:kTKPD_ADDETALASEPOSTNOTIFICATIONNAMEKEY object:nil];
     
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -125,7 +122,7 @@
     [super viewWillAppear:animated];
     
     [self configureRestKit];
-    if (_isnodata || _page>1) {
+    if (_isnodata && _page<=1) {
         [self request];
     }
 }
@@ -226,6 +223,14 @@
 }
 
 #pragma mark - Table View Delegate
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    SettingEtalaseDetailViewController *vc = [SettingEtalaseDetailViewController new];
+    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY],DATA_ETALASE_KEY : _list[indexPath.row], kTKPDDETAIL_DATAINDEXPATHKEY:indexPath};
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -633,7 +638,7 @@
 -(void)GeneralList1GestureCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     SettingEtalaseDetailViewController *vc = [SettingEtalaseDetailViewController new];
-    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY],kTKPDDETAIL_DATAETALASEKEY : _list[indexpath.row], kTKPDDETAIL_DATAINDEXPATHKEY:indexpath};
+    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY],DATA_ETALASE_KEY : _list[indexpath.row], kTKPDDETAIL_DATAINDEXPATHKEY:indexpath};
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -687,7 +692,6 @@
 
 -(void)deleteListAtIndexPath:(NSIndexPath*)indexpath
 {
-    _ismanualdelete = YES;
     EtalaseList *list = _list[indexpath.row];
     [_datainput setObject:@(list.etalase_id) forKey:kTKPDSHOP_APIETALASEIDKEY];
     [_datainput setObject:_list[indexpath.row] forKey:kTKPDDETAIL_DATADELETEDOBJECTKEY];

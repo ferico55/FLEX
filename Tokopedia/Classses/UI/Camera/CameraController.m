@@ -8,18 +8,12 @@
 
 #import "camera.h"
 #import "CameraController.h"
-
-#import "CameraAlbumListViewController.h"
-#import "CameraCropViewController.h"
-#import "AlertCameraView.h"
-
 #import "NSDictionaryCategory.h"
 
-@interface CameraController () <TKPDAlertViewDelegate, CameraCropViewControllerDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface CameraController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
 {
     BOOL _isFirstTimeLaunch;
     
-    UIImage* _snappedImage;
 }
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) UIImagePickerController *picker;
@@ -39,7 +33,6 @@
     {
         // Custom initialization
         _isFirstTimeLaunch = YES;
-        self.wantsFullScreenLayout = YES;
     }
     return self;
 }
@@ -59,27 +52,22 @@
     {
         _data = [NSMutableDictionary new];
     }
-    //cropimage from camera collection view
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(CameraCrop:) name:kTKPD_CROPIMAGEPOSTNOTIFICATIONNAMEKEY object:nil];
-    
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-//    if(!_snappedImage)
-//    {
-//        [self snap];
-//        
-//        [_imageView setImage:_snappedImage];
-//    }
-//    else
-//    {
-//        [_imageView setImage:_snappedImage];
-//    }
+    if(!_snappedImage)
+    {
+        [self snap];
+        
+        [_imageView setImage:_snappedImage];
+    }
+    else
+    {
+        [_imageView setImage:_snappedImage];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -97,39 +85,24 @@
         
         if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         {
-//            [_picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-//            _picker.mediaTypes = @[(NSString*)kUTTypeImage];
-//            if(_picker != nil)
-//            {
-//                [self presentViewController:_picker animated:YES completion:nil];
-//            }
-            //TODO:: add alert choose type camera
-            AlertCameraView *v = [AlertCameraView newview];
-            v.delegate = self;
-            v.tag = 10;
-            [v show];
-           
+            UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:
+                                    @"Camera",
+                                    @"Library",
+                                    nil];
+            popup.tag = 1;
+            [popup showInView:[UIApplication sharedApplication].keyWindow];
         }else
         {
-            CameraAlbumListViewController *vc = [CameraAlbumListViewController new];
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-            [self presentViewController:nav animated:YES completion:nil];
-            //[_picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-            //_picker.mediaTypes = @[(NSString*)kUTTypeImage];
-            //if(_picker != nil)
-            //{
-            //    [self presentViewController:_picker animated:YES completion:nil];
-            //}
+            [self presentPickerSourceTypePhotoLibrary];
 
         }
-        
     }
 }
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
+    //[[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -156,29 +129,46 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     
-    //UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
-    //self.imageView.image = chosenImage;
-    
+    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     UIImage* rawImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-    
     NSString* mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    
+    NSURL *imagePath = [info objectForKey:UIImagePickerControllerReferenceURL];
+    
+    //UIImage *image = [UIImage imageNamed:@"icon_location.png"];
+    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, chosenImage.scale);
+    [chosenImage drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
+    chosenImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    NSString *imageName;
+    NSData* imageData;
+    if (imagePath) {
+        imageName = [imagePath lastPathComponent];
+        
+        NSString *extensionOFImage =[imageName substringFromIndex:[imageName rangeOfString:@"."].location+1 ];
+        if ([extensionOFImage isEqualToString:@"jpg"])
+            imageData =  UIImagePNGRepresentation(chosenImage);
+        else
+            imageData = UIImageJPEGRepresentation(chosenImage, 1.0);
+    }
+    else{
+        imageData =  UIImagePNGRepresentation(chosenImage);
+    }
+
     
     [_data setValue:@{
                       kTKPDCAMERA_DATARAWPHOTOKEY:rawImage,
                       kTKPDCAMERA_DATAMEDIATYPEKEY:mediaType,
-                      kTKPDCAMERA_DATAPHOTOKEY:rawImage //TODO::remove it - cropped image
+                      kTKPDCAMERA_DATAPHOTOKEY:chosenImage,
+                      DATA_CAMERA_IMAGENAME:imageName?:@"image.png",
+                      DATA_CAMERA_IMAGEDATA:imageData
                       } forKey:kTKPDCAMERA_DATAPHOTOKEY];
     
     [_delegate didDismissCameraController:self withUserInfo:_data];
     [self dismissViewControllerAnimated:YES completion:^{
         [self dismissViewControllerAnimated:YES completion:nil];
     }];
-    //CameraCropViewController *c = [CameraCropViewController new];
-    //[c setDelegate:self];
-    //[c setData:[_data copy]];
-    //[c setPicker:picker];
-    //
-    //[picker pushViewController:c animated:YES];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -189,75 +179,58 @@
      }];
 }
 
-#pragma mark - Camera Crop Delegate
--(void)CameraCropViewController:(UIViewController *)controller didFinishCroppingMediaWithInfo:(NSDictionary *)userinfo
-{
-    [_delegate didDismissCameraController:self withUserInfo:userinfo];
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }];
-}
-
--(void)CameraCrop:(NSNotification*)notification
-{
-    NSDictionary* userinfo = notification.userInfo;
-    [_delegate didDismissCameraController:self withUserInfo:userinfo];
-}
-
 #pragma mark - Alert Delegate
--(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch (buttonIndex) {
         case 0:
         {   //camera
-            [_picker setSourceType:UIImagePickerControllerSourceTypeCamera];
-            [_picker setCameraCaptureMode:UIImagePickerControllerCameraCaptureModePhoto];
-            _picker.showsCameraControls = YES;
-            _picker.allowsEditing = NO;
-            _picker.toolbarHidden = YES;
-            _picker.navigationBarHidden = NO;
-            _picker.mediaTypes = @[(NSString*)kUTTypeImage];
-            
-            if(_picker != nil)
-            {
-                [self presentViewController:_picker animated:YES completion:nil];
-            }
+            [self presentPickerSourceTypeCamera];
             break;
         }
         case 1:
-        {   //gallery
-             
-            CameraAlbumListViewController *vc = [CameraAlbumListViewController new];
-            [self.navigationController pushViewController:vc animated:YES];
-            //[self presentViewController:vc animated:YES completion:nil];
-            //[_picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-            //_picker.mediaTypes = @[(NSString*)kUTTypeImage];
+        {   //Library
+            [self presentPickerSourceTypePhotoLibrary];
             break;
         }
         default:
+            [self dismissViewControllerAnimated:YES completion:nil];
             break;
-    }
-}
--(void)alertViewCancel:(TKPDAlertView *)alertView
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - View Action
-- (IBAction)tap:(id)sender
-{
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
-        if (btn.tag == 10) {
-            //back
-            [self dismissViewControllerAnimated:YES completion:^{
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }];
-        }
     }
 }
 
 #pragma mark - Methods
+- (void) presentPickerSourceTypePhotoLibrary
+{
+    [_picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+    _picker.title = @"Select Photo";
+    _picker.allowsEditing = YES;
+    _picker.mediaTypes = @[(NSString*)kUTTypeImage];
+    _picker.navigationBarHidden = NO;
+    _picker.wantsFullScreenLayout = NO;
+    _picker.navigationBar.tintColor = [UIColor blackColor];
+    if(_picker != nil)
+    {
+        [self presentViewController:_picker animated:YES completion:nil];
+    }
+}
+
+-(void)presentPickerSourceTypeCamera
+{
+    [_picker setSourceType:UIImagePickerControllerSourceTypeCamera];
+    [_picker setCameraCaptureMode:UIImagePickerControllerCameraCaptureModePhoto];
+    _picker.showsCameraControls = YES;
+    _picker.allowsEditing = YES;
+    _picker.toolbarHidden = YES;
+    _picker.navigationBarHidden = NO;
+    _picker.mediaTypes = @[(NSString*)kUTTypeImage];
+    
+    if(_picker != nil)
+    {
+        [self presentViewController:_picker animated:YES completion:nil];
+    }
+}
+
 - (void)snap
 {
     UIWindow* window = [UIApplication sharedApplication].keyWindow;
@@ -286,7 +259,6 @@
     
     [((NSMutableDictionary*)_data)removeObjectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     [((NSMutableDictionary*)_data)removeObjectForKey:kTKPDCAMERA_DATACAMERAKEY];
-    [((NSMutableDictionary*)_data)removeObjectForKey:kTKPDCAMERA_DATAPRESENTINGVIEWCONTROLLERCLASSKEY];
     [((NSMutableDictionary*)_data)removeObjectForKey:kTKPDCAMERA_DATAUSERINFOKEY];
 }
 

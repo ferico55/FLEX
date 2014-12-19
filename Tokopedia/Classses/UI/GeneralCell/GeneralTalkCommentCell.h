@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "home.h"
+#import "stringhome.h"
 
 #define kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER @"GeneralTalkCommentCellIdentifier"
 

@@ -46,4 +46,7 @@
 #define STATE_PRODUCT_BANNED @"-2"
 #define STATE_PRODUCT_DELETED @"0"
 
+#define STATE_PRODUCT_DELETED @"0"
+#define STATE_PRODUCT_BANNED @"-2"
+
 #endif

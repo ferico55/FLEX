@@ -9,12 +9,13 @@
 #import "detail.h"
 #import "DetailShopResult.h"
 #import "ShopSettingViewController.h"
-#import "Etalase/SettingEtalaseViewController.h"
-#import "Shipment/SettingShipmentViewController.h"
+#import "SettingEtalaseViewController.h"
+#import "SettingShipmentViewController.h"
 #import "ShipmentSettingViewController.h"
-#import "Payment/SettingPaymentViewController.h"
-#import "Note/SettingNoteViewController.h"
-#import "Location/SettingLocationViewController.h"
+#import "SettingPaymentViewController.h"
+#import "SettingNoteViewController.h"
+#import "SettingLocationViewController.h"
+#import "ProductListMyShopViewController.h"
 
 @interface ShopSettingViewController ()
 {
@@ -87,6 +88,9 @@
                 case 11:
                 {
                     //Product
+                    ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
+                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                    [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }
                 case 12:

@@ -71,7 +71,7 @@
 }
 
 -(void) setHeaderData:(NSDictionary*)data{
-    _productnamelabel.text = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
+    _productnamelabel.text = [data objectForKey:API_PRODUCT_NAME_KEY];
     _reviewmessagelabel.text = [data objectForKey:kTKPDREVIEW_APIREVIEWMESSAGEKEY];
     _usernamelabel.text = [data objectForKey:kTKPDREVIEW_APIREVIEWUSERNAMEKEY];
     _createtimelabel.text = [data objectForKey:kTKPDREVIEW_APIREVIEWCREATETIMEKEY];

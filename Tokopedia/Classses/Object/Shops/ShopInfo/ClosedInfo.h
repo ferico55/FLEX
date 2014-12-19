@@ -12,5 +12,6 @@
 
 @property (nonatomic, strong) NSString *until;
 @property (nonatomic, strong) NSString *reason;
+@property (nonatomic, strong) NSString *note;
 
 @end

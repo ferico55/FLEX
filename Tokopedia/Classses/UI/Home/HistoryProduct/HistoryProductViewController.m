@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "home.h"
+#import "stringhome.h"
 #import "detail.h"
 #import "GeneralProductCell.h"
 #import "HistoryProductViewController.h"
@@ -302,8 +302,6 @@
     
     _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-
-
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
@@ -414,7 +412,7 @@
                                                  kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
                                                  kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
                                                  kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY,
-                                                 kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY
+                                                 API_PRODUCT_NAME_KEY
                                                 ]];
     
     //relation

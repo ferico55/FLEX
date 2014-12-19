@@ -145,7 +145,7 @@ static sqlite3_stmt *statement = nil;
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
             {
-                NSMutableDictionary* dict = [NSMutableDictionary new];
+                //NSMutableDictionary* dict = [NSMutableDictionary new];
                 //[dict removeAllObjects];
                 if ( sqlite3_column_type(statement, 0) != SQLITE_NULL )
                     districtname = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];
@@ -174,7 +174,7 @@ static sqlite3_stmt *statement = nil;
         {
             while (sqlite3_step(statement) == SQLITE_ROW)
             {
-                NSMutableDictionary* dict = [NSMutableDictionary new];
+                //NSMutableDictionary* dict = [NSMutableDictionary new];
                 //[dict removeAllObjects];
                 if ( sqlite3_column_type(statement, 0) != SQLITE_NULL )
                     districtvalue = [[NSString alloc] initWithUTF8String:(const char *) sqlite3_column_text(statement, 0)];

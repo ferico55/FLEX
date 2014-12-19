@@ -25,7 +25,7 @@
 #import "URLCacheController.h"
 #import "UIImage+ImageEffects.h"
 
-@interface TKPDTabShopNavigationController () <UIScrollViewDelegate> {
+@interface TKPDTabShopNavigationController () <UIScrollViewDelegate, ProductEtalaseViewControllerDelegate> {
 	UIView* _tabbar;
 	NSInteger _unloadSelectedIndex;
 	NSArray* _unloadViewControllers;
@@ -44,6 +44,7 @@
     NSInteger _requestcount;
     BOOL _isaddressexpanded;
     BOOL _isrefreshview;
+    BOOL _isinsertgradientlayer;
     
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -161,6 +162,7 @@
         _requestcount = 0;
         _isnodata = YES;
         _isrefreshview = NO;
+        _isinsertgradientlayer= YES;
     }
     return self;
 }
@@ -173,8 +175,9 @@
     
     self.title = @"Shop";
     
-    [self.navigationController.navigationBar setTranslucent:NO];
-    
+    //[self.navigationController.navigationBar setTranslucent:NO];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+
     _operationQueue = [NSOperationQueue new];
     _detailfilter = [NSMutableDictionary new];
     _cachecontroller = [URLCacheController new];
@@ -190,10 +193,9 @@
 	}
     
     /** set inset table for different size**/
-    
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
+    //if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
+    //    self.edgesForExtendedLayout = UIRectEdgeNone;
+    //}
     
     CGSize size =_contentview.frame.size;
     size.height = size.height - _tapview.frame.size.height;
@@ -241,7 +243,6 @@
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil];
-    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil];
     
@@ -683,7 +684,9 @@
             {
                 //settings
                 ShopSettingViewController *vc = [ShopSettingViewController new];
-                vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY], kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result};
+                vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                            kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result
+                            };
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -751,6 +754,7 @@
                 ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
                 vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
+                vc.delegate = self;
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
@@ -783,6 +787,7 @@
                 ShopInfoViewController *vc = [[ShopInfoViewController alloc] init];
                 vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                vc.navigationController.navigationBarHidden = NO;
                 [self.navigationController pushViewController:vc animated:YES];
                 
                 break;
@@ -1234,7 +1239,8 @@
     
     RKObjectMapping *closedinfoMapping = [RKObjectMapping mappingForClass:[ClosedInfo class]];
     [closedinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILSHOP_APIUNTILKEY:kTKPDDETAILSHOP_APIUNTILKEY,
-                                                            kTKPDDETAILSHOP_APIRESONKEY:kTKPDDETAILSHOP_APIRESONKEY
+                                                            kTKPDDETAILSHOP_APIRESONKEY:kTKPDDETAILSHOP_APIRESONKEY,
+                                                            kTKPDDETAILSHOP_APINOTEKEY:kTKPDDETAILSHOP_APINOTEKEY
                                                             }];
     
     RKObjectMapping *ownerMapping = [RKObjectMapping mappingForClass:[Owner class]];
@@ -1294,7 +1300,7 @@
                                                     kTKPDDETAILSHOP_APIPAYMENTNAMEKEY]];
     
     RKObjectMapping *addressMapping = [RKObjectMapping mappingForClass:[Address class]];
-    [addressMapping addAttributeMappingsFromArray:@[kTKPDDETAIL_APILOCATIONKEY,
+    [addressMapping addAttributeMappingsFromArray:@[//kTKPDDETAIL_APILOCATIONKEY,
                                                     kTKPDSHOP_APIADDRESSNAMEKEY,
                                                     kTKPDSHOP_APIADDRESSIDKEY,
                                                     kTKPDSHOP_APIPOSTALCODEKEY,
@@ -1346,7 +1352,7 @@
         UIApplication* app = [UIApplication sharedApplication];
         app.networkActivityIndicatorVisible = YES;
         
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:param];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOP_APIPATH parameters:param];
         
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             app.networkActivityIndicatorVisible = NO;
@@ -1582,6 +1588,16 @@
     [_detailfilter addEntriesFromDictionary:userinfo];
     
     [self refreshView:nil];
+}
+
+#pragma mark - Etalase Delegate
+-(void)ProductEtalaseViewController:(ProductEtalaseViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+{
+    [self cancel];
+    [_detailfilter addEntriesFromDictionary:userInfo];
+    [self refreshView:nil];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
 }
 
 @end

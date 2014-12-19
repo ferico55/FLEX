@@ -18,7 +18,7 @@
 #import "MGSwipeButton.h"
 
 #pragma mark - Setting Note View Controller
-@interface SettingNoteViewController () <UITableViewDataSource,UITableViewDelegate,GeneralList1GestureCellDelegate,MGSwipeTableCellDelegate>
+@interface SettingNoteViewController () <UITableViewDataSource,UITableViewDelegate,MGSwipeTableCellDelegate>
 {
     NSMutableDictionary *_datainput;
     NSMutableArray *_list;
@@ -36,6 +36,8 @@
     __weak RKManagedObjectRequestOperation *_requestActionDelete;
     
     NSOperationQueue *_operationQueue;
+    
+    UIRefreshControl *_refreshControl;
     
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
@@ -66,6 +68,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isnodata = YES;
+        self.title = kTKPDTITLE_NOTE;
     }
     return self;
 }
@@ -85,11 +88,17 @@
         _isnodata = NO;
     }
     
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
     /** adjust refresh control **/
-    //_refreshControl = [[UIRefreshControl alloc] init];
-    //_refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
-    //[_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
-    //[_table addSubview:_refreshControl];
+    _refreshControl = [[UIRefreshControl alloc] init];
+    _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
+    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_table addSubview:_refreshControl];
     
     //cache
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
@@ -177,7 +186,9 @@
     SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
     vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
                 kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
-                kTKPDNOTES_APINOTEIDKEY:list.note_id};
+                kTKPDNOTES_APINOTEIDKEY:list.note_id,
+                kTKPDNOTES_APINOTETITLEKEY:list.note_title
+                };
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -287,14 +298,14 @@
             [timer invalidate];
             _table.hidden = NO;
             _isrefreshview = NO;
-            //[_refreshControl endRefreshing];
+            [_refreshControl endRefreshing];
             [_act stopAnimating];
             [self requestsuccess:mappingResult withOperation:operation];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
             [timer invalidate];
             _isrefreshview = NO;
-            //[_refreshControl endRefreshing];
+            [_refreshControl endRefreshing];
             [_act stopAnimating];
             [self requestfailure:error];
         }];
@@ -390,21 +401,19 @@
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
                     NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
-                    //_table.tableFooterView = _footer;
-                    [_act startAnimating];
-                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    //[self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    //[self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }
                 else
                 {
-                    [_act stopAnimating];
-                    _table.tableFooterView = nil;
+                    //[_act stopAnimating];
+                    //_table.tableFooterView = nil;
                 }
             }
             else
             {
-                [_act stopAnimating];
-                _table.tableFooterView = nil;
+                //[_act stopAnimating];
+                //_table.tableFooterView = nil;
             }
         }
     }
@@ -519,7 +528,7 @@
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
-                if (setting.result.is_success) {
+                if (setting.result.is_success == 1) {
                     NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
@@ -541,42 +550,42 @@
 
 
 #pragma mark - Cell Delegate
--(void)GeneralList1GestureCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-{
-    NotesList *list = _list[indexpath.row];
-    SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
-    vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
-                kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
-                kTKPDNOTES_APINOTEIDKEY:list.note_id};
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
--(void)DidTapButton:(UIButton *)button atCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-{
-    NotesList *list = _list[indexpath.row];
-    [_datainput setObject:list.note_id forKey:kTKPDNOTES_APINOTEIDKEY];
-    switch (button.tag) {
-        case 10:
-        {
-            //edit
-            SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
-            vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
-                        kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY),
-                        kTKPDNOTES_APINOTEIDKEY : list.note_id
-                        };
-            [self.navigationController pushViewController:vc animated:YES];
-            break;
-        }
-        case 11:
-        {
-            //delete
-            [self deleteListAtIndexPath:indexpath];
-            break;
-        }
-        default:
-            break;
-    }
-}
+//-(void)GeneralList1GestureCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+//{
+//    NotesList *list = _list[indexpath.row];
+//    SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
+//    vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
+//                kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
+//                kTKPDNOTES_APINOTEIDKEY:list.note_id};
+//    [self.navigationController pushViewController:vc animated:YES];
+//}
+//
+//-(void)DidTapButton:(UIButton *)button atCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+//{
+//    NotesList *list = _list[indexpath.row];
+//    [_datainput setObject:list.note_id forKey:kTKPDNOTES_APINOTEIDKEY];
+//    switch (button.tag) {
+//        case 10:
+//        {
+//            //edit
+//            SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
+//            vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
+//                        kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY),
+//                        kTKPDNOTES_APINOTEIDKEY : list.note_id
+//                        };
+//            [self.navigationController pushViewController:vc animated:YES];
+//            break;
+//        }
+//        case 11:
+//        {
+//            //delete
+//            [self deleteListAtIndexPath:indexpath];
+//            break;
+//        }
+//        default:
+//            break;
+//    }
+//}
 
 
 #pragma mark - Methods
@@ -626,7 +635,7 @@
     [self refreshView:nil];
 }
 
-#pragma mark Swipe Delegate
+#pragma mark - Swipe Delegate
 
 -(BOOL) swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction;
 {
@@ -637,7 +646,7 @@
              swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
 {
     
-    swipeSettings.transition = MGSwipeTransitionBorder;
+    swipeSettings.transition = MGSwipeTransitionStatic;
     expansionSettings.buttonIndex = -1; //-1 not expand, 0 expand
     
     

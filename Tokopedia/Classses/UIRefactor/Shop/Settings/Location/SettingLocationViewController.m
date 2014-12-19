@@ -18,7 +18,7 @@
 
 #import "URLCacheController.h"
 
-@interface SettingLocationViewController ()<UITableViewDataSource, UITableViewDelegate, GeneralList1GestureCellDelegate, SettingLocationDetailViewControllerDelegate, UIScrollViewDelegate>
+@interface SettingLocationViewController ()<UITableViewDataSource, UITableViewDelegate, SettingLocationDetailViewControllerDelegate, UIScrollViewDelegate>
 {
     NSInteger _page;
     NSInteger _limit;
@@ -221,6 +221,27 @@
 }
 
 #pragma mark - Table View Delegate
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    BOOL isdefault;
+    Address *list = _list[indexPath.row];
+    if (_ismanualsetdefault) {
+        isdefault = (indexPath.row == 0)?YES:NO;
+    }
+    else
+    {
+        //isdefault = (list.address_status == 2)?YES:NO;
+    }
+    
+    SettingLocationDetailViewController *vc = [SettingLocationDetailViewController new];
+    vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
+                kTKPDDETAIL_DATAADDRESSKEY : _list[indexPath.row],
+                kTKPDDETAIL_DATAINDEXPATHKEY : indexPath,
+                kTKPDDETAIL_DATAISDEFAULTKEY : @(isdefault)
+                };
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 -(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -573,9 +594,9 @@
     NSTimer *timer;
     
     NSDictionary *userinfo = (NSDictionary*)object;
-    
+    Address *address = [userinfo objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY];
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIDELETESHOPLOCATIONKEY,
-                            kTKPDSHOP_APIADDRESSIDKEY : [userinfo objectForKey:kTKPDSHOP_APIADDRESSIDKEY]
+                            kTKPDSHOP_APIADDRESSIDKEY : address.location_address_id?:@(0)
                             };
     _requestcount ++;
     

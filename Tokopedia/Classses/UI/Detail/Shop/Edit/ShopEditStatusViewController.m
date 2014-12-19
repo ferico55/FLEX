@@ -213,7 +213,7 @@
                 NSString *note = [_datainput objectForKey:kTKPDSHOPEDIT_APIREASONKEY];
                 ClosedInfo *closedinfo = [_data objectForKey:kTKPDDETAIL_DATACLOSEDINFOKEY];
                 _viewcontentclose.hidden = NO;
-                _textviewnote.text = (note && ![note isEqualToString:@""])?note:closedinfo.reason;
+                _textviewnote.text = (note && ![note isEqualToString:@""])?note:closedinfo.note;
                 _labelcatatan.hidden = !(!closedinfo.reason);
                 
                 ((UIImageView*)_thumbicon[0]).hidden = YES;
