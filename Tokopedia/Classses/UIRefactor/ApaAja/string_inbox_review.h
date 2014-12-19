@@ -43,5 +43,7 @@
 #define BUTTON_OK @"Ya"
 
 #define ADD_REVIEW_PATH @"action/review.pl"
+#define STATE_PRODUCT_BANNED @"-2"
+#define STATE_PRODUCT_DELETED @"0"
 
 #endif
