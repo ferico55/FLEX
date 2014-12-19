@@ -11,13 +11,14 @@
 #import "detail.h"
 #import "ProductEtalaseCell.h"
 #import "ProductEtalaseViewController.h"
+#import "SettingEtalaseEditViewController.h"
 
 #import "URLCacheController.h"
 
-@interface ProductEtalaseViewController ()<UITableViewDataSource, UITableViewDelegate, ProductEtalaseCellDelegate>{
+@interface ProductEtalaseViewController ()<UITableViewDataSource, UITableViewDelegate, ProductEtalaseCellDelegate, SettingEtalaseEditViewControllerDelegate>{
     BOOL _isnodata;
     
-    NSMutableArray *_datas;
+    NSMutableArray *_etalaseList;
     NSMutableDictionary *_selecteddata;
     
     NSInteger _requestcount;
@@ -51,11 +52,12 @@
     return self;
 }
 
+#pragma mark - View Lifecycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    _datas = [NSMutableArray new];
+    _etalaseList = [NSMutableArray new];
     _selecteddata = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
@@ -85,35 +87,21 @@
 	[rightBarButton setTag:11];
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
-    // set table view datasource and delegate
-    _table.delegate = self;
-    _table.dataSource = self;
-    
-    [self.navigationController.navigationBar setTranslucent:NO];
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
-    
     _etalase = [[Etalase alloc] init];
-
-    [_datas addObjectsFromArray:kTKPDSHOP_ETALASEARRAY];
+    NSInteger presentedEtalaseType = [[_data objectForKey:DATA_PRESENTED_ETALASE_TYPE_KEY]integerValue];
+    if (presentedEtalaseType == PRESENTED_ETALASE_DEFAULT || presentedEtalaseType == PRESENTED_ETALASE_SHOP_PRODUCT){
+        int etalaseArrayCount = (int)kTKPDSHOP_ETALASEARRAY.count;
+        for (int i = 0;i<etalaseArrayCount;i++) {
+            EtalaseList *etalase = [EtalaseList new];
+            etalase.etalase_name = [kTKPDSHOP_ETALASEARRAY[i]objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
+            etalase.etalase_id = [[kTKPDSHOP_ETALASEARRAY[i]objectForKey:kTKPDSHOP_APIETALASEIDKEY] integerValue];
+            [_etalaseList addObject:etalase];
+        }
+    }
     
     NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     [_selecteddata setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
     
-    NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:0
-                                                            diskCapacity:0
-                                                                diskPath:nil];
-    [NSURLCache setSharedURLCache:sharedCache];
-    
-    /* prepare to use our own on-disk cache */
-    //[_cachecontroller initCachePathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILETALASE_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:kTKPDDETAILSHOPETALASE_APIRESPONSEFILE];
-
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-    [_cachecontroller initCacheWithDocumentPath:path];
 }
 
 - (void)didReceiveMemoryWarning
@@ -160,10 +148,33 @@
             {
                 //SUBMIT
                 NSIndexPath *indexpath =[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                NSDictionary *orderdict = _datas[indexpath.row];
-                NSDictionary *userinfo = @{kTKPDDETAIL_DATAETALASEKEY:orderdict,kTKPDDETAILETALASE_DATAINDEXPATHKEY:indexpath};
-                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                EtalaseList *etalase = _etalaseList[indexpath.row];
+                NSDictionary *userinfo = @{DATA_ETALASE_KEY:etalase,kTKPDDETAILETALASE_DATAINDEXPATHKEY:indexpath};
+
+                if (etalase.etalase_id == DATA_ADD_NEW_ETALASE_ID) {
+                    SettingEtalaseEditViewController *newEtalaseVC = [SettingEtalaseEditViewController new];
+                    newEtalaseVC.delegate = self;
+                    newEtalaseVC.data = @{DATA_ETALASE_KEY : [_data objectForKey:DATA_ETALASE_KEY]?:etalase,
+                                          kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                                          kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWADDPRODUCTKEY),
+                                          kTKPDDETAIL_DATAINDEXPATHKEY : indexpath
+                                          };
+                    [self.navigationController pushViewController:newEtalaseVC animated:YES];
+                }
+                else
+                {
+                    [_delegate ProductEtalaseViewController:self withUserInfo:userinfo];
+                    if (self.presentingViewController != nil) {
+                        if (self.navigationController.viewControllers.count > 1) {
+                            [self.navigationController popViewControllerAnimated:YES];
+                        } else {
+                            [self dismissViewControllerAnimated:YES completion:NULL];
+                        }
+                    } else {
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }
+                }
+
                 break;
             }
             default:
@@ -177,9 +188,9 @@
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 #ifdef kTKPDPRODUCTETALASE_NODATAENABLE
-    return _isnodata?1:_datas.count;
+    return _isnodata?1:_etalaseList.count;
 #else
-    return _isnodata?0:_datas.count;
+    return _isnodata?0:_etalaseList.count;
 #endif
 }
 
@@ -195,29 +206,15 @@
             cell = [ProductEtalaseCell newcell];
             ((ProductEtalaseCell*)cell).delegate = self;
         }
-        
-        if (indexPath.row>1) {
-            if (_datas.count > indexPath.row) {
-                if (indexPath.row != ((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row) {
-                    ((ProductEtalaseCell*)cell).imageview.hidden = YES;
-                }
-                else
-                    ((ProductEtalaseCell*)cell).imageview.hidden = NO;
-                EtalaseList *list =_datas[indexPath.row];
-                ((ProductEtalaseCell*)cell).label.text = list.etalase_name;
-                ((ProductEtalaseCell*)cell).indexpath = indexPath;
+        if (_etalaseList.count > indexPath.row) {
+            if (indexPath.row != ((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row) {
+                ((ProductEtalaseCell*)cell).imageview.hidden = YES;
             }
-        }else{
-            if (_datas.count > indexPath.row) {
-                if (indexPath.row != ((NSIndexPath*)[_selecteddata objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]).row) {
-                    ((ProductEtalaseCell*)cell).imageview.hidden = YES;
-                }
-                else
-                    ((ProductEtalaseCell*)cell).imageview.hidden = NO;
-                NSDictionary *data =_datas[indexPath.row];
-                ((ProductEtalaseCell*)cell).label.text = [data objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
-                ((ProductEtalaseCell*)cell).indexpath = indexPath;
-            }
+            else
+                ((ProductEtalaseCell*)cell).imageview.hidden = NO;
+            EtalaseList *list =_etalaseList[indexPath.row];
+            ((ProductEtalaseCell*)cell).label.text = list.etalase_name;
+            ((ProductEtalaseCell*)cell).indexpath = indexPath;
         }
 	}
 	return cell;
@@ -299,7 +296,6 @@
         _table.tableFooterView = _footer;
         [_act startAnimating];
         
-        //[_cachecontroller clearCache];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [self requestsuccess:mappingResult withOperation:operation];
             [_act stopAnimating];
@@ -311,8 +307,6 @@
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
             [self requestfailure:error];
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"An Error Has Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            //[alertView show];
             [_act stopAnimating];
             _table.tableFooterView = nil;
             [_timer invalidate];
@@ -406,8 +400,17 @@
             BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                [_datas addObjectsFromArray:_etalase.result.list];
-                if (_datas.count >0) {
+                [_etalaseList addObjectsFromArray:_etalase.result.list];
+                
+                NSInteger presentedEtalaseType = [[_data objectForKey:DATA_PRESENTED_ETALASE_TYPE_KEY]integerValue];
+                if (presentedEtalaseType == PRESENTED_ETALASE_ADD_PRODUCT) {
+                    EtalaseList *etalase = [EtalaseList new];
+                    etalase.etalase_name = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
+                    etalase.etalase_id = [[DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASEIDKEY] integerValue];
+                    [_etalaseList addObject:etalase];
+                }
+                
+                if (_etalaseList.count >0) {
                     _isnodata = NO;
                     [_table reloadData];
                 }
@@ -418,7 +421,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %ld =====",(long)_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -446,5 +449,65 @@
     [_table reloadData];
 }
 
+#pragma mark - Setting Etalase Delegate
+-(void)SettingEtalaseEditViewController:(SettingEtalaseEditViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+{
+    [_delegate ProductEtalaseViewController:self withUserInfo:userInfo];
+}
+
+#pragma mark - Methods
+-(void)adjustCacheController
+{
+    NSURLCache *sharedCache = [[NSURLCache alloc] initWithMemoryCapacity:0
+                                                            diskCapacity:0
+                                                                diskPath:nil];
+    [NSURLCache setSharedURLCache:sharedCache];
+    
+    /* prepare to use our own on-disk cache */
+    //[_cachecontroller initCachePathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILETALASE_CACHEFILEPATH];
+    _cachepath = [path stringByAppendingPathComponent:kTKPDDETAILSHOPETALASE_APIRESPONSEFILE];
+    
+    _cachecontroller.filePath = _cachepath;
+    _cachecontroller.URLCacheInterval = 86400.0;
+    [_cachecontroller initCacheWithDocumentPath:path];
+}
+
+-(void)adjustNavigationBar
+{
+    [self.navigationController.navigationBar setTranslucent:NO];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
+    
+    UIBarButtonItem *backBarButton;
+    NSInteger presentedEtalaseType = [[_data objectForKey:DATA_PRESENTED_ETALASE_TYPE_KEY]integerValue];
+    if (presentedEtalaseType == PRESENTED_ETALASE_ADD_PRODUCT) {
+        backBarButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+        UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+        backBarButton.tag = 10;
+        [previousVC.navigationItem setBackBarButtonItem:backBarButton];
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    }
+    else
+    {
+        NSBundle* bundle = [NSBundle mainBundle];
+        UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+            UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+            backBarButton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        }
+        else
+            backBarButton = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+        [backBarButton setTag:10];
+        self.navigationItem.leftBarButtonItem = backBarButton;
+    }
+    
+    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [doneBarButton setTintColor:[UIColor blackColor]];
+    
+	[doneBarButton setTag:11];
+    self.navigationItem.rightBarButtonItem = doneBarButton;
+}
 
 @end

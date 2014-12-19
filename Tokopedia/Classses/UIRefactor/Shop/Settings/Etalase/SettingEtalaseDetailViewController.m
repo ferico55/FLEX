@@ -41,23 +41,20 @@
 {
     [super viewDidLoad];
     
-    _etalase = [_data objectForKey:kTKPDDETAIL_DATAETALASEKEY];
+    _etalase = [_data objectForKey:DATA_ETALASE_KEY];
     self.title = _etalase.etalase_name;
     [self setDefaultData:_data];
-        
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
     barButtonItem.tag = 10;
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Ubah" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor blackColor]];
-    barbutton1.tag = 11;
-    self.navigationItem.rightBarButtonItem = barbutton1;
+    barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Ubah" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [barButtonItem setTintColor:[UIColor blackColor]];
+    barButtonItem.tag = 11;
+    self.navigationItem.rightBarButtonItem = barButtonItem;
 }
 
 #pragma mark - Memory Management
@@ -84,7 +81,7 @@
             {   //Edit
                 NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 SettingEtalaseEditViewController *vc = [SettingEtalaseEditViewController new];
-                vc.data = @{kTKPDDETAIL_DATAETALASEKEY : [_data objectForKey:kTKPDDETAIL_DATAETALASEKEY]?:[NSNull null],
+                vc.data = @{DATA_ETALASE_KEY : [_data objectForKey:DATA_ETALASE_KEY]?:[NSNull null],
                             kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                             kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY),
                             kTKPDDETAIL_DATAINDEXPATHKEY : indexpath

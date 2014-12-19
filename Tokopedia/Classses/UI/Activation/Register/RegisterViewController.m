@@ -399,7 +399,7 @@
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
-    NSArray *messages = _register.message_error;
+    //NSArray *messages = _register.message_error;
     
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     

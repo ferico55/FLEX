@@ -198,6 +198,12 @@
             ((GeneralProductReviewCell *)cell).namelabel.text = list.review_user_name;
             ((GeneralProductReviewCell *)cell).timelabel.text = list.review_create_time;
             
+            if([list.review_response.response_message isEqualToString:@"0"]) {
+                [((GeneralProductReviewCell*)cell).commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];
+            } else {
+                [((GeneralProductReviewCell*)cell).commentbutton setTitle:@"1 Comment" forState:UIControlStateNormal];
+            }
+            
             NSString *reviewMessage;
             if (list.review_message.length > 60) {
                 NSRange stringRange = {0, MIN(list.review_message.length, 60)};
@@ -220,10 +226,10 @@
             ReviewResponse *review_response = list.review_response;
             [((GeneralProductReviewCell *)cell).commentbutton setTitle:([review_response.response_message isEqualToString:@"0"] ? @"0 Comment" : @"1 Comment") forState:UIControlStateNormal];
             
-            ((GeneralProductReviewCell *)cell).qualityrate.starscount = list.review_rate_quality;
-            ((GeneralProductReviewCell *)cell).speedrate.starscount = list.review_rate_speed;
-            ((GeneralProductReviewCell *)cell).servicerate.starscount = list.review_rate_service;
-            ((GeneralProductReviewCell *)cell).accuracyrate.starscount = list.review_rate_accuracy;
+            ((GeneralProductReviewCell *)cell).qualityrate.starscount = [list.review_rate_quality integerValue];
+            ((GeneralProductReviewCell *)cell).speedrate.starscount = [list.review_rate_speed integerValue];
+            ((GeneralProductReviewCell *)cell).servicerate.starscount = [list.review_rate_service integerValue];
+            ((GeneralProductReviewCell *)cell).accuracyrate.starscount = [list.review_rate_accuracy integerValue];
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *thumb = ((GeneralProductReviewCell *)cell).thumb;
@@ -666,7 +672,7 @@
     ReviewList *list = _list[indexpath.row];
 
     vc.data = @{
-                kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY]?:@(""),
+                API_PRODUCT_NAME_KEY:[_data objectForKey:API_PRODUCT_NAME_KEY]?:@(""),
                 kTKPDDETAILPRODUCT_APIIMAGESRCKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]?:@(""),
                 //ini untuk review
                 kTKPDREVIEW_APIREVIEWMESSAGEKEY:list.review_message,
@@ -675,10 +681,10 @@
                 kTKPDREVIEW_APIREVIEWUSERIMAGEKEY:list.review_user_image,
                 kTKPDREVIEW_APIREVIEWUSERIDKEY:list.review_user_id,
                 kTKPDREVIEW_APIREVIEWRESPONSEKEY:list.review_response,
-                kTKPDREVIEW_APIREVIEWRATEACCURACYKEY:@(list.review_rate_accuracy),
-                kTKPDREVIEW_APIREVIEWRATEQUALITY:@(list.review_rate_quality),
-                kTKPDREVIEW_APIREVIEWRATESERVICEKEY:@(list.review_rate_service),
-                kTKPDREVIEW_APIREVIEWRATESPEEDKEY:@(list.review_rate_speed),
+                kTKPDREVIEW_APIREVIEWRATEACCURACYKEY:list.review_rate_accuracy,
+                kTKPDREVIEW_APIREVIEWRATEQUALITY:list.review_rate_quality,
+                kTKPDREVIEW_APIREVIEWRATESERVICEKEY:list.review_rate_service,
+                kTKPDREVIEW_APIREVIEWRATESPEEDKEY:list.review_rate_speed,
                 kTKPDREVIEW_APIREVIEWPRODUCTOWNERKEY:list.review_product_owner
                 };
     [self.navigationController pushViewController:vc animated:YES];

@@ -550,8 +550,8 @@
 #pragma mark - Methods
 -(void)setHeaderData:(NSDictionary*)data
 {
-    _productnamelabel.text = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
-    _pricelabel.text = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTPRICEKEY];
+    _productnamelabel.text = [data objectForKey:API_PRODUCT_NAME_KEY];
+    _pricelabel.text = [data objectForKey:API_PRODUCT_PRICE_KEY];
     _headerimages = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
     for (int i = 0; i<_headerimages.count; i++) {
         CGFloat y = i * 320;

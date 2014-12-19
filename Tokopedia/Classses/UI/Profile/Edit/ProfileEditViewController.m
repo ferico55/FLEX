@@ -209,10 +209,11 @@
                 c.delegate = self;
                 //c.data = data;
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-                nav.wantsFullScreenLayout = YES;
-                nav.modalPresentationStyle = UIModalPresentationFullScreen;
-                nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                c.wantsFullScreenLayout = YES;
+                c.modalPresentationStyle = UIModalPresentationFullScreen;
+                c.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                [self presentViewController:c animated:YES completion:nil];
+                //[self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
             case 11:
@@ -572,77 +573,20 @@
     
 	NSDictionary* userInfo = object;
     
-    //NSDictionary* camera = [userInfo objectForKey:kTKPDCAMERA_DATACAMERAKEY];
     NSDictionary* photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    NSData* imageData = [photo objectForKey:DATA_CAMERA_IMAGEDATA];
+    NSString* imageName = [photo objectForKey:DATA_CAMERA_IMAGENAME];
     
-    NSDictionary* param;
-    
-    param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY,
+    NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY,
               kTKPDPROFILE_APIUSERIDKEY:@(_generatehost.result.generated_host.user_id),
               kTKPDGENERATEDHOST_APISERVERIDKEY :@(_generatehost.result.generated_host.server_id),
               };
     
-    NSData* imageData;
-    //UIImage *image = [UIImage imageNamed:@"icon_location.png"];
-    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
-    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    imageData = UIImagePNGRepresentation(image);
-    //imageData = UIImageJPEGRepresentation(image,1);
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-
-    //Set Params
-    [request setHTTPShouldHandleCookies:NO];
-    [request setTimeoutInterval:60];
-    [request setHTTPMethod:@"POST"];
-
-    //Create boundary, it can be anything
-    NSString *boundary = @"------VohpleBoundary4QuqLuM1cE5lMwCy";
-
-    //set Content-Type in HTTP header
-    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
-    [request setValue:contentType forHTTPHeaderField: @"Content-Type"];
-
-    //post body
-    NSMutableData *body = [NSMutableData data];
-
-    //Populate a dictionary with all the regular values you would like to send.?action=upload_profile_image?
-    NSMutableDictionary *parameters = [[NSMutableDictionary alloc] init];
-    [parameters setValue:kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY forKeyPath:kTKPDPROFILE_APIACTIONKEY];
-    [parameters setValue:@(_generatehost.result.generated_host.user_id) forKeyPath:kTKPDPROFILE_APIUSERIDKEY];
-    [parameters setValue:@(_generatehost.result.generated_host.server_id) forKeyPath:kTKPDGENERATEDHOST_APISERVERIDKEY];
-
-    //add params (all params are strings)
-    for (NSString *param in parameters) {
-        [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"%@\"\r\n\r\n", param] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"%@\r\n", [parameters objectForKey:param]] dataUsingEncoding:NSUTF8StringEncoding]];
-        [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    }
-
-    //NSString *FileParamConstant = @"profile_img";
-    [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[@"Content-Disposition: attachment; name=\"profile_img\"; filename=\"icon_location.png\"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[@"Content-Type: application/octet-stream\r\n\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    [body appendData:[NSData dataWithData:imageData]];
-    [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
-    
-
-    //add image data
-
-    //Close off the request with the boundary
-    [body appendData:[[NSString stringWithFormat:@"--%@--\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
-
-    //setting the body of the post to the request
-    [request setHTTPBody:body];
-
-    NSString *url = @"http://www.tkpdevel-pg.renny/ws/action/upload-image.pl";
-
-    [request setURL:[NSURL URLWithString:url]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestUploadImageData:imageData
+                                                                      withName:API_UPLOAD_PROFILE_IMAGE_DATA_NAME
+                                                                   andFileName:imageName
+                                                         withRequestParameters:param
+                                    ];
 
     [NSURLConnection sendAsynchronousRequest:request
                                        queue:[NSOperationQueue mainQueue]
@@ -912,7 +856,7 @@
                     //TODO:: add alert
                     NSLog(@"%@",_editform.message_status);
                     Alert1ButtonView *v = [Alert1ButtonView newview];
-                    v.data = @{kTKPDALERTVIEW_DATALABELKEY: _editform.message_status};
+                    v.data = @{DATA_LABEL_KEY: _editform.message_status};
                     v.tag = 12;
                     [v show];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDADDRESSPOSTNOTIFICATIONNAMEKEY object:nil userInfo:nil];
@@ -1045,7 +989,7 @@
                              if ((self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height)> _keyboardPosition.y) {
                                  UIEdgeInsets inset = _scrollview.contentInset;
                                  inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height + 10));
-                                 [_scrollview setContentSize:_scrollviewContentSize];
+                                 //[_scrollview setContentSize:_scrollviewContentSize];
                                  [_scrollview setContentInset:inset];
                              }
                          }
@@ -1070,7 +1014,7 @@
 
 
 #pragma mark - Delegate Camera Controller
--(void)didDismissCameraController:(UIViewController *)controller withUserInfo:(NSDictionary *)userinfo
+-(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
 {
     [self configureRestkitUploadPhoto];
     [self requestActionUploadPhoto:userinfo];

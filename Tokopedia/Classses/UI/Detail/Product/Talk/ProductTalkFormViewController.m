@@ -89,7 +89,7 @@
 {
     [super viewWillAppear:animated];
     
-    _productlabel.text = [_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
+    _productlabel.text = [_data objectForKey:API_PRODUCT_NAME_KEY];
     
     UIImageView *thumb = _productimage;
     

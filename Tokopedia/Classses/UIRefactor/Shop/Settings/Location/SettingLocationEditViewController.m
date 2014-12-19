@@ -90,9 +90,6 @@ UITextViewDelegate
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
     barButtonItem.tag = 10;
@@ -126,14 +123,7 @@ UITextViewDelegate
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white.png"]
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:@selector(tap:)];
-    backBarButtonItem.tintColor = [UIColor whiteColor];
-    backBarButtonItem.tag = 12;
-    self.navigationItem.leftBarButtonItem = backBarButtonItem;
+
 }
 
 
@@ -424,7 +414,7 @@ UITextViewDelegate
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (setting.result.is_success) {
+                if (setting.result.is_success == 1) {
                     NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil menambah lokasi.", nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
@@ -669,7 +659,7 @@ UITextViewDelegate
     }else{
         [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                               delay:0
-                            options: UIViewAnimationCurveEaseOut
+                            options: UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              _scrollviewContentSize = [_container contentSize];
                              _scrollviewContentSize.height -= _keyboardSize.height;
@@ -694,7 +684,7 @@ UITextViewDelegate
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                           delay:0
-                        options: UIViewAnimationCurveEaseOut
+                        options: UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          _container.contentInset = contentInsets;
                          _container.scrollIndicatorInsets = contentInsets;

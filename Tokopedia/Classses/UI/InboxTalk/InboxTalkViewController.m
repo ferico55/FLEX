@@ -16,7 +16,7 @@
 #import "InboxTalk.h"
 
 #import "inbox.h"
-#import "home.h"
+#import "stringhome.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 #import "detail.h"

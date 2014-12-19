@@ -61,19 +61,19 @@
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    //if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-    //    UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    //    barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    //}
-    //else
-    //    barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    //[barbutton1 setTag:10];
-    //self.navigationItem.leftBarButtonItem = barbutton1;
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    }
+    else
+        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    [barbutton1 setTag:10];
+    self.navigationItem.leftBarButtonItem = barbutton1;
+    //UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    //UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    //barButtonItem.tag = 10;
+    //[previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    //self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     if (self.navigationController.viewControllers.count==1) {
         img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
@@ -110,8 +110,10 @@
     
     NSArray *departmenttree =[_data objectForKey:kTKPDCATEGORY_APIDEPARTMENTTREEKEY]?:@[];
     if (departmenttree && departmenttree.count>0) {
-        [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:[_data objectForKey:kTKPDCATEGORY_DATADIDALLCATEGORYKEY]?:@(0),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:[NSString stringWithFormat:@"All Category %@",[_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]?:@""]}];
-
+        NSInteger previousViewType = [[_data objectForKey:DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE]integerValue];
+        if (previousViewType == 0) {
+            [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:[_data objectForKey:kTKPDCATEGORY_DATADIDALLCATEGORYKEY]?:@(0),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:[NSString stringWithFormat:@"All Category %@",[_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]?:@""]}];
+        }
         for (int i = 0 ; i<departmenttree.count; i++) {
             _departmenttree = departmenttree[i];
             if (_departmenttree.child == nil) {
@@ -124,21 +126,37 @@
     else{
         /** Set isnull value (title and ic on for category) **/
         NSInteger parentid = [[_data objectForKey:kTKPDCATEGORY_DATADEPARTMENTIDKEY]integerValue];
-        if (![_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]) {
-            [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:@(parentid),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:@"All Category"}];
+        NSInteger previousViewType = [[_data objectForKey:DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE]integerValue];
+        if (previousViewType == 0) {
+            if (![_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]) {
+                [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:@(parentid),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:@"All Category"}];
+            }
+            else{
+                [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:@(parentid),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:[NSString stringWithFormat:@"All Category %@",[_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]]}];
+            }
+            NSArray *data = [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" order by weight",parentid]];
+            
+            [_menu addObjectsFromArray:data];
+            
+            /** ceck is have a child or not **/
+            for (int i = 1 ; i<_menu.count; i++) {
+                NSInteger childparentid = [_menu[i][kTKPDCATEGORY_DATADIDKEY]integerValue];
+                NSArray * data= [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" order by weight",childparentid]];
+                if (data == nil || data.count == 0) {
+                    [_menu[i] setObject:@(YES) forKey:kTKPDCATEGORY_DATAISNULLCHILD];
+                }
+                else
+                    [_menu[i] setObject:@(NO) forKey:kTKPDCATEGORY_DATAISNULLCHILD];
+            }
         }
-        else{
-            [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:@(parentid),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:[NSString stringWithFormat:@"All Category %@",[_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]]}];
-        }
-
-        NSArray *data = [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%d\" order by weight",parentid]];
+        NSArray *data = [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" order by weight",parentid]];
         
         [_menu addObjectsFromArray:data];
         
         /** ceck is have a child or not **/
-        for (int i = 1 ; i<_menu.count; i++) {
+        for (int i = 0 ; i<_menu.count; i++) {
             NSInteger childparentid = [_menu[i][kTKPDCATEGORY_DATADIDKEY]integerValue];
-            NSArray * data= [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%d\" order by weight",childparentid]];
+            NSArray * data= [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" order by weight",childparentid]];
             if (data == nil || data.count == 0) {
                 [_menu[i] setObject:@(YES) forKey:kTKPDCATEGORY_DATAISNULLCHILD];
             }
@@ -222,24 +240,27 @@
             case 11:
             {
                 CategoryMenuViewController *vc = [CategoryMenuViewController new];
+                vc.delegate = self.delegate;
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
             case 12:
             {
                 //Done Action
-                NSArray *array = [self.navigationController viewControllers];
                 NSIndexPath *indexpath = [_selectedcategory objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 
                 if (indexpath) {
                     NSDictionary *userinfo = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY],
+                                               
                                                kTKPDCATEGORY_DATAPUSHCOUNTKEY : @(_pushcount?:0),
                                                kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : _choosenindexpaths?:@[],
                                                kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY : @(YES),
-                                               kTKPDCATEGORY_DATACATEGORYINDEXPATHKEY :indexpath
+                                               kTKPDCATEGORY_DATACATEGORYINDEXPATHKEY :indexpath,
+                                               kTKPDCATEGORY_DATATITLEKEY : [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY]
                                                };
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"setDepartmentID" object:self userInfo:userinfo];
-                    [self.navigationController popToViewController:[array objectAtIndex:0] animated:YES];
+                    UIViewController *popViewController = (UIViewController*)self.delegate;
+                    [self.navigationController popToViewController:popViewController animated:YES];
+                    [_delegate CategoryMenuViewController:self userInfo:userinfo];
                 }
             }
             default:
@@ -329,8 +350,10 @@
                     kTKPDCATEGORY_DATAPUSHCOUNTKEY : @(_pushcount),
                     kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : _choosenindexpaths?:@[],
                     kTKPDCATEGORY_DATAINDEXPATHKEY : indexpath,
-                    kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY]
+                    kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY],
+                    DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE : @([[_data objectForKey:DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE]integerValue])
                     };
+        vc.delegate = self.delegate;
         [self.navigationController pushViewController:vc animated:YES];
     }
     else{

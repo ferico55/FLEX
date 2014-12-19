@@ -11,7 +11,7 @@
 #import "InboxMessageDetail.h"
 #import "InboxMessageAction.h"
 #import "inbox.h"
-#import "home.h"
+#import "stringhome.h"
 #import "HPGrowingTextView.h"
 #import "inbox.h"
 

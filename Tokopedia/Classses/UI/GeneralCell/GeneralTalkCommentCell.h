@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "home.h"
+#import "stringhome.h"
 
 #define kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER @"GeneralTalkCommentCellIdentifier"
 
@@ -16,6 +16,9 @@
 @protocol GeneralTalkCommentCellDelegate <NSObject>
 @required
 -(void)GeneralTalkCommentCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
+
+@optional
+- (id)navigationController:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
 
 @end
 

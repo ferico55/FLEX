@@ -57,7 +57,7 @@
 
 	//_viewController.data = _parameters;
 	//_parameters = nil;
-    _window.backgroundColor = [UIColor greenColor];
+    _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
 	_window.rootViewController = _viewController;
 	[_window makeKeyAndVisible];
 	

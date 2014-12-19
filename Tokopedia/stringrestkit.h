@@ -10,6 +10,10 @@
 #define tokopedia_stringRestkit_h
 
 #define kTKPD_AUTHKEY @"auth"
+#define NEXT_PAGE_URI_API @"uri_next"
+#define RESULT_API @"result"
+#define LIST_API @"list"
+#define PAGING_API @"paging"
 
 
 /** string for inbox talk */
@@ -49,9 +53,36 @@
 #define TKPD_DELETE_TALK_ACTION @"delete_product_talk"
 
 
+/** string for review */
+#define INBOX_REVIEW_API_PATH @"inbox-review.pl"
+#define REVIEW_PRODUCT_IMG @"review_product_image"
+#define REVIEW_USER_NAME @"review_user_name"
+#define REVIEW_RATE_ACCURACY @"review_rate_accuracy"
+#define REVIEW_MESSAGE @"review_message"
+#define REVIEW_PRODUCT_ID @"review_product_id"
+#define REVIEW_SHOP_ID @"review_shop_id"
+#define REVIEW_PRODUCT_NAME @"review_product_name"
+#define REVIEW_CREATE_TIME @"review_create_time"
+#define REVIEW_ID @"review_id"
+#define REVIEW_RATE_QUALITY @"review_rate_quality"
+#define REVIEW_RATE_SPEED @"review_rate_speed"
+#define REVIEW_RATE_SERVICE @"review_rate_service"
+#define REVIEW_IS_OWNER @"review_is_owner"
+#define REVIEW_READ_STATUS @"review_read_status"
+#define REVIEW_USER_ID @"review_user_id"
+#define REVIEW_IS_ALLOW_EDIT @"review_is_allow_edit"
+#define REVIEW_PRODUCT_STATUS @"review_product_status"
 #pragma mark - Deposit
 
+#define REVIEW_RESPONSE @"review_response"
+#define REVIEW_RESPONSE_CREATE_TIME @"response_create_time"
+#define REVIEW_RESPONSE_MESSAGE @"response_message"
+#define REVIEW_PRODUCT_OWNER @"review_product_owner"
+#define REVIEW_PRODUCT_OWNER_USER_ID @"user_id"
+#define REVIEW_PRODUCT_OWNER_USER_IMAGE @"user_image"
+#define REVIEW_PRODUCT_OWNER_USER_NAME @"user_name"
 #define TKPD_DEPOSIT_TOTAL @"deposit_total"
 
+#define NEW_REVIEW_STATE @"0" 
 
 #endif

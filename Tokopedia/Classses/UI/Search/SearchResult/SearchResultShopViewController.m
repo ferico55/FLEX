@@ -416,9 +416,6 @@
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
             [self requestfailure:error];
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"An Error Has Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            //[alertView show];
-            //[_act stopAnimating];
             _table.tableFooterView = nil;
             _isrefreshview = NO;
             [_refreshControl endRefreshing];

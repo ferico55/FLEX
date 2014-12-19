@@ -99,7 +99,7 @@
 
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton*)sender;
+        //UIButton *btn = (UIButton*)sender;
         //[_delegate DidTapButton:btn atCell:self withindexpath:_indexpath];
     }
 }
@@ -145,7 +145,7 @@
     if (animated) {
         [UIView animateWithDuration:0.5
                               delay:0
-                            options: UIViewAnimationCurveEaseOut
+                            options: UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              CGRect frame = _viewcell.frame;
                              frame.origin.x = 0;
