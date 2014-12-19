@@ -18,6 +18,7 @@
 #import "AlertListView.h"
 #import "ShopNotesViewController.h"
 #import "ShopNotesDetailViewController.h"
+#import "SettingNoteDetailViewController.h"
 
 #import "URLCacheController.h"
 #import "SettingNoteDetailViewController.h"
@@ -53,6 +54,7 @@
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (weak, nonatomic) IBOutlet UIButton *addButton;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -417,11 +419,20 @@
 }
 
 #pragma mark - Cell Delegate
--(void)ShopNotesCellDelegate:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+-(void)ShopNotesCellDelegate:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexPath
 {
-    ShopNotesDetailViewController *vc = [ShopNotesDetailViewController new];
-    NotesList *list = _list[indexpath.row];
-    vc.data = @{kTKPDNOTES_APINOTEIDKEY:list.note_id,kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)};
+//    SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
+//    NotesList *list = _list[indexpath.row];
+//    vc.data = @{kTKPDNOTES_APINOTEIDKEY:list.note_id,kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)};
+//    [self.navigationController pushViewController:vc animated:YES];
+//
+    NotesList *list = _list[indexPath.row];
+    SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
+    vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
+                kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
+                kTKPDNOTES_APINOTEIDKEY:list.note_id,
+                kTKPDNOTES_APINOTETITLEKEY:list.note_title
+                };
     [self.navigationController pushViewController:vc animated:YES];
 }
 

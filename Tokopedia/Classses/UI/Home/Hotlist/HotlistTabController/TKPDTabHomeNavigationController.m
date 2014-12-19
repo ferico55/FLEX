@@ -63,22 +63,12 @@
     return self;
 }
 
-#pragma mark - Init Notification 
-- (void) initNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(windowDidTap)
-                                                 name:@"tapNotification" object:nil];
-
-}
-
-
-
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self initNotification];
+    
     _buttons = [NSMutableArray new];
     _chevrons = [NSMutableArray new];
 	
@@ -565,10 +555,7 @@
     [_notificationWindow makeKeyAndVisible];
     
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(windowDidTap)];
-    
-    UIView *tapView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 64)];
-    [tapView addGestureRecognizer:tapRecognizer];
-    [_notificationWindow addSubview:tapView];
+    [_notificationWindow addGestureRecognizer:tapRecognizer];
     
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
     _notificationController = [storyboard instantiateViewControllerWithIdentifier:@"NotificationViewController"];

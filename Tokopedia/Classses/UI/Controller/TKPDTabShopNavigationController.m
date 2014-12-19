@@ -21,6 +21,7 @@
 #import "ShopReviewViewController.h"
 #import "ShopNotesViewController.h"
 #import "ShopSettingViewController.h"
+#import "ProductAddEditViewController.h"
 
 #import "URLCacheController.h"
 #import "UIImage+ImageEffects.h"
@@ -177,6 +178,7 @@
     
     //[self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage new] forBarMetrics:UIBarMetricsDefault];
+    
 
     _operationQueue = [NSOperationQueue new];
     _detailfilter = [NSMutableDictionary new];
@@ -664,6 +666,9 @@
             case 19:
             {
                 //add produk
+                ProductAddEditViewController *vc = [ProductAddEditViewController new];
+                vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
             case 20:
@@ -1035,7 +1040,12 @@
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
     
+    
+    //TODO::change this
     _shop.result.info.shop_is_gold = true;
+    _buttonfav.hidden = YES;
+    _buttonMessage.hidden = YES;
+   
     
     if (_shop.result.info.shop_is_gold == true) {
         
@@ -1076,6 +1086,7 @@
         
         [_namelabel sizeToFit];
         [_shopdesclabel sizeToFit];
+        
     }
     else {
         _backButtonCustom.hidden = YES;
@@ -1099,6 +1110,9 @@
         _scrollview.contentInset = UIEdgeInsetsMake(-50, 0, 0, 0);
         
         _badgeGoldMerchant.hidden = YES;
+
+        _stickyTapView.hidden = YES;
+
     }
 }
 

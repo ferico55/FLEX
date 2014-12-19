@@ -11,6 +11,7 @@
 #import "LoginViewController.h"
 #import "SearchViewController.h"
 #import "CartViewController.h"
+#import "MoreNavigationController.h"
 #import "MoreViewController.h"
 #import "CategoryViewController.h"
 
@@ -172,7 +173,8 @@
     }
     else{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        moreNavBar = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+        moreNavBar = moreNavController;
     }
 
     [moreNavBar.navigationBar setTranslucent:NO];
@@ -408,7 +410,8 @@
     }
     else{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        moreNavBar = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+        moreNavBar = moreNavController;
     }
     [moreNavBar.navigationBar setTranslucent:NO];
 

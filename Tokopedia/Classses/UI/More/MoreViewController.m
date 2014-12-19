@@ -35,7 +35,13 @@
 #import "ShopNotesViewController.h"
 #import "ShopTalkViewController.h"
 
+#import "InboxMessageViewController.h"
+#import "TKPDTabInboxMessageNavigationController.h"
+
+#import "InboxTalkViewController.h"
+
 #import "NotificationBarButton.h"
+#import "TKPDTabInboxTalkNavigationController.h"
 
 @interface MoreViewController () <NotificationDelegate> {
     NSDictionary *_auth;
@@ -273,7 +279,7 @@
             break;
             
         case 4:
-            return 3;
+            return 6;
             break;
             
         case 5:
@@ -360,6 +366,49 @@
         [shopNavigationController setSelectedIndex:0];
         
         [self.navigationController pushViewController:shopNavigationController animated:YES];
+    }
+    
+    else if (indexPath.section == 4) {
+        if(indexPath.row == 3) {
+            InboxMessageViewController *vc = [InboxMessageViewController new];
+            vc.data=@{@"nav":@"inbox-message"};
+            
+            InboxMessageViewController *vc1 = [InboxMessageViewController new];
+            vc1.data=@{@"nav":@"inbox-message-sent"};
+            
+            InboxMessageViewController *vc2 = [InboxMessageViewController new];
+            vc2.data=@{@"nav":@"inbox-message-archive"};
+            
+            InboxMessageViewController *vc3 = [InboxMessageViewController new];
+            vc3.data=@{@"nav":@"inbox-message-trash"};
+            NSArray *vcs = @[vc,vc1, vc2, vc3];
+            
+            TKPDTabInboxMessageNavigationController *nc = [TKPDTabInboxMessageNavigationController new];
+            [nc setSelectedIndex:2];
+            [nc setViewControllers:vcs];
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+            [nav.navigationBar setTranslucent:NO];
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+        } else if(indexPath.row == 4) {
+            InboxTalkViewController *vc = [InboxTalkViewController new];
+            vc.data=@{@"nav":@"inbox-talk"};
+            
+            InboxTalkViewController *vc1 = [InboxTalkViewController new];
+            vc1.data=@{@"nav":@"inbox-talk-my-product"};
+            
+            InboxTalkViewController *vc2 = [InboxTalkViewController new];
+            vc2.data=@{@"nav":@"inbox-talk-following"};
+            
+            NSArray *vcs = @[vc,vc1, vc2];
+            
+            TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
+            [nc setSelectedIndex:2];
+            [nc setViewControllers:vcs];
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+            [nav.navigationBar setTranslucent:NO];
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+        }
+        
     }
     
     else if (indexPath.section == 5) {

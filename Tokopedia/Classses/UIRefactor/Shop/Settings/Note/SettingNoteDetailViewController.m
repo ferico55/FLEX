@@ -10,7 +10,7 @@
 #import "ShopSettings.h"
 #import "detail.h"
 #import "SettingNoteDetailViewController.h"
-
+#import "UITextView+UITextView_Placeholder.h"
 #import "URLCacheController.h"
 
 #pragma mark - SettingNoteDetailViewController
@@ -43,11 +43,10 @@
     NSTimeInterval _timeinterval;
 }
 
-@property (weak, nonatomic) IBOutlet UILabel *labeltitle;
-@property (weak, nonatomic) IBOutlet UILabel *labeltime;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldtitle;
-@property (weak, nonatomic) IBOutlet UILabel *labelcontent;
-@property (weak, nonatomic) IBOutlet UITextView *textviewcontent;
+@property (strong, nonatomic) IBOutlet UILabel *labeltitle;
+@property (strong, nonatomic) IBOutlet UILabel *labeltime;
+@property (strong, nonatomic) IBOutlet UITextField *textfieldtitle;
+@property (strong, nonatomic) IBOutlet UITextView *textviewcontent;
 
 -(void)cancelActionNote;
 -(void)configureRestKitActionNote;
@@ -137,6 +136,15 @@
     [_cachecontroller initCacheWithDocumentPath:path];
     
     
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+//    _textfieldtitle.hidden = YES;
+//    _labeltitle.hidden = YES;
+//    _labeltime.hidden = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -360,16 +368,16 @@
             BOOL status = [_note.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                _barbuttonedit.enabled = YES;
+                
+                _labeltitle.hidden = NO;
+                _labeltime.hidden = NO;
+                
                 _labeltitle.text = _note.result.detail.notes_title;
                 _labeltime.text = _note.result.detail.notes_update_time;
                 _textfieldtitle.text = _note.result.detail.notes_title;
                 _textviewcontent.text = [NSString convertHTML:_note.result.detail.notes_content];
-                
-                _labelcontent.text = [NSString convertHTML:_note.result.detail.notes_content];
-                [_labelcontent sizeToFit];
-                [_labelcontent setNumberOfLines:0];
-                
+
+                [_barbuttonedit setEnabled:YES];
             }
         }
         else{
@@ -611,26 +619,25 @@
     if (data) {
         _type = [[_data objectForKey:kTKPDDETAIL_DATATYPEKEY] integerValue];
         switch (_type) {
-            case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
-            case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:{
+            case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY: {
+            
+                [_textviewcontent setPlaceholder:@"Konten"];
                 _labeltitle.hidden = YES;
-                _labelcontent.hidden = YES;
-                _textviewcontent.hidden = NO;
-                _textfieldtitle.hidden = NO;
+                
+            }
+                break;
+            case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:{
+                
+                _labeltitle.hidden = YES;
+                [_barbuttonedit setEnabled:YES];
                 
                 NSDate *date = [NSDate date];
                 NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
-                int year = [components year];
-                int day = [components day];
+                NSInteger year = [components year];
+                NSInteger day = [components day];
                 
                 NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                 dateFormatter.dateFormat = @"yyyyMMdd";
-                
-                // set locale
-                /** sv_SE : 2011-10-30 19:09
-                 nl_NL : 30-10-11 19:09
-                 en_US : 10/30/11 7:09 PM **/
-                //[dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:NSLocaleIdentifier]];
                 [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"sv_SE"]];
                 
                 dateFormatter.dateFormat=@"MMMM";
@@ -639,12 +646,10 @@
                 [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
                 NSString *currentTime = [dateFormatter stringFromDate:date];
                 
-                [_labelcontent setNumberOfLines:0];
-                [_labelcontent sizeToFit];
-                
                 _note = [_data objectForKey:kTKPDDETAIL_DATANOTEKEY];
                 _textfieldtitle.text = _note.result.detail.notes_title;
-                _labeltime.text = [NSString stringWithFormat:@"%d %@ %d, %@",day, monthString,year,currentTime];
+                _labeltime.text = [NSString stringWithFormat:@"%ld %@ %ld, %@",(long)day, monthString,(long)year,currentTime];
+                
                 [_datainput setObject:_labeltime.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
 
                 //_textviewcontent.text = [NSString convertHTML:_note.result.detail.notes_content];
@@ -656,21 +661,54 @@
                 _textviewcontent.attributedText = attributedString;
                 break;
             }
-            case kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY:
+            case kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY: {
+                
+                _labeltitle.hidden = YES;
                 _textfieldtitle.hidden = YES;
-                _textviewcontent.hidden = YES;
-                _labelcontent.hidden = NO;
-                _labeltitle.hidden = NO;
+                _labeltime.hidden = YES;
+                [_textviewcontent setUserInteractionEnabled:NO];
+                
+                NSDate *date = [NSDate date];
+                NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
+                NSInteger year = [components year];
+                NSInteger day = [components day];
+                
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                dateFormatter.dateFormat = @"yyyyMMdd";
+                [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"sv_SE"]];
+                
+                dateFormatter.dateFormat=@"MMMM";
+                NSString * monthString = [[dateFormatter stringFromDate:date] capitalizedString];
+                NSLog(@"month: %@", monthString);
+                [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+                NSString *currentTime = [dateFormatter stringFromDate:date];
+                
+                _note = [_data objectForKey:kTKPDDETAIL_DATANOTEKEY];
+                _textfieldtitle.text = _note.result.detail.notes_title;
+                _labeltime.text = [NSString stringWithFormat:@"%ld %@ %ld, %@",(long)day, monthString,(long)year,currentTime];
+                
+                //_textviewcontent.text = [NSString convertHTML:_note.result.detail.notes_content];
+                UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+                NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
+                [attributes setObject:font forKey:NSFontAttributeName];
+
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:&attributes error:nil];
+                _textviewcontent.attributedText = attributedString;
+                
                 [self configureRestKit];
-                [self request];
+                [self request];   
+            }
                 break;
             case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
+
                 _labeltitle.hidden = YES;
-                _labelcontent.hidden = YES;
-                _textviewcontent.hidden = NO;
-                _textfieldtitle.hidden = NO;
+                [_barbuttonedit setEnabled:YES];
+                
                 [self configureRestKit];
                 [self request];
+
+                break;
+            
             default:
                 break;
         }

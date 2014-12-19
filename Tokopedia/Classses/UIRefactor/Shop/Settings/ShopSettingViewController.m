@@ -42,7 +42,6 @@
     [super viewDidLoad];
 
     self.navigationController.navigationBarHidden = NO;
-
     self.title = @"Pengaturan Toko";
     
     _shop = [_data objectForKey:kTKPDDETAIL_DATAINFOSHOPSKEY];

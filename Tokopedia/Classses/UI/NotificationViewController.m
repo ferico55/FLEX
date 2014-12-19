@@ -7,6 +7,8 @@
 //
 
 #import "NotificationViewController.h"
+#import "InboxMessageViewController.h"
+#import "TKPDTabInboxMessageNavigationController.h"
 
 @interface NotificationViewController ()
 
@@ -141,6 +143,46 @@
     redCircle.layer.cornerRadius = 4;
     redCircle.clipsToBounds = YES;
     [label addSubview:redCircle];
+}
+
+- (IBAction)tap:(id)sender {
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton*)sender;
+        
+        switch (btn.tag) {
+                //archive
+            case 10: {
+                InboxMessageViewController *vc = [InboxMessageViewController new];
+                vc.data=@{@"nav":@"inbox-message"};
+                
+                InboxMessageViewController *vc1 = [InboxMessageViewController new];
+                vc1.data=@{@"nav":@"inbox-message-sent"};
+                
+                InboxMessageViewController *vc2 = [InboxMessageViewController new];
+                vc2.data=@{@"nav":@"inbox-message-archive"};
+                
+                InboxMessageViewController *vc3 = [InboxMessageViewController new];
+                vc3.data=@{@"nav":@"inbox-message-trash"};
+                NSArray *vcs = @[vc,vc1, vc2, vc3];
+                
+                TKPDTabInboxMessageNavigationController *nc = [TKPDTabInboxMessageNavigationController new];
+                [nc setSelectedIndex:2];
+                [nc setViewControllers:vcs];
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+                [nav.navigationBar setTranslucent:NO];
+//                [self.navigationController presentViewController:nav animated:YES completion:nil];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"tapNotification" object:nil];
+                [self presentViewController:nav animated:YES completion:nil];
+
+                break;
+            }
+                
+            
+            default:
+                break;
+        }
+        
+    }
 }
 
 /*
