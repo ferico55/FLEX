@@ -415,7 +415,8 @@ UITextViewDelegate
             
             if (status) {
                 if (setting.result.is_success == 1) {
-                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:@"Anda telah berhasil menambah lokasi.", nil];
+                    NSString *successMessage = (_type==2)?SUCCESSMESSAGE_ADD_LOCATION:SUCCESSMESSAGE_EDIT_LOCATION;
+                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:successMessage, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
                     

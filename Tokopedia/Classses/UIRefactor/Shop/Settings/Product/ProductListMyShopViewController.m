@@ -75,6 +75,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isnodata = YES;
+        self.title = TITLE_LIST_PRODUCT;
     }
     return self;
 }

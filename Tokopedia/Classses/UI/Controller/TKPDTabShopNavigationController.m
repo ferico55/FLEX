@@ -21,6 +21,8 @@
 #import "ShopReviewViewController.h"
 #import "ShopNotesViewController.h"
 #import "ShopSettingViewController.h"
+#import "ProductAddEditViewController.h"
+#import "stringproduct.h"
 
 #import "URLCacheController.h"
 #import "UIImage+ImageEffects.h"
@@ -664,6 +666,11 @@
             case 19:
             {
                 //add produk
+                ProductAddEditViewController *vc = [ProductAddEditViewController new];
+                vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                            DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_ADD),
+                            };
+                [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
             case 20:
@@ -1043,7 +1050,9 @@
         _infoButtonCustom.hidden = NO;
         _navigationTitleLabel.hidden = YES;
 
-        self.navigationController.navigationBarHidden = YES;
+        if ([self.navigationController.viewControllers.lastObject class] == [self class]) {
+            self.navigationController.navigationBarHidden = YES;
+        }
         
         self.view.clipsToBounds = NO;
         self.contentview.clipsToBounds = NO;
@@ -1085,7 +1094,9 @@
         self.blurCoverImage.hidden = NO;
         self.coverImageView.hidden = NO;
         
-        self.navigationController.navigationBarHidden = NO;
+        if ([self.navigationController.viewControllers.lastObject class] == [self class]) {
+            self.navigationController.navigationBarHidden = NO;
+        }
         
         [_stickyTapView layoutIfNeeded];
         CGRect stickyTabFrame = _stickyTapView.frame;
@@ -1099,6 +1110,9 @@
         _scrollview.contentInset = UIEdgeInsetsMake(-50, 0, 0, 0);
         
         _badgeGoldMerchant.hidden = YES;
+        
+        self.navigationController.navigationBarHidden = NO;
+
     }
 }
 
