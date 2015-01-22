@@ -15,7 +15,7 @@
 @property (nonatomic, strong) NSString *bank_branch;
 @property (nonatomic, strong) NSString *bank_account_name;
 @property (nonatomic, strong) NSString *bank_name;
-@property (nonatomic, strong) NSNumber *bank_account_number;
+@property (nonatomic, strong) NSString *bank_account_number;
 @property (nonatomic) NSInteger is_default_bank;
 
 @end

@@ -405,7 +405,7 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDPROFILE_APIPAGEKEY] integerValue];
-                NSLog(@"next page : %d",_page);
+                NSLog(@"next page : %zd",_page);
                 
                 [_table reloadData];
             }
@@ -414,7 +414,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -424,17 +424,23 @@
                 {
                     [_act stopAnimating];
                     _table.tableFooterView = nil;
+                    NSError *error = object;
+                    NSString *errorDescription = error.localizedDescription;
+                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                    [errorAlert show];
                 }
             }
             else
             {
                 [_act stopAnimating];
                 _table.tableFooterView = nil;
+                NSError *error = object;
+                NSString *errorDescription = error.localizedDescription;
+                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                [errorAlert show];
             }
         }
     }
-    [_act stopAnimating];
-    _table.tableFooterView = nil;
 }
 
 -(void)requesttimeout

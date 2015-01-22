@@ -70,29 +70,29 @@
     
     _type = [[_data objectForKey:kTKPDFILTER_DATAFILTERTYPEVIEWKEY] integerValue]?:0;
     switch (_type) {
-        case 1:
-        case 2:
-        {   //product
+        case kTKPDFILTER_DATATYPEHOTLISTVIEWKEY:
+        case kTKPDFILTER_DATATYPEPRODUCTVIEWKEY:
+        {
             [self.view addSubview: _productview];
             break;
         }
-        case 3:
-        {   //catalog
+        case kTKPDFILTER_DATATYPECATALOGVIEWKEY:
+        { 
             [self.view addSubview: _catalogview];
             break;
         }
-        case 4:
-        {    //detail catalog
+        case kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY:
+        {
             [self.view addSubview: _detailcatalogview];
             break;
         }
-        case 5:
-        {    //shop
+        case kTKPDFILTER_DATATYPESHOPVIEWKEY:
+        {
             [self.view addSubview: _shopview];
             break;
         }
-        case 6:
-        {   //shop product
+        case kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY:
+        {
             [self.view addSubview: _shopview];
             break;
         }
@@ -109,7 +109,6 @@
 
     barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [barbutton1 setTintColor:[UIColor blackColor]];
-    [barbutton1 setTintColor:[UIColor blackColor]];
 	[barbutton1 setTag:11];
     self.navigationItem.rightBarButtonItem = barbutton1;
     
@@ -123,10 +122,10 @@
     [_detailfilter setObject:@(pricemin?:0) forKey:kTKPDFILTER_APIPRICEMINKEY];
     [_detailfilter setObject:@(pricemax?:0) forKey:kTKPDFILTER_APIPRICEMAXKEY];
     
-    _pricemin.text = (pricemin>0)?[NSString stringWithFormat:@"%d",pricemin]:0;
-    _pricemax.text = (pricemax>0)?[NSString stringWithFormat:@"%d",pricemax]:0;
-    _pricemincatalog.text = (pricemin>0)?[NSString stringWithFormat:@"%d",pricemin]:0;
-    _pricemaxcatalog.text = (pricemax>0)?[NSString stringWithFormat:@"%d",pricemax]:0;
+    _pricemin.text = (pricemin>0)?[NSString stringWithFormat:@"%zd",pricemin]:0;
+    _pricemax.text = (pricemax>0)?[NSString stringWithFormat:@"%zd",pricemax]:0;
+    _pricemincatalog.text = (pricemin>0)?[NSString stringWithFormat:@"%zd",pricemin]:0;
+    _pricemaxcatalog.text = (pricemax>0)?[NSString stringWithFormat:@"%zd",pricemax]:0;
     
     NSString *location = [datafilter objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY]?:@"All Location";
     [_shoplocationbutton setTitle:location forState:UIControlStateNormal];
@@ -148,8 +147,8 @@
         case 2:
         {
             switch (_type) {
-                case 5:
-                {    //shop
+                case kTKPDFILTER_DATATYPESHOPVIEWKEY:
+                {
                     [_detailfilter setObject:@(goldshopvalue) forKey:kTKPDFILTER_APISHOPTYPEKEY];
                     _shopsegmentcontrol.selectedSegmentIndex=1;
                     break;
@@ -162,15 +161,15 @@
         case 3:
         {
             switch (_type) {
-                case 1:
-                case 2:
-                {   //product
+                case kTKPDFILTER_DATATYPEHOTLISTVIEWKEY:
+                case kTKPDFILTER_DATATYPEPRODUCTVIEWKEY:
+                { 
                     [_detailfilter setObject:@(goldshopvalue) forKey:kTKPDFILTER_APISHOPTYPEKEY];
                     _productsegmentcontrol.selectedSegmentIndex = 1;
                     break;
                 }
-                case 3:
-                {   //catalog
+                case kTKPDFILTER_DATATYPECATALOGVIEWKEY:
+                {
                     [_detailfilter setObject:@(goldshopvalue) forKey:kTKPDFILTER_APISHOPTYPEKEY];
                     _productsegmentcontrol.selectedSegmentIndex = 1;
                     break;
@@ -238,43 +237,8 @@
                                                kTKPDFILTERCONDITION_DATAINDEXPATHKEY:[_detailfilter objectForKey:kTKPDFILTERCONDITION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
                                                kTKPDFILTER_APICONDITIONNAMEKEY : [_detailfilter objectForKey:kTKPDFILTER_APICONDITIONNAMEKEY]?:@""
                                                };
-                    
-                    switch (_type) {
-                        case 1:
-                        case 2:
-                        {   //product
-                            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                            break;
-                        }
-                        case 3:
-                        {   //catalog
-                            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                            break;
-                        }
-                        case 4:
-                        {    //detail catalog
-                            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                            UINavigationController *nav = (UINavigationController *)self.presentingViewController;
-                            [self dismissViewControllerAnimated:NO completion:^{
-                                [nav popViewControllerAnimated:NO];
-                            }];
-                            break;
-                        }
-                        case 5:
-                        {    //shop
-                            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERSHOPPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                            break;
-                        }
-                        case 6:
-                        {   //shop product
-                            break;
-                        }
-                        default:
-                            break;
-                    }
+                    [_delegate FilterViewController:self withUserInfo:userinfo];
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 }
                 else{
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:@"price max < price min" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
@@ -293,8 +257,7 @@
             {
                 // select location
                 FilterLocationViewController *vc = [FilterLocationViewController new];
-                if (_type == 3) {
-                    //catalog
+                if (_type == kTKPDFILTER_DATATYPECATALOGVIEWKEY) {
                     vc.data = @{kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY : [_data objectForKey:kTKPDFILTERLOCATION_DATALOCATIONARRAYKEY]?:@[],
                                 kTKPDFILTER_DATAINDEXPATHKEY: [_detailfilter objectForKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0]};
                 }
@@ -343,27 +306,19 @@
             case 1:
             {
                 switch (_type) {
-                    case 1:
-                    case 2:
-                    {   //product
+                    case kTKPDFILTER_DATATYPEHOTLISTVIEWKEY:
+                    case kTKPDFILTER_DATATYPEPRODUCTVIEWKEY:
+                    case kTKPDFILTER_DATATYPECATALOGVIEWKEY:
+                    {
                         [_detailfilter setObject:@(3) forKey:kTKPDFILTER_APISHOPTYPEKEY];
                         break;
                     }
-                    case 3:
-                    {   //catalog
-                        [_detailfilter setObject:@(3) forKey:kTKPDFILTER_APISHOPTYPEKEY];
-                        break;
-                    }
-                    case 4:
-                    {    //detail catalog
-                        break;
-                    }
-                    case 5:
-                    {    //shop
+                    case kTKPDFILTER_DATATYPESHOPVIEWKEY:
+                    {
                         [_detailfilter setObject:@(2) forKey:kTKPDFILTER_APISHOPTYPEKEY];
                         break;
                     }
-                    case 6:
+                    case kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY:
                     {   //shop product
                         break;
                     }
@@ -425,7 +380,7 @@
     [_detailfilter setObject:[data objectForKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY] forKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY];
 }
 
--(void)FilterConditionViewController:(UIViewController *)viewcontroller withdata:(NSDictionary *)data
+-(void)FilterConditionViewController:(FilterConditionViewController *)viewcontroller withdata:(NSDictionary *)data
 {
     NSDictionary *conditiondata = [data objectForKey:kTKPDFILTER_DATACONDITIONKEY]?:@{};
     [_conditionbutton setTitle:[conditiondata objectForKey:kTKPDFILTER_DATASORTNAMEKEY] forState:UIControlStateNormal];
@@ -465,7 +420,6 @@
 }
 
 #pragma mark - Keyboard Notification
-// Called when the UIKeyboardWillShowNotification is sent
 - (void)keyboardWillShow:(NSNotification *)info {
     if(_keyboardSize.height < 0){
         _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
@@ -478,7 +432,7 @@
     }else{
         [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                               delay:0
-                            options: UIViewAnimationCurveEaseOut
+                            options: UIViewAnimationOptionCurveEaseOut
                          animations:^{
                              _scrollviewContentSize = [_container contentSize];
                              _scrollviewContentSize.height -= _keyboardSize.height;
@@ -489,7 +443,6 @@
                              if ((self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height)> _keyboardPosition.y) {
                                  UIEdgeInsets inset = _container.contentInset;
                                  inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height + 10));
-                                 [_container setContentSize:_scrollviewContentSize];
                                  [_container setContentInset:inset];
                              }
                          }
@@ -503,7 +456,7 @@
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                           delay:0
-                        options: UIViewAnimationCurveEaseOut
+                        options: UIViewAnimationOptionCurveEaseOut
                      animations:^{
                          _container.contentInset = contentInsets;
                          _container.scrollIndicatorInsets = contentInsets;

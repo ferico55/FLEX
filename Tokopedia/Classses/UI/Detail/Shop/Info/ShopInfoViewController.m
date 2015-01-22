@@ -322,7 +322,7 @@
             ShipmentPackage *package = [shipment.shipment_package objectAtIndex:indexPath.row];
             ((UILabel*)((ShopInfoShipmentCell*)cell).packageLabel).text = package.product_name;
             
-            NSLog(@"\n\n%d %d %@\n\n", indexPath.section, indexPath.row, package.product_name);
+            NSLog(@"\n\n%zd %zd %@\n\n", indexPath.section, indexPath.row, package.product_name);
             
             if (indexPath.row > 0) {
                 ((UILabel*)((ShopInfoShipmentCell*)cell).labelshipment).hidden = YES;
@@ -413,7 +413,7 @@
     _nameowner.text = _shop.result.owner.owner_name;
     NSInteger totallocation = _shop.result.address.count;
     
-    [_buttonofflocation setTitle:[NSString stringWithFormat:@"%d Offline", totallocation] forState:UIControlStateNormal];
+    [_buttonofflocation setTitle:[NSString stringWithFormat:@"%zd Offline", totallocation] forState:UIControlStateNormal];
     
     _labelsuccessfulltransaction.text = _shop.result.stats.shop_total_transaction;
     _labelsold.text = _shop.result.stats.shop_item_sold;

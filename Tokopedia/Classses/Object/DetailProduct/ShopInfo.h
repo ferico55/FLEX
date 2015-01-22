@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "ShopStats.h"
 #import <Foundation/Foundation.h>
+
+#import "ShopStats.h"
+#import "TransactionCartGateway.h"
 
 @interface ShopInfo : NSObject
 
@@ -20,11 +22,13 @@
 @property (nonatomic, strong) ShopStats *shop_stats;
 @property (nonatomic, strong) NSString *shop_already_favorited;
 @property (nonatomic, strong) NSString *shop_description;
-@property (nonatomic, strong) NSString *shop_avatar;
+@property (nonatomic, strong) NSString *shop_avatar;        //shop_image (cart)
 @property (nonatomic, strong) NSString *shop_total_favorit;
 @property (nonatomic, strong) NSString *shop_cover;
 @property (nonatomic, strong) NSString *shop_domain;
 @property (nonatomic, strong) NSString *shop_url;
 @property BOOL shop_is_gold;
+
+@property (nonatomic) NSArray *shop_pay_gateway;
 
 @end

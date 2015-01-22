@@ -31,7 +31,7 @@
 
 #import "URLCacheController.h"
 
-@interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate>
+@interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate,SortViewControllerDelegate,FilterViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -144,10 +144,6 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateViewShop:) name:@"setfilterShop" object:nil];
-    [nc addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
-
     _shopview.hidden = YES;
     
     //cache
@@ -188,7 +184,6 @@
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Table View Delegate
@@ -217,7 +212,7 @@
 #pragma mark - Table View Data Source
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    NSInteger count = (_product.count%2==0)?_product.count/2:_product.count/2+1;
+    NSInteger count = _product.count;
 #ifdef kTKPDSEARCHRESULT_NODATAENABLE
     return _isnodata?1:count;
 #else
@@ -257,35 +252,30 @@
             
             UIActivityIndicatorView *act = ((SearchResultShopCell*)cell).act;
             [act startAnimating];
-            NSLog(@"============================== START GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
             [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                //NSLOG(@"thumb: %@", thumb);
-                [thumb setImage:image];
-                
+                [thumb setImage:image animated:YES];
                 [act stopAnimating];
-                NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
     #pragma clang diagnostic pop
                 
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                 [act stopAnimating];
-                NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
             }];
         }
         else [self reset:cell];
-	} else {
-		static NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
-		
-		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (cell == nil) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		}
-		
-		cell.textLabel.text = kTKPDSEARCH_NODATACELLTITLE;
-		cell.detailTextLabel.text = kTKPDSEARCH_NODATACELLDESCS;
-	}
+    } else {
+        static NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
+        
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        cell.textLabel.text = kTKPDSEARCH_NODATACELLTITLE;
+        cell.detailTextLabel.text = kTKPDSEARCH_NODATACELLDESCS;
+    }
 	return cell;
 }
 
@@ -346,7 +336,7 @@
 
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDSEARCH_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDSEARCH_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     //add response description to object manager
     [_objectmanager addResponseDescriptor:responseDescriptor];
@@ -401,7 +391,7 @@
             [_act startAnimating];
         }
         
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDSEARCH_APIPATH parameters:param];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDSEARCH_APIPATH parameters:[param encrypt]];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [self requestsuccess:mappingResult withOperation:operation];
             [_table reloadData];
@@ -411,7 +401,6 @@
             [_refreshControl endRefreshing];
             [_timer invalidate];
             _timer = nil;
-            NSLog(@"============================== DONE GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
             
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
@@ -509,8 +498,10 @@
                 NSString *uriredirect = _searchitem.result.redirect_url.redirect_url;
                 
                 if (uriredirect == nil) {
+                    if (_page == 1) {
+                        [_product removeAllObjects];
+                    }
                     
-                    //TODO::
                     [_product addObjectsFromArray:_searchitem.result.list];
                     
                     if (_product.count == 0) {
@@ -538,8 +529,10 @@
                         
                         _page = [[queries objectForKey:kTKPDSEARCH_APIPAGEKEY] integerValue];
                         
-                        NSLog(@"next page : %d",_page);
+                        NSLog(@"next page : %zd",_page);
                         _isnodata = NO;
+                        
+                        [_table reloadData];
                     }
                 }
                 else{
@@ -565,10 +558,11 @@
             }
         }else{
             [self cancel];
+            NSError *error = object;
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
+            if ([error code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -578,12 +572,22 @@
                 {
                     [_act stopAnimating];
                     _table.tableFooterView = nil;
+                    NSError *error = object;
+                    NSString *errorDescription = error.localizedDescription;
+                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                    [errorAlert show];
                 }
             }
             else
             {
                 [_act stopAnimating];
                 _table.tableFooterView = nil;
+                if ([error code] != NSURLErrorCancelled)
+                {
+                    NSString *errorDescription = error.localizedDescription;
+                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                    [errorAlert show];
+                }
             }
         }
     }
@@ -640,6 +644,7 @@
             SortViewController *vc = [SortViewController new];
             vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY),
                         kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:0};
+            vc.delegate = self;
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             
@@ -651,6 +656,7 @@
             FilterViewController *vc = [FilterViewController new];
             vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPVIEWKEY),
                         kTKPDFILTER_DATAFILTERKEY: _params};
+            vc.delegate = self;
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             break;
@@ -670,34 +676,33 @@
 
 -(void)refreshView:(UIRefreshControl*)refresh
 {
-    /** clear object **/
     [self cancel];
-    [_product removeAllObjects];
     _page = 1;
     _isrefreshview = YES;
     _requestcount = 0;
     
     [_table reloadData];
-    /** request data **/
     [self configureRestKit];
     [self loadData];
 }
 
-
-#pragma mark - Post Notification Methods
-
--(void)setDepartmentID:(NSNotification*)notification
+#pragma mark - Sort Delegate
+-(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
-    NSDictionary* userinfo = notification.userInfo;
-    [_params setObject:[userinfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    [_params addEntriesFromDictionary:userInfo];
     [self refreshView:nil];
+    [_act startAnimating];
+    _table.tableFooterView = _footer;
 }
 
-- (void)updateViewShop:(NSNotification *)notification;
+#pragma mark - Filter Delegate
+-(void)FilterViewController:(FilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
-    NSDictionary *userinfo = notification.userInfo;
-    [_params addEntriesFromDictionary:userinfo];
+    [_params addEntriesFromDictionary:userInfo];
     [self refreshView:nil];
+    [_act startAnimating];
+    _table.tableFooterView = _footer;
+
 }
 
 @end

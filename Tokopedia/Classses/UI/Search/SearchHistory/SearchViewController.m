@@ -7,7 +7,6 @@
 //
 
 #import "search.h"
-#import "SearchCell.h"
 #import "SearchViewController.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
@@ -22,8 +21,7 @@
 @interface SearchViewController ()<
     UISearchBarDelegate,
     UISearchDisplayDelegate,
-    SearchCellDelegate,
-    NotificationDelegate>
+    NotificationDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     /** real time search result array **/
     NSMutableArray *_searchresultarray;
@@ -31,6 +29,8 @@
     NSString *_filter;
     /** all histories from property list **/
     NSMutableArray *_historysearch;
+    
+    UITextField *_activeTextField;
     
     Notification *_notification;
 }
@@ -58,6 +58,7 @@
         self.title = kTKPDSEARCH_TITLE;
         UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
         [self.navigationItem setTitleView:logo];
+
     }
     return self;
 }
@@ -65,23 +66,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.navigationController.navigationBar setTranslucent:NO];
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
-    
-    if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
-        self.edgesForExtendedLayout = UIRectEdgeNone;
-    }
     
     _historysearch =[NSMutableArray new];
     _searchresultarray = [NSMutableArray new];
     
     _searchbar.delegate = self;
     
-    /** set default to product **/
-//    [_segmentcontrol setSelectedSegmentIndex:0];
-//    [_segmentcontrol sendActionsForControlEvents:UIControlEventValueChanged];
+    _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+
     _filter = @"search_product";
     
     [self LoadHistory];
@@ -90,6 +82,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     [_searchbar becomeFirstResponder];
     
     _notificationWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -263,19 +256,7 @@
     [self ClearHistories];
 }
 - (IBAction)gesture:(id)sender {
-    UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-    switch (gesture.state) {
-        case UIGestureRecognizerStateBegan: {
-            break;
-        }
-        case UIGestureRecognizerStateChanged: {
-            break;
-        }
-        case UIGestureRecognizerStateEnded: {
-            [_searchbar resignFirstResponder];
-            break;
-        }
-    }
+    [_searchbar resignFirstResponder];
 }
 
 #pragma mark - Table View Data Source
@@ -292,26 +273,64 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell* cell = nil;
-    NSString *cellid = kTKPDCATEGORYCELL_IDENTIFIER;
+    NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
     
-    cell = (SearchCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-    if (cell == nil) {
-        cell = [SearchCell newcell];
-        ((SearchCell*)cell).delegate = self;
-    }
-    
-    // Display recipe in the table cell
     NSString *searchresult;
     if (_searchresultarray == nil || _searchresultarray.count == 0) {
         searchresult = [_historysearch objectAtIndex:indexPath.row];
     } else {
         searchresult = [_searchresultarray objectAtIndex:indexPath.row];
     }
+    
+    if (cell == nil) {
+        
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    }
     if (_historysearch.count > indexPath.row) {
-        ((SearchCell*)cell).data = @{kTKPDSEARCH_DATAINDEXPATHKEY: indexPath, kTKPDSEARCH_DATACOLUMNSKEY: searchresult};
+        cell.textLabel.text = searchresult;
     }
 	
 	return cell;
+}
+
+#pragma mark - TableView Delegate
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *searchresult;
+    if (_searchresultarray == nil || _searchresultarray.count == 0) {
+        searchresult = [_historysearch objectAtIndex:indexPath.row];
+    } else {
+        searchresult = [_searchresultarray objectAtIndex:indexPath.row];
+    }
+    
+    SearchResultViewController *vc = [SearchResultViewController new];
+    vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchresult?:@"" ,
+               kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
+               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+    SearchResultViewController *vc1 = [SearchResultViewController new];
+    vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchresult?:@"" ,
+                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+    SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+    vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : searchresult?:@"" ,
+                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+    NSArray *viewcontrollers = @[vc,vc1,vc2];
+    
+    TKPDTabNavigationController *c = [TKPDTabNavigationController new];
+    [c setSelectedIndex:0];
+    [c setViewControllers:viewcontrollers];
+    [c setNavigationTitle:searchresult];
+    
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
+    [nav.navigationBar setTranslucent:NO];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_searchbar resignFirstResponder];
 }
 
 #pragma mark - UISearchBar Delegate
@@ -352,8 +371,6 @@
             }
         }
         
-        //_searchbar.text = nil;
-        
         /** Goto result page **/
         SearchResultViewController *vc = [SearchResultViewController new];
         vc.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
@@ -373,9 +390,12 @@
         
         [c setSelectedIndex:0];
         [c setViewControllers:viewcontrollers];
-        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-        [nav.navigationBar setTranslucent:NO];
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
+        //UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
+        //[nav.navigationBar setTranslucent:NO];
+        //[self.navigationController presentViewController:nav animated:YES completion:nil];
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:c animated:YES];
+        self.hidesBottomBarWhenPushed = NO;
     }
     else
     {
@@ -400,34 +420,6 @@
 {
     [searchBar setShowsCancelButton:YES animated:YES];
     return YES;
-}
-
-#pragma mark - cell delegate
--(void)SearchCellDelegate:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withdata:(NSDictionary *)data
-{
-    SearchResultViewController *vc = [SearchResultViewController new];
-    NSString *searchtext = [data objectForKey:kTKPDSEARCH_DATASEARCHKEY];
-    vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchtext?:@"" ,
-               kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
-               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-    SearchResultViewController *vc1 = [SearchResultViewController new];
-    vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchtext?:@"" ,
-                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-    SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-    vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : searchtext?:@"" ,
-                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-    NSArray *viewcontrollers = @[vc,vc1,vc2];
-    
-    TKPDTabNavigationController *c = [TKPDTabNavigationController new];
-    [c setSelectedIndex:0];
-    [c setViewControllers:viewcontrollers];
-    [c setNavigationTitle:searchtext];
-    
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-    [nav.navigationBar setTranslucent:NO];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 #pragma mark - Notification delegate

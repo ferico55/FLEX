@@ -10,9 +10,4 @@
 
 @interface HistoryProductViewController : UIViewController
 
-@property (strong, nonatomic) UINavigationController *navcon;
-
-- (id)initWithPosition:(NSInteger)position withNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
-
-
 @end

@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+@class FilterConditionViewController;
 
 #pragma mark - Filter Condition View Controller Delegate
 @protocol FilterConditionViewControllerDelegate <NSObject>
 @required
--(void)FilterConditionViewController:(UIViewController*)viewcontroller withdata:(NSDictionary*)data;
+-(void)FilterConditionViewController:(FilterConditionViewController*)viewcontroller withdata:(NSDictionary*)data;
 
 @end
 

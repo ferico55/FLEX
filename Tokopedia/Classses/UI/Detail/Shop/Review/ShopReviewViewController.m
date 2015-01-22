@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 #import "detail.h"
-#import "alert.h"
+#import "string_alert.h"
 
 #import "Review.h"
 #import "StarsRateView.h"
@@ -569,7 +569,7 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                NSLog(@"next page : %d",_page);
+                NSLog(@"next page : %zd",_page);
                 
                 [_table reloadData];
             }
@@ -578,7 +578,7 @@
                 NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
                 if ([(NSError*)object code] == NSURLErrorCancelled) {
                     if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                        NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                        NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                         _table.tableFooterView = _footer;
                         [_act startAnimating];
                         [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -609,14 +609,14 @@
 
 -(void)setHeaderData
 {
-    _labelstarcount.text = (_starcount>1)?[NSString stringWithFormat:@"%d ratings",_starcount]:[NSString stringWithFormat:@"%d rating",_starcount];
+    _labelstarcount.text = (_starcount>1)?[NSString stringWithFormat:@"%zd ratings",_starcount]:[NSString stringWithFormat:@"%zd rating",_starcount];
     
     NSArray *list =kTKPDREVIEW_ALERTPERIODSARRAY;
     _labeltime.text = (_isalltimes)?[NSString stringWithFormat:@"%@",list[0]]:[NSString stringWithFormat:@"in the past %@",list[1]];
     
     float ratingpoint = (_isadvreviewquality)?_review.result.advance_review.rating_quality_point:_review.result.advance_review.rating_accuracy_point;
     
-    _labeltotalreview.text = [NSString stringWithFormat:@"%f out of %d",ratingpoint,_review.result.advance_review.total_review];
+    _labeltotalreview.text = [NSString stringWithFormat:@"%f out of %zd",ratingpoint,_review.result.advance_review.total_review];
     
     NSArray *ratinglist = _review.result.advance_review.rating_list;
     

@@ -13,7 +13,7 @@
 #import "ShopInfoViewController.h"
 #import "BackgroundLayer.h"
 #import "SortViewController.h"
-#import "ProductEtalaseViewController.h"
+#import "MyShopEtalaseFilterViewController.h"
 #import "SendMessageViewController.h"
 #import "FavoriteShopAction.h"
 #import "ShopProductViewController.h"
@@ -22,12 +22,12 @@
 #import "ShopNotesViewController.h"
 #import "ShopSettingViewController.h"
 #import "ProductAddEditViewController.h"
-#import "stringproduct.h"
+#import "string_product.h"
 
 #import "URLCacheController.h"
 #import "UIImage+ImageEffects.h"
 
-@interface TKPDTabShopNavigationController () <UIScrollViewDelegate, ProductEtalaseViewControllerDelegate> {
+@interface TKPDTabShopNavigationController () <UIScrollViewDelegate, MyShopEtalaseFilterViewControllerDelegate, SortViewControllerDelegate> {
 	UIView* _tabbar;
 	NSInteger _unloadSelectedIndex;
 	NSArray* _unloadViewControllers;
@@ -51,7 +51,6 @@
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
-    NSTimer *_timer;
     BOOL is_dismissed;
     
     NSString *_cachepath;
@@ -60,6 +59,7 @@
     NSTimeInterval _timeinterval;
     
     BOOL navigationBarAnimated;
+    BOOL _isMyShop;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *filterview;
@@ -244,7 +244,6 @@
     _operationQueue = [NSOperationQueue new];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil];
     
@@ -750,6 +749,7 @@
                 SortViewController *vc = [SortViewController new];
                 vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY),
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
+                vc.delegate = self;
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
@@ -758,7 +758,7 @@
             {
                 // etalase button action
                 NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
+                MyShopEtalaseFilterViewController *vc = [MyShopEtalaseFilterViewController new];
                 vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
                 vc.delegate = self;
@@ -896,32 +896,27 @@
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/favorite-shop.pl" parameters:param];
     
     
+    NSTimer *timer;
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsuccessfav:mappingResult withOperation:operation];
-        
-        [_timer invalidate];
-        _timer = nil;
-        
+        [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
         [self requestfailurefav:error];
-        
-        [_timer invalidate];
-        _timer = nil;
+        [timer invalidate];
     }];
     
     
     
     [_operationQueue addOperation:_request];
     
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     
     
     
 }
 
--(void) requestsuccessfav:(id)mappingResult withOperation:(NSOperationQueue*)operation {
+-(void) requestsuccessfav:(id)mappingResult withOperation:(RKObjectRequestOperation*)operation {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
 }
 
@@ -1070,11 +1065,11 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             self.coverImageView.image = image;
+#pragma clang diagnostic pop
             self.coverImageView.hidden = NO;
             self.coverImageView.backgroundColor = [UIColor blackColor];
             self.blurCoverImage.image = [self.coverImageView.image applyLightEffect];
             self.blurCoverImage.hidden = NO;
-#pragma clang diagnostic pop
         } failure:nil];
         
         //add gradient in cover image
@@ -1144,7 +1139,7 @@
     }
 }
 
-- (void)disableScrollAtIndex:(int)index
+- (void)disableScrollAtIndex:(NSInteger)index
 {
     switch (index) {
         case 0:
@@ -1167,7 +1162,7 @@
     }
 }
 
-- (void)enableScrollAtIndex:(int)index
+- (void)enableScrollAtIndex:(NSInteger)index
 {
     switch (index) {
         case 0:
@@ -1314,16 +1309,20 @@
                                                     kTKPDDETAILSHOP_APIPAYMENTNAMEKEY]];
     
     RKObjectMapping *addressMapping = [RKObjectMapping mappingForClass:[Address class]];
-    [addressMapping addAttributeMappingsFromArray:@[//kTKPDDETAIL_APILOCATIONKEY,
+    [addressMapping addAttributeMappingsFromArray:@[kTKPDSHOP_APICITYNAMEKEY,
+                                                    kTKPDSHOP_APIEMAILKEY,
                                                     kTKPDSHOP_APIADDRESSNAMEKEY,
-                                                    kTKPDSHOP_APIADDRESSIDKEY,
                                                     kTKPDSHOP_APIPOSTALCODEKEY,
-                                                    kTKPDSHOP_APIDISTRICTIDKEY,
-                                                    kTKPDSHOP_APIFAXKEY,
+                                                    kTKPDSHOP_APIADDRESSKEY,
                                                     kTKPDSHOP_APICITYIDKEY,
                                                     kTKPDSHOP_APIPHONEKEY,
-                                                    kTKPDSHOP_APIEMAILKEY,
-                                                    kTKPDSHOP_APIPROVINCEIDKEY
+                                                    kTKPDSHOP_APILOCATIONAREAKEY,
+                                                    kTKPDSHOP_APIDISTRICTIDKEY,
+                                                    kTKPDSHOP_APIPROVINCENAMEKEY,
+                                                    kTKPDSHOP_APIPROVINCEIDKEY,
+                                                    kTKPDSHOP_APIDISTRICTNAMEKEY,
+                                                    kTKPDSHOP_APIFAXKEY,
+                                                    kTKPDSHOP_APIADDRESSIDKEY
                                                     ]];
     // Relationship Mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
@@ -1363,28 +1362,22 @@
     
 	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
         
-        UIApplication* app = [UIApplication sharedApplication];
-        app.networkActivityIndicatorVisible = YES;
-        
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOP_APIPATH parameters:param];
-        
+        NSTimer *timer;
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            app.networkActivityIndicatorVisible = NO;
             [self requestsuccess:mappingResult withOperation:operation];
-            [_timer invalidate];
+            [timer invalidate];
             _buttonsetting.enabled = YES;
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            /** failure **/
-            app.networkActivityIndicatorVisible = NO;
             [self requestfailure:error];
-            [_timer invalidate];
+            [timer invalidate];
             _buttonsetting.enabled = NO;
         }];
         
         [_operationQueue addOperation:_request];
         
-        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     }
     else {
         _buttonsetting.enabled = YES;
@@ -1477,11 +1470,10 @@
 
         }
         else{
-            [self cancel];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                     [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }
@@ -1558,15 +1550,19 @@
         _cachecontroller.URLCacheInterval = 86400.0;
         [_cachecontroller initCacheWithDocumentPath:path];
         
-        NSDictionary *auth = (NSDictionary *)[_data objectForKey:kTKPD_AUTHKEY];
-        if (auth && ![auth isEqual:[NSNull null]]) {
-            if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
-                _buttonsetting.hidden = NO;
-                _buttonaddproduct.hidden = NO;
-
-                _buttonfav.hidden = YES;
-                _buttonMessage.hidden = YES;
-            }
+        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+        NSDictionary* auth = [secureStorage keychainDictionary];
+        NSInteger myShopID = [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue];
+        NSInteger currentShopID = [[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue];
+        
+        _isMyShop = (myShopID == currentShopID);
+        
+        if (_isMyShop) {
+            _buttonsetting.hidden = NO;
+            _buttonaddproduct.hidden = NO;
+            
+            _buttonfav.hidden = YES;
+            _buttonMessage.hidden = YES;
         }
         else
         {
@@ -1576,7 +1572,6 @@
             _buttonfav.hidden = NO;
             _buttonMessage.hidden = NO;
         }
-        
     }
     
 }
@@ -1593,6 +1588,12 @@
     [self request];
 }
 
+#pragma mark - Sort Delegate
+-(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+{
+    [_detailfilter addEntriesFromDictionary:userInfo];
+    [self refreshView:nil];
+}
 
 #pragma mark - Notification
 - (void)updateView:(NSNotification *)notification;
@@ -1605,7 +1606,7 @@
 }
 
 #pragma mark - Etalase Delegate
--(void)ProductEtalaseViewController:(ProductEtalaseViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+-(void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
     [self cancel];
     [_detailfilter addEntriesFromDictionary:userInfo];

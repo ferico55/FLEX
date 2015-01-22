@@ -13,7 +13,7 @@
 
 #import "ProductEditWholesaleViewController.h"
 
-#import "SettingShipmentViewController.h"
+#import "MyShopShipmentViewController.h"
 
 @interface CartViewController ()
 @property (weak, nonatomic) IBOutlet ProgressBarView *progress;
@@ -74,8 +74,6 @@
         }
         case 200:
         {
-            SettingShipmentViewController *vc = [SettingShipmentViewController new];
-            [self.navigationController pushViewController:vc animated:YES];
             break;
         }
         default:

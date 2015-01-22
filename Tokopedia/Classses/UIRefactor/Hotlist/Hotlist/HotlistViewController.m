@@ -7,7 +7,7 @@
 //
 
 #import "Hotlist.h"
-#import "stringhome.h"
+#import "string_home.h"
 #import "HotlistViewController.h"
 #import "HotlistResultViewController.h"
 
@@ -131,11 +131,11 @@
     
     /* prepare to use our own on-disk cache */
     //[_cachecontroller initCachePathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
-//    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDHOMEHOTLIST_CACHEFILEPATH];
-//    _cachepath = [path stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
-//    _cachecontroller.filePath = _cachepath;
-//    _cachecontroller.URLCacheInterval = 86400.0;
-//	[_cachecontroller initCacheWithDocumentPath:path];
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDHOMEHOTLIST_CACHEFILEPATH];
+    _cachepath = [path stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
+    _cachecontroller.filePath = _cachepath;
+    _cachecontroller.URLCacheInterval = 86400.0;
+	[_cachecontroller initCacheWithDocumentPath:path];
     
     /* create and load the URL array using the strings stored in URLCache.plist */
     //NSString* path = [[NSBundle mainBundle] pathForResource:@"URLCache" ofType:@"plist"];
@@ -189,7 +189,7 @@
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         NSString *cellid = kTKPDHOTLISTCELL_IDENTIFIER;
-        UIFont * font = kTKPDHOME_FONTHOTLIST;
+        ///UIFont * font = kTKPDHOME_FONTHOTLIST;
 		
 		cell = (HotlistCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
@@ -319,13 +319,6 @@
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE)
                             };
     _requestcount ++;
-
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDHOMEHOTLIST_APIPATH parameters:param];
-    
-	/* apply daily time interval policy */
-    
-	/* In this program, "update" means to check the last modified date
-	 of the image to see if we need to load a new version. */
     
 	[_cachecontroller getFileModificationDate];
 
@@ -334,18 +327,18 @@
     
 
 	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
+        
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDHOMEHOTLIST_APIPATH parameters:[param encrypt]];
+        
+        NSTimer *timer;
         //[_cachecontroller clearCache];
-		/* file doesn't exist or hasn't been updated */
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [self requestsuccess:mappingResult withOperation:operation];
             [_act stopAnimating];
             _table.tableFooterView = nil;
-            [_table reloadData];
             _isrefreshview = NO;
             [_refreshControl endRefreshing];
-            [_timer invalidate];
-            _timer = nil;
-            
+            [timer invalidate];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
             [self requestfailure:error];
@@ -353,14 +346,13 @@
             //_table.tableFooterView = nil;
             _isrefreshview = NO;
             [_refreshControl endRefreshing];
-            [_timer invalidate];
-            _timer = nil;
+            [timer invalidate];
         }];
         
         [_operationQueue addOperation:_request];
         
-        _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 	}
 	else {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -445,7 +437,7 @@
             BOOL status = [hotlist.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if(_isrefreshview) {
+                if(_page == 1) {
                     [_product removeAllObjects];
                 }
                 
@@ -470,6 +462,7 @@
                     
                     _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
                 }
+                [_table reloadData];
             }
         }
         else{
@@ -478,7 +471,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -494,6 +487,12 @@
             {
                 [_act stopAnimating];
                 _table.tableFooterView = nil;
+                NSError *error = object;
+                if (!([error code] == NSURLErrorCancelled)){
+                    NSString *errorDescription = error.localizedDescription;
+                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                    [errorAlert show];
+                }
             }
 
         }
@@ -517,6 +516,7 @@
                     kTKPDHOME_APITITLEKEY : hotlist.title,
                     };
         UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+        nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self.navigationController presentViewController:nav animated:YES completion:nil];
     }
     // redirect uri to search category

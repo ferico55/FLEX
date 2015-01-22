@@ -209,7 +209,7 @@
             UINavigationController* n = (UINavigationController*)select;
             if (!n.navigationBarHidden && !n.navigationBar.hidden) {
                 
-                CGRect rect = n.navigationBar.frame;
+                //CGRect rect = n.navigationBar.frame;
                 selectframe.origin.y = inset.top;
                 selectframe = CGRectZero;
             } else {
@@ -439,7 +439,7 @@
     if(translation.x < 0)
     {
         //scroll to right
-        UIButton *button = (UIButton*)_buttons[3];
+        //UIButton *button = (UIButton*)_buttons[3];
     } else
     {
         //scroll to left

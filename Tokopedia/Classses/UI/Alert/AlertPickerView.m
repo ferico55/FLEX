@@ -7,7 +7,7 @@
 //
 
 #import "AlertPickerView.h"
-#import "alert.h"
+#import "string_alert.h"
 
 #pragma mark -
 #pragma mark TKPDAlertView category
@@ -33,8 +33,8 @@
 -(IBAction)tap:(id)sender
 {
     if ([sender isKindOfClass:[UIButton class]]) {
-        //done button
-        [self dismissWithClickedButtonIndex:(int)index animated:YES];
+        UIButton *doneButton = (UIButton*)sender;
+        [self dismissWithClickedButtonIndex:doneButton.tag animated:YES];
     }
 }
 

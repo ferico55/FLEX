@@ -7,6 +7,7 @@
 //
 
 #import "Talk.h"
+#import "string_product.h"
 #import "detail.h"
 #import "GeneralTalkCell.h"
 #import "ShopTalkViewController.h"
@@ -488,7 +489,7 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                NSLog(@"next page shop talk : %d",_page);
+                NSLog(@"next page shop talk : %zd",_page);
                 
                 _isnodata = NO;
                 [_table reloadData];
@@ -499,7 +500,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];

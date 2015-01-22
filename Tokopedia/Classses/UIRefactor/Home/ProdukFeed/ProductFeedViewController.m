@@ -6,7 +6,8 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "stringhome.h"
+#import "string_home.h"
+#import "string_product.h"
 #import "detail.h"
 #import "GeneralProductCell.h"
 #import "ProductFeedViewController.h"
@@ -51,8 +52,6 @@
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
 }
-
-#pragma mark - Factory Method
 
 #pragma mark - Initialization
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -293,10 +292,8 @@
     
     [_operationQueue addOperation:_request];
     
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout:) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-
-
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
@@ -356,7 +353,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -423,6 +420,11 @@
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 
+}
+
+-(void)requestTimeout:(NSTimer*)timer
+{
+    
 }
 
 #pragma mark - Cell Delegate

@@ -11,6 +11,8 @@
 #import "LoginViewController.h"
 #import "SearchViewController.h"
 #import "CartViewController.h"
+//#import "TransactionCartViewController.h"
+#import "TransactionCartRootViewController.h"
 #import "MoreViewController.h"
 #import "CategoryViewController.h"
 
@@ -23,6 +25,8 @@
 #import "LogoutViewController.h"
 
 #import "activation.h"
+
+#import "MoreNavigationViewController.h"
 
 #import "TKPDSecureStorage.h"
 
@@ -116,14 +120,14 @@
         // before login
         titles = kTKPD_HOMETITLEARRAY;
         HotlistViewController *v = [HotlistViewController new];
-        v.data = @{kTKPD_AUTHKEY : _auth?:@""};
+        v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
         [viewcontrollers addObject:v];
     }
     else{
         // after login
         titles = kTKPD_HOMETITLEISAUTHARRAY;
         HotlistViewController *v = [HotlistViewController new];
-        v.data = @{kTKPD_AUTHKEY : _auth?:@""};
+        v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
         [viewcontrollers addObject:v];
         ProductFeedViewController *v1 = [ProductFeedViewController new];
         [viewcontrollers addObject:v1];
@@ -147,8 +151,8 @@
     CategoryViewController *categoryvc = [CategoryViewController new];
     UINavigationController *categoryNavBar = [[UINavigationController alloc]initWithRootViewController:categoryvc];
     [categoryNavBar.navigationBar setTranslucent:NO];
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
-        categoryNavBar.edgesForExtendedLayout = UIRectEdgeNone;
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
+        categoryvc.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
     /** TAB BAR INDEX 3 **/
@@ -157,12 +161,19 @@
         search.data = @{kTKPD_AUTHKEY:_auth?:[NSNull null]};
     }
     UINavigationController *searchNavBar = [[UINavigationController alloc]initWithRootViewController:search];
-    [searchNavBar.navigationBar setTranslucent:NO];
+    searchNavBar.navigationBar.translucent = NO;
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
+        search.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     
     /** TAB BAR INDEX 4 **/
-    CartViewController *cart = [CartViewController new];
+    TransactionCartRootViewController *cart = [TransactionCartRootViewController new];
     UINavigationController *cartNavBar = [[UINavigationController alloc]initWithRootViewController:cart];
     [cartNavBar.navigationBar setTranslucent:NO];
+    [cartNavBar.navigationItem setTitleView:logo];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
+        cart.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     
     /** TAB BAR INDEX 5 **/
     UINavigationController *moreNavBar;
@@ -172,7 +183,8 @@
     }
     else{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        moreNavBar = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+        MoreNavigationViewController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+        moreNavBar = moreNavController;
     }
 
     [moreNavBar.navigationBar setTranslucent:NO];
@@ -408,7 +420,8 @@
     }
     else{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        moreNavBar = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+        MoreNavigationViewController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+        moreNavBar = moreNavController;
     }
     [moreNavBar.navigationBar setTranslucent:NO];
 

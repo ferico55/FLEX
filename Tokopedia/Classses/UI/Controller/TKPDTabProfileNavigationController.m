@@ -13,9 +13,9 @@
 
 #import "TKPDTabProfileNavigationController.h"
 #import "SortViewController.h"
-#import "ProductEtalaseViewController.h"
-#import "../Profile/Edit/ProfileEditViewController.h"
-#import "../Profile/Settings/ProfileSettingViewController.h"
+#import "MyShopEtalaseFilterViewController.h"
+#import "SettingUserProfileViewController.h"
+#import "ProfileSettingViewController.h"
 
 #import "URLCacheController.h"
 
@@ -54,7 +54,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *namelabel;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *buttons;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
-@property (strong, nonatomic) IBOutlet UIView *contentview;
+@property (weak, nonatomic) IBOutlet UIView *contentview;
 
 @property (weak, nonatomic) IBOutlet UIView *container;
 @property (weak, nonatomic) IBOutlet UIView *tapview;
@@ -158,12 +158,17 @@
     _scrollview.contentSize = size;
     
     NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
+    UIBarButtonItem *backBarButtonItem;
     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+        backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+    }
+    else
+    backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+    backBarButtonItem.tag = 10;
+    self.navigationItem.leftBarButtonItem = backBarButtonItem;
+
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
@@ -174,7 +179,6 @@
     else
         _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
 	[_barbuttoninfo setTag:11];
-    
     
     [_scrollview addSubview:_contentview];
     
@@ -504,6 +508,9 @@
 #pragma mark View actions
 -(IBAction)tap:(UIButton*) sender
 {
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        
+    }
 	if (_viewControllers != nil) {
 		
 		NSInteger index = _selectedIndex;
@@ -556,7 +563,15 @@
         switch (btn.tag) {
             case 10:
             {
-                [self.navigationController popViewControllerAnimated:YES];
+                if (self.presentingViewController != nil) {
+                    if (self.navigationController.viewControllers.count > 1) {
+                        [self.navigationController popViewControllerAnimated:YES];
+                    } else {
+                        [self dismissViewControllerAnimated:YES completion:NULL];
+                    }
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
                 break;
             }
                 
@@ -583,13 +598,13 @@
         switch (btn.tag) {
             case 10:
             {
-                //button message action
+                
                 break;
             }
             case 11:
             {
                 //button edit profile action
-                ProfileEditViewController *vc = [ProfileEditViewController new];
+                SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
                 vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]
                             };
                 [self.navigationController pushViewController:vc animated:YES];
@@ -709,7 +724,6 @@
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        //NSLOG(@"thumb: %@", thumb);
         [thumb setImage:image];
         [_actpp stopAnimating];
 #pragma clang diagnostic pop
@@ -819,7 +833,7 @@
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
 //	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
-    
+        NSTimer *timer;
         [_act startAnimating];
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_PEOPLEAPIPATH parameters:param];
         
@@ -828,19 +842,19 @@
             
             [self requestsuccess:mappingResult withOperation:operation];
             [_act stopAnimating];
-            [_timer invalidate];
+            [timer invalidate];
             
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
             [self requestfailure:error];
             [_act stopAnimating];
-            [_timer invalidate];
+            [timer invalidate];
         }];
         
         [_operationQueue addOperation:_request];
         
-        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 ////    }else {
 //        [_act stopAnimating];
 //        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -939,14 +953,18 @@
                 }
                 else
                 {
-                    //[_act stopAnimating];
-                    //_table.tableFooterView = nil;
+                    NSError *error = object;
+                    NSString *errorDescription = error.localizedDescription;
+                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                    [errorAlert show];
                 }
             }
             else
             {
-                //[_act stopAnimating];
-                //_table.tableFooterView = nil;
+                NSError *error = object;
+                NSString *errorDescription = error.localizedDescription;
+                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                [errorAlert show];
             }
         }
     }
@@ -990,7 +1008,9 @@
         _cachecontroller.filePath = _cachepath;
         [_cachecontroller initCacheWithDocumentPath:path];
         
-        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+        TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+        NSDictionary *auth = [secureStorage keychainDictionary];
+        
         if (auth && ![auth isEqual:[NSNull null]]) {
             if ([[_data objectForKey:kTKPD_USERIDKEY]integerValue] == [[auth objectForKey:kTKPD_USERIDKEY]integerValue]) {
                 

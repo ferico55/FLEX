@@ -290,7 +290,7 @@
             UINavigationController* n = (UINavigationController*)select;
             if (!n.navigationBarHidden && !n.navigationBar.hidden) {
                 
-                CGRect rect = n.navigationBar.frame;
+                //CGRect rect = n.navigationBar.frame;
                 selectframe.origin.y = inset.top;
                 //selectframe = CGRectOffset(selectframe, 0.0f, CGRectGetHeight(rect));
                 selectframe = CGRectZero;
@@ -444,7 +444,7 @@
 {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
-        UIBarButtonItem *barbutton1;
+        //UIBarButtonItem *barbutton1;
         
         switch (btn.tag) {
             case 10:

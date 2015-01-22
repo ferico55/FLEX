@@ -12,4 +12,6 @@
 
 - (BOOL)isMutable;
 
+- (NSDictionary *)encrypt;
+
 @end

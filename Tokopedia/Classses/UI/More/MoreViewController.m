@@ -324,12 +324,21 @@
         [viewControllers addObject:contactController];
         
         TKPDTabProfileNavigationController *profileController = [TKPDTabProfileNavigationController new];
+        profileController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         profileController.data = @{MORE_USER_ID:[_auth objectForKey:MORE_USER_ID],
                                    MORE_AUTH:_auth?:[NSNull null]};
         [profileController setViewControllers:viewControllers animated:YES];
         [profileController setSelectedIndex:0];
         
-        [self.navigationController pushViewController:profileController animated:YES];
+        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:profileController];
+        nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [nav.navigationBar setTranslucent:NO];
+        [self.navigationController presentViewController:nav animated:YES completion:nil];
+        
+        //TODO::
+        //self.hidesBottomBarWhenPushed = YES;
+        //[self.navigationController pushViewController:profileController animated:YES];
+        //self.hidesBottomBarWhenPushed = NO;
     }
     
     else if (indexPath.section == 2 && indexPath.row == 0) {
@@ -355,11 +364,19 @@
         [viewControllers addObject:noteController];
         
         TKPDTabShopNavigationController *shopNavigationController = [TKPDTabShopNavigationController new];
+        shopNavigationController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         shopNavigationController.data = data;
         [shopNavigationController setViewControllers:viewControllers animated:YES];
         [shopNavigationController setSelectedIndex:0];
         
-        [self.navigationController pushViewController:shopNavigationController animated:YES];
+        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:shopNavigationController];
+        nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [nav.navigationBar setTranslucent:NO];
+        [self.navigationController presentViewController:nav animated:YES completion:nil];
+        //TODO::
+        //self.hidesBottomBarWhenPushed = YES;
+        //[self.navigationController pushViewController:shopNavigationController animated:YES];
+        //self.hidesBottomBarWhenPushed = NO;
     }
     
     else if (indexPath.section == 5) {

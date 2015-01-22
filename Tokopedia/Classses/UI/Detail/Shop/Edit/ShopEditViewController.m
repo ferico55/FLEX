@@ -250,18 +250,13 @@
     NSTimer *timer;
     _barbuttonsave.enabled = NO;
     
-    UIApplication* app = [UIApplication sharedApplication];
-    app.networkActivityIndicatorVisible = YES;
-    
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [timer invalidate];
-        app.networkActivityIndicatorVisible = NO;
         _barbuttonsave.enabled = YES;
         [self requestsuccessaction:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [timer invalidate];
         _barbuttonsave.enabled = YES;
-        app.networkActivityIndicatorVisible = NO;
         [self requestfailureaction:error];
     }];
     
@@ -319,22 +314,11 @@
         }else{
             [self cancel];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                    //_table.tableFooterView = _footer;
-                    //[_act startAnimating];
-                    //[self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    //[self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                }
-                else
-                {
-                    //[_act stopAnimating];
-                }
-            }
-            else
-            {
-                //[_act stopAnimating];
+            NSError *error = object;
+            if (!([error code] == NSURLErrorCancelled)){
+                NSString *errorDescription = error.localizedDescription;
+                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                [errorAlert show];
             }
         }
     }
@@ -428,7 +412,7 @@
 
 -(void)requestfailureGenerateHost:(id)object
 {
-    
+    [self requestfailureGenerateHost:object];
 }
 
 -(void)requestprocessGenerateHost:(id)object
@@ -442,8 +426,23 @@
             BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                _buttoneditimage.enabled = YES;
+                if (_settings.message_status) {
+                    NSArray *array = _settings.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                }
+                else
+                    _buttoneditimage.enabled = YES;
             }
+        }
+    }
+    else
+    {
+        NSError *error = object;
+        if (!([error code] == NSURLErrorCancelled)){
+            NSString *errorDescription = error.localizedDescription;
+            UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+            [errorAlert show];
         }
     }
 }
@@ -506,6 +505,7 @@
               kTKPDGENERATEDHOST_APISERVERIDKEY :@(_generatehost.result.generated_host.server_id),
               };
     
+    _thumb.alpha = 0.5f;
     NSMutableURLRequest *request = [NSMutableURLRequest requestUploadImageData:imageData
                                                                       withName:API_UPLOAD_SHOP_IMAGE_FORM_FIELD_NAME
                                                                    andFileName:imageName
@@ -541,7 +541,7 @@
                                        BOOL status = [_images.status isEqualToString:kTKPDREQUEST_OKSTATUS];
                                        
                                        if (status) {
-                                           [self requestProcessUploadPhoto:mappingresult];
+                                            [self requestProcessUploadPhoto:mappingresult];
                                        }
                                    }
                                    
@@ -579,7 +579,16 @@
             BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (!_images.message_error) {
+                if (_settings.message_status) {
+                    NSArray *array = _settings.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                }
+                else
+                {
+                    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION animations:^{
+                        _thumb.alpha = 1.0;
+                    }];
                     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_images.result.file_th] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
                     //request.URL = url;
                     
@@ -593,7 +602,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                         //NSLOG(@"thumb: %@", thumb);
-                        [thumb setImage:image];
+                        [thumb setImage:image animated:YES];
 #pragma clang diagnostic pop
                         
                     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
@@ -604,16 +613,16 @@
                                                };
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
                 }
-                else
-                {
-                    NSLog(@"%@ : %@",NSStringFromSelector(_cmd), _images.message_error);
-                }
             }
         }
         else
         {
-            //[self performSelector:@selector(configureRestkitProfileForm) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            //[self performSelector:@selector(requestActionUploadPhoto:) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            NSError *error = object;
+            if (!([error code] == NSURLErrorCancelled)){
+                NSString *errorDescription = error.localizedDescription;
+                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                [errorAlert show];
+            }
         }
     }
 }
@@ -691,9 +700,14 @@
             case 12:
             {
                 // adjust shop status
+                NSString *closedNote = [_datainput objectForKey:kTKPDSHOPEDIT_APICLOSEDNOTEKEY]?:_shop.closed_info.note;
+                NSString *closedUntil = [_datainput objectForKey:kTKPDSHOPEDIT_APICLOSEUNTILKEY]?:_shop.closed_info.until;
                 ShopEditStatusViewController *vc = [ShopEditStatusViewController new];
                 vc.data = @{kTKPDDETAIL_DATASTATUSSHOPKEY: _shop.is_open?:@(0),
-                            kTKPDDETAIL_DATACLOSEDINFOKEY: _shop.closed_info};
+                            kTKPDDETAIL_DATACLOSEDINFOKEY: _shop.closed_info,
+                            kTKPDSHOPEDIT_APICLOSEDNOTEKEY:closedNote,
+                            kTKPDSHOPEDIT_APICLOSEUNTILKEY:closedUntil
+                            };
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
                 break;

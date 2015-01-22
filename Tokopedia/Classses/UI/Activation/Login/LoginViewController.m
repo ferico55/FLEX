@@ -83,7 +83,7 @@
     /** SIGN IN **/
     _barbuttonsignin = [[UIBarButtonItem alloc] initWithTitle:@"Sign In" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [_barbuttonsignin setTag:10];
-    [_barbuttonsignin setTintColor:[UIColor whiteColor]];
+    [_barbuttonsignin setTintColor:[UIColor blackColor]];
     self.navigationItem.rightBarButtonItem = _barbuttonsignin;
     
     /** GO TO SIGN UP PAGE **/
@@ -96,16 +96,6 @@
     
     _activation = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
-    
-    /** keyboard notification **/
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(keyboardWillShow:)
-//                                                 name:UIKeyboardWillShowNotification
-//                                               object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self
-//                                             selector:@selector(keyboardWillBeHidden:)
-//                                                 name:UIKeyboardWillHideNotification
-//
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -122,8 +112,6 @@
 {
     [super viewWillDisappear:animated];
     [self cancelLogin];
-    //    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    //    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 #pragma mark - View Actipn
@@ -166,6 +154,7 @@
                 
                 if (valid) {
                     NSDictionary *userinfo = @{kTKPDACTIVATION_DATAEMAILKEY : email, kTKPDACTIVATION_DATAPASSKEY : pass};
+                    [self configureRestKitLogin];
                     [self requestActionLogin:userinfo];
                 }
                 else{
@@ -252,21 +241,18 @@
     
     _requestcount++;
     
-	NSDictionary* param = @{
+    NSDictionary* param = @{
                             kTKPDLOGIN_APIUSEREMAILKEY : [data objectForKey:kTKPDACTIVATION_DATAEMAILKEY]?:@(0),
                             kTKPDLOGIN_APIUSERPASSKEY : [data objectForKey:kTKPDACTIVATION_DATAPASSKEY]?:@(0)
                             };
     
-    UIApplication* app = [UIApplication sharedApplication];
-    app.networkActivityIndicatorVisible = YES;
     _barbuttonsignin.enabled = NO;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDLOGIN_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDLOGIN_APIPATH parameters:[param encrypt]];
     
     NSTimer *timer;
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [timer invalidate];
         //[_act stopAnimating];
-        app.networkActivityIndicatorVisible = NO;
         _barbuttonsignin.enabled = YES;
         [self requestsuccessLogin:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
@@ -274,7 +260,6 @@
         [timer invalidate];
         //[_act stopAnimating];
         _barbuttonsignin.enabled =YES;
-        app.networkActivityIndicatorVisible = NO;
         [self requestfailureLogin:error];
     }];
     [_operationQueue addOperation:_request];
@@ -342,7 +327,7 @@
     NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
     if ([(NSError*)object code] == NSURLErrorCancelled) {
         if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+            NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
             [self performSelector:@selector(configureRestKitLogin) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
             [self performSelector:@selector(requestActionLogin:) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
         }

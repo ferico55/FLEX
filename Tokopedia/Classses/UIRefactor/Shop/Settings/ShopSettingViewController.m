@@ -9,19 +9,24 @@
 #import "detail.h"
 #import "DetailShopResult.h"
 #import "ShopSettingViewController.h"
-#import "SettingEtalaseViewController.h"
-#import "SettingShipmentViewController.h"
-#import "ShipmentSettingViewController.h"
-#import "SettingPaymentViewController.h"
-#import "SettingNoteViewController.h"
-#import "SettingLocationViewController.h"
+#import "MyShopEtalaseViewController.h"
+#import "MyShopShipmentViewController.h"
+#import "MyShopShipmentViewController.h"
+#import "MyShopPaymentViewController.h"
+#import "MyShopNoteViewController.h"
+#import "MyShopAddressViewController.h"
 #import "ProductListMyShopViewController.h"
 
-@interface ShopSettingViewController ()
+@interface ShopSettingViewController ()<UITableViewDataSource, UITableViewDelegate>
 {
     DetailShopResult *_shop;
+    
+    NSArray *_listMenu;
+    
+    BOOL _isnodata;
 }
 
+@property (weak, nonatomic) IBOutlet UITableView *table;
 - (IBAction)gesture:(id)sender;
 
 @end
@@ -32,7 +37,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        _isnodata = YES;
     }
     return self;
 }
@@ -43,7 +48,7 @@
 
     self.navigationController.navigationBarHidden = NO;
 
-    self.title = @"Pengaturan Toko";
+    self.title = TITLE_SHOP_SETTING;
     
     _shop = [_data objectForKey:kTKPDDETAIL_DATAINFOSHOPSKEY];
 
@@ -52,6 +57,11 @@
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
+    _listMenu = ARRAY_SHOP_SETTING_MENU;
+    if (_listMenu.count >0) {
+        _isnodata = NO;
+    }
+    _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)didReceiveMemoryWarning
@@ -80,7 +90,7 @@
                 case 10:
                 {
                     //Etalase
-                    SettingEtalaseViewController *vc = [SettingEtalaseViewController new];
+                    MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
                     vc.data = @{kTKPDDETAIL_APISHOPIDKEY : @(_shop.info.shop_id)?:@(0), kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
@@ -96,7 +106,7 @@
                 case 12:
                 {
                     //Location
-                    SettingLocationViewController *vc = [SettingLocationViewController new];
+                    MyShopAddressViewController *vc = [MyShopAddressViewController new];
                     vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
@@ -109,7 +119,7 @@
 //                                };
 //                    [self.navigationController pushViewController:vc animated:YES];
                     
-                    ShipmentSettingViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"ShipmentSettingViewController"];
+                    MyShopShipmentViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentViewController"];
                     vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},};
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
@@ -117,7 +127,7 @@
                 case 14:
                 {
                     //Payment
-                    SettingPaymentViewController *vc = [SettingPaymentViewController new];
+                    MyShopPaymentViewController *vc = [MyShopPaymentViewController new];
                     vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
@@ -125,7 +135,7 @@
                 case 15:
                 {
                     //Notes
-                    SettingNoteViewController *vc = [SettingNoteViewController new];
+                    MyShopNoteViewController *vc = [MyShopNoteViewController new];
                     vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
@@ -153,6 +163,110 @@
             [self.navigationController popViewControllerAnimated:YES];
             break;
             
+        default:
+            break;
+    }
+}
+
+#pragma - TableView DataSource
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return _listMenu.count;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
+    UITableViewCell* cell = nil;
+
+    if (!_isnodata) {
+        if (indexPath.row<_listMenu.count) {
+            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            }
+            
+            cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
+            cell.textLabel.text = _listMenu[indexPath.row];
+        }
+    }
+
+    return cell;
+}
+
+#pragma mark - TableView Delegate
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.row)
+    {
+        case 0:
+        {
+            //Etalase
+            MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
+            vc.data = @{kTKPDDETAIL_APISHOPIDKEY : @(_shop.info.shop_id)?:@(0), kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 1:
+        {
+            //Product
+            ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
+            vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 2:
+        {
+            //Location
+            MyShopAddressViewController *vc = [MyShopAddressViewController new];
+            vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 3:
+        {
+            //Shipment
+            //                    SettingShipmentViewController *vc = [SettingShipmentViewController new];
+            //                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
+            //                                };
+            //                    [self.navigationController pushViewController:vc animated:YES];
+            
+            MyShopShipmentViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentViewController"];
+            vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},};
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 4:
+        {
+            //Payment
+            MyShopPaymentViewController *vc = [MyShopPaymentViewController new];
+            vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 5:
+        {
+            //Notes
+            MyShopNoteViewController *vc = [MyShopNoteViewController new];
+            vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+            [self.navigationController pushViewController:vc animated:YES];
+            break;
+        }
+        case 6:
+        {
+            //Admin
+            break;
+        }
         default:
             break;
     }

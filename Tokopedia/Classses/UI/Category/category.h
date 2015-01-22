@@ -38,6 +38,7 @@ typedef enum
 #define DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE @"previousviewtype"
 
 #define kTKPDCATEGORY_DATAPUSHCOUNTKEY @"pushcount"
+#define DATA_PUSH_COUNT_CONTROL @"pushcountcontrol"
 #define kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY @"isotomatis"
 #define kTKPDCATEGORY_DATACHOSENINDEXPATHKEY @"chosenindexpaths"
 

@@ -7,8 +7,9 @@
 //
 
 #import "Register.h"
-#import "alert.h"
+#import "string_alert.h"
 #import "activation.h"
+#import "stringregister.h"
 #import "RegisterViewController.h"
 
 #import "AlertDatePickerView.h"
@@ -96,15 +97,7 @@
     
     /** BACK **/
     img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    //if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-    //    UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    //    barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    //}
-    //else
-    //    barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    //
-    //[barbutton1 setTag:10];
-    //self.navigationItem.leftBarButtonItem = barbutton1;
+
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
     barButtonItem.tag = 10;
@@ -114,6 +107,7 @@
     /** SIGN UP **/
     barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [barbutton1 setTag:11];
+    barbutton1.tintColor = [UIColor blackColor];
     self.navigationItem.rightBarButtonItem = barbutton1;
     
     // keyboard notification
@@ -191,51 +185,51 @@
                 else
                 {
                     if (!fullname || [fullname isEqualToString:@""]) {
-                        [messages addObject:@"Fullname must be filled"];
+                        [messages addObject:ERRORMESSAGE_NULL_FULL_NAME];
                     }
                     if (!phone) {
-                        [messages addObject:@"Mobile Number must be filled."];
+                        [messages addObject:ERRORMESSAGE_NULL_PHONE__NUMBER];
                     }
                     else{
                         if (phoneCharCount<6) {
-                            [messages addObject:@"phone minimum 6 character"];
+                            [messages addObject:ERRORMESSAGE_INVALID_PHONE_COUNT];
                         }
                     }
                     if (!email || [email isEqualToString:@""]) {
-                        [messages addObject:@"Email must be filled"];
+                        [messages addObject:ERRORMESSAGE_NULL_EMAIL];
                     }
                     else
                     {
                         if (![email isEmail]) {
-                            [messages addObject:@"Invalid email format"];
+                            [messages addObject:ERRORMESSAGE_INVALID_EMAIL_FORMAR];
                         }
                     }
                     if (!gender) {
-                        [messages addObject:@"Gender must be filled"];
+                        [messages addObject:ERRORMESSAGE_NULL_GENDER];
                     }
                     if (!birthday || !birthmonth || !birthyear) {
-                        [messages addObject:@"Date of birth must be filled"];
+                        [messages addObject:ERRORMESSAGE_NULL_BIRTHDATE];
                     }
                     if (!pass || [pass isEqualToString:@""]) {
-                        [messages addObject:@"Password must be filled"];
+                        [messages addObject:ERRORMESSAGE_NULL_PASSWORD];
                     }
                     else
                     {
                         if (passCharCount < 6) {
-                            [messages addObject:@"password minimum 6 character"];
+                            [messages addObject:ERRORMESSAGE_INVALID_PASSWORD_COUNT];
                         }
                     }
                     if (!confirmpass || [confirmpass isEqualToString:@""]) {
-                        [messages addObject:@"Confirm password must be filled"];
+                        [messages addObject:ERRORMESSAGE_NULL_CONFIRM_PASSWORD];
                     }
                     else
                     {
                         if (![pass isEqualToString:confirmpass]) {
-                            [messages addObject:@"Password and confirm password not macth"];
+                            [messages addObject:ERRORMESSAGE_INVALID_PASSWORD_AND_CONFIRM_PASSWORD];
                         }
                     }
                     if (!isagree) {
-                        [messages addObject:@"You have to agree the Terms & Conditions of Tokopedia."];
+                        [messages addObject:ERRORMESSAGE_NULL_AGREMENT];
                     }
                 }
                 
@@ -372,9 +366,6 @@
                             kTKPDREGISTER_APICONFIRMPASSKEY:[data objectForKey:kTKPDREGISTER_APICONFIRMPASSKEY]
                             };
     
-    UIApplication* app = [UIApplication sharedApplication];
-    app.networkActivityIndicatorVisible = YES;
-    
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDREGISTER_APIPATH parameters:param];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -382,13 +373,11 @@
         _timer = nil;
         [_act stopAnimating];
         [self requestsuccess:mappingResult withOperation:operation];
-        app.networkActivityIndicatorVisible = NO;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [_timer invalidate];
         _timer = nil;
         [_act stopAnimating];
         [self requestfailure:error];
-        app.networkActivityIndicatorVisible = NO;
     }];
     [_operationQueue addOperation:_request];
     
@@ -433,7 +422,7 @@
     NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
     if ([(NSError*)object code] == NSURLErrorCancelled) {
         if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-            NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+            NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
             //_table.tableFooterView = _footer;
             [_act startAnimating];
             //[self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -532,7 +521,7 @@
     }else{
         [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                               delay:0
-                            options: UIViewAnimationCurveEaseOut
+                            options: UIViewAnimationOptionCurveEaseIn
                          animations:^{
                              _scrollviewContentSize = [_container contentSize];
                              _scrollviewContentSize.height -= _keyboardSize.height;
@@ -543,7 +532,6 @@
                              if ((self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height)> _keyboardPosition.y) {
                                  UIEdgeInsets inset = _container.contentInset;
                                  inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height + 10));
-                                 [_container setContentSize:_scrollviewContentSize];
                                  [_container setContentInset:inset];
                              }
                          }
@@ -557,7 +545,7 @@
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                           delay:0
-                        options: UIViewAnimationCurveEaseOut
+                        options: UIViewAnimationOptionCurveEaseIn
                      animations:^{
                          _container.contentInset = contentInsets;
                          _container.scrollIndicatorInsets = contentInsets;
@@ -576,14 +564,14 @@
             NSDictionary *data = alertView.data;
             NSDate *date = [data objectForKey:kTKPDALERTVIEW_DATADATEPICKERKEY];
             NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
-            int year = [components year];
-            int month = [components month];
-            int day = [components day];
+            NSInteger year = [components year];
+            NSInteger month = [components month];
+            NSInteger day = [components day];
             [_datainput setObject:@(year) forKey:kTKPDREGISTER_APIBITHYEARKEY];
             [_datainput setObject:@(month) forKey:kTKPDREGISTER_APIBIRTHMONTHKEY];
             [_datainput setObject:@(day) forKey:kTKPDREGISTER_APIBIRTHDAYKEY];
             
-            _textfielddob.text = [NSString stringWithFormat:@"%d / %d / %d",day,month,year];
+            _textfielddob.text = [NSString stringWithFormat:@"%zd / %zd / %zd",day,month,year];
             break;
         }
         case 11:

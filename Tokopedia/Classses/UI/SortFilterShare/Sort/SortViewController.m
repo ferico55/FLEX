@@ -11,7 +11,7 @@
 #import "SortCell.h"
 #import "UIImage+ImageEffects.h"
 
-@interface SortViewController ()<UITableViewDataSource,UITableViewDelegate, SortCellDelegate>
+@interface SortViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
     NSArray *_sortarray;
     NSMutableDictionary *_selectedsort;
@@ -59,7 +59,7 @@
 
     UIBarButtonItem *barbutton1;
     barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [barbutton1 setTintColor:[UIColor whiteColor]];
+        [barbutton1 setTintColor:[UIColor blackColor]];
 	[barbutton1 setTag:11];
     self.navigationItem.rightBarButtonItem = barbutton1;
     
@@ -115,17 +115,34 @@
             case 10:
             {
                 //CANCEL
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                if (self.presentingViewController != nil) {
+                    if (self.navigationController.viewControllers.count > 1) {
+                        [self.navigationController popViewControllerAnimated:YES];
+                    } else {
+                        [self dismissViewControllerAnimated:YES completion:NULL];
+                    }
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
                 break;
             }
             case 11:
             {
                 //DONE
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                break;
+                NSIndexPath *indexPath = [_selectedsort objectForKey:kTKPDFILTER_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                NSDictionary *orderdict = _sortarray[indexPath.row];
+                NSDictionary *userinfo = @{kTKPDFILTER_APIORDERBYKEY:[orderdict objectForKey:kTKPDFILTER_DATASORTVALUEKEY]?:@"", kTKPDFILTERSORT_DATAINDEXPATHKEY:indexPath?:0};
+                [_delegate SortViewController:self withUserInfo:userinfo];
+                if (self.presentingViewController != nil) {
+                    if (self.navigationController.viewControllers.count > 1) {
+                        [self.navigationController popViewControllerAnimated:YES];
+                    } else {
+                        [self dismissViewControllerAnimated:YES completion:NULL];
+                    }
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
             }
-            default:
-                break;
         }
     }
 }
@@ -144,7 +161,7 @@
     cell = (SortCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
     if (cell == nil) {
         cell = [SortCell newcell];
-        ((SortCell*)cell).delegate = self;
+        
     }
     
     if (_sortarray.count > indexPath.row) {
@@ -163,53 +180,15 @@
 
 #pragma mark - Table View Delegate
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [_selectedsort setObject:indexPath forKey:kTKPDFILTER_DATAINDEXPATHKEY];
+    [_table reloadData];
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-}
-
-#pragma mark - Cell Delegate
--(void)SortCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-{
-    [_selectedsort setObject:indexpath forKey:kTKPDFILTER_DATAINDEXPATHKEY];
-    [_table reloadData];
-
-
-    //SUBMIT
-    NSDictionary *orderdict = _sortarray[indexpath.row];
-    NSDictionary *userinfo = @{kTKPDFILTER_APIORDERBYKEY:[orderdict objectForKey:kTKPDFILTER_DATASORTVALUEKEY]?:@"", kTKPDFILTERSORT_DATAINDEXPATHKEY:indexpath?:0};
-    
-    switch (_type) {
-        case 1:
-        case 2:
-        {   //product //TODO:: Change To Delegate
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-            break;
-        }
-        case 3:
-        {   //catalog //TODO:: Change To Delegate
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            break;
-        }
-        case 4:
-        {    //detail catalog //TODO:: Change To Delegate
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            break;
-        }
-        case 5:
-        {    //shop
-            
-            break;
-        }
-        case 6:
-        {   //shop product //TODO:: Change To Delegate
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            break;
-        }
-        default:
-            break;
-    }
 }
 
 @end

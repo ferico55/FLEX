@@ -7,6 +7,10 @@
 //
 
 #import "NSDictionaryCategory.h"
+#import "NSData+Encryption.h"
+#import "UserAuthentificationManager.h"
+#import "EncodeDecoderManager.h"
+
 
 @implementation NSDictionary (tkpdcategory)
 
@@ -25,5 +29,21 @@
     return YES;
 }
 
+
+- (NSDictionary *)encrypt
+{
+    if ([self isKindOfClass:[NSDictionary class]]) {
+        UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+        EncodeDecoderManager *encodeDecodeManager = [EncodeDecoderManager new];
+        
+        NSString *encryptedParam = [userManager addParameterAndConvertToString:self];
+        NSString *encodedKey   = encodeDecodeManager.encryptKeyAndIv;
+        NSString *encodedParam = [encodeDecodeManager encryptParams:encryptedParam];
+        NSDictionary *keyAndParam = @{@"key" : encodedKey, @"param" : encodedParam};
+        
+        return keyAndParam;
+    }
+    return nil;
+}
 
 @end

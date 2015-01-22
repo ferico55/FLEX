@@ -13,7 +13,7 @@
 #import "sortfiltershare.h"
 #import "detail.h"
 
-#import "ProductEtalaseViewController.h"
+#import "MyShopEtalaseFilterViewController.h"
 #import "SortViewController.h"
 
 #import "GeneralProductCell.h"
@@ -150,7 +150,6 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(setDepartmentID:) name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY object:nil];
     

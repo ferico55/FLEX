@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Info.h"
+#import "ProductDetail.h"
 #import "Statistic.h"
 #import "ShopInfo.h"
 #import "WholesalePrice.h"
@@ -18,8 +18,7 @@
 
 @interface DetailProductResult : NSObject
 
-@property (nonatomic, strong) Info *info;
-@property (nonatomic, strong) Info *product;
+@property (nonatomic, strong) ProductDetail *product;
 @property (nonatomic) NSInteger server_id;
 @property (nonatomic) NSInteger shop_is_gold;
 @property (nonatomic, strong) Statistic *statistic;

@@ -1,0 +1,39 @@
+//
+//  string_address.h
+//  Tokopedia
+//
+//  Created by IT Tkpd on 11/25/14.
+//  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
+//
+
+#ifndef Tokopedia_string_address_h
+#define Tokopedia_string_address_h
+
+typedef enum
+{
+    kTKPDLOCATION_DATATYPEDEFAULTVIEWKEY = 0,
+    kTKPDLOCATION_DATATYPEPROVINCEKEY,
+    kTKPDLOCATION_DATATYPEDISTICTKEY,
+    kTKPDLOCATION_DATATYPEREGIONKEY
+} kTKPDSHOPLOCATIONTYPE;
+
+#define kTKPDLOCATION_DATALOCATIONTYPEKEY @"type"
+
+#define kTKPDLOCATION_DATAINDEXPATHKEY @"indexpath"
+
+#define kTKPDLOCATION_DATACITYIDKEY @"city_id"
+#define kTKPDLOCATION_DATAPROVINCEIDKEY @"province_id"
+#define kTKPDLOCATION_DATADISTRICTIDKEY @"district_id"
+
+#define kTKPDLOCATION_DATAPROVINCEINDEXPATHKEY @"provinceindexpath"
+#define kTKPDLOCATION_DATACITYINDEXPATHKEY @"cityindexpath"
+#define kTKPDLOCATION_DATADISTRICTINDEXPATHKEY @"districtindexpath"
+
+#define kTKPDLOCATION_DATALOCATIONVALUEKEY @"locationvalue"
+#define kTKPDLOCATION_DATALOCATIONNAMEKEY @"locationname"
+
+#define kTKPDLOCATION_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
+#define kTKPDLOCATION_NODATACELLTITLE @"no data"
+#define kTKPDLOCATION_NODATACELLDESCS @"no data description"
+
+#endif

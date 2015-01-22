@@ -208,6 +208,7 @@
     [c setSelectedIndex:0];
     [c setViewControllers:viewcontrollers];
     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
+    nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [nav.navigationBar setTranslucent:NO];
     [self.navigationController presentViewController:nav animated:YES completion:nil];
 }

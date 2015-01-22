@@ -7,12 +7,11 @@
 //
 
 #import "detail.h"
-#import "alert.h"
+#import "string_alert.h"
 
 #import "Notes.h"
 #import "StarsRateView.h"
 #import "ProgressBarView.h"
-#import "ShopNotesCell.h"
 
 #import "TKPDAlertView.h"
 #import "AlertListView.h"
@@ -20,15 +19,14 @@
 #import "ShopNotesDetailViewController.h"
 
 #import "URLCacheController.h"
-#import "SettingNoteDetailViewController.h"
+#import "MyShopNoteDetailViewController.h"
 
 #pragma mark - Shop Notes View Controller
-@interface ShopNotesViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, ShopNotesCellDelegate>
+@interface ShopNotesViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate>
 {
     NSMutableDictionary *_param;
     NSMutableArray *_list;
     NSInteger _requestcount;
-    NSTimer *_timer;
     BOOL _isnodata;
     
     NSInteger _starcount;
@@ -97,12 +95,13 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
+    _table.tableFooterView = _footer;
     //cache
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTES_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue]]];
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
+    //NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
+    //_cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTES_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue]]];
+    //_cachecontroller.filePath = _cachepath;
+    //_cachecontroller.URLCacheInterval = 86400.0;
+    //[_cachecontroller initCacheWithDocumentPath:path];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -136,21 +135,19 @@
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         
-        NSString *cellid = kTKPDSHOPNOTESCELL_IDENTIFIER;
-		
-		cell = (ShopNotesCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-		if (cell == nil) {
-			cell = [ShopNotesCell newcell];
-			((ShopNotesCell*)cell).delegate = self;
-		}
+        static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
         
-        if (_list.count > indexPath.row) {
-            NotesList *list = _list[indexPath.row];
-            ((ShopNotesCell*)cell).label.text = list.note_title;
-            ((ShopNotesCell*)cell).indexpath = indexPath;
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
+        NotesList *list = _list[indexPath.row];
+        cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
+        cell.textLabel.text = list.note_title;
         
-		return cell;
+        return cell;
     } else {
         static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
         
@@ -167,6 +164,21 @@
 }
 
 #pragma mark - Table View Delegate
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ShopNotesDetailViewController *vc = [ShopNotesDetailViewController new];
+    NotesList *list = _list[indexPath.row];
+    vc.data = @{kTKPDNOTES_APINOTEIDKEY:list.note_id,kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)};
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	if (_isnodata) {
@@ -253,39 +265,38 @@
     
     [_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-	if (_timeinterval > _cachecontroller.URLCacheInterval) {
-        _table.tableFooterView = _footer;
+        NSTimer *timer;
         [_act startAnimating];
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:param];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            [_timer invalidate];
-            _timer = nil;
+            [timer invalidate];
             [_act stopAnimating];
             _table.hidden = NO;
             _isrefreshview = NO;
             [_refreshControl endRefreshing];
+            _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
             [self requestsuccess:mappingResult withOperation:operation];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
-            [_timer invalidate];
-            _timer = nil;
+            [timer invalidate];
             [_act stopAnimating];
             _isrefreshview = NO;
             [_refreshControl endRefreshing];
+            _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
             [self requestfailure:error];
         }];
         [_operationQueue addOperation:_request];
         
-        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    }else{
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-        NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
-    }
+        timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    //}else{
+    //    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    //    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    //    NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+    //    NSLog(@"cache and updated in last 24 hours.");
+    //    [self requestfailure:nil];
+    //}
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -296,10 +307,10 @@
     BOOL status = [_notes.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-        [_cachecontroller connectionDidFinish:_cacheconnection];
+        //[_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+        //[_cachecontroller connectionDidFinish:_cacheconnection];
         //save response data
-        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+        //[operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
 
         [self requestprocess:object];
     }
@@ -364,7 +375,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -394,7 +405,7 @@
 
 - (IBAction)addNewNoteDidTap:(id)sender {
     //add new notes
-    SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
+    MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
     vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
                 kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY)
                 };
@@ -414,15 +425,6 @@
     /** request data **/
     [self configureRestKit];
     [self request];
-}
-
-#pragma mark - Cell Delegate
--(void)ShopNotesCellDelegate:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-{
-    ShopNotesDetailViewController *vc = [ShopNotesDetailViewController new];
-    NotesList *list = _list[indexpath.row];
-    vc.data = @{kTKPDNOTES_APINOTEIDKEY:list.note_id,kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)};
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

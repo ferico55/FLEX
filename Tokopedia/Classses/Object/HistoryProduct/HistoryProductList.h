@@ -11,7 +11,7 @@
 @interface HistoryProductList : NSObject
 
 @property (nonatomic, strong) NSString *product_price;
-@property (nonatomic, strong) NSString *product_id;
+@property (nonatomic, strong) NSNumber *product_id;
 @property (nonatomic, strong) NSString *shop_gold_status;
 @property (nonatomic, strong) NSString *shop_location;
 @property (nonatomic, strong) NSString *shop_name;

@@ -10,7 +10,7 @@
 #import "SearchResult.h"
 #import "List.h"
 
-#import "stringhome.h"
+#import "string_home.h"
 #import "search.h"
 #import "sortfiltershare.h"
 #import "detail.h"
@@ -30,7 +30,7 @@
 
 #import "URLCacheController.h"
 
-@interface HotlistResultViewController () <UITableViewDataSource,UITableViewDelegate, GeneralProductCellDelegate, CategoryMenuViewDelegate>
+@interface HotlistResultViewController () <UITableViewDataSource,UITableViewDelegate, GeneralProductCellDelegate, CategoryMenuViewDelegate, SortViewControllerDelegate, FilterViewControllerDelegate>
 {
     NSInteger _page;
     NSInteger _limit;
@@ -84,7 +84,7 @@
 
 -(void)cancel;
 -(void)configureRestKit;
--(void)loadData;
+-(void)request;
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
 -(void)requestfailure:(id)object;
 -(void)requestprocess:(id)object;
@@ -181,10 +181,6 @@
     //[_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     //[_table addSubview:_refreshControl];
     
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil];
-    //[nc addObserver:self selector:@selector(setDepartmentID:) name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY object:nil];
-    
     UIImageView *imageview = [_data objectForKey:kTKPHOME_DATAHEADERIMAGEKEY];
     if (imageview) {
         _imageview.image = imageview.image;
@@ -204,6 +200,7 @@
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
+    self.navigationController.navigationBar.translucent = NO;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -213,7 +210,7 @@
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self loadData];
+            [self request];
         }
     }
 }
@@ -227,7 +224,6 @@
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Table View Data Source
@@ -288,18 +284,14 @@
                 [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
     #pragma clang diagnostic push
     #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    //NSLOG(@"thumb: %@", thumb);
-                    [thumb setImage:image];
+                    [thumb setImage:image animated:YES];
                     [thumb setContentMode:UIViewContentModeScaleAspectFill];
-                    
                     [act stopAnimating];
-                    NSLog(@"============================== DONE GET IMAGE =====================");
     #pragma clang diagnostic pop
                     
                 } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                     [act stopAnimating];
                     
-                    NSLog(@"============================== DONE GET IMAGE =====================");
                 }];
             }
         }
@@ -334,7 +326,7 @@
             /** called if need to load next page **/
             //NSLog(@"%@", NSStringFromSelector(_cmd));
             [self configureRestKit];
-            [self loadData];
+            [self request];
         }
 	}
 }
@@ -361,7 +353,8 @@
                             kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : [_detailfilter objectForKey:kTKPDCATEGORY_DATACHOSENINDEXPATHKEY]?:@[],
                             kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY : @([[_detailfilter objectForKey:kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY]boolValue])?:NO,
                             kTKPDCATEGORY_DATAINDEXPATHKEY :[_detailfilter objectForKey:kTKPDCATEGORY_DATACATEGORYINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0],
-                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{}
+                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                            DATA_PUSH_COUNT_CONTROL : @([[_detailfilter objectForKey:DATA_PUSH_COUNT_CONTROL]integerValue])
                             };
                 vc.delegate = self;
                 [self.navigationController pushViewController:vc animated:YES];
@@ -420,7 +413,7 @@
                     SortViewController *vc = [SortViewController new];
                     vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY),
                                 kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-
+                    vc.delegate = self;
                     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
                     [self.navigationController presentViewController:nav animated:YES completion:nil];
                     break;
@@ -429,6 +422,7 @@
                 {
                     // FILTER
                     FilterViewController *vc = [FilterViewController new];
+                    vc.delegate = self;
                     vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEHOTLISTVIEWKEY),
                                 kTKPDFILTER_DATAFILTERKEY: _detailfilter};
                     UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
@@ -481,7 +475,7 @@
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              [_descriptionview setFrame:CGRectMake(_imageview.frame.origin.x, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
-                             [self.view addSubview:_descriptionview];
+                             [_imageview addSubview:_descriptionview];
                          }
                          completion:^(BOOL finished){
                          }];
@@ -579,7 +573,7 @@
     [departmentMapping addPropertyMapping:deptchildRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     // add response description to object manager
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
@@ -587,7 +581,7 @@
 }
 
 
-- (void)loadData
+- (void)request
 {
     if(_request.isExecuting)return;
     
@@ -596,7 +590,6 @@
     NSString *querry =[_data objectForKey:kTKPDHOME_DATAQUERYKEY]?:@"";
 
 	NSDictionary* param = @{
-                            //@"auth":@(1),
                             kTKPDHOME_APIQUERYKEY : [_detailfilter objectForKey:kTKPDHOME_DATAQUERYKEY]?:querry,
                             kTKPDHOME_APIPAGEKEY : @(_page),
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLISTRESULT_LIMITPAGE),
@@ -608,7 +601,7 @@
                             kTKPDHOME_APIPRICEMAXKEY :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMAXKEY]?:@""
                             };
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDHOMEHOTLISTRESULT_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDHOMEHOTLISTRESULT_APIPATH parameters:[param encrypt]];
 	[_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
 	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
@@ -623,19 +616,15 @@
             [_refreshControl endRefreshing];
             [_timer invalidate];
             _timer = nil;
-            NSLog(@"============================== DONE GET HOTLIST DETAIL =====================");
             
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
             [self requestfailure:error];
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"An Error Has Occurred" message:[error localizedDescription] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-            //[alertView show];
             [_act stopAnimating];
             _table.tableFooterView = nil;
             [_refreshControl endRefreshing];
             [_timer invalidate];
             _timer = nil;
-            NSLog(@"============================== DONE GET HOTLIST DETAIL =====================");
         }];
         
         [_operationQueue addOperation:_request];
@@ -762,7 +751,7 @@
                     
                     _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
                     
-                    NSLog(@"next page : %d",_page);
+                    NSLog(@"next page : %zd",_page);
                     
                     _isnodata = NO;
                     
@@ -783,13 +772,26 @@
                 _table.tableFooterView = _footer;
                 [_act startAnimating];
                 [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            }
+            else
+            {
+                NSError *error = object;
+                NSString *errorDescription = error.localizedDescription;
+                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                [errorAlert show];
             }
         }
         else
         {
             [_act stopAnimating];
             _table.tableFooterView = nil;
+            NSError *error = object;
+            if (!([error code] == NSURLErrorCancelled)){
+                NSString *errorDescription = error.localizedDescription;
+                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                [errorAlert show];
+            }
         }
     }
 }
@@ -828,11 +830,9 @@
         [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-            //NSLOG(@"thumb: %@", thumb);
             [thumb setImage:image animated:YES];
-            
-            [_act stopAnimating];
 #pragma clang diagnostic pop
+            [_act stopAnimating];
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
             [_act stopAnimating];
@@ -894,41 +894,116 @@
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     [self cancel];
-    /** clear object **/
-    //[_product removeAllObjects];
     _page = 1;
     _requestcount = 0;
     _isrefreshview = YES;
     
-    [_table reloadData];
-    /** request data **/
     [self configureRestKit];
-    [self loadData];
+    [self request];
 }
+
+#pragma mark - UIScrollView Delegate
+- (void)scrollViewDidScroll:(UIScrollView *)sender
+{
+    if (sender.contentOffset.y < 0) {
+        CGRect frame = _imageview.frame;
+        CGPoint translation = [sender.panGestureRecognizer translationInView:sender.superview];
+        if(translation.y > 0)
+        {
+            frame.origin.x = sender.contentOffset.y/2;
+            frame.origin.y = sender.contentOffset.y;
+            frame.size.height =  150 + fabsf(sender.contentOffset.y);
+            frame.size.width = 320 + fabsf(sender.contentOffset.y);
+        } else {
+            frame.origin.x = 0;
+            frame.origin.y = 0;
+            frame.size.height = 150;
+            frame.size.width = 320;
+        }
+        _imageview.frame = frame;
+        
+        if (_pagecontrol.currentPage==1) {
+            _descriptionview.frame = _imageview.frame;
+        }
+    }
+    
+//    //Initializing the views and the new frame sizes.
+//    UINavigationBar *navbar = self.navigationController.navigationBar;
+//    
+//    CGRect navBarFrame = self.navigationController.navigationBar.frame;
+//    
+//    [self.navigationController.navigationBar setTranslucent:NO];
+//    // store current scroll view frame as we will change it later on and set it
+//    // back to the scroll view in the very end
+//    CGRect currentScrollViewRect = _table.frame;
+//    // same with the content offset
+//    CGPoint currentScrollViewOffset = _table.contentOffset;
+//    CGFloat offsetShiftY = self.lastScrollViewOffsetY - _table.contentOffset.y;
+//    
+//    if (offsetShiftY > 0) {
+//        // pulling downwards
+//        // keep trrack of the distance that we pulled downwards
+//        self.distancePulledDownwards += offsetShiftY;
+//        
+//        // header opens (table view shifts its frame down) in two cases:
+//        // 1. contentOffset.y<0
+//        // 2. scrolled downwards a significant amount or header is already open
+//        // but in both cases we have to make sure that it doesn't open further than we want it to
+//        CGFloat wantedOriginY = currentScrollViewRect.origin.y;
+//        if ((_table.contentOffset.y<0) || (self.distancePulledDownwards > 100) || (currentScrollViewRect.origin.y>20)){
+//            
+//            // shift scroll views frame by offset shift
+//            wantedOriginY = currentScrollViewRect.origin.y + offsetShiftY;
+//            // compensate that shift by moving content offset back
+//            currentScrollViewOffset.y += (wantedOriginY <= 105) ? offsetShiftY : 0;
+//        }
+//        currentScrollViewRect.origin.y = (wantedOriginY <= 105) ? wantedOriginY : 105;
+//        
+//    }
+//    else {
+//        // pulling upwards
+//        self.distancePulledDownwards = 0;
+//        
+//        // header closes (table view shifts its frame up) in one case: when it is open =) (and contentOffset.y>0 to eliminate closing on bounce)
+//        if (_table.contentOffset.y > 0) {
+//            CGFloat wantedOriginY = currentScrollViewRect.origin.y + offsetShiftY;
+//            currentScrollViewRect.origin.y = (wantedOriginY >= 20) ? wantedOriginY : 20;
+//            currentScrollViewOffset.y += (wantedOriginY >= 20) ? offsetShiftY : 0;
+//        }
+//    }
+//    
+//    // set the changed (if it was changed at all) frame to the scroll view
+//    [_table setFrame:currentScrollViewRect];
+//    
+//    // correct offset using a special trick
+//    // it ensures that scrollViewDidScroll: won't be called on setting the offset
+//    _table.delegate = nil;
+//    [_table setContentOffset:currentScrollViewOffset];
+//    _table.delegate = self;
+//    
+//    // and finally remember the current offset as the last
+//    self.lastScrollViewOffsetY = _table.contentOffset.y;
+}
+
 
 #pragma mark - Category Delegate
 - (void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
 {
-    [self cancel];
     [_detailfilter addEntriesFromDictionary:userInfo];
     [self refreshView:nil];
 }
 
-#pragma mark - Post Notification Methods
-
--(void)setDepartmentID:(NSNotification*)notification
+#pragma mark - Sort Delegate
+-(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
-    [self cancel];
-    NSDictionary* userinfo = notification.userInfo;
-    [_detailfilter addEntriesFromDictionary:userinfo];
+    [_detailfilter addEntriesFromDictionary:userInfo];
     [self refreshView:nil];
 }
 
-- (void)updateView:(NSNotification *)notification;
+#pragma mark - Filter Delegate
+-(void)FilterViewController:(FilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
-    [self cancel];
-    NSDictionary *userinfo = notification.userInfo;
-    [_detailfilter addEntriesFromDictionary:userinfo];
+    [_detailfilter addEntriesFromDictionary:userInfo];
     [self refreshView:nil];
 }
 

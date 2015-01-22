@@ -6,7 +6,8 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "stringhome.h"
+#import "string_home.h"
+#import "string_product.h"
 #import "detail.h"
 #import "GeneralProductCell.h"
 #import "HistoryProductViewController.h"
@@ -158,7 +159,7 @@
         
         if (_product.count > indexPath.row) {
             //reset cell
-            [self reset:cell];
+            [self reset:(GeneralProductCell*)cell];
             /** Flexible view count **/
             NSUInteger indexsegment = indexPath.row * 2;
             NSUInteger indexmax = indexsegment + 2;
@@ -300,7 +301,7 @@
     
     [_operationQueue addOperation:_request];
     
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout:) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
@@ -363,7 +364,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -432,6 +433,11 @@
 
 }
 
+-(void)requesttimeout:(NSTimer*)timer
+{
+    
+}
+
 #pragma mark - Cell Delegate
 -(void)GeneralProductCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
@@ -463,13 +469,13 @@
 }
 
 
--(void)reset:(UITableViewCell*)cell
+-(void)reset:(GeneralProductCell*)cell
 {
-    [((GeneralProductCell*)cell).thumb makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
-    [((GeneralProductCell*)cell).labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((GeneralProductCell*)cell).labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((GeneralProductCell*)cell).labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((GeneralProductCell*)cell).viewcell makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
+    [cell.thumb makeObjectsPerformSelector:@selector(setImage:) withObject:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]];
+    [cell.labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [cell.labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [cell.labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [cell.viewcell makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
 }
 
 
