@@ -262,7 +262,7 @@
     
     
     _requestCount++;
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:ADD_REVIEW_PATH parameters:[NSDictionary encryptDictionary:[self getEditedParam]]];
+    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:ADD_REVIEW_PATH parameters:[[self getEditedParam] encrypt]];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];

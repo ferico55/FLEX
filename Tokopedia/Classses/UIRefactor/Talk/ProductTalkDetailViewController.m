@@ -402,7 +402,7 @@
 //    [_cachecontroller getFileModificationDate];
 //	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
 //	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILTALK_APIPATH parameters:[NSDictionary encryptDictionary:param]];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILTALK_APIPATH parameters:[param encrypt]];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         //[_objectmanager getObjectsAtPath:kTKPDDETAILTALK_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [_timer invalidate];
@@ -654,7 +654,7 @@
                             };
     
     _requestactioncount ++;
-    _requestaction = [_objectactionmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDACTIONTALK_APIPATH parameters:[NSDictionary encryptDictionary:param]];
+    _requestaction = [_objectactionmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDACTIONTALK_APIPATH parameters:[param encrypt]];
     
     
     [_requestaction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {

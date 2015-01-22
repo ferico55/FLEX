@@ -329,7 +329,7 @@
     _requestCount++;
     
     NSDictionary *param = @{@"action" : @"add_comment_review", @"review_id" : _review.review_id, @"text_comment" : _commentReview};
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:ADD_REVIEW_PATH parameters:[NSDictionary encryptDictionary:param]];
+    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:ADD_REVIEW_PATH parameters:[param encrypt]];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];

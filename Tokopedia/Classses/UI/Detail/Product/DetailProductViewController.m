@@ -683,7 +683,7 @@
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:kTKPDDETAILPRODUCT_APIPATH
-                                                                parameters:param];
+                                                                parameters:[param encrypt]];
 	[_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
 	if (_timeinterval > _cachecontroller.URLCacheInterval) {

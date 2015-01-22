@@ -162,7 +162,7 @@
     
     _requestCount++;
     
-    NSDictionary *param = [NSDictionary encryptDictionary: @{API_NOTIFICATION_ACTION : API_NOTIFICATION_GET_DETAIL}];
+    NSDictionary *param = [@{API_NOTIFICATION_ACTION : API_NOTIFICATION_GET_DETAIL} encrypt];
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:API_NOTIFICATION_PATH
@@ -269,7 +269,7 @@
     
     _requestResetNotificationCount++;
     
-    NSDictionary *param = [NSDictionary encryptDictionary: @{API_NOTIFICATION_ACTION : API_NOTIFICATION_RESET}];
+    NSDictionary *param = [@{API_NOTIFICATION_ACTION : API_NOTIFICATION_RESET} encrypt];
     _requestResetNotification = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:API_NOTIFICATION_PATH

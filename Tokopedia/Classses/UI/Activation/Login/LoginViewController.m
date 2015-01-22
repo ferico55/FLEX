@@ -252,10 +252,10 @@
     
     _requestcount++;
     
-    NSDictionary* param = [NSDictionary encryptDictionary : @{
+    NSDictionary* param = [@{
                             kTKPDLOGIN_APIUSEREMAILKEY : [data objectForKey:kTKPDACTIVATION_DATAEMAILKEY]?:@(0),
                             kTKPDLOGIN_APIUSERPASSKEY : [data objectForKey:kTKPDACTIVATION_DATAPASSKEY]?:@(0)
-                            }];
+                            } encrypt];
     
     UIApplication* app = [UIApplication sharedApplication];
     app.networkActivityIndicatorVisible = YES;

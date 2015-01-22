@@ -441,7 +441,7 @@
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:INBOX_REVIEW_API_PATH
-                                                                parameters:[NSDictionary encryptDictionary:param]];
+                                                                parameters:[param encrypt]];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         _isNeedToInsertCache = YES;
@@ -692,7 +692,7 @@
     _requestSkipReview = [_objectSkipReviewManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:ADD_REVIEW_PATH
-                                                                parameters:[NSDictionary encryptDictionary:param]];
+                                                                parameters:[param encrypt]];
     
     [_requestSkipReview setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSkipReviewSuccess:mappingResult withOperation:operation];

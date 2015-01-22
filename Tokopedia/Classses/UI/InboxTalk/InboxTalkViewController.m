@@ -421,19 +421,19 @@
         [_act startAnimating];
     }
     
-    NSDictionary* param = [NSDictionary encryptDictionary : @{kTKPDHOME_APIACTIONKEY:KTKPDTALK_ACTIONGET,
+    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:KTKPDTALK_ACTIONGET,
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
                             kTKPDHOME_APIPAGEKEY:@(_talkListPage),
                             KTKPDMESSAGE_FILTERKEY:_readstatus?_readstatus:@"",
                             KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
                             KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]
-                            }];
+                            };
     
     _requestcount ++;
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:KTKPDMESSAGE_TALK
-                                                                parameters:param];
+                                                                parameters:[param encrypt]];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
     

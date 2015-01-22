@@ -327,7 +327,7 @@
                             };
     
     _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGE_PATHURL parameters:[NSDictionary encryptDictionary:param]];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGE_PATHURL parameters:[param encrypt]];
     
     
     
@@ -664,7 +664,7 @@
                             };
     
     _requestsendcount ++;
-    _requestsend = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGEPRODUCTACTION_PATHURL parameters:[NSDictionary encryptDictionary:param]];
+    _requestsend = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGEPRODUCTACTION_PATHURL parameters:[param encrypt]];
     
     NSDictionary *userinfo;
     userinfo = @{MESSAGE_INDEX_PATH : [_data objectForKey:MESSAGE_INDEX_PATH], KTKPDMESSAGE_MESSAGEREPLYKEY : _growingtextview.text};
