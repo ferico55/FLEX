@@ -187,17 +187,17 @@
     switch (_type) {
         case 1:
         case 2:
-        {   //product
+        {   //product //TODO:: Change To Delegate
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
             break;
         }
         case 3:
-        {   //catalog
+        {   //catalog //TODO:: Change To Delegate
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
             break;
         }
         case 4:
-        {    //detail catalog
+        {    //detail catalog //TODO:: Change To Delegate
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
             break;
         }
@@ -207,7 +207,7 @@
             break;
         }
         case 6:
-        {   //shop product
+        {   //shop product //TODO:: Change To Delegate
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
             break;
         }

@@ -127,7 +127,7 @@
         /** Set isnull value (title and ic on for category) **/
         NSInteger parentid = [[_data objectForKey:kTKPDCATEGORY_DATADEPARTMENTIDKEY]integerValue];
         NSInteger previousViewType = [[_data objectForKey:DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE]integerValue];
-        if (previousViewType == 0) {
+        if (previousViewType != CATEGORY_MENU_PREVIOUS_VIEW_ADD_PRODUCT) {
             if (![_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]) {
                 [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:@(parentid),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:@"All Category"}];
             }
@@ -149,19 +149,24 @@
                     [_menu[i] setObject:@(NO) forKey:kTKPDCATEGORY_DATAISNULLCHILD];
             }
         }
-        NSArray *data = [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" order by weight",parentid]];
-        
-        [_menu addObjectsFromArray:data];
-        
-        /** ceck is have a child or not **/
-        for (int i = 0 ; i<_menu.count; i++) {
-            NSInteger childparentid = [_menu[i][kTKPDCATEGORY_DATADIDKEY]integerValue];
-            NSArray * data= [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" order by weight",childparentid]];
-            if (data == nil || data.count == 0) {
-                [_menu[i] setObject:@(YES) forKey:kTKPDCATEGORY_DATAISNULLCHILD];
+        else{
+            NSArray *data = [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" order by weight",parentid]];
+            
+            [_menu addObjectsFromArray:data];
+            
+            /** ceck is have a child or not **/
+            for (int i = 0 ; i<_menu.count; i++) {
+                NSInteger childparentid = [_menu[i][kTKPDCATEGORY_DATADIDKEY]integerValue];
+                NSArray * data= [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" order by weight",childparentid]];
+                NSMutableDictionary *menu = [NSMutableDictionary new];
+                [menu addEntriesFromDictionary: _menu[i]];
+                if (data == nil || data.count == 0) {
+                    [menu setObject:@(YES) forKey:kTKPDCATEGORY_DATAISNULLCHILD];
+                }
+                else
+                    [menu setObject:@(NO) forKey:kTKPDCATEGORY_DATAISNULLCHILD];
+                [_menu replaceObjectAtIndex:i withObject:menu];
             }
-            else
-                [_menu[i] setObject:@(NO) forKey:kTKPDCATEGORY_DATAISNULLCHILD];
         }
     }
     //_ispushotomatis = [[_data objectForKey:kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY]boolValue];
@@ -307,7 +312,7 @@
 
         if (_menu.count > indexPath.row) {
             NSIndexPath *selectedindex =[_selectedcategory objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY];
-            if (indexPath.row == selectedindex.row) {
+            if (indexPath.row == selectedindex.row && selectedindex) {
                 [((CategoryMenuViewCell*)cell).imagenext setImage:[UIImage imageNamed:@"icon_check_orange.png"]];
             }
             else{

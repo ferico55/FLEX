@@ -590,6 +590,7 @@
 {
     _data = data;
     if (data) {
+                
         [_dataInput addEntriesFromDictionary:[_data objectForKey:DATA_INPUT_KEY]];
         
         NSInteger productReturnable = [[_dataInput objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]integerValue];
