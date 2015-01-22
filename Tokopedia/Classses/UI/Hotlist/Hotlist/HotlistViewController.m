@@ -10,6 +10,10 @@
 #import "stringhome.h"
 #import "HotlistViewController.h"
 #import "HotlistResultViewController.h"
+#import "InboxMessageViewController.h"
+#import "InboxTalkViewController.h"
+#import "TKPDTabInboxMessageNavigationController.h"
+#import "TKPDTabInboxTalkNavigationController.h"
 
 #import "URLCacheController.h"
 
@@ -59,6 +63,7 @@
 -(void)requesttimeout;
 
 
+
 @end
 
 @implementation HotlistViewController
@@ -66,12 +71,15 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+
     if (self) {
         _isrefreshview = NO;
         _isnodata = YES;
     }
     return self;
 }
+
+
 
 
 #pragma mark - View Lifecylce
@@ -90,7 +98,7 @@
     
     /** set max data per page request **/
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
-    
+
     /** set inset table for different size**/
     UIEdgeInsets inset = _table.contentInset;
     inset.top += 2;
@@ -129,30 +137,38 @@
                                                                 diskPath:nil];
     [NSURLCache setSharedURLCache:sharedCache];
     
-    /* prepare to use our own on-disk cache */
-    //[_cachecontroller initCachePathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
-//    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDHOMEHOTLIST_CACHEFILEPATH];
-//    _cachepath = [path stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
-//    _cachecontroller.filePath = _cachepath;
-//    _cachecontroller.URLCacheInterval = 86400.0;
-//	[_cachecontroller initCacheWithDocumentPath:path];
-    
-    /* create and load the URL array using the strings stored in URLCache.plist */
-    //NSString* path = [[NSBundle mainBundle] pathForResource:@"URLCache" ofType:@"plist"];
-    //if (path) {
-    //    NSArray *array = [[NSArray alloc] initWithContentsOfFile:path];
-    //    _cachecontroller.urlArray = [NSMutableArray array];
-    //    for (NSString *element in array) {
-    //        [_cachecontroller.urlArray addObject:[NSURL URLWithString:element]];
-    //    }
-    //}
     
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     
+    [self initNotification];
+    
     [self configureRestKit];
     [self loadData];
 }
+
+- (void) initNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(goToInboxMessage:)
+                                                 name:@"goToInboxMessage"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(goToInboxTalk:)
+                                                 name:@"goToInboxTalk"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(goToInboxReview:)
+                                                 name:@"goToInboxReview"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(goToNewOrder:)
+                                                 name:@"goToNewOrder"
+                                               object:nil];
+}
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -567,5 +583,57 @@
     [self configureRestKit];
     [self loadData];
 }
+
+- (void)goToInboxMessage:(NSNotification*)userInfo {
+    InboxMessageViewController *vc = [InboxMessageViewController new];
+    vc.data=@{@"nav":@"inbox-message"};
+    
+    InboxMessageViewController *vc1 = [InboxMessageViewController new];
+    vc1.data=@{@"nav":@"inbox-message-sent"};
+    
+    InboxMessageViewController *vc2 = [InboxMessageViewController new];
+    vc2.data=@{@"nav":@"inbox-message-archive"};
+    
+    InboxMessageViewController *vc3 = [InboxMessageViewController new];
+    vc3.data=@{@"nav":@"inbox-message-trash"};
+    NSArray *vcs = @[vc,vc1, vc2, vc3];
+    
+    TKPDTabInboxMessageNavigationController *nc = [TKPDTabInboxMessageNavigationController new];
+    [nc setSelectedIndex:2];
+    [nc setViewControllers:vcs];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+    [nav.navigationBar setTranslucent:NO];
+    
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)goToInboxTalk:(NSNotification*)userInfo {
+    InboxTalkViewController *vc = [InboxTalkViewController new];
+    vc.data=@{@"nav":@"inbox-talk"};
+    
+    InboxTalkViewController *vc1 = [InboxTalkViewController new];
+    vc1.data=@{@"nav":@"inbox-talk-my-product"};
+    
+    InboxTalkViewController *vc2 = [InboxTalkViewController new];
+    vc2.data=@{@"nav":@"inbox-talk-following"};
+    
+    NSArray *vcs = @[vc,vc1, vc2];
+    
+    TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
+    [nc setSelectedIndex:2];
+    [nc setViewControllers:vcs];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+    [nav.navigationBar setTranslucent:NO];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)goToInboxReview:(NSNotification*)userInfo {
+    
+}
+
+- (void)goToNewOrder:(NSNotification*)userInfo {
+    
+}
+
 
 @end

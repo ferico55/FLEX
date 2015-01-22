@@ -720,6 +720,7 @@ typedef enum
 #define kTKPDDETAILETALASE_CACHEFILEPATH @"etalase"
 
 #define TKPD_INBOXTALK_CACHE @"inbox-talk"
+#define TKPD_INBOXREVIEW_CACHE @"inbox-review"
 
 #define kTKPDDETAILSHOPETALASE_APIRESPONSEFILE @"etalase"
 

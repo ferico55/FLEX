@@ -8,7 +8,9 @@
 
 #import "NotificationViewController.h"
 #import "InboxMessageViewController.h"
+#import "InboxTalkViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
+#import "TKPDTabInboxTalkNavigationController.h"
 
 @interface NotificationViewController ()
 
@@ -24,10 +26,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *shippingStatusCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *salesListCountLabel;
 
+@property (weak, nonatomic) IBOutlet UILabel *orderCancelledLabel;
 @property (weak, nonatomic) IBOutlet UILabel *paymentConfirmationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *orderStatusCountLabel;
 @property (weak, nonatomic) IBOutlet UILabel *receiveConfirmationCountLabel;
-@property (weak, nonatomic) IBOutlet UILabel *paymentListCountLabel;
+
+@property (weak, nonatomic) IBOutlet UITableViewCell *salesNewOrder;
 
 
 @end
@@ -59,18 +63,19 @@
         [self updateLabelAppearance:_resolutionCenterCountLabel];
     }
     
-    // Payment section
+
     
+    // Payment section
     _salesOrderLabel.text = _notification.result.sales.sales_new_order;
     _shippingConfirmationCountLabel.text = _notification.result.sales.sales_shipping_confirm;
     _shippingStatusCountLabel.text = _notification.result.sales.sales_shipping_status;
 
     // Purchase section
-    
+    _orderCancelledLabel.text = _notification.result.purchase.purchase_reorder;
     _paymentConfirmationLabel.text = _notification.result.purchase.purchase_payment_confirm;
     _orderStatusCountLabel.text = _notification.result.purchase.purchase_order_status;
     _receiveConfirmationCountLabel.text = _notification.result.purchase.purchase_delivery_confirm;
-    _paymentListCountLabel.text = _notification.result.purchase.purchase_order_status;
+
  
 }
 
@@ -92,7 +97,7 @@
             break;
             
         case 1:
-            numberOfRows = 4;
+            numberOfRows = 3;
             break;
             
         case 2:
@@ -138,7 +143,7 @@
     messageFrame.origin.x -= 18;
     label.frame = messageFrame;
 
-    UIView *redCircle = [[UIView alloc] initWithFrame:CGRectMake(82, 17, 8, 8)];
+    UIView *redCircle = [[UIView alloc] initWithFrame:CGRectMake(40, 17, 8, 8)];
     redCircle.backgroundColor = [UIColor colorWithRed:229.0/255.0 green:28.0/255.0 blue:35.0/255.0 alpha:1];
     redCircle.layer.cornerRadius = 4;
     redCircle.clipsToBounds = YES;
@@ -152,6 +157,23 @@
         switch (btn.tag) {
                 //archive
             case 10: {
+                
+
+                break;
+            }
+                
+            
+            default:
+                break;
+        }
+        
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    if([indexPath section] == 0) {
+        switch ([indexPath row]) {
+            case 0:{
                 InboxMessageViewController *vc = [InboxMessageViewController new];
                 vc.data=@{@"nav":@"inbox-message"};
                 
@@ -170,20 +192,44 @@
                 [nc setViewControllers:vcs];
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
                 [nav.navigationBar setTranslucent:NO];
-//                [self.navigationController presentViewController:nav animated:YES completion:nil];
-//                [[NSNotificationCenter defaultCenter] postNotificationName:@"tapNotification" object:nil];
-                [self presentViewController:nav animated:YES completion:nil];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"goToViewController" object:nil userInfo:@{@"nav":nav}];
 
                 break;
             }
+            case 1 : {
+                InboxTalkViewController *vc = [InboxTalkViewController new];
+                vc.data=@{@"nav":@"inbox-talk"};
                 
-            
+                InboxTalkViewController *vc1 = [InboxTalkViewController new];
+                vc1.data=@{@"nav":@"inbox-talk-my-product"};
+                
+                InboxTalkViewController *vc2 = [InboxTalkViewController new];
+                vc2.data=@{@"nav":@"inbox-talk-following"};
+                
+                NSArray *vcs = @[vc,vc1, vc2];
+                
+                TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
+                [nc setSelectedIndex:2];
+                [nc setViewControllers:vcs];
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+                [nav.navigationBar setTranslucent:NO];
+
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"goToViewController" object:nil userInfo:@{@"nav":nav}];
+                break;
+            }
             default:
                 break;
         }
-        
     }
 }
+
+#pragma mark - Memory Management
+-(void)dealloc{
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
+
 
 /*
 #pragma mark - Navigation

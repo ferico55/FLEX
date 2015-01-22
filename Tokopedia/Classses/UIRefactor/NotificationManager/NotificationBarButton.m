@@ -34,4 +34,14 @@
     return self;
 }
 
+- (void)setNoUnreadNotification:(NSString*)status {
+    if([status isEqualToString:@"0"]) {
+        [_badgeLabel setBackgroundColor:[UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1.0]];
+    } else {
+        [_badgeLabel setBackgroundColor:[UIColor redColor]];
+    }
+
+}
+
+
 @end

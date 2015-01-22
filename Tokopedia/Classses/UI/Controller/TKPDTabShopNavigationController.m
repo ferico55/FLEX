@@ -1040,14 +1040,9 @@
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
     
-    
-    //TODO::change this
-    _shop.result.info.shop_is_gold = true;
-    _buttonfav.hidden = YES;
-    _buttonMessage.hidden = YES;
    
     
-    if (_shop.result.info.shop_is_gold == true) {
+    if (_shop.result.info.shop_is_gold) {
         
         _backButtonCustom.hidden = NO;
         _infoButtonCustom.hidden = NO;
@@ -1548,24 +1543,30 @@
 #pragma mark - Properties
 -(void)setData:(NSDictionary *)data
 {
-    _data = data;
+//    _data = data;
     
-    if(_data) {
+    if(data) {
         //cache
         NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
-        _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOP_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]]];
+        _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOP_APIRESPONSEFILEFORMAT,[[data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]]];
         _cachecontroller.filePath = _cachepath;
         _cachecontroller.URLCacheInterval = 86400.0;
         [_cachecontroller initCacheWithDocumentPath:path];
         
-        NSDictionary *auth = (NSDictionary *)[_data objectForKey:kTKPD_AUTHKEY];
+        NSDictionary *auth = (NSDictionary *)[data objectForKey:kTKPD_AUTHKEY];
         if (auth && ![auth isEqual:[NSNull null]]) {
-            if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
+            if ([[data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
                 _buttonsetting.hidden = NO;
                 _buttonaddproduct.hidden = NO;
 
                 _buttonfav.hidden = YES;
                 _buttonMessage.hidden = YES;
+            } else {
+                _buttonsetting.hidden = YES;
+                _buttonaddproduct.hidden = YES;
+                
+                _buttonfav.hidden = NO;
+                _buttonMessage.hidden = NO;
             }
         }
         else

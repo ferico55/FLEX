@@ -9,6 +9,8 @@
 #define API_NOTIFICATION_PATH @"notification.pl"
 #define API_NOTIFICATION_ACTION @"action"
 #define API_NOTIFICATION_GET_DETAIL @"get_notification"
+#define API_NOTIFICATION_RESET @"reset_notification"
+
 
 #define API_NOTIFICATION_TOTAL_CART @"total_cart"
 #define API_NOTIFICATION_RESOLUTION @"resolution"

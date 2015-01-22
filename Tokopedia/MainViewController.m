@@ -17,6 +17,7 @@
 
 #import "TKPDTabHomeNavigationController.h"
 
+#import "HotlistAuthViewController.h"
 #import "HotlistViewController.h"
 #import "ProductFeedViewController.h"
 #import "HistoryProductViewController.h"
@@ -26,12 +27,14 @@
 #import "activation.h"
 
 #import "TKPDSecureStorage.h"
+#import "URLCacheController.h"
 
 @interface MainViewController ()
 {
     UITabBarController *_tabBarController;
     TKPDTabHomeNavigationController *_swipevc;
     NSMutableDictionary *_auth;
+    URLCacheController *_cacheController;
 }
 
 @end
@@ -53,6 +56,8 @@
     [super viewDidLoad];
     
     _auth = [NSMutableDictionary new];
+    _cacheController = [URLCacheController new];
+    
     
     [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
@@ -116,14 +121,14 @@
     if (!isauth) {
         // before login
         titles = kTKPD_HOMETITLEARRAY;
-        HotlistViewController *v = [HotlistViewController new];
+        HotlistAuthViewController *v = [HotlistAuthViewController new];
         v.data = @{kTKPD_AUTHKEY : _auth?:@""};
         [viewcontrollers addObject:v];
     }
     else{
         // after login
         titles = kTKPD_HOMETITLEISAUTHARRAY;
-        HotlistViewController *v = [HotlistViewController new];
+        HotlistAuthViewController *v = [HotlistAuthViewController new];
         v.data = @{kTKPD_AUTHKEY : _auth?:@""};
         [viewcontrollers addObject:v];
         ProductFeedViewController *v1 = [ProductFeedViewController new];
@@ -358,6 +363,9 @@
 
 - (void)applicationLogin:(NSNotification*)notification
 {
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadNotificationBar" object:self];
+
+    
     //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     //id auth = [defaults loadCustomObjectWithKey:kTKPD_AUTHKEY];
     //_login = auth;
@@ -426,13 +434,19 @@
 - (void)applicationlogout:(NSNotification*)notification
 {
 	//NSDictionary* userinfo = notification.userInfo;
-	
+    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+    [_cacheController initCacheWithDocumentPath:path];
+    [_cacheController clearCache];
+    
+    
 	TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
 	[storage resetKeychain];	//delete all previous sensitive data
 	[_auth removeAllObjects];
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
-	
+    
     //TODO:: request delayed
 	//[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(requestdelayed) object:nil];
 	//[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(requestdelayedguardian) object:nil];

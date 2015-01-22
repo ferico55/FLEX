@@ -58,7 +58,24 @@
                 
                 UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
                 vc.data = _data;
+                vc.reviewIndex = indexpath.row;
                 [nav.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+                
+            case 12 :
+            {
+                NSIndexPath *indexPath = _indexpath;
+                
+                UIAlertView *alert = [[UIAlertView alloc]
+                                      initWithTitle:@"Skip Review"
+                                      message:@"Are you sure you want to skip this review ?"
+                                      delegate:self
+                                      cancelButtonTitle:@"Cancel"
+                                      otherButtonTitles:nil];
+                
+                [alert addButtonWithTitle:@"Skip"];
+                [alert show];
                 break;
             }
                 
@@ -73,12 +90,20 @@
                 vc.isEditForm = YES;
                 [nav.navigationController pushViewController:vc animated:YES];
                 break;
-
+                
             }
                 
             default:
                 break;
         }
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    //delete talk
+    if(buttonIndex == 1) {
+        NSIndexPath* indexpath = _indexpath;
+        [_delegate skipReview:self withindexpath:indexpath];
     }
 }
 

@@ -16,6 +16,7 @@
 #import "TKPDSecureStorage.h"
 #import "stringrestkit.h"
 #import "URLCacheController.h"
+#import "UserAuthentificationManager.h"
 
 #pragma mark - Product Talk View Controller
 @interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, GeneralTalkCellDelegate>
@@ -41,6 +42,7 @@
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
+    UserAuthentificationManager *_userManager;
     NSTimeInterval _timeinterval;
     NSString *product_id;
     NSMutableDictionary *_auth;
@@ -81,6 +83,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    
     if (self) {
         _isnodata = YES;
         self.title = kTKPDTITLE_TALK;
@@ -101,9 +104,9 @@
     
     _table.tableHeaderView = _header;
     
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    _auth = [secureStorage keychainDictionary];
-    _auth = [_auth mutableCopy];
+    _userManager = [UserAuthentificationManager new];
+    _auth = [_userManager getUserLoginData];
+
     
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image

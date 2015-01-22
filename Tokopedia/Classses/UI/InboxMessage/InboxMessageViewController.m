@@ -16,7 +16,8 @@
 #import "InboxMessageCell.h"
 #import "InboxMessageDetailViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
-
+#import "UserAuthentificationManager.h"
+#import "EncodeDecoderManager.h"
 
 @interface InboxMessageViewController () <UITableViewDataSource, UITableViewDelegate, InboxMessageCellDelegate, TKPDTabInboxMessageNavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 
@@ -77,6 +78,9 @@
     __weak RKManagedObjectRequestOperation *_requesttrash;
     NSOperationQueue *_operationQueue;
     
+    UserAuthentificationManager *_userManager;
+    EncodeDecoderManager *_encodeDecodeManager;
+    
 }
 
 
@@ -128,6 +132,8 @@
     _messages = [NSMutableArray new];
     _messages_selected = [NSMutableArray new];
     _messageNavigationFlag = [_data objectForKey:@"nav"];
+    _userManager = [UserAuthentificationManager new];
+    _encodeDecodeManager = [EncodeDecoderManager new];
     
     /** set first page become 1 **/
     _page = 1;
@@ -152,6 +158,7 @@
     
     /** set table footer view (loading act) **/
     _table.tableFooterView = _footer;
+    
     
     //    [self setHeaderData:_goldshop];
     //    [_act startAnimating];
@@ -298,7 +305,7 @@
         if (_messages.count > indexPath.row ) {
             InboxMessageList *list = _messages[indexPath.row];
             
-            ((InboxMessageCell*)cell).message_title.text = list.message_title;
+            ((InboxMessageCell*)cell).message_title.text = list.user_full_name;
             ((InboxMessageCell*)cell).message_create_time.text =list.message_create_time;
             ((InboxMessageCell*)cell).message_reply.text = list.message_reply;
             ((InboxMessageCell*)cell).multicheckbtn.tag = indexPath.row;
@@ -395,7 +402,7 @@
             
             [self loadData];
         } else {
-            _table.tableFooterView = nil;
+            _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];;
             [_act stopAnimating];
         }
     }
@@ -546,9 +553,10 @@
                             KTKPDMESSAGE_KEYWORDKEY:_keyword?_keyword:@"",
                             KTKPDMESSAGE_NAVKEY:[_data objectForKey:@"nav"]
                             };
+
     
     _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGE_PATHURL parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGE_PATHURL parameters:[NSDictionary encryptDictionary:param]];
      [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -622,7 +630,7 @@
                 _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
             } else {
                 _isnodata = YES;
-                _table.tableFooterView = nil;
+                _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];;
             }
         }
         else{
@@ -640,13 +648,13 @@
                 else
                 {
                     [_act stopAnimating];
-                    _table.tableFooterView = nil;
+                    _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];;
                 }
             }
             else
             {
                 [_act stopAnimating];
-                _table.tableFooterView = nil;
+                _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];;
             }
             
         }

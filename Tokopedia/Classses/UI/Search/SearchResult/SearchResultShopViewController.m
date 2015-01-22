@@ -28,6 +28,7 @@
 #import "ShopTalkViewController.h"
 #import "ShopReviewViewController.h"
 #import "ShopNotesViewController.h"
+#import "NSDictionaryCategory.h"
 
 #import "URLCacheController.h"
 
@@ -400,8 +401,8 @@
             _table.tableFooterView = _footer;
             [_act startAnimating];
         }
-        
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDSEARCH_APIPATH parameters:param];
+        NSDictionary *encryptParam = [NSDictionary encryptDictionary:param];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDSEARCH_APIPATH parameters:encryptParam];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [self requestsuccess:mappingResult withOperation:operation];
             [_table reloadData];

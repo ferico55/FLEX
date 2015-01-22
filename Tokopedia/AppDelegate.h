@@ -45,6 +45,7 @@
 @property (assign, nonatomic) BOOL isNetworkWiFi;
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UIViewController *viewController;
+@property (strong, nonatomic) UIViewController *navigationController;
 
 //TODO:: Push Notifiation
 @property (assign, nonatomic) BOOL isPushNotificationRegistered;

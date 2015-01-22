@@ -13,4 +13,6 @@
 
 @property (strong, nonatomic) NSDictionary *data;
 
+- (void)panggil;
+
 @end

@@ -10,6 +10,8 @@
 		8530E7401A3972DF00A76C1B /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8530E73F1A3972DF00A76C1B /* libPods-Tokopedia.a */; };
 		8530E7421A39737E00A76C1B /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8530E7411A39737E00A76C1B /* libPods-TokopediaTests.a */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		85810A2F1A56761600725B14 /* RSA.m in Sources */ = {isa = PBXBuildFile; fileRef = 85810A2E1A56761600725B14 /* RSA.m */; };
+		85810A3B1A56A12900725B14 /* public_key.der in Resources */ = {isa = PBXBuildFile; fileRef = 85810A3A1A56A12900725B14 /* public_key.der */; };
 		8596E76B1A43CB0400655564 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E22F1A43CB0300655564 /* URLCacheAlert.m */; };
 		8596E76C1A43CB0400655564 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E2311A43CB0300655564 /* URLCacheConnection.m */; };
 		8596E76D1A43CB0400655564 /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E2331A43CB0300655564 /* URLCacheController.m */; };
@@ -284,9 +286,6 @@
 		8596E8831A43CB0400655564 /* InboxTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8596E4C91A43CB0300655564 /* InboxTalkViewController.xib */; };
 		8596E8841A43CB0400655564 /* LogoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E4CE1A43CB0300655564 /* LogoutViewController.m */; };
 		8596E8851A43CB0400655564 /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E4D11A43CB0300655564 /* MoreViewController.m */; };
-		8596E8861A43CB0400655564 /* NotificationBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E4D31A43CB0300655564 /* NotificationBarButton.m */; };
-		8596E8871A43CB0400655564 /* NotificationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E4D51A43CB0300655564 /* NotificationRequest.m */; };
-		8596E8881A43CB0400655564 /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E4D71A43CB0300655564 /* NotificationViewController.m */; };
 		8596E8891A43CB0400655564 /* ProfileBiodataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E4DB1A43CB0300655564 /* ProfileBiodataCell.m */; };
 		8596E88A1A43CB0400655564 /* ProfileBiodataShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E4DD1A43CB0300655564 /* ProfileBiodataShopCell.m */; };
 		8596E88B1A43CB0400655564 /* ProfileBiodataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E4DF1A43CB0300655564 /* ProfileBiodataViewController.m */; };
@@ -325,10 +324,6 @@
 		8596E8AC1A43CB0400655564 /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E5361A43CB0300655564 /* FilterViewController.m */; };
 		8596E8AD1A43CB0400655564 /* SortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E5391A43CB0300655564 /* SortCell.m */; };
 		8596E8AE1A43CB0400655564 /* SortViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E53B1A43CB0300655564 /* SortViewController.m */; };
-		8596E8AF1A43CB0400655564 /* InboxReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E5411A43CB0300655564 /* InboxReviewViewController.m */; };
-		8596E8B01A43CB0400655564 /* InboxReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8596E5421A43CB0300655564 /* InboxReviewViewController.xib */; };
-		8596E8B11A43CB0400655564 /* ReviewFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E5441A43CB0300655564 /* ReviewFormViewController.m */; };
-		8596E8B21A43CB0400655564 /* ReviewFormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8596E5451A43CB0300655564 /* ReviewFormViewController.xib */; };
 		8596E8B31A43CB0400655564 /* ShopFavoritedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E54B1A43CB0300655564 /* ShopFavoritedCell.m */; };
 		8596E8B41A43CB0400655564 /* ShopFavoritedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E54D1A43CB0300655564 /* ShopFavoritedViewController.m */; };
 		8596E8B51A43CB0400655564 /* SendMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E5501A43CB0300655564 /* SendMessageViewController.m */; };
@@ -727,6 +722,23 @@
 		8596EA411A43CC5000655564 /* HotlistResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596E4B31A43CB0300655564 /* HotlistResultViewController.m */; };
 		8596EA431A44047100655564 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8596EA421A44047100655564 /* Main.storyboard */; };
 		8596EA461A4405E700655564 /* MoreNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8596EA451A4405E700655564 /* MoreNavigationController.m */; };
+		85AE21511A5F8CE7000E346E /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE21501A5F8CE7000E346E /* NotificationManager.m */; };
+		85AE21571A5F8CF8000E346E /* EncodeDecoderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE21541A5F8CF8000E346E /* EncodeDecoderManager.m */; };
+		85AE21581A5F8CF8000E346E /* UserAuthentificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AE21561A5F8CF8000E346E /* UserAuthentificationManager.m */; };
+		85BA3D7E1A650E1E00DA96EF /* NotificationBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85BA3D791A650E1E00DA96EF /* NotificationBarButton.m */; };
+		85BA3D7F1A650E1E00DA96EF /* NotificationRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 85BA3D7B1A650E1E00DA96EF /* NotificationRequest.m */; };
+		85BA3D801A650E1E00DA96EF /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85BA3D7D1A650E1E00DA96EF /* NotificationViewController.m */; };
+		85C6E8601A47D0DA007E2CBE /* InboxReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C6E85A1A47D0DA007E2CBE /* InboxReviewViewController.m */; };
+		85C6E8611A47D0DA007E2CBE /* InboxReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C6E85B1A47D0DA007E2CBE /* InboxReviewViewController.xib */; };
+		85C6E8621A47D0DA007E2CBE /* ReviewFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C6E85D1A47D0DA007E2CBE /* ReviewFormViewController.m */; };
+		85C6E8631A47D0DA007E2CBE /* ReviewFormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C6E85E1A47D0DA007E2CBE /* ReviewFormViewController.xib */; };
+		85C6E8671A47D4EA007E2CBE /* HotlistAuthViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C6E8651A47D4EA007E2CBE /* HotlistAuthViewController.m */; };
+		85C6E8681A47D4EA007E2CBE /* HotlistAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C6E8661A47D4EA007E2CBE /* HotlistAuthViewController.xib */; };
+		85C6E86B1A48018C007E2CBE /* NSData+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C6E86A1A48018C007E2CBE /* NSData+Encryption.m */; };
+		85C823561A6DFB3E009085CC /* TKPDTabInboxReviewNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C823541A6DFB3E009085CC /* TKPDTabInboxReviewNavigationController.m */; };
+		85C823571A6DFB3E009085CC /* TKPDTabInboxReviewNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C823551A6DFB3E009085CC /* TKPDTabInboxReviewNavigationController.xib */; };
+		85C8235B1A6E500F009085CC /* DetailReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C823591A6E500F009085CC /* DetailReviewViewController.m */; };
+		85C8235C1A6E500F009085CC /* DetailReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85C8235A1A6E500F009085CC /* DetailReviewViewController.xib */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
 		FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */; };
 		FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8A19B0656400AF74C1 /* UIKit.framework */; };
@@ -762,6 +774,9 @@
 		8530E73F1A3972DF00A76C1B /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		8530E7411A39737E00A76C1B /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-TokopediaTests.a"; path = "Pods/build/Debug-iphoneos/libPods-TokopediaTests.a"; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		85810A2D1A56761600725B14 /* RSA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSA.h; sourceTree = "<group>"; };
+		85810A2E1A56761600725B14 /* RSA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSA.m; sourceTree = "<group>"; };
+		85810A3A1A56A12900725B14 /* public_key.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = public_key.der; sourceTree = "<group>"; };
 		8596E22E1A43CB0300655564 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		8596E22F1A43CB0300655564 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		8596E2301A43CB0300655564 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -1341,12 +1356,6 @@
 		8596E4CF1A43CB0300655564 /* more.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = more.h; sourceTree = "<group>"; };
 		8596E4D01A43CB0300655564 /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
 		8596E4D11A43CB0300655564 /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreViewController.m; sourceTree = "<group>"; };
-		8596E4D21A43CB0300655564 /* NotificationBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationBarButton.h; sourceTree = "<group>"; };
-		8596E4D31A43CB0300655564 /* NotificationBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationBarButton.m; sourceTree = "<group>"; };
-		8596E4D41A43CB0300655564 /* NotificationRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationRequest.h; sourceTree = "<group>"; };
-		8596E4D51A43CB0300655564 /* NotificationRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationRequest.m; sourceTree = "<group>"; };
-		8596E4D61A43CB0300655564 /* NotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
-		8596E4D71A43CB0300655564 /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
 		8596E4DA1A43CB0300655564 /* ProfileBiodataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileBiodataCell.h; sourceTree = "<group>"; };
 		8596E4DB1A43CB0300655564 /* ProfileBiodataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileBiodataCell.m; sourceTree = "<group>"; };
 		8596E4DC1A43CB0300655564 /* ProfileBiodataShopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileBiodataShopCell.h; sourceTree = "<group>"; };
@@ -1428,13 +1437,6 @@
 		8596E53B1A43CB0300655564 /* SortViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SortViewController.m; sourceTree = "<group>"; };
 		8596E53C1A43CB0300655564 /* sortfiltershare.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sortfiltershare.h; sourceTree = "<group>"; };
 		8596E53D1A43CB0300655564 /* string_more.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_more.h; sourceTree = "<group>"; };
-		8596E5401A43CB0300655564 /* InboxReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReviewViewController.h; sourceTree = "<group>"; };
-		8596E5411A43CB0300655564 /* InboxReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReviewViewController.m; sourceTree = "<group>"; };
-		8596E5421A43CB0300655564 /* InboxReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxReviewViewController.xib; sourceTree = "<group>"; };
-		8596E5431A43CB0300655564 /* ReviewFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReviewFormViewController.h; sourceTree = "<group>"; };
-		8596E5441A43CB0300655564 /* ReviewFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReviewFormViewController.m; sourceTree = "<group>"; };
-		8596E5451A43CB0300655564 /* ReviewFormViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewFormViewController.xib; sourceTree = "<group>"; };
-		8596E5461A43CB0300655564 /* string_inbox_review.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_inbox_review.h; sourceTree = "<group>"; };
 		8596E54A1A43CB0300655564 /* ShopFavoritedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopFavoritedCell.h; sourceTree = "<group>"; };
 		8596E54B1A43CB0300655564 /* ShopFavoritedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopFavoritedCell.m; sourceTree = "<group>"; };
 		8596E54C1A43CB0300655564 /* ShopFavoritedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopFavoritedViewController.h; sourceTree = "<group>"; };
@@ -1873,6 +1875,37 @@
 		8596EA421A44047100655564 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		8596EA441A4405E700655564 /* MoreNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreNavigationController.h; sourceTree = "<group>"; };
 		8596EA451A4405E700655564 /* MoreNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreNavigationController.m; sourceTree = "<group>"; };
+		85AE214F1A5F8CE7000E346E /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
+		85AE21501A5F8CE7000E346E /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
+		85AE21531A5F8CF8000E346E /* EncodeDecoderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncodeDecoderManager.h; sourceTree = "<group>"; };
+		85AE21541A5F8CF8000E346E /* EncodeDecoderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncodeDecoderManager.m; sourceTree = "<group>"; };
+		85AE21551A5F8CF8000E346E /* UserAuthentificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserAuthentificationManager.h; sourceTree = "<group>"; };
+		85AE21561A5F8CF8000E346E /* UserAuthentificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserAuthentificationManager.m; sourceTree = "<group>"; };
+		85B739051A63825200670343 /* NotificationState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationState.h; sourceTree = "<group>"; };
+		85BA3D781A650E1E00DA96EF /* NotificationBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationBarButton.h; sourceTree = "<group>"; };
+		85BA3D791A650E1E00DA96EF /* NotificationBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationBarButton.m; sourceTree = "<group>"; };
+		85BA3D7A1A650E1E00DA96EF /* NotificationRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationRequest.h; sourceTree = "<group>"; };
+		85BA3D7B1A650E1E00DA96EF /* NotificationRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationRequest.m; sourceTree = "<group>"; };
+		85BA3D7C1A650E1E00DA96EF /* NotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
+		85BA3D7D1A650E1E00DA96EF /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
+		85C6E8591A47D0DA007E2CBE /* InboxReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxReviewViewController.h; sourceTree = "<group>"; };
+		85C6E85A1A47D0DA007E2CBE /* InboxReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReviewViewController.m; sourceTree = "<group>"; };
+		85C6E85B1A47D0DA007E2CBE /* InboxReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxReviewViewController.xib; sourceTree = "<group>"; };
+		85C6E85C1A47D0DA007E2CBE /* ReviewFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReviewFormViewController.h; sourceTree = "<group>"; };
+		85C6E85D1A47D0DA007E2CBE /* ReviewFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReviewFormViewController.m; sourceTree = "<group>"; };
+		85C6E85E1A47D0DA007E2CBE /* ReviewFormViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReviewFormViewController.xib; sourceTree = "<group>"; };
+		85C6E85F1A47D0DA007E2CBE /* string_inbox_review.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_inbox_review.h; sourceTree = "<group>"; };
+		85C6E8641A47D4EA007E2CBE /* HotlistAuthViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistAuthViewController.h; sourceTree = "<group>"; };
+		85C6E8651A47D4EA007E2CBE /* HotlistAuthViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistAuthViewController.m; sourceTree = "<group>"; };
+		85C6E8661A47D4EA007E2CBE /* HotlistAuthViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotlistAuthViewController.xib; sourceTree = "<group>"; };
+		85C6E8691A48018C007E2CBE /* NSData+Encryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Encryption.h"; sourceTree = "<group>"; };
+		85C6E86A1A48018C007E2CBE /* NSData+Encryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Encryption.m"; sourceTree = "<group>"; };
+		85C823531A6DFB3E009085CC /* TKPDTabInboxReviewNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabInboxReviewNavigationController.h; sourceTree = "<group>"; };
+		85C823541A6DFB3E009085CC /* TKPDTabInboxReviewNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabInboxReviewNavigationController.m; sourceTree = "<group>"; };
+		85C823551A6DFB3E009085CC /* TKPDTabInboxReviewNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabInboxReviewNavigationController.xib; sourceTree = "<group>"; };
+		85C823581A6E500F009085CC /* DetailReviewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReviewViewController.h; sourceTree = "<group>"; };
+		85C823591A6E500F009085CC /* DetailReviewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailReviewViewController.m; sourceTree = "<group>"; };
+		85C8235A1A6E500F009085CC /* DetailReviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailReviewViewController.xib; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -1948,9 +1981,20 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		85810A2C1A5675E400725B14 /* Encryption */ = {
+			isa = PBXGroup;
+			children = (
+				85810A3A1A56A12900725B14 /* public_key.der */,
+				85810A2D1A56761600725B14 /* RSA.h */,
+				85810A2E1A56761600725B14 /* RSA.m */,
+			);
+			path = Encryption;
+			sourceTree = "<group>";
+		};
 		8596E22C1A43CB0300655564 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
+				85810A2C1A5675E400725B14 /* Encryption */,
 				8596E22D1A43CB0300655564 /* CacheController */,
 				8596E2341A43CB0300655564 /* Cocoa */,
 				8596E24D1A43CB0300655564 /* Object */,
@@ -2000,6 +2044,8 @@
 				8596E24A1A43CB0300655564 /* UIImage+ImageEffects.m */,
 				8596E24B1A43CB0300655564 /* UIKitCategory.h */,
 				8596E24C1A43CB0300655564 /* UIKitCategory.m */,
+				85C6E8691A48018C007E2CBE /* NSData+Encryption.h */,
+				85C6E86A1A48018C007E2CBE /* NSData+Encryption.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -2757,12 +2803,6 @@
 				8596E4B81A43CB0300655564 /* InboxMessage */,
 				8596E4C31A43CB0300655564 /* InboxTalk */,
 				8596E4CB1A43CB0300655564 /* More */,
-				8596E4D21A43CB0300655564 /* NotificationBarButton.h */,
-				8596E4D31A43CB0300655564 /* NotificationBarButton.m */,
-				8596E4D41A43CB0300655564 /* NotificationRequest.h */,
-				8596E4D51A43CB0300655564 /* NotificationRequest.m */,
-				8596E4D61A43CB0300655564 /* NotificationViewController.h */,
-				8596E4D71A43CB0300655564 /* NotificationViewController.m */,
 				8596E4D81A43CB0300655564 /* Profile */,
 				8596E5151A43CB0300655564 /* PurchaseViewController.h */,
 				8596E5161A43CB0300655564 /* PurchaseViewController.m */,
@@ -2894,6 +2934,9 @@
 		8596E4051A43CB0300655564 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				85C823531A6DFB3E009085CC /* TKPDTabInboxReviewNavigationController.h */,
+				85C823541A6DFB3E009085CC /* TKPDTabInboxReviewNavigationController.m */,
+				85C823551A6DFB3E009085CC /* TKPDTabInboxReviewNavigationController.xib */,
 				8596E4061A43CB0300655564 /* controller.h */,
 				8596E4071A43CB0300655564 /* TKPDTabBarNavigationController.h */,
 				8596E4081A43CB0300655564 /* TKPDTabBarNavigationController.m */,
@@ -3252,6 +3295,9 @@
 				8596E4AE1A43CB0300655564 /* HotlistCell.m */,
 				8596E4AF1A43CB0300655564 /* HotlistViewController.h */,
 				8596E4B01A43CB0300655564 /* HotlistViewController.m */,
+				85C6E8641A47D4EA007E2CBE /* HotlistAuthViewController.h */,
+				85C6E8651A47D4EA007E2CBE /* HotlistAuthViewController.m */,
+				85C6E8661A47D4EA007E2CBE /* HotlistAuthViewController.xib */,
 			);
 			path = Hotlist;
 			sourceTree = "<group>";
@@ -3571,33 +3617,14 @@
 		8596E53E1A43CB0300655564 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
-				8596E53F1A43CB0300655564 /* ApaAja */,
-				8596E5471A43CB0300655564 /* InboxReview */,
+				85AE21521A5F8CF8000E346E /* Authentification */,
+				85AE214E1A5F8CE7000E346E /* NotificationManager */,
+				85C6E8581A47D0DA007E2CBE /* InboxReview */,
+				85C6E8521A47CEFB007E2CBE /* Network */,
 				8596E5481A43CB0300655564 /* Shop */,
 				8596E58D1A43CB0300655564 /* Talk */,
 			);
 			path = UIRefactor;
-			sourceTree = "<group>";
-		};
-		8596E53F1A43CB0300655564 /* ApaAja */ = {
-			isa = PBXGroup;
-			children = (
-				8596E5401A43CB0300655564 /* InboxReviewViewController.h */,
-				8596E5411A43CB0300655564 /* InboxReviewViewController.m */,
-				8596E5421A43CB0300655564 /* InboxReviewViewController.xib */,
-				8596E5431A43CB0300655564 /* ReviewFormViewController.h */,
-				8596E5441A43CB0300655564 /* ReviewFormViewController.m */,
-				8596E5451A43CB0300655564 /* ReviewFormViewController.xib */,
-				8596E5461A43CB0300655564 /* string_inbox_review.h */,
-			);
-			path = ApaAja;
-			sourceTree = "<group>";
-		};
-		8596E5471A43CB0300655564 /* InboxReview */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = InboxReview;
 			sourceTree = "<group>";
 		};
 		8596E5481A43CB0300655564 /* Shop */ = {
@@ -4920,6 +4947,57 @@
 			path = Talk;
 			sourceTree = "<group>";
 		};
+		85AE214E1A5F8CE7000E346E /* NotificationManager */ = {
+			isa = PBXGroup;
+			children = (
+				85BA3D781A650E1E00DA96EF /* NotificationBarButton.h */,
+				85BA3D791A650E1E00DA96EF /* NotificationBarButton.m */,
+				85BA3D7A1A650E1E00DA96EF /* NotificationRequest.h */,
+				85BA3D7B1A650E1E00DA96EF /* NotificationRequest.m */,
+				85BA3D7C1A650E1E00DA96EF /* NotificationViewController.h */,
+				85BA3D7D1A650E1E00DA96EF /* NotificationViewController.m */,
+				85AE214F1A5F8CE7000E346E /* NotificationManager.h */,
+				85AE21501A5F8CE7000E346E /* NotificationManager.m */,
+				85B739051A63825200670343 /* NotificationState.h */,
+			);
+			path = NotificationManager;
+			sourceTree = "<group>";
+		};
+		85AE21521A5F8CF8000E346E /* Authentification */ = {
+			isa = PBXGroup;
+			children = (
+				85AE21531A5F8CF8000E346E /* EncodeDecoderManager.h */,
+				85AE21541A5F8CF8000E346E /* EncodeDecoderManager.m */,
+				85AE21551A5F8CF8000E346E /* UserAuthentificationManager.h */,
+				85AE21561A5F8CF8000E346E /* UserAuthentificationManager.m */,
+			);
+			path = Authentification;
+			sourceTree = "<group>";
+		};
+		85C6E8521A47CEFB007E2CBE /* Network */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		85C6E8581A47D0DA007E2CBE /* InboxReview */ = {
+			isa = PBXGroup;
+			children = (
+				85C823581A6E500F009085CC /* DetailReviewViewController.h */,
+				85C823591A6E500F009085CC /* DetailReviewViewController.m */,
+				85C8235A1A6E500F009085CC /* DetailReviewViewController.xib */,
+				85C6E8591A47D0DA007E2CBE /* InboxReviewViewController.h */,
+				85C6E85A1A47D0DA007E2CBE /* InboxReviewViewController.m */,
+				85C6E85B1A47D0DA007E2CBE /* InboxReviewViewController.xib */,
+				85C6E85C1A47D0DA007E2CBE /* ReviewFormViewController.h */,
+				85C6E85D1A47D0DA007E2CBE /* ReviewFormViewController.m */,
+				85C6E85E1A47D0DA007E2CBE /* ReviewFormViewController.xib */,
+				85C6E85F1A47D0DA007E2CBE /* string_inbox_review.h */,
+			);
+			path = InboxReview;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -5064,6 +5142,7 @@
 						DevelopmentTeam = YQP4A2M94J;
 					};
 					FC36DF9D19B0656400AF74C1 = {
+						DevelopmentTeam = YQP4A2M94J;
 						TestTargetID = FC36DF8219B0656400AF74C1;
 					};
 				};
@@ -5129,6 +5208,7 @@
 				8596E9321A43CB0400655564 /* icon_google@2x.png in Resources */,
 				8596E9871A43CB0400655564 /* icon_cart_active.png in Resources */,
 				8596E9471A43CB0400655564 /* icon_profile_picture.jpeg in Resources */,
+				85C6E8681A47D4EA007E2CBE /* HotlistAuthViewController.xib in Resources */,
 				8596E9421A43CB0400655564 /* icon_message@2x.png in Resources */,
 				8596EA281A43CB0400655564 /* SettingLocationDetailViewController.xib in Resources */,
 				8596E98A1A43CB0400655564 /* icon_category@2x.png in Resources */,
@@ -5137,7 +5217,6 @@
 				8596E8F91A43CB0400655564 /* icon_2.png in Resources */,
 				8596E99C1A43CB0400655564 /* tabnav_bg@2x.png in Resources */,
 				8596E9401A43CB0400655564 /* icon_love_active@2x.png in Resources */,
-				8596E8B01A43CB0400655564 /* InboxReviewViewController.xib in Resources */,
 				8596EA241A43CB0400655564 /* SendMessageViewController.xib in Resources */,
 				8596EA0F1A43CB0400655564 /* SettingBankAccountViewController.xib in Resources */,
 				8596E9841A43CB0400655564 /* ic_search@2x.png in Resources */,
@@ -5173,18 +5252,19 @@
 				8596E9561A43CB0400655564 /* icon_toped_loading_grey-01.png in Resources */,
 				8596EA161A43CB0400655564 /* SearchCell.xib in Resources */,
 				8596E9BD1A43CB0400655564 /* DetailCatalogSpecView.xib in Resources */,
+				85C6E8611A47D0DA007E2CBE /* InboxReviewViewController.xib in Resources */,
 				8596E9B91A43CB0400655564 /* TKPDTabShopNavigationController.xib in Resources */,
 				8596E9451A43CB0400655564 /* icon_plus_blue.png in Resources */,
 				8596E9BF1A43CB0400655564 /* DetailCatalogViewController.xib in Resources */,
 				8596E8FD1A43CB0400655564 /* icon_21@2x.png in Resources */,
 				8596E9641A43CB0400655564 /* icon_location_14px.png in Resources */,
-				8596E8B21A43CB0400655564 /* ReviewFormViewController.xib in Resources */,
 				8596EA141A43CB0400655564 /* SettingPrivacyViewController.xib in Resources */,
 				8596E8EC1A43CB0400655564 /* icon_14.png in Resources */,
 				8596E9391A43CB0400655564 /* icon_login.png in Resources */,
 				8596E9951A43CB0400655564 /* icon_search.png in Resources */,
 				8596E93B1A43CB0400655564 /* icon_login_active.png in Resources */,
 				8596EA211A43CB0400655564 /* SortViewController.xib in Resources */,
+				85C8235C1A6E500F009085CC /* DetailReviewViewController.xib in Resources */,
 				8596EA3F1A43CB0400655564 /* ShopTalkViewController.xib in Resources */,
 				8596E9E71A43CB0400655564 /* GeneralProductCell.xib in Resources */,
 				8596E9071A43CB0400655564 /* icon_7.png in Resources */,
@@ -5195,6 +5275,7 @@
 				8596E9601A43CB0400655564 /* icon_arrow_white.png in Resources */,
 				8596EA291A43CB0400655564 /* SettingLocationEditViewController.xib in Resources */,
 				8596E9301A43CB0400655564 /* icon_facebook@2x.png in Resources */,
+				85810A3B1A56A12900725B14 /* public_key.der in Resources */,
 				8596E9CB1A43CB0400655564 /* DetailProductWholesaleTableCell.xib in Resources */,
 				8596E9F61A43CB0400655564 /* HotlistResultViewController.xib in Resources */,
 				8596E8FB1A43CB0400655564 /* icon_20@2x.png in Resources */,
@@ -5252,6 +5333,7 @@
 				FC36DF9119B0656400AF74C1 /* InfoPlist.strings in Resources */,
 				8596EA041A43CB0400655564 /* ProfileFavoriteShopCell.xib in Resources */,
 				8596E9D11A43CB0400655564 /* ProductTalkViewController.xib in Resources */,
+				85C6E8631A47D0DA007E2CBE /* ReviewFormViewController.xib in Resources */,
 				8596EA311A43CB0400655564 /* ProductEditImageViewController.xib in Resources */,
 				8596E9171A43CB0400655564 /* icon_arrow_up@2x.png in Resources */,
 				FC36DF9919B0656400AF74C1 /* Images.xcassets in Resources */,
@@ -5334,6 +5416,7 @@
 				8596E9191A43CB0400655564 /* icon_calendar@2x.png in Resources */,
 				8596E9731A43CB0400655564 /* top_bg1.png in Resources */,
 				8596E9341A43CB0400655564 /* icon_info@2x.png in Resources */,
+				85C823571A6DFB3E009085CC /* TKPDTabInboxReviewNavigationController.xib in Resources */,
 				8596E9EC1A43CB0400655564 /* GeneralTalkCellOld.xib in Resources */,
 				8596E8E01A43CB0400655564 /* button_white_rounded_2.png in Resources */,
 				8596E9021A43CB0400655564 /* icon_4@2x.png in Resources */,
@@ -5545,11 +5628,13 @@
 				8596E8261A43CB0400655564 /* AlertCameraView.m in Sources */,
 				8596E7EF1A43CB0400655564 /* PrivacyForm.m in Sources */,
 				8596E8CD1A43CB0400655564 /* ShipmentInfoViewController.m in Sources */,
+				85810A2F1A56761600725B14 /* RSA.m in Sources */,
 				8596E8AE1A43CB0400655564 /* SortViewController.m in Sources */,
 				8596E8AB1A43CB0400655564 /* FilterLocationViewController.m in Sources */,
 				8596E8931A43CB0400655564 /* SettingAddressLocationViewController.m in Sources */,
 				8596E8081A43CB0400655564 /* Payment.m in Sources */,
 				8596E8BC1A43CB0400655564 /* SettingLocationViewController.m in Sources */,
+				85C6E8601A47D0DA007E2CBE /* InboxReviewViewController.m in Sources */,
 				8596E76E1A43CB0400655564 /* DBManager.m in Sources */,
 				8596E88E1A43CB0400655564 /* ProfileEditViewController.m in Sources */,
 				8596E76D1A43CB0400655564 /* URLCacheController.m in Sources */,
@@ -5579,6 +5664,7 @@
 				8596E7E11A43CB0400655564 /* ProfileInfo.m in Sources */,
 				8596E88F1A43CB0400655564 /* GoldShopView.m in Sources */,
 				8596E8CB1A43CB0400655564 /* SettingShipmentSectionHeaderView.m in Sources */,
+				85BA3D7E1A650E1E00DA96EF /* NotificationBarButton.m in Sources */,
 				8596E7B91A43CB0400655564 /* InboxMessageAction.m in Sources */,
 				8596E8351A43CB0400655564 /* TKPDTabInboxMessageNavigationController.m in Sources */,
 				8596E83F1A43CB0400655564 /* StarsRateView.m in Sources */,
@@ -5604,16 +5690,18 @@
 				8596E7D81A43CB0400655564 /* ProductTalkFormResult.m in Sources */,
 				8596E8621A43CB0400655564 /* ShopNotesCell.m in Sources */,
 				8596E8601A43CB0400655564 /* ShopInfoShipmentCell.m in Sources */,
+				85AE21511A5F8CE7000E346E /* NotificationManager.m in Sources */,
 				8596E7E81A43CB0400655564 /* AddressFormResult.m in Sources */,
 				8596E80A1A43CB0400655564 /* ShipmentPackage.m in Sources */,
 				8596E83B1A43CB0400655564 /* BackgroundLayer.m in Sources */,
-				8596E8861A43CB0400655564 /* NotificationBarButton.m in Sources */,
 				8596E7AA1A43CB0400655564 /* FavoriteShopActionResult.m in Sources */,
 				8596E8A61A43CB0400655564 /* SearchResultShopViewController.m in Sources */,
 				8596E8C51A43CB0400655564 /* ProductEditWholesaleViewController.m in Sources */,
 				8596E7EA1A43CB0400655564 /* BankAccountFormList.m in Sources */,
 				8596E8C11A43CB0400655564 /* ProductAddEditDetailViewController.m in Sources */,
 				8596E7A71A43CB0400655564 /* FavoritedShopList.m in Sources */,
+				85C6E8671A47D4EA007E2CBE /* HotlistAuthViewController.m in Sources */,
+				85AE21571A5F8CF8000E346E /* EncodeDecoderManager.m in Sources */,
 				8596E88B1A43CB0400655564 /* ProfileBiodataViewController.m in Sources */,
 				8596E8C71A43CB0400655564 /* ProductListMyShopViewController.m in Sources */,
 				8596E85E1A43CB0400655564 /* ShopInfoPaymentCell.m in Sources */,
@@ -5637,10 +5725,12 @@
 				8596E84E1A43CB0400655564 /* DetailProductViewController.m in Sources */,
 				8596E7A51A43CB0400655564 /* ListFavorited.m in Sources */,
 				8596E7731A43CB0400655564 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
+				85BA3D7F1A650E1E00DA96EF /* NotificationRequest.m in Sources */,
 				8596E88D1A43CB0400655564 /* ProfileEditPhoneViewController.m in Sources */,
 				8596E8C31A43CB0400655564 /* ProductEditImageViewController.m in Sources */,
 				8596E9A01A43CB0400655564 /* MGSwipeButton.m in Sources */,
 				8596E78C1A43CB0400655564 /* Breadcrumb.m in Sources */,
+				85C6E86B1A48018C007E2CBE /* NSData+Encryption.m in Sources */,
 				8596E7961A43CB0400655564 /* ReviewProductOwner.m in Sources */,
 				8596E8C41A43CB0400655564 /* ProductEditWholesaleCell.m in Sources */,
 				8596E81E1A43CB0400655564 /* GenerateHostResult.m in Sources */,
@@ -5689,6 +5779,7 @@
 				8596E8AA1A43CB0400655564 /* FilterLocationViewCell.m in Sources */,
 				8596E8381A43CB0400655564 /* TKPDTabNavigationController.m in Sources */,
 				8596E89D1A43CB0400655564 /* SettingPasswordViewController.m in Sources */,
+				85C823561A6DFB3E009085CC /* TKPDTabInboxReviewNavigationController.m in Sources */,
 				8596E7ED1A43CB0400655564 /* NotificationFormNotif.m in Sources */,
 				8596E8221A43CB0400655564 /* LoginViewController.m in Sources */,
 				8596E7761A43CB0400655564 /* RKObjectManagerCategory.m in Sources */,
@@ -5699,7 +5790,6 @@
 				8596E89C1A43CB0400655564 /* SettingNotificationViewController.m in Sources */,
 				8596E8A71A43CB0400655564 /* SearchResultViewController.m in Sources */,
 				8596E7DD1A43CB0400655564 /* ProfileEditResult.m in Sources */,
-				8596E8881A43CB0400655564 /* NotificationViewController.m in Sources */,
 				8596E83D1A43CB0400655564 /* ProgressBarView.m in Sources */,
 				8596E8141A43CB0400655564 /* POSIndonesia.m in Sources */,
 				8596E8101A43CB0400655564 /* ShopSettings.m in Sources */,
@@ -5753,6 +5843,7 @@
 				8596E99D1A43CB0400655564 /* HPGrowingTextView.m in Sources */,
 				8596E8061A43CB0400655564 /* DetailShopResult.m in Sources */,
 				8596E7EE1A43CB0400655564 /* NotificationFormResult.m in Sources */,
+				85C6E8621A47D0DA007E2CBE /* ReviewFormViewController.m in Sources */,
 				8596E8BE1A43CB0400655564 /* SettingNoteViewController.m in Sources */,
 				8596E7F91A43CB0400655564 /* SendMessage.m in Sources */,
 				8596E87D1A43CB0400655564 /* InboxMessageDetailCell.m in Sources */,
@@ -5760,7 +5851,6 @@
 				8596E7F01A43CB0400655564 /* PrivacyFormPrivacy.m in Sources */,
 				8596E7901A43CB0400655564 /* Product.m in Sources */,
 				8596E7A81A43CB0400655564 /* FavoritedShopResult.m in Sources */,
-				8596E8871A43CB0400655564 /* NotificationRequest.m in Sources */,
 				8596E7CB1A43CB0400655564 /* ManageProductResult.m in Sources */,
 				FC36DF9719B0656400AF74C1 /* AppDelegate.m in Sources */,
 				8596E8001A43CB0400655564 /* NoteDetails.m in Sources */,
@@ -5790,6 +5880,7 @@
 				8596E7CC1A43CB0400655564 /* Notification.m in Sources */,
 				8596E8201A43CB0400655564 /* UploadImageParams.m in Sources */,
 				8596E7D01A43CB0400655564 /* NotificationSales.m in Sources */,
+				85BA3D801A650E1E00DA96EF /* NotificationViewController.m in Sources */,
 				8596E7B41A43CB0400655564 /* Hotlist.m in Sources */,
 				8596E79C1A43CB0400655564 /* Talk.m in Sources */,
 				8596E8521A43CB0400655564 /* ProductReviewDetailViewController.m in Sources */,
@@ -5805,7 +5896,6 @@
 				8596E8631A43CB0400655564 /* ShopNotesDetailViewController.m in Sources */,
 				8596E9A11A43CB0400655564 /* MGSwipeTableCell.m in Sources */,
 				8596E79E1A43CB0400655564 /* TalkCommentList.m in Sources */,
-				8596E8AF1A43CB0400655564 /* InboxReviewViewController.m in Sources */,
 				8596E8411A43CB0400655564 /* UITextView+UITextView_Placeholder.m in Sources */,
 				8596E8401A43CB0400655564 /* StickyAlert.m in Sources */,
 				8596E7BF1A43CB0400655564 /* InboxMessageList.m in Sources */,
@@ -5814,6 +5904,7 @@
 				8596E7E21A43CB0400655564 /* ProfileInfoResult.m in Sources */,
 				8596E79A1A43CB0400655564 /* ShopStats.m in Sources */,
 				8596E8291A43CB0400655564 /* AlertListViewCell.m in Sources */,
+				85AE21581A5F8CF8000E346E /* UserAuthentificationManager.m in Sources */,
 				8596E85B1A43CB0400655564 /* ShopEditStatusViewController.m in Sources */,
 				8596E8691A43CB0400655564 /* GeneralList1GestureCell.m in Sources */,
 				8596E7F31A43CB0400655564 /* List.m in Sources */,
@@ -5850,7 +5941,6 @@
 				8596E77F1A43CB0400655564 /* DepositResult.m in Sources */,
 				8596E8841A43CB0400655564 /* LogoutViewController.m in Sources */,
 				8596E7BC1A43CB0400655564 /* InboxMessageDetailBetween.m in Sources */,
-				8596E8B11A43CB0400655564 /* ReviewFormViewController.m in Sources */,
 				8596E7E61A43CB0400655564 /* AddressForm.m in Sources */,
 				8596E7951A43CB0400655564 /* ReviewList.m in Sources */,
 				8596E8241A43CB0400655564 /* TextField.m in Sources */,
@@ -5891,6 +5981,7 @@
 				8596E7DC1A43CB0400655564 /* ProfileEdit.m in Sources */,
 				8596E8A41A43CB0400655564 /* SearchResultCell.m in Sources */,
 				8596E7A31A43CB0400655564 /* Favorited.m in Sources */,
+				85C8235B1A6E500F009085CC /* DetailReviewViewController.m in Sources */,
 				8596E7921A43CB0400655564 /* AdvanceReview.m in Sources */,
 				8596E7B21A43CB0400655564 /* DepartmentTree.m in Sources */,
 				8596E7C61A43CB0400655564 /* InboxTalk.m in Sources */,
@@ -5970,7 +6061,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "38508ba6-3f02-480f-bbf2-d7f767500f66";
+				PROVISIONING_PROFILE = "cabb0f92-0887-433a-88bf-b35cbb68d61b";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -6004,7 +6095,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "38508ba6-3f02-480f-bbf2-d7f767500f66";
+				PROVISIONING_PROFILE = "cabb0f92-0887-433a-88bf-b35cbb68d61b";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -6017,8 +6108,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
@@ -6031,7 +6122,7 @@
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "cabb0f92-0887-433a-88bf-b35cbb68d61b";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -6043,8 +6134,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$(BUILT_PRODUCTS_DIR)/../../Headers\"";
@@ -6057,7 +6148,7 @@
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "cabb0f92-0887-433a-88bf-b35cbb68d61b";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -6068,6 +6159,8 @@
 			baseConfigurationReference = 967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Tokopedia.app/Tokopedia";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -6085,7 +6178,7 @@
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b1c061a0-db69-4d72-8264-f609a803b8a6";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -6096,6 +6189,8 @@
 			baseConfigurationReference = C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Tokopedia.app/Tokopedia";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -6109,7 +6204,7 @@
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b1c061a0-db69-4d72-8264-f609a803b8a6";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};

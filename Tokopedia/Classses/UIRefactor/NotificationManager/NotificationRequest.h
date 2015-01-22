@@ -20,5 +20,7 @@
 @property (weak) id<NotificationDelegate> delegate;
 
 - (void)loadNotification;
+- (void)deleteCache;
+- (void)resetNotification;
 
 @end

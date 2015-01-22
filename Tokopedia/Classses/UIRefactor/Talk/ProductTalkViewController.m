@@ -17,6 +17,7 @@
 #import "stringrestkit.h"
 #import "URLCacheController.h"
 #import "GeneralAction.h"
+#import "UserAuthentificationManager.h"
 #import "stringrestkit.h"
 #import "inbox.h"
 
@@ -56,6 +57,7 @@
     NSTimeInterval _timeinterval;
     NSString *product_id;
     NSMutableDictionary *_auth;
+    UserAuthentificationManager *_userManager;
     
 }
 
@@ -111,6 +113,7 @@
     _operationUnfollowQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
+    _userManager = [UserAuthentificationManager new];
     
     _table.tableHeaderView = _header;
     
@@ -124,11 +127,9 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     //right button
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    _auth = [auth mutableCopy];
-    
-    if(![[_auth objectForKey:@"shop_id"] isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
+
+    NSString *loggedInUserId = [_userManager getUserId];
+    if(![loggedInUserId isEqualToString:@"0"] && ![loggedInUserId isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
 
         UIBarButtonItem *rightbar;
         UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];

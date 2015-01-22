@@ -261,10 +261,10 @@
         [_act startAnimating];
     }
     
-    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEPRODUCTFEEDACT,
+    NSDictionary* param = [NSDictionary encryptDictionary: @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEPRODUCTFEEDACT,
                             kTKPDHOME_APIPAGEKEY : @(_page),
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE)
-                            };
+                            }];
     
     _requestcount ++;
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDHOMEHOTLIST_APIPATH parameters:param];

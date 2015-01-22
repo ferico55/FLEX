@@ -11,6 +11,7 @@
 @interface ReviewFormViewController : UIViewController
 
 @property (strong, nonatomic) NSDictionary* data;
+@property (nonatomic) int reviewIndex;
 @property (nonatomic) BOOL isEditForm;
 @property (nonatomic) BOOL isViewForm;
 

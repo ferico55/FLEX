@@ -180,7 +180,9 @@
 - (void)setViewControllers:(NSArray *)viewControllers
 {
     [self setViewControllers:viewControllers animated:YES];
+
 }
+
 
 - (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated
 {

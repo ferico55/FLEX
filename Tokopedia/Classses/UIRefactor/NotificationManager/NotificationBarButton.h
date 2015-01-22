@@ -12,4 +12,6 @@
 
 @property (strong, nonatomic) UILabel *badgeLabel;
 
+- (void)setNoUnreadNotification:(NSString*)status;
+
 @end

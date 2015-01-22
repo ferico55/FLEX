@@ -252,10 +252,10 @@
     
     _requestcount++;
     
-	NSDictionary* param = @{
+    NSDictionary* param = [NSDictionary encryptDictionary : @{
                             kTKPDLOGIN_APIUSEREMAILKEY : [data objectForKey:kTKPDACTIVATION_DATAEMAILKEY]?:@(0),
                             kTKPDLOGIN_APIUSERPASSKEY : [data objectForKey:kTKPDACTIVATION_DATAPASSKEY]?:@(0)
-                            };
+                            }];
     
     UIApplication* app = [UIApplication sharedApplication];
     app.networkActivityIndicatorVisible = YES;
@@ -263,7 +263,9 @@
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDLOGIN_APIPATH parameters:param];
     
     NSTimer *timer;
+    
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"clearCacheNotificationBar" object:self];
         [timer invalidate];
         //[_act stopAnimating];
         app.networkActivityIndicatorVisible = NO;

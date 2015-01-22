@@ -13,6 +13,7 @@
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
 #import "StickyAlert.h"
+#import "NotificationManager.h"
 
 @implementation AppDelegate
 {
@@ -72,9 +73,31 @@
     //NSURLCache* cache = [NSURLCache sharedURLCache];
     //NSLOG(@"nsurlcache capacity:%dKB, %dKB - current:%dKB, %dKB", cache.memoryCapacity >> 10, cache.diskCapacity >> 10, cache.currentMemoryUsage >> 10, cache.currentDiskUsage >> 10);
     ////[cache removeAllCachedResponses];
-
+    
+    // Let the device know we want to receive push notifications
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
     return YES;
+}
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+    NSLog(@"My token is: %@", deviceToken);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+    //opened when application is on background
+    NotificationManager *notifManager = [NotificationManager new];
+    if(application.applicationState == UIApplicationStateInactive || application.applicationState == UIApplicationStateBackground) {
+        [notifManager selectViewControllerToOpen:[[userInfo objectForKey:@"data"] objectForKey:@"tkp_code"]];
+    } else {
+        //refresh ticker notification
+    }
+    
 }
 
 - (void)didFinishLaunchingWithOptionsQueued
@@ -172,6 +195,13 @@
                                              selector:@selector(receiveStickyMessage:)
                                                  name:kTKPD_SETUSERSTICKYERRORMESSAGEKEY
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(receiveStickyMessage:)
+                                                 name:kTKPD_SETUSERSTICKYERRORMESSAGEKEY
+                                               object:nil];
+    
+   
     
     return self;
 }
