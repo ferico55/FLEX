@@ -45,11 +45,16 @@
     self.cancelButton.layer.borderWidth = 1;
 }
 
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
+
     [self.navigationController.navigationBar setTranslucent:NO];
+    self.navigationController.navigationBarHidden = NO;
+
+    self.title = @"Urutkan";
+    
     _selectedsort = [NSMutableDictionary new];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
@@ -182,24 +187,18 @@
     switch (_type) {
         case 1:
         case 2:
-        {   //product
+        {   //product //TODO:: Change To Delegate
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             break;
         }
         case 3:
-        {   //catalog
+        {   //catalog //TODO:: Change To Delegate
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             break;
         }
         case 4:
-        {    //detail catalog
+        {    //detail catalog //TODO:: Change To Delegate
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            UINavigationController *nav = (UINavigationController *)self.presentingViewController;
-            [self dismissViewControllerAnimated:NO completion:^{
-                [nav popViewControllerAnimated:NO];
-            }];
             break;
         }
         case 5:
@@ -208,9 +207,8 @@
             break;
         }
         case 6:
-        {   //shop product
+        {   //shop product //TODO:: Change To Delegate
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             break;
         }
         default:

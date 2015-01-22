@@ -18,6 +18,7 @@
 #import "AlertDatePickerView.h"
 #import "AlertListView.h"
 #import "Alert1ButtonView.h"
+#import "AlertPickerView.h"
 #import "CameraController.h"
 
 #import "ProfileEditViewController.h"
@@ -61,6 +62,8 @@
     __weak RKManagedObjectRequestOperation *_requestProfileForm;
     
     NSOperationQueue *_operationQueue;
+    
+    UIBarButtonItem *_barbuttonsave;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
@@ -116,19 +119,10 @@
                name:UIKeyboardWillHideNotification
              object:nil];
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-	[barbutton1 setTag:11];
-    self.navigationItem.rightBarButtonItem = barbutton1;
-    _buttonedit.enabled = NO;
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [_barbuttonsave setTintColor:[UIColor whiteColor]];
+	[_barbuttonsave setTag:11];
+    self.navigationItem.rightBarButtonItem = _barbuttonsave;
     
     [self configureRestkitGenerateHost];
     [self requestGenerateHost];
@@ -206,14 +200,13 @@
             case 10:
             {   //edit thumbnail
                 CameraController* c = [CameraController new];
+                [c snap];
                 c.delegate = self;
-                //c.data = data;
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-                c.wantsFullScreenLayout = YES;
-                c.modalPresentationStyle = UIModalPresentationFullScreen;
-                c.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [self presentViewController:c animated:YES completion:nil];
-                //[self.navigationController presentViewController:nav animated:YES completion:nil];
+                nav.wantsFullScreenLayout = YES;
+                nav.modalPresentationStyle = UIModalPresentationFullScreen;
+                nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
             case 11:
@@ -234,11 +227,11 @@
             }
             case 12:
             {    //gender
-                AlertListView *v = [AlertListView newview];
-                v.delegate = self;
-                v.tag = 11;
-                v.data = @{kTKPDALERTVIEW_DATALISTKEY:kTKPDPROFILE_DATAGENDERARRAYKEY};
-                [v show];
+                AlertPickerView *alertView = [AlertPickerView newview];
+                alertView.tag = 11;
+                alertView.delegate = self;
+                alertView.pickerData = ARRAY_GENDER;
+                [alertView show];
                 break;
             }
             case 13:
@@ -378,7 +371,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     //[_act startAnimating];
                     [self performSelector:@selector(configureRestkitProfileForm) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                     [self performSelector:@selector(requestProfileForm) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -502,7 +495,6 @@
             BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                _buttonedit.enabled = YES;
             }
         }
     }
@@ -806,15 +798,20 @@
     [self navigationItem].rightBarButtonItem = barButton;
     [act startAnimating];
     
+    UIApplication* app = [UIApplication sharedApplication];
+    app.networkActivityIndicatorVisible = YES;
+    
     _requestActionSubmit = [_objectmanagerActionSubmit appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:param];
     [_requestActionSubmit setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
          [act stopAnimating];
          act.hidden = YES;
          [self requestSuccessSubmit:mappingResult withOperation:operation];
+        app.networkActivityIndicatorVisible = NO;
      } failure:^(RKObjectRequestOperation *operation, NSError *error) {
          [act stopAnimating];
          act.hidden = YES;
          [self requestFailureSubmit:error];
+         app.networkActivityIndicatorVisible = NO;
      }];
 
     [_operationQueue addOperation:_requestActionSubmit];
@@ -978,7 +975,7 @@
     }else{
         [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                               delay:0
-                            options: UIViewAnimationCurveEaseOut
+                            options: UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              _scrollviewContentSize = [_scrollview contentSize];
                              _scrollviewContentSize.height -= _keyboardSize.height;
@@ -1003,7 +1000,7 @@
     UIEdgeInsets contentInsets = UIEdgeInsetsZero;
     [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                           delay:0
-                        options: UIViewAnimationCurveEaseOut
+                        options: UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          _scrollview.contentInset = contentInsets;
                          _scrollview.scrollIndicatorInsets = contentInsets;
@@ -1030,22 +1027,25 @@
             NSDictionary *data = alertView.data;
             NSDate *date = [data objectForKey:kTKPDALERTVIEW_DATADATEPICKERKEY];
             NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
-            int year = [components year];
-            int month = [components month];
-            int day = [components day];
+            NSInteger year = [components year];
+            NSInteger month = [components month];
+            NSInteger day = [components day];
             [_datainput setObject:@(year) forKey:kTKPDPROFILE_APIBIRTHYEARKEY];
             [_datainput setObject:@(month) forKey:kTKPDPROFILE_APIBIRTHMONTHKEY];
             [_datainput setObject:@(day) forKey:kTKPDPROFILE_APIBIRTHDAYKEY];
             
-            NSString *stringdate = [NSString stringWithFormat:@"%d / %d / %d",day,month,year];
+            NSString *stringdate = [NSString stringWithFormat:@"%zd / %zd / %zd",day,month,year];
             [_buttondob setTitle:stringdate forState:UIControlStateNormal];
             break;
         }
         case 11:
         {
             // alert gender
-            [_buttongender setTitle:kTKPDPROFILE_DATAGENDERARRAYKEY[buttonIndex] forState:UIControlStateNormal];
-            [_datainput setObject:kTKPDPROFILE_DATAGENDERVALUEARRAYKEY[buttonIndex] forKey:kTKPDPROFILE_APIGENDERKEY];
+            NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
+            NSString *gender = [ARRAY_GENDER[index] objectForKey:DATA_NAME_KEY];
+            NSInteger genderID = [[ARRAY_GENDER[index] objectForKey:DATA_VALUE_KEY]integerValue];
+            [_buttongender setTitle:gender forState:UIControlStateNormal];
+            [_datainput setObject:@(genderID) forKey:kTKPDPROFILE_APIGENDERKEY];
             break;
         }
         default:

@@ -15,7 +15,7 @@
 #import "MoreViewController.h"
 #import "CategoryViewController.h"
 
-#import "TKPDTabHomeNavigationController.h"
+#import "TKPDTabHomeViewController.h"
 
 #import "HotlistAuthViewController.h"
 #import "HotlistViewController.h"
@@ -32,7 +32,7 @@
 @interface MainViewController ()
 {
     UITabBarController *_tabBarController;
-    TKPDTabHomeNavigationController *_swipevc;
+    TKPDTabHomeViewController *_swipevc;
     NSMutableDictionary *_auth;
     URLCacheController *_cacheController;
 }
@@ -105,7 +105,7 @@
 
 -(void)createtabbarController
 {
-    BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY]boolValue];
+    BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     _tabBarController = [UITabBarController new];
     
     [[UITabBarItem appearance] setTitleTextAttributes:@{ UITextAttributeTextColor : kTKPDNAVIGATION_TABBARTITLECOLOR }
@@ -121,14 +121,14 @@
     if (!isauth) {
         // before login
         titles = kTKPD_HOMETITLEARRAY;
-        HotlistAuthViewController *v = [HotlistAuthViewController new];
-        v.data = @{kTKPD_AUTHKEY : _auth?:@""};
+        HotlistViewController *v = [HotlistViewController new];
+        v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
         [viewcontrollers addObject:v];
     }
     else{
         // after login
         titles = kTKPD_HOMETITLEISAUTHARRAY;
-        HotlistAuthViewController *v = [HotlistAuthViewController new];
+        HotlistViewController *v = [HotlistViewController new];
         v.data = @{kTKPD_AUTHKEY : _auth?:@""};
         [viewcontrollers addObject:v];
         ProductFeedViewController *v1 = [ProductFeedViewController new];
@@ -139,14 +139,9 @@
         [viewcontrollers addObject:v3];
     }
     
-    /** Adjust View Controller **/
-    _swipevc = [TKPDTabHomeNavigationController new];
+//    /** Adjust View Controller **/
+    _swipevc = [TKPDTabHomeViewController new];
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
-    [_swipevc setViewControllers:viewcontrollers animated:YES withtitles:titles];
-    [_swipevc setSelectedIndex:0];
-    [swipevcNav.navigationBar setTranslucent:NO];
-    UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-    [_swipevc.navigationItem setTitleView:logo];
     
     
     /** TAB BAR INDEX 2 **/
@@ -160,7 +155,7 @@
     /** TAB BAR INDEX 3 **/
     SearchViewController *search = [SearchViewController new];
     if (_auth) {
-        search.data = @{kTKPD_AUTHKEY:_auth?:[NSNull null]};
+        search.data = @{kTKPD_AUTHKEY:_auth?:@{}};
     }
     UINavigationController *searchNavBar = [[UINavigationController alloc]initWithRootViewController:search];
     [searchNavBar.navigationBar setTranslucent:NO];
@@ -178,8 +173,7 @@
     }
     else{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
-        moreNavBar = moreNavController;
+        moreNavBar = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
     }
 
     [moreNavBar.navigationBar setTranslucent:NO];
@@ -379,27 +373,30 @@
     // and newVC is the controller you want to be the new view controller at index 0
     NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
     NSArray *titles;
-    // array untuk view controller pada swipe vc
-    NSMutableArray *arrays = [NSMutableArray arrayWithArray:_swipevc.viewControllers];
-    if (!isauth) {
-        // before login
-        titles = kTKPD_HOMETITLEARRAY;
-        [arrays removeObjectsInRange:NSMakeRange(1,3)];
-    }
-    else{
-        // after login
-        titles = kTKPD_HOMETITLEISAUTHARRAY;
-        ProductFeedViewController *v1 = [ProductFeedViewController new];
-        [arrays addObject:v1];
-        HistoryProductViewController *v2 = [HistoryProductViewController new];
-        [arrays addObject:v2];
-        FavoritedShopViewController *v3 = [FavoritedShopViewController new];
-        [arrays addObject:v3];
-    }
+
+//    // array untuk view controller pada swipe vc
+//    NSMutableArray *arrays = [NSMutableArray arrayWithArray:_swipevc.viewControllers];
+//    if (!isauth) {
+//        // before login
+//        titles = kTKPD_HOMETITLEARRAY;
+//        [arrays removeObjectsInRange:NSMakeRange(1,3)];
+//    }
+//    else{
+//        // after login
+//        titles = kTKPD_HOMETITLEISAUTHARRAY;
+//        ProductFeedViewController *v1 = [ProductFeedViewController new];
+//        [arrays addObject:v1];
+//        HistoryProductViewController *v2 = [HistoryProductViewController new];
+//        [arrays addObject:v2];
+//        FavoritedShopViewController *v3 = [FavoritedShopViewController new];
+//        [arrays addObject:v3];
+//    }
+
     /** Adjust View Controller **/
     //TKPDTabHomeNavigationController *swipevc = [TKPDTabHomeNavigationController new];
-    [_swipevc setViewControllers:arrays animated:YES withtitles:titles];
-    [_swipevc setSelectedIndex:0];
+//    [_swipevc setViewControllers:arrays animated:YES withtitles:titles];
+//    [_swipevc setSelectedIndex:0];
+
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
     swipevcNav.navigationBar.translucent = NO;
     UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
@@ -408,7 +405,7 @@
     UINavigationController *searchNavBar = newControllers[2];
     id search = searchNavBar.viewControllers[0];
     if (_auth) {
-         ((SearchViewController*)search).data = @{kTKPD_AUTHKEY:_auth?:[NSNull null]};
+        ((SearchViewController*)search).data = @{kTKPD_AUTHKEY:_auth?:@{}};
     }
     
     UINavigationController *moreNavBar = newControllers[4];
@@ -418,8 +415,7 @@
     }
     else{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
-        moreNavBar = moreNavController;
+        moreNavBar = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
     }
     [moreNavBar.navigationBar setTranslucent:NO];
 

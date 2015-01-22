@@ -25,9 +25,8 @@
 #import "ProfileContactViewController.h"
 #import "TKPDTabProfileNavigationController.h"
 
-#import "TKPDTabShopNavigationController.h"
+#import "TKPDTabShopViewController.h"
 #import "ShopFavoritedViewController.h"
-#import "ShopProductViewController.h"
 #import "ShopReviewViewController.h"
 #import "ShopNotesViewController.h"
 #import "ShopTalkViewController.h"
@@ -75,6 +74,7 @@
 @implementation MoreViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
@@ -89,6 +89,28 @@
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
 
     
+    request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"shop_avatar"]]
+                                    cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    [_shopImageView setImageWithURLRequest:request
+                                    placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]
+                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                                 //NSLOG(@"thumb: %@", thumb);
+                                                 [_shopImageView setImage:image];
+#pragma clang diagnostic pop
+                                             } failure: nil];
+    
+    if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
+        _shopIsGoldLabel.text = @"Gold Merchant";
+    } else {
+        _shopIsGoldBadge.hidden = YES;
+        CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
+        shopIsGoldLabelFrame.origin.x = 83;
+        _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -102,7 +124,7 @@
 
     // Add logo in navigation bar
     self.title = kTKPDMORE_TITLE;
-    UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
+    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
 
     // Remove default table inset
@@ -124,6 +146,11 @@
     if (_isNoDataDeposit) {
         [self loadDataDeposit];
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -198,6 +225,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    self.hidesBottomBarWhenPushed = YES;
+    
     if (indexPath.section == 1 && indexPath.row == 0) {
         NSMutableArray *viewControllers = [NSMutableArray new];
         
@@ -222,96 +251,28 @@
         [self.navigationController pushViewController:profileController animated:YES];
     }
     
-    else if (indexPath.section == 2 && indexPath.row == 0) {
-        NSMutableArray *viewControllers = [NSMutableArray new];
-        
-        NSDictionary *data = @{MORE_SHOP_ID:[_auth objectForKey:@"shop_id"],
-                               MORE_AUTH:_auth};
-        
-        ShopProductViewController *productController = [ShopProductViewController new];
-        productController.data = data;
-        [viewControllers addObject:productController];
-        
-        ShopTalkViewController *talkController = [ShopTalkViewController new];
-        talkController.data = data;
-        [viewControllers addObject:talkController];
-        
-        ShopReviewViewController *reviewController = [ShopReviewViewController new];
-        reviewController.data = data;
-        [viewControllers addObject:reviewController];
-        
-        ShopNotesViewController *noteController = [ShopNotesViewController new];
-        noteController.data = data;
-        [viewControllers addObject:noteController];
-        
-        TKPDTabShopNavigationController *shopNavigationController = [TKPDTabShopNavigationController new];
-        shopNavigationController.data = data;
-        [shopNavigationController setViewControllers:viewControllers animated:YES];
-        [shopNavigationController setSelectedIndex:0];
-        
-        [self.navigationController pushViewController:shopNavigationController animated:YES];
+    else if (indexPath.section == 1 && indexPath.row == 1) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        PurchaseViewController *purchaseController = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
+        purchaseController.notification = _notification;
+        [self.navigationController pushViewController:purchaseController animated:YES];
     }
     
-    else if (indexPath.section == 4) {
-        if(indexPath.row == 3) {
-            InboxMessageViewController *vc = [InboxMessageViewController new];
-            vc.data=@{@"nav":@"inbox-message"};
-            
-            InboxMessageViewController *vc1 = [InboxMessageViewController new];
-            vc1.data=@{@"nav":@"inbox-message-sent"};
-            
-            InboxMessageViewController *vc2 = [InboxMessageViewController new];
-            vc2.data=@{@"nav":@"inbox-message-archive"};
-            
-            InboxMessageViewController *vc3 = [InboxMessageViewController new];
-            vc3.data=@{@"nav":@"inbox-message-trash"};
-            NSArray *vcs = @[vc,vc1, vc2, vc3];
-            
-            TKPDTabInboxMessageNavigationController *nc = [TKPDTabInboxMessageNavigationController new];
-            [nc setSelectedIndex:2];
-            [nc setViewControllers:vcs];
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-            [nav.navigationBar setTranslucent:NO];
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
-        } else if(indexPath.row == 4) {
-            InboxTalkViewController *vc = [InboxTalkViewController new];
-            vc.data=@{@"nav":@"inbox-talk"};
-            
-            InboxTalkViewController *vc1 = [InboxTalkViewController new];
-            vc1.data=@{@"nav":@"inbox-talk-my-product"};
-            
-            InboxTalkViewController *vc2 = [InboxTalkViewController new];
-            vc2.data=@{@"nav":@"inbox-talk-following"};
-            
-            NSArray *vcs = @[vc,vc1, vc2];
-            
-            TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
-            [nc setSelectedIndex:2];
-            [nc setViewControllers:vcs];
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-            [nav.navigationBar setTranslucent:NO];
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
-        } else if (indexPath.row == 5) {
-            InboxReviewViewController *vc = [InboxReviewViewController new];
-            vc.data=@{@"nav":@"inbox-review"};
-            
-            InboxTalkViewController *vc1 = [InboxReviewViewController new];
-            vc1.data=@{@"nav":@"inbox-review-my-product"};
-            
-            InboxTalkViewController *vc2 = [InboxReviewViewController new];
-            vc2.data=@{@"nav":@"inbox-review-my-review"};
-            
-            NSArray *vcs = @[vc,vc1, vc2];
-            
-            TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-            [nc setSelectedIndex:2];
-            [nc setViewControllers:vcs];
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-            [nav.navigationBar setTranslucent:NO];
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
-
-        }
-        
+    else if (indexPath.section == 2 && indexPath.row == 0) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
+        shopViewController.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
+                                    MORE_AUTH : _auth,
+                                    MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
+                                    };
+        [self.navigationController pushViewController:shopViewController animated:YES];
+    }
+    
+    else if (indexPath.section == 2 && indexPath.row == 1) {
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        SalesViewController *salesController = [storyboard instantiateViewControllerWithIdentifier:@"SalesViewController"];
+        salesController.notification = _notification;
+        [self.navigationController pushViewController:salesController animated:YES];
     }
     
     else if (indexPath.section == 5) {
@@ -319,6 +280,10 @@
         [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil userInfo:@{}];
         [nc postNotificationName:@"clearCacheNotificationBar" object:nil];
     }
+
+    self.hidesBottomBarWhenPushed = NO;
+
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 #pragma mark - Reskit
@@ -360,10 +325,12 @@
     
     _depositRequestCount++;
 
+    NSDictionary *param = @{API_DEPOSIT_ACTION : API_DEPOSIT_GET_DETAIL};
+    
     _depositRequest = [_depositObjectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodGET
                                                                       path:API_DEPOSIT_PATH
-                                                                parameters:@{API_DEPOSIT_ACTION : API_DEPOSIT_GET_DETAIL}];
+                                                                parameters:[param encrypt]];
     
     [_depositRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsuccess:mappingResult withOperation:operation];
@@ -389,7 +356,19 @@
 }
 
 
-#pragma mark - Navigation
+//#pragma mark - Navigation
+//
+//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+//{
+//    if ([segue.identifier isEqualToString:@"Sales"]) {
+//        SalesViewController *salesController = segue.destinationViewController;
+//        salesController.notification = _notification;
+//    }
+//    else if ([segue.identifier isEqualToString:@"Purchase"]) {
+//        PurchaseViewController *purchaseController = segue.destinationViewController;
+//        purchaseController.notification = _notification;
+//    }
+//}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"Sales"]) {

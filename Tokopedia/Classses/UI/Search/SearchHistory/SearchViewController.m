@@ -37,6 +37,10 @@
 @property (weak, nonatomic) IBOutlet UIView *searchhistoryview;
 @property (weak, nonatomic) IBOutlet UILabel *labelsearchfor;
 
+@property (strong, nonatomic) UIView *notificationView;
+@property (strong, nonatomic) NotificationBarButton *notificationButton;
+@property (strong, nonatomic) UIImageView *notificationArrowImageView;
+@property (strong, nonatomic) NotificationViewController *notificationController;
 
 @end
 
@@ -69,6 +73,7 @@
     [nc addObserver:self selector:@selector(goToViewController:) name:@"goToViewController" object:nil];
     
     [self.navigationController.navigationBar setTranslucent:NO];
+
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
@@ -93,8 +98,14 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     [_searchbar becomeFirstResponder];
     [self initNotificationManager];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
 }
 
 #pragma mark - Memory Management
@@ -278,15 +289,15 @@
         SearchResultViewController *vc = [SearchResultViewController new];
         vc.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
                    kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
-                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
         SearchResultViewController *vc1 = [SearchResultViewController new];
         vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
                     kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
-                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
         SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
         vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
                     kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
-                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
         NSArray *viewcontrollers = @[vc,vc1,vc2];
         
         TKPDTabNavigationController *c = [TKPDTabNavigationController new];
@@ -329,15 +340,15 @@
     NSString *searchtext = [data objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchtext?:@"" ,
                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
-               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     SearchResultViewController *vc1 = [SearchResultViewController new];
     vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchtext?:@"" ,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
     vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : searchtext?:@"" ,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *c = [TKPDTabNavigationController new];

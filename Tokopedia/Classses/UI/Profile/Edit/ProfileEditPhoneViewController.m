@@ -22,6 +22,8 @@
     __weak RKManagedObjectRequestOperation *_requestAction;
     
     NSOperationQueue *_operationQueue;
+    
+    UIBarButtonItem *_saveBarButtonItem;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *textfieldpass;
@@ -61,18 +63,10 @@
     _operationQueue = [NSOperationQueue new];
     
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-	[barbutton1 setTag:11];
-    self.navigationItem.rightBarButtonItem = barbutton1;
+    _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+
+	[_saveBarButtonItem setTag:11];
+    self.navigationItem.rightBarButtonItem = _saveBarButtonItem;
     
     _textfieldphone.text = [_data objectForKey:kTKPDPROFILEEDIT_DATAPHONENUMBERKEY];
     
@@ -138,20 +132,21 @@
     
     _requestAction = [_objectmanagerAction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:param];
     
-    //[_cachecontroller clearCache];
-    /* file doesn't exist or hasn't been updated */
+
+    _saveBarButtonItem.enabled = NO;
     [_requestAction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessAction:mappingResult withOperation:operation];
         [self.view setUserInteractionEnabled:YES];
         [_timer invalidate];
         _timer = nil;
-        
+        _saveBarButtonItem.enabled = YES;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFailureAction:error];
         [self.view setUserInteractionEnabled:YES];
         [_timer invalidate];
         _timer = nil;
+        _saveBarButtonItem.enabled = YES;
     }];
     
     [_operationQueue addOperation:_requestAction];

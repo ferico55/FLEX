@@ -1078,6 +1078,10 @@
 {
     _data = data;
     if (data) {
+        
+        NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
+        self.title = (type ==TYPE_ADD_EDIT_PRODUCT_ADD)?TITLE_ADD_PRODUCT:TITLE_EDIT_PRODUCT;
+        
         DetailProductResult *detailProduct = _product.result;
         NSArray *images = detailProduct.product_images;
         NSInteger imageCount = images.count;

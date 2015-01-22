@@ -1,0 +1,62 @@
+//
+//  OrderRejectExplanationViewController.m
+//  Tokopedia
+//
+//  Created by Tokopedia PT on 1/16/15.
+//  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
+//
+
+#import "OrderRejectExplanationViewController.h"
+#import "UITextView+UITextView_Placeholder.h"
+
+@interface OrderRejectExplanationViewController ()
+
+@property (weak, nonatomic) IBOutlet UITextView *textView;
+
+@end
+
+@implementation OrderRejectExplanationViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    self.title = @"Keterangan";
+
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                                     style:UIBarButtonItemStyleBordered
+                                                                    target:self
+                                                                    action:@selector(tap:)];
+    cancelButton.tag = 1;
+    self.navigationItem.leftBarButtonItem = cancelButton;
+    
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(tap:)];
+    doneButton.tag = 2;
+    self.navigationItem.rightBarButtonItem = doneButton;
+
+    [_textView setPlaceholder:@"Tulis keterangan"];
+    [_textView becomeFirstResponder];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+#pragma mark - Actions
+
+- (IBAction)tap :(id)sender
+{
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *button = (UIBarButtonItem *)sender;
+        if (button.tag == 1) {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        } else if (button.tag == 2) {
+            [self.delegate didFinishWritingExplanation:_textView.text];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+    }
+}
+
+@end

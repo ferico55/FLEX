@@ -22,121 +22,207 @@
 
 #import "URLCacheController.h"
 #import "SettingNoteDetailViewController.h"
+#import "ShopHeaderViewController.h"
+
+#import "UIImage+ImageEffects.h"
+
+#import "TKPDTabShopViewController.h"
+#import "ShopTalkViewController.h"
+#import "ShopReviewViewController.h"
+#import "ShopInfoViewController.h"
 
 #pragma mark - Shop Notes View Controller
-@interface ShopNotesViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, ShopNotesCellDelegate>
+
+@interface ShopNotesViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, ShopNotesCellDelegate, ShopHeaderDelegate>
 {
     NSMutableDictionary *_param;
     NSMutableArray *_list;
-    NSInteger _requestcount;
+    NSInteger _requestCount;
     NSTimer *_timer;
-    BOOL _isnodata;
+    BOOL _isNoData;
     
-    NSInteger _starcount;
-    
-    BOOL _isrefreshview;
+    BOOL _isRefreshView;
     UIRefreshControl *_refreshControl;
-    
-    BOOL _isadvreviewquality;
-    BOOL _isalltimes;
     
     Notes *_notes;
     
-    __weak RKObjectManager *_objectmanager;
+    __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
     
-    NSString *_cachepath;
-    URLCacheController *_cachecontroller;
-    URLCacheConnection *_cacheconnection;
-    NSTimeInterval _timeinterval;
+    NSString *_cachePath;
+    URLCacheController *_cacheController;
+    URLCacheConnection *_cacheConnection;
+    NSTimeInterval _timeInterval;
+    
+    UIImageView *_navigationImageView;
+
+    BOOL _shopIsGold;
+    BOOL _navigationBarIsAnimating;
+    BOOL _navigationBarShouldAnimate;
+
+    ShopHeaderViewController *_headerController;
 }
 
-@property (strong, nonatomic) IBOutlet UIView *footer;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (weak, nonatomic) IBOutlet UIButton *addButton;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) IBOutlet UIView *headerView;
+@property (strong, nonatomic) IBOutlet UIView *footerView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
+@property (strong, nonatomic) IBOutlet UIView *tabView;
+@property (strong, nonatomic) IBOutlet UIView *stickyTabView;
+
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *stickyTabVerticalSpace;
 
 -(void)cancel;
 -(void)configureRestKit;
 -(void)request;
--(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestfailure:(id)object;
--(void)requestprocess:(id)object;
--(void)requesttimeout;
+-(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
+-(void)requestFailure:(id)object;
+-(void)requestProcess:(id)object;
+-(void)requestTimeout;
 
 @end
 
 @implementation ShopNotesViewController
 
-#pragma mark - Initializations
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        _isadvreviewquality = YES;
-        _isnodata = YES;
-    }
-    return self;
-}
-
 #pragma mark - View Life Cycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    _isNoData = YES;
+    
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
-    _cachecontroller = [URLCacheController new];
-    _cacheconnection = [URLCacheConnection new];
+    _cacheController = [URLCacheController new];
+    _cacheConnection = [URLCacheConnection new];
     
     if (_list.count>2) {
-        _isnodata = NO;
+        _isNoData = NO;
     }
     
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
-    [_table addSubview:_refreshControl];
+    [_tableView addSubview:_refreshControl];
     
     //cache
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTES_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue]]];
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
+    _cachePath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTES_APIRESPONSEFILEFORMAT, [[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue]]];
+    _cacheController.filePath = _cachePath;
+    _cacheController.URLCacheInterval = 86400.0;
+	[_cacheController initCacheWithDocumentPath:path];
+    
+    _shopIsGold = [[_data objectForKey:kTKPDDETAIL_APISHOPISGOLD] boolValue];
+    
+    if (_shopIsGold) {
+        _navigationImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 64)];
+        _navigationImageView.backgroundColor = [UIColor lightGrayColor];
+        [self.view addSubview:_navigationImageView];
+        
+        self.stickyTabVerticalSpace.constant = 64;
+    }
+    
+    _navigationBarIsAnimating = false;
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    if (!_isrefreshview) {
+    
+    self.title = [_data objectForKey:kTKPDDETAIL_APISHOPNAMEKEY];
+    
+    if (!_isRefreshView) {
         [self configureRestKit];
-        if (_isnodata) {
+        if (_isNoData) {
             [self request];
         }
     }
+    
+    if (_shopIsGold) {
+        [self.navigationController.navigationBar setBackgroundImage:[UIImage new]
+                                                      forBarMetrics:UIBarMetricsDefault];
+        self.navigationController.navigationBar.shadowImage = [UIImage new];
+        self.navigationController.navigationBar.translucent = YES;
+        self.navigationController.view.backgroundColor = [UIColor clearColor];
+        self.navigationController.navigationBar.backgroundColor = [UIColor clearColor];
+        
+        if (_contentOffset.y > 136) {
+            _navigationImageView.alpha = 1;
+            self.title = [_data objectForKey:kTKPDDETAIL_APISHOPNAMEKEY];
+        } else {
+            _navigationImageView.alpha = 0;
+            self.title = @"";
+        }
+    } else {
+        self.navigationController.navigationBar.translucent = NO;
+    }
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    barButtonItem.tag = 1;
+    [self.navigationItem setBackBarButtonItem:barButtonItem];
+    
+    UIImage *infoImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
+    UIBarButtonItem *infoBarButton = [[UIBarButtonItem alloc] initWithImage:infoImage
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    infoBarButton.tag = 2;
+    self.navigationItem.rightBarButtonItem = infoBarButton;
+    
+    _navigationBarIsAnimating = false;
+    _navigationBarShouldAnimate = false;
+    
+    [self updateTabAppearance:_contentOffset];
+    [self updateNavigationBarAppearance:_contentOffset];
+    
+    _navigationBarShouldAnimate = true;
+    
+    if (_contentOffset.y > self.view.frame.size.height) _contentOffset.y = _headerView.frame.size.height - 109;
+    else if (_tableView.contentInset.top == -64) _contentOffset.y = 64;
+
+    self.tableView.contentOffset = _contentOffset;
+    
+    self.tableView.contentInset = UIEdgeInsetsMake(0, 0, self.view.frame.size.height, 0);
+    if (_shopIsGold) self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0);
+
+    self.tableView.delegate = self;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self cancel];
+    self.navigationController.navigationBar.translucent = NO;
+    self.navigationController.navigationBar.backgroundColor = [UIColor colorWithRed:37.0/255.0 green:197.0/255.0 blue:34.0/255.0 alpha:1];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    self.tableView.delegate = nil;
 }
 
 #pragma mark - Table View Data Source
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 #ifdef kTKPDHOTLISTRESULT_NODATAENABLE
-    return _isnodata?1:_list.count;
+    return _isNoData?1:_list.count;
 #else
-    return _isnodata?0:_list.count;
+    return _isNoData?0:_list.count;
 #endif
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell* cell = nil;
-    if (!_isnodata) {
+    if (!_isNoData) {
         
         NSString *cellid = kTKPDSHOPNOTESCELL_IDENTIFIER;
 		
@@ -169,32 +255,35 @@
 }
 
 #pragma mark - Table View Delegate
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (_isnodata) {
+	if (_isNoData) {
 		cell.backgroundColor = [UIColor whiteColor];
 	}
-    
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-	if (row == indexPath.row) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-	}
+
+    if (indexPath.row == (_list.count-1)) {
+        CGFloat insetBottom = self.view.frame.size.height - (tableView.sectionHeaderHeight +
+                                                             (tableView.rowHeight * _list.count) +
+                                                             _tabView.frame.size.height + 64);
+        _tableView.contentInset = UIEdgeInsetsMake(0, 0, insetBottom, 0);
+        _tableView.tableFooterView = nil;
+    }
 }
 
 #pragma mark - Scroll view delegate
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView.contentOffset.y < 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"enableParentScroll" object:nil];
-        _table.scrollEnabled = NO;
-    } else {
-        _table.scrollEnabled = YES;
-    }
+    [self updateTabAppearance:scrollView.contentOffset];
+    [self updateNavigationBarAppearance:scrollView.contentOffset];
+    [_headerController didScroll:scrollView];
 }
 
 #pragma mark - Memory Management
-- (void)dealloc{
+
+- (void)dealloc
+{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 
@@ -209,14 +298,14 @@
 {
     [_request cancel];
     _request = nil;
-    [_objectmanager.operationQueue cancelAllOperations];
-    _objectmanager = nil;
+    [_objectManager.operationQueue cancelAllOperations];
+    _objectManager = nil;
 }
 
 - (void)configureRestKit
 {
     // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
+    _objectManager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Notes class]];
@@ -232,65 +321,92 @@
                                                        ]];
     
     //add relationship mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
+                                                                                 toKeyPath:kTKPD_APILISTKEY
+                                                                               withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOP_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:kTKPDDETAILSHOP_APIPATH
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+    [_objectManager addResponseDescriptor:responseDescriptorStatus];
 }
 
 - (void)request
 {
-    if (_request.isExecuting) return;
+//    if (_request.isExecuting) return;
     
-    _requestcount++;
+    _requestCount++;
     
-	NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPNOTESKEY,
-                            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0),
-                            };
+    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPNOTESKEY,
+                            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)};
     
-    [_cachecontroller getFileModificationDate];
-	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-	if (_timeinterval > _cachecontroller.URLCacheInterval) {
-        _table.tableFooterView = _footer;
-        [_act startAnimating];
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:param];
+    [_cacheController getFileModificationDate];
+    
+	_timeInterval = fabs([_cacheController.fileDate timeIntervalSinceNow]);
+	
+    if (_timeInterval > _cacheController.URLCacheInterval) {
+
+        _tableView.tableFooterView = _footerView;
+        
+        [_activityIndicator startAnimating];
+        
+        _request = [_objectManager appropriateObjectRequestOperationWithObject:self
+                                                                        method:RKRequestMethodPOST
+                                                                          path:kTKPDDETAILSHOP_APIPATH
+                                                                    parameters:[param encrypt]];
+
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+
             [_timer invalidate];
             _timer = nil;
-            [_act stopAnimating];
-            _table.hidden = NO;
-            _isrefreshview = NO;
+            
+            [_activityIndicator stopAnimating];
+            
+            _isRefreshView = NO;
+            
             [_refreshControl endRefreshing];
-            [self requestsuccess:mappingResult withOperation:operation];
+            
+            [self requestSuccess:mappingResult withOperation:operation];
+            
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
             [_timer invalidate];
             _timer = nil;
-            [_act stopAnimating];
-            _isrefreshview = NO;
+            [_activityIndicator stopAnimating];
+            _isRefreshView = NO;
             [_refreshControl endRefreshing];
-            [self requestfailure:error];
+            [self requestFailure:error];
         }];
+        
         [_operationQueue addOperation:_request];
         
-        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                  target:self
+                                                selector:@selector(requestTimeout)
+                                                userInfo:nil
+                                                 repeats:NO];
+        
         [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        
     }else{
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cacheController.fileDate]);
         NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
+        [self requestFailure:nil];
     }
 }
 
--(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
+-(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id stats = [result objectForKey:@""];
@@ -298,34 +414,36 @@
     BOOL status = [_notes.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-        [_cachecontroller connectionDidFinish:_cacheconnection];
+        [_cacheConnection connection:operation.HTTPRequestOperation.request
+                  didReceiveResponse:operation.HTTPRequestOperation.response];
+        [_cacheController connectionDidFinish:_cacheConnection];
         //save response data
-        [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+        [operation.HTTPRequestOperation.responseData writeToFile:_cachePath atomically:YES];
 
-        [self requestprocess:object];
+        [self requestProcess:object];
     }
 }
 
--(void)requestfailure:(id)object
+-(void)requestFailure:(id)object
 {
-    if (_timeinterval > _cachecontroller.URLCacheInterval) {
-        [self requestprocess:object];
+    if (_timeInterval > _cacheController.URLCacheInterval) {
+        [self requestProcess:object];
     }
     else{
         NSError* error;
-        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
+        NSData *data = [NSData dataWithContentsOfFile:_cachePath];
         id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
         if (parsedData == nil && error) {
             NSLog(@"parser error");
         }
         
         NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
+        for (RKResponseDescriptor *descriptor in _objectManager.responseDescriptors) {
             [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
         }
         
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData
+                                                                   mappingsDictionary:mappingsDictionary];
         NSError *mappingError = nil;
         BOOL isMapped = [mapper execute:&mappingError];
         if (isMapped && !mappingError) {
@@ -334,15 +452,14 @@
             id stats = [result objectForKey:@""];
             _notes = stats;
             BOOL status = [_notes.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
             if (status) {
-                [self requestprocess:mappingresult];
+                [self requestProcess:mappingresult];
             }
         }
     }
 }
 
--(void)requestprocess:(id)object
+-(void)requestProcess:(id)object
 {
     if (object) {
         if ([object isKindOfClass:[RKMappingResult class]]) {
@@ -356,76 +473,126 @@
             if (status) {
                 NSArray *list = _notes.result.list;
                 [_list addObjectsFromArray:list];
-                _isnodata = NO;
+                _isNoData = NO;
                 
-                [_table reloadData];
+                [_tableView reloadData];
+
+                _tableView.tableFooterView = nil;
+                [_activityIndicator stopAnimating];
+                if (_list.count == 0) _activityIndicator.hidden = YES;
             }
-        }
-        else{
+
+        } else {
             [self cancel];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
-                    _table.tableFooterView = _footer;
-                    [_act startAnimating];
+                if (_requestCount<kTKPDREQUESTCOUNTMAX) {
+                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestCount);
+                    _tableView.tableFooterView = _footerView;
+                    [_activityIndicator startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                     [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }
                 else
                 {
-                    [_act stopAnimating];
-                    _table.tableFooterView = nil;
+                    [_activityIndicator stopAnimating];
+                    _tableView.tableFooterView = nil;
                 }
             }
             else
             {
-                [_act stopAnimating];
-                _table.tableFooterView = nil;
+                [_activityIndicator stopAnimating];
+                _tableView.tableFooterView = nil;
             }
         }
     }
 }
 
--(void)requesttimeout
+-(void)requestTimeout
 {
     [self cancel];
 }
 
 #pragma mark - Methods
 
-- (IBAction)addNewNoteDidTap:(id)sender {
-    //add new notes
-    SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
-    vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
-                kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY)
-                };
-    [self.navigationController pushViewController:vc animated:YES];
+- (void)updateTabAppearance:(CGPoint)contentOffset
+{
+    CGFloat limit;
+    if (_shopIsGold) {
+        limit = self.headerView.frame.size.height - 131;
+    } else {
+        limit = (self.headerView.frame.size.height - 66);
+    }
+    
+    if (contentOffset.y >= limit) {
+        _stickyTabView.hidden = NO;
+    } else {
+        _stickyTabView.hidden = YES;
+    }
 }
 
+- (void)updateNavigationBarAppearance:(CGPoint)contentOffset;
+{
+    if (!_navigationBarIsAnimating && _shopIsGold) {
+        _navigationBarIsAnimating = true;
+        if (contentOffset.y > 136) {
+            [self showNavigationBar];
+        } else {
+            [self hideNavigationBar];
+        }
+    }
+}
+
+- (void)showNavigationBar
+{
+    if (_navigationBarShouldAnimate) {
+        [UIView animateWithDuration:0.2 animations:^(void) {
+            _navigationImageView.alpha = 1;
+            self.title = [_data objectForKey:kTKPDDETAIL_APISHOPNAMEKEY];
+        } completion:^(BOOL finished) {
+            _navigationBarIsAnimating = false;
+        }];
+    } else {
+        _navigationImageView.alpha = 1;
+        self.title = [_data objectForKey:kTKPDDETAIL_APISHOPNAMEKEY];
+        _navigationBarIsAnimating = false;
+    }
+}
+
+- (void)hideNavigationBar
+{
+    if ( _navigationBarShouldAnimate) {
+        [UIView animateWithDuration:0.2 animations:^(void) {
+            _navigationImageView.alpha = 0;
+            self.title = @"";
+        } completion:^(BOOL finished) {
+            _navigationBarIsAnimating = false;
+        }];
+    } else {
+        _navigationImageView.alpha = 0;
+        self.title = @"";
+        _navigationBarIsAnimating = false;
+    }
+}
 
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     /** clear object **/
     [self cancel];
-    _requestcount = 0;
+    _requestCount = 0;
     [_list removeAllObjects];
-    _isrefreshview = YES;
+    _isRefreshView = YES;
     
-    [_table reloadData];
+    [_tableView reloadData];
     /** request data **/
     [self configureRestKit];
     [self request];
 }
 
 #pragma mark - Cell Delegate
+
 -(void)ShopNotesCellDelegate:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexPath
 {
-//    SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
-//    NotesList *list = _list[indexpath.row];
-//    vc.data = @{kTKPDNOTES_APINOTEIDKEY:list.note_id,kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)};
-//    [self.navigationController pushViewController:vc animated:YES];
-//
     NotesList *list = _list[indexPath.row];
     SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
     vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
@@ -434,6 +601,96 @@
                 kTKPDNOTES_APINOTETITLEKEY:list.note_title
                 };
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - Navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"EmbedHeader"]) {
+        _headerController = segue.destinationViewController;
+        _headerController.data = _data;
+        _headerController.delegate = self;
+        _headerController.shop = _shop;
+    }
+}
+
+#pragma mark - Shop header delegate
+
+- (void)didLoadImage:(UIImage *)image
+{
+    _navigationImageView.image = [image applyLightEffect];
+}
+
+- (void)didReceiveShop:(Shop *)shop
+{
+    _shop = shop;
+}
+
+#pragma mark - Actions
+
+-(IBAction)tap:(id)sender
+{
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *button = (UIBarButtonItem*)sender;
+        switch (button.tag) {
+            case 1:
+            {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                break;
+            }
+            case 2:
+            {
+                if (_shop) {
+                    ShopInfoViewController *vc = [[ShopInfoViewController alloc] init];
+                    vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
+                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                break;
+            }
+            default:
+                break;
+        }
+    }
+    
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *button = (UIButton *)sender;
+        switch (button.tag) {
+            case 1:
+            {
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+                TKPDTabShopViewController *shopProductViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
+                shopProductViewController.data = _data;
+                shopProductViewController.contentOffset = self.tableView.contentOffset;
+                shopProductViewController.shop = _shop;
+                [self.navigationController setViewControllers:@[self.navigationController.viewControllers[0], shopProductViewController]];
+                break;
+            }
+            case 2:
+            {
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+                ShopTalkViewController *shopTalkController = [storyboard instantiateViewControllerWithIdentifier:@"ShopTalkViewController"];
+                shopTalkController.data = _data;
+                shopTalkController.contentOffset = self.tableView.contentOffset;
+                shopTalkController.shop = _shop;
+                [self.navigationController setViewControllers:@[self.navigationController.viewControllers[0], shopTalkController]];
+                break;
+            }
+            case 3:
+            {
+                UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+                ShopReviewViewController *shopReviewController = [storyboard instantiateViewControllerWithIdentifier:@"ShopReviewViewController"];
+                shopReviewController.data = _data;
+                shopReviewController.contentOffset = self.tableView.contentOffset;
+                shopReviewController.shop = _shop;
+                [self.navigationController setViewControllers:@[self.navigationController.viewControllers[0], shopReviewController]];
+                break;
+            }
+            default:
+                break;
+        }
+    }
 }
 
 @end

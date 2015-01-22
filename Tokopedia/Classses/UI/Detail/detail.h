@@ -47,6 +47,10 @@ typedef enum
 #define KTKPDTITLE_PEOPLE @"People Information"
 #define KTKPDTITLE_BIODATA @"Biodata"
 
+#define TITLE_LIST_PRODUCT @"Produk"
+#define TITLE_ADD_PRODUCT @"Tambah Product"
+#define TITLE_EDIT_PRODUCT @"Ubah Product"
+
 #define kTKPDTITLE_NOTE @"Catatan"
 #define kTKPDTILTE_EDIT_NOTE @"Ubah Catatan"
 #define kTKPDTITLE_NEW_NOTE @"Tambah Catatan"
@@ -170,6 +174,9 @@ typedef enum
 #define kTKPDDETAIL_DATASHOPTITLEKEY @"Shop"
 
 #define kTKPDDETAIL_APIQUERYKEY @"query"
+
+#define SUCCESSMESSAGE_ADD_LOCATION @"Anda telah berhasil menambah lokasi."
+#define SUCCESSMESSAGE_EDIT_LOCATION @"Anda telah berhasil merubah lokasi."
 
 //TODO:: Move To stringproduct.h
 #define DATA_PRODUCT_IMAGE_NAME_KEY @"dataimagename"
@@ -619,6 +626,7 @@ typedef enum
 #define kTKPDDETAILCATALOG_APISHOPIMAGEKEY @"shop_image"
 #define kTKPDDETAIL_APISHOPIDKEY @"shop_id"
 #define kTKPDDETAIL_APISHOPNAMEKEY @"shop_name"
+#define kTKPDDETAIL_APISHOPISGOLD @"shop_is_gold"
 #define kTKPDDETAILCATALOG_APISHOPLOCATIONKEY @"shop_location"
 #define kTKPDDETAILCATALOG_APISHOPRATESPEEDKEY @"shop_rate_speed"
 #define kTKPDDETAILCATALOG_APIISGOLDSHOPKEY @"is_gold_shop"

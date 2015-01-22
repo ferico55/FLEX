@@ -13,7 +13,7 @@
 #import "SearchItem.h"
 
 #import "TKPDTabNavigationController.h"
-#import "TKPDTabShopNavigationController.h"
+#import "TKPDTabShopViewController.h"
 
 #import "DetailProductViewController.h"
 #import "SearchResultShopCell.h"
@@ -24,7 +24,6 @@
 
 #import "SearchResultShopViewController.h"
 
-#import "ShopProductViewController.h"
 #import "ShopTalkViewController.h"
 #import "ShopReviewViewController.h"
 #import "ShopNotesViewController.h"
@@ -106,7 +105,7 @@
     _cachecontroller = [URLCacheController new];
     
     /** set first page become 1 **/
-    _page = 1;
+    _page = 3;
     
     /** set max data per page request **/
     _limit = kTKPDSEARCH_LIMITPAGE;
@@ -156,22 +155,30 @@
     NSString *querry =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *deptid =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDSEARCHSHOP_APIRESPONSEFILEFORMAT,querry?:deptid]];
+    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDSEARCHSHOP_APIRESPONSEFILEFORMAT, querry?:deptid]];
 
     _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
+//    _cachecontroller.URLCacheInterval = 86400.0;
+    _cachecontroller.URLCacheInterval = 0;
+    [_cachecontroller initCacheWithDocumentPath:path];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
             [self loadData];
         }
     }
+    self.table.contentInset = UIEdgeInsetsMake(0, 0, 45, 0);
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -252,7 +259,7 @@
             
             UIImageView *thumb = (UIImageView*)((SearchResultShopCell*)cell).thumb;
             thumb = [UIImageView circleimageview:thumb];
-            thumb.image = nil;
+            thumb.image = [UIImage imageNamed:@"icon_default_shop.jpg"];
             
             //thumb.hidden = YES;	//@prepareforreuse then @reset
             
@@ -322,7 +329,8 @@
                                                  kTKPDSEARCH_APISHOPLOCATIONKEY,
                                                  kTKPDSEARCH_APISHOPTOTALTRANSACTIONKEY,
                                                  kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY,
-                                                 kTKPDSEARCH_APISHOPTOTALFAVKEY
+                                                 kTKPDSEARCH_APISHOPTOTALFAVKEY,
+                                                 kTKPDSEARCH_APISHOPGOLDSHOP,
                                                  ]];
     
     /** paging mapping **/
@@ -347,7 +355,11 @@
 
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDSEARCH_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDSEARCH_APIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
     //add response description to object manager
     [_objectmanager addResponseDescriptor:responseDescriptor];
@@ -360,49 +372,52 @@
     
     _requestcount ++;
 
-    NSString *querry =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
+    NSString *querry = [_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *type = kTKPDSEARCH_DATASEARCHSHOPKEY;
-    NSString *deptid =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    NSString *deptid = [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+
     NSDictionary* param;
-    
     if (deptid == nil ) {
-        param = @{
-                  kTKPDSEARCH_APIQUERYKEY : querry?:@"",
-                  kTKPDSEARCH_APIACTIONTYPEKEY : type?:@"",
-                  kTKPDSEARCH_APIPAGEKEY : @(_page),
-                  kTKPDSEARCH_APILIMITKEY : @(kTKPDSEARCH_LIMITPAGE),
-                  kTKPDSEARCH_APIORDERBYKEY : [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
-                  kTKPDSEARCH_APILOCATIONKEY : [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
-                  kTKPDSEARCH_APISHOPTYPEKEY : [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
-                  kTKPDSEARCH_APIPRICEMINKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-                  kTKPDSEARCH_APIPRICEMAXKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
+        param = @{kTKPDSEARCH_APIQUERYKEY       :   querry?:@"",
+                  kTKPDSEARCH_APIACTIONTYPEKEY  :   type?:@"",
+                  kTKPDSEARCH_APIPAGEKEY        :   @(_page),
+                  kTKPDSEARCH_APILIMITKEY       :   @(kTKPDSEARCH_LIMITPAGE),
+                  kTKPDSEARCH_APIORDERBYKEY     :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+                  kTKPDSEARCH_APILOCATIONKEY    :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+                  kTKPDSEARCH_APISHOPTYPEKEY    :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+                  kTKPDSEARCH_APIPRICEMINKEY    :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+                  kTKPDSEARCH_APIPRICEMAXKEY    :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
                   };
-    }
-    else{
-        param = @{
-                  kTKPDSEARCH_APIDEPARTEMENTIDKEY : deptid?:@"",
-                  kTKPDSEARCH_APIACTIONTYPEKEY : type?:@"",
-                  kTKPDSEARCH_APIPAGEKEY : @(_page),
-                  kTKPDSEARCH_APILIMITKEY : @(kTKPDSEARCH_LIMITPAGE),
-                  kTKPDSEARCH_APIORDERBYKEY : [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
-                  kTKPDSEARCH_APILOCATIONKEY : [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
-                  kTKPDSEARCH_APISHOPTYPEKEY : [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
-                  kTKPDSEARCH_APIPRICEMINKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-                  kTKPDSEARCH_APIPRICEMAXKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
+    } else {
+        param = @{kTKPDSEARCH_APIDEPARTEMENTIDKEY   :   deptid?:@"",
+                  kTKPDSEARCH_APIACTIONTYPEKEY      :   type?:@"",
+                  kTKPDSEARCH_APIPAGEKEY            :   @(_page),
+                  kTKPDSEARCH_APILIMITKEY           :   @(kTKPDSEARCH_LIMITPAGE),
+                  kTKPDSEARCH_APIORDERBYKEY         :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+                  kTKPDSEARCH_APILOCATIONKEY        :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+                  kTKPDSEARCH_APISHOPTYPEKEY        :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+                  kTKPDSEARCH_APIPRICEMINKEY        :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+                  kTKPDSEARCH_APIPRICEMAXKEY        :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
                   };
     }
     
     _requestcount ++;
     
 	[_cachecontroller getFileModificationDate];
-	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-	if (_timeinterval > _cachecontroller.URLCacheInterval || _page>1 || _isrefreshview) {
+	
+    _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+    
+	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
         if (!_isrefreshview) {
             _table.tableFooterView = _footer;
             [_act startAnimating];
         }
-        NSDictionary *encryptParam = [NSDictionary encryptDictionary:param];
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDSEARCH_APIPATH parameters:encryptParam];
+        
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                        method:RKRequestMethodPOST
+                                                                          path:kTKPDSEARCH_APIPATH
+                                                                    parameters:[param encrypt]];
+
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [self requestsuccess:mappingResult withOperation:operation];
             [_table reloadData];
@@ -427,7 +442,11 @@
         
         [_operationQueue addOperation:_request];
 
-        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                  target:self
+                                                selector:@selector(requesttimeout)
+                                                userInfo:nil
+                                                 repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
     }else {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -596,37 +615,22 @@
 }
 
 #pragma mark - cell delegate
+
 -(void)SearchResultShopCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
     List *list = _product[indexpath.row];
-    NSMutableArray *viewcontrollers = [NSMutableArray new];
-    /** create new view controller **/
-    ShopProductViewController *v = [ShopProductViewController new];
-    v.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0),
-               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    [viewcontrollers addObject:v];
-    ShopTalkViewController *v1 = [ShopTalkViewController new];
-    v1.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0),
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    [viewcontrollers addObject:v1];
-    ShopReviewViewController *v2 = [ShopReviewViewController new];
-    v2.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0),
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    [viewcontrollers addObject:v2];
-    ShopNotesViewController *v3 = [ShopNotesViewController new];
-    v3.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0),
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    [viewcontrollers addObject:v3];
-    /** Adjust View Controller **/
-    TKPDTabShopNavigationController *tapnavcon = [TKPDTabShopNavigationController new];
-    NSIndexPath *indexpathparam = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    tapnavcon.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id,
-                       kTKPDFILTERSORT_DATAINDEXPATHKEY: indexpathparam?:0,
-                       kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-    [tapnavcon setViewControllers:viewcontrollers animated:YES];
-    [tapnavcon setSelectedIndex:0];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
+    
+    NSIndexPath *indexPath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    shopViewController.data = @{kTKPDDETAIL_APISHOPIDKEY : list.shop_id,
+                                kTKPDDETAIL_APISHOPNAMEKEY : list.shop_name,
+                                kTKPDDETAIL_APISHOPISGOLD : list.shop_gold_shop,
+                                kTKPDFILTERSORT_DATAINDEXPATHKEY : indexPath?:0,
+                                kTKPD_AUTHKEY:[_data objectForKey : kTKPD_AUTHKEY]?:@{}};
 
-    [self.navigationController pushViewController:tapnavcon animated:YES];
+    [self.navigationController pushViewController:shopViewController animated:YES];
 }
 
 #pragma mark - TKPDTabNavigationController Tap Button Notification
@@ -662,6 +666,7 @@
 }
 
 #pragma mark - Methods
+
 -(void)reset:(UITableViewCell*)cell
 {
     ((SearchResultShopCell*)cell).thumb = nil;

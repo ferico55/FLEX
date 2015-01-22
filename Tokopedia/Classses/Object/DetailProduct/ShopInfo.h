@@ -18,13 +18,13 @@
 @property (nonatomic, strong) NSString *shop_tagline;
 @property (nonatomic, strong) NSString *shop_name;
 @property (nonatomic, strong) ShopStats *shop_stats;
-@property (nonatomic, strong) NSString *shop_already_favorited;
+@property (nonatomic) NSInteger shop_already_favorited;
 @property (nonatomic, strong) NSString *shop_description;
 @property (nonatomic, strong) NSString *shop_avatar;
 @property (nonatomic, strong) NSString *shop_total_favorit;
 @property (nonatomic, strong) NSString *shop_cover;
 @property (nonatomic, strong) NSString *shop_domain;
 @property (nonatomic, strong) NSString *shop_url;
-@property BOOL shop_is_gold;
+@property (nonatomic) NSInteger shop_is_gold;
 
 @end

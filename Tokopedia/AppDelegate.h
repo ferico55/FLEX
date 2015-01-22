@@ -50,5 +50,4 @@
 //TODO:: Push Notifiation
 @property (assign, nonatomic) BOOL isPushNotificationRegistered;
 
-
 @end
