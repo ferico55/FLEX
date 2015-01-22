@@ -407,7 +407,11 @@
     [resultMapping addPropertyMapping:pageRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDSEARCH_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDSEARCH_APIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
     //add response description to object manager
     [_objectmanager addResponseDescriptor:responseDescriptor];
@@ -426,48 +430,52 @@
     NSString *type = [_params objectForKey:kTKPDSEARCH_DATATYPE];
     NSString *deptid =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     BOOL isredirect = [[_params objectForKey:kTKPDSEARCH_DATAISREDIRECTKEY] boolValue];
-    NSDictionary* param;
     
+    NSDictionary* param;
     if (query != nil && ![query isEqualToString:@""] && !isredirect) {
         param = @{
                 //@"auth":@(1),
-                kTKPDSEARCH_APIQUERYKEY : query?:@"",
-                kTKPDSEARCH_APIACTIONTYPEKEY : type?:@"",
-                kTKPDSEARCH_APIPAGEKEY : @(_page),
-                kTKPDSEARCH_APILIMITKEY : @(kTKPDSEARCH_LIMITPAGE),
-                kTKPDSEARCH_APIORDERBYKEY : [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
-                kTKPDSEARCH_APILOCATIONKEY : [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
-                kTKPDSEARCH_APISHOPTYPEKEY : [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
-                kTKPDSEARCH_APIPRICEMINKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-                kTKPDSEARCH_APIPRICEMAXKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
+                kTKPDSEARCH_APIQUERYKEY         :   query?:@"",
+                kTKPDSEARCH_APIACTIONTYPEKEY    :   type?:@"",
+                kTKPDSEARCH_APIPAGEKEY          :   @(_page),
+                kTKPDSEARCH_APILIMITKEY         :   @(kTKPDSEARCH_LIMITPAGE),
+                kTKPDSEARCH_APIORDERBYKEY       :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+                kTKPDSEARCH_APILOCATIONKEY      :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+                kTKPDSEARCH_APISHOPTYPEKEY      :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+                kTKPDSEARCH_APIPRICEMINKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+                kTKPDSEARCH_APIPRICEMAXKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
                 };
     }
     else{
        param = @{
                 //@"auth":@(1),
-                kTKPDSEARCH_APIDEPARTEMENTIDKEY : deptid?:@"",
-                kTKPDSEARCH_APIACTIONTYPEKEY : type?:@"",
-                kTKPDSEARCH_APIPAGEKEY : @(_page),
-                kTKPDSEARCH_APILIMITKEY : @(kTKPDSEARCH_LIMITPAGE),
-                kTKPDSEARCH_APIORDERBYKEY : [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
-                kTKPDSEARCH_APILOCATIONKEY : [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
-                kTKPDSEARCH_APISHOPTYPEKEY : [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
-                kTKPDSEARCH_APIPRICEMINKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-                kTKPDSEARCH_APIPRICEMAXKEY : [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
+                kTKPDSEARCH_APIDEPARTEMENTIDKEY :   deptid?:@"",
+                kTKPDSEARCH_APIACTIONTYPEKEY    :   type?:@"",
+                kTKPDSEARCH_APIPAGEKEY          :   @(_page),
+                kTKPDSEARCH_APILIMITKEY         :   @(kTKPDSEARCH_LIMITPAGE),
+                kTKPDSEARCH_APIORDERBYKEY       :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+                kTKPDSEARCH_APILOCATIONKEY      :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+                kTKPDSEARCH_APISHOPTYPEKEY      :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+                kTKPDSEARCH_APIPRICEMINKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+                kTKPDSEARCH_APIPRICEMAXKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
                 };
-    }
+    }    
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILPRODUCT_APIPATH parameters:param];
-	[_cachecontroller getFileModificationDate];
-	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-	if (_timeinterval > _cachecontroller.URLCacheInterval || _page>1 || _isrefreshview) {
+    [_cachecontroller getFileModificationDate];
+	
+    _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+
+    if (_timeinterval > _cachecontroller.URLCacheInterval || _page>1 || _isrefreshview) {
         
         if (!_isrefreshview) {
             _table.tableFooterView = _footer;
             [_act startAnimating];
         }
 
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDSEARCH_APIPATH parameters:param];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                        method:RKRequestMethodPOST
+                                                                          path:kTKPDSEARCH_APIPATH
+                                                                    parameters:[param encrypt]];
         
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [self requestsuccess:mappingResult withOperation:operation];
@@ -493,7 +501,11 @@
         
         [_operationQueue addOperation:_request];
         
-        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                  target:self
+                                                selector:@selector(requesttimeout)
+                                                userInfo:nil
+                                                 repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
     }else {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -686,7 +698,7 @@
         NSInteger index = indexpath.section+2*(indexpath.row);
         List *list = _product[index];
         vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id?:@(0),
-                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY])
@@ -696,7 +708,7 @@
         NSInteger index = indexpath.section+2*(indexpath.row);
         List *list = _product[index];
         vc.data = @{kTKPDDETAIL_APICATALOGIDKEY : list.catalog_id?:@(0),
-                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

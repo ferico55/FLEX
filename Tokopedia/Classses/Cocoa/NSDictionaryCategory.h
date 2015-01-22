@@ -11,5 +11,6 @@
 @interface NSDictionary(tkpdcategory)
 
 - (BOOL)isMutable;
+- (NSDictionary *)encrypt;
 
 @end

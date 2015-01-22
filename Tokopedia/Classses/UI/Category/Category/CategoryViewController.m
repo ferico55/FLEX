@@ -29,7 +29,7 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 
-@property (strong, nonatomic) UIWindow *notificationWindow;
+@property (strong, nonatomic) UIView *notificationView;
 @property (strong, nonatomic) NotificationBarButton *notificationButton;
 @property (strong, nonatomic) UIImageView *notificationArrowImageView;
 @property (strong, nonatomic) NotificationViewController *notificationController;
@@ -72,10 +72,15 @@
 {
     [super viewWillAppear:animated];
     
-    _notificationWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
-    _notificationWindow.clipsToBounds = YES;
-
+    _notificationView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    _notificationView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
+    _notificationView.clipsToBounds = YES;
+    
+    UIView *notificationTapToCloseArea = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 64)];
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(windowDidTap)];
+    [notificationTapToCloseArea addGestureRecognizer:tapRecognizer];
+    [_notificationView addSubview:notificationTapToCloseArea];    
+    
     // Notification button
     _notificationButton = [[NotificationBarButton alloc] init];
     UIButton *button = (UIButton *)_notificationButton.customView;
@@ -87,12 +92,11 @@
     _notificationArrowImageView.clipsToBounds = YES;
     _notificationArrowImageView.frame = CGRectMake(_notificationButton.customView.frame.origin.x+12, 60, 10, 5);
     _notificationArrowImageView.alpha = 0;
-    [_notificationWindow addSubview:_notificationArrowImageView];
+    [_notificationView addSubview:_notificationArrowImageView];
     
     NotificationRequest *notificationRequest = [NotificationRequest new];
     notificationRequest.delegate = self;
     [notificationRequest loadNotification];
-
 }
 
 -(void)viewDidLayoutSubviews
@@ -106,7 +110,7 @@
  
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
     if ([self.table respondsToSelector:@selector(setLayoutMargins:)]) {
-        [self.table setLayoutMargins:UIEdgeInsetsZero];
+//        [self.table setLayoutMargins:UIEdgeInsetsZero];
     }
 #endif
 }
@@ -171,12 +175,12 @@
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
     // Prevent the cell from inheriting the Table View's margin settings
     if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
-        [cell setPreservesSuperviewLayoutMargins:NO];
+//        [cell setPreservesSuperviewLayoutMargins:NO];
     }
     
     // Explictly set your cell's layout margins
     if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-        [cell setLayoutMargins:UIEdgeInsetsZero];
+//        [cell setLayoutMargins:UIEdgeInsetsZero];
     }
 #endif
 }
@@ -264,58 +268,49 @@
 
 - (void)barButtonDidTap
 {
-    [_notificationWindow makeKeyAndVisible];
-    
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(windowDidTap)];
-    [_notificationWindow addGestureRecognizer:tapRecognizer];
-    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
     _notificationController = [storyboard instantiateViewControllerWithIdentifier:@"NotificationViewController"];
     _notificationController.notification = _notification;
     
-    [_notificationController.tableView beginUpdates];
-    CGRect notificationTableFrame = _notificationController.tableView.frame;
-    notificationTableFrame.origin.y = 64;
-    notificationTableFrame.size.height = 300;
-    _notificationController.tableView.frame = notificationTableFrame;
-    [_notificationController.tableView endUpdates];
+    [[[self tabBarController] view] addSubview:_notificationView];
     
-    _notificationController.tableView.contentInset = UIEdgeInsetsMake(0, 0, 355, 0);
-    
-    CGRect windowFrame = _notificationWindow.frame;
+    CGRect windowFrame = [[UIScreen mainScreen] bounds];
     windowFrame.size.height = 0;
-    _notificationWindow.frame = windowFrame;
+    _notificationView.frame = windowFrame;
     
-    windowFrame.size.height = self.view.frame.size.height-64;
+    CGRect tableFrame = [[UIScreen mainScreen] bounds];
+    tableFrame.origin.y = 64;
+    self.notificationController.tableView.frame = tableFrame;
+    tableFrame.size.height = self.view.frame.size.height-64;
     
-    [_notificationWindow addSubview:_notificationController.view];
+    [_notificationView addSubview:_notificationController.tableView];
     
     _notificationArrowImageView.alpha = 1;
     
     [UIView animateWithDuration:0.7 animations:^{
-        _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
+        _notificationView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
     }];
     
     [UIView animateWithDuration:0.55 animations:^{
-        _notificationWindow.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+112);
+        _notificationView.frame = [[UIScreen mainScreen] bounds];
+        self.notificationController.tableView.frame = tableFrame;
     }];
-    
 }
 
 - (void)windowDidTap
 {
-    CGRect windowFrame = _notificationWindow.frame;
+    CGRect windowFrame = _notificationView.frame;
     windowFrame.size.height = 0;
     
     [UIView animateWithDuration:0.15 animations:^{
-        _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
+        _notificationView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
         _notificationArrowImageView.alpha = 0;
     }];
     
     [UIView animateWithDuration:0.2 animations:^{
-        _notificationWindow.frame = windowFrame;
+        _notificationView.frame = windowFrame;
     } completion:^(BOOL finished) {
-        _notificationWindow.hidden = YES;
+        [_notificationView removeFromSuperview];
     }];
     
 }

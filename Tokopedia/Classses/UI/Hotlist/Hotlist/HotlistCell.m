@@ -43,9 +43,6 @@
     _contentSubview.layer.shadowOffset = CGSizeMake(0, 0.3);
     _contentSubview.layer.shadowOpacity = 0.2;
     _contentSubview.layer.shadowRadius = 0.5;
-    
-//    _viewcontainer.layer.borderColor = [UIColor colorWithRed:200.0f/255.0f green:200.0f/255.0f blue:200.0f/255.0f alpha:0.5f].CGColor;
-//    _viewcontainer.layer.borderWidth = 1.0f;
 }
 
 
@@ -67,7 +64,18 @@
             }
         }
     }
-    
+    else if ([sender isKindOfClass:[UISwipeGestureRecognizer class]])
+    {
+        UISwipeGestureRecognizer *swipeRecognizer = (UISwipeGestureRecognizer *)sender;
+        if (swipeRecognizer.direction == UISwipeGestureRecognizerDirectionLeft )
+        {
+            NSLog(@"left");
+        }
+        else
+        {
+            NSLog(@"Right");
+        }        
+    }
 }
 
 @end

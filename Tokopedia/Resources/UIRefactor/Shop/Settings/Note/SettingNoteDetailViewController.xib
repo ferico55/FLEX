@@ -4,13 +4,20 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingNoteDetailViewController">
             <connections>
-                <outlet property="labelcontent" destination="Lgt-tS-kq6" id="umL-Ag-Ux3"/>
-                <outlet property="labeltime" destination="Tww-wo-38B" id="Xgg-tk-Ovj"/>
-                <outlet property="labeltitle" destination="17U-do-AAJ" id="kgQ-Vd-Qqd"/>
-                <outlet property="textfieldtitle" destination="Bo4-gy-oIJ" id="4FB-yb-8Mh"/>
+                <outlet property="labeltime" destination="Tww-wo-38B" id="YqP-cp-DIi"/>
+                <outlet property="labeltitle" destination="17U-do-AAJ" id="g4M-wI-CtM"/>
+                <outlet property="textfieldtitle" destination="5fp-eP-fsH" id="BFf-Nd-k9t"/>
                 <outlet property="textviewcontent" destination="Q7v-o7-4nJ" id="Zwg-bq-CjT"/>
                 <outlet property="view" destination="iN0-l3-epB" id="qCh-in-6Zw"/>
             </connections>
@@ -20,55 +27,82 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cin-V2-RVQ">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cin-V2-RVQ">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="69"/>
                     <subviews>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="17U-do-AAJ">
-                            <rect key="frame" x="20" y="11" width="239" height="21"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="17U-do-AAJ" userLabel="Label Title">
+                            <rect key="frame" x="15" y="16" width="290" height="19"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="290" id="9uj-h0-u4w"/>
+                                <constraint firstAttribute="height" constant="19" id="ieI-RF-qFU"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="17"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tww-wo-38B">
-                            <rect key="frame" x="20" y="40" width="228" height="21"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="September 3, 2014, 1:19" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tww-wo-38B" userLabel="Label Time">
+                            <rect key="frame" x="15" y="37" width="290" height="21"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="290" id="2HQ-LA-oJF"/>
+                                <constraint firstAttribute="height" constant="21" id="3zc-kW-JNa"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Bo4-gy-oIJ">
-                            <rect key="frame" x="20" y="7" width="258" height="30"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Title" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5fp-eP-fsH">
+                            <rect key="frame" x="16" y="11" width="289" height="30"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="17"/>
                             <textInputTraits key="textInputTraits"/>
-                            <connections>
-                                <outlet property="delegate" destination="-1" id="wV3-0o-5aJ"/>
-                            </connections>
                         </textField>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Tww-wo-38B" firstAttribute="leading" secondItem="cin-V2-RVQ" secondAttribute="leading" constant="15" id="3N7-UW-i0J"/>
+                        <constraint firstItem="Tww-wo-38B" firstAttribute="top" secondItem="17U-do-AAJ" secondAttribute="bottom" constant="2" id="7P3-HO-CbV"/>
+                        <constraint firstAttribute="trailing" secondItem="17U-do-AAJ" secondAttribute="trailing" constant="15" id="DOJ-rG-VGJ"/>
+                        <constraint firstItem="17U-do-AAJ" firstAttribute="leading" secondItem="cin-V2-RVQ" secondAttribute="leading" constant="15" id="SrQ-7G-LBr"/>
+                        <constraint firstAttribute="height" constant="69" id="vgy-Zf-JWS"/>
+                        <constraint firstItem="17U-do-AAJ" firstAttribute="top" secondItem="cin-V2-RVQ" secondAttribute="top" constant="16" id="y8Z-av-BM0"/>
+                        <constraint firstAttribute="width" constant="320" id="zbf-8s-Z80"/>
+                    </constraints>
                 </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="d1b-Rv-vak">
-                    <rect key="frame" x="0.0" y="82" width="320" height="486"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d1b-Rv-vak">
+                    <rect key="frame" x="0.0" y="75" width="320" height="493"/>
                     <subviews>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q7v-o7-4nJ">
-                            <rect key="frame" x="13" y="20" width="287" height="446"/>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q7v-o7-4nJ">
+                            <rect key="frame" x="12" y="15" width="290" height="463"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="290" id="fxg-36-b1x"/>
+                                <constraint firstAttribute="height" constant="463" id="q36-4O-RKU"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             <connections>
                                 <outlet property="delegate" destination="-1" id="MuQ-r8-gRb"/>
                             </connections>
                         </textView>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="Lgt-tS-kq6">
-                            <rect key="frame" x="20" y="20" width="280" height="446"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                            <nil key="highlightedColor"/>
-                            <size key="shadowOffset" width="0.0" height="0.0"/>
-                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Q7v-o7-4nJ" firstAttribute="leading" secondItem="d1b-Rv-vak" secondAttribute="leading" constant="12" id="EDC-F9-8OE"/>
+                        <constraint firstItem="Q7v-o7-4nJ" firstAttribute="top" secondItem="d1b-Rv-vak" secondAttribute="top" constant="15" id="d0O-kZ-xze"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <gestureRecognizers/>
+            <constraints>
+                <constraint firstItem="d1b-Rv-vak" firstAttribute="top" secondItem="cin-V2-RVQ" secondAttribute="bottom" constant="6" id="6tD-eB-bj8"/>
+                <constraint firstItem="cin-V2-RVQ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Eke-j1-Q1m"/>
+                <constraint firstItem="d1b-Rv-vak" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Txq-CZ-EzX"/>
+                <constraint firstItem="d1b-Rv-vak" firstAttribute="top" secondItem="cin-V2-RVQ" secondAttribute="bottom" constant="6" id="ZQA-tA-zus"/>
+                <constraint firstAttribute="bottom" secondItem="d1b-Rv-vak" secondAttribute="bottom" id="dvd-e1-Ilg"/>
+                <constraint firstAttribute="trailing" secondItem="cin-V2-RVQ" secondAttribute="trailing" id="gaZ-E0-bVC"/>
+                <constraint firstAttribute="trailing" secondItem="d1b-Rv-vak" secondAttribute="trailing" id="mOX-qn-57O"/>
+                <constraint firstItem="cin-V2-RVQ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="t44-tb-rj2"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="Vve-k9-zDu" appends="YES" id="Zl7-jO-5jc"/>
             </connections>

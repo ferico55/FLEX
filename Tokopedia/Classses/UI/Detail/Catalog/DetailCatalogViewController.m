@@ -388,7 +388,11 @@
     [specsMapping addPropertyMapping:specchildsRel];
     
     // set response description
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:catalogMapping method:RKRequestMethodGET pathPattern:kTKDPDETAILCATALOG_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:catalogMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKDPDETAILCATALOG_APIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
 
     [_objectmanager addResponseDescriptor:responseDescriptor];
     

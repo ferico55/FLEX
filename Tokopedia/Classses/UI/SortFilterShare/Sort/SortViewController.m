@@ -45,11 +45,16 @@
     self.cancelButton.layer.borderWidth = 1;
 }
 
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
+
     [self.navigationController.navigationBar setTranslucent:NO];
+    self.navigationController.navigationBarHidden = NO;
+
+    self.title = @"Urutkan";
+    
     _selectedsort = [NSMutableDictionary new];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
@@ -184,22 +189,16 @@
         case 2:
         {   //product
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             break;
         }
         case 3:
         {   //catalog
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             break;
         }
         case 4:
         {    //detail catalog
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERDETAILCATALOGPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            UINavigationController *nav = (UINavigationController *)self.presentingViewController;
-            [self dismissViewControllerAnimated:NO completion:^{
-                [nav popViewControllerAnimated:NO];
-            }];
             break;
         }
         case 5:
@@ -210,7 +209,6 @@
         case 6:
         {   //shop product
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             break;
         }
         default:

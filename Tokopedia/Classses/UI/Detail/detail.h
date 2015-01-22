@@ -619,6 +619,7 @@ typedef enum
 #define kTKPDDETAILCATALOG_APISHOPIMAGEKEY @"shop_image"
 #define kTKPDDETAIL_APISHOPIDKEY @"shop_id"
 #define kTKPDDETAIL_APISHOPNAMEKEY @"shop_name"
+#define kTKPDDETAIL_APISHOPISGOLD @"shop_is_gold"
 #define kTKPDDETAILCATALOG_APISHOPLOCATIONKEY @"shop_location"
 #define kTKPDDETAILCATALOG_APISHOPRATESPEEDKEY @"shop_rate_speed"
 #define kTKPDDETAILCATALOG_APIISGOLDSHOPKEY @"is_gold_shop"

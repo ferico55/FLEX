@@ -157,12 +157,12 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <swipeGestureRecognizer direction="right" id="P9k-JG-dTC">
+        <swipeGestureRecognizer enabled="NO" direction="right" id="P9k-JG-dTC">
             <connections>
                 <action selector="gesture:" destination="-1" id="lrC-LZ-5cK"/>
             </connections>
         </swipeGestureRecognizer>
-        <swipeGestureRecognizer direction="left" id="fIS-Ou-7LV">
+        <swipeGestureRecognizer enabled="NO" direction="left" id="fIS-Ou-7LV">
             <connections>
                 <action selector="gesture:" destination="-1" id="GYB-Ug-QSA"/>
             </connections>

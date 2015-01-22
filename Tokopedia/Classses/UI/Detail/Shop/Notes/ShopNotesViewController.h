@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Shop.h"
 
 @interface ShopNotesViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UITableView *table;
 @property (nonatomic, strong) NSDictionary *data;
+@property (assign, nonatomic) NSInteger pageIndex;
+@property CGPoint contentOffset;
+@property (strong, nonatomic) Shop *shop;
 
 @end

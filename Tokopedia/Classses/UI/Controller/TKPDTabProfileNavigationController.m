@@ -300,7 +300,7 @@
 	}
     
     CALayer *upperBorder = [CALayer layer];
-    upperBorder.backgroundColor = [[UIColor colorWithRed:(18.0/255.0) green:(199.0/255.0) blue:(0.0/255.0) alpha:1.0] CGColor];
+    upperBorder.backgroundColor = [[UIColor colorWithRed:(22.0/255.0) green:(125.0/255.0) blue:(22.0/255.0) alpha:1.0] CGColor];
     upperBorder.frame = CGRectMake(0, 41.0f, CGRectGetWidth([_chevrons[_selectedIndex] frame]), 3.0f);
     
     [[_chevrons[_selectedIndex] layer] addSublayer:upperBorder];
@@ -516,15 +516,15 @@
             whiteBorder.frame = CGRectMake(0, 41.0f, CGRectGetWidth([_chevrons[i] frame]), 3.0f);
             [[_chevrons[i] layer] addSublayer:whiteBorder];
             UIButton *button = (UIButton *)[_chevrons objectAtIndex:i];
-            [button setTitleColor:[UIColor colorWithRed:111.0/255.0 green:113.0/255.0 blue:121.0/255.0 alpha:1] forState:UIControlStateNormal];
+            [button setTitleColor:[UIColor colorWithRed:22.0/255.0 green:125.0/255.0 blue:22.0/255.0 alpha:1] forState:UIControlStateNormal];
         }
 
         //set button text color to green
-        [sender setTitleColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1] forState:UIControlStateNormal];
+        [sender setTitleColor:[UIColor colorWithRed:22.0/255.0 green:125.0/255.0 blue:22.0/255.0 alpha:1] forState:UIControlStateNormal];
         
         //add border green on bottom button
         CALayer *upperBorder = [CALayer layer];
-        upperBorder.backgroundColor = [[UIColor colorWithRed:(18.0/255.0) green:(199.0/255.0) blue:(0.0/255.0) alpha:1.0] CGColor];
+        upperBorder.backgroundColor = [[UIColor colorWithRed:(22.0/255.0) green:(125.0/255.0) blue:(22.0/255.0) alpha:1.0] CGColor];
         upperBorder.frame = CGRectMake(0, 41.0f, CGRectGetWidth([_chevrons[index-10] frame]), 3.0f);
         [[_chevrons[index-10] layer] addSublayer:upperBorder];
 
@@ -796,13 +796,29 @@
                                                            kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY,
                                                            kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY
                                                            }];
-        // Relationship Mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDPROFILE_APIUSERINFOKEY toKeyPath:kTKPDPROFILE_APIUSERINFOKEY withMapping:userinfoMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY withMapping:shopinfoMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY withMapping:shopstatsMapping]];
+
+    // Relationship Mapping
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
     
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDPROFILE_PEOPLEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDPROFILE_APIUSERINFOKEY
+                                                                                  toKeyPath:kTKPDPROFILE_APIUSERINFOKEY
+                                                                                withMapping:userinfoMapping]];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY
+                                                                                  toKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY
+                                                                                withMapping:shopinfoMapping]];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY
+                                                                                  toKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY
+                                                                                withMapping:shopstatsMapping]];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDPROFILE_PEOPLEAPIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptor];
 }
@@ -815,13 +831,18 @@
                             kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEINFOKEY,
                             kTKPDPROFILE_APIUSERIDKEY : @([[_data objectForKey:kTKPDPROFILE_APIUSERIDKEY]integerValue])
                             };
+    
     [_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
 //	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
     
         [_act startAnimating];
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_PEOPLEAPIPATH parameters:param];
+
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                        method:RKRequestMethodPOST
+                                                                          path:kTKPDPROFILE_PEOPLEAPIPATH
+                                                                    parameters:[param encrypt]];
         
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         //[_objectmanager getObjectsAtPath:kTKPDPROFILE_PEOPLEAPIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -839,8 +860,14 @@
         
         [_operationQueue addOperation:_request];
         
-        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                  target:self
+                                                selector:@selector(requesttimeout)
+                                                userInfo:nil
+                                                 repeats:NO];
+    
         [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+
 ////    }else {
 //        [_act stopAnimating];
 //        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -862,8 +889,10 @@
     
     if (status) {
         //only save cache for first page
-        [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+        [_cacheconnection connection:operation.HTTPRequestOperation.request
+                  didReceiveResponse:operation.HTTPRequestOperation.response];
         [_cachecontroller connectionDidFinish:_cacheconnection];
+
         //save response data
         [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
         
@@ -889,9 +918,13 @@
             [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
         }
         
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData
+                                                                   mappingsDictionary:mappingsDictionary];
+        
         NSError *mappingError = nil;
+        
         BOOL isMapped = [mapper execute:&mappingError];
+        
         if (isMapped && !mappingError) {
             RKMappingResult *mappingresult = [mapper mappingResult];
             NSDictionary *result = mappingresult.dictionary;

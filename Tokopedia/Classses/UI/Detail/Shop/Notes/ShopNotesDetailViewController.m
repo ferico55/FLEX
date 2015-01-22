@@ -90,11 +90,11 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
     [self configureRestKit];
     if (_isnodata) {
         [self loadData];
     }
-
 }
 
 -(void)viewWillDisappear:(BOOL)animated

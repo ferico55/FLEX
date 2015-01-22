@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -33,79 +32,75 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="211"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view tag="10" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bcb-32-YCv">
+                    <view tag="10" contentMode="scaleToFill" id="Bcb-32-YCv">
                         <rect key="frame" x="11" y="9" width="145" height="193"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_toped_loading_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="wGP-qo-mui" userLabel="Icon Toped">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_loading_grey.png" id="wGP-qo-mui" userLabel="Icon Toped">
                                 <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" tag="10" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2yq-GM-COw">
+                            <imageView clipsSubviews="YES" tag="10" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="2yq-GM-COw">
                                 <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rp. 75.000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VHt-Sg-CbG">
+                            <label opaque="NO" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp. 75.000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="VHt-Sg-CbG">
                                 <rect key="frame" x="6" y="168" width="103" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                                 <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Model Baju Korea Yang Keren" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O8i-jA-g3M">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model Baju Korea Yang Keren" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="O8i-jA-g3M">
                                 <rect key="frame" x="6" y="150" width="133" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <color key="textColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="145" id="6tx-gK-GT3"/>
-                            <constraint firstAttribute="height" constant="193" id="TXh-yc-hco"/>
-                        </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="zX6-Io-410" appends="YES" id="aRI-dt-jmL"/>
                         </connections>
                     </view>
-                    <view tag="11" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EJe-fO-eTj">
+                    <view tag="11" contentMode="scaleToFill" id="EJe-fO-eTj">
                         <rect key="frame" x="164" y="9" width="145" height="193"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_toped_loading_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="jZD-bT-Z8K" userLabel="Icon Toped">
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_loading_grey.png" id="jZD-bT-Z8K" userLabel="Icon Toped">
                                 <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" tag="11" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Msv-di-U2z">
+                            <imageView clipsSubviews="YES" tag="11" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Msv-di-U2z">
                                 <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rp. 75.000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o8z-rc-9Xo">
+                            <label opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp. 75.000" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="o8z-rc-9Xo">
                                 <rect key="frame" x="6" y="168" width="103" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                                 <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Model Baju Korea Yang Keren" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qeH-X4-Ibl">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Model Baju Korea Yang Keren" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qeH-X4-Ibl">
                                 <rect key="frame" x="6" y="150" width="133" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <color key="textColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="193" id="Eta-DN-Db6"/>
-                            <constraint firstAttribute="width" constant="145" id="skY-Hd-O1m"/>
-                        </constraints>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="cYy-qa-248" appends="YES" id="MC6-bg-gDr"/>
                         </connections>
                     </view>
                 </subviews>
-                <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="EJe-fO-eTj" secondAttribute="trailing" constant="3" id="MZc-aU-dzo"/>
-                    <constraint firstItem="Bcb-32-YCv" firstAttribute="top" secondItem="GDt-tA-anA" secondAttribute="topMargin" constant="1" id="aeP-I6-HwQ"/>
-                    <constraint firstItem="EJe-fO-eTj" firstAttribute="top" secondItem="GDt-tA-anA" secondAttribute="topMargin" constant="1" id="cHj-Nn-zwP"/>
-                    <constraint firstItem="Bcb-32-YCv" firstAttribute="leading" secondItem="GDt-tA-anA" secondAttribute="leadingMargin" constant="3" id="lZV-Bu-k6O"/>
-                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>

@@ -523,7 +523,11 @@
     [resultMapping addPropertyMapping:listRel];
     
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:KTKPDMESSAGE_PATHURL keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:KTKPDMESSAGE_PATHURL
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
@@ -751,7 +755,11 @@
     
     
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:KTKPDMESSAGEPRODUCTACTION_PATHURL keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:KTKPDMESSAGEPRODUCTACTION_PATHURL
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanagerarchive addResponseDescriptor:responseDescriptorStatus];
 }

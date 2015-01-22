@@ -579,7 +579,11 @@
     [departmentMapping addPropertyMapping:deptchildRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
     
     // add response description to object manager
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
@@ -608,7 +612,10 @@
                             kTKPDHOME_APIPRICEMAXKEY :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMAXKEY]?:@""
                             };
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDHOMEHOTLISTRESULT_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:kTKPDHOMEHOTLISTRESULT_APIPATH
+                                                                parameters:param];
 	[_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
 	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {

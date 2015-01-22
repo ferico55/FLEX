@@ -91,7 +91,6 @@
     }
     _table.contentInset = inset;
     
-    
     /** set table view datasource and delegate **/
     _table.delegate = self;
     _table.dataSource = self;
@@ -103,7 +102,6 @@
     if (_product.count > 0) {
         _isnodata = NO;
     }
-    
     
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -261,13 +259,15 @@
         [_act startAnimating];
     }
     
-    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEPRODUCTFEEDACT,
-                            kTKPDHOME_APIPAGEKEY : @(_page),
-                            kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE)
-                            };
+    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY      :   kTKPDHOMEPRODUCTFEEDACT,
+                            kTKPDHOME_APIPAGEKEY        :       @(_page),
+                            kTKPDHOME_APILIMITPAGEKEY   :   @(kTKPDHOMEHOTLIST_LIMITPAGE)};
     
     _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDHOMEHOTLIST_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:kTKPDHOMEHOTLIST_APIPATH
+                                                                parameters:[param encrypt]];
     
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -364,13 +364,13 @@
                 }
                 else
                 {
-                    [_act stopAnimating];
+//                    [_act stopAnimating];
                     _table.tableFooterView = nil;
                 }
             }
             else
             {
-                [_act stopAnimating];
+//                [_act stopAnimating];
                 _table.tableFooterView = nil;
             }
             
@@ -419,7 +419,10 @@
     [resultMapping addPropertyMapping:listRel];
     
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 

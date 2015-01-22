@@ -7,10 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ShopHeaderViewController.h"
 
 @interface ShopTalkViewController : UIViewController
 
-@property (weak, nonatomic) IBOutlet UITableView *table;
 @property (nonatomic, strong) NSDictionary *data;
+@property CGPoint contentOffset;
+@property (strong, nonatomic) Shop *shop;
 
 @end

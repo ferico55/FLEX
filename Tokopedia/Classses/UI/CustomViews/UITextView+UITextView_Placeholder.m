@@ -14,9 +14,9 @@
 {
     self.delegate = self;
     
-    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, self.frame.size.height, 40)];
+    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, self.frame.size.width, 40)];
     placeholderLabel.text = placeholderText;
-    placeholderLabel.font = [UIFont fontWithName:self.font.fontName size:12];
+    placeholderLabel.font = [UIFont fontWithName:self.font.fontName size:self.font.pointSize];
     placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
     placeholderLabel.tag = 1;
     [self addSubview:placeholderLabel];

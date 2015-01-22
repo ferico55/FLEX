@@ -152,15 +152,15 @@
     
     [self configureRestKit];
     [self loadData];
+    [self configureRestKit];
+    if (_isnodata && !_isrefreshview && _page<1) {
+        [self loadData];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self configureRestKit];
-    if (_isnodata && !_isrefreshview && _page<1) {
-        [self loadData];
-    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -270,7 +270,6 @@
     //TraktAPIClient *client = [TraktAPIClient sharedClient];
     _objectmanager = [RKObjectManager sharedClient];
     
-    
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Hotlist class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
@@ -294,16 +293,19 @@
     [resultMapping addPropertyMapping:pageRel];
 
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptor];
-    
-    
 }
 
 - (void)loadData
 {
     if (_request.isExecuting) return;
+
+    _requestcount ++;
     
     if (!_isrefreshview) {
         _table.tableFooterView = _footer;
@@ -314,13 +316,14 @@
         [_act stopAnimating];
     }
     
-    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEHOTLISTACT,
-                            kTKPDHOME_APIPAGEKEY : @(_page),
-                            kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE)
-                            };
-    _requestcount ++;
+    NSDictionary* parameters = @{kTKPDHOME_APIACTIONKEY :   kTKPDHOMEHOTLISTACT,
+                                 kTKPDHOME_APIPAGEKEY   :   @(_page),
+                                 kTKPDHOME_APILIMITPAGEKEY  :   @(kTKPDHOMEHOTLIST_LIMITPAGE)};
 
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDHOMEHOTLIST_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:kTKPDHOMEHOTLIST_APIPATH
+                                                                parameters:[parameters encrypt]];
     
 	/* apply daily time interval policy */
     
@@ -383,7 +386,8 @@
     if (status) {
         if (_page <=1) {
             //only save cache for first page
-            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+            [_cacheconnection connection:operation.HTTPRequestOperation.request
+                      didReceiveResponse:operation.HTTPRequestOperation.response];
             [_cachecontroller connectionDidFinish:_cacheconnection];
             //save response data to plist
             [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
@@ -417,7 +421,8 @@
             [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
         }
         
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData
+                                                                   mappingsDictionary:mappingsDictionary];
         NSError *mappingError = nil;
         BOOL isMapped = [mapper execute:&mappingError];
         if (isMapped && !mappingError) {
@@ -481,8 +486,12 @@
                     NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
-                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(configureRestKit)
+                               withObject:nil
+                               afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(loadData)
+                               withObject:nil
+                               afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }
                 else
                 {

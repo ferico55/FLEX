@@ -28,8 +28,7 @@
 
 #import "DetailProductOtherView.h"
 
-#import "TKPDTabShopNavigationController.h"
-#import "ShopProductViewController.h"
+#import "TKPDTabShopViewController.h"
 #import "ShopTalkViewController.h"
 #import "ShopReviewViewController.h"
 #import "ShopNotesViewController.h"
@@ -101,6 +100,7 @@
 @property (strong, nonatomic) IBOutlet DetailProductOtherView *otherproductview;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *otherproductscrollview;
+@property (weak, nonatomic) IBOutlet UIButton *buyButton;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -136,14 +136,14 @@
     
     self.title = @"Detail Produk";
     
+    _buyButton.layer.cornerRadius = 3;
+    
     _datatalk = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
-    
-//    _isexpanded = NO;
     
     UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
@@ -168,19 +168,9 @@
             
         }
     }
-//    if (is4inch) {
-//        UIEdgeInsets inset = _table.contentInset;
-//        inset.bottom += 200;
-//        _table.contentInset = inset;
-//    }
-//    else{
-//        UIEdgeInsets inset = _table.contentInset;
-//        inset.bottom += 120;
-//        _table.contentInset = inset;
-//    }
     
     UIEdgeInsets inset = _table.contentInset;
-    inset.bottom += 190;
+    inset.bottom += 198;
     _table.contentInset = inset;
     _table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
@@ -204,12 +194,15 @@
 
     //Set initial table view cell for product information
     _informationHeight = 232;
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     [self configureRestKit];
+ 
     if (_isnodata) {
         [self loadData];
         if (_product.result.wholesale_price) {
@@ -354,33 +347,11 @@
                     [self.navigationController popViewControllerAnimated:YES];
                 }
                 else{
-                    // create new view controller
-                    ShopProductViewController *v = [ShopProductViewController new];
-                    v.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
-                               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                               kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0)
-                               };
-                    [viewcontrollers addObject:v];
-                    ShopTalkViewController *v1 = [ShopTalkViewController new];
-                    v1.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
-                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                    [viewcontrollers addObject:v1];
-                    ShopReviewViewController *v2 = [ShopReviewViewController new];
-                    v2.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
-                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                    [viewcontrollers addObject:v2];
-                    ShopNotesViewController *v3 = [ShopNotesViewController new];
-                    v3.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
-                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                    [viewcontrollers addObject:v3];
-                    /** Adjust View Controller **/
-                    TKPDTabShopNavigationController *tapnavcon = [TKPDTabShopNavigationController new];
-                    tapnavcon.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
-                                       kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                    [tapnavcon setViewControllers:viewcontrollers animated:YES];
-                    [tapnavcon setSelectedIndex:0];
-                    
-                    [self.navigationController pushViewController:tapnavcon animated:YES];
+                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+                    TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
+                    shopViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                    [self.navigationController pushViewController:shopViewController animated:YES];
                 }
                 break;
             }
@@ -689,7 +660,11 @@
     [resultMapping addPropertyMapping:wholesaleRel];
     
     // Response Descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:productMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:productMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDDETAILPRODUCT_APIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptor];
 }
@@ -705,7 +680,10 @@
                             kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]
                             };
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILPRODUCT_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:kTKPDDETAILPRODUCT_APIPATH
+                                                                parameters:param];
 	[_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
 	if (_timeinterval > _cachecontroller.URLCacheInterval) {
@@ -927,7 +905,6 @@
     _productnamelabel.text = _product.result.info.product_name?:@"";
 
     NSString *productName = _product.result.info.product_name?:@"";
-//    NSString *productName = @"Alice in Wonderland: White Rabbit Tsum Tsum Plush 3.5";
 
     UIFont *font = [UIFont fontWithName:@"GothamMedium" size:15];
 

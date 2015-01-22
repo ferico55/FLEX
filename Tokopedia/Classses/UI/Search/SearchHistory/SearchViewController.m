@@ -41,7 +41,7 @@
 @property (weak, nonatomic) IBOutlet UIView *searchhistoryview;
 @property (weak, nonatomic) IBOutlet UILabel *labelsearchfor;
 
-@property (strong, nonatomic) UIWindow *notificationWindow;
+@property (strong, nonatomic) UIView *notificationView;
 @property (strong, nonatomic) NotificationBarButton *notificationButton;
 @property (strong, nonatomic) UIImageView *notificationArrowImageView;
 @property (strong, nonatomic) NotificationViewController *notificationController;
@@ -65,7 +65,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [self.navigationController.navigationBar setTranslucent:NO];
+
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
@@ -90,11 +92,17 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     [_searchbar becomeFirstResponder];
     
-    _notificationWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
-    _notificationWindow.clipsToBounds = YES;
+    _notificationView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    _notificationView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
+    _notificationView.clipsToBounds = YES;
+    
+    UIView *notificationTapToCloseArea = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 64)];
+    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(windowDidTap)];
+    [notificationTapToCloseArea addGestureRecognizer:tapRecognizer];
+    [_notificationView addSubview:notificationTapToCloseArea];
     
     // Notification button
     _notificationButton = [[NotificationBarButton alloc] init];
@@ -107,12 +115,17 @@
     _notificationArrowImageView.clipsToBounds = YES;
     _notificationArrowImageView.frame = CGRectMake(_notificationButton.customView.frame.origin.x+12, 60, 10, 5);
     _notificationArrowImageView.alpha = 0;
-    [_notificationWindow addSubview:_notificationArrowImageView];
+    [_notificationView addSubview:_notificationArrowImageView];
     
     NotificationRequest *notificationRequest = [NotificationRequest new];
     notificationRequest.delegate = self;
     [notificationRequest loadNotification];
 
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
 }
 
 #pragma mark - Memory Management
@@ -198,60 +211,49 @@
 
 - (void)barButtonDidTap
 {
-    [_searchbar resignFirstResponder];
-    
-    [_notificationWindow makeKeyAndVisible];
-    
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(windowDidTap)];
-    [_notificationWindow addGestureRecognizer:tapRecognizer];
-    
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
     _notificationController = [storyboard instantiateViewControllerWithIdentifier:@"NotificationViewController"];
     _notificationController.notification = _notification;
     
-    [_notificationController.tableView beginUpdates];
-    CGRect notificationTableFrame = _notificationController.tableView.frame;
-    notificationTableFrame.origin.y = 64;
-    notificationTableFrame.size.height = 300;
-    _notificationController.tableView.frame = notificationTableFrame;
-    [_notificationController.tableView endUpdates];
+    [[[self tabBarController] view] addSubview:_notificationView];
     
-    _notificationController.tableView.contentInset = UIEdgeInsetsMake(0, 0, 355, 0);
-    
-    CGRect windowFrame = _notificationWindow.frame;
+    CGRect windowFrame = [[UIScreen mainScreen] bounds];
     windowFrame.size.height = 0;
-    _notificationWindow.frame = windowFrame;
+    _notificationView.frame = windowFrame;
     
-    windowFrame.size.height = self.view.frame.size.height-64;
-    
-    [_notificationWindow addSubview:_notificationController.view];
+    CGRect tableFrame = [[UIScreen mainScreen] bounds];
+    tableFrame.origin.y = 64;
+    self.notificationController.tableView.frame = tableFrame;
+    tableFrame.size.height = self.view.frame.size.height-64;
+
+    [_notificationView addSubview:_notificationController.tableView];
     
     _notificationArrowImageView.alpha = 1;
     
     [UIView animateWithDuration:0.7 animations:^{
-        _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
+        _notificationView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
     }];
     
     [UIView animateWithDuration:0.55 animations:^{
-        _notificationWindow.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+112);
+        _notificationView.frame = [[UIScreen mainScreen] bounds];
+        self.notificationController.tableView.frame = tableFrame;
     }];
-    
 }
 
 - (void)windowDidTap
 {
-    CGRect windowFrame = _notificationWindow.frame;
+    CGRect windowFrame = _notificationView.frame;
     windowFrame.size.height = 0;
     
     [UIView animateWithDuration:0.15 animations:^{
-        _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
+        _notificationView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
         _notificationArrowImageView.alpha = 0;
     }];
     
     [UIView animateWithDuration:0.2 animations:^{
-        _notificationWindow.frame = windowFrame;
+        _notificationView.frame = windowFrame;
     } completion:^(BOOL finished) {
-        _notificationWindow.hidden = YES;
+        [_notificationView removeFromSuperview];
     }];
     
 }
@@ -358,15 +360,15 @@
         SearchResultViewController *vc = [SearchResultViewController new];
         vc.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
                    kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
-                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
         SearchResultViewController *vc1 = [SearchResultViewController new];
         vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
                     kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
-                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
         SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
         vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
                     kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
-                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
         NSArray *viewcontrollers = @[vc,vc1,vc2];
         
         TKPDTabNavigationController *c = [TKPDTabNavigationController new];
@@ -409,15 +411,15 @@
     NSString *searchtext = [data objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchtext?:@"" ,
                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
-               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     SearchResultViewController *vc1 = [SearchResultViewController new];
     vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchtext?:@"" ,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
     vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : searchtext?:@"" ,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *c = [TKPDTabNavigationController new];

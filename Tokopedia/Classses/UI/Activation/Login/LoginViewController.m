@@ -260,7 +260,10 @@
     UIApplication* app = [UIApplication sharedApplication];
     app.networkActivityIndicatorVisible = YES;
     _barbuttonsignin.enabled = NO;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDLOGIN_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:kTKPDLOGIN_APIPATH
+                                                                parameters:[param encrypt]];
     
     NSTimer *timer;
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {

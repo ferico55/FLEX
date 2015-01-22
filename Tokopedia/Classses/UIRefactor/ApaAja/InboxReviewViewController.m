@@ -333,7 +333,7 @@
                                                                                 withMapping:pagingMapping]];
     
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodGET
+                                                                                                  method:RKRequestMethodPOST
                                                                                              pathPattern:INBOX_REVIEW_API_PATH
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
