@@ -50,7 +50,6 @@
     __weak RKManagedObjectRequestOperation *_request;
 
     __weak RKObjectManager *_actionObjectManager;
-    __weak RKManagedObjectRequestOperation *_actionRequest;
     
     NSOperationQueue *_operationQueue;
     
@@ -58,6 +57,10 @@
 
     Order *_newOrder;
     OrderTransaction *_selectedTransaction;
+    
+    NSMutableDictionary *_orderInProcess;
+    
+    NSIndexPath *_selectedIndexPath;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -69,8 +72,6 @@
 
 @property (weak, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-
-@property (strong, nonatomic) NSIndexPath *selectedIndexPath;
 
 @end
 
@@ -89,7 +90,8 @@
     _transactions = [NSMutableArray new];
     _paging = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
-
+    _orderInProcess = [NSMutableDictionary new];
+    
     [self configureRestKit];
     [self request];
 }
@@ -249,30 +251,23 @@
 
 - (void)tableViewCell:(UITableViewCell *)cell acceptOrderAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"success", @"yeah",]
-                                                                     delegate:self];
-    [alert show];
-    
-//    OrderTransaction *transaction = [_transactions objectAtIndex:indexPath.row];
-//    _selectedTransaction = [_transactions objectAtIndex:indexPath.row];
-//    _selectedIndexPath = indexPath;
-//    
-//    if (transaction.order_detail.detail_force_cancel == 1) {
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
-//                                                            message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
-//                                                           delegate:self
-//                                                  cancelButtonTitle:@"Cancel"
-//                                                  otherButtonTitles:@"Terima Pesanan", @"Terima Sebagian", nil];
-//        alertView.tag = 2;
-//        [alertView show];
-//    } else {
-//        [self requestActionType:@"accept"
-//                        orderId:_selectedTransaction.order_detail.detail_order_id
-//                         reason:nil
-//                       products:nil
-//                productQuantity:nil];
-//    }
+    OrderTransaction *transaction = [_transactions objectAtIndex:indexPath.row];
+    _selectedTransaction = [_transactions objectAtIndex:indexPath.row];
+    _selectedIndexPath = indexPath;
+    if (transaction.order_detail.detail_force_cancel == 1) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
+                                                            message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:@"Terima Pesanan", @"Terima Sebagian", nil];
+        alertView.tag = 2;
+        [alertView show];
+    } else {
+        [self requestActionType:@"accept"
+                         reason:nil
+                       products:nil
+                productQuantity:nil];
+    }
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell rejectOrderAtIndexPath:(NSIndexPath *)indexPath
@@ -280,7 +275,6 @@
     OrderTransaction *transaction = [_transactions objectAtIndex:indexPath.row];
     _selectedTransaction = [_transactions objectAtIndex:indexPath.row];
     _selectedIndexPath = indexPath;
-    
     if (transaction.order_detail.detail_force_cancel == 1) {
     
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Tolak Pesanan"
@@ -316,7 +310,6 @@
 - (void)didSelectProducts:(NSArray *)products
 {
     [self requestActionType:@"reject"
-                    orderId:_selectedTransaction.order_detail.detail_order_id
                      reason:@"Persediaan barang habis"
                    products:products
             productQuantity:nil];
@@ -327,7 +320,6 @@
 - (void)didFinishWritingExplanation:(NSString *)explanation
 {
     [self requestActionType:@"reject"
-                    orderId:_selectedTransaction.order_detail.detail_order_id
                      reason:explanation
                    products:nil
             productQuantity:nil];
@@ -398,7 +390,6 @@
         } else if (buttonIndex == 2) {
             
             [self requestActionType:@"reject"
-                            orderId:_selectedTransaction.order_detail.detail_order_id
                              reason:@"Barang tidak dapat dikirim"
                            products:_selectedTransaction.order_products
                     productQuantity:nil];
@@ -643,7 +634,6 @@
                             kTKPDDETAIL_APIACTIONKEY : API_GET_NEW_ORDER_KEY,
                             API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
                             };
-    param = [param encrypt];
     
     if (_page >= 1 || _isRefreshView) {
     
@@ -655,10 +645,10 @@
         _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                         method:RKRequestMethodPOST
                                                                           path:API_NEW_ORDER_PATH
-                                                                    parameters:param];
+                                                                    parameters:[param encrypt]];
 
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-
+            
             _tableView.hidden = NO;
             _isRefreshView = NO;
 
@@ -816,12 +806,10 @@
     [_actionObjectManager addResponseDescriptor:responseDescriptorStatus];
 }
 
-- (void)requestActionType:(NSString *)type orderId:(NSInteger)orderId reason:(NSString *)reason products:(NSArray *)products productQuantity:(NSDictionary *)productQuantity
+- (void)requestActionType:(NSString *)type reason:(NSString *)reason products:(NSArray *)products productQuantity:(NSDictionary *)productQuantity
 {
     [self configureRestKitForRejectAction];
     
-    if (_actionRequest.isExecuting) return;
-
     NSString *productIds = @"";
     if (products) {
         for (OrderProduct *product in products) {
@@ -842,83 +830,115 @@
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *auth = [secureStorage keychainDictionary];
     
-    NSDictionary* param = @{
+    NSDictionary *param = @{
                             API_ACTION_KEY          : API_PROCEED_ORDER_KEY,
                             API_ACTION_TYPE_KEY     : type,
                             API_USER_ID_KEY         : [auth objectForKey:API_USER_ID_KEY],
-                            API_ORDER_ID_KEY        : [NSString stringWithFormat:@"%d", (int)orderId],
+                            API_ORDER_ID_KEY        : [NSNumber numberWithInteger:_selectedTransaction.order_detail.detail_order_id],
                             API_REASON_KEY          : reason ?: @"",
                             API_LIST_PRODUCT_ID_KEY : productIds ?: @"",
                             API_PRODUCT_QUANTITY_KEY: productQuantities ?: @"",
-                            @"enc_dec"              : @"off",
                             };
-//    param = [param encrypt];
 
-    _actionRequest = [_objectManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodGET
+    RKManagedObjectRequestOperation *actionRequest = [_objectManager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
                                                                       path:API_NEW_ORDER_ACTION_PATH
-                                                                parameters:param];
+                                                                parameters:[param encrypt]];
     
-    [_actionRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self actionRequestSuccess:mappingResult withOperation:operation];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self actionRequestFailure:error];
-    }];
+    // Add information about which transaction is in processing and at what index path
+    OrderTransaction *order = [OrderTransaction new];
+    order = _selectedTransaction;
     
-    [_operationQueue addOperation:_actionRequest];
+    NSIndexPath *indexPath = [NSIndexPath new];
+    indexPath = _selectedIndexPath;
+    
+    NSDictionary *object = @{@"order" : order, @"indexPath" : indexPath};
+    NSString *key = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:order.order_detail.detail_order_id]];
+    [_orderInProcess setObject:object forKey:key];
+    
+    // Delete row for the object
+    [_transactions removeObjectAtIndex:indexPath.row];
+    [_newOrder.result.list removeObjectAtIndex:indexPath.row];
+    [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
     
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(actionRequestTimeout)
-                                            userInfo:nil
-                                             repeats:NO];
+                                                      target:self
+                                                    selector:@selector(timeoutAtIndexPath:)
+                                                    userInfo:@{@"orderId" : key}
+                                                     repeats:NO];
+    
+    [actionRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        
+        [self actionRequestSuccess:mappingResult
+                     withOperation:operation
+                            orderId:key];
+        
+        [timer invalidate];
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+
+        [self actionRequestFailure:error orderId:key];
+
+        [timer invalidate];
+
+    }];
+    
+    [_operationQueue addOperation:actionRequest];
     
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
-- (void)actionRequestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
+- (void)actionRequestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation orderId:(NSString *)orderId
 {
     NSDictionary *result = ((RKMappingResult *)object).dictionary;
     
     ActionOrder *actionOrder = [result objectForKey:@""];
     BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
-    if (status) {
-        
-        if (actionOrder.result.is_success == 1 && _selectedIndexPath) {
-            
-            // Request success
-            [_transactions removeObjectAtIndex:_selectedIndexPath.row];
-            [_newOrder.result.list removeObjectAtIndex:_selectedIndexPath.row];
-            [_tableView deleteRowsAtIndexPaths:@[_selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            
-            [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
-            
-        } else {
-            
-            // Request not success
-
-        }
+    if (status && actionOrder.result.is_success == 1) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Success"] delegate:self];
+        [alert show];
+        [_orderInProcess removeObjectForKey:orderId];
     } else {
-        
-        // WS response status not OK
-    
+        [self performSelector:@selector(restoreData:) withObject:orderId];
     }
 }
 
-- (void)actionRequestFailure:(id)object
+- (void)actionRequestFailure:(id)object orderId:(NSString *)orderId
 {
-    
+    [self performSelector:@selector(restoreData:) withObject:orderId];
 }
 
-- (void)actionRequestTimeout
+- (void)timeoutAtIndexPath:(NSTimer *)timer
 {
-    
+    NSString *orderId = [[timer userInfo] objectForKey:@"orderId"];
+    [self performSelector:@selector(restoreData:) withObject:orderId];
 }
 
 - (void)reloadData
 {
     [_tableView reloadData];
+}
+
+- (void)restoreData:(NSString *)orderId
+{
+    NSDictionary *dict = [_orderInProcess objectForKey:orderId];
+    if (dict) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Error"] delegate:self];
+        [alert show];
+
+        OrderTransaction *order = [dict objectForKey:@"order"];
+        NSIndexPath *objectIndexPath = [dict objectForKey:@"indexPath"];
+        
+        [_transactions insertObject:order atIndex:objectIndexPath.row];
+        [_newOrder.result.list insertObject:order atIndex:objectIndexPath.row];
+        [_tableView insertRowsAtIndexPaths:@[objectIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
+
+        [_orderInProcess removeObjectForKey:orderId];
+    }
 }
 
 @end
