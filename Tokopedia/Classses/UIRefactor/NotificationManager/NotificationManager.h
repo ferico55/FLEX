@@ -14,10 +14,10 @@
 #import "NotificationRequest.h"
 
 @interface NotificationManager : NSObject  {
-    Notification *_notification;
     UserAuthentificationManager *_userManager;
 }
 
+@property (strong, nonatomic) Notification *notification;
 @property (nonatomic, strong) UIWindow *notificationWindow;
 @property (strong, nonatomic) UILabel *badgeLabel;
 @property (strong, nonatomic) UIViewController *attachedViewController;

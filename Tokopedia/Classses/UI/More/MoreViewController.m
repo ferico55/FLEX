@@ -45,7 +45,6 @@
     NSDictionary *_auth;
     
     Deposit *_deposit;
-    Notification *_notification;
     
     NSOperationQueue *_operationQueue;
 
@@ -76,6 +75,11 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    
+    // Add logo in navigation bar
+    self.title = kTKPDMORE_TITLE;
+    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
+    [self.navigationItem setTitleView:logo];
     
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
@@ -121,11 +125,6 @@
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(goToViewController:) name:@"goToViewController" object:nil];
     [nc addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotificationBar" object:nil];
-
-    // Add logo in navigation bar
-    self.title = kTKPDMORE_TITLE;
-    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-    [self.navigationItem setTitleView:logo];
 
     // Remove default table inset
     self.tableView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
@@ -254,7 +253,7 @@
     else if (indexPath.section == 1 && indexPath.row == 1) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         PurchaseViewController *purchaseController = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
-        purchaseController.notification = _notification;
+        purchaseController.notification = _notifManager.notification;
         [self.navigationController pushViewController:purchaseController animated:YES];
     }
     
@@ -271,7 +270,7 @@
     else if (indexPath.section == 2 && indexPath.row == 1) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         SalesViewController *salesController = [storyboard instantiateViewControllerWithIdentifier:@"SalesViewController"];
-        salesController.notification = _notification;
+        salesController.notification = _notifManager.notification;
         [self.navigationController pushViewController:salesController animated:YES];
     }
     
@@ -318,10 +317,10 @@
             InboxReviewViewController *vc = [InboxReviewViewController new];
             vc.data=@{@"nav":@"inbox-review"};
             
-            InboxTalkViewController *vc1 = [InboxReviewViewController new];
+            InboxReviewViewController *vc1 = [InboxReviewViewController new];
             vc1.data=@{@"nav":@"inbox-review-my-product"};
             
-            InboxTalkViewController *vc2 = [InboxReviewViewController new];
+            InboxReviewViewController *vc2 = [InboxReviewViewController new];
             vc2.data=@{@"nav":@"inbox-review-my-review"};
             
             NSArray *vcs = @[vc,vc1, vc2];
@@ -390,7 +389,7 @@
     NSDictionary *param = @{API_DEPOSIT_ACTION : API_DEPOSIT_GET_DETAIL};
     
     _depositRequest = [_depositObjectManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodGET
+                                                                    method:RKRequestMethodPOST
                                                                       path:API_DEPOSIT_PATH
                                                                 parameters:[param encrypt]];
     
@@ -417,32 +416,6 @@
     
 }
 
-
-//#pragma mark - Navigation
-//
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-//{
-//    if ([segue.identifier isEqualToString:@"Sales"]) {
-//        SalesViewController *salesController = segue.destinationViewController;
-//        salesController.notification = _notification;
-//    }
-//    else if ([segue.identifier isEqualToString:@"Purchase"]) {
-//        PurchaseViewController *purchaseController = segue.destinationViewController;
-//        purchaseController.notification = _notification;
-//    }
-//}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"Sales"]) {
-        SalesViewController *salesController = segue.destinationViewController;
-        salesController.notification = _notification;
-    }
-    else if ([segue.identifier isEqualToString:@"Purchase"]) {
-        PurchaseViewController *purchaseController = segue.destinationViewController;
-        purchaseController.notification = _notification;
-    }
-}
-
 #pragma mark - Notification Manager
 - (void)initNotificationManager {
     _notifManager = [NotificationManager new];
@@ -458,8 +431,7 @@
     [_notifManager tapWindowBar];
 }
 
-- (void)goToViewController:(NSNotification*)notification {
-    NSDictionary *userinfo = notification.userInfo;
+- (void)goToViewController:(NSNotification *)notification {
     [self tapWindowBar];
 }
 
