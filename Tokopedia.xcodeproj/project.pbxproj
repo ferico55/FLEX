@@ -246,6 +246,8 @@
 		FC36DFA219B0656400AF74C1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8A19B0656400AF74C1 /* UIKit.framework */; };
 		FC36DFAA19B0656400AF74C1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC36DFA819B0656400AF74C1 /* InfoPlist.strings */; };
 		FC36DFAC19B0656400AF74C1 /* TokopediaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36DFAB19B0656400AF74C1 /* TokopediaTests.m */; };
+		FC3F73931A725258004D29B6 /* TransactionCartResultPaymentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3F73921A725258004D29B6 /* TransactionCartResultPaymentCell.xib */; };
+		FC3F73961A7255EB004D29B6 /* TransactionCartResultPaymentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3F73951A7255EB004D29B6 /* TransactionCartResultPaymentCell.m */; };
 		FC4D904A1A7121450048106E /* EncodeDecoderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4D90451A7121450048106E /* EncodeDecoderManager.m */; };
 		FC4D904B1A7121450048106E /* RSA.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4D90471A7121450048106E /* RSA.m */; };
 		FC4D904C1A7121450048106E /* UserAuthentificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4D90491A7121450048106E /* UserAuthentificationManager.m */; };
@@ -334,7 +336,6 @@
 		FC4D919E1A712B280048106E /* TransactionCartResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D90D31A712B280048106E /* TransactionCartResultViewController.xib */; };
 		FC4D919F1A712B280048106E /* TransactionCartRootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D90D41A712B280048106E /* TransactionCartRootViewController.xib */; };
 		FC4D91A01A712B280048106E /* TransactionShipmentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D90D61A712B280048106E /* TransactionShipmentViewController.xib */; };
-		FC4D91A11A712B280048106E /* TransactionATCViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D90D71A712B280048106E /* TransactionATCViewController.xib */; };
 		FC4D91A21A712B280048106E /* TransactionStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC4D90D81A712B280048106E /* TransactionStoryboard.storyboard */; };
 		FC4D91A31A712B280048106E /* AddressCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D90DB1A712B280048106E /* AddressCell.xib */; };
 		FC4D91A41A712B280048106E /* AddressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D90DC1A712B280048106E /* AddressViewController.xib */; };
@@ -1130,6 +1131,9 @@
 		FC36DFAB19B0656400AF74C1 /* TokopediaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TokopediaTests.m; sourceTree = "<group>"; };
 		FC36E1CD19B067AD00AF74C1 /* Tkpd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tkpd.h; sourceTree = "<group>"; };
 		FC36E1CE19B067AD00AF74C1 /* TkpdImg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TkpdImg.h; sourceTree = "<group>"; };
+		FC3F73921A725258004D29B6 /* TransactionCartResultPaymentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartResultPaymentCell.xib; sourceTree = "<group>"; };
+		FC3F73941A7255EB004D29B6 /* TransactionCartResultPaymentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartResultPaymentCell.h; sourceTree = "<group>"; };
+		FC3F73951A7255EB004D29B6 /* TransactionCartResultPaymentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartResultPaymentCell.m; sourceTree = "<group>"; };
 		FC4D90441A7121450048106E /* EncodeDecoderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncodeDecoderManager.h; sourceTree = "<group>"; };
 		FC4D90451A7121450048106E /* EncodeDecoderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncodeDecoderManager.m; sourceTree = "<group>"; };
 		FC4D90461A7121450048106E /* RSA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSA.h; sourceTree = "<group>"; };
@@ -1222,7 +1226,6 @@
 		FC4D90D31A712B280048106E /* TransactionCartResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartResultViewController.xib; sourceTree = "<group>"; };
 		FC4D90D41A712B280048106E /* TransactionCartRootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartRootViewController.xib; sourceTree = "<group>"; };
 		FC4D90D61A712B280048106E /* TransactionShipmentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionShipmentViewController.xib; sourceTree = "<group>"; };
-		FC4D90D71A712B280048106E /* TransactionATCViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionATCViewController.xib; sourceTree = "<group>"; };
 		FC4D90D81A712B280048106E /* TransactionStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TransactionStoryboard.storyboard; sourceTree = "<group>"; };
 		FC4D90DB1A712B280048106E /* AddressCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddressCell.xib; sourceTree = "<group>"; };
 		FC4D90DC1A712B280048106E /* AddressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddressViewController.xib; sourceTree = "<group>"; };
@@ -1383,8 +1386,8 @@
 		FCD5C2B21A7118150054A9B2 /* StarsRateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StarsRateView.m; sourceTree = "<group>"; };
 		FCD5C2B31A7118150054A9B2 /* StickyAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyAlertView.h; sourceTree = "<group>"; };
 		FCD5C2B41A7118150054A9B2 /* StickyAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyAlertView.m; sourceTree = "<group>"; };
-		FCD5C2B51A7118150054A9B2 /* UITextView+UITextView_Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+UITextView_Placeholder.h"; sourceTree = "<group>"; };
-		FCD5C2B61A7118150054A9B2 /* UITextView+UITextView_Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+UITextView_Placeholder.m"; sourceTree = "<group>"; };
+		FCD5C2B51A7118150054A9B2 /* UITextView+UITextView_Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UITextView+UITextView_Placeholder.h"; path = "../UI/CustomViews/UITextView+UITextView_Placeholder.h"; sourceTree = "<group>"; };
+		FCD5C2B61A7118150054A9B2 /* UITextView+UITextView_Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UITextView+UITextView_Placeholder.m"; path = "../UI/CustomViews/UITextView+UITextView_Placeholder.m"; sourceTree = "<group>"; };
 		FCD5C2B81A7118150054A9B2 /* detail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = detail.h; sourceTree = "<group>"; };
 		FCD5C2BA1A7118150054A9B2 /* string_product.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_product.h; sourceTree = "<group>"; };
 		FCD5C2BC1A7118150054A9B2 /* ProductTalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkViewController.m; sourceTree = "<group>"; };
@@ -2266,6 +2269,8 @@
 		FC2E85A11A43CEC700A51BF0 /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
+				FCD5C2B51A7118150054A9B2 /* UITextView+UITextView_Placeholder.h */,
+				FCD5C2B61A7118150054A9B2 /* UITextView+UITextView_Placeholder.m */,
 				FC26F4D21A63D926009BD76B /* NSData+Encryption.h */,
 				FC26F4D31A63D926009BD76B /* NSData+Encryption.m */,
 				FC2E85A21A43CEC700A51BF0 /* DBManager.h */,
@@ -3169,7 +3174,6 @@
 				FC4D90C51A712B280048106E /* AddToCart */,
 				FC4D90C71A712B280048106E /* Cart */,
 				FC4D90D51A712B280048106E /* Shipment */,
-				FC4D90D71A712B280048106E /* TransactionATCViewController.xib */,
 				FC4D90D81A712B280048106E /* TransactionStoryboard.storyboard */,
 			);
 			path = Transaction;
@@ -3196,6 +3200,7 @@
 		FC4D90C81A712B280048106E /* CartDetail */ = {
 			isa = PBXGroup;
 			children = (
+				FC4D90D01A712B280048106E /* TransactionCartViewController.xib */,
 				FC4D90C91A712B280048106E /* TransactionCartCell.xib */,
 				FC4D90CA1A712B280048106E /* TransactionCartCostView.xib */,
 				FC4D90CB1A712B280048106E /* TransactionCartEditViewController.xib */,
@@ -3203,7 +3208,6 @@
 				FC4D90CD1A712B280048106E /* TransactionCartHeaderView.xib */,
 				FC4D90CE1A712B280048106E /* TransactionCartPaymentViewController.xib */,
 				FC4D90CF1A712B280048106E /* TransactionCartShippingViewController.xib */,
-				FC4D90D01A712B280048106E /* TransactionCartViewController.xib */,
 			);
 			path = CartDetail;
 			sourceTree = "<group>";
@@ -3213,6 +3217,7 @@
 			children = (
 				FC4D90D21A712B280048106E /* TransactionCartResultCell.xib */,
 				FC4D90D31A712B280048106E /* TransactionCartResultViewController.xib */,
+				FC3F73921A725258004D29B6 /* TransactionCartResultPaymentCell.xib */,
 			);
 			path = CartResult;
 			sourceTree = "<group>";
@@ -3781,8 +3786,6 @@
 				FCD5C2B21A7118150054A9B2 /* StarsRateView.m */,
 				FCD5C2B31A7118150054A9B2 /* StickyAlertView.h */,
 				FCD5C2B41A7118150054A9B2 /* StickyAlertView.m */,
-				FCD5C2B51A7118150054A9B2 /* UITextView+UITextView_Placeholder.h */,
-				FCD5C2B61A7118150054A9B2 /* UITextView+UITextView_Placeholder.m */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -4196,6 +4199,8 @@
 		FCD5C38A1A7118150054A9B2 /* CartDetail */ = {
 			isa = PBXGroup;
 			children = (
+				FCD5C3991A7118150054A9B2 /* TransactionCartViewController.h */,
+				FCD5C39A1A7118150054A9B2 /* TransactionCartViewController.m */,
 				FCD5C38B1A7118150054A9B2 /* TransactionCartCell.h */,
 				FCD5C38C1A7118150054A9B2 /* TransactionCartCell.m */,
 				FCD5C38D1A7118150054A9B2 /* TransactionCartCostView.h */,
@@ -4210,8 +4215,6 @@
 				FCD5C3961A7118150054A9B2 /* TransactionCartPaymentViewController.m */,
 				FCD5C3971A7118150054A9B2 /* TransactionCartShippingViewController.h */,
 				FCD5C3981A7118150054A9B2 /* TransactionCartShippingViewController.m */,
-				FCD5C3991A7118150054A9B2 /* TransactionCartViewController.h */,
-				FCD5C39A1A7118150054A9B2 /* TransactionCartViewController.m */,
 				FCD5C39B1A7118150054A9B2 /* TransactionPaymenViewController.h */,
 				FCD5C39C1A7118150054A9B2 /* TransactionPaymenViewController.m */,
 			);
@@ -4223,6 +4226,8 @@
 			children = (
 				FCD5C39E1A7118150054A9B2 /* TransactionCartResultCell.h */,
 				FCD5C39F1A7118150054A9B2 /* TransactionCartResultCell.m */,
+				FC3F73941A7255EB004D29B6 /* TransactionCartResultPaymentCell.h */,
+				FC3F73951A7255EB004D29B6 /* TransactionCartResultPaymentCell.m */,
 				FCD5C3A01A7118150054A9B2 /* TransactionCartResultViewController.h */,
 				FCD5C3A11A7118150054A9B2 /* TransactionCartResultViewController.m */,
 			);
@@ -6039,7 +6044,6 @@
 				FC4D91F11A712B280048106E /* ShopTalkViewController.xib in Resources */,
 				FC4D91531A712B280048106E /* AlertListViewCell.xib in Resources */,
 				FC4D918F1A712B280048106E /* FilterLocationViewCell.xib in Resources */,
-				FC4D91A11A712B280048106E /* TransactionATCViewController.xib in Resources */,
 				FC2E8C5C1A43CEC900A51BF0 /* icon_5@2x.png in Resources */,
 				FCD5C4071A7118150054A9B2 /* ProductQuantityViewController.xib in Resources */,
 				FC2E8CC71A43CEC900A51BF0 /* navigation-button-bg-pt@2x.png in Resources */,
@@ -6071,6 +6075,7 @@
 				FC2E8C961A43CEC900A51BF0 /* icon_love@2x.png in Resources */,
 				FC4D91B81A712B280048106E /* InboxTalkCell.xib in Resources */,
 				FC2E8C561A43CEC900A51BF0 /* icon_2@2x.png in Resources */,
+				FC3F73931A725258004D29B6 /* TransactionCartResultPaymentCell.xib in Resources */,
 				FCD5C40B1A7118150054A9B2 /* OrderDetailProductCell.xib in Resources */,
 				FC2E8C451A43CEC900A51BF0 /* icon_14@2x.png in Resources */,
 				FC2E8C7B1A43CEC900A51BF0 /* icon_checkmark_1.png in Resources */,
@@ -6444,6 +6449,7 @@
 				FCD5C7991A7118780054A9B2 /* HotlistList.m in Sources */,
 				FC2E8CF91A43CEC900A51BF0 /* MGSwipeTableCell.m in Sources */,
 				FCD5C81D1A7118780054A9B2 /* TransactionBuyResult.m in Sources */,
+				FC3F73961A7255EB004D29B6 /* TransactionCartResultPaymentCell.m in Sources */,
 				FC2E8AD01A43CEC900A51BF0 /* NSStringCategory.m in Sources */,
 				FCD5C7F21A7118780054A9B2 /* EtalaseResult.m in Sources */,
 				FCD5C40A1A7118150054A9B2 /* OrderDetailProductCell.m in Sources */,

@@ -26,6 +26,7 @@
 #import "TransactionBuy.h"
 #import "TransactionCartFormMandiriClickPayViewController.h"
 
+
 @interface TransactionCartViewController () <UITableViewDataSource,UITableViewDelegate,TransactionCartCellDelegate, TransactionCartHeaderViewDelegate,GeneralSwitchCellDelegate, UIActionSheetDelegate,UIAlertViewDelegate,TransactionCartPaymentViewControllerDelegate, TKPDAlertViewDelegate,UITextFieldDelegate, TransactionCartMandiriClickPayFormDelegate>
 {
     NSMutableArray *_list;
@@ -82,14 +83,14 @@
     BOOL _isUsingSaldoTokopedia;
 }
 
+@property (weak, nonatomic) IBOutlet UITextField *saldoTokopediaAmountTextField;
 @property (strong, nonatomic) IBOutlet UITableViewCell *paymentGatewayCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *paymentGatewaySummaryCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *voucerCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *totalInvoiceCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *transferCodeCell;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *errorCells;
-
-
+@property (strong, nonatomic) IBOutlet UITableViewCell *saldoTextFieldCell;
 
 @property (strong, nonatomic) IBOutlet UIView *checkoutView;
 @property (strong, nonatomic) IBOutlet UIView *buyView;
@@ -206,8 +207,6 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -230,6 +229,13 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     NSInteger listCount = _list.count;
+    NSArray *gatewayList = _cart.gateway_list;
+    BOOL isNullDeposit = YES;
+    for (TransactionCartGateway *gateway in gatewayList) {
+        if([gateway.gateway  isEqual:@(0)]) isNullDeposit = NO;
+    }
+    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+
     if (section == 0) {
         return 1;
     }
@@ -241,7 +247,9 @@
                 return 2;
                 break;
             default:
-                return _isUsingSaldoTokopedia?4:3;
+                if (_indexPage == 0)
+                    return (isNullDeposit || [selectedGateway.gateway isEqual:@(0)])?2:_isUsingSaldoTokopedia?4:3;
+                else return 3;
                 break;
         }
     }
@@ -263,10 +271,16 @@
     
     UITableViewCell* cell = nil;
     NSInteger listCount = _list.count;
+    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     _isUsingSaldoTokopediaButton.selected = _isUsingSaldoTokopedia;
+    NSArray *gatewayList = _cart.gateway_list;
+    BOOL isNullDeposit = YES;
+    for (TransactionCartGateway *gateway in gatewayList) {
+        if([gateway.gateway  isEqual: @(0)])
+            isNullDeposit = NO;
+    }
     if (indexPath.section == 0) {
         if (_indexPage == 0) {
-            TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
             _paymentGatewayCell.detailTextLabel.text = selectedGateway.gateway_name?:STRING_DEFAULT_PAYMENT;
             cell = _paymentGatewayCell;
         }
@@ -295,7 +309,7 @@
                     default:
                         if (_indexPage==0) {
                             [_saldoTokopediaLabel setText:[NSString stringWithFormat:FORMAT_SALDO_TOKOPEDIA,_cart.deposit_idr?:@"Rp.0,-"] animated:YES];
-                            cell = _saldoTokopediaCell;
+                            cell = (isNullDeposit||[selectedGateway.gateway isEqual: @(0)])?_totalPaymentCell:_saldoTokopediaCell;
                         }
                         else
                         {
@@ -306,11 +320,14 @@
                 }
                 break;
             case 2:
-                [_totalPaymentCell.detailTextLabel setText:(_indexPage==0)?_cart.grand_total_idr:_cartSummary.grand_total_idr animated:YES];
-                cell = _isUsingSaldoTokopedia?[self cellTextFieldAtIndexPath:indexPath]:_totalPaymentCell;
+            {
+
+                [_totalPaymentCell.detailTextLabel setText:(_indexPage==0)?_cart.grand_total_idr:_cartSummary.payment_left_idr animated:YES];
+                cell = (isNullDeposit||[selectedGateway.gateway isEqual: @(0)])?_totalPaymentCell:_isUsingSaldoTokopedia?_saldoTextFieldCell:_totalPaymentCell;
                 break;
+            }
             case 3:
-                [_totalPaymentCell.detailTextLabel setText:(_indexPage==0)?_cart.grand_total_idr:_cartSummary.grand_total_idr animated:YES];
+                [_totalPaymentCell.detailTextLabel setText:(_indexPage==0)?_cart.grand_total_idr:_cartSummary.payment_left_idr animated:YES];
                 cell = _totalPaymentCell;
                 break;
             default:
@@ -357,8 +374,9 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-#define DEFAULT_ROW_HEIGHT 40
+#define DEFAULT_ROW_HEIGHT 44
     NSInteger listCount = _list.count;
+    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
 
     if (indexPath.section == 0) {
         return DEFAULT_ROW_HEIGHT;
@@ -379,6 +397,7 @@
         //        return DEFAULT_ROW_HEIGHT;
         //}
         //else if (rowCount>indexPath.row){
+        
         if (indexPath.row<products.count) {
             return 236;
         }
@@ -387,8 +406,13 @@
     }
     else if (indexPath.section == listCount+1)
     {
+        NSArray *gatewayList = _cart.gateway_list;
+        BOOL isNullDeposit = YES;
+        for (TransactionCartGateway *gateway in gatewayList) {
+            if([gateway.gateway  isEqual:@(0)]) isNullDeposit = NO;
+        }
         if (indexPath.row == 1) {
-            return (_indexPage==0)?_saldoTokopediaCell.frame.size.height:DEFAULT_ROW_HEIGHT;
+            return (isNullDeposit||[selectedGateway.gateway isEqual: @(0)])?_totalPaymentCell.frame.size.height:(_indexPage==0)?_saldoTokopediaCell.frame.size.height:DEFAULT_ROW_HEIGHT;
         }
 
         else
@@ -504,6 +528,7 @@
     {
         if (indexPath.row == 1) {
             _isUsingSaldoTokopedia = _isUsingSaldoTokopedia?NO:YES;
+            _isUsingSaldoTokopediaButton.selected = _isUsingSaldoTokopedia;
             if (_isUsingSaldoTokopedia) {
                 [self.tableView beginUpdates];
                 NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
@@ -549,6 +574,13 @@
     }
 }
 
+//TODO:: adjust resignResponder
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    [_activeTextField resignFirstResponder];
+    [_activeTextView resignFirstResponder];
+}
+
 #pragma mark - Request Cart
 -(void)cancelCartRequest
 {
@@ -572,7 +604,11 @@
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionCartResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[API_TOKEN_KEY]];
+    [resultMapping addAttributeMappingsFromArray:@[API_TOKEN_KEY,
+                                                   API_DEPOSIT_IDR_KEY,
+                                                   API_GRAND_TOTAL_KEY,
+                                                   API_GRAND_TOTAL_IDR_KEY,
+                                                   API_GATEWAY_LIST_ID_KEY]];
 
     RKObjectMapping *listMapping = [self transactionCartListMapping];
     RKObjectMapping *productMapping = [self productMapping];
@@ -982,12 +1018,16 @@
     NSString * partialString = [[tempPartialStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
     NSDictionary *partialDetail = [userInfo objectForKey:DATA_PARTIAL_LIST_KEY];
     
+    NSNumber *usedSaldo = _isUsingSaldoTokopedia?[_dataInput objectForKey:DATA_USED_SALDO_KEY]:@"0";
+    
     NSMutableDictionary *param = [NSMutableDictionary new];
     NSDictionary* paramDictionary = @{API_STEP_KEY:@(STEP_CHECKOUT),
                                       API_TOKEN_KEY:token,
                                       API_GATEWAY_LIST_ID_KEY:gatewayID,
                                       API_DROPSHIP_STRING_KEY:dropshipString,
                                       API_PARTIAL_STRING_KEY :partialString,
+                                      API_USE_DEPOSIT_KEY:@(_isUsingSaldoTokopedia),
+                                      @"deposit_amt":usedSaldo
                                       };
     
     [param addEntriesFromDictionary:paramDictionary];
@@ -996,17 +1036,20 @@
     
     _requestcount ++;
     _checkoutButton.enabled = NO;
+    [_checkoutButton setTitle:@"Processing ..." forState:UIControlStateNormal];
     _requestActionCheckout = [_objectManagerActionCheckout appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_TRANSACTION_PATH parameters:[param encrypt]];
     [_requestActionCheckout setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionCheckout:mappingResult withOperation:operation];
         _checkoutButton.enabled = YES;
+        [_checkoutButton setTitle:@"CHECKOUT" forState:UIControlStateNormal];
         [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionCheckout:error];
         _checkoutButton.enabled = YES;
+        [_checkoutButton setTitle:@"CHECKOUT" forState:UIControlStateNormal];
         [timer invalidate];
     }];
-    
+
     [_operationQueue addOperation:_requestActionCheckout];
     
     timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionCheckout) userInfo:nil repeats:NO];
@@ -1164,15 +1207,18 @@
     
     _requestcount ++;
     _buyButton.enabled = NO;
+    [_buyButton setTitle:@"Processing ..." forState:UIControlStateNormal];
     _requestActionBuy = [_objectManagerActionBuy appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_TRANSACTION_PATH parameters:[param encrypt]];
     [_requestActionBuy setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionBuy:mappingResult withOperation:operation];
         [timer invalidate];
         _buyButton.enabled = YES;
+        [_buyButton setTitle:@"BAYAR" forState:UIControlStateNormal];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionBuy:error];
         [timer invalidate];
         _buyButton.enabled = YES;
+        [_buyButton setTitle:@"BAYAR" forState:UIControlStateNormal];
     }];
     
     [_operationQueue addOperation:_requestActionBuy];
@@ -1575,12 +1621,6 @@
     [self requestActionBuy:_dataInput];
 }
 
-#pragma mark - ScrollView Delegate
--(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
-{
-    [_activeTextField resignFirstResponder];
-}
-
 #pragma mark - Textfield Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     [textField resignFirstResponder];
@@ -1589,7 +1629,6 @@
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
-    
     [textField resignFirstResponder];
     return YES;
 }
@@ -1598,10 +1637,48 @@
 {
     if (textField.tag > 0 )
         [_senderNameDropshipper replaceObjectAtIndex:textField.tag-1 withObject:textField.text];
-    else
+    else if (textField.tag < 0)
         [_senderPhoneDropshipper replaceObjectAtIndex:-textField.tag-1 withObject:textField.text];
+    if (textField == _saldoTokopediaAmountTextField) {
+        NSString *depositAmount = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+        [_dataInput setObject:depositAmount forKey:DATA_USED_SALDO_KEY];
+    }
     
     [self adjustDropshipperListParam];
+    return YES;
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (textField == _saldoTokopediaAmountTextField) {
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        if([string length]==0)
+        {
+            [formatter setGroupingSeparator:@","];
+            [formatter setGroupingSize:4];
+            [formatter setUsesGroupingSeparator:YES];
+            [formatter setSecondaryGroupingSize:3];
+            NSString *num = textField.text ;
+            num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+            NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
+            textField.text = str;
+            return YES;
+        }
+        else {
+            [formatter setGroupingSeparator:@","];
+            [formatter setGroupingSize:2];
+            [formatter setUsesGroupingSeparator:YES];
+            [formatter setSecondaryGroupingSize:3];
+            NSString *num = textField.text ;
+            if(![num isEqualToString:@""])
+            {
+                num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+                NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
+                textField.text = str;
+            }
+            return YES;
+        }
+    }
     return YES;
 }
 
@@ -1617,7 +1694,7 @@
     }else{
         [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                               delay:0
-                            options: UIViewAnimationOptionCurveEaseInOut
+                            options: UIViewAnimationOptionOverrideInheritedCurve
                          animations:^{
                              _scrollviewContentSize = [_tableView contentSize];
                              _scrollviewContentSize.height -= _keyboardSize.height;
@@ -1625,10 +1702,12 @@
                              _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
                              _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
                              _scrollviewContentSize.height += _keyboardSize.height;
-                             if (_activeTextField != nil && ((self.view.frame.origin.y + _activeTextField.frame.origin.y+_activeTextField.frame.size.height)> _keyboardPosition.y)) {
-                                 UIEdgeInsets inset = _tableView.contentInset;
-                                 inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activeTextField.frame.origin.y+_activeTextField.frame.size.height + 10));
-                                 [_tableView setContentInset:inset];
+                             if (_activeTextField!= nil){//&& (self.view.frame.origin.y + _activeTextField.frame.origin.y+_activeTextField.frame.size.height)> _keyboardPosition.y) {
+                             UIEdgeInsets inset = _tableView.contentInset;
+                             inset.bottom = (_keyboardPosition.y-(120+_activeTextField.frame.size.height));
+                                 //TODO:: 120 ->nafigation+sticky view
+                             [_tableView setContentSize:_scrollviewContentSize];
+                             [_tableView setContentInset:inset];
                              }
                          }
                          completion:^(BOOL finished){

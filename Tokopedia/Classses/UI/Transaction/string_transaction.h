@@ -102,6 +102,7 @@ typedef enum
 #define DATA_CART_SUMMARY_KEY @"cart_summary"
 #define DATA_CART_RESULT_KEY @"data_cart_result"
 #define DATA_KEY @"data"
+#define DATA_USED_SALDO_KEY @"saldo_is_used"
 
 #define API_ACTION_KEY @"action"
 #define API_INSURANCE_KEY @"insurance"
@@ -188,12 +189,16 @@ typedef enum
 
 #define API_DROPSHIP_STRING_KEY @"dropship_str"
 #define API_PARTIAL_STRING_KEY @"partial_str"
+#define API_USE_DEPOSIT_KEY @"use_deposit"
+#define API_DEPOSIT_AMOUNT_KEY @"deposit_amount"
 
 #define API_MANDIRI_TOKEN_KEY @"mandiri_token"
 #define API_CARD_NUMBER_KEY @"card_no"
 
 #define API_VOUCHER_AMOUNT_IDR_KEY @"voucher_amount_idr"
 #define API_DEPOSIT_AFTER_KEY @"deposit_after"
+#define API_DEPOSIT_IDR_KEY @"deposit_idr"
+#define API_E_CACH_FLAG_KEY @"ecash_flag"
 #define API_GRAND_TOTAL_KEY @"grand_total"
 #define API_PAYMENT_LEFT_IDR_KEY @"payment_left_idr"
 #define API_CONFIRMATION_ID_KEY @"confirmation_id"
@@ -248,6 +253,8 @@ typedef enum
 #define TRANSACTION_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define TRANSACTION_NODATACELLTITLE @"no data"
 #define TRANSACTION_NODATACELLDESCS @"no data description"
+
+#define PLACEHOLDER_NOTE_ATC @"Contoh : Warna hitam"
 
 #define TITLE_ALERT_CANCEL_CART @"Konfirmasi Pembatalan Transaksi"
 #define DESCRIPTION_ALERT_CANCEL_CART_PRODUCT FORMAT_CANCEL_CART_PRODUCT

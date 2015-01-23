@@ -318,10 +318,10 @@
             InboxReviewViewController *vc = [InboxReviewViewController new];
             vc.data=@{@"nav":@"inbox-review"};
             
-            InboxTalkViewController *vc1 = [InboxReviewViewController new];
+            InboxReviewViewController *vc1 = [InboxReviewViewController new];
             vc1.data=@{@"nav":@"inbox-review-my-product"};
             
-            InboxTalkViewController *vc2 = [InboxReviewViewController new];
+            InboxReviewViewController *vc2 = [InboxReviewViewController new];
             vc2.data=@{@"nav":@"inbox-review-my-review"};
             
             NSArray *vcs = @[vc,vc1, vc2];
@@ -371,7 +371,7 @@
     
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodGET
+                                                                                                  method:RKRequestMethodPOST
                                                                                              pathPattern:API_DEPOSIT_PATH
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
@@ -390,7 +390,7 @@
     NSDictionary *param = @{API_DEPOSIT_ACTION : API_DEPOSIT_GET_DETAIL};
     
     _depositRequest = [_depositObjectManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodGET
+                                                                    method:RKRequestMethodPOST
                                                                       path:API_DEPOSIT_PATH
                                                                 parameters:[param encrypt]];
     
@@ -418,19 +418,7 @@
 }
 
 
-//#pragma mark - Navigation
-//
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-//{
-//    if ([segue.identifier isEqualToString:@"Sales"]) {
-//        SalesViewController *salesController = segue.destinationViewController;
-//        salesController.notification = _notification;
-//    }
-//    else if ([segue.identifier isEqualToString:@"Purchase"]) {
-//        PurchaseViewController *purchaseController = segue.destinationViewController;
-//        purchaseController.notification = _notification;
-//    }
-//}
+#pragma mark - Navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if ([segue.identifier isEqualToString:@"Sales"]) {

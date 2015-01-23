@@ -341,7 +341,7 @@
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:@"action/favorite-shop.pl"
-                                                                parameters:param];
+                                                                parameters:[param encrypt]];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsuccessfav:mappingResult withOperation:operation];

@@ -641,7 +641,6 @@
                             kTKPDDETAIL_APIACTIONKEY : API_GET_NEW_ORDER_KEY,
                             API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
                             };
-    param = [param encrypt];
     
     if (_page >= 1 || _isRefreshView) {
     
@@ -653,7 +652,7 @@
         _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                         method:RKRequestMethodPOST
                                                                           path:API_NEW_ORDER_PATH
-                                                                    parameters:param];
+                                                                    parameters:[param encrypt]];
 
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
 
@@ -848,14 +847,12 @@
                             API_REASON_KEY          : reason ?: @"",
                             API_LIST_PRODUCT_ID_KEY : productIds ?: @"",
                             API_PRODUCT_QUANTITY_KEY: productQuantities ?: @"",
-                            @"enc_dec"              : @"off",
                             };
-//    param = [param encrypt];
 
     _actionRequest = [_objectManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodGET
+                                                                    method:RKRequestMethodPOST
                                                                       path:API_NEW_ORDER_ACTION_PATH
-                                                                parameters:param];
+                                                                parameters:[param encrypt]];
     
     [_actionRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self actionRequestSuccess:mappingResult withOperation:operation];
