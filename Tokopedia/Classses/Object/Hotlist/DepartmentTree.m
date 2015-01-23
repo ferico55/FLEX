@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "stringhome.h"
 #import "DepartmentTree.h"
 
 @implementation DepartmentTree

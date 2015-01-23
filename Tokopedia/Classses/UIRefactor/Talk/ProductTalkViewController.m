@@ -7,6 +7,7 @@
 //
 
 #import "Talk.h"
+#import "string_product.h"
 #import "detail.h"
 #import "GeneralTalkCell.h"
 #import "ProductTalkViewController.h"
@@ -17,6 +18,7 @@
 #import "stringrestkit.h"
 #import "URLCacheController.h"
 #import "GeneralAction.h"
+#import "UserAuthentificationManager.h"
 #import "stringrestkit.h"
 #import "inbox.h"
 
@@ -56,6 +58,7 @@
     NSTimeInterval _timeinterval;
     NSString *product_id;
     NSMutableDictionary *_auth;
+    UserAuthentificationManager *_userManager;
     
 }
 
@@ -69,8 +72,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *pricelabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *imagescrollview;
 @property (weak, nonatomic) IBOutlet UIPageControl *pagecontrol;
-@property (weak, nonatomic) IBOutlet UIButton *backbutton;
-@property (weak, nonatomic) IBOutlet UIButton *nextbutton;
 @property (weak, nonatomic) IBOutlet UILabel *productSoldLabel;
 @property (weak, nonatomic) IBOutlet UILabel *productViewLabel;
 
@@ -111,10 +112,11 @@
     _operationUnfollowQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
+    _userManager = [UserAuthentificationManager new];
     
     _table.tableHeaderView = _header;
     
-    UIBarButtonItem *barbutton1;
+    //UIBarButtonItem *barbutton1;
     NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
@@ -124,11 +126,9 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     //right button
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    _auth = [auth mutableCopy];
-    
-    if(![[_auth objectForKey:@"shop_id"] isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
+
+    NSString *loggedInUserId = [_userManager getUserId];
+    if(![loggedInUserId isEqualToString:@"0"] && ![loggedInUserId isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
 
         UIBarButtonItem *rightbar;
         UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
@@ -298,9 +298,6 @@
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
-    _nextbutton.hidden = (_pageheaderimages == _headerimages.count -1)?YES:NO;
-    _backbutton.hidden = (_pageheaderimages == 0)?YES:NO;
-
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         switch (btn.tag) {
@@ -640,7 +637,7 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                NSLog(@"next page : %d",_page);
+                NSLog(@"next page : %zd",_page);
                 
                 
                 _isnodata = NO;
@@ -651,7 +648,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -661,12 +658,20 @@
                 {
                     [_act stopAnimating];
                     _table.tableFooterView = nil;
+                    NSError *error = object;
+                    NSString *errorDescription = error.localizedDescription;
+                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                    [errorAlert show];
                 }
             }
             else
             {
                 [_act stopAnimating];
                 _table.tableFooterView = nil;
+                NSError *error = object;
+                NSString *errorDescription = error.localizedDescription;
+                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                [errorAlert show];
             }
         }
     }
@@ -705,8 +710,6 @@
     CGFloat pageWidth = _imagescrollview.frame.size.width;
     _pageheaderimages = floor((_imagescrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     _pagecontrol.currentPage = _pageheaderimages;
-    _nextbutton.hidden = (_pageheaderimages == _headerimages.count -1)?YES:NO;
-    _backbutton.hidden = (_pageheaderimages == 0)?YES:NO;
 }
 
 #pragma mark - Methods
@@ -732,12 +735,6 @@
     
     _pagecontrol.hidden = _headerimages.count <= 1?YES:NO;
     _pagecontrol.numberOfPages = _headerimages.count;
-    
-    _nextbutton.hidden = _headerimages.count <= 1?YES:NO;
-    _backbutton.hidden = _headerimages.count <= 1?YES:NO;
-    
-    _nextbutton.hidden = (_pageheaderimages == _headerimages.count -1)?YES:NO;
-    _backbutton.hidden = (_pageheaderimages == 0)?YES:NO;
 }
 
 -(void)refreshView:(UIRefreshControl*)refresh

@@ -97,7 +97,7 @@ Copyright (C) 2008-2010 Apple Inc. All Rights Reserved.
 
 #pragma mark NSURLConnection delegate methods
 
-- (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+- (void) connection:(NSURLRequest *)request didReceiveResponse:(NSURLResponse *)response
 {
     /* This method is called when the server has determined that it has
 	 enough information to create the NSURLResponse. It can be called

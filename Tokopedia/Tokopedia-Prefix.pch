@@ -29,6 +29,7 @@
     #import "NSDictionaryCategory.h"
     #import "UIKitCategory.h"
     #import "NSMutableURLRequest+TKPDURLRequestUploadImage.h"
+    #import "TKPDSecureStorage.h"
 
     #import "Tkpd.h"
     #import "string.h"

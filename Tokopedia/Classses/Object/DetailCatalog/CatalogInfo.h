@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "CatalogPrice.h"
-#import "CatalogImage.h"
+#import "CatalogImages.h"
 
 @interface CatalogInfo : NSObject
 
@@ -19,7 +19,7 @@
 @property (nonatomic, strong) NSString *catalog_id;
 @property (nonatomic, strong) NSString *catalog_name;
 @property (nonatomic, strong) CatalogPrice *catalog_price;
-@property (nonatomic, strong) NSArray *catalog_image;
+@property (nonatomic, strong) NSArray *catalog_images;
 @property (nonatomic, strong) NSString *catalog_uri;
 
 @end

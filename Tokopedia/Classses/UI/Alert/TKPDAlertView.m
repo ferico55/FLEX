@@ -6,15 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-//
-//  JYAlertView.m
-//  jury
-//
-//  Created by Vicky Hidayat on 11/26/13.
-//  Copyright (c) 2013 Buzoo. All rights reserved.
-//
-
-#import "alert.h"
+#import "string_alert.h"
 #import "TKPDAlertView.h"
 
 #pragma mark -

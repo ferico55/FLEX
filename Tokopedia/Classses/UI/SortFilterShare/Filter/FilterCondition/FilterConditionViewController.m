@@ -61,9 +61,9 @@
     _selectedcondition = [NSMutableDictionary new];
     
     UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
+    //NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    //UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
     //if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
     //    UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     //    barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
@@ -78,29 +78,9 @@
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        //barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    }
-    else
-        //barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
 	[barbutton1 setTag:11];
     self.navigationItem.rightBarButtonItem = barbutton1;
-    
-    /** set inset table for different size**/
-    //if (is4inch) {
-    //    UIEdgeInsets inset = _table.contentInset;
-    //    inset.bottom += 120;
-    //    _table.contentInset = inset;
-    //}
-    //else{
-    //    UIEdgeInsets inset = _table.contentInset;
-    //    inset.bottom += 240;
-    //    _table.contentInset = inset;
-    //}
     
     _table.delegate = self;
     _table.dataSource = self;

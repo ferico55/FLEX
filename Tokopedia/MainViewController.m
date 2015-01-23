@@ -11,6 +11,9 @@
 #import "LoginViewController.h"
 #import "SearchViewController.h"
 #import "CartViewController.h"
+//#import "TransactionCartViewController.h"
+#import "TransactionCartRootViewController.h"
+#import "MoreNavigationController.h"
 #import "MoreViewController.h"
 #import "CategoryViewController.h"
 
@@ -25,12 +28,14 @@
 #import "activation.h"
 
 #import "TKPDSecureStorage.h"
+#import "URLCacheController.h"
 
 @interface MainViewController ()
 {
     UITabBarController *_tabBarController;
     TKPDTabHomeViewController *_swipevc;
     NSMutableDictionary *_auth;
+    URLCacheController *_cacheController;
 }
 
 @end
@@ -52,6 +57,8 @@
     [super viewDidLoad];
     
     _auth = [NSMutableDictionary new];
+    _cacheController = [URLCacheController new];
+    
     
     [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
@@ -123,7 +130,7 @@
         // after login
         titles = kTKPD_HOMETITLEISAUTHARRAY;
         HotlistViewController *v = [HotlistViewController new];
-        v.data = @{kTKPD_AUTHKEY : _auth?:@""};
+        v.data = @{kTKPD_AUTHKEY : _auth?:@{}};
         [viewcontrollers addObject:v];
         ProductFeedViewController *v1 = [ProductFeedViewController new];
         [viewcontrollers addObject:v1];
@@ -142,8 +149,8 @@
     CategoryViewController *categoryvc = [CategoryViewController new];
     UINavigationController *categoryNavBar = [[UINavigationController alloc]initWithRootViewController:categoryvc];
     [categoryNavBar.navigationBar setTranslucent:NO];
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
-        categoryNavBar.edgesForExtendedLayout = UIRectEdgeNone;
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
+        categoryvc.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
     /** TAB BAR INDEX 3 **/
@@ -152,12 +159,19 @@
         search.data = @{kTKPD_AUTHKEY:_auth?:@{}};
     }
     UINavigationController *searchNavBar = [[UINavigationController alloc]initWithRootViewController:search];
-    [searchNavBar.navigationBar setTranslucent:NO];
+    searchNavBar.navigationBar.translucent = NO;
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
+        search.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     
     /** TAB BAR INDEX 4 **/
-    CartViewController *cart = [CartViewController new];
+    TransactionCartRootViewController *cart = [TransactionCartRootViewController new];
     UINavigationController *cartNavBar = [[UINavigationController alloc]initWithRootViewController:cart];
     [cartNavBar.navigationBar setTranslucent:NO];
+    //[cartNavBar.navigationItem setTitleView:logo];
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
+        cart.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     
     /** TAB BAR INDEX 5 **/
     UINavigationController *moreNavBar;
@@ -167,7 +181,8 @@
     }
     else{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        moreNavBar = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+        moreNavBar = moreNavController;
     }
 
     [moreNavBar.navigationBar setTranslucent:NO];
@@ -351,6 +366,9 @@
 
 - (void)applicationLogin:(NSNotification*)notification
 {
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadNotificationBar" object:self];
+
+    
     //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     //id auth = [defaults loadCustomObjectWithKey:kTKPD_AUTHKEY];
     //_login = auth;
@@ -406,7 +424,8 @@
     }
     else{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        moreNavBar = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+        moreNavBar = moreNavController;
     }
     [moreNavBar.navigationBar setTranslucent:NO];
 
@@ -421,13 +440,19 @@
 - (void)applicationlogout:(NSNotification*)notification
 {
 	//NSDictionary* userinfo = notification.userInfo;
-	
+    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+    [_cacheController initCacheWithDocumentPath:path];
+    [_cacheController clearCache];
+    
+    
 	TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
 	[storage resetKeychain];	//delete all previous sensitive data
 	[_auth removeAllObjects];
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
-	
+    
     //TODO:: request delayed
 	//[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(requestdelayed) object:nil];
 	//[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(requestdelayedguardian) object:nil];

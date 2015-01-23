@@ -26,6 +26,7 @@
 #define kTKPD_APISTATUSKEY @"status"
 #define kTKPD_APISERVERPROCESSTIMEKEY @"server_process_time"
 #define kTKPD_APIISSUCCESSKEY @"is_success"
+#define API_TOKEN_KEY @"token"
 
 #define kTKPD_APIRESULTKEY @"result"
 #define kTKPD_APIPAGINGKEY @"paging"
@@ -38,13 +39,24 @@
 #define kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY @"Sukses"
 #define kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY @"Error"
 
-#define kTKPDNETWORK_ERRORTITLE @"ERROR"
-#define kTKPDNETWORK_ERRORDESCS @"Network Error"
+#define kTKPDNETWORK_ERRORTITLE @"Network Error"
+#define kTKPDNETWORK_ERRORDESCS @"The Internet connection appears to be offline."
 #define kTKPDBUTTON_OKTITLE @"OK"
 
 #define kTKPD_PARAMETERSKEY @"parameters"
 
-#define kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY @"Sukses"
-#define kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY @"Error"
+#define kTKPDMESSAGE_SUCCESSMESSAGEDEFAULT @"Sukses"
+#define kTKPDMESSAGE_ERRORMESSAGEDEFAULT @"Error"
+#define ERROR_TITLE @"ERROR"
+#define ERROR_CANCEL_BUTTON_TITLE @"OK"
+#define ERROR_REQUEST_TIMEOUT @"Request Timeout"
+
+#define FONT_DEFAULT_CELL_TKPD [UIFont fontWithName:@"GothamBook" size:14.0f]
+#define FONT_DETAIL_DEFAULT_CELL_TKPD [UIFont fontWithName:@"GothamBook" size:12.0f]
+
+#define FONT_GOTHAM_MEDIUM_12 [UIFont fontWithName:@"GothamMedium" size:12.0f]
+#define FONT_GOTHAM_BOOK_12 [UIFont fontWithName:@"GothamBook" size:12.0f]
+
+#define TEXT_COLOUR_DEFAULT_CELL_TEXT [UIColor colorWithRed:66.0/255.0 green:66.0/255.0 blue:66.0/255.0 alpha:1.0]
 
 #endif

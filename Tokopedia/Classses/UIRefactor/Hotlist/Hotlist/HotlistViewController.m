@@ -7,9 +7,13 @@
 //
 
 #import "Hotlist.h"
-#import "stringhome.h"
+#import "string_home.h"
 #import "HotlistViewController.h"
 #import "HotlistResultViewController.h"
+#import "InboxMessageViewController.h"
+#import "InboxTalkViewController.h"
+#import "TKPDTabInboxMessageNavigationController.h"
+#import "TKPDTabInboxTalkNavigationController.h"
 
 #import "URLCacheController.h"
 
@@ -90,7 +94,7 @@
     
     /** set max data per page request **/
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
-    
+
     /** set inset table for different size**/
     UIEdgeInsets inset = _table.contentInset;
     inset.top += 2;
@@ -131,11 +135,11 @@
     
     /* prepare to use our own on-disk cache */
     //[_cachecontroller initCachePathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
-//    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDHOMEHOTLIST_CACHEFILEPATH];
-//    _cachepath = [path stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
-//    _cachecontroller.filePath = _cachepath;
-//    _cachecontroller.URLCacheInterval = 86400.0;
-//	[_cachecontroller initCacheWithDocumentPath:path];
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDHOMEHOTLIST_CACHEFILEPATH];
+    _cachepath = [path stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
+    _cachecontroller.filePath = _cachepath;
+    _cachecontroller.URLCacheInterval = 86400.0;
+	[_cachecontroller initCacheWithDocumentPath:path];
     
     /* create and load the URL array using the strings stored in URLCache.plist */
     //NSString* path = [[NSBundle mainBundle] pathForResource:@"URLCache" ofType:@"plist"];
@@ -150,13 +154,38 @@
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     
+    [self initNotification];
+    
     [self configureRestKit];
     [self loadData];
-    [self configureRestKit];
+    
     if (_isnodata && !_isrefreshview && _page<1) {
         [self loadData];
     }
 }
+
+- (void) initNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(goToInboxMessage:)
+                                                 name:@"goToInboxMessage"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(goToInboxTalk:)
+                                                 name:@"goToInboxTalk"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(goToInboxReview:)
+                                                 name:@"goToInboxReview"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(goToNewOrder:)
+                                                 name:@"goToNewOrder"
+                                               object:nil];
+}
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -316,19 +345,9 @@
         [_act stopAnimating];
     }
     
-    NSDictionary* parameters = @{kTKPDHOME_APIACTIONKEY :   kTKPDHOMEHOTLISTACT,
-                                 kTKPDHOME_APIPAGEKEY   :   @(_page),
-                                 kTKPDHOME_APILIMITPAGEKEY  :   @(kTKPDHOMEHOTLIST_LIMITPAGE)};
-
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:kTKPDHOMEHOTLIST_APIPATH
-                                                                parameters:[parameters encrypt]];
-    
-	/* apply daily time interval policy */
-    
-	/* In this program, "update" means to check the last modified date
-	 of the image to see if we need to load a new version. */
+    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY :   kTKPDHOMEHOTLISTACT,
+                            kTKPDHOME_APIPAGEKEY   :   @(_page),
+                            kTKPDHOME_APILIMITPAGEKEY  :   @(kTKPDHOMEHOTLIST_LIMITPAGE)};
     
 	[_cachecontroller getFileModificationDate];
 
@@ -337,18 +356,18 @@
     
 
 	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
+        
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDHOMEHOTLIST_APIPATH parameters:[param encrypt]];
+        
+        NSTimer *timer;
         //[_cachecontroller clearCache];
-		/* file doesn't exist or hasn't been updated */
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [self requestsuccess:mappingResult withOperation:operation];
             [_act stopAnimating];
             _table.tableFooterView = nil;
-            [_table reloadData];
             _isrefreshview = NO;
             [_refreshControl endRefreshing];
-            [_timer invalidate];
-            _timer = nil;
-            
+            [timer invalidate];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
             [self requestfailure:error];
@@ -356,14 +375,13 @@
             //_table.tableFooterView = nil;
             _isrefreshview = NO;
             [_refreshControl endRefreshing];
-            [_timer invalidate];
-            _timer = nil;
+            [timer invalidate];
         }];
         
         [_operationQueue addOperation:_request];
         
-        _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 	}
 	else {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -450,7 +468,7 @@
             BOOL status = [hotlist.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if(_isrefreshview) {
+                if(_page == 1) {
                     [_product removeAllObjects];
                 }
                 
@@ -475,6 +493,7 @@
                     
                     _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
                 }
+                [_table reloadData];
             }
         }
         else{
@@ -483,7 +502,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit)
@@ -503,6 +522,12 @@
             {
                 [_act stopAnimating];
                 _table.tableFooterView = nil;
+                NSError *error = object;
+                if (!([error code] == NSURLErrorCancelled)){
+                    NSString *errorDescription = error.localizedDescription;
+                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                    [errorAlert show];
+                }
             }
 
         }
@@ -526,6 +551,7 @@
                     kTKPDHOME_APITITLEKEY : hotlist.title,
                     };
         UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+        nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self.navigationController presentViewController:nav animated:YES completion:nil];
     }
     // redirect uri to search category
@@ -576,5 +602,57 @@
     [self configureRestKit];
     [self loadData];
 }
+
+- (void)goToInboxMessage:(NSNotification*)userInfo {
+    InboxMessageViewController *vc = [InboxMessageViewController new];
+    vc.data=@{@"nav":@"inbox-message"};
+    
+    InboxMessageViewController *vc1 = [InboxMessageViewController new];
+    vc1.data=@{@"nav":@"inbox-message-sent"};
+    
+    InboxMessageViewController *vc2 = [InboxMessageViewController new];
+    vc2.data=@{@"nav":@"inbox-message-archive"};
+    
+    InboxMessageViewController *vc3 = [InboxMessageViewController new];
+    vc3.data=@{@"nav":@"inbox-message-trash"};
+    NSArray *vcs = @[vc,vc1, vc2, vc3];
+    
+    TKPDTabInboxMessageNavigationController *nc = [TKPDTabInboxMessageNavigationController new];
+    [nc setSelectedIndex:2];
+    [nc setViewControllers:vcs];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+    [nav.navigationBar setTranslucent:NO];
+    
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)goToInboxTalk:(NSNotification*)userInfo {
+    InboxTalkViewController *vc = [InboxTalkViewController new];
+    vc.data=@{@"nav":@"inbox-talk"};
+    
+    InboxTalkViewController *vc1 = [InboxTalkViewController new];
+    vc1.data=@{@"nav":@"inbox-talk-my-product"};
+    
+    InboxTalkViewController *vc2 = [InboxTalkViewController new];
+    vc2.data=@{@"nav":@"inbox-talk-following"};
+    
+    NSArray *vcs = @[vc,vc1, vc2];
+    
+    TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
+    [nc setSelectedIndex:2];
+    [nc setViewControllers:vcs];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+    [nav.navigationBar setTranslucent:NO];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)goToInboxReview:(NSNotification*)userInfo {
+    
+}
+
+- (void)goToNewOrder:(NSNotification*)userInfo {
+    
+}
+
 
 @end

@@ -19,6 +19,7 @@
 
 @optional
 - (id)navigationController:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
+- (void)skipReview:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
 @end
 
 #pragma mark - General Review Cell
@@ -43,6 +44,7 @@
 @property (weak, nonatomic) IBOutlet StarsRateView *accuracyrate;
 @property (weak, nonatomic) IBOutlet UIButton *commentbutton;
 @property (weak, nonatomic) IBOutlet UIButton *editReviewButton;
+@property (weak, nonatomic) IBOutlet UIButton *skipReviewButton;
 @property (weak, nonatomic) IBOutlet UIButton *reportReviewButton;
 @property (weak, nonatomic) IBOutlet UIView *ratingView;
 @property (weak, nonatomic) IBOutlet UIView *commentView;

@@ -180,7 +180,9 @@
 - (void)setViewControllers:(NSArray *)viewControllers
 {
     [self setViewControllers:viewControllers animated:YES];
+
 }
+
 
 - (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated
 {
@@ -289,7 +291,7 @@
             UINavigationController* n = (UINavigationController*)select;
             if (!n.navigationBarHidden && !n.navigationBar.hidden) {
                 
-                CGRect rect = n.navigationBar.frame;
+                //CGRect rect = n.navigationBar.frame;
                 selectframe.origin.y = inset.top;
                 //selectframe = CGRectOffset(selectframe, 0.0f, CGRectGetHeight(rect));
                 selectframe = CGRectZero;
@@ -590,7 +592,7 @@
                 barbutton1.tintColor = [UIColor blackColor];
                 
                 [self.navigationItem setRightBarButtonItem:barbutton1];
-                NSString *str_index = [NSString stringWithFormat:@"%d",_selectedIndex];
+                NSString *str_index = [NSString stringWithFormat:@"%zd",_selectedIndex];
                 NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:str_index, @"show_check", nil];
 
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"editModeOn" object:nil userInfo:dict];

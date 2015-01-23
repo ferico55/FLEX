@@ -20,10 +20,6 @@
 
 #define kTKPDWINDOW_TINTLCOLOR [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0]
 
-#define kTKPD_HOMETITLEISAUTHARRAY @[@"Hotlist",@"Produk Feed", @"Terakhir dilihat", @"Toko Favorite"]
-#define kTKPD_HOMETITLEARRAY @[@"Hotlist"]
-
-#define kTKPDNAVIGATION_TABBARTITLEARRAY @[@"Home", @"Category", @"Search", @"Cart", @"More"]
 #define kTKPDNAVIGATION_TABBARACTIVETITLECOLOR [UIColor blackColor]
 #define kTKPDNAVIGATION_TABBARTITLECOLOR [UIColor blackColor]
 
@@ -45,6 +41,7 @@
 @property (assign, nonatomic) BOOL isNetworkWiFi;
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UIViewController *viewController;
+@property (strong, nonatomic) UIViewController *navigationController;
 
 //TODO:: Push Notifiation
 @property (assign, nonatomic) BOOL isPushNotificationRegistered;

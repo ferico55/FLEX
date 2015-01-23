@@ -11,8 +11,6 @@
 
 @implementation SortCell
 
-@synthesize delegate = _delegate;
-
 #pragma mark - Factory methods
 
 + (id)newcell
@@ -50,26 +48,5 @@
     
 }
 
-#pragma mark - View Gesture
-- (IBAction)gesture:(id)sender {
-    
-    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
-        UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-        switch (gesture.state) {
-            case UIGestureRecognizerStateBegan: {
-                break;
-            }
-            case UIGestureRecognizerStateChanged: {
-                break;
-            }
-            case UIGestureRecognizerStateEnded: {
-                NSIndexPath *indexpath = [_data objectForKey:kTKPDFILTER_DATAINDEXPATHKEY];
-                [_delegate SortCell:self withindexpath:indexpath];
-                break;
-            }
-        }
-    }
-    
-}
 
 @end

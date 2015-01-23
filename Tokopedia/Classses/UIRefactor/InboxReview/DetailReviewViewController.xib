@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailReviewViewController">
+            <connections>
+                <outlet property="accuracyrate" destination="Da9-oy-ccD" id="7xl-Dd-Mas"/>
+                <outlet property="commentView" destination="6kS-n5-1j9" id="ehz-kR-AXs"/>
+                <outlet property="commentbutton" destination="zNT-UL-qC9" id="ImB-Zj-HjF"/>
+                <outlet property="commentlabel" destination="ZFn-o2-XqL" id="sAa-RY-Pef"/>
+                <outlet property="editReviewButton" destination="Kxx-pW-z3B" id="mC2-aP-a1P"/>
+                <outlet property="productImageView" destination="tUK-ni-ay7" id="WkG-dO-jn0"/>
+                <outlet property="productNamelabel" destination="HqU-nU-ayR" id="v5I-hg-lLx"/>
+                <outlet property="qualityrate" destination="DId-tZ-CSO" id="LEg-fl-BF7"/>
+                <outlet property="ratingView" destination="JrU-Ca-aEc" id="IYc-uF-Q7o"/>
+                <outlet property="reportReviewButton" destination="2NE-ja-VnX" id="5Gr-4y-cfh"/>
+                <outlet property="respondView" destination="bE8-15-huH" id="cdF-Nz-xNA"/>
+                <outlet property="reviewCreateTimeLabel" destination="J2Z-Dj-mZo" id="PyI-qz-pAR"/>
+                <outlet property="reviewRespondLabel" destination="YzB-Za-dOk" id="cvs-vM-e3K"/>
+                <outlet property="sendButton" destination="Bjm-md-Us0" id="3fv-tR-QfB"/>
+                <outlet property="servicerate" destination="I2r-QL-AKy" id="zXH-kq-lnM"/>
+                <outlet property="speedrate" destination="gdJ-FD-yoi" id="Fde-Nc-goy"/>
+                <outlet property="talkInputView" destination="Clf-QR-SE2" id="Y9u-OD-NWa"/>
+                <outlet property="timelabel" destination="6be-sE-orR" id="9HW-fG-ZYd"/>
+                <outlet property="userImageView" destination="s9u-CW-HzA" id="afd-Uk-CPN"/>
+                <outlet property="userNamelabel" destination="g4z-kv-MBi" id="idf-lj-avW"/>
+                <outlet property="view" destination="3sB-MC-Mi0" id="SHL-5Q-Knu"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="3sB-MC-Mi0">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W0x-wc-Tvn" userLabel="View Top">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s9u-CW-HzA" userLabel="user_image">
+                            <rect key="frame" x="10" y="10" width="50" height="50"/>
+                        </imageView>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g4z-kv-MBi" userLabel="user_name">
+                            <rect key="frame" x="74" y="15" width="214" height="21"/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                            <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6be-sE-orR" userLabel="create_time">
+                            <rect key="frame" x="74" y="33" width="214" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6HC-l0-fZt" userLabel="Vertical Border">
+                            <rect key="frame" x="10" y="69" width="300" height="1"/>
+                            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                        </view>
+                        <button hidden="YES" opaque="NO" tag="15" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kxx-pW-z3B" userLabel="Edit">
+                            <rect key="frame" x="250" y="0.0" width="42" height="22"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="Edit">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TF2-Ms-twf" userLabel="View Middle">
+                    <rect key="frame" x="0.0" y="70" width="320" height="170"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_toped_loading_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="ip1-cm-NLR" userLabel="Icon Toped Image View">
+                            <rect key="frame" x="10" y="14" width="50" height="50"/>
+                            <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="deviceRGB"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tUK-ni-ay7" userLabel="Product Image View">
+                            <rect key="frame" x="10" y="15" width="50" height="50"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </imageView>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="180" translatesAutoresizingMaskIntoConstraints="NO" id="ZFn-o2-XqL" userLabel="Message Label">
+                            <rect key="frame" x="10" y="75" width="282" height="95"/>
+                            <attributedString key="attributedText">
+                                <fragment content="Label Label Label Label Label Label Label Label Label Label Label ">
+                                    <attributes>
+                                        <font key="NSFont" size="12" name="GothamBook"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="5"/>
+                                    </attributes>
+                                </fragment>
+                            </attributedString>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HqU-nU-ayR" userLabel="Product Name Label">
+                            <rect key="frame" x="68" y="31" width="224" height="18"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JrU-Ca-aEc" userLabel="View Rating">
+                    <rect key="frame" x="0.0" y="240" width="320" height="83"/>
+                    <subviews>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Quality" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Sg-yk-Ntu">
+                            <rect key="frame" x="10" y="14" width="60" height="21"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LRp-Pq-Sgx" userLabel="Vertical Border">
+                            <rect key="frame" x="10" y="0.0" width="300" height="1"/>
+                            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                        </view>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Accuracy" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fiz-cS-NOW">
+                            <rect key="frame" x="10" y="45" width="66" height="21"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Da9-oy-ccD" userLabel="Accuracy Rate View" customClass="StarsRateView">
+                            <rect key="frame" x="73" y="47" width="100" height="20"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rUk-UK-Wzd">
+                                    <rect key="frame" x="2" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="coe-YV-Ju2">
+                                    <rect key="frame" x="18" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V0g-u6-1OI">
+                                    <rect key="frame" x="34" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="H9b-4q-exp">
+                                    <rect key="frame" x="50" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZN1-O2-zPs">
+                                    <rect key="frame" x="66" y="2" width="13" height="13"/>
+                                </imageView>
+                            </subviews>
+                            <connections>
+                                <outletCollection property="starimages" destination="ZN1-O2-zPs" id="XdZ-77-tzV"/>
+                                <outletCollection property="starimages" destination="H9b-4q-exp" id="hjd-dP-mYM"/>
+                                <outletCollection property="starimages" destination="rUk-UK-Wzd" id="csI-aD-2RF"/>
+                                <outletCollection property="starimages" destination="V0g-u6-1OI" id="Noj-kn-VCy"/>
+                                <outletCollection property="starimages" destination="coe-YV-Ju2" id="9Rk-KS-vTg"/>
+                            </connections>
+                        </view>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DId-tZ-CSO" userLabel="Quality Rate View" customClass="StarsRateView">
+                            <rect key="frame" x="73" y="16" width="100" height="20"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sel-BR-5Uy">
+                                    <rect key="frame" x="2" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VUI-tM-Gws">
+                                    <rect key="frame" x="18" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EEF-GL-QOx">
+                                    <rect key="frame" x="34" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nq8-qT-Tla">
+                                    <rect key="frame" x="50" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Ev-kI-M4y">
+                                    <rect key="frame" x="66" y="2" width="13" height="13"/>
+                                </imageView>
+                            </subviews>
+                            <connections>
+                                <outletCollection property="starimages" destination="7Ev-kI-M4y" id="UwO-yk-8aP"/>
+                                <outletCollection property="starimages" destination="nq8-qT-Tla" id="tOQ-In-Fsr"/>
+                                <outletCollection property="starimages" destination="EEF-GL-QOx" id="uCa-Ge-Sgg"/>
+                                <outletCollection property="starimages" destination="VUI-tM-Gws" id="F9N-bi-Laz"/>
+                                <outletCollection property="starimages" destination="sel-BR-5Uy" id="crc-AU-OXo"/>
+                            </connections>
+                        </view>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Speed" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MTP-TY-shm">
+                            <rect key="frame" x="161" y="12" width="50" height="21"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gdJ-FD-yoi" userLabel="Speed Rate View" customClass="StarsRateView">
+                            <rect key="frame" x="213" y="16" width="77" height="22"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TTU-bW-v7x">
+                                    <rect key="frame" x="0.0" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rEr-JW-GQS">
+                                    <rect key="frame" x="16" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mAL-TC-guQ">
+                                    <rect key="frame" x="32" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="emQ-nD-aSs">
+                                    <rect key="frame" x="48" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cmc-8B-h5I">
+                                    <rect key="frame" x="64" y="2" width="13" height="13"/>
+                                </imageView>
+                            </subviews>
+                            <connections>
+                                <outletCollection property="starimages" destination="cmc-8B-h5I" id="LOU-1K-qhy"/>
+                                <outletCollection property="starimages" destination="emQ-nD-aSs" id="LFu-Sr-1Rw"/>
+                                <outletCollection property="starimages" destination="TTU-bW-v7x" id="t1v-MP-dj7"/>
+                                <outletCollection property="starimages" destination="mAL-TC-guQ" id="kFp-Ft-wmu"/>
+                                <outletCollection property="starimages" destination="rEr-JW-GQS" id="MSZ-Ly-EfC"/>
+                            </connections>
+                        </view>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Service" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QLA-O3-K8q">
+                            <rect key="frame" x="161" y="45" width="48" height="21"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="I2r-QL-AKy" userLabel="Service Rate View" customClass="StarsRateView">
+                            <rect key="frame" x="213" y="47" width="77" height="22"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JdQ-wT-P7B">
+                                    <rect key="frame" x="0.0" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Map-Hz-cB7">
+                                    <rect key="frame" x="16" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7hR-QL-e7L">
+                                    <rect key="frame" x="32" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="DA1-Fc-yQb">
+                                    <rect key="frame" x="48" y="2" width="13" height="13"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q7r-k9-u3f">
+                                    <rect key="frame" x="64" y="2" width="13" height="13"/>
+                                </imageView>
+                            </subviews>
+                            <connections>
+                                <outletCollection property="starimages" destination="Q7r-k9-u3f" id="hMA-wZ-EWq"/>
+                                <outletCollection property="starimages" destination="DA1-Fc-yQb" id="sfU-yx-KDz"/>
+                                <outletCollection property="starimages" destination="JdQ-wT-P7B" id="vL0-iY-Hxs"/>
+                                <outletCollection property="starimages" destination="7hR-QL-e7L" id="7Ek-y3-NQM"/>
+                                <outletCollection property="starimages" destination="Map-Hz-cB7" id="hWB-Ga-xZX"/>
+                            </connections>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bE8-15-huH" userLabel="View Comment">
+                    <rect key="frame" x="0.0" y="358" width="320" height="107"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Penjual" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mGO-iO-oZx">
+                            <rect key="frame" x="8" y="8" width="50" height="18"/>
+                            <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="12 Desember 2014" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J2Z-Dj-mZo">
+                            <rect key="frame" x="144" y="2" width="163" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YzB-Za-dOk">
+                            <rect key="frame" x="16" y="34" width="304" height="57"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6kS-n5-1j9" userLabel="View Bottom">
+                    <rect key="frame" x="0.0" y="318" width="320" height="40"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7pN-AQ-HeQ" userLabel="Vertical Border">
+                            <rect key="frame" x="10" y="0.0" width="300" height="1"/>
+                            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                        </view>
+                        <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zNT-UL-qC9">
+                            <rect key="frame" x="10" y="9" width="99" height="22"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Comment" image="icon_comment.png">
+                                <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                        <button hidden="YES" opaque="NO" tag="14" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2NE-ja-VnX" userLabel="Report">
+                            <rect key="frame" x="246" y="9" width="46" height="22"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="Report">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Clf-QR-SE2" userLabel="Bottom View">
+                    <rect key="frame" x="0.0" y="528" width="320" height="40"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dYv-hX-33e" userLabel="Horizontal Border">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                        </view>
+                        <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bjm-md-Us0">
+                            <rect key="frame" x="250" y="5" width="65" height="30"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                            <state key="normal" title="Send">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="7zb-NT-Igj"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="9PL-QW-riH"/>
+                        <constraint firstAttribute="width" constant="320" id="WCH-To-GOH"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="bE8-15-huH" firstAttribute="top" secondItem="6kS-n5-1j9" secondAttribute="bottom" constant="3" id="4Bl-qn-1zS"/>
+                <constraint firstAttribute="bottom" secondItem="bE8-15-huH" secondAttribute="bottom" constant="95" id="bHX-rX-y54"/>
+                <constraint firstAttribute="bottom" secondItem="Clf-QR-SE2" secondAttribute="bottom" id="gFh-H9-S0g"/>
+                <constraint firstAttribute="trailing" secondItem="Clf-QR-SE2" secondAttribute="trailing" id="nFK-s6-Mml"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="140" y="154"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_comment.png" width="14" height="14"/>
+        <image name="icon_toped_loading_grey.png" width="20" height="20"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

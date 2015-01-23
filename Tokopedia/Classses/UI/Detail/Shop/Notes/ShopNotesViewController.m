@@ -7,21 +7,19 @@
 //
 
 #import "detail.h"
-#import "alert.h"
+#import "string_alert.h"
 
 #import "Notes.h"
 #import "StarsRateView.h"
 #import "ProgressBarView.h"
-#import "ShopNotesCell.h"
 
 #import "TKPDAlertView.h"
 #import "AlertListView.h"
 #import "ShopNotesViewController.h"
 #import "ShopNotesDetailViewController.h"
-#import "SettingNoteDetailViewController.h"
 
 #import "URLCacheController.h"
-#import "SettingNoteDetailViewController.h"
+#import "MyShopNoteDetailViewController.h"
 #import "ShopHeaderViewController.h"
 
 #import "UIImage+ImageEffects.h"
@@ -33,7 +31,7 @@
 
 #pragma mark - Shop Notes View Controller
 
-@interface ShopNotesViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, ShopNotesCellDelegate, ShopHeaderDelegate>
+@interface ShopNotesViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate, ShopHeaderDelegate>
 {
     NSMutableDictionary *_param;
     NSMutableArray *_list;
@@ -226,21 +224,19 @@
     UITableViewCell* cell = nil;
     if (!_isNoData) {
         
-        NSString *cellid = kTKPDSHOPNOTESCELL_IDENTIFIER;
-		
-		cell = (ShopNotesCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-		if (cell == nil) {
-			cell = [ShopNotesCell newcell];
-			((ShopNotesCell*)cell).delegate = self;
-		}
+        static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
         
-        if (_list.count > indexPath.row) {
-            NotesList *list = _list[indexPath.row];
-            ((ShopNotesCell*)cell).label.text = list.note_title;
-            ((ShopNotesCell*)cell).indexpath = indexPath;
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
+        NotesList *list = _list[indexPath.row];
+        cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
+        cell.textLabel.text = list.note_title;
         
-		return cell;
+        return cell;
     } else {
         static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
         
@@ -257,6 +253,20 @@
 }
 
 #pragma mark - Table View Delegate
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ShopNotesDetailViewController *vc = [ShopNotesDetailViewController new];
+    NotesList *list = _list[indexPath.row];
+    vc.data = @{kTKPDNOTES_APINOTEIDKEY:list.note_id,kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]?:@(0)};
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -283,9 +293,7 @@
 }
 
 #pragma mark - Memory Management
-
-- (void)dealloc
-{
+- (void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 
@@ -343,7 +351,7 @@
 
 - (void)request
 {
-//    if (_request.isExecuting) return;
+    if (_request.isExecuting) return;
     
     _requestCount++;
     
@@ -375,9 +383,8 @@
             _isRefreshView = NO;
             
             [_refreshControl endRefreshing];
-            
+            _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
             [self requestSuccess:mappingResult withOperation:operation];
-            
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             /** failure **/
             [_timer invalidate];
@@ -385,6 +392,7 @@
             [_activityIndicator stopAnimating];
             _isRefreshView = NO;
             [_refreshControl endRefreshing];
+            _tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
             [self requestFailure:error];
         }];
         
@@ -596,7 +604,7 @@
 -(void)ShopNotesCellDelegate:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexPath
 {
     NotesList *list = _list[indexPath.row];
-    SettingNoteDetailViewController *vc = [SettingNoteDetailViewController new];
+    MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
     vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
                 kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
                 kTKPDNOTES_APINOTEIDKEY:list.note_id,

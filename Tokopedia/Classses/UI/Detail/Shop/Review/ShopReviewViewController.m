@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 #import "detail.h"
-#import "alert.h"
+#import "string_alert.h"
 
 #import "Review.h"
 #import "StarsRateView.h"
@@ -640,7 +640,7 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                NSLog(@"next page : %d",_page);
+                NSLog(@"next page : %zd",_page);
                 
                 [_tableView reloadData];
                 if (_list.count == 0) _activityIndicator.hidden = YES;
@@ -651,7 +651,7 @@
                 NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
                 if ([(NSError*)object code] == NSURLErrorCancelled) {
                     if (_requestCount<kTKPDREQUESTCOUNTMAX) {
-                        NSLog(@" ==== REQUESTCOUNT %d =====",_requestCount);
+                        NSLog(@" ==== REQUESTCOUNT %zd =====",_requestCount);
                         _tableView.tableFooterView = _footerView;
                         [_activityIndicator startAnimating];
                         [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];

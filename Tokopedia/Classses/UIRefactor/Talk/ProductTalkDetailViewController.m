@@ -127,8 +127,8 @@
     _page = 1;
     _auth = [NSMutableDictionary new];
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
+    //UIBarButtonItem *barbutton1;
+    //NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
@@ -311,7 +311,7 @@
     _growingtextview.minNumberOfLines = 1;
     _growingtextview.maxNumberOfLines = 6;
     _growingtextview.returnKeyType = UIReturnKeyGo; //just as an example
-    _growingtextview.delegate = self;
+//    _growingtextview.delegate = self;
     _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     _growingtextview.backgroundColor = [UIColor whiteColor];
     _growingtextview.placeholder = @"Kirim pesanmu di sini..";
@@ -402,7 +402,7 @@
 //    [_cachecontroller getFileModificationDate];
 //	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
 //	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILTALK_APIPATH parameters:param];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILTALK_APIPATH parameters:[param encrypt]];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         //[_objectmanager getObjectsAtPath:kTKPDDETAILTALK_APIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [_timer invalidate];
@@ -518,7 +518,7 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                NSLog(@"next page : %d",_page);
+                NSLog(@"next page : %zd",_page);
                 
                 
                 _isnodata = NO;
@@ -529,7 +529,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
@@ -539,12 +539,20 @@
                 {
                     [_act stopAnimating];
                     _table.tableFooterView = nil;
+                    NSError *error = object;
+                    NSString *errorDescription = error.localizedDescription;
+                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                    [errorAlert show];
                 }
             }
             else
             {
                 [_act stopAnimating];
                 _table.tableFooterView = nil;
+                NSError *error = object;
+                NSString *errorDescription = error.localizedDescription;
+                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                [errorAlert show];
             }
         }
     }
@@ -594,9 +602,9 @@
                 
                 commentlist.comment_create_time = [dateString stringByAppendingString:@"WIB"];
                 
-                [_list insertObject:commentlist atIndex:lastindexpathrow?:0];
+                [_list insertObject:commentlist atIndex:lastindexpathrow];
                 NSArray *insertIndexPaths = [NSArray arrayWithObjects:
-                                             [NSIndexPath indexPathForRow:lastindexpathrow?:0 inSection:0],nil
+                                             [NSIndexPath indexPathForRow:lastindexpathrow inSection:0],nil
                                              ];
                 
                 [_table beginUpdates];
@@ -654,7 +662,7 @@
                             };
     
     _requestactioncount ++;
-    _requestaction = [_objectactionmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDACTIONTALK_APIPATH parameters:param];
+    _requestaction = [_objectactionmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDACTIONTALK_APIPATH parameters:[param encrypt]];
     
     
     [_requestaction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -695,7 +703,7 @@
             TalkCommentList *commentlist = _list[_list.count-1];
             commentlist.is_not_delivered = @"1";
         } else {
-            NSString *totalcomment = [NSString stringWithFormat:@"%d %@",_list.count, @"Comment"];
+            NSString *totalcomment = [NSString stringWithFormat:@"%zd %@",_list.count, @"Comment"];
             _talktotalcommentlabel.text = totalcomment;
             
             NSDictionary *userinfo;

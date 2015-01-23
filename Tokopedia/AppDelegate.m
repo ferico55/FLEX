@@ -13,6 +13,7 @@
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
 #import "StickyAlert.h"
+#import "NotificationManager.h"
 
 @implementation AppDelegate
 {
@@ -31,7 +32,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
      NSLog(@"path:%@",[[NSBundle mainBundle]bundlePath]);
-    //[self monitornetwork];
     
     [self adjustnavigationbar];
     
@@ -39,12 +39,6 @@
     [application setStatusBarStyle:UIStatusBarStyleLightContent];
     
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-//    UIAlertView* alert = [[UIAlertView alloc] initWithTitle:kTKPDNETWORK_ERRORTITLE message:kTKPDNETWORK_ERRORDESCS delegate:self cancelButtonTitle:kTKPDBUTTON_OKTITLE otherButtonTitles:nil];
-//    alert.delegate = self;
-//    [alert show];
-    
-	_window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	_window.tag = 0xCAFEBABE;	//used globally to identify main application window
 	_window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
 //#ifdef __IPHONE_7_0
@@ -72,9 +66,31 @@
     //NSURLCache* cache = [NSURLCache sharedURLCache];
     //NSLOG(@"nsurlcache capacity:%dKB, %dKB - current:%dKB, %dKB", cache.memoryCapacity >> 10, cache.diskCapacity >> 10, cache.currentMemoryUsage >> 10, cache.currentDiskUsage >> 10);
     ////[cache removeAllCachedResponses];
-
+    
+    // Let the device know we want to receive push notifications
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     
     return YES;
+}
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+    NSLog(@"My token is: %@", deviceToken);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+    //opened when application is on background
+    NotificationManager *notifManager = [NotificationManager new];
+    if(application.applicationState == UIApplicationStateInactive || application.applicationState == UIApplicationStateBackground) {
+        [notifManager selectViewControllerToOpen:[[userInfo objectForKey:@"data"] objectForKey:@"tkp_code"]];
+    } else {
+        //refresh ticker notification
+    }
+    
 }
 
 - (void)didFinishLaunchingWithOptionsQueued
@@ -132,11 +148,8 @@
     else
     {
         [proxy setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-        //[proxy setTintColor:[UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1]];
     }
-	
-    [proxy setBarTintColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
-    [proxy setBackgroundColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
+    
     [proxy setTintColor:[UIColor whiteColor]];
     
     //[proxy setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
@@ -259,13 +272,9 @@
 		
 		if (!_isalertshown) {
 			_isalertshown = YES;
-			
-            //TODO::alert view crash customButtonCell
-            //UIAlertView* alert = [[UIAlertView alloc] initWithTitle:kTKPDNETWORK_ERRORTITLE message:kTKPDNETWORK_ERRORDESCS delegate:self cancelButtonTitle:kTKPDBUTTON_OKTITLE otherButtonTitles:nil];
-            //[alert show];
-            NSLog(@"%@ : %@ NETWORK NOT AVAILABLE",[self class], NSStringFromSelector(_cmd));
-			
-			[[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_INTERRUPTNOTIFICATIONNAMEKEY object:self userInfo:nil];
+            UIAlertView* alert = [[UIAlertView alloc] initWithTitle:kTKPDNETWORK_ERRORTITLE message:kTKPDNETWORK_ERRORDESCS delegate:self cancelButtonTitle:kTKPDBUTTON_OKTITLE otherButtonTitles:nil];
+            [alert show];			
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_INTERRUPTNOTIFICATIONNAMEKEY object:self userInfo:nil];
 		}
 	}
 }

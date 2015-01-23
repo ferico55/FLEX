@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "stringhome.h"
+#import "string_home.h"
 #import "HotlistList.h"
 
 @implementation HotlistList

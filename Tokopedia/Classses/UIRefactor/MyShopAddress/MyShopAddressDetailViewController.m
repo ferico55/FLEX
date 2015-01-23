@@ -1,0 +1,143 @@
+//
+//  MyShopAddressDetailViewController.m
+//  Tokopedia
+//
+//  Created by IT Tkpd on 11/5/14.
+//  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
+//
+
+#import "detail.h"
+#import "Address.h"
+#import "MyShopAddressDetailViewController.h"
+#import "MyShopAddressEditViewController.h"
+
+#pragma mark - Setting Location Detail View Controller
+@interface MyShopAddressDetailViewController () <UIScrollViewDelegate>
+@property (weak, nonatomic) IBOutlet UILabel *labeladdressname;
+@property (weak, nonatomic) IBOutlet UILabel *labeladdress;
+@property (weak, nonatomic) IBOutlet UILabel *labelemail;
+@property (weak, nonatomic) IBOutlet UILabel *labeldistrict;
+@property (weak, nonatomic) IBOutlet UILabel *labelcity;
+@property (weak, nonatomic) IBOutlet UILabel *labelprovince;
+@property (weak, nonatomic) IBOutlet UILabel *labelphonenumber;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
+
+@end
+
+@implementation MyShopAddressDetailViewController
+#pragma  mark - Initialization
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        
+    }
+    return self;
+}
+
+#pragma mark - View Action
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self setDefaultData:_data];
+    
+    Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+    self.title = list.location_address_name;
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    barButtonItem.tag = 10;
+    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    UIBarButtonItem *barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [barbutton1 setTintColor:[UIColor blackColor]];
+    barbutton1.tag = 11;
+    self.navigationItem.rightBarButtonItem = barbutton1;
+}
+
+-(void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    _scrollView.contentSize = _contentView.frame.size;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.scrollView.delegate = self;
+    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, self.contentView.frame.size.height)];
+    
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - View Action
+-(IBAction)tap:(id)sender
+{
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *btn = (UIBarButtonItem*)sender;
+        switch (btn.tag) {
+            case 10:
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+                break;
+            }
+            case 11:
+            {   //Edit
+                MyShopAddressEditViewController *vc = [MyShopAddressEditViewController new];
+                vc.data = @{kTKPDDETAIL_DATAADDRESSKEY : [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY],
+                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
+                            kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY),
+                            kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
+                            };
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+
+            default:
+                break;
+        }
+    }
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton*)sender;
+        switch (btn.tag) {
+            case 11:
+            {
+                //delete address
+                [_delegate DidTapButton:btn withdata:_data];
+                [self.navigationController popViewControllerAnimated:YES];
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
+
+#pragma mark - Methods
+-(void)setDefaultData:(NSDictionary*)data
+{
+    _data = data;
+    if (data) {
+        Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+        
+        _labeladdressname.text = list.location_address_name;
+        NSString *address = [NSString convertHTML:list.location_address];
+        _labeladdress.text = [NSString stringWithFormat:@"%@\n%@",address,list.location_area];
+        _labelcity.text = list.location_city_name;
+        _labeldistrict.text = list.location_district_name;
+        _labelphonenumber.text = list.location_phone;
+        _labelprovince.text = list.location_province_name;
+        NSString *email = [list.location_email isEqualToString:@"0"]?@"-":list.location_email;
+        _labelemail.text = email;
+    }
+}
+
+@end

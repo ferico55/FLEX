@@ -18,7 +18,8 @@
 
 #import "Shop.h"
 
-#import "ProductEtalaseViewController.h"
+#import "MyShopEtalaseFilterViewController.h"
+//#import "ProductEtalaseViewController.h" //TODO::ceck
 #import "SortViewController.h"
 
 #import "GeneralProductCell.h"
@@ -41,7 +42,7 @@
 #import "ShopReviewViewController.h"
 #import "ShopNotesViewController.h"
 
-@interface TKPDTabShopViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, ShopHeaderDelegate> {
+@interface TKPDTabShopViewController () <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, ShopHeaderDelegate, MyShopEtalaseFilterViewControllerDelegate, GeneralProductCellDelegate> {
     NSMutableArray *_product;
     
     NSInteger _page;
@@ -147,7 +148,7 @@
     [self loadData];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil];
+    //[nc addObserver:self selector:@selector(updateView:) name:kTKPD_FILTERPRODUCTPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(setDepartmentID:) name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY object:nil];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_ETALASEPOSTNOTIFICATIONNAMEKEY object:nil];
     
@@ -431,7 +432,8 @@
             {
                 // etalase button action
                 NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
+                MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
+                //ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
                 vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
                 vc.delegate = self;
@@ -883,12 +885,12 @@
 }
 
 #pragma mark - Post Notification Methods
-
--(void)setDepartmentID:(NSNotification*)notification
+-(void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+//-(void)setDepartmentID:(NSNotification*)notification
 {
     [self cancel];
-    NSDictionary* userinfo = notification.userInfo;
-    [_detailfilter setObject:[userinfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@""
+    //NSDictionary* userinfo = notification.userInfo;
+    [_detailfilter setObject:[userInfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@""
                       forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     [self refreshView:nil];
 }

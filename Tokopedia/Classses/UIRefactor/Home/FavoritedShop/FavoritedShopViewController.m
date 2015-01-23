@@ -7,7 +7,7 @@
 //
 
 #import "FavoritedShopViewController.h"
-#import "stringhome.h"
+#import "string_home.h"
 #import "detail.h"
 #import "ShopTalkViewController.h"
 #import "ShopReviewViewController.h"
@@ -373,8 +373,8 @@
 
 
 -(void) requestsuccessfav:(id)object withOperation:(RKObjectRequestOperation*)operation {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id info = [result objectForKey:@""];
+    //NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    //id info = [result objectForKey:@""];
     
 }
 
@@ -577,7 +577,7 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];

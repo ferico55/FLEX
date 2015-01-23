@@ -8,6 +8,7 @@
 
 #import "search.h"
 #import "sortfiltershare.h"
+#import "string_product.h"
 #import "detail.h"
 
 #import "SearchItem.h"
@@ -29,7 +30,7 @@
 #import "URLCacheController.h"
 
 #pragma mark - Search Result View Controller
-@interface SearchResultViewController () <GeneralProductCellDelegate, TKPDTabNavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface SearchResultViewController () <GeneralProductCellDelegate, TKPDTabNavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, SortViewControllerDelegate, FilterViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -43,7 +44,7 @@
 
 -(void)cancel;
 -(void)configureRestKit;
--(void)loadData;
+-(void)request;
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
 -(void)requestfailure:(id)object;
 -(void)requestprocess:(id)object;
@@ -67,7 +68,6 @@
     
     UIRefreshControl *_refreshControl;
     NSInteger _requestcount;
-    NSTimer *_timer;
     
     SearchItem *_searchitem;
     
@@ -113,22 +113,6 @@
     /** set max data per page request **/
     _limit = kTKPDSEARCH_LIMITPAGE;
     
-    /** set inset table for different size**/
-    if (is4inch) {
-        UIEdgeInsets inset = _table.contentInset;
-        //inset.bottom += 200;
-        _table.contentInset = inset;
-    }
-    else{
-        UIEdgeInsets inset = _table.contentInset;
-        //inset.bottom += 280;
-        _table.contentInset = inset;
-    }
-    
-    /** set table view datasource and delegate **/
-    _table.delegate = self;
-    _table.dataSource = self;
-    
     /** set table footer view (loading act) **/
     if (_product.count > 0) {
         _isnodata = NO;
@@ -149,13 +133,7 @@
     
     [_params setObject:[_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
         _catalogproductview.hidden = YES;
-    
-    // add notification
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(updateViewProduct:) name:@"setfilterProduct" object:nil];
-    [nc addObserver:self selector:@selector(updateViewCatalog:) name:@"setfilterCatalog" object:nil];
-    [nc addObserver:self selector:@selector(setDepartmentID:) name:@"setDepartmentID" object:nil];
-    
+
     //cache
     NSString* path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDSEARCH_CACHEFILEPATH];
     NSString *query =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
@@ -180,7 +158,7 @@
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self loadData];
+            [self request];
         }
     }
 }
@@ -200,7 +178,6 @@
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Table View Delegate
@@ -217,7 +194,7 @@
 		
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext !=0 ) {
             /** called if need to load next page **/
-            [self loadData];
+            [self request];
         }
         else{
             [_act stopAnimating];
@@ -252,7 +229,7 @@
         
         if (_product.count > indexPath.row) {
             //reset cell
-            [self reset:cell];
+            [self reset:(GeneralProductCell*)cell];
             
             /** Flexible view count **/
             NSUInteger indexsegment = indexPath.row * 2;
@@ -418,13 +395,13 @@
 }
 
 
-- (void)loadData
+- (void)request
 {
     if([_request isExecuting]) return;
     
     _requestcount ++;
     
-    NSLog(@"========= Request Count : %d ==============", _requestcount);
+    NSLog(@"========= Request Count : %zd ==============", _requestcount);
     
     NSString *query =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *type = [_params objectForKey:kTKPDSEARCH_DATATYPE];
@@ -477,36 +454,31 @@
                                                                           path:kTKPDSEARCH_APIPATH
                                                                     parameters:[param encrypt]];
         
+        NSTimer *timer;
+        
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [self requestsuccess:mappingResult withOperation:operation];
-            [_table reloadData];
-            //[_act stopAnimating];
-            //_table.tableFooterView = nil;
             _isrefreshview = NO;
             [_refreshControl endRefreshing];
-            [_timer invalidate];
-            _timer = nil;
+            [timer invalidate];
             NSLog(@"============================== DONE GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
             
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            /** failure **/
             [self requestfailure:error];
-            _table.tableFooterView = nil;
             _isrefreshview = NO;
             [_refreshControl endRefreshing];
-            [_timer invalidate];
-            _timer = nil;
+            [timer invalidate];
             NSLog(@"============================== DONE GET %@ =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
         }];
         
         [_operationQueue addOperation:_request];
         
-        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+        timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
                                                   target:self
                                                 selector:@selector(requesttimeout)
                                                 userInfo:nil
                                                  repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     }else {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
@@ -600,12 +572,16 @@
                             [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
                         }
                     }
+                    if (_page == 1) {
+                        [_product removeAllObjects];
+                    }
                     [_product addObjectsFromArray: _searchitem.result.list];
                     
                     if (_product.count == 0) {
                         [_act stopAnimating];
                         _table.tableFooterView = nil;
                     }
+                    
                     if (_product.count >0) {
                         _urinext = _searchitem.result.paging.uri_next;
                         
@@ -625,9 +601,9 @@
                         
                         _page = [[queries objectForKey:kTKPDSEARCH_APIPAGEKEY] integerValue];
                         
-                        NSLog(@"next page : %d",_page);
+                        NSLog(@"next page : %zd",_page);
                         _isnodata = NO;
-                        
+                        [_table reloadData];
                     }
                     
                 }
@@ -652,7 +628,7 @@
                         [_act startAnimating];
                         
                         [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                        [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                        [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                     }
                 }
                 _catalogproductview.hidden = NO;
@@ -662,11 +638,11 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestcount);
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }
                 else
                 {
@@ -729,7 +705,7 @@
             else
                 vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPECATALOGVIEWKEY),
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:0};
-
+            vc.delegate = self;
             UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO, 0);
             if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
                 [self.view drawViewHierarchyInRect:self.view.bounds afterScreenUpdates:YES];
@@ -753,6 +729,7 @@
             else
                 vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPECATALOGVIEWKEY),
                             kTKPDFILTER_DATAFILTERKEY: _params};
+            vc.delegate = self;
             UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
             [self.navigationController presentViewController:nav animated:YES completion:nil];
             break;
@@ -778,53 +755,42 @@
 }
 
 #pragma mark - Methods
--(void)reset:(UITableViewCell*)cell
+-(void)reset:(GeneralProductCell*)cell
 {
-    [((GeneralProductCell*)cell).thumb makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
-    [((GeneralProductCell*)cell).labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((GeneralProductCell*)cell).labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((GeneralProductCell*)cell).labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];
-    [((GeneralProductCell*)cell).viewcell makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
+    [cell.thumb makeObjectsPerformSelector:@selector(setImage:) withObject:nil];
+    [cell.labelprice makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [cell.labelalbum makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [cell.labeldescription makeObjectsPerformSelector:@selector(setText:) withObject:nil];
+    [cell.viewcell makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
 }
 
 -(void)refreshView:(UIRefreshControl*)refresh
 {
-    /** clear object **/
     [self cancel];
-    [_product removeAllObjects];
     _page = 1;
     _isrefreshview = YES;
     _requestcount = 0;
     
     [_table reloadData];
-    /** request data **/
     [self configureRestKit];
-    [self loadData];
+    [self request];
 }
 
-#pragma mark - Post Notification Methods
--(void)setDepartmentID:(NSNotification*)notification
+#pragma mark - Filter Delegate
+-(void)FilterViewController:(FilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
-    NSDictionary* userinfo = notification.userInfo;
-    [_params setObject:[userinfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    [_params addEntriesFromDictionary:userInfo];
     [self refreshView:nil];
+    _table.tableFooterView = _footer;
+    [_act startAnimating];
 }
 
-- (void)updateViewProduct:(NSNotification *)notification
+#pragma mark - Sort Delegate
+-(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
-    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
-        NSDictionary *userinfo = notification.userInfo;
-        [_params addEntriesFromDictionary:userinfo];
-        [self refreshView:nil];
-    }
-}
-
-- (void)updateViewCatalog:(NSNotification *)notification;
-{
-    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-        NSDictionary *userinfo = notification.userInfo;
-        [_params addEntriesFromDictionary:userinfo];
-        [self refreshView:nil];
-    }
+    [_params addEntriesFromDictionary:userInfo];
+    [self refreshView:nil];
+    _table.tableFooterView = _footer;
+    [_act startAnimating];
 }
 @end

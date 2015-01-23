@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "alert.h"
+#import "string_alert.h"
 #import "Alert1ButtonView.h"
 
 @interface Alert1ButtonView ()

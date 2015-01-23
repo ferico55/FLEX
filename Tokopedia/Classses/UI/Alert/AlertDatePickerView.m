@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "alert.h"
+#import "string_alert.h"
 #import "AlertDatePickerView.h"
 
 #pragma mark -
@@ -51,7 +51,8 @@
         NSDate *pickerDate = [_datepicker date];
         NSLog(@"%@",pickerDate);
         _data = @{kTKPDALERTVIEW_DATADATEPICKERKEY:pickerDate};
-        [self dismissWithClickedButtonIndex:index animated:YES];
+        UIButton *doneButton = (UIButton*)sender;
+        [self dismissWithClickedButtonIndex:doneButton.tag animated:YES];
     }
 }
 

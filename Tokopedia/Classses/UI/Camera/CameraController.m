@@ -52,6 +52,12 @@
     {
         _data = [NSMutableDictionary new];
     }
+
+}
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -81,6 +87,10 @@
             _picker = [UIImagePickerController new];
             [_picker setDelegate:(id)self];
             _picker.navigationBar.translucent = YES;
+            
+            UIView *statusBarView = [[UIView alloc] initWithFrame:CGRectMake(0, -20, 320, 22)];
+            statusBarView.backgroundColor = [UIColor yellowColor];
+            [_picker.navigationController.navigationBar addSubview:statusBarView];
         }
         
         if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
@@ -128,41 +138,72 @@
 #pragma mark - UIImagePickerController Delegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    
-    UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
     UIImage* rawImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     NSString* mediaType = [info objectForKey:UIImagePickerControllerMediaType];
     
     NSURL *imagePath = [info objectForKey:UIImagePickerControllerReferenceURL];
     
-    //UIImage *image = [UIImage imageNamed:@"icon_location.png"];
-    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, chosenImage.scale);
-    [chosenImage drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-    chosenImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+    float actualHeight = rawImage.size.height;
+    float actualWidth = rawImage.size.width;
+    float imgRatio = actualWidth/actualHeight;
+    float widthView = self.view.frame.size.width;
+    float heightView = self.view.frame.size.height;
+    float maxRatio = widthView/heightView;
     
+    if(imgRatio!=maxRatio){
+        if(imgRatio < maxRatio){
+            imgRatio = heightView / actualHeight;
+            actualWidth = imgRatio * actualWidth;
+            actualHeight = heightView;
+        }
+        else{
+            imgRatio = widthView / actualWidth;
+            actualHeight = imgRatio * actualHeight;
+            actualWidth = widthView;
+        }
+    }
     NSString *imageName;
-    NSData* imageData;
+    NSData* imageDataRawImage;
     if (imagePath) {
         imageName = [imagePath lastPathComponent];
         
         NSString *extensionOFImage =[imageName substringFromIndex:[imageName rangeOfString:@"."].location+1 ];
         if ([extensionOFImage isEqualToString:@"jpg"])
-            imageData =  UIImagePNGRepresentation(chosenImage);
+            imageDataRawImage =  UIImagePNGRepresentation(rawImage);
         else
-            imageData = UIImageJPEGRepresentation(chosenImage, 1.0);
+            imageDataRawImage = UIImageJPEGRepresentation(rawImage, 1.0);
     }
     else{
-        imageData =  UIImagePNGRepresentation(chosenImage);
+        imageDataRawImage =  UIImagePNGRepresentation(rawImage);
     }
-
+    
+    CGRect rect = CGRectMake(0.0, 0.0, actualWidth, actualHeight);
+    UIGraphicsBeginImageContext(rect.size);
+    [rawImage drawInRect:rect];
+    UIImage *resizedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    //NSString *imageName;
+    NSData* imageDataResizedImage;
+    if (imagePath) {
+        imageName = [imagePath lastPathComponent];
+        
+        NSString *extensionOFImage =[imageName substringFromIndex:[imageName rangeOfString:@"."].location+1 ];
+        if ([extensionOFImage isEqualToString:@"jpg"])
+            imageDataResizedImage =  UIImagePNGRepresentation(resizedImage);
+        else
+            imageDataResizedImage = UIImageJPEGRepresentation(resizedImage, 1.0);
+    }
+    else{
+        imageDataResizedImage =  UIImagePNGRepresentation(resizedImage);
+    }
     
     [_data setValue:@{
-                      kTKPDCAMERA_DATARAWPHOTOKEY:rawImage,
-                      kTKPDCAMERA_DATAMEDIATYPEKEY:mediaType,
-                      kTKPDCAMERA_DATAPHOTOKEY:chosenImage,
+                      kTKPDCAMERA_DATARAWPHOTOKEY:rawImage?:@"",
+                      kTKPDCAMERA_DATAMEDIATYPEKEY:mediaType?:@"",
+                      kTKPDCAMERA_DATAPHOTOKEY:resizedImage?:@"",
                       DATA_CAMERA_IMAGENAME:imageName?:@"image.png",
-                      DATA_CAMERA_IMAGEDATA:imageData
+                      DATA_CAMERA_IMAGEDATA:imageDataResizedImage?:@""
                       } forKey:kTKPDCAMERA_DATAPHOTOKEY];
     
     [_delegate didDismissCameraController:self withUserInfo:_data];
@@ -204,11 +245,11 @@
 {
     [_picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
     _picker.title = @"Select Photo";
-    _picker.allowsEditing = YES;
+    _picker.allowsEditing = NO;
     _picker.mediaTypes = @[(NSString*)kUTTypeImage];
     _picker.navigationBarHidden = NO;
     _picker.wantsFullScreenLayout = NO;
-    _picker.navigationBar.tintColor = [UIColor blackColor];
+    _picker.navigationBar.tintColor = [UIColor blueColor];
     if(_picker != nil)
     {
         [self presentViewController:_picker animated:YES completion:nil];
@@ -219,8 +260,8 @@
 {
     [_picker setSourceType:UIImagePickerControllerSourceTypeCamera];
     [_picker setCameraCaptureMode:UIImagePickerControllerCameraCaptureModePhoto];
+    _picker.allowsEditing = NO;
     _picker.showsCameraControls = YES;
-    _picker.allowsEditing = YES;
     _picker.toolbarHidden = YES;
     _picker.navigationBarHidden = NO;
     _picker.mediaTypes = @[(NSString*)kUTTypeImage];

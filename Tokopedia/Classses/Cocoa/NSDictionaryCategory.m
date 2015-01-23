@@ -7,8 +7,10 @@
 //
 
 #import "NSDictionaryCategory.h"
+#import "NSData+Encryption.h"
 #import "UserAuthentificationManager.h"
 #import "EncodeDecoderManager.h"
+
 
 @implementation NSDictionary (tkpdcategory)
 
@@ -27,10 +29,10 @@
     return YES;
 }
 
+
 - (NSDictionary *)encrypt
 {
-    if ([self isKindOfClass:[NSDictionary class]])
-    {
+    if ([self isKindOfClass:[NSDictionary class]]) {
         UserAuthentificationManager *userManager = [UserAuthentificationManager new];
         EncodeDecoderManager *encodeDecodeManager = [EncodeDecoderManager new];
         

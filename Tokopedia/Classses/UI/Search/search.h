@@ -53,7 +53,7 @@
 #define kTKPDSEARCH_APISHOPTOTALTRANSACTIONKEY @"shop_total_transaction"
 #define kTKPDSEARCH_APISHOPTOTALFAVKEY @"shop_total_favorite"
 #define kTKPDSEARCH_APISHOPGOLDSHOP @"shop_gold_shop"
-
+#define kTKPDSEARCH_APISHOPGOLDSTATUS @"shop_gold_status"
 /** product **/
 #define kTKPDSEARCH_APIPRODUCTIMAGEKEY @"product_image"
 #define kTKPDSEARCH_APIPRODUCTNAMEKEY @"product_name"

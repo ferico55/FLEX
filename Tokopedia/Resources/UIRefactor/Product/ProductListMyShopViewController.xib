@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6205" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6198"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamLight.ttf">
+            <string>GothamLight</string>
+            <string>GothamLight</string>
+            <string>GothamLight</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductListMyShopViewController">
+            <connections>
+                <outlet property="act" destination="pFQ-ej-fSO" id="7Kd-ug-ptg"/>
+                <outlet property="footer" destination="ZLz-ol-CSP" id="5cS-bl-VyI"/>
+                <outlet property="searchbar" destination="eWC-P2-hId" id="Cc2-ZT-ScO"/>
+                <outlet property="table" destination="OQu-8S-oTs" id="T48-jo-d3y"/>
+                <outlet property="view" destination="iN0-l3-epB" id="oua-Kt-zdR"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="90" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="OQu-8S-oTs">
+                    <rect key="frame" x="0.0" y="87" width="320" height="435"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="lNW-j7-gJf"/>
+                        <outlet property="delegate" destination="-1" id="VK5-AJ-O6b"/>
+                    </connections>
+                </tableView>
+                <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="eWC-P2-hId">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="tXk-gU-1zy"/>
+                    </connections>
+                </searchBar>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JKz-K6-aFT">
+                    <rect key="frame" x="0.0" y="44" width="320" height="44"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_plus_blue" translatesAutoresizingMaskIntoConstraints="NO" id="8cG-TW-lJ1">
+                            <rect key="frame" x="20" y="14" width="15" height="15"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="15" id="ZiF-n2-2BC"/>
+                                <constraint firstAttribute="height" constant="15" id="nzf-98-UTr"/>
+                            </constraints>
+                        </imageView>
+                        <button opaque="NO" tag="14" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vNM-YT-NOR">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="3EA-rR-zY3"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                            <inset key="contentEdgeInsets" minX="45" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Tambah Produk">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="uFN-CR-un5"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="m8a-Uk-T39" userLabel="Border Bottom">
+                            <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="8cG-TW-lJ1" firstAttribute="top" secondItem="JKz-K6-aFT" secondAttribute="top" constant="14" id="8Ts-ki-GWI"/>
+                        <constraint firstAttribute="trailing" secondItem="vNM-YT-NOR" secondAttribute="trailing" id="HmK-WZ-frw"/>
+                        <constraint firstAttribute="bottom" secondItem="vNM-YT-NOR" secondAttribute="bottom" id="JOi-A5-w6r"/>
+                        <constraint firstItem="8cG-TW-lJ1" firstAttribute="leading" secondItem="JKz-K6-aFT" secondAttribute="leading" constant="20" id="Lee-F9-wgt"/>
+                        <constraint firstItem="vNM-YT-NOR" firstAttribute="top" secondItem="JKz-K6-aFT" secondAttribute="top" id="Otd-3x-Mc0"/>
+                        <constraint firstItem="vNM-YT-NOR" firstAttribute="leading" secondItem="JKz-K6-aFT" secondAttribute="leading" id="faH-cO-SIY"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vVc-8X-zhr">
+                    <rect key="frame" x="0.0" y="520" width="320" height="48"/>
+                    <subviews>
+                        <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bvQ-wm-WqJ">
+                            <rect key="frame" x="0.0" y="0.0" width="106" height="48"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
+                            <inset key="contentEdgeInsets" minX="0.0" minY="3" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Urutkan">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="vGD-V3-h6u"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tyk-zS-hO2">
+                            <rect key="frame" x="106" y="0.0" width="109" height="48"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
+                            <inset key="contentEdgeInsets" minX="0.0" minY="3" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Etalase">
+                                <color key="titleColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="zJH-nr-UEC"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fli-qa-Dc3">
+                            <rect key="frame" x="214" y="0.0" width="106" height="48"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="14"/>
+                            <inset key="titleEdgeInsets" minX="0.0" minY="3" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Share">
+                                <color key="titleColor" red="0.12941176469999999" green="0.12941176469999999" blue="0.12941176469999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="Y9F-4h-ucQ"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="he1-yl-Kkp" userLabel="Vertical Border">
+                            <rect key="frame" x="106" y="12" width="1" height="25"/>
+                            <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                        </view>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="odv-xk-ay5" userLabel="Vertical Border">
+                            <rect key="frame" x="212" y="12" width="1" height="25"/>
+                            <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                        </view>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KMD-0x-ewF" userLabel="Top Horizontal Border">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="0.28000000000000003" colorSpace="deviceRGB"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="48" id="U2V-sm-DTR"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="OQu-8S-oTs" secondAttribute="trailing" id="81f-Wv-y9A"/>
+                <constraint firstAttribute="trailing" secondItem="vVc-8X-zhr" secondAttribute="trailing" id="9tg-os-pd0"/>
+                <constraint firstItem="vVc-8X-zhr" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CUX-cR-BXL"/>
+                <constraint firstItem="JKz-K6-aFT" firstAttribute="top" secondItem="eWC-P2-hId" secondAttribute="bottom" id="CqH-DQ-l3g"/>
+                <constraint firstItem="OQu-8S-oTs" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="D53-Bg-m3W"/>
+                <constraint firstAttribute="bottom" secondItem="vVc-8X-zhr" secondAttribute="bottom" id="TxQ-h0-MP8"/>
+                <constraint firstItem="eWC-P2-hId" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="YiY-F1-kzq"/>
+                <constraint firstAttribute="bottom" secondItem="OQu-8S-oTs" secondAttribute="bottom" constant="46" id="fvo-VS-kDr"/>
+                <constraint firstItem="JKz-K6-aFT" firstAttribute="top" secondItem="eWC-P2-hId" secondAttribute="bottom" id="hFb-FI-lyB"/>
+                <constraint firstItem="JKz-K6-aFT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="jVq-0a-Xft"/>
+                <constraint firstItem="OQu-8S-oTs" firstAttribute="top" secondItem="eWC-P2-hId" secondAttribute="bottom" constant="43" id="pmg-2I-iV0"/>
+                <constraint firstAttribute="trailing" secondItem="JKz-K6-aFT" secondAttribute="trailing" id="rJI-k6-vtH"/>
+                <constraint firstAttribute="trailing" secondItem="eWC-P2-hId" secondAttribute="trailing" id="rKQ-P3-efo"/>
+                <constraint firstItem="eWC-P2-hId" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="y4N-68-Nzj"/>
+            </constraints>
+            <point key="canvasLocation" x="97" y="19"/>
+        </view>
+        <view contentMode="scaleToFill" id="ZLz-ol-CSP" userLabel="FooterView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="pFQ-ej-fSO">
+                    <rect key="frame" x="150" y="7" width="20" height="20"/>
+                </activityIndicatorView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_plus_blue" width="20" height="20"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4">
+            <size key="portraitSize" width="320" height="568"/>
+            <size key="landscapeSize" width="568" height="320"/>
+        </simulatedScreenMetrics>
+    </simulatedMetricsContainer>
+</document>

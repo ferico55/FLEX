@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShopReviewViewController">
+            <connections>
+                <outlet property="act" destination="Gzh-VE-h4x" id="tQi-v4-p2Q"/>
+                <outlet property="footer" destination="d3p-cz-3cT" id="XOT-wJ-S6t"/>
+                <outlet property="table" destination="TVd-jj-Fdv" id="fnK-1p-4hz"/>
+                <outlet property="view" destination="iN0-l3-epB" id="STD-WD-I9d"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" pagingEnabled="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="325" sectionHeaderHeight="22" sectionFooterHeight="34" translatesAutoresizingMaskIntoConstraints="NO" id="TVd-jj-Fdv">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="deviceRGB"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Phz-Ut-TRm"/>
+                        <outlet property="delegate" destination="-1" id="Neg-Ya-yLL"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="deviceRGB"/>
+            <constraints>
+                <constraint firstItem="TVd-jj-Fdv" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="7mO-v0-TNN"/>
+                <constraint firstAttribute="bottom" secondItem="TVd-jj-Fdv" secondAttribute="bottom" id="TQ7-VW-Yv6"/>
+                <constraint firstAttribute="trailing" secondItem="TVd-jj-Fdv" secondAttribute="trailing" id="blg-gc-NpD"/>
+                <constraint firstItem="TVd-jj-Fdv" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gUB-60-Ruh"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+        <view contentMode="scaleToFill" id="d3p-cz-3cT" userLabel="FooterView">
+            <rect key="frame" x="0.0" y="0.0" width="319" height="34"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Gzh-VE-h4x">
+                    <rect key="frame" x="150" y="7" width="20" height="20"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                </activityIndicatorView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

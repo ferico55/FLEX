@@ -10,7 +10,7 @@
 @class CategoryMenuViewController;
 
 @protocol CategoryMenuViewDelegate <NSObject>
-@required
+@optional
 -(void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary*)userInfo;
 
 @end

@@ -39,7 +39,7 @@
 - (IBAction)gesture:(id)sender {
     
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
-        UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+        //UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
         NSIndexPath* indexpath = _indexpath;
         
         [_delegate ProductTalkCell:self withindexpath:indexpath];

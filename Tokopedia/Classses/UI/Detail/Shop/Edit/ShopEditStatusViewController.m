@@ -6,14 +6,13 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "alert.h"
+#import "string_alert.h"
 #import "detail.h"
 
 #import "ClosedInfo.h"
 #import "ShopEditStatusViewController.h"
 
-#import "../../../../CacheController/URLCacheController.h"
-#import "../../../../CacheController/URLCacheConnection.h"
+#import "URLCacheController.h"
 
 #import "AlertDatePickerView.h"
 
@@ -84,7 +83,7 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     UIBarButtonItem *barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor whiteColor]];
+    [barbutton1 setTintColor:[UIColor blackColor]];
     barbutton1.tag = 11;
     self.navigationItem.rightBarButtonItem = barbutton1;
     
@@ -163,6 +162,7 @@
                 else
                 {
                     [_delegate ShopEditStatusViewController:self withData:_datainput];
+                    [self.navigationController popViewControllerAnimated:YES];
                 }
                 break;
             }
@@ -210,11 +210,11 @@
             }
             case kTKPDDETAIL_DATASTATUSSHOPCLOSED:
             {
-                NSString *note = [_datainput objectForKey:kTKPDSHOPEDIT_APIREASONKEY];
-                ClosedInfo *closedinfo = [_data objectForKey:kTKPDDETAIL_DATACLOSEDINFOKEY];
                 _viewcontentclose.hidden = NO;
-                _textviewnote.text = (note && ![note isEqualToString:@""])?note:closedinfo.note;
-                _labelcatatan.hidden = !(!closedinfo.reason);
+                NSString *note = [_data objectForKey:kTKPDSHOPEDIT_APICLOSEDNOTEKEY];
+                _textviewnote.text = note;
+                _labelcatatan.hidden = !(!note);
+                [_datainput setObject:note forKey:kTKPDSHOPEDIT_APICLOSEDNOTEKEY];
                 
                 ((UIImageView*)_thumbicon[0]).hidden = YES;
                 ((UIImageView*)_thumbicon[1]).hidden = NO;
@@ -223,12 +223,14 @@
                 [deltaComps setDay:7];
                 NSDate* tomorrow = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
                 NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:tomorrow];
-                int year = [components year];
-                int month = [components month];
-                int day = [components day];
-                NSString *datestring = [NSString stringWithFormat:@"%d/%d/%d",day,month,year];
-                [_datainput setObject:datestring forKey:kTKPDDETAILSHOP_APICLOSEDUNTILKEY];
-                NSString *until = [closedinfo.until isEqualToString:@"0"]?datestring:closedinfo.until;
+                NSInteger year = [components year];
+                NSInteger month = [components month];
+                NSInteger day = [components day];
+                NSString *datestring = [NSString stringWithFormat:@"%zd/%zd/%zd",day,month,year];
+                
+                NSString *closedUntil = [_data objectForKey:kTKPDDETAILSHOP_APICLOSEDUNTILKEY]?:datestring;
+                [_datainput setObject:closedUntil forKey:kTKPDDETAILSHOP_APICLOSEDUNTILKEY];
+                NSString *until = [closedUntil isEqualToString:@"0"]?datestring:closedUntil;
                 [_buttondate setTitle:until forState:UIControlStateNormal];
                 break;
             }
@@ -248,10 +250,10 @@
             NSDictionary *data = alertView.data;
             NSDate *date = [data objectForKey:kTKPDALERTVIEW_DATADATEPICKERKEY];
             NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
-            int year = [components year];
-            int month = [components month];
-            int day = [components day];
-            NSString *datestring = [NSString stringWithFormat:@"%d/%d/%d",day,month,year];
+            NSInteger year = [components year];
+            NSInteger month = [components month];
+            NSInteger day = [components day];
+            NSString *datestring = [NSString stringWithFormat:@"%zd/%zd/%zd",day,month,year];
             [_datainput setObject:datestring forKey:kTKPDDETAILSHOP_APICLOSEDUNTILKEY];
             [_buttondate setTitle:datestring forState:UIControlStateNormal];
             

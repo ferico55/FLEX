@@ -7,6 +7,7 @@
 //
 
 #import "Talk.h"
+#import "string_product.h"
 #import "detail.h"
 #import "GeneralTalkCell.h"
 #import "ShopTalkViewController.h"
@@ -84,6 +85,7 @@
 
 #pragma mark - View Life Cycle
 
+#pragma mark - View Life Cycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -212,9 +214,6 @@
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-
-    NSLog(@"\n\n\n%lu\n\n\n", (unsigned long)_list.count);
-
 #ifdef kTKPDHOTLISTRESULT_NODATAENABLE
     return _isnodata?1:_list.count;
 #else
@@ -607,7 +606,7 @@
                 }
                 
                 _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                NSLog(@"next page shop talk : %d",_page);
+                NSLog(@"next page shop talk : %zd",_page);
                 
                 _isNoData = NO;
                 
@@ -621,9 +620,9 @@
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestCount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %d =====",_requestCount);
-                    self.tableView.tableFooterView = _footer;
-                    [_activityIndicator startAnimating];
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestCount);
+                    //_table.tableFooterView = _footer;
+                    //[_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                     [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }

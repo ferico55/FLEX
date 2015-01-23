@@ -25,7 +25,7 @@
 /** product **/
 @property (nonatomic, strong) NSString *product_price;
 @property (nonatomic, strong) NSString *product_id;
-@property (nonatomic, strong) NSString *shop_gold_shop;
+@property (nonatomic, strong) NSString *shop_gold_status;
 @property (nonatomic, strong) NSString *shop_location;
 @property (nonatomic, strong) NSString *shop_name;
 @property (nonatomic, strong) NSString *product_image;

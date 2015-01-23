@@ -16,9 +16,6 @@
 #import "string_deposit.h"
 #import "string_more.h"
 
-#import "Notification.h"
-#import "NotificationRequest.h"
-#import "NotificationViewController.h"
 
 #import "SalesViewController.h"
 #import "PurchaseViewController.h"
@@ -34,9 +31,17 @@
 #import "ShopNotesViewController.h"
 #import "ShopTalkViewController.h"
 
-#import "NotificationBarButton.h"
+#import "InboxMessageViewController.h"
+#import "TKPDTabInboxMessageNavigationController.h"
+#import "TKPDTabInboxReviewNavigationController.h"
 
-@interface MoreViewController () <NotificationDelegate> {
+#import "InboxTalkViewController.h"
+#import "InboxReviewViewController.h"
+#import "NotificationManager.h"
+
+#import "TKPDTabInboxTalkNavigationController.h"
+
+@interface MoreViewController ()  {
     NSDictionary *_auth;
     
     Deposit *_deposit;
@@ -48,6 +53,7 @@
     __weak RKManagedObjectRequestOperation *_depositRequest;
     NSInteger _depositRequestCount;
     BOOL _isNoDataDeposit;
+    NotificationManager *_notifManager;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -62,10 +68,6 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *createShopButton;
 
-@property (strong, nonatomic) UIView *notificationView;
-@property (strong, nonatomic) NotificationBarButton *notificationButton;
-@property (strong, nonatomic) UIImageView *notificationArrowImageView;
-@property (strong, nonatomic) NotificationViewController *notificationController;
 
 @end
 
@@ -74,11 +76,6 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
-    
-    // Add logo in navigation bar
-    self.title = kTKPDMORE_TITLE;
-    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-    [self.navigationItem setTitleView:logo];
     
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
@@ -90,24 +87,9 @@
     _operationQueue = [[NSOperationQueue alloc] init];
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"user_image"]]
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
 
-    [_profilePictureImageView setImageWithURLRequest:request
-                                    placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
-                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        //NSLOG(@"thumb: %@", thumb);
-        [_profilePictureImageView setImage:image];
-#pragma clang diagnostic pop
-    } failure: nil];
-
-    _shopNameLabel.text = [_auth objectForKey:@"shop_name"];
     
-    request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"shop_avatar"]]
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"shop_avatar"]]
                                     cachePolicy:NSURLRequestUseProtocolCachePolicy
                                 timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
@@ -134,7 +116,17 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
- 
+    
+    [self initNotificationManager];
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(goToViewController:) name:@"goToViewController" object:nil];
+    [nc addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotificationBar" object:nil];
+
+    // Add logo in navigation bar
+    self.title = kTKPDMORE_TITLE;
+    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
+    [self.navigationItem setTitleView:logo];
+
     // Remove default table inset
     self.tableView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
 
@@ -149,33 +141,7 @@
     
     _depositLabel.text = @"";
 
-    _notificationView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    _notificationView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
-    _notificationView.clipsToBounds = YES;
-    
-    UIView *notificationTapToCloseArea = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 64)];
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(windowDidTap)];
-    [notificationTapToCloseArea addGestureRecognizer:tapRecognizer];
-    [_notificationView addSubview:notificationTapToCloseArea];
-    
-    // Notification button
-    _notificationButton = [[NotificationBarButton alloc] init];
-    UIButton *button = (UIButton *)_notificationButton.customView;
-    [button addTarget:self action:@selector(barButtonDidTap) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem = _notificationButton;
-    
-    _notificationArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_triangle_grey"]];
-    _notificationArrowImageView.contentMode = UIViewContentModeScaleAspectFill;
-    _notificationArrowImageView.clipsToBounds = YES;
-    _notificationArrowImageView.frame = CGRectMake(_notificationButton.customView.frame.origin.x+12, 60, 10, 5);
-    _notificationArrowImageView.alpha = 0;
-    [_notificationView addSubview:_notificationArrowImageView];
-    
-    NotificationRequest *notificationRequest = [NotificationRequest new];
-    notificationRequest.delegate = self;
-    [notificationRequest loadNotification];
-
-    [self configureRestKit];
+        [self configureRestKit];
     
     if (_isNoDataDeposit) {
         [self loadDataDeposit];
@@ -191,56 +157,7 @@
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark - Notification methods
 
-- (void)barButtonDidTap
-{
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-    _notificationController = [storyboard instantiateViewControllerWithIdentifier:@"NotificationViewController"];
-    _notificationController.notification = _notification;
-    
-    [[[self tabBarController] view] addSubview:_notificationView];
-    
-    CGRect windowFrame = [[UIScreen mainScreen] bounds];
-    windowFrame.size.height = 0;
-    _notificationView.frame = windowFrame;
-    
-    CGRect tableFrame = [[UIScreen mainScreen] bounds];
-    tableFrame.origin.y = 64;
-    self.notificationController.tableView.frame = tableFrame;
-    tableFrame.size.height = self.view.frame.size.height-64;
-    
-    [_notificationView addSubview:_notificationController.tableView];
-    
-    _notificationArrowImageView.alpha = 1;
-    
-    [UIView animateWithDuration:0.7 animations:^{
-        _notificationView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
-    }];
-    
-    [UIView animateWithDuration:0.55 animations:^{
-        _notificationView.frame = [[UIScreen mainScreen] bounds];
-        self.notificationController.tableView.frame = tableFrame;
-    }];
-}
-
-- (void)windowDidTap
-{
-    CGRect windowFrame = _notificationView.frame;
-    windowFrame.size.height = 0;
-
-    [UIView animateWithDuration:0.15 animations:^{
-        _notificationView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
-        _notificationArrowImageView.alpha = 0;
-    }];
-
-    [UIView animateWithDuration:0.2 animations:^{
-        _notificationView.frame = windowFrame;
-    } completion:^(BOOL finished) {
-        [_notificationView removeFromSuperview];
-    }];
-
-} 
 
 #pragma mark - Table view data source
 
@@ -273,7 +190,7 @@
             break;
             
         case 4:
-            return 3;
+            return 6;
             break;
             
         case 5:
@@ -358,9 +275,72 @@
         [self.navigationController pushViewController:salesController animated:YES];
     }
     
+    else if (indexPath.section == 4) {
+        if(indexPath.row == 3) {
+            InboxMessageViewController *vc = [InboxMessageViewController new];
+            vc.data=@{@"nav":@"inbox-message"};
+            
+            InboxMessageViewController *vc1 = [InboxMessageViewController new];
+            vc1.data=@{@"nav":@"inbox-message-sent"};
+            
+            InboxMessageViewController *vc2 = [InboxMessageViewController new];
+            vc2.data=@{@"nav":@"inbox-message-archive"};
+            
+            InboxMessageViewController *vc3 = [InboxMessageViewController new];
+            vc3.data=@{@"nav":@"inbox-message-trash"};
+            NSArray *vcs = @[vc,vc1, vc2, vc3];
+            
+            TKPDTabInboxMessageNavigationController *nc = [TKPDTabInboxMessageNavigationController new];
+            [nc setSelectedIndex:2];
+            [nc setViewControllers:vcs];
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+            [nav.navigationBar setTranslucent:NO];
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+        } else if(indexPath.row == 4) {
+            InboxTalkViewController *vc = [InboxTalkViewController new];
+            vc.data=@{@"nav":@"inbox-talk"};
+            
+            InboxTalkViewController *vc1 = [InboxTalkViewController new];
+            vc1.data=@{@"nav":@"inbox-talk-my-product"};
+            
+            InboxTalkViewController *vc2 = [InboxTalkViewController new];
+            vc2.data=@{@"nav":@"inbox-talk-following"};
+            
+            NSArray *vcs = @[vc,vc1, vc2];
+            
+            TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
+            [nc setSelectedIndex:2];
+            [nc setViewControllers:vcs];
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+            [nav.navigationBar setTranslucent:NO];
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+        } else if (indexPath.row == 5) {
+            InboxReviewViewController *vc = [InboxReviewViewController new];
+            vc.data=@{@"nav":@"inbox-review"};
+            
+            InboxTalkViewController *vc1 = [InboxReviewViewController new];
+            vc1.data=@{@"nav":@"inbox-review-my-product"};
+            
+            InboxTalkViewController *vc2 = [InboxReviewViewController new];
+            vc2.data=@{@"nav":@"inbox-review-my-review"};
+            
+            NSArray *vcs = @[vc,vc1, vc2];
+            
+            TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
+            [nc setSelectedIndex:2];
+            [nc setViewControllers:vcs];
+            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+            [nav.navigationBar setTranslucent:NO];
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            
+        }
+        
+    }
+    
     else if (indexPath.section == 5) {
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil userInfo:@{}];        
+        [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil userInfo:@{}];
+        [nc postNotificationName:@"clearCacheNotificationBar" object:nil];
     }
 
     self.hidesBottomBarWhenPushed = NO;
@@ -452,52 +432,42 @@
 //    }
 //}
 
-#pragma mark - Notification delegate
-
-- (void)didReceiveNotification:(Notification *)notification
-{
-    _notification = notification;
-    
-    if ([_notification.result.total_notif integerValue] == 0) {
-        
-        _notificationButton.badgeLabel.hidden = YES;
-        
-    } else {
-        
-        _notificationButton.enabled = YES;
-        
-        _notificationButton.badgeLabel.hidden = NO;
-        _notificationButton.badgeLabel.text = _notification.result.total_notif;
-        
-        NSInteger totalNotif = [_notification.result.total_notif integerValue];
-        
-        CGRect badgeLabelFrame = _notificationButton.badgeLabel.frame;
-        
-        if (totalNotif >= 10 && totalNotif < 100) {
-            
-            badgeLabelFrame.origin.x -= 6;
-            badgeLabelFrame.size.width += 11;
-            
-        } else if (totalNotif >= 100 && totalNotif < 1000) {
-            
-            badgeLabelFrame.origin.x -= 7;
-            badgeLabelFrame.size.width += 14;
-            
-        } else if (totalNotif >= 1000 && totalNotif < 10000) {
-            
-            badgeLabelFrame.origin.x -= 11;
-            badgeLabelFrame.size.width += 22;
-            
-        } else if (totalNotif >= 10000 && totalNotif < 100000) {
-            
-            badgeLabelFrame.origin.x -= 17;
-            badgeLabelFrame.size.width += 30;
-            
-        }
-        
-        _notificationButton.badgeLabel.frame = badgeLabelFrame;
-        
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"Sales"]) {
+        SalesViewController *salesController = segue.destinationViewController;
+        salesController.notification = _notification;
+    }
+    else if ([segue.identifier isEqualToString:@"Purchase"]) {
+        PurchaseViewController *purchaseController = segue.destinationViewController;
+        purchaseController.notification = _notification;
     }
 }
+
+#pragma mark - Notification Manager
+- (void)initNotificationManager {
+    _notifManager = [NotificationManager new];
+    [_notifManager setViewController:self];
+    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+}
+
+- (void)tapNotificationBar {
+    [_notifManager tapNotificationBar];
+}
+
+- (void)tapWindowBar {
+    [_notifManager tapWindowBar];
+}
+
+- (void)goToViewController:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    [self tapWindowBar];
+}
+
+#pragma mark - Memory Management
+-(void)dealloc{
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
+}
+
 
 @end

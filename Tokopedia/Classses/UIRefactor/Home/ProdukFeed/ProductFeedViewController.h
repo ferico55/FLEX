@@ -10,9 +10,6 @@
 
 @interface ProductFeedViewController : UIViewController
 
-@property (assign, nonatomic) NSInteger index;
-@property (strong, nonatomic) UINavigationController *navcon;
-
-- (id)initWithPosition:(NSInteger)position withNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil;
+@property NSInteger index;
 
 @end

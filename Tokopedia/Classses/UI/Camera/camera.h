@@ -19,6 +19,7 @@
 #define kTKPDCAMERA_DATAMEDIATYPEKEY @"mediatype"
 #define kTKPDCAMERA_DATAPHOTOACCESSKEY @"photoaccess"
 #define kTKPDCAMERA_DATAPHOTOKEY @"photo"
+#define DATA_CAMERA_PICKER_INFO @"camerainfo"
 #define DATA_CAMERA_IMAGEDATA @"cameraimagedata"
 #define DATA_CAMERA_IMAGENAME @"cameraimagename"
 #define kTKPDCAMERA_DATARAWPHOTOKEY @"rawphoto"
