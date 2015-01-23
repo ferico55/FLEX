@@ -5721,6 +5721,7 @@
 						DevelopmentTeam = YQP4A2M94J;
 					};
 					FC36DF9D19B0656400AF74C1 = {
+						DevelopmentTeam = YQP4A2M94J;
 						TestTargetID = FC36DF8219B0656400AF74C1;
 					};
 				};
@@ -6828,6 +6829,8 @@
 			baseConfigurationReference = 967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Tokopedia.app/Tokopedia";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -6841,6 +6844,7 @@
 				);
 				INFOPLIST_FILE = "TokopediaTests/TokopediaTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -6851,6 +6855,8 @@
 			baseConfigurationReference = C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Tokopedia.app/Tokopedia";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -6860,6 +6866,7 @@
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				INFOPLIST_FILE = "TokopediaTests/TokopediaTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};

@@ -47,7 +47,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W0x-wc-Tvn" userLabel="View Top">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W0x-wc-Tvn" userLabel="View Top">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s9u-CW-HzA" userLabel="user_image">
@@ -80,7 +80,7 @@
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TF2-Ms-twf" userLabel="View Middle">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TF2-Ms-twf" userLabel="View Middle">
                     <rect key="frame" x="0.0" y="70" width="320" height="170"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_toped_loading_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="ip1-cm-NLR" userLabel="Icon Toped Image View">
@@ -112,7 +112,7 @@
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JrU-Ca-aEc" userLabel="View Rating">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JrU-Ca-aEc" userLabel="View Rating">
                     <rect key="frame" x="0.0" y="240" width="320" height="83"/>
                     <subviews>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Quality" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Sg-yk-Ntu">
@@ -250,7 +250,7 @@
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bE8-15-huH" userLabel="View Comment">
+                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bE8-15-huH" userLabel="View Comment">
                     <rect key="frame" x="0.0" y="358" width="320" height="107"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Penjual" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mGO-iO-oZx">
@@ -275,7 +275,7 @@
                     </subviews>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6kS-n5-1j9" userLabel="View Bottom">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6kS-n5-1j9" userLabel="View Bottom">
                     <rect key="frame" x="0.0" y="318" width="320" height="40"/>
                     <subviews>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7pN-AQ-HeQ" userLabel="Vertical Border">
@@ -331,10 +331,27 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="bE8-15-huH" firstAttribute="top" secondItem="6kS-n5-1j9" secondAttribute="bottom" constant="3" id="4Bl-qn-1zS"/>
-                <constraint firstAttribute="bottom" secondItem="bE8-15-huH" secondAttribute="bottom" constant="95" id="bHX-rX-y54"/>
+                <constraint firstItem="bE8-15-huH" firstAttribute="leading" secondItem="TF2-Ms-twf" secondAttribute="leading" id="0YP-qh-wG7"/>
+                <constraint firstItem="bE8-15-huH" firstAttribute="trailing" secondItem="Clf-QR-SE2" secondAttribute="trailing" id="14T-YY-2tR"/>
+                <constraint firstItem="JrU-Ca-aEc" firstAttribute="trailing" secondItem="6kS-n5-1j9" secondAttribute="trailing" id="2TJ-tI-3Z3"/>
+                <constraint firstItem="bE8-15-huH" firstAttribute="trailing" secondItem="TF2-Ms-twf" secondAttribute="trailing" id="2qP-MV-UJG"/>
+                <constraint firstItem="bE8-15-huH" firstAttribute="top" secondItem="JrU-Ca-aEc" secondAttribute="bottom" constant="35" id="4bB-Bg-sdZ"/>
+                <constraint firstItem="JrU-Ca-aEc" firstAttribute="top" secondItem="TF2-Ms-twf" secondAttribute="bottom" id="4dh-3H-3Lj"/>
+                <constraint firstItem="TF2-Ms-twf" firstAttribute="top" secondItem="W0x-wc-Tvn" secondAttribute="bottom" id="69i-hn-GwO"/>
+                <constraint firstItem="W0x-wc-Tvn" firstAttribute="top" secondItem="3sB-MC-Mi0" secondAttribute="top" id="Ahk-8W-lWm"/>
+                <constraint firstItem="JrU-Ca-aEc" firstAttribute="leading" secondItem="bE8-15-huH" secondAttribute="leading" id="Dka-Dj-o1y"/>
+                <constraint firstItem="6kS-n5-1j9" firstAttribute="top" secondItem="3sB-MC-Mi0" secondAttribute="top" constant="318" id="EEr-yP-Fc9"/>
+                <constraint firstItem="bE8-15-huH" firstAttribute="top" secondItem="6kS-n5-1j9" secondAttribute="bottom" id="EoE-SL-K1d"/>
+                <constraint firstItem="JrU-Ca-aEc" firstAttribute="trailing" secondItem="bE8-15-huH" secondAttribute="trailing" id="Ljk-vT-cAW"/>
+                <constraint firstItem="6kS-n5-1j9" firstAttribute="top" secondItem="TF2-Ms-twf" secondAttribute="bottom" constant="78" id="OKs-7e-ZTj"/>
+                <constraint firstItem="W0x-wc-Tvn" firstAttribute="leading" secondItem="TF2-Ms-twf" secondAttribute="leading" id="a27-ik-z9s"/>
                 <constraint firstAttribute="bottom" secondItem="Clf-QR-SE2" secondAttribute="bottom" id="gFh-H9-S0g"/>
+                <constraint firstItem="JrU-Ca-aEc" firstAttribute="leading" secondItem="6kS-n5-1j9" secondAttribute="leading" id="iKA-ej-iXu"/>
                 <constraint firstAttribute="trailing" secondItem="Clf-QR-SE2" secondAttribute="trailing" id="nFK-s6-Mml"/>
+                <constraint firstItem="bE8-15-huH" firstAttribute="leading" secondItem="Clf-QR-SE2" secondAttribute="leading" id="oXY-cA-sEr"/>
+                <constraint firstItem="bE8-15-huH" firstAttribute="top" secondItem="3sB-MC-Mi0" secondAttribute="top" constant="358" id="sFt-Gl-mGe"/>
+                <constraint firstAttribute="bottom" secondItem="W0x-wc-Tvn" secondAttribute="bottom" constant="498" id="tbl-i2-Y8c"/>
+                <constraint firstItem="W0x-wc-Tvn" firstAttribute="trailing" secondItem="TF2-Ms-twf" secondAttribute="trailing" id="vmn-W5-xzq"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="140" y="154"/>

@@ -342,7 +342,12 @@
                     NSDictionary *userinfo;
                     _editedParam = [self getEditedParam];
                     userinfo = @{@"data":[self getEditedParam], @"index" : @(_reviewIndex)};
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterEditingReview" object:nil userInfo:userinfo];
+                    if(_isEditForm) {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterEditingReview" object:nil userInfo:userinfo];
+                    } else {
+                        [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterWriteReview" object:nil userInfo:userinfo];
+                    }
+                    
                     
                     [self doSendReview];
                 } else {

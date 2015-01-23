@@ -98,6 +98,10 @@
                                                  name:@"updateAfterEditingReview" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateAfterWriteReview:)
+                                                 name:@"updateAfterWriteReview" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showTalkWithFilter:)
                                                  name:[NSString stringWithFormat:@"%@%@", @"showRead", _talkNavigationFlag]
                                                object:nil];
@@ -446,6 +450,7 @@
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         _isNeedToInsertCache = YES;
         [self requestSuccess:mappingResult withOperation:operation];
+        _isRefreshing = NO;
         [self stopRequestTimer];
         [self finishRequest];
         [_reviewTable reloadData];
@@ -734,6 +739,25 @@
     list.review_rate_service = [editedParam objectForKey:@"rate_service"];
     list.review_rate_speed = [editedParam objectForKey:@"rate_speed"];
     list.review_is_allow_edit = 0;
+    
+    [_reviewTable reloadData];
+}
+
+- (void)updateAfterWriteReview:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+    
+    InboxReviewList *list = _reviews[index];
+    NSDictionary *editedParam = [userinfo objectForKey:@"data"];
+    
+    list.review_message = [editedParam objectForKey:@"review_message"];
+    list.review_rate_quality = [editedParam objectForKey:@"rate_product"];
+    list.review_rate_accuracy = [editedParam objectForKey:@"rate_accuracy"];
+    list.review_rate_service = [editedParam objectForKey:@"rate_service"];
+    list.review_rate_speed = [editedParam objectForKey:@"rate_speed"];
+    list.review_create_time = @"Just Now";
+    list.review_is_allow_edit = @"1";
+    list.review_id = @"1";
     
     [_reviewTable reloadData];
 }

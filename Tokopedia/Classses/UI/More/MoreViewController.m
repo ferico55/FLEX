@@ -87,7 +87,7 @@
     _operationQueue = [[NSOperationQueue alloc] init];
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
-
+    _shopNameLabel.text = [_auth objectForKey:@"shop_name"];
     
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"shop_avatar"]]
                                     cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -390,7 +390,7 @@
     NSDictionary *param = @{API_DEPOSIT_ACTION : API_DEPOSIT_GET_DETAIL};
     
     _depositRequest = [_depositObjectManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodGET
+                                                                    method:RKRequestMethodPOST
                                                                       path:API_DEPOSIT_PATH
                                                                 parameters:[param encrypt]];
     
