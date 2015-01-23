@@ -462,7 +462,10 @@
     [breadcrumbMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIDEPARTMENTNAMEKEY,API_DEPARTMENT_ID_KEY]];
     
     RKObjectMapping *otherproductMapping = [RKObjectMapping mappingForClass:[OtherProduct class]];
-    [otherproductMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,API_PRODUCT_NAME_KEY,kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY]];
+    [otherproductMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,
+                                                         API_PRODUCT_NAME_KEY,
+                                                         kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,
+                                                         kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY]];
     
     RKObjectMapping *imagesMapping = [RKObjectMapping mappingForClass:[ProductImages class]];
     [imagesMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIIMAGEIDKEY,kTKPDDETAILPRODUCT_APIIMAGESTATUSKEY,kTKPDDETAILPRODUCT_APIIMAGEDESCRIPTIONKEY,kTKPDDETAILPRODUCT_APIIMAGEPRIMARYKEY,kTKPDDETAILPRODUCT_APIIMAGESRCKEY]];
@@ -506,7 +509,7 @@
                             };
     [self enableButtonBeforeSuccessRequest:NO];
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILPRODUCT_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILPRODUCT_APIPATH parameters:[param encrypt]];
 	//[_cachecontroller getFileModificationDate];
 	//_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
 	//if (_timeinterval > _cachecontroller.URLCacheInterval) {
@@ -643,7 +646,7 @@
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDGENERATEDHOST_APIGENERATEDHOSTKEY toKeyPath:kTKPDGENERATEDHOST_APIGENERATEDHOSTKEY withMapping:generatedhostMapping]];
     
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanagerGenerateHost addResponseDescriptor:responseDescriptor];
 }
@@ -670,7 +673,7 @@
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIUPLOADGENERATEHOSTKEY
                             };
     
-    _requestGenerateHost = [_objectmanagerGenerateHost appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAIL_UPLOADIMAGEAPIPATH parameters:param];
+    _requestGenerateHost = [_objectmanagerGenerateHost appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAIL_UPLOADIMAGEAPIPATH parameters:[param encrypt]];
     
     [_requestGenerateHost setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessGenerateHost:mappingResult withOperation:operation];
@@ -759,7 +762,7 @@
     // Relationship Mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanagerUploadPhoto addResponseDescriptor:responseDescriptor];
     
@@ -944,7 +947,7 @@
     [self failedAddImageAtIndex:index];
 }
 
-#pragma mark Request Generate Host
+#pragma mark Request Delete Image
 -(void)configureRestKitDeleteImage
 {
     _objectmanagerDeleteImage =  [RKObjectManager sharedClient];
@@ -963,7 +966,7 @@
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanagerDeleteImage addResponseDescriptor:responseDescriptor];
 }
@@ -995,7 +998,7 @@
     
     NSTimer *timer;
     
-    _requestDeleteImage = [_objectmanagerDeleteImage appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param];
+    _requestDeleteImage = [_objectmanagerDeleteImage appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
     [_requestDeleteImage setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessDeleteImage:mappingResult withOperation:operation];
         [timer invalidate];
@@ -1203,28 +1206,42 @@
 #pragma mark - Alert View Delegate
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    
+    
     switch (alertView.tag) {
         case 11:
         {
+            
             //price curency
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             NSDictionary* auth = [secureStorage keychainDictionary];
             BOOL isGoldShop = [[auth objectForKey:kTKPD_SHOPISGOLD]boolValue];
             
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
+
             NSInteger previousValue = [[_dataInput objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
+            
             NSInteger value = [[ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_VALUE_KEY] integerValue];
+
             if ( value == PRICE_CURRENCY_ID_USD && !isGoldShop) {
+            
                 NSArray *errorMessage = @[ERRORMESSAGE_INVALID_PRICE_CURRENCY_USD];
+                
                 NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:errorMessage,@"messages", nil];
+                
                 [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+
             }
             else{
+            
                 NSString *name = [ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_NAME_KEY];
+               
                 if (value != previousValue) {
                     _productPriceTextField.text = @"";
                 }
+                
                 [_dataInput setObject:@(value) forKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY];
+                
                 [_priceCurrencyButton setTitle:name forState:UIControlStateNormal];
             }
             break;

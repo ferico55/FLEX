@@ -68,6 +68,8 @@
                                                                                attributes:attributes];
     _tableTitleLabel.attributedText = attributedText;
     _confirmPaymentButton.layer.cornerRadius = 2;
+    
+    [_totalPaymentLabel setText:_cartBuy.transaction.payment_left_idr animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

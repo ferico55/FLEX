@@ -56,6 +56,12 @@
     UIBarButtonItem *_doneBarButtonItem;
     
     BOOL _isRequestFrom;
+    
+    CGPoint _keyboardPosition;
+    CGSize _keyboardSize;
+    
+    CGRect _containerDefault;
+    CGSize _scrollviewContentSize;
 }
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *headerTableView;
 
@@ -127,6 +133,8 @@
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
     _isnodata = YES;
     
+    [_remarkTextView setPlaceholder:PLACEHOLDER_NOTE_ATC];
+    
     [self setDefaultData:_data];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
@@ -139,6 +147,13 @@
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
     
     [self configureRestKitFormATC];
     [self requestFormATC];
@@ -457,8 +472,7 @@
     else return nil;
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
     [_activeTextField resignFirstResponder];
     [_activeTextView resignFirstResponder];
 }
@@ -1204,6 +1218,7 @@
 #pragma mark - Textfield Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     [_activeTextView resignFirstResponder];
+    _activeTextView = nil;
     _activeTextField = textField;
     return YES;
 }
@@ -1228,8 +1243,10 @@
 
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
     [textView resignFirstResponder];
+    _activeTextField= nil;
     [_activeTextView resignFirstResponder];
     _activeTextView = textView;
+
     return YES;
 }
 
@@ -1246,6 +1263,53 @@
     }
     return YES;
 }
+
+#pragma mark - Keyboard Notification
+- (void)keyboardWillShow:(NSNotification *)info {
+    if(_keyboardSize.height < 0){
+        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
+        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+        
+        _scrollviewContentSize = [_tableView contentSize];
+        _scrollviewContentSize.height += _keyboardSize.height;
+        [_tableView setContentSize:_scrollviewContentSize];
+    }else{
+        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
+                              delay:0
+                            options: UIViewAnimationOptionOverrideInheritedCurve
+                         animations:^{
+                             _scrollviewContentSize = [_tableView contentSize];
+                             _scrollviewContentSize.height -= _keyboardSize.height;
+                             
+                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
+                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+                             _scrollviewContentSize.height += _keyboardSize.height;
+                             if (_activeTextView!= nil){//&& (self.view.frame.origin.y + _activeTextField.frame.origin.y+_activeTextField.frame.size.height)> _keyboardPosition.y) {
+                                 UIEdgeInsets inset = _tableView.contentInset;
+                                 inset.bottom = (_keyboardPosition.y-(_activeTextField.frame.size.height));
+                                 [_tableView setContentSize:_scrollviewContentSize];
+                                 [_tableView setContentInset:inset];
+                             }
+                         }
+                         completion:^(BOOL finished){
+                         }];
+        
+    }
+}
+
+- (void)keyboardWillHide:(NSNotification *)info {
+    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
+                          delay:0
+                        options: UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         _tableView.contentInset = contentInsets;
+                         _tableView.scrollIndicatorInsets = contentInsets;
+                     }
+                     completion:^(BOOL finished){
+                     }];
+}
+
 
 #pragma mark - Methods
 
