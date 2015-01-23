@@ -480,8 +480,8 @@
     NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:_shop.result.info.shop_description
                                                                                     attributes:attributes];
     
-    _descriptionView.descriptionLabel.attributedText = productNameAttributedText;
-    _descriptionView.descriptionLabel.textAlignment = NSTextAlignmentCenter;
+//    _descriptionView.descriptionLabel.attributedText = productNameAttributedText;
+//    _descriptionView.descriptionLabel.textAlignment = NSTextAlignmentCenter;
     
     _statView.locationLabel.text = [NSString stringWithFormat:@"     %@", _shop.result.info.shop_location];
     UIImageView *iconLocation = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_location.png"]];

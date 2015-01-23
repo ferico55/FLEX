@@ -224,6 +224,7 @@
     self.tableView.contentOffset = _contentOffset;
     self.tableView.contentInset = UIEdgeInsetsMake(-64, 0, self.view.frame.size.height, 0);
     
+    self.hidesBottomBarWhenPushed = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated

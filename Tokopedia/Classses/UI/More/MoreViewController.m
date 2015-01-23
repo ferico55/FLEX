@@ -75,6 +75,11 @@
     
     [super viewDidLoad];
     
+    // Add logo in navigation bar
+    self.title = kTKPDMORE_TITLE;
+    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
+    [self.navigationItem setTitleView:logo];
+    
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     _auth = [_auth mutableCopy];
@@ -130,11 +135,6 @@
 {
     [super viewWillAppear:animated];
  
-    // Add logo in navigation bar
-    self.title = kTKPDMORE_TITLE;
-    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-    [self.navigationItem setTitleView:logo];
-
     // Remove default table inset
     self.tableView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
 
