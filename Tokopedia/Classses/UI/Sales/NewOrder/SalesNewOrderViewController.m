@@ -249,28 +249,30 @@
 
 - (void)tableViewCell:(UITableViewCell *)cell acceptOrderAtIndexPath:(NSIndexPath *)indexPath
 {
-    OrderTransaction *transaction = [_transactions objectAtIndex:indexPath.row];
-    _selectedTransaction = [_transactions objectAtIndex:indexPath.row];
-    _selectedIndexPath = indexPath;
     
-    if (transaction.order_detail.detail_force_cancel == 1) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
-                                                            message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Cancel"
-                                                  otherButtonTitles:@"Terima Pesanan", @"Terima Sebagian", nil];
-        alertView.tag = 2;
-        [alertView show];
-
-    } else {
-
-        [self requestActionType:@"accept"
-                        orderId:_selectedTransaction.order_detail.detail_order_id
-                         reason:nil
-                       products:nil
-                productQuantity:nil];
-        
-    }
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"success", @"yeah",]
+                                                                     delegate:self];
+    [alert show];
+    
+//    OrderTransaction *transaction = [_transactions objectAtIndex:indexPath.row];
+//    _selectedTransaction = [_transactions objectAtIndex:indexPath.row];
+//    _selectedIndexPath = indexPath;
+//    
+//    if (transaction.order_detail.detail_force_cancel == 1) {
+//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
+//                                                            message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
+//                                                           delegate:self
+//                                                  cancelButtonTitle:@"Cancel"
+//                                                  otherButtonTitles:@"Terima Pesanan", @"Terima Sebagian", nil];
+//        alertView.tag = 2;
+//        [alertView show];
+//    } else {
+//        [self requestActionType:@"accept"
+//                        orderId:_selectedTransaction.order_detail.detail_order_id
+//                         reason:nil
+//                       products:nil
+//                productQuantity:nil];
+//    }
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell rejectOrderAtIndexPath:(NSIndexPath *)indexPath
