@@ -30,6 +30,7 @@
 @property (nonatomic, strong) NSString *review_rate_service;
 @property (nonatomic, strong) NSString *review_product_status;
 @property (nonatomic, strong) NSString *review_is_allow_edit;
+@property (nonatomic, strong) NSString *review_is_skipable;
 
 @property (nonatomic, strong) InboxReviewResponse *review_response;
 @property (nonatomic, strong) InboxReviewProductOwner *review_product_owner;

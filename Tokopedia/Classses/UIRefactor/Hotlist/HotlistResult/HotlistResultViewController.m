@@ -573,7 +573,11 @@
     [departmentMapping addPropertyMapping:deptchildRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:kTKPDHOMEHOTLISTRESULT_APIPATH
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
     
     // add response description to object manager
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
@@ -601,7 +605,10 @@
                             kTKPDHOME_APIPRICEMAXKEY :[_detailfilter objectForKey:kTKPDHOME_APIPRICEMAXKEY]?:@""
                             };
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDHOMEHOTLISTRESULT_APIPATH parameters:[param encrypt]];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:kTKPDHOMEHOTLISTRESULT_APIPATH
+                                                                parameters:[param encrypt]];
 	[_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
 	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
@@ -905,84 +912,27 @@
 #pragma mark - UIScrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)sender
 {
-    if (sender.contentOffset.y < 0) {
-        CGRect frame = _imageview.frame;
-        CGPoint translation = [sender.panGestureRecognizer translationInView:sender.superview];
-        if(translation.y > 0)
-        {
-            frame.origin.x = sender.contentOffset.y/2;
-            frame.origin.y = sender.contentOffset.y;
-            frame.size.height =  150 + fabsf(sender.contentOffset.y);
-            frame.size.width = 320 + fabsf(sender.contentOffset.y);
-        } else {
-            frame.origin.x = 0;
-            frame.origin.y = 0;
-            frame.size.height = 150;
-            frame.size.width = 320;
-        }
-        _imageview.frame = frame;
-        
-        if (_pagecontrol.currentPage==1) {
-            _descriptionview.frame = _imageview.frame;
-        }
-    }
-    
-//    //Initializing the views and the new frame sizes.
-//    UINavigationBar *navbar = self.navigationController.navigationBar;
-//    
-//    CGRect navBarFrame = self.navigationController.navigationBar.frame;
-//    
-//    [self.navigationController.navigationBar setTranslucent:NO];
-//    // store current scroll view frame as we will change it later on and set it
-//    // back to the scroll view in the very end
-//    CGRect currentScrollViewRect = _table.frame;
-//    // same with the content offset
-//    CGPoint currentScrollViewOffset = _table.contentOffset;
-//    CGFloat offsetShiftY = self.lastScrollViewOffsetY - _table.contentOffset.y;
-//    
-//    if (offsetShiftY > 0) {
-//        // pulling downwards
-//        // keep trrack of the distance that we pulled downwards
-//        self.distancePulledDownwards += offsetShiftY;
-//        
-//        // header opens (table view shifts its frame down) in two cases:
-//        // 1. contentOffset.y<0
-//        // 2. scrolled downwards a significant amount or header is already open
-//        // but in both cases we have to make sure that it doesn't open further than we want it to
-//        CGFloat wantedOriginY = currentScrollViewRect.origin.y;
-//        if ((_table.contentOffset.y<0) || (self.distancePulledDownwards > 100) || (currentScrollViewRect.origin.y>20)){
-//            
-//            // shift scroll views frame by offset shift
-//            wantedOriginY = currentScrollViewRect.origin.y + offsetShiftY;
-//            // compensate that shift by moving content offset back
-//            currentScrollViewOffset.y += (wantedOriginY <= 105) ? offsetShiftY : 0;
+//    if (sender.contentOffset.y < 0) {
+//        CGRect frame = _imageview.frame;
+//        CGPoint translation = [sender.panGestureRecognizer translationInView:sender.superview];
+//        if(translation.y > 0)
+//        {
+//            frame.origin.x = sender.contentOffset.y/2;
+//            frame.origin.y = sender.contentOffset.y;
+//            frame.size.height =  150 + fabsf(sender.contentOffset.y);
+//            frame.size.width = 320 + fabsf(sender.contentOffset.y);
+//        } else {
+//            frame.origin.x = 0;
+//            frame.origin.y = 0;
+//            frame.size.height = 150;
+//            frame.size.width = 320;
 //        }
-//        currentScrollViewRect.origin.y = (wantedOriginY <= 105) ? wantedOriginY : 105;
+//        _imageview.frame = frame;
 //        
-//    }
-//    else {
-//        // pulling upwards
-//        self.distancePulledDownwards = 0;
-//        
-//        // header closes (table view shifts its frame up) in one case: when it is open =) (and contentOffset.y>0 to eliminate closing on bounce)
-//        if (_table.contentOffset.y > 0) {
-//            CGFloat wantedOriginY = currentScrollViewRect.origin.y + offsetShiftY;
-//            currentScrollViewRect.origin.y = (wantedOriginY >= 20) ? wantedOriginY : 20;
-//            currentScrollViewOffset.y += (wantedOriginY >= 20) ? offsetShiftY : 0;
+//        if (_pagecontrol.currentPage==1) {
+//            _descriptionview.frame = _imageview.frame;
 //        }
 //    }
-//    
-//    // set the changed (if it was changed at all) frame to the scroll view
-//    [_table setFrame:currentScrollViewRect];
-//    
-//    // correct offset using a special trick
-//    // it ensures that scrollViewDidScroll: won't be called on setting the offset
-//    _table.delegate = nil;
-//    [_table setContentOffset:currentScrollViewOffset];
-//    _table.delegate = self;
-//    
-//    // and finally remember the current offset as the last
-//    self.lastScrollViewOffsetY = _table.contentOffset.y;
 }
 
 

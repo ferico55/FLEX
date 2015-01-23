@@ -30,4 +30,6 @@
 #define BUTTON_CANCEL @"Tidak"
 #define BUTTON_OK @"Ya"
 
+
+
 #endif

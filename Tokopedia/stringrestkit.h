@@ -71,6 +71,7 @@
 #define REVIEW_READ_STATUS @"review_read_status"
 #define REVIEW_USER_ID @"review_user_id"
 #define REVIEW_IS_ALLOW_EDIT @"review_is_allow_edit"
+#define REVIEW_IS_SKIPABLE @"review_is_skipable"
 #define REVIEW_PRODUCT_STATUS @"review_product_status"
 #pragma mark - Deposit
 

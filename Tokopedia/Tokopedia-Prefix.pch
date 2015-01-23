@@ -19,6 +19,8 @@
     #import <CoreData/CoreData.h>
     #import <MobileCoreServices/MobileCoreServices.h>
 
+    #import "AppDelegate.h"
+
     #import "TkpdImg.h"
     #import "RKObjectManagerCategory.h"
     #import "NSStringCategory.h"

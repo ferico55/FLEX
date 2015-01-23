@@ -9,11 +9,10 @@
 #import "FavoritedShopViewController.h"
 #import "string_home.h"
 #import "detail.h"
-#import "ShopProductViewController.h"
 #import "ShopTalkViewController.h"
 #import "ShopReviewViewController.h"
 #import "ShopNotesViewController.h"
-#import "TKPDTabShopNavigationController.h"
+#import "TKPDTabShopViewController.h"
 #import "FavoritedShopCell.h"
 #import "FavoritedShop.h"
 #import "FavoriteShopAction.h"
@@ -106,12 +105,7 @@
     [_table addSubview:_refreshControl];
     
 //    [self.table setContentInset:UIEdgeInsetsMake(0, 0, 140, 0)];
-}
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshView:)
                                                  name:@"notifyFav"
@@ -123,6 +117,12 @@
             [self request];
         }
     }
+
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -314,11 +314,17 @@
                                                         @"is_success":@"is_success"}];
     
     //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping];
     [statusMapping addPropertyMapping:resulRel];
     
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:@"action/favorite-shop.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor
+                                                      responseDescriptorWithMapping:statusMapping
+                                                      method:RKRequestMethodPOST
+                                                      pathPattern:@"action/favorite-shop.pl"
+                                                      keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
@@ -332,7 +338,10 @@
                             };
     
     _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/favorite-shop.pl" parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:@"action/favorite-shop.pl"
+                                                                parameters:param];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsuccessfav:mappingResult withOperation:operation];
@@ -436,7 +445,11 @@
     [resultMapping addPropertyMapping:listGoldRel];
     
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:kTKPDHOMEHOTLIST_APIPATH
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
     
@@ -453,11 +466,13 @@
     
     NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEFAVORITESHOPACT,
                             kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
-                            kTKPDHOME_APIPAGEKEY:@(_page)
-                            };
+                            kTKPDHOME_APIPAGEKEY:@(_page)};
     
     _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDHOMEHOTLIST_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:kTKPDHOMEHOTLIST_APIPATH
+                                                                parameters:[param encrypt]];
     
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -484,7 +499,10 @@
     
     [_operationQueue addOperation:_request];
     
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                             target:self selector:@selector(requesttimeout)
+                                           userInfo:nil
+                                            repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
     
 }
@@ -603,38 +621,15 @@
         list = _shop[indexpath.row];
     }
     
-    
-    
-    NSMutableArray *viewcontrollers = [NSMutableArray new];
-    /** create new view controller **/
-    ShopProductViewController *v = [ShopProductViewController new];
-    v.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0)};
-    [viewcontrollers addObject:v];
-    ShopTalkViewController *v1 = [ShopTalkViewController new];
-    v1.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0)};
-    [viewcontrollers addObject:v1];
-    ShopReviewViewController *v2 = [ShopReviewViewController new];
-    v2.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0)};
-    [viewcontrollers addObject:v2];
-    ShopNotesViewController *v3 = [ShopNotesViewController new];
-    v3.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0)};
-    [viewcontrollers addObject:v3];
-    /** Adjust View Controller **/
-    TKPDTabShopNavigationController *tapnavcon = [TKPDTabShopNavigationController new];
-    tapnavcon.data = @{
-                       kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
-                       kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
-                       @"is_dismissed" : @YES
-                       };
-    [tapnavcon setViewControllers:viewcontrollers animated:YES];
-    [tapnavcon setSelectedIndex:0];
-    
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:tapnavcon];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
-    
-    //    [self.navigationController pushViewController:tapnavcon animated:YES];
-    
-    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
+    shopViewController.data = @{
+                                kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
+                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                                @"is_dismissed" : @YES
+                                };
+    [self.navigationController pushViewController:shopViewController animated:YES];
+
 }
 
 

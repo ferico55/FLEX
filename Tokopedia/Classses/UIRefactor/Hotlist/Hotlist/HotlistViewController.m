@@ -10,6 +10,10 @@
 #import "string_home.h"
 #import "HotlistViewController.h"
 #import "HotlistResultViewController.h"
+#import "InboxMessageViewController.h"
+#import "InboxTalkViewController.h"
+#import "TKPDTabInboxMessageNavigationController.h"
+#import "TKPDTabInboxTalkNavigationController.h"
 
 #import "URLCacheController.h"
 
@@ -90,7 +94,7 @@
     
     /** set max data per page request **/
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
-    
+
     /** set inset table for different size**/
     UIEdgeInsets inset = _table.contentInset;
     inset.top += 2;
@@ -150,17 +154,42 @@
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
     
+    [self initNotification];
+    
     [self configureRestKit];
     [self loadData];
+    
+    if (_isnodata && !_isrefreshview && _page<1) {
+        [self loadData];
+    }
 }
+
+- (void) initNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(goToInboxMessage:)
+                                                 name:@"goToInboxMessage"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(goToInboxTalk:)
+                                                 name:@"goToInboxTalk"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(goToInboxReview:)
+                                                 name:@"goToInboxReview"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(goToNewOrder:)
+                                                 name:@"goToNewOrder"
+                                               object:nil];
+}
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self configureRestKit];
-    if (_isnodata && !_isrefreshview && _page<1) {
-        [self loadData];
-    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -189,7 +218,7 @@
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         NSString *cellid = kTKPDHOTLISTCELL_IDENTIFIER;
-        ///UIFont * font = kTKPDHOME_FONTHOTLIST;
+        UIFont * font = kTKPDHOME_FONTHOTLIST;
 		
 		cell = (HotlistCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
@@ -270,7 +299,6 @@
     //TraktAPIClient *client = [TraktAPIClient sharedClient];
     _objectmanager = [RKObjectManager sharedClient];
     
-    
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Hotlist class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
@@ -294,16 +322,19 @@
     [resultMapping addPropertyMapping:pageRel];
 
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptor];
-    
-    
 }
 
 - (void)loadData
 {
     if (_request.isExecuting) return;
+
+    _requestcount ++;
     
     if (!_isrefreshview) {
         _table.tableFooterView = _footer;
@@ -314,11 +345,9 @@
         [_act stopAnimating];
     }
     
-    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEHOTLISTACT,
-                            kTKPDHOME_APIPAGEKEY : @(_page),
-                            kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE)
-                            };
-    _requestcount ++;
+    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY :   kTKPDHOMEHOTLISTACT,
+                            kTKPDHOME_APIPAGEKEY   :   @(_page),
+                            kTKPDHOME_APILIMITPAGEKEY  :   @(kTKPDHOMEHOTLIST_LIMITPAGE)};
     
 	[_cachecontroller getFileModificationDate];
 
@@ -375,7 +404,8 @@
     if (status) {
         if (_page <=1) {
             //only save cache for first page
-            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
+            [_cacheconnection connection:operation.HTTPRequestOperation.request
+                      didReceiveResponse:operation.HTTPRequestOperation.response];
             [_cachecontroller connectionDidFinish:_cacheconnection];
             //save response data to plist
             [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
@@ -409,7 +439,8 @@
             [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
         }
         
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData
+                                                                   mappingsDictionary:mappingsDictionary];
         NSError *mappingError = nil;
         BOOL isMapped = [mapper execute:&mappingError];
         if (isMapped && !mappingError) {
@@ -474,8 +505,12 @@
                     NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     _table.tableFooterView = _footer;
                     [_act startAnimating];
-                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(configureRestKit)
+                               withObject:nil
+                               afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(loadData)
+                               withObject:nil
+                               afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }
                 else
                 {
@@ -567,5 +602,57 @@
     [self configureRestKit];
     [self loadData];
 }
+
+- (void)goToInboxMessage:(NSNotification*)userInfo {
+    InboxMessageViewController *vc = [InboxMessageViewController new];
+    vc.data=@{@"nav":@"inbox-message"};
+    
+    InboxMessageViewController *vc1 = [InboxMessageViewController new];
+    vc1.data=@{@"nav":@"inbox-message-sent"};
+    
+    InboxMessageViewController *vc2 = [InboxMessageViewController new];
+    vc2.data=@{@"nav":@"inbox-message-archive"};
+    
+    InboxMessageViewController *vc3 = [InboxMessageViewController new];
+    vc3.data=@{@"nav":@"inbox-message-trash"};
+    NSArray *vcs = @[vc,vc1, vc2, vc3];
+    
+    TKPDTabInboxMessageNavigationController *nc = [TKPDTabInboxMessageNavigationController new];
+    [nc setSelectedIndex:2];
+    [nc setViewControllers:vcs];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+    [nav.navigationBar setTranslucent:NO];
+    
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)goToInboxTalk:(NSNotification*)userInfo {
+    InboxTalkViewController *vc = [InboxTalkViewController new];
+    vc.data=@{@"nav":@"inbox-talk"};
+    
+    InboxTalkViewController *vc1 = [InboxTalkViewController new];
+    vc1.data=@{@"nav":@"inbox-talk-my-product"};
+    
+    InboxTalkViewController *vc2 = [InboxTalkViewController new];
+    vc2.data=@{@"nav":@"inbox-talk-following"};
+    
+    NSArray *vcs = @[vc,vc1, vc2];
+    
+    TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
+    [nc setSelectedIndex:2];
+    [nc setViewControllers:vcs];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+    [nav.navigationBar setTranslucent:NO];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)goToInboxReview:(NSNotification*)userInfo {
+    
+}
+
+- (void)goToNewOrder:(NSNotification*)userInfo {
+    
+}
+
 
 @end

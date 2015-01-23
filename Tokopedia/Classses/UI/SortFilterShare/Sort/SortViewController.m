@@ -45,11 +45,16 @@
     self.cancelButton.layer.borderWidth = 1;
 }
 
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
+
     [self.navigationController.navigationBar setTranslucent:NO];
+    self.navigationController.navigationBarHidden = NO;
+
+    self.title = @"Urutkan";
+    
     _selectedsort = [NSMutableDictionary new];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];

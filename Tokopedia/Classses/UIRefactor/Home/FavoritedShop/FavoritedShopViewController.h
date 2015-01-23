@@ -11,6 +11,7 @@
 
 @interface FavoritedShopViewController : UIViewController
 
+@property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic)NSDictionary *data;
 
 @end

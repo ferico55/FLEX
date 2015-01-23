@@ -13,10 +13,11 @@
 #import "CartViewController.h"
 //#import "TransactionCartViewController.h"
 #import "TransactionCartRootViewController.h"
+#import "MoreNavigationController.h"
 #import "MoreViewController.h"
 #import "CategoryViewController.h"
 
-#import "TKPDTabHomeNavigationController.h"
+#import "TKPDTabHomeViewController.h"
 
 #import "HotlistViewController.h"
 #import "ProductFeedViewController.h"
@@ -26,15 +27,15 @@
 
 #import "activation.h"
 
-#import "MoreNavigationViewController.h"
-
 #import "TKPDSecureStorage.h"
+#import "URLCacheController.h"
 
 @interface MainViewController ()
 {
     UITabBarController *_tabBarController;
-    TKPDTabHomeNavigationController *_swipevc;
+    TKPDTabHomeViewController *_swipevc;
     NSMutableDictionary *_auth;
+    URLCacheController *_cacheController;
 }
 
 @end
@@ -56,6 +57,8 @@
     [super viewDidLoad];
     
     _auth = [NSMutableDictionary new];
+    _cacheController = [URLCacheController new];
+    
     
     [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
@@ -103,7 +106,7 @@
 
 -(void)createtabbarController
 {
-    BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY]boolValue];
+    BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     _tabBarController = [UITabBarController new];
     
     [[UITabBarItem appearance] setTitleTextAttributes:@{ UITextAttributeTextColor : kTKPDNAVIGATION_TABBARTITLECOLOR }
@@ -137,14 +140,9 @@
         [viewcontrollers addObject:v3];
     }
     
-    /** Adjust View Controller **/
-    _swipevc = [TKPDTabHomeNavigationController new];
+//    /** Adjust View Controller **/
+    _swipevc = [TKPDTabHomeViewController new];
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
-    [_swipevc setViewControllers:viewcontrollers animated:YES withtitles:titles];
-    [_swipevc setSelectedIndex:0];
-    [swipevcNav.navigationBar setTranslucent:NO];
-    UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-    [_swipevc.navigationItem setTitleView:logo];
     
     
     /** TAB BAR INDEX 2 **/
@@ -158,7 +156,7 @@
     /** TAB BAR INDEX 3 **/
     SearchViewController *search = [SearchViewController new];
     if (_auth) {
-        search.data = @{kTKPD_AUTHKEY:_auth?:[NSNull null]};
+        search.data = @{kTKPD_AUTHKEY:_auth?:@{}};
     }
     UINavigationController *searchNavBar = [[UINavigationController alloc]initWithRootViewController:search];
     searchNavBar.navigationBar.translucent = NO;
@@ -170,7 +168,7 @@
     TransactionCartRootViewController *cart = [TransactionCartRootViewController new];
     UINavigationController *cartNavBar = [[UINavigationController alloc]initWithRootViewController:cart];
     [cartNavBar.navigationBar setTranslucent:NO];
-    [cartNavBar.navigationItem setTitleView:logo];
+    //[cartNavBar.navigationItem setTitleView:logo];
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
         cart.edgesForExtendedLayout = UIRectEdgeNone;
     }
@@ -183,7 +181,7 @@
     }
     else{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        MoreNavigationViewController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
         moreNavBar = moreNavController;
     }
 
@@ -368,6 +366,9 @@
 
 - (void)applicationLogin:(NSNotification*)notification
 {
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadNotificationBar" object:self];
+
+    
     //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     //id auth = [defaults loadCustomObjectWithKey:kTKPD_AUTHKEY];
     //_login = auth;
@@ -381,27 +382,30 @@
     // and newVC is the controller you want to be the new view controller at index 0
     NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
     NSArray *titles;
-    // array untuk view controller pada swipe vc
-    NSMutableArray *arrays = [NSMutableArray arrayWithArray:_swipevc.viewControllers];
-    if (!isauth) {
-        // before login
-        titles = kTKPD_HOMETITLEARRAY;
-        [arrays removeObjectsInRange:NSMakeRange(1,3)];
-    }
-    else{
-        // after login
-        titles = kTKPD_HOMETITLEISAUTHARRAY;
-        ProductFeedViewController *v1 = [ProductFeedViewController new];
-        [arrays addObject:v1];
-        HistoryProductViewController *v2 = [HistoryProductViewController new];
-        [arrays addObject:v2];
-        FavoritedShopViewController *v3 = [FavoritedShopViewController new];
-        [arrays addObject:v3];
-    }
+
+//    // array untuk view controller pada swipe vc
+//    NSMutableArray *arrays = [NSMutableArray arrayWithArray:_swipevc.viewControllers];
+//    if (!isauth) {
+//        // before login
+//        titles = kTKPD_HOMETITLEARRAY;
+//        [arrays removeObjectsInRange:NSMakeRange(1,3)];
+//    }
+//    else{
+//        // after login
+//        titles = kTKPD_HOMETITLEISAUTHARRAY;
+//        ProductFeedViewController *v1 = [ProductFeedViewController new];
+//        [arrays addObject:v1];
+//        HistoryProductViewController *v2 = [HistoryProductViewController new];
+//        [arrays addObject:v2];
+//        FavoritedShopViewController *v3 = [FavoritedShopViewController new];
+//        [arrays addObject:v3];
+//    }
+
     /** Adjust View Controller **/
     //TKPDTabHomeNavigationController *swipevc = [TKPDTabHomeNavigationController new];
-    [_swipevc setViewControllers:arrays animated:YES withtitles:titles];
-    [_swipevc setSelectedIndex:0];
+//    [_swipevc setViewControllers:arrays animated:YES withtitles:titles];
+//    [_swipevc setSelectedIndex:0];
+
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
     swipevcNav.navigationBar.translucent = NO;
     UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
@@ -410,7 +414,7 @@
     UINavigationController *searchNavBar = newControllers[2];
     id search = searchNavBar.viewControllers[0];
     if (_auth) {
-         ((SearchViewController*)search).data = @{kTKPD_AUTHKEY:_auth?:[NSNull null]};
+        ((SearchViewController*)search).data = @{kTKPD_AUTHKEY:_auth?:@{}};
     }
     
     UINavigationController *moreNavBar = newControllers[4];
@@ -420,7 +424,7 @@
     }
     else{
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-        MoreNavigationViewController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+        MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
         moreNavBar = moreNavController;
     }
     [moreNavBar.navigationBar setTranslucent:NO];
@@ -436,13 +440,19 @@
 - (void)applicationlogout:(NSNotification*)notification
 {
 	//NSDictionary* userinfo = notification.userInfo;
-	
+    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
+    [_cacheController initCacheWithDocumentPath:path];
+    [_cacheController clearCache];
+    
+    
 	TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
 	[storage resetKeychain];	//delete all previous sensitive data
 	[_auth removeAllObjects];
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
-	
+    
     //TODO:: request delayed
 	//[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(requestdelayed) object:nil];
 	//[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(requestdelayedguardian) object:nil];

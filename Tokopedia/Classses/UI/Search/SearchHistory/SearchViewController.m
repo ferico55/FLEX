@@ -13,10 +13,7 @@
 #import "TKPDTabNavigationController.h"
 #import "ProductFeedViewController.h"
 
-#import "Notification.h"
-#import "NotificationViewController.h"
-#import "NotificationBarButton.h"
-#import "NotificationRequest.h"
+#import "NotificationManager.h"
 
 @interface SearchViewController ()<
     UISearchBarDelegate,
@@ -32,7 +29,8 @@
     
     UITextField *_activeTextField;
     
-    Notification *_notification;
+    //Notification *_notification;
+    NotificationManager *_notifManager;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -41,7 +39,7 @@
 @property (weak, nonatomic) IBOutlet UIView *searchhistoryview;
 @property (weak, nonatomic) IBOutlet UILabel *labelsearchfor;
 
-@property (strong, nonatomic) UIWindow *notificationWindow;
+@property (strong, nonatomic) UIView *notificationView;
 @property (strong, nonatomic) NotificationBarButton *notificationButton;
 @property (strong, nonatomic) UIImageView *notificationArrowImageView;
 @property (strong, nonatomic) NotificationViewController *notificationController;
@@ -58,7 +56,6 @@
         self.title = kTKPDSEARCH_TITLE;
         UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
         [self.navigationItem setTitleView:logo];
-
     }
     return self;
 }
@@ -66,6 +63,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(windowDidTap)
+                                                 name:@"tapNotification" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(initNotificationManager)
+                                                 name:@"reloadNotificationBar" object:nil];
+    
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(goToViewController:) name:@"goToViewController" object:nil];
+    
+    [self.navigationController.navigationBar setTranslucent:NO];
+
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+    }
     
     _historysearch =[NSMutableArray new];
     _searchresultarray = [NSMutableArray new];
@@ -84,28 +97,12 @@
     [super viewWillAppear:animated];
     
     [_searchbar becomeFirstResponder];
-    
-    _notificationWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
-    _notificationWindow.clipsToBounds = YES;
-    
-    // Notification button
-    _notificationButton = [[NotificationBarButton alloc] init];
-    UIButton *button = (UIButton *)_notificationButton.customView;
-    [button addTarget:self action:@selector(barButtonDidTap) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem = _notificationButton;
-    
-    _notificationArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_triangle_grey"]];
-    _notificationArrowImageView.contentMode = UIViewContentModeScaleAspectFill;
-    _notificationArrowImageView.clipsToBounds = YES;
-    _notificationArrowImageView.frame = CGRectMake(_notificationButton.customView.frame.origin.x+12, 60, 10, 5);
-    _notificationArrowImageView.alpha = 0;
-    [_notificationWindow addSubview:_notificationArrowImageView];
-    
-    NotificationRequest *notificationRequest = [NotificationRequest new];
-    notificationRequest.delegate = self;
-    [notificationRequest loadNotification];
+    [self initNotificationManager];
+}
 
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
 }
 
 #pragma mark - Memory Management
@@ -185,68 +182,6 @@
     }else {
         _searchhistoryview.hidden = NO;
     }
-}
-
-#pragma mark - Notification methods
-
-- (void)barButtonDidTap
-{
-    [_searchbar resignFirstResponder];
-    
-    [_notificationWindow makeKeyAndVisible];
-    
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(windowDidTap)];
-    [_notificationWindow addGestureRecognizer:tapRecognizer];
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-    _notificationController = [storyboard instantiateViewControllerWithIdentifier:@"NotificationViewController"];
-    _notificationController.notification = _notification;
-    
-    [_notificationController.tableView beginUpdates];
-    CGRect notificationTableFrame = _notificationController.tableView.frame;
-    notificationTableFrame.origin.y = 64;
-    notificationTableFrame.size.height = 300;
-    _notificationController.tableView.frame = notificationTableFrame;
-    [_notificationController.tableView endUpdates];
-    
-    _notificationController.tableView.contentInset = UIEdgeInsetsMake(0, 0, 355, 0);
-    
-    CGRect windowFrame = _notificationWindow.frame;
-    windowFrame.size.height = 0;
-    _notificationWindow.frame = windowFrame;
-    
-    windowFrame.size.height = self.view.frame.size.height-64;
-    
-    [_notificationWindow addSubview:_notificationController.view];
-    
-    _notificationArrowImageView.alpha = 1;
-    
-    [UIView animateWithDuration:0.7 animations:^{
-        _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
-    }];
-    
-    [UIView animateWithDuration:0.55 animations:^{
-        _notificationWindow.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+112);
-    }];
-    
-}
-
-- (void)windowDidTap
-{
-    CGRect windowFrame = _notificationWindow.frame;
-    windowFrame.size.height = 0;
-    
-    [UIView animateWithDuration:0.15 animations:^{
-        _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
-        _notificationArrowImageView.alpha = 0;
-    }];
-    
-    [UIView animateWithDuration:0.2 animations:^{
-        _notificationWindow.frame = windowFrame;
-    } completion:^(BOOL finished) {
-        _notificationWindow.hidden = YES;
-    }];
-    
 }
 
 
@@ -375,27 +310,24 @@
         SearchResultViewController *vc = [SearchResultViewController new];
         vc.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
                    kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
-                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
         SearchResultViewController *vc1 = [SearchResultViewController new];
         vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
                     kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
-                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
         SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
         vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : _searchbar.text?:@"" ,
                     kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
-                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
         NSArray *viewcontrollers = @[vc,vc1,vc2];
         
         TKPDTabNavigationController *c = [TKPDTabNavigationController new];
         
         [c setSelectedIndex:0];
         [c setViewControllers:viewcontrollers];
-        //UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-        //[nav.navigationBar setTranslucent:NO];
-        //[self.navigationController presentViewController:nav animated:YES completion:nil];
-        self.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:c animated:YES];
-        self.hidesBottomBarWhenPushed = NO;
+        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
+        [nav.navigationBar setTranslucent:NO];
+        [self.navigationController presentViewController:nav animated:YES completion:nil];
     }
     else
     {
@@ -422,58 +354,32 @@
     return YES;
 }
 
-#pragma mark - Notification delegate
-
-- (void)didReceiveNotification:(Notification *)notification
-{
-    _notification = notification;
-    
-    if ([_notification.result.total_notif integerValue] == 0) {
-        
-        _notificationButton.badgeLabel.hidden = YES;
-        
-    } else {
-        
-        _notificationButton.enabled = YES;
-        
-        _notificationButton.badgeLabel.hidden = NO;
-        _notificationButton.badgeLabel.text = _notification.result.total_notif;
-        
-        NSInteger totalNotif = [_notification.result.total_notif integerValue];
-        
-        CGRect badgeLabelFrame = _notificationButton.badgeLabel.frame;
-        
-        if (totalNotif >= 10 && totalNotif < 100) {
-            
-            badgeLabelFrame.origin.x -= 6;
-            badgeLabelFrame.size.width += 11;
-            
-        } else if (totalNotif >= 100 && totalNotif < 1000) {
-            
-            badgeLabelFrame.origin.x -= 7;
-            badgeLabelFrame.size.width += 14;
-            
-        } else if (totalNotif >= 1000 && totalNotif < 10000) {
-            
-            badgeLabelFrame.origin.x -= 11;
-            badgeLabelFrame.size.width += 22;
-            
-        } else if (totalNotif >= 10000 && totalNotif < 100000) {
-            
-            badgeLabelFrame.origin.x -= 17;
-            badgeLabelFrame.size.width += 30;
-            
-        }
-        
-        _notificationButton.badgeLabel.frame = badgeLabelFrame;
-        
-    }
-}
-
 #pragma mark - properties
 -(void)setData:(NSDictionary *)data
 {
     _data = data;
 }
+
+
+#pragma mark - Notification Manager
+- (void)initNotificationManager {
+    _notifManager = [NotificationManager new];
+    [_notifManager setViewController:self];
+    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+}
+
+- (void)tapNotificationBar {
+    [_notifManager tapNotificationBar];
+}
+
+- (void)tapWindowBar {
+    [_notifManager tapWindowBar];
+}
+
+- (void)goToViewController:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    [self tapWindowBar];
+}
+
 
 @end

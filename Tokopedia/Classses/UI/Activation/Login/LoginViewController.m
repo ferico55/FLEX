@@ -247,10 +247,15 @@
                             };
     
     _barbuttonsignin.enabled = NO;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDLOGIN_APIPATH parameters:[param encrypt]];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:kTKPDLOGIN_APIPATH
+                                                                parameters:[param encrypt]];
     
     NSTimer *timer;
+    
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"clearCacheNotificationBar" object:self];
         [timer invalidate];
         //[_act stopAnimating];
         _barbuttonsignin.enabled = YES;

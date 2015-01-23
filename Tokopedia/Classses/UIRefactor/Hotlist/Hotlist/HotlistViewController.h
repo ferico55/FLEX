@@ -11,6 +11,9 @@
 
 @interface HotlistViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, HotlistCellDelegate>
 
+@property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic) NSDictionary *data;
+
+- (void)panggil;
 
 @end

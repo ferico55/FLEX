@@ -18,19 +18,20 @@
 #define KEYWORD_API_KEY @"keyword"
 
 #define GET_INBOX_REVIEW @"get_inbox_review"
+#define SKIP_REVIEW @"skip_product_review"
 #define INBOX_REVIEW_LIMIT_VALUE @5
 #define TIMEOUT_TIMER_MAX 10.0
 
-#define NAV_TALK @"inbox-talk"
-#define NAV_TALK_MYPRODUCT @"inbox-talk-my-product"
-#define NAV_TALK_FOLLOWING @"inbox-talk-following"
+#define NAV_REVIEW @"inbox-review"
+#define NAV_REVIEW_MYPRODUCT @"inbox-review-my-product"
+#define NAV_REVIEW_MINE @"inbox-review-my-review"
 
-#define SEGMENT_INBOX_TALK 0
-#define SEGMENT_INBOX_TALK_MY_PRODUCT 1
-#define SEGMENT_INBOX_TALK_FOLLOWING 2
+#define SEGMENT_INBOX_REVIEW 0
+#define SEGMENT_INBOX_REVIEW_MY_PRODUCT 1
+#define SEGMENT_INBOX_REVIEW_MINE 2
 
-#define ALL_TALK @"Semua Diskusi"
-#define UNREAD_TALK @"Belum Dibaca"
+#define ALL_REVIEW @"Semua Ulasan"
+#define UNREAD_REVIEW @"Belum Dibaca"
 
 #define EDIT_TALK @"Edit"
 #define COMMENT_TALK @"Comment"
@@ -43,6 +44,8 @@
 #define BUTTON_OK @"Ya"
 
 #define ADD_REVIEW_PATH @"action/review.pl"
+#define STATE_PRODUCT_BANNED @"-2"
+#define STATE_PRODUCT_DELETED @"0"
 
 #define STATE_PRODUCT_DELETED @"0"
 #define STATE_PRODUCT_BANNED @"-2"

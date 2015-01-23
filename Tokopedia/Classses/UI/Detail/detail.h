@@ -611,6 +611,7 @@ typedef enum
 #define kTKPDDETAILCATALOG_APISHOPIMAGEKEY @"shop_image"
 #define kTKPDDETAIL_APISHOPIDKEY @"shop_id"
 #define kTKPDDETAIL_APISHOPNAMEKEY @"shop_name"
+#define kTKPDDETAIL_APISHOPISGOLD @"shop_is_gold"
 #define kTKPDDETAILCATALOG_APISHOPLOCATIONKEY @"shop_location"
 #define kTKPDDETAILCATALOG_APISHOPRATESPEEDKEY @"shop_rate_speed"
 #define kTKPDDETAILCATALOG_APIISGOLDSHOPKEY @"is_gold_shop"
@@ -716,6 +717,7 @@ typedef enum
 #define kTKPDDETAILETALASE_CACHEFILEPATH @"etalase"
 
 #define TKPD_INBOXTALK_CACHE @"inbox-talk"
+#define TKPD_INBOXREVIEW_CACHE @"inbox-review"
 
 #define ARRAY_SHOP_SETTING_MENU @[@"Etalase", @"Produk", @"Lokasi", @"Pengiriman", @"Pembayaran", @"Catatan", @"Admin"]
 

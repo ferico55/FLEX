@@ -10,4 +10,6 @@
 
 @interface HistoryProductViewController : UIViewController
 
+@property NSInteger index;
+
 @end

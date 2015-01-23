@@ -53,14 +53,16 @@
 }
 
 #pragma mark - View Lifecycle
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.edgesForExtendedLayout=UIRectEdgeNone;
-    self.extendedLayoutIncludesOpaqueBars=NO;
-    self.automaticallyAdjustsScrollViewInsets=NO;
+    [self.navigationController.navigationBar setTranslucent:NO];
+    self.navigationController.navigationBarHidden = NO;
     
+    self.title = @"Etalase";
+
     _etalaseList = [NSMutableArray new];
     _selecteddata = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
@@ -122,6 +124,10 @@
     if (_isnodata) {
         [self loadData];
     }
+    
+    self.edgesForExtendedLayout=UIRectEdgeNone;
+    self.extendedLayoutIncludesOpaqueBars=NO;
+    self.automaticallyAdjustsScrollViewInsets=NO;
 }
 
 -(void)viewWillDisappear:(BOOL)animated

@@ -10,4 +10,6 @@
 
 @interface ProductFeedViewController : UIViewController
 
+@property NSInteger index;
+
 @end

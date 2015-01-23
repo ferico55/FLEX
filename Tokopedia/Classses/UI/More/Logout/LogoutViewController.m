@@ -9,7 +9,6 @@
 #import "LogoutViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
-#import "ShopProductViewController.h"
 #import "ShopTalkViewController.h"
 #import "InboxMessageViewController.h"
 #import "InboxTalkViewController.h"

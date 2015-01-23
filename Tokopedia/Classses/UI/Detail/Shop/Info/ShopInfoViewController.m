@@ -83,8 +83,6 @@
     if (self) {
         _isnodata = YES;
         _isaddressexpanded = NO;
-        self.navigationController.navigationBarHidden = NO;
-
     }
     return self;
 }
@@ -98,16 +96,16 @@
     [super viewDidLoad];
     self.title = kTKPDTITLE_SHOP_INFO;
     
-
-    self.navigationController.navigationBarHidden = NO;
-
     _scrollview.delegate = self;
     _scrollview.scrollEnabled = YES;
     CGSize viewsize = _containerview.frame.size;
     [_scrollview setContentSize:viewsize];
     [_scrollview addSubview:_containerview];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
     barButtonItem.tag = 10;
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
@@ -118,6 +116,11 @@
     [_tableshipment reloadData];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = NO;
+}
 
 #pragma mark - Memory Management
 -(void)dealloc{

@@ -13,8 +13,7 @@
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileFavoriteShopCell.h"
 
-#import "TKPDTabShopNavigationController.h"
-#import "ShopProductViewController.h"
+#import "TKPDTabShopViewController.h"
 #import "ShopNotesViewController.h"
 #import "ShopReviewViewController.h"
 #import "ShopTalkViewController.h"
@@ -481,31 +480,14 @@
     }
     else
     {
-        NSMutableArray *viewcontrollers = [NSMutableArray new];
-        /** create new view controller **/
-        ShopProductViewController *v = [ShopProductViewController new];
-        v.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0)};
-        [viewcontrollers addObject:v];
-        ShopTalkViewController *v1 = [ShopTalkViewController new];
-        v1.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0)};
-        [viewcontrollers addObject:v1];
-        ShopReviewViewController *v2 = [ShopReviewViewController new];
-        v2.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0)};
-        [viewcontrollers addObject:v2];
-        ShopNotesViewController *v3 = [ShopNotesViewController new];
-        v3.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:@(0)};
-        [viewcontrollers addObject:v3];
-        /** Adjust View Controller **/
-        TKPDTabShopNavigationController *tapnavcon = [TKPDTabShopNavigationController new];
-        tapnavcon.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
-                           kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
-                           };
-        [tapnavcon setViewControllers:viewcontrollers animated:YES];
-        [tapnavcon setSelectedIndex:0];
-        
-        [self.navigationController pushViewController:tapnavcon animated:YES];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
+        shopViewController.data = @{
+                                    kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
+                                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
+                                    };
+        [self.navigationController pushViewController:shopViewController animated:YES];
     }
-
 }
 
 @end

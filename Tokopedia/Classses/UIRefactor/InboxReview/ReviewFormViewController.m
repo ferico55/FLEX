@@ -51,6 +51,8 @@
     BOOL _editableRating;
     ReviewList *_selectedReviewDetail;
     NSMutableArray *_errorMessages;
+    UIBarButtonItem *_barbuttonright;
+    NSDictionary *_editedParam;
 }
 
 #pragma mark - Initialization
@@ -59,19 +61,19 @@
 }
 
 - (void)initNavigationBar {
+
     UIBarButtonItem *barbuttonleft;
-    UIBarButtonItem *barbuttonright;
     
     barbuttonleft = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [barbuttonleft setTintColor:[UIColor whiteColor]];
     [barbuttonleft setTag:10];
     self.navigationItem.leftBarButtonItem = barbuttonleft;
     if(!_isViewForm) {
-        barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [barbuttonright setTintColor:[UIColor blackColor]];
-        [barbuttonright setTag:11];
+        _barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Send" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        [_barbuttonright setTintColor:[UIColor blackColor]];
+        [_barbuttonright setTag:11];
         
-        self.navigationItem.rightBarButtonItem = barbuttonright;
+        self.navigationItem.rightBarButtonItem = _barbuttonright;
     }
 }
 
@@ -256,24 +258,11 @@
     if(_request.isExecuting) return;
     
     [self configureRestkit];
-    NSNumberFormatter *formatter = [NSNumberFormatter new];
-    [formatter setMaximumFractionDigits:0];
-    [formatter setRoundingMode:NSNumberFormatterRoundDown];
     
-    NSDictionary *param = @{
-                            @"action" : _isEditForm ? @"edit_product_review" : @"add_product_review",
-                            @"mode" : _isEditForm ? @"edit" : @"",
-                            @"element_id" : _isEditForm ? _selectedReviewDetail.review_id : @"",
-                            @"shop_id" : _selectedReviewDetail.review_shop_id,
-                            @"product_id" : _selectedReviewDetail.review_product_id,
-                            @"review_message" : _reviewMessage.text,
-                            @"rate_product" : [formatter stringFromNumber:[NSNumber numberWithFloat:_qualityRateView.rating]],
-                            @"rate_speed" : [formatter stringFromNumber:[NSNumber numberWithFloat:_speedRateView.rating]],
-                            @"rate_accuracy" : [formatter stringFromNumber:[NSNumber numberWithFloat:_accuracyRateView.rating]],
-                            @"rate_service" : [formatter stringFromNumber:[NSNumber numberWithFloat:_serviceRateView.rating]]
-                            };
+    
+    
     _requestCount++;
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:ADD_REVIEW_PATH parameters:param];
+    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:ADD_REVIEW_PATH parameters:[[self getEditedParam] encrypt]];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];
@@ -314,6 +303,27 @@
     
 }
 
+- (NSDictionary *)getEditedParam {
+    NSNumberFormatter *formatter = [NSNumberFormatter new];
+    [formatter setMaximumFractionDigits:0];
+    [formatter setRoundingMode:NSNumberFormatterRoundDown];
+    
+    _editedParam = @{
+                     @"action" : _isEditForm ? @"edit_product_review" : @"add_product_review",
+                     @"mode" : _isEditForm ? @"edit" : @"",
+                     @"review_id" : _isEditForm ? _selectedReviewDetail.review_id : @"",
+                     @"shop_id" : _selectedReviewDetail.review_shop_id,
+                     @"product_id" : _selectedReviewDetail.review_product_id,
+                     @"review_message" : _reviewMessage.text,
+                     @"rate_product" : [formatter stringFromNumber:[NSNumber numberWithFloat:_qualityRateView.rating]],
+                     @"rate_speed" : [formatter stringFromNumber:[NSNumber numberWithFloat:_speedRateView.rating]],
+                     @"rate_accuracy" : [formatter stringFromNumber:[NSNumber numberWithFloat:_accuracyRateView.rating]],
+                     @"rate_service" : [formatter stringFromNumber:[NSNumber numberWithFloat:_serviceRateView.rating]]
+                     };
+    
+    return _editedParam;
+}
+
 #pragma mark - IBAction
 -(IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
@@ -327,6 +337,13 @@
                 
             case 11 : {
                 if([self validateReviewValue]) {
+                    [self.navigationController popViewControllerAnimated:YES];
+                    
+                    NSDictionary *userinfo;
+                    _editedParam = [self getEditedParam];
+                    userinfo = @{@"data":[self getEditedParam], @"index" : @(_reviewIndex)};
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateAfterEditingReview" object:nil userInfo:userinfo];
+                    
                     [self doSendReview];
                 } else {
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:_errorMessages,@"messages", nil];
@@ -425,5 +442,6 @@
     }
 
 }
+
 
 @end

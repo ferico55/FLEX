@@ -1,4 +1,4 @@
-//
+    //
 //  TKPDTabHomeNavigationController.m
 //  Tokopedia
 //
@@ -7,28 +7,21 @@
 //
 
 #import "TKPDTabHomeNavigationController.h"
-#import "Notification.h"
-#import "NotificationViewController.h"
-#import "NotificationBarButton.h"
-#import "NotificationRequest.h"
+#import "NotificationManager.h"
 
-@interface TKPDTabHomeNavigationController () <UIScrollViewDelegate, NotificationDelegate> {
+@interface TKPDTabHomeNavigationController () <UIScrollViewDelegate> {
 	UIView *_tabbar;
 	NSMutableArray* _buttons;
 	NSInteger _unloadSelectedIndex;
 	NSArray* _unloadViewControllers;
     NSMutableArray *_chevrons;
     
-    Notification *_notification;
+    NotificationManager *_notifManager;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollviewtop;
 @property (weak, nonatomic) IBOutlet UIView *container;
 
-@property (strong, nonatomic) UIWindow *notificationWindow;
-@property (strong, nonatomic) NotificationBarButton *notificationButton;
-@property (strong, nonatomic) UIImageView *notificationArrowImageView;
-@property (strong, nonatomic) NotificationViewController *notificationController;
 
 - (UIEdgeInsets)contentInsetForContainerController;
 - (UIViewController*)isChildViewControllersContainsNavigationController:(UIViewController*)controller;
@@ -63,11 +56,25 @@
     return self;
 }
 
+#pragma mark - Init Notification 
+- (void) initNotification {
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self name:@"goToViewController" object:nil];
+    [nc addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotificationBar" object:nil];
+    [nc addObserver:self selector:@selector(goToViewController:) name:@"goToViewController" object:nil];
+
+}
+
+
+
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    
     
     _buttons = [NSMutableArray new];
     _chevrons = [NSMutableArray new];
@@ -92,29 +99,11 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self initNotificationManager];
+    [self initNotification];
     [super viewWillAppear:animated];
-    
-    _notificationWindow = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
-    _notificationWindow.clipsToBounds = YES;
-
-    // Notification button
-    _notificationButton = [[NotificationBarButton alloc] init];
-    UIButton *button = (UIButton *)_notificationButton.customView;
-    [button addTarget:self action:@selector(barButtonDidTap) forControlEvents:UIControlEventTouchUpInside];
-    self.navigationItem.rightBarButtonItem = _notificationButton;
-    
-    _notificationArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_triangle_grey"]];
-    _notificationArrowImageView.contentMode = UIViewContentModeScaleAspectFill;
-    _notificationArrowImageView.clipsToBounds = YES;
-    _notificationArrowImageView.frame = CGRectMake(_notificationButton.customView.frame.origin.x+12, 60, 10, 5);
-    _notificationArrowImageView.alpha = 0;
-    [_notificationWindow addSubview:_notificationArrowImageView];
-    
-    NotificationRequest *notificationRequest = [NotificationRequest new];
-    notificationRequest.delegate = self;
-    [notificationRequest loadNotification];
 }
+
 
 - (void)viewDidLayoutSubviews
 {
@@ -373,6 +362,30 @@
 	return inset;
 }
 
+#pragma mark - Notification Manager
+- (void)initNotificationManager {
+    _notifManager = [NotificationManager new];
+    [_notifManager setViewController:self];
+    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+}
+
+- (void)tapNotificationBar {
+    [_notifManager tapNotificationBar];
+}
+
+- (void)tapWindowBar {
+    [_notifManager tapWindowBar];
+}
+
+- (void)goToViewController:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    UIViewController *ui  = (UIViewController*)[userinfo objectForKey:@"nav"];
+    [self tapWindowBar];
+    [self presentViewController:ui animated:YES completion:nil];
+}
+
+
+
 #pragma mark -
 #pragma mark Memory management
 
@@ -387,12 +400,13 @@
 	}
 }
 
-#ifdef _DEBUG
-- (void)dealloc
-{
-	NSLog(@"%@: %@", [self class], NSStringFromSelector(_cmd));
+
+#pragma mark - Memory Management
+-(void)dealloc{
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
-#endif
+
 
 #pragma mark -
 #pragma mark View actions
@@ -415,7 +429,6 @@
 			[self setSelectedIndex:index animated:YES];
 			
 			if (([_delegate respondsToSelector:@selector(tabBarController:didSelectViewController:)])) {
-				
 				[_delegate tabBarController:self didSelectViewController:_viewControllers[index]];
 			}
 		}
@@ -548,65 +561,8 @@
 	return nil;
 }
 
-#pragma mark - Notification methods
 
-- (void)barButtonDidTap
-{
-    [_notificationWindow makeKeyAndVisible];
-    
-    UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(windowDidTap)];
-    [_notificationWindow addGestureRecognizer:tapRecognizer];
-    
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-    _notificationController = [storyboard instantiateViewControllerWithIdentifier:@"NotificationViewController"];
-    _notificationController.notification = _notification;
-    
-    [_notificationController.tableView beginUpdates];
-    CGRect notificationTableFrame = _notificationController.tableView.frame;
-    notificationTableFrame.origin.y = 64;
-    notificationTableFrame.size.height = 300;
-    _notificationController.tableView.frame = notificationTableFrame;
-    [_notificationController.tableView endUpdates];
-    
-    _notificationController.tableView.contentInset = UIEdgeInsetsMake(0, 0, 355, 0);
-    
-    CGRect windowFrame = _notificationWindow.frame;
-    windowFrame.size.height = 0;
-    _notificationWindow.frame = windowFrame;
-    
-    windowFrame.size.height = self.view.frame.size.height-64;
-    
-    [_notificationWindow addSubview:_notificationController.view];
-    
-    _notificationArrowImageView.alpha = 1;
-    
-    [UIView animateWithDuration:0.7 animations:^{
-        _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
-    }];
-    
-    [UIView animateWithDuration:0.55 animations:^{
-        _notificationWindow.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+112);
-    }];
-    
-}
 
-- (void)windowDidTap
-{
-    CGRect windowFrame = _notificationWindow.frame;
-    windowFrame.size.height = 0;
-    
-    [UIView animateWithDuration:0.15 animations:^{
-        _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
-        _notificationArrowImageView.alpha = 0;
-    }];
-    
-    [UIView animateWithDuration:0.2 animations:^{
-        _notificationWindow.frame = windowFrame;
-    } completion:^(BOOL finished) {
-        _notificationWindow.hidden = YES;
-    }];
-    
-}
 
 #pragma mark - Scroll view delegate
 
@@ -623,53 +579,7 @@
     }
 }
 
-#pragma mark - Notification delegate
 
-- (void)didReceiveNotification:(Notification *)notification
-{
-    _notification = notification;
-    
-    if ([_notification.result.total_notif integerValue] == 0) {
-        
-        _notificationButton.badgeLabel.hidden = YES;
-        
-    } else {
-        
-        _notificationButton.enabled = YES;
-        
-        _notificationButton.badgeLabel.hidden = NO;
-        _notificationButton.badgeLabel.text = _notification.result.total_notif;
-        
-        NSInteger totalNotif = [_notification.result.total_notif integerValue];
-        
-        CGRect badgeLabelFrame = _notificationButton.badgeLabel.frame;
-        
-        if (totalNotif >= 10 && totalNotif < 100) {
-            
-            badgeLabelFrame.origin.x -= 6;
-            badgeLabelFrame.size.width += 11;
-            
-        } else if (totalNotif >= 100 && totalNotif < 1000) {
-            
-            badgeLabelFrame.origin.x -= 7;
-            badgeLabelFrame.size.width += 14;
-            
-        } else if (totalNotif >= 1000 && totalNotif < 10000) {
-            
-            badgeLabelFrame.origin.x -= 11;
-            badgeLabelFrame.size.width += 22;
-            
-        } else if (totalNotif >= 10000 && totalNotif < 100000) {
-            
-            badgeLabelFrame.origin.x -= 17;
-            badgeLabelFrame.size.width += 30;
-            
-        }
-        
-        _notificationButton.badgeLabel.frame = badgeLabelFrame;
-        
-    }
-}
 
 @end
 
