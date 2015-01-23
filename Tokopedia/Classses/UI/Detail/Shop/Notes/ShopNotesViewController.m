@@ -191,6 +191,8 @@
     if (_shopIsGold) self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0);
 
     self.tableView.delegate = self;
+    
+    self.hidesBottomBarWhenPushed = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
