@@ -10,10 +10,11 @@
 
 @interface StickyAlertView : UIView
 
+@property BOOL disableAutoDismiss;
+
 -(id)initWithErrorMessages:(NSArray *)messages delegate:(id)delegate;
 -(id)initWithSuccessMessages:(NSArray *)messages delegate:(id)delegate;
--(id)initWithInfoMessages:(NSArray *)messages delegate:(id)delegate;
--(id)initWithLoadingMessage:(NSString *)message delegate:(id)delegate;
+-(id)initWithLoadingMessages:(NSArray *)messages delegate:(id)delegate;
 
 - (void)show;
 - (void)dismiss;
