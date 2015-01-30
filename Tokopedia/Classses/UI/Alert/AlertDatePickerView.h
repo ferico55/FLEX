@@ -12,5 +12,8 @@
 @interface AlertDatePickerView : TKPDAlertView
 
 @property (nonatomic, strong) NSDate *currentdate;
+@property (strong, nonatomic) NSDate *startDate;
+@property (strong, nonatomic) NSDate *endDate;
+@property BOOL isSetMinimumDate;
 
 @end

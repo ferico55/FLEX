@@ -19,6 +19,7 @@
 #define API_NEW_ORDER_ACTION_PATH       @"action/myshop-order.pl"
 #define API_GET_NEW_ORDER_KEY           @"get_order_new"
 #define API_GET_NEW_ORDER_PROCESS_KEY   @"get_order_process"
+#define API_GET_NEW_ORDER_STATUS_KEY    @"get_order_status"
 #define API_PROCEED_ORDER_KEY           @"proceed_order"
 
 #define API_ACTION_TYPE_KEY             @"action_type"
@@ -28,6 +29,8 @@
 #define API_PRODUCT_QUANTITY_KEY        @"qty_accept"
 
 #define API_USER_ID_KEY                 @"user_id"
+#define API_DEADLINE_KEY                @"deadline"
+#define API_FILTER_KEY                  @"filter"
 
 #define API_LIST_ORDER_JOB_STATUS       @"order_JOB_status"
 #define API_LIST_ORDER_CUSTOMER         @"order_customer"
@@ -91,6 +94,9 @@
 #define API_DETAIL_TOTAL_ADD_FEE        @"detail_total_add_fee"
 #define API_DETAIL_OPEN_AMOUNT_IDR      @"detail_open_amount_idr"
 #define API_DETAIL_FORCE_CANCEL         @"detail_force_cancel"
+#define API_DETAIL_PARTIAL_ORDER        @"detail_partial_order"
+#define API_DETAIL_DROPSHIP_NAME        @"detail_dropship_name"
+#define API_DETAIL_DROPSHIP_TELP        @"detail_dropship_telp"
 
 #define API_DEADLINE_PROCESS_DAY_LEFT   @"deadline_process_day_left"
 #define API_DEADLINE_SHIPPING_DAY_LEFT  @"deadline_shipping_day_left"

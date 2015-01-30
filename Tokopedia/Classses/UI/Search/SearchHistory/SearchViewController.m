@@ -232,6 +232,8 @@
 #pragma mark - TableView Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     NSString *searchresult;
     if (_searchresultarray == nil || _searchresultarray.count == 0) {
         searchresult = [_historysearch objectAtIndex:indexPath.row];

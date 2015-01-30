@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol FilterDelegate <NSObject>
+
+- (void)didFinishFilterInvoice:(NSString *)invoice dueDate:(NSString *)dueDate;
+
+@end
+
 @interface FilterNewOrderViewController : UITableViewController
+
+@property (weak, nonatomic) id<FilterDelegate> delegate;
 
 @end

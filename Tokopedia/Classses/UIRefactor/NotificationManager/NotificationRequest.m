@@ -15,7 +15,7 @@
 #import "UserAuthentificationManager.h"
 
 @interface NotificationRequest () {
-
+    
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     NSInteger _requestCount;
@@ -166,7 +166,7 @@
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:API_NOTIFICATION_PATH
-                                                                parameters:[param encrypt]];
+                                                                parameters:param];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];
@@ -204,8 +204,8 @@
         BOOL isMapped = [mapper execute:&mappingError];
         if (isMapped && !mappingError) {
             RKMappingResult *mappingresult = [mapper mappingResult];
-//            _isrefreshview = YES;
-//            _isNeedToInsertCache = NO;
+            //            _isrefreshview = YES;
+            //            _isNeedToInsertCache = NO;
             [self requestSuccess:mappingresult withOperation:nil];
         }
     }
@@ -217,9 +217,9 @@
     if (result) {
         _notification = [result objectForKey:@""];
         
-//        TODO::here
+        //        TODO::here
         [[NSNotificationCenter defaultCenter] postNotificationName:@"setUnreadNotification" object:nil userInfo:@{@"increment_notif" : _notification.result.incr_notif?:@"0"}];
-
+        
         [self.delegate didReceiveNotification:_notification];
         
         [_cacheconnection connection:operation.HTTPRequestOperation.request
@@ -235,7 +235,7 @@
     
 }
 
-#pragma mark - Read Notification Request 
+#pragma mark - Read Notification Request
 - (void)resetNotification {
     [self configureResetNotificationRestkit];
     [self doresetNotification];
@@ -271,10 +271,10 @@
     
     NSDictionary *param = [@{API_NOTIFICATION_ACTION : API_NOTIFICATION_RESET} encrypt];
     _requestResetNotification = [_objectManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:API_NOTIFICATION_PATH
-                                                                parameters:param];
-
+                                                                                     method:RKRequestMethodPOST
+                                                                                       path:API_NOTIFICATION_PATH
+                                                                                 parameters:param];
+    
     [_requestResetNotification setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestResetSuccess:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {

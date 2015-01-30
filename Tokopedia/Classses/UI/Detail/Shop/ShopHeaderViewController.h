@@ -19,7 +19,6 @@
 @interface ShopHeaderViewController : UIViewController
 
 @property (strong, nonatomic) NSDictionary *data;
-//@property (weak, nonatomic) id parent;
 @property (weak, nonatomic) UIImage *coverImage;
 @property (weak, nonatomic) id<ShopHeaderDelegate> delegate;
 @property (strong, nonatomic) Shop *shop;

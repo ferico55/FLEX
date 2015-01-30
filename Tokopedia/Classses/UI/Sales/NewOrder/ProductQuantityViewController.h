@@ -10,7 +10,7 @@
 
 @protocol ProductQuantityDelegate <NSObject>
 
-- (void)didUpdateProductQuantity:(NSDictionary *)productQuantity;
+- (void)didUpdateProductQuantity:(NSArray *)productQuantity explanation:(NSString *)explanation;
 
 @end
 

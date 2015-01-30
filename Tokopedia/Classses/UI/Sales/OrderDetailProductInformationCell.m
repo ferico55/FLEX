@@ -10,14 +10,33 @@
 
 @implementation OrderDetailProductInformationCell
 
+static CGFloat messageTextSize = 14.0;
+static CGFloat textMarginVertical = 40.0f;
+
 - (void)awakeFromNib {
-    // Initialization code
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
+}
 
-    // Configure the view for the selected state
++ (CGFloat)maxTextWidth {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone) {
+        return 220.0f;
+    } else {
+        return 400.0f;
+    }
+}
+
++ (CGSize)messageSize:(NSString*)message {
+    message = [message stringByAppendingString:@"\n"];
+    return [message sizeWithFont:[UIFont systemFontOfSize:messageTextSize]
+               constrainedToSize:CGSizeMake([self maxTextWidth], CGFLOAT_MAX)
+                   lineBreakMode:NSLineBreakByWordWrapping];
+}
+
++ (CGFloat)textMarginVertical {
+    return textMarginVertical;
 }
 
 @end

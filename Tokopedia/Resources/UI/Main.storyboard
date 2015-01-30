@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="2Kq-eg-CQr">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -1406,9 +1406,9 @@
                                                 </textField>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="Hlr-tM-ZjR" secondAttribute="trailing" constant="-8" id="MbQ-mw-Blp"/>
-                                                <constraint firstItem="Hlr-tM-ZjR" firstAttribute="top" secondItem="Btg-Wa-TCK" secondAttribute="topMargin" constant="-8" id="TIq-AM-7s1"/>
-                                                <constraint firstItem="Hlr-tM-ZjR" firstAttribute="leading" secondItem="Btg-Wa-TCK" secondAttribute="leadingMargin" constant="7" id="ckf-om-lCS"/>
+                                                <constraint firstAttribute="trailing" secondItem="Hlr-tM-ZjR" secondAttribute="trailing" id="MbQ-mw-Blp"/>
+                                                <constraint firstItem="Hlr-tM-ZjR" firstAttribute="top" secondItem="Btg-Wa-TCK" secondAttribute="top" id="TIq-AM-7s1"/>
+                                                <constraint firstItem="Hlr-tM-ZjR" firstAttribute="leading" secondItem="Btg-Wa-TCK" secondAttribute="leading" constant="15" id="ckf-om-lCS"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1448,18 +1448,20 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Filter" id="VOv-yc-t8E">
-                        <barButtonItem key="backBarButtonItem" title=" " id="Bre-cr-E55"/>
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="Uip-Sq-aI7">
+                        <barButtonItem key="leftBarButtonItem" tag="1" title="Cancel" id="Uip-Sq-aI7">
                             <connections>
                                 <action selector="tap:" destination="B6c-MU-e9O" id="0MQ-k9-FZw"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Selesai" id="Uqn-na-oEz">
+                        <barButtonItem key="rightBarButtonItem" tag="2" title="Selesai" id="Uqn-na-oEz">
                             <connections>
                                 <action selector="tap:" destination="B6c-MU-e9O" id="AC4-mY-f8K"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="invoiceTextField" destination="Hlr-tM-ZjR" id="SvH-Bw-Gil"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="V0C-gI-wUd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1632,7 +1634,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="63U-zf-Ouh" id="dzv-GF-KY3">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Hari Ini" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qpq-Mc-3JB">
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Hari ini" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qpq-Mc-3JB">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -3166,6 +3168,7 @@
         <!--Navigation Controller-->
         <scene sceneID="AU7-lq-052">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="la4-4P-OeW" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="FilterNewOrderNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="OB7-en-OFb" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="w0s-db-SWw">
@@ -3182,7 +3185,6 @@
                         <segue destination="B6c-MU-e9O" kind="relationship" relationship="rootViewController" id="uBM-0m-VQC"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="la4-4P-OeW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1650" y="140"/>
         </scene>
