@@ -10,7 +10,7 @@
 
 @protocol FilterShipmentStatusDelegate <NSObject>
 
-- (void)didFinishFilterInvoice:(NSString *)invoice transactionDate:(NSString *)transactionDate startDate:(NSString *)startDate endDate:(NSString *)endDate;
+- (void)didFinishFilterInvoice:(NSString *)invoice transactionStatus:(NSString *)transactionStatus startDate:(NSString *)startDate endDate:(NSString *)endDate;
 
 @end
 

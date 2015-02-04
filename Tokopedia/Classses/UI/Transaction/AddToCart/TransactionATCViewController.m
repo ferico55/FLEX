@@ -910,8 +910,8 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionCalculatePriceResult class]];
     
     RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[ProductDetail class]];
-    [productMapping addAttributeMappingsFromDictionary:@{API_PRICE_KEY:API_PRICE_KEY
-                                                         }];
+//    [productMapping addAttributeMappingsFromDictionary:@{API_PRICE_KEY:API_PRICE_KEY
+//                                                         }];
 
     RKObjectMapping *shipmentsMapping = [RKObjectMapping mappingForClass:[ShippingInfoShipments class]];
     [shipmentsMapping addAttributeMappingsFromDictionary:@{kTKPDSHOPSHIPMENT_APISHIPMENTNAMEKEY:kTKPDSHOPSHIPMENT_APISHIPMENTNAMEKEY,

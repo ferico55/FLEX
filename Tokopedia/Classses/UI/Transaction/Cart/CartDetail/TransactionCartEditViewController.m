@@ -87,7 +87,7 @@
     if ([sender isKindOfClass:[UIStepper class]]) {
         UIStepper *stepper = (UIStepper*)sender;
         _quantityLabel.text = [NSString stringWithFormat:@"%zd",(NSInteger)stepper.value];
-        [_dataInput setObject:_quantityLabel.text forKey:API_PRODUCT_QUANTITY_KEY];
+//        [_dataInput setObject:_quantityLabel.text forKey:API_PRODUCT_QUANTITY_KEY];
     }
 }
 
@@ -140,13 +140,13 @@
     ProductDetail *product = [_data objectForKey:DATA_CART_PRODUCT_KEY];
     
     NSInteger productCartID = [product.product_cart_id integerValue];
-    NSString *productNotes = [userInfo objectForKey:API_CART_PRODUCT_NOTES_KEY]?:@""?:product.product_notes;
-    NSInteger productQty = [[userInfo objectForKey:API_PRODUCT_QUANTITY_KEY]integerValue]?:product.product_quantity;
+//    NSString *productNotes = [userInfo objectForKey:API_CART_PRODUCT_NOTES_KEY]?:@""?:product.product_notes;
+//    NSInteger productQty = [[userInfo objectForKey:API_PRODUCT_QUANTITY_KEY]integerValue]?:product.product_quantity;
     
     NSDictionary* param = @{API_ACTION_KEY :ACTION_EDIT_PRODUCT_CART,
-                            API_PRODUCT_CART_ID_KEY : @(productCartID),
-                            API_CART_PRODUCT_NOTES_KEY:productNotes,
-                            API_PRODUCT_QUANTITY_KEY:@(productQty)
+//                            API_PRODUCT_CART_ID_KEY : @(productCartID),
+//                            API_CART_PRODUCT_NOTES_KEY:productNotes,
+//                            API_PRODUCT_QUANTITY_KEY:@(productQty)
                             };
     _barButtonSave.enabled = NO;
     _requestActionEditProductCart = [_objectManagerActionEditProductCart appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_ACTION_TRANSACTION_PATH parameters:[param encrypt]];

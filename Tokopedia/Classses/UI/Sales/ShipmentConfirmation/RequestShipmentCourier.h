@@ -8,6 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
-@interface RequestShipmentCourier : NSObject
+@protocol RequestShipmentCourierDelegate <NSObject>
+
+@optional;
+- (void)didReceiveShipmentCourier:(NSArray *)couriers;
+- (void)requestShipmentCourierError:(NSError *)error;
 
 @end
+
+@interface RequestShipmentCourier : NSObject
+
+@property (weak, nonatomic) id<RequestShipmentCourierDelegate> delegate;
+
+- (void)request;
+
+@end
+

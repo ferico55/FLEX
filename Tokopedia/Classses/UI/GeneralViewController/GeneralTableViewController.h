@@ -8,6 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol GeneralTableViewControllerDelegate <NSObject>
+
+- (void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath;
+
+@end
+
 @interface GeneralTableViewController : UITableViewController
+
+@property (strong, nonatomic) NSArray *objects;
+@property (strong, nonatomic) id selectedObject;
+@property (strong, nonatomic) NSIndexPath *senderIndexPath;
+@property (weak, nonatomic) id<GeneralTableViewControllerDelegate> delegate;
 
 @end

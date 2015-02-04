@@ -11,7 +11,14 @@
 #import "OrderProduct.h"
 #import "UITextView+UITextView_Placeholder.h"
 
-@interface ProductQuantityViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate> {
+@interface ProductQuantityViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    UITextFieldDelegate,
+    UITextViewDelegate
+>
+{
     NSMutableArray *_productQuantity;
 }
 
@@ -47,10 +54,10 @@
     
     _productQuantity = [NSMutableArray new];
     for (OrderProduct *product in _products) {
-        [_productQuantity addObject:@{
-                                        @"order_detail_id"         : product.order_detail_id,
-                                        @"product_quantity"   : [NSString stringWithFormat:@"%ld", (long)product.product_quantity],
-                                     }];
+        [_productQuantity addObject:[NSMutableDictionary dictionaryWithDictionary:@{
+                                                                                    @"order_detail_id"    : product.order_detail_id,
+                                                                                    @"product_quantity"   : [NSString stringWithFormat:@"%ld", (long)product.product_quantity],
+                                                                                    }]];
     }
 
     [_explanationTextView setText:@"Terima sebagian"];
@@ -82,15 +89,35 @@
         cell = [topLevelObjects objectAtIndex:0];
     }
     
+    OrderProduct *product = [_products objectAtIndex:indexPath.row];
+    
+    cell.productNameLabel.text = product.product_name;
+    
+    cell.productPriceLabel.text = product.product_price;
+    
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_picture]
+                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    [cell.productImageView setImageWithURLRequest:request
+                                 placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"]
+                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                              [cell.productImageView setImage:image];
+                                              [cell.productImageView setContentMode:UIViewContentModeScaleAspectFill];
+                                          } failure:nil];
+    
     cell.productQuantityTextField.text = [[_productQuantity objectAtIndex:indexPath.row] objectForKey:@"product_quantity"];
     cell.productQuantityTextField.tag = indexPath.row;
+    [cell.productQuantityTextField addTarget:self
+                                      action:@selector(textFieldDidChange:)
+                            forControlEvents:UIControlEventEditingChanged];
     
     return cell;
 }
 
-#pragma mark - Text field delegate
+#pragma mark - Text field method
 
-- (void)textFieldDidEndEditing:(UITextField *)textField
+- (void)textFieldDidChange:(UITextField *)textField
 {
     [[_productQuantity objectAtIndex:textField.tag] setObject:textField.text forKey:@"product_quantity"];
 }

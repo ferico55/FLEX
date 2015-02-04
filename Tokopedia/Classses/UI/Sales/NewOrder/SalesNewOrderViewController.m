@@ -366,7 +366,7 @@
 - (void)didFinishFilterInvoice:(NSString *)invoice dueDate:(NSString *)dueDate
 {
     [_transactions removeAllObjects];
-    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
     
     _isNoData = YES;
     _isRefreshView = NO;
@@ -903,12 +903,10 @@
                             API_REASON_KEY           : reason ?: @"",
                             API_LIST_PRODUCT_ID_KEY  : productIds ?: @"",
                             API_PRODUCT_QUANTITY_KEY : productQuantities ?: @"",
+                            @"enc_dec"               : @"off",
                             };
 
-    _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self
-                                                                                method:RKRequestMethodPOST
-                                                                                  path:API_NEW_ORDER_ACTION_PATH
-                                                                            parameters:[param encrypt]];
+    _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_NEW_ORDER_ACTION_PATH parameters:param];
     
     NSLog(@"\n\n\n%@\n\n\n", _actionRequest);
     
@@ -960,7 +958,7 @@
     ActionOrder *actionOrder = [result objectForKey:@""];
     BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
-    if (status && actionOrder.result.is_success == 1) {
+    if (status && [actionOrder.result.is_success boolValue]) {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil memproses transaksi."] delegate:self];
         [alert show];
         [_orderInProcess removeObjectForKey:orderId];

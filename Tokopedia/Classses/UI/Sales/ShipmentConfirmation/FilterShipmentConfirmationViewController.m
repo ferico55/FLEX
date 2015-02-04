@@ -7,8 +7,14 @@
 //
 
 #import "FilterShipmentConfirmationViewController.h"
+#import "GeneralTableViewController.h"
 
-@interface FilterShipmentConfirmationViewController ()
+@interface FilterShipmentConfirmationViewController () <GeneralTableViewControllerDelegate> {
+    NSString *_invoice;
+    NSString *_dueDate;
+    NSString *_courier;
+    ShipmentCourier *_selectedCourier;
+}
 
 @end
 
@@ -17,100 +23,151 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
+    self.title = @"Filter";
     
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                                     style:UIBarButtonItemStyleBordered
+                                                                    target:self
+                                                                    action:@selector(tap:)];
+    cancelButton.tag = 1;
+    self.navigationItem.leftBarButtonItem = cancelButton;
+    
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(tap:)];
+    doneButton.tag = 2;
+    self.navigationItem.rightBarButtonItem = doneButton;
+
+    _invoice = @"";
+    _dueDate = @"Pilih";
+    _courier = @"Pilih";
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+    NSInteger rows;
+    if (section == 0) {
+        rows = 1;
+    } else if (section == 1) {
+        rows = 2;
+    }
+    return rows;
 }
 
-/*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (cell == nil) {
+        if (indexPath.section == 0) {
+
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+            
+            UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width-30, 45)];
+            textField.placeholder = @"Nama Penerima / Invoice";
+            textField.font = [UIFont fontWithName:@"GothamBook" size:14];
+            [textField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
+            [cell addSubview:textField];
+            
+        } else if (indexPath.section == 1) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
+            cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+            cell.detailTextLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+            cell.detailTextLabel.textColor = [UIColor grayColor];
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        }
+    }
     
-    // Configure the cell...
+    if (indexPath.section == 1 && indexPath.row == 0) {
+        cell.textLabel.text = @"Jatuh tempo";
+        cell.detailTextLabel.text = _dueDate;
+    } else if (indexPath.section == 1 && indexPath.row == 1) {
+        cell.textLabel.text = @"Kurir";
+        cell.detailTextLabel.text = _courier;
+    }
     
     return cell;
 }
-*/
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
+ 
 #pragma mark - Table view delegate
 
-// In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here, for example:
-    // Create the next view controller.
-    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:<#@"Nib name"#> bundle:nil];
-    
-    // Pass the selected object to the new view controller.
-    
-    // Push the view controller.
-    [self.navigationController pushViewController:detailViewController animated:YES];
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    GeneralTableViewController *controller = [GeneralTableViewController new];
+    controller.delegate = self;
+    controller.senderIndexPath = indexPath;
+    if (indexPath.section == 1 && indexPath.row == 0) {
+        controller.title = @"Jatuh Tempo";
+        controller.objects = @[
+                               @"Pilih",
+                               @"Hari ini",
+                               @"Besok",
+                               @"2 Hari",
+                               @"3 Hari",
+                               @"4 Hari",
+                               @"5 Hari",
+                               @"6 Hari",
+                               @"7 Hari"
+                               ];
+        controller.selectedObject = _dueDate;
+    } else if (indexPath.section == 1 && indexPath.row == 1) {
+        controller.title = @"Agen Kurir";
+        controller.objects = _couriers;
+        controller.selectedObject = _selectedCourier ?: [_couriers objectAtIndex:0];
+    }
+    [self.navigationController pushViewController:controller animated:YES];
 }
-*/
 
-/*
-#pragma mark - Navigation
+#pragma mark - Text field method
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)textFieldValueChanged:(UITextField *)textField
+{
+    _invoice = textField.text;
 }
-*/
+
+#pragma mark - Actions
+
+- (IBAction)tap:(id)sender
+{
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *button = (UIBarButtonItem *)sender;
+        if (button.tag == 2) {
+            NSString *dueDate;
+            if ([_dueDate isEqualToString:@"Hari ini"]) dueDate = @"1";
+            else if ([_dueDate isEqualToString:@"Besok"]) dueDate = @"2";
+            else if ([_dueDate isEqualToString:@"2 Hari"]) dueDate = @"3";
+            else if ([_dueDate isEqualToString:@"3 Hari"]) dueDate = @"4";
+            else if ([_dueDate isEqualToString:@"4 Hari"]) dueDate = @"5";
+            else if ([_dueDate isEqualToString:@"5 Hari"]) dueDate = @"6";
+            else if ([_dueDate isEqualToString:@"6 Hari"]) dueDate = @"7";
+            else if ([_dueDate isEqualToString:@"7 Hari"]) dueDate = @"8";
+            [self.delegate filterShipmentInvoice:_invoice
+                                         dueDate:dueDate
+                                         courier:_selectedCourier];
+        }
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+#pragma mark - General table view controller delegate
+
+- (void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    cell.detailTextLabel.text = [object description];
+    if (indexPath.row == 0) {
+        _dueDate = object;
+    } else if (indexPath.row == 1) {
+        _selectedCourier = object;
+    }
+}
 
 @end

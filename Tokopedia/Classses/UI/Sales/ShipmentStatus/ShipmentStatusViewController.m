@@ -581,7 +581,6 @@ typedef enum {
 #pragma mark - Action
 
 - (IBAction)tap:(id)sender {
-    
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     navigationController.navigationBar.translucent = NO;

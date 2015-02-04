@@ -18,7 +18,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="135" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="May-Mf-z8r">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="135" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="May-Mf-z8r">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
@@ -28,6 +28,12 @@
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="May-Mf-z8r" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Hat-cL-Pck"/>
+                <constraint firstAttribute="trailing" secondItem="May-Mf-z8r" secondAttribute="trailing" id="J85-cD-OkP"/>
+                <constraint firstAttribute="bottom" secondItem="May-Mf-z8r" secondAttribute="bottom" id="WBw-e0-e15"/>
+                <constraint firstItem="May-Mf-z8r" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="mVu-fh-iWI"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="16A-Jf-hoy">

@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol CancelShipmentConfirmationDelegate <NSObject>
+
+- (void)cancelShipmentWithExplanation:(NSString *)explanation;
+
+@end
+
 @interface CancelShipmentViewController : UIViewController
+
+@property (strong, nonatomic) id<CancelShipmentConfirmationDelegate> delegate;
 
 @end

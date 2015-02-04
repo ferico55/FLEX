@@ -8,11 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "OrderTransaction.h"
+#import "ShipmentCourier.h"
+#import "ShipmentCourierPackage.h"
 
 @protocol OrderDetailDelegate <NSObject>
 
 @optional;
 - (void)didReceiveActionType:(NSString *)actionType reason:(NSString *)reason products:(NSArray *)products productQuantity:(NSArray *)productQuantity;
+- (void)didReceiveActionType:(NSString *)type courier:(ShipmentCourier *)courier courierPackage:(ShipmentCourierPackage *)courierPackage receiptNumber:(NSString *)receiptNumber rejectionReason:(NSString *)rejectionReason;
 
 @end
 
@@ -20,5 +23,6 @@
 
 @property (strong, nonatomic) OrderTransaction *transaction;
 @property (weak, nonatomic) id<OrderDetailDelegate> delegate;
+@property (strong, nonatomic) NSArray *shipmentCouriers;
 
 @end

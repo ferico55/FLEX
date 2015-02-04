@@ -831,7 +831,7 @@
     NSInteger shipmentPackageID = list.cart_shipments.shipment_package_id;
     
     NSDictionary* param = @{API_ACTION_KEY :ACTION_CANCEL_CART,
-                            API_PRODUCT_CART_ID_KEY : @(productCartID),
+//                            API_PRODUCT_CART_ID_KEY : @(productCartID),
                             kTKPD_SHOPIDKEY:@(shopID),
                             API_ADDRESS_ID_KEY:@(addressID),
                             API_SHIPMENT_ID_KEY:@(shipmentID),
@@ -1924,10 +1924,10 @@
                                                      API_PRODUCT_TOTAL_PRICE_KEY,
                                                      API_PRODUCT_PICTURE_KEY,
                                                      API_PRODUCT_WEIGHT_KEY,
-                                                     API_PRODUCT_QUANTITY_KEY,
-                                                     API_PRODUCT_CART_ID_KEY,
-                                                     API_PRODUCT_TOTAL_WEIGHT_KEY,
-                                                     API_PRODUCT_NOTES_KEY
+//                                                     API_PRODUCT_QUANTITY_KEY,
+//                                                     API_PRODUCT_CART_ID_KEY,
+//                                                     API_PRODUCT_TOTAL_WEIGHT_KEY,
+//                                                     API_PRODUCT_NOTES_KEY
                                                      ]];
     return productMapping;
 }

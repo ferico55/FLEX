@@ -7,7 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ShipmentCourier.h"
+#import "ShipmentCourierPackage.h"
+#import "OrderTransaction.h"
+
+@protocol SubmitShipmentConfirmationDelegate <NSObject>
+
+- (void)submitConfirmationReceiptNumber:(NSString *)receiptNumber courier:(ShipmentCourier *)courier courierPackage:(ShipmentCourierPackage *)courierPackage;
+
+@end
 
 @interface SubmitShipmentConfirmationViewController : UIViewController
+
+@property (strong, nonatomic) id<SubmitShipmentConfirmationDelegate> delegate;
+@property (strong, nonatomic) NSArray *shipmentCouriers;
 
 @end

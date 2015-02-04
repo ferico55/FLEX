@@ -15,6 +15,11 @@
 #import "OrderDetailViewController.h"
 #import "FilterShipmentConfirmationViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
+#import "CancelShipmentViewController.h"
+#import "ActionOrder.h"
+#import "StickyAlertView.h"
+#import "RequestShipmentCourier.h"
+#import "ShipmentCourier.h"
 
 @interface ShipmentConfirmationViewController ()
 <
@@ -23,12 +28,16 @@
     UIAlertViewDelegate,
     SalesOrderCellDelegate,
     OrderDetailDelegate,
-    FilterShipmentConfirmationDelegate
+    FilterShipmentConfirmationDelegate,
+    SubmitShipmentConfirmationDelegate,
+    CancelShipmentConfirmationDelegate,
+    RequestShipmentCourierDelegate
 >
 {
     NSMutableArray *_orders;
     OrderTransaction *_selectedOrder;
     NSIndexPath *_selectedIndexPath;
+    NSMutableDictionary *_orderInProcess;
     
     BOOL _isNoData;
     BOOL _isRefreshView;
@@ -36,6 +45,11 @@
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     RKResponseDescriptor *_responseDescriptorStatus;
+    
+    __weak RKObjectManager *_actionObjectManager;
+    __weak RKManagedObjectRequestOperation *_actionRequest;
+    RKResponseDescriptor *_responseActionDescriptorStatus;
+    
     NSOperationQueue *_operationQueue;
     
     NSInteger _page;
@@ -45,6 +59,12 @@
     NSTimer *_timer;
     
     UIRefreshControl *_refreshControl;
+    
+    NSString *_invoiceNumber;
+    NSString *_dueDate;
+    ShipmentCourier *_courier;
+    
+    NSArray *_shipmentCouriers;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *headerView;
@@ -70,10 +90,16 @@
     _requestCount = 0;
     
     _orders = [NSMutableArray new];
+    _orderInProcess = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
     [self configureRestKit];
+    [self configureActionReskit];
     [self request];
+    
+    RequestShipmentCourier *courier = [RequestShipmentCourier new];
+    courier.delegate = self;
+    [courier request];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -135,7 +161,7 @@
     
     cell.invoiceNumberLabel.text = transaction.order_detail.detail_invoice;
     
-    if (transaction.order_payment.payment_process_day_left == 1) {
+    if (transaction.order_deadline.deadline_shipping_day_left == 1) {
         
         cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0
                                                                   green:145.0/255.0
@@ -143,7 +169,7 @@
                                                                   alpha:1];
         cell.remainingDaysLabel.text = @"Besok";
         
-    } else if (transaction.order_payment.payment_process_day_left == 0) {
+    } else if (transaction.order_deadline.deadline_shipping_day_left == 0) {
         
         cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0
                                                                   green:59.0/255.0
@@ -151,7 +177,7 @@
                                                                   alpha:1];
         cell.remainingDaysLabel.text = @"Hari ini";
         
-    } else if (transaction.order_payment.payment_process_day_left < 0) {
+    } else if (transaction.order_deadline.deadline_shipping_day_left < 0) {
         
         cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:158.0/255.0
                                                                   green:158.0/255.0
@@ -171,7 +197,7 @@
 
     } else {
         
-        cell.remainingDaysLabel.text = [NSString stringWithFormat:@"%d Hari lagi", (int)transaction.order_payment.payment_process_day_left];
+        cell.remainingDaysLabel.text = [NSString stringWithFormat:@"%d Hari lagi", (int)transaction.order_deadline.deadline_shipping_day_left];
      
         cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:0.0/255.0
                                                                   green:121.0/255.0
@@ -221,12 +247,17 @@
 
 - (void)tableViewCell:(UITableViewCell *)cell acceptOrderAtIndexPath:(NSIndexPath *)indexPath
 {
+    _selectedOrder = [_orders objectAtIndex:indexPath.row];
+    _selectedIndexPath = indexPath;
+
     UINavigationController *navigationController = [[UINavigationController alloc] init];
     navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
     navigationController.navigationBar.translucent = NO;
     navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     SubmitShipmentConfirmationViewController *controller = [SubmitShipmentConfirmationViewController new];
+    controller.delegate = self;
+    controller.shipmentCouriers = _shipmentCouriers;
     navigationController.viewControllers = @[controller];
     
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
@@ -234,7 +265,19 @@
 
 - (void)tableViewCell:(UITableViewCell *)cell rejectOrderAtIndexPath:(NSIndexPath *)indexPath
 {
+    _selectedOrder = [_orders objectAtIndex:indexPath.row];
+    _selectedIndexPath = indexPath;
+
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
+    CancelShipmentViewController *controller = [CancelShipmentViewController new];
+    controller.delegate = self;
+    navigationController.viewControllers = @[controller];
     
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectPriceAtIndexPath:(NSIndexPath *)indexPath
@@ -245,6 +288,7 @@
     OrderDetailViewController *controller = [[OrderDetailViewController alloc] init];
     controller.transaction = [_orders objectAtIndex:indexPath.row];
     controller.delegate = self;
+    controller.shipmentCouriers = _shipmentCouriers;
     
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -485,6 +529,9 @@
     NSDictionary* param = @{
                             API_ACTION_KEY           : API_GET_NEW_ORDER_PROCESS_KEY,
                             API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
+                            API_STATUS_KEY           : _invoiceNumber ?: @"",
+                            API_DEADLINE_KEY         : _dueDate ?: @"",
+                            API_SHIPMENT_ID_KEY      : _courier.shipment_id ?: @"",
                             API_PAGE_KEY             : [NSNumber numberWithInteger:_page],
                             };
     
@@ -499,6 +546,8 @@
                                                                           path:API_NEW_ORDER_PATH
                                                                     parameters:[param encrypt]];
         
+        NSLog(@"\n\n\n\n%@\n\n\n\n", _request);
+
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             
             _isRefreshView = NO;
@@ -538,19 +587,15 @@
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     BOOL status = [[[result objectForKey:@""] status] isEqualToString:kTKPDREQUEST_OKSTATUS];
-    if (status)
-    {
+    if (status) {
         [self requestProcess:object];
-    }
-    else
-    {
-
     }
 }
 
 - (void)requestProcess:(id)object
 {
     if (object && [object isKindOfClass:[RKMappingResult class]]) {
+
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
         Order *newOrders = [result objectForKey:@""];
         [_orders addObjectsFromArray:newOrders.result.list];
@@ -592,13 +637,13 @@
 
 - (void)cancel
 {
-    
-}
-
-#pragma mark - Navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    
+//    _isRefreshView = NO;
+//    [_refreshControl endRefreshing];
+//    
+//    [_timer invalidate];
+//    _timer = nil;
+//
+//    _tableView.tableFooterView = nil;
 }
 
 #pragma mark - Actions
@@ -614,6 +659,7 @@
             navigationController.navigationBar.tintColor = [UIColor whiteColor];
             FilterShipmentConfirmationViewController *controller = [FilterShipmentConfirmationViewController new];
             controller.delegate = self;
+            controller.couriers = _shipmentCouriers;
             navigationController.viewControllers = @[controller];
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
         }
@@ -622,16 +668,219 @@
 
 #pragma mark - Order detail delegate
 
-- (void)didReceiveActionType:(NSString *)actionType reason:(NSString *)reason products:(NSArray *)products productQuantity:(NSArray *)productQuantity
+- (void)didReceiveActionType:(NSString *)type courier:(ShipmentCourier *)courier courierPackage:(ShipmentCourierPackage *)courierPackage receiptNumber:(NSString *)receiptNumber rejectionReason:(NSString *)rejectionReason
 {
-    
+    [self requestActionType:type
+                    courier:courier
+             courierPackage:courierPackage
+              receiptNumber:receiptNumber
+            rejectionReason:rejectionReason];
 }
 
 #pragma mark - Filter delegate
 
-- (void)didFilterShipmentConfirmationInvoice:(NSString *)invoice deadline:(NSString *)deadline
+- (void)filterShipmentInvoice:(NSString *)invoice dueDate:(NSString *)dueDate courier:(ShipmentCourier *)courier
 {
+    _invoiceNumber = invoice;
+    _dueDate = dueDate;
+    _courier = courier;
     
+    _isNoData = YES;
+    _isRefreshView = NO;
+    
+    _page = 1;
+    _limit = 6;
+    _requestCount = 0;
+    
+    [_orders removeAllObjects];
+    [_tableView reloadData];
+
+    [self configureRestKit];
+    [self request];
+}
+
+#pragma mark - Accept shipment delegate
+
+- (void)submitConfirmationReceiptNumber:(NSString *)receiptNumber courier:(ShipmentCourier *)courier courierPackage:(ShipmentCourierPackage *)courierPackage
+{
+    [self requestActionType:@"confirm"
+                    courier:courier
+             courierPackage:courierPackage
+              receiptNumber:receiptNumber
+            rejectionReason:nil];
+}
+
+#pragma mark - Cancel shipment delegate
+
+- (void)cancelShipmentWithExplanation:(NSString *)explanation
+{
+    [self requestActionType:@"reject"
+                    courier:nil
+             courierPackage:nil
+              receiptNumber:nil
+            rejectionReason:explanation];
+}
+
+#pragma mark - Resktit methods for actions
+
+- (void)configureActionReskit
+{
+    _actionObjectManager =  [RKObjectManager sharedClient];
+    
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ActionOrder class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{
+                                                        kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY   : kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        kTKPD_APISTATUSMESSAGEKEY       : kTKPD_APISTATUSMESSAGEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ActionOrderResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY : kTKPD_APIISSUCCESSKEY}];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    RKResponseDescriptor *actionResponseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                        method:RKRequestMethodPOST
+                                                                                                   pathPattern:API_NEW_ORDER_ACTION_PATH
+                                                                                                       keyPath:@""
+                                                                                                   statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_actionObjectManager addResponseDescriptor:actionResponseDescriptorStatus];
+}
+
+- (void)requestActionType:(NSString *)type courier:(ShipmentCourier *)courier courierPackage:(ShipmentCourierPackage *)courierPackage receiptNumber:(NSString *)receiptNumber rejectionReason:(NSString *)rejectionReason
+{
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *auth = [secureStorage keychainDictionary];
+    
+    NSDictionary *param = @{
+                            API_ACTION_KEY              : API_PROCEED_SHIPPING_KEY,
+                            API_ACTION_TYPE_KEY         : type,
+                            API_USER_ID_KEY             : [auth objectForKey:API_USER_ID_KEY],
+                            API_ORDER_ID_KEY            : [NSNumber numberWithInteger:_selectedOrder.order_detail.detail_order_id],
+                            API_SHIPMENT_ID_KEY         : courier.shipment_id ?: [NSNumber numberWithInteger:_selectedOrder.order_shipment.shipment_id],
+                            API_SHIPMENT_NAME_KEY       : courier.shipment_name ?: _selectedOrder.order_shipment.shipment_name,
+                            API_SHIPMENT_PACKAGE_ID_KEY : courierPackage.sp_id ?: [NSNumber numberWithInteger:_selectedOrder.order_shipment.shipment_package_id],
+                            API_SHIPMENT_REF_KEY        : receiptNumber ?: @"",
+                            API_REASON_KEY              : rejectionReason ?: @"",
+                            @"enc_dec"                  : @"off"
+                            };
+    
+    _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_NEW_ORDER_ACTION_PATH parameters:param];
+    [_operationQueue addOperation:_actionRequest];
+    
+    NSLog(@"\n\n\nRequest Operation : %@\n\n\n", _actionRequest);
+    
+    // Add information about which transaction is in processing and at what index path
+    OrderTransaction *order = [OrderTransaction new];
+    order = _selectedOrder;
+    
+    NSIndexPath *indexPath = [NSIndexPath new];
+    indexPath = _selectedIndexPath;
+    
+    NSDictionary *object = @{@"order" : order, @"indexPath" : indexPath};
+    NSString *key = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:order.order_detail.detail_order_id]];
+    [_orderInProcess setObject:object forKey:key];
+    
+    // Delete row for the object
+    [_orders removeObjectAtIndex:indexPath.row];
+    [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
+    
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                      target:self
+                                                    selector:@selector(timeoutAtIndexPath:)
+                                                    userInfo:@{@"orderId" : key}
+                                                     repeats:NO];
+    
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    
+    [_actionRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        
+        [self actionRequestSuccess:mappingResult
+                     withOperation:operation
+                           orderId:key
+                        actionType:type];
+        [timer invalidate];
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        
+        [self actionRequestFailure:error orderId:key];
+        [timer invalidate];
+        
+    }];
+}
+
+- (void)actionRequestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation orderId:(NSString *)orderId actionType:(NSString *)actionType
+{
+    NSDictionary *result = ((RKMappingResult *)object).dictionary;
+    
+    ActionOrder *actionOrder = [result objectForKey:@""];
+    BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status && [actionOrder.result.is_success boolValue]) {
+        NSString *message;
+        if ([actionType isEqualToString:@"confirm"]) {
+            message = @"Anda telah berhasil mengkonfirmasi pengiriman barang.";
+        } else if ([actionType isEqualToString:@"reject"]) {
+            message = @"Anda telah berhasil membatalkan pengiriman barang.";
+        }
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[message] delegate:self];
+        [alert show];
+        [_orderInProcess removeObjectForKey:orderId];
+    } else {
+        
+        NSLog(@"\n\nRequest Message status : %@\n\n", actionOrder.message_status);
+        
+        [self performSelector:@selector(restoreData:) withObject:orderId];
+    }
+}
+
+- (void)actionRequestFailure:(id)object orderId:(NSString *)orderId
+{
+    NSLog(@"\n\nRequest error : %@\n\n", object);
+    [self performSelector:@selector(restoreData:) withObject:orderId];
+}
+
+- (void)timeoutAtIndexPath:(NSTimer *)timer
+{
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+    NSString *orderId = [[timer userInfo] objectForKey:@"orderId"];
+    [self performSelector:@selector(restoreData:) withObject:orderId];
+}
+
+- (void)reloadData
+{
+    [_tableView reloadData];
+}
+
+- (void)restoreData:(NSString *)orderId
+{
+    NSDictionary *dict = [_orderInProcess objectForKey:orderId];
+    if (dict) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses transaksi gagal."] delegate:self];
+        [alert show];
+        
+        OrderTransaction *order = [dict objectForKey:@"order"];
+        NSIndexPath *objectIndexPath = [dict objectForKey:@"indexPath"];
+        
+        [_orders insertObject:order atIndex:objectIndexPath.row];
+        [_tableView insertRowsAtIndexPaths:@[objectIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
+        
+        [_orderInProcess removeObjectForKey:orderId];
+    }
+}
+
+#pragma mark - Shipment courier request delegate
+
+- (void)didReceiveShipmentCourier:(NSArray *)couriers
+{
+    _shipmentCouriers = couriers;
 }
 
 @end

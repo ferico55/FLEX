@@ -15,6 +15,9 @@
 #import "ShipmentConfirmationViewController.h"
 #import "DetailShipmentStatusViewController.h"
 #import "SalesNewOrderViewController.h"
+#import "ShipmentStatusViewController.h"
+#import "CancelShipmentViewController.h"
+#import "SubmitShipmentConfirmationViewController.h"
 
 @interface OrderDetailViewController ()
 <
@@ -22,13 +25,17 @@
     UITableViewDelegate,
     ProductQuantityDelegate,
     ChooseProductDelegate,
-    RejectExplanationDelegate
+    RejectExplanationDelegate,
+    SubmitShipmentConfirmationDelegate,
+    CancelShipmentConfirmationDelegate
 >
 {
     NSDictionary *_textAttributes;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *topButtonsView;
+@property (weak, nonatomic) IBOutlet UIButton *acceptButton;
+@property (weak, nonatomic) IBOutlet UIButton *rejectButton;
 
 @property (strong, nonatomic) IBOutlet UIView *orderHeaderView;
 @property (strong, nonatomic) IBOutlet UIView *orderFooterView;
@@ -241,6 +248,14 @@
         
     } else if ([_delegate isKindOfClass:[ShipmentConfirmationViewController class]]) {
 
+        [_acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
+        [_rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
+
+        if (_transaction.order_payment.payment_process_day_left < 0) {
+            _acceptButton.enabled = NO;
+            _acceptButton.layer.opacity = 0.25;
+        }
+        
         if ([_transaction.order_detail.detail_dropship_name isEqualToString:@"0"]) {
             
             // Hide dropship view if dropship not available
@@ -419,51 +434,87 @@
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)sender;
-        if (button.tag == 1) {
+        if ([_delegate isKindOfClass:[SalesNewOrderViewController class]]) {
+            [self newOrderActionButton:button];
+        } else if ([_delegate isKindOfClass:[ShipmentConfirmationViewController class]]) {
+            [self shipmentConfirmationActionButton:button];
+        }
+    }
+}
+
+- (void)shipmentConfirmationActionButton:(UIButton *)button
+{
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
+    if (button.tag == 1) {
+        
+        CancelShipmentViewController *controller = [CancelShipmentViewController new];
+        controller.delegate = self;
+        navigationController.viewControllers = @[controller];
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        
+    } else if (button.tag == 2) {
+        
+        SubmitShipmentConfirmationViewController *controller = [SubmitShipmentConfirmationViewController new];
+        controller.delegate = self;
+        controller.shipmentCouriers = _shipmentCouriers;
+        navigationController.viewControllers = @[controller];
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        
+    }
+}
+
+- (void)newOrderActionButton:(UIButton *)button
+{
+    if (button.tag == 1) {
+        
+        if (_transaction.order_detail.detail_partial_order == 1) {
             
-            if (_transaction.order_detail.detail_force_cancel == 1) {
-                
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Tolak Pesanan"
-                                                                    message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
-                                                                   delegate:self
-                                                          cancelButtonTitle:@"Cancel"
-                                                          otherButtonTitles:@"Tolak Pesanan", @"Terima Sebagian", nil];
-                alertView.tag = 1;
-                [alertView show];
-                
-            } else {
-                
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pilih Alasan Penolakan"
-                                                                    message:nil
-                                                                   delegate:self
-                                                          cancelButtonTitle:@"Cancel"
-                                                          otherButtonTitles:@"Pesanan barang habis", @"Barang tidak dapat dikirim", @"Lainnya", nil];
-                alertView.tag = 3;
-                [alertView show];
-                
-            }
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Tolak Pesanan"
+                                                                message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Cancel"
+                                                      otherButtonTitles:@"Tolak Pesanan", @"Terima Sebagian", nil];
+            alertView.tag = 1;
+            [alertView show];
             
-        } else if (button.tag == 2) {
-
-            if (_transaction.order_detail.detail_force_cancel == 1) {
+        } else {
             
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
-                                                                    message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
-                                                                   delegate:self
-                                                          cancelButtonTitle:@"Cancel"
-                                                          otherButtonTitles:@"Terima Pesanan", @"Terima Sebagian", nil];
-                alertView.tag = 2;
-                [alertView show];
-
-            } else {
-
-                [self.navigationController popViewControllerAnimated:YES];
-
-                [self.delegate didReceiveActionType:@"accept"
-                                          reason:nil
-                                        products:nil
-                                 productQuantity:nil];
-            }
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pilih Alasan Penolakan"
+                                                                message:nil
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Cancel"
+                                                      otherButtonTitles:@"Pesanan barang habis", @"Barang tidak dapat dikirim", @"Lainnya", nil];
+            alertView.tag = 3;
+            [alertView show];
+            
+        }
+        
+    } else if (button.tag == 2) {
+        
+        if (_transaction.order_detail.detail_partial_order == 1) {
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
+                                                                message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Cancel"
+                                                      otherButtonTitles:@"Terima Pesanan", @"Terima Sebagian", nil];
+            alertView.tag = 2;
+            [alertView show];
+            
+        } else {
+            
+            [self.navigationController popViewControllerAnimated:YES];
+            
+            [self.delegate didReceiveActionType:@"accept"
+                                         reason:nil
+                                       products:nil
+                                productQuantity:nil];
         }
     }
 }
@@ -598,14 +649,28 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-/*
-#pragma mark - Navigation
+#pragma mark - Cancel shipment delegate
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)cancelShipmentWithExplanation:(NSString *)explanation
+{
+    [self.delegate didReceiveActionType:@"reject"
+                                courier:nil
+                         courierPackage:nil
+                          receiptNumber:nil
+                        rejectionReason:explanation];
+    [self.navigationController popViewControllerAnimated:YES];
 }
-*/
+
+#pragma mark - Confirm shipment delegate
+
+- (void)submitConfirmationReceiptNumber:(NSString *)receiptNumber courier:(ShipmentCourier *)courier courierPackage:(ShipmentCourierPackage *)courierPackage
+{
+    [self.delegate didReceiveActionType:@"confirm"
+                                courier:courier
+                         courierPackage:courierPackage
+                          receiptNumber:receiptNumber
+                        rejectionReason:nil];
+    [self.navigationController popViewControllerAnimated:YES];
+}
 
 @end
