@@ -1,18 +1,18 @@
 //
-//  SubmitShipmentConfirmationViewController.m
+//  CancelShipmentViewController.m
 //  Tokopedia
 //
-//  Created by Feizal Badri Asmoro on 2/3/15.
+//  Created by Feizal Badri Asmoro on 2/1/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "SubmitShipmentConfirmationViewController.h"
+#import "CancelShipmentViewController.h"
 
-@interface SubmitShipmentConfirmationViewController ()
+@interface CancelShipmentViewController ()
 
 @end
 
-@implementation SubmitShipmentConfirmationViewController
+@implementation CancelShipmentViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

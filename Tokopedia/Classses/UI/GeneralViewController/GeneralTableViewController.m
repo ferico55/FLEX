@@ -1,18 +1,18 @@
 //
-//  FilterShipmentConfirmationViewController.m
+//  GeneralTableViewController.m
 //  Tokopedia
 //
-//  Created by Feizal Badri Asmoro on 2/4/15.
+//  Created by Feizal Badri Asmoro on 2/3/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "FilterShipmentConfirmationViewController.h"
+#import "GeneralTableViewController.h"
 
-@interface FilterShipmentConfirmationViewController ()
+@interface GeneralTableViewController ()
 
 @end
 
-@implementation FilterShipmentConfirmationViewController
+@implementation GeneralTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

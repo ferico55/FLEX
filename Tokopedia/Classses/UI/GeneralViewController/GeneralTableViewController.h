@@ -1,5 +1,5 @@
 //
-//  SubmitShipmentConfirmationViewController.h
+//  GeneralTableViewController.h
 //  Tokopedia
 //
 //  Created by Feizal Badri Asmoro on 2/3/15.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SubmitShipmentConfirmationViewController : UIViewController
+@interface GeneralTableViewController : UITableViewController
 
 @end

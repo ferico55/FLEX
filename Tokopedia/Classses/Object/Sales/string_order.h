@@ -21,6 +21,7 @@
 #define API_GET_NEW_ORDER_PROCESS_KEY   @"get_order_process"
 #define API_GET_NEW_ORDER_STATUS_KEY    @"get_order_status"
 #define API_PROCEED_ORDER_KEY           @"proceed_order"
+#define API_PROCEED_SHIPPING_KEY        @"proceed_shipping"
 
 #define API_ACTION_TYPE_KEY             @"action_type"
 #define API_ORDER_ID_KEY                @"order_id"
@@ -28,9 +29,22 @@
 #define API_LIST_PRODUCT_ID_KEY         @"list_product_id"
 #define API_PRODUCT_QUANTITY_KEY        @"qty_accept"
 
+#define API_SHIPMENT_ID_KEY             @"shipment_id"
+#define API_SHIPMENT_NAME_KEY           @"shipment_name"
+#define API_SHIPMENT_PACKAGE_ID_KEY     @"sp_id"
+#define API_SHIP_DAY_KEY                @"ship_day"
+#define API_SHIP_MONTH_KEY              @"ship_month"
+#define API_SHIP_YEAR_KEY               @"ship_year"
+#define API_SHIPMENT_REF_KEY            @"shipping_ref"
+
 #define API_USER_ID_KEY                 @"user_id"
 #define API_DEADLINE_KEY                @"deadline"
 #define API_FILTER_KEY                  @"filter"
+#define API_INVOICE_KEY                 @"invoice"
+#define API_STATUS_KEY                  @"status"
+#define API_START_KEY                   @"start"
+#define API_END_KEY                     @"end"
+#define API_SHIPMENT_COURIER_ID_KEY     @"shipment_id"
 
 #define API_LIST_ORDER_JOB_STATUS       @"order_JOB_status"
 #define API_LIST_ORDER_CUSTOMER         @"order_customer"
