@@ -287,7 +287,6 @@
 		FC4D91611A712B280048106E /* TKPDTabShopNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D90741A712B270048106E /* TKPDTabShopNavigationController.xib */; };
 		FC4D91621A712B280048106E /* ProgressBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D90761A712B270048106E /* ProgressBarView.xib */; };
 		FC4D91631A712B280048106E /* StarsRateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D90771A712B270048106E /* StarsRateView.xib */; };
-		FC4D91641A712B280048106E /* StickyAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D90781A712B270048106E /* StickyAlertView.xib */; };
 		FC4D91651A712B280048106E /* DetailListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D907C1A712B270048106E /* DetailListViewController.xib */; };
 		FC4D91661A712B280048106E /* ShopEditStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D907F1A712B270048106E /* ShopEditStatusViewController.xib */; };
 		FC4D91671A712B280048106E /* ShopEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D90801A712B270048106E /* ShopEditViewController.xib */; };
@@ -445,6 +444,35 @@
 		FC937B221A81DEA000916745 /* TransactionOrderConfirmationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B211A81DEA000916745 /* TransactionOrderConfirmationCell.m */; };
 		FC937B251A81F0E500916745 /* TransactionOrderConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B241A81F0E500916745 /* TransactionOrderConfirmationViewController.m */; };
 		FC937B271A81F11A00916745 /* TransactionOrderConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937B261A81F11A00916745 /* TransactionOrderConfirmationViewController.xib */; };
+		FC937B6F1A81FF6F00916745 /* CancelShipmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B651A81FF6F00916745 /* CancelShipmentViewController.m */; };
+		FC937B701A81FF6F00916745 /* CancelShipmentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937B661A81FF6F00916745 /* CancelShipmentViewController.xib */; };
+		FC937B711A81FF6F00916745 /* FilterShipmentConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B681A81FF6F00916745 /* FilterShipmentConfirmationViewController.m */; };
+		FC937B721A81FF6F00916745 /* FilterShipmentConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937B691A81FF6F00916745 /* FilterShipmentConfirmationViewController.xib */; };
+		FC937B731A81FF6F00916745 /* RequestShipmentCourier.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B6B1A81FF6F00916745 /* RequestShipmentCourier.m */; };
+		FC937B741A81FF6F00916745 /* SubmitShipmentConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B6D1A81FF6F00916745 /* SubmitShipmentConfirmationViewController.m */; };
+		FC937B751A81FF6F00916745 /* SubmitShipmentConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937B6E1A81FF6F00916745 /* SubmitShipmentConfirmationViewController.xib */; };
+		FC937B891A81FF8000916745 /* ChangeReceiptNumberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B781A81FF8000916745 /* ChangeReceiptNumberViewController.m */; };
+		FC937B8A1A81FF8000916745 /* ChangeReceiptNumberViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937B791A81FF8000916745 /* ChangeReceiptNumberViewController.xib */; };
+		FC937B8B1A81FF8000916745 /* DetailShipmentStatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B7B1A81FF8000916745 /* DetailShipmentStatusCell.m */; };
+		FC937B8C1A81FF8000916745 /* DetailShipmentStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937B7C1A81FF8000916745 /* DetailShipmentStatusCell.xib */; };
+		FC937B8D1A81FF8000916745 /* DetailShipmentStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B7E1A81FF8000916745 /* DetailShipmentStatusViewController.m */; };
+		FC937B8E1A81FF8000916745 /* DetailShipmentStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937B7F1A81FF8000916745 /* DetailShipmentStatusViewController.xib */; };
+		FC937B8F1A81FF8000916745 /* FilterShipmentStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B811A81FF8000916745 /* FilterShipmentStatusViewController.m */; };
+		FC937B901A81FF8000916745 /* FilterShipmentStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937B821A81FF8000916745 /* FilterShipmentStatusViewController.xib */; };
+		FC937B911A81FF8000916745 /* ShipmentStatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B841A81FF8000916745 /* ShipmentStatusCell.m */; };
+		FC937B921A81FF8000916745 /* ShipmentStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937B851A81FF8000916745 /* ShipmentStatusCell.xib */; };
+		FC937B931A81FF8000916745 /* ShipmentStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B871A81FF8000916745 /* ShipmentStatusViewController.m */; };
+		FC937B941A81FF8000916745 /* ShipmentStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937B881A81FF8000916745 /* ShipmentStatusViewController.xib */; };
+		FC937B991A81FF9100916745 /* UITextField+WithInset.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B961A81FF9100916745 /* UITextField+WithInset.m */; };
+		FC937B9A1A81FF9100916745 /* UITextView+UITextView_Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B981A81FF9100916745 /* UITextView+UITextView_Placeholder.m */; };
+		FC937BA51A81FFFC00916745 /* ShipmentCourier.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B9D1A81FFFC00916745 /* ShipmentCourier.m */; };
+		FC937BA61A81FFFC00916745 /* ShipmentCourierPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B9F1A81FFFC00916745 /* ShipmentCourierPackage.m */; };
+		FC937BA71A81FFFC00916745 /* ShipmentOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937BA11A81FFFC00916745 /* ShipmentOrder.m */; };
+		FC937BA81A81FFFC00916745 /* ShipmentResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937BA31A81FFFC00916745 /* ShipmentResult.m */; };
+		FC937BAB1A82001300916745 /* StickyAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937BAA1A82001300916745 /* StickyAlertView.m */; };
+		FC937BAD1A82002100916745 /* StickyAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937BAC1A82002100916745 /* StickyAlertView.xib */; };
+		FC937BB21A82009B00916745 /* GeneralTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937BB01A82009B00916745 /* GeneralTableViewController.m */; };
+		FC937BB31A82009B00916745 /* GeneralTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937BB11A82009B00916745 /* GeneralTableViewController.xib */; };
 		FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
 		FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */; };
 		FCA7751419F663070041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
@@ -487,8 +515,6 @@
 		FCD5C3C71A7118150054A9B2 /* ProgressBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5C2AE1A7118150054A9B2 /* ProgressBarView.m */; };
 		FCD5C3C81A7118150054A9B2 /* RateView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5C2B01A7118150054A9B2 /* RateView.m */; };
 		FCD5C3C91A7118150054A9B2 /* StarsRateView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5C2B21A7118150054A9B2 /* StarsRateView.m */; };
-		FCD5C3CA1A7118150054A9B2 /* StickyAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5C2B41A7118150054A9B2 /* StickyAlertView.m */; };
-		FCD5C3CB1A7118150054A9B2 /* UITextView+UITextView_Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5C2B61A7118150054A9B2 /* UITextView+UITextView_Placeholder.m */; };
 		FCD5C3CD1A7118150054A9B2 /* ShopEditStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5C2C01A7118150054A9B2 /* ShopEditStatusViewController.m */; };
 		FCD5C3CE1A7118150054A9B2 /* ShopEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5C2C21A7118150054A9B2 /* ShopEditViewController.m */; };
 		FCD5C3CF1A7118150054A9B2 /* ShopInfoAddressView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5C2C51A7118150054A9B2 /* ShopInfoAddressView.m */; };
@@ -552,7 +578,6 @@
 		FCD5C4111A7118150054A9B2 /* SalesOrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCD5C35C1A7118150054A9B2 /* SalesOrderCell.xib */; };
 		FCD5C4121A7118150054A9B2 /* ShipmentConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5C35F1A7118150054A9B2 /* ShipmentConfirmationViewController.m */; };
 		FCD5C4131A7118150054A9B2 /* ShipmentConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCD5C3601A7118150054A9B2 /* ShipmentConfirmationViewController.xib */; };
-		FCD5C4141A7118150054A9B2 /* ShipmentFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5C3621A7118150054A9B2 /* ShipmentFilterViewController.m */; };
 		FCD5C4151A7118150054A9B2 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5C3671A7118150054A9B2 /* SearchViewController.m */; };
 		FCD5C4161A7118150054A9B2 /* SearchResultCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5C36A1A7118150054A9B2 /* SearchResultCell.m */; };
 		FCD5C4171A7118150054A9B2 /* SearchResultShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCD5C36C1A7118150054A9B2 /* SearchResultShopCell.m */; };
@@ -1379,6 +1404,54 @@
 		FC937B231A81F0E500916745 /* TransactionOrderConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionOrderConfirmationViewController.h; sourceTree = "<group>"; };
 		FC937B241A81F0E500916745 /* TransactionOrderConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionOrderConfirmationViewController.m; sourceTree = "<group>"; };
 		FC937B261A81F11A00916745 /* TransactionOrderConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionOrderConfirmationViewController.xib; sourceTree = "<group>"; };
+		FC937B641A81FF6F00916745 /* CancelShipmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CancelShipmentViewController.h; sourceTree = "<group>"; };
+		FC937B651A81FF6F00916745 /* CancelShipmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CancelShipmentViewController.m; sourceTree = "<group>"; };
+		FC937B661A81FF6F00916745 /* CancelShipmentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CancelShipmentViewController.xib; sourceTree = "<group>"; };
+		FC937B671A81FF6F00916745 /* FilterShipmentConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterShipmentConfirmationViewController.h; sourceTree = "<group>"; };
+		FC937B681A81FF6F00916745 /* FilterShipmentConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterShipmentConfirmationViewController.m; sourceTree = "<group>"; };
+		FC937B691A81FF6F00916745 /* FilterShipmentConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterShipmentConfirmationViewController.xib; sourceTree = "<group>"; };
+		FC937B6A1A81FF6F00916745 /* RequestShipmentCourier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestShipmentCourier.h; sourceTree = "<group>"; };
+		FC937B6B1A81FF6F00916745 /* RequestShipmentCourier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestShipmentCourier.m; sourceTree = "<group>"; };
+		FC937B6C1A81FF6F00916745 /* SubmitShipmentConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubmitShipmentConfirmationViewController.h; sourceTree = "<group>"; };
+		FC937B6D1A81FF6F00916745 /* SubmitShipmentConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubmitShipmentConfirmationViewController.m; sourceTree = "<group>"; };
+		FC937B6E1A81FF6F00916745 /* SubmitShipmentConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SubmitShipmentConfirmationViewController.xib; sourceTree = "<group>"; };
+		FC937B771A81FF8000916745 /* ChangeReceiptNumberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeReceiptNumberViewController.h; sourceTree = "<group>"; };
+		FC937B781A81FF8000916745 /* ChangeReceiptNumberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeReceiptNumberViewController.m; sourceTree = "<group>"; };
+		FC937B791A81FF8000916745 /* ChangeReceiptNumberViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangeReceiptNumberViewController.xib; sourceTree = "<group>"; };
+		FC937B7A1A81FF8000916745 /* DetailShipmentStatusCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailShipmentStatusCell.h; sourceTree = "<group>"; };
+		FC937B7B1A81FF8000916745 /* DetailShipmentStatusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailShipmentStatusCell.m; sourceTree = "<group>"; };
+		FC937B7C1A81FF8000916745 /* DetailShipmentStatusCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailShipmentStatusCell.xib; sourceTree = "<group>"; };
+		FC937B7D1A81FF8000916745 /* DetailShipmentStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailShipmentStatusViewController.h; sourceTree = "<group>"; };
+		FC937B7E1A81FF8000916745 /* DetailShipmentStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailShipmentStatusViewController.m; sourceTree = "<group>"; };
+		FC937B7F1A81FF8000916745 /* DetailShipmentStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailShipmentStatusViewController.xib; sourceTree = "<group>"; };
+		FC937B801A81FF8000916745 /* FilterShipmentStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterShipmentStatusViewController.h; sourceTree = "<group>"; };
+		FC937B811A81FF8000916745 /* FilterShipmentStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterShipmentStatusViewController.m; sourceTree = "<group>"; };
+		FC937B821A81FF8000916745 /* FilterShipmentStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterShipmentStatusViewController.xib; sourceTree = "<group>"; };
+		FC937B831A81FF8000916745 /* ShipmentStatusCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipmentStatusCell.h; sourceTree = "<group>"; };
+		FC937B841A81FF8000916745 /* ShipmentStatusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentStatusCell.m; sourceTree = "<group>"; };
+		FC937B851A81FF8000916745 /* ShipmentStatusCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShipmentStatusCell.xib; sourceTree = "<group>"; };
+		FC937B861A81FF8000916745 /* ShipmentStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipmentStatusViewController.h; sourceTree = "<group>"; };
+		FC937B871A81FF8000916745 /* ShipmentStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentStatusViewController.m; sourceTree = "<group>"; };
+		FC937B881A81FF8000916745 /* ShipmentStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShipmentStatusViewController.xib; sourceTree = "<group>"; };
+		FC937B951A81FF9100916745 /* UITextField+WithInset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+WithInset.h"; sourceTree = "<group>"; };
+		FC937B961A81FF9100916745 /* UITextField+WithInset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+WithInset.m"; sourceTree = "<group>"; };
+		FC937B971A81FF9100916745 /* UITextView+UITextView_Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+UITextView_Placeholder.h"; sourceTree = "<group>"; };
+		FC937B981A81FF9100916745 /* UITextView+UITextView_Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+UITextView_Placeholder.m"; sourceTree = "<group>"; };
+		FC937B9C1A81FFFC00916745 /* ShipmentCourier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipmentCourier.h; sourceTree = "<group>"; };
+		FC937B9D1A81FFFC00916745 /* ShipmentCourier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentCourier.m; sourceTree = "<group>"; };
+		FC937B9E1A81FFFC00916745 /* ShipmentCourierPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipmentCourierPackage.h; sourceTree = "<group>"; };
+		FC937B9F1A81FFFC00916745 /* ShipmentCourierPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentCourierPackage.m; sourceTree = "<group>"; };
+		FC937BA01A81FFFC00916745 /* ShipmentOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipmentOrder.h; sourceTree = "<group>"; };
+		FC937BA11A81FFFC00916745 /* ShipmentOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentOrder.m; sourceTree = "<group>"; };
+		FC937BA21A81FFFC00916745 /* ShipmentResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipmentResult.h; sourceTree = "<group>"; };
+		FC937BA31A81FFFC00916745 /* ShipmentResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentResult.m; sourceTree = "<group>"; };
+		FC937BA41A81FFFC00916745 /* string_shipment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_shipment.h; sourceTree = "<group>"; };
+		FC937BA91A82001300916745 /* StickyAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyAlertView.h; sourceTree = "<group>"; };
+		FC937BAA1A82001300916745 /* StickyAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyAlertView.m; sourceTree = "<group>"; };
+		FC937BAC1A82002100916745 /* StickyAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StickyAlertView.xib; sourceTree = "<group>"; };
+		FC937BAF1A82009B00916745 /* GeneralTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralTableViewController.h; sourceTree = "<group>"; };
+		FC937BB01A82009B00916745 /* GeneralTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralTableViewController.m; sourceTree = "<group>"; };
+		FC937BB11A82009B00916745 /* GeneralTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralTableViewController.xib; sourceTree = "<group>"; };
 		FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FCAAEA4319F7534B00904AFB /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -1465,8 +1538,6 @@
 		FCD5C2B21A7118150054A9B2 /* StarsRateView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StarsRateView.m; sourceTree = "<group>"; };
 		FCD5C2B31A7118150054A9B2 /* StickyAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyAlertView.h; sourceTree = "<group>"; };
 		FCD5C2B41A7118150054A9B2 /* StickyAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyAlertView.m; sourceTree = "<group>"; };
-		FCD5C2B51A7118150054A9B2 /* UITextView+UITextView_Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UITextView+UITextView_Placeholder.h"; path = "../UI/CustomViews/UITextView+UITextView_Placeholder.h"; sourceTree = "<group>"; };
-		FCD5C2B61A7118150054A9B2 /* UITextView+UITextView_Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UITextView+UITextView_Placeholder.m"; path = "../UI/CustomViews/UITextView+UITextView_Placeholder.m"; sourceTree = "<group>"; };
 		FCD5C2B81A7118150054A9B2 /* detail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = detail.h; sourceTree = "<group>"; };
 		FCD5C2BA1A7118150054A9B2 /* string_product.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_product.h; sourceTree = "<group>"; };
 		FCD5C2BC1A7118150054A9B2 /* ProductTalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkViewController.m; sourceTree = "<group>"; };
@@ -1591,8 +1662,6 @@
 		FCD5C35E1A7118150054A9B2 /* ShipmentConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipmentConfirmationViewController.h; sourceTree = "<group>"; };
 		FCD5C35F1A7118150054A9B2 /* ShipmentConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentConfirmationViewController.m; sourceTree = "<group>"; };
 		FCD5C3601A7118150054A9B2 /* ShipmentConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShipmentConfirmationViewController.xib; sourceTree = "<group>"; };
-		FCD5C3611A7118150054A9B2 /* ShipmentFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipmentFilterViewController.h; sourceTree = "<group>"; };
-		FCD5C3621A7118150054A9B2 /* ShipmentFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentFilterViewController.m; sourceTree = "<group>"; };
 		FCD5C3641A7118150054A9B2 /* search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = search.h; sourceTree = "<group>"; };
 		FCD5C3661A7118150054A9B2 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
 		FCD5C3671A7118150054A9B2 /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
@@ -2335,12 +2404,12 @@
 				FC4D90471A7121450048106E /* RSA.m */,
 				FC4D90481A7121450048106E /* UserAuthentificationManager.h */,
 				FC4D90491A7121450048106E /* UserAuthentificationManager.m */,
-				FCD5C5741A7118780054A9B2 /* Object */,
-				FCD5C42F1A7118620054A9B2 /* UIRefactor */,
-				FCD5C25E1A7118150054A9B2 /* UI */,
 				FC26F4D51A63D930009BD76B /* Encryption */,
 				FC2E859A1A43CEC700A51BF0 /* CacheController */,
 				FC2E85A11A43CEC700A51BF0 /* Cocoa */,
+				FCD5C5741A7118780054A9B2 /* Object */,
+				FCD5C42F1A7118620054A9B2 /* UIRefactor */,
+				FCD5C25E1A7118150054A9B2 /* UI */,
 			);
 			path = Classses;
 			sourceTree = "<group>";
@@ -2361,8 +2430,10 @@
 		FC2E85A11A43CEC700A51BF0 /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
-				FCD5C2B51A7118150054A9B2 /* UITextView+UITextView_Placeholder.h */,
-				FCD5C2B61A7118150054A9B2 /* UITextView+UITextView_Placeholder.m */,
+				FC937B951A81FF9100916745 /* UITextField+WithInset.h */,
+				FC937B961A81FF9100916745 /* UITextField+WithInset.m */,
+				FC937B971A81FF9100916745 /* UITextView+UITextView_Placeholder.h */,
+				FC937B981A81FF9100916745 /* UITextView+UITextView_Placeholder.m */,
 				FC26F4D21A63D926009BD76B /* NSData+Encryption.h */,
 				FC26F4D31A63D926009BD76B /* NSData+Encryption.m */,
 				FC2E85A21A43CEC700A51BF0 /* DBManager.h */,
@@ -2925,6 +2996,7 @@
 		FC4D905A1A712B270048106E /* Alert */ = {
 			isa = PBXGroup;
 			children = (
+				FC937BAC1A82002100916745 /* StickyAlertView.xib */,
 				FC4D905B1A712B270048106E /* Alert1ButtonView.xib */,
 				FC4D905C1A712B270048106E /* AlertCameraView.xib */,
 				FC4D905D1A712B270048106E /* AlertDatePickerView.xib */,
@@ -3762,9 +3834,61 @@
 			path = Order;
 			sourceTree = "<group>";
 		};
+		FC937B761A81FF8000916745 /* ShipmentStatus */ = {
+			isa = PBXGroup;
+			children = (
+				FC937B771A81FF8000916745 /* ChangeReceiptNumberViewController.h */,
+				FC937B781A81FF8000916745 /* ChangeReceiptNumberViewController.m */,
+				FC937B791A81FF8000916745 /* ChangeReceiptNumberViewController.xib */,
+				FC937B7A1A81FF8000916745 /* DetailShipmentStatusCell.h */,
+				FC937B7B1A81FF8000916745 /* DetailShipmentStatusCell.m */,
+				FC937B7C1A81FF8000916745 /* DetailShipmentStatusCell.xib */,
+				FC937B7D1A81FF8000916745 /* DetailShipmentStatusViewController.h */,
+				FC937B7E1A81FF8000916745 /* DetailShipmentStatusViewController.m */,
+				FC937B7F1A81FF8000916745 /* DetailShipmentStatusViewController.xib */,
+				FC937B801A81FF8000916745 /* FilterShipmentStatusViewController.h */,
+				FC937B811A81FF8000916745 /* FilterShipmentStatusViewController.m */,
+				FC937B821A81FF8000916745 /* FilterShipmentStatusViewController.xib */,
+				FC937B831A81FF8000916745 /* ShipmentStatusCell.h */,
+				FC937B841A81FF8000916745 /* ShipmentStatusCell.m */,
+				FC937B851A81FF8000916745 /* ShipmentStatusCell.xib */,
+				FC937B861A81FF8000916745 /* ShipmentStatusViewController.h */,
+				FC937B871A81FF8000916745 /* ShipmentStatusViewController.m */,
+				FC937B881A81FF8000916745 /* ShipmentStatusViewController.xib */,
+			);
+			path = ShipmentStatus;
+			sourceTree = "<group>";
+		};
+		FC937B9B1A81FFFC00916745 /* Shipment */ = {
+			isa = PBXGroup;
+			children = (
+				FC937B9C1A81FFFC00916745 /* ShipmentCourier.h */,
+				FC937B9D1A81FFFC00916745 /* ShipmentCourier.m */,
+				FC937B9E1A81FFFC00916745 /* ShipmentCourierPackage.h */,
+				FC937B9F1A81FFFC00916745 /* ShipmentCourierPackage.m */,
+				FC937BA01A81FFFC00916745 /* ShipmentOrder.h */,
+				FC937BA11A81FFFC00916745 /* ShipmentOrder.m */,
+				FC937BA21A81FFFC00916745 /* ShipmentResult.h */,
+				FC937BA31A81FFFC00916745 /* ShipmentResult.m */,
+				FC937BA41A81FFFC00916745 /* string_shipment.h */,
+			);
+			path = Shipment;
+			sourceTree = "<group>";
+		};
+		FC937BAE1A82009B00916745 /* GeneralViewController */ = {
+			isa = PBXGroup;
+			children = (
+				FC937BAF1A82009B00916745 /* GeneralTableViewController.h */,
+				FC937BB01A82009B00916745 /* GeneralTableViewController.m */,
+				FC937BB11A82009B00916745 /* GeneralTableViewController.xib */,
+			);
+			path = GeneralViewController;
+			sourceTree = "<group>";
+		};
 		FCD5C25E1A7118150054A9B2 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				FC937BAE1A82009B00916745 /* GeneralViewController */,
 				FCD5C25F1A7118150054A9B2 /* Activation */,
 				FCD5C26A1A7118150054A9B2 /* Alert */,
 				FCD5C27C1A7118150054A9B2 /* Camera */,
@@ -3820,6 +3944,8 @@
 		FCD5C26A1A7118150054A9B2 /* Alert */ = {
 			isa = PBXGroup;
 			children = (
+				FC937BA91A82001300916745 /* StickyAlertView.h */,
+				FC937BAA1A82001300916745 /* StickyAlertView.m */,
 				FCD5C26B1A7118150054A9B2 /* Alert1ButtonView.h */,
 				FCD5C26C1A7118150054A9B2 /* Alert1ButtonView.m */,
 				FCD5C26D1A7118150054A9B2 /* AlertCameraView.h */,
@@ -4178,6 +4304,7 @@
 		FCD5C3371A7118150054A9B2 /* Sales */ = {
 			isa = PBXGroup;
 			children = (
+				FC937B761A81FF8000916745 /* ShipmentStatus */,
 				FCD5C3381A7118150054A9B2 /* NewOrder */,
 				FCD5C3511A7118150054A9B2 /* OrderDetailProductCell.h */,
 				FCD5C3521A7118150054A9B2 /* OrderDetailProductCell.m */,
@@ -4230,11 +4357,20 @@
 		FCD5C35D1A7118150054A9B2 /* ShipmentConfirmation */ = {
 			isa = PBXGroup;
 			children = (
+				FC937B641A81FF6F00916745 /* CancelShipmentViewController.h */,
+				FC937B651A81FF6F00916745 /* CancelShipmentViewController.m */,
+				FC937B661A81FF6F00916745 /* CancelShipmentViewController.xib */,
+				FC937B671A81FF6F00916745 /* FilterShipmentConfirmationViewController.h */,
+				FC937B681A81FF6F00916745 /* FilterShipmentConfirmationViewController.m */,
+				FC937B691A81FF6F00916745 /* FilterShipmentConfirmationViewController.xib */,
+				FC937B6A1A81FF6F00916745 /* RequestShipmentCourier.h */,
+				FC937B6B1A81FF6F00916745 /* RequestShipmentCourier.m */,
+				FC937B6C1A81FF6F00916745 /* SubmitShipmentConfirmationViewController.h */,
+				FC937B6D1A81FF6F00916745 /* SubmitShipmentConfirmationViewController.m */,
+				FC937B6E1A81FF6F00916745 /* SubmitShipmentConfirmationViewController.xib */,
 				FCD5C35E1A7118150054A9B2 /* ShipmentConfirmationViewController.h */,
 				FCD5C35F1A7118150054A9B2 /* ShipmentConfirmationViewController.m */,
 				FCD5C3601A7118150054A9B2 /* ShipmentConfirmationViewController.xib */,
-				FCD5C3611A7118150054A9B2 /* ShipmentFilterViewController.h */,
-				FCD5C3621A7118150054A9B2 /* ShipmentFilterViewController.m */,
 			);
 			path = ShipmentConfirmation;
 			sourceTree = "<group>";
@@ -4895,6 +5031,7 @@
 		FCD5C5741A7118780054A9B2 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				FC937B9B1A81FFFC00916745 /* Shipment */,
 				FCD5C5751A7118780054A9B2 /* Activation */,
 				FCD5C5801A7118780054A9B2 /* Deposit */,
 				FCD5C5861A7118780054A9B2 /* DetailCatalog */,
@@ -5945,6 +6082,7 @@
 				FCD5C4131A7118150054A9B2 /* ShipmentConfirmationViewController.xib in Resources */,
 				FC4D915E1A712B280048106E /* TKPDTabInboxMessageNavigationController.xib in Resources */,
 				FC4D91671A712B280048106E /* ShopEditViewController.xib in Resources */,
+				FC937B8A1A81FF8000916745 /* ChangeReceiptNumberViewController.xib in Resources */,
 				FC4D91CD1A712B280048106E /* ProductReviewDetailViewController.xib in Resources */,
 				FC4D91A91A712B280048106E /* CatalogSellerCell.xib in Resources */,
 				FC2E8CC51A43CEC900A51BF0 /* logo@2x.png in Resources */,
@@ -5964,6 +6102,7 @@
 				FC2E8CA71A43CEC900A51BF0 /* icon_shop_grey@2x.png in Resources */,
 				FC2E8C7D1A43CEC900A51BF0 /* icon_clock.png in Resources */,
 				FC4D91BA1A712B280048106E /* MyShopAddressDetailViewController.xib in Resources */,
+				FC937B8C1A81FF8000916745 /* DetailShipmentStatusCell.xib in Resources */,
 				FC4D91E91A712B280048106E /* SettingUserProfileViewController.xib in Resources */,
 				FC2E8C571A43CEC900A51BF0 /* icon_3.png in Resources */,
 				FC2E8CF11A43CEC900A51BF0 /* icon_green.png in Resources */,
@@ -5976,6 +6115,7 @@
 				FC4D91591A712B280048106E /* CategoryMenuViewCell.xib in Resources */,
 				FC2E8C511A43CEC900A51BF0 /* icon_2.png in Resources */,
 				FC4D918A1A712B280048106E /* SearchResultShopCell.xib in Resources */,
+				FC937BAD1A82002100916745 /* StickyAlertView.xib in Resources */,
 				FC4D91C41A712B280048106E /* MyShopPaymentCell.xib in Resources */,
 				FC2E8CF41A43CEC900A51BF0 /* tabnav_bg@2x.png in Resources */,
 				FC4D91E11A712B280048106E /* SettingBankEditViewController.xib in Resources */,
@@ -6080,13 +6220,16 @@
 				FC4D91D31A712B280048106E /* ProductAddEditViewController.xib in Resources */,
 				FC4D919D1A712B280048106E /* TransactionCartResultCell.xib in Resources */,
 				FC2E8C8E1A43CEC900A51BF0 /* icon_location@2x.png in Resources */,
+				FC937B721A81FF6F00916745 /* FilterShipmentConfirmationViewController.xib in Resources */,
 				FC2E8C721A43CEC900A51BF0 /* icon_cancel.png in Resources */,
+				FC937BB31A82009B00916745 /* GeneralTableViewController.xib in Resources */,
 				FC2E8CE01A43CEC900A51BF0 /* icon_cart_active@2x.png in Resources */,
 				FC4D91C91A712B280048106E /* DetailProductViewController.xib in Resources */,
 				FC4D91EE1A712B280048106E /* SettingShipmentInfoViewController.xib in Resources */,
 				FC2E8C7A1A43CEC900A51BF0 /* icon_checkmark@2x.png in Resources */,
 				FC4D91B31A712B280048106E /* HotlistResultViewController.xib in Resources */,
 				FC2E8CA61A43CEC900A51BF0 /* icon_shop_grey.png in Resources */,
+				FC937B751A81FF6F00916745 /* SubmitShipmentConfirmationViewController.xib in Resources */,
 				FCD5C3BE1A7118150054A9B2 /* TKPDTabInboxReviewNavigationController.xib in Resources */,
 				FC4D91C61A712B280048106E /* DetailProductDescriptionCell.xib in Resources */,
 				FC2E8C741A43CEC900A51BF0 /* icon_category_white.png in Resources */,
@@ -6220,7 +6363,6 @@
 				FC2E8CC71A43CEC900A51BF0 /* navigation-button-bg-pt@2x.png in Resources */,
 				FC2E8C641A43CEC900A51BF0 /* icon_9@2x.png in Resources */,
 				FC4D91D11A712B280048106E /* ProductTalkViewController.xib in Resources */,
-				FC4D91641A712B280048106E /* StickyAlertView.xib in Resources */,
 				FC4D91C11A712B280048106E /* MyShopEtalaseViewController.xib in Resources */,
 				FC4D91B71A712B280048106E /* InboxMessageViewController.xib in Resources */,
 				FC937B181A81CE0E00916745 /* TransactionOrderViewController.xib in Resources */,
@@ -6253,6 +6395,7 @@
 				FC2E8C7B1A43CEC900A51BF0 /* icon_checkmark_1.png in Resources */,
 				FC4D916D1A712B280048106E /* ShopNotesDetailViewController.xib in Resources */,
 				FC2E8C7F1A43CEC900A51BF0 /* icon_default_shop.jpg in Resources */,
+				FC937B8E1A81FF8000916745 /* DetailShipmentStatusViewController.xib in Resources */,
 				FC937B0E1A80C2C500916745 /* NoResult.xib in Resources */,
 				FC2E8CC31A43CEC900A51BF0 /* image-1@2x.png in Resources */,
 				FC4D91B41A712B280048106E /* InboxMessageCell.xib in Resources */,
@@ -6270,6 +6413,7 @@
 				FC4D919F1A712B280048106E /* TransactionCartRootViewController.xib in Resources */,
 				FC2E8C521A43CEC900A51BF0 /* icon_20.png in Resources */,
 				FC2E8C481A43CEC900A51BF0 /* icon_16.png in Resources */,
+				FC937B901A81FF8000916745 /* FilterShipmentStatusViewController.xib in Resources */,
 				FC2E8CA91A43CEC900A51BF0 /* icon_star@2x.png in Resources */,
 				FC2E8C491A43CEC900A51BF0 /* icon_16@2x.png in Resources */,
 				FC2E8C4C1A43CEC900A51BF0 /* icon_18.png in Resources */,
@@ -6281,6 +6425,7 @@
 				FC2E8C781A43CEC900A51BF0 /* icon_check_orange@2x.png in Resources */,
 				FC2E8C801A43CEC900A51BF0 /* icon_default_shop@2x.jpg in Resources */,
 				FC2E8C601A43CEC900A51BF0 /* icon_7@2x.png in Resources */,
+				FC937B701A81FF6F00916745 /* CancelShipmentViewController.xib in Resources */,
 				FC2E8CA01A43CEC900A51BF0 /* icon_quote.png in Resources */,
 				FC4D91621A712B280048106E /* ProgressBarView.xib in Resources */,
 				FC4D91771A712B280048106E /* GeneralProductReviewCell.xib in Resources */,
@@ -6293,6 +6438,7 @@
 				FC2E8CF31A43CEC900A51BF0 /* tabnav_bg.png in Resources */,
 				FC2E8CDB1A43CEC900A51BF0 /* ic_search.png in Resources */,
 				FC2E8CE11A43CEC900A51BF0 /* icon_category.png in Resources */,
+				FC937B921A81FF8000916745 /* ShipmentStatusCell.xib in Resources */,
 				FC2E8CB91A43CEC900A51BF0 /* icon_arrow_white@2x.png in Resources */,
 				FC2E8CB51A43CEC900A51BF0 /* login.jpg in Resources */,
 				FC4D91EB1A712B280048106E /* ShopFavoritedViewController.xib in Resources */,
@@ -6309,6 +6455,7 @@
 				FC4D91CC1A712B280048106E /* ProductReviewCell.xib in Resources */,
 				FC2E8C791A43CEC900A51BF0 /* icon_checkmark.png in Resources */,
 				FC4D91A01A712B280048106E /* TransactionShipmentViewController.xib in Resources */,
+				FC937B941A81FF8000916745 /* ShipmentStatusViewController.xib in Resources */,
 				FC2E8C3B1A43CEC900A51BF0 /* icon_1.png in Resources */,
 				FC937B271A81F11A00916745 /* TransactionOrderConfirmationViewController.xib in Resources */,
 				FC2E8CAF1A43CEC900A51BF0 /* icon_toped_loading_grey-02.png in Resources */,
@@ -6405,6 +6552,7 @@
 				FC0C7E901A64B89E0028A706 /* RKObjectManagerCategory.m in Sources */,
 				FCD5C77A1A7118780054A9B2 /* ReviewResponse.m in Sources */,
 				FCD5C7EA1A7118780054A9B2 /* SearchItem.m in Sources */,
+				FC937BAB1A82001300916745 /* StickyAlertView.m in Sources */,
 				FCD5C7C11A7118780054A9B2 /* FavoriteShop.m in Sources */,
 				FCD5C7891A7118780054A9B2 /* FavoritedShop.m in Sources */,
 				FCD5C7C31A7118780054A9B2 /* ListFavoriteShop.m in Sources */,
@@ -6426,6 +6574,7 @@
 				FC2E8AC91A43CEC900A51BF0 /* URLCacheController.m in Sources */,
 				FCD5C77F1A7118780054A9B2 /* Talk.m in Sources */,
 				FCD5C7A01A7118780054A9B2 /* InboxMessageDetailList.m in Sources */,
+				FC937B8D1A81FF8000916745 /* DetailShipmentStatusViewController.m in Sources */,
 				FCD5C5681A7118620054A9B2 /* ProfileSettingViewController.m in Sources */,
 				FCD5C7E81A7118780054A9B2 /* List.m in Sources */,
 				FCD5C7881A7118780054A9B2 /* ListFavorited.m in Sources */,
@@ -6473,7 +6622,6 @@
 				FCD5C7AE1A7118780054A9B2 /* ManageProductResult.m in Sources */,
 				FCD5C3C21A7118150054A9B2 /* TKPDTabProfileNavigationController.m in Sources */,
 				FCD5C54E1A7118620054A9B2 /* DetailProductWholesaleCell.m in Sources */,
-				FCD5C4141A7118150054A9B2 /* ShipmentFilterViewController.m in Sources */,
 				FCD5C7D81A7118780054A9B2 /* ActionOrder.m in Sources */,
 				FCD5C53C1A7118620054A9B2 /* MyShopEtalaseEditViewController.m in Sources */,
 				FCD5C7F81A7118780054A9B2 /* NotesResult.m in Sources */,
@@ -6555,16 +6703,18 @@
 				FCD5C8271A7118780054A9B2 /* TransactionSummary.m in Sources */,
 				FCD5C5611A7118620054A9B2 /* SettingBankDetailViewController.m in Sources */,
 				FCD5C7C81A7118780054A9B2 /* ProfileSettingsResult.m in Sources */,
+				FC937B8F1A81FF8000916745 /* FilterShipmentStatusViewController.m in Sources */,
 				FCD5C75D1A7118780054A9B2 /* Login.m in Sources */,
+				FC937BA61A81FFFC00916745 /* ShipmentCourierPackage.m in Sources */,
 				FCD5C8141A7118780054A9B2 /* ShippingInfoShipments.m in Sources */,
 				FCD5C3AF1A7118150054A9B2 /* AlertListViewCell.m in Sources */,
+				FC937B741A81FF6F00916745 /* SubmitShipmentConfirmationViewController.m in Sources */,
 				FCD5C7CD1A7118780054A9B2 /* BankAccountFormList.m in Sources */,
 				FCD5C5551A7118620054A9B2 /* ProductEditImageViewController.m in Sources */,
 				FCD5C5501A7118620054A9B2 /* ProductReviewCell.m in Sources */,
 				FCD5C5391A7118620054A9B2 /* MyShopAddressEditViewController.m in Sources */,
 				FCD5C79C1A7118780054A9B2 /* InboxMessageAction.m in Sources */,
 				FCD5C7671A7118780054A9B2 /* CatalogMarketPlace.m in Sources */,
-				FCD5C3CB1A7118150054A9B2 /* UITextView+UITextView_Placeholder.m in Sources */,
 				FCD5C7BE1A7118780054A9B2 /* ProfileEditFormResult.m in Sources */,
 				FCD5C78D1A7118780054A9B2 /* FavoriteShopActionResult.m in Sources */,
 				FCD5C7841A7118780054A9B2 /* TalkResult.m in Sources */,
@@ -6573,6 +6723,7 @@
 				FCD5C7A71A7118780054A9B2 /* InboxReviewResponse.m in Sources */,
 				FCD5C3A91A7118150054A9B2 /* RegisterViewController.m in Sources */,
 				FCD5C3B41A7118150054A9B2 /* CartViewController.m in Sources */,
+				FC937B891A81FF8000916745 /* ChangeReceiptNumberViewController.m in Sources */,
 				FCB014351A79D78200370465 /* TransactionCartWebViewViewController.m in Sources */,
 				FC318FCE1A7B856F00F57A69 /* TransactionAddressShippingResult.m in Sources */,
 				FCD5C3DF1A7118150054A9B2 /* GeneralProductReviewCell.m in Sources */,
@@ -6612,6 +6763,7 @@
 				FCD5C76E1A7118780054A9B2 /* SpecChilds.m in Sources */,
 				FCD5C7F51A7118780054A9B2 /* NoteDetails.m in Sources */,
 				FCD5C7791A7118780054A9B2 /* ReviewProductOwner.m in Sources */,
+				FC937B991A81FF9100916745 /* UITextField+WithInset.m in Sources */,
 				FC2E8ACB1A43CEC900A51BF0 /* ExpiringCache.m in Sources */,
 				FCD5C7B81A7118780054A9B2 /* ProductTalkCommentAction.m in Sources */,
 				FCD5C77C1A7118780054A9B2 /* ShopInfo.m in Sources */,
@@ -6633,6 +6785,7 @@
 				FC3F73961A7255EB004D29B6 /* TransactionCartResultPaymentCell.m in Sources */,
 				FC2E8AD01A43CEC900A51BF0 /* NSStringCategory.m in Sources */,
 				FCD5C7F21A7118780054A9B2 /* EtalaseResult.m in Sources */,
+				FC937B8B1A81FF8000916745 /* DetailShipmentStatusCell.m in Sources */,
 				FCD5C40A1A7118150054A9B2 /* OrderDetailProductCell.m in Sources */,
 				FCD5C42E1A7118150054A9B2 /* TransactionShipmentViewController.m in Sources */,
 				FCD5C8091A7118780054A9B2 /* SettingPayment.m in Sources */,
@@ -6644,7 +6797,6 @@
 				FCD5C7F91A7118780054A9B2 /* Address.m in Sources */,
 				FCD5C5471A7118620054A9B2 /* NotificationManager.m in Sources */,
 				FCD5C5521A7118620054A9B2 /* ProductReviewViewController.m in Sources */,
-				FCD5C3CA1A7118150054A9B2 /* StickyAlertView.m in Sources */,
 				FCD5C4121A7118150054A9B2 /* ShipmentConfirmationViewController.m in Sources */,
 				FCD5C81C1A7118780054A9B2 /* TransactionBuy.m in Sources */,
 				FCD5C7A51A7118780054A9B2 /* InboxReviewList.m in Sources */,
@@ -6671,6 +6823,7 @@
 				FCD5C7941A7118780054A9B2 /* DepartmentChild2.m in Sources */,
 				FCD5C5411A7118620054A9B2 /* MyShopNoteViewController.m in Sources */,
 				FCD5C7ED1A7118780054A9B2 /* SearchResult.m in Sources */,
+				FC937BB21A82009B00916745 /* GeneralTableViewController.m in Sources */,
 				FCD5C7921A7118780054A9B2 /* HistoryProductResult.m in Sources */,
 				FCD5C55D1A7118620054A9B2 /* SettingAddressViewController.m in Sources */,
 				FCD5C7D91A7118780054A9B2 /* ActionOrderResult.m in Sources */,
@@ -6720,6 +6873,7 @@
 				FCD5C3A81A7118150054A9B2 /* LoginViewController.m in Sources */,
 				FCD5C4151A7118150054A9B2 /* SearchViewController.m in Sources */,
 				FCD5C51E1A7118620054A9B2 /* DetailCatalogSpecViewCell.m in Sources */,
+				FC937B9A1A81FF9100916745 /* UITextView+UITextView_Placeholder.m in Sources */,
 				FCD5C7AB1A7118780054A9B2 /* InboxTalkResult.m in Sources */,
 				FCD5C3DE1A7118150054A9B2 /* GeneralProductCell.m in Sources */,
 				FC2E8ACC1A43CEC900A51BF0 /* NSArray+PerformSelector.m in Sources */,
@@ -6728,6 +6882,7 @@
 				FCD5C7601A7118780054A9B2 /* RegisterResult.m in Sources */,
 				FCD5C5511A7118620054A9B2 /* ProductReviewDetailViewController.m in Sources */,
 				FCD5C7B61A7118780054A9B2 /* ProductFeedList.m in Sources */,
+				FC937BA71A81FFFC00916745 /* ShipmentOrder.m in Sources */,
 				FCD5C5591A7118620054A9B2 /* ProductListMyShopViewController.m in Sources */,
 				FC738D6E1A78C4FD00F5D820 /* AlertInfoVoucherCodeView.m in Sources */,
 				FCD5C4281A7118150054A9B2 /* TransactionCartShippingViewController.m in Sources */,
@@ -6752,6 +6907,7 @@
 				FCD5C3B71A7118150054A9B2 /* CategoryMenuViewCell.m in Sources */,
 				FCD5C7C61A7118780054A9B2 /* UserInfo.m in Sources */,
 				FCD5C3BD1A7118150054A9B2 /* TKPDTabInboxReviewNavigationController.m in Sources */,
+				FC937B911A81FF8000916745 /* ShipmentStatusCell.m in Sources */,
 				FCD5C53F1A7118620054A9B2 /* MyShopEtalaseViewController.m in Sources */,
 				FCD5C5541A7118620054A9B2 /* ProductAddEditViewController.m in Sources */,
 				FCD5C81B1A7118780054A9B2 /* TransactionATCFormResult.m in Sources */,
@@ -6780,12 +6936,16 @@
 				FCD5C8051A7118780054A9B2 /* AddProductValidation.m in Sources */,
 				FCD5C5231A7118620054A9B2 /* FavoritedShopCell.m in Sources */,
 				FCD5C3EC1A7118150054A9B2 /* MoreNavigationController.m in Sources */,
+				FC937B6F1A81FF6F00916745 /* CancelShipmentViewController.m in Sources */,
 				FCD5C7811A7118780054A9B2 /* TalkCommentList.m in Sources */,
 				FCD5C5631A7118620054A9B2 /* SettingNotificationCell.m in Sources */,
 				FCD5C7771A7118780054A9B2 /* Review.m in Sources */,
+				FC937BA51A81FFFC00916745 /* ShipmentCourier.m in Sources */,
 				FCD5C7AF1A7118780054A9B2 /* Notification.m in Sources */,
+				FC937B711A81FF6F00916745 /* FilterShipmentConfirmationViewController.m in Sources */,
 				FCD5C7F01A7118780054A9B2 /* Etalase.m in Sources */,
 				FCD5C3F01A7118150054A9B2 /* SalesViewController.m in Sources */,
+				FC937BA81A81FFFC00916745 /* ShipmentResult.m in Sources */,
 				FCD5C7E41A7118780054A9B2 /* OrderResult.m in Sources */,
 				FCD5C7CB1A7118780054A9B2 /* AddressFormResult.m in Sources */,
 				FCD5C7AD1A7118780054A9B2 /* ManageProductList.m in Sources */,
@@ -6811,6 +6971,7 @@
 				FC2E8AD31A43CEC900A51BF0 /* TKPDSecureStorage.m in Sources */,
 				FCD5C7E11A7118780054A9B2 /* OrderOrder.m in Sources */,
 				FC36DF9319B0656400AF74C1 /* main.m in Sources */,
+				FC937B731A81FF6F00916745 /* RequestShipmentCourier.m in Sources */,
 				FCD5C3F81A7118150054A9B2 /* GoldShopView.m in Sources */,
 				FCD5C7B51A7118780054A9B2 /* ProductFeed.m in Sources */,
 				FCD5C3E31A7118150054A9B2 /* GeneralTalkCommentCell.m in Sources */,
@@ -6845,6 +7006,7 @@
 				FCD5C7D11A7118780054A9B2 /* BankAccountGetDefaultFormResult.m in Sources */,
 				FCD5C7C41A7118780054A9B2 /* ProfileInfo.m in Sources */,
 				FCD5C7911A7118780054A9B2 /* HistoryProductList.m in Sources */,
+				FC937B931A81FF8000916745 /* ShipmentStatusViewController.m in Sources */,
 				FCD5C7A21A7118780054A9B2 /* InboxMessageList.m in Sources */,
 				FCD5C3ED1A7118150054A9B2 /* MoreNavigationViewController.m in Sources */,
 				FCD5C52B1A7118620054A9B2 /* HotlistResultViewController.m in Sources */,
