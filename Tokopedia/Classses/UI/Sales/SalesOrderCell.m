@@ -17,6 +17,7 @@
 @implementation SalesOrderCell
 
 - (void)awakeFromNib {
+    
     self.remainingDaysLabel.layer.cornerRadius = 1;
 
     UITapGestureRecognizer *priceViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
@@ -25,7 +26,10 @@
     _priceView.userInteractionEnabled = YES;
     [_priceView addGestureRecognizer:priceViewTap];
 
+    [self.acceptButton.titleLabel setFont:[UIFont fontWithName:@"GothamBook" size:12]];
     [self.acceptButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
+
+    [self.rejectButton.titleLabel setFont:[UIFont fontWithName:@"GothamBook" size:12]];
     [self.rejectButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
 }
 

@@ -7,7 +7,6 @@
 //
 
 #import "AlertPickerView.h"
-#import "string_alert.h"
 
 #pragma mark -
 #pragma mark TKPDAlertView category
@@ -24,7 +23,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
     }
     return self;
 }
@@ -79,6 +77,8 @@
 		[_delegate willPresentAlertView:self];
 	}
 	
+    _doneButton.layer.cornerRadius = 2;
+
 	CGPoint windowcenter = _window.center;
 	CGRect windowbounds = _window.bounds;
 	CGSize windowsize = windowbounds.size;

@@ -10,7 +10,8 @@
 
 @interface Paging : NSObject
 
-@property (nonatomic, strong) NSString *uri_next;
+@property (strong, nonatomic) NSString *uri_next;
+@property (strong, nonatomic) NSString *uri_previous;
 
 - (void) encodeWithCoder:(NSCoder *)encoder;
 - (id)initWithCoder:(NSCoder *)decoder;

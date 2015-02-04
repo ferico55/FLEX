@@ -30,10 +30,13 @@
 <
     UITableViewDataSource,
     UITableViewDelegate,
+    UIAlertViewDelegate,
     SalesOrderCellDelegate,
     ChooseProductDelegate,
     RejectExplanationDelegate,
-    UIAlertViewDelegate
+    FilterDelegate,
+    ProductQuantityDelegate,
+    OrderDetailDelegate
 >
 {
     NSMutableArray *_transactions;
@@ -43,6 +46,9 @@
     NSInteger _requestCount;
     NSString *_uriNext;
     
+    NSString *_deadline;
+    NSString *_filter;
+    
     BOOL _isNoData;
     BOOL _isRefreshView;
     
@@ -51,13 +57,15 @@
 
     __weak RKObjectManager *_actionObjectManager;
     __weak RKManagedObjectRequestOperation *_actionRequest;
-    
+
     NSOperationQueue *_operationQueue;
-    
+    NSTimer *_timer;
+
     UIRefreshControl *_refreshControl;
 
-    Order *_newOrder;
     OrderTransaction *_selectedTransaction;
+    NSMutableDictionary *_orderInProcess;
+    NSIndexPath *_selectedIndexPath;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -69,8 +77,6 @@
 
 @property (weak, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
-
-@property (strong, nonatomic) NSIndexPath *selectedIndexPath;
 
 @end
 
@@ -86,12 +92,17 @@
     _limit = 6;
     _requestCount = 0;
 
+    _deadline = @"";
+    _filter = @"";
+    
     _transactions = [NSMutableArray new];
     _paging = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
-
+    _orderInProcess = [NSMutableDictionary new];
+    
     [self configureRestKit];
     [self request];
+    [self configureActionReskit];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -100,14 +111,16 @@
     
     self.title = @"Pesanan Baru";
 
-    UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered
+    UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
                                                                      target:nil
                                                                      action:nil];
     [[self navigationItem] setBackBarButtonItem:newBackButton];
 
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
     self.tableView.tableHeaderView = _alertView;
-
+    self.tableView.tableFooterView = _footerView;
+    
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 4.0;
     NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
@@ -192,11 +205,17 @@
         cell.remainingDaysLabel.frame = frame;
         
         cell.acceptButton.enabled = NO;
+        cell.acceptButton.layer.opacity = 0.25;
         
     } else {
         
         cell.remainingDaysLabel.text = [NSString stringWithFormat:@"%d Hari lagi",
                                         (int)transaction.order_payment.payment_process_day_left];
+        
+        cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:0.0/255.0
+                                                                  green:121.0/255.0
+                                                                   blue:255.0/255.0
+                                                                  alpha:1];
     
     }
     
@@ -210,29 +229,30 @@
     [cell.userImageView setImageWithURLRequest:request
                               placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
                                        success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        [cell.userImageView setImage:image];
-    } failure:nil];
+                                           [cell.userImageView setImage:image];
+                                           [cell.userImageView setContentMode:UIViewContentModeScaleAspectFill];
+                                     } failure:nil];
     
     cell.paymentAmountLabel.text = transaction.order_detail.detail_open_amount_idr;
     cell.dueDateLabel.text = [NSString stringWithFormat:@"Batas Respon : %@", transaction.order_payment.payment_process_due_date];
     
+    // Reset button style
+    [cell.acceptButton.titleLabel setFont:[UIFont fontWithName:@"GothamBook" size:12]];
+    [cell.acceptButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
+    
+    [cell.rejectButton.titleLabel setFont:[UIFont fontWithName:@"GothamBook" size:12]];
+    [cell.rejectButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
+
     return cell;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
+    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
     if (row == indexPath.row) {
         NSLog(@"%@", NSStringFromSelector(_cmd));
         if (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0) {
-            
-            _tableView.tableFooterView = _footerView;
-            [_activityIndicator startAnimating];
-            
             [self request];
-            
-        } else {
-            _tableView.tableFooterView = nil;
         }
     }
 }
@@ -241,38 +261,33 @@
 
 - (IBAction)tap:(id)sender {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    UINavigationController *controller = [storyboard instantiateViewControllerWithIdentifier:@"FilterNewOrderNavigationController"];
-    [self.navigationController presentViewController:controller animated:YES completion:nil];
+    UINavigationController *navigationController = [storyboard instantiateViewControllerWithIdentifier:@"FilterNewOrderNavigationController"];
+    FilterNewOrderViewController *controller = (FilterNewOrderViewController *)navigationController.topViewController;
+    controller.delegate = self;
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - Cell delegate
 
 - (void)tableViewCell:(UITableViewCell *)cell acceptOrderAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"success", @"yeah",]
-                                                                     delegate:self];
-    [alert show];
-    
-//    OrderTransaction *transaction = [_transactions objectAtIndex:indexPath.row];
-//    _selectedTransaction = [_transactions objectAtIndex:indexPath.row];
-//    _selectedIndexPath = indexPath;
-//    
-//    if (transaction.order_detail.detail_force_cancel == 1) {
-//        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
-//                                                            message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
-//                                                           delegate:self
-//                                                  cancelButtonTitle:@"Cancel"
-//                                                  otherButtonTitles:@"Terima Pesanan", @"Terima Sebagian", nil];
-//        alertView.tag = 2;
-//        [alertView show];
-//    } else {
-//        [self requestActionType:@"accept"
-//                        orderId:_selectedTransaction.order_detail.detail_order_id
-//                         reason:nil
-//                       products:nil
-//                productQuantity:nil];
-//    }
+    OrderTransaction *transaction = [_transactions objectAtIndex:indexPath.row];
+    _selectedTransaction = [_transactions objectAtIndex:indexPath.row];
+    _selectedIndexPath = indexPath;
+    if (transaction.order_detail.detail_partial_order == 1) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
+                                                            message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:@"Terima Pesanan", @"Terima Sebagian", nil];
+        alertView.tag = 2;
+        [alertView show];
+    } else {
+        [self requestActionType:@"accept"
+                         reason:nil
+                       products:nil
+                productQuantity:nil];
+    }
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell rejectOrderAtIndexPath:(NSIndexPath *)indexPath
@@ -280,8 +295,7 @@
     OrderTransaction *transaction = [_transactions objectAtIndex:indexPath.row];
     _selectedTransaction = [_transactions objectAtIndex:indexPath.row];
     _selectedIndexPath = indexPath;
-    
-    if (transaction.order_detail.detail_force_cancel == 1) {
+    if (transaction.order_detail.detail_partial_order == 1) {
     
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Tolak Pesanan"
                                                             message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
@@ -306,8 +320,13 @@
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectPriceAtIndexPath:(NSIndexPath *)indexPath
 {
+    _selectedTransaction = [_transactions objectAtIndex:indexPath.row];
+    _selectedIndexPath = indexPath;
+
     OrderDetailViewController *controller = [[OrderDetailViewController alloc] init];
     controller.transaction = [_transactions objectAtIndex:indexPath.row];
+    controller.delegate = self;
+
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -316,7 +335,6 @@
 - (void)didSelectProducts:(NSArray *)products
 {
     [self requestActionType:@"reject"
-                    orderId:_selectedTransaction.order_detail.detail_order_id
                      reason:@"Persediaan barang habis"
                    products:products
             productQuantity:nil];
@@ -327,10 +345,40 @@
 - (void)didFinishWritingExplanation:(NSString *)explanation
 {
     [self requestActionType:@"reject"
-                    orderId:_selectedTransaction.order_detail.detail_order_id
                      reason:explanation
                    products:nil
             productQuantity:nil];
+}
+
+
+#pragma mark - Product quantity delegate
+
+- (void)didUpdateProductQuantity:(NSArray *)productQuantity explanation:(NSString *)explanation
+{
+    [self requestActionType:@"partial"
+                     reason:explanation
+                   products:nil
+            productQuantity:productQuantity];
+}
+
+#pragma mark - Filter delegate
+
+- (void)didFinishFilterInvoice:(NSString *)invoice dueDate:(NSString *)dueDate
+{
+    [_transactions removeAllObjects];
+    [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    _isNoData = YES;
+    _isRefreshView = NO;
+        
+    _page = 1;
+    _limit = 6;
+    _requestCount = 0;
+    
+    _filter = invoice;
+    _deadline = dueDate;
+    
+    [self request];
 }
 
 #pragma mark - Alert view delegate
@@ -351,13 +399,14 @@
             
         } else if (buttonIndex == 2) {
 
-            //TODO: BELOM BERES
-
             UINavigationController *navigationController = [[UINavigationController alloc] init];
             navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
             navigationController.navigationBar.translucent = NO;
             navigationController.navigationBar.tintColor = [UIColor whiteColor];
             ProductQuantityViewController *controller = [[ProductQuantityViewController alloc] init];
+            OrderTransaction *order = [_transactions objectAtIndex:_selectedIndexPath.row];
+            controller.products = order.order_products;
+            controller.delegate = self;
             navigationController.viewControllers = @[controller];
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 
@@ -367,15 +416,21 @@
         
         if (buttonIndex == 1) {
             
+            [self requestActionType:@"accept" 
+                             reason:nil
+                           products:nil
+                    productQuantity:nil];
+            
         } else if (buttonIndex == 2) {
 
-            //TODO: BELOM BERES
-            
             UINavigationController *navigationController = [[UINavigationController alloc] init];
             navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
             navigationController.navigationBar.translucent = NO;
             navigationController.navigationBar.tintColor = [UIColor whiteColor];
             ProductQuantityViewController *controller = [[ProductQuantityViewController alloc] init];
+            OrderTransaction *order = [_transactions objectAtIndex:_selectedIndexPath.row];
+            controller.products = order.order_products;
+            controller.delegate = self;
             navigationController.viewControllers = @[controller];
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 
@@ -398,7 +453,6 @@
         } else if (buttonIndex == 2) {
             
             [self requestActionType:@"reject"
-                            orderId:_selectedTransaction.order_detail.detail_order_id
                              reason:@"Barang tidak dapat dikirim"
                            products:_selectedTransaction.order_products
                     productQuantity:nil];
@@ -497,11 +551,13 @@
                                                              API_DETAIL_INSURANCE_PRICE_IDR : API_DETAIL_INSURANCE_PRICE_IDR,
                                                              API_DETAIL_PDF_URI             : API_DETAIL_PDF_URI,
                                                              API_DETAIL_SHIP_REF_NUM        : API_DETAIL_SHIP_REF_NUM,
-                                                             API_DETAIL_FORCE_CANCEL        : API_DETAIL_FORCE_CANCEL,
                                                              API_DETAIL_PRINT_ADDRESS_URI   : API_DETAIL_PRINT_ADDRESS_URI,
                                                              API_DETAIL_PDF                 : API_DETAIL_PDF,
                                                              API_DETAIL_ORDER_STATUS        : API_DETAIL_ORDER_STATUS,
                                                              API_DETAIL_FORCE_CANCEL        : API_DETAIL_FORCE_CANCEL,
+                                                             API_DETAIL_PARTIAL_ORDER       : API_DETAIL_PARTIAL_ORDER,
+                                                             API_DETAIL_DROPSHIP_NAME       : API_DETAIL_DROPSHIP_NAME,
+                                                             API_DETAIL_DROPSHIP_TELP       : API_DETAIL_DROPSHIP_TELP,
                                                              @"detail_total_add_fee"        : @"detail_total_add_fee",
                                                              @"detail_open_amount_idr"      : @"detail_open_amount_idr",
                                                              }];
@@ -585,6 +641,14 @@
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
     
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_ORDER_KEY
+                                                                                  toKeyPath:API_ORDER_KEY
+                                                                                withMapping:orderMapping]];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_PAGING_KEY
+                                                                                  toKeyPath:API_PAGING_KEY
+                                                                                withMapping:pagingMapping]];
+    
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY
                                                                                   toKeyPath:kTKPD_APILISTKEY
                                                                                 withMapping:listMapping]];
@@ -632,6 +696,9 @@
 
 - (void)request
 {
+
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+
     if (_request.isExecuting) return;
     
     _requestCount++;
@@ -642,14 +709,16 @@
     NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : API_GET_NEW_ORDER_KEY,
                             API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
+                            API_DEADLINE_KEY         : _deadline,
+                            API_FILTER_KEY           : _filter,
+                            API_PAGE_KEY             : [NSNumber numberWithInteger:_page],
                             };
+    
+    NSLog(@"\n\n\n\n%@\n\n\n\n", param);
     
     if (_page >= 1 || _isRefreshView) {
     
-        if (!_isRefreshView) {
-            _tableView.tableFooterView = _footerView;
-            [_activityIndicator startAnimating];
-        }
+        [_activityIndicator startAnimating];
         
         _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                         method:RKRequestMethodPOST
@@ -657,23 +726,22 @@
                                                                     parameters:[param encrypt]];
 
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-
-            _tableView.hidden = NO;
+            
             _isRefreshView = NO;
-
-            [_activityIndicator stopAnimating];
             [_refreshControl endRefreshing];
             
-            _tableView.tableFooterView = nil;
-
+            [_timer invalidate];
+            _timer = nil;
+            
             [self requestSuccess:mappingResult withOperation:operation];
             
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             
             _isRefreshView = NO;
-            
-            [_activityIndicator stopAnimating];
             [_refreshControl endRefreshing];
+            
+            [_timer invalidate];
+            _timer = nil;
 
             [self requestFailure:error];
 
@@ -681,27 +749,27 @@
 
         [_operationQueue addOperation:_request];
         
-        NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
                                                   target:self
-                                                selector:@selector(requestTimeout)
+                                                selector:@selector(cancel)
                                                 userInfo:nil
                                                  repeats:NO];
         
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 
     }
 }
 
 - (void)requestFailure:(id)object
 {
-    
 }
 
 - (void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    _newOrder = [result objectForKey:@""];
-    BOOL status = [_newOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    Order *newOrder = [result objectForKey:@""];
+    BOOL status = [newOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
     if (status)
     {
         [self requestProcess:object];
@@ -712,36 +780,23 @@
         
         NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
 
-        if ([(NSError*)object code] == NSURLErrorCancelled) {
-            if (_requestCount<kTKPDREQUESTCOUNTMAX) {
-                NSLog(@" ==== REQUESTCOUNT %ld =====",(long)_requestCount);
-                _tableView.tableFooterView = _footerView;
-                [_activityIndicator startAnimating];
-                [self performSelector:@selector(configureRestKit)
-                           withObject:nil
-                           afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                [self performSelector:@selector(request)
-                           withObject:nil
-                           afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-            }
-            else
-            {
-                [_activityIndicator stopAnimating];
-                _tableView.tableFooterView = nil;
-            }
-        }
-        else
-        {
-            [_activityIndicator stopAnimating];
-            _tableView.tableFooterView = nil;
+        if ([(NSError*)object code] == NSURLErrorCancelled && _requestCount < kTKPDREQUESTCOUNTMAX) {
+            NSLog(@" ==== REQUESTCOUNT %ld =====",(long)_requestCount);
+            [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            [self performSelector:@selector(request) withObject:nil  afterDelay:kTKPDREQUEST_DELAYINTERVAL];
         }
     }
-
 }
 
 - (void)cancel
 {
+    [_request cancel];
+    _request = nil;
     
+    [_objectManager.operationQueue cancelAllOperations];
+    _objectManager = nil;
+    
+    _tableView.tableFooterView = nil;
 }
 
 - (void)requestProcess:(id)object
@@ -749,12 +804,14 @@
     if (object && [object isKindOfClass:[RKMappingResult class]]) {
     
         NSDictionary *result = ((RKMappingResult*)object).dictionary;
-        _newOrder = [result objectForKey:@""];
-        _transactions = [NSMutableArray arrayWithArray:_newOrder.result.list];
+        Order *newOrder = [result objectForKey:@""];
+        [_transactions addObjectsFromArray:newOrder.result.list];
         
-        _uriNext =  _newOrder.result.paging.uri_next;
+        NSLog(@"\n\n\n%@\n\n\n", _transactions);
         
-        NSURL *url = [NSURL URLWithString:_newOrder.result.paging.uri_next];
+        _uriNext =  newOrder.result.paging.uri_next;
+        
+        NSURL *url = [NSURL URLWithString:newOrder.result.paging.uri_next];
         NSArray* query = [[url query] componentsSeparatedByString: @"&"];
         
         NSMutableDictionary *queries = [NSMutableDictionary new];
@@ -774,22 +831,23 @@
         if (_transactions.count == 0) _activityIndicator.hidden = YES;
         
         _isNoData = NO;
+        _timer = nil;
+        
+        if (_page == 0) {
+            [_activityIndicator stopAnimating];
+            _tableView.tableFooterView = nil;
+        }
         
         [_tableView reloadData];
     }
 }
 
-- (void)requestTimeout
-{
-    
-}
+#pragma mark - Reskit Actions
 
-#pragma mark - Reskit tolak barang
-
-- (void)configureRestKitForRejectAction
+- (void)configureActionReskit
 {
     _actionObjectManager =  [RKObjectManager sharedClient];
-
+    
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ActionOrder class]];
     [statusMapping addAttributeMappingsFromDictionary:@{
                                                         kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,
@@ -801,26 +859,22 @@
     [resultMapping addAttributeMappingsFromDictionary:@{
                                                         kTKPD_APIISSUCCESSKEY   : kTKPD_APIISSUCCESSKEY,
                                                         }];
-
+    
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
     
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:API_NEW_ORDER_ACTION_PATH
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *actionResponseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                   method:RKRequestMethodPOST
+                                                                              pathPattern:API_NEW_ORDER_ACTION_PATH
+                                                                                  keyPath:@""
+                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_actionObjectManager addResponseDescriptor:responseDescriptorStatus];
+    [_actionObjectManager addResponseDescriptor:actionResponseDescriptorStatus];
 }
 
-- (void)requestActionType:(NSString *)type orderId:(NSInteger)orderId reason:(NSString *)reason products:(NSArray *)products productQuantity:(NSDictionary *)productQuantity
+- (void)requestActionType:(NSString *)type reason:(NSString *)reason products:(NSArray *)products productQuantity:(NSArray *)productQuantity
 {
-    [self configureRestKitForRejectAction];
-    
-    if (_actionRequest.isExecuting) return;
-
     NSString *productIds = @"";
     if (products) {
         for (OrderProduct *product in products) {
@@ -832,7 +886,7 @@
     if (productQuantity) {
         for (NSDictionary *quantity in productQuantity) {
             productQuantities = [NSString stringWithFormat:@"%@~%@*~*%@",
-                                 [quantity objectForKey:@"product_id"],
+                                 [quantity objectForKey:@"order_detail_id"],
                                  [quantity objectForKey:@"product_quantity"],
                                  productQuantities];
         }
@@ -841,81 +895,129 @@
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *auth = [secureStorage keychainDictionary];
     
-    NSDictionary* param = @{
-                            API_ACTION_KEY          : API_PROCEED_ORDER_KEY,
-                            API_ACTION_TYPE_KEY     : type,
-                            API_USER_ID_KEY         : [auth objectForKey:API_USER_ID_KEY],
-                            API_ORDER_ID_KEY        : [NSString stringWithFormat:@"%d", (int)orderId],
-                            API_REASON_KEY          : reason ?: @"",
-                            API_LIST_PRODUCT_ID_KEY : productIds ?: @"",
-                            API_PRODUCT_QUANTITY_KEY: productQuantities ?: @"",
+    NSDictionary *param = @{
+                            API_ACTION_KEY           : API_PROCEED_ORDER_KEY,
+                            API_ACTION_TYPE_KEY      : type,
+                            API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
+                            API_ORDER_ID_KEY         : [NSNumber numberWithInteger:_selectedTransaction.order_detail.detail_order_id],
+                            API_REASON_KEY           : reason ?: @"",
+                            API_LIST_PRODUCT_ID_KEY  : productIds ?: @"",
+                            API_PRODUCT_QUANTITY_KEY : productQuantities ?: @"",
                             };
 
-    _actionRequest = [_objectManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:API_NEW_ORDER_ACTION_PATH
-                                                                parameters:[param encrypt]];
+    _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self
+                                                                                method:RKRequestMethodPOST
+                                                                                  path:API_NEW_ORDER_ACTION_PATH
+                                                                            parameters:[param encrypt]];
+    
+    NSLog(@"\n\n\n%@\n\n\n", _actionRequest);
+    
+    // Add information about which transaction is in processing and at what index path
+    OrderTransaction *order = [OrderTransaction new];
+    order = _selectedTransaction;
+    
+    NSIndexPath *indexPath = [NSIndexPath new];
+    indexPath = _selectedIndexPath;
+    
+    NSDictionary *object = @{@"order" : order, @"indexPath" : indexPath};
+    NSString *key = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:order.order_detail.detail_order_id]];
+    [_orderInProcess setObject:object forKey:key];
+    
+    // Delete row for the object
+    [_transactions removeObjectAtIndex:indexPath.row];
+    [_tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
+    
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                      target:self
+                                                    selector:@selector(timeoutAtIndexPath:)
+                                                    userInfo:@{@"orderId" : key}
+                                                     repeats:NO];
     
     [_actionRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self actionRequestSuccess:mappingResult withOperation:operation];
+        
+        [self actionRequestSuccess:mappingResult
+                     withOperation:operation
+                           orderId:key];
+        [timer invalidate];
+        
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self actionRequestFailure:error];
+
+        [self actionRequestFailure:error orderId:key];
+        [timer invalidate];
+
     }];
     
     [_operationQueue addOperation:_actionRequest];
     
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(actionRequestTimeout)
-                                            userInfo:nil
-                                             repeats:NO];
-    
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
-- (void)actionRequestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
+- (void)actionRequestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation orderId:(NSString *)orderId
 {
     NSDictionary *result = ((RKMappingResult *)object).dictionary;
     
     ActionOrder *actionOrder = [result objectForKey:@""];
     BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
-    if (status) {
-        
-        if (actionOrder.result.is_success == 1 && _selectedIndexPath) {
-            
-            // Request success
-            [_transactions removeObjectAtIndex:_selectedIndexPath.row];
-            [_newOrder.result.list removeObjectAtIndex:_selectedIndexPath.row];
-            [_tableView deleteRowsAtIndexPaths:@[_selectedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            
-            [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
-            
-        } else {
-            
-            // Request not success
-
-        }
+    if (status && actionOrder.result.is_success == 1) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil memproses transaksi."] delegate:self];
+        [alert show];
+        [_orderInProcess removeObjectForKey:orderId];
     } else {
         
-        // WS response status not OK
-    
+        NSLog(@"\n\nRequest Message status : %@\n\n", actionOrder.message_status);
+        
+        [self performSelector:@selector(restoreData:) withObject:orderId];
     }
 }
 
-- (void)actionRequestFailure:(id)object
+- (void)actionRequestFailure:(id)object orderId:(NSString *)orderId
 {
-    
+    NSLog(@"\n\nRequest error : %@\n\n", object);
+    [self performSelector:@selector(restoreData:) withObject:orderId];
 }
 
-- (void)actionRequestTimeout
+- (void)timeoutAtIndexPath:(NSTimer *)timer
 {
-    
+    NSLog(@"%@", NSStringFromSelector(_cmd));
+    NSString *orderId = [[timer userInfo] objectForKey:@"orderId"];
+    [self performSelector:@selector(restoreData:) withObject:orderId];
 }
 
 - (void)reloadData
 {
     [_tableView reloadData];
+}
+
+- (void)restoreData:(NSString *)orderId
+{
+    NSDictionary *dict = [_orderInProcess objectForKey:orderId];
+    if (dict) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses transaksi gagal."] delegate:self];
+        [alert show];
+
+        OrderTransaction *order = [dict objectForKey:@"order"];
+        NSIndexPath *objectIndexPath = [dict objectForKey:@"indexPath"];
+        
+        [_transactions insertObject:order atIndex:objectIndexPath.row];
+        [_tableView insertRowsAtIndexPaths:@[objectIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        
+        [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.5];
+
+        [_orderInProcess removeObjectForKey:orderId];
+    }
+}
+
+#pragma mark - Order detail delegate
+
+- (void)didReceiveActionType:(NSString *)actionType reason:(NSString *)reason products:(NSArray *)products productQuantity:(NSArray *)productQuantity
+{
+    [self requestActionType:actionType
+                     reason:reason
+                   products:products
+            productQuantity:productQuantity];
+    [self performSelector:@selector(reloadData) withObject:nil afterDelay:1];
 }
 
 @end

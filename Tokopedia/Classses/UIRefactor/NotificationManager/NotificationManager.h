@@ -13,11 +13,17 @@
 #import "UserAuthentificationManager.h"
 #import "NotificationRequest.h"
 
+@protocol NotificationManagerDelegate <NSObject>
+
+- (void)didReceiveNotification:(Notification *)notification;
+
+@end
+
 @interface NotificationManager : NSObject  {
-    Notification *_notification;
     UserAuthentificationManager *_userManager;
 }
 
+@property (strong, nonatomic) Notification *notification;
 @property (nonatomic, strong) UIWindow *notificationWindow;
 @property (strong, nonatomic) UILabel *badgeLabel;
 @property (strong, nonatomic) UIViewController *attachedViewController;
@@ -25,6 +31,7 @@
 @property (strong, nonatomic) NotificationBarButton *notificationButton;
 @property (strong, nonatomic) NotificationViewController *notificationController;
 @property (strong, nonatomic) NotificationRequest *notificationRequest;
+@property (weak, nonatomic) id<NotificationManagerDelegate> delegate;
 
 - (void)clearCacheNotificationPanel;
 - (void)selectViewControllerToOpen:(NSString *)notificationCode;

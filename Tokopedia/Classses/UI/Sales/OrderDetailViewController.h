@@ -9,8 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "OrderTransaction.h"
 
+@protocol OrderDetailDelegate <NSObject>
+
+@optional;
+- (void)didReceiveActionType:(NSString *)actionType reason:(NSString *)reason products:(NSArray *)products productQuantity:(NSArray *)productQuantity;
+
+@end
+
 @interface OrderDetailViewController : UIViewController
 
 @property (strong, nonatomic) OrderTransaction *transaction;
+@property (weak, nonatomic) id<OrderDetailDelegate> delegate;
 
 @end

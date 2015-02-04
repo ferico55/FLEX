@@ -22,10 +22,9 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GFF-3r-n4U">
-                    <rect key="frame" x="15" y="12" width="290" height="22"/>
+                    <rect key="frame" x="15" y="12" width="290" height="21"/>
                     <constraints>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="Z6J-oM-Erl"/>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="22" id="tim-u2-iqi"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="btF-uw-arC"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -37,26 +36,18 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x3y-K7-oQZ" userLabel="Bottom Border">
-                    <rect key="frame" x="0.0" y="45" width="320" height="1"/>
-                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
-                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="GFF-3r-n4U" secondAttribute="bottom" constant="12" id="13F-Jv-hds"/>
-                <constraint firstItem="x3y-K7-oQZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="3tT-he-nSO"/>
-                <constraint firstItem="GFF-3r-n4U" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="5XW-Sy-Ili"/>
-                <constraint firstAttribute="trailing" secondItem="GFF-3r-n4U" secondAttribute="trailing" constant="15" id="A8z-Jy-TCf"/>
-                <constraint firstAttribute="bottom" secondItem="x3y-K7-oQZ" secondAttribute="bottom" id="Dbf-CO-rEx"/>
-                <constraint firstAttribute="trailing" secondItem="baU-ph-w9G" secondAttribute="trailing" id="GLZ-3P-UMV"/>
-                <constraint firstAttribute="trailing" secondItem="x3y-K7-oQZ" secondAttribute="trailing" id="GRE-XV-YGt"/>
-                <constraint firstItem="GFF-3r-n4U" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="MfZ-15-bbg"/>
-                <constraint firstAttribute="bottom" secondItem="baU-ph-w9G" secondAttribute="bottom" id="Rp3-s2-G5m"/>
-                <constraint firstItem="baU-ph-w9G" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="aQD-yX-428"/>
-                <constraint firstItem="x3y-K7-oQZ" firstAttribute="top" secondItem="GFF-3r-n4U" secondAttribute="bottom" constant="11" id="dLy-Af-Vlw"/>
-                <constraint firstItem="baU-ph-w9G" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="yVO-ad-Oxl"/>
+                <constraint firstItem="GFF-3r-n4U" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="12" id="KPo-Sg-IuM"/>
+                <constraint firstAttribute="bottom" secondItem="GFF-3r-n4U" secondAttribute="bottom" constant="13" id="LbG-o9-5xD"/>
+                <constraint firstItem="GFF-3r-n4U" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="Nr1-Y7-wfQ"/>
+                <constraint firstAttribute="bottom" secondItem="baU-ph-w9G" secondAttribute="bottom" id="TdB-z1-16K"/>
+                <constraint firstItem="baU-ph-w9G" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="WQL-T0-Clk"/>
+                <constraint firstItem="baU-ph-w9G" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="b5j-8s-Fc4"/>
+                <constraint firstAttribute="trailing" secondItem="baU-ph-w9G" secondAttribute="trailing" id="c6S-Gl-u2n"/>
+                <constraint firstAttribute="trailing" secondItem="GFF-3r-n4U" secondAttribute="trailing" constant="15" id="ofh-5v-uxv"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="416" y="243"/>

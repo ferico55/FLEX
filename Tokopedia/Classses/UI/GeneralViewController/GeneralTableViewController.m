@@ -1,18 +1,18 @@
 //
-//  ShipmentFilterViewController.m
+//  GeneralTableViewController.m
 //  Tokopedia
 //
-//  Created by Tokopedia PT on 1/19/15.
+//  Created by Feizal Badri Asmoro on 2/3/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "ShipmentFilterViewController.h"
+#import "GeneralTableViewController.h"
 
-@interface ShipmentFilterViewController ()
+@interface GeneralTableViewController ()
 
 @end
 
-@implementation ShipmentFilterViewController
+@implementation GeneralTableViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -84,6 +84,22 @@
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the item to be re-orderable.
     return YES;
+}
+*/
+
+/*
+#pragma mark - Table view delegate
+
+// In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Navigation logic may go here, for example:
+    // Create the next view controller.
+    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:<#@"Nib name"#> bundle:nil];
+    
+    // Pass the selected object to the new view controller.
+    
+    // Push the view controller.
+    [self.navigationController pushViewController:detailViewController animated:YES];
 }
 */
 

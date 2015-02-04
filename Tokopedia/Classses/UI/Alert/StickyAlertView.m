@@ -126,15 +126,12 @@
     
     NSString *joinedString = @"";
     if ([texts count] > 1) {
-        
         joinedString = [NSString stringWithFormat:@"\u25CF  %@\n", [[texts valueForKey:@"description"] componentsJoinedByString:@"\u25CF  \n"]];
-        
     } else {
         joinedString = [texts objectAtIndex:0];
     }
     
     _textLabel.attributedText = [[NSAttributedString alloc] initWithString:joinedString attributes:attributes];
-
     _textLabel.numberOfLines = 0;
     [_textLabel sizeToFit];
 }

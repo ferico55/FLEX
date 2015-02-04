@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
@@ -19,30 +19,56 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HRE-IP-MWo" id="V0R-aL-kwT">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Warna hijau" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="IVa-IC-rgi">
-                        <rect key="frame" x="15" y="30" width="290" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keterangan" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="BG6-M0-6C6">
-                        <rect key="frame" x="15" y="12" width="290" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SEh-Nm-NRH" userLabel="Horizontal Border">
+                        <rect key="frame" x="15" y="0.0" width="290" height="1"/>
+                        <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="HXD-Re-bfc"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="amU-22-OX1"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keterangan" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BG6-M0-6C6">
+                        <rect key="frame" x="15" y="18" width="290" height="12"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="12" id="0Ty-du-Vv1"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="f7B-6a-TiI"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                         <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" id="SEh-Nm-NRH" userLabel="Horizontal Border">
-                        <rect key="frame" x="15" y="0.0" width="290" height="1"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Warna hijau" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IVa-IC-rgi">
+                        <rect key="frame" x="15" y="37" width="290" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="SbE-bX-x3j"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14" id="nRH-2a-Ydj"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AAr-BK-rES" userLabel="Bottom border">
+                        <rect key="frame" x="0.0" y="62" width="320" height="1"/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <view contentMode="scaleToFill" id="AAr-BK-rES" userLabel="Bottom border">
-                        <rect key="frame" x="0.0" y="63" width="320" height="1"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="qiZ-9f-0Jb"/>
+                            <constraint firstAttribute="height" constant="1" id="ygT-kJ-H3x"/>
+                        </constraints>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="AAr-BK-rES" firstAttribute="leading" secondItem="V0R-aL-kwT" secondAttribute="leading" id="1Ku-NQ-jgp"/>
+                    <constraint firstItem="BG6-M0-6C6" firstAttribute="leading" secondItem="V0R-aL-kwT" secondAttribute="leading" constant="15" id="5eY-pq-Yu4"/>
+                    <constraint firstItem="SEh-Nm-NRH" firstAttribute="top" secondItem="V0R-aL-kwT" secondAttribute="top" id="75h-J6-gX9"/>
+                    <constraint firstItem="IVa-IC-rgi" firstAttribute="top" secondItem="BG6-M0-6C6" secondAttribute="bottom" constant="7" id="JPa-5K-aet"/>
+                    <constraint firstAttribute="bottom" secondItem="AAr-BK-rES" secondAttribute="bottom" id="SJZ-DZ-PFp"/>
+                    <constraint firstAttribute="trailing" secondItem="IVa-IC-rgi" secondAttribute="trailing" constant="15" id="ank-0h-chv"/>
+                    <constraint firstItem="SEh-Nm-NRH" firstAttribute="leading" secondItem="V0R-aL-kwT" secondAttribute="leading" constant="15" id="e2o-Xf-PFw"/>
+                    <constraint firstItem="IVa-IC-rgi" firstAttribute="leading" secondItem="V0R-aL-kwT" secondAttribute="leading" constant="15" id="iOK-HG-vIg"/>
+                    <constraint firstItem="BG6-M0-6C6" firstAttribute="top" secondItem="SEh-Nm-NRH" secondAttribute="bottom" constant="17" id="iqJ-c2-EOh"/>
+                    <constraint firstAttribute="trailing" secondItem="BG6-M0-6C6" secondAttribute="trailing" constant="15" id="pTB-f8-Ftl"/>
+                    <constraint firstAttribute="trailing" secondItem="AAr-BK-rES" secondAttribute="trailing" id="w2E-86-kHr"/>
+                    <constraint firstAttribute="trailing" secondItem="SEh-Nm-NRH" secondAttribute="trailing" constant="15" id="xYW-uD-eeq"/>
+                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>

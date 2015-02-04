@@ -218,6 +218,7 @@
                 // display datepicker
                 AlertDatePickerView *v = [AlertDatePickerView newview];
                 v.tag = 10;
+                v.isSetMinimumDate = YES;
                 v.delegate = self;
                 if (!_isnodataprofile) {
                     NSString *dob = [NSString stringWithFormat:kTKPDPROFILEEDIT_DATEOFBIRTHFORMAT,_profile.result.data_user.birth_day,_profile.result.data_user.birth_month, _profile.result.data_user.birth_year];
