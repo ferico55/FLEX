@@ -67,8 +67,10 @@
     [dateFormatter setDateFormat:@"dd/MM/yyyy"];
 
     _startDateLabel.text = [dateFormatter stringFromDate:[NSDate date]];
-    _endDateLabel.text = [dateFormatter stringFromDate:[NSDate date]];
+    _startDate = [dateFormatter stringFromDate:[NSDate date]];
 
+    _endDateLabel.text = [dateFormatter stringFromDate:[NSDate date]];
+    _endDate = [dateFormatter stringFromDate:[NSDate date]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -84,6 +86,7 @@
             controller.title = @"Status Transaksi";
             controller.tableView.dataSource = self;
             controller.tableView.delegate = self;
+            controller.tableView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
             
             [self.navigationController pushViewController:controller animated:YES];
             
@@ -106,15 +109,13 @@
         }
     } else if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
-        if (button.tag == 1) {
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        } else if (button.tag == 2){
+        if (button.tag == 2){
             [self.delegate didFinishFilterInvoice:_invoice
-                                  transactionDate:_transactionStatus
+                                transactionStatus:_transactionStatus
                                         startDate:_startDate
                                           endDate:_endDate];
-            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         }
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

@@ -53,6 +53,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OrderDetailViewController">
             <connections>
+                <outlet property="acceptButton" destination="WTZ-BH-bix" id="Q0A-Uu-hpt"/>
                 <outlet property="addressLabel" destination="3dZ-CP-M6c" id="6Kn-R8-9Na"/>
                 <outlet property="assuranceFeeLabel" destination="055-SE-i09" id="Ls9-wz-Mjt"/>
                 <outlet property="automaticallyRejectedLabel" destination="5c7-2m-n2T" id="FVL-GK-hnR"/>
@@ -74,6 +75,7 @@
                 <outlet property="paymentMethodLabel" destination="3Z4-Df-ahB" id="VZU-Gu-KGR"/>
                 <outlet property="phoneNumberLabel" destination="ceH-fr-HCk" id="NGD-1C-5kz"/>
                 <outlet property="receiverNameLabel" destination="1JG-jp-AFS" id="5Y6-f7-5LH"/>
+                <outlet property="rejectButton" destination="V37-yO-ur1" id="uaY-I8-rUj"/>
                 <outlet property="shipmentFeeLabel" destination="VmI-AM-ueI" id="x2T-3a-acp"/>
                 <outlet property="subTotalFeeLabel" destination="FJf-nY-1wK" id="Co3-4C-rpB"/>
                 <outlet property="tableView" destination="zme-T8-wvu" id="HcQ-KJ-DxK"/>

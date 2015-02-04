@@ -3168,7 +3168,6 @@
         <!--Navigation Controller-->
         <scene sceneID="AU7-lq-052">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="la4-4P-OeW" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController storyboardIdentifier="FilterNewOrderNavigationController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="OB7-en-OFb" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="w0s-db-SWw">
@@ -3185,6 +3184,7 @@
                         <segue destination="B6c-MU-e9O" kind="relationship" relationship="rootViewController" id="uBM-0m-VQC"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="la4-4P-OeW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1650" y="140"/>
         </scene>

@@ -7,8 +7,11 @@
 //
 
 #import "CancelShipmentViewController.h"
+#import "UITextView+UITextView_Placeholder.h"
 
 @interface CancelShipmentViewController ()
+
+@property (weak, nonatomic) IBOutlet UITextView *textView;
 
 @end
 
@@ -16,12 +19,40 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    self.title = @"Konfirmasi";
+    
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                                     style:UIBarButtonItemStyleBordered
+                                                                    target:self
+                                                                    action:@selector(tap:)];
+    cancelButton.tag = 1;
+    self.navigationItem.leftBarButtonItem = cancelButton;
+    
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Batalkan order"
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(tap:)];
+    doneButton.tag = 2;
+    self.navigationItem.rightBarButtonItem = doneButton;
+    
+    [self.textView setPlaceholder:@"Tulis keterangan pembatalan order"];
+    [self.textView becomeFirstResponder];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)tap:(id)sender
+{
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *button = (UIBarButtonItem *)sender;
+        if (button.tag == 2) {
+            [self.delegate cancelShipmentWithExplanation:_textView.text];
+        }
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 /*

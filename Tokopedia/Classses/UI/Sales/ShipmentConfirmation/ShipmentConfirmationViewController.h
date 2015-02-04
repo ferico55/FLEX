@@ -8,14 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol ShipmentConfirmationDelegate <NSObject>
-
-- (void)didFinishFilterInvoice:(NSString *)invoice transactionDate:(NSString *)date;
-
-@end
-
 @interface ShipmentConfirmationViewController : UIViewController
-
-@property (weak, nonatomic) id<ShipmentConfirmationDelegate> delegate;
 
 @end
