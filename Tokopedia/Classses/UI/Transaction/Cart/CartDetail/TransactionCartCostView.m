@@ -21,5 +21,9 @@
     }
     return nil;
 }
+- (IBAction)tap:(id)sender {
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:@"Biaya tambahan termasuk biaya asuransi dan biaya administrasi pengiriman" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+}
 
 @end

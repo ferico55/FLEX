@@ -506,6 +506,11 @@
             BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
+                if ([_generatehost.result.generated_host.server_id integerValue] == 0)
+                {
+                    [self configureRestkitGenerateHost];
+                    [self requestGenerateHost];
+                }
             }
         }
     }
@@ -589,7 +594,7 @@
     
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIUPLOADPROFILEIMAGEKEY,
               kTKPDPROFILE_APIUSERIDKEY:@(_generatehost.result.generated_host.user_id),
-              kTKPDGENERATEDHOST_APISERVERIDKEY :@(_generatehost.result.generated_host.server_id),
+              kTKPDGENERATEDHOST_APISERVERIDKEY :_generatehost.result.generated_host.server_id,
               };
     _thumb.alpha = 0.5f;
     

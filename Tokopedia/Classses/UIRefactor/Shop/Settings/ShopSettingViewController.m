@@ -90,7 +90,7 @@
                 {
                     //Etalase
                     MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
-                    vc.data = @{kTKPDDETAIL_APISHOPIDKEY : @(_shop.info.shop_id)?:@(0), kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                    vc.data = @{kTKPDDETAIL_APISHOPIDKEY : _shop.info.shop_id?:@"", kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                     [self.navigationController pushViewController:vc animated:YES];
                     break;
                 }
@@ -212,7 +212,7 @@
         {
             //Etalase
             MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
-            vc.data = @{kTKPDDETAIL_APISHOPIDKEY : @(_shop.info.shop_id)?:@(0), kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+            vc.data = @{kTKPDDETAIL_APISHOPIDKEY : _shop.info.shop_id?:@"", kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
             [self.navigationController pushViewController:vc animated:YES];
             break;
         }

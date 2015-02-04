@@ -426,13 +426,13 @@
             BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (_settings.message_status) {
-                    NSArray *array = _settings.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-                }
-                else
-                    _buttoneditimage.enabled = YES;
+                    if ([_generatehost.result.generated_host.server_id integerValue] == 0)
+                    {
+                        [self configureRestkitGenerateHost];
+                        [self requestGenerateHost];
+                    }
+                    else
+                        _buttoneditimage.enabled = YES;
             }
         }
     }
@@ -502,7 +502,7 @@
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY,
               kTKPDSHOPEDIT_APIUSERIDKEY:@(_generatehost.result.generated_host.user_id),
-              kTKPDGENERATEDHOST_APISERVERIDKEY :@(_generatehost.result.generated_host.server_id),
+              kTKPDGENERATEDHOST_APISERVERIDKEY :_generatehost.result.generated_host.server_id,
               };
     
     _thumb.alpha = 0.5f;

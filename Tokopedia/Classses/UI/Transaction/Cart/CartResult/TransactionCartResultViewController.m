@@ -10,10 +10,12 @@
 #import "TransactionBuyResult.h"
 #import "TransactionCartResultViewController.h"
 #import "TransactionCartResultCell.h"
+#import "TransactionCartResultPaymentCell.h"
 
 @interface TransactionCartResultViewController ()<UITableViewDataSource, UITableViewDelegate>
 {
-    NSMutableArray *_list;
+    NSMutableArray *_listSystemBank;
+    NSMutableArray *_listTotalPayment;
     BOOL _isnodata;
     TransactionBuyResult *_cartBuy;
 }
@@ -28,6 +30,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *totalPaymentLabel;
 @property (strong, nonatomic) IBOutlet UIView *headerPaymentListView;
 @property (weak, nonatomic) IBOutlet UILabel *footerLabel;
+@property (strong, nonatomic) IBOutlet UIView *paymentStatusView;
+@property (weak, nonatomic) IBOutlet UIButton *paymentStatusButton;
 
 @end
 
@@ -36,10 +40,53 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _list = [NSMutableArray new];
+    _listSystemBank = [NSMutableArray new];
+    _listTotalPayment = [NSMutableArray new];
     
     _cartBuy = [_data objectForKey:DATA_CART_RESULT_KEY];
-    [_list addObjectsFromArray:_cartBuy.system_bank];
+    //TODO::
+    if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TRANSFER_BANK)]) {
+        [_listSystemBank addObjectsFromArray:_cartBuy.system_bank];
+    }
+
+    if ([_cartBuy.transaction.deposit_amount integerValue]>0) {
+        if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)]) {
+            NSArray *detailPayment = @[
+                                       @{DATA_NAME_KEY : STRING_JUMLAH_YANG_SUDAH_DIBAYAR,
+                                         DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr
+                                         },
+                                       ];
+            [_listTotalPayment addObjectsFromArray:detailPayment];
+        }
+        else
+        {
+            NSArray *detailPayment = @[
+                                       @{DATA_NAME_KEY : STRING_TOTAL_TAGIHAN ,
+                                         DATA_VALUE_KEY : _cartBuy.transaction.grand_total_idr
+                                         },
+                                       ];
+            [_listTotalPayment addObjectsFromArray:detailPayment];
+        }
+        
+        NSArray *detailPaymentIfUsingSaldo = @[
+                                               @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERPAKAI,
+                                                 DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr
+                                                 },
+                                               @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
+                                                 DATA_VALUE_KEY : _cartBuy.transaction.deposit_left
+                                             },
+                                           ];
+        [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
+    }
+    if ([_cartBuy.transaction.payment_left integerValue]>0) {
+        NSArray *detailPayment = @[
+                                   @{DATA_NAME_KEY : STRING_JUMLAH_YANG_HARUS_DIBAYAR,
+                                     DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr
+                                     },
+                                   ];
+        [_listTotalPayment addObjectsFromArray:detailPayment];
+    }
+
     
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:14];
     
@@ -64,10 +111,13 @@
                                  NSParagraphStyleAttributeName: style,
                                  };
     
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:_tableTitleLabel.text
+    NSString *tableTitleLabel = [NSString stringWithFormat:FORMAT_SUCCESS_BUY,_cartBuy.transaction.gateway_name];
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:tableTitleLabel
                                                                                attributes:attributes];
     _tableTitleLabel.attributedText = attributedText;
+    _tableTitleLabel.textAlignment = NSTextAlignmentCenter;
     _confirmPaymentButton.layer.cornerRadius = 2;
+    _paymentStatusButton.layer.cornerRadius = 2;
     
     [_totalPaymentLabel setText:_cartBuy.transaction.payment_left_idr animated:YES];
 }
@@ -80,88 +130,65 @@
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#ifdef TRANSACTION_SHIPMENT_ISNODATA_ENABLE
-    return _isnodata ? 1 : 1;
-#else
-    return _isnodata ? 0 : _list.count+1;
-#endif
+    NSInteger sectionCount = _listSystemBank.count+_listTotalPayment.count;
+    return sectionCount;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-#ifdef TRANSACTION_SHIPMENT_ISNODATA_ENABLE
-    return _isnodata ? 1 : 1;
-#else
-    return _isnodata ? 0 : 1;
-#endif
+    return 1;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell* cell = nil;
-    if (!_isnodata) {
-        if (indexPath.section == 0)
-            cell = _totalPaymentCell;
-        else if (indexPath.section <= _list.count)
-            cell = [self cellPaymentAtIndexPath:indexPath];
-    } else {
-        static NSString *CellIdentifier = TRANSACTION_STANDARDTABLEVIEWCELLIDENTIFIER;
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell.textLabel.text = TRANSACTION_NODATACELLTITLE;
-        cell.detailTextLabel.text = TRANSACTION_NODATACELLDESCS;
-    }
+    if (indexPath.section < _listTotalPayment.count)
+        cell = [self cellDetailPaymentAtIndexPath:indexPath];
+    else
+        cell = [self cellPaymentAtIndexPath:indexPath];
+
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
 #pragma mark - Table View Delegate
-
--(UIView*)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    if(section==1)return _headerPaymentListView;
-    else return nil;
-}
-
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if (section == _list.count) {
-        return _viewConfirmPayment;
+    if (section == _listTotalPayment.count + _listSystemBank.count-1) {
+        return ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_TOKOPEDIA)?_paymentStatusView:_viewConfirmPayment;
     }
-    else return nil;
+    return nil;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (section == _listTotalPayment.count) {
+        return _headerPaymentListView;
+    }
+    return nil;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 1) {
+    if (section == _listTotalPayment.count) {
         return _headerPaymentListView.frame.size.height;
     }
-    else return 1;
+    return 1;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 0) {
+    if (indexPath.section < _listTotalPayment.count)
         return _totalPaymentCell.frame.size.height;
-    }
-    else if (indexPath.section <=_list.count)
-    {
-        return  120;
-    }
     else
-        return 40;
+        return  120;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    if (section == _list.count) {
-        return _viewConfirmPayment.frame.size.height;
+    if (section == _listTotalPayment.count + _listSystemBank.count-1) {
+        return ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_TOKOPEDIA)?_paymentStatusView.frame.size.height:_viewConfirmPayment.frame.size.height;
     }
-    else return 20;
+    return 20;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -170,36 +197,69 @@
         cell.backgroundColor = [UIColor whiteColor];
     }
 }
+- (IBAction)tap:(id)sender {
+    [_delegate shouldBackToFirstPage];
+}
 
 #pragma mark - methods Cell
 -(UITableViewCell*)cellPaymentAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString *cellid = TRANSACTION_CART_RESULT_CELL_IDENTIFIER;
+    UITableViewCell *cell = nil;
     
-    UITableViewCell *cell = (TransactionCartResultCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
-    if (cell == nil) {
-        cell = [TransactionCartResultCell newcell];
+    if (indexPath.section < _listTotalPayment.count) {
+        NSString *cellid = TRANSACTION_CART_PAYMENT_CELL_IDENTIDIER;
+        cell = (TransactionCartResultPaymentCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
+        if (cell == nil) {
+            cell = [TransactionCartResultPaymentCell newcell];
+        }
+        
+        ((TransactionCartResultPaymentCell*)cell).detailPaymentLabel.text = [_listTotalPayment[indexPath.section] objectForKey:DATA_NAME_KEY];
+        ((TransactionCartResultPaymentCell*)cell).totalPaymentLabel.text = [_listTotalPayment[indexPath.section] objectForKey:DATA_VALUE_KEY];
     }
-    
-    TransactionSystemBank *list = _list[indexPath.section-1];
-    [((TransactionCartResultCell*)cell).bankNameLabel setText:[NSString stringWithFormat:@"Bank %@",list.sb_bank_name] animated:YES];
-    [((TransactionCartResultCell*)cell).bankBranchLabel setText:[NSString stringWithFormat:@"Cab. %@",list.sb_bank_cabang] animated:YES];
-    [((TransactionCartResultCell*)cell).accountNameLabel setText:[NSString stringWithFormat:@"a/n %@",list.sb_account_name] animated:YES];
-    [((TransactionCartResultCell*)cell).accountNumberLabel setText:list.sb_account_no animated:YES];
-    
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.sb_picture] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    UIImageView *thumb = ((TransactionCartResultCell*)cell).logoBankImageView;
-    thumb.image = nil;
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image animated:YES];
-#pragma clang diagnosti c pop
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    }];
-    
+    else{
+        NSString *cellid = TRANSACTION_CART_RESULT_CELL_IDENTIFIER;
+
+        cell = (TransactionCartResultCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
+        if (cell == nil) {
+            cell = [TransactionCartResultCell newcell];
+        }
+        
+        TransactionSystemBank *list = _listSystemBank[indexPath.section-_listTotalPayment.count];
+        [((TransactionCartResultCell*)cell).bankNameLabel setText:[NSString stringWithFormat:@"Bank %@",list.sb_bank_name] animated:YES];
+        [((TransactionCartResultCell*)cell).bankBranchLabel setText:[NSString stringWithFormat:@"Cab. %@",list.sb_bank_cabang] animated:YES];
+        [((TransactionCartResultCell*)cell).accountNameLabel setText:[NSString stringWithFormat:@"a/n %@",list.sb_account_name] animated:YES];
+        [((TransactionCartResultCell*)cell).accountNumberLabel setText:list.sb_account_no animated:YES];
+        
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.sb_picture] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        
+        UIImageView *thumb = ((TransactionCartResultCell*)cell).logoBankImageView;
+        thumb.image = nil;
+        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Warc-retain-cycles"
+            [thumb setImage:image animated:YES];
+    #pragma clang diagnosti c pop
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        }];
+    }
     return cell;
 }
 
+-(UITableViewCell*)cellDetailPaymentAtIndexPath:(NSIndexPath*)indexPath
+{
+    NSString *cellid = TRANSACTION_CART_PAYMENT_CELL_IDENTIDIER;
+    
+    UITableViewCell *cell = (TransactionCartResultPaymentCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
+    if (cell == nil) {
+        cell = [TransactionCartResultPaymentCell newcell];
+    }
+    
+    NSString *detail = [_listTotalPayment[indexPath.section] objectForKey:DATA_NAME_KEY];
+    NSString *totalPayment =  [_listTotalPayment[indexPath.section] objectForKey:DATA_VALUE_KEY];
+    [((TransactionCartResultPaymentCell*)cell).detailPaymentLabel setText:detail animated:YES];
+    [((TransactionCartResultPaymentCell*)cell).totalPaymentLabel setText:totalPayment animated:YES];
+    cell.backgroundColor = ([detail isEqualToString:STRING_JUMLAH_YANG_HARUS_DIBAYAR])?[UIColor colorWithRed:255.f/255.f green:255.f/255.f blue:229.f/255.f alpha:1]:[UIColor colorWithRed:238.f/255.f green:255.f/255.f blue:255.f/255.f alpha:1];
+    
+    return cell;
+}
 @end

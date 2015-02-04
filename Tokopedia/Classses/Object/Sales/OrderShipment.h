@@ -11,7 +11,7 @@
 @interface OrderShipment : NSObject
 
 @property (strong, nonatomic) NSString *shipment_logo;
-@property NSInteger shipment_package_id;
+@property (strong, nonatomic) NSString *shipment_package_id;
 @property NSInteger shipment_id;
 @property (strong, nonatomic) NSString *shipment_product;
 @property (strong, nonatomic) NSString *shipment_name;

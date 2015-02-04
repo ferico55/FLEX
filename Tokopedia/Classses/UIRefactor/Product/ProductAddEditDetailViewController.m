@@ -22,8 +22,10 @@
 #import "ProductEditWholesaleViewController.h"
 #import "MyShopEtalaseEditViewController.h"
 #import "MyShopNoteViewController.h"
+#import "Breadcrumb.h"
+#import "ProductDetail.h"
 
-@interface ProductAddEditDetailViewController ()<UITextViewDelegate, TKPDAlertViewDelegate, MyShopEtalaseFilterViewControllerDelegate,ProductEditWholesaleViewControllerDelegate>
+@interface ProductAddEditDetailViewController ()<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate, TKPDAlertViewDelegate, MyShopEtalaseFilterViewControllerDelegate,ProductEditWholesaleViewControllerDelegate>
 {
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
@@ -31,7 +33,7 @@
     CGRect _containerDefault;
     CGSize _scrollviewContentSize;
     
-    NSMutableDictionary *_auth;
+    NSDictionary *_auth;
     NSMutableDictionary *_dataInput;
     NSMutableArray *_wholesaleList;
     
@@ -53,17 +55,21 @@
     __weak RKManagedObjectRequestOperation *_requestActionEditProduct;
     
     UIBarButtonItem *_saveBarButtonItem;
+    
+    BOOL _isNodata;
 }
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0TableViewCell;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1TableViewCell;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section2TableViewCell;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section3TableViewCell;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section4TableViewCell;
+@property (strong, nonatomic) IBOutlet UIView *section0FooterView;
+@property (strong, nonatomic) IBOutlet UIView *section3FooterView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *containerScrollView;
-@property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UISwitch *returnableProductSwitch;
-@property (weak, nonatomic) IBOutlet UIButton *insuranceButton;
-@property (weak, nonatomic) IBOutlet UIButton *etalaseButton;
-@property (weak, nonatomic) IBOutlet UIButton *etalaseDetailButton;
-@property (weak, nonatomic) IBOutlet UIButton *productConditionButton;
 @property (weak, nonatomic) IBOutlet UITextView *productDescriptionTextView;
-@property (weak, nonatomic) IBOutlet UILabel *productDescriptionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *pengembalianProductLabel;
 
 -(void)cancelActionAddProductValidation;
 -(void)configureRestkitActionAddProductValidation;
@@ -121,7 +127,6 @@
     
     _wholesaleList = [NSMutableArray new];
     _dataInput = [NSMutableDictionary new];
-    _auth = [NSMutableDictionary new];
     
     _operationQueue = [NSOperationQueue new];
     
@@ -147,13 +152,32 @@
              object:nil];
     
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    _auth = [auth mutableCopy];
+    _auth = [secureStorage keychainDictionary];
+    
+    NSString *string = _pengembalianProductLabel.text;
+    
+    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 6.0;
+    
+    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
+                                 NSFontAttributeName: font,
+                                 NSParagraphStyleAttributeName: style,
+                                 };
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string
+                                                                                    attributes:attributes];
+    
+    _pengembalianProductLabel.attributedText = attributedText;
+    //[_productDescriptionTextView setPlaceholder:@"Masukkan Deskripsi Produk"];
 }
 
--(void)viewDidLayoutSubviews
+-(void)viewWillDisappear:(BOOL)animated
 {
-    _containerScrollView.contentSize = _contentView.frame.size;
+    [super viewWillDisappear:animated];
+    NSDictionary *userInfo = @{DATA_INPUT_KEY:_dataInput};
+    [_delegate ProductEditDetailViewController:self withUserInfo:userInfo];
 }
 
 #pragma mark - Memory Management
@@ -174,53 +198,6 @@
 -(IBAction)tap:(id)sender
 {
     [_activeTextView resignFirstResponder];
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton*)sender;
-        switch (button.tag) {
-            case BUTTON_PRODUCT_INSURANCE:
-            {
-                AlertPickerView *alertView = [AlertPickerView newview];
-                alertView.tag = BUTTON_PRODUCT_INSURANCE;
-                alertView.delegate = self;
-                alertView.pickerData = ARRAY_PRODUCT_INSURACE;
-                [alertView show];
-                break;
-            }
-            case BUTTON_PRODUCT_CONDITION:
-            {
-                AlertPickerView *alertView = [AlertPickerView newview];
-                alertView.tag = BUTTON_PRODUCT_CONDITION;
-                alertView.delegate = self;
-                alertView.pickerData = ARRAY_PRODUCT_CONDITION;
-                [alertView show];
-                break;
-            }
-            case BUTTON_PRODUCT_ETALASE:
-            {
-                AlertPickerView *alertView = [AlertPickerView newview];
-                alertView.tag = BUTTON_PRODUCT_ETALASE;
-                alertView.delegate = self;
-                alertView.pickerData = ARRAY_PRODUCT_MOVETO_ETALASE;
-                [alertView show];
-                break;
-            }
-            case BUTTON_PRODUCT_ETALASE_DETAIL:
-            {
-                NSIndexPath *indexpath = [_dataInput objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                MyShopEtalaseFilterViewController *etalaseViewController = [MyShopEtalaseFilterViewController new];
-                NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-                etalaseViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[auth objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath,
-                            DATA_PRESENTED_ETALASE_TYPE_KEY : @(PRESENTED_ETALASE_ADD_PRODUCT),
-                            
-                            };
-                etalaseViewController.delegate = self;
-                [self.navigationController pushViewController:etalaseViewController animated:YES];
-            }
-            default:
-                break;
-        }
-    }
     if ([sender isKindOfClass:[UISwitch class]]) {
         UISwitch *returnableSwitch =(UISwitch*)sender;
         BOOL isReturnable = returnableSwitch.on;
@@ -280,6 +257,220 @@
                 //}
             //}
     }
+}
+
+#pragma mark - Table View Data Source
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 5;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    NSInteger rowCount = 0;
+    switch (section) {
+        case 0:
+            rowCount = _section0TableViewCell.count;
+            break;
+        case 1:
+            rowCount = _section1TableViewCell.count;
+            break;
+        case 2:
+            rowCount = _section2TableViewCell.count;
+            break;
+        case 3:
+            rowCount = _section3TableViewCell.count;
+            break;
+        case 4:
+            rowCount = _section4TableViewCell.count;
+            break;
+        default:
+            break;
+    }
+
+    return rowCount;
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+
+    UITableViewCell *cell = nil;
+    switch (indexPath.section) {
+        case 0:
+            cell = _section0TableViewCell[indexPath.row];
+            if (indexPath.row == BUTTON_PRODUCT_INSURANCE) {
+                NSString *productMustInsurance =[ARRAY_PRODUCT_INSURACE[([product.product_must_insurance integerValue]-1>0)?[product.product_must_insurance integerValue]-1:0]objectForKey:DATA_NAME_KEY];
+                cell.detailTextLabel.text = productMustInsurance;
+            }
+            break;
+        case 1:
+            cell = _section1TableViewCell[indexPath.row];
+            BOOL isProductWarehouse = ([product.product_move_to integerValue] == PRODUCT_WAREHOUSE_YES_ID);
+            if (indexPath.row == BUTTON_PRODUCT_ETALASE) {
+                NSString *moveTo = (isProductWarehouse)?[ARRAY_PRODUCT_MOVETO_ETALASE[0]objectForKey:DATA_NAME_KEY]:[ARRAY_PRODUCT_MOVETO_ETALASE[1]objectForKey:DATA_NAME_KEY];
+                cell.detailTextLabel.text = moveTo;
+            }
+            else if (indexPath.row == BUTTON_PRODUCT_ETALASE_DETAIL)
+            {
+                cell.detailTextLabel.textColor = (isProductWarehouse)?[UIColor grayColor]:[UIColor blueColor];
+                cell.detailTextLabel.text = (isProductWarehouse)?@"-":[product.product_etalase isEqualToString:@"0"]?@"Pilih Etalase":product.product_etalase;
+            }
+            break;
+        case 2:
+            cell = _section2TableViewCell[indexPath.row];
+            if (indexPath.row==BUTTON_PRODUCT_CONDITION) {
+                NSInteger productCondition = [product.product_condition integerValue];
+                BOOL isNewProduct = (productCondition == PRODUCT_CONDITION_NEW_ID || productCondition == PRODUCT_CONDITION_NOTSET_ID)?YES:NO;
+                NSString *productConditionName = isNewProduct?[ARRAY_PRODUCT_CONDITION[0] objectForKey:DATA_NAME_KEY]:[ARRAY_PRODUCT_CONDITION[1] objectForKey:DATA_NAME_KEY];
+                cell.detailTextLabel.text = productConditionName;
+            }
+            break;
+        case 3:
+            cell = _section3TableViewCell[indexPath.row];
+            break;
+        case 4:
+            cell = _section4TableViewCell[indexPath.row];
+            break;
+        default:
+            break;
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+
+#pragma mark - Table View Delegate
+-(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if (section == 0)
+        return _section0FooterView;
+    else if (section == 3)
+        return _section3FooterView;
+    return nil;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section == 0)
+        return _section0FooterView.frame.size.height;
+    else if(section == 3)
+        return _section3FooterView.frame.size.height;
+    return 0;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    float cellHeight;
+    switch (indexPath.section) {
+        case 0:
+            cellHeight = ((UITableViewCell*)_section0TableViewCell[indexPath.row]).frame.size.height;
+            break;
+        case 1:
+            cellHeight = ((UITableViewCell*)_section1TableViewCell[indexPath.row]).frame.size.height;
+            break;
+        case 2:
+            cellHeight = ((UITableViewCell*)_section2TableViewCell[indexPath.row]).frame.size.height;
+            break;
+        case 3:
+            cellHeight = ((UITableViewCell*)_section3TableViewCell[indexPath.row]).frame.size.height;
+            break;
+        case 4:
+            cellHeight = ((UITableViewCell*)_section4TableViewCell[indexPath.row]).frame.size.height;
+            break;
+        default:
+            break;
+    }
+    return cellHeight;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [_productDescriptionTextView resignFirstResponder];
+    [_dataInput setObject:_productDescriptionTextView.text?:@"" forKey:API_PRODUCT_DESCRIPTION_KEY];
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    BOOL isProductWarehouse = ([product.product_move_to integerValue] == PRODUCT_WAREHOUSE_YES_ID);
+    switch (indexPath.section) {
+        case 0:
+            switch (indexPath.row) {
+                case BUTTON_PRODUCT_INSURANCE:
+                {
+                    AlertPickerView *alertView = [AlertPickerView newview];
+                    alertView.tag = 10;
+                    alertView.delegate = self;
+                    alertView.pickerData = ARRAY_PRODUCT_INSURACE;
+                    [alertView show];
+                    break;
+                }
+            }
+            break;
+        case 1:
+            switch (indexPath.row) {
+                case BUTTON_PRODUCT_ETALASE:
+                {
+                    AlertPickerView *alertView = [AlertPickerView newview];
+                    alertView.tag = 11;
+                    alertView.delegate = self;
+                    alertView.pickerData = ARRAY_PRODUCT_MOVETO_ETALASE;
+                    [alertView show];
+                    break;
+                }
+                case BUTTON_PRODUCT_ETALASE_DETAIL:
+                {
+                    if (!isProductWarehouse) {
+                        NSIndexPath *indexpath = [_dataInput objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                        MyShopEtalaseFilterViewController *etalaseViewController = [MyShopEtalaseFilterViewController new];
+                        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+                        etalaseViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[auth objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                                                       kTKPDFILTER_DATAINDEXPATHKEY: indexpath,
+                                                       DATA_PRESENTED_ETALASE_TYPE_KEY : @(PRESENTED_ETALASE_ADD_PRODUCT),
+                                                       
+                                                       };
+                        etalaseViewController.delegate = self;
+                        [self.navigationController pushViewController:etalaseViewController animated:YES];
+                    }
+                    break;
+                }
+            }
+            break;
+        case 2:
+            switch (indexPath.row) {
+                case BUTTON_PRODUCT_CONDITION:
+                {
+                    AlertPickerView *alertView = [AlertPickerView newview];
+                    alertView.tag = 12;
+                    alertView.delegate = self;
+                    alertView.pickerData = ARRAY_PRODUCT_CONDITION;
+                    [alertView show];
+                    break;
+                }
+                default:
+                    break;
+            }
+            break;
+        case 4:
+            switch (indexPath.row) {
+                case BUTTON_PRODUCT_EDIT_WHOLESALE:
+                {
+                    ProductEditWholesaleViewController *editWholesaleVC = [ProductEditWholesaleViewController new];
+                    editWholesaleVC.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
+                                             DATA_INPUT_KEY : _dataInput
+                                             };
+                    editWholesaleVC.delegate = self;
+                    [self.navigationController pushViewController:editWholesaleVC animated:YES];
+                }
+                    break;
+                    
+                default:
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
+}
+
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    [_productDescriptionTextView resignFirstResponder];
 }
 
 #pragma mark - -Request Add Product Validation
@@ -351,36 +542,40 @@
     NSTimer *timer;
     
     NSDictionary *userInfo = (NSDictionary*)object;
-#define PRODUCT_MOVETO_WAREHOUSE_ID 2
+#define PRODUCT_MOVETO_WAREHOUSE_ID @"2"
     
     //TODO:: catalogid
+    
+    Breadcrumb *breadcrumb = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+
     NSString *action = ACTION_ADD_PRODUCT_VALIDATION;
     NSInteger serverID = [[userInfo objectForKey:API_SERVER_ID_KEY] integerValue]?:0;
-    NSString *productName = [userInfo objectForKey:API_PRODUCT_NAME_KEY]?:@"";
-    NSString *productDescription = [userInfo objectForKey:API_PRODUCT_DESCRIPTION_KEY]?:@"";
-    NSInteger departmentID = [[userInfo objectForKey:API_DEPARTMENT_ID_KEY]integerValue]?:0;
-    NSInteger minimumOrder = [[userInfo objectForKey:API_PRODUCT_MINIMUM_ORDER_KEY]integerValue]?:1;
-    NSInteger productPriceCurrencyID = [[userInfo objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue]?:1;
-    NSInteger productPrice = [[userInfo objectForKey:API_PRODUCT_PRICE_KEY]integerValue]?:0;
-    NSInteger productWeightUnitID = [[userInfo objectForKey:API_PRODUCT_WEIGHT_UNIT_KEY]integerValue]?:1;
-    NSInteger productWeight = [[userInfo objectForKey:API_PRODUCT_WEIGHT_KEY]integerValue]?:0;
+    NSString *productName = product.product_name?:@"";
+    NSString *productDescription = product.product_description?:@"";
+    NSString *departmentID = breadcrumb.department_id?:@"";
+    NSString *minimumOrder = product.product_min_order?:@"1";
+    NSString *productPriceCurrencyID = product.product_currency_id?:@"";
+    NSString *productPrice = product.product_price?:@"";
+    NSString *productWeightUnitID = product.product_weight_unit?:@"";
+    NSString *productWeight = product.product_weight?:@"";
     NSString *productImage = [userInfo objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
     NSString *photoDefault = [userInfo objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
-    NSInteger productInsurance = [[userInfo objectForKey:API_PRODUCT_MUST_INSURANCE_KEY] integerValue];
-    NSInteger moveToWarehouse = [[userInfo objectForKey:API_PRODUCT_MOVETO_WAREHOUSE_KEY]integerValue]?:PRODUCT_MOVETO_WAREHOUSE_ID;
+    NSString *productInsurance = product.product_must_insurance?:@"";
+    NSString *moveToWarehouse = product.product_move_to?:@"";
     
-    NSInteger etalaseUserInfoID = [[userInfo objectForKey:API_PRODUCT_ETALASE_ID_KEY]integerValue];
-    BOOL isNewEtalase = (etalaseUserInfoID==DATA_ADD_NEW_ETALASE_ID);
-    NSString *etalaseID = isNewEtalase?API_ADD_PRODUCT_NEW_ETALASE_TAG:[NSString stringWithFormat:@"%zd",etalaseUserInfoID];
+    NSNumber *etalaseUserInfoID = product.product_etalase_id?:@(0);
+    BOOL isNewEtalase = ([etalaseUserInfoID integerValue]==DATA_ADD_NEW_ETALASE_ID);
+    NSString *etalaseID = isNewEtalase?API_ADD_PRODUCT_NEW_ETALASE_TAG:[etalaseUserInfoID stringValue];
     
-    NSString *etalaseName = [userInfo objectForKey:API_PRODUCT_ETALASE_NAME_KEY]?:@"";
-    NSInteger productConditionID = [[userInfo objectForKey: API_PRODUCT_CONDITION_KEY] integerValue]?:1;
+    NSString *etalaseName = product.product_etalase?:@"";
+    NSString *productConditionID = product.product_condition?:@"";
     NSArray *wholesaleList = [userInfo objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
     
-    NSNumber *productID = [userInfo objectForKey:API_PRODUCT_ID_KEY];
+    NSString *productID = product.product_id?:@"";
     BOOL isReturnableProduct = [[userInfo objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]integerValue];
     
-    NSInteger userID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
+    NSString *userID = [_auth objectForKey:kTKPD_USERIDKEY]?:@"";
     
     NSString *dateString = [NSDateFormatter localizedStringFromDate:[NSDate date]
                                                           dateStyle:NSDateFormatterShortStyle
@@ -394,42 +589,45 @@
     
     [_dataInput setObject:uniqueID forKey:API_UNIQUE_ID_KEY];
     
-    NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action?:@"",
-                                      API_PRODUCT_ID_KEY: productID?:@(0),
+    NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action,
+                                      API_PRODUCT_ID_KEY: productID,
                                       API_SERVER_ID_KEY : @(serverID)?:@(0),
-                                      API_PRODUCT_NAME_KEY: productName?:@"",
-                                      API_PRODUCT_PRICE_KEY: @(productPrice)?:@(0),
-                                      API_PRODUCT_PRICE_CURRENCY_ID_KEY: @(productPriceCurrencyID)?:@(0),
-                                      API_PRODUCT_WEIGHT_KEY: @(productWeight)?:@(0),
-                                      API_PRODUCT_WEIGHT_UNIT_KEY: @(productWeightUnitID)?:@(0),
-                                      API_PRODUCT_DEPARTMENT_ID_KEY: @(departmentID)?:@(0),
-                                      API_PRODUCT_MINIMUM_ORDER_KEY : @(minimumOrder)?:@(0),
-                                      API_PRODUCT_DESCRIPTION_KEY : productDescription?:@"",
-                                      API_PRODUCT_MUST_INSURANCE_KEY : @(productInsurance)?:@(0),
-                                      API_PRODUCT_MOVETO_WAREHOUSE_KEY : @(moveToWarehouse)?:@(0),
-                                      API_PRODUCT_ETALASE_ID_KEY : etalaseID?:@(0),
-                                      API_PRODUCT_ETALASE_NAME_KEY : etalaseName?:@"",
-                                      API_PRODUCT_CONDITION_KEY : @(productConditionID)?:@(0),
+                                      API_PRODUCT_NAME_KEY: productName,
+                                      API_PRODUCT_PRICE_KEY: productPrice,
+                                      API_PRODUCT_PRICE_CURRENCY_ID_KEY: productPriceCurrencyID,
+                                      API_PRODUCT_WEIGHT_KEY: productWeight,
+                                      API_PRODUCT_WEIGHT_UNIT_KEY: productWeightUnitID,
+                                      API_PRODUCT_DEPARTMENT_ID_KEY: departmentID,
+                                      API_PRODUCT_MINIMUM_ORDER_KEY : minimumOrder,
+                                      API_PRODUCT_DESCRIPTION_KEY : productDescription,
+                                      API_PRODUCT_MUST_INSURANCE_KEY : productInsurance,
+                                      API_PRODUCT_MOVETO_WAREHOUSE_KEY : moveToWarehouse,
+                                      API_PRODUCT_ETALASE_ID_KEY : etalaseID,
+                                      API_PRODUCT_ETALASE_NAME_KEY : etalaseName,
+                                      API_PRODUCT_CONDITION_KEY : productConditionID,
                                       API_PRODUCT_IMAGE_TOUPLOAD_KEY : productImage?:@(0),
                                       API_PRODUCT_IMAGE_DEFAULT_KEY: photoDefault?:@"",
                                       API_PRODUCT_IS_RETURNABLE_KEY : @(isReturnableProduct)?:@(0),
                                       API_PRODUCT_IS_CHANGE_WHOLESALE_KEY:@(1),
                                       API_UNIQUE_ID_KEY:uniqueID,
-                                      API_IS_DUPLICATE_KEY : @(duplicate)
+                                      API_IS_DUPLICATE_KEY : @(duplicate),
+                                      kTKPD_USERIDKEY : userID,
+                                      @"enc_dec" : @"off"
                                       };
-    NSMutableDictionary *param = [NSMutableDictionary new];
-    [param addEntriesFromDictionary:paramDictionary];
+    NSMutableDictionary *paramMutableDict = [NSMutableDictionary new];
+    [paramMutableDict addEntriesFromDictionary:paramDictionary];
     
     for (NSDictionary *wholesale in wholesaleList) {
-        [param addEntriesFromDictionary:wholesale];
+        [paramMutableDict addEntriesFromDictionary:wholesale];
     }
     NSString *productImageDesc = [userInfo objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY]?:@"";
-    [param setObject:productImageDesc forKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
+    [paramMutableDict setObject:productImageDesc forKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
     
-    _requestCount ++;
+    NSDictionary *param = [paramMutableDict copy];
+    
     
     _saveBarButtonItem.enabled = NO;
-    _requestActionAddProductValidation = [_objectManagerActionAddProductValidation appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
+    _requestActionAddProductValidation = [_objectManagerActionAddProductValidation appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param];
     
     [_requestActionAddProductValidation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionAddProductValidation:mappingResult
@@ -437,6 +635,7 @@
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionAddProductValidation:error];
         [timer invalidate];
+        _saveBarButtonItem.enabled = YES;
     }];
     
     [_operationQueue addOperation:_requestActionAddProductValidation];
@@ -472,7 +671,7 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (![setting.result.post_key isEqualToString:@"1"])
+                if (![setting.result.post_key integerValue]!=1)
                 {
                     [_dataInput setObject:setting.result.post_key?:@"" forKey:API_POSTKEY_KEY];
                     [self configureRestkitActionAddProductPicture];
@@ -483,6 +682,7 @@
                     NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    _saveBarButtonItem.enabled = YES;
                 }
             }
         }
@@ -569,20 +769,17 @@
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
     
-    NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action?:@"",
+    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action?:@"",
                                       API_SERVER_ID_KEY : @(serverID)?:@(0),
                                       API_PRODUCT_IMAGE_TOUPLOAD_KEY : productPhoto?:@(0),
                                       API_PRODUCT_IMAGE_DESCRIPTION_KEY: productPhotoDesc,
                                       API_PRODUCT_IMAGE_DEFAULT_KEY: photoDefault?:@"",
                                       kTKPD_USERIDKEY : @(userID),
-                                      API_IS_DUPLICATE_KEY :@(duplicate)
+                                      API_IS_DUPLICATE_KEY :@(duplicate),
+                                        @"enc_dec" :@"off"
                                       };
-    NSMutableDictionary *param = [NSMutableDictionary new];
-    [param addEntriesFromDictionary:paramDictionary];
     
-    _requestCount ++;
-    
-    _requestActionAddProductPicture = [_objectManagerActionAddProductPicture appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
+    _requestActionAddProductPicture = [_objectManagerActionAddProductPicture appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param];
     
     [_requestActionAddProductPicture setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionAddProductPicture:mappingResult withOperation:operation];
@@ -590,6 +787,7 @@
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionAddProductPicture:error];
         [timer invalidate];
+        _saveBarButtonItem.enabled = YES;
     }];
     
     [_operationQueue addOperation:_requestActionAddProductPicture];
@@ -634,7 +832,7 @@
                 //TODO:: add else after web service done
                 //else
                 //{
-                    [_dataInput setObject:setting.result.file_uploaded forKey:API_FILE_UPLOADED_KEY];
+                [_dataInput setObject:setting.result.file_uploaded?:@"" forKey:API_FILE_UPLOADED_KEY];
                     [self configureRestkitActionAddProductSubmit];
                     [self requestActionAddProductSubmit:_dataInput];
                 //}
@@ -699,36 +897,7 @@
     [_objectManagerActionAddProductSubmit addResponseDescriptor:responseDescriptor];
     
 }
-/**
- # add product new langkah ke-3
- # sub add_product_submit example URL
- # www.tkpdevel-pg.ekarisky/ws/action/product.pl?action=add_product_submit&
- # server_id=2&
- # product_name=Produk%20dari%20WS%20IOS&
- # product_description=Coba%20Tambah%20Produk%20dari%20WS%20IOS&
- # product_department_id=582&
- # product_catalog_id=5312&
- # product_min_order=1&
- # product_price_currency=1&
- # product_price=1000000&
- # product_weight_unit=1&
- # product_weight=1&
- # product_photo=& (delimiternya '~')
- # product_photo_desc=& (delimiternya '~')
- # product_photo_default=&
- # product_must_insurance=0&
- # product_upload_to=1&
- # product_etalase_id=1509&
- # product_etalase_name=sdfdsfds113&
- # product_condition=1&
- # product_returnable=1&
- # qty_min_1=&
- # qty_max_1=&
- # prd_prc_1=&
- # click_name=&
- # post_key=&
- # file_uploaded=
- */
+
 -(void)requestActionAddProductSubmit:(id)object
 {
     if (_requestActionAddProductSubmit.isExecuting) return;
@@ -752,16 +921,17 @@
                             API_POSTKEY_KEY:postKey,
                             API_FILE_UPLOADED_KEY:uploadedFile,
                             API_UNIQUE_ID_KEY : uniqueID,
-                            API_IS_DUPLICATE_KEY:@(duplicate)
+                            API_IS_DUPLICATE_KEY:@(duplicate),
+                            kTKPD_USERIDKEY :[_auth objectForKey:kTKPD_USERIDKEY]?:@"",
+                            @"enc_dec" :@"off"
                             };
     _requestCount ++;
     
-    _requestActionAddProductSubmit = [_objectManagerActionAddProductSubmit appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
+    _requestActionAddProductSubmit = [_objectManagerActionAddProductSubmit appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param];
     
     [_requestActionAddProductSubmit setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionAddProductSubmit:mappingResult withOperation:operation];
         [timer invalidate];
-        _saveBarButtonItem.enabled = YES;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestFailureActionAddProductSubmit:error];
@@ -807,6 +977,7 @@
                     NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    _saveBarButtonItem.enabled = YES;
                 }
                 if (setting.result.is_success == 1 || setting.result.product_id!=0) {
                     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
@@ -879,73 +1050,76 @@
     NSTimer *timer;
     
     NSDictionary *userInfo = (NSDictionary*)object;
-#define PRODUCT_MOVETO_WAREHOUSE_ID 2
     
     NSString *action = ACTION_EDIT_PRODUCT_KEY;
+    ProductDetail *product = [userInfo objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    Breadcrumb *breadcrumb = [userInfo objectForKey:DATA_CATEGORY_KEY];
     
     NSInteger serverID = [[userInfo objectForKey:API_SERVER_ID_KEY] integerValue]?:0;
-    NSString *productName = [userInfo objectForKey:API_PRODUCT_NAME_KEY]?:@"";
-    NSString *productDescription = [userInfo objectForKey:API_PRODUCT_DESCRIPTION_KEY]?:@"";
-    NSInteger productPrice = [[userInfo objectForKey:API_PRODUCT_PRICE_KEY]integerValue]?:0;
-    NSInteger productPriceCurrencyID = [[userInfo objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue]?:1;
-    NSInteger productWeight = [[userInfo objectForKey:API_PRODUCT_WEIGHT_KEY]integerValue]?:0;
-    NSInteger productWeightUnitID = [[userInfo objectForKey:API_PRODUCT_WEIGHT_UNIT_KEY]integerValue]?:1;
-    NSInteger departmentID = [[userInfo objectForKey:API_DEPARTMENT_ID_KEY]integerValue]?:0;
-    NSInteger minimumOrder = [[userInfo objectForKey:API_PRODUCT_MINIMUM_ORDER_KEY]integerValue]?:1;
-    NSInteger productInsurance = [[userInfo objectForKey:API_PRODUCT_MUST_INSURANCE_KEY] integerValue];
+    NSString *productName = product.product_name?:@"";
+    NSString *productDescription = product.product_description?:@"";
+    NSString *productPrice = product.product_price?:0;
+    NSString *productPriceCurrencyID = product.product_currency_id?:@"";
+    NSString *productWeight = product.product_weight?:@"";
+    NSString *productWeightUnitID = product.product_weight_unit?:@"";
+    NSString *departmentID = breadcrumb.department_id?:@"";
+    NSString *minimumOrder = product.product_min_order?:@"";
+    NSString *productInsurance = product.product_must_insurance?:@"";
     
-    NSInteger moveToWarehouse = [[userInfo objectForKey:API_PRODUCT_MOVETO_WAREHOUSE_KEY]integerValue]?:PRODUCT_MOVETO_WAREHOUSE_ID;
+    NSString *moveToWarehouse = [product.product_etalase_id isEqual:@(0)]?PRODUCT_MOVETO_WAREHOUSE_ID:@"1";
     
-    NSInteger etalaseUserInfoID = [[userInfo objectForKey:API_PRODUCT_ETALASE_ID_KEY]integerValue];
-    BOOL isNewEtalase = (etalaseUserInfoID==DATA_ADD_NEW_ETALASE_ID);
-    NSString *etalaseID = isNewEtalase?API_ADD_PRODUCT_NEW_ETALASE_TAG:[NSString stringWithFormat:@"%zd",etalaseUserInfoID];
+    NSNumber *etalaseUserInfoID = product.product_etalase_id;
+    BOOL isNewEtalase = ([etalaseUserInfoID integerValue]==DATA_ADD_NEW_ETALASE_ID);
+    NSString *etalaseID = isNewEtalase?API_ADD_PRODUCT_NEW_ETALASE_TAG:[etalaseUserInfoID stringValue];
     
-    NSString *etalaseName = [userInfo objectForKey:API_PRODUCT_ETALASE_NAME_KEY]?:@"";
-    NSInteger productConditionID = [[userInfo objectForKey: API_PRODUCT_CONDITION_KEY] integerValue]?:1;
+    NSString *etalaseName = product.product_etalase;
+    NSString *productConditionID = product.product_condition;
     NSString *productImage = [userInfo objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
     NSArray *wholesaleList = [userInfo objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
     NSString *photoDefault = [userInfo objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
     
-    NSNumber *productID = [userInfo objectForKey:API_PRODUCT_ID_KEY];
-    BOOL isReturnableProduct = [[userInfo objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]integerValue];
+    NSString *productID = product.product_id?:@"";
+    NSString *isReturnableProduct = product.product_returnable;
     
-    
+    NSString *userID = [_auth objectForKey:kTKPD_USERIDKEY]?:@"";
     
     NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action?:@"",
-                                      API_PRODUCT_ID_KEY: productID?:@(0),
+                                      API_PRODUCT_ID_KEY: productID,
                                       API_SERVER_ID_KEY : @(serverID)?:@(0),
-                                      API_PRODUCT_NAME_KEY: productName?:@"",
-                                      API_PRODUCT_PRICE_KEY: @(productPrice)?:@(0),
-                                      API_PRODUCT_PRICE_CURRENCY_ID_KEY: @(productPriceCurrencyID)?:@(0),
-                                      API_PRODUCT_WEIGHT_KEY: @(productWeight)?:@(0),
-                                      API_PRODUCT_WEIGHT_UNIT_KEY: @(productWeightUnitID)?:@(0),
-                                      API_PRODUCT_DEPARTMENT_ID_KEY: @(departmentID)?:@(0),
-                                      API_PRODUCT_MINIMUM_ORDER_KEY : @(minimumOrder)?:@(0),
-                                      API_PRODUCT_DESCRIPTION_KEY : productDescription?:@"",
-                                      API_PRODUCT_MUST_INSURANCE_KEY : @(productInsurance)?:@(0),
-                                      API_PRODUCT_MOVETO_WAREHOUSE_KEY : @(moveToWarehouse)?:@(0),
-                                      API_PRODUCT_ETALASE_ID_KEY : etalaseID?:@(0),
-                                      API_PRODUCT_ETALASE_NAME_KEY : etalaseName?:@"",
-                                      API_PRODUCT_CONDITION_KEY : @(productConditionID)?:@(0),
+                                      API_PRODUCT_NAME_KEY: productName,
+                                      API_PRODUCT_PRICE_KEY: productPrice,
+                                      API_PRODUCT_PRICE_CURRENCY_ID_KEY: productPriceCurrencyID,
+                                      API_PRODUCT_WEIGHT_KEY: productWeight,
+                                      API_PRODUCT_WEIGHT_UNIT_KEY: productWeightUnitID,
+                                      API_PRODUCT_DEPARTMENT_ID_KEY: departmentID,
+                                      API_PRODUCT_MINIMUM_ORDER_KEY : minimumOrder,
+                                      API_PRODUCT_DESCRIPTION_KEY : productDescription,
+                                      API_PRODUCT_MUST_INSURANCE_KEY : productInsurance,
+                                      API_PRODUCT_MOVETO_WAREHOUSE_KEY : moveToWarehouse,
+                                      API_PRODUCT_ETALASE_ID_KEY : etalaseID,
+                                      API_PRODUCT_ETALASE_NAME_KEY : etalaseName,
+                                      API_PRODUCT_CONDITION_KEY : productConditionID,
                                       API_PRODUCT_IMAGE_TOUPLOAD_KEY : productImage?:@(0),
                                       API_PRODUCT_IMAGE_DEFAULT_KEY: photoDefault?:@"",
-                                      API_PRODUCT_IS_RETURNABLE_KEY : @(isReturnableProduct)?:@(0),
-                                      API_PRODUCT_IS_CHANGE_WHOLESALE_KEY:@(1)
+                                      API_PRODUCT_IS_RETURNABLE_KEY : isReturnableProduct?:@"",
+                                      API_PRODUCT_IS_CHANGE_WHOLESALE_KEY:@(1),
+                                      kTKPD_USERIDKEY : userID,
+                                      @"enc_dec" :@"off"
                                       };
-    NSMutableDictionary *param = [NSMutableDictionary new];
-    [param addEntriesFromDictionary:paramDictionary];
+    NSMutableDictionary *paramMutableDict = [NSMutableDictionary new];
+    [paramMutableDict addEntriesFromDictionary:paramDictionary];
     
     for (NSDictionary *wholesale in wholesaleList) {
-        [param addEntriesFromDictionary:wholesale];
+        [paramMutableDict addEntriesFromDictionary:wholesale];
     }
 
     NSDictionary *imageDescriptions = [userInfo objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY];
-    [param addEntriesFromDictionary:imageDescriptions];
+    [paramMutableDict addEntriesFromDictionary:imageDescriptions];
     
-    _requestCount ++;
+    NSDictionary *param = [paramMutableDict copy];
     
     _saveBarButtonItem.enabled = NO;
-    _requestActionEditProduct = [_objectManagerActionEditProduct appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
+    _requestActionEditProduct = [_objectManagerActionEditProduct appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param];
     
     [_requestActionEditProduct setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionEditProduct:mappingResult withOperation:operation];
@@ -1035,26 +1209,17 @@
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
     [textView resignFirstResponder];
     _activeTextView = textView;
-    
-    _productDescriptionLabel.hidden = YES;
-    
-    return YES;
-}
 
--(void) textViewDidChange:(UITextView *)textView
-{
-    if (textView == _productDescriptionTextView) {
-        if(_productDescriptionTextView.text.length == 0){
-            _productDescriptionLabel.hidden = YES;
-        }
-    }
+    return YES;
 }
 
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
     if (textView == _productDescriptionTextView) {
         if(textView.text.length != 0 && ![textView.text isEqualToString:@""]){
-            [_dataInput setObject:textView.text forKey:API_PRODUCT_DESCRIPTION_KEY];
+            ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+            product.product_description = textView.text;
+            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
         }
     }
     return YES;
@@ -1069,35 +1234,15 @@
 
 
 #pragma mark - Keyboard Notification
-- (void)keyboardWillShow:(NSNotification *)info {
-    if(_keyboardSize.height < 0){
-        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-
-        _scrollviewContentSize = [_containerScrollView contentSize];
-        _scrollviewContentSize.height += _keyboardSize.height;
-        [_containerScrollView setContentSize:_scrollviewContentSize];
-    }else{
-        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                              delay:0
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             _scrollviewContentSize = [_containerScrollView contentSize];
-                             _scrollviewContentSize.height -= _keyboardSize.height;
-
-                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-                             _scrollviewContentSize.height += _keyboardSize.height;
-                             if ((self.view.frame.origin.y + _activeTextView.frame.origin.y+_activeTextView.frame.size.height)> _keyboardPosition.y) {
-                                 UIEdgeInsets inset = _containerScrollView.contentInset;
-                                 inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activeTextView.frame.origin.y+_activeTextView.frame.size.height + 10));
-                                 [_containerScrollView setContentInset:inset];
-                             }
-                         }
-                         completion:^(BOOL finished){
-                         }];
-
-    }
+- (void)keyboardWillShow:(NSNotification *)aNotification {
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    _tableView.contentInset = contentInsets;
+    _tableView.scrollIndicatorInsets = contentInsets;
+    
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
@@ -1106,8 +1251,8 @@
                           delay:0
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         _containerScrollView.contentInset = contentInsets;
-                         _containerScrollView.scrollIndicatorInsets = contentInsets;
+                         _tableView.contentInset = contentInsets;
+                         _tableView.scrollIndicatorInsets = contentInsets;
                      }
                      completion:^(BOOL finished){
                      }];
@@ -1117,43 +1262,33 @@
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
 #define DEFAULT_ETALASE_DETAIL_TITLE_BUTTON @"Pilih Etalase"
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY]?:[ProductDetail new];
     switch (alertView.tag) {
-        case BUTTON_PRODUCT_INSURANCE:
+        case 10:
         {
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
-            NSInteger value = [[ARRAY_PRODUCT_INSURACE[index] objectForKey:DATA_VALUE_KEY] integerValue];
-            NSString *name = [ARRAY_PRODUCT_INSURACE[index] objectForKey:DATA_NAME_KEY];
-            [_dataInput setObject:@(value) forKey:API_PRODUCT_MUST_INSURANCE_KEY];
-            [_insuranceButton setTitle:name forState:UIControlStateNormal];
+            NSString *value = [ARRAY_PRODUCT_INSURACE[index] objectForKey:DATA_VALUE_KEY];
+            product.product_must_insurance = value;
+            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
+            [_tableView reloadData];
             break;
         }
-        case BUTTON_PRODUCT_CONDITION:
+        case 12:
         {
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
-            NSInteger value = [[ARRAY_PRODUCT_CONDITION[index] objectForKey:DATA_VALUE_KEY] integerValue];
-            NSString *name = [ARRAY_PRODUCT_CONDITION[index] objectForKey:DATA_NAME_KEY];
-            [_dataInput setObject:@(value) forKey:API_PRODUCT_CONDITION_KEY];
-            [_productConditionButton setTitle:name forState:UIControlStateNormal];
+            NSString *value = [ARRAY_PRODUCT_CONDITION[index] objectForKey:DATA_VALUE_KEY];
+            product.product_condition = value;
+            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
+            [_tableView reloadData];
             break;
         }
-        case BUTTON_PRODUCT_ETALASE:
+        case 11:
         {
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
-            NSInteger value = [[ARRAY_PRODUCT_MOVETO_ETALASE[index] objectForKey:DATA_VALUE_KEY] integerValue];
-            NSString *name = [ARRAY_PRODUCT_MOVETO_ETALASE[index] objectForKey:DATA_NAME_KEY];
-            [_dataInput setObject:@(value) forKey:API_PRODUCT_MOVETO_WAREHOUSE_KEY];
-            [_etalaseButton setTitle:name forState:UIControlStateNormal];
-            
-            BOOL isWarehouse = (value == PRODUCT_WAREHOUSE_YES_ID);
-            if (isWarehouse) {
-                _etalaseDetailButton.enabled = NO;
-                [_etalaseDetailButton setTitle:DEFAULT_ETALASE_DETAIL_TITLE_BUTTON forState:UIControlStateNormal];
-                [_dataInput removeObjectForKey:API_PRODUCT_ETALASE_ID_KEY];
-                [_dataInput removeObjectForKey:API_PRODUCT_ETALASE_NAME_KEY];
-            }
-            else{
-                _etalaseDetailButton.enabled = YES;
-            }
+            NSString *value = [ARRAY_PRODUCT_MOVETO_ETALASE[index] objectForKey:DATA_VALUE_KEY];
+            product.product_move_to = ([value integerValue]==1)?@"0":value;
+            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
+            [_tableView reloadData];
             break;
         }
         case BUTTON_PRODUCT_RETURNABLE_NOTE:
@@ -1170,13 +1305,14 @@
 -(void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
     EtalaseList *etalase = [userInfo objectForKey:DATA_ETALASE_KEY];
-
-    [_dataInput setObject:@(etalase.etalase_id) forKey:API_PRODUCT_ETALASE_ID_KEY];
-    [_dataInput setObject:etalase.etalase_name forKey:API_PRODUCT_ETALASE_NAME_KEY];
-    [_etalaseDetailButton setTitle:etalase.etalase_name forState:UIControlStateNormal];
-    
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    product.product_etalase_id = @([etalase.etalase_id integerValue]);
+    product.product_etalase = etalase.etalase_name;
+    [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
     NSIndexPath *indexpath = [userInfo objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     [_dataInput setObject:indexpath forKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY];
+    
+    [_tableView reloadData];
 }
 
 #pragma mark - Product Wholesale View Controller Delegate
@@ -1193,41 +1329,13 @@
                 
         [_dataInput addEntriesFromDictionary:[_data objectForKey:DATA_INPUT_KEY]];
         
-        NSInteger productReturnable = [[_dataInput objectForKey:API_PRODUCT_IS_RETURNABLE_KEY]integerValue];
+        ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+        NSInteger productReturnable = [product.product_returnable integerValue];
         BOOL isProductReturnable = (productReturnable == RETURNABLE_YES_ID)?YES:NO;
         _returnableProductSwitch.on = isProductReturnable;
         
-        NSInteger productInsurance = [[_dataInput objectForKey:API_PRODUCT_MUST_INSURANCE_KEY]integerValue];
-        NSInteger indexInsurance = productInsurance?productInsurance-1:productInsurance;
-        NSString *productInsuranceName = [ARRAY_PRODUCT_INSURACE[indexInsurance]objectForKey:DATA_NAME_KEY];
-        [_insuranceButton setTitle:productInsuranceName forState:UIControlStateNormal];
-        
-        NSInteger productWarehouse = [[_dataInput objectForKey:API_PRODUCT_MOVETO_WAREHOUSE_KEY]integerValue];
-        BOOL isProductWarehouse = (productWarehouse == PRODUCT_WAREHOUSE_YES_ID || productWarehouse == PRODUCT_WAREHOUSE_NOTSET_ID)?YES:NO;
-        NSString *etalaseName = [_dataInput objectForKey:API_PRODUCT_ETALASE_NAME_KEY];
-        NSString *etalaseButtonTitle = isProductWarehouse?[ARRAY_PRODUCT_MOVETO_ETALASE[0]objectForKey:DATA_NAME_KEY]:[ARRAY_PRODUCT_MOVETO_ETALASE[1]objectForKey:DATA_NAME_KEY];
-        
-        if (isProductWarehouse) {
-            _etalaseDetailButton.enabled = NO;
-            [_etalaseDetailButton setTitle:DEFAULT_ETALASE_DETAIL_TITLE_BUTTON forState:UIControlStateNormal];
-            [_etalaseButton setTitle:etalaseButtonTitle forState:UIControlStateNormal];
-            [_dataInput removeObjectForKey:API_PRODUCT_ETALASE_ID_KEY];
-        }
-        else{
-            _etalaseDetailButton.enabled = YES;
-            [_etalaseDetailButton setTitle:etalaseName forState:UIControlStateNormal];
-            [_etalaseButton setTitle:etalaseButtonTitle forState:UIControlStateNormal];
-        }
-        
-        NSInteger productCondition = [[_dataInput objectForKey:API_PRODUCT_CONDITION_KEY]integerValue];
-        BOOL isNewProduct = (productCondition == PRODUCT_CONDITION_NEW_ID || productCondition == PRODUCT_CONDITION_NOTSET_ID)?YES:NO;
-        NSString *productConditionButtonTitle = isNewProduct?[ARRAY_PRODUCT_CONDITION[0] objectForKey:DATA_NAME_KEY]:[ARRAY_PRODUCT_CONDITION[1] objectForKey:DATA_NAME_KEY];
-        
-        [_productConditionButton setTitle:productConditionButtonTitle forState:UIControlStateNormal];
-        
-        NSString *productDescription = [_dataInput objectForKey:API_PRODUCT_DESCRIPTION_KEY];
+        NSString *productDescription = product.product_short_desc?:@"";
         _productDescriptionTextView.text = productDescription;
-        _productDescriptionLabel.hidden = YES;
         
         NSArray *wholesaleList = [_dataInput objectForKey:DATA_WHOLESALE_LIST_KEY]?:@[];
         

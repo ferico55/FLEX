@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+#define TRANSACTION_CART_PAYMENT_CELL_IDENTIDIER @"TransactionCartResultPaymentCellCellIdentifier"
+
 @interface TransactionCartResultPaymentCell : UITableViewCell
+
+@property (weak, nonatomic) IBOutlet UILabel *detailPaymentLabel;
+@property (weak, nonatomic) IBOutlet UILabel *totalPaymentLabel;
 
 + (id)newcell;
 

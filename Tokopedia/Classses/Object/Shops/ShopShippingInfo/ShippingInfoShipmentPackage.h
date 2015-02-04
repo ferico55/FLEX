@@ -15,6 +15,6 @@
 @property (nonatomic, strong) NSString *desc;
 @property (nonatomic) NSInteger active;
 @property (nonatomic, strong) NSString *name;
-@property (nonatomic) NSInteger sp_id;
+@property (nonatomic, strong) NSString *sp_id;
 
 @end

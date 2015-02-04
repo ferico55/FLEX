@@ -105,12 +105,11 @@
                 //submit
                 EtalaseList *list = [_data objectForKey:DATA_ETALASE_KEY];
 
-                if ([self isValidEtalaseName] && list.etalase_id != DATA_ADD_NEW_ETALASE_ID) {
+                if ([self isValidEtalaseName] && [list.etalase_id integerValue] != DATA_ADD_NEW_ETALASE_ID) {
                     [self configureRestKitActionAddEtalase];
                     [self requestActionAddEtalase:_datainput];
                 }
-                
-                if ([self isValidEtalaseName] && list.etalase_id == DATA_ADD_NEW_ETALASE_ID) {
+                if ([self isValidEtalaseName] && [list.etalase_id integerValue] == DATA_ADD_NEW_ETALASE_ID) {
                     EtalaseList *list = [_data objectForKey:DATA_ETALASE_KEY];
                     NSString *etalasename = [_datainput objectForKey:kTKPDSHOP_APIETALASENAMEKEY]?:list.etalase_name?:@"";
                     list.etalase_name = etalasename;

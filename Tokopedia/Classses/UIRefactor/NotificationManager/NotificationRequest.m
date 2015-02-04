@@ -166,7 +166,7 @@
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:API_NOTIFICATION_PATH
-                                                                parameters:[param encrypt]];
+                                                                parameters:param];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];

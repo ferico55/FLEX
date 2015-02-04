@@ -10,11 +10,9 @@
 #import "TransactionATCForm.h"
 #import "TransactionCalculatePrice.h"
 
-#import "string_transaction.h"
+#import "TransactionObjectMapping.h"
+
 #import "string_alert.h"
-#import "string_product.h"
-#import "detail.h"
-#import "profile.h"
 
 #import "AlertPickerView.h"
 #import "string_settings.h"
@@ -284,9 +282,14 @@
                 switch (indexPath.row) {
                     case TAG_BUTTON_TRANSACTION_INSURANCE:
                     {
-                        NSInteger insuranceID = [[_dataInput objectForKey:API_INSURANCE_KEY]integerValue];
-                        [cell.detailTextLabel setText:(insuranceID==1)?@"Ya":@"Tidak" animated:YES];;
-                        break; 
+                        if ([product.product_must_insurance integerValue]==1) {
+                            [cell.detailTextLabel setText:@"Wajib Asuransi" animated:YES];
+                        }
+                        else{
+                            NSInteger insuranceID = [product.product_insurance integerValue];
+                            [cell.detailTextLabel setText:(insuranceID==1)?@"Ya":@"Tidak" animated:YES];
+                        }
+                        break;
                     }
                 }
                 break;
@@ -387,11 +390,14 @@
             }
             case TAG_BUTTON_TRANSACTION_INSURANCE:
             {
-                AlertPickerView *alert = [AlertPickerView newview];
-                alert.tag = indexPath.row;
-                alert.delegate = self;
-                alert.pickerData = ARRAY_INSURACE;
-                [alert show];
+                ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+                if ([product.product_must_insurance integerValue]!=1) {
+                    AlertPickerView *alert = [AlertPickerView newview];
+                    alert.tag = indexPath.row;
+                    alert.delegate = self;
+                    alert.pickerData = ARRAY_INSURACE;
+                    [alert show];
+                }
                 break;
             }
             case TAG_BUTTON_TRANSACTION_NOTE:
@@ -475,6 +481,8 @@
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
     [_activeTextField resignFirstResponder];
     [_activeTextView resignFirstResponder];
+    [_remarkTextView resignFirstResponder];
+    [_dataInput setObject:_remarkTextView.text forKey:API_NOTES_KEY];
 }
 
 #pragma mark - Request Form
@@ -502,54 +510,12 @@
     
     RKObjectMapping *formMapping = [RKObjectMapping mappingForClass:[TransactionATCFormDetail class]];
     [formMapping addAttributeMappingsFromDictionary:@{API_AVAILABLE_COUNT_KEY:API_AVAILABLE_COUNT_KEY}];
-     
-    RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[ProductDetail class]];
-    [productMapping addAttributeMappingsFromDictionary:@{API_PRODUCT_NAME_KEY:API_PRODUCT_NAME_KEY,
-                                                      API_PRODUCT_WEIGHT_UNIT_KEY:API_PRODUCT_WEIGHT_UNIT_KEY,
-                                                      API_PRODUCT_DESCRIPTION_KEY:API_PRODUCT_DESCRIPTION_KEY,
-                                                      API_PRODUCT_PRICE_KEY:API_PRODUCT_PRICE_KEY,
-                                                      API_PRODUCT_INSURANCE_KEY:API_PRODUCT_INSURANCE_KEY,
-                                                      API_PRODUCT_CONDITION_KEY:API_PRODUCT_CONDITION_KEY,
-                                                      API_PRODUCT_MINIMUM_ORDER_KEY:API_PRODUCT_MINIMUM_ORDER_KEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY:kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTIDKEY:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY:kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTURLKEY:kTKPDDETAILPRODUCT_APIPRODUCTURLKEY,
-                                                         API_PRODUCT_WEIGHT_KEY:API_PRODUCT_WEIGHT_KEY
-                                                      }];
     
-    RKObjectMapping *AddressMapping = [RKObjectMapping mappingForClass:[AddressFormList class]];
-    [AddressMapping addAttributeMappingsFromDictionary:@{kTKPDPROFILESETTING_APICOUNTRYNAMEKEY:kTKPDPROFILESETTING_APICOUNTRYNAMEKEY,
-                                                         kTKPDPROFILESETTING_APIRECEIVERNAMEKEY:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY,
-                                                         kTKPDPROFILESETTING_APIADDRESSNAMEKEY:kTKPDPROFILESETTING_APIADDRESSNAMEKEY,
-                                                         kTKPDPROFILESETTING_APIADDRESSIDKEY:kTKPDPROFILESETTING_APIADDRESSIDKEY,
-                                                         kTKPDPROFILESETTING_APIRECEIVERPHONEKEY :kTKPDPROFILESETTING_APIRECEIVERPHONEKEY,
-                                                         kTKPDPROFILESETTING_APIPROVINCENAMEKEY:kTKPDPROFILESETTING_APIPROVINCENAMEKEY,
-                                                         kTKPDPROFILESETTING_APIPOSTALCODEKEY:kTKPDPROFILESETTING_APIPOSTALCODEKEY,
-                                                         kTKPDPROFILESETTING_APIADDRESSSTATUSKEY:kTKPDPROFILESETTING_APIADDRESSSTATUSKEY,
-                                                         kTKPDPROFILESETTING_APIADDRESSSTREETKEY:kTKPDPROFILESETTING_APIADDRESSSTREETKEY,
-                                                         kTKPDPROFILESETTING_APIDISTRICNAMEKEY:kTKPDPROFILESETTING_APIDISTRICNAMEKEY,
-                                                         kTKPDPROFILESETTING_APICITYNAMEKEY:kTKPDPROFILESETTING_APICITYNAMEKEY,
-                                                         kTKPDPROFILESETTING_APICITYIDKEY:kTKPDPROFILESETTING_APICITYIDKEY,
-                                                         kTKPDPROFILESETTING_APIPROVINCEIDKEY:kTKPDPROFILESETTING_APIPROVINCEIDKEY,
-                                                         kTKPDPROFILESETTING_APIDISTRICTIDKEY:kTKPDPROFILESETTING_APIDISTRICTIDKEY
-                                                         }];
-    
-    RKObjectMapping *shipmentsMapping = [RKObjectMapping mappingForClass:[ShippingInfoShipments class]];
-    [shipmentsMapping addAttributeMappingsFromDictionary:@{kTKPDSHOPSHIPMENT_APISHIPMENTNAMEKEY:kTKPDSHOPSHIPMENT_APISHIPMENTNAMEKEY,
-                                                           kTKPDSHOPSHIPMENT_APISHIPMENTIDKEY:kTKPDSHOPSHIPMENT_APISHIPMENTIDKEY,
-                                                           kTKPDSHOPSHIPMENT_APISHIPMENTIMAGEKEY:kTKPDSHOPSHIPMENT_APISHIPMENTIMAGEKEY
-                                                           }];
-    
-    RKObjectMapping *shipmentspackageMapping = [RKObjectMapping mappingForClass:[ShippingInfoShipmentPackage class]];
-    [shipmentspackageMapping addAttributeMappingsFromDictionary:@{kTKPDSHOPSHIPMENT_APIDESCKEY:kTKPDSHOPSHIPMENT_APIDESCKEY,
-                                                                  kTKPDSHOPSHIPMENT_APIACTIVEKEY:kTKPDSHOPSHIPMENT_APIACTIVEKEY,
-                                                                  kTKPDSHOPSHIPMENT_APINAMEKEY:kTKPDSHOPSHIPMENT_APINAMEKEY,
-                                                                  kTKPDSHOPSHIPMENT_APISPIDKEY:kTKPDSHOPSHIPMENT_APISPIDKEY,
-                                                                  API_SHIPMENT_PRICE:API_SHIPMENT_PRICE,
-                                                                  API_SHIPMENT_PRICE_TOTAL:API_SHIPMENT_PRICE_TOTAL
-                                                                  }];
+    TransactionObjectMapping *mapping = [TransactionObjectMapping new];
+    RKObjectMapping *productMapping = [mapping productMapping];
+    RKObjectMapping *AddressMapping = [mapping addressMapping];
+    RKObjectMapping *shipmentsMapping = [mapping shipmentsMapping];
+    RKObjectMapping *shipmentspackageMapping = [mapping shipmentPackageMapping];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
@@ -763,9 +729,9 @@
     
     NSInteger productID = [ product.product_id integerValue];
     NSInteger quantity = [[userinfo objectForKey:API_QUANTITY_KEY]integerValue];
-    NSInteger insuranceID = [[userinfo objectForKey:API_INSURANCE_KEY]integerValue];
-    NSInteger shippingID = shipment.shipment_id;
-    NSInteger shippingProduct = shipmentPackage.sp_id;
+    NSInteger insuranceID = [product.product_insurance integerValue];
+    NSInteger shippingID = [shipment.shipment_id integerValue];
+    NSInteger shippingProduct = [shipmentPackage.sp_id integerValue];
     NSString *remark = [userinfo objectForKey:API_NOTES_KEY];
     
     NSInteger addressID = (address.address_id==0)?-1:address.address_id;
@@ -909,24 +875,10 @@
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TransactionCalculatePriceResult class]];
     
-    RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[ProductDetail class]];
-    [productMapping addAttributeMappingsFromDictionary:@{API_PRICE_KEY:API_PRICE_KEY
-                                                         }];
-
-    RKObjectMapping *shipmentsMapping = [RKObjectMapping mappingForClass:[ShippingInfoShipments class]];
-    [shipmentsMapping addAttributeMappingsFromDictionary:@{kTKPDSHOPSHIPMENT_APISHIPMENTNAMEKEY:kTKPDSHOPSHIPMENT_APISHIPMENTNAMEKEY,
-                                                           kTKPDSHOPSHIPMENT_APISHIPMENTIDKEY:kTKPDSHOPSHIPMENT_APISHIPMENTIDKEY,
-                                                           kTKPDSHOPSHIPMENT_APISHIPMENTIMAGEKEY:kTKPDSHOPSHIPMENT_APISHIPMENTIMAGEKEY
-                                                           }];
-    
-    RKObjectMapping *shipmentspackageMapping = [RKObjectMapping mappingForClass:[ShippingInfoShipmentPackage class]];
-    [shipmentspackageMapping addAttributeMappingsFromDictionary:@{kTKPDSHOPSHIPMENT_APIDESCKEY:kTKPDSHOPSHIPMENT_APIDESCKEY,
-                                                                  kTKPDSHOPSHIPMENT_APIACTIVEKEY:kTKPDSHOPSHIPMENT_APIACTIVEKEY,
-                                                                  kTKPDSHOPSHIPMENT_APINAMEKEY:kTKPDSHOPSHIPMENT_APINAMEKEY,
-                                                                  kTKPDSHOPSHIPMENT_APISPIDKEY:kTKPDSHOPSHIPMENT_APISPIDKEY,
-                                                                  API_SHIPMENT_PRICE:API_SHIPMENT_PRICE,
-                                                                  API_SHIPMENT_PRICE_TOTAL:API_SHIPMENT_PRICE_TOTAL
-                                                                  }];
+    TransactionObjectMapping *mapping = [TransactionObjectMapping new];
+    RKObjectMapping *productMapping = [mapping productMapping];
+    RKObjectMapping *shipmentsMapping = [mapping shipmentsMapping];
+    RKObjectMapping *shipmentspackageMapping = [mapping shipmentPackageMapping];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
@@ -958,9 +910,9 @@
     NSInteger quantity = [[userinfo objectForKey:API_QUANTITY_KEY]integerValue];
     NSInteger insuranceID = [[userinfo objectForKey:API_INSURANCE_KEY]integerValue];
     ShippingInfoShipments *shipment = [userinfo objectForKey:DATA_SELECTED_SHIPMENT_KEY];
-    NSInteger shippingID = shipment.shipment_id;
+    NSInteger shippingID = [shipment.shipment_id integerValue];
     ShippingInfoShipmentPackage *shipmentPackage = [userinfo objectForKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
-    NSInteger shippingProduct = shipmentPackage.sp_id;
+    NSInteger shippingProduct = [shipmentPackage.sp_id integerValue];
     NSString *weight = product.product_weight?:@"0";
     
     AddressFormList *address = [userinfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
@@ -1176,11 +1128,13 @@
     switch (alertView.tag) {
         case TAG_BUTTON_TRANSACTION_INSURANCE:
         {
+            ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
-            NSInteger value = [[ARRAY_INSURACE[index] objectForKey:DATA_VALUE_KEY] integerValue];
+            NSString *value = [ARRAY_INSURACE[index] objectForKey:DATA_VALUE_KEY];
             NSString *name = [ARRAY_INSURACE[index] objectForKey:DATA_NAME_KEY];
-            [_dataInput setObject:@(value) forKey:API_INSURANCE_KEY];
+            product.product_insurance = value;
             [_dataInput setObject:name forKey:DATA_INSURANCE_NAME_KEY];
+            [_dataInput setObject:product forKey:DATA_DETAIL_PRODUCT_KEY];
             [_tableView reloadData];
             break;
         }
@@ -1265,36 +1219,15 @@
 }
 
 #pragma mark - Keyboard Notification
-- (void)keyboardWillShow:(NSNotification *)info {
-    if(_keyboardSize.height < 0){
-        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-        
-        _scrollviewContentSize = [_tableView contentSize];
-        _scrollviewContentSize.height += _keyboardSize.height;
-        [_tableView setContentSize:_scrollviewContentSize];
-    }else{
-        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                              delay:0
-                            options: UIViewAnimationOptionOverrideInheritedCurve
-                         animations:^{
-                             _scrollviewContentSize = [_tableView contentSize];
-                             _scrollviewContentSize.height -= _keyboardSize.height;
-                             
-                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-                             _scrollviewContentSize.height += _keyboardSize.height;
-                             if (_activeTextView!= nil){//&& (self.view.frame.origin.y + _activeTextField.frame.origin.y+_activeTextField.frame.size.height)> _keyboardPosition.y) {
-                                 UIEdgeInsets inset = _tableView.contentInset;
-                                 inset.bottom = (_keyboardPosition.y-(_activeTextField.frame.size.height));
-                                 [_tableView setContentSize:_scrollviewContentSize];
-                                 [_tableView setContentInset:inset];
-                             }
-                         }
-                         completion:^(BOOL finished){
-                         }];
-        
-    }
+- (void)keyboardWillShow:(NSNotification *)anotification {
+     NSDictionary* info = [anotification userInfo];
+     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+     
+     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+     _tableView.contentInset = contentInsets;
+     _tableView.scrollIndicatorInsets = contentInsets;
+     
+     [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:4 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
@@ -1380,12 +1313,12 @@
     NSMutableArray *errorMessage = [NSMutableArray new];
     
     ShippingInfoShipments *shipment = [_dataInput objectForKey:DATA_SELECTED_SHIPMENT_KEY];
-    NSInteger shippingID = shipment.shipment_id;
+    NSInteger shippingID = [shipment.shipment_id integerValue];
     
     if (shippingID == 0)
     {
         isValid = NO;
-        [errorMessage addObject:ERRORMESSAGE_NULL_SHIPPING_AGENT];
+        [errorMessage addObject:ERRORMESSAGE_NULL_CART_SHIPPING_AGENT];
     }
     
     if (!isValid) {

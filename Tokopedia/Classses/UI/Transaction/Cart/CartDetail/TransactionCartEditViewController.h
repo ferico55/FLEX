@@ -8,7 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
+@class TransactionCartPaymentViewController;
+
+#pragma mark - Transaction Cart Payment Delegate
+@protocol TransactionCartEditViewControllerDelegate <NSObject>
+@required
+- (void)shouldEditCartWithUserInfo:(NSDictionary*)userInfo;
+
+@end
+
 @interface TransactionCartEditViewController : UIViewController
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+@property (nonatomic, weak) IBOutlet id<TransactionCartEditViewControllerDelegate> delegate;
+#else
+@property (nonatomic, assign) IBOutlet id<TransactionCartEditViewControllerDelegate> delegate;
+#endif
+
 
 @property (nonatomic,strong) NSDictionary *data;
 

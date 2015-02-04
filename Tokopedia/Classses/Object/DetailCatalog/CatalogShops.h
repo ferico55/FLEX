@@ -16,7 +16,7 @@
 @property (nonatomic, strong) NSArray *product_list;
 @property (nonatomic) NSInteger shop_rate_accuracy;
 @property (nonatomic, strong) NSString *shop_image;
-@property (nonatomic) NSInteger shop_id;
+@property (nonatomic, strong) NSString *shop_id;
 @property (nonatomic, strong) NSString *shop_location;
 @property (nonatomic) NSInteger shop_rate_speed;
 @property (nonatomic) NSInteger is_gold_shop;

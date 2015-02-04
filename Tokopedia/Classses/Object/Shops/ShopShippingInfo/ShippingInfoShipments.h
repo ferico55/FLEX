@@ -12,11 +12,11 @@
 @interface ShippingInfoShipments : NSObject
 
 @property (nonatomic, strong) NSString *shipment_name;
-@property (nonatomic) NSInteger shipment_id;
+@property (nonatomic, strong) NSString *shipment_id;
 @property (nonatomic, strong) NSString *shipment_image;
 @property (nonatomic, strong) NSArray *shipment_package;
 
-@property (nonatomic) NSInteger shipment_package_id;
+@property (nonatomic, strong) NSString *shipment_package_id;
 @property (nonatomic, strong) NSString *shipment_package_name;
 
 @end

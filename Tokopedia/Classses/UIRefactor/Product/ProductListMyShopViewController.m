@@ -57,6 +57,8 @@
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    
+    NSDictionary *_auth;
 }
 
 @property (weak, nonatomic) IBOutlet UISearchBar *searchbar;
@@ -126,6 +128,8 @@
     //Add observer
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(updateView:) name:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil];
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    _auth = [secureStorage keychainDictionary];
     
     [self configureRestKit];
     [self request];
@@ -249,7 +253,7 @@
 	}
 }
 
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
+-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     [_searchbar resignFirstResponder];
 }
@@ -398,6 +402,7 @@
     NSInteger orderByID = [[_dataFilter objectForKey:kTKPDFILTER_APIORDERBYKEY]integerValue];
     NSInteger etalaseID = [[_dataFilter objectForKey:API_PRODUCT_ETALASE_ID_KEY]integerValue];
     NSString *keyword = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
+    NSInteger userID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
     
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : ACTION_GET_PRODUCT_LIST,
@@ -406,7 +411,9 @@
                             kTKPDDETAIL_APIPAGEKEY : @(_page),
                             kTKPDDETAIL_APISORTKEY : @(orderByID),
                             kTKPDSHOP_APIETALASEIDKEY:@(etalaseID),
-                            API_KEYWORD_KEY:keyword
+                            API_KEYWORD_KEY:keyword,
+                            kTKPD_USERIDKEY :@(userID),
+                            //@"enc_dec" : @"off"
                             };
     [_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
@@ -595,11 +602,12 @@
     NSDictionary *userinfo = (NSDictionary*)object;
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIDELETEPRODUCTKEY,
-                            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [userinfo objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]?:0
+                            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [userinfo objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]?:@(0),
+                            kTKPD_USERIDKEY :[_auth objectForKey:kTKPD_USERIDKEY],
+                            @"enc_dec":@"off"
                             };
-    _requestcount ++;
     
-    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
+    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
     
     [_requestActionDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionDelete:mappingResult withOperation:operation];
@@ -719,11 +727,10 @@
     NSDictionary *userinfo = (NSDictionary*)object;
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:ACTION_MOVE_TO_WAREHOUSE,
-                            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [userinfo objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]?:0
+                            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [userinfo objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]?:0,
+                            @"enc_dec":@"off"
                             };
-    _requestcount ++;
-    
-    _requestActionMoveToWarehouse = [_objectmanagerActionMoveToWarehouse appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
+    _requestActionMoveToWarehouse = [_objectmanagerActionMoveToWarehouse appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
     
     [_requestActionMoveToWarehouse setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionMoveToWarehouse:mappingResult withOperation:operation];
@@ -889,7 +896,7 @@
 {
     EtalaseList *etalase = [userInfo objectForKey:DATA_ETALASE_KEY];
     
-    [_dataFilter setObject:@(etalase.etalase_id) forKey:API_PRODUCT_ETALASE_ID_KEY];
+    [_dataFilter setObject:etalase.etalase_id?:@"" forKey:API_PRODUCT_ETALASE_ID_KEY];
     [_dataFilter setObject:etalase.etalase_name forKey:API_PRODUCT_ETALASE_NAME_KEY];
     
     NSIndexPath *indexpath = [userInfo objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];

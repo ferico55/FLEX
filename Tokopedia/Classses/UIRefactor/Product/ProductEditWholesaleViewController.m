@@ -12,6 +12,7 @@
 #import "string_product.h"
 #import "ProductEditWholesaleViewController.h"
 #import "ProductEditWholesaleCell.h"
+#import "ProductDetail.h"
 
 @interface ProductEditWholesaleViewController ()<UITableViewDataSource,UITableViewDelegate,ProductEditWholesaleCellDelegate>
 {
@@ -101,6 +102,8 @@
                 if ([self isValidMaxWholesaleList] && [self isValidQuantityValue] && [self isValidWholesalePriceCompareNet] && [self isValidWholesalePrice]) {
                     [self addWholesaleListPrice:0 withQuantityMinimum:0 andQuantityMaximum:0];
                     [_table reloadData];
+                    
+                    [_table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_wholesaleList.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
                 }
                 break;
                 
@@ -163,16 +166,26 @@
             NSString *wholesalePriceKey = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_PRICE,wholesaleListIndex];
             NSString *wholesaleQuantityMaximum = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_QUANTITY_MAXIMUM_KEY,wholesaleListIndex];
             NSString *wholesaleQuantityMinimum = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_QUANTITY_MINIMUM_KEY,wholesaleListIndex];
+            
+            NSInteger priceInteger = [[wholesale objectForKey:wholesalePriceKey] integerValue];
+            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+            [formatter setGroupingSeparator:@","];
+            [formatter setGroupingSize:3];
+            [formatter setUsesGroupingSeparator:YES];
+            [formatter setSecondaryGroupingSize:3];
+            NSString *wholesalePrice = (priceInteger>0)?[formatter stringFromNumber:@(priceInteger)]:@"";
 
-            NSInteger wholesalePrice = [[wholesale objectForKey:wholesalePriceKey]integerValue];
             NSInteger wholesaleMinQty = [[wholesale objectForKey:wholesaleQuantityMinimum]integerValue];
             NSInteger wholesaleMaxQty = [[wholesale objectForKey:wholesaleQuantityMaximum]integerValue];
-            ((ProductEditWholesaleCell*)cell).productPriceTextField.text = (wholesalePrice==0)?@"":[NSString stringWithFormat:@"%zd",wholesalePrice];
+            ((ProductEditWholesaleCell*)cell).productPriceTextField.text = (wholesalePrice==0)?@"":wholesalePrice;
+            
             ((ProductEditWholesaleCell*)cell).minimumProductTextField.text = (wholesaleMinQty==0)?@"":[NSString stringWithFormat:@"%zd",wholesaleMinQty];
             ((ProductEditWholesaleCell*)cell).maximumProductTextField.text = (wholesaleMaxQty==0)?@"":[NSString stringWithFormat:@"%zd",wholesaleMaxQty];
             ((ProductEditWholesaleCell*)cell).indexPath = indexPath;
             ((ProductEditWholesaleCell*)cell).deleteWholesaleButton.hidden = (indexPath.row==0);
-            NSInteger priceCurencyID = [[_dataInput objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue]?:1;
+
+            ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+            NSInteger priceCurencyID = [product.product_currency_id integerValue]?:1;
             if (priceCurencyID == PRICE_CURRENCY_ID_RUPIAH)
                 ((ProductEditWholesaleCell*)cell).productCurrencyLabel.text = @"Rp";
             else if (priceCurencyID == PRICE_CURRENCY_ID_USD)
@@ -249,16 +262,16 @@
         NSMutableDictionary *wholesale = [NSMutableDictionary new];
         [wholesale addEntriesFromDictionary:_wholesaleList[indexPath.row]];
 
-        NSInteger textFieldValue = [textField.text integerValue];
+        NSString *textFieldValue = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
         if (textField == wholesalePriceTextFiled) {
             
-            [wholesale setObject:@(textFieldValue) forKey:wholesalePriceKey];
+            [wholesale setObject:textFieldValue forKey:wholesalePriceKey];
         }
         if (textField == wholesaleMinimumQuantityTextFiled) {
-            [wholesale setObject:@(textFieldValue) forKey:wholesaleQuantityMinimum];
+            [wholesale setObject:textFieldValue forKey:wholesaleQuantityMinimum];
         }
         if (textField == wholesaleMaximumQuantityTextFiled) {
-            [wholesale setObject:@(textFieldValue) forKey:wholesaleQuantityMaximum];
+            [wholesale setObject:textFieldValue forKey:wholesaleQuantityMaximum];
         }
         
         [_wholesaleList replaceObjectAtIndex:indexPath.row withObject:wholesale];
@@ -267,8 +280,10 @@
 
 - (void)ProductEditWholesaleCell:(ProductEditWholesaleCell *)cell textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    NSInteger currency = [[_dataInput objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
-    BOOL isIDRCurrency = (currency == PRICE_CURRENCY_ID_RUPIAH);
+    
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    NSInteger priceCurencyID = [product.product_currency_id integerValue]?:1;
+    BOOL isIDRCurrency = (priceCurencyID == PRICE_CURRENCY_ID_RUPIAH);
     if (textField == cell.productPriceTextField) {
         if (isIDRCurrency) {
             NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
@@ -311,6 +326,11 @@
     }
 }
 
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    [_activeTextField resignFirstResponder];
+}
+
 #pragma mark - Methods
 -(void)setDefaultData:(NSDictionary*)data
 {
@@ -322,22 +342,23 @@
         NSArray *wholesales = [_dataInput objectForKey:DATA_WHOLESALE_LIST_KEY];
         [_wholesaleList addObjectsFromArray:wholesales];
         
-        NSInteger priceCurrencyID = [[_dataInput objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
-        NSInteger productPricePerProduct = [[_dataInput objectForKey:API_PRODUCT_PRICE_KEY]integerValue];
+        ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+        NSString *priceCurrencyID = product.product_currency_id;
+        NSString *productPricePerProduct = product.product_price;
         NSString *price;
         
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        if (priceCurrencyID == PRICE_CURRENCY_ID_RUPIAH) {
+        if ([priceCurrencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH) {
             [formatter setGroupingSeparator:@","];
             [formatter setGroupingSize:3];
             [formatter setUsesGroupingSeparator:YES];
             [formatter setSecondaryGroupingSize:3];
-            price = [formatter stringFromNumber:@(productPricePerProduct)];
+            price = [formatter stringFromNumber:@([productPricePerProduct integerValue])];
         }
         else
         {
             [formatter setNumberStyle: NSNumberFormatterCurrencyStyle];
-            price = [formatter stringFromNumber:@(productPricePerProduct)];
+            price = [NSString stringWithFormat:@"$%.2lf",(double)[productPricePerProduct integerValue]];
         }
         _productPriceLabel.text = price;
         
@@ -349,10 +370,9 @@
             [_table reloadData];
         }
         
-        NSInteger priceCurencyID = [[dataInputFromPreviousVC objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue]?:1;
-        if (priceCurencyID == PRICE_CURRENCY_ID_RUPIAH)
+        if ([priceCurrencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH)
             _currencyLabel.text = @"Rp";
-        else if (priceCurencyID == PRICE_CURRENCY_ID_USD)
+        else if ([priceCurrencyID integerValue] == PRICE_CURRENCY_ID_USD)
             _currencyLabel.text = @"US$";
     }
     else
@@ -393,7 +413,8 @@
 {
     BOOL isValidWholesalePriceCompareNet = YES;
     
-    NSInteger netPrice = [[_dataInput objectForKey:API_PRODUCT_PRICE_KEY]integerValue];
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    NSInteger netPrice = [product.product_price integerValue];
     NSInteger wholesalePrice;
     NSString *wholesalePriceKey;
     
@@ -427,7 +448,9 @@
         NSInteger wholesaleMinQty = [[wholesale objectForKey:wholesaleQuantityMinimum]integerValue];
         NSInteger wholesaleMaxQty = [[wholesale objectForKey:wholesaleQuantityMaximum]integerValue];
         
-        NSInteger minimumOrder = [[_dataInput objectForKey:API_PRODUCT_MINIMUM_ORDER_KEY]integerValue]?:1;
+        
+        ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+        NSInteger minimumOrder = [ product.product_min_order integerValue]?:1;
         
         NSInteger wholesaleListIndexPrevious = i-1;
         NSString *wholesaleQuantityPreviousMaximum = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_QUANTITY_MAXIMUM_KEY,wholesaleListIndexPrevious];

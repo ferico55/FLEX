@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionCartRootViewController">
             <connections>
                 <outlet property="containerView" destination="uXr-F6-eiV" id="Rwb-vR-CAG"/>
                 <outlet property="pageControlView" destination="Udz-dt-e2a" id="Oox-rG-PNd"/>
+                <outlet property="progressView" destination="jGJ-QC-MGX" id="dBh-Sf-EQq"/>
                 <outlet property="view" destination="l92-7M-7T4" id="qm6-o5-QNJ"/>
                 <outletCollection property="pageButtons" destination="a5P-Vi-EW1" id="WP1-UL-mEK"/>
                 <outletCollection property="pageButtons" destination="gh9-uw-Jix" id="GQe-nN-XgD"/>
@@ -21,54 +30,86 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uXr-F6-eiV">
                     <rect key="frame" x="0.0" y="60" width="320" height="508"/>
-                    <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Udz-dt-e2a">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                     <subviews>
-                        <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a5P-Vi-EW1">
-                            <rect key="frame" x="17" y="15" width="46" height="30"/>
+                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" misplaced="YES" progress="1" translatesAutoresizingMaskIntoConstraints="NO" id="jGJ-QC-MGX">
+                            <rect key="frame" x="30" y="28" width="260" height="5"/>
+                            <color key="backgroundColor" red="0.74117647058823533" green="0.74117647058823533" blue="0.74117647058823533" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="tintColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="5" id="wwH-Yq-TcV"/>
+                            </constraints>
+                            <color key="trackTintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        </progressView>
+                        <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a5P-Vi-EW1">
+                            <rect key="frame" x="15" y="15" width="30" height="30"/>
+                            <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="QsY-9S-13m"/>
+                                <constraint firstAttribute="width" constant="30" id="pxi-U0-4h0"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <state key="normal" title="1">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <state key="selected" title="1"/>
                             <connections>
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="PYk-2V-6Ce"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gh9-uw-Jix">
-                            <rect key="frame" x="137" y="15" width="46" height="30"/>
+                        <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gh9-uw-Jix">
+                            <rect key="frame" x="145" y="15" width="30" height="30"/>
+                            <color key="backgroundColor" red="0.74117647060000003" green="0.74117647060000003" blue="0.74117647060000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <state key="normal" title="2">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <state key="selected" title="2"/>
                             <connections>
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="KOs-ff-Od3"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sNe-IO-Odd">
-                            <rect key="frame" x="266" y="15" width="46" height="30"/>
+                        <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sNe-IO-Odd">
+                            <rect key="frame" x="275" y="15" width="30" height="30"/>
+                            <color key="backgroundColor" red="0.74117647060000003" green="0.74117647060000003" blue="0.74117647060000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <state key="normal" title="3">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <state key="selected" title="3"/>
                             <connections>
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="Pm6-Wb-omE"/>
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="60" id="q6S-Ha-eNe"/>
+                        <constraint firstItem="a5P-Vi-EW1" firstAttribute="leading" secondItem="Udz-dt-e2a" secondAttribute="leading" constant="15" id="3zR-Az-sVC"/>
+                        <constraint firstAttribute="trailing" secondItem="jGJ-QC-MGX" secondAttribute="trailing" constant="30" id="NCY-Kv-ofM"/>
+                        <constraint firstItem="jGJ-QC-MGX" firstAttribute="leading" secondItem="Udz-dt-e2a" secondAttribute="leading" constant="30" id="Vpf-oA-xAL"/>
+                        <constraint firstItem="jGJ-QC-MGX" firstAttribute="top" secondItem="Udz-dt-e2a" secondAttribute="top" constant="28" id="jlM-X9-EFY"/>
+                        <constraint firstItem="a5P-Vi-EW1" firstAttribute="top" secondItem="Udz-dt-e2a" secondAttribute="top" constant="15" id="xux-MN-ZKL"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="uXr-F6-eiV" secondAttribute="trailing" id="I6X-wn-FJq"/>
-                <constraint firstItem="Udz-dt-e2a" firstAttribute="top" secondItem="l92-7M-7T4" secondAttribute="top" id="b3M-g4-6vk"/>
-                <constraint firstItem="uXr-F6-eiV" firstAttribute="leading" secondItem="l92-7M-7T4" secondAttribute="leading" id="dkB-kd-zLH"/>
-                <constraint firstItem="Udz-dt-e2a" firstAttribute="leading" secondItem="l92-7M-7T4" secondAttribute="leading" id="ifq-Wu-X1n"/>
-                <constraint firstAttribute="trailing" secondItem="Udz-dt-e2a" secondAttribute="trailing" id="lUB-Pb-r03"/>
-                <constraint firstAttribute="bottom" secondItem="uXr-F6-eiV" secondAttribute="bottom" id="vPm-6m-yoY"/>
-                <constraint firstItem="uXr-F6-eiV" firstAttribute="top" secondItem="l92-7M-7T4" secondAttribute="top" constant="60" id="zCE-C9-JiA"/>
+                <constraint firstAttribute="trailing" secondItem="Udz-dt-e2a" secondAttribute="trailing" id="EcR-mr-UGI"/>
+                <constraint firstItem="Udz-dt-e2a" firstAttribute="top" secondItem="l92-7M-7T4" secondAttribute="top" id="PQg-Cc-d8h"/>
+                <constraint firstAttribute="bottom" secondItem="Udz-dt-e2a" secondAttribute="bottom" constant="508" id="RSY-PE-boG"/>
+                <constraint firstItem="Udz-dt-e2a" firstAttribute="trailing" secondItem="uXr-F6-eiV" secondAttribute="trailing" id="afJ-sz-4f7"/>
+                <constraint firstItem="Udz-dt-e2a" firstAttribute="leading" secondItem="uXr-F6-eiV" secondAttribute="leading" id="bCC-WG-whS"/>
+                <constraint firstItem="uXr-F6-eiV" firstAttribute="top" secondItem="Udz-dt-e2a" secondAttribute="bottom" id="cKw-XK-XyU"/>
+                <constraint firstAttribute="bottom" secondItem="uXr-F6-eiV" secondAttribute="bottom" id="hDT-f3-4ZI"/>
+                <constraint firstItem="Udz-dt-e2a" firstAttribute="leading" secondItem="l92-7M-7T4" secondAttribute="leading" id="oFb-ES-LaH"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>

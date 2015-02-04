@@ -104,6 +104,8 @@
     
     [self setDefaultData:_data];
     
+    [_textviewaddress setPlaceholder:@"Alamat"];
+    //_textviewaddress.delegate = self;
     
     _viewpassword.hidden = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC)?YES:NO;
     _textfieldpass.hidden = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC)?YES:NO;
@@ -158,6 +160,8 @@
 {
     [_activetextfield resignFirstResponder];
     [_activetextview resignFirstResponder];
+    [_textviewaddress resignFirstResponder];
+    [_datainput setObject:_textviewaddress.text forKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY];
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
         AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
@@ -266,6 +270,8 @@
 - (IBAction)gesture:(id)sender {
     [_activetextfield resignFirstResponder];
     [_activetextview resignFirstResponder];
+    [_textviewaddress resignFirstResponder];
+    [_datainput setObject:_textviewaddress.text forKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY];
 }
 
 #pragma mark - Request Action AddAddress
@@ -337,7 +343,6 @@
                             kTKPDPROFILESETTING_APIDISTRICTKEY : distric,
                             kTKPDPROFILESETTING_APIUSERPASSWORDKEY : password
                             };
-    _requestcount ++;
     
     _barbuttonsave.enabled = NO;
     
@@ -435,8 +440,18 @@
     _data = data;
     if (data) {
         _type = [[_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]integerValue];
-        //self.title = (_type == TYPE_ADD_EDIT_PROFILE_EDIT)?TITLE_EDIT_ADDRESS:TITLE_NEW_ADDRESS;
-        self.title = (_type == TYPE_ADD_EDIT_PROFILE_EDIT)?(_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW)?TITLE_NEW_ADDRESS:TITLE_ATC_ADDRESS:TITLE_EDIT_ADDRESS;
+        
+        switch (_type) {
+            case TYPE_ADD_EDIT_PROFILE_ATC:
+            case TYPE_ADD_EDIT_PROFILE_ADD_NEW:
+                self.title = TITLE_NEW_ADDRESS;
+                break;
+            case TYPE_ADD_EDIT_PROFILE_EDIT:
+                self.title = TITLE_EDIT_ADDRESS;
+                break;
+            default:
+                break;
+        }
         AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
         _textfieldreceivername.text = list.receiver_name?:@"";
         _textfieldaddressname.text = list.address_name?:@"";
@@ -658,18 +673,19 @@
 }
 
 #pragma mark - Text View Delegate
--(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
-    [textView resignFirstResponder];
-    [_activetextfield resignFirstResponder];
-    _activetextfield = nil;
-    AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-    if (!list.address_name) {
-        _activetextview = textView;
-        _labeladdressplaceholder.hidden = YES;
-    }
-    return YES;
-}
-
+//-(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
+//    [_activetextview resignFirstResponder];
+//    [_activetextfield resignFirstResponder];
+//    _activetextfield = nil;
+//    _activetextview = textView;
+//    AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+//    if (!list.address_name) {
+//        _activetextview = textView;
+//        _labeladdressplaceholder.hidden = YES;
+//    }
+//    return YES;
+//}
+//
 -(BOOL)textViewShouldReturn:(UITextView *)textView{
 
     [_activetextfield resignFirstResponder];
@@ -685,12 +701,10 @@
     return YES;
 }
 
--(void) textViewDidChange:(UITextView *)textView
-{
-    if(_textviewaddress.text.length == 0){
-        _labeladdressplaceholder.hidden = NO;
-        [_textviewaddress resignFirstResponder];
-    }
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
+    [_activetextfield resignFirstResponder];
+    [_activetextview resignFirstResponder];
+    [_textviewaddress resignFirstResponder];
 }
 
 #pragma mark - Keyboard Notification

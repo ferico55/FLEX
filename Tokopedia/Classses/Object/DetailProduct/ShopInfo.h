@@ -15,7 +15,7 @@
 
 @property (nonatomic, strong) NSString *shop_open_since;
 @property (nonatomic, strong) NSString *shop_location;
-@property (nonatomic) NSInteger shop_id;
+@property (nonatomic, strong) NSString *shop_id;
 @property (nonatomic, strong) NSString *shop_owner_last_login;
 @property (nonatomic, strong) NSString *shop_tagline;
 @property (nonatomic, strong) NSString *shop_name;

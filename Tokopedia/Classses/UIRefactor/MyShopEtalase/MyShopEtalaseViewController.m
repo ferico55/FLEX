@@ -682,7 +682,7 @@
 -(void)deleteListAtIndexPath:(NSIndexPath*)indexpath
 {
     EtalaseList *list = _list[indexpath.row];
-    [_datainput setObject:@(list.etalase_id) forKey:kTKPDSHOP_APIETALASEIDKEY];
+    [_datainput setObject:list.etalase_id?:@"" forKey:kTKPDSHOP_APIETALASEIDKEY];
     [_datainput setObject:_list[indexpath.row] forKey:kTKPDDETAIL_DATADELETEDOBJECTKEY];
     [_list removeObjectAtIndex:indexpath.row];
     [_table beginUpdates];
