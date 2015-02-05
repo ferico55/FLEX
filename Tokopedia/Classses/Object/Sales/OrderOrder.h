@@ -10,7 +10,7 @@
 
 @interface OrderOrder : NSObject
 
-@property NSInteger is_allow_manage_tx;
+@property (strong, nonatomic) NSString *is_allow_manage_tx;
 @property (strong, nonatomic) NSString *shop_name;
 @property NSInteger is_gold_shop;
 

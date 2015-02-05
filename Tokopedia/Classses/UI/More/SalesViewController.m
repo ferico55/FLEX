@@ -10,6 +10,7 @@
 #import "SalesNewOrderViewController.h"
 #import "ShipmentConfirmationViewController.h"
 #import "ShipmentStatusViewController.h"
+#import "SalesTransactionListViewController.h"
 #import "NotificationManager.h"
 
 @interface SalesViewController () <NotificationManagerDelegate> {
@@ -72,6 +73,8 @@
 }
 
 - (IBAction)listTransactionDidTap:(id)sender {
+    SalesTransactionListViewController *controller = [SalesTransactionListViewController new];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)setValues

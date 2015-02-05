@@ -8,7 +8,9 @@
 
 #import "DueDateViewController.h"
 
-@interface DueDateViewController ()
+@interface DueDateViewController () {
+    NSIndexPath *_selectedIndexPath;
+}
 
 @end
 
@@ -16,6 +18,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    _selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -46,16 +49,16 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
- 
-    UITableViewCell *prevCell = [tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
-    prevCell.accessoryType = UITableViewCellAccessoryNone;
     
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:_selectedIndexPath];
+    cell.accessoryType = UITableViewCellAccessoryNone;
+    
+    _selectedIndexPath = indexPath;
+    
+    cell = [tableView cellForRowAtIndexPath:_selectedIndexPath];
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
 
     [self.delegate didSelectDueDate:cell.textLabel.text];
-    
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

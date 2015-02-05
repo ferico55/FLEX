@@ -302,7 +302,10 @@
 
         _topButtonsView.hidden = YES;
         _tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
-        
+
+        _dayLeftLabel.hidden = YES;
+        _automaticallyRejectedLabel.hidden = YES;
+
         if ([_transaction.order_detail.detail_dropship_name isEqualToString:@"0"]) {
             
             // Hide dropship view if dropship not available

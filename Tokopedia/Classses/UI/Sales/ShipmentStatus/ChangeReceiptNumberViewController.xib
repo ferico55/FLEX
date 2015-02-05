@@ -22,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jlW-Dy-SVh">
-                    <rect key="frame" x="0.0" y="22" width="320" height="45"/>
+                    <rect key="frame" x="0.0" y="34" width="320" height="45"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ped-Cp-L9d" userLabel="Border">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -35,6 +35,9 @@
                             <rect key="frame" x="15" y="0.0" width="290" height="45"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="CPP-sv-1gy"/>
+                            </connections>
                         </textField>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Opb-qe-c1a" userLabel="Border">
                             <rect key="frame" x="0.0" y="44" width="320" height="1"/>
@@ -64,7 +67,7 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="jlW-Dy-SVh" secondAttribute="trailing" id="7y4-Jc-Lop"/>
                 <constraint firstItem="jlW-Dy-SVh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Nc6-ti-KcO"/>
-                <constraint firstItem="jlW-Dy-SVh" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="22" id="Xv3-qD-h0O"/>
+                <constraint firstItem="jlW-Dy-SVh" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="34" id="Xv3-qD-h0O"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
