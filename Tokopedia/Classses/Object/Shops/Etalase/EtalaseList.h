@@ -10,7 +10,7 @@
 
 @interface EtalaseList : NSObject
 
-@property (nonatomic) NSInteger etalase_id;
+@property (nonatomic, strong) NSString *etalase_id;
 @property (nonatomic, strong) NSString *etalase_num_product;
 @property (nonatomic, strong) NSString *etalase_name;
 @property (nonatomic, strong) NSString *etalase_total_product;

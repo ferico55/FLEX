@@ -13,8 +13,6 @@
 
 #import "ProductEditWholesaleViewController.h"
 
-#import "MyShopShipmentViewController.h"
-
 @interface CartViewController ()
 @property (weak, nonatomic) IBOutlet ProgressBarView *progress;
 

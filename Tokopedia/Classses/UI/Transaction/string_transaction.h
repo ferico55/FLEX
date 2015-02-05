@@ -72,6 +72,11 @@ typedef enum
 #define TITLE_FORM_MANDIRI_CLICK_PAY @"Form Mandiri Click Pay"
 
 #define STRING_DEFAULT_PAYMENT @"Pilih Metode Pembayaran"
+#define STRING_TOTAL_TAGIHAN @"Total Tagihan"
+#define STRING_JUMLAH_YANG_SUDAH_DIBAYAR @"Jumlah yang sudah dibayar"
+#define STRING_SALDO_TOKOPEDIA_TERPAKAI @"Saldo Tokopedia terpakai"
+#define STRING_SALDO_TOKOPEDIA_TERSISA @"Saldo Tokopedia yang tersisa"
+#define STRING_JUMLAH_YANG_HARUS_DIBAYAR @"Jumlah yang harus dibayar"
 
 #define DATA_DETAIL_PRODUCT_KEY @"product"
 #define DATA_SHIPMENT_KEY @"shipment"
@@ -103,7 +108,10 @@ typedef enum
 #define DATA_CART_RESULT_KEY @"data_cart_result"
 #define DATA_KEY @"data"
 #define DATA_USED_SALDO_KEY @"saldo_is_used"
+#define DATA_NAME_KEY @"name"
+#define DATA_VALUE_KEY @"value"
 
+#define API_VOUCHER_CODE_KEY @"voucher_code"
 #define API_ACTION_KEY @"action"
 #define API_INSURANCE_KEY @"insurance"
 #define API_IS_SUCCESS_KEY @"is_success"
@@ -114,11 +122,15 @@ typedef enum
 #define API_LIST_PRODUCT_CART @"cart_details"
 #define API_DESTINATION_KEY @"destination"
 
+#define API_PRODUCT_INSURANCE @"product_insurance"
+
 #define API_PRODUCT_ID_KEY @"product_id"
 #define API_ADDRESS_ID_KEY @"address_id"
 #define API_OLD_ADDRESS_ID_KEY @"old_address_id"
 #define API_OLD_SHIPMENT_ID_KEY @"old_shipment_id"
 #define API_OLD_SHIPMENT_PACKAGE_ID_KEY @"old_shipment_package_id"
+#define API_SHIPMENT_PACKAGE_ID_KEY @"shipment_package_id"
+#define API_CHANGE_KEY @"change"
 #define API_DISTRICT_ID_KEY @"district_id"
 #define API_ADDRESS_NAME_KEY @"address_name"
 #define API_ADDRESS_STREET_KEY @"address_street"
@@ -179,6 +191,7 @@ typedef enum
 #define API_GATEWAY_LIST_NAME_KEY @"gateway_name"
 #define API_GATEWAY_LIST_ID_KEY @"gateway"
 
+#pragma mark - System Bank
 #define API_SYSTEM_BANK_KEY @"system_bank"
 #define API_SYSTEM_BANK_BANK_CABANG_KEY @"sb_bank_cabang"
 #define API_SYSTEM_BANK_PICTURE_KEY @"sb_picture"
@@ -186,6 +199,21 @@ typedef enum
 #define API_SYSTEM_BANK_BANK_NAME_KEY @"sb_bank_name"
 #define API_SYSTEM_BANK_ACCOUNT_NUMBER_KEY @"sb_account_no"
 #define API_SYSTEM_BANK_ACCOUNT_NAME_KEY @"sb_account_name"
+#pragma mark -
+
+#pragma mark - BCA Param
+#define API_BCA_DESRIPTION_KEY @"bca_descp"
+#define API_BCA_CODE_KEY @"bca_code"
+#define API_BCA_AMOUNT_KEY @"bca_amt"
+#define API_BCA_URL_KEY @"bca_url"
+#define API_BCA_CURRENCY_KEY @"currency"
+#define API_BCA_MISC_FEE_KEY @"miscFee"
+#define API_BCA_DATE_KEY @"bca_date"
+#define API_BCA_SIGNATURE_KEY @"signature"
+#define API_BCA_CALLBACK_KEY @"callback"
+#define API_BCA_PAYMENT_ID_KEY @"payment_id"
+#define API_BCA_TYPE_PAYMENT_KEY @"payType"
+#pragma mark -
 
 #define API_DROPSHIP_STRING_KEY @"dropship_str"
 #define API_PARTIAL_STRING_KEY @"partial_str"
@@ -194,6 +222,8 @@ typedef enum
 
 #define API_MANDIRI_TOKEN_KEY @"mandiri_token"
 #define API_CARD_NUMBER_KEY @"card_no"
+
+#define API_PASSWORD_KEY @"password"
 
 #define API_VOUCHER_AMOUNT_IDR_KEY @"voucher_amount_idr"
 #define API_DEPOSIT_AFTER_KEY @"deposit_after"
@@ -236,10 +266,20 @@ typedef enum
 
 #define ACTION_ADD_TO_CART @"add_to_cart"
 #define ACTION_ADD_TO_CART_FORM @"get_add_to_cart_form"
+#define ACTION_SHIPMENT_FORM @"get_edit_address_shipping_form"
 #define ACTION_CALCULATE_PRICE @"calculate_cart"
 #define ACTION_CANCEL_CART @"cancel_cart"
 #define ACTION_EDIT_PRODUCT_CART @"edit_product"
 #define ACTION_EDIT_ADDRESS_CART @"edit_address"
+#define ACTION_EDIT_INSURANCE @"edit_insurance"
+#define ACTION_CECK_VOUCHER_CODE @"check_voucher_code"
+
+#define API_DATA_VOUCHER_KEY @"data_voucher"
+#define API_DATA_VOUCHER_AMOUNT_KEY @"voucher_amount"
+#define API_DATA_VOUCHER_ID_KEY @"voucher_id"
+#define API_DATA_VOUCHER_STATUS_KEY @"voucher_status"
+#define API_DATA_VOUCHER_EXPIRED_KEY @"voucher_expired_time"
+#define API_DATA_VOUCHER_MINIMAL_AMOUNT_KEY @"voucher_minimal_amount"
 
 #define CALCULATE_PRODUCT @""
 #define CALCULATE_ADDRESS @"calculate_address_shipping"
@@ -249,6 +289,7 @@ typedef enum
 #define API_TRANSACTION_PATH @"tx.pl"
 #define API_TRANSACTION_CART_PATH @"tx-cart.pl"
 #define API_ACTION_TRANSACTION_PATH @"action/tx-cart.pl"
+#define API_CHECK_VOUCHER_PATH @"tx-voucher.pl"
 
 #define TRANSACTION_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define TRANSACTION_NODATACELLTITLE @"no data"
@@ -268,14 +309,19 @@ typedef enum
 
 #define FORMAT_CART_DROPSHIP_NAME_KEY @"dropship_name-%zd-%zd-%zd-%zd"
 #define FORMAT_CART_DROPSHIP_PHONE_KEY @"dropship_telp-%zd-%zd-%zd-%zd"
-#define FORMAT_CART_CANCEL_PARTIAL_PHONE_KEY @"fcancel_partial-%zd-%zd-%zd-%zd"
+#define FORMAT_CART_CANCEL_PARTIAL_PHONE_KEY @"fcancel_partial-%zd-%zd-%zd"
 #define FORMAT_CART_DROPSHIP_STR_KEY @"%zd~%zd~%zd~%zd"
 #define FORMAT_CART_PARTIAL_STR_KEY FORMAT_CART_DROPSHIP_STR_KEY
 
-#define ERRORMESSAGE_NULL_SHIPPING_AGENT @"Agen kurir harus diisi"
-#define ERRORMESSAGE_NULL_PAYMENT @"Pilih Metode Pembayaran yang ingin digunakan terlebih dahulu."
+#define FORMAT_SUCCESS_BUY @"Terima kasih, Anda telah berhasil melakukan checkout pemesanan dengan memilih pembayaran %@"
 
-#define ARRAY_INSURACE @[@{DATA_NAME_KEY:@"Ya", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Tidak", DATA_VALUE_KEY:@(2)}]
+#define ERRORMESSAGE_NULL_CART_SHIPPING_AGENT @"Agen kurir harus diisi."
+#define ERRORMESSAGE_NULL_CART_PAYMENT @"Pilih Metode Pembayaran yang ingin digunakan terlebih dahulu."
+#define ERRORMESSAGE_NULL_CART_PASSWORD @"Kata Sandi harus diisi."
+#define ERRORMESSAGE_NULL_VOUCHER_CODE @"Masukkan kode kupon terlebih dahulu."
+#define ERRORMESSAGE_VOUCHER_CODE_LENGHT @"Kode kupon harus 12 karakter."
+
+#define ARRAY_INSURACE @[@{DATA_NAME_KEY:@"Ya", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Tidak", DATA_VALUE_KEY:@(0)}]
 #define ARRAY_IF_STOCK_AVAILABLE_PARTIALLY @[@{DATA_NAME_KEY:@"Batalkan keseluruhan pesanan", DATA_VALUE_KEY:@(0)}, @{DATA_NAME_KEY:@"Kirimkan stok yang tersedia", DATA_VALUE_KEY:@(1)}]
 
 #endif

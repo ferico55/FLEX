@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TransactionCartList.h"
+#import "TransactionSummaryBCAParam.h"
 
 @interface TransactionSummaryDetail : NSObject
 
@@ -34,7 +35,7 @@
 @property (nonatomic,strong) NSString *discount_gateway_idr;
 @property (nonatomic,strong) NSString *user_deposit_idr;
 @property (nonatomic,strong) NSString *msisdn_verified;
-@property (nonatomic,strong) NSString *gateway;
+@property (nonatomic,strong) NSNumber *gateway;
 @property (nonatomic,strong) NSString *conf_code;
 @property (nonatomic,strong) NSString *dropship_list;
 @property (nonatomic,strong) NSString *conf_due_date;

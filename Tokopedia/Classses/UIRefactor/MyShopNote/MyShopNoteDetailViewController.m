@@ -82,12 +82,13 @@
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _operationQueue = [NSOperationQueue new];
-    
-    [self setDefaultData:_data];
+    _auth = [NSMutableDictionary new];
     
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary* auth = [secureStorage keychainDictionary];
     _auth = [auth mutableCopy];
+    
+    [self setDefaultData:_data];
     
     NSString *barbuttontitle;
     

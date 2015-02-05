@@ -209,10 +209,7 @@
     if ([[notification name] isEqualToString:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY]) {
         [stickyalert alertSuccess:string];
     }
-
 }
-
-
 
 
 #pragma mark - Alert view delegate

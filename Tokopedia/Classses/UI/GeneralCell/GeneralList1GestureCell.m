@@ -21,7 +21,6 @@
 #pragma mark - Factory methods
 + (id)newcell
 {
-    NSLog( @"Cell loading" );
     NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"GeneralList1GestureCell" owner:nil options:0];
     for (id o in a) {
         if ([o isKindOfClass:[self class]]) {

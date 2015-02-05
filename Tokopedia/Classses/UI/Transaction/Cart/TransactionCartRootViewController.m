@@ -5,23 +5,27 @@
 //  Created by IT Tkpd on 1/14/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+#import <QuartzCore/QuartzCore.h>
 
 #import "string_transaction.h"
 #import "TransactionCartRootViewController.h"
 #import "TransactionCartViewController.h"
 #import "TransactionCartResultViewController.h"
 
-@interface TransactionCartRootViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate, TransactionCartViewControllerDelegate>
+@interface TransactionCartRootViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate, TransactionCartViewControllerDelegate, TransactionCartResultViewControllerDelegate>
 {
     NSInteger _index;
     NSDictionary *_data;
     TransactionCartViewController *_cartViewController;
     TransactionCartViewController *_cartSummaryViewController;
     TransactionCartResultViewController *_cartResultViewController;
+    NSDictionary *_auth;
+    BOOL _isLogin;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (strong, nonatomic) UIPageViewController *pageController;
+@property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 
 @property (weak, nonatomic) IBOutlet UIView *pageControlView;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *pageButtons;
@@ -30,25 +34,35 @@
 @implementation TransactionCartRootViewController
 
 #define COUNT_CILD_VIEW_CONTROLLER 3
+#define COLOR_DEFAULT_BUTTON [UIColor colorWithRed:189.0/255.0 green:189.0/255.0 blue:189.0/255.0 alpha:1.0]
+#define COLOR_SELECTED_BUTTON [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1.0]
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
         self.navigationController.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    _pageButtons = [NSArray sortViewsWithTagInArray:_pageButtons];
     
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    _auth = [secureStorage keychainDictionary];
+    _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+    
+    _pageButtons = [NSArray sortViewsWithTagInArray:_pageButtons];
+
     for (UIButton *button in _pageButtons) {
-        button.enabled = NO;
+        //button.enabled = NO;
+        button.backgroundColor = COLOR_DEFAULT_BUTTON;
+        button.layer.cornerRadius = button.frame.size.width/2;
+        button.clipsToBounds=YES;
     }
+    
     _pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
     _pageController.dataSource = self;
 
-    [[_pageController view] setFrame:_containerView.frame];
-    _pageController.view.backgroundColor = [UIColor yellowColor];
-    
     [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    
+    [[_pageController view] setFrame:_containerView.frame];
     
     [self addChildViewController:_pageController];
     [[self view] addSubview:[_pageController view]];
@@ -56,6 +70,35 @@
     [[self view] addSubview:_pageControlView];
     [_pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    //TODO:: create not log-in page to login view controller
+    if (!_isLogin) {
+        int controllerIndex = 4;
+        UIView * fromView = self.tabBarController .selectedViewController.view;
+        UIView * toView = [[self.tabBarController.viewControllers objectAtIndex:controllerIndex] view];
+        
+        // Transition using a page curl.
+        [UIView transitionFromView:fromView toView:toView duration:1.0
+                           options:UIViewAnimationOptionTransitionNone
+         
+                        completion:^(BOOL finished) {
+                            
+                            if (finished) {
+                                self.tabBarController.selectedIndex = controllerIndex;
+                            }
+                            
+                        }];
+    }
+    else
+    {
+        [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    }
+
 }
 
 -(void)setScrollEnabled:(BOOL)enabled forPageViewController:(UIPageViewController*)pageViewController{
@@ -78,15 +121,21 @@
 {
     id childViewController;
     for (UIButton *button in _pageButtons) {
-        button.enabled = NO;
+        button.backgroundColor = COLOR_DEFAULT_BUTTON;
+        //button.enabled = NO;
     }
     switch (index) {
         case 0:
         {
             if(!_cartViewController)_cartViewController = [TransactionCartViewController new];
+            //TransactionCartViewController *cartViewController = [TransactionCartViewController new];
             _cartViewController.delegate = self;
             ((UIButton*)_pageButtons[index]).enabled = YES;
             childViewController = _cartViewController;
+            [_progressView setProgress:0 animated:YES];
+            ((UIButton*)_pageButtons[index]).backgroundColor = COLOR_SELECTED_BUTTON;
+            self.navigationItem.leftBarButtonItem = nil;
+            self.navigationItem.rightBarButtonItem = nil; //TODO::
             break;
         }
         case 1:
@@ -96,18 +145,44 @@
             _cartSummaryViewController.data =_data;
             _cartSummaryViewController.delegate = self;
             ((UIButton*)_pageButtons[index-1]).enabled = YES;
+            ((UIButton*)_pageButtons[index-1]).backgroundColor = COLOR_SELECTED_BUTTON;
             ((UIButton*)_pageButtons[index]).enabled = YES;
             childViewController = _cartSummaryViewController;
+            [_progressView setProgress:0.5 animated:YES];
+            [UIView animateWithDuration:0.0 delay:0.5 options:UIViewAnimationOptionAllowUserInteraction animations:^{
+                ((UIButton*)_pageButtons[index]).backgroundColor = COLOR_SELECTED_BUTTON;
+            } completion:^(BOOL finished) {
+            }];
+            UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Kembali" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+            [backBarButtonItem setTintColor:[UIColor whiteColor]];
+            backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
+            self.navigationItem.leftBarButtonItem = backBarButtonItem;
+            self.navigationItem.rightBarButtonItem = nil;
             break;
         }
         case 2:
         {
             if(!_cartResultViewController)_cartResultViewController = [TransactionCartResultViewController new];
             _cartResultViewController.data = _data;
+            _cartResultViewController.delegate = self;
             for (UIButton *button in _pageButtons) {
                 button.enabled = NO;
             }
             childViewController = _cartResultViewController;
+            [_progressView setProgress:1 animated:YES];
+            ((UIButton*)_pageButtons[index-1]).backgroundColor = COLOR_SELECTED_BUTTON;
+            ((UIButton*)_pageButtons[index-2]).backgroundColor = COLOR_SELECTED_BUTTON;
+            [UIView animateWithDuration:0.0 delay:0.5 options:UIViewAnimationOptionAllowUserInteraction animations:^{
+                ((UIButton*)_pageButtons[index]).backgroundColor = COLOR_SELECTED_BUTTON;
+            } completion:^(BOOL finished) {
+            }];
+            
+            UIBarButtonItem *barbutton1;
+            barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+            [barbutton1 setTintColor:[UIColor blackColor]];
+            [barbutton1 setTag:11];
+            self.navigationItem.leftBarButtonItem = nil;
+            self.navigationItem.rightBarButtonItem = barbutton1;
             break;
         }
         default:
@@ -160,6 +235,12 @@
 {
     _data = data;
     [_pageController setViewControllers:@[[self viewControllerAtIndex:2]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+
+}
+
+-(void)shouldBackToFirstPage
+{
+    [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
 }
 
 -(void)dealloc{
@@ -167,9 +248,16 @@
 }
 
 - (IBAction)tap:(id)sender {
-    UIButton *pageButton = (UIButton*)sender;
-    
-    [_pageController setViewControllers:@[[self viewControllerAtIndex:pageButton.tag-10]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+        UIBarButtonItem *barbutton = (UIBarButtonItem*)sender;
+        ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = !(barbutton.tag == TAG_BAR_BUTTON_TRANSACTION_BACK);
+    }
+    else
+    {
+        UIButton *pageButton = (UIButton*)sender;
+        [_pageController setViewControllers:@[[self viewControllerAtIndex:pageButton.tag-10]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+    }
 }
 
 @end

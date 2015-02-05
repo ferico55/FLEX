@@ -260,7 +260,7 @@
                 [_datatalk setObject:image.image_src?:@(0) forKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
                 [_datatalk setObject:_product.result.statistic.product_sold forKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY];
                 [_datatalk setObject:_product.result.statistic.product_view forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
-                [_datatalk setObject:@(_product.result.shop_info.shop_id) forKey:TKPD_TALK_SHOP_ID];
+                [_datatalk setObject:_product.result.shop_info.shop_id?:@"" forKey:TKPD_TALK_SHOP_ID];
                 
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:_datatalk];

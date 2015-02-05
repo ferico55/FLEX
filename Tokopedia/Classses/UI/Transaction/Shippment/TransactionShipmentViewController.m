@@ -106,7 +106,7 @@
         NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
         if (type == TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY) {
             ShippingInfoShipments *shipment = _list[indexPath.row];
-            ((GeneralCheckmarkCell*)cell)   .cellLabel.text = shipment.shipment_name;
+            ((GeneralCheckmarkCell*)cell).cellLabel.text = shipment.shipment_name;
         }
         else
         {
