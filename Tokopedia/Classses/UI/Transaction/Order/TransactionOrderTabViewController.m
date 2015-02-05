@@ -26,7 +26,6 @@
 @property (strong, nonatomic) UIPageViewController *pageController;
 
 @property (weak, nonatomic) IBOutlet UIView *pageControlView;
-@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *pageButtons;
 
 @end
 
@@ -42,9 +41,7 @@
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
-    
-    _pageButtons = [NSArray sortViewsWithTagInArray:_pageButtons];
-    
+
     _pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     
     _pageController.dataSource = self;
@@ -101,17 +98,18 @@
         case 0:
         {
             if(!_confirmationViewController)_confirmationViewController = [TransactionOrderConfirmationViewController new];
+            childViewController = _confirmationViewController;
             break;
         }
         case 1:
         {
             if(!_verificationViewController)_verificationViewController = [TransactionOrderViewController new];
+            childViewController = _verificationViewController;
              break;
         }
         default:
             break;
     }
-    ((UIButton*)_pageButtons[index]).enabled = YES;
     return (UIViewController*)childViewController;
 }
 

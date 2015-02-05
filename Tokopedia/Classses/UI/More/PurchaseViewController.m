@@ -8,6 +8,8 @@
 
 #import "PurchaseViewController.h"
 
+#import "TransactionOrderTabViewController.h"
+
 @interface PurchaseViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *paymentConfirmationValueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *orderStatusValueLabel;
@@ -61,6 +63,8 @@
 }
 
 - (IBAction)paymentConfirmationDidTap:(id)sender {
+    TransactionOrderTabViewController *vc = [TransactionOrderTabViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (IBAction)orderStatusDidTap:(id)sender {

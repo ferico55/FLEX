@@ -9,6 +9,7 @@
             <connections>
                 <outlet property="containerView" destination="m4F-7C-dNH" id="Ym8-1Q-Ayd"/>
                 <outlet property="segmentControl" destination="GQq-Wb-n59" id="d4o-X3-56I"/>
+                <outlet property="view" destination="iN0-l3-epB" id="CWH-PB-bff"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

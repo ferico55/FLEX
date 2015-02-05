@@ -473,6 +473,19 @@
 		FC937BAD1A82002100916745 /* StickyAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937BAC1A82002100916745 /* StickyAlertView.xib */; };
 		FC937BB21A82009B00916745 /* GeneralTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937BB01A82009B00916745 /* GeneralTableViewController.m */; };
 		FC937BB31A82009B00916745 /* GeneralTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937BB11A82009B00916745 /* GeneralTableViewController.xib */; };
+		FC937BB71A82073A00916745 /* TransactionOrderConfirmation.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937BB61A82073A00916745 /* TransactionOrderConfirmation.m */; };
+		FC937BBA1A82078C00916745 /* TransactionOrderConfirmationResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937BB91A82078C00916745 /* TransactionOrderConfirmationResult.m */; };
+		FC937BBD1A8207AD00916745 /* TransactionOrderConfirmationList.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937BBC1A8207AD00916745 /* TransactionOrderConfirmationList.m */; };
+		FC937BC01A82096100916745 /* TransactionOrderConfirmationListOrder.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937BBF1A82096100916745 /* TransactionOrderConfirmationListOrder.m */; };
+		FC937BC31A8209A400916745 /* OrderExtraFee.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937BC21A8209A400916745 /* OrderExtraFee.m */; };
+		FC937BC61A8209D100916745 /* OrderConfirmationDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937BC51A8209D100916745 /* OrderConfirmationDetail.m */; };
+		FC937BC91A820A8B00916745 /* OrderShop.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937BC81A820A8B00916745 /* OrderShop.m */; };
+		FC937BCC1A83195100916745 /* TransactionOrderConfirmationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937BCB1A83195100916745 /* TransactionOrderConfirmationDetailViewController.m */; };
+		FC937BCE1A83197100916745 /* TransactionOrderConfirmationDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937BCD1A83197100916745 /* TransactionOrderConfirmationDetailViewController.xib */; };
+		FC937BD01A831CF900916745 /* TransactionOrderConfirmationDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937BCF1A831CF900916745 /* TransactionOrderConfirmationDetailCell.xib */; };
+		FC937BD31A831D1E00916745 /* TransactionOrderConfirmationDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937BD21A831D1E00916745 /* TransactionOrderConfirmationDetailCell.m */; };
+		FC937BD51A83265200916745 /* TransactionOrderConfirmationDetailCostView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937BD41A83265200916745 /* TransactionOrderConfirmationDetailCostView.xib */; };
+		FC937BD81A83267600916745 /* TransactionOrderConfirmationDetailCostView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937BD71A83267600916745 /* TransactionOrderConfirmationDetailCostView.m */; };
 		FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
 		FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */; };
 		FCA7751419F663070041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
@@ -1452,6 +1465,29 @@
 		FC937BAF1A82009B00916745 /* GeneralTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralTableViewController.h; sourceTree = "<group>"; };
 		FC937BB01A82009B00916745 /* GeneralTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralTableViewController.m; sourceTree = "<group>"; };
 		FC937BB11A82009B00916745 /* GeneralTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralTableViewController.xib; sourceTree = "<group>"; };
+		FC937BB51A82073A00916745 /* TransactionOrderConfirmation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionOrderConfirmation.h; sourceTree = "<group>"; };
+		FC937BB61A82073A00916745 /* TransactionOrderConfirmation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionOrderConfirmation.m; sourceTree = "<group>"; };
+		FC937BB81A82078C00916745 /* TransactionOrderConfirmationResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionOrderConfirmationResult.h; sourceTree = "<group>"; };
+		FC937BB91A82078C00916745 /* TransactionOrderConfirmationResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionOrderConfirmationResult.m; sourceTree = "<group>"; };
+		FC937BBB1A8207AD00916745 /* TransactionOrderConfirmationList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionOrderConfirmationList.h; sourceTree = "<group>"; };
+		FC937BBC1A8207AD00916745 /* TransactionOrderConfirmationList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionOrderConfirmationList.m; sourceTree = "<group>"; };
+		FC937BBE1A82096100916745 /* TransactionOrderConfirmationListOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionOrderConfirmationListOrder.h; sourceTree = "<group>"; };
+		FC937BBF1A82096100916745 /* TransactionOrderConfirmationListOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionOrderConfirmationListOrder.m; sourceTree = "<group>"; };
+		FC937BC11A8209A400916745 /* OrderExtraFee.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderExtraFee.h; sourceTree = "<group>"; };
+		FC937BC21A8209A400916745 /* OrderExtraFee.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderExtraFee.m; sourceTree = "<group>"; };
+		FC937BC41A8209D100916745 /* OrderConfirmationDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderConfirmationDetail.h; sourceTree = "<group>"; };
+		FC937BC51A8209D100916745 /* OrderConfirmationDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderConfirmationDetail.m; sourceTree = "<group>"; };
+		FC937BC71A820A8B00916745 /* OrderShop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderShop.h; sourceTree = "<group>"; };
+		FC937BC81A820A8B00916745 /* OrderShop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderShop.m; sourceTree = "<group>"; };
+		FC937BCA1A83195100916745 /* TransactionOrderConfirmationDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionOrderConfirmationDetailViewController.h; sourceTree = "<group>"; };
+		FC937BCB1A83195100916745 /* TransactionOrderConfirmationDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionOrderConfirmationDetailViewController.m; sourceTree = "<group>"; };
+		FC937BCD1A83197100916745 /* TransactionOrderConfirmationDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionOrderConfirmationDetailViewController.xib; sourceTree = "<group>"; };
+		FC937BCF1A831CF900916745 /* TransactionOrderConfirmationDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionOrderConfirmationDetailCell.xib; sourceTree = "<group>"; };
+		FC937BD11A831D1E00916745 /* TransactionOrderConfirmationDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionOrderConfirmationDetailCell.h; sourceTree = "<group>"; };
+		FC937BD21A831D1E00916745 /* TransactionOrderConfirmationDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionOrderConfirmationDetailCell.m; sourceTree = "<group>"; };
+		FC937BD41A83265200916745 /* TransactionOrderConfirmationDetailCostView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionOrderConfirmationDetailCostView.xib; sourceTree = "<group>"; };
+		FC937BD61A83267600916745 /* TransactionOrderConfirmationDetailCostView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionOrderConfirmationDetailCostView.h; sourceTree = "<group>"; };
+		FC937BD71A83267600916745 /* TransactionOrderConfirmationDetailCostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionOrderConfirmationDetailCostView.m; sourceTree = "<group>"; };
 		FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FCAAEA4319F7534B00904AFB /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -3819,6 +3855,12 @@
 				FC937B211A81DEA000916745 /* TransactionOrderConfirmationCell.m */,
 				FC937B231A81F0E500916745 /* TransactionOrderConfirmationViewController.h */,
 				FC937B241A81F0E500916745 /* TransactionOrderConfirmationViewController.m */,
+				FC937BCA1A83195100916745 /* TransactionOrderConfirmationDetailViewController.h */,
+				FC937BCB1A83195100916745 /* TransactionOrderConfirmationDetailViewController.m */,
+				FC937BD11A831D1E00916745 /* TransactionOrderConfirmationDetailCell.h */,
+				FC937BD21A831D1E00916745 /* TransactionOrderConfirmationDetailCell.m */,
+				FC937BD61A83267600916745 /* TransactionOrderConfirmationDetailCostView.h */,
+				FC937BD71A83267600916745 /* TransactionOrderConfirmationDetailCostView.m */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -3830,6 +3872,9 @@
 				FC937B191A81D5DD00916745 /* TransactionOrderTabViewController.xib */,
 				FC937B1E1A81DE6300916745 /* TransactionOrderConfirmationCell.xib */,
 				FC937B261A81F11A00916745 /* TransactionOrderConfirmationViewController.xib */,
+				FC937BCD1A83197100916745 /* TransactionOrderConfirmationDetailViewController.xib */,
+				FC937BCF1A831CF900916745 /* TransactionOrderConfirmationDetailCell.xib */,
+				FC937BD41A83265200916745 /* TransactionOrderConfirmationDetailCostView.xib */,
 			);
 			path = Order;
 			sourceTree = "<group>";
@@ -3883,6 +3928,27 @@
 				FC937BB11A82009B00916745 /* GeneralTableViewController.xib */,
 			);
 			path = GeneralViewController;
+			sourceTree = "<group>";
+		};
+		FC937BB41A82071F00916745 /* TransactionOrderConfrimation */ = {
+			isa = PBXGroup;
+			children = (
+				FC937BB51A82073A00916745 /* TransactionOrderConfirmation.h */,
+				FC937BB61A82073A00916745 /* TransactionOrderConfirmation.m */,
+				FC937BB81A82078C00916745 /* TransactionOrderConfirmationResult.h */,
+				FC937BB91A82078C00916745 /* TransactionOrderConfirmationResult.m */,
+				FC937BBB1A8207AD00916745 /* TransactionOrderConfirmationList.h */,
+				FC937BBC1A8207AD00916745 /* TransactionOrderConfirmationList.m */,
+				FC937BBE1A82096100916745 /* TransactionOrderConfirmationListOrder.h */,
+				FC937BBF1A82096100916745 /* TransactionOrderConfirmationListOrder.m */,
+				FC937BC11A8209A400916745 /* OrderExtraFee.h */,
+				FC937BC21A8209A400916745 /* OrderExtraFee.m */,
+				FC937BC41A8209D100916745 /* OrderConfirmationDetail.h */,
+				FC937BC51A8209D100916745 /* OrderConfirmationDetail.m */,
+				FC937BC71A820A8B00916745 /* OrderShop.h */,
+				FC937BC81A820A8B00916745 /* OrderShop.m */,
+			);
+			path = TransactionOrderConfrimation;
 			sourceTree = "<group>";
 		};
 		FCD5C25E1A7118150054A9B2 /* UI */ = {
@@ -4466,10 +4532,10 @@
 		FCD5C3851A7118150054A9B2 /* Transaction */ = {
 			isa = PBXGroup;
 			children = (
-				FC937B121A81C97800916745 /* Order */,
 				FCD5C3A71A7118150054A9B2 /* string_transaction.h */,
 				FCB65C4D1A79EA9000CE6621 /* TransactionObjectMapping.h */,
 				FCB65C4E1A79EA9000CE6621 /* TransactionObjectMapping.m */,
+				FC937B121A81C97800916745 /* Order */,
 				FCD5C3861A7118150054A9B2 /* AddToCart */,
 				FCD5C3891A7118150054A9B2 /* Cart */,
 				FCD5C3A41A7118150054A9B2 /* Shippment */,
@@ -5831,6 +5897,7 @@
 		FCD5C7201A7118780054A9B2 /* Transaction */ = {
 			isa = PBXGroup;
 			children = (
+				FC937BB41A82071F00916745 /* TransactionOrderConfrimation */,
 				FC318FC81A7B854D00F57A69 /* TransactionAddressShippingForm */,
 				FC738D6F1A78D0C400F5D820 /* TransactionVoucher */,
 				FCD5C7211A7118780054A9B2 /* TransactionAction */,
@@ -6259,6 +6326,7 @@
 				FC4D91C01A712B280048106E /* MyShopEtalaseFilterViewController.xib in Resources */,
 				FC2E8C6F1A43CEC900A51BF0 /* icon_arrow_up@2x.png in Resources */,
 				FC4D91BC1A712B280048106E /* MyShopAddressViewController.xib in Resources */,
+				FC937BD51A83265200916745 /* TransactionOrderConfirmationDetailCostView.xib in Resources */,
 				FC36DF9919B0656400AF74C1 /* Images.xcassets in Resources */,
 				FC4D91E01A712B280048106E /* SettingBankDetailViewController.xib in Resources */,
 				FC2E8C461A43CEC900A51BF0 /* icon_15.png in Resources */,
@@ -6436,11 +6504,13 @@
 				FC2E8CAB1A43CEC900A51BF0 /* icon_star_active@2x.png in Resources */,
 				FC4D91581A712B280048106E /* CategoryViewController.xib in Resources */,
 				FC2E8CF31A43CEC900A51BF0 /* tabnav_bg.png in Resources */,
+				FC937BCE1A83197100916745 /* TransactionOrderConfirmationDetailViewController.xib in Resources */,
 				FC2E8CDB1A43CEC900A51BF0 /* ic_search.png in Resources */,
 				FC2E8CE11A43CEC900A51BF0 /* icon_category.png in Resources */,
 				FC937B921A81FF8000916745 /* ShipmentStatusCell.xib in Resources */,
 				FC2E8CB91A43CEC900A51BF0 /* icon_arrow_white@2x.png in Resources */,
 				FC2E8CB51A43CEC900A51BF0 /* login.jpg in Resources */,
+				FC937BD01A831CF900916745 /* TransactionOrderConfirmationDetailCell.xib in Resources */,
 				FC4D91EB1A712B280048106E /* ShopFavoritedViewController.xib in Resources */,
 				FC21CEFB1A7A2328001C97F6 /* icon_more_grey.png in Resources */,
 				FC2E8C871A43CEC900A51BF0 /* icon_facebook.png in Resources */,
@@ -6580,6 +6650,7 @@
 				FCD5C7881A7118780054A9B2 /* ListFavorited.m in Sources */,
 				FCD5C8281A7118780054A9B2 /* TransactionSummaryDetail.m in Sources */,
 				FC937B111A80C2DF00916745 /* NoResult.m in Sources */,
+				FC937BBA1A82078C00916745 /* TransactionOrderConfirmationResult.m in Sources */,
 				FCD5C7C51A7118780054A9B2 /* ProfileInfoResult.m in Sources */,
 				FCD5C3EF1A7118150054A9B2 /* PurchaseViewController.m in Sources */,
 				FCD5C40C1A7118150054A9B2 /* OrderDetailProductInformationCell.m in Sources */,
@@ -6650,6 +6721,7 @@
 				FCD5C8251A7118780054A9B2 /* TransactionEditAddressForm.m in Sources */,
 				FCD5C3C91A7118150054A9B2 /* StarsRateView.m in Sources */,
 				FCD5C79A1A7118780054A9B2 /* HotlistResult.m in Sources */,
+				FC937BD81A83267600916745 /* TransactionOrderConfirmationDetailCostView.m in Sources */,
 				FCD5C7BD1A7118780054A9B2 /* ProfileEditForm.m in Sources */,
 				FCD5C3D81A7118150054A9B2 /* ShopDescriptionView.m in Sources */,
 				FCD5C7BC1A7118780054A9B2 /* DataUser.m in Sources */,
@@ -6676,6 +6748,7 @@
 				FCD5C7A91A7118780054A9B2 /* InboxTalk.m in Sources */,
 				FCD5C7611A7118780054A9B2 /* Deposit.m in Sources */,
 				FCD5C80F1A7118780054A9B2 /* POSIndonesia.m in Sources */,
+				FC937BB71A82073A00916745 /* TransactionOrderConfirmation.m in Sources */,
 				FCD5C5401A7118620054A9B2 /* MyShopNoteDetailViewController.m in Sources */,
 				FCD5C7A31A7118780054A9B2 /* InboxMessageResult.m in Sources */,
 				FCD5C4011A7118150054A9B2 /* NewOrderRequest.m in Sources */,
@@ -6721,6 +6794,7 @@
 				FCD5C3CD1A7118150054A9B2 /* ShopEditStatusViewController.m in Sources */,
 				FCD5C4001A7118150054A9B2 /* FilterNewOrderViewController.m in Sources */,
 				FCD5C7A71A7118780054A9B2 /* InboxReviewResponse.m in Sources */,
+				FC937BCC1A83195100916745 /* TransactionOrderConfirmationDetailViewController.m in Sources */,
 				FCD5C3A91A7118150054A9B2 /* RegisterViewController.m in Sources */,
 				FCD5C3B41A7118150054A9B2 /* CartViewController.m in Sources */,
 				FC937B891A81FF8000916745 /* ChangeReceiptNumberViewController.m in Sources */,
@@ -6766,6 +6840,7 @@
 				FC937B991A81FF9100916745 /* UITextField+WithInset.m in Sources */,
 				FC2E8ACB1A43CEC900A51BF0 /* ExpiringCache.m in Sources */,
 				FCD5C7B81A7118780054A9B2 /* ProductTalkCommentAction.m in Sources */,
+				FC937BBD1A8207AD00916745 /* TransactionOrderConfirmationList.m in Sources */,
 				FCD5C77C1A7118780054A9B2 /* ShopInfo.m in Sources */,
 				FCD5C8221A7118780054A9B2 /* TransactionCartGateway.m in Sources */,
 				FCD5C3C81A7118150054A9B2 /* RateView.m in Sources */,
@@ -6813,6 +6888,7 @@
 				FCD5C4181A7118150054A9B2 /* SearchResultShopViewController.m in Sources */,
 				FCD5C4191A7118150054A9B2 /* SearchResultViewController.m in Sources */,
 				FCD5C8151A7118780054A9B2 /* ShopShipping.m in Sources */,
+				FC937BC61A8209D100916745 /* OrderConfirmationDetail.m in Sources */,
 				FCD5C7711A7118780054A9B2 /* OtherProduct.m in Sources */,
 				FCD5C8021A7118780054A9B2 /* AddProductPictureResult.m in Sources */,
 				FCD5C7F11A7118780054A9B2 /* EtalaseList.m in Sources */,
@@ -6919,6 +6995,7 @@
 				FCD5C56A1A7118620054A9B2 /* SettingUserProfileViewController.m in Sources */,
 				FCD5C8241A7118780054A9B2 /* TransactionCartResult.m in Sources */,
 				FC2E8ACD1A43CEC900A51BF0 /* NSArrayCategory.m in Sources */,
+				FC937BC31A8209A400916745 /* OrderExtraFee.m in Sources */,
 				FCD5C7FE1A7118780054A9B2 /* Shipment.m in Sources */,
 				FCD5C7E91A7118780054A9B2 /* SearchData.m in Sources */,
 				FCD5C79E1A7118780054A9B2 /* InboxMessageDetail.m in Sources */,
@@ -6954,6 +7031,7 @@
 				FCD5C5301A7118620054A9B2 /* DetailReviewViewController.m in Sources */,
 				FCD5C55C1A7118620054A9B2 /* SettingAddressExpandedCell.m in Sources */,
 				FCD5C7B31A7118780054A9B2 /* NotificationSales.m in Sources */,
+				FC937BC01A82096100916745 /* TransactionOrderConfirmationListOrder.m in Sources */,
 				FCD5C7DB1A7118780054A9B2 /* OrderCustomer.m in Sources */,
 				FCD5C3F61A7118150054A9B2 /* ProfileBiodataViewController.m in Sources */,
 				FCD5C75E1A7118780054A9B2 /* LoginResult.m in Sources */,
@@ -6978,6 +7056,7 @@
 				FCD5C81F1A7118780054A9B2 /* TransactionCalculatePrice.m in Sources */,
 				FCD5C5581A7118620054A9B2 /* ProductListMyShopCell.m in Sources */,
 				FCD5C8191A7118780054A9B2 /* TransactionATCForm.m in Sources */,
+				FC937BD31A831D1E00916745 /* TransactionOrderConfirmationDetailCell.m in Sources */,
 				FCD5C75F1A7118780054A9B2 /* Register.m in Sources */,
 				FCD5C3E21A7118150054A9B2 /* GeneralTalkCell.m in Sources */,
 				FCD5C5601A7118620054A9B2 /* SettingBankAccountViewController.m in Sources */,
@@ -7000,6 +7079,7 @@
 				FCD5C5691A7118620054A9B2 /* SettingUserPhoneViewController.m in Sources */,
 				FCD5C7691A7118780054A9B2 /* CatalogReview.m in Sources */,
 				FCD5C55F1A7118620054A9B2 /* SettingBankNameViewController.m in Sources */,
+				FC937BC91A820A8B00916745 /* OrderShop.m in Sources */,
 				FCD5C82A1A7118780054A9B2 /* GeneratedHost.m in Sources */,
 				FCD5C5711A7118620054A9B2 /* ProductTalkFormViewController.m in Sources */,
 				FCD5C3F51A7118150054A9B2 /* ProfileBiodataShopCell.m in Sources */,

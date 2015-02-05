@@ -20,6 +20,7 @@
 #import "TransactionBuy.h"
 #import "TransactionVoucher.h"
 #import "TransactionSummaryBCAParam.h"
+#import "TransactionOrderConfirmation.h"
 
 @interface TransactionObjectMapping : NSObject
 
@@ -33,5 +34,14 @@
 -(RKObjectMapping*)transactionDetailSummaryMapping;
 -(RKObjectMapping*)BCAParamMapping;
 -(RKObjectMapping*)systemBankMapping;
+
+-(RKObjectMapping*)confirmationDetailMapping;
+-(RKObjectMapping*)orderListMapping;
+-(RKObjectMapping*)orderExtraFeeMapping;
+-(RKObjectMapping*)orderProductsMapping;
+-(RKObjectMapping*)orderShopMapping;
+-(RKObjectMapping*)orderShipmentsMapping;
+-(RKObjectMapping*)orderDestinationMapping;
+-(RKObjectMapping*)orderDetailMapping;
 
 @end

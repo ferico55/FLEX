@@ -164,64 +164,6 @@
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton*)sender;
         switch (button.tag) {
-//            case TAG_BUTTON_TRANSACTION_INSURANCE:
-//            {
-//                AlertPickerView *alert = [AlertPickerView newview];
-//                alert.tag = button.tag;
-//                alert.delegate = self;
-//                alert.pickerData = ARRAY_INSURACE;
-//                [alert show];
-//                break;
-//            }
-//            case TAG_BUTTON_TRANSACTION_ADDRESS:
-//            {
-//                SettingAddressViewController *addressViewController = [SettingAddressViewController new];
-//                addressViewController.delegate = self;
-//                NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-//                addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
-//                                               DATA_INDEXPATH_KEY: selectedIndexPath};
-//                [self.navigationController pushViewController:addressViewController animated:YES];
-//                break;
-//            }
-//            case TAG_BUTTON_TRANSACTION_SERVICE_TYPE:
-//            {
-//                NSArray *shipments = [_dataInput objectForKey:DATA_SHIPMENT_KEY];
-//                NSIndexPath *selectedShipment = [_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-//                NSInteger indexShipment = selectedShipment.row;
-//                NSIndexPath *selectedShipmentPackage = [_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-//                
-//                ShippingInfoShipments *shipment = shipments[indexShipment];
-//                
-//                NSMutableArray *shipmentPackages = [NSMutableArray new];
-//                [shipmentPackages addObjectsFromArray:shipment.shipment_package];
-//                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-//                    if ([package.price isEqualToString:@"0"]) {
-//                        [shipmentPackages removeObject:package];
-//                    }
-//                }
-//                TransactionShipmentViewController *shipmentViewController = [TransactionShipmentViewController new];
-//                shipmentViewController.data = @{DATA_TYPE_KEY:@(TYPE_TRANSACTION_SHIPMENT_SERVICE_TYPE),
-//                                                DATA_SHIPMENT_KEY :shipmentPackages,
-//                                                DATA_INDEXPATH_KEY : selectedShipmentPackage
-//                                                };
-//                shipmentViewController.delegate = self;
-//                [self.navigationController pushViewController:shipmentViewController animated:YES];
-//                break;
-//            }
-//            case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:
-//            {
-//                NSIndexPath *selectedShipment = [_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-//                
-//                ShippingInfoShipments *shipments = [_dataInput objectForKey:DATA_SHIPMENT_KEY];
-//                TransactionShipmentViewController *shipmentViewController = [TransactionShipmentViewController new];
-//                shipmentViewController.data = @{DATA_TYPE_KEY:@(TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY),
-//                                                DATA_SHIPMENT_KEY :shipments,
-//                                                DATA_INDEXPATH_KEY : selectedShipment
-//                                                };
-//                shipmentViewController.delegate = self;
-//                [self.navigationController pushViewController:shipmentViewController animated:YES];
-//                break;
-//            }
             case TAG_BUTTON_TRANSACTION_BUY:
             {
                 if ([self isValidInput]) {
