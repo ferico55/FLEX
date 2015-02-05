@@ -2,7 +2,7 @@
 //  FilterShipmentStatusViewController.h
 //  Tokopedia
 //
-//  Created by Tokopedia PT on 1/29/15.
+//  Created by Feizal Badri Asmoro on 2/4/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
@@ -10,11 +10,11 @@
 
 @protocol FilterShipmentStatusDelegate <NSObject>
 
-- (void)didFinishFilterInvoice:(NSString *)invoice transactionStatus:(NSString *)transactionStatus startDate:(NSString *)startDate endDate:(NSString *)endDate;
+- (void)filterShipmentStatusInvoice:(NSString *)invoice;
 
 @end
 
-@interface FilterShipmentStatusViewController : UIViewController
+@interface FilterShipmentStatusViewController : UITableViewController
 
 @property (weak, nonatomic) id<FilterShipmentStatusDelegate> delegate;
 

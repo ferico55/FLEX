@@ -529,7 +529,7 @@
     NSDictionary* param = @{
                             API_ACTION_KEY           : API_GET_NEW_ORDER_PROCESS_KEY,
                             API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
-                            API_STATUS_KEY           : _invoiceNumber ?: @"",
+                            API_INVOICE_KEY          : _invoiceNumber ?: @"",
                             API_DEADLINE_KEY         : _dueDate ?: @"",
                             API_SHIPMENT_ID_KEY      : _courier.shipment_id ?: @"",
                             API_PAGE_KEY             : [NSNumber numberWithInteger:_page],

@@ -366,7 +366,11 @@
 - (void)didFinishFilterInvoice:(NSString *)invoice dueDate:(NSString *)dueDate
 {
     [_transactions removeAllObjects];
-    [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [_tableView reloadData];
+    
+    _tableView.tableFooterView = _footerView;
+    _activityIndicator.hidden = NO;
+    [_activityIndicator startAnimating];
     
     _isNoData = YES;
     _isRefreshView = NO;
@@ -936,7 +940,8 @@
         
         [self actionRequestSuccess:mappingResult
                      withOperation:operation
-                           orderId:key];
+                           orderId:key
+                        actionType:type];
         [timer invalidate];
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
@@ -951,7 +956,7 @@
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
-- (void)actionRequestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation orderId:(NSString *)orderId
+- (void)actionRequestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation orderId:(NSString *)orderId actionType:(NSString *)actionType
 {
     NSDictionary *result = ((RKMappingResult *)object).dictionary;
     
@@ -959,7 +964,13 @@
     BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status && [actionOrder.result.is_success boolValue]) {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil memproses transaksi."] delegate:self];
+        NSString *message;
+        if ([actionType isEqualToString:@"accept"]) {
+            message = @"Anda telah berhasil memproses transaksi.";
+        } else {
+            message = @"Anda telah berhasil membatalkan transaksi.";
+        }
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[message] delegate:self];
         [alert show];
         [_orderInProcess removeObjectForKey:orderId];
     } else {

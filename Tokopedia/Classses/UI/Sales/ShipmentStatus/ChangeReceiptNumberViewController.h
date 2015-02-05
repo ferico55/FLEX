@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ChangeReceiptNumberDelegate <NSObject>
+
+- (void)changeReceiptNumber:(NSString *)receiptNumber;
+
+@end
+
 @interface ChangeReceiptNumberViewController : UIViewController
+
+@property (weak, nonatomic) id<ChangeReceiptNumberDelegate> delegate;
 
 @end

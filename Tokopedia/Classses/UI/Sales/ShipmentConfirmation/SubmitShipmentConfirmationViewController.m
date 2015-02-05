@@ -195,7 +195,9 @@
 {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
-        if (button.tag == 2) {
+        if (button.tag == 1) {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        } else if (button.tag == 2) {
             UITableViewCell *cell = [_tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
             UITextField *textField = (UITextField *)[cell viewWithTag:1];
             if (textField.text.length >=8 && textField.text.length <=17) {

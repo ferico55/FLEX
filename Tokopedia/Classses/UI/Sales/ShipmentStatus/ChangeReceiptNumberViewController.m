@@ -7,6 +7,7 @@
 //
 
 #import "ChangeReceiptNumberViewController.h"
+#import "StickyAlertView.h"
 
 @interface ChangeReceiptNumberViewController ()
 
@@ -49,7 +50,14 @@
         if (button.tag == 1) {
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         } else if (button.tag == 2) {
-            
+            if (_textField.text.length >=8 && _textField.text.length <=17) {
+                [self.delegate changeReceiptNumber:_textField.text];
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            } else {
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Nomor resi antara 9 - 17 karakter"]
+                                                                               delegate:self];
+                [alert show];
+            }
         }
     }
 }
