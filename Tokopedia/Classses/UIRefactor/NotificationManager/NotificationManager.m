@@ -164,7 +164,8 @@
     [_notificationRequest resetNotification];
 }
 
-- (void)setUnreadNotification:(NSNotification*)notification{
+- (void)setUnreadNotification:(NSNotification*)notification
+{
     if(notification) {
         NSDictionary *userinfo = notification.userInfo;
         [_notificationButton setNoUnreadNotification:[userinfo objectForKey:@"increment_notif"]];
@@ -193,22 +194,15 @@
 - (void)didReceiveNotification:(Notification *)notification
 {
     _notification = notification;
-    
+    [self.delegate didReceiveNotification:notification];    
     if ([_notification.result.total_notif integerValue] == 0) {
-        
         _notificationButton.badgeLabel.hidden = YES;
-        
     } else {
-        
         _notificationButton.enabled = YES;
-        
         _notificationButton.badgeLabel.hidden = NO;
         _notificationButton.badgeLabel.text = [_notification.result.total_notif  stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        
         NSInteger totalNotif = [_notification.result.total_notif integerValue];
-        
         CGRect badgeLabelFrame = _notificationButton.badgeLabel.frame;
-        
         if (totalNotif >= 10 && totalNotif < 100) {
             badgeLabelFrame.origin.x = -11;
             badgeLabelFrame.size.width = 30;
@@ -223,9 +217,7 @@
             badgeLabelFrame.origin.x = -22;
             badgeLabelFrame.size.width = 50;
         }
-        
         _notificationButton.badgeLabel.frame = badgeLabelFrame;
-        
     }
 }
 

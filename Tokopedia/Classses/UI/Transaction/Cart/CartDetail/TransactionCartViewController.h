@@ -13,6 +13,7 @@
 @required
 - (void)didFinishRequestCheckoutData:(NSDictionary*)data;
 - (void)didFinishRequestBuyData:(NSDictionary*)data;
+- (void)shouldBackToFirstPage;
 
 @end
 
@@ -25,6 +26,7 @@
 #endif
 
 @property (nonatomic) NSInteger indexPage;
+@property BOOL shouldRefresh;
 @property (strong,nonatomic,setter=setData:) NSDictionary *data;
 
 @end

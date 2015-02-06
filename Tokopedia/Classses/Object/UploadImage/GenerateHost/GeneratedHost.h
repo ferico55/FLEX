@@ -10,7 +10,7 @@
 
 @interface GeneratedHost : NSObject
 
-@property (nonatomic) NSInteger server_id;
+@property (nonatomic, strong) NSString *server_id;
 @property (nonatomic, strong) NSString *upload_host;
 @property (nonatomic) NSInteger user_id;
 

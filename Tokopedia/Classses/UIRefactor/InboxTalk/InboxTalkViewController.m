@@ -674,7 +674,7 @@
                             };
     
     _requestUnfollowCount ++;
-    _requestUnfollow = [_objectUnfollowmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:TKPD_MESSAGE_TALK_ACTION parameters:param];
+    _requestUnfollow = [_objectUnfollowmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:TKPD_MESSAGE_TALK_ACTION parameters:[param encrypt]];
     
     [_requestUnfollow setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         
@@ -720,7 +720,7 @@
         _requestDelete = [_objectDeletemanager appropriateObjectRequestOperationWithObject:self
                                                                                     method:RKRequestMethodPOST
                                                                                       path:TKPD_MESSAGE_TALK_ACTION
-                                                                                parameters:param];
+                                                                                parameters:[param encrypt]];
         
         [_requestDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             

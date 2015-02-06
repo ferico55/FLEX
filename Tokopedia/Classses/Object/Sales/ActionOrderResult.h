@@ -10,6 +10,6 @@
 
 @interface ActionOrderResult : NSObject
 
-@property NSInteger is_success;
+@property (strong, nonatomic) NSString *is_success;
 
 @end

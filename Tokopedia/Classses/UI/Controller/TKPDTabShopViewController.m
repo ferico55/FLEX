@@ -548,19 +548,19 @@
     NSInteger sort =  [[_detailfilter objectForKey:kTKPDDETAIL_APIORERBYKEY]integerValue];
     NSInteger shopID = [[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0;
     EtalaseList *etalase = [_detailfilter objectForKey:DATA_ETALASE_KEY];
-    BOOL isSoldProduct = (etalase.etalase_id == 7);
+    BOOL isSoldProduct = ([etalase.etalase_id integerValue] == 7);
     BOOL isAllEtalase = (etalase.etalase_id == 0);
     
     id etalaseid;
     
     if (isSoldProduct) {
         etalaseid = @"sold";
-        if(sort == 0)sort = etalase.etalase_id;
+        if(sort == 0)sort = [etalase.etalase_id integerValue];
     }
     else if (isAllEtalase)
         etalaseid = @"all";
     else{
-        etalaseid = @(etalase.etalase_id);
+        etalaseid = etalase.etalase_id?:@"";
     }
     
     NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY    :   kTKPDDETAIL_APIGETSHOPPRODUCTKEY,
@@ -569,7 +569,7 @@
                             kTKPDDETAIL_APILIMITKEY     :   @(_limit),
                             kTKPDDETAIL_APIORERBYKEY    :   @(sort),
                             kTKPDDETAIL_APIKEYWORDKEY   :   querry,
-                            kTKPDDETAIL_APIETALASEIDKEY :   etalaseid?:0};
+                            kTKPDDETAIL_APIETALASEIDKEY :   etalaseid};
     
     [_cachecontroller getFileModificationDate];
     

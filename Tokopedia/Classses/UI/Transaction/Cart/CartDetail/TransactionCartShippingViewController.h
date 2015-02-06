@@ -7,21 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
-@class TransactionCartShipmentViewController;
+@class TransactionCartShippingViewController;
 
 #pragma mark - Transaction Cart Shipment Delegate
-@protocol TransactionCartShipmentViewControllerDelegate <NSObject>
+@protocol TransactionCartShippingViewControllerDelegate <NSObject>
 @required
-- (void)TransactionCartShipmentViewController:(TransactionCartShipmentViewController*)viewController withUserInfo:(NSDictionary*)userInfo;
+- (void)TransactionCartShippingViewController:(TransactionCartShippingViewController*)viewController withUserInfo:(NSDictionary*)userInfo;
 
 @end
 
 @interface TransactionCartShippingViewController : UIViewController
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-@property (nonatomic, weak) IBOutlet id<TransactionCartShipmentViewControllerDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<TransactionCartShippingViewControllerDelegate> delegate;
 #else
-@property (nonatomic, assign) IBOutlet id<TransactionCartShipmentViewControllerDelegate> delegate;
+@property (nonatomic, assign) IBOutlet id<TransactionCartShippingViewControllerDelegate> delegate;
 #endif
 
 @property (nonatomic) NSInteger indexPage;

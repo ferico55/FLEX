@@ -123,6 +123,7 @@
                 v.data = @{kTKPDALERTVIEW_DATATYPEKEY:@(kTKPDALERT_DATAALERTTYPESHOPEDITKEY)};
                 v.tag = 10;
                 v.delegate = self;
+                v.isSetMinimumDate = YES;
                 [v show];
                 break;
             }

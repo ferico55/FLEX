@@ -59,7 +59,10 @@
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (strong, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (strong, nonatomic) IBOutlet UIView *searchBarView;
 
+@property (strong, nonatomic) IBOutlet UIView *addNewAddressView;
 -(void)cancel;
 -(void)configureRestKit;
 -(void)request;
@@ -120,16 +123,23 @@
         [_doneBarButtonItem setTag:TAG_SETTING_ADDRESS_BARBUTTONITEM_DONE];
         self.navigationItem.rightBarButtonItem = _doneBarButtonItem;
         
-        UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 44.0)];
-        searchBar.delegate = self;
-        searchBar.placeholder = @"Search";
-        searchBar.userInteractionEnabled=YES;
-        searchBar.searchBarStyle = UISearchBarStyleMinimal;
-        
-        UIView *searchBarContainer = [[UIView alloc] initWithFrame:searchBar.frame];
-        [searchBarContainer addSubview:searchBar];
-        
-        self.navigationItem.titleView = searchBarContainer;
+        UIView *additionalView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 88)];
+        [additionalView addSubview:_searchBarView];
+        CGRect frame = _addNewAddressView.frame;
+        frame.origin.y +=_searchBarView.frame.size.height;
+        [_addNewAddressView setFrame:frame];
+        [additionalView addSubview:_addNewAddressView];
+        _table.tableHeaderView = additionalView;
+        //UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 44.0)];
+        _searchBar.delegate = self;
+        _searchBar.placeholder = @"Cari Alamat";
+        _searchBar.userInteractionEnabled=YES;
+        //searchBar.searchBarStyle = UISearchBarStyleMinimal;
+        //
+        //UIView *searchBarContainer = [[UIView alloc] initWithFrame:searchBar.frame];
+        //[searchBarContainer addSubview:searchBar];
+        //
+        //self.navigationItem.titleView = searchBarContainer;
 
     }
     else
@@ -139,6 +149,10 @@
         barButtonItem.tag = 10;
         [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        UIView *additionalView = [[UIView alloc]initWithFrame:_addNewAddressView.frame];
+        [additionalView addSubview:_addNewAddressView];
+        _table.tableHeaderView = additionalView;
     }
 
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -162,6 +176,7 @@
     _auth = auth;
     
     _selectedIndexPath = [_data objectForKey:DATA_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    _limit = kTKPDPROFILESETTINGADDRESS_LIMITPAGE;
 }
 
 
@@ -298,12 +313,6 @@
 }
 
 #pragma mark - Table View Delegate
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    view.backgroundColor = [UIColor clearColor];
-    return view;
-}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -351,11 +360,11 @@
 	}
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-	if (row == indexPath.row) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
+	if (indexPath.section == _limit-1) {
+		//NSLog(@"%@", NSStringFromSelector(_cmd));
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             /** called if need to load next page **/
-            //NSLog(@"%@", NSStringFromSelector(_cmd));
+            NSLog(@"%@", NSStringFromSelector(_cmd));
             [self configureRestKit];
             [self request];
         }
@@ -460,7 +469,7 @@
         [_act stopAnimating];
     }
     
-    _doneBarButtonItem.enabled = NO;
+    if (_page==1)_doneBarButtonItem.enabled = NO;
     
     NSString *query = [_datainput objectForKey:API_QUERY_KEY]?:@"";
     NSInteger userID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
@@ -479,7 +488,7 @@
         [self requestSuccess:mappingResult withOperation:operation];
         [_act stopAnimating];
         _table.tableFooterView = nil;
-        _table.tableHeaderView = nil;
+        //_table.tableHeaderView = nil;
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         [timer invalidate];
@@ -552,7 +561,6 @@
                     _page = [[queries objectForKey:kTKPDPROFILE_APIPAGEKEY] integerValue];
                     NSLog(@"%zd",_page);
                 }
-                [_table reloadData];
                 NSInteger type = [[_datainput objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]integerValue];
                 if (type == 1) {
                     //TODO: Behavior after edit
@@ -569,6 +577,8 @@
                     vc.delegate = self;
                     [self.navigationController pushViewController:vc animated:NO];
                 }
+                [_table reloadData];
+
             }
         }
         else{
@@ -647,7 +657,6 @@
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APISETDEFAULTADDRESSKEY,
                             kTKPDPROFILESETTING_APIADDRESSIDKEY : [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSIDKEY]?:0
                             };
-    _requestcount ++;
     
     _requestActionSetDefault = [_objectmanagerActionSetDefault appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:[param encrypt]];
     
@@ -710,14 +719,6 @@
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
                 }
-                else
-                {
-                    [self cancelSetAsDefault];
-                    NSError *error = object;
-                    NSString *errorDescription = error.localizedDescription;
-                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                    [errorAlert show];
-                }
             }
         }
         else{
@@ -778,11 +779,11 @@
     NSDictionary *userinfo = (NSDictionary*)object;
     
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIDELETEADDRESSKEY,
-                            kTKPDPROFILESETTING_APIADDRESSIDKEY : [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSIDKEY]
+                            kTKPDPROFILESETTING_APIADDRESSIDKEY : [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSIDKEY],
+                            @"dec_enc":@"off"
                             };
-    _requestcount ++;
     
-    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:[param encrypt]]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
+    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:param]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
     
     [_requestActionDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionDelete:mappingResult withOperation:operation];
@@ -984,13 +985,11 @@
 #pragma mark - UISearchBar Delegate
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [_datainput setObject:searchBar.text forKey:API_QUERY_KEY];
-    [self refreshView:nil];
-    _table.tableHeaderView = _footer;
-    [_act startAnimating];
+    //_table.tableHeaderView = _footer;
+    //[_act startAnimating];
     [searchBar resignFirstResponder];
-    [self.navigationItem setRightBarButtonItem:_doneBarButtonItem];
-    [self.navigationItem setLeftBarButtonItem:_cancelBarButtonItem];
+    //[self.navigationItem setRightBarButtonItem:_doneBarButtonItem];
+    //[self.navigationItem setLeftBarButtonItem:_cancelBarButtonItem];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
@@ -1001,16 +1000,17 @@
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
 {
-    //[searchBar setShowsCancelButton:NO animated:YES];
-
+    [searchBar setShowsCancelButton:NO animated:YES];
+    [_datainput setObject:searchBar.text forKey:API_QUERY_KEY];
+    [self refreshView:nil];
     return YES;
 }
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
-    //[searchBar setShowsCancelButton:YES animated:YES];
-    [self.navigationItem setRightBarButtonItem:nil];
-    [self.navigationItem setLeftBarButtonItem:nil];
+    [searchBar setShowsCancelButton:YES animated:YES];
+    //[self.navigationItem setRightBarButtonItem:nil];
+    //[self.navigationItem setLeftBarButtonItem:nil];
     return YES;
 }
 

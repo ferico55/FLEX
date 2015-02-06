@@ -13,6 +13,8 @@
     NSString *_dueDate;
 }
 
+@property (weak, nonatomic) IBOutlet UITextField *invoiceTextField;
+
 @end
 
 @implementation FilterNewOrderViewController
@@ -48,6 +50,23 @@
 }
 
 - (IBAction)tap:(id)sender {
+    
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *barButton = (UIBarButtonItem *)sender;
+        if (barButton.tag == 2) {
+            NSString *deadline = @"";
+            if ([_dueDate isEqualToString:@"Hari ini"]) {
+                deadline = @"4";
+            } else if ([_dueDate isEqualToString:@"Besok"]) {
+                deadline = @"3";
+            } else if ([_dueDate isEqualToString:@"2 Hari"]) {
+                deadline = @"2";
+            } else if ([_dueDate isEqualToString:@"3 Hari"]) {
+                deadline = @"1";
+            }
+            [self.delegate didFinishFilterInvoice:_invoiceTextField.text?:@"" dueDate:deadline];
+        }
+    }
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

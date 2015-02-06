@@ -105,12 +105,11 @@
                 //submit
                 EtalaseList *list = [_data objectForKey:DATA_ETALASE_KEY];
 
-                if ([self isValidEtalaseName] && list.etalase_id != DATA_ADD_NEW_ETALASE_ID) {
+                if ([self isValidEtalaseName] && [list.etalase_id integerValue] != DATA_ADD_NEW_ETALASE_ID) {
                     [self configureRestKitActionAddEtalase];
                     [self requestActionAddEtalase:_datainput];
                 }
-                
-                if ([self isValidEtalaseName] && list.etalase_id == DATA_ADD_NEW_ETALASE_ID) {
+                if ([self isValidEtalaseName] && [list.etalase_id integerValue] == DATA_ADD_NEW_ETALASE_ID) {
                     EtalaseList *list = [_data objectForKey:DATA_ETALASE_KEY];
                     NSString *etalasename = [_datainput objectForKey:kTKPDSHOP_APIETALASENAMEKEY]?:list.etalase_name?:@"";
                     list.etalase_name = etalasename;
@@ -161,7 +160,7 @@
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOPETALASEACTION_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILSHOPETALASEACTION_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanagerActionAddEtalase addResponseDescriptor:responseDescriptor];
     
@@ -190,7 +189,7 @@
     
     _barbuttonsave.enabled = NO;
     
-    _requestActionAddEtalase = [_objectmanagerActionAddEtalase appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPETALASEACTION_APIPATH parameters:param];
+    _requestActionAddEtalase = [_objectmanagerActionAddEtalase appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOPETALASEACTION_APIPATH parameters:[param encrypt]];
     
     [_requestActionAddEtalase setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionAddEtalase:mappingResult withOperation:operation];

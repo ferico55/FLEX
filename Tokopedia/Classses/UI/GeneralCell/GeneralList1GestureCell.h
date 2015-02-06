@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "MGSwipeTableCell.h"
 
-#define kTKPDGENERALLIST1GESTURECELL_IDENTIFIER @"GeneralList1GeneralCellIdentifier"
+#define kTKPDGENERALLIST1GESTURECELL_IDENTIFIER @"GeneralListCellIdentifier"
 
 @interface GeneralList1GestureCell : MGSwipeTableCell
 

@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "TKPDAlertView.h"
+#import "string_alert.h"
 
 @interface AlertPickerView : TKPDAlertView
 
 @property (strong,nonatomic) NSArray *pickerData;
+@property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
 @end

@@ -69,7 +69,7 @@ typedef enum
 #define kTKPDPROFILE_APIGETPRIVACYKEY @"get_privacy_form"
 #define kTKPDPROFILE_APISETPRIVACYKEY @"get_privacy"
 #define kTKPDPROFILE_APIGETUSERADDRESSKEY @"get_address"
-#define kTKPDPROFILE_APISETDEFAULTADDRESSKEY @"set_default_address"
+#define kTKPDPROFILE_APISETDEFAULTADDRESSKEY @"edit_default_address"
 #define kTKPDPROFILE_APIADDADDRESSKEY @"add_address"
 #define kTKPDPROFILE_APIEDITADDRESSKEY @"edit_address"
 #define kTKPDPROFILE_APIDELETEADDRESSKEY @"delete_address"

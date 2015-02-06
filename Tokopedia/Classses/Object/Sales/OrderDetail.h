@@ -13,6 +13,7 @@
 @property (strong, nonatomic) NSString *detail_insurance_price;
 @property (strong, nonatomic) NSString *detail_open_amount;
 @property NSInteger detail_total_add_fee;
+@property NSInteger detail_partial_order;
 @property NSInteger detail_quantity;
 @property (strong, nonatomic) NSString *detail_product_price_idr;
 @property (strong, nonatomic) NSString *detail_invoice;
@@ -36,5 +37,8 @@
 @property (strong, nonatomic) NSString *detail_print_address_uri;
 @property (strong, nonatomic) NSString *detail_pdf;
 @property NSInteger detail_order_status;
+
+@property (strong, nonatomic) NSString *detail_dropship_name;
+@property (strong, nonatomic) NSString *detail_dropship_telp;
 
 @end

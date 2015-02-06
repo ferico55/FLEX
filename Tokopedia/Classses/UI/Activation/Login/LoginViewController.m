@@ -228,7 +228,7 @@
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDLOGIN_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDLOGIN_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
@@ -282,10 +282,10 @@
     _login = stats;
     BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
+        
         _isnodata = NO;
 
         if (!_login.message_error) {
-            
             //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             //[defaults saveCustomObject:_login.result key:kTKPD_AUTHKEY];
             //[defaults setObject:operation.HTTPRequestOperation.responseData forKey:kTKPD_AUTHKEY];
@@ -306,6 +306,7 @@
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
             
             [self.tabBarController setSelectedIndex:0];
+            
             NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
             [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION object:nil userInfo:@{}];
         }
@@ -324,6 +325,12 @@
             //UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"ERROR" message:message delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
             //[alertView show];
         }
+    }
+    else
+    {
+        NSArray *messages = [NSArray arrayWithObjects:@"Sign in gagal silahkan coba lagi.", nil];
+        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
     }
 }
 

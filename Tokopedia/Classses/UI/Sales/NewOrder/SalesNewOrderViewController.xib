@@ -86,14 +86,14 @@
                 <constraint firstItem="ljV-Fk-VDb" firstAttribute="top" secondItem="1fh-8o-6y0" secondAttribute="bottom" id="utY-hN-bJS"/>
                 <constraint firstAttribute="bottom" secondItem="ljV-Fk-VDb" secondAttribute="bottom" id="v52-E1-N14"/>
             </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="366" y="360"/>
         </view>
         <view contentMode="scaleToFill" id="u8O-JY-tZd" userLabel="Alert View">
             <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Order anda akan otomatis kami batalkan apabila anda melewati batas waktu respon (3 hari) setelah order diverifikasi. " lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LYm-kA-B92">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Order anda akan otomatis kami batalkan apabila anda melewati batas waktu respon (3 hari) setelah order diverifikasi. " lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="LYm-kA-B92">
                     <rect key="frame" x="15" y="0.0" width="290" height="56"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -101,8 +101,8 @@
                 </label>
             </subviews>
             <color key="backgroundColor" red="1" green="0.97647058823529409" blue="0.76862745098039209" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="748" y="148"/>
         </view>
         <view contentMode="scaleToFill" id="hXd-um-DF6" userLabel="Footer View">
             <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
@@ -113,8 +113,8 @@
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="748" y="306.5"/>
         </view>
     </objects>
     <resources>

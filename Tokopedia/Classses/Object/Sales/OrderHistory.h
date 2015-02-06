@@ -13,7 +13,7 @@
 @property (strong, nonatomic) NSString *history_status_date;
 @property (strong, nonatomic) NSString *history_status_date_full;
 @property (strong, nonatomic) NSString *history_order_status;
-@property NSInteger *history_comments;
+@property (strong, nonatomic) NSString *history_comments;
 @property (strong, nonatomic) NSString *history_action_by;
 @property (strong, nonatomic) NSString *history_buyer_status;
 @property (strong, nonatomic) NSString *history_seller_status;

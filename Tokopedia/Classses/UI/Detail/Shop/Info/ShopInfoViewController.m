@@ -147,7 +147,7 @@
                 [viewcontrollers addObject:v];
                 ProfileFavoriteShopViewController *v1 = [ProfileFavoriteShopViewController new];
                 v1.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(_shop.result.owner.owner_id),
-                            kTKPDDETAIL_APISHOPIDKEY:@(_shop.result.info.shop_id),
+                            kTKPDDETAIL_APISHOPIDKEY:_shop.result.info.shop_id?:@"",
                             kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]
                             };
                 [viewcontrollers addObject:v1];
@@ -201,7 +201,7 @@
             {
                 //favorited button action
                 ShopFavoritedViewController *vc = [ShopFavoritedViewController new];
-                vc.data = @{kTKPDDETAIL_APISHOPIDKEY : @(_shop.result.info.shop_id),
+                vc.data = @{kTKPDDETAIL_APISHOPIDKEY : _shop.result.info.shop_id?:@"",
                             kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
@@ -223,7 +223,7 @@
                 [viewcontrollers addObject:v];
                 ProfileFavoriteShopViewController *v1 = [ProfileFavoriteShopViewController new];
                 v1.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(_shop.result.owner.owner_id),
-                            kTKPDDETAIL_APISHOPIDKEY:@(_shop.result.info.shop_id),
+                            kTKPDDETAIL_APISHOPIDKEY:_shop.result.info.shop_id?:@"",
                             kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]
                             };
                 [viewcontrollers addObject:v1];

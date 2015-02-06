@@ -46,8 +46,6 @@
     NSDictionary *_auth;
     
     Deposit *_deposit;
-    Notification *_notification;
-    
     NSOperationQueue *_operationQueue;
 
     __weak RKObjectManager *_depositObjectManager;
@@ -74,7 +72,8 @@
 
 @implementation MoreViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     
     [super viewDidLoad];
     
@@ -163,15 +162,15 @@
     [super didReceiveMemoryWarning];
 }
 
-
-
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 6;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     switch (section) {
         case 0:
             return 1;
@@ -268,7 +267,7 @@
     else if (indexPath.section == 1 && indexPath.row == 1) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         PurchaseViewController *purchaseController = [storyboard instantiateViewControllerWithIdentifier:@"PurchaseViewController"];
-        purchaseController.notification = _notification;
+        purchaseController.notification = _notifManager.notification;
         [self.navigationController pushViewController:purchaseController animated:YES];
     }
     
@@ -285,7 +284,7 @@
     else if (indexPath.section == 2 && indexPath.row == 1) {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         SalesViewController *salesController = [storyboard instantiateViewControllerWithIdentifier:@"SalesViewController"];
-        salesController.notification = _notification;
+        salesController.notification = _notifManager.notification;
         [self.navigationController pushViewController:salesController animated:YES];
     }
     
@@ -332,10 +331,10 @@
             InboxReviewViewController *vc = [InboxReviewViewController new];
             vc.data=@{@"nav":@"inbox-review"};
             
-            InboxTalkViewController *vc1 = [InboxReviewViewController new];
+            InboxReviewViewController *vc1 = [InboxReviewViewController new];
             vc1.data=@{@"nav":@"inbox-review-my-product"};
             
-            InboxTalkViewController *vc2 = [InboxReviewViewController new];
+            InboxReviewViewController *vc2 = [InboxReviewViewController new];
             vc2.data=@{@"nav":@"inbox-review-my-review"};
             
             NSArray *vcs = @[vc,vc1, vc2];
@@ -385,7 +384,7 @@
     
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodGET
+                                                                                                  method:RKRequestMethodPOST
                                                                                              pathPattern:API_DEPOSIT_PATH
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
@@ -431,32 +430,6 @@
     
 }
 
-
-//#pragma mark - Navigation
-//
-//- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-//{
-//    if ([segue.identifier isEqualToString:@"Sales"]) {
-//        SalesViewController *salesController = segue.destinationViewController;
-//        salesController.notification = _notification;
-//    }
-//    else if ([segue.identifier isEqualToString:@"Purchase"]) {
-//        PurchaseViewController *purchaseController = segue.destinationViewController;
-//        purchaseController.notification = _notification;
-//    }
-//}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"Sales"]) {
-        SalesViewController *salesController = segue.destinationViewController;
-        salesController.notification = _notification;
-    }
-    else if ([segue.identifier isEqualToString:@"Purchase"]) {
-        PurchaseViewController *purchaseController = segue.destinationViewController;
-        purchaseController.notification = _notification;
-    }
-}
-
 #pragma mark - Notification Manager
 - (void)initNotificationManager {
     _notifManager = [NotificationManager new];
@@ -473,7 +446,6 @@
 }
 
 - (void)goToViewController:(NSNotification*)notification {
-    NSDictionary *userinfo = notification.userInfo;
     [self tapWindowBar];
 }
 

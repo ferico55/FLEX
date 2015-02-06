@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ShipmentConfirmationDelegate <NSObject>
+
+- (void)viewController:(UIViewController *)viewController numberOfProcessedOrder:(NSInteger)totalOrder;
+
+@end
+
 @interface ShipmentConfirmationViewController : UIViewController
+
+@property (weak, nonatomic) id<ShipmentConfirmationDelegate> delegate;
 
 @end

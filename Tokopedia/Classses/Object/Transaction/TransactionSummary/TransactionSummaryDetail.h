@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TransactionCartList.h"
+#import "TransactionSummaryBCAParam.h"
 
 @interface TransactionSummaryDetail : NSObject
 

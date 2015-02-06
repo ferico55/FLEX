@@ -14,6 +14,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *insuranceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *shippingCostLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalLabel;
+@property (weak, nonatomic) IBOutlet UILabel *biayaInsuranceLabel;
+@property (weak, nonatomic) IBOutlet UIButton *infoButton;
 
 +(id)newview;
 

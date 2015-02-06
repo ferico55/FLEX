@@ -7,6 +7,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductQuantityViewController">
             <connections>
+                <outlet property="explanationTextView" destination="ygK-rY-QbB" id="K2x-4y-7My"/>
+                <outlet property="footerView" destination="16A-Jf-hoy" id="0ji-jL-lwg"/>
                 <outlet property="tableView" destination="May-Mf-z8r" id="46l-0O-moG"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -16,9 +18,9 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="May-Mf-z8r">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="135" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="May-Mf-z8r">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="fi6-ah-aRL"/>
                         <outlet property="delegate" destination="-1" id="a20-oD-lnj"/>
@@ -26,7 +28,50 @@
                 </tableView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="May-Mf-z8r" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Hat-cL-Pck"/>
+                <constraint firstAttribute="trailing" secondItem="May-Mf-z8r" secondAttribute="trailing" id="J85-cD-OkP"/>
+                <constraint firstAttribute="bottom" secondItem="May-Mf-z8r" secondAttribute="bottom" id="WBw-e0-e15"/>
+                <constraint firstItem="May-Mf-z8r" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="mVu-fh-iWI"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+        </view>
+        <view contentMode="scaleToFill" id="16A-Jf-hoy">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="164"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ygK-rY-QbB">
+                    <rect key="frame" x="10" y="10" width="300" height="144"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S2l-4b-WqV" userLabel="Horizontal Line">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NQX-dO-Ann" userLabel="Horizontal Line">
+                    <rect key="frame" x="0.0" y="163" width="320" height="1"/>
+                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="NQX-dO-Ann" firstAttribute="top" secondItem="ygK-rY-QbB" secondAttribute="bottom" constant="9" id="44o-Pc-uzI"/>
+                <constraint firstItem="ygK-rY-QbB" firstAttribute="leading" secondItem="16A-Jf-hoy" secondAttribute="leading" constant="10" id="6bk-Jp-ILT"/>
+                <constraint firstItem="NQX-dO-Ann" firstAttribute="leading" secondItem="16A-Jf-hoy" secondAttribute="leading" id="AdK-bb-aDg"/>
+                <constraint firstAttribute="bottom" secondItem="ygK-rY-QbB" secondAttribute="bottom" constant="10" id="RGE-pJ-Hzk"/>
+                <constraint firstAttribute="bottom" secondItem="NQX-dO-Ann" secondAttribute="bottom" id="Xor-55-NJc"/>
+                <constraint firstItem="S2l-4b-WqV" firstAttribute="top" secondItem="16A-Jf-hoy" secondAttribute="top" id="ZhY-id-oOK"/>
+                <constraint firstItem="ygK-rY-QbB" firstAttribute="top" secondItem="16A-Jf-hoy" secondAttribute="top" constant="10" id="aCi-5u-YHA"/>
+                <constraint firstItem="S2l-4b-WqV" firstAttribute="leading" secondItem="16A-Jf-hoy" secondAttribute="leading" id="cDi-L5-vHs"/>
+                <constraint firstAttribute="trailing" secondItem="NQX-dO-Ann" secondAttribute="trailing" id="cKg-bR-tfe"/>
+                <constraint firstAttribute="trailing" secondItem="S2l-4b-WqV" secondAttribute="trailing" id="e1Y-EV-wE8"/>
+                <constraint firstItem="ygK-rY-QbB" firstAttribute="top" secondItem="S2l-4b-WqV" secondAttribute="bottom" constant="9" id="f9p-jB-JAo"/>
+                <constraint firstAttribute="trailing" secondItem="ygK-rY-QbB" secondAttribute="trailing" constant="10" id="vH7-ga-h4t"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="920" y="182"/>
         </view>
     </objects>
 </document>

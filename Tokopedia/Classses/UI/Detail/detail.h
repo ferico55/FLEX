@@ -50,8 +50,9 @@ typedef enum
 #define TITLE_SHOP_SETTING @"Pengaturan Toko"
 
 #define TITLE_LIST_PRODUCT @"Produk"
-#define TITLE_ADD_PRODUCT @"Tambah Product"
-#define TITLE_EDIT_PRODUCT @"Ubah Product"
+#define TITLE_ADD_PRODUCT @"Tambah Produk"
+#define TITLE_EDIT_PRODUCT @"Ubah Produk"
+#define TITLE_SALIN_PRODUCT @"Salin Produk"
 
 #define kTKPDTITLE_NOTE @"Catatan"
 #define kTKPDTILTE_EDIT_NOTE @"Ubah Catatan"
@@ -98,6 +99,7 @@ typedef enum
 #define DATA_WHOLESALE_LIST_KEY @"dataWholesale"
 #define DATA_IS_DEFAULT_IMAGE @"isdefaultimage"
 #define DATA_IS_GOLD_MERCHANT @"isgoldmerchant"
+#define DATA_IMAGE_VIEW_IN_PROGRESS @"imageViewInProgress"
 
 #define kTKPDDETAILETALASE_DATAINDEXPATHKEY @"etalaseindexpath"
 

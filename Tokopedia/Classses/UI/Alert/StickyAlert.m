@@ -38,7 +38,8 @@
     CGRect frame = _view.superview.frame;
 
     UILabel* errorlabel = [[UILabel alloc]initWithFrame:frame];
-    NSString *joinedstring = [NSString stringWithFormat:@"\n  \u25CF  %@",[[errorArray valueForKey:@"description"] componentsJoinedByString:@"\n  \u25CF  "]]; //[NSString convertHTML:[errorArray componentsJoinedByString:@"\n"]];
+    NSString *joinedstring = [NSString stringWithFormat:@"\n  \u25CF  %@", [[errorArray valueForKey:@"description"] componentsJoinedByString:@"\n  \u25CF  "]];
+    //[NSString convertHTML:[errorArray componentsJoinedByString:@"\n"]];
     
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
     

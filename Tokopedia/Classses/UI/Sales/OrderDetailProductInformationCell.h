@@ -12,4 +12,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *productInformationLabel;
 
++ (CGFloat)maxTextWidth;
++ (CGSize)messageSize:(NSString*)message;
++ (CGFloat)textMarginVertical;
+
 @end

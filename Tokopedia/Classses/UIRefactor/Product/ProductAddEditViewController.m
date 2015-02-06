@@ -25,7 +25,7 @@
 #import "URLCacheController.h"
 
 #pragma mark - Setting Add Product View Controller
-@interface ProductAddEditViewController ()<UITextFieldDelegate,UIScrollViewDelegate,TKPDAlertViewDelegate,CameraControllerDelegate,CategoryMenuViewDelegate,ProductEditDetailViewControllerDelegate>
+@interface ProductAddEditViewController ()<UITextFieldDelegate,UIScrollViewDelegate,TKPDAlertViewDelegate,CameraControllerDelegate,CategoryMenuViewDelegate,ProductEditDetailViewControllerDelegate, ProductEditImageViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 {
     NSMutableDictionary *_dataInput;
     NSMutableArray *_productImageURLs;
@@ -73,27 +73,25 @@
     
     UIBarButtonItem *_nextBarButtonItem;
     BOOL _isFinishedUploadImages;
+    NSDictionary *_auth;
+    BOOL _isNodata;
 }
+@property (strong, nonatomic) IBOutlet UIView *section2FooterView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0TableViewCell;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1TableViewCell;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section2TableViewCell;
+@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section3TableViewCell;
+
 @property (weak, nonatomic) IBOutlet UIScrollView *productImageScrollView;
-
 @property (weak, nonatomic) IBOutlet UITextField *productNameTextField;
 @property (weak, nonatomic) IBOutlet UITextField *minimumOrderTextField;
 @property (weak, nonatomic) IBOutlet UITextField *productPriceTextField;
 @property (weak, nonatomic) IBOutlet UITextField *productWeightTextField;
-
-@property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UIView *productImagesContentView;
-
-@property (weak, nonatomic) IBOutlet UIButton *categoryButton;
-@property (weak, nonatomic) IBOutlet UIButton *priceCurrencyButton;
-@property (weak, nonatomic) IBOutlet UIButton *weightUnitButton;
-
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *addImageButtons;
-@property (strong, nonatomic) IBOutletCollection(UIActivityIndicatorView) NSArray *productImageActs;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *thumbProductImageViews;
-
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *defaultImageLabels;
 
 -(void)cancel;
@@ -131,10 +129,12 @@
 {
     [super viewDidLoad];
     
-    _productImageActs = [NSArray sortViewsWithTagInArray:_productImageActs];
     _addImageButtons = [NSArray sortViewsWithTagInArray:_addImageButtons];
     _thumbProductImageViews = [NSArray sortViewsWithTagInArray:_thumbProductImageViews];
     _defaultImageLabels = [NSArray sortViewsWithTagInArray:_defaultImageLabels];
+    _section1TableViewCell = [NSArray sortViewsWithTagInArray:_section1TableViewCell];
+    _section2TableViewCell = [NSArray sortViewsWithTagInArray:_section2TableViewCell];
+    _section3TableViewCell = [NSArray sortViewsWithTagInArray:_section3TableViewCell];
     
     _operationQueue = [NSOperationQueue new];
     _operationQueueUploadImage = [NSOperationQueue new];
@@ -174,6 +174,9 @@
     //_cachecontroller.URLCacheInterval = 86400.0;
     //[_cachecontroller initCacheWithDocumentPath:path];
     
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    _auth = [secureStorage keychainDictionary];
+    
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PRODUCT_EDIT || type == TYPE_ADD_EDIT_PRODUCT_COPY) {
         [self configureRestKit];
@@ -203,7 +206,6 @@
 {
     [super viewDidLayoutSubviews];
     
-    _scrollView.contentSize = _contentView.frame.size;
     _productImageScrollView.contentSize = _productImagesContentView.frame.size;
 }
 
@@ -233,7 +235,7 @@
             case 11:
             {
                 if (!_isFinishedUploadImages) {
-                    NSArray *errorMessage = @[@"Belum Selesai Mengupload Image"];
+                    NSArray *errorMessage = @[ERRORMESSAGE_PROCESSING_UPLOAD_IMAGE];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:errorMessage,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
@@ -287,15 +289,6 @@
             {
                 AlertPickerView *v = [AlertPickerView newview];
                 v.pickerData = ARRAY_PRICE_CURRENCY;
-                v.tag = btn.tag;
-                v.delegate = self;
-                [v show];
-                break;
-            }
-            case BUTTON_PRODUCT_WEIGHT_UNIT:
-            {
-                AlertPickerView *v = [AlertPickerView newview];
-                v.pickerData = ARRAY_WEIGHT_UNIT;
                 v.tag = btn.tag;
                 v.delegate = self;
                 [v show];
@@ -366,6 +359,212 @@
         default:
             break;
     }
+}
+
+#pragma mark - Table View Data Source
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 4;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+    NSInteger rowCount = 0;
+    switch (section) {
+        case 0:
+            rowCount = _section0TableViewCell.count;
+            break;
+        case 1:
+            rowCount = _section1TableViewCell.count;
+            break;
+        case 2:
+            rowCount = _section2TableViewCell.count;
+            break;
+        case 3:
+            rowCount = _section3TableViewCell.count;
+            break;
+        default:
+            break;
+    }
+#ifdef kTKPDHOTLISTRESULT_NODATAENABLE
+    return _isNodata?1:rowCount;
+#else
+    return _isNodata?0:rowCount;
+#endif
+}
+
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+    //NSDictionary *selectedCategory = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+    Breadcrumb *breadcrumb = [_dataInput objectForKey:DATA_CATEGORY_KEY];
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    
+    UITableViewCell* cell = nil;
+    if (!_isNodata) {
+        switch (indexPath.section) {
+            case 0:
+                cell = _section0TableViewCell[indexPath.row];
+                break;
+            case 1:
+                cell = _section1TableViewCell[indexPath.row];
+                if (indexPath.row == BUTTON_PRODUCT_CATEGORY) {
+                    NSString *departmentTitle = breadcrumb.department_name?:@"Pilih Kategori";
+                    cell.detailTextLabel.text = departmentTitle;
+                    }
+                break;
+            case 2:
+                cell = _section2TableViewCell[indexPath.row];
+                if (indexPath.row==BUTTON_PRODUCT_PRICE_CURRENCY) {
+                    NSString *currencyName = product.product_currency;
+                    cell.detailTextLabel.text = currencyName;
+                }
+                break;
+            case 3:
+                cell = _section3TableViewCell[indexPath.row];
+                if (indexPath.row == BUTTON_PRODUCT_WEIGHT_UNIT) {
+                    NSString *weightUnitName = product.product_weight_unit_name;
+                    cell.detailTextLabel.text = weightUnitName;
+                }
+                break;
+            default:
+                break;
+        }
+    } else {
+        static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
+        
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        cell.textLabel.text = kTKPDDETAIL_NODATACELLTITLE;
+        cell.detailTextLabel.text = kTKPDDETAIL_NODATACELLDESCS;
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    return cell;
+}
+
+
+#pragma mark - Table View Delegate
+-(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if (section==2) {
+        return _section2FooterView;
+    }
+    else return nil;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section==2) {
+        return _section2FooterView.frame.size.height;
+    }
+    else return 0;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    float cellHeight;
+    switch (indexPath.section) {
+        case 0:
+            cellHeight = ((UITableViewCell*)_section0TableViewCell[indexPath.row]).frame.size.height;
+            break;
+        case 1:
+            cellHeight = ((UITableViewCell*)_section1TableViewCell[indexPath.row]).frame.size.height;
+            break;
+        case 2:
+            cellHeight = ((UITableViewCell*)_section2TableViewCell[indexPath.row]).frame.size.height;
+            break;
+        case 3:
+            cellHeight = ((UITableViewCell*)_section3TableViewCell[indexPath.row]).frame.size.height;
+            break;
+        default:
+            break;
+    }
+    return cellHeight;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [_activeTextField resignFirstResponder];
+    switch (indexPath.section) {
+        case 1:
+            switch (indexPath.row) {
+                case BUTTON_PRODUCT_PRODUCT_NAME:
+                    [_productNameTextField becomeFirstResponder];
+                    break;
+                case BUTTON_PRODUCT_CATEGORY:
+                {
+                    CategoryMenuViewController *categoryViewController = [CategoryMenuViewController new];
+                    NSInteger d_id = [[_data objectForKey:kTKPDCATEGORY_DATADEPARTMENTIDKEY] integerValue];
+                    categoryViewController.data = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:@(d_id),
+                                                    DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE:@(CATEGORY_MENU_PREVIOUS_VIEW_ADD_PRODUCT)
+                                                    };
+                    categoryViewController.delegate = self;
+                    [self.navigationController pushViewController:categoryViewController animated:YES];
+                    break;
+                }
+                case BUTTON_PRODUCT_MIN_ORDER:
+                    [_minimumOrderTextField becomeFirstResponder];
+                    break;
+            }
+            break;
+        case 2:
+            switch (indexPath.row) {
+                case BUTTON_PRODUCT_PRICE_CURRENCY:
+                {
+                    AlertPickerView *v = [AlertPickerView newview];
+                    v.pickerData = ARRAY_PRICE_CURRENCY;
+                    v.tag = 11;
+                    v.delegate = self;
+                    [v show];
+                    break;
+                }
+                case BUTTON_PRODUCT_PRICE:
+                    [_productPriceTextField becomeFirstResponder];
+                    break;
+            }
+            break;
+        case 3:
+            switch (indexPath.row) {
+                case BUTTON_PRODUCT_WEIGHT_UNIT:
+                {
+                    AlertPickerView *v = [AlertPickerView newview];
+                    v.pickerData = ARRAY_WEIGHT_UNIT;
+                    v.tag = 12;
+                    v.delegate = self;
+                    [v show];
+                    break;
+                }
+                case BUTTON_PRODUCT_WEIGHT:
+                    [_productWeightTextField becomeFirstResponder];
+                    break;
+                default:
+                    break;
+            }
+            break;
+        default:
+            break;
+    }
+
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (_isNodata) {
+        cell.backgroundColor = [UIColor whiteColor];
+    }
+}
+
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
+    [_activeTextField resignFirstResponder];
 }
 
 #pragma mark - Request Product Detail
@@ -462,7 +661,10 @@
     [breadcrumbMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIDEPARTMENTNAMEKEY,API_DEPARTMENT_ID_KEY]];
     
     RKObjectMapping *otherproductMapping = [RKObjectMapping mappingForClass:[OtherProduct class]];
-    [otherproductMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,API_PRODUCT_NAME_KEY,kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY]];
+    [otherproductMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,
+                                                         API_PRODUCT_NAME_KEY,
+                                                         kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,
+                                                         kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY]];
     
     RKObjectMapping *imagesMapping = [RKObjectMapping mappingForClass:[ProductImages class]];
     [imagesMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIIMAGEIDKEY,kTKPDDETAILPRODUCT_APIIMAGESTATUSKEY,kTKPDDETAILPRODUCT_APIIMAGEDESCRIPTIONKEY,kTKPDDETAILPRODUCT_APIIMAGEPRIMARYKEY,kTKPDDETAILPRODUCT_APIIMAGESRCKEY]];
@@ -499,14 +701,18 @@
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
     NSInteger productID = [[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]integerValue];
     NSInteger myshopID = [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue];
+    NSInteger userID = [[auth objectForKey:kTKPD_USERIDKEY]integerValue];
+    
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : ACTION_GET_PRODUCT_FORM,
                             kTKPDDETAIL_APIPRODUCTIDKEY : @(productID),
-                            kTKPDDETAIL_APISHOPIDKEY : @(myshopID)
+                            kTKPDDETAIL_APISHOPIDKEY : @(myshopID),
+                            kTKPD_USERIDKEY : @(userID),
+                            //@"enc_dec" : @"off"
                             };
     [self enableButtonBeforeSuccessRequest:NO];
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILPRODUCT_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILPRODUCT_APIPATH parameters:[param encrypt]];
 	//[_cachecontroller getFileModificationDate];
 	//_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
 	//if (_timeinterval > _cachecontroller.URLCacheInterval) {
@@ -602,6 +808,7 @@
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:_data];
                 [self setDefaultData:data];
+                [_tableView reloadData];
             }
         }else{
             [self cancel];
@@ -643,7 +850,7 @@
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDGENERATEDHOST_APIGENERATEDHOSTKEY toKeyPath:kTKPDGENERATEDHOST_APIGENERATEDHOSTKEY withMapping:generatedhostMapping]];
     
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanagerGenerateHost addResponseDescriptor:responseDescriptor];
 }
@@ -661,16 +868,15 @@
 {
     if(_requestGenerateHost.isExecuting) return;
     
-    _requestcountGenerateHost ++;
-    
-    
     NSTimer *timer;
     
+    NSString *shopID = [_auth objectForKey:kTKPD_SHOPIDKEY];
 	NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIUPLOADGENERATEHOSTKEY
+                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIUPLOADGENERATEHOSTKEY,
+                            kTKPD_SHOPIDKEY :shopID
                             };
     
-    _requestGenerateHost = [_objectmanagerGenerateHost appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAIL_UPLOADIMAGEAPIPATH parameters:param];
+    _requestGenerateHost = [_objectmanagerGenerateHost appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAIL_UPLOADIMAGEAPIPATH parameters:[param encrypt]];
     
     [_requestGenerateHost setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessGenerateHost:mappingResult withOperation:operation];
@@ -718,8 +924,16 @@
             BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                [_addImageButtons makeObjectsPerformSelector:@selector(setEnabled:) withObject:@(YES)];
-                [_dataInput setObject:@(_generatehost.result.generated_host.server_id) forKey:API_SERVER_ID_KEY];
+                if ([_generatehost.result.generated_host.server_id integerValue] == 0 || _generatehost.message_error) {
+                    [self configureRestkitGenerateHost];
+                    [self requestGenerateHost];
+                }
+                else
+                {
+                    [_addImageButtons makeObjectsPerformSelector:@selector(setEnabled:) withObject:@(YES)];
+                    [_dataInput setObject:_generatehost.result.generated_host.server_id forKey:API_SERVER_ID_KEY];
+                }
+
             }
         }
         else
@@ -759,7 +973,7 @@
     // Relationship Mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanagerUploadPhoto addResponseDescriptor:responseDescriptor];
     
@@ -783,19 +997,21 @@
     
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
     
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    
     NSDictionary* photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     NSData* imageData = [photo objectForKey:DATA_CAMERA_IMAGEDATA];
     NSString* imageName = [photo objectForKey:DATA_CAMERA_IMAGENAME];
-    NSInteger serverID = [[_dataInput objectForKey:API_SERVER_ID_KEY]integerValue]?:_generatehost.result.generated_host.server_id;
+    NSString *serverID = [_dataInput objectForKey:API_SERVER_ID_KEY]?:_generatehost.result.generated_host.server_id?:@"0";
     NSInteger userID = [[auth objectForKey:kTKPD_USERIDKEY]integerValue];
 
-    ManageProductList *product = [_data objectForKey:DATA_PRODUCT_DETAIL_KEY];
-    NSInteger productID = product.product_id;
+    NSString *productID = product.product_id?:@"0";
     
     NSDictionary *param = @{ kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIUPLOADPRODUCTIMAGEKEY,
                              kTKPDSHOPEDIT_APIUSERIDKEY:@(userID),
-                             kTKPDGENERATEDHOST_APISERVERIDKEY:@(serverID),
-                             API_PRODUCT_ID_KEY : @(productID)
+                             kTKPDGENERATEDHOST_APISERVERIDKEY:serverID,
+                             API_PRODUCT_ID_KEY : productID,
+                             @"enc_dec" : @"off" //TODO::
                              };
     
     _requestActionUploadPhoto = [NSMutableURLRequest requestUploadImageData:imageData
@@ -818,7 +1034,7 @@
     _isFinishedUploadImages = NO;
     
     [NSURLConnection sendAsynchronousRequest:_requestActionUploadPhoto
-                                       queue:_operationQueueUploadImage
+                                       queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
                                NSString *responsestring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
@@ -852,9 +1068,8 @@
                                        
                                        if (status) {
                                            if (!_images.message_error) {
-                                               [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION animations:^{
-                                                   thumbProductImage.alpha = 1.0;
-                                               }];
+                                               thumbProductImage.alpha = 1.0;
+                                               
                                                thumbProductImage.userInteractionEnabled = YES;
                                                NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
                                                [_productImageURLs replaceObjectAtIndex:index withObject:_images.result.file_path];
@@ -873,6 +1088,10 @@
                                        }
                                    }
                                    
+                               }
+                               else
+                               {
+                                   [self failedAddImageAtIndex:index];
                                }
                                NSLog(@"%@",responsestring);
                            }];
@@ -944,7 +1163,7 @@
     [self failedAddImageAtIndex:index];
 }
 
-#pragma mark Request Generate Host
+#pragma mark Request Delete Image
 -(void)configureRestKitDeleteImage
 {
     _objectmanagerDeleteImage =  [RKObjectManager sharedClient];
@@ -963,7 +1182,7 @@
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanagerDeleteImage addResponseDescriptor:responseDescriptor];
 }
@@ -995,7 +1214,7 @@
     
     NSTimer *timer;
     
-    _requestDeleteImage = [_objectmanagerDeleteImage appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param];
+    _requestDeleteImage = [_objectmanagerDeleteImage appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
     [_requestDeleteImage setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessDeleteImage:mappingResult withOperation:operation];
         [timer invalidate];
@@ -1112,10 +1331,15 @@
 #pragma mark - Category Delegate
 -(void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
 {
-    NSString *departmentTitle = [userInfo objectForKey:kTKPDCATEGORY_DATATITLEKEY];
-    NSInteger departmentID = [[userInfo objectForKey:API_DEPARTMENT_ID_KEY] integerValue];
-    [_categoryButton setTitle:departmentTitle forState:UIControlStateNormal];
-    [_dataInput setObject:@(departmentID) forKey:API_DEPARTMENT_ID_KEY];
+    [_dataInput setObject:userInfo forKey:DATA_CATEGORY_KEY];
+    NSString *departmentName = [userInfo objectForKey:kTKPDCATEGORY_DATATITLEKEY];
+    NSString *departmentID = [userInfo objectForKey:API_DEPARTMENT_ID_KEY];
+    //[_categoryButton setTitle:departmentTitle forState:UIControlStateNormal];
+    Breadcrumb *breadcrumb = [Breadcrumb new];
+    breadcrumb.department_id = departmentID;
+    breadcrumb.department_name = departmentName;
+    [_dataInput setObject:breadcrumb forKey:DATA_CATEGORY_KEY];
+    [_tableView reloadData];
 }
 
 #pragma mark - Product Edit Image Delegate
@@ -1203,6 +1427,7 @@
 #pragma mark - Alert View Delegate
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    [_productNameTextField resignFirstResponder];
     switch (alertView.tag) {
         case 11:
         {
@@ -1212,20 +1437,27 @@
             BOOL isGoldShop = [[auth objectForKey:kTKPD_SHOPISGOLD]boolValue];
             
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
+
             NSInteger previousValue = [[_dataInput objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
+            
             NSInteger value = [[ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_VALUE_KEY] integerValue];
+            NSString *name = [ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_NAME_KEY];
+            
             if ( value == PRICE_CURRENCY_ID_USD && !isGoldShop) {
                 NSArray *errorMessage = @[ERRORMESSAGE_INVALID_PRICE_CURRENCY_USD];
                 NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:errorMessage,@"messages", nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
             }
             else{
-                NSString *name = [ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_NAME_KEY];
                 if (value != previousValue) {
                     _productPriceTextField.text = @"";
                 }
-                [_dataInput setObject:@(value) forKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY];
-                [_priceCurrencyButton setTitle:name forState:UIControlStateNormal];
+                ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+                product.product_currency_id = [ARRAY_PRICE_CURRENCY[index] objectForKey:DATA_VALUE_KEY];
+                product.product_currency = name;
+                [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
+                [_tableView reloadData];
+                
             }
             break;
         }
@@ -1233,10 +1465,13 @@
         {
             //weight curency
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
-            NSInteger value = [[ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_VALUE_KEY] integerValue];
-            [_dataInput setObject:@(value) forKey:API_PRODUCT_WEIGHT_UNIT_KEY];
+            NSString *value = [ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_VALUE_KEY];
             NSString *name = [ARRAY_WEIGHT_UNIT[index] objectForKey:DATA_NAME_KEY];
-            [_weightUnitButton setTitle:name forState:UIControlStateNormal];
+            ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+            product.product_weight_unit_name = name;
+            product.product_weight_unit = value;
+            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
+            [_tableView reloadData];
             break;
         }
         default:
@@ -1248,12 +1483,11 @@
 #pragma mark - Text Field Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     _activeTextField = textField;
-    [textField resignFirstResponder];
     if (textField == _productNameTextField) {
         NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
         if (type == TYPE_ADD_EDIT_PRODUCT_EDIT) {
-            UIAlertView *editableNameProduct = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:ERRRORMESSAGE_CANNOT_EDIT_PRODUCT_NAME delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-            [editableNameProduct show];
+            UIAlertView *editableNameProductAlert = [[UIAlertView alloc]initWithTitle:nil message:ERRRORMESSAGE_CANNOT_EDIT_PRODUCT_NAME delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+            [editableNameProductAlert show];
         }
     }
     return YES;
@@ -1267,30 +1501,43 @@
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
     if (textField == _productNameTextField) {
         NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
         if (type == TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY) {
-            [_dataInput setObject:textField.text forKey:API_PRODUCT_NAME_KEY];
+            product.product_name = textField.text;
+            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
         }
     }
     if (textField == _productPriceTextField) {
-        
-        NSString *productPrice = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
-        [_dataInput setObject:productPrice forKey:API_PRODUCT_PRICE_KEY];
+        NSString *productPrice;
+        NSInteger currency = [[_dataInput objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
+        BOOL isIDRCurrency = (currency == PRICE_CURRENCY_ID_RUPIAH);
+        if (isIDRCurrency)
+           productPrice = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+        else
+        {
+            productPrice = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+            
+        }
+        product.product_price = productPrice;
+        [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
     }
     if (textField == _productWeightTextField) {
-        [_dataInput setObject:textField.text forKey:API_PRODUCT_WEIGHT_KEY];
+        product.product_weight = textField.text;
+        [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
     }
     if (textField == _minimumOrderTextField) {
-        [_dataInput setObject:textField.text forKey:API_PRODUCT_MINIMUM_ORDER_KEY];
+        product.product_min_order = textField.text;
+        [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
     }
     return YES;
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    NSInteger currency = [[_dataInput objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
-    BOOL isIDRCurrency = (currency == PRICE_CURRENCY_ID_RUPIAH);
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    BOOL isIDRCurrency = ([product.product_currency_id integerValue] == PRICE_CURRENCY_ID_RUPIAH);
     if (textField == _productPriceTextField) {
         if (isIDRCurrency) {
             NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
@@ -1321,9 +1568,44 @@
                 return YES;
             }
         }
+        else
+        {
+            NSString *cleanCentString = [[textField.text
+                                          componentsSeparatedByCharactersInSet:
+                                          [[NSCharacterSet decimalDigitCharacterSet] invertedSet]]
+                                         componentsJoinedByString:@""];
+            // Parse final integer value
+            NSInteger centAmount = cleanCentString.integerValue;
+            // Check the user input
+            if (string.length > 0)
+            {
+                // Digit added
+                centAmount = centAmount * 10 + string.integerValue;
+            }
+            else
+            {
+                // Digit deleted
+                centAmount = centAmount / 10;
+            }
+            // Update call amount value
+            NSNumber *amount = [[NSNumber alloc] initWithFloat:(float)centAmount / 100.0f];
+            // Write amount with currency symbols to the textfield
+            NSNumberFormatter *_currencyFormatter = [[NSNumberFormatter alloc] init];
+            [_currencyFormatter setNumberStyle:NSNumberFormatterCurrencyStyle];
+            [_currencyFormatter setCurrencyCode:@"USD"];
+            [_currencyFormatter setNegativeFormat:@"-¤#,##0.00"];
+            textField.text = [_currencyFormatter stringFromNumber:amount];
+            return NO;
+        }
     }
-    return YES;
+    else if (textField == _productNameTextField) {
+#define PRODUCT_NAME_CHARACTER_LIMIT 70
+        return textField.text.length + (string.length - range.length) <= PRODUCT_NAME_CHARACTER_LIMIT;
+    }
+    else
+        return YES;
 }
+
 
 #pragma mark - Product Edit Detail Delegate 
 -(void)ProductEditDetailViewController:(ProductAddEditDetailViewController *)cell withUserInfo:(NSDictionary *)userInfo
@@ -1334,6 +1616,7 @@
     [_dataInput addEntriesFromDictionary:updatedDataInput];
 }
 
+
 #pragma mark - Methods
 
 - (void) setDefaultData:(NSDictionary*)data
@@ -1342,10 +1625,50 @@
     if (data) {
         
         NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
-        self.title = (type ==TYPE_ADD_EDIT_PRODUCT_ADD)?TITLE_ADD_PRODUCT:TITLE_EDIT_PRODUCT;
-        
-        DetailProductResult *detailProduct = _product.result;
-        NSArray *images = detailProduct.product_images;
+        switch (type) {
+            case TYPE_ADD_EDIT_PRODUCT_ADD:
+                self.title =  TITLE_ADD_PRODUCT;
+                break;
+            case TYPE_ADD_EDIT_PRODUCT_EDIT:
+                self.title = TITLE_EDIT_PRODUCT;
+                break;
+            case TYPE_ADD_EDIT_PRODUCT_COPY:
+                self.title = TITLE_SALIN_PRODUCT;
+                break;
+            default:
+                break;
+        }
+        DetailProductResult *result = _product.result;
+        ProductDetail *product = result.product;
+        if (!product) {
+            product = [ProductDetail new];
+            product.product_weight_unit_name = [ARRAY_WEIGHT_UNIT[0] objectForKey:DATA_NAME_KEY];
+            product.product_weight_unit = [ARRAY_WEIGHT_UNIT[0] objectForKey:DATA_VALUE_KEY];
+            
+            product.product_currency = [ARRAY_PRICE_CURRENCY[0] objectForKey:DATA_NAME_KEY];
+            product.product_currency_id = [ARRAY_PRICE_CURRENCY[0] objectForKey:DATA_VALUE_KEY];
+            
+            product.product_min_order = @"1";
+            
+            product.product_condition = [ARRAY_PRODUCT_CONDITION[0] objectForKey:DATA_VALUE_KEY];
+            
+            NSString *value = [ARRAY_PRODUCT_MOVETO_ETALASE[0] objectForKey:DATA_VALUE_KEY];
+            product.product_move_to = value;
+        }
+        else
+        {
+            product.product_weight_unit_name = [ARRAY_WEIGHT_UNIT[[product.product_weight_unit integerValue]-1] objectForKey:DATA_NAME_KEY];
+            if ([product.product_currency isEqualToString:@"idr"]) {
+                product.product_currency = [ARRAY_PRICE_CURRENCY[0]objectForKey:DATA_NAME_KEY];
+            }
+            NSInteger indexMoveTo = ([product.product_etalase_id integerValue]>0)?1:0;
+            NSString *value = [ARRAY_PRODUCT_MOVETO_ETALASE[indexMoveTo] objectForKey:DATA_VALUE_KEY];
+            product.product_move_to = value;
+            product.product_etalase_id = product.product_etalase_id?:@(0);
+            product.product_description = product.product_short_desc;
+        }
+        [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
+        NSArray *images = result.product_images;
         NSInteger imageCount = images.count;
         NSInteger addProductImageCount = (imageCount<_addImageButtons.count)?imageCount:imageCount-1;
         ((UIButton*)_addImageButtons[addProductImageCount]).enabled = YES;
@@ -1385,41 +1708,22 @@
         [_dataInput setObject:stringImageURLs forKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY];
         NSLog(@" Product image URL %@ with string %@ ", objectProductPhoto, stringImageURLs);
         
-        NSInteger serverID = detailProduct.server_id;
-        NSNumber *productID = detailProduct.product.product_id?:@(0);
-        NSString *productName = detailProduct.product.product_name?:@"";
-        NSArray *breadcrumbs = detailProduct.breadcrumb?:@[];
-        Breadcrumb *breadcrumb = [breadcrumbs lastObject];
-        NSString *categoryName = breadcrumb.department_name;
-        NSInteger categoryID = [breadcrumb.department_id integerValue];
-        NSInteger minimumOrder = detailProduct.product.product_min_order?:1;
-        NSString *priceCurencyID = detailProduct.product.product_currency_id?:@"1";
+        NSString *serverID = result.server_id?:_generatehost.result.generated_host.server_id?:@"0";
+        NSArray *breadcrumbs = result.breadcrumb?:@[];
+        Breadcrumb *breadcrumb = [breadcrumbs lastObject]?:[Breadcrumb new];
+        [_dataInput setObject:breadcrumb forKey:DATA_CATEGORY_KEY];
+        NSString *priceCurencyID = result.product.product_currency_id?:@"1";
         
-        NSInteger indexPriceCurrency = [priceCurencyID integerValue]?[priceCurencyID integerValue]-1:[priceCurencyID integerValue];
-        NSString *priceCurrency = [ARRAY_PRICE_CURRENCY[indexPriceCurrency] objectForKey:DATA_NAME_KEY];
-        NSString *price = detailProduct.product.product_price?:@"";
-        NSInteger weightUnitID = [detailProduct.product.product_weight_unit integerValue];
-        NSInteger indexWeightUnit = weightUnitID?weightUnitID-1:weightUnitID;
-        NSString *weightUnit = [ARRAY_WEIGHT_UNIT[indexWeightUnit] objectForKey:DATA_NAME_KEY];
-        NSString *weight = detailProduct.product.product_weight?:@"";
-        NSInteger mustInsurance = [detailProduct.product.product_must_insurance integerValue];
-        NSInteger productConditionID = [detailProduct.product.product_condition integerValue];
-        NSString *productDescription = detailProduct.product.product_short_desc?:@"";
-        NSArray *wholesale = detailProduct.wholesale_price?:@[];
-        BOOL isWarehouse = ([detailProduct.product.product_etalase_id integerValue]>0)?NO:YES;
+        NSString *price = result.product.product_price?:@"";
+        NSString *weight = result.product.product_weight?:@"";
+        NSArray *wholesale = result.wholesale_price?:@[];
+        [_dataInput setObject:wholesale forKey:DATA_WHOLESALE_LIST_KEY];
+        BOOL isWarehouse = ([result.product.product_etalase_id integerValue]>0)?NO:YES;
         NSInteger uploadToWarehouse = isWarehouse?UPLOAD_TO_VALUE_IF_IS_WAREHOUSE:UPLOAD_TO_VALUE_IF_ISNOT_WAREHOUSE;
-        NSInteger etalaseID = [detailProduct.product.product_etalase_id integerValue];
-        BOOL isGoldShop = detailProduct.shop_is_gold;
-        NSInteger returnable = detailProduct.product.product_returnable;
-        NSString *etalaseName = detailProduct.product.product_etalase?:@"";
+        BOOL isGoldShop = result.shop_is_gold;
         
-        _productNameTextField.text = productName;
+        _productNameTextField.text = product.product_name;
         //_productNameTextField.enabled = (type ==TYPE_ADD_EDIT_PRODUCT_ADD || type == TYPE_ADD_EDIT_PRODUCT_COPY)?YES:NO;
-
-        [_categoryButton setTitle:categoryName?:@"Pilih Kategori" forState:UIControlStateNormal];
-        _minimumOrderTextField.text = [NSString stringWithFormat:@"%zd",minimumOrder];
-        [_priceCurrencyButton setTitle:priceCurrency forState:UIControlStateNormal];
-        [_dataInput setObject:price forKey:API_PRODUCT_PRICE_KEY];
         
         NSInteger priceInteger = [price integerValue];
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
@@ -1433,32 +1737,18 @@
         else
         {
             price = (price>0)?[NSString localizedStringWithFormat:@"%.2f",(float)priceInteger]:@"";
-
-            //[formatter setNumberStyle: NSNumberFormatterDecimalStyle];
-            //price = [formatter stringFromNumber:[NSNumber numberWithDouble:[price doubleValue]]];
         }
         
         _productPriceTextField.text = price;
-        [_weightUnitButton setTitle:weightUnit forState:UIControlStateNormal];
         _productWeightTextField.text = weight;
         
-        [_dataInput setObject:@(serverID) forKey:API_SERVER_ID_KEY];
-        [_dataInput setObject:productID forKey:API_PRODUCT_ID_KEY];
-        [_dataInput setObject:productName forKey:API_PRODUCT_NAME_KEY];
-        [_dataInput setObject:@(categoryID) forKey:API_DEPARTMENT_ID_KEY];
-        [_dataInput setObject:@(minimumOrder) forKey:API_PRODUCT_MINIMUM_ORDER_KEY];
-        [_dataInput setObject:priceCurencyID forKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY];
-        [_dataInput setObject:@(weightUnitID) forKey:API_PRODUCT_WEIGHT_UNIT_KEY];
-        [_dataInput setObject:weight forKey:API_PRODUCT_WEIGHT_KEY];
-        [_dataInput setObject:@(mustInsurance) forKey:API_PRODUCT_MUST_INSURANCE_KEY];
-        [_dataInput setObject:@(productConditionID) forKey:API_PRODUCT_CONDITION_KEY];
-        [_dataInput setObject:productDescription forKey:API_PRODUCT_DESCRIPTION_KEY];
+        [_dataInput setObject:serverID forKey:API_SERVER_ID_KEY];
         [_dataInput setObject:wholesale forKey:DATA_WHOLESALE_LIST_KEY];
         [_dataInput setObject:@(uploadToWarehouse) forKey:API_PRODUCT_MOVETO_WAREHOUSE_KEY];
-        [_dataInput setObject:@(etalaseID) forKey:API_PRODUCT_ETALASE_ID_KEY];
+//        [_dataInput setObject:@(etalaseID) forKey:API_PRODUCT_ETALASE_ID_KEY];
         [_dataInput setObject:@(isGoldShop) forKey:API_IS_GOLD_SHOP_KEY];
-        [_dataInput setObject:@(returnable) forKey:API_PRODUCT_IS_RETURNABLE_KEY];
-        [_dataInput setObject:etalaseName forKey:API_PRODUCT_ETALASE_NAME_KEY];
+//        [_dataInput setObject:@(returnable) forKey:API_PRODUCT_IS_RETURNABLE_KEY];
+        
     }
 }
 
@@ -1468,35 +1758,51 @@
     BOOL isValid = YES;
     BOOL isValidPrice = YES;
     BOOL isValidWeight = YES;
-    BOOL isValidImage = (_productImageURLs.count>0);
-    NSString *productName = [_dataInput objectForKey:API_PRODUCT_NAME_KEY]?:@"";
-    NSInteger productPrice = [[_dataInput objectForKey:API_PRODUCT_PRICE_KEY]integerValue]?:0;
-    NSInteger productPriceCurrencyID = [[_dataInput objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue]?:1;
-    NSInteger productWeight = [[_dataInput objectForKey:API_PRODUCT_WEIGHT_KEY]integerValue]?:0;
-    NSInteger productWeightUnitID = [[_dataInput objectForKey:API_PRODUCT_WEIGHT_UNIT_KEY]integerValue]?:1;
-    NSInteger departmentID = [[_dataInput objectForKey:API_DEPARTMENT_ID_KEY]integerValue]?:0;
     
-    BOOL isPriceCurrencyRupiah = (productPriceCurrencyID == 1);
-    BOOL isPriceCurrencyUSD = (productPriceCurrencyID == 2);
+    NSMutableArray *productImagesTemp = [NSMutableArray new];
+    for (NSString *productImage in _productImageURLs) {
+        if (![productImage isEqualToString:@""]) {
+            [productImagesTemp addObject:productImage];
+        }
+    }
+    //BOOL isValidImage = (productImagesTemp.count>0);
+    BOOL isValidImage = YES;
     
-    BOOL isWeightUnitGram = (productWeightUnitID == 1);
-    BOOL isWeightUnitKilogram = (productWeightUnitID == 2);
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY]?:[ProductDetail new];
+    Breadcrumb *department = [_dataInput objectForKey:DATA_CATEGORY_KEY]?:[Breadcrumb new];
+    NSString *productName = product.product_name;
+    NSString *productPrice = product.product_price;
+    NSString *productPriceCurrencyID = product.product_currency_id;
+    NSString *productWeight = product.product_weight;
+    NSString *productWeightUnitID = product.product_weight_unit;
+    NSString *departmentID = department.department_id;
+    
+    BOOL isPriceCurrencyRupiah = ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH);
+    BOOL isPriceCurrencyUSD = ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_USD);
+    
+    BOOL isWeightUnitGram = ([productWeightUnitID integerValue] == WEIGHT_UNIT_ID_GRAM);
+    BOOL isWeightUnitKilogram = ([productWeightUnitID integerValue] == WEIGHT_UNIT_ID_KILOGRAM);
     
     if (productName && ![productName isEqualToString:@""] &&
         productPrice>0 &&
         productWeight>0 &&
         departmentID>0) {
        
-        if (isPriceCurrencyRupiah && productPrice>=MINIMUM_PRICE_RUPIAH && productPrice<=MAXIMUM_PRICE_RUPIAH)
+        if (isPriceCurrencyRupiah && [productPrice integerValue]>=MINIMUM_PRICE_RUPIAH &&
+            [productPrice integerValue]<=MAXIMUM_PRICE_RUPIAH)
             isValidPrice = YES;
-        else if (isPriceCurrencyUSD && productPrice>=MINIMUM_PRICE_USD && productPrice<=MAXIMUM_PRICE_USD)
+        else if (isPriceCurrencyUSD && [productPrice integerValue]>=MINIMUM_PRICE_USD &&
+                 [productPrice integerValue]<=MAXIMUM_PRICE_USD)
             isValidPrice = YES;
         else
             isValidPrice = NO;
         
-        if (isWeightUnitGram && productWeight >=MINIMUM_WEIGHT_GRAM && productWeight<=MAXIMUM_WEIGHT_GRAM)
+        if (isWeightUnitGram &&
+            [productWeight integerValue]>=MINIMUM_WEIGHT_GRAM &&
+            [productWeight integerValue]<=MAXIMUM_WEIGHT_GRAM)
             isValidWeight = YES;
-        else if (isWeightUnitKilogram && productWeight>=MINIMUM_WEIGHT_KILOGRAM && productWeight<=MAXIMUM_WEIGHT_KILOGRAM)
+        else if (isWeightUnitKilogram && [productWeight integerValue]>=MINIMUM_WEIGHT_KILOGRAM &&
+                 [productWeight integerValue]<=MAXIMUM_WEIGHT_KILOGRAM)
             isValidWeight = YES;
         else
             isValidWeight = NO;
@@ -1512,11 +1818,13 @@
     }
     else
     {
-        if (productPriceCurrencyID == PRICE_CURRENCY_ID_RUPIAH && (productPrice<MINIMUM_PRICE_RUPIAH || productPrice>MAXIMUM_PRICE_RUPIAH)) {
+        if ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_RUPIAH &&
+            ([productPrice integerValue]<MINIMUM_PRICE_RUPIAH || [productPrice integerValue]>MAXIMUM_PRICE_RUPIAH)) {
             [_errorMessage addObject:ERRORMESSAGE_INVALID_PRICE_RUPIAH];
             isValid = NO;
         }
-        else if (productPriceCurrencyID == PRICE_CURRENCY_ID_USD && (productPrice<MINIMUM_PRICE_USD || productPrice>MAXIMUM_PRICE_USD)) {
+        else if ([productPriceCurrencyID integerValue] == PRICE_CURRENCY_ID_USD &&
+                 ([productPrice integerValue]<MINIMUM_PRICE_USD || [productPrice integerValue]>MAXIMUM_PRICE_USD)) {
             [_errorMessage addObject:ERRORMESSAGE_INVALID_PRICE_USD];
             isValid = NO;
         }
@@ -1525,11 +1833,13 @@
         [_errorMessage addObject:ERRORMESSAGE_NULL_CATEGORY];
         isValid = NO;
     }
-    if (productWeightUnitID == WEIGHT_UNIT_ID_GRAM && (productWeight<MINIMUM_WEIGHT_GRAM || productWeight>MAXIMUM_WEIGHT_GRAM)) {
+    if ([productWeightUnitID integerValue] == WEIGHT_UNIT_ID_GRAM &&
+        ([productWeight integerValue]<MINIMUM_WEIGHT_GRAM || [productWeight integerValue]>MAXIMUM_WEIGHT_GRAM)) {
         [_errorMessage addObject:ERRORMESSAGE_INVALID_WEIGHT_GRAM];
         isValid = NO;
     }
-    else if (productWeightUnitID == WEIGHT_UNIT_ID_KILOGRAM && (productWeight<MINIMUM_WEIGHT_KILOGRAM || productWeight>MAXIMUM_WEIGHT_KILOGRAM)) {
+    else if ([productWeightUnitID integerValue] == WEIGHT_UNIT_ID_KILOGRAM &&
+             ([productWeight integerValue]<MINIMUM_WEIGHT_KILOGRAM || [productWeight integerValue]>MAXIMUM_WEIGHT_KILOGRAM)) {
         [_errorMessage addObject:ERRORMESSAGE_INVALID_WEIGHT_KILOGRAM];
         isValid = NO;
     }
@@ -1544,13 +1854,10 @@
 {
     _nextBarButtonItem.enabled = isEnable;
     ((UIButton*)_addImageButtons[0]).enabled = NO;
-    _categoryButton.enabled = isEnable;
-    _priceCurrencyButton.enabled = isEnable;
-    _categoryButton.enabled = isEnable;
+
     _productNameTextField.userInteractionEnabled = isEnable;
     _minimumOrderTextField.userInteractionEnabled = isEnable;
     _productPriceTextField.userInteractionEnabled = isEnable;
-    _weightUnitButton.enabled = isEnable;
     _productWeightTextField.userInteractionEnabled = isEnable;
 }
 
@@ -1574,36 +1881,49 @@
 }
 
 #pragma mark - Keyboard Notification
-- (void)keyboardWillShow:(NSNotification *)info {
-    if(_keyboardSize.height < 0){
-        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-        
-        
-        _scrollviewContentSize = [_scrollView contentSize];
-        _scrollviewContentSize.height += _keyboardSize.height;
-        [_scrollView setContentSize:_scrollviewContentSize];
-    }else{
-        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                              delay:0
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             _scrollviewContentSize = [_scrollView contentSize];
-                             _scrollviewContentSize.height -= _keyboardSize.height;
-                             
-                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-                             _scrollviewContentSize.height += _keyboardSize.height;
-                             if ((_activeTextField.frame.origin.y+_activeTextField.frame.size.height)> _keyboardPosition.y) {
-                                 UIEdgeInsets inset = _scrollView.contentInset;
-                                 inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activeTextField.frame.origin.y+_activeTextField.frame.size.height + 10));
-                                 [_scrollView setContentInset:inset];
-                             }
-                         }
-                         completion:^(BOOL finished){
-                         }];
-        
+- (void)keyboardWillShow:(NSNotification *)aNotification {
+//    if(_keyboardSize.height < 0){
+//        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
+//        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+//        
+//        
+//        _scrollviewContentSize = [_scrollView contentSize];
+//        _scrollviewContentSize.height += _keyboardSize.height;
+//        [_scrollView setContentSize:_scrollviewContentSize];
+//    }else{
+//        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
+//                              delay:0
+//                            options: UIViewAnimationOptionCurveEaseInOut
+//                         animations:^{
+//                             _scrollviewContentSize = [_scrollView contentSize];
+//                             _scrollviewContentSize.height -= _keyboardSize.height;
+//                             
+//                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
+//                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+//                             _scrollviewContentSize.height += _keyboardSize.height;
+//                             if ((_activeTextField.frame.origin.y+_activeTextField.frame.size.height)> _keyboardPosition.y) {
+//                                 UIEdgeInsets inset = _scrollView.contentInset;
+//                                 inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activeTextField.frame.origin.y+_activeTextField.frame.size.height + 10));
+//                                 [_scrollView setContentInset:inset];
+//                             }
+//                         }
+//                         completion:^(BOOL finished){
+//                         }];
+    NSDictionary* info = [aNotification userInfo];
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    _tableView.contentInset = contentInsets;
+    _tableView.scrollIndicatorInsets = contentInsets;
+    
+    if (_activeTextField == _productPriceTextField) {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:2] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
+    else if (_activeTextField == _productWeightTextField)
+    {
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:3] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
@@ -1612,8 +1932,8 @@
                           delay:0
                         options: UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         _scrollView.contentInset = contentInsets;
-                         _scrollView.scrollIndicatorInsets = contentInsets;
+                         _tableView.contentInset = contentInsets;
+                         _tableView.scrollIndicatorInsets = contentInsets;
                      }
                      completion:^(BOOL finished){
                      }];

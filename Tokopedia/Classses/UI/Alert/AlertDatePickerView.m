@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "string_alert.h"
 #import "AlertDatePickerView.h"
 
 #pragma mark -
@@ -23,6 +22,7 @@
     NSInteger _type;
 }
 @property (weak, nonatomic) IBOutlet UIDatePicker *datepicker;
+@property (weak, nonatomic) IBOutlet UIButton *doneButton;
 
 @end
 
@@ -39,8 +39,7 @@
 
 - (void)awakeFromNib
 {
-
-
+    _doneButton.layer.cornerRadius = 2;
 }
 
 #pragma mark - View Action
@@ -109,17 +108,22 @@
         case kTKPDALERT_DATAALERTTYPESHOPEDITKEY:
         {
             NSDateComponents* deltaComps = [NSDateComponents new];
-            [deltaComps setDay:1];
-            NSDate* tomorrow = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
-            _datepicker.minimumDate = tomorrow;
+
+            if (_isSetMinimumDate) {
+                [deltaComps setDay:1];
+                NSDate* tomorrow = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
+                _datepicker.minimumDate = tomorrow;
+            }
+            
             [deltaComps setDay:7];
-            NSDate* nextweek = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
-            [_datepicker setDate:nextweek];
+            NSDate* nextWeek = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
+            [_datepicker setDate:_startDate ?: nextWeek];
+           
             break;
         }
         default:
         {
-            _datepicker.maximumDate = [NSDate date];
+            if (_isSetMinimumDate) _datepicker.maximumDate = [NSDate date];
             break;
         }
     }

@@ -78,18 +78,8 @@
     barButtonItem.tag = 10;
     self.navigationItem.leftBarButtonItem = barButtonItem;
 
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"]];
-    UIBarButtonItem *rightBarButton = nil;
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        //UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        //barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [rightBarButton setTintColor:[UIColor blackColor]];
-    }
-    else
-        rightBarButton = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+    UIBarButtonItem  *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [rightBarButton setTintColor:[UIColor blackColor]];
 	[rightBarButton setTag:11];
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
@@ -100,7 +90,7 @@
         for (int i = 0;i<etalaseArrayCount;i++) {
             EtalaseList *etalase = [EtalaseList new];
             etalase.etalase_name = [kTKPDSHOP_ETALASEARRAY[i]objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
-            etalase.etalase_id = [[kTKPDSHOP_ETALASEARRAY[i]objectForKey:kTKPDSHOP_APIETALASEIDKEY] integerValue];
+            etalase.etalase_id = [kTKPDSHOP_ETALASEARRAY[i]objectForKey:kTKPDSHOP_APIETALASEIDKEY];
             [_etalaseList addObject:etalase];
         }
     }
@@ -169,7 +159,7 @@
                 EtalaseList *etalase = _etalaseList[indexpath.row];
                 NSDictionary *userinfo = @{DATA_ETALASE_KEY:etalase,kTKPDDETAILETALASE_DATAINDEXPATHKEY:indexpath};
 
-                if (etalase.etalase_id == DATA_ADD_NEW_ETALASE_ID) {
+                if ([etalase.etalase_id integerValue] == DATA_ADD_NEW_ETALASE_ID) {
                     MyShopEtalaseEditViewController *newEtalaseVC = [MyShopEtalaseEditViewController new];
                     newEtalaseVC.delegate = self;
                     newEtalaseVC.data = @{DATA_ETALASE_KEY : [_data objectForKey:DATA_ETALASE_KEY]?:etalase,
@@ -288,7 +278,7 @@
     [resultMapping addPropertyMapping:listRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDDETAILSHOPETALASE_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILSHOPETALASE_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     //add response description to object manager
     [_objectmanager addResponseDescriptor:responseDescriptor];
@@ -302,7 +292,8 @@
     _requestcount ++;
     
 	NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETETALASEKEY,
-                            kTKPDDETAIL_APISHOPIDKEY: @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0)
+                            kTKPDDETAIL_APISHOPIDKEY: @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                            @"enc_dec" : @"off"
                             };
     
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPETALASE_APIPATH parameters:param];
@@ -314,26 +305,22 @@
         _table.tableFooterView = _footer;
         [_act startAnimating];
         
+        NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [self requestsuccess:mappingResult withOperation:operation];
             [_act stopAnimating];
             _table.tableFooterView = nil;
-            [_table reloadData];
-            [_timer invalidate];
-            _timer = nil;
-            
+            [timer invalidate];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            /** failure **/
             [self requestfailure:error];
             [_act stopAnimating];
             _table.tableFooterView = nil;
-            [_timer invalidate];
-            _timer = nil;
+            [timer invalidate];
         }];
         [_operationQueue addOperation:_request];
         
-        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+
     }
     else {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -424,7 +411,7 @@
                 if (presentedEtalaseType == PRESENTED_ETALASE_ADD_PRODUCT) {
                     EtalaseList *etalase = [EtalaseList new];
                     etalase.etalase_name = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASENAMEKEY];
-                    etalase.etalase_id = [[DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASEIDKEY] integerValue];
+                    etalase.etalase_id = [DATA_ADD_NEW_ETALASE_DICTIONARY objectForKey:kTKPDSHOP_APIETALASEIDKEY];
                     [_etalaseList addObject:etalase];
                 }
                 
