@@ -6,6 +6,9 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
+#import "string_product.h"
+#import "string_transaction.h"
+
 #import "TransactionObjectMapping.h"
 
 #import "TransactionCartViewController.h"
@@ -1196,10 +1199,9 @@
                                       API_PARTIAL_STRING_KEY :partialString,
                                       API_USE_DEPOSIT_KEY:@(_isUsingSaldoTokopedia),
                                       @"deposit_amt":usedSaldo,
-                                      API_VOUCHER_CODE_KEY : voucherCode
-                                      //@"enc_dec":@"off",
-                                      //kTKPD_USERIDKEY : [_auth objectForKey:kTKPD_USERIDKEY],
-                                      //kTKPD_SHOPIDKEY: [_auth objectForKey:kTKPD_SHOPIDKEY]
+                                      API_VOUCHER_CODE_KEY : voucherCode,
+                                      kTKPD_USERIDKEY : [_auth objectForKey:kTKPD_USERIDKEY],
+                                      kTKPD_SHOPIDKEY: [_auth objectForKey:kTKPD_SHOPIDKEY]
                                       };
     
     [param addEntriesFromDictionary:paramDictionary];
