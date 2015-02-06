@@ -471,6 +471,8 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 #define DEFAULT_ROW_HEIGHT 44
+#define CELL_ROW_HEIGHT 212
+    
     NSInteger listCount = _list.count;
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
 
@@ -488,7 +490,7 @@
             return ((UITableViewCell*)_errorCells[0]).frame.size.height;
         }
         else if (labs(indexPathFirstObjectProduct.row-indexPath.row)<products.count) {
-            return 236;
+            return CELL_ROW_HEIGHT;
         }
         else
             return DEFAULT_ROW_HEIGHT;

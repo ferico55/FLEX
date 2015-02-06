@@ -30,6 +30,7 @@
 
 #define kTKPD_APIRESULTKEY @"result"
 #define kTKPD_APIPAGINGKEY @"paging"
+#define API_PAGE_KEY @"page"
 #define kTKPD_APIURINEXTKEY @"uri_next"
 #define kTKPD_APILISTKEY @"list"
 #define kTKPD_APIERRORMESSAGEKEY @"message_error"

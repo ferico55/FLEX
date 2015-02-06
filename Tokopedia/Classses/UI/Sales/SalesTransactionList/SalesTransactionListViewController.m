@@ -89,7 +89,7 @@ typedef enum {
     ORDER_DELIVERED_CONFIRM              = 610,   // update by BUYER        buyer confirm for delivery
     ORDER_DELIVERED_DUE_DATE             = 620,   // update by SYSTEM       no response after delivery age > 3 days
     ORDER_DELIVERY_FAILURE               = 630,   // update by BUYER        buyer claim that he/she does not received any package
-    ORDER_FINISHED                       = 700,   // update by ADMIN        order complete verification
+    ORDER_FINISHED                       = 700,   // update by ADMIN        order complete Confirmed
     ORDER_FINISHED_BOUNCE_BACK           = 701,   // update by ADMIN        order yang dianggap selesai tetapi barang tidak sampai ke buyer
     ORDER_REFUND                         = 800,   // update by ADMIN        order refund to the buyer for some reason
     ORDER_ROLLBACK                       = 801,   // update by ADMIN        order rollback from finished

@@ -12,7 +12,7 @@
 #import "TransactionCartViewController.h"
 #import "TransactionCartResultViewController.h"
 
-@interface TransactionCartRootViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate, TransactionCartViewControllerDelegate, TransactionCartResultViewControllerDelegate>
+@interface TransactionCartRootViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate, TransactionCartViewControllerDelegate>
 {
     NSInteger _index;
     NSDictionary *_data;
@@ -94,10 +94,6 @@
                             
                         }];
     }
-    else
-    {
-        [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
-    }
 
 }
 
@@ -164,7 +160,6 @@
         {
             if(!_cartResultViewController)_cartResultViewController = [TransactionCartResultViewController new];
             _cartResultViewController.data = _data;
-            _cartResultViewController.delegate = self;
             for (UIButton *button in _pageButtons) {
                 button.enabled = NO;
             }
@@ -236,11 +231,6 @@
     _data = data;
     [_pageController setViewControllers:@[[self viewControllerAtIndex:2]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
 
-}
-
--(void)shouldBackToFirstPage
-{
-    [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
 }
 
 -(void)dealloc{

@@ -110,6 +110,20 @@ typedef enum
 #define DATA_USED_SALDO_KEY @"saldo_is_used"
 #define DATA_NAME_KEY @"name"
 #define DATA_VALUE_KEY @"value"
+#define DATA_DETAIL_ORDER_CONFIRMATION @"data_detail_order"
+
+
+#pragma mark - String Action
+#define ACTION_ADD_TO_CART @"add_to_cart"
+#define ACTION_ADD_TO_CART_FORM @"get_add_to_cart_form"
+#define ACTION_SHIPMENT_FORM @"get_edit_address_shipping_form"
+#define ACTION_CALCULATE_PRICE @"calculate_cart"
+#define ACTION_CANCEL_CART @"cancel_cart"
+#define ACTION_EDIT_PRODUCT_CART @"edit_product"
+#define ACTION_EDIT_ADDRESS_CART @"edit_address"
+#define ACTION_EDIT_INSURANCE @"edit_insurance"
+#define ACTION_CECK_VOUCHER_CODE @"check_voucher_code"
+#pragma mark -
 
 #define API_VOUCHER_CODE_KEY @"voucher_code"
 #define API_ACTION_KEY @"action"
@@ -263,16 +277,6 @@ typedef enum
 
 #define API_TRANSACTION_SUMMARY_KEY @"transaction"
 #define API_TRANSACTION_SUMMARY_PRODUCT_KET @"carts"
-
-#define ACTION_ADD_TO_CART @"add_to_cart"
-#define ACTION_ADD_TO_CART_FORM @"get_add_to_cart_form"
-#define ACTION_SHIPMENT_FORM @"get_edit_address_shipping_form"
-#define ACTION_CALCULATE_PRICE @"calculate_cart"
-#define ACTION_CANCEL_CART @"cancel_cart"
-#define ACTION_EDIT_PRODUCT_CART @"edit_product"
-#define ACTION_EDIT_ADDRESS_CART @"edit_address"
-#define ACTION_EDIT_INSURANCE @"edit_insurance"
-#define ACTION_CECK_VOUCHER_CODE @"check_voucher_code"
 
 #define API_DATA_VOUCHER_KEY @"data_voucher"
 #define API_DATA_VOUCHER_AMOUNT_KEY @"voucher_amount"

@@ -24,7 +24,7 @@
 }
 
 - (void)awakeFromNib {
-    // Initialization code
+    [_productNameLabel sizeToFit];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

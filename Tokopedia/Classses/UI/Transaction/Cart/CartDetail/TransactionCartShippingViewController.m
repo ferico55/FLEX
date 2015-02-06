@@ -108,6 +108,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY]};
+    [_delegate TransactionCartShippingViewController:self withUserInfo:userInfo];
+}
+
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
@@ -467,7 +474,12 @@
                     NSArray *array = action.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     if (!_isFirstLoad)
+                    {
                         [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                        TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
+                        [_dataInput setObject:cart.cart_destination forKey:DATA_ADDRESS_DETAIL_KEY];
+                        [_tableView reloadData];
+                    }
                     _isFirstLoad = NO;
 
                 }
@@ -671,11 +683,6 @@
         cell = [self cellCartDetailAtIndexPage:indexPath];
     else
         cell = [self cellCartSummaryAtIndexPage:indexPath];
-    
-    if (!_isFinishCalculate)
-        cell.userInteractionEnabled = NO;
-    else
-        cell.userInteractionEnabled = YES;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -716,50 +723,56 @@
     switch (indexPath.row) {
         case 0:
         {
+            AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
             SettingAddressViewController *addressViewController = [SettingAddressViewController new];
             addressViewController.delegate = self;
             NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
             addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
-                                           DATA_INDEXPATH_KEY: selectedIndexPath};
+                                           DATA_INDEXPATH_KEY: selectedIndexPath,
+                                           DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]};
             [self.navigationController pushViewController:addressViewController animated:YES];
             break;
         }
         case 2:
         {
-            NSIndexPath *selectedShipment = [_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-            
-            ShippingInfoShipments *shipment = [_dataInput objectForKey:DATA_SHIPMENT_KEY]?:cart.cart_shipments;
-            
-            TransactionShipmentViewController *shipmentViewController = [TransactionShipmentViewController new];
-            shipmentViewController.data = @{DATA_TYPE_KEY:@(TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY),
-                                            DATA_SHIPMENT_KEY :shipment,
-                                            DATA_INDEXPATH_KEY : selectedShipment
-                                            };
-            shipmentViewController.delegate = self;
-            [self.navigationController pushViewController:shipmentViewController animated:YES];
+            if (_isFinishCalculate) {
+                NSIndexPath *selectedShipment = [_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                
+                ShippingInfoShipments *shipment = [_dataInput objectForKey:DATA_SHIPMENT_KEY]?:cart.cart_shipments;
+                
+                TransactionShipmentViewController *shipmentViewController = [TransactionShipmentViewController new];
+                shipmentViewController.data = @{DATA_TYPE_KEY:@(TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY),
+                                                DATA_SHIPMENT_KEY :shipment,
+                                                DATA_INDEXPATH_KEY : selectedShipment
+                                                };
+                shipmentViewController.delegate = self;
+                [self.navigationController pushViewController:shipmentViewController animated:YES];
+            }
             break;
         }
         case 3:
         {
-            NSArray *shipments = [_dataInput objectForKey:DATA_SHIPMENT_KEY];
-            ShippingInfoShipments *shipment = [_dataInput objectForKey:DATA_SELECTED_SHIPMENT_KEY]?:shipments[0];
-
-            NSIndexPath *selectedShipmentPackage = [_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-            
-            NSMutableArray *shipmentPackages = [NSMutableArray new];
-            [shipmentPackages addObjectsFromArray:shipment.shipment_package];
-            for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                if ([package.price isEqualToString:@"0"]) {
-                    [shipmentPackages removeObject:package];
+            if (_isFinishCalculate) {
+                NSArray *shipments = [_dataInput objectForKey:DATA_SHIPMENT_KEY];
+                ShippingInfoShipments *shipment = [_dataInput objectForKey:DATA_SELECTED_SHIPMENT_KEY]?:shipments[0];
+                
+                NSIndexPath *selectedShipmentPackage = [_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                
+                NSMutableArray *shipmentPackages = [NSMutableArray new];
+                [shipmentPackages addObjectsFromArray:shipment.shipment_package];
+                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                    if ([package.price isEqualToString:@"0"]) {
+                        [shipmentPackages removeObject:package];
+                    }
                 }
+                TransactionShipmentViewController *shipmentViewController = [TransactionShipmentViewController new];
+                shipmentViewController.data = @{DATA_TYPE_KEY:@(TYPE_TRANSACTION_SHIPMENT_SERVICE_TYPE),
+                                                DATA_SHIPMENT_KEY :shipmentPackages,
+                                                DATA_INDEXPATH_KEY : selectedShipmentPackage
+                                                };
+                shipmentViewController.delegate = self;
+                [self.navigationController pushViewController:shipmentViewController animated:YES];
             }
-            TransactionShipmentViewController *shipmentViewController = [TransactionShipmentViewController new];
-            shipmentViewController.data = @{DATA_TYPE_KEY:@(TYPE_TRANSACTION_SHIPMENT_SERVICE_TYPE),
-                                            DATA_SHIPMENT_KEY :shipmentPackages,
-                                            DATA_INDEXPATH_KEY : selectedShipmentPackage
-                                            };
-            shipmentViewController.delegate = self;
-            [self.navigationController pushViewController:shipmentViewController animated:YES];
             break;
         }
         case 4: // insurance
@@ -858,7 +871,7 @@
     NSString *name = [ARRAY_INSURACE[index] objectForKey:DATA_NAME_KEY];
     
     cart.cart_insurance_prod =value;
-    cart.cart_insurance_price_idr = ([value isEqual:@(0)])?@"Rp 0,-":cart.cart_insurance_price_idr;
+    cart.cart_insurance_price_idr = @"Processing ..";
     cart.cart_insurance_name = name;
     [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
     [_tableView reloadData];
@@ -888,12 +901,12 @@
                 _addressStreetLabel.text = address.address_street?:@"-";
                 break;
             case 2:
-                cell.detailTextLabel.text = shipment.shipment_name?:@"None";
+                cell.detailTextLabel.text = (!_isFinishCalculate)?@"Processing ...":shipment.shipment_name?:@"None";
                 break;
             case 3:
             {
                 NSString *shipmentPackageName = shipmentPackage.name?:cart.cart_shipments.shipment_package_name;
-                cell.detailTextLabel.text = shipmentPackageName;
+                cell.detailTextLabel.text = (!_isFinishCalculate)?@"Processing ...":shipmentPackageName;
                 break;
             }
             case 4:
@@ -1017,6 +1030,7 @@
     TransactionCartList *cart = [userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY];
     
     [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
+    
     [_tableView reloadData];
 }
 
