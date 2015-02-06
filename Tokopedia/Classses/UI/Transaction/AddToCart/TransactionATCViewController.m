@@ -353,11 +353,13 @@
         switch (indexPath.row) {
             case TAG_BUTTON_TRANSACTION_ADDRESS:
             {
+                AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
                 SettingAddressViewController *addressViewController = [SettingAddressViewController new];
                 addressViewController.delegate = self;
                 NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
-                                               DATA_INDEXPATH_KEY: selectedIndexPath};
+                                               DATA_INDEXPATH_KEY: selectedIndexPath,
+                                               DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]};
                 [self.navigationController pushViewController:addressViewController animated:YES];
                 break;
             }

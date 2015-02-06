@@ -8,7 +8,7 @@
 
 #import "PurchaseViewController.h"
 
-#import "TransactionOrderTabViewController.h"
+#import "TxOrderTabViewController.h"
 
 @interface PurchaseViewController ()
 @property (weak, nonatomic) IBOutlet UILabel *paymentConfirmationValueLabel;
@@ -58,12 +58,18 @@
                                                                            attributes:attributes];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.hidesBottomBarWhenPushed = YES;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
 - (IBAction)paymentConfirmationDidTap:(id)sender {
-    TransactionOrderTabViewController *vc = [TransactionOrderTabViewController new];
+    TxOrderTabViewController *vc = [TxOrderTabViewController new];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

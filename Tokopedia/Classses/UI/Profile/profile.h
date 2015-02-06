@@ -18,7 +18,7 @@ typedef enum
 } TYPE_ADD_EDIT_PROFILE;
 
 #define kTKPDPROFILEEDIT_TITLE @"Edit Profile"
-#define kTKPDPROFILEEDITPHONEVERIFICATION_TITLE @"Verification Phone Number"
+#define kTKPDPROFILEEDITPHONEConfirmed_TITLE @"Confirmed Phone Number"
 
 #define kTKPDPROFILESETTING_TITLE @"Settings"
 #define kTKPDPROFILESETTINGNOTIFICATION_TITLE @"Setting Notification"

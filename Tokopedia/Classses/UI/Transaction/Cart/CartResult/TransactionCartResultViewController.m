@@ -12,6 +12,8 @@
 #import "TransactionCartResultCell.h"
 #import "TransactionCartResultPaymentCell.h"
 
+#import "TxOrderTabViewController.h"
+
 @interface TransactionCartResultViewController ()<UITableViewDataSource, UITableViewDelegate>
 {
     NSMutableArray *_listSystemBank;
@@ -197,8 +199,11 @@
         cell.backgroundColor = [UIColor whiteColor];
     }
 }
+
+#pragma mark - View Action
 - (IBAction)tap:(id)sender {
-    [_delegate shouldBackToFirstPage];
+    TxOrderTabViewController *vc = [TxOrderTabViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - methods Cell

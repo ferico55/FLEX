@@ -162,6 +162,7 @@
     
     _list = [NSMutableArray new];
     _datainput = [NSMutableDictionary new];
+    [_datainput addEntriesFromDictionary:_data];
     _operationQueue = [NSOperationQueue new];
     
     _page = 1;
@@ -232,8 +233,9 @@
                 ((GeneralCheckmarkCell*)cell).cellLabel.text = list.address_name;
                 
                 if (_list.count > indexPath.row) {
+                    AddressFormList *addressSelected = [_datainput objectForKey:DATA_ADDRESS_DETAIL_KEY];
                     NSIndexPath *indexpath = _selectedIndexPath;
-                    if (indexPath.section != indexpath.section) {
+                    if (addressSelected.address_id != list.address_id) {
                         ((GeneralCheckmarkCell*)cell).checkmarkImageView.hidden = YES;
                     }
                     else
@@ -328,7 +330,8 @@
     BOOL isdefault;
     NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
-        _selectedIndexPath = indexPath;
+         AddressFormList *address = _list[indexPath.section];
+        [_datainput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
         [_table reloadData];
     }
     else
@@ -360,7 +363,7 @@
 	}
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-	if (indexPath.section == _limit-1) {
+	if (row == indexPath.row) {
 		//NSLog(@"%@", NSStringFromSelector(_cmd));
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             /** called if need to load next page **/
@@ -566,6 +569,7 @@
                     //TODO: Behavior after edit
                     NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY];
                     BOOL isdefault;
+                    
                     AddressFormList *list = _list[indexpath.row];
                     isdefault = (list.address_status == 2)?YES:NO;
                     SettingAddressDetailViewController *vc = [SettingAddressDetailViewController new];
@@ -875,7 +879,7 @@
                 break;
             case TAG_SETTING_ADDRESS_BARBUTTONITEM_DONE:
             {
-                AddressFormList *address = _list[_selectedIndexPath.section];
+                AddressFormList *address = [_datainput objectForKey:DATA_ADDRESS_DETAIL_KEY];
                 NSDictionary* userInfo = @{DATA_ADDRESS_DETAIL_KEY:address,
                                            DATA_INDEXPATH_KEY:_selectedIndexPath
                                            };
