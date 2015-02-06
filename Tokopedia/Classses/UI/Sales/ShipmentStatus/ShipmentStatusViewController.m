@@ -12,11 +12,14 @@
 #import "OrderTransaction.h"
 #import "ActionOrder.h"
 
+
 #import "ShipmentStatusViewController.h"
-#import "ShipmentStatusCell.h"
 #import "FilterShipmentStatusViewController.h"
 #import "DetailShipmentStatusViewController.h"
 #import "ChangeReceiptNumberViewController.h"
+#import "TrackOrderViewController.h"
+
+#import "ShipmentStatusCell.h"
 #import "StickyAlertView.h"
 
 @interface ShipmentStatusViewController ()
@@ -118,7 +121,9 @@ typedef enum {
                                                                options:nil];
         cell = [topLevelObjects objectAtIndex:0];
     }
+    
     cell.delegate = self;
+    cell.indexPath = indexPath;
     
     OrderTransaction *order = [_shipments objectAtIndex:indexPath.row];
     
@@ -178,23 +183,14 @@ typedef enum {
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
-    
     if (row == indexPath.row) {
-
         NSLog(@"%@", NSStringFromSelector(_cmd));
-
         if (_nextURI != NULL && ![_nextURI isEqualToString:@"0"] && _nextURI != 0) {
-
             _tableView.tableFooterView = _footerView;
-        
             [_activityIndicator startAnimating];
-            
             [self request];
-        
         } else {
-
             _tableView.tableFooterView = nil;
-        
         }
     }
 }
@@ -621,6 +617,8 @@ typedef enum {
 
             StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil merubah nomor resi."] delegate:self];
             [alert show];
+        
+            _selectedOrder.order_detail.detail_ship_ref_num = receiptNumber;
             
         } else {
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."] delegate:self];
@@ -633,7 +631,6 @@ typedef enum {
         [alert show];
         
     }];
-
 }
 
 #pragma mark - Cell delegate
@@ -642,6 +639,17 @@ typedef enum {
 {
     OrderTransaction *order = [_shipments objectAtIndex:indexPath.row];
     _selectedOrder = order;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+    TrackOrderViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"TrackOrderViewController"];
+    navigationController.viewControllers = @[controller];
+    
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }   
 
 - (void)didTapReceiptButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath

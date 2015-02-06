@@ -13,7 +13,13 @@
 #import "SalesTransactionListViewController.h"
 #import "NotificationManager.h"
 
-@interface SalesViewController () <NotificationManagerDelegate> {
+@interface SalesViewController ()
+<
+    NotificationManagerDelegate,
+    NewOrderDelegate,
+    ShipmentConfirmationDelegate
+>
+{
     NotificationManager *_notificationManager;
 }
 
@@ -44,8 +50,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
     self.hidesBottomBarWhenPushed = YES;
+    
     _notificationManager = [NotificationManager new];
+    [_notificationManager initNotificationRequest];
+    _notificationManager.delegate = self;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -59,11 +69,13 @@
 
 - (IBAction)newOrderDidTap:(id)sender {
     SalesNewOrderViewController *controller = [[SalesNewOrderViewController alloc] init];
+    controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (IBAction)shipmentConfirmationDidTap:(id)sender {
     ShipmentConfirmationViewController *controller = [[ShipmentConfirmationViewController alloc] init];
+    controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -111,6 +123,22 @@
 - (void)didReceiveNotification:(Notification *)notification
 {
     _notification = notification;
+    [self setValues];
+}
+
+#pragma mark - Delegate
+
+- (void)viewController:(UIViewController *)viewController numberOfProcessedOrder:(NSInteger)totalOrder
+{
+    if ([viewController isKindOfClass:[SalesNewOrderViewController class]]) {
+        totalOrder = [_notification.result.sales.sales_new_order integerValue] - totalOrder;
+        _notification.result.sales.sales_new_order = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:totalOrder]];
+
+    } else if ([viewController isKindOfClass:[ShipmentConfirmationViewController class]]) {
+        totalOrder = [_notification.result.sales.sales_shipping_confirm integerValue] - totalOrder;
+        _notification.result.sales.sales_shipping_confirm = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:totalOrder]];
+    
+    }
     [self setValues];
 }
 

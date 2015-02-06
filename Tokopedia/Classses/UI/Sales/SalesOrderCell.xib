@@ -150,7 +150,7 @@
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="-6" minY="-2" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Tolak Pesanan" image="icon_order_cancel.png">
+                                        <state key="normal" title="Tolak Pesanan" image="icon_order_cancel-01.png">
                                             <color key="titleColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -164,7 +164,7 @@
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="-6" minY="-4" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Terima Pesanan" image="icon_order_check.png">
+                                        <state key="normal" title="Terima Pesanan" image="icon_order_check-01.png">
                                             <color key="titleColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -209,8 +209,8 @@
     </objects>
     <resources>
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>
-        <image name="icon_order_cancel.png" width="14" height="14"/>
-        <image name="icon_order_check.png" width="14" height="14"/>
+        <image name="icon_order_cancel-01.png" width="14" height="14"/>
+        <image name="icon_order_check-01.png" width="14" height="14"/>
         <image name="icon_profile_picture.jpeg" width="200" height="200"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
