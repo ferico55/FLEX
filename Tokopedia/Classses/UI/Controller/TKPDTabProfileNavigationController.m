@@ -351,10 +351,7 @@
     
 	if (_viewControllers != nil) {
         
-        if (!_isnodata) {
-            id userinfo = _profileinfo;
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-        }
+        
         
 		//UIView* selecttabbar;
 		CGRect selectframe;
@@ -460,7 +457,12 @@
 			[_container addSubview:select.view];
 			[select didMoveToParentViewController:self];
 		}
-	}
+        
+        if (!_isnodata) {
+            id userinfo = _profileinfo;
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+        }
+    }
 }
 
 - (UIEdgeInsets)contentInsetForChildController

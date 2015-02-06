@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "string_alert.h"
 #import "AlertDatePickerView.h"
 
 #pragma mark -

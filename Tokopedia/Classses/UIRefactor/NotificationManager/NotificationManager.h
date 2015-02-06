@@ -38,5 +38,6 @@
 - (void)tapNotificationBar;
 - (void)tapWindowBar;
 - (void)setViewController:(UIViewController*)vc;
+- (void)initNotificationRequest;
 
 @end

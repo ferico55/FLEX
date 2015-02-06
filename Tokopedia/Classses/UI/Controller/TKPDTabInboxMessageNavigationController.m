@@ -254,7 +254,8 @@
     UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
     
     if(_selectedIndex == SEGMENT_MESSAGE) {
-        [titleLabel setTitle:_titleNavMessage forState:UIControlStateNormal];
+        [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessage];
+//        [titleLabel setTitle:_titleNavMessage forState:UIControlStateNormal];
         if([_titleNavMessage isEqualToString:ALL_MESSAGE]) {
             [self markAllTalkButton];
         } else {
@@ -486,16 +487,20 @@
                 
                 if(_selectedIndex == SEGMENT_MESSAGE) {
                     _titleNavMessage = ALL_MESSAGE;
-                    [titleLabel setTitle:_titleNavMessage forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavMessage forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessage];
                 } else if (_selectedIndex == SEGMENT_MESSAGE_SENT) {
                     _titleNavMessageSent = ALL_MESSAGE;
-                    [titleLabel setTitle:_titleNavMessageSent forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavMessageSent forState:UIControlStateNormal];
+                        [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageSent];
                 } else if (_selectedIndex == SEGMENT_MESSAGE_ARCHIVE) {
                     _titleNavMessageArchive = ALL_MESSAGE;
-                    [titleLabel setTitle:_titleNavMessageArchive forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavMessageArchive forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageArchive];
                 } else if (_selectedIndex == SEGMENT_MESSAGE_TRASH) {
                     _titleNavMessageTrash = ALL_MESSAGE;
-                    [titleLabel setTitle:_titleNavMessageTrash forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavMessageTrash forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageTrash];
                 }
                 
                 titleLabel.frame = CGRectMake(0, 0, 70, 44);
@@ -516,16 +521,20 @@
 
                 if(_selectedIndex == SEGMENT_MESSAGE) {
                     _titleNavMessage = UNREAD_MESSAGE;
-                    [titleLabel setTitle:_titleNavMessage forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavMessage forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessage];
                 } else if (_selectedIndex == SEGMENT_MESSAGE_SENT) {
                     _titleNavMessageSent = UNREAD_MESSAGE;
-                    [titleLabel setTitle:_titleNavMessageSent forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavMessageSent forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageSent];
                 } else if (_selectedIndex == SEGMENT_MESSAGE_ARCHIVE) {
                     _titleNavMessageArchive = UNREAD_MESSAGE;
-                    [titleLabel setTitle:_titleNavMessageArchive forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavMessageArchive forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageArchive];
                 } else if (_selectedIndex == SEGMENT_MESSAGE_TRASH) {
                     _titleNavMessageTrash = UNREAD_MESSAGE;
-                    [titleLabel setTitle:_titleNavMessageTrash forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavMessageTrash forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageSent];
                 }
                 
                 titleLabel.frame = CGRectMake(0, 0, 70, 44);
@@ -587,7 +596,7 @@
             }
             case 11:
             {
-                barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleDone target:(self) action:@selector(tapbutton:)];
+                barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:(self) action:@selector(tapbutton:)];
                 barbutton1.tag = 12;
                 barbutton1.tintColor = [UIColor blackColor];
                 
@@ -618,6 +627,19 @@
     }
     
     
+}
+
+- (void)setLabelButtonWithArrow:(id)button withString:(NSString*)string {
+    NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+    attachment.image = [UIImage imageNamed:@"navigate-down.png"];
+    
+    
+    NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
+    
+    NSMutableAttributedString *myString= [[NSMutableAttributedString alloc] initWithString:string attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:1 alpha:1]}];
+    [myString appendAttributedString:attachmentString];
+    
+    [button setAttributedTitle:myString forState:UIControlStateNormal];
 }
 
 

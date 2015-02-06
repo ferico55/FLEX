@@ -2,17 +2,14 @@
 //  InboxMessageCell.m
 //  Tokopedia
 //
-//  Created by Tokopedia on 10/29/14.
-//  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
+//  Created by Tokopedia on 1/30/15.
+//  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
 #import "InboxMessageCell.h"
 
 @implementation InboxMessageCell
 
-@synthesize delegate = _delegate;
-
-#pragma mark - Factory methods
 
 + (id)newcell
 {
@@ -36,42 +33,6 @@
     
     // Configure the view for the selected state
 }
-
-- (IBAction) tap:(id)sender {
-    if([sender isKindOfClass:[UIButton class]]) {
-       // UIButton *btn = (UIButton*)sender;
-        
-        
-        
-    }
-}
-
-#pragma mark - View Gesture
-- (IBAction)gesture:(id)sender {
-    
-    if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
-        UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-        switch (gesture.state) {
-            case UIGestureRecognizerStateBegan: {
-                break;
-            }
-            case UIGestureRecognizerStateChanged: {
-                break;
-            }
-            case UIGestureRecognizerStateEnded: {
-                [_delegate InboxMessageCell:self withindexpath:_indexpath];
-                break;
-            }
-        }
-    }
-    
-}
-
-
-
-
-
-
 
 
 @end

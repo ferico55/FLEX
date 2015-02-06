@@ -40,6 +40,7 @@
 #import "NotificationManager.h"
 
 #import "TKPDTabInboxTalkNavigationController.h"
+#import "DepositSummaryViewController.h"
 
 @interface MoreViewController ()  {
     NSDictionary *_auth;
@@ -86,30 +87,35 @@
     _operationQueue = [[NSOperationQueue alloc] init];
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
-
     
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"shop_avatar"]]
-                                    cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
-    [_shopImageView setImageWithURLRequest:request
-                                    placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]
-                                             success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    if([_auth objectForKey:@"shop_id"]  == 0) {
+        _shopNameLabel.text = [_auth objectForKey:@"shop_name"];
+        
+        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"shop_avatar"]]
+                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        
+        [_shopImageView setImageWithURLRequest:request
+                              placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]
+                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                                 //NSLOG(@"thumb: %@", thumb);
-                                                 [_shopImageView setImage:image];
+                                           //NSLOG(@"thumb: %@", thumb);
+                                           [_shopImageView setImage:image];
 #pragma clang diagnostic pop
-                                             } failure: nil];
-    
-    if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
-        _shopIsGoldLabel.text = @"Gold Merchant";
-    } else {
-        _shopIsGoldBadge.hidden = YES;
-        CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
-        shopIsGoldLabelFrame.origin.x = 83;
-        _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
+                                       } failure: nil];
+        
+        if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
+            _shopIsGoldLabel.text = @"Gold Merchant";
+        } else {
+            _shopIsGoldBadge.hidden = YES;
+            CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
+            shopIsGoldLabelFrame.origin.x = 83;
+            _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
+        }
     }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -138,7 +144,7 @@
     // Set create shop button corner
     self.createShopButton.layer.cornerRadius = 2;
     
-    _depositLabel.text = @"";
+    _depositLabel.text = @"Fetching Saldo Tokopedia...";
 
         [self configureRestKit];
     
@@ -225,6 +231,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.hidesBottomBarWhenPushed = YES;
+    
+    if(indexPath.section == 0) {
+        if(!_depositRequest.isExecuting) {
+            DepositSummaryViewController *depositController = [DepositSummaryViewController new];
+            depositController.data = @{@"total_saldo":_depositLabel.text};
+            [self.navigationController pushViewController:depositController animated:YES];
+        }
+    }
     
     if (indexPath.section == 1 && indexPath.row == 0) {
         NSMutableArray *viewControllers = [NSMutableArray new];

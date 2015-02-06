@@ -65,6 +65,8 @@
     ShipmentCourier *_courier;
     
     NSArray *_shipmentCouriers;
+    
+    NSInteger _numberOfProcessedOrder;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *headerView;
@@ -88,6 +90,8 @@
     _page = 1;
     _limit = 6;
     _requestCount = 0;
+    
+    _numberOfProcessedOrder = 0;
     
     _orders = [NSMutableArray new];
     _orderInProcess = [NSMutableDictionary new];
@@ -121,6 +125,12 @@
 
     NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:_alertLabel.text attributes:attributes];
     _alertLabel.attributedText = productNameAttributedText;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.delegate viewController:self numberOfProcessedOrder:_numberOfProcessedOrder];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -828,6 +838,7 @@
         } else if ([actionType isEqualToString:@"reject"]) {
             message = @"Anda telah berhasil membatalkan pengiriman barang.";
         }
+        _numberOfProcessedOrder++;
         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[message] delegate:self];
         [alert show];
         [_orderInProcess removeObjectForKey:orderId];

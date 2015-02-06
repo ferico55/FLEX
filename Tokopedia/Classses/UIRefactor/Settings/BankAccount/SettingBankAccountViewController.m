@@ -349,7 +349,7 @@
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIGETUSERBANKACCOUNTKEY,
                             kTKPDPROFILE_APIPAGEKEY : @(_page),
                             kTKPDPROFILE_APILIMITKEY : @(kTKPDPROFILESETTINGBANKACCOUNT_LIMITPAGE),
-                            kTKPD_USERIDKEY : [auth objectForKey:kTKPD_USERIDKEY]
+//                            kTKPD_USERIDKEY : [auth objectForKey:kTKPD_USERIDKEY]
                             };
     _requestcount ++;
     

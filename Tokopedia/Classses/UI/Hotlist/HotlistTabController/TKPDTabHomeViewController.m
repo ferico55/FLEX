@@ -13,6 +13,7 @@
 #import "HistoryProductViewController.h"
 #import "FavoritedShopViewController.h"
 #import "NotificationManager.h"
+#import "UserAuthentificationManager.h"
 
 
 @interface TKPDTabHomeViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate> {
@@ -26,6 +27,7 @@
     BOOL _tabBarCanScrolling;
 
     NotificationManager *_notifManager;
+    UserAuthentificationManager *_userManager;
 
 }
 
@@ -72,12 +74,10 @@
     pageControllerFrame.size.height -= 108;
     [[self.pageController view] setFrame:pageControllerFrame];
 
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-	NSDictionary* auth = [secureStorage keychainDictionary];
-	_auth = [auth mutableCopy];
+    _userManager = [UserAuthentificationManager new];
     
     _hotListViewController = [HotlistViewController new];
-    _hotListViewController.data = @{kTKPD_AUTHKEY : _auth?:@""};
+    _hotListViewController.data = @{kTKPD_AUTHKEY : [_userManager getUserLoginData]?:@""};
     _hotListViewController.index = 1;
     
     _productFeedViewController = [ProductFeedViewController new];
@@ -172,6 +172,49 @@
     
     [self initNotificationManager];
     [self initNotification];
+    _userManager = [UserAuthentificationManager new];
+    
+    if(_userManager.getUserId == @"0") {
+        int i = 1;
+        for (UIView *subview in [_tabScrollView subviews]) {
+            if(i != 1) {
+                [subview removeFromSuperview];
+            }
+            i++;
+        }
+    } else {
+        UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*1, 0, (self.view.frame.size.width/3), 44)];
+        [button1 setTitle:@"Hotlist" forState:UIControlStateNormal];
+        [button1 setTitleColor:[UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1] forState:UIControlStateNormal];
+        button1.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+        button1.tag = 1;
+        [button1 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
+        [_tabScrollView addSubview:button1];
+        
+        UIButton *button2 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*2, 0, (self.view.frame.size.width/3), 44)];
+        [button2 setTitle:@"Produk Feed" forState:UIControlStateNormal];
+        [button2 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
+        button2.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+        button2.tag = 2;
+        [button2 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
+        [_tabScrollView addSubview:button2];
+        
+        UIButton *button3 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*3, 0, (self.view.frame.size.width/3), 44)];
+        [button3 setTitle:@"Terakhir Dilihat" forState:UIControlStateNormal];
+        [button3 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
+        button3.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+        button3.tag = 3;
+        [button3 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
+        [_tabScrollView addSubview:button3];
+        
+        UIButton *button4 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*4, 0, (self.view.frame.size.width/3), 44)];
+        [button4 setTitle:@"Toko Favorit" forState:UIControlStateNormal];
+        [button4 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
+        button4.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+        button4.tag = 4;
+        [button4 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
+        [_tabScrollView addSubview:button4];
+    }
 
     [self.navigationController.navigationBar setTranslucent:NO];
     

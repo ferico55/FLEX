@@ -66,6 +66,8 @@
     OrderTransaction *_selectedTransaction;
     NSMutableDictionary *_orderInProcess;
     NSIndexPath *_selectedIndexPath;
+    
+    NSInteger _numberOfProcessedOrder;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -94,6 +96,8 @@
 
     _deadline = @"";
     _filter = @"";
+    
+    _numberOfProcessedOrder = 0;
     
     _transactions = [NSMutableArray new];
     _paging = [NSMutableDictionary new];
@@ -130,7 +134,12 @@
     NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:_alertLabel.text
                                                                                     attributes:attributes];
     _alertLabel.attributedText = productNameAttributedText;
-    
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.delegate viewController:self numberOfProcessedOrder:_numberOfProcessedOrder];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -970,6 +979,7 @@
         } else {
             message = @"Anda telah berhasil membatalkan transaksi.";
         }
+        _numberOfProcessedOrder++;
         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[message] delegate:self];
         [alert show];
         [_orderInProcess removeObjectForKey:orderId];

@@ -4,6 +4,15 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -14,26 +23,26 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="190"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wkt-6B-BtT">
-                        <rect key="frame" x="10" y="8" width="300" height="173"/>
+                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Wkt-6B-BtT">
+                        <rect key="frame" x="10" y="9" width="300" height="173"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp 1rb" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j8t-Vu-9rj">
-                                <rect key="frame" x="243" y="148" width="42" height="16"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Rp 1rb" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j8t-Vu-9rj">
+                                <rect key="frame" x="243" y="149" width="42" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="42" id="SvX-nz-aQK"/>
                                     <constraint firstAttribute="height" constant="16" id="vBO-gu-JEv"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <color key="textColor" red="0.93769106657608692" green="0.44360182746835053" blue="0.14870811547253557" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mulai dari" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xXB-Hl-0Ls">
-                                <rect key="frame" x="185" y="149" width="55" height="16"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Mulai dari" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xXB-Hl-0Ls">
+                                <rect key="frame" x="185" y="150" width="55" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="16" id="3uL-pp-BKP"/>
                                     <constraint firstAttribute="width" constant="55" id="7kq-Lp-52l"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -44,8 +53,8 @@
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="141"/>
                                 <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wAf-xN-EU4">
-                                <rect key="frame" x="0.0" y="0.0" width="300" height="141"/>
+                            <imageView clipsSubviews="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wAf-xN-EU4">
+                                <rect key="frame" x="0.0" y="1" width="300" height="141"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <gestureRecognizers/>
                                 <constraints>
@@ -56,6 +65,12 @@
                                     <outletCollection property="gestureRecognizers" destination="Ev2-Sh-dk5" appends="YES" id="2Fe-GI-Esb"/>
                                 </connections>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Product" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k48-fz-ULg">
+                                <rect key="frame" x="8" y="149" width="175" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -79,9 +94,11 @@
             <connections>
                 <outlet property="act" destination="Nsd-Xa-ZQO" id="NS6-pY-jzH"/>
                 <outlet property="contentSubview" destination="Wkt-6B-BtT" id="I0o-xA-myO"/>
+                <outlet property="namelabel" destination="k48-fz-ULg" id="PLU-Y6-Ces"/>
                 <outlet property="pricelabel" destination="j8t-Vu-9rj" id="SYA-o7-uuX"/>
                 <outlet property="productimageview" destination="wAf-xN-EU4" id="JnX-Nw-vk6"/>
             </connections>
+            <point key="canvasLocation" x="408" y="234.5"/>
         </tableViewCell>
         <tapGestureRecognizer id="Ev2-Sh-dk5">
             <connections>

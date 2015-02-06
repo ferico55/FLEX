@@ -73,7 +73,7 @@ typedef enum
 #define kTKPDPROFILE_APIADDADDRESSKEY @"add_address"
 #define kTKPDPROFILE_APIEDITADDRESSKEY @"edit_address"
 #define kTKPDPROFILE_APIDELETEADDRESSKEY @"delete_address"
-#define kTKPDPROFILE_APIGETUSERBANKACCOUNTKEY @"get_user_bank_account"
+#define kTKPDPROFILE_APIGETUSERBANKACCOUNTKEY @"get_bank_account"
 #define kTKPDPROFILE_APISETDEFAULTBANKACCOUNTKEY @"set_default_bank_account"
 #define ACTION_GET_DEFAULT_BANK_FORM @"get_default_bank_account_form"
 #define kTKPDPROFILE_APIADDBANKKEY @"add_bank_account"

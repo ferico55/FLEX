@@ -33,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *commentbutton;
 @property (weak, nonatomic) IBOutlet UIButton *editReviewButton;
 @property (weak, nonatomic) IBOutlet UIButton *reportReviewButton;
+@property (weak, nonatomic) IBOutlet UIButton *deleteReviewButton;
 @property (weak, nonatomic) IBOutlet UIView *ratingView;
 @property (weak, nonatomic) IBOutlet UIView *commentView;
 @property (weak, nonatomic) IBOutlet UIView *respondView;
@@ -45,9 +46,16 @@
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
+    
+    NSInteger _requestDeleteCommentCount;
+    __weak RKObjectManager *_objectDeleteCommentManager;
+    __weak RKManagedObjectRequestOperation *_requestDeleteComment;
+    NSOperationQueue *_operationDeleteCommentQueue;
+    
     NSInteger *_requestCount;
     InboxReviewList *_review;
     NSString *_commentReview;
+    NSTimer *_timer;
 }
 
 #pragma mark - Initialization
@@ -92,6 +100,7 @@
     
     _userManager = [UserAuthentificationManager new];
     _operationQueue = [NSOperationQueue new];
+    _operationDeleteCommentQueue = [NSOperationQueue new];
     
     [self initNavigationBar];
     [self initReviewData];
@@ -111,6 +120,14 @@
    
 }
 
+- (void)hideInputView {
+    _talkInputView.hidden = YES;
+    
+    CGRect newFrame = _talkInputView.frame;
+    newFrame.size.height = 0;
+    _talkInputView.frame = newFrame;
+}
+
 - (void)initReviewData {
     _review = _data;
     
@@ -121,8 +138,9 @@
         [_commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];
         
         _respondView.hidden = YES;
-        if([_review.review_user_id isEqualToString:_userManager.getUserId]) {
-            _talkInputView.hidden = YES;
+        NSString *userId = [NSString stringWithFormat:@"%@", _userManager.getUserId];
+        if([_review.review_user_id isEqualToString:userId]) {
+            [self hideInputView];
         } else {
             _talkInputView.hidden = NO;
         }
@@ -131,7 +149,7 @@
         [_commentbutton setTitle:@"1 Comment" forState:UIControlStateNormal];
         
         _respondView.hidden = NO;
-        _talkInputView.hidden = YES;
+        [self hideInputView];
         _reviewCreateTimeLabel.text = _review.review_response.response_create_time;
         _reviewRespondLabel.text = _review.review_response.response_message;
         _reviewRespondLabel.numberOfLines = 0;
@@ -139,7 +157,9 @@
     }
     
     _productNamelabel.text = _review.review_product_name;
-    _commentlabel.text = _review.review_message;
+    NSString *stringWithoutBr = [_review.review_message stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
+    _commentlabel.text = stringWithoutBr;
+    
     _qualityrate.starscount = [_review.review_rate_quality integerValue];
     _speedrate.starscount = [_review.review_rate_speed integerValue];
     _servicerate.starscount = [_review.review_rate_service integerValue];
@@ -196,8 +216,14 @@
                 [_growingtextview resignFirstResponder];
                 _respondView.hidden = NO;
                 _talkInputView.hidden = YES;
-                _commentlabel.text = @"1 Comment";
+                [_commentbutton setTitle:@"1 Comment" forState:UIControlStateNormal];
                 [self sendComment];
+                break;
+            }
+                
+            case 11 : {
+                [self deleteComment];
+                break;
             }
                 
             default:
@@ -251,7 +277,7 @@
     NSNumber *curve = [note.userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
     
     // get a rect for the textView frame
-    self.view.backgroundColor = [UIColor clearColor];
+//    self.view.backgroundColor = [UIColor clearColor];
     CGRect containerFrame = self.view.frame;
     
     containerFrame.origin.y = self.view.bounds.size.height - containerFrame.size.height + 65;
@@ -274,17 +300,26 @@
 }
 
 - (void) initTalkInputView {
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(5, 5, 240, 45)];
+    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, 240, 45)];
+    //    [_growingtextview becomeFirstResponder];
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
+    _growingtextview.layer.borderWidth = 0.5f;
+    _growingtextview.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    _growingtextview.layer.cornerRadius = 5;
+    _growingtextview.layer.masksToBounds = YES;
     
     _growingtextview.minNumberOfLines = 1;
     _growingtextview.maxNumberOfLines = 6;
+    // you can also set the maximum height in points with maxHeight
+    // textView.maxHeight = 200.0f;
     _growingtextview.returnKeyType = UIReturnKeyGo; //just as an example
+    //    _growingtextview.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     _growingtextview.delegate = self;
     _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     _growingtextview.backgroundColor = [UIColor whiteColor];
     _growingtextview.placeholder = @"Kirim pesanmu di sini..";
+    
     
     [_talkInputView addSubview:_growingtextview];
     _talkInputView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
@@ -349,5 +384,132 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTotalComment" object:nil userInfo:userinfo];
 }
 
+#pragma mark - Action Delete Review
+- (void)deleteComment {
+    _respondView.hidden = YES;
+    [_commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];
+    
+    [self configureDeleteCommentRestkit];
+    [self doDeleteComment];
+}
+
+- (void)configureDeleteCommentRestkit {
+    _objectDeleteCommentManager =  [RKObjectManager sharedClient];
+    
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success"}];
+    
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:@"action/review.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectDeleteCommentManager addResponseDescriptor:responseDescriptorStatus];
+}
+
+- (void)doDeleteComment {
+    if(_requestDeleteComment.isExecuting) return;
+    _requestDeleteCommentCount++;
+    
+    NSDictionary *param = @{
+                            @"review_id" : _review.review_id,
+                            @"text_comment" : _review.review_response.response_message?:@"0",
+                            @"action" : @"delete_comment_review"
+                            };
+    
+    _requestDeleteComment = [_objectDeleteCommentManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/review.pl" parameters:[param encrypt]];
+    
+    
+    [_requestDeleteComment setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestSuccessDeleteComment:mappingResult withOperation:operation];
+        [_timer invalidate];
+        _timer = nil;
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [_timer invalidate];
+        _timer = nil;
+        [self requestFailureDeleteComment:error];
+    }];
+    
+    [_operationDeleteCommentQueue addOperation:_requestDeleteComment];
+    
+    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutDeleteComment) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    
+}
+
+- (void)requestSuccessDeleteComment:(id)object withOperation:(RKObjectRequestOperation *)operation {
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    id stat = [result objectForKey:@""];
+    GeneralAction *generalaction = stat;
+    BOOL status = [generalaction.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+        [self requestProcessDeleteComment:object];
+    }
+}
+
+- (void)requestFailureDeleteComment:(id)object {
+    [self requestProcessDeleteComment:object];
+}
+
+- (void)requestProcessDeleteComment:(id)object {
+    if (object) {
+        if ([object isKindOfClass:[RKMappingResult class]]) {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            id stat = [result objectForKey:@""];
+            GeneralAction *generalaction = stat;
+            BOOL status = [generalaction.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                if(generalaction.message_error)
+                {
+                    [self cancelDeleteRow];
+                    NSArray *array = generalaction.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    
+                } else {
+                    NSDictionary *userinfo;
+                    
+                    userinfo = @{@"index": _index, @"review_comment" : @"0", @"review_comment_time" : @"Just Now"};
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTotalComment" object:nil userInfo:userinfo];
+                }
+            }
+        }
+        else{
+            [self cancelActionDelete];
+            [self cancelDeleteRow];
+            NSError *error = object;
+            if (!([error code] == NSURLErrorCancelled)){
+                NSString *errorDescription = error.localizedDescription;
+                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                [errorAlert show];
+            }
+        }
+    }
+}
+
+- (void)requestTimeoutDeleteComment {
+    [self cancelActionDelete];
+}
+
+- (void)cancelDeleteRow {
+    _respondView.hidden = NO;
+}
+
+- (void)cancelActionDelete {
+    [_requestDeleteComment cancel];
+    _requestDeleteComment = nil;
+    [_objectDeleteCommentManager.operationQueue cancelAllOperations];
+    _objectDeleteCommentManager = nil;
+
+}
 
 @end

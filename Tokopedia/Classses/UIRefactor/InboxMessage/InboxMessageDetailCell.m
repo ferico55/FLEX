@@ -15,7 +15,7 @@
 
 static CGFloat textMarginHorizontal = 15.0f;
 static CGFloat textMarginVertical = 7.5f;
-static CGFloat messageTextSize = 14.0;
+static CGFloat messageTextSize = 15.0;
 
 @synthesize sent, messageLabel, messageView, timeLabel, avatarImageView, balloonView;
 
@@ -81,7 +81,8 @@ static CGFloat messageTextSize = 14.0;
         
         messageLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-        avatarImageView = [[UIImageView alloc] initWithImage:nil];
+        avatarImageView = [UIImageView circleimageview:[[UIImageView alloc] initWithImage:nil]];
+
         
         /*Message-Label*/
         self.messageLabel.backgroundColor = [UIColor clearColor];
@@ -91,7 +92,7 @@ static CGFloat messageTextSize = 14.0;
         self.messageLabel.numberOfLines = 0;
         
         /*Time-Label*/
-        self.timeLabel.font = [UIFont boldSystemFontOfSize:12.0f];
+        self.timeLabel.font = [UIFont boldSystemFontOfSize:10.0f];
         self.timeLabel.textColor = [UIColor darkGrayColor];
         self.timeLabel.backgroundColor = [UIColor clearColor];
         
@@ -102,6 +103,10 @@ static CGFloat messageTextSize = 14.0;
         [self.contentView addSubview: self.timeLabel];
         [self.contentView addSubview: self.messageView];
         [self.contentView addSubview: self.avatarImageView];
+        
+        self.contentView.backgroundColor = [UIColor colorWithRed:(231.0/255.0) green:(231.0/255.0) blue:(231.0/255.0) alpha:1.0];
+//        self.contentView.backgroundColor = [UIColor greenColor];
+        [self.contentView setFrame:CGRectMake(self.contentView.frame.origin.x, self.contentView.frame.origin.y, self.contentView.frame.size.width , 500)];
         
         /*...and a gesture-recognizer, for LongPressure is added to the view.*/
         UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
@@ -132,23 +137,27 @@ static CGFloat messageTextSize = 14.0;
     CGRect avatarImageFrame = CGRectZero;
     
     if (self.sent == YES) {
-        timeLabelFrame = CGRectMake(self.frame.size.width - dateSize.width - textMarginHorizontal, 0.0f, dateSize.width, dateSize.height);
-        
         ballonViewFrame = CGRectMake(self.frame.size.width - (textSize.width + 2*textMarginHorizontal), timeLabelFrame.size.height, textSize.width + 2*textMarginHorizontal, textSize.height + 2*textMarginVertical + 5.0f);
+        
+        timeLabelFrame = CGRectMake(self.frame.size.width - dateSize.width - textMarginHorizontal, ballonViewFrame.size.height, dateSize.width, dateSize.height);
         
         messageLabelFrame = CGRectMake(self.frame.size.width - (textSize.width + textMarginHorizontal),  ballonViewFrame.origin.y + textMarginVertical, textSize.width, textSize.height);
         
-        avatarImageFrame = CGRectMake(5.0f, ballonViewFrame.origin.y + textMarginVertical + 10.0f , 15.0f, 15.0f);
+        avatarImageFrame = CGRectMake(self.frame.size.width - 55.0f,  timeLabelFrame.size.height + ballonViewFrame.size.height - 45.0f , 45.0f, 45.0f);
+        
+        self.messageLabel.textColor = [UIColor whiteColor];
         
     } else {
-        timeLabelFrame = CGRectMake(textMarginHorizontal, 0.0f, dateSize.width, dateSize.height);
+        ballonViewFrame = CGRectMake(55.0f, timeLabelFrame.size.height, textSize.width + 2*textMarginHorizontal, textSize.height + 2*textMarginVertical + 5.0f);
         
-        ballonViewFrame = CGRectMake(0.0f, timeLabelFrame.size.height, textSize.width + 2*textMarginHorizontal, textSize.height + 2*textMarginVertical + 5.0f);
+        timeLabelFrame = CGRectMake(60.0f, ballonViewFrame.size.height , dateSize.width, dateSize.height);
         
-        messageLabelFrame = CGRectMake(textMarginHorizontal, ballonViewFrame.origin.y + textMarginVertical, textSize.width, textSize.height);
+        messageLabelFrame = CGRectMake(textMarginHorizontal + 55.0f, ballonViewFrame.origin.y + textMarginVertical, textSize.width, textSize.height);
         
         
-        avatarImageFrame = CGRectMake(self.frame.size.width - 55.0f, timeLabelFrame.size.height, 50.0f, 50.0f);
+        avatarImageFrame = CGRectMake(5.0f, timeLabelFrame.size.height + ballonViewFrame.size.height - 45.0f, 45.0f, 45.0f);
+        self.messageLabel.textColor = [UIColor blackColor];
+        
     }
     
     self.balloonView.image = [InboxMessageDetailCell balloonImage:self.sent isSelected:self.selected];
@@ -160,6 +169,9 @@ static CGFloat messageTextSize = 14.0;
     /*If shown (and loaded), sets the frame for the avatarImageView*/
     if (self.avatarImageView.image != nil) {
         self.avatarImageView.frame = avatarImageFrame;
+        self.avatarImageView.layer.cornerRadius = self.avatarImageView.frame.size.height /2;
+        self.avatarImageView.layer.masksToBounds = YES;
+        self.avatarImageView.layer.borderWidth = 0;
     }
     
     /*If there is next for the timeLabel, sets the frame of the timeLabel.*/

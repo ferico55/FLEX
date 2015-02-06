@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "string_home.h"
+#import "MGSwipeTableCell.h"
 
 #define kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER @"GeneralTalkCommentCellIdentifier"
 
@@ -23,7 +24,7 @@
 @end
 
 #pragma mark - General Talk Comment Cell
-@interface GeneralTalkCommentCell : UITableViewCell
+@interface GeneralTalkCommentCell : MGSwipeTableCell
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
 @property (nonatomic, weak) IBOutlet id<GeneralTalkCommentCellDelegate> delegate;

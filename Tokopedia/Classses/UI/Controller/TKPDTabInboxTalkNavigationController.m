@@ -236,7 +236,8 @@
     UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
     
     if(_selectedIndex == SEGMENT_INBOX_TALK) {
-        [titleLabel setTitle:_titleNavTalk forState:UIControlStateNormal];
+//        [titleLabel setTitle:_titleNavTalk forState:UIControlStateNormal];
+        [self setLabelButtonWithArrow:titleLabel withString:_titleNavTalk];
         if([_titleNavTalk isEqualToString:ALL_TALK]) {
             [self markAllTalkButton];
         } else {
@@ -245,7 +246,8 @@
     }
     
     if(_selectedIndex == SEGMENT_INBOX_TALK_MY_PRODUCT) {
-        [titleLabel setTitle:_titleNavMyProductTalk forState:UIControlStateNormal];
+//        [titleLabel setTitle:_titleNavMyProductTalk forState:UIControlStateNormal];
+        [self setLabelButtonWithArrow:titleLabel withString:_titleNavMyProductTalk];
         if([_titleNavMyProductTalk isEqualToString:ALL_TALK]) {
             [self markAllTalkButton];
         } else {
@@ -254,7 +256,8 @@
     }
     
     if(_selectedIndex == SEGMENT_INBOX_TALK_FOLLOWING) {
-        [titleLabel setTitle:_titleNavFollowingTalk forState:UIControlStateNormal];
+//        [titleLabel setTitle:_titleNavFollowingTalk forState:UIControlStateNormal];
+        [self setLabelButtonWithArrow:titleLabel withString:_titleNavFollowingTalk];
         if([_titleNavFollowingTalk isEqualToString:ALL_TALK]) {
             [self markAllTalkButton];
         } else {
@@ -489,13 +492,16 @@
                 
                 if(_selectedIndex == SEGMENT_INBOX_TALK) {
                     _titleNavTalk = ALL_TALK;
-                    [titleLabel setTitle:_titleNavTalk forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavTalk forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavTalk];
                 } else if (_selectedIndex == SEGMENT_INBOX_TALK_MY_PRODUCT) {
                     _titleNavMyProductTalk = ALL_TALK;
-                    [titleLabel setTitle:_titleNavMyProductTalk forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavMyProductTalk forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMyProductTalk];
                 } else if (_selectedIndex == SEGMENT_INBOX_TALK_FOLLOWING) {
                     _titleNavFollowingTalk = ALL_TALK;
-                    [titleLabel setTitle:_titleNavFollowingTalk forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavFollowingTalk forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavFollowingTalk];
                 }
                 
                 self.navigationItem.titleView = titleLabel;
@@ -521,13 +527,16 @@
                 
                 if(_selectedIndex == SEGMENT_INBOX_TALK) {
                     _titleNavTalk = UNREAD_TALK;
-                    [titleLabel setTitle:_titleNavTalk forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavTalk forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavTalk];
                 } else if (_selectedIndex == SEGMENT_INBOX_TALK_MY_PRODUCT) {
                     _titleNavMyProductTalk = UNREAD_TALK;
-                    [titleLabel setTitle:_titleNavMyProductTalk forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavMyProductTalk forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMyProductTalk];
                 } else if (_selectedIndex == SEGMENT_INBOX_TALK_FOLLOWING) {
                     _titleNavFollowingTalk = UNREAD_TALK;
-                    [titleLabel setTitle:_titleNavFollowingTalk forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavFollowingTalk forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavFollowingTalk];
                 }
                 
                 self.navigationItem.titleView = titleLabel;
@@ -610,6 +619,19 @@
         }
     }
     return nil;
+}
+
+- (void)setLabelButtonWithArrow:(id)button withString:(NSString*)string {
+    NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+    attachment.image = [UIImage imageNamed:@"navigate-down.png"];
+    
+    
+    NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
+    
+    NSMutableAttributedString *myString= [[NSMutableAttributedString alloc] initWithString:string attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:1 alpha:1]}];
+    [myString appendAttributedString:attachmentString];
+    
+    [button setAttributedTitle:myString forState:UIControlStateNormal];
 }
 
 #pragma mark - Notification

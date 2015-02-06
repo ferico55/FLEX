@@ -20,6 +20,7 @@
 
 #import "URLCacheController.h"
 #import "URLCacheConnection.h"
+#import "UserAuthentificationManager.h"
 
 @interface InboxReviewViewController () <UITableViewDataSource, UITableViewDelegate, GeneralReviewCellDelegate>
 
@@ -75,6 +76,7 @@
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    UserAuthentificationManager *_userManager;
 }
 
 #pragma mark - Initialization
@@ -96,6 +98,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateAfterEditingReview:)
                                                  name:@"updateAfterEditingReview" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateAfterWriteReview:)
+                                                 name:@"updateAfterWriteReview" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(showTalkWithFilter:)
@@ -144,6 +150,7 @@
     _operationSkipReviewQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
+    _userManager = [UserAuthentificationManager new];
 
     
     _reviews = [NSMutableArray new];
@@ -213,6 +220,9 @@
             ((GeneralReviewCell*)cell).timelabel.text = [list.review_create_time isEqualToString:@"0"] ? @"" : list.review_create_time;
             ((GeneralReviewCell*)cell).data = list;
             
+//            ((GeneralReviewCell*)cell).contentReview.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//            ((GeneralReviewCell*)cell).contentReview.layer.borderWidth = 1.0f;
+            
             if([list.review_response.response_message isEqualToString:@"0"]) {
                 [((GeneralReviewCell*)cell).commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];
             } else {
@@ -248,7 +258,11 @@
             if ([list.review_message length] > 30) {
                 NSRange stringRange = {0, MIN([list.review_message length], 30)};
                 stringRange = [list.review_message rangeOfComposedCharacterSequencesForRange:stringRange];
-                ((GeneralReviewCell *)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [list.review_message substringWithRange:stringRange]];
+                
+                NSString *stringWithoutBr = [list.review_message stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
+                
+                
+                ((GeneralReviewCell *)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [stringWithoutBr substringWithRange:stringRange]];
             } else {
                 ((GeneralReviewCell *)cell).commentlabel.text = [list.review_message isEqualToString:@"0"] ? @"" : list.review_message;
             }
@@ -273,10 +287,11 @@
             NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *userImageView = ((GeneralReviewCell *)cell).userImageView;
             userImageView.image = nil;
-            [userImageView setImageWithURLRequest:userImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [userImageView setImageWithURLRequest:userImageRequest placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 [userImageView setImage:image];
+                userImageView.layer.cornerRadius = userImageView.frame.size.width/2;
 #pragma clang diagnostic pop
             } failure:nil];
             
@@ -314,7 +329,7 @@
     if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
         cellHeight =  250;
     } else {
-        cellHeight =  345;
+        cellHeight =  325;
     }
    
     return cellHeight;
@@ -443,9 +458,13 @@
                                                                       path:INBOX_REVIEW_API_PATH
                                                                 parameters:[param encrypt]];
     
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"disableButtonRead" object:nil userInfo:nil];
+    
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
         _isNeedToInsertCache = YES;
         [self requestSuccess:mappingResult withOperation:operation];
+        _isRefreshing = NO;
         [self stopRequestTimer];
         [self finishRequest];
         [_reviewTable reloadData];
@@ -734,6 +753,25 @@
     list.review_rate_service = [editedParam objectForKey:@"rate_service"];
     list.review_rate_speed = [editedParam objectForKey:@"rate_speed"];
     list.review_is_allow_edit = 0;
+    
+    [_reviewTable reloadData];
+}
+
+- (void)updateAfterWriteReview:(NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+    
+    InboxReviewList *list = _reviews[index];
+    NSDictionary *editedParam = [userinfo objectForKey:@"data"];
+    
+    list.review_message = [editedParam objectForKey:@"review_message"];
+    list.review_rate_quality = [editedParam objectForKey:@"rate_product"];
+    list.review_rate_accuracy = [editedParam objectForKey:@"rate_accuracy"];
+    list.review_rate_service = [editedParam objectForKey:@"rate_service"];
+    list.review_rate_speed = [editedParam objectForKey:@"rate_speed"];
+    list.review_create_time = @"Just Now";
+    list.review_id = @"1";
+//    list.review_user_id = [_userManager getUserId];
     
     [_reviewTable reloadData];
 }

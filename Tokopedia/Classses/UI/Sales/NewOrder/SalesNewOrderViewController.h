@@ -8,5 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol NewOrderDelegate <NSObject>
+
+- (void)viewController:(UIViewController *)viewController numberOfProcessedOrder:(NSInteger)totalOrder;
+
+@end
+
 @interface SalesNewOrderViewController : UIViewController
+
+@property (weak, nonatomic) id<NewOrderDelegate> delegate;
+
 @end

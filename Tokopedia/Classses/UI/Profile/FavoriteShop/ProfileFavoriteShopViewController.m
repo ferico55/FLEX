@@ -19,6 +19,7 @@
 #import "ShopTalkViewController.h"
 
 #import "URLCacheController.h"
+#import "NoResult.h"
 
 #pragma mark - Profile Favorite Shop View Controller
 @interface ProfileFavoriteShopViewController ()<UITableViewDataSource, UITableViewDelegate, ProfileFavoriteShopCellDelegate>
@@ -44,6 +45,7 @@
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
+    NoResult *_noResult;
     NSTimeInterval _timeinterval;
 }
 
@@ -81,6 +83,7 @@
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
+    _noResult = [NoResult new];
     
     _list = [NSMutableArray new];
     
@@ -387,25 +390,31 @@
                 [_list addObjectsFromArray:list];
                 _isnodata = NO;
                 
-                _urinext =  _favoriteshop.result.paging.uri_next;
-                NSURL *url = [NSURL URLWithString:_urinext];
-                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                
-                NSMutableDictionary *queries = [NSMutableDictionary new];
-                [queries removeAllObjects];
-                for (NSString *keyValuePair in querry)
-                {
-                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                    NSString *key = [pairComponents objectAtIndex:0];
-                    NSString *value = [pairComponents objectAtIndex:1];
+                if([_list count] > 0) {
+                    _urinext =  _favoriteshop.result.paging.uri_next;
+                    NSURL *url = [NSURL URLWithString:_urinext];
+                    NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
                     
-                    [queries setObject:value forKey:key];
+                    NSMutableDictionary *queries = [NSMutableDictionary new];
+                    [queries removeAllObjects];
+                    for (NSString *keyValuePair in querry)
+                    {
+                        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                        NSString *key = [pairComponents objectAtIndex:0];
+                        NSString *value = [pairComponents objectAtIndex:1];
+                        
+                        [queries setObject:value forKey:key];
+                    }
+                    
+                    _page = [[queries objectForKey:kTKPDPROFILE_APIPAGEKEY] integerValue];
+                    NSLog(@"next page : %zd",_page);
+                    
+                    [_table reloadData];
+                } else {
+                    _isnodata = YES;
+                    _table.tableFooterView = _noResult;
                 }
                 
-                _page = [[queries objectForKey:kTKPDPROFILE_APIPAGEKEY] integerValue];
-                NSLog(@"next page : %zd",_page);
-                
-                [_table reloadData];
             }
         }else{
             [self cancel];

@@ -9,22 +9,27 @@
 #import "string_order.h"
 
 #import "SalesTransactionListViewController.h"
+#import "FilterSalesTransactionListViewController.h"
 #import "ChangeReceiptNumberViewController.h"
 #import "FilterShipmentStatusViewController.h"
+#import "DetailShipmentStatusViewController.h"
+
+#import "StickyAlertView.h"
+
 #import "ShipmentStatusCell.h"
 #import "SalesOrderCell.h"
 
 #import "Order.h"
 #import "OrderTransaction.h"
+#import "ActionOrder.h"
 
 @interface SalesTransactionListViewController ()
 <
     UITableViewDataSource,
     UITableViewDelegate,
     ShipmentStatusCellDelegate,
-    SalesOrderCellDelegate,
-    FilterShipmentStatusDelegate,
-    ChangeReceiptNumberDelegate
+    ChangeReceiptNumberDelegate,
+    FilterSalesTransactionListDelegate
 >
 {
     NSMutableArray *_orders;
@@ -39,7 +44,6 @@
     
     NSOperationQueue *_operationQueue;
     
-    NSString *_status;
     NSInteger _page;
     NSInteger _requestCount;
     NSString *_nextURI;
@@ -105,7 +109,7 @@ typedef enum {
     _operationQueue = [NSOperationQueue new];
     
     [self configureRestKit];
-    [self request];
+    [self requestInvoice:nil transactionStatus:nil startDate:nil endDate:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -132,70 +136,22 @@ typedef enum {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat height;
-    
     OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
-    
-    if (order.order_detail.detail_order_status == ORDER_PROCESS ||
-        order.order_detail.detail_order_status == ORDER_PROCESS_PARTIAL) {
-        
-        height = 237;
-    
-    } else if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
-               order.order_detail.detail_order_status == ORDER_SHIPPING_DATE_EDITED ||
-               order.order_detail.detail_order_status == ORDER_SHIPPING_DUE_DATE ||
-               order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
-               order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED ||
-               order.order_detail.detail_order_status == ORDER_DELIVERED ||
-               order.order_detail.detail_order_status == ORDER_CONFLICTED ||
-               order.order_detail.detail_order_status == ORDER_DELIVERY_FAILURE) {
-
-        if ([_resultOrder.result.order.is_allow_manage_tx boolValue] && order.order_detail.detail_ship_ref_num) {
-            if (order.order_detail.detail_order_status == ORDER_DELIVERED ||
-                order.order_detail.detail_order_status == ORDER_SHIPPING ||
-                order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED ||
-                order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID) {
-
-                height = 260;
-            
-            } else {
-
-                height = 215;
-
-            }
+    CGFloat height = 0;
+    if ([_resultOrder.result.order.is_allow_manage_tx boolValue] && order.order_detail.detail_ship_ref_num) {
+        if (order.order_detail.detail_order_status == ORDER_DELIVERED ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID) {
+            height = tableView.rowHeight;
         } else {
-
-            height = 0;
-        
+            height = tableView.rowHeight - 45;
         }
     }
     return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell;
-    OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
-    if (order.order_detail.detail_order_status == ORDER_PROCESS ||
-        order.order_detail.detail_order_status == ORDER_PROCESS_PARTIAL) {
-        cell = [self tableView:tableView shipmentConfirmationCellOrder:order indexPath:indexPath];
-        
-    } else if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
-        order.order_detail.detail_order_status == ORDER_SHIPPING_DATE_EDITED ||
-        order.order_detail.detail_order_status == ORDER_SHIPPING_DUE_DATE ||
-        order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
-        order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED ||
-        order.order_detail.detail_order_status == ORDER_DELIVERED ||
-        order.order_detail.detail_order_status == ORDER_CONFLICTED ||
-        order.order_detail.detail_order_status == ORDER_DELIVERY_FAILURE) {
-        cell = [self tableView:tableView shipmentStatusCellForOrder:order];
-    } else {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    }
-    return cell;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView shipmentStatusCellForOrder:(OrderTransaction *)order
 {
     static NSString *cellIdentifer = @"ShipmentStatusCell";
     ShipmentStatusCell *cell = (ShipmentStatusCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifer];
@@ -206,6 +162,8 @@ typedef enum {
         cell = [topLevelObjects objectAtIndex:0];
     }
     cell.delegate = self;
+    
+    OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
     
     cell.invoiceNumberLabel.text = order.order_detail.detail_invoice;
     
@@ -254,95 +212,98 @@ typedef enum {
     }
     
     [cell setStatusLabelText:[[order.order_history objectAtIndex:0] history_seller_status]];
-    
+
     return cell;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView shipmentConfirmationCellOrder:(OrderTransaction *)order indexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *cellIdentifer = @"SalesOrderCell";
-    SalesOrderCell *cell = (SalesOrderCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifer];
-    if (cell == nil) {
-        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"SalesOrderCell"
-                                                                 owner:self
-                                                               options:nil];
-        cell = [topLevelObjects objectAtIndex:0];
-        cell.delegate = self;
+    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] - 1;
+    if (row == indexPath.row) {
+        NSLog(@"%@", NSStringFromSelector(_cmd));
+        if (_nextURI != NULL && ![_nextURI isEqualToString:@"0"] && _nextURI != 0) {
+            _tableView.tableFooterView = _footerView;
+            [_activityIndicator startAnimating];
+            [self requestInvoice:nil transactionStatus:nil startDate:nil endDate:nil];
+        } else {
+            _tableView.tableFooterView = nil;
+        }
     }
-    
-    cell.indexPath = indexPath;
-    
-    cell.invoiceNumberLabel.text = order.order_detail.detail_invoice;
-    
-    if (order.order_deadline.deadline_shipping_day_left == 1) {
-        
-        cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0
-                                                                  green:145.0/255.0
-                                                                   blue:0.0/255.0
-                                                                  alpha:1];
-        cell.remainingDaysLabel.text = @"Besok";
-        
-    } else if (order.order_deadline.deadline_shipping_day_left == 0) {
-        
-        cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0
-                                                                  green:59.0/255.0
-                                                                   blue:48.0/255.0
-                                                                  alpha:1];
-        cell.remainingDaysLabel.text = @"Hari ini";
-        
-    } else if (order.order_deadline.deadline_shipping_day_left < 0) {
-        
-        cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:158.0/255.0
-                                                                  green:158.0/255.0
-                                                                   blue:158.0/255.0
-                                                                  alpha:1];
-        
-        cell.automaticallyCanceledLabel.hidden = YES;
-        
-        cell.remainingDaysLabel.text = @"Expired";
-        
-        CGRect frame = cell.remainingDaysLabel.frame;
-        frame.origin.y = 17;
-        cell.remainingDaysLabel.frame = frame;
-        
-        cell.acceptButton.enabled = NO;
-        cell.acceptButton.layer.opacity = 0.25;
-        
-    } else {
-        
-        cell.remainingDaysLabel.text = [NSString stringWithFormat:@"%d Hari lagi", (int)order.order_deadline.deadline_shipping_day_left];
-        
-        cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:0.0/255.0
-                                                                  green:121.0/255.0
-                                                                   blue:255.0/255.0
-                                                                  alpha:1];
-    }
-    
-    cell.userNameLabel.text = order.order_customer.customer_name;
-    cell.purchaseDateLabel.text = order.order_payment.payment_verify_date;
-    
-    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:order.order_customer.customer_image]
-                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    [cell.userImageView setImageWithURLRequest:request
-                              placeholderImage:[UIImage imageNamed:@"icon_profile_picture.jpeg"]
-                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                           [cell.userImageView setImage:image];
-                                           [cell.userImageView setContentMode:UIViewContentModeScaleAspectFill];
-                                       } failure:nil];
-    
-    cell.paymentAmountLabel.text = order.order_detail.detail_open_amount_idr;
-    cell.dueDateLabel.text = [NSString stringWithFormat:@"Batas Respon : %@", order.order_payment.payment_process_due_date];
-    
-    [cell.rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
-    [cell.acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
-    
-    return cell;
 }
+
+#pragma mark - Table cell delegate
+
+- (void)didTapTrackButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath
+{
+    
+}
+
+- (void)didTapReceiptButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath
+{
+    OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
+    _selectedOrder = order;
+    
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    ChangeReceiptNumberViewController *controller = [ChangeReceiptNumberViewController new];
+    controller.delegate = self;
+    navigationController.viewControllers = @[controller];
+    
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+}
+
+- (void)didTapStatusAtIndexPath:(NSIndexPath *)indexPath
+{
+    OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
+    _selectedOrder = order;
+    
+    DetailShipmentStatusViewController *controller = [DetailShipmentStatusViewController new];
+    controller.order = order;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+#pragma mark - Filter delegate
+
+- (void)filterOrderInvoice:(NSString *)invoice transactionStatus:(NSString *)transactionStatus startDate:(NSString *)startDate endDate:(NSString *)endDate
+{
+    _page = 1;
+    _requestCount = 0;
+    
+    [_orders removeAllObjects];
+    [_tableView reloadData];
+    
+    [self configureRestKit];
+    [self requestInvoice:invoice transactionStatus:transactionStatus startDate:startDate endDate:endDate];
+}
+
+#pragma mark - Change receipt number delegate
+
+- (void)changeReceiptNumber:(NSString *)receiptNumber
+{
+    [self requestChangeReceiptNumber:receiptNumber];
+}
+
+#pragma mark - Actions
 
 - (IBAction)tap:(id)sender {
-    
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *button = (UIButton *)sender;
+        if (button.tag == 1) {
+            UINavigationController *navigationController = [[UINavigationController alloc] init];
+            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+            navigationController.navigationBar.translucent = NO;
+            navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
+            FilterSalesTransactionListViewController *controller = [FilterSalesTransactionListViewController new];
+            controller.delegate = self;
+            navigationController.viewControllers = @[controller];
+            
+            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        }
+    }
 }
 
 #pragma mark - Restkit methods
@@ -568,7 +529,7 @@ typedef enum {
     [_objectManager addResponseDescriptor:responseDescriptorStatus];
 }
 
-- (void)request
+- (void)requestInvoice:(NSString *)invoice transactionStatus:(NSString *)transactionStatus startDate:(NSString *)startDate endDate:(NSString *)endDate
 {
     NSLog(@"%@", NSStringFromSelector(_cmd));
     
@@ -586,7 +547,10 @@ typedef enum {
                             API_ACTION_KEY           : API_GET_NEW_ORDER_LIST_KEY,
                             API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
                             API_PAGE_KEY             : [NSNumber numberWithInteger:_page],
-                            API_INVOICE_KEY          : _status ?: @"",
+                            API_INVOICE_KEY          : invoice ?: @"",
+                            API_FILTER_KEY           : transactionStatus ?: @"",
+                            API_START_KEY            : startDate ?: @"",
+                            API_END_KEY              : endDate ?: @"",
                             };
     
     NSLog(@"\n\n\n\n%@\n\n\n\n", param);
@@ -692,6 +656,79 @@ typedef enum {
 - (void)cancel
 {
     
+}
+
+#pragma mark - Reskit action methods
+
+- (void)configureActionReskit
+{
+    _actionObjectManager =  [RKObjectManager sharedClient];
+    
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ActionOrder class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{
+                                                        kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY   : kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        kTKPD_APISTATUSMESSAGEKEY       : kTKPD_APISTATUSMESSAGEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ActionOrderResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY : kTKPD_APIISSUCCESSKEY}];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    RKResponseDescriptor *actionResponseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                        method:RKRequestMethodPOST
+                                                                                                   pathPattern:API_NEW_ORDER_ACTION_PATH
+                                                                                                       keyPath:@""
+                                                                                                   statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_actionObjectManager addResponseDescriptor:actionResponseDescriptorStatus];
+}
+
+- (void)requestChangeReceiptNumber:(NSString *)receiptNumber
+{
+    [self configureActionReskit];
+    
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *auth = [secureStorage keychainDictionary];
+    
+    NSDictionary *param = @{
+                            API_ACTION_KEY              : API_EDIT_SHIPPING_REF,
+                            API_USER_ID_KEY             : [auth objectForKey:API_USER_ID_KEY],
+                            API_ORDER_ID_KEY            : [NSNumber numberWithInteger:_selectedOrder.order_detail.detail_order_id],
+                            API_SHIPMENT_REF_KEY        : receiptNumber,
+                            };
+    
+    _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self
+                                                                                method:RKRequestMethodPOST
+                                                                                  path:API_NEW_ORDER_ACTION_PATH
+                                                                            parameters:[param encrypt]];
+    [_operationQueue addOperation:_actionRequest];
+    
+    [_actionRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        
+        NSDictionary *result = ((RKMappingResult *) mappingResult).dictionary;
+        ActionOrder *actionOrder = [result objectForKey:@""];
+        BOOL status = [actionOrder.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        
+        if (status && [actionOrder.result.is_success boolValue]) {
+            
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Anda telah berhasil merubah nomor resi."] delegate:self];
+            [alert show];
+            
+        } else {
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."] delegate:self];
+            [alert show];
+        }
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."] delegate:self];
+        [alert show];
+        
+    }];    
 }
 
 @end

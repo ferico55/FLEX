@@ -32,6 +32,13 @@
 @property (weak, nonatomic) IBOutlet UILabel *receiveConfirmationCountLabel;
 
 @property (weak, nonatomic) IBOutlet UITableViewCell *salesNewOrder;
+@property (weak, nonatomic) IBOutlet UITableViewCell *shippingConfirmation;
+@property (weak, nonatomic) IBOutlet UITableViewCell *shippingStatus;
+
+@property (weak, nonatomic) IBOutlet UITableViewCell *orderCancelled;
+@property (weak, nonatomic) IBOutlet UITableViewCell *paymentConfirmation;
+@property (weak, nonatomic) IBOutlet UITableViewCell *orderStatus;
+@property (weak, nonatomic) IBOutlet UITableViewCell *receiveConfirmation;
 
 
 @end
@@ -66,15 +73,55 @@
 
     
     // Payment section
-    _salesOrderLabel.text = _notification.result.sales.sales_new_order;
-    _shippingConfirmationCountLabel.text = _notification.result.sales.sales_shipping_confirm;
-    _shippingStatusCountLabel.text = _notification.result.sales.sales_shipping_status;
+    if([_notification.result.sales.sales_new_order integerValue] > 0) {
+        _salesNewOrder.hidden = NO;
+        _salesOrderLabel.text = _notification.result.sales.sales_new_order;
+    } else {
+        _salesNewOrder.hidden = YES;
+    }
+    
+    if([_notification.result.sales.sales_shipping_confirm integerValue] > 0) {
+        _shippingConfirmationCountLabel.text = _notification.result.sales.sales_shipping_confirm;\
+        _shippingConfirmation.hidden = NO;
+    } else {
+        _shippingConfirmation.hidden = YES;
+    }
+    
+    if([_notification.result.sales.sales_shipping_status integerValue] > 0) {
+        _shippingStatusCountLabel.text = _notification.result.sales.sales_shipping_status;
+        _shippingStatus.hidden = NO;
+    } else {
+        _shippingStatus.hidden = YES;
+    }
 
     // Purchase section
-    _orderCancelledLabel.text = _notification.result.purchase.purchase_reorder;
-    _paymentConfirmationLabel.text = _notification.result.purchase.purchase_payment_confirm;
-    _orderStatusCountLabel.text = _notification.result.purchase.purchase_order_status;
-    _receiveConfirmationCountLabel.text = _notification.result.purchase.purchase_delivery_confirm;
+    if([_notification.result.purchase.purchase_reorder integerValue] > 0) {
+        _orderCancelledLabel.text = _notification.result.purchase.purchase_reorder;
+        _orderCancelled.hidden = NO;
+    } else {
+        _orderCancelled.hidden = YES;
+    }
+    
+    if([_notification.result.purchase.purchase_payment_conf integerValue] > 0) {
+        _paymentConfirmationLabel.text = _notification.result.purchase.purchase_payment_conf;
+        _paymentConfirmation.hidden = NO;
+    } else {
+        _paymentConfirmation.hidden = YES;
+    }
+    
+    if([_notification.result.purchase.purchase_order_status integerValue] > 0) {
+        _orderStatusCountLabel.text = _notification.result.purchase.purchase_order_status;
+        _orderStatus.hidden = NO;
+    } else {
+        _orderStatus.hidden = YES;
+    }
+    
+    if([_notification.result.purchase.purchase_delivery_confirm integerValue] > 0) {
+        _receiveConfirmationCountLabel.text = _notification.result.purchase.purchase_delivery_confirm;
+        _receiveConfirmation.hidden = NO;
+    } else {
+        _receiveConfirmation.hidden = YES;
+    }
 
  
 }
@@ -110,8 +157,68 @@
     return numberOfRows;
 }
 
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSInteger *section = [indexPath section];
+    
+    if(section == 1) {
+        NSInteger *row = [indexPath row];
+        if(row == 0 && [_notification.result.sales.sales_new_order integerValue] == 0) {
+            return 0;
+        }
+        
+        if(row == 1 && [_notification.result.sales.sales_shipping_confirm integerValue] == 0) {
+            return 0;
+        }
+        
+        if(row == 2 && [_notification.result.sales.sales_shipping_status integerValue] == 0) {
+            return 0;
+        }
+    }
+    
+    if(section == 2) {
+        NSInteger *row = [indexPath row];
+        if(row == 0 && [_notification.result.purchase.purchase_reorder integerValue] == 0) {
+            return 0;
+        }
+        
+        if(row == 1 && [_notification.result.purchase.purchase_payment_conf integerValue] == 0) {
+            return 0;
+        }
+        
+        if(row == 2 && [_notification.result.purchase.purchase_order_status integerValue] == 0) {
+            return 0;
+        }
+        if(row == 3 && [_notification.result.purchase.purchase_delivery_confirm integerValue] == 0) {
+            return 0;
+        }
+
+    }
+
+    return 44;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if(section == 1) {
+        if([_notification.result.sales.sales_new_order integerValue] == 0 &&
+           [_notification.result.sales.sales_shipping_confirm integerValue] == 0 &&
+           [_notification.result.sales.sales_shipping_status integerValue] == 0
+           ) {
+            return  0;
+        }
+    }
+    
+    if(section == 2) {
+        if([_notification.result.purchase.purchase_reorder integerValue] == 0 &&
+           [_notification.result.purchase.purchase_payment_conf integerValue] == 0 &&
+           [_notification.result.purchase.purchase_order_status integerValue] == 0 &&
+           [_notification.result.purchase.purchase_delivery_confirm integerValue] == 0
+           ) {
+            return 0;
+        }
+    }
+    
     return 34;
 }
 

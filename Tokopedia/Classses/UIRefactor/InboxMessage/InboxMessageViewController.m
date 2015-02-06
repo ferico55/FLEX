@@ -18,8 +18,9 @@
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "UserAuthentificationManager.h"
 #import "EncodeDecoderManager.h"
+#import "NoResult.h"
 
-@interface InboxMessageViewController () <UITableViewDataSource, UITableViewDelegate, InboxMessageCellDelegate, TKPDTabInboxMessageNavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
+@interface InboxMessageViewController () <UITableViewDataSource, UITableViewDelegate, MGSwipeTableCellDelegate, TKPDTabInboxMessageNavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -55,7 +56,7 @@
     
     /** url to the next page **/
     NSString *_urinext;
-    
+    NSMutableDictionary *_datainput;
     
     UIRefreshControl *_refreshControl;
     NSInteger _requestcount;
@@ -77,7 +78,7 @@
     __weak RKManagedObjectRequestOperation *_requestarchive;
     __weak RKManagedObjectRequestOperation *_requesttrash;
     NSOperationQueue *_operationQueue;
-    
+    NoResult *_noresult;
     UserAuthentificationManager *_userManager;
     EncodeDecoderManager *_encodeDecodeManager;
     
@@ -134,6 +135,7 @@
     _messageNavigationFlag = [_data objectForKey:@"nav"];
     _userManager = [UserAuthentificationManager new];
     _encodeDecodeManager = [EncodeDecoderManager new];
+    _noresult = [NoResult new];
     
     /** set first page become 1 **/
     _page = 1;
@@ -212,22 +214,28 @@
             //archive
             case 10: {
                 [self messageaction:KTKPDMESSAGE_ACTIONARCHIVEMESSAGE];
-                _navthatwillrefresh = @"inbox-message-archive";
+                _navthatwillrefresh = @"archive";
                 break;
             }
                 
             //trash
             case 11 : {
                 [self messageaction:KTKPDMESSAGE_ACTIONDELETEMESSAGE];
-                _navthatwillrefresh = @"inbox-message-trash";
+                _navthatwillrefresh = @"trash";
                 break;
             }
                 
                 
             //back to inbox message
             case 12 : {
-                [self messageaction:KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE];
-                _navthatwillrefresh = @"inbox-message";
+                if([_messageNavigationFlag isEqualToString:@"inbox-message-archive"]) {
+                    [self messageaction:KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE];
+                    _navthatwillrefresh = @"inbox-sent";
+                } else {
+                    [self messageaction:KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE];
+                    _navthatwillrefresh = @"inbox-archive-sent";
+                }
+                
                 break;
             }
             
@@ -271,11 +279,13 @@
     
     [_table beginUpdates];
     [_table deleteRowsAtIndexPaths:_messages_selected withRowAnimation:UITableViewRowAnimationFade];
+    [_messages_selected removeAllObjects];
     [_table endUpdates];
     
+
     [self configureactionrestkit];
     [self doactionmessage:joinedArr withAction:action];
-    [_messages_selected removeAllObjects];
+
 
 }
 
@@ -289,6 +299,8 @@
 #endif
     
 }
+
+
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell* cell = nil;
@@ -332,25 +344,27 @@
                 }
             }
             
-            
-            
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            //request.URL = url;
             UIImageView *thumb = ((InboxMessageCell*)cell).userimageview;
             thumb = [UIImageView circleimageview:thumb];
-            thumb.image = nil;
-            //thumb.hidden = YES;	//@prepareforreuse then @reset
-            
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            if(![list.user_image isEqualToString:@"0"]) {
+                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+                
+
+                thumb.image = nil;
+                [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                //NSLOG(@"thumb: %@", thumb);
-                [thumb setImage:image];
-                
+                    //NSLOG(@"thumb: %@", thumb);
+                    [thumb setImage:image];
+                    
 #pragma clang diagnostic pop
-                
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            }];
+                    
+                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                }];
+            } else {
+                [thumb setImage:[UIImage imageNamed:@"default-boy.png"]];
+            }
+            
         }
         
         if ([_messages_selected containsObject:indexPath]) {
@@ -383,6 +397,31 @@
 }
 
 #pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if(_iseditmode) {
+        if ([_messages_selected containsObject:indexPath]) {
+            [_messages_selected removeObject:indexPath];
+        }
+        else  {
+            [_messages_selected addObject:indexPath];
+        }
+        
+        [_table reloadData];
+    } else {
+        NSInteger index = indexPath.row;
+        InboxMessageList *list = _messages[index];
+        InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
+        list.message_read_status = @"1";
+        vc.data = @{KTKPDMESSAGE_IDKEY : list.message_id,
+                    KTKPDMESSAGE_TITLEKEY : list.message_title,
+                    KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"],
+                    MESSAGE_INDEX_PATH : indexPath
+                    };
+        [_table reloadData];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+
+}
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -415,6 +454,7 @@
     _userinfo = notification.userInfo;
     
     NSInteger selected_vc = [_userinfo[@"show_check"] integerValue];
+    _isrefreshview = YES;
     
     //show OPTION move to archive + trash
     if(selected_vc == 0 || selected_vc == 1) {
@@ -469,8 +509,10 @@
 
     if([[_data objectForKey:@"nav"] isEqualToString:notification.userInfo[@"vc"]] && !_isrefreshnav) {
         [_messages removeAllObjects];
+        _page = 1;
         [_table reloadData];
         _table.tableFooterView = _footer;
+
         [self configureRestKit];
         [self loadData]; 
     }
@@ -634,7 +676,8 @@
                 _page = [[queries objectForKey:kTKPDHOME_APIPAGEKEY] integerValue];
             } else {
                 _isnodata = YES;
-                _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+                _table.tableFooterView = _noresult;
+                
             }
         }
         else{
@@ -652,13 +695,13 @@
                 else
                 {
                     [_act stopAnimating];
-                    _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];;
+                    _table.tableFooterView = _noresult;
                 }
             }
             else
             {
                 [_act stopAnimating];
-                _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];;
+                _table.tableFooterView = _noresult;
             }
             
         }
@@ -713,6 +756,7 @@
     [_searchbar resignFirstResponder];
     
     _keyword = _searchbar.text;
+    _page = 1;
     [self undoactionmessage];
 }
 
@@ -785,7 +829,6 @@
     _requestarchivecount ++;
     _requestarchive = [_objectmanagerarchive appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGEPRODUCTACTION_PATHURL parameters:[param encrypt]];
     
-    
     [_requestarchive setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         
         [self requestactionsuccess:mappingResult withOperation:operation];
@@ -826,15 +869,51 @@
         //if success
         if([inboxmessageaction.result.is_success isEqualToString:@"1"]) {
             NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:_navthatwillrefresh, @"vc", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadvc" object:nil userInfo:dict];
+            _isrefreshnav = NO;
+            
+            
+            if([_navthatwillrefresh isEqualToString:@"inbox-archive-sent"]) {
+                [self reloadInbox];
+                [self reloadArchive];
+                [self reloadSent];
+            }
+            
+            if([_navthatwillrefresh isEqualToString:@"inbox-sent"]) {
+                [self reloadInbox];
+                [self reloadSent];
+            }
+            
+            if([_navthatwillrefresh isEqualToString:@"archive"]) {
+                [self reloadArchive];
+            }
+            
+            if([_navthatwillrefresh isEqualToString:@"trash"]) {
+                [self reloadTrash];
+            }
         } else {
             [self undoactionmessage];
         }
     }
-    
-    
-    
-    
+}
+
+- (void)reloadInbox {
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"inbox-message", @"vc", nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadvc" object:nil userInfo:dict];
+}
+
+- (void)reloadSent {
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"inbox-message-sent", @"vc", nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadvc" object:nil userInfo:dict];
+}
+
+- (void)reloadArchive {
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"inbox-message-archive", @"vc", nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadvc" object:nil userInfo:dict];
+}
+
+- (void)reloadTrash {
+    NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:@"inbox-message-trash", @"vc", nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadvc" object:nil userInfo:dict];
 }
 
 -(void) requestactionfailure:(id)error {
@@ -876,15 +955,114 @@
         NSInteger index = indexpath.row;
         InboxMessageList *list = _messages[index];
         InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
+        list.message_read_status = @"1";
         vc.data = @{KTKPDMESSAGE_IDKEY : list.message_id,
                     KTKPDMESSAGE_TITLEKEY : list.message_title,
                     KTKPDMESSAGE_NAVKEY : [_data objectForKey:@"nav"],
                     MESSAGE_INDEX_PATH : indexpath
                     };
+        [_table reloadData];
         [self.navigationController pushViewController:vc animated:YES];
     }
     
+}
+
+#pragma mark - Swipe Delegate
+-(BOOL)swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction;
+{
+    if(_iseditmode) {
+        return NO;
+    } else {
+        return YES;
+    }
+}
+
+-(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
+             swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
+{
+    [_searchbar resignFirstResponder];
     
+    swipeSettings.transition = MGSwipeTransitionStatic;
+    expansionSettings.buttonIndex = -1; //-1 not expand, 0 expand
+    
+    
+    if (direction == MGSwipeDirectionRightToLeft) {
+        expansionSettings.fillOnTrigger = YES;
+        expansionSettings.threshold = 1.1;
+        
+        CGFloat padding = 15;
+        NSIndexPath *indexPath = ((InboxMessageCell*) cell).indexpath;
+        InboxMessageList *list = _messages[indexPath.row];
+        
+        if ([_messages_selected containsObject:indexPath]) {
+            [_messages_selected removeObject:indexPath];
+        }
+        else  {
+            [_messages_selected addObject:indexPath];
+        }
+        
+        [_datainput setObject:list.message_id forKey:@"message_id"];
+
+        MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Delete" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+//            [self deleteListAtIndexPath:indexPath];
+            [self messageaction:KTKPDMESSAGE_ACTIONDELETEMESSAGE];
+            _navthatwillrefresh = @"trash";
+            return YES;
+        }];
+        MGSwipeButton * archive = [MGSwipeButton buttonWithTitle:@"Archive" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+            [self messageaction:KTKPDMESSAGE_ACTIONARCHIVEMESSAGE];
+            _navthatwillrefresh = @"archive";
+
+            return YES;
+        }];
+        
+        MGSwipeButton * backtoinbox = [MGSwipeButton buttonWithTitle:@"Move to Inbox" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+            if([_messageNavigationFlag isEqualToString:@"inbox-message-archive"]) {
+                [self messageaction:KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE];
+                _navthatwillrefresh = @"inbox-sent";
+            } else {
+                [self messageaction:KTKPDMESSAGE_ACTIONMOVETOINBOXMESSAGE];
+                _navthatwillrefresh = @"inbox-archive-sent";
+            }
+            
+            return YES;
+        }];
+        
+        MGSwipeButton * deleteforever = [MGSwipeButton buttonWithTitle:@"Delete Forever" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+            [self messageaction:KTKPDMESSAGE_ACTIONDELETEFOREVERMESSAGE];
+            
+            return YES;
+        }];
+        
+        
+//        MGSwipeButton * duplicate = [MGSwipeButton buttonWithTitle:BUTTON_DUPLICATE_PRODUCT backgroundColor:[UIColor colorWithRed:199.0/255 green:199.0/255.0 blue:199.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+//            ManageProductList *list = _list[indexPath.row];
+//            ProductAddEditViewController *editProductVC = [ProductAddEditViewController new];
+//            editProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: @(list.product_id),
+//                                   kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+//                                   DATA_PRODUCT_DETAIL_KEY : list,
+//                                   DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_COPY),
+//                                   DATA_IS_GOLD_MERCHANT :@(0) //TODO:: Change Value
+//                                   };
+//            [self.navigationController pushViewController:editProductVC animated:YES];
+//            return YES;
+//        }];
+        if([_messageNavigationFlag isEqualToString:@"inbox-message"] || [_messageNavigationFlag isEqualToString:@"inbox-message-sent"]) {
+            return @[trash, archive];
+        }
+        
+        if([_messageNavigationFlag isEqualToString:@"inbox-message-archive"]) {
+            return @[trash, backtoinbox];
+        }
+        
+        if([_messageNavigationFlag isEqualToString:@"inbox-message-trash"]) {
+            return @[backtoinbox, deleteforever];
+        }
+
+
+    }
+    
+    return nil;
     
 }
 

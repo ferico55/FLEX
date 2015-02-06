@@ -9,8 +9,8 @@
 #ifndef tokopedia_string_inbox_message_h
 #define tokopedia_string_inbox_message_h
 
-#define ALL_MESSAGE @"Semua Pesan"
-#define UNREAD_MESSAGE @"Belum Dibaca"
+#define ALL_MESSAGE @"Semua Pesan  "
+#define UNREAD_MESSAGE @"Belum Dibaca  "
 
 #define NAV_MESSAGE @"inbox-message"
 #define NAV_MESSAGE_SENT @"inbox-message-sent"
@@ -22,6 +22,7 @@
 #define SEGMENT_MESSAGE_ARCHIVE 2
 #define SEGMENT_MESSAGE_TRASH 3
 
+#define NO_DATA_MESSAGE
 
 
 #endif

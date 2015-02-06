@@ -12,8 +12,10 @@
 #import "HotlistResultViewController.h"
 #import "InboxMessageViewController.h"
 #import "InboxTalkViewController.h"
+#import "InboxReviewViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
+#import "TKPDTabInboxReviewNavigationController.h"
 
 #import "URLCacheController.h"
 
@@ -647,8 +649,26 @@
 }
 
 - (void)goToInboxReview:(NSNotification*)userInfo {
+    InboxReviewViewController *vc = [InboxReviewViewController new];
+    vc.data=@{@"nav":@"inbox-review"};
     
+    InboxReviewViewController *vc1 = [InboxReviewViewController new];
+    vc1.data=@{@"nav":@"inbox-review-my-product"};
+    
+    InboxReviewViewController *vc2 = [InboxReviewViewController new];
+    vc2.data=@{@"nav":@"inbox-review-my-review"};
+    
+    NSArray *vcs = @[vc,vc1, vc2];
+    
+    TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
+    [nc setSelectedIndex:2];
+    [nc setViewControllers:vcs];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+    [nav.navigationBar setTranslucent:NO];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
+
+
 
 - (void)goToNewOrder:(NSNotification*)userInfo {
     
