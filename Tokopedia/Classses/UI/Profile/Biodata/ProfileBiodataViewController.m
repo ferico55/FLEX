@@ -93,15 +93,16 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, tableView.sectionHeaderHeight)];
+    UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 35)];
 
-    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width, tableView.sectionHeaderHeight)];
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.view.frame.size.width, 35)];
     titleLabel.font = [UIFont fontWithName:@"GothamLight" size:15];
     if(section == 0) {
         titleLabel.text = kTKPDTITLE_SHOP_INFO;
     } else if (section == 1) {
         titleLabel.text = KTKPDTITLE_BIODATA;
     }
+
     [headerView addSubview:titleLabel];
 
     return headerView;

@@ -285,7 +285,7 @@
         _isnodata = NO;
 
         if (!_login.message_error) {
-            [self.tabBarController setSelectedIndex:0];
+            
             //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             //[defaults saveCustomObject:_login.result key:kTKPD_AUTHKEY];
             //[defaults setObject:operation.HTTPRequestOperation.responseData forKey:kTKPD_AUTHKEY];
@@ -305,6 +305,7 @@
             [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
             
+            [self.tabBarController setSelectedIndex:0];
             NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
             [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION object:nil userInfo:@{}];
         }

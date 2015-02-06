@@ -2,28 +2,17 @@
 //  InboxMessageCell.h
 //  Tokopedia
 //
-//  Created by IT Tkpd on 8/19/14.
-//  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
+//  Created by Tokopedia on 1/30/15.
+//  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
+
+#import <UIKit/UIKit.h>
+#import "MGSwipeTableCell.h"
+#import "MGSwipeButton.h"
 
 #define kTKPDINBOXMESSAGECELL_IDENTIFIER @"InboxMessageCellIdentifier"
 
-#import <UIKit/UIKit.h>
-
-@protocol InboxMessageCellDelegate <NSObject>
-@required
--(void)InboxMessageCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
-
-@end
-
-
-@interface InboxMessageCell : UITableViewCell
-
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-@property (nonatomic, weak) IBOutlet id<InboxMessageCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<InboxMessageCellDelegate> delegate;
-#endif
+@interface InboxMessageCell : MGSwipeTableCell
 
 @property (strong,nonatomic) NSDictionary *data;
 
@@ -40,8 +29,4 @@
 
 @property (strong, nonatomic) NSIndexPath *indexpath;
 
-
 @end
-
-
-

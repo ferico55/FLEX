@@ -34,6 +34,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *productimageview;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UILabel *mulaidarilabel;
+
+
 @property (strong, nonatomic) NSIndexPath *indexpath;
 
 

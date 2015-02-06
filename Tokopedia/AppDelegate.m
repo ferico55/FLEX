@@ -89,6 +89,7 @@
         [notifManager selectViewControllerToOpen:[[userInfo objectForKey:@"data"] objectForKey:@"tkp_code"]];
     } else {
         //refresh ticker notification
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadNotificationBar" object:self];
     }
     
 }

@@ -77,7 +77,8 @@
     _titleNavMyReview = ALL_REVIEW;
     
     UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
-    [titleLabel setTitle:ALL_REVIEW forState:UIControlStateNormal];
+//    [titleLabel setTitle:ALL_REVIEW forState:UIControlStateNormal];
+    [self setLabelButtonWithArrow:titleLabel withString:ALL_REVIEW];
     titleLabel.frame = CGRectMake(0, 0, 70, 44);
     titleLabel.tag = 15;
     [titleLabel addTarget:self action:@selector(tapbutton:) forControlEvents:UIControlEventTouchUpInside];
@@ -236,7 +237,8 @@
     UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
     
     if(_selectedIndex == SEGMENT_INBOX_REVIEW) {
-        [titleLabel setTitle:_titleNavReview forState:UIControlStateNormal];
+//        [titleLabel setTitle:_titleNavReview forState:UIControlStateNormal];
+        [self setLabelButtonWithArrow:titleLabel withString:_titleNavReview];
         if([_titleNavReview isEqualToString:ALL_REVIEW]) {
             [self markAllTalkButton];
         } else {
@@ -245,7 +247,8 @@
     }
     
     if(_selectedIndex == SEGMENT_INBOX_REVIEW_MY_PRODUCT) {
-        [titleLabel setTitle:_titleNavMyProductReview forState:UIControlStateNormal];
+//        [titleLabel setTitle:_titleNavMyProductReview forState:UIControlStateNormal];
+        [self setLabelButtonWithArrow:titleLabel withString:_titleNavMyProductReview];
         if([_titleNavMyProductReview isEqualToString:ALL_REVIEW]) {
             [self markAllTalkButton];
         } else {
@@ -254,7 +257,8 @@
     }
     
     if(_selectedIndex == SEGMENT_INBOX_REVIEW_MINE) {
-        [titleLabel setTitle:_titleNavMyReview forState:UIControlStateNormal];
+//        [titleLabel setTitle:_titleNavMyReview forState:UIControlStateNormal];
+        [self setLabelButtonWithArrow:titleLabel withString:_titleNavMyReview];
         if([_titleNavMyReview isEqualToString:ALL_REVIEW]) {
             [self markAllTalkButton];
         } else {
@@ -489,13 +493,16 @@
                 
                 if(_selectedIndex == SEGMENT_INBOX_REVIEW) {
                     _titleNavReview = ALL_REVIEW;
-                    [titleLabel setTitle:_titleNavReview forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavReview forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavReview];
                 } else if (_selectedIndex == SEGMENT_INBOX_REVIEW_MY_PRODUCT) {
                     _titleNavMyProductReview = ALL_REVIEW;
-                    [titleLabel setTitle:_titleNavMyProductReview forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavMyProductReview forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMyProductReview];
                 } else if (_selectedIndex == SEGMENT_INBOX_REVIEW_MINE) {
                     _titleNavMyReview = ALL_REVIEW;
-                    [titleLabel setTitle:_titleNavMyReview forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavMyReview forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMyReview];
                 }
                 
                 self.navigationItem.titleView = titleLabel;
@@ -521,13 +528,16 @@
                 
                 if(_selectedIndex == SEGMENT_INBOX_REVIEW) {
                     _titleNavReview = UNREAD_REVIEW;
-                    [titleLabel setTitle:_titleNavReview forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavReview forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavReview];
                 } else if (_selectedIndex == SEGMENT_INBOX_REVIEW_MY_PRODUCT) {
                     _titleNavMyProductReview = UNREAD_REVIEW;
-                    [titleLabel setTitle:_titleNavMyProductReview forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavMyProductReview forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMyProductReview];
                 } else if (_selectedIndex == SEGMENT_INBOX_REVIEW_MINE) {
                     _titleNavMyReview = UNREAD_REVIEW;
-                    [titleLabel setTitle:_titleNavMyReview forState:UIControlStateNormal];
+//                    [titleLabel setTitle:_titleNavMyReview forState:UIControlStateNormal];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMyReview];
                 }
                 
                 self.navigationItem.titleView = titleLabel;
@@ -610,6 +620,19 @@
         }
     }
     return nil;
+}
+
+- (void)setLabelButtonWithArrow:(id)button withString:(NSString*)string {
+    NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
+    attachment.image = [UIImage imageNamed:@"navigate-down.png"];
+    
+    
+    NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
+    
+    NSMutableAttributedString *myString= [[NSMutableAttributedString alloc] initWithString:string attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:1 alpha:1]}];
+    [myString appendAttributedString:attachmentString];
+    
+    [button setAttributedTitle:myString forState:UIControlStateNormal];
 }
 
 #pragma mark - Notification

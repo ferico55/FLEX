@@ -152,7 +152,7 @@
     }];
     
     [UIView animateWithDuration:0.55 animations:^{
-        _notificationWindow.frame = CGRectMake(0, 0, _attachedViewController.view.frame.size.width, _attachedViewController.view.frame.size.height+112);
+        _notificationWindow.frame = CGRectMake(0, 0, _attachedViewController.view.frame.size.width, 568);
     }];
     
     [self setUnreadNotification:nil];

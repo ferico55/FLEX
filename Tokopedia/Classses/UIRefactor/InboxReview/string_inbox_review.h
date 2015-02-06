@@ -30,8 +30,8 @@
 #define SEGMENT_INBOX_REVIEW_MY_PRODUCT 1
 #define SEGMENT_INBOX_REVIEW_MINE 2
 
-#define ALL_REVIEW @"Semua Ulasan"
-#define UNREAD_REVIEW @"Belum Dibaca"
+#define ALL_REVIEW @"Semua Ulasan "
+#define UNREAD_REVIEW @"Belum Dibaca "
 
 #define EDIT_TALK @"Edit"
 #define COMMENT_TALK @"Comment"

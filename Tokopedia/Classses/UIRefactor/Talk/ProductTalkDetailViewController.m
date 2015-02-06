@@ -14,10 +14,13 @@
 #import "TKPDSecureStorage.h"
 #import "URLCacheController.h"
 #import "HPGrowingTextView.h"
+#import "MGSwipeTableCell.h"
+#import "MGSwipeButton.h"
+#import "GeneralAction.h"
 
 #import "stringrestkit.h"
 
-@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, HPGrowingTextViewDelegate>
+@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate>
 {
     BOOL _isnodata;
     NSMutableArray *_list;
@@ -28,17 +31,23 @@
     NSTimer *_timer;
     NSInteger _page;
     NSInteger _limit;
+    NSMutableDictionary *_datainput;
 
     NSInteger _requestcount;
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
     
     NSInteger _requestactioncount;
-    __weak RKObjectManager *_objectactionmanager;
-    __weak RKManagedObjectRequestOperation *_requestaction;
+    __weak RKObjectManager *_objectSendCommentManager;
+    __weak RKManagedObjectRequestOperation *_requestSendComment;
+    
+    NSInteger _requestDeleteCommentCount;
+    __weak RKObjectManager *_objectDeleteCommentManager;
+    __weak RKManagedObjectRequestOperation *_requestDeleteComment;
     
     NSOperationQueue *_operationQueue;
-    NSOperationQueue *_operationActionQueue;
+    NSOperationQueue *_operationSendCommentQueue;
+    NSOperationQueue *_operationDeleteCommentQueue;
     TalkComment *_talkcomment;
 
     NSString *_cachepath;
@@ -58,6 +67,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *talkusernamelabel;
 @property (weak, nonatomic) IBOutlet UILabel *talktotalcommentlabel;
 @property (weak, nonatomic) IBOutlet UIImageView *talkuserimage;
+@property (weak, nonatomic) IBOutlet UIImageView *talkProductImage;
 @property (weak, nonatomic) IBOutlet UIView *talkInputView;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
 
@@ -70,7 +80,8 @@
 -(void)requestfailure:(id)object;
 -(void)requestprocess:(id)object;
 -(void)requesttimeout;
--(void)configureActionRestkit;
+-(void)configureSendCommentRestkit;
+- (void)configureDeleteCommentRestkit;
 
 @end
 
@@ -119,9 +130,12 @@
     // Do any additional setup after loading the view from its nib.
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
-    _operationActionQueue = [NSOperationQueue new];
+    _operationSendCommentQueue = [NSOperationQueue new];
+    _operationDeleteCommentQueue = [NSOperationQueue new];
+    
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
+    _datainput = [NSMutableDictionary new];
     
     _table.tableHeaderView = _header;
     _page = 1;
@@ -229,7 +243,7 @@
             user_image.image = nil;
 
 
-            [user_image setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [user_image setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 //NSLOG(@"thumb: %@", thumb);
@@ -296,25 +310,54 @@
     
     
     NSURL * imageURL = [NSURL URLWithString:[data objectForKey:TKPD_TALK_USER_IMG]];
+    UIImage * image;
     NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
-    UIImage * image = [UIImage imageWithData:imageData];
+    if(imageData) {
+        image = [UIImage imageWithData:imageData];
+    } else {
+        image = [UIImage imageNamed:@"default-boy.png"];
+    }
     
     _talkuserimage.image = image;
+    _talkuserimage = [UIImageView circleimageview:_talkuserimage];
+    
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[data objectForKey:TKPD_TALK_PRODUCT_IMAGE]] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    [_talkProductImage setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+        //NSLOG(@"thumb: %@", thumb);
+        [_talkProductImage setImage:image];
+        
+#pragma clang diagnostic pop
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+        
+    }];
+
     
 }
 
 - (void) initTalkInputView {
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(5, 5, 240, 45)];
+    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, 240, 45)];
+    //    [_growingtextview becomeFirstResponder];
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
+    _growingtextview.layer.borderWidth = 0.5f;
+    _growingtextview.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    _growingtextview.layer.cornerRadius = 5;
+    _growingtextview.layer.masksToBounds = YES;
     
     _growingtextview.minNumberOfLines = 1;
     _growingtextview.maxNumberOfLines = 6;
+    // you can also set the maximum height in points with maxHeight
+    // textView.maxHeight = 200.0f;
     _growingtextview.returnKeyType = UIReturnKeyGo; //just as an example
-//    _growingtextview.delegate = self;
+    //    _growingtextview.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
+    _growingtextview.delegate = self;
     _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     _growingtextview.backgroundColor = [UIColor whiteColor];
     _growingtextview.placeholder = @"Kirim pesanmu di sini..";
+
     
     [_talkInputView addSubview:_growingtextview];
     _talkInputView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
@@ -386,6 +429,8 @@
 }
 
 -(void) loadData {
+    if(_request.isExecuting) return;
+    
     _requestcount++;
     
     if (!_isrefreshview) {
@@ -617,7 +662,7 @@
                                       animated:YES];
                 
                 //connect action to web service
-                [self configureActionRestkit];
+                [self configureSendCommentRestkit];
                 [self addProductCommentTalk];
                 
                  _growingtextview.text = nil;
@@ -631,9 +676,9 @@
 }
 
 #pragma mark - Action Send Comment Talk
-- (void)configureActionRestkit {
+- (void)configureSendCommentRestkit {
     // initialize RestKit
-    _objectactionmanager =  [RKObjectManager sharedClient];
+    _objectSendCommentManager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProductTalkCommentAction class]];
@@ -650,10 +695,11 @@
     //register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDACTIONTALK_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectactionmanager addResponseDescriptor:responseDescriptorStatus];
+    [_objectSendCommentManager addResponseDescriptor:responseDescriptorStatus];
 }
 
 -(void)addProductCommentTalk{
+    
     NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIADDCOMMENTTALK,
                             TKPD_TALK_ID:[_data objectForKey:TKPD_TALK_ID],
@@ -662,10 +708,10 @@
                             };
     
     _requestactioncount ++;
-    _requestaction = [_objectactionmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDACTIONTALK_APIPATH parameters:[param encrypt]];
+    _requestSendComment = [_objectSendCommentManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDACTIONTALK_APIPATH parameters:[param encrypt]];
     
     
-    [_requestaction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [_requestSendComment setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestactionsuccess:mappingResult withOperation:operation];
         [_table reloadData];
         [_refreshControl endRefreshing];
@@ -684,7 +730,7 @@
         
     }];
     
-    [_operationActionQueue addOperation:_requestaction];
+    [_operationSendCommentQueue addOperation:_requestSendComment];
     
     _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
@@ -786,6 +832,190 @@
     
 }
 
+#pragma mark - Swipe Delegate
+-(BOOL)swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction;
+{
+    return YES;
+}
+
+-(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
+             swipeSettings:(MGSwipeSettings*) swipeSettings expansionSettings:(MGSwipeExpansionSettings*) expansionSettings
+{
+    
+    swipeSettings.transition = MGSwipeTransitionStatic;
+    expansionSettings.buttonIndex = -1; //-1 not expand, 0 expand
+    
+    
+    if (direction == MGSwipeDirectionRightToLeft) {
+        expansionSettings.fillOnTrigger = YES;
+        expansionSettings.threshold = 1.1;
+        
+        CGFloat padding = 15;
+        NSIndexPath *indexPath = ((GeneralTalkCommentCell*) cell).indexpath;
+        TalkCommentList *list = _list[indexPath.row];
+        [_datainput setObject:list.comment_talk_id forKey:@"comment_id"];
+        [_datainput setObject:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY] forKey:@"product_id"];
+        
+        MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Delete" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+            [self deleteCommentTalkAtIndexPath:indexPath];
+            return YES;
+        }];
+       
+        return @[trash];
+    }
+    
+    return nil;
+    
+}
+
+#pragma mark - Action Delete Comment Talk
+- (void)deleteCommentTalkAtIndexPath:(NSIndexPath*)indexpath {
+    [_datainput setObject:_list[indexpath.row] forKey:kTKPDDETAIL_DATADELETEDOBJECTKEY];
+    [_list removeObjectAtIndex:indexpath.row];
+    [_table beginUpdates];
+    [_table deleteRowsAtIndexPaths:@[indexpath] withRowAnimation:UITableViewRowAnimationRight];
+    [_table endUpdates];
+    [self configureDeleteCommentRestkit];
+    [self doDeleteCommentTalk:_datainput];
+    [_datainput setObject:indexpath forKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
+    [_table reloadData];
+}
+
+
+- (void)configureDeleteCommentRestkit {
+    _objectDeleteCommentManager =  [RKObjectManager sharedClient];
+    
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"is_success":@"is_success"}];
+
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDACTIONTALK_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectDeleteCommentManager addResponseDescriptor:responseDescriptorStatus];
+}
+
+- (void)doDeleteCommentTalk:(id)object {
+    if(_requestDeleteComment.isExecuting) return;
+    
+    _requestDeleteCommentCount++;
+
+    NSDictionary *param = @{
+                            @"action" : @"delete_comment_talk",
+                            @"product_id" : [_datainput objectForKey:@"product_id"],
+                            @"comment_id" : [_datainput objectForKey:@"comment_id"]
+                            };
+    
+    _requestDeleteComment = [_objectDeleteCommentManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDACTIONTALK_APIPATH parameters:[param encrypt]];
+    
+    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%lu Comment", (unsigned long)[_list count]];
+    
+    [_requestDeleteComment setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestSuccessDeleteComment:mappingResult withOperation:operation];
+        
+        [_table reloadData];
+        [_refreshControl endRefreshing];
+        [_timer invalidate];
+        _timer = nil;
+ 
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [_timer invalidate];
+        _timer = nil;
+        [_act stopAnimating];
+        _table.hidden = NO;
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        
+        [self requestFailureDeleteComment:error];
+    }];
+    
+    [_operationDeleteCommentQueue addOperation:_requestDeleteComment];
+    
+    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutDeleteComment) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+}
+
+- (void)requestSuccessDeleteComment:(id)object withOperation:(RKObjectRequestOperation *)operation {
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    id stat = [result objectForKey:@""];
+    GeneralAction *generalaction = stat;
+    BOOL status = [generalaction.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+        [self requestProcessActionDelete:object];
+    }
+}
+
+- (void)requestProcessActionDelete:(id)object {
+    if (object) {
+        if ([object isKindOfClass:[RKMappingResult class]]) {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            id stat = [result objectForKey:@""];
+            GeneralAction *generalaction = stat;
+            BOOL status = [generalaction.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                if(generalaction.message_error)
+                {
+                    [self cancelDeleteRow];
+                    NSArray *array = generalaction.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    
+                }
+                if ([generalaction.result.is_success isEqualToString:@"1"]) {
+                    NSArray *array =  [[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    
+                    NSDictionary *userinfo = @{TKPD_TALK_TOTAL_COMMENT:@(_list.count)?:0, kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"UpdateTotalComment" object:nil userInfo:info];
+                }
+            }
+        }
+        else{
+            [self cancelActionDelete];
+            [self cancelDeleteRow];
+            NSError *error = object;
+            if (!([error code] == NSURLErrorCancelled)){
+                NSString *errorDescription = error.localizedDescription;
+                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                [errorAlert show];
+            }
+        }
+    }
+}
+
+-(void)cancelDeleteRow
+{
+    NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
+    [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
+    _talktotalcommentlabel.text = [NSString stringWithFormat:@"%lu Comment",(unsigned long)[_list count]];
+    [_table reloadData];
+}
+
+
+
+- (void)cancelActionDelete {
+    [_requestDeleteComment cancel];
+    _requestDeleteComment = nil;
+    [_objectDeleteCommentManager.operationQueue cancelAllOperations];
+    _objectDeleteCommentManager = nil;
+}
+
+- (void)requestFailureDeleteComment:(id)object {
+    [self requestProcessActionDelete:object];
+}
+
+- (void)requestTimeoutDeleteComment {
+    [self cancelActionDelete];
+}
 
 
 /*

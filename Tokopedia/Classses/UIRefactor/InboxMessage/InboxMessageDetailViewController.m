@@ -113,6 +113,7 @@
     
     _titlelabel.text = [_data objectForKey:KTKPDMESSAGE_TITLEKEY];
     _titlebetween.text = nil;
+    _buttonsend.enabled = NO;
     
     [self setMessagingView];
 
@@ -141,11 +142,15 @@
 }
 
 - (void) setMessagingView {
-    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(5, 5, 265, 45)];
+    _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, 240, 45)];
 //    [_growingtextview becomeFirstResponder];
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
-    
+    _growingtextview.layer.borderWidth = 0.5f;
+    _growingtextview.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    _growingtextview.layer.cornerRadius = 5;
+    _growingtextview.layer.masksToBounds = YES;
+
     _growingtextview.minNumberOfLines = 1;
     _growingtextview.maxNumberOfLines = 6;
     // you can also set the maximum height in points with maxHeight
@@ -156,6 +161,7 @@
     _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     _growingtextview.backgroundColor = [UIColor whiteColor];
     _growingtextview.placeholder = @"Kirim pesanmu di sini..";
+    _growingtextview.enablesReturnKeyAutomatically = YES;
     
     [_messagingview addSubview:_growingtextview];
     _messagingview.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
@@ -199,17 +205,39 @@
         
         if([messagedetaillist.message_action isEqualToString:@"1"]) {
             ccell.sent = YES;
-//            ccell.avatarImageView.image = [UIImage imageNamed:@"pesrson1"];
+//            ccell.avatarImageView.image = [UIImage imageNamed:@"default-boy.png"];
+            ccell.avatarImageView.image = nil;
         } else {
             ccell.sent = NO;
-//            ccell.avatarImageView.image = [UIImage imageNamed:@"person1"];
+//            ccell.avatarImageView.image = [UIImage imageNamed:@"default-girl.png"];
+            
+            ccell.avatarImageView.image = nil;
+            
+            if([messagedetaillist.user_image isEqualToString:@"0"]) {
+                ccell.avatarImageView.image = [UIImage imageNamed:@"default-boy.png"];
+            } else {
+                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:messagedetaillist.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+                [ccell.avatarImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                    //NSLOG(@"thumb: %@", thumb);
+                    [ccell.avatarImageView setImage:image];
+                    
+#pragma clang diagnostic pop
+                    
+                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                    
+                }];
+            }
+        
         }
         
-        if(messagedetaillist.is_not_delivered) {
-            ccell.avatarImageView.image = [UIImage imageNamed:@"icon_report.png"];
-        } else {
-            ccell.avatarImageView.image = nil;
-        }
+        
+//        if(messagedetaillist.is_not_delivered) {
+//            ccell.avatarImageView.image = [UIImage imageNamed:@"icon_report.png"];
+//        } else {
+//            ccell.avatarImageView.image = nil;
+//        }
     }
 
     
@@ -336,6 +364,7 @@
       
         [_table reloadData];
         _isrefreshview = NO;
+        _buttonsend.enabled = YES;
         [_refreshControl endRefreshing];
         [_timer invalidate];
         _timer = nil;
@@ -654,6 +683,7 @@
         [_act startAnimating];
     }
     _buttonloadmore.hidden = YES;
+    _table.tableHeaderView = nil;
 }
 
 -(void) doSendMessage:(id)message_reply {

@@ -39,6 +39,10 @@
                     <color key="separatorColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <inset key="separatorInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                     <color key="sectionIndexBackgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="Zvy-Sw-Whb"/>
+                        <outlet property="delegate" destination="-1" id="Fgx-7C-ypY"/>
+                    </connections>
                 </tableView>
                 <view hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p7g-6U-lVD">
                     <rect key="frame" x="0.0" y="403" width="320" height="42"/>
@@ -136,7 +140,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
-                <searchBar contentMode="redraw" fixedFrame="YES" placeholder="Search Message" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mng-1T-16p">
+                <searchBar contentMode="redraw" fixedFrame="YES" placeholder="Search Message" translatesAutoresizingMaskIntoConstraints="NO" id="mng-1T-16p">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <textInputTraits key="textInputTraits"/>

@@ -87,6 +87,7 @@
                 
                 UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
                 vc.data = _data;
+                vc.reviewIndex = indexpath.row;
                 vc.isEditForm = YES;
                 [nav.navigationController pushViewController:vc animated:YES];
                 break;

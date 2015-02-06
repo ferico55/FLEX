@@ -13,7 +13,6 @@
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -23,6 +22,7 @@
                 <outlet property="commentView" destination="6kS-n5-1j9" id="ehz-kR-AXs"/>
                 <outlet property="commentbutton" destination="zNT-UL-qC9" id="ImB-Zj-HjF"/>
                 <outlet property="commentlabel" destination="ZFn-o2-XqL" id="sAa-RY-Pef"/>
+                <outlet property="deleteReviewButton" destination="eeo-0W-Uqk" id="D6u-tU-SyM"/>
                 <outlet property="editReviewButton" destination="Kxx-pW-z3B" id="mC2-aP-a1P"/>
                 <outlet property="productImageView" destination="tUK-ni-ay7" id="WkG-dO-jn0"/>
                 <outlet property="productNamelabel" destination="HqU-nU-ayR" id="v5I-hg-lLx"/>
@@ -250,8 +250,8 @@
                     </subviews>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
-                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bE8-15-huH" userLabel="View Comment">
-                    <rect key="frame" x="0.0" y="358" width="320" height="107"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bE8-15-huH" userLabel="View Comment">
+                    <rect key="frame" x="0.0" y="358" width="320" height="210"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Penjual" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mGO-iO-oZx">
                             <rect key="frame" x="8" y="8" width="50" height="18"/>
@@ -260,20 +260,33 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="12 Desember 2014" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J2Z-Dj-mZo">
-                            <rect key="frame" x="144" y="2" width="163" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="12 Desember 2014" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J2Z-Dj-mZo">
+                            <rect key="frame" x="8" y="27" width="163" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YzB-Za-dOk">
-                            <rect key="frame" x="16" y="34" width="304" height="57"/>
+                            <rect key="frame" x="8" y="54" width="304" height="57"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eeo-0W-Uqk">
+                            <rect key="frame" x="266" y="0.0" width="46" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <state key="normal" title="Delete">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="RE7-Ki-2pU"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="210" id="NgX-Gj-VyP"/>
+                    </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6kS-n5-1j9" userLabel="View Bottom">
                     <rect key="frame" x="0.0" y="318" width="320" height="40"/>
@@ -303,18 +316,18 @@
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Clf-QR-SE2" userLabel="Bottom View">
-                    <rect key="frame" x="0.0" y="528" width="320" height="40"/>
+                    <rect key="frame" x="0.0" y="518" width="320" height="50"/>
                     <subviews>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dYv-hX-33e" userLabel="Horizontal Border">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
                         </view>
                         <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bjm-md-Us0">
-                            <rect key="frame" x="250" y="5" width="65" height="30"/>
+                            <rect key="frame" x="250" y="0.0" width="65" height="50"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                             <state key="normal" title="Send">
-                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleColor" red="0.25882352939999997" green="0.74117647060000003" blue="0.25490196079999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -324,7 +337,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="9PL-QW-riH"/>
+                        <constraint firstAttribute="height" constant="50" id="9PL-QW-riH"/>
                         <constraint firstAttribute="width" constant="320" id="WCH-To-GOH"/>
                     </constraints>
                 </view>
@@ -345,6 +358,7 @@
                 <constraint firstItem="JrU-Ca-aEc" firstAttribute="trailing" secondItem="bE8-15-huH" secondAttribute="trailing" id="Ljk-vT-cAW"/>
                 <constraint firstItem="6kS-n5-1j9" firstAttribute="top" secondItem="TF2-Ms-twf" secondAttribute="bottom" constant="78" id="OKs-7e-ZTj"/>
                 <constraint firstItem="W0x-wc-Tvn" firstAttribute="leading" secondItem="TF2-Ms-twf" secondAttribute="leading" id="a27-ik-z9s"/>
+                <constraint firstItem="Clf-QR-SE2" firstAttribute="top" secondItem="bE8-15-huH" secondAttribute="bottom" constant="-50" id="gEJ-Mc-5ka"/>
                 <constraint firstAttribute="bottom" secondItem="Clf-QR-SE2" secondAttribute="bottom" id="gFh-H9-S0g"/>
                 <constraint firstItem="JrU-Ca-aEc" firstAttribute="leading" secondItem="6kS-n5-1j9" secondAttribute="leading" id="iKA-ej-iXu"/>
                 <constraint firstAttribute="trailing" secondItem="Clf-QR-SE2" secondAttribute="trailing" id="nFK-s6-Mml"/>

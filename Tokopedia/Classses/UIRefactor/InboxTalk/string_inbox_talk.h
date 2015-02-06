@@ -17,8 +17,8 @@
 #define SEGMENT_INBOX_TALK_MY_PRODUCT 1
 #define SEGMENT_INBOX_TALK_FOLLOWING 2
 
-#define ALL_TALK @"Semua Diskusi"
-#define UNREAD_TALK @"Belum Dibaca"
+#define ALL_TALK @"Semua Diskusi "
+#define UNREAD_TALK @"Belum Dibaca "
 
 #define EDIT_TALK @"Edit"
 #define COMMENT_TALK @"Comment"

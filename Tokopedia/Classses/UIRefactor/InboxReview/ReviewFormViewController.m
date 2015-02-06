@@ -170,7 +170,8 @@
 - (void)initReviewForm {
     if(_isEditForm) {
         self.title = @"Ubah Ulasan";
-        [_reviewMessage setText:_selectedReviewDetail.review_message];
+        [_reviewMessage setText:[_selectedReviewDetail.review_message stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"]];
+        
         [self setRating];
         
         if([_selectedReviewDetail.review_is_allow_edit isEqualToString:@"1"]) {
@@ -186,7 +187,11 @@
         }
     } else if (_isViewForm){
         self.title = @"Lihat Ulasan";
-        [_reviewMessage setText:_selectedReviewDetail.review_message];
+        
+        NSString *htmlString = _selectedReviewDetail.review_message;
+        NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[htmlString dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
+        _reviewMessage.attributedText = attributedString;
+        
         [self setRating];
         
         if([_selectedReviewDetail.review_is_allow_edit isEqualToString:@"1"]) {
