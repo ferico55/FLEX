@@ -10,6 +10,7 @@
 
 @interface GeneralTableViewController () {
     NSIndexPath *_selectedIndexPath;
+    NSDictionary *_textAttributes;
 }
 
 @end
@@ -26,6 +27,14 @@
                                                                     action:@selector(tap:)];
     cancelButton.tag = 1;
     self.navigationItem.backBarButtonItem = cancelButton;
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 5.0;
+
+    _textAttributes = @{
+                        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+                        NSParagraphStyleAttributeName  : style,
+                        };
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -57,7 +66,9 @@
     id object = [_objects objectAtIndex:indexPath.row];
 
     cell.textLabel.text = [object description];
-    cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+    cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:[object description]
+                                                                    attributes:_textAttributes];
+    cell.textLabel.numberOfLines = 0;
     
     if ([object isEqual:_selectedObject]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
