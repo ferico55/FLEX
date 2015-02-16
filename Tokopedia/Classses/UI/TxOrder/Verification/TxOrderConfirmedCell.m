@@ -33,4 +33,9 @@
     // Configure the view for the selected state
 }
 
+- (IBAction)tap:(id)sender {
+    [_delegate didTapInvoiceButton:sender atIndexPath:_indexPath];
+}
+
+
 @end

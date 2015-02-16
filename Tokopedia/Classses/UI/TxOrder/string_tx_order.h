@@ -9,23 +9,63 @@
 #ifndef Tokopedia_string_tx_order_h
 #define Tokopedia_string_tx_order_h
 
+#import "string_alert.h"
+
+typedef enum
+{
+    TAG_BAR_BUTTON_TRANSACTION_BACK = 10,
+    TAG_BAR_BUTTON_TRANSACTION_DONE = 11
+}TAG_BAR_BUTTON_TRANSACTION;
+
+typedef enum
+{
+    TYPE_PAYMENT_DEFAULT,
+    TYPE_PAYMENT_TRANSFER_ATM = 2,
+    TYPE_PAYMENT_INTERNET_BANKING = 3,
+    TYPE_PAYMENT_MOBILE_BANKING = 4,
+    TYPE_PAYMENT_SALDO_TOKOPEDIA = 5,
+    TYPE_PAYMENT_CASH_TRANSFER = 6
+}TYPE_PAYMENT;
+
+#define TITLE_PAYMENT_CONFIRMATION_FORM @"Konfirmasi Pembayaran"
+
 #define DATA_DETAIL_ORDER_CONFIRMATION_KEY @"data_detail_order"
+#define DATA_DETAIL_ORDER_CONFIRMED_KEY @"data_detail_order_confirmed"
 #define DATA_SELECTED_ORDER_KEY @"selected_order"
+#define DATA_SELECTED_SYSTEM_BANK_KEY @"selected_system_bank"
+#define DATA_SELECTED_PAYMENT_METHOD_KEY @"selected_payment_method"
+#define DATA_PAYMENT_DATE_KEY @"payment_date"
+#define DATA_SELECTED_BANK_ACCOUNT_KEY @"selected_bank_account"
+#define DATA_INDEXPATH_SYSTEM_BANK_KEY @"indexpath_system_bank"
+#define DATA_INDEXPATH_PAYMENT_METHOD_KEY @"indexpath_payment_method"
+#define DATA_INDEXPATH_BANK_ACCOUNT_KEY @"indexpath_bank_account"
+#define DATA_TOTAL_PAYMENT_KEY @"total_payment"
+#define DATA_PASSWORD_KEY @"password"
+#define DATA_DEPOSITOR_KEY @"depositor"
+#define DATA_MARK_KEY @"mark"
 
 #pragma mark - Action
 #define ACTION_GET_TX_ORDER_PAYMENT_CONFIRMED @"get_tx_order_payment_confirmed"
 #define ACTION_GET_TX_ORDER_PAYMENT_CONFIRMATION @"get_tx_order_payment_confirmation"
 #define ACTION_CANCEL_PAYMENT @"cancel_payment"
+#define ACTION_GET_CANCEL_PAYMENT_FORM @"get_cancel_payment_form"
+#define ACTION_GET_CONFIRM_PAYMENT_FORM @"get_confirm_payment_form"
+#define ACTION_GET_EDIT_PAYMENT_FORM @"get_edit_payment_form"
+#define ACTION_GET_TX_ORDER_PAYMENT_CONFIRMED_DETAIL @"get_tx_order_payment_confirmed_detail"
+#define ACTION_CONFIRM_PAYMENT @"confirm_payment"
+#define ACTION_UPLOAD_PAYMENT_PROOF @"upload_payment_proof"
 #pragma mark -
 
 #define API_ACTION_KEY @"action"
 #define API_TOTAL_LOGISTIC_FEE_KEY @"cart_logistic_fee"
+#define API_FORM_KEY @"form"
+#define API_TOKEN_KEY @"token"
 
 #pragma mark - String Alert
 #define ALERT_TITLE_CANCEL_PAYMENT_CONFIRMATION @"Konfirmasi Pembatalan Pembayaran"
 #define ALERT_DESCRIPTION_CANCEL_PAYMENT_CONFIRMATION @"Apakah anda yakin membatalkan transaksi ini? \n saldo Tokopedia yang akan dikembalikan adalah sebesar : 100" //TODO::
 
-#define ALERT_TITLE_INVOICE_LIST @"Berikut Daftar Invoice dari Nomor Pembayaran %@"
+#define ALERT_TITLE_INVOICE_LIST @"Berikut Daftar Invoice dari Nomor Pembayaran \n%@"
 
 #pragma mark - Order Confirmation
 #define API_CONFIRMATION_KEY @"confirmation"
@@ -157,9 +197,89 @@
 #define API_ORDER_PAYMENT_AMOUNT_KEY @"payment_amount"
 #pragma mark -
 
+#pragma mark - System Bank
+#define API_SYSTEM_BANK_LIST_KEY @"sysbank_list"
+#define API_SYSTEM_BANK_KEY @"sysbank_account"
+#define API_SYSTEM_BANK_ACCOUNT_NUMBER_KEY @"sysbank_account_number"
+#define API_SYSTEM_BANK_ACCOUNT_NAME_KEY @"sysbank_account_name"
+#define API_SYSTEM_BANK_NAME_KEY @"sysbank_name"
+#define API_SYSTEM_BANK_NOTE_KEY @"sysbank_note"
+#define API_SYSTEM_BANK_ID_KEY @"sysbank_id"
+#define API_SYSTEM_BANK_ID_CHOOSEN_KEY @"sysbank_id_chosen"
+#pragma mark -
+
+#pragma mark - Method Payment
+#define API_METHOD_LIST_KEY @"method_list"
+#define API_METHOD_KEY @"method"
+#define API_METHOD_ID_KEY @"method_id"
+#define API_METHOD_NAME_KEY @"method_name"
+#define API_METHOD_ID_CHOOSEN_KEY @"method_id_chosen"
+#pragma mark -
+
+#pragma mark - Payment Confirmation
+#define API_PAYMENT_DAY_KEY @"payment_day"
+#define API_PAYMENT_MONTH_KEY @"payment_month"
+#define API_PAYMENT_YEAR_KEY @"payment_year"
+#define API_PAYMENT_COMMENT_KEY @"comment"
+#define API_PASSWORD_KEY @"password"
+#define API_PASSWORD_DEPOSIT_KEY @"password_deposit"
+#define API_DEPOSITOR_KEY @"depositor"
+
+#pragma mark - Bank Account
+#define API_BANK_ACCOUNT_LIST_KEY @"bank_account_list"
+#define API_BANK_ACCOUNT_KEY @"bank_account"
+#define API_BANK_ID_KEY @"bank_id"
+#define API_BANK_NAME_KEY @"bank_name"
+#define API_BANK_ACCOUNT_NAME_KEY @"bank_account_name"
+#define API_BANK_ACCOUNT_BRANCH_KEY @"bank_account_branch"
+#define API_BANK_ACCOUNT_NUMBER_KEY @"bank_account_number"
+#define API_BANK_ACCOUNT_ID_KEY @"bank_account_id"
+#define API_BANK_ACCOUNT_ID_CHOOSEN_KEY @"bank_account_id_chosen"
+
+#define API_CANCEL_FORM_VOUCHER_USED_KEY @"voucher_used"
+#define API_CANCEL_FORM_REFUND_KEY @"refund"
+#define API_CANCEL_FORM_VOUCHERS_KEY @"vouchers"
+#define API_CANCEL_FORM_TOTAL_REFUND_KEY @"total_refund"
 
 #pragma mark - Path
 #define API_PATH_TX_ORDER @"tx-order.pl"
 #define API_PATH_ACTION_TX_ORDER @"action/tx-order.pl"
+#pragma mark -
 
+#pragma mark - Error Message
+#define ERRORMESSAGE_NILL_BANK_NAME @"Masukkan Nama Bank"
+#define ERRORMESSAGE_NILL_BANK_ACCOUNT_NAME @"Masukan Nama Pemilik Bank"
+#define ERRORMESSAGE_NILL_BANK_ACCOUNT_NUMBER @"Masukkan Nomor Rekening"
+#define ERRORMESSAGE_NILL_PASSWORD_TOKOPEDIA @"Masukkan Password Tokopedia"
+#define ERRORMESSAGE_NILL_SYSTEM_BANK @"Pilih Bank Tujuan"
+
+#pragma mark - Order Form
+#define API_ORDER_FORM_KEY @"order"
+#define API_ORDER_FORM_PAYMENT_KEY @"payment"
+#define API_ORDER_FORM_LEFT_AMOUNT_IDR_KEY @"order_left_amount_idr"
+#define API_ORDER_FORM_DEPOSIT_USED_IDR_KEY @"order_deposit_used_idr"
+#define API_ORDER_FORM_INVOICE_KEY @"order_invoice"
+#define API_ORDER_FORM_CONFIRMATION_CODE_IDR_KEY @"order_confirmation_code_idr"
+#define API_ORDER_FORM_GRAND_TOTAL_IDR_KEY @"order_grand_total_idr_key"
+#define API_ORDER_FORM_LEFT_AMOUNT_KEY @"order_left_amount"
+#define API_ORDER_FORM_CONFIRMATION_CODE_KEY @"order_confirmation_code"
+#define API_ORDER_FORM_DEPOSIT_USED_KEY @"deposit_used"
+#define API_ORDER_FORM_DEPOSITABLE_KEY @"order_depositable"
+#define API_ORDER_FORM_GRAND_TOTAL_KEY @"order_grand_total"
+
+#pragma mark - Confirmed
+#define API_ORDER_DETAIL_KEY @"tx_order_detail"
+#define API_DETAIL_KEY @"detail"
+#define API_PAYMENT_KEY @"payment"
+#define API_INVOICE_KEY @"invoice"
+#define API_INVOICE_STRING_KEY @"order_invoice_string"
+#define API_INVOICE_LIST_KEY @"order_invoice"
+#define API_URL_KEY @"url"
+#define API_PAYMENT_ID_KEY @"payment_id"
+#define API_PAYMENT_REF_KEY @"payment_ref"
+#define API_PAYMENT_DATE_KEY @"payment_date"
+
+#pragma mark - Array
+//#define ARRAY_PAYMENT_METHOD @[@{DATA_NAME_KEY :@"Transfer ATM",DATA_VALUE_KEY:@(TYPE_PAYMENT_TRANSFER_ATM)},@{DATA_NAME_KEY :@"Internet Banking",DATA_VALUE_KEY:@(TYPE_PAYMENT_INTERNET_BANKING)}, @{DATA_NAME_KEY :@"Mobile Banking",DATA_VALUE_KEY:@(TYPE_PAYMENT_MOBILE_BANKING)}, @{DATA_NAME_KEY :@"Saldo Tokopedia",DATA_VALUE_KEY:@(TYPE_PAYMENT_SALDO_TOKOPEDIA)},@{DATA_NAME_KEY :@"Setoran/ Transfer Tunai",DATA_VALUE_KEY:@(TYPE_PAYMENT_CASH_TRANSFER)}]
+//
 #endif

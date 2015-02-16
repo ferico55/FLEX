@@ -94,6 +94,25 @@
 	}
 }
 
+-(void)multipleLineLabel:(UILabel*)label
+{
+    
+    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 6.0;
+    
+    NSDictionary *attributes = @{NSForegroundColorAttributeName: label.textColor,
+                                 NSFontAttributeName: font,
+                                 NSParagraphStyleAttributeName: style,
+                                 };
+    
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:label.text?:@""
+                                                                         attributes:attributes];
+    label.attributedText = attributedText;
+    //return label;
+}
+
 - (void)attributedLabel:(UILabel *)label didSelectLinkWithURL:(NSURL *)url {
     if ([[url scheme] hasPrefix:@"action"]) {
         if ([[url host] hasPrefix:@"show-help"]) {

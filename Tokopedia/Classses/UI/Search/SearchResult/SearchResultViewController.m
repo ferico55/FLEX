@@ -348,6 +348,8 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
                                                         kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
+                                                        kTKPDSEARCH_APIREDIRECTURLKEY:kTKPDSEARCH_APIREDIRECTURLKEY,
+                                                        kTKPDSEARCH_APIDEPARTMENTIDKEY:kTKPDSEARCH_APIDEPARTMENTIDKEY
                                                         }];
     
     // searchs list mapping
@@ -370,10 +372,10 @@
     [departmentMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APIHREFKEY, kTKPDSEARCH_APITREEKEY, kTKPDSEARCH_APIDIDKEY, kTKPDSEARCH_APITITLEKEY,kTKPDSEARCH_APICHILDTREEKEY]];
     
     /** redirect mapping & hascatalog **/
-    RKObjectMapping *redirectMapping = [RKObjectMapping mappingForClass:[SearchRedirect class]];
-    [redirectMapping addAttributeMappingsFromDictionary: @{kTKPDSEARCH_APIREDIRECTURLKEY:kTKPDSEARCH_APIREDIRECTURLKEY,
-                                                           kTKPDSEARCH_APIDEPARTEMENTIDKEY:kTKPDSEARCH_APIDEPARTEMENTIDKEY,
-                                                           kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY}];
+    //RKObjectMapping *redirectMapping = [RKObjectMapping mappingForClass:[SearchRedirect class]];
+    //[redirectMapping addAttributeMappingsFromDictionary: @{kTKPDSEARCH_APIREDIRECTURLKEY:kTKPDSEARCH_APIREDIRECTURLKEY,
+    //                                                       kTKPDSEARCH_APIDEPARTEMENTIDKEY:kTKPDSEARCH_APIDEPARTEMENTIDKEY,
+    //                                                       kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY}];
 
     //add list relationship
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
@@ -543,7 +545,8 @@
             
             if (status) {
                 
-                NSString *uriredirect = _searchitem.result.redirect_url.redirect_url;
+                NSString *uriredirect = _searchitem.result.redirect_url;
+                //NSString *uriredirect = _searchitem.result.redirect_url.redirect_url;
                 NSString *hascatalog = _searchitem.result.has_catalog;
                 
                 if (uriredirect == nil) {
@@ -607,8 +610,9 @@
                     }
                     // redirect uri to search category
                     if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
-                        NSString *deptid = _searchitem.result.redirect_url.department_id;
-                        [_params setObject:deptid forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+                        NSString *departementID = _searchitem.result.department_id;
+                        //NSString *deptid = _searchitem.result.redirect_url.department_id;
+                        [_params setObject:departementID forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
                         [_params setObject:@(YES) forKey:kTKPDSEARCH_DATAISREDIRECTKEY];
                         [self cancel];
                         _table.tableFooterView = _footer;

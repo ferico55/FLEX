@@ -646,6 +646,9 @@ typedef enum
 #define API_POSTKEY_KEY @"post_key"
 #define API_FILE_UPLOADED_KEY @"file_uploaded"
 
+#define API_FILE_NAME_KEY @"file_name"
+#define API_FILE_PATH_KEY @"file_path"
+
 //product
 #define kTKPDDETAILPRODUCT_APIPATH @"product.pl"
 #define kTKPDDETAILACTIONPRODUCT_APIPATH @"action/product.pl"

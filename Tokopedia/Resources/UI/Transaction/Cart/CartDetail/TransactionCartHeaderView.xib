@@ -28,7 +28,7 @@
                     <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lV1-oE-K35" userLabel="Top Border">
+                <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lV1-oE-K35" userLabel="Top Border">
                     <rect key="frame" x="0.0" y="39" width="320" height="1"/>
                     <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                 </view>

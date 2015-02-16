@@ -15,7 +15,10 @@
 
 @interface SearchResult : NSObject
 
-@property (nonatomic, strong) SearchRedirect *redirect_url;
+@property (nonatomic, strong) NSString *redirect_url;
+@property (nonatomic, strong) NSString *department_id;
+
+//@property (nonatomic, strong) SearchRedirect *redirect_url;
 @property (nonatomic, strong) NSArray *list;
 @property (nonatomic, strong) NSArray *listshop;
 @property (nonatomic, strong) Paging *paging;

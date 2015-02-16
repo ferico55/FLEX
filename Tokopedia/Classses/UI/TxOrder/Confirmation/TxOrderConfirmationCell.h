@@ -14,6 +14,8 @@
 @required
 -(void)shouldCancelOrderAtIndexPath:(NSIndexPath*)indexPath;
 -(void)shouldConfirmOrderAtIndexPath:(NSIndexPath *)indexPath;
+@optional
+-(void)selectCellConfirmationAtIndexPath:(NSIndexPath*)indexPath;
 
 @end
 
@@ -29,9 +31,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *transactionDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *deadlineDateLabel;
+@property (weak, nonatomic) IBOutlet UIButton *selectionButton;
 
 @property (strong, nonatomic)NSIndexPath *indexPath;
 
 + (id)newcell;
+- (void)selectCell;
+- (void)deselectCell;
 
 @end

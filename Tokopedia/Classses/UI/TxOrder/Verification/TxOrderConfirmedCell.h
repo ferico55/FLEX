@@ -29,6 +29,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *totalPaymentLabel;
 @property (weak, nonatomic) IBOutlet UIButton *totalInvoiceButton;
 
+@property (strong, nonatomic) NSIndexPath *indexPath;
+
 +(id)newCell;
 
 @end

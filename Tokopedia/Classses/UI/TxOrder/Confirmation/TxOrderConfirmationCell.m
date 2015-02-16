@@ -31,14 +31,25 @@
 
     // Configure the view for the selected state
 }
-- (IBAction)tap:(id)sender {
-    
-}
+
 - (IBAction)tapCancel:(id)sender {
     [_delegate shouldCancelOrderAtIndexPath:_indexPath];
 }
 - (IBAction)tapConfirmation:(id)sender {
     [_delegate shouldConfirmOrderAtIndexPath:_indexPath];
+}
+- (IBAction)tapCell:(id)sender {
+    [_delegate selectCellConfirmationAtIndexPath:_indexPath];
+}
+
+- (void)selectCell
+{
+    
+}
+
+- (void)deselectCell
+{
+    
 }
 
 @end

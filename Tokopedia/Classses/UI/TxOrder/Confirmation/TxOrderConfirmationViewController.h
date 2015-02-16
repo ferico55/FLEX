@@ -10,4 +10,6 @@
 
 @interface TxOrderConfirmationViewController : UIViewController
 
+@property (nonatomic) BOOL isMultipleSelection;
+
 @end
