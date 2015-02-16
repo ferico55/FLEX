@@ -28,6 +28,8 @@
 
 @property (strong,nonatomic) NSIndexPath *indexPath;
 
+@property (weak, nonatomic) IBOutlet UIButton *editButton;
+
 +(id)newCell;
 
 @end

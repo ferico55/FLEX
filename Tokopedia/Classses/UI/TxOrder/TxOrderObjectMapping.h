@@ -12,6 +12,10 @@
 #import "TxOrderConfirmation.h"
 #import "TxOrderConfirmationList.h"
 #import "TxOrderConfirmed.h"
+#import "BankAccountFormList.h"
+#import "SystemBankAcount.h"
+#import "MethodList.h"
+#import "OrderDetailForm.h"
 
 @interface TxOrderObjectMapping : NSObject
 
@@ -25,4 +29,9 @@
 -(RKObjectMapping*)orderDetailMapping;
 
 -(RKObjectMapping*)confirmedListMapping;
+-(RKObjectMapping*)bankAccountListMapping;
+-(RKObjectMapping*)systemBankListMapping;
+-(RKObjectMapping*)methodListMapping;
+-(RKObjectMapping*)confirmedOrderDetailMapping;
+
 @end

@@ -370,20 +370,8 @@
             if (indexPath.row<indexPathFirstObjectProduct.row) {
                 ((UILabel*)_errorLabel[0]).text = list.cart_error_message_1;
                 NSString *string = list.cart_error_message_1;
-                
-                UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-                
-                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-                style.lineSpacing = 6.0;
-                
-                NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
-                                             NSFontAttributeName: font,
-                                             NSParagraphStyleAttributeName: style,
-                                             };
-                
-                NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string
-                                                                                                attributes:attributes];
-                ((UILabel*)_errorLabel[0]).attributedText = attributedText;
+                [_errorLabel[0] setText:string animated:YES];
+                [(UILabel*)_errorLabel[0] multipleLineLabel:(UILabel*)_errorLabel];
                 cell = _errorCells[indexPath.row];
             }
             else if (labs(indexPathFirstObjectProduct.row-indexPath.row) < rowCount)

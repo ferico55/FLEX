@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "string_transaction.h"
+#import "string_tx_order.h"
 
 #import "TxOrderConfirmationDetailViewController.h"
 #import "TxOrderConfirmationDetailHeaderView.h"
@@ -15,6 +15,7 @@
 #import "TxOrderConfirmationDropshipCell.h"
 #import "TxOrderConfirmationShipmentCell.h"
 #import "TxOrderConfirmationList.h"
+#import "TxOrderPaymentViewController.h"
 
 @interface TxOrderConfirmationDetailViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -43,6 +44,20 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+- (IBAction)tap:(id)sender {
+    UIButton *button = (UIButton*)sender;
+    if (button.tag == 10) {
+        [_delegate shouldCancelOrderAtIndexPath:_indexPath];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    else
+    {
+        TxOrderConfirmationList *detailOrder = [_data objectForKey:DATA_SELECTED_ORDER_KEY];
+        TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
+        vc.data = @{DATA_SELECTED_ORDER_KEY : @[detailOrder]};
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 #pragma mark - Table View Data Source
@@ -147,7 +162,7 @@
 -(void)setData
 {
     _tableView.tableHeaderView = _headerView;
-    TxOrderConfirmationList *detailOrder = [_data objectForKey:DATA_DETAIL_ORDER_CONFIRMATION];
+    TxOrderConfirmationList *detailOrder = [_data objectForKey:DATA_SELECTED_ORDER_KEY];
     _list = detailOrder.order_list;
     
     _isNodata = !(_list.count>0);

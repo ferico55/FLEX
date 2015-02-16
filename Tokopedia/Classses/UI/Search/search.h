@@ -71,7 +71,7 @@
 #define kTKPDSEARCH_APIREDIRECTURLKEY @"redirect_url"
 #define kTKPDSEARCH_APIDEPARTMENTIDKEY @"department_id"
 #define kTKPDSEARCH_APIDEPARTEMENTTITLEKEY @"department_title"
-#define kTKPDSEARCH_APIDIDKEY @"d_id"
+#define kTKPDSEARCH_APIDEPARTEMENTIDKEY @"department_id"
 
 /** has catalog **/
 #define kTKPDSEARCH_APIHASCATALOGKEY @"has_catalog"

@@ -170,4 +170,55 @@
     return confirmedMapping;
 }
 
+-(RKObjectMapping*)bankAccountListMapping
+{
+    RKObjectMapping *listBankMapping = [RKObjectMapping mappingForClass:[BankAccountFormList class]];
+    [listBankMapping addAttributeMappingsFromArray:@[API_BANK_ID_KEY,
+                                                     API_BANK_NAME_KEY,
+                                                     API_BANK_ACCOUNT_NAME_KEY,
+                                                     API_BANK_ACCOUNT_NUMBER_KEY,
+                                                     API_BANK_ACCOUNT_BRANCH_KEY,
+                                                     API_BANK_ACCOUNT_ID_KEY,
+                                                     ]];
+    return listBankMapping;
+}
+
+-(RKObjectMapping*)systemBankListMapping
+{
+    RKObjectMapping *listSystemBankMapping = [RKObjectMapping mappingForClass:[SystemBankAcount class]];
+    [listSystemBankMapping addAttributeMappingsFromArray:@[API_SYSTEM_BANK_ACCOUNT_NUMBER_KEY,
+                                                           API_SYSTEM_BANK_ACCOUNT_NAME_KEY,
+                                                           API_SYSTEM_BANK_NAME_KEY,
+                                                           API_SYSTEM_BANK_NOTE_KEY,
+                                                           API_SYSTEM_BANK_ID_KEY
+                                                           ]];
+    return listSystemBankMapping;
+}
+
+-(RKObjectMapping*)methodListMapping
+{
+    RKObjectMapping *listMethodMapping = [RKObjectMapping mappingForClass:[MethodList class]];
+    [listMethodMapping addAttributeMappingsFromArray:@[API_METHOD_ID_KEY,
+                                                       API_METHOD_NAME_KEY
+                                                       ]];
+    
+    return listMethodMapping;
+}
+
+-(RKObjectMapping*)confirmedOrderDetailMapping
+{
+    RKObjectMapping *orderMapping = [RKObjectMapping mappingForClass:[OrderDetailForm class]];
+    [orderMapping addAttributeMappingsFromArray:@[API_ORDER_FORM_LEFT_AMOUNT_IDR_KEY,
+                                                  API_ORDER_FORM_DEPOSIT_USED_IDR_KEY,
+                                                  API_ORDER_FORM_INVOICE_KEY,
+                                                  API_ORDER_FORM_CONFIRMATION_CODE_IDR_KEY,
+                                                  API_ORDER_FORM_GRAND_TOTAL_IDR_KEY,
+                                                  API_ORDER_FORM_LEFT_AMOUNT_KEY,
+                                                  API_ORDER_FORM_CONFIRMATION_CODE_KEY,
+                                                  API_ORDER_FORM_DEPOSIT_USED_KEY,
+                                                  API_ORDER_FORM_DEPOSITABLE_KEY,
+                                                  API_ORDER_FORM_GRAND_TOTAL_KEY]];
+    return orderMapping;
+}
+
 @end

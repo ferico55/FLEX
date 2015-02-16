@@ -1,22 +1,29 @@
 //
-//  TransactionPaymenViewController.m
+//  TxOrderInvoiceViewController.m
 //  Tokopedia
 //
-//  Created by IT Tkpd on 1/14/15.
+//  Created by IT Tkpd on 2/13/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "TransactionPaymenViewController.h"
+#import "TxOrderInvoiceViewController.h"
 
-@interface TransactionPaymenViewController ()
+@interface TxOrderInvoiceViewController ()
+@property (weak, nonatomic) IBOutlet UIWebView *webView;
 
 @end
 
-@implementation TransactionPaymenViewController
+@implementation TxOrderInvoiceViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    
+    _webView.scalesPageToFit = YES;
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:_urlAddress]];
+    [_webView loadRequest:request];
+
 }
 
 - (void)didReceiveMemoryWarning {

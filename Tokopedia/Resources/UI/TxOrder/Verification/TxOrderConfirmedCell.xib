@@ -81,6 +81,9 @@
                                         <state key="normal" title="3 invoice">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="tap:" destination="GZV-gC-ecS" eventType="touchUpInside" id="yeq-Y3-VAR"/>
+                                        </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_arrow_right_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="TNF-6K-q5v">
                                         <rect key="frame" x="275" y="35" width="15" height="15"/>

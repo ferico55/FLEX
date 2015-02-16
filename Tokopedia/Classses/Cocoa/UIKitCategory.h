@@ -23,7 +23,6 @@
 @interface UIImageView(TkpdCategory)
 
 +(UIImageView*)circleimageview:(UIImageView*)imageview;
-
 - (void)setImage:(UIImage*)image animated:(BOOL)animated;
 
 @end
@@ -31,8 +30,7 @@
 #pragma mark - UILabel
 @interface UILabel(TkpdCategory)
 
-+(UIImageView*)circleimageview:(UIImageView*)imageview;
-
 - (void)setText:(NSString*)text animated:(BOOL)animated;
+-(void)multipleLineLabel:(UILabel*)label;
 
 @end
