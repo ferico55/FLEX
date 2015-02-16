@@ -135,8 +135,6 @@
     
     self.title = @"Detail Produk";
     
-    _buyButton.layer.cornerRadius = 3;
-    
     _datatalk = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
@@ -144,18 +142,11 @@
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    [barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     /** set inset table for different size**/
     is_dismissed = [[_data objectForKey:@"is_dismissed"] boolValue];
@@ -183,22 +174,22 @@
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILPRODUCT_CACHEFILEPATH];
     _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILPRODUCT_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue]]];
     _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
+    _cachecontroller.URLCacheInterval = 0;
+//    _cachecontroller.URLCacheInterval = 86400.0;
+    [_cachecontroller initCacheWithDocumentPath:path];
     
-    // UIView below table view (View More Product button)
-    UIView *backgroundGreyView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+100)];
-    backgroundGreyView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
-    [self.view insertSubview:backgroundGreyView belowSubview:self.table];
-
     //Set initial table view cell for product information
     _informationHeight = 232;
     
+    self.table.hidden = YES;
+    _buyButton.hidden = YES;
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    self.hidesBottomBarWhenPushed = YES;
     
     [self configureRestKit];
  
@@ -292,19 +283,6 @@
             }
             default:
                 break;
-        }
-    } else {
-        UIBarButtonItem *btn = (UIBarButtonItem *)sender;
-        switch (btn.tag) {
-            case 10:
-            {
-                if(is_dismissed) {
-                    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-                } else {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-                
-            }
         }
     }
 }
@@ -783,6 +761,16 @@
                 [self setOtherProducts];
                 _isnodata = NO;
                 [_table reloadData];
+                
+                _table.hidden = NO;
+                _buyButton.hidden = NO;
+                
+                // UIView below table view (View More Product button)
+                CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+100);
+                UIView *backgroundGreyView = [[UIView alloc] initWithFrame:frame];
+                backgroundGreyView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
+                [self.view insertSubview:backgroundGreyView belowSubview:self.table];
+
             }
         }else{
             [self cancel];
@@ -846,11 +834,11 @@
             
             SearchResultViewController *vc = [SearchResultViewController new];
             NSString *deptid = breadcrumb.department_id;
-            vc.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:0};
+            vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:0};
             SearchResultViewController *vc1 = [SearchResultViewController new];
-            vc1.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:0};
+            vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:0};
             SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-            vc2.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:0};
+            vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:0};
             NSArray *viewcontrollers = @[vc,vc1,vc2];
             
             TKPDTabNavigationController *c = [TKPDTabNavigationController new];

@@ -110,6 +110,12 @@
 {
     [super viewWillAppear:animated];
 
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
     self.tableView.tableHeaderView = _headerView;
     self.tableView.tableFooterView = _footerView;
@@ -742,6 +748,7 @@
                                                         kTKPD_APISTATUSKEY              : kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY   : kTKPD_APISERVERPROCESSTIMEKEY,
                                                         kTKPD_APISTATUSMESSAGEKEY       : kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY        : kTKPD_APIERRORMESSAGEKEY,
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ActionOrderResult class]];
@@ -769,10 +776,10 @@
                             API_ACTION_KEY              : API_PROCEED_SHIPPING_KEY,
                             API_ACTION_TYPE_KEY         : type,
                             API_USER_ID_KEY             : [auth objectForKey:API_USER_ID_KEY],
-                            API_ORDER_ID_KEY            : [NSNumber numberWithInteger:_selectedOrder.order_detail.detail_order_id],
+                            API_ORDER_ID_KEY            : _selectedOrder.order_detail.detail_order_id,
                             API_SHIPMENT_ID_KEY         : courier.shipment_id ?: [NSNumber numberWithInteger:_selectedOrder.order_shipment.shipment_id],
                             API_SHIPMENT_NAME_KEY       : courier.shipment_name ?: _selectedOrder.order_shipment.shipment_name,
-                            API_SHIPMENT_PACKAGE_ID_KEY : courierPackage.sp_id ?: [NSNumber numberWithInteger:_selectedOrder.order_shipment.shipment_package_id],
+                            API_SHIPMENT_PACKAGE_ID_KEY : courierPackage.sp_id ?: _selectedOrder.order_shipment.shipment_package_id,
                             API_SHIPMENT_REF_KEY        : receiptNumber ?: @"",
                             API_REASON_KEY              : rejectionReason ?: @"",
                             @"enc_dec"                  : @"off"
@@ -791,7 +798,7 @@
     indexPath = _selectedIndexPath;
     
     NSDictionary *object = @{@"order" : order, @"indexPath" : indexPath};
-    NSString *key = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:order.order_detail.detail_order_id]];
+    NSString *key = order.order_detail.detail_order_id;
     [_orderInProcess setObject:object forKey:key];
     
     // Delete row for the object
@@ -843,9 +850,10 @@
         [alert show];
         [_orderInProcess removeObjectForKey:orderId];
     } else {
-        
-        NSLog(@"\n\nRequest Message status : %@\n\n", actionOrder.message_status);
-        
+        NSLog(@"\n\nRequest Message status : %@\n\n", actionOrder.message_error);
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:actionOrder.message_error
+                                                                       delegate:self];
+        [alert show];
         [self performSelector:@selector(restoreData:) withObject:orderId];
     }
 }
@@ -853,6 +861,13 @@
 - (void)actionRequestFailure:(id)object orderId:(NSString *)orderId
 {
     NSLog(@"\n\nRequest error : %@\n\n", object);
+    NSDictionary *result = ((RKMappingResult *)object).dictionary;
+    ActionOrder *actionOrder = [result objectForKey:@""];
+
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:actionOrder.message_error
+                                                                   delegate:self];
+    [alert show];
+    
     [self performSelector:@selector(restoreData:) withObject:orderId];
 }
 
@@ -872,9 +887,6 @@
 {
     NSDictionary *dict = [_orderInProcess objectForKey:orderId];
     if (dict) {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses transaksi gagal."] delegate:self];
-        [alert show];
-        
         OrderTransaction *order = [dict objectForKey:@"order"];
         NSIndexPath *objectIndexPath = [dict objectForKey:@"indexPath"];
         

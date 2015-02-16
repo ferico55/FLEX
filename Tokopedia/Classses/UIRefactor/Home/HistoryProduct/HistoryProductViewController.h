@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TKPDTabHomeViewController.h"
 
 @interface HistoryProductViewController : UIViewController
 
 @property NSInteger index;
+@property (weak, nonatomic) id<TKPDTabHomeDelegate> delegate;
 
 @end

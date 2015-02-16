@@ -21,9 +21,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DetailShipmentStatusViewController">
             <connections>
                 <outlet property="buttonTransactionDetail" destination="6Hh-VV-jRV" id="cyR-rh-0as"/>
+                <outlet property="changeReceiptButton" destination="q8D-be-hBR" id="hPT-LC-CgQ"/>
                 <outlet property="invoiceNumberLabel" destination="7QR-K0-SnY" id="sPK-be-ZTU"/>
                 <outlet property="paymentMethodLabel" destination="6tD-sh-mFY" id="puo-sC-yzB"/>
                 <outlet property="receiptNumberLabel" destination="nQx-0u-MkH" id="TM0-Zm-ghn"/>
+                <outlet property="receiptNumberView" destination="s2y-MX-LAP" id="G1E-7u-Szh"/>
                 <outlet property="tableView" destination="FCo-8K-qgn" id="SSZ-va-2fD"/>
                 <outlet property="topView" destination="xuX-Ko-hXj" id="KTD-xI-ULR"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -209,7 +211,7 @@
                                 <constraint firstItem="b0h-cS-gYW" firstAttribute="leading" secondItem="E6w-0e-RY5" secondAttribute="leading" constant="10" id="jCc-Lj-2lw"/>
                                 <constraint firstItem="b0h-cS-gYW" firstAttribute="top" secondItem="E6w-0e-RY5" secondAttribute="top" constant="11" id="nRg-h9-wOe"/>
                                 <constraint firstAttribute="width" constant="150" id="rJ0-83-IHj"/>
-                                <constraint firstAttribute="bottom" secondItem="b0h-cS-gYW" secondAttribute="bottom" constant="31" id="uSH-oJ-49T"/>
+                                <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="b0h-cS-gYW" secondAttribute="bottom" constant="31" id="uSH-oJ-49T"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jht-gU-vkZ" userLabel="Vertical Border">
@@ -254,7 +256,7 @@
                         <constraint firstAttribute="bottom" secondItem="q8D-be-hBR" secondAttribute="bottom" constant="14" id="gQg-wK-uan"/>
                         <constraint firstItem="q8D-be-hBR" firstAttribute="top" secondItem="nQx-0u-MkH" secondAttribute="bottom" id="hXF-IP-87G"/>
                         <constraint firstAttribute="bottom" secondItem="E6w-0e-RY5" secondAttribute="bottom" id="hf2-Dn-Ff4"/>
-                        <constraint firstAttribute="height" constant="64" id="vg8-ah-sa8"/>
+                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="64" id="vg8-ah-sa8"/>
                         <constraint firstItem="E6w-0e-RY5" firstAttribute="leading" secondItem="s2y-MX-LAP" secondAttribute="leading" id="x8s-td-7cv"/>
                         <constraint firstItem="nQx-0u-MkH" firstAttribute="top" secondItem="s2y-MX-LAP" secondAttribute="top" constant="11" id="xdH-xo-hCt"/>
                         <constraint firstItem="E6w-0e-RY5" firstAttribute="top" secondItem="s2y-MX-LAP" secondAttribute="top" id="yje-z0-YBW"/>

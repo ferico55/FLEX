@@ -43,7 +43,7 @@
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
     NSString *titleTable = (type == TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY)?TITLE_TABLE_SHIPMENT:TITLE_TABLE_SHIPMENT_PACKAGE;
-    _titleTableLabel.text =titleTable;
+    self.title = titleTable;
 }
 
 - (void)didReceiveMemoryWarning {

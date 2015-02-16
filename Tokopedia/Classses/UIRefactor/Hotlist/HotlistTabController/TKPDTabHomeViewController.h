@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol TKPDTabHomeDelegate <NSObject>
+
+- (void)pushViewController:(id)viewController;
+
+@end
+
 @interface TKPDTabHomeViewController : UIViewController
 
 @end

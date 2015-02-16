@@ -85,11 +85,6 @@
     [super viewDidLoad];
     
     self.title = @"Detail Transaksi";
-
-    UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered
-                                                                     target:nil
-                                                                     action:nil];
-    [[self navigationItem] setBackBarButtonItem:newBackButton];
     
     _tableView.tableHeaderView = _orderHeaderView;
     _tableView.tableFooterView = _orderFooterView;
@@ -105,6 +100,7 @@
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
 
+    _buyerProfileImageView.layer.cornerRadius = _buyerProfileImageView.frame.size.width/2;
     [_buyerProfileImageView setImageWithURLRequest:request
                                   placeholderImage:_buyerProfileImageView.image
                                            success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
@@ -114,42 +110,7 @@
     } failure:nil];
     
     _invoiceNumberLabel.text = _transaction.order_detail.detail_invoice;
-    
-    if (_transaction.order_payment.payment_process_day_left == 1) {
-        
-        _dayLeftLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0
-                                                                  green:145.0/255.0
-                                                                   blue:0.0/255.0
-                                                                  alpha:1];
-        _dayLeftLabel.text = @"Besok";
-        
-    } else if (_transaction.order_payment.payment_process_day_left == 0) {
-        
-        _dayLeftLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0
-                                                                  green:59.0/255.0
-                                                                   blue:48.0/255.0
-                                                                  alpha:1];
-        _dayLeftLabel.text = @"Hari ini";
-        
-    } else if (_transaction.order_payment.payment_process_day_left < 0) {
-        
-        _dayLeftLabel.backgroundColor = [UIColor colorWithRed:158.0/255.0
-                                                                  green:158.0/255.0
-                                                                   blue:158.0/255.0
-                                                                  alpha:1];
-        _dayLeftLabel.text = @"Expired";
-        
-        _automaticallyRejectedLabel.hidden = YES;
-        
-    } else {
-
-        _dayLeftLabel.text = [NSString stringWithFormat:@"%d Hari lagi", (int)_transaction.order_payment.payment_process_day_left];
-    
-        _dayLeftLabel.backgroundColor = [UIColor colorWithRed:0.0/255.0
-                                                                  green:121.0/255.0
-                                                                   blue:255.0/255.0
-                                                                  alpha:1];
-    }
+    _invoiceDateLabel.text = _transaction.order_payment.payment_verify_date;
     
     _receiverNameLabel.text = _transaction.order_destination.receiver_name;
 
@@ -227,6 +188,8 @@
 
     if ([_delegate isKindOfClass:[SalesNewOrderViewController class]]) {
 
+        [self setDayLeft:_transaction.order_payment.payment_process_day_left];
+        
         if ([_transaction.order_detail.detail_dropship_name isEqualToString:@"0"]) {
             
             // Hide dropship view if dropship not available
@@ -248,6 +211,8 @@
         
     } else if ([_delegate isKindOfClass:[ShipmentConfirmationViewController class]]) {
 
+        [self setDayLeft:_transaction.order_deadline.deadline_shipping_day_left];
+        
         [_acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
         [_rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
 
@@ -475,13 +440,12 @@
 - (void)newOrderActionButton:(UIButton *)button
 {
     if (button.tag == 1) {
-        
         if (_transaction.order_detail.detail_partial_order == 1) {
             
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Tolak Pesanan"
                                                                 message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
                                                                delegate:self
-                                                      cancelButtonTitle:@"Cancel"
+                                                      cancelButtonTitle:@"Batal"
                                                       otherButtonTitles:@"Tolak Pesanan", @"Terima Sebagian", nil];
             alertView.tag = 1;
             [alertView show];
@@ -491,33 +455,45 @@
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pilih Alasan Penolakan"
                                                                 message:nil
                                                                delegate:self
-                                                      cancelButtonTitle:@"Cancel"
+                                                      cancelButtonTitle:@"Batal"
                                                       otherButtonTitles:@"Pesanan barang habis", @"Barang tidak dapat dikirim", @"Lainnya", nil];
             alertView.tag = 3;
             [alertView show];
             
         }
-        
     } else if (button.tag == 2) {
-        
-        if (_transaction.order_detail.detail_partial_order == 1) {
+        if (_transaction.order_payment.payment_process_day_left >= 0) {
+            if (_transaction.order_detail.detail_partial_order == 1) {
+
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
+                                                                    message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"Batal"
+                                                          otherButtonTitles:@"Terima Pesanan", @"Terima Sebagian", nil];
+                alertView.tag = 2;
+                [alertView show];
             
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
-                                                                message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
-                                                               delegate:self
-                                                      cancelButtonTitle:@"Cancel"
-                                                      otherButtonTitles:@"Terima Pesanan", @"Terima Sebagian", nil];
-            alertView.tag = 2;
-            [alertView show];
+            } else {
             
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
+                                                                    message:@"Apakah Anda yakin ingin menerima pesanan ini?"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"Batal"
+                                                          otherButtonTitles:@"Ya", nil];
+                alertView.tag = 4;
+                [alertView show];
+            
+            }
         } else {
-            
-            [self.navigationController popViewControllerAnimated:YES];
-            
-            [self.delegate didReceiveActionType:@"accept"
-                                         reason:nil
-                                       products:nil
-                                productQuantity:nil];
+
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pesanan Expired"
+                                                                message:@"Pesanan ini telah melewati batas waktu respon (3 hari)"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Batal"
+                                                      otherButtonTitles:@"Tolak Pesanan", nil];
+            alertView.tag = 5;
+            [alertView show];
+        
         }
     }
 }
@@ -615,6 +591,22 @@
                                                   completion:nil];
             
         }
+    } else if (alertView.tag == 4) {
+        if (buttonIndex == 1) {
+            [self.delegate didReceiveActionType:@"accept"
+                                        courier:nil
+                                 courierPackage:nil
+                                  receiptNumber:nil
+                                rejectionReason:nil];
+        }
+    } else if (alertView.tag == 5) {
+        if (buttonIndex == 1) {
+            [self.delegate didReceiveActionType:@"reject"
+                                        courier:nil
+                                 courierPackage:nil
+                                  receiptNumber:nil
+                                rejectionReason:@"Order expired"];
+        }
     }
 }
 
@@ -674,6 +666,47 @@
                           receiptNumber:receiptNumber
                         rejectionReason:nil];
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - Other methods
+
+- (void)setDayLeft:(NSInteger)dayLeft
+{
+    if (dayLeft == 1) {
+        
+        _dayLeftLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0
+                                                        green:145.0/255.0
+                                                         blue:0.0/255.0
+                                                        alpha:1];
+        _dayLeftLabel.text = @"Besok";
+        
+    } else if (dayLeft == 0) {
+        
+        _dayLeftLabel.backgroundColor = [UIColor colorWithRed:255.0/255.0
+                                                        green:59.0/255.0
+                                                         blue:48.0/255.0
+                                                        alpha:1];
+        _dayLeftLabel.text = @"Hari ini";
+        
+    } else if (dayLeft < 0) {
+        
+        _dayLeftLabel.backgroundColor = [UIColor colorWithRed:158.0/255.0
+                                                        green:158.0/255.0
+                                                         blue:158.0/255.0
+                                                        alpha:1];
+        _dayLeftLabel.text = @"Expired";
+        
+        _automaticallyRejectedLabel.hidden = YES;
+        
+    } else {
+        
+        _dayLeftLabel.text = [NSString stringWithFormat:@"%d Hari lagi", (int)_transaction.order_payment.payment_process_day_left];
+        
+        _dayLeftLabel.backgroundColor = [UIColor colorWithRed:0.0/255.0
+                                                        green:121.0/255.0
+                                                         blue:255.0/255.0
+                                                        alpha:1];
+    }
 }
 
 @end

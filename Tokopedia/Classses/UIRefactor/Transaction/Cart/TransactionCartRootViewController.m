@@ -34,8 +34,9 @@
 @implementation TransactionCartRootViewController
 
 #define COUNT_CILD_VIEW_CONTROLLER 3
-#define COLOR_DEFAULT_BUTTON [UIColor colorWithRed:189.0/255.0 green:189.0/255.0 blue:189.0/255.0 alpha:1.0]
+#define COLOR_DEFAULT_BUTTON [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1.0]
 #define COLOR_SELECTED_BUTTON [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1.0]
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -75,6 +76,9 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
+    [self.navigationItem setTitleView:logo];
     
     //TODO:: create not log-in page to login view controller
     if (!_isLogin) {

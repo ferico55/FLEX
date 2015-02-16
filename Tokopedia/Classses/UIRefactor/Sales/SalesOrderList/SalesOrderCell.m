@@ -44,17 +44,9 @@
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton *)sender;
         if (button.tag == 1) {
-
-            [self.rejectButton.titleLabel setFont:[UIFont fontWithName:@"GothamMedium" size:12]];
-            
             [self.delegate tableViewCell:self rejectOrderAtIndexPath:self.indexPath];
-        
         } else {
-
-            [self.acceptButton.titleLabel setFont:[UIFont fontWithName:@"GothamMedium" size:12]];
-            
-            [self.delegate tableViewCell:self acceptOrderAtIndexPath:self.indexPath];
-        
+            [self.delegate tableViewCell:self acceptOrderAtIndexPath:self.indexPath];        
         }
     } else {
         [self.delegate tableViewCell:self didSelectPriceAtIndexPath:self.indexPath];

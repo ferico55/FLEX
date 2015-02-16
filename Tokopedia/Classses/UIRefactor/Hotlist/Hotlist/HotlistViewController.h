@@ -7,13 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TKPDTabHomeViewController.h"
 #import "HotListCell.h"
 
 @interface HotlistViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, HotlistCellDelegate>
 
 @property (assign, nonatomic) NSInteger index;
 @property (strong, nonatomic) NSDictionary *data;
-
-- (void)panggil;
+@property (weak, nonatomic) id<TKPDTabHomeDelegate> delegate;
 
 @end

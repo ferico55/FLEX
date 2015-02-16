@@ -68,6 +68,7 @@
 
 - (void)setStatusLabelText:(NSString *)text
 {
+    text = text ?: @"-";
     NSString *status = [text stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n"];
     status = [status stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
     _statusLabel.attributedText = [[NSAttributedString alloc] initWithString:status

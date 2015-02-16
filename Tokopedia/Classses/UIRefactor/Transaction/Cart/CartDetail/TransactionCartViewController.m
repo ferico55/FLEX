@@ -8,6 +8,7 @@
 
 #import "string_product.h"
 #import "string_transaction.h"
+#import "NoResult.h"
 
 #import "TransactionObjectMapping.h"
 
@@ -23,7 +24,7 @@
 #import "TransactionCartFormMandiriClickPayViewController.h"
 #import "TransactionCartWebViewViewController.h"
 #import "AlertInfoVoucherCodeView.h"
-#import "NoResult.h"
+#import "StickyAlertView.h"
 
 @interface TransactionCartViewController () <UITableViewDataSource,UITableViewDelegate,TransactionCartCellDelegate, TransactionCartHeaderViewDelegate,GeneralSwitchCellDelegate, UIActionSheetDelegate,UIAlertViewDelegate,TransactionCartPaymentViewControllerDelegate, TKPDAlertViewDelegate,UITextFieldDelegate, TransactionCartMandiriClickPayFormDelegate,TransactionCartShippingViewControllerDelegate, TransactionCartEditViewControllerDelegate>
 {
@@ -99,7 +100,6 @@
 
 @property (strong, nonatomic) IBOutlet UITableViewCell *passwordCell;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
-@property (weak, nonatomic) IBOutlet UITextField *voucherCodeTextField;
 
 @property (weak, nonatomic) IBOutlet UITextField *saldoTokopediaAmountTextField;
 @property (strong, nonatomic) IBOutlet UITableViewCell *paymentGatewayCell;
@@ -215,7 +215,6 @@
     
     [_dataInput setObject:@(-1) forKey:API_GATEWAY_LIST_ID_KEY];
     
-    self.tableView.contentInset = UIEdgeInsetsMake(-1.0f, 0.0f, 0.0f, 0.0);
     _isnodata = YES;
     _isLoadingRequest = NO;
     _shouldRefresh = NO;
@@ -234,6 +233,10 @@
         _voucerCodeBeforeTapView.hidden = NO;
         _valueVoucherCodeLabel.hidden = YES;
     }
+    
+    TransactionCartGateway *gateway = [TransactionCartGateway new];
+    gateway.gateway = @(-1);
+    [_dataInput setObject:gateway forKey:DATA_CART_GATEWAY_KEY];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -246,7 +249,6 @@
         [self configureRestKitCart];
         [self requestCart];
     }
-
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -265,7 +267,14 @@
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger sectionCount = _list.count +2;
+    NSInteger sectionCount = _list.count + 2;
+    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+    if (_indexPage == 0) {
+        sectionCount = sectionCount +1;
+    }
+    if (_indexPage == 0 && ![selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)]) {
+        sectionCount = sectionCount+1;
+    }
     if (_indexPage==1 && [_cartSummary.deposit_amount integerValue]>0)
         sectionCount = sectionCount+1;
 
@@ -299,7 +308,7 @@
                 break;
             default:
                 if (_indexPage == 0)
-                    rowCount = ([selectedGateway.gateway isEqual:@(0)])?2:_isUsingSaldoTokopedia?4:3;
+                    rowCount = 1;
                 else rowCount = ([_cartSummary.deposit_amount integerValue]>0&&[_cartSummary.gateway integerValue]!=TYPE_GATEWAY_TOKOPEDIA)?4:3;
                 break;
         }
@@ -310,6 +319,8 @@
         NSIndexPath *indexPathFirstObjectProduct = (NSIndexPath*)_listProductFirstObjectIndexPath[section-1];
         rowCount = (_indexPage==0)?indexPathFirstObjectProduct.row+[_rowCountExpandCellForDropshipper[section-1]integerValue]:indexPathFirstObjectProduct.row+products.count+1;
     }
+    else if (_indexPage == 0 && section == listCount+2 && ![selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)])
+        rowCount = _isUsingSaldoTokopedia?2:1;
     else rowCount = 1;
     
 #ifdef TRANSACTION_NODATA_ENABLE
@@ -410,12 +421,6 @@
                             [cell.detailTextLabel setText:_cartSummary.deposit_amount_idr animated:YES];
 
                         default:
-                            if (_indexPage==0) {
-                                cell = ([selectedGateway.gateway isEqual: @(0)])?_totalPaymentCell:_saldoTokopediaCell;
-                                [_saldoTokopediaLabel setText:[NSString stringWithFormat:FORMAT_SALDO_TOKOPEDIA,_cart.deposit_idr?:@"Rp.0,-"] animated:YES];
-                                [cell.detailTextLabel setText:_cart.grand_total_idr animated:YES];
-
-                            }
                             break;
                     }
                 }
@@ -423,7 +428,7 @@
             case 2:
             {
                 if (_indexPage == 0) {
-                    cell = ([selectedGateway.gateway isEqual: @(0)])?_totalPaymentCell:_isUsingSaldoTokopedia?_saldoTextFieldCell:_totalPaymentCell;
+                    cell = _saldoTextFieldCell;
                     [cell.detailTextLabel setText:_cart.grand_total_idr animated:YES];
                 }
                 else
@@ -439,11 +444,29 @@
             }
             case 3:
                 cell = _totalPaymentCell;
-                [cell.detailTextLabel setText:(_indexPage==0)?_cart.grand_total_idr:_cartSummary.payment_left_idr animated:YES];
-                break;
+                [cell.detailTextLabel setText:_cartSummary.payment_left_idr animated:YES];
             default:
                 break;
         }
+    }
+    else if (indexPath.section == listCount+2 && _indexPage == 0) {
+        if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)])
+        {
+            cell = _totalPaymentCell;
+            [cell.detailTextLabel setText:_cart.grand_total_idr];
+        }
+        else
+        {
+            cell = _saldoTokopediaCell;
+            if (indexPath.row==1) {
+                cell = _saldoTextFieldCell;
+            }
+        }
+    }
+    else if (indexPath.section == listCount+3 &&_indexPage == 0)
+    {
+        cell = _totalPaymentCell;
+        [cell.detailTextLabel setText:_cart.grand_total_idr];
     }
     else
     {
@@ -503,31 +526,29 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) return 1;
-    else if (section <= _list.count) return 40;
-    else if(section == _list.count+1)
-    {
-        if (_indexPage==1 && [_cartSummary.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)]) {
-            return 0;
-        }
-        else return 0;
-    }
-    else return 40;
+    if (section <= _list.count) return 44;
+    return 0;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+    NSInteger listCount = _list.count;
     if (section == 0)
-        return 40;
-    else if (section <= _list.count)
+        return 20;
+    else if (section <= listCount)
         return 156;
-    else if(section == _list.count+1)
+    else if(section == listCount+1)
     {
         if (_indexPage==1 && [_cartSummary.deposit_amount integerValue]>0) {
-            return 1;
+            return 0;
         }
         else
-            return (_indexPage==0)?_checkoutView.frame.size.height:_buyView.frame.size.height;
+            return (_indexPage==0)?0:_buyView.frame.size.height;
+    }
+    else if (section == listCount+2 && _indexPage == 0)
+    {
+        return ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)])?_checkoutView.frame.size.height:0;
     }
     else
     {
@@ -537,14 +558,8 @@
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section == 0) {
-        return nil;
-    }
-    else if (section == _list.count+1)
-    {
-        return nil;
-    }
-    else if(section <= _list.count)
+    
+    if(section <= _list.count && section>0)
     {
         TransactionCartList *list = _list[section-1];
         NSString *shopName = list.cart_shop.shop_name;
@@ -561,14 +576,13 @@
     }
     else
     {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-        view.backgroundColor = [UIColor clearColor];
-        return view;
+        return nil;
     }
 }
 
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
+    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     if (section == 0) {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
         view.backgroundColor = [UIColor clearColor];
@@ -594,11 +608,15 @@
             return nil;
         }
         else
-            return (_indexPage==0)?_checkoutView:_buyView;
+            return (_indexPage==0)?nil:_buyView;
+    }
+    else if (section == _list.count+2 && _indexPage == 0)
+    {
+        return ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)])?_checkoutView:nil;
     }
     else
     {
-       return (_indexPage==0)?_checkoutView:_buyView;
+        return (_indexPage==0)?_checkoutView:_buyView;
     }
 }
 
@@ -606,17 +624,6 @@
 {
     if (_isnodata) {
         cell.backgroundColor = [UIColor whiteColor];
-    }
-    if ([tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-        [tableView setSeparatorInset:UIEdgeInsetsZero];
-    }
-    
-    if ([tableView respondsToSelector:@selector(setLayoutMargins:)]) {
-        [tableView setLayoutMargins:UIEdgeInsetsZero];
-    }
-    
-    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-        [cell setLayoutMargins:UIEdgeInsetsZero];
     }
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
@@ -639,21 +646,6 @@
         else if (indexPath.section == listCount+1)
         {
             if (indexPath.row == 1) {
-                _isUsingSaldoTokopedia = _isUsingSaldoTokopedia?NO:YES;
-                _isUsingSaldoTokopediaButton.selected = _isUsingSaldoTokopedia;
-                if (_isUsingSaldoTokopedia) {
-                    [self.tableView beginUpdates];
-                    NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
-                    [self.tableView insertRowsAtIndexPaths:@[indexPath1] withRowAnimation:UITableViewRowAnimationRight];
-                    [self.tableView endUpdates];
-                }
-                else
-                {
-                    [self.tableView beginUpdates];
-                    NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
-                    [self.tableView deleteRowsAtIndexPaths:@[indexPath1] withRowAnimation:UITableViewRowAnimationLeft];
-                    [self.tableView endUpdates];
-                }
                 
             }
         }
@@ -683,9 +675,23 @@
                 picker.pickerData =ARRAY_IF_STOCK_AVAILABLE_PARTIALLY;
                 [picker show];
             }
-            else if (indexPath.row == indexPathFirstObjectProduct.row+rowCount+2)
+        }
+        else if (indexPath.section == listCount+2)
+        {
+            _isUsingSaldoTokopedia = _isUsingSaldoTokopedia?NO:YES;
+            _isUsingSaldoTokopediaButton.selected = _isUsingSaldoTokopedia;
+            if (_isUsingSaldoTokopedia) {
+                [self.tableView beginUpdates];
+                NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
+                [self.tableView insertRowsAtIndexPaths:@[indexPath1] withRowAnimation:UITableViewRowAnimationRight];
+                [self.tableView endUpdates];
+            }
+            else
             {
-                
+                [self.tableView beginUpdates];
+                NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
+                [self.tableView deleteRowsAtIndexPaths:@[indexPath1] withRowAnimation:UITableViewRowAnimationLeft];
+                [self.tableView endUpdates];
             }
         }
         else
@@ -884,10 +890,11 @@
                         _tableView.tableFooterView = noResultView;
                     }
                     [_tableView reloadData];
+                    _tableView.contentInset = UIEdgeInsetsMake(-14.0, 0, 0, 0);
                 }
             }
         }
-        else{
+        else {
             
             [self cancelCartRequest];
             NSError *error = object;
@@ -1738,24 +1745,21 @@
         if (_indexPage==0){
             UIButton *button = (UIButton*)sender;
             switch (button.tag) {
-                case 10:
-                    _voucerCodeBeforeTapView.hidden = YES;
-                    _voucherCodeView.hidden = NO;
-                    _voucherCodeButton.hidden =YES;
-                    _valueVoucherCodeLabel.hidden = YES;
+                case 10:{
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Kode Kupon"
+                                                                    message:@"Masukan kode kupon"
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"Batal"
+                                                          otherButtonTitles:@"OK", nil];
+                    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+                    alert.tag = TAG_BUTTON_VOUCHER;
+                    [alert show];
+                }
                     break;
                 case 11:
                 {
                     AlertInfoVoucherCodeView *alertInfo = [AlertInfoVoucherCodeView newview];
                     [alertInfo show];
-                }
-                    break;
-                case 12:
-                {
-                    if ([self isValidInputVoucher]) {
-                        [self configureRestKitActionVoucher];
-                        [self requestActionVoucher:_dataInput];
-                    }
                 }
                     break;
                 default:
@@ -1819,6 +1823,7 @@
 }
 
 #pragma mark - Methods
+
 -(void)setData:(NSDictionary *)data
 {
     _data = data;
@@ -1895,23 +1900,22 @@
 {
     BOOL isValid = YES;
     
-    NSMutableArray *messageError = [NSMutableArray new];
+    NSMutableArray *errorMessages = [NSMutableArray new];
     
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY];
     if (!(voucherCode) || [voucherCode isEqualToString:@""]) {
         isValid = NO;
-        [messageError addObject:ERRORMESSAGE_NULL_VOUCHER_CODE];
+        [errorMessages addObject:ERRORMESSAGE_NULL_VOUCHER_CODE];
     }
     if (voucherCode.length != 12)
     {
         isValid = NO;
-        [messageError addObject:ERRORMESSAGE_VOUCHER_CODE_LENGHT];
+        [errorMessages addObject:ERRORMESSAGE_VOUCHER_CODE_LENGHT];
     }
     
     if (!isValid) {
-        NSArray *array = messageError;
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+        [alert show];
     }
     
     return  isValid;
@@ -2101,7 +2105,19 @@
                     break;
             }
             break;
-        default:
+        case TAG_BUTTON_VOUCHER:
+        {
+            if (buttonIndex == 1) {
+                NSString *voucherCode = [[alertView textFieldAtIndex:0] text];
+                [_dataInput setObject:voucherCode forKey:API_VOUCHER_CODE_KEY];
+                if ([self isValidInputVoucher]) {
+                    [self configureRestKitActionVoucher];
+                    [self requestActionVoucher:_dataInput];
+                }
+            }
+        }
+            break;
+        default://TODO: JANGAN MASUKIN KE DEFAULT.
         {
             if (alertView.tag>0) {
                 NSInteger index = [[((AlertPickerView*)alertView).data objectForKey:DATA_INDEX_KEY] integerValue];
@@ -2128,6 +2144,7 @@
             break;
     }
 }
+
 
 #pragma mark - Mandiri Klik Pay Form Delegate
 -(void)TransactionCartMandiriClickPayForm:(TransactionCartFormMandiriClickPayViewController *)VC withUserInfo:(NSDictionary *)userInfo
@@ -2161,9 +2178,6 @@
     }
     if (textField == _passwordTextField) {
         [_dataInput setObject:textField.text forKey:API_PASSWORD_KEY];
-    }
-    if (textField == _voucherCodeTextField) {
-        [_dataInput setObject:textField.text forKey:API_VOUCHER_CODE_KEY];
     }
     
     [self adjustDropshipperListParam];
@@ -2216,9 +2230,6 @@
     if (_activeTextField == _passwordTextField) {
         [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:_list.count+2] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
-    if (_activeTextField == _voucherCodeTextField) {
-        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:_list.count+1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    }
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
@@ -2246,8 +2257,7 @@
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = @"Detail Pengiriman";
-    cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
-    //cell.textLabel.textColor = TEXT_COLOUR_DEFAULT_CELL_TEXT;
+    cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;    
     return cell;
 }
 

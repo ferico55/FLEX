@@ -15,6 +15,7 @@
 #import "string_alert.h"
 
 #import "AlertPickerView.h"
+#import "StickyAlertView.h"
 #import "string_settings.h"
 #import "SettingAddressViewController.h"
 #import "TransactionATCViewController.h"
@@ -25,7 +26,18 @@
 
 #pragma mark - Transaction Add To Cart View Controller
 
-@interface TransactionATCViewController ()<TKPDAlertViewDelegate,SettingAddressViewControllerDelegate, UITextViewDelegate, TransactionShipmentViewControllerDelegate, SettingAddressViewControllerDelegate, UIAlertViewDelegate, UITabBarControllerDelegate, UITableViewDataSource>
+@interface TransactionATCViewController ()
+<
+    TKPDAlertViewDelegate,
+    SettingAddressViewControllerDelegate,
+    TransactionShipmentViewControllerDelegate,
+    SettingAddressViewControllerDelegate,
+    UITabBarControllerDelegate,
+    UITableViewDataSource,
+    UITableViewDelegate,
+    UITextViewDelegate,
+    UIAlertViewDelegate
+>
 {
     NSMutableDictionary *_dataInput;
     
@@ -60,6 +72,8 @@
     
     CGRect _containerDefault;
     CGSize _scrollviewContentSize;
+
+    BOOL _productQuantityChanged;
 }
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *headerTableView;
 
@@ -71,7 +85,6 @@
 @property (weak, nonatomic) IBOutlet UIImageView *productThumbImageView;
 @property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *productDescriptionLabel;
-@property (weak, nonatomic) IBOutlet UITextField *quantityTextField;
 @property (weak, nonatomic) IBOutlet UITextView *remarkTextView;
 @property (weak, nonatomic) IBOutlet UILabel *recieverNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *addressLabel;
@@ -79,6 +92,9 @@
 @property (weak, nonatomic) IBOutlet UIButton *buyButton;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+
+@property (weak, nonatomic) IBOutlet UILabel *productQuantityLabel;
+@property (weak, nonatomic) IBOutlet UIStepper *productQuantityStepper;
 
 -(void)cancelFormATC;
 -(void)configureRestKitFormATC;
@@ -157,6 +173,21 @@
     [self requestFormATC];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    self.title = @"Beli";
+    
+    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 30, 0);
+
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
+}
+
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
     [_activeTextView resignFirstResponder];
@@ -221,15 +252,16 @@
             case 0:
             {
                 cell = _tableViewProductCell[indexPath.row];
+                UILabel *label = (UILabel *)[cell viewWithTag:1];
                 switch (indexPath.row) {
                     case TAG_BUTTON_TRANSACTION_INSURANCE:
                     {
                         if ([product.product_must_insurance integerValue]==1) {
-                            [cell.detailTextLabel setText:@"Wajib Asuransi" animated:YES];
+                            label.text = @"Wajib Asuransi";
                         }
                         else{
                             NSInteger insuranceID = [product.product_insurance integerValue];
-                            [cell.detailTextLabel setText:(insuranceID==1)?@"Ya":@"Tidak" animated:YES];
+                            label.text = (insuranceID==1)?@"Ya":@"Tidak";
                         }
                         break;
                     }
@@ -239,20 +271,21 @@
             case 1:
             {
                 cell = _tableViewShipmentCell[indexPath.row];
+                UILabel *label = (UILabel *)[cell viewWithTag:1];
                 switch (indexPath.row) {
                     case TAG_BUTTON_TRANSACTION_ADDRESS:
                     {
-                        [cell.detailTextLabel setText:address.address_name animated:YES];
+                        label.text = address.address_name;
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:
                     {
-                        [cell.detailTextLabel setText:shipment.shipment_name animated:YES];
+                        label.text = shipment.shipment_name;
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_SERVICE_TYPE:
                     {
-                        [cell.detailTextLabel setText:shipmentPackage.name animated:YES];
+                        label.text = shipmentPackage.name;
                         break;
                     }
                 }
@@ -260,17 +293,49 @@
             }
             case 2:
                 cell = _tableViewPaymentDetailCell[indexPath.row];
+                UILabel *label = (UILabel *)[cell viewWithTag:1];
                 switch (indexPath.row) {
                     case TAG_BUTTON_TRANSACTION_PRODUCT_PRICE:
                     {
-                        [cell.detailTextLabel setText:product.product_price animated:YES];
-                    }
+                        label.text = product.product_price;
                         break;
+                    }
                     case TAG_BUTTON_TRANSACTION_SHIPMENT_COST:
                     {
-                        [cell.detailTextLabel setText:shipmentPackage.price animated:YES];
+                        label.text = shipmentPackage.price;
                         break;
                     }
+                    case TAG_BUTTON_TRANSACTION_TOTAL:
+                    {
+                        NSString *productPrice = [product.product_price stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
+                        productPrice = [productPrice stringByReplacingOccurrencesOfString:@"." withString:@""];
+                        productPrice = [productPrice stringByReplacingOccurrencesOfString:@"," withString:@""];
+                        productPrice = [productPrice stringByReplacingOccurrencesOfString:@"-" withString:@""];
+
+                        NSString *shipmentPackagePrice = [shipmentPackage.price stringByReplacingOccurrencesOfString:@"Rp " withString:@""];
+                        shipmentPackagePrice = [shipmentPackagePrice stringByReplacingOccurrencesOfString:@"." withString:@""];
+                        shipmentPackagePrice = [shipmentPackagePrice stringByReplacingOccurrencesOfString:@"," withString:@""];
+                        shipmentPackagePrice = [shipmentPackagePrice stringByReplacingOccurrencesOfString:@"-" withString:@""];
+
+                        NSNumber *total = [NSNumber numberWithInteger:([productPrice integerValue] + [shipmentPackagePrice integerValue])];
+                        
+                        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+                        formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+                        formatter.currencyCode = @"Rp ";
+                        formatter.currencyGroupingSeparator = @".";
+                        formatter.currencyDecimalSeparator = @",";
+                        formatter.maximumFractionDigits = 0;
+                        formatter.minimumFractionDigits = 0;
+                        
+                        NSString *totalPrice = [[formatter stringFromNumber:total] stringByAppendingString:@",-"];
+                        
+                        label.text = totalPrice;
+                    }
+                }
+                if (!_productQuantityChanged) {
+                    UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView *)[cell viewWithTag:2];
+                    [indicatorView stopAnimating];
+                    [indicatorView setHidden:YES];
                 }
         }
     }
@@ -282,18 +347,10 @@
 #pragma mark - Table View Delegate
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    if ([tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-        [tableView setSeparatorInset:UIEdgeInsetsZero];
-    }
-    
-    if ([tableView respondsToSelector:@selector(setLayoutMargins:)]) {
-        [tableView setLayoutMargins:UIEdgeInsetsZero];
-    }
-    
-    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-        [cell setLayoutMargins:UIEdgeInsetsZero];
+{    
+    if (indexPath.section == 2 && _productQuantityChanged) {
+        [_dataInput setObject:@(_productQuantityStepper.value) forKey:API_QUANTITY_KEY];
+        [self calculatePriceWithAction:@""];
     }
 }
 
@@ -325,11 +382,6 @@
     if (indexPath.section == 0)
     {
         switch (indexPath.row) {
-            case TAG_BUTTON_TRANSACTION_QUANTITY:
-            {
-                [_quantityTextField becomeFirstResponder];
-                break;
-            }
             case TAG_BUTTON_TRANSACTION_INSURANCE:
             {
                 ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
@@ -408,18 +460,12 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section>0 && section<3) {
-        return ((UIView*)_headerTableView[section-1]).frame.size.height;
-    }
-    else return 0;
+    return [(_headerTableView[section]) frame].size.height;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (section>0 && section<3) {
-        return _headerTableView[section-1];
-    }
-    else return nil;
+    return _headerTableView[section];
 }
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView{
@@ -556,9 +602,9 @@
             if (status) {
                 if(ATCForm.message_error)
                 {
-                    NSArray *array = ATCForm.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    NSArray *messages = ATCForm.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+                    [alert show];
                 }
                 else{
                     AddressFormList *address = ATCForm.result.form.destination;
@@ -763,15 +809,11 @@
             if (status) {
                 if(setting.message_error)
                 {
-                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    NSArray *messages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+                    [alert show];
                 }
                 if (setting.result.is_success == 1) {
-                    //NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    //NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    //[[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-                    //TODO:: GOTO CART
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:[setting.message_status firstObject] delegate:self cancelButtonTitle:@"Kembali Belanja" otherButtonTitles:@"Ke Keranjang Belanja",nil];
                     alertView.tag=TAG_BUTTON_TRANSACTION_BUY;
                     [alertView show];
@@ -897,6 +939,7 @@
     
     [_requestActionCalculate setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionCalculate:mappingResult withOperation:operation];
+        _productQuantityChanged = NO;
         _isRefreshRequest = NO;
         [_refreshControl endRefreshing];
         [timer invalidate];
@@ -913,6 +956,15 @@
     
     timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionCalculate) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+
+    for (UITableViewCell *cell in _tableViewPaymentDetailCell) {
+        UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView *)[cell viewWithTag:2];
+        [indicatorView startAnimating];
+        [indicatorView setHidden:NO];
+        
+        UILabel *label = (UILabel *)[cell viewWithTag:1];
+        label.hidden = YES;
+    }
 }
 
 -(void)requestSuccessActionCalculate:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -944,9 +996,9 @@
             if (status) {
                 if(calculate.message_error)
                 {
-                    NSArray *array = calculate.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    NSArray *messages = calculate.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+                    [alert show];
                 }
                 else
                 {
@@ -991,6 +1043,15 @@
                     [_dataInput setObject:shipment forKey:DATA_SELECTED_SHIPMENT_KEY];
                     [_dataInput setObject:shipmentPackage forKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
                     [_tableView reloadData];
+                    
+                    for (UITableViewCell *cell in _tableViewPaymentDetailCell) {
+                        UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView *)[cell viewWithTag:2];
+                        [indicatorView stopAnimating];
+                        [indicatorView setHidden:YES];
+                        
+                        UILabel *label = (UILabel *)[cell viewWithTag:1];
+                        label.hidden = NO;
+                    }
                 }
             }
         }
@@ -1043,9 +1104,9 @@
         }
     }
     if (shipmentPackages.count==0) {
-        NSArray *array = [[NSArray alloc] initWithObjects:[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipment.shipment_name], nil];
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        NSArray *messages = @[[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipment.shipment_name],];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+        [alert show];
         return;
     }
     ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
@@ -1058,10 +1119,6 @@
     if (type == TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY) {
         [_dataInput removeObjectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY];
     }
-//    NSString *productPrice = shipmentPackage.price;
-//    ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
-//    product.product_price = productPrice;
-//    [_dataInput setObject:product forKey:DATA_DETAIL_PRODUCT_KEY];
     
     [_tableView reloadData];
 }
@@ -1127,16 +1184,6 @@
     return YES;
 }
 
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    if (textField == _quantityTextField) {
-        NSInteger quantity = [textField.text integerValue];
-        [_dataInput setObject:@(quantity) forKey:API_QUANTITY_KEY];
-        [self calculatePriceWithAction:@""];
-    }
-    return YES;
-}
-
 #pragma mark - Text View Delegate
 
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
@@ -1156,10 +1203,17 @@
 
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
-    if (textView== _remarkTextView) {
+    if (textView == _remarkTextView) {
         [_dataInput setObject:textView.text forKey:API_NOTES_KEY];
     }
     return YES;
+}
+
+#pragma mark - UIStepper method
+
+- (IBAction)changeStepperValue:(UIStepper *)sender {
+    _productQuantityChanged = YES;
+    _productQuantityLabel.text = [NSString stringWithFormat:@"%d", (int)sender.value];
 }
 
 #pragma mark - Keyboard Notification
@@ -1200,9 +1254,9 @@
 {
     _data = data;
     if (data) {
-        NSInteger quantity = 1;
-        _quantityTextField.text = [NSString stringWithFormat:@"%zd",quantity];
-        [_dataInput setObject:@(quantity) forKey:API_QUANTITY_KEY];
+        _productQuantityStepper.value = 1;
+        _productQuantityLabel.text = @"1";
+        [_dataInput setObject:@(1) forKey:API_QUANTITY_KEY];
         DetailProductResult *result = [_data objectForKey:DATA_DETAIL_PRODUCT_KEY];
         NSString *shopName = result.shop_info.shop_name;
         [_shopNameLabel setText:shopName animated:YES];
@@ -1266,8 +1320,8 @@
     }
     
     if (!isValid) {
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:errorMessage,@"messages", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
+        [alert show];
         return NO;
     }
     else
@@ -1277,8 +1331,11 @@
 -(void)buyButtonIsLoading:(BOOL)isLoading
 {
     _buyButton.enabled = !isLoading;
-    NSString *buyButtonTitle = isLoading?@"Loading ...":@"BELI";
-    [_buyButton setTitle:buyButtonTitle forState:UIControlStateNormal];
+    if (isLoading) {
+        _buyButton.layer.opacity = 0.8;
+    } else {
+        _buyButton.layer.opacity = 1;
+    }
 }
 
 -(void)calculatePriceWithAction:(NSString*)action

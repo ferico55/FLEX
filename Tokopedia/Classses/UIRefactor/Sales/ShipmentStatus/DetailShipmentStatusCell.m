@@ -49,10 +49,12 @@ static CGFloat messageTextSize = 14.0;
 
 - (void)setStatusLabelText:(NSString *)text;
 {
-    text = [text stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n\n"];
-    text = [text stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n\n"];
-    [_textAttributes setObject:[UIFont fontWithName:@"GothamMedium" size:12] forKey:NSFontAttributeName];
-    _statusLabel.attributedText = [[NSAttributedString alloc] initWithString:text attributes:_textAttributes];
+    if (text) {
+        text = [text stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n\n"];
+        text = [text stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n\n"];
+        [_textAttributes setObject:[UIFont fontWithName:@"GothamMedium" size:12] forKey:NSFontAttributeName];
+        _statusLabel.attributedText = [[NSAttributedString alloc] initWithString:text attributes:_textAttributes];    
+    }
 }
 
 - (void)setSubjectLabelText:(NSString *)text

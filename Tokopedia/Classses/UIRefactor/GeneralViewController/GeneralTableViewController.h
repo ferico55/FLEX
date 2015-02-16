@@ -20,5 +20,8 @@
 @property (strong, nonatomic) id selectedObject;
 @property (strong, nonatomic) NSIndexPath *senderIndexPath;
 @property (weak, nonatomic) id<GeneralTableViewControllerDelegate> delegate;
+@property UITableViewCellStyle tableViewCellStyle;
+
+@property BOOL enableSearch;
 
 @end

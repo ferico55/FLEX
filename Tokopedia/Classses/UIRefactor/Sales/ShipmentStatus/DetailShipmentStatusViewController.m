@@ -38,10 +38,21 @@
 @property (weak, nonatomic) IBOutlet UILabel *invoiceNumberLabel;
 @property (weak, nonatomic) IBOutlet UILabel *paymentMethodLabel;
 @property (weak, nonatomic) IBOutlet UILabel *receiptNumberLabel;
+@property (weak, nonatomic) IBOutlet UIButton *changeReceiptButton;
+@property (weak, nonatomic) IBOutlet UIView *receiptNumberView;
 
 @end
 
 @implementation DetailShipmentStatusViewController
+
+typedef enum {
+    ORDER_SHIPPING                  = 500,
+    ORDER_SHIPPING_TRACKER_INVALID  = 520,
+    ORDER_SHIPPING_REF_NUM_EDITED   = 530,
+    ORDER_DELIVERED                 = 600,
+    ORDER_DELIVERED_CONFIRM         = 610,
+    ORDER_DELIVERED_DUE_DATE        = 620,
+} ORDER_STATUS;
 
 - (void)viewDidLoad {
     
@@ -62,12 +73,26 @@
     _receiptNumberLabel.text = _order.order_detail.detail_ship_ref_num;
     
     _operationQueue = [NSOperationQueue new];
+    
+    if (_order.order_detail.detail_order_status == ORDER_SHIPPING ||
+        _order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED ||
+        _order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
+        _order.order_detail.detail_order_status == ORDER_DELIVERED_CONFIRM) {
+        _changeReceiptButton.enabled = NO;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
     self.title = @"Detail Status";
+
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -94,6 +119,7 @@
 
             ChangeReceiptNumberViewController *controller = [ChangeReceiptNumberViewController new];
             controller.delegate = self;
+            controller.order = _order;
             navigationController.viewControllers = @[controller];
             
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
@@ -205,7 +231,7 @@
     NSDictionary *param = @{
                             API_ACTION_KEY              : API_EDIT_SHIPPING_REF,
                             API_USER_ID_KEY             : [auth objectForKey:API_USER_ID_KEY],
-                            API_ORDER_ID_KEY            : [NSNumber numberWithInteger:_order.order_detail.detail_order_id],
+                            API_ORDER_ID_KEY            : _order.order_detail.detail_order_id,
                             API_SHIPMENT_REF_KEY        : receiptNumber,
                             };
     

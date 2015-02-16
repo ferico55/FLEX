@@ -12,7 +12,6 @@
 #import "OrderTransaction.h"
 #import "ActionOrder.h"
 
-
 #import "ShipmentStatusViewController.h"
 #import "FilterShipmentStatusViewController.h"
 #import "DetailShipmentStatusViewController.h"
@@ -78,8 +77,6 @@ typedef enum {
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Status Pengiriman";
-    
     _page = 1;
     _requestCount = 0;
     
@@ -93,6 +90,19 @@ typedef enum {
     
     [self configureRestKit];
     [self request];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.title = @"Status Pengiriman";
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -174,9 +184,14 @@ typedef enum {
         
         }
     }
-
-    [cell setStatusLabelText:[[order.order_history objectAtIndex:0] history_seller_status]];
     
+    if (order.order_history.count > 0) {
+        OrderHistory *history = [order.order_history objectAtIndex:0];
+        [cell setStatusLabelText:history.history_seller_status];
+    } else {
+        [cell setStatusLabelText:@"-"];
+    }
+
     return cell;
 }
 
@@ -597,7 +612,7 @@ typedef enum {
     NSDictionary *param = @{
                             API_ACTION_KEY              : API_EDIT_SHIPPING_REF,
                             API_USER_ID_KEY             : [auth objectForKey:API_USER_ID_KEY],
-                            API_ORDER_ID_KEY            : [NSNumber numberWithInteger:_selectedOrder.order_detail.detail_order_id],
+                            API_ORDER_ID_KEY            : _selectedOrder.order_detail.detail_order_id,
                             API_SHIPMENT_REF_KEY        : receiptNumber,
                             };
     
@@ -640,16 +655,10 @@ typedef enum {
     OrderTransaction *order = [_shipments objectAtIndex:indexPath.row];
     _selectedOrder = order;
     
-    UINavigationController *navigationController = [[UINavigationController alloc] init];
-    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-    navigationController.navigationBar.translucent = NO;
-    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    TrackOrderViewController *controller = [TrackOrderViewController new];
+    controller.order = _selectedOrder;
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
-    TrackOrderViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"TrackOrderViewController"];
-    navigationController.viewControllers = @[controller];
-    
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    [self.navigationController pushViewController:controller animated:YES];
 }   
 
 - (void)didTapReceiptButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath
@@ -664,6 +673,7 @@ typedef enum {
 
     ChangeReceiptNumberViewController *controller = [ChangeReceiptNumberViewController new];
     controller.delegate = self;
+    controller.order = _selectedOrder;
     navigationController.viewControllers = @[controller];
     
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
