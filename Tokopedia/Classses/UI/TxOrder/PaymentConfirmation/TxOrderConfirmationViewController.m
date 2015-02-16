@@ -126,7 +126,17 @@
             [_isSelectedOrders addObject:@(NO)];
         }
     }
-    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 45);
+    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 45, 0);
+    [_tableView reloadData];
+}
+
+-(void)setIsSelectAll:(BOOL)isSelectAll
+{
+    _isSelectAll = isSelectAll;
+    [_isSelectedOrders removeAllObjects];
+    for (id selected in _list) {
+        [_isSelectedOrders addObject:@(isSelectAll)];
+    }
     [_tableView reloadData];
 }
 
@@ -157,6 +167,7 @@
     cell.totalInvoiceLabel.text = detailOrder.confirmation.open_amount;
     cell.indexPath = indexPath;
     cell.selectionButton.hidden = !(_isMultipleSelection);
+    cell.frameView.hidden = !(_isMultipleSelection);
     cell.selectionButton.selected = [_isSelectedOrders[indexPath.row] boolValue];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

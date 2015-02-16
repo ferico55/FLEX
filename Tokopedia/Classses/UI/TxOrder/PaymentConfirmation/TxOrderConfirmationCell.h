@@ -32,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *transactionDateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *deadlineDateLabel;
 @property (weak, nonatomic) IBOutlet UIButton *selectionButton;
+@property (weak, nonatomic) IBOutlet UIView *frameView;
 
 @property (strong, nonatomic)NSIndexPath *indexPath;
 

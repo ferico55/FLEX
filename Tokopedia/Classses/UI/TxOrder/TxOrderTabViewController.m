@@ -25,6 +25,7 @@
     NSDictionary *_auth;
     BOOL _isLogin;
     BOOL _isMultipleSelect;
+    BOOL _isSelectAll;
 }
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 
@@ -89,17 +90,22 @@
 
 -(IBAction)tapBarButton:(UIBarButtonItem*)sender
 {
-    _isMultipleSelect = !_isMultipleSelect;
-    NSString *barButtonTitle;
-
+    if (sender.tag == TAG_BAR_BUTTON_TRANSACTION_DONE) {
+        if(_isMultipleSelect)
+        {
+            _isSelectAll = !_isSelectAll;
+        }
+        else
+        {
+            _isMultipleSelect = !_isMultipleSelect;
+        }
+    }
+    else
+    {
+        _isMultipleSelect = !_isMultipleSelect;
+    }
     [self viewControllerAtIndex:_index];
-    
-    barButtonTitle = _isMultipleSelect?@"Cancel":@"Select";
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:barButtonTitle style:UIBarButtonItemStylePlain target:(self) action:@selector(tapBarButton:)];
-    [backBarButtonItem setTintColor:[UIColor blackColor]];
-    backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
-    self.navigationItem.rightBarButtonItem = backBarButtonItem;
+    _segmentControl.enabled = !_isMultipleSelect;
 }
 
 -(void)setScrollEnabled:(BOOL)enabled forPageViewController:(UIPageViewController*)pageViewController{
@@ -124,15 +130,23 @@
     switch (index) {
         case 0:
         {
-            NSString *barButtonTitle = _isMultipleSelect?@"Cancel":@"Select";
+            NSString *barButtonTitle = (!_isMultipleSelect)?@"Pilih":_isSelectAll?@"Tidak Pilih":@"Pilih Semua";
             
-            UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:barButtonTitle style:UIBarButtonItemStylePlain target:(self) action:@selector(tapBarButton:)];
-            [backBarButtonItem setTintColor:[UIColor blackColor]];
-            backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
-            self.navigationItem.rightBarButtonItem = backBarButtonItem;
+            UIBarButtonItem *selectBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:barButtonTitle style:UIBarButtonItemStylePlain target:(self) action:@selector(tapBarButton:)];
+            [selectBarButtonItem setTintColor:[UIColor blackColor]];
+            selectBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
+            self.navigationItem.rightBarButtonItem = selectBarButtonItem;
+            
+            if (_isMultipleSelect) {
+                UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@""] style:UIBarButtonItemStylePlain target:self action:@selector(tapBarButton:)];
+                [backBarButtonItem setTintColor:[UIColor whiteColor]];
+                backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
+                self.navigationItem.leftBarButtonItem = backBarButtonItem;
+            }
             
             if(!_confirmationViewController)_confirmationViewController = [TxOrderConfirmationViewController new];
             ((TxOrderConfirmationViewController*)_confirmationViewController).isMultipleSelection = _isMultipleSelect;
+            ((TxOrderConfirmationViewController*)_confirmationViewController).isSelectAll = _isSelectAll;
             childViewController = _confirmationViewController;
             break;
         }

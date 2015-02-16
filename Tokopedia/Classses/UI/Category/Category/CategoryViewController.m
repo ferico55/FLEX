@@ -11,7 +11,6 @@
 #import "DBManager.h"
 #import "CategoryViewController.h"
 #import "CategoryViewCell.h"
-#import "CategoryResultViewController.h"
 #import "TKPDTabNavigationController.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"

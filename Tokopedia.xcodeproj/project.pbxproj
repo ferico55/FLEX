@@ -271,8 +271,6 @@
 		FC44EFE81A88C84200586B23 /* TxOrderConfirmPaymentFormForm.m in Sources */ = {isa = PBXBuildFile; fileRef = FC44EFE71A88C84200586B23 /* TxOrderConfirmPaymentFormForm.m */; };
 		FC44EFEA1A89D9A400586B23 /* AlertInfoPaymentConfirmationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC44EFE91A89D9A400586B23 /* AlertInfoPaymentConfirmationView.xib */; };
 		FC44EFED1A89DA1B00586B23 /* AlertInfoPaymentConfirmationView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC44EFEC1A89DA1B00586B23 /* AlertInfoPaymentConfirmationView.m */; };
-		FC44EFF01A89F13400586B23 /* TxOrderPaymentConfirmationSuccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC44EFEF1A89F13400586B23 /* TxOrderPaymentConfirmationSuccessViewController.m */; };
-		FC44EFF21A89F14200586B23 /* TxOrderPaymentConfirmationSuccessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC44EFF11A89F14200586B23 /* TxOrderPaymentConfirmationSuccessViewController.xib */; };
 		FC4D904A1A7121450048106E /* EncodeDecoderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4D90451A7121450048106E /* EncodeDecoderManager.m */; };
 		FC4D904B1A7121450048106E /* RSA.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4D90471A7121450048106E /* RSA.m */; };
 		FC4D904C1A7121450048106E /* UserAuthentificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FC4D90491A7121450048106E /* UserAuthentificationManager.m */; };
@@ -437,7 +435,6 @@
 		FC4D91EE1A712B280048106E /* SettingShipmentInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D91481A712B280048106E /* SettingShipmentInfoViewController.xib */; };
 		FC4D91EF1A712B280048106E /* ShopSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D91491A712B280048106E /* ShopSettingViewController.xib */; };
 		FC4D91F01A712B280048106E /* ProductTalkFormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D914B1A712B280048106E /* ProductTalkFormViewController.xib */; };
-		FC4D91F11A712B280048106E /* ShopTalkViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC4D914C1A712B280048106E /* ShopTalkViewController.xib */; };
 		FC6401111A84CA8E00CCE86D /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FE921A84CA8D00CCE86D /* LoginViewController.m */; };
 		FC6401121A84CA8E00CCE86D /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FE951A84CA8D00CCE86D /* RegisterViewController.m */; };
 		FC6401131A84CA8E00CCE86D /* TextField.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FE981A84CA8D00CCE86D /* TextField.m */; };
@@ -457,8 +454,6 @@
 		FC6401211A84CA8E00CCE86D /* CategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FEBC1A84CA8E00CCE86D /* CategoryViewController.m */; };
 		FC6401221A84CA8E00CCE86D /* CategoryMenuViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FEC01A84CA8E00CCE86D /* CategoryMenuViewCell.m */; };
 		FC6401231A84CA8E00CCE86D /* CategoryMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FEC21A84CA8E00CCE86D /* CategoryMenuViewController.m */; };
-		FC6401241A84CA8E00CCE86D /* CategoryResultViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FEC51A84CA8E00CCE86D /* CategoryResultViewCell.m */; };
-		FC6401251A84CA8E00CCE86D /* CategoryResultViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FEC71A84CA8E00CCE86D /* CategoryResultViewController.m */; };
 		FC6401261A84CA8E00CCE86D /* TKPDTabBarNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FECB1A84CA8E00CCE86D /* TKPDTabBarNavigationController.m */; };
 		FC6401271A84CA8E00CCE86D /* TKPDTabInboxMessageNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FECD1A84CA8E00CCE86D /* TKPDTabInboxMessageNavigationController.m */; };
 		FC6401281A84CA8E00CCE86D /* TKPDTabInboxReviewNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FECF1A84CA8E00CCE86D /* TKPDTabInboxReviewNavigationController.m */; };
@@ -592,24 +587,8 @@
 		FC6401A91A84CA8E00CCE86D /* TransactionCartRootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FFE81A84CA8E00CCE86D /* TransactionCartRootViewController.m */; };
 		FC6401AA1A84CA8E00CCE86D /* TransactionShipmentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FFEB1A84CA8E00CCE86D /* TransactionShipmentViewController.m */; };
 		FC6401AB1A84CA8E00CCE86D /* TransactionObjectMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FFEE1A84CA8E00CCE86D /* TransactionObjectMapping.m */; };
-		FC6401AC1A84CA8E00CCE86D /* TxOrderConfirmationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FFF21A84CA8E00CCE86D /* TxOrderConfirmationCell.m */; };
-		FC6401AD1A84CA8E00CCE86D /* TxOrderConfirmationCostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FFF41A84CA8E00CCE86D /* TxOrderConfirmationCostCell.m */; };
-		FC6401AE1A84CA8E00CCE86D /* TxOrderConfirmationDetailHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FFF61A84CA8E00CCE86D /* TxOrderConfirmationDetailHeaderView.m */; };
-		FC6401AF1A84CA8E00CCE86D /* TxOrderConfirmationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FFF81A84CA8E00CCE86D /* TxOrderConfirmationDetailViewController.m */; };
-		FC6401B01A84CA8E00CCE86D /* TxOrderConfirmationDropshipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FFFA1A84CA8E00CCE86D /* TxOrderConfirmationDropshipCell.m */; };
-		FC6401B11A84CA8E00CCE86D /* TxOrderConfirmationProductCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FFFC1A84CA8E00CCE86D /* TxOrderConfirmationProductCell.m */; };
-		FC6401B21A84CA8E00CCE86D /* TxOrderConfirmationShipmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64FFFE1A84CA8E00CCE86D /* TxOrderConfirmationShipmentCell.m */; };
-		FC6401B31A84CA8E00CCE86D /* TxOrderConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6400001A84CA8E00CCE86D /* TxOrderConfirmationViewController.m */; };
 		FC6401B41A84CA8E00CCE86D /* TxOrderObjectMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6400031A84CA8E00CCE86D /* TxOrderObjectMapping.m */; };
 		FC6401B51A84CA8E00CCE86D /* TxOrderTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6400051A84CA8E00CCE86D /* TxOrderTabViewController.m */; };
-		FC6401B61A84CA8E00CCE86D /* TableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6400081A84CA8E00CCE86D /* TableViewCell.m */; };
-		FC6401B71A84CA8E00CCE86D /* TxOrderConfirmedBankCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64000A1A84CA8E00CCE86D /* TxOrderConfirmedBankCell.m */; };
-		FC6401B81A84CA8E00CCE86D /* TxOrderPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64000C1A84CA8E00CCE86D /* TxOrderPaymentViewController.m */; };
-		FC6401B91A84CA8E00CCE86D /* TxOrderConfirmedButtonArrowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64000E1A84CA8E00CCE86D /* TxOrderConfirmedButtonArrowCell.m */; };
-		FC6401BA1A84CA8E00CCE86D /* TxOrderConfirmedButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6400101A84CA8E00CCE86D /* TxOrderConfirmedButtonCell.m */; };
-		FC6401BB1A84CA8E00CCE86D /* TxOrderConfirmedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6400121A84CA8E00CCE86D /* TxOrderConfirmedCell.m */; };
-		FC6401BC1A84CA8E00CCE86D /* TxOrderConfirmedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6400141A84CA8E00CCE86D /* TxOrderConfirmedViewController.m */; };
-		FC6401BD1A84CA8E00CCE86D /* TxOrderConfirmedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC6400151A84CA8E00CCE86D /* TxOrderConfirmedViewController.xib */; };
 		FC6401BE1A84CA8E00CCE86D /* AddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6400191A84CA8E00CCE86D /* AddressCell.m */; };
 		FC6401BF1A84CA8E00CCE86D /* AddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64001B1A84CA8E00CCE86D /* AddressViewController.m */; };
 		FC6401C01A84CA8E00CCE86D /* CatalogSpecViewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = FC6400201A84CA8E00CCE86D /* CatalogSpecViewHeaderView.m */; };
@@ -953,16 +932,12 @@
 		FC64053D1A84CAD300CCE86D /* UploadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64044B1A84CAD300CCE86D /* UploadImage.m */; };
 		FC64053E1A84CAD300CCE86D /* UploadImageParams.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64044D1A84CAD300CCE86D /* UploadImageParams.m */; };
 		FC64053F1A84CAD300CCE86D /* UploadImageResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FC64044F1A84CAD300CCE86D /* UploadImageResult.m */; };
-		FC64FE841A847D2D00CCE86D /* TxOrderConfirmedButtonArrowCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC64FE831A847D2D00CCE86D /* TxOrderConfirmedButtonArrowCell.xib */; };
-		FC64FE891A84BA8400CCE86D /* TxOrderPaymentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC64FE881A84BA8400CCE86D /* TxOrderPaymentViewController.xib */; };
 		FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FC681F6619B6D62200C58548 /* libsqlite3.dylib */; };
 		FC738D6B1A78C3D100F5D820 /* AlertInfoVoucherCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC738D6A1A78C3D100F5D820 /* AlertInfoVoucherCodeView.xib */; };
 		FC937B0E1A80C2C500916745 /* NoResult.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937B0D1A80C2C500916745 /* NoResult.xib */; };
 		FC937B991A81FF9100916745 /* UITextField+WithInset.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B961A81FF9100916745 /* UITextField+WithInset.m */; };
 		FC937B9A1A81FF9100916745 /* UITextView+UITextView_Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = FC937B981A81FF9100916745 /* UITextView+UITextView_Placeholder.m */; };
 		FC937BAD1A82002100916745 /* StickyAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC937BAC1A82002100916745 /* StickyAlertView.xib */; };
-		FC9F0C1E1A8DA2490050AE76 /* TxOrderInvoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC9F0C1C1A8DA2490050AE76 /* TxOrderInvoiceViewController.m */; };
-		FC9F0C1F1A8DA2490050AE76 /* TxOrderInvoiceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC9F0C1D1A8DA2490050AE76 /* TxOrderInvoiceViewController.xib */; };
 		FC9F0C231A8DB2350050AE76 /* TxOrderPaymentEditForm.m in Sources */ = {isa = PBXBuildFile; fileRef = FC9F0C221A8DB2350050AE76 /* TxOrderPaymentEditForm.m */; };
 		FC9F0C261A8DB2610050AE76 /* TxOrderPaymentEdit.m in Sources */ = {isa = PBXBuildFile; fileRef = FC9F0C251A8DB2610050AE76 /* TxOrderPaymentEdit.m */; };
 		FC9F0C291A8DB2EB0050AE76 /* TxOrderPaymentEditBankAccount.m in Sources */ = {isa = PBXBuildFile; fileRef = FC9F0C281A8DB2EB0050AE76 /* TxOrderPaymentEditBankAccount.m */; };
@@ -976,20 +951,26 @@
 		FCAAEA4619F7534B00904AFB /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAAEA4419F7534B00904AFB /* MainViewController.m */; };
 		FCAAEA4719F7534B00904AFB /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCAAEA4519F7534B00904AFB /* MainViewController.xib */; };
 		FCB014321A79D74900370465 /* TransactionCartWebViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCB014311A79D74900370465 /* TransactionCartWebViewViewController.xib */; };
+		FCB222D41A91D3EC001A719C /* TxOrderConfirmationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222B01A91D3EC001A719C /* TxOrderConfirmationCell.m */; };
+		FCB222D51A91D3EC001A719C /* TxOrderConfirmationCostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222B21A91D3EC001A719C /* TxOrderConfirmationCostCell.m */; };
+		FCB222D61A91D3EC001A719C /* TxOrderConfirmationDetailHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222B41A91D3EC001A719C /* TxOrderConfirmationDetailHeaderView.m */; };
+		FCB222D71A91D3EC001A719C /* TxOrderConfirmationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222B61A91D3EC001A719C /* TxOrderConfirmationDetailViewController.m */; };
+		FCB222D81A91D3EC001A719C /* TxOrderConfirmationDropshipCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222B81A91D3EC001A719C /* TxOrderConfirmationDropshipCell.m */; };
+		FCB222D91A91D3EC001A719C /* TxOrderConfirmationProductCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222BA1A91D3EC001A719C /* TxOrderConfirmationProductCell.m */; };
+		FCB222DA1A91D3EC001A719C /* TxOrderConfirmationShipmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222BC1A91D3EC001A719C /* TxOrderConfirmationShipmentCell.m */; };
+		FCB222DB1A91D3EC001A719C /* TxOrderConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222BE1A91D3EC001A719C /* TxOrderConfirmationViewController.m */; };
+		FCB222DD1A91D3EC001A719C /* TxOrderConfirmedBankCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222C31A91D3EC001A719C /* TxOrderConfirmedBankCell.m */; };
+		FCB222DE1A91D3EC001A719C /* TxOrderConfirmedButtonArrowCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222C51A91D3EC001A719C /* TxOrderConfirmedButtonArrowCell.m */; };
+		FCB222DF1A91D3EC001A719C /* TxOrderConfirmedButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222C71A91D3EC001A719C /* TxOrderConfirmedButtonCell.m */; };
+		FCB222E01A91D3EC001A719C /* TxOrderConfirmedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222C91A91D3EC001A719C /* TxOrderConfirmedCell.m */; };
+		FCB222E11A91D3EC001A719C /* TxOrderConfirmedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222CB1A91D3EC001A719C /* TxOrderConfirmedViewController.m */; };
+		FCB222E21A91D3EC001A719C /* TxOrderConfirmedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCB222CC1A91D3EC001A719C /* TxOrderConfirmedViewController.xib */; };
+		FCB222E31A91D3EC001A719C /* TxOrderInvoiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222CE1A91D3EC001A719C /* TxOrderInvoiceViewController.m */; };
+		FCB222E41A91D3EC001A719C /* TxOrderInvoiceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCB222CF1A91D3EC001A719C /* TxOrderInvoiceViewController.xib */; };
+		FCB222E51A91D3EC001A719C /* TxOrderPaymentConfirmationSuccessViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222D11A91D3EC001A719C /* TxOrderPaymentConfirmationSuccessViewController.m */; };
+		FCB222E61A91D3EC001A719C /* TxOrderPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCB222D31A91D3EC001A719C /* TxOrderPaymentViewController.m */; };
+		FCB222E81A91D5B3001A719C /* TxOrderTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCB222E71A91D5B3001A719C /* TxOrderTabViewController.xib */; };
 		FCC416C71A8C5944001B4FF2 /* OrderDetailForm.m in Sources */ = {isa = PBXBuildFile; fileRef = FCC416C61A8C5944001B4FF2 /* OrderDetailForm.m */; };
-		FCE2839E1A845A40003B9987 /* TxOrderConfirmationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE283921A845A40003B9987 /* TxOrderConfirmationCell.xib */; };
-		FCE2839F1A845A40003B9987 /* TxOrderConfirmationCostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE283931A845A40003B9987 /* TxOrderConfirmationCostCell.xib */; };
-		FCE283A01A845A40003B9987 /* TxOrderConfirmationDetailHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE283941A845A40003B9987 /* TxOrderConfirmationDetailHeaderView.xib */; };
-		FCE283A11A845A40003B9987 /* TxOrderConfirmationDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE283951A845A40003B9987 /* TxOrderConfirmationDetailViewController.xib */; };
-		FCE283A21A845A40003B9987 /* TxOrderConfirmationDropshipCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE283961A845A40003B9987 /* TxOrderConfirmationDropshipCell.xib */; };
-		FCE283A31A845A40003B9987 /* TxOrderConfirmationProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE283971A845A40003B9987 /* TxOrderConfirmationProductCell.xib */; };
-		FCE283A41A845A40003B9987 /* TxOrderConfirmationShipmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE283981A845A40003B9987 /* TxOrderConfirmationShipmentCell.xib */; };
-		FCE283A51A845A40003B9987 /* TxOrderConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE283991A845A40003B9987 /* TxOrderConfirmationViewController.xib */; };
-		FCE283A61A845A40003B9987 /* TxOrderDropshipCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE2839A1A845A40003B9987 /* TxOrderDropshipCell.xib */; };
-		FCE283A71A845A40003B9987 /* TxOrderTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE2839C1A845A40003B9987 /* TxOrderTabViewController.xib */; };
-		FCE283BA1A846284003B9987 /* TxOrderConfirmedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE283B91A846284003B9987 /* TxOrderConfirmedCell.xib */; };
-		FCE283BC1A846A4C003B9987 /* TxOrderConfirmedBankCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE283BB1A846A4C003B9987 /* TxOrderConfirmedBankCell.xib */; };
-		FCE283C41A846B64003B9987 /* TxOrderConfirmedButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE283C31A846B64003B9987 /* TxOrderConfirmedButtonCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1313,9 +1294,6 @@
 		FC44EFE91A89D9A400586B23 /* AlertInfoPaymentConfirmationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertInfoPaymentConfirmationView.xib; sourceTree = "<group>"; };
 		FC44EFEB1A89DA1B00586B23 /* AlertInfoPaymentConfirmationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertInfoPaymentConfirmationView.h; sourceTree = "<group>"; };
 		FC44EFEC1A89DA1B00586B23 /* AlertInfoPaymentConfirmationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertInfoPaymentConfirmationView.m; sourceTree = "<group>"; };
-		FC44EFEE1A89F13400586B23 /* TxOrderPaymentConfirmationSuccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderPaymentConfirmationSuccessViewController.h; sourceTree = "<group>"; };
-		FC44EFEF1A89F13400586B23 /* TxOrderPaymentConfirmationSuccessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderPaymentConfirmationSuccessViewController.m; sourceTree = "<group>"; };
-		FC44EFF11A89F14200586B23 /* TxOrderPaymentConfirmationSuccessViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderPaymentConfirmationSuccessViewController.xib; sourceTree = "<group>"; };
 		FC4D90441A7121450048106E /* EncodeDecoderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncodeDecoderManager.h; sourceTree = "<group>"; };
 		FC4D90451A7121450048106E /* EncodeDecoderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncodeDecoderManager.m; sourceTree = "<group>"; };
 		FC4D90461A7121450048106E /* RSA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSA.h; sourceTree = "<group>"; };
@@ -1485,27 +1463,11 @@
 		FC4D91491A712B280048106E /* ShopSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopSettingViewController.xib; sourceTree = "<group>"; };
 		FC4D914B1A712B280048106E /* ProductTalkFormViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkFormViewController.xib; sourceTree = "<group>"; };
 		FC4D914C1A712B280048106E /* ShopTalkViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopTalkViewController.xib; sourceTree = "<group>"; };
-		FC6400001A84CA8E00CCE86D /* TxOrderConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationViewController.m; sourceTree = "<group>"; };
 		FC6400011A84CA8E00CCE86D /* string_tx_order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_tx_order.h; sourceTree = "<group>"; };
 		FC6400021A84CA8E00CCE86D /* TxOrderObjectMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderObjectMapping.h; sourceTree = "<group>"; };
 		FC6400031A84CA8E00CCE86D /* TxOrderObjectMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderObjectMapping.m; sourceTree = "<group>"; };
 		FC6400041A84CA8E00CCE86D /* TxOrderTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderTabViewController.h; sourceTree = "<group>"; };
 		FC6400051A84CA8E00CCE86D /* TxOrderTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderTabViewController.m; sourceTree = "<group>"; };
-		FC6400071A84CA8E00CCE86D /* TableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewCell.h; sourceTree = "<group>"; };
-		FC6400081A84CA8E00CCE86D /* TableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewCell.m; sourceTree = "<group>"; };
-		FC6400091A84CA8E00CCE86D /* TxOrderConfirmedBankCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmedBankCell.h; sourceTree = "<group>"; };
-		FC64000A1A84CA8E00CCE86D /* TxOrderConfirmedBankCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmedBankCell.m; sourceTree = "<group>"; };
-		FC64000B1A84CA8E00CCE86D /* TxOrderPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderPaymentViewController.h; sourceTree = "<group>"; };
-		FC64000C1A84CA8E00CCE86D /* TxOrderPaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderPaymentViewController.m; sourceTree = "<group>"; };
-		FC64000D1A84CA8E00CCE86D /* TxOrderConfirmedButtonArrowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmedButtonArrowCell.h; sourceTree = "<group>"; };
-		FC64000E1A84CA8E00CCE86D /* TxOrderConfirmedButtonArrowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmedButtonArrowCell.m; sourceTree = "<group>"; };
-		FC64000F1A84CA8E00CCE86D /* TxOrderConfirmedButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmedButtonCell.h; sourceTree = "<group>"; };
-		FC6400101A84CA8E00CCE86D /* TxOrderConfirmedButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmedButtonCell.m; sourceTree = "<group>"; };
-		FC6400111A84CA8E00CCE86D /* TxOrderConfirmedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmedCell.h; sourceTree = "<group>"; };
-		FC6400121A84CA8E00CCE86D /* TxOrderConfirmedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmedCell.m; sourceTree = "<group>"; };
-		FC6400131A84CA8E00CCE86D /* TxOrderConfirmedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmedViewController.h; sourceTree = "<group>"; };
-		FC6400141A84CA8E00CCE86D /* TxOrderConfirmedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmedViewController.m; sourceTree = "<group>"; };
-		FC6400151A84CA8E00CCE86D /* TxOrderConfirmedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmedViewController.xib; sourceTree = "<group>"; };
 		FC6400181A84CA8E00CCE86D /* AddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressCell.h; sourceTree = "<group>"; };
 		FC6400191A84CA8E00CCE86D /* AddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddressCell.m; sourceTree = "<group>"; };
 		FC64001A1A84CA8E00CCE86D /* AddressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressViewController.h; sourceTree = "<group>"; };
@@ -2198,8 +2160,6 @@
 		FC64044D1A84CAD300CCE86D /* UploadImageParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImageParams.m; sourceTree = "<group>"; };
 		FC64044E1A84CAD300CCE86D /* UploadImageResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UploadImageResult.h; sourceTree = "<group>"; };
 		FC64044F1A84CAD300CCE86D /* UploadImageResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UploadImageResult.m; sourceTree = "<group>"; };
-		FC64FE831A847D2D00CCE86D /* TxOrderConfirmedButtonArrowCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmedButtonArrowCell.xib; sourceTree = "<group>"; };
-		FC64FE881A84BA8400CCE86D /* TxOrderPaymentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderPaymentViewController.xib; sourceTree = "<group>"; };
 		FC64FE8F1A84CA8D00CCE86D /* activation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = activation.h; sourceTree = "<group>"; };
 		FC64FE911A84CA8D00CCE86D /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		FC64FE921A84CA8D00CCE86D /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
@@ -2244,10 +2204,6 @@
 		FC64FEC01A84CA8E00CCE86D /* CategoryMenuViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryMenuViewCell.m; sourceTree = "<group>"; };
 		FC64FEC11A84CA8E00CCE86D /* CategoryMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryMenuViewController.h; sourceTree = "<group>"; };
 		FC64FEC21A84CA8E00CCE86D /* CategoryMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryMenuViewController.m; sourceTree = "<group>"; };
-		FC64FEC41A84CA8E00CCE86D /* CategoryResultViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryResultViewCell.h; sourceTree = "<group>"; };
-		FC64FEC51A84CA8E00CCE86D /* CategoryResultViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryResultViewCell.m; sourceTree = "<group>"; };
-		FC64FEC61A84CA8E00CCE86D /* CategoryResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryResultViewController.h; sourceTree = "<group>"; };
-		FC64FEC71A84CA8E00CCE86D /* CategoryResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CategoryResultViewController.m; sourceTree = "<group>"; };
 		FC64FEC91A84CA8E00CCE86D /* controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = controller.h; sourceTree = "<group>"; };
 		FC64FECA1A84CA8E00CCE86D /* TKPDTabBarNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTabBarNavigationController.h; sourceTree = "<group>"; };
 		FC64FECB1A84CA8E00CCE86D /* TKPDTabBarNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabBarNavigationController.m; sourceTree = "<group>"; };
@@ -2499,21 +2455,6 @@
 		FC64FFEC1A84CA8E00CCE86D /* string_transaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_transaction.h; sourceTree = "<group>"; };
 		FC64FFED1A84CA8E00CCE86D /* TransactionObjectMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionObjectMapping.h; sourceTree = "<group>"; };
 		FC64FFEE1A84CA8E00CCE86D /* TransactionObjectMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionObjectMapping.m; sourceTree = "<group>"; };
-		FC64FFF11A84CA8E00CCE86D /* TxOrderConfirmationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationCell.h; sourceTree = "<group>"; };
-		FC64FFF21A84CA8E00CCE86D /* TxOrderConfirmationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationCell.m; sourceTree = "<group>"; };
-		FC64FFF31A84CA8E00CCE86D /* TxOrderConfirmationCostCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationCostCell.h; sourceTree = "<group>"; };
-		FC64FFF41A84CA8E00CCE86D /* TxOrderConfirmationCostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationCostCell.m; sourceTree = "<group>"; };
-		FC64FFF51A84CA8E00CCE86D /* TxOrderConfirmationDetailHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationDetailHeaderView.h; sourceTree = "<group>"; };
-		FC64FFF61A84CA8E00CCE86D /* TxOrderConfirmationDetailHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationDetailHeaderView.m; sourceTree = "<group>"; };
-		FC64FFF71A84CA8E00CCE86D /* TxOrderConfirmationDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationDetailViewController.h; sourceTree = "<group>"; };
-		FC64FFF81A84CA8E00CCE86D /* TxOrderConfirmationDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationDetailViewController.m; sourceTree = "<group>"; };
-		FC64FFF91A84CA8E00CCE86D /* TxOrderConfirmationDropshipCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationDropshipCell.h; sourceTree = "<group>"; };
-		FC64FFFA1A84CA8E00CCE86D /* TxOrderConfirmationDropshipCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationDropshipCell.m; sourceTree = "<group>"; };
-		FC64FFFB1A84CA8E00CCE86D /* TxOrderConfirmationProductCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationProductCell.h; sourceTree = "<group>"; };
-		FC64FFFC1A84CA8E00CCE86D /* TxOrderConfirmationProductCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationProductCell.m; sourceTree = "<group>"; };
-		FC64FFFD1A84CA8E00CCE86D /* TxOrderConfirmationShipmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationShipmentCell.h; sourceTree = "<group>"; };
-		FC64FFFE1A84CA8E00CCE86D /* TxOrderConfirmationShipmentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationShipmentCell.m; sourceTree = "<group>"; };
-		FC64FFFF1A84CA8E00CCE86D /* TxOrderConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationViewController.h; sourceTree = "<group>"; };
 		FC681F6619B6D62200C58548 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		FC738D6A1A78C3D100F5D820 /* AlertInfoVoucherCodeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertInfoVoucherCodeView.xib; sourceTree = "<group>"; };
 		FC937B0D1A80C2C500916745 /* NoResult.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoResult.xib; sourceTree = "<group>"; };
@@ -2522,9 +2463,6 @@
 		FC937B971A81FF9100916745 /* UITextView+UITextView_Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+UITextView_Placeholder.h"; sourceTree = "<group>"; };
 		FC937B981A81FF9100916745 /* UITextView+UITextView_Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+UITextView_Placeholder.m"; sourceTree = "<group>"; };
 		FC937BAC1A82002100916745 /* StickyAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StickyAlertView.xib; sourceTree = "<group>"; };
-		FC9F0C1B1A8DA2490050AE76 /* TxOrderInvoiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderInvoiceViewController.h; sourceTree = "<group>"; };
-		FC9F0C1C1A8DA2490050AE76 /* TxOrderInvoiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderInvoiceViewController.m; sourceTree = "<group>"; };
-		FC9F0C1D1A8DA2490050AE76 /* TxOrderInvoiceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderInvoiceViewController.xib; sourceTree = "<group>"; };
 		FC9F0C211A8DB2350050AE76 /* TxOrderPaymentEditForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderPaymentEditForm.h; sourceTree = "<group>"; };
 		FC9F0C221A8DB2350050AE76 /* TxOrderPaymentEditForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderPaymentEditForm.m; sourceTree = "<group>"; };
 		FC9F0C241A8DB2610050AE76 /* TxOrderPaymentEdit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderPaymentEdit.h; sourceTree = "<group>"; };
@@ -2546,21 +2484,43 @@
 		FCAAEA4519F7534B00904AFB /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		FCAAEA4819F7536D00904AFB /* string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string.h; sourceTree = "<group>"; };
 		FCB014311A79D74900370465 /* TransactionCartWebViewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartWebViewViewController.xib; sourceTree = "<group>"; };
+		FCB222AF1A91D3EC001A719C /* TxOrderConfirmationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationCell.h; sourceTree = "<group>"; };
+		FCB222B01A91D3EC001A719C /* TxOrderConfirmationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationCell.m; sourceTree = "<group>"; };
+		FCB222B11A91D3EC001A719C /* TxOrderConfirmationCostCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationCostCell.h; sourceTree = "<group>"; };
+		FCB222B21A91D3EC001A719C /* TxOrderConfirmationCostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationCostCell.m; sourceTree = "<group>"; };
+		FCB222B31A91D3EC001A719C /* TxOrderConfirmationDetailHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationDetailHeaderView.h; sourceTree = "<group>"; };
+		FCB222B41A91D3EC001A719C /* TxOrderConfirmationDetailHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationDetailHeaderView.m; sourceTree = "<group>"; };
+		FCB222B51A91D3EC001A719C /* TxOrderConfirmationDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationDetailViewController.h; sourceTree = "<group>"; };
+		FCB222B61A91D3EC001A719C /* TxOrderConfirmationDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationDetailViewController.m; sourceTree = "<group>"; };
+		FCB222B71A91D3EC001A719C /* TxOrderConfirmationDropshipCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationDropshipCell.h; sourceTree = "<group>"; };
+		FCB222B81A91D3EC001A719C /* TxOrderConfirmationDropshipCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationDropshipCell.m; sourceTree = "<group>"; };
+		FCB222B91A91D3EC001A719C /* TxOrderConfirmationProductCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationProductCell.h; sourceTree = "<group>"; };
+		FCB222BA1A91D3EC001A719C /* TxOrderConfirmationProductCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationProductCell.m; sourceTree = "<group>"; };
+		FCB222BB1A91D3EC001A719C /* TxOrderConfirmationShipmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationShipmentCell.h; sourceTree = "<group>"; };
+		FCB222BC1A91D3EC001A719C /* TxOrderConfirmationShipmentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationShipmentCell.m; sourceTree = "<group>"; };
+		FCB222BD1A91D3EC001A719C /* TxOrderConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationViewController.h; sourceTree = "<group>"; };
+		FCB222BE1A91D3EC001A719C /* TxOrderConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationViewController.m; sourceTree = "<group>"; };
+		FCB222C21A91D3EC001A719C /* TxOrderConfirmedBankCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmedBankCell.h; sourceTree = "<group>"; };
+		FCB222C31A91D3EC001A719C /* TxOrderConfirmedBankCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmedBankCell.m; sourceTree = "<group>"; };
+		FCB222C41A91D3EC001A719C /* TxOrderConfirmedButtonArrowCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmedButtonArrowCell.h; sourceTree = "<group>"; };
+		FCB222C51A91D3EC001A719C /* TxOrderConfirmedButtonArrowCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmedButtonArrowCell.m; sourceTree = "<group>"; };
+		FCB222C61A91D3EC001A719C /* TxOrderConfirmedButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmedButtonCell.h; sourceTree = "<group>"; };
+		FCB222C71A91D3EC001A719C /* TxOrderConfirmedButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmedButtonCell.m; sourceTree = "<group>"; };
+		FCB222C81A91D3EC001A719C /* TxOrderConfirmedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmedCell.h; sourceTree = "<group>"; };
+		FCB222C91A91D3EC001A719C /* TxOrderConfirmedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmedCell.m; sourceTree = "<group>"; };
+		FCB222CA1A91D3EC001A719C /* TxOrderConfirmedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmedViewController.h; sourceTree = "<group>"; };
+		FCB222CB1A91D3EC001A719C /* TxOrderConfirmedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmedViewController.m; sourceTree = "<group>"; };
+		FCB222CC1A91D3EC001A719C /* TxOrderConfirmedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmedViewController.xib; sourceTree = "<group>"; };
+		FCB222CD1A91D3EC001A719C /* TxOrderInvoiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderInvoiceViewController.h; sourceTree = "<group>"; };
+		FCB222CE1A91D3EC001A719C /* TxOrderInvoiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderInvoiceViewController.m; sourceTree = "<group>"; };
+		FCB222CF1A91D3EC001A719C /* TxOrderInvoiceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderInvoiceViewController.xib; sourceTree = "<group>"; };
+		FCB222D01A91D3EC001A719C /* TxOrderPaymentConfirmationSuccessViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderPaymentConfirmationSuccessViewController.h; sourceTree = "<group>"; };
+		FCB222D11A91D3EC001A719C /* TxOrderPaymentConfirmationSuccessViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderPaymentConfirmationSuccessViewController.m; sourceTree = "<group>"; };
+		FCB222D21A91D3EC001A719C /* TxOrderPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderPaymentViewController.h; sourceTree = "<group>"; };
+		FCB222D31A91D3EC001A719C /* TxOrderPaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderPaymentViewController.m; sourceTree = "<group>"; };
+		FCB222E71A91D5B3001A719C /* TxOrderTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderTabViewController.xib; sourceTree = "<group>"; };
 		FCC416C51A8C5944001B4FF2 /* OrderDetailForm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderDetailForm.h; sourceTree = "<group>"; };
 		FCC416C61A8C5944001B4FF2 /* OrderDetailForm.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderDetailForm.m; sourceTree = "<group>"; };
-		FCE283921A845A40003B9987 /* TxOrderConfirmationCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmationCell.xib; sourceTree = "<group>"; };
-		FCE283931A845A40003B9987 /* TxOrderConfirmationCostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmationCostCell.xib; sourceTree = "<group>"; };
-		FCE283941A845A40003B9987 /* TxOrderConfirmationDetailHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmationDetailHeaderView.xib; sourceTree = "<group>"; };
-		FCE283951A845A40003B9987 /* TxOrderConfirmationDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmationDetailViewController.xib; sourceTree = "<group>"; };
-		FCE283961A845A40003B9987 /* TxOrderConfirmationDropshipCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmationDropshipCell.xib; sourceTree = "<group>"; };
-		FCE283971A845A40003B9987 /* TxOrderConfirmationProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmationProductCell.xib; sourceTree = "<group>"; };
-		FCE283981A845A40003B9987 /* TxOrderConfirmationShipmentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmationShipmentCell.xib; sourceTree = "<group>"; };
-		FCE283991A845A40003B9987 /* TxOrderConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmationViewController.xib; sourceTree = "<group>"; };
-		FCE2839A1A845A40003B9987 /* TxOrderDropshipCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderDropshipCell.xib; sourceTree = "<group>"; };
-		FCE2839C1A845A40003B9987 /* TxOrderTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderTabViewController.xib; sourceTree = "<group>"; };
-		FCE283B91A846284003B9987 /* TxOrderConfirmedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmedCell.xib; sourceTree = "<group>"; };
-		FCE283BB1A846A4C003B9987 /* TxOrderConfirmedBankCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmedBankCell.xib; sourceTree = "<group>"; };
-		FCE283C31A846B64003B9987 /* TxOrderConfirmedButtonCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmedButtonCell.xib; sourceTree = "<group>"; };
 		FCEBA3EB1A64C6A1003DE833 /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -3220,7 +3180,6 @@
 		FC4D90541A712B270048106E /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				FCE283901A845A15003B9987 /* TxOrder */,
 				FC4D90551A712B270048106E /* Activation */,
 				FC4D905A1A712B270048106E /* Alert */,
 				FC4D90611A712B270048106E /* Camera */,
@@ -4055,33 +4014,6 @@
 				FC4D914C1A712B280048106E /* ShopTalkViewController.xib */,
 			);
 			path = Talk;
-			sourceTree = "<group>";
-		};
-		FC6400061A84CA8E00CCE86D /* Verification */ = {
-			isa = PBXGroup;
-			children = (
-				FC6400071A84CA8E00CCE86D /* TableViewCell.h */,
-				FC6400081A84CA8E00CCE86D /* TableViewCell.m */,
-				FC6400091A84CA8E00CCE86D /* TxOrderConfirmedBankCell.h */,
-				FC64000A1A84CA8E00CCE86D /* TxOrderConfirmedBankCell.m */,
-				FC64000B1A84CA8E00CCE86D /* TxOrderPaymentViewController.h */,
-				FC64000C1A84CA8E00CCE86D /* TxOrderPaymentViewController.m */,
-				FC64000D1A84CA8E00CCE86D /* TxOrderConfirmedButtonArrowCell.h */,
-				FC64000E1A84CA8E00CCE86D /* TxOrderConfirmedButtonArrowCell.m */,
-				FC64000F1A84CA8E00CCE86D /* TxOrderConfirmedButtonCell.h */,
-				FC6400101A84CA8E00CCE86D /* TxOrderConfirmedButtonCell.m */,
-				FC6400111A84CA8E00CCE86D /* TxOrderConfirmedCell.h */,
-				FC6400121A84CA8E00CCE86D /* TxOrderConfirmedCell.m */,
-				FC6400131A84CA8E00CCE86D /* TxOrderConfirmedViewController.h */,
-				FC6400141A84CA8E00CCE86D /* TxOrderConfirmedViewController.m */,
-				FC6400151A84CA8E00CCE86D /* TxOrderConfirmedViewController.xib */,
-				FC44EFEE1A89F13400586B23 /* TxOrderPaymentConfirmationSuccessViewController.h */,
-				FC44EFEF1A89F13400586B23 /* TxOrderPaymentConfirmationSuccessViewController.m */,
-				FC9F0C1B1A8DA2490050AE76 /* TxOrderInvoiceViewController.h */,
-				FC9F0C1C1A8DA2490050AE76 /* TxOrderInvoiceViewController.m */,
-				FC9F0C1D1A8DA2490050AE76 /* TxOrderInvoiceViewController.xib */,
-			);
-			path = Verification;
 			sourceTree = "<group>";
 		};
 		FC6400161A84CA8E00CCE86D /* UIRefactor */ = {
@@ -5772,7 +5704,6 @@
 				FC64FEB81A84CA8E00CCE86D /* Category */,
 				FC64FEBD1A84CA8E00CCE86D /* category.h */,
 				FC64FEBE1A84CA8E00CCE86D /* CategoryMenu */,
-				FC64FEC31A84CA8E00CCE86D /* CategoryResult */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -5797,17 +5728,6 @@
 				FC64FEC21A84CA8E00CCE86D /* CategoryMenuViewController.m */,
 			);
 			path = CategoryMenu;
-			sourceTree = "<group>";
-		};
-		FC64FEC31A84CA8E00CCE86D /* CategoryResult */ = {
-			isa = PBXGroup;
-			children = (
-				FC64FEC41A84CA8E00CCE86D /* CategoryResultViewCell.h */,
-				FC64FEC51A84CA8E00CCE86D /* CategoryResultViewCell.m */,
-				FC64FEC61A84CA8E00CCE86D /* CategoryResultViewController.h */,
-				FC64FEC71A84CA8E00CCE86D /* CategoryResultViewController.m */,
-			);
-			path = CategoryResult;
 			sourceTree = "<group>";
 		};
 		FC64FEC81A84CA8E00CCE86D /* Controller */ = {
@@ -6386,38 +6306,16 @@
 		FC64FFEF1A84CA8E00CCE86D /* TxOrder */ = {
 			isa = PBXGroup;
 			children = (
-				FC64FFF01A84CA8E00CCE86D /* Confirmation */,
 				FC6400011A84CA8E00CCE86D /* string_tx_order.h */,
 				FC6400021A84CA8E00CCE86D /* TxOrderObjectMapping.h */,
 				FC6400031A84CA8E00CCE86D /* TxOrderObjectMapping.m */,
 				FC6400041A84CA8E00CCE86D /* TxOrderTabViewController.h */,
 				FC6400051A84CA8E00CCE86D /* TxOrderTabViewController.m */,
-				FC6400061A84CA8E00CCE86D /* Verification */,
+				FCB222E71A91D5B3001A719C /* TxOrderTabViewController.xib */,
+				FCB222AE1A91D3EC001A719C /* PaymentConfirmation */,
+				FCB222BF1A91D3EC001A719C /* PaymentConfirmed */,
 			);
 			path = TxOrder;
-			sourceTree = "<group>";
-		};
-		FC64FFF01A84CA8E00CCE86D /* Confirmation */ = {
-			isa = PBXGroup;
-			children = (
-				FC64FFF11A84CA8E00CCE86D /* TxOrderConfirmationCell.h */,
-				FC64FFF21A84CA8E00CCE86D /* TxOrderConfirmationCell.m */,
-				FC64FFF31A84CA8E00CCE86D /* TxOrderConfirmationCostCell.h */,
-				FC64FFF41A84CA8E00CCE86D /* TxOrderConfirmationCostCell.m */,
-				FC64FFF51A84CA8E00CCE86D /* TxOrderConfirmationDetailHeaderView.h */,
-				FC64FFF61A84CA8E00CCE86D /* TxOrderConfirmationDetailHeaderView.m */,
-				FC64FFF71A84CA8E00CCE86D /* TxOrderConfirmationDetailViewController.h */,
-				FC64FFF81A84CA8E00CCE86D /* TxOrderConfirmationDetailViewController.m */,
-				FC64FFF91A84CA8E00CCE86D /* TxOrderConfirmationDropshipCell.h */,
-				FC64FFFA1A84CA8E00CCE86D /* TxOrderConfirmationDropshipCell.m */,
-				FC64FFFB1A84CA8E00CCE86D /* TxOrderConfirmationProductCell.h */,
-				FC64FFFC1A84CA8E00CCE86D /* TxOrderConfirmationProductCell.m */,
-				FC64FFFD1A84CA8E00CCE86D /* TxOrderConfirmationShipmentCell.h */,
-				FC64FFFE1A84CA8E00CCE86D /* TxOrderConfirmationShipmentCell.m */,
-				FC64FFFF1A84CA8E00CCE86D /* TxOrderConfirmationViewController.h */,
-				FC6400001A84CA8E00CCE86D /* TxOrderConfirmationViewController.m */,
-			);
-			path = Confirmation;
 			sourceTree = "<group>";
 		};
 		FC9F0C201A8DB21A0050AE76 /* TxOrderPayementEditForm */ = {
@@ -6441,44 +6339,52 @@
 			path = TxOrderPayementEditForm;
 			sourceTree = "<group>";
 		};
-		FCE283901A845A15003B9987 /* TxOrder */ = {
+		FCB222AE1A91D3EC001A719C /* PaymentConfirmation */ = {
 			isa = PBXGroup;
 			children = (
-				FCE283911A845A40003B9987 /* Confirmation */,
-				FCE2839B1A845A40003B9987 /* Confirmed */,
-				FCE2839C1A845A40003B9987 /* TxOrderTabViewController.xib */,
+				FCB222AF1A91D3EC001A719C /* TxOrderConfirmationCell.h */,
+				FCB222B01A91D3EC001A719C /* TxOrderConfirmationCell.m */,
+				FCB222B11A91D3EC001A719C /* TxOrderConfirmationCostCell.h */,
+				FCB222B21A91D3EC001A719C /* TxOrderConfirmationCostCell.m */,
+				FCB222B31A91D3EC001A719C /* TxOrderConfirmationDetailHeaderView.h */,
+				FCB222B41A91D3EC001A719C /* TxOrderConfirmationDetailHeaderView.m */,
+				FCB222B51A91D3EC001A719C /* TxOrderConfirmationDetailViewController.h */,
+				FCB222B61A91D3EC001A719C /* TxOrderConfirmationDetailViewController.m */,
+				FCB222B71A91D3EC001A719C /* TxOrderConfirmationDropshipCell.h */,
+				FCB222B81A91D3EC001A719C /* TxOrderConfirmationDropshipCell.m */,
+				FCB222B91A91D3EC001A719C /* TxOrderConfirmationProductCell.h */,
+				FCB222BA1A91D3EC001A719C /* TxOrderConfirmationProductCell.m */,
+				FCB222BB1A91D3EC001A719C /* TxOrderConfirmationShipmentCell.h */,
+				FCB222BC1A91D3EC001A719C /* TxOrderConfirmationShipmentCell.m */,
+				FCB222BD1A91D3EC001A719C /* TxOrderConfirmationViewController.h */,
+				FCB222BE1A91D3EC001A719C /* TxOrderConfirmationViewController.m */,
 			);
-			path = TxOrder;
+			path = PaymentConfirmation;
 			sourceTree = "<group>";
 		};
-		FCE283911A845A40003B9987 /* Confirmation */ = {
+		FCB222BF1A91D3EC001A719C /* PaymentConfirmed */ = {
 			isa = PBXGroup;
 			children = (
-				FCE283921A845A40003B9987 /* TxOrderConfirmationCell.xib */,
-				FCE283931A845A40003B9987 /* TxOrderConfirmationCostCell.xib */,
-				FCE283941A845A40003B9987 /* TxOrderConfirmationDetailHeaderView.xib */,
-				FCE283951A845A40003B9987 /* TxOrderConfirmationDetailViewController.xib */,
-				FCE283961A845A40003B9987 /* TxOrderConfirmationDropshipCell.xib */,
-				FCE283971A845A40003B9987 /* TxOrderConfirmationProductCell.xib */,
-				FCE283981A845A40003B9987 /* TxOrderConfirmationShipmentCell.xib */,
-				FCE283991A845A40003B9987 /* TxOrderConfirmationViewController.xib */,
-				FCE2839A1A845A40003B9987 /* TxOrderDropshipCell.xib */,
+				FCB222C21A91D3EC001A719C /* TxOrderConfirmedBankCell.h */,
+				FCB222C31A91D3EC001A719C /* TxOrderConfirmedBankCell.m */,
+				FCB222C41A91D3EC001A719C /* TxOrderConfirmedButtonArrowCell.h */,
+				FCB222C51A91D3EC001A719C /* TxOrderConfirmedButtonArrowCell.m */,
+				FCB222C61A91D3EC001A719C /* TxOrderConfirmedButtonCell.h */,
+				FCB222C71A91D3EC001A719C /* TxOrderConfirmedButtonCell.m */,
+				FCB222C81A91D3EC001A719C /* TxOrderConfirmedCell.h */,
+				FCB222C91A91D3EC001A719C /* TxOrderConfirmedCell.m */,
+				FCB222CA1A91D3EC001A719C /* TxOrderConfirmedViewController.h */,
+				FCB222CB1A91D3EC001A719C /* TxOrderConfirmedViewController.m */,
+				FCB222CC1A91D3EC001A719C /* TxOrderConfirmedViewController.xib */,
+				FCB222CD1A91D3EC001A719C /* TxOrderInvoiceViewController.h */,
+				FCB222CE1A91D3EC001A719C /* TxOrderInvoiceViewController.m */,
+				FCB222CF1A91D3EC001A719C /* TxOrderInvoiceViewController.xib */,
+				FCB222D01A91D3EC001A719C /* TxOrderPaymentConfirmationSuccessViewController.h */,
+				FCB222D11A91D3EC001A719C /* TxOrderPaymentConfirmationSuccessViewController.m */,
+				FCB222D21A91D3EC001A719C /* TxOrderPaymentViewController.h */,
+				FCB222D31A91D3EC001A719C /* TxOrderPaymentViewController.m */,
 			);
-			path = Confirmation;
-			sourceTree = "<group>";
-		};
-		FCE2839B1A845A40003B9987 /* Confirmed */ = {
-			isa = PBXGroup;
-			children = (
-				FCE283B91A846284003B9987 /* TxOrderConfirmedCell.xib */,
-				FCE283BB1A846A4C003B9987 /* TxOrderConfirmedBankCell.xib */,
-				FCE283C31A846B64003B9987 /* TxOrderConfirmedButtonCell.xib */,
-				FC64FE831A847D2D00CCE86D /* TxOrderConfirmedButtonArrowCell.xib */,
-				FC64FE881A84BA8400CCE86D /* TxOrderPaymentViewController.xib */,
-				FC44EFF11A89F14200586B23 /* TxOrderPaymentConfirmationSuccessViewController.xib */,
-			);
-			name = Confirmed;
-			path = Verification;
+			path = PaymentConfirmed;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -6611,7 +6517,6 @@
 				FC2E8C5E1A43CEC900A51BF0 /* icon_6@2x.png in Resources */,
 				FC2E8C9B1A43CEC900A51BF0 /* icon_people_grey.png in Resources */,
 				FC4D915C1A712B280048106E /* CategoryResultViewController.xib in Resources */,
-				FCE283C41A846B64003B9987 /* TxOrderConfirmedButtonCell.xib in Resources */,
 				FC2E8CCF1A43CEC900A51BF0 /* hotlist.png in Resources */,
 				FC6401C81A84CA8E00CCE86D /* DepositFormAccountBankViewController.xib in Resources */,
 				FC2E8CA71A43CEC900A51BF0 /* icon_shop_grey@2x.png in Resources */,
@@ -6627,9 +6532,9 @@
 				FC2E8C9F1A43CEC900A51BF0 /* icon_profile_picture.jpeg in Resources */,
 				FC2E8C9A1A43CEC900A51BF0 /* icon_message@2x.png in Resources */,
 				FC2E8CE21A43CEC900A51BF0 /* icon_category@2x.png in Resources */,
+				FCB222E41A91D3EC001A719C /* TxOrderInvoiceViewController.xib in Resources */,
 				FC2E8C841A43CEC900A51BF0 /* icon_diskusi_report_grey@2x.png in Resources */,
 				FC4D91591A712B280048106E /* CategoryMenuViewCell.xib in Resources */,
-				FC9F0C1F1A8DA2490050AE76 /* TxOrderInvoiceViewController.xib in Resources */,
 				FC2E8C511A43CEC900A51BF0 /* icon_2.png in Resources */,
 				FC4D918A1A712B280048106E /* SearchResultShopCell.xib in Resources */,
 				FC937BAD1A82002100916745 /* StickyAlertView.xib in Resources */,
@@ -6643,7 +6548,6 @@
 				FC2E8CDC1A43CEC900A51BF0 /* ic_search@2x.png in Resources */,
 				FC4D91921A712B280048106E /* SortCell.xib in Resources */,
 				FC2E8CEF1A43CEC900A51BF0 /* icon_search_active.png in Resources */,
-				FCE2839E1A845A40003B9987 /* TxOrderConfirmationCell.xib in Resources */,
 				FC4D91D91A712B280048106E /* SettingAddressDetailViewController.xib in Resources */,
 				FC2E8CD71A43CEC900A51BF0 /* ic_home.png in Resources */,
 				FC2E8C431A43CEC900A51BF0 /* icon_13@2x.png in Resources */,
@@ -6660,13 +6564,11 @@
 				FC2E8CDE1A43CEC900A51BF0 /* icon_cart@2x.png in Resources */,
 				FC21CEF71A7A2328001C97F6 /* icon_cancel_grey.png in Resources */,
 				FC2E8CEC1A43CEC900A51BF0 /* icon_more_active@2x.png in Resources */,
-				FCE283A51A845A40003B9987 /* TxOrderConfirmationViewController.xib in Resources */,
 				FC2E8CF21A43CEC900A51BF0 /* icon_green_2.png in Resources */,
 				FC4D91AE1A712B280048106E /* HistoryProductViewController.xib in Resources */,
 				FC4D915A1A712B280048106E /* CategoryMenuViewController.xib in Resources */,
 				FC4D91EF1A712B280048106E /* ShopSettingViewController.xib in Resources */,
 				FC2E8C2F1A43CEC900A51BF0 /* GothamBlack.ttf in Resources */,
-				FC64FE841A847D2D00CCE86D /* TxOrderConfirmedButtonArrowCell.xib in Resources */,
 				FC2E8C681A43CEC900A51BF0 /* tab_btm_shadow@2x.png in Resources */,
 				FC2E8C651A43CEC900A51BF0 /* icon_house.png in Resources */,
 				FC2E8CE31A43CEC900A51BF0 /* icon_category_active.png in Resources */,
@@ -6715,9 +6617,7 @@
 				FC6401D01A84CA8E00CCE86D /* DepositSummaryCell.xib in Resources */,
 				FC4D917D1A712B280048106E /* GeneralTalkCommentCell.xib in Resources */,
 				FC6401881A84CA8E00CCE86D /* FilterShipmentStatusViewController.xib in Resources */,
-				FCE283A31A845A40003B9987 /* TxOrderConfirmationProductCell.xib in Resources */,
 				FC2E8C3F1A43CEC900A51BF0 /* icon_11@2x.png in Resources */,
-				FCE283A21A845A40003B9987 /* TxOrderConfirmationDropshipCell.xib in Resources */,
 				FC4D916E1A712B280048106E /* ShopNotesViewController.xib in Resources */,
 				FC2E8CBA1A43CEC900A51BF0 /* icon_category_white.png in Resources */,
 				FC4D91691A712B280048106E /* ShopInfoPaymentCell.xib in Resources */,
@@ -6737,7 +6637,6 @@
 				FC2E8CB21A43CEC900A51BF0 /* icon_toped_loading_grey@2x.png in Resources */,
 				FC6401821A84CA8E00CCE86D /* ChangeReceiptNumberViewController.xib in Resources */,
 				FC4D91DA1A712B280048106E /* SettingAddressEditViewController.xib in Resources */,
-				FCE283BA1A846284003B9987 /* TxOrderConfirmedCell.xib in Resources */,
 				FC2E8C4D1A43CEC900A51BF0 /* icon_18@2x.png in Resources */,
 				FC2E8CD11A43CEC900A51BF0 /* active_tab.png in Resources */,
 				FC2E8CC11A43CEC900A51BF0 /* icon_view_28px.png in Resources */,
@@ -6767,7 +6666,6 @@
 				FC4D91AD1A712B280048106E /* FavoritedShopViewController.xib in Resources */,
 				FC21CEFC1A7A2328001C97F6 /* icon_more_grey@2x.png in Resources */,
 				FC4D91631A712B280048106E /* StarsRateView.xib in Resources */,
-				FC6401BD1A84CA8E00CCE86D /* TxOrderConfirmedViewController.xib in Resources */,
 				FC2E8CA31A43CEC900A51BF0 /* icon_share_28px-01.png in Resources */,
 				FC2E8CBF1A43CEC900A51BF0 /* icon_sold_28px.png in Resources */,
 				FC4D914D1A712B280048106E /* LoginViewController.xib in Resources */,
@@ -6776,12 +6674,8 @@
 				FC2E8C421A43CEC900A51BF0 /* icon_13.png in Resources */,
 				FC2E8CE61A43CEC900A51BF0 /* icon_home@2x.png in Resources */,
 				FC4D91D61A712B280048106E /* ProductEditWholesaleViewController.xib in Resources */,
-				FCE283A11A845A40003B9987 /* TxOrderConfirmationDetailViewController.xib in Resources */,
 				FC4D91AC1A712B280048106E /* FavoritedShopCell.xib in Resources */,
-				FC44EFF21A89F14200586B23 /* TxOrderPaymentConfirmationSuccessViewController.xib in Resources */,
-				FCE283A41A845A40003B9987 /* TxOrderConfirmationShipmentCell.xib in Resources */,
 				FC4D91951A712B280048106E /* TransactionCartCell.xib in Resources */,
-				FCE283BC1A846A4C003B9987 /* TxOrderConfirmedBankCell.xib in Resources */,
 				FC2E8CAC1A43CEC900A51BF0 /* icon_telephone.png in Resources */,
 				FC2E8C2E1A43CEC900A51BF0 /* TokopediaDB.db in Resources */,
 				FC4D91BF1A712B280048106E /* MyShopEtalaseFilterCell.xib in Resources */,
@@ -6792,6 +6686,7 @@
 				FC4D91D01A712B280048106E /* ProductTalkDetailViewController.xib in Resources */,
 				FC6401751A84CA8E00CCE86D /* FilterSalesTransactionListViewController.xib in Resources */,
 				FC4D91C01A712B280048106E /* MyShopEtalaseFilterViewController.xib in Resources */,
+				FCB222E81A91D5B3001A719C /* TxOrderTabViewController.xib in Resources */,
 				FC2E8C6F1A43CEC900A51BF0 /* icon_arrow_up@2x.png in Resources */,
 				FC4D91BC1A712B280048106E /* MyShopAddressViewController.xib in Resources */,
 				FC36DF9919B0656400AF74C1 /* Images.xcassets in Resources */,
@@ -6807,7 +6702,6 @@
 				FC4D917A1A712B280048106E /* GeneralSwitchCell.xib in Resources */,
 				FC2E8CCD1A43CEC900A51BF0 /* person1.png in Resources */,
 				FC4D91871A712B280048106E /* ProfileFavoriteShopViewController.xib in Resources */,
-				FCE283A71A845A40003B9987 /* TxOrderTabViewController.xib in Resources */,
 				FC2E8CE91A43CEC900A51BF0 /* icon_more.png in Resources */,
 				FC4D91991A712B280048106E /* TransactionCartHeaderView.xib in Resources */,
 				FC2E8CB71A43CEC900A51BF0 /* actionbar_bg.png in Resources */,
@@ -6889,7 +6783,6 @@
 				FC4D91661A712B280048106E /* ShopEditStatusViewController.xib in Resources */,
 				FC2E8C9E1A43CEC900A51BF0 /* icon_plus_blue@2x.png in Resources */,
 				FC4D91941A712B280048106E /* TransactionATCViewController.xib in Resources */,
-				FC4D91F11A712B280048106E /* ShopTalkViewController.xib in Resources */,
 				FC6401861A84CA8E00CCE86D /* DetailShipmentStatusViewController.xib in Resources */,
 				FC4D91531A712B280048106E /* AlertListViewCell.xib in Resources */,
 				FC4D918F1A712B280048106E /* FilterLocationViewCell.xib in Resources */,
@@ -6901,7 +6794,6 @@
 				FC4D91B71A712B280048106E /* InboxMessageViewController.xib in Resources */,
 				FC2E8CD41A43CEC900A51BF0 /* ic_cart@2x.png in Resources */,
 				FC4D91CA1A712B280048106E /* DetailProductWholesaleCell.xib in Resources */,
-				FCE283A61A845A40003B9987 /* TxOrderDropshipCell.xib in Resources */,
 				FC2E8CA21A43CEC900A51BF0 /* icon_share_14px-01.png in Resources */,
 				FC4D917F1A712B280048106E /* Main.storyboard in Resources */,
 				FC4D91DC1A712B280048106E /* SettingAddressViewController.xib in Resources */,
@@ -6913,7 +6805,6 @@
 				FC2E8C5D1A43CEC900A51BF0 /* icon_6.png in Resources */,
 				FC2E8C331A43CEC900A51BF0 /* Lato-Bold.ttf in Resources */,
 				FC4D914E1A712B280048106E /* RegisterViewController.xib in Resources */,
-				FCE2839F1A845A40003B9987 /* TxOrderConfirmationCostCell.xib in Resources */,
 				FC2E8C541A43CEC900A51BF0 /* icon_21.png in Resources */,
 				FC2E8CC61A43CEC900A51BF0 /* navigation-button-bg-pt.png in Resources */,
 				FC6401801A84CA8E00CCE86D /* SubmitShipmentConfirmationViewController.xib in Resources */,
@@ -6944,7 +6835,6 @@
 				FC4D91D21A712B280048106E /* ProductAddEditDetailViewController.xib in Resources */,
 				FC2E8C321A43CEC900A51BF0 /* GothamMedium.ttf in Resources */,
 				FC4D91D81A712B280048106E /* ProductListMyShopViewController.xib in Resources */,
-				FCE283A01A845A40003B9987 /* TxOrderConfirmationDetailHeaderView.xib in Resources */,
 				FC4D91741A712B280048106E /* GeneralCheckmarkCell.xib in Resources */,
 				FC4D91EA1A712B280048106E /* ShopFavoritedCell.xib in Resources */,
 				FC2E8C3C1A43CEC900A51BF0 /* icon_10.png in Resources */,
@@ -6959,6 +6849,7 @@
 				FC2E8C4C1A43CEC900A51BF0 /* icon_18.png in Resources */,
 				FC2E8C971A43CEC900A51BF0 /* icon_love_active.png in Resources */,
 				FC6401E51A84CA8E00CCE86D /* InboxReviewViewController.xib in Resources */,
+				FCB222E21A91D3EC001A719C /* TxOrderConfirmedViewController.xib in Resources */,
 				FC4D91D71A712B280048106E /* ProductListMyShopCell.xib in Resources */,
 				FC2E8C861A43CEC900A51BF0 /* icon_diskusi_unfollow_grey@2x.png in Resources */,
 				FC4D91B21A712B280048106E /* HotlistViewController.xib in Resources */,
@@ -6996,7 +6887,6 @@
 				FC4D91A01A712B280048106E /* TransactionShipmentViewController.xib in Resources */,
 				FC2E8C3B1A43CEC900A51BF0 /* icon_1.png in Resources */,
 				FC64015E1A84CA8E00CCE86D /* ChooseProductCell.xib in Resources */,
-				FC64FE891A84BA8400CCE86D /* TxOrderPaymentViewController.xib in Resources */,
 				FC2E8CAF1A43CEC900A51BF0 /* icon_toped_loading_grey-02.png in Resources */,
 				FC4D915B1A712B280048106E /* CategoryResultViewCell.xib in Resources */,
 				FC2E8C901A43CEC900A51BF0 /* icon_lock_grey@2x.png in Resources */,
@@ -7094,7 +6984,6 @@
 				FC6401461A84CA8E00CCE86D /* GeneralProductReviewCell.m in Sources */,
 				FC6404961A84CAD300CCE86D /* InboxMessageDetailBetween.m in Sources */,
 				FC0C7E8F1A64B7440028A706 /* NSDictionaryCategory.m in Sources */,
-				FC6401AF1A84CA8E00CCE86D /* TxOrderConfirmationDetailViewController.m in Sources */,
 				FC6401B51A84CA8E00CCE86D /* TxOrderTabViewController.m in Sources */,
 				FC64013B1A84CA8E00CCE86D /* ShopInfoViewController.m in Sources */,
 				FC6401641A84CA8E00CCE86D /* OrderRejectExplanationViewController.m in Sources */,
@@ -7114,7 +7003,6 @@
 				FC64048D1A84CAD300CCE86D /* Hashtags.m in Sources */,
 				FC6405021A84CAD300CCE86D /* AddProductSubmit.m in Sources */,
 				FC64014A1A84CA8E00CCE86D /* GeneralTalkCommentCell.m in Sources */,
-				FC6401B31A84CA8E00CCE86D /* TxOrderConfirmationViewController.m in Sources */,
 				FC6401A41A84CA8E00CCE86D /* TransactionCartWebViewViewController.m in Sources */,
 				FC9F0C2C1A8DB3CF0050AE76 /* TxOrderPaymentEditOrder.m in Sources */,
 				FC6404691A84CAD300CCE86D /* Product.m in Sources */,
@@ -7143,7 +7031,6 @@
 				FC6401961A84CA8E00CCE86D /* FilterLocationViewCell.m in Sources */,
 				FC6401E01A84CA8E00CCE86D /* InboxMessageViewController.m in Sources */,
 				FC6401A01A84CA8E00CCE86D /* TransactionCartHeaderView.m in Sources */,
-				FC6401B81A84CA8E00CCE86D /* TxOrderPaymentViewController.m in Sources */,
 				FC64016C1A84CA8E00CCE86D /* OrderDetailProductCell.m in Sources */,
 				FC64049D1A84CAD300CCE86D /* InboxReviewProductOwner.m in Sources */,
 				FC6401951A84CA8E00CCE86D /* FilterConditionViewController.m in Sources */,
@@ -7169,6 +7056,7 @@
 				FC6404F71A84CAD300CCE86D /* NotesResult.m in Sources */,
 				FC6401E41A84CA8E00CCE86D /* InboxReviewViewController.m in Sources */,
 				FC6401501A84CA8E00CCE86D /* LogoutViewController.m in Sources */,
+				FCB222D51A91D3EC001A719C /* TxOrderConfirmationCostCell.m in Sources */,
 				FC6401F51A84CA8E00CCE86D /* MyShopPaymentViewController.m in Sources */,
 				FC250E461A8CC41000FBC54B /* TxOrderConfirmedDetailPayment.m in Sources */,
 				FC2E8CF51A43CEC900A51BF0 /* HPGrowingTextView.m in Sources */,
@@ -7237,6 +7125,7 @@
 				FC6405261A84CAD300CCE86D /* TransactionCartResult.m in Sources */,
 				FC6401BE1A84CA8E00CCE86D /* AddressCell.m in Sources */,
 				FC64050A1A84CAD300CCE86D /* ShopSettings.m in Sources */,
+				FCB222DF1A91D3EC001A719C /* TxOrderConfirmedButtonCell.m in Sources */,
 				FC4D904A1A7121450048106E /* EncodeDecoderManager.m in Sources */,
 				FC6401F81A84CA8E00CCE86D /* NotificationBarButton.m in Sources */,
 				FC64021C1A84CA8E00CCE86D /* SettingUserProfileViewController.m in Sources */,
@@ -7255,11 +7144,13 @@
 				FC6401A71A84CA8E00CCE86D /* TransactionCartResultPaymentCell.m in Sources */,
 				FC6401491A84CA8E00CCE86D /* GeneralTalkCell.m in Sources */,
 				FC6404F41A84CAD300CCE86D /* NoteDetails.m in Sources */,
+				FCB222D91A91D3EC001A719C /* TxOrderConfirmationProductCell.m in Sources */,
 				FC64047A1A84CAD300CCE86D /* TalkList.m in Sources */,
 				FC64045A1A84CAD300CCE86D /* Catalog.m in Sources */,
 				FC6404E91A84CAD300CCE86D /* SendMessage.m in Sources */,
 				FC6404AE1A84CAD300CCE86D /* ProductFeedResult.m in Sources */,
 				FC64020A1A84CA8E00CCE86D /* ProductListMyShopCell.m in Sources */,
+				FCB222DA1A91D3EC001A719C /* TxOrderConfirmationShipmentCell.m in Sources */,
 				FC6404D41A84CAD300CCE86D /* OrderDestination.m in Sources */,
 				FC64051E1A84CAD300CCE86D /* TransactionBuy.m in Sources */,
 				FC6402011A84CA8E00CCE86D /* DetailProductWholesaleTableCell.m in Sources */,
@@ -7268,11 +7159,12 @@
 				FC6404E01A84CAD300CCE86D /* TrackOrderDetail.m in Sources */,
 				FC6404DC1A84CAD300CCE86D /* OrderShipment.m in Sources */,
 				FC6401EB1A84CA8E00CCE86D /* MyShopAddressEditViewController.m in Sources */,
-				FC44EFF01A89F13400586B23 /* TxOrderPaymentConfirmationSuccessViewController.m in Sources */,
 				FC6404BF1A84CAD300CCE86D /* ProfileSettingsResult.m in Sources */,
 				FC6401DF1A84CA8E00CCE86D /* InboxMessageDetailViewController.m in Sources */,
+				FCB222D81A91D3EC001A719C /* TxOrderConfirmationDropshipCell.m in Sources */,
 				FC6404CC1A84CAD300CCE86D /* PrivacyForm.m in Sources */,
 				FC64052A1A84CAD300CCE86D /* OrderExtraFee.m in Sources */,
+				FCB222E01A91D3EC001A719C /* TxOrderConfirmedCell.m in Sources */,
 				FC6401FA1A84CA8E00CCE86D /* NotificationRequest.m in Sources */,
 				FC6401661A84CA8E00CCE86D /* ProductQuantityCell.m in Sources */,
 				FC6401371A84CA8E00CCE86D /* ShopInfoAddressView.m in Sources */,
@@ -7292,7 +7184,6 @@
 				FC64046C1A84CAD300CCE86D /* AdvanceReview.m in Sources */,
 				FC6404E61A84CAD300CCE86D /* SearchModel.xcdatamodeld in Sources */,
 				FC6404921A84CAD300CCE86D /* InboxMessage.m in Sources */,
-				FC6401BA1A84CA8E00CCE86D /* TxOrderConfirmedButtonCell.m in Sources */,
 				FC64019F1A84CA8E00CCE86D /* TransactionCartFormMandiriClickPayViewController.m in Sources */,
 				FC6405331A84CAD300CCE86D /* TransactionSummaryResult.m in Sources */,
 				FC6402191A84CA8E00CCE86D /* SettingPrivacyViewController.m in Sources */,
@@ -7316,8 +7207,10 @@
 				FC64046E1A84CAD300CCE86D /* Review.m in Sources */,
 				FC64013C1A84CA8E00CCE86D /* ShopNotesDetailViewController.m in Sources */,
 				FC6404C91A84CAD300CCE86D /* NotificationForm.m in Sources */,
+				FCB222D41A91D3EC001A719C /* TxOrderConfirmationCell.m in Sources */,
 				FC64014F1A84CA8E00CCE86D /* TKPDTabHomeViewController.m in Sources */,
 				FC64021F1A84CA8E00CCE86D /* SendMessageViewController.m in Sources */,
+				FCB222E61A91D3EC001A719C /* TxOrderPaymentViewController.m in Sources */,
 				FC6404BE1A84CAD300CCE86D /* ProfileSettings.m in Sources */,
 				FC6401311A84CA8E00CCE86D /* NoResult.m in Sources */,
 				FC6401511A84CA8E00CCE86D /* MoreNavigationController.m in Sources */,
@@ -7329,7 +7222,6 @@
 				FC937B991A81FF9100916745 /* UITextField+WithInset.m in Sources */,
 				FC2E8ACB1A43CEC900A51BF0 /* ExpiringCache.m in Sources */,
 				FC9F0C2F1A8DB4350050AE76 /* TxOrderPaymentEditSystemBank.m in Sources */,
-				FC6401AC1A84CA8E00CCE86D /* TxOrderConfirmationCell.m in Sources */,
 				FC6401141A84CA8E00CCE86D /* Alert1ButtonView.m in Sources */,
 				FC6401891A84CA8E00CCE86D /* ShipmentStatusCell.m in Sources */,
 				FC6401FF1A84CA8E00CCE86D /* DetailProductViewController.m in Sources */,
@@ -7358,17 +7250,14 @@
 				FC6404DD1A84CAD300CCE86D /* OrderTransaction.m in Sources */,
 				FC2E8CFB1A43CEC900A51BF0 /* README.md in Sources */,
 				FC6404B81A84CAD300CCE86D /* FavoriteShop.m in Sources */,
-				FC6401251A84CA8E00CCE86D /* CategoryResultViewController.m in Sources */,
 				FC6401811A84CA8E00CCE86D /* ChangeReceiptNumberViewController.m in Sources */,
 				FC6401DE1A84CA8E00CCE86D /* InboxMessageDetailCell.m in Sources */,
 				FC6404551A84CAD300CCE86D /* DepositResult.m in Sources */,
 				FC6404A71A84CAD300CCE86D /* NotificationInbox.m in Sources */,
 				FC6404E71A84CAD300CCE86D /* SearchRedirect.m in Sources */,
-				FC6401B91A84CA8E00CCE86D /* TxOrderConfirmedButtonArrowCell.m in Sources */,
 				FC6404B91A84CAD300CCE86D /* FavoriteShopResult.m in Sources */,
 				FC2E8AC71A43CEC900A51BF0 /* URLCacheAlert.m in Sources */,
 				FC6404BA1A84CAD300CCE86D /* ListFavoriteShop.m in Sources */,
-				FC6401241A84CA8E00CCE86D /* CategoryResultViewCell.m in Sources */,
 				FC6401FB1A84CA8E00CCE86D /* NotificationViewController.m in Sources */,
 				FC6401121A84CA8E00CCE86D /* RegisterViewController.m in Sources */,
 				FC2E8CF91A43CEC900A51BF0 /* MGSwipeTableCell.m in Sources */,
@@ -7382,7 +7271,6 @@
 				FC6405171A84CAD300CCE86D /* TransactionActionResult.m in Sources */,
 				FC250E401A8CC3E600FBC54B /* TxOrderConfirmedDetailResult.m in Sources */,
 				FC64046F1A84CAD300CCE86D /* ReviewList.m in Sources */,
-				FC6401B01A84CA8E00CCE86D /* TxOrderConfirmationDropshipCell.m in Sources */,
 				FC64019C1A84CA8E00CCE86D /* TransactionCartCell.m in Sources */,
 				FC6404A01A84CAD300CCE86D /* InboxTalk.m in Sources */,
 				FC6401161A84CA8E00CCE86D /* AlertDatePickerView.m in Sources */,
@@ -7428,11 +7316,11 @@
 				FC6401521A84CA8E00CCE86D /* MoreNavigationViewController.m in Sources */,
 				FC64049C1A84CAD300CCE86D /* InboxReviewList.m in Sources */,
 				FC6401441A84CA8E00CCE86D /* GeneralList1GestureCell.m in Sources */,
-				FC9F0C1E1A8DA2490050AE76 /* TxOrderInvoiceViewController.m in Sources */,
 				FC6401991A84CA8E00CCE86D /* SortCell.m in Sources */,
 				FC6404FE1A84CAD300CCE86D /* ShipmentPackage.m in Sources */,
 				FC6401181A84CA8E00CCE86D /* AlertListView.m in Sources */,
 				FC6404941A84CAD300CCE86D /* InboxMessageActionResult.m in Sources */,
+				FCB222DE1A91D3EC001A719C /* TxOrderConfirmedButtonArrowCell.m in Sources */,
 				FC6405251A84CAD300CCE86D /* TransactionCartList.m in Sources */,
 				FC2E8CF81A43CEC900A51BF0 /* MGSwipeButton.m in Sources */,
 				FC6404C31A84CAD300CCE86D /* BankAccountForm.m in Sources */,
@@ -7445,7 +7333,6 @@
 				FC6402151A84CA8E00CCE86D /* SettingNotificationCell.m in Sources */,
 				FC6405211A84CAD300CCE86D /* TransactionCalculatePrice.m in Sources */,
 				FC36DF9719B0656400AF74C1 /* AppDelegate.m in Sources */,
-				FC6401AE1A84CA8E00CCE86D /* TxOrderConfirmationDetailHeaderView.m in Sources */,
 				FC64015D1A84CA8E00CCE86D /* ChooseProductCell.m in Sources */,
 				FC6401D61A84CA8E00CCE86D /* TKPDTabHomeNavigationController.m in Sources */,
 				FC6404F21A84CAD300CCE86D /* NoteDetail.m in Sources */,
@@ -7454,6 +7341,7 @@
 				FC6404611A84CAD300CCE86D /* CatalogShops.m in Sources */,
 				FC6402241A84CA8E00CCE86D /* ProductTalkViewController.m in Sources */,
 				FC64052D1A84CAD300CCE86D /* TxOrderConfirmationList.m in Sources */,
+				FCB222D61A91D3EC001A719C /* TxOrderConfirmationDetailHeaderView.m in Sources */,
 				FC6404ED1A84CAD300CCE86D /* ShipmentOrder.m in Sources */,
 				FC64019B1A84CA8E00CCE86D /* TransactionATCViewController.m in Sources */,
 				FC6405191A84CAD300CCE86D /* TransactionAddressShippingForm.m in Sources */,
@@ -7463,7 +7351,6 @@
 				FC64021E1A84CA8E00CCE86D /* ShopFavoritedViewController.m in Sources */,
 				FC6404E21A84CAD300CCE86D /* HotlistDetail.m in Sources */,
 				FC64049B1A84CAD300CCE86D /* InboxReview.m in Sources */,
-				FC6401B11A84CA8E00CCE86D /* TxOrderConfirmationProductCell.m in Sources */,
 				FC64046A1A84CAD300CCE86D /* ProductDetail.m in Sources */,
 				FC6405221A84CAD300CCE86D /* TransactionCalculatePriceResult.m in Sources */,
 				FC6405391A84CAD300CCE86D /* TxOrderConfirmedResult.m in Sources */,
@@ -7497,7 +7384,6 @@
 				FC6404AA1A84CAD300CCE86D /* NotificationSales.m in Sources */,
 				FC2E8ACC1A43CEC900A51BF0 /* NSArray+PerformSelector.m in Sources */,
 				FC6404901A84CAD300CCE86D /* HotlistList.m in Sources */,
-				FC6401BC1A84CA8E00CCE86D /* TxOrderConfirmedViewController.m in Sources */,
 				FC6402211A84CA8E00CCE86D /* ProductTalkCell.m in Sources */,
 				FC64013F1A84CA8E00CCE86D /* ShopDescriptionView.m in Sources */,
 				FC6401551A84CA8E00CCE86D /* SalesViewController.m in Sources */,
@@ -7514,7 +7400,6 @@
 				FC6405111A84CAD300CCE86D /* ShippingInfoResult.m in Sources */,
 				FC64051C1A84CAD300CCE86D /* TransactionATCFormDetail.m in Sources */,
 				FC6404B11A84CAD300CCE86D /* ProductTalkForm.m in Sources */,
-				FC6401AD1A84CA8E00CCE86D /* TxOrderConfirmationCostCell.m in Sources */,
 				FC64011E1A84CA8E00CCE86D /* CameraController.m in Sources */,
 				FC6401541A84CA8E00CCE86D /* PurchaseViewController.m in Sources */,
 				FC44EFDC1A88BE2C00586B23 /* TxOrderConfirmPaymentForm.m in Sources */,
@@ -7522,15 +7407,14 @@
 				FC64045B1A84CAD300CCE86D /* CatalogImages.m in Sources */,
 				FC2E8ACD1A43CEC900A51BF0 /* NSArrayCategory.m in Sources */,
 				FC6401C61A84CA8E00CCE86D /* CatalogSellerViewController.m in Sources */,
+				FCB222E11A91D3EC001A719C /* TxOrderConfirmedViewController.m in Sources */,
 				FC6404CE1A84CAD300CCE86D /* PrivacyFormResult.m in Sources */,
 				FC64018D1A84CA8E00CCE86D /* TrackOrderViewController.m in Sources */,
-				FC6401B61A84CA8E00CCE86D /* TableViewCell.m in Sources */,
 				FC6402171A84CA8E00CCE86D /* SettingPasswordViewController.m in Sources */,
 				FC6404D71A84CAD300CCE86D /* OrderLast.m in Sources */,
 				FC64052F1A84CAD300CCE86D /* TxOrderConfirmationResult.m in Sources */,
 				FC64013E1A84CA8E00CCE86D /* ShopReviewViewController.m in Sources */,
 				FC6401971A84CA8E00CCE86D /* FilterLocationViewController.m in Sources */,
-				FC6401B71A84CA8E00CCE86D /* TxOrderConfirmedBankCell.m in Sources */,
 				FC64015F1A84CA8E00CCE86D /* ChooseProductViewController.m in Sources */,
 				FC250E391A8CAE7C00FBC54B /* TxOrderCancelPaymentFormForm.m in Sources */,
 				FC64011D1A84CA8E00CCE86D /* TKPDAlertView.m in Sources */,
@@ -7548,10 +7432,12 @@
 				FC6401431A84CA8E00CCE86D /* GeneralCheckmarkCell.m in Sources */,
 				FC64020F1A84CA8E00CCE86D /* SettingAddressViewController.m in Sources */,
 				FC6401321A84CA8E00CCE86D /* ProgressBarView.m in Sources */,
+				FCB222E51A91D3EC001A719C /* TxOrderPaymentConfirmationSuccessViewController.m in Sources */,
 				FC64050D1A84CAD300CCE86D /* JNE.m in Sources */,
 				FC64015B1A84CA8E00CCE86D /* ProfileFavoriteShopCell.m in Sources */,
 				FC6401F11A84CA8E00CCE86D /* MyShopEtalaseViewController.m in Sources */,
 				FC6404C51A84CAD300CCE86D /* BankAccountFormResult.m in Sources */,
+				FCB222DB1A91D3EC001A719C /* TxOrderConfirmationViewController.m in Sources */,
 				FC64048E1A84CAD300CCE86D /* Hotlist.m in Sources */,
 				FC6404651A84CAD300CCE86D /* SpecChilds.m in Sources */,
 				FC64020B1A84CA8E00CCE86D /* ProductListMyShopViewController.m in Sources */,
@@ -7567,10 +7453,10 @@
 				FC6404A41A84CAD300CCE86D /* ManageProductList.m in Sources */,
 				FC6404E81A84CAD300CCE86D /* SearchResult.m in Sources */,
 				FC6402141A84CA8E00CCE86D /* SettingBankEditViewController.m in Sources */,
-				FC6401B21A84CA8E00CCE86D /* TxOrderConfirmationShipmentCell.m in Sources */,
 				FC6401F41A84CA8E00CCE86D /* MyShopPaymentCell.m in Sources */,
 				FC6404521A84CAD300CCE86D /* Register.m in Sources */,
 				FC64053B1A84CAD300CCE86D /* GenerateHost.m in Sources */,
+				FCB222DD1A91D3EC001A719C /* TxOrderConfirmedBankCell.m in Sources */,
 				FC64049A1A84CAD300CCE86D /* InboxMessageResult.m in Sources */,
 				FC6401F61A84CA8E00CCE86D /* MyShopShipmentInfoViewController.m in Sources */,
 				FC6404C41A84CAD300CCE86D /* BankAccountFormList.m in Sources */,
@@ -7578,6 +7464,7 @@
 				FC6404871A84CAD300CCE86D /* HistoryProduct.m in Sources */,
 				FC64050E1A84CAD300CCE86D /* POSIndonesia.m in Sources */,
 				FC64052E1A84CAD300CCE86D /* TxOrderConfirmationListOrder.m in Sources */,
+				FCB222D71A91D3EC001A719C /* TxOrderConfirmationDetailViewController.m in Sources */,
 				FC64045F1A84CAD300CCE86D /* CatalogPrice.m in Sources */,
 				FC64019D1A84CA8E00CCE86D /* TransactionCartCostView.m in Sources */,
 				FC6404C01A84CAD300CCE86D /* AddressForm.m in Sources */,
@@ -7593,9 +7480,9 @@
 				FC6401451A84CA8E00CCE86D /* GeneralProductCell.m in Sources */,
 				FC6401421A84CA8E00CCE86D /* GeneralAlertCell.m in Sources */,
 				FC64045E1A84CAD300CCE86D /* CatalogMarketPlace.m in Sources */,
+				FCB222E31A91D3EC001A719C /* TxOrderInvoiceViewController.m in Sources */,
 				FC250E3D1A8CC3D200FBC54B /* TxOrderConfirmedDetail.m in Sources */,
 				FC6404FF1A84CAD300CCE86D /* Shop.m in Sources */,
-				FC6401BB1A84CA8E00CCE86D /* TxOrderConfirmedCell.m in Sources */,
 				FC6404BD1A84CAD300CCE86D /* UserInfo.m in Sources */,
 				FC6401591A84CA8E00CCE86D /* ProfileContactViewController.m in Sources */,
 				FC6402101A84CA8E00CCE86D /* SettingBankNameCell.m in Sources */,

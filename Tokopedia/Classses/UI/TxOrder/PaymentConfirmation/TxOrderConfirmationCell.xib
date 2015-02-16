@@ -159,6 +159,7 @@
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <connections>
                 <outlet property="deadlineDateLabel" destination="AVS-09-2vs" id="TrG-bT-nYf"/>
+                <outlet property="frameView" destination="7VG-ae-IHB" id="Scq-NZ-HiZ"/>
                 <outlet property="selectionButton" destination="h30-pa-8Tb" id="yUR-of-H2X"/>
                 <outlet property="shopNameLabel" destination="ZTC-Eq-4OJ" id="xkd-hY-Ir1"/>
                 <outlet property="totalInvoiceLabel" destination="jXK-VD-NIw" id="1y6-ur-H3c"/>
