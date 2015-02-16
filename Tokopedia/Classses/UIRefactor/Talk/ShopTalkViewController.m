@@ -136,6 +136,8 @@
 {
     [super viewWillAppear:animated];
     
+    self.hidesBottomBarWhenPushed = YES;
+    
     self.title = [_data objectForKey:kTKPDDETAIL_APISHOPNAMEKEY];
     
     if (!_isRefreshView) {

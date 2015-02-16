@@ -32,7 +32,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 
-@property (weak, nonatomic) NSIndexPath *indexPath;
+@property (strong, nonatomic) NSIndexPath *indexPath;
 
 @property (weak, nonatomic) id<ShipmentStatusCellDelegate> delegate;
 

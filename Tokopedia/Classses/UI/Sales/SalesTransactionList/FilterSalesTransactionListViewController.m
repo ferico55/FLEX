@@ -191,8 +191,26 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
         if (button.tag == 2) {
+            
+            NSString *status = @"";
+            if ([_transactionStatus isEqualToString:@"Semua Status"]) {
+                status = @"9";
+            } else if ([_transactionStatus isEqualToString:@"Pesanan Baru"]) {
+                status = @"1";
+            } else if ([_transactionStatus isEqualToString:@"Dalam Pengiriman"]) {
+                status = @"2";
+            } else if ([_transactionStatus isEqualToString:@"Transaksi Resi Invalid"]) {
+                status = @"6";
+            } else if ([_transactionStatus isEqualToString:@"Transaksi Terkirim"]) {
+                status = @"7";
+            } else if ([_transactionStatus isEqualToString:@"Transaksi Selesai"]) {
+                status = @"3";
+            } else if ([_transactionStatus isEqualToString:@"Transaksi Dibatalkan"]) {
+                status = @"4";
+            }
+            
             [self.delegate filterOrderInvoice:_invoice
-                            transactionStatus:_transactionStatus
+                            transactionStatus:status
                                     startDate:_startDate
                                       endDate:_endDate];
         }

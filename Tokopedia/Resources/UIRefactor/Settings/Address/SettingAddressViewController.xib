@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -26,9 +26,9 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" delaysContentTouches="NO" canCancelContentTouches="NO" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="YWE-3l-Kil">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" delaysContentTouches="NO" canCancelContentTouches="NO" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="YWE-3l-Kil">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Rye-92-3rK"/>
@@ -36,7 +36,6 @@
                     </connections>
                 </tableView>
             </subviews>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="YWE-3l-Kil" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="DyV-cF-U98"/>
                 <constraint firstAttribute="trailing" secondItem="YWE-3l-Kil" secondAttribute="trailing" id="HdM-Vf-gqE"/>
@@ -49,37 +48,75 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Vsm-hP-vkL">
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Vsm-hP-vkL">
                     <rect key="frame" x="150" y="7" width="20" height="20"/>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="centerY" secondItem="Vsm-hP-vkL" secondAttribute="centerY" id="K9O-G8-4ge"/>
+                <constraint firstAttribute="centerX" secondItem="Vsm-hP-vkL" secondAttribute="centerX" id="qWi-po-Ybr"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="IzA-Ue-aRU">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_plus_blue" translatesAutoresizingMaskIntoConstraints="NO" id="DNj-ti-qKK">
-                    <rect key="frame" x="20" y="14" width="15" height="15"/>
-                </imageView>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g3N-M4-7ME">
-                    <rect key="frame" x="43" y="0.0" width="244" height="44"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                    <state key="normal" title="Tambah Alamat Baru">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="3g1-R9-rtu"/>
-                    </connections>
-                </button>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GRW-Tx-azr" userLabel="Border Bottom">
-                    <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cxr-RD-2mr">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_plus_blue" translatesAutoresizingMaskIntoConstraints="NO" id="DNj-ti-qKK">
+                            <rect key="frame" x="20" y="14" width="15" height="15"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="15" id="B78-ke-iNw"/>
+                                <constraint firstAttribute="width" constant="15" id="pMv-Ty-VEg"/>
+                            </constraints>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g3N-M4-7ME">
+                            <rect key="frame" x="43" y="0.0" width="244" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="244" id="7aQ-oe-AWV"/>
+                                <constraint firstAttribute="height" constant="44" id="hXc-Zc-ls8"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                            <state key="normal" title="Tambah Alamat Baru">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="3g1-R9-rtu"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GRW-Tx-azr" userLabel="Border Bottom">
+                            <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="Gki-FQ-4sf"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="GRW-Tx-azr" secondAttribute="bottom" id="4DN-KW-pym"/>
+                        <constraint firstItem="DNj-ti-qKK" firstAttribute="top" secondItem="Cxr-RD-2mr" secondAttribute="top" constant="14" id="9e4-0w-xpY"/>
+                        <constraint firstItem="GRW-Tx-azr" firstAttribute="leading" secondItem="Cxr-RD-2mr" secondAttribute="leading" id="FHX-Md-9an"/>
+                        <constraint firstItem="g3N-M4-7ME" firstAttribute="top" secondItem="Cxr-RD-2mr" secondAttribute="top" id="NWY-gk-dp2"/>
+                        <constraint firstAttribute="height" constant="44" id="PAt-md-P8u"/>
+                        <constraint firstAttribute="bottom" secondItem="g3N-M4-7ME" secondAttribute="bottom" id="b8O-RS-eub"/>
+                        <constraint firstItem="GRW-Tx-azr" firstAttribute="top" secondItem="DNj-ti-qKK" secondAttribute="bottom" constant="14" id="i2x-UA-4hK"/>
+                        <constraint firstItem="DNj-ti-qKK" firstAttribute="leading" secondItem="Cxr-RD-2mr" secondAttribute="leading" constant="20" id="mbg-CT-dyt"/>
+                        <constraint firstItem="g3N-M4-7ME" firstAttribute="leading" secondItem="DNj-ti-qKK" secondAttribute="trailing" constant="8" id="rwc-JP-PW7"/>
+                        <constraint firstAttribute="trailing" secondItem="GRW-Tx-azr" secondAttribute="trailing" id="vgp-3t-1vD"/>
+                    </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Cxr-RD-2mr" secondAttribute="trailing" id="8Iy-sA-jNF"/>
+                <constraint firstItem="Cxr-RD-2mr" firstAttribute="top" secondItem="IzA-Ue-aRU" secondAttribute="top" id="qU9-hF-vZQ"/>
+                <constraint firstItem="Cxr-RD-2mr" firstAttribute="leading" secondItem="IzA-Ue-aRU" secondAttribute="leading" id="uZt-je-5bf"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="520" y="273"/>
         </view>
@@ -87,12 +124,12 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fYi-0l-G6g">
+                <searchBar contentMode="redraw" fixedFrame="YES" searchBarStyle="prominent" translatesAutoresizingMaskIntoConstraints="NO" id="fYi-0l-G6g">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <textInputTraits key="textInputTraits"/>
                 </searchBar>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="860" y="68"/>
         </view>

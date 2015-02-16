@@ -40,8 +40,12 @@
         [self attributedTextWithArray:messages color:textColor];
         
         CGRect frame = self.view.frame;
-        frame.size.height = _textLabel.frame.size.height + 24;
+        frame.size.height = _textLabel.frame.size.height + 6;
         self.view.frame = frame;
+        
+        frame = self.frame;
+        frame.size.height = self.view.frame.size.height;
+        self.frame = frame;
     
         NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3
                                                           target:self
@@ -126,7 +130,7 @@
     
     NSString *joinedString = @"";
     if ([texts count] > 1) {
-        joinedString = [NSString stringWithFormat:@"\u25CF  %@\n", [[texts valueForKey:@"description"] componentsJoinedByString:@"\u25CF  \n"]];
+        joinedString = [NSString stringWithFormat:@"\u25CF %@", [[texts valueForKey:@"description"] componentsJoinedByString:@"\n\u25CF "]];
     } else {
         joinedString = [texts objectAtIndex:0];
     }

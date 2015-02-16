@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-            <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
@@ -29,7 +27,6 @@
             <string>GothamMedium</string>
             <string>GothamMedium</string>
             <string>GothamMedium</string>
-            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -40,7 +37,6 @@
                 <outlet property="checkoutButton" destination="IRs-zw-g4I" id="Zsn-QE-48w"/>
                 <outlet property="checkoutView" destination="esW-Te-z8M" id="EpC-ez-KgJ"/>
                 <outlet property="footerView" destination="KDl-FM-LK1" id="SJG-4e-rGU"/>
-                <outlet property="isUsingSaldoTokopediaButton" destination="VS5-97-jmo" id="anT-0p-Z6S"/>
                 <outlet property="passwordCell" destination="Mbe-do-c9y" id="9PE-pp-KYz"/>
                 <outlet property="passwordTextField" destination="hJb-lx-Y9Z" id="TlD-ew-hrh"/>
                 <outlet property="paymentGatewayCell" destination="60d-Jk-tyu" id="2na-gI-9aM"/>
@@ -48,19 +44,15 @@
                 <outlet property="saldoTextFieldCell" destination="tTs-1N-0vt" id="Rjx-Pn-xHQ"/>
                 <outlet property="saldoTokopediaAmountTextField" destination="Pw6-lS-pBR" id="A0B-ov-fiQ"/>
                 <outlet property="saldoTokopediaCell" destination="Lfk-xl-Rbu" id="ztG-Pk-k75"/>
-                <outlet property="saldoTokopediaLabel" destination="cIc-Bp-i8p" id="Dgi-cM-2Ee"/>
                 <outlet property="tableView" destination="QKG-0J-91A" id="2Rb-96-CmS"/>
                 <outlet property="totalInvoiceCell" destination="AVf-0Y-ZcY" id="dEk-gk-dOg"/>
                 <outlet property="totalPaymentCell" destination="hTf-We-spw" id="2vh-Vl-d0W"/>
                 <outlet property="transferCodeCell" destination="hHW-yd-Xhs" id="QsD-o3-0tn"/>
                 <outlet property="usedSaldoCell" destination="gnN-iy-Hi0" id="Q2N-GN-bKz"/>
-                <outlet property="valueVoucherCodeLabel" destination="M8c-IE-gwR" id="fac-J1-7Z3"/>
                 <outlet property="view" destination="Gh7-DV-yXN" id="azQ-xw-Yce"/>
                 <outlet property="voucerCell" destination="v13-pk-jca" id="l4Z-or-uXE"/>
                 <outlet property="voucerCodeBeforeTapView" destination="7jP-3s-t2c" id="PGj-wW-pwn"/>
                 <outlet property="voucherCodeButton" destination="fjF-sg-pi6" id="iyh-8E-9t7"/>
-                <outlet property="voucherCodeTextField" destination="1Ep-VO-0Fe" id="aFd-YN-lSx"/>
-                <outlet property="voucherCodeView" destination="4QX-HV-JzA" id="yAe-my-OC0"/>
                 <outletCollection property="errorCells" destination="bcD-ei-uZV" id="GEX-aS-U0P"/>
                 <outletCollection property="errorCells" destination="rQU-GF-11J" id="zBk-wo-8TY"/>
                 <outletCollection property="errorLabel" destination="idp-IE-Bsj" id="ZtN-aP-QJs"/>
@@ -72,9 +64,9 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="258" sectionHeaderHeight="1" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="QKG-0J-91A">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="QKG-0J-91A">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -92,7 +84,7 @@
                 <constraint firstAttribute="bottom" secondItem="QKG-0J-91A" secondAttribute="bottom" id="z2q-aX-S2p"/>
             </constraints>
         </view>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="zl3-bd-RqO" detailTextLabel="Qpr-uJ-2jP" style="IBUITableViewCellStyleValue1" id="60d-Jk-tyu">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="zl3-bd-RqO" detailTextLabel="Qpr-uJ-2jP" style="IBUITableViewCellStyleValue1" id="60d-Jk-tyu" userLabel="Metode Pembayaran">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="60d-Jk-tyu" id="Fwk-Au-75y">
@@ -111,7 +103,7 @@
                     </label>
                 </subviews>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="618" y="58"/>
+            <point key="canvasLocation" x="110" y="-110"/>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="KES-B2-wTQ" detailTextLabel="aek-0N-e9L" style="IBUITableViewCellStyleValue1" id="AVf-0Y-ZcY">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -199,34 +191,7 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v13-pk-jca" id="pFk-He-4KN">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4QX-HV-JzA">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <subviews>
-                            <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u2K-ip-5VR">
-                                <rect key="frame" x="260" y="-1" width="60" height="44"/>
-                                <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                                <inset key="contentEdgeInsets" minX="4" minY="4" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Check">
-                                    <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="tap:" destination="-1" eventType="touchUpInside" id="ZA1-fe-S5E"/>
-                                </connections>
-                            </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Masukkan Kode Kupon" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1Ep-VO-0Fe">
-                                <rect key="frame" x="6" y="0.0" width="246" height="44"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <outlet property="delegate" destination="-1" id="2kr-kg-WWc"/>
-                                </connections>
-                            </textField>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7jP-3s-t2c">
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7jP-3s-t2c">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                         <subviews>
                             <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjF-sg-pi6">
@@ -239,12 +204,6 @@
                                     <action selector="tap:" destination="-1" eventType="touchUpInside" id="0OF-yP-udi"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rp 0,-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M8c-IE-gwR">
-                                <rect key="frame" x="15" y="11" width="226" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
-                                <color key="textColor" red="1" green="0.25028351809999999" blue="0.018869707659999999" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0sG-Mm-AAO">
                                 <rect key="frame" x="288" y="11" width="20" height="20"/>
                                 <state key="normal" backgroundImage="icon_info_grey.png">
@@ -259,7 +218,7 @@
                     </view>
                 </subviews>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="526" y="-82"/>
+            <point key="canvasLocation" x="567" y="87"/>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="u1p-Qm-vqC" detailTextLabel="6yM-Im-p4G" style="IBUITableViewCellStyleValue1" id="hTf-We-spw">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -281,38 +240,24 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="496" y="417"/>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="61" id="Lfk-xl-Rbu">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="61"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Lfk-xl-Rbu">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Lfk-xl-Rbu" id="9r9-kM-wgv">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gunakan Saldo Tokopedia" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bpc-Rx-yiu">
-                        <rect key="frame" x="52" y="9" width="196" height="21"/>
+                        <rect key="frame" x="15" y="11" width="196" height="21"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="(Saldo Tokopedia Anda Rp. ,-)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cIc-Bp-i8p">
-                        <rect key="frame" x="52" y="30" width="268" height="21"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                        <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <button opaque="NO" tag="10" contentMode="scaleAspectFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VS5-97-jmo">
-                        <rect key="frame" x="18" y="12" width="18" height="18"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <state key="normal">
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <state key="selected" image="icon_check_orange.png"/>
-                        <connections>
-                            <action selector="tap:" destination="-1" eventType="touchUpInside" id="tZD-xe-K4q"/>
-                        </connections>
-                    </button>
+                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sI2-vl-FxW">
+                        <rect key="frame" x="259" y="6" width="51" height="31"/>
+                    </switch>
                 </subviews>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-            <point key="canvasLocation" x="504" y="249.5"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <point key="canvasLocation" x="567" y="175"/>
         </tableViewCell>
         <view contentMode="scaleToFill" id="esW-Te-z8M" userLabel="FooterView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
@@ -362,11 +307,15 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="kvI-4t-wDf">
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="kvI-4t-wDf">
                     <rect key="frame" x="150" y="7" width="20" height="20"/>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="centerY" secondItem="kvI-4t-wDf" secondAttribute="centerY" id="YSt-Yf-tDv"/>
+                <constraint firstAttribute="centerX" secondItem="kvI-4t-wDf" secondAttribute="centerX" id="cfU-bT-RoZ"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
@@ -485,7 +434,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="icon_check_orange.png" width="14" height="14"/>
         <image name="icon_info_grey.png" width="20" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

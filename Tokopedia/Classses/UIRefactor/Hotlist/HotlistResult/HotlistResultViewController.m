@@ -149,29 +149,30 @@
         _isnodata = NO;
     }
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-	[barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
     
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"]];
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
+
+    NSString *iconPath = [[NSBundle mainBundle] pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"];
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:iconPath];
     
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+    // iOS 7
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-        //_barbuttoncategory = [[UIBarButtonItem alloc] initWithTitle:@"Category" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image
+                                                              style:UIBarButtonItemStylePlain
+                                                             target:self
+                                                             action:@selector(tap:)];
+    } else {
+        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img
+                                                              style:UIBarButtonItemStylePlain
+                                                             target:self
+                                                             action:@selector(tap:)];
     }
-    else
-        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-	[_barbuttoncategory setTag:11];
+	_barbuttoncategory.tag = 11;
     _barbuttoncategory.enabled = NO;
     self.navigationItem.rightBarButtonItem = _barbuttoncategory;
     
@@ -213,6 +214,8 @@
             [self request];
         }
     }
+    
+    self.hidesBottomBarWhenPushed = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -378,11 +381,11 @@
             if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTCATEGORY]) {
                 SearchResultViewController *vc = [SearchResultViewController new];
                 NSString *searchtext = hashtags.department_id;
-                vc.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
+                vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
                 SearchResultViewController *vc1 = [SearchResultViewController new];
-                vc1.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
+                vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
                 SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-                vc2.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
+                vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
                 NSArray *viewcontrollers = @[vc,vc1,vc2];
                 
                 TKPDTabNavigationController *c = [TKPDTabNavigationController new];

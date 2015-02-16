@@ -115,12 +115,12 @@
     
     self.title = @"Pesanan Baru";
 
-    UIBarButtonItem *newBackButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:nil
-                                                                     action:nil];
-    [[self navigationItem] setBackBarButtonItem:newBackButton];
-
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
     self.tableView.tableHeaderView = _alertView;
     self.tableView.tableFooterView = _footerView;
@@ -197,7 +197,7 @@
                                                                    blue:48.0/255.0
                                                                   alpha:1];
         cell.remainingDaysLabel.text = @"Hari ini";
-        
+
     } else if (transaction.order_payment.payment_process_day_left < 0) {
         
         cell.remainingDaysLabel.backgroundColor = [UIColor colorWithRed:158.0/255.0
@@ -212,9 +212,6 @@
         CGRect frame = cell.remainingDaysLabel.frame;
         frame.origin.y = 17;
         cell.remainingDaysLabel.frame = frame;
-        
-        cell.acceptButton.enabled = NO;
-        cell.acceptButton.layer.opacity = 0.25;
         
     } else {
         
@@ -283,19 +280,39 @@
     OrderTransaction *transaction = [_transactions objectAtIndex:indexPath.row];
     _selectedTransaction = [_transactions objectAtIndex:indexPath.row];
     _selectedIndexPath = indexPath;
-    if (transaction.order_detail.detail_partial_order == 1) {
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
-                                                            message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Cancel"
-                                                  otherButtonTitles:@"Terima Pesanan", @"Terima Sebagian", nil];
-        alertView.tag = 2;
-        [alertView show];
+
+    
+    if (transaction.order_payment.payment_process_day_left >= 0) {
+
+        if (transaction.order_detail.detail_partial_order == 1) {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
+                                                                message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Batal"
+                                                      otherButtonTitles:@"Terima Pesanan", @"Terima Sebagian", nil];
+            alertView.tag = 2;
+            [alertView show];
+        } else {
+            
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Terima Pesanan"
+                                                                message:@"Apakah Anda yakin ingin menerima pesanan ini?"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Batal"
+                                                      otherButtonTitles:@"Ya", nil];
+            alertView.tag = 4;
+            [alertView show];
+        }
+        
     } else {
-        [self requestActionType:@"accept"
-                         reason:nil
-                       products:nil
-                productQuantity:nil];
+        
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pesanan Expired"
+                                                            message:@"Pesanan ini telah melewati batas waktu respon (3 hari)"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Batal"
+                                                  otherButtonTitles:@"Tolak Pesanan", nil];
+        alertView.tag = 5;
+        [alertView show];
+        
     }
 }
 
@@ -309,7 +326,7 @@
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Tolak Pesanan"
                                                             message:@"Pembeli menyetujui apabila stok barang yang tersedia hanya sebagian"
                                                            delegate:self
-                                                  cancelButtonTitle:@"Cancel"
+                                                  cancelButtonTitle:@"Batal"
                                                   otherButtonTitles:@"Tolak Pesanan", @"Terima Sebagian", nil];
         alertView.tag = 1;
         [alertView show];
@@ -319,7 +336,7 @@
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pilih Alasan Penolakan"
                                                             message:nil
                                                            delegate:self
-                                                  cancelButtonTitle:@"Cancel"
+                                                  cancelButtonTitle:@"Batal"
                                                   otherButtonTitles:@"Pesanan barang habis", @"Barang tidak dapat dikirim", @"Lainnya", nil];
         alertView.tag = 3;
         [alertView show];
@@ -405,7 +422,7 @@
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Pilih Alasan Penolakan"
                                                                 message:nil
                                                                delegate:self
-                                                      cancelButtonTitle:@"Cancel"
+                                                      cancelButtonTitle:@"Batal"
                                                       otherButtonTitles:@"Pesanan barang habis", @"Barang tidak dapat dikirim", @"Lainnya", nil];
             alertView.tag = 3;
             [alertView show];
@@ -481,6 +498,21 @@
                                                     animated:YES
                                                   completion:nil];
         
+        }
+        
+    } else if (alertView.tag == 4) {
+        if (buttonIndex == 1) {
+            [self requestActionType:@"accept"
+                             reason:nil
+                           products:nil
+                    productQuantity:nil];
+        }
+    } else if (alertView.tag == 5) {
+        if (buttonIndex == 1) {
+            [self requestActionType:@"reject"
+                             reason:@"Order expired"
+                           products:_selectedTransaction.order_products
+                    productQuantity:nil];   
         }
     }
 }
@@ -912,7 +944,7 @@
                             API_ACTION_KEY           : API_PROCEED_ORDER_KEY,
                             API_ACTION_TYPE_KEY      : type,
                             API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
-                            API_ORDER_ID_KEY         : [NSNumber numberWithInteger:_selectedTransaction.order_detail.detail_order_id],
+                            API_ORDER_ID_KEY         : _selectedTransaction.order_detail.detail_order_id,
                             API_REASON_KEY           : reason ?: @"",
                             API_LIST_PRODUCT_ID_KEY  : productIds ?: @"",
                             API_PRODUCT_QUANTITY_KEY : productQuantities ?: @"",
@@ -931,7 +963,7 @@
     indexPath = _selectedIndexPath;
     
     NSDictionary *object = @{@"order" : order, @"indexPath" : indexPath};
-    NSString *key = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:order.order_detail.detail_order_id]];
+    NSString *key = order.order_detail.detail_order_id;
     [_orderInProcess setObject:object forKey:key];
     
     // Delete row for the object
@@ -976,6 +1008,8 @@
         NSString *message;
         if ([actionType isEqualToString:@"accept"]) {
             message = @"Anda telah berhasil memproses transaksi.";
+        } else if ([actionType isEqualToString:@"partial"]) {
+            message = @"Anda telah berhasil memproses transaksi sebagian.";
         } else {
             message = @"Anda telah berhasil membatalkan transaksi.";
         }

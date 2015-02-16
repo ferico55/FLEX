@@ -13,6 +13,7 @@
 #import "ChangeReceiptNumberViewController.h"
 #import "FilterShipmentStatusViewController.h"
 #import "DetailShipmentStatusViewController.h"
+#import "TrackOrderViewController.h"
 
 #import "StickyAlertView.h"
 
@@ -100,8 +101,6 @@ typedef enum {
     
     [super viewDidLoad];
     
-    self.title = @"Daftar Transaksi";
-
     _page = 1;
     _requestCount = 0;
     
@@ -115,6 +114,15 @@ typedef enum {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    self.title = @"Daftar Transaksi";
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
+
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
 }
 
@@ -161,7 +169,9 @@ typedef enum {
                                                                options:nil];
         cell = [topLevelObjects objectAtIndex:0];
     }
+
     cell.delegate = self;
+    cell.indexPath = indexPath;
     
     OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
     
@@ -195,8 +205,12 @@ typedef enum {
             cell.dateFinishLabel.hidden = NO;
             cell.finishLabel.hidden = NO;
             
-            OrderHistory *history = [order.order_history objectAtIndex:0];
-            cell.dateFinishLabel.text = [history.history_status_date_full substringToIndex:[history.history_status_date_full length]-6];
+            if ([order.order_history count]) {
+                OrderHistory *history = [order.order_history objectAtIndex:0];
+                cell.dateFinishLabel.text = [history.history_status_date_full substringToIndex:[history.history_status_date_full length]-6];
+            } else {
+                cell.dateFinishLabel.text = @"";
+            }
             
         } else if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
                    order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED ||
@@ -211,7 +225,11 @@ typedef enum {
         }
     }
     
-    [cell setStatusLabelText:[[order.order_history objectAtIndex:0] history_seller_status]];
+    if ([order.order_history count]) {
+        [cell setStatusLabelText:[[order.order_history objectAtIndex:0] history_seller_status]];
+    } else {
+        [cell setStatusLabelText:@"-"];
+    }
 
     return cell;
 }
@@ -235,7 +253,13 @@ typedef enum {
 
 - (void)didTapTrackButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath
 {
+    OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
+    _selectedOrder = order;
     
+    TrackOrderViewController *controller = [TrackOrderViewController new];
+    controller.order = _selectedOrder;
+        
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)didTapReceiptButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath
@@ -250,6 +274,7 @@ typedef enum {
     
     ChangeReceiptNumberViewController *controller = [ChangeReceiptNumberViewController new];
     controller.delegate = self;
+    controller.order = _selectedOrder;
     navigationController.viewControllers = @[controller];
     
     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
@@ -697,7 +722,7 @@ typedef enum {
     NSDictionary *param = @{
                             API_ACTION_KEY              : API_EDIT_SHIPPING_REF,
                             API_USER_ID_KEY             : [auth objectForKey:API_USER_ID_KEY],
-                            API_ORDER_ID_KEY            : [NSNumber numberWithInteger:_selectedOrder.order_detail.detail_order_id],
+                            API_ORDER_ID_KEY            : _selectedOrder.order_detail.detail_order_id,
                             API_SHIPMENT_REF_KEY        : receiptNumber,
                             };
     

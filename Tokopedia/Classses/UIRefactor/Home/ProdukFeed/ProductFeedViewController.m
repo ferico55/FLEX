@@ -78,18 +78,7 @@
     
     /** set max data per page request **/
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
-    
-    /** set inset table for different size**/
-    UIEdgeInsets inset = _table.contentInset;
-    inset.top += 2;    
-    if (is4inch) {
-        inset.bottom += 145;
-    }
-    else{
-        inset.bottom += 230;
-    }
-    _table.contentInset = inset;
-    
+        
     /** set table view datasource and delegate **/
     _table.delegate = self;
     _table.dataSource = self;
@@ -97,6 +86,8 @@
     /** set table footer view (loading act) **/
     _table.tableFooterView = _footer;
     [_act startAnimating];
+
+    _table.contentInset = UIEdgeInsetsMake(0, 0, 53, 0);
     
     if (_product.count > 0) {
         _isnodata = NO;
@@ -107,9 +98,6 @@
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
-
-    NSLog(@"going here first");
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -122,6 +110,12 @@
             [self loadData];
         }
     }
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
 }
 
 
@@ -435,11 +429,11 @@
 {
     NSInteger index = indexpath.section+2*(indexpath.row);
     ProductFeedList *list = _product[index];
+
     DetailProductViewController *vc = [DetailProductViewController new];
     vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id, @"is_dismissed" : @YES};
-//    [self.navigationController pushViewController:vc animated:YES];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+
+    [self.delegate pushViewController:vc];
 }
 
 

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "OrderTransaction.h"
 
 @protocol ChangeReceiptNumberDelegate <NSObject>
 
@@ -16,6 +17,7 @@
 
 @interface ChangeReceiptNumberViewController : UIViewController
 
+@property (strong, nonatomic) OrderTransaction *order;
 @property (weak, nonatomic) id<ChangeReceiptNumberDelegate> delegate;
 
 @end

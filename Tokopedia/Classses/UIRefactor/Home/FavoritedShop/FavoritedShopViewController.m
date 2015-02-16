@@ -70,18 +70,6 @@
     _page = 1;
     
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
-    /** set inset table for different size**/
-    if (is4inch) {
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 155;
-        _table.contentInset = inset;
-    }
-    else{
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 240;
-        _table.contentInset = inset;
-    }
-    
     
     /** set table view datasource and delegate **/
     _table.delegate = self;
@@ -89,14 +77,14 @@
     
     /** set table footer view (loading act) **/
     _table.tableFooterView = _footer;
-    
     //    [self setHeaderData:_goldshop];
     [_act startAnimating];
     
+    _table.contentInset = UIEdgeInsetsMake(-34, 0, 53, 0);
+
     if (_shop.count > 0) {
         _isnodata = NO;
-    }
-    
+    }    
     
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -104,8 +92,6 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
-//    [self.table setContentInset:UIEdgeInsetsMake(0, 0, 140, 0)];
-
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshView:)
                                                  name:@"notifyFav"
@@ -117,7 +103,6 @@
             [self request];
         }
     }
-
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -191,22 +176,19 @@
             
             ((FavoritedShopCell*)cell).indexpath = indexPath;
             
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:shop.shop_image?:nil] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            //request.URL = url;
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:shop.shop_image?:nil]
+                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            
             UIImageView *thumb = ((FavoritedShopCell*)cell).shopimageview;
             thumb.image = nil;
-            //thumb.hidden = YES;	//@prepareforreuse then @reset
             
             [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                //NSLOG(@"thumb: %@", thumb);
                 [thumb setImage:image animated:YES];
-                
 #pragma clang diagnostic pop
-                
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            }];
+            } failure:nil];
         }
         
         
@@ -229,7 +211,11 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 33;
+    if (_shop.count > 0) {
+        return 33;
+    } else {
+        return 0;
+    }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -628,8 +614,8 @@
                                 kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
                                 @"is_dismissed" : @YES
                                 };
-    [self.navigationController pushViewController:shopViewController animated:YES];
 
+    [self.delegate pushViewController:shopViewController];
 }
 
 

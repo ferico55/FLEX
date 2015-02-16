@@ -15,16 +15,13 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="66" sectionHeaderHeight="33" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="Cex-il-UIU">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <color key="backgroundColor" red="0.95294117649999999" green="0.95294117649999999" blue="0.95294117649999999" alpha="1" colorSpace="deviceRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="320" id="2HP-SR-twI"/>
-                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="568" id="KcG-3G-5kx"/>
-                    </constraints>
+                    <inset key="scrollIndicatorInsets" minX="0.0" minY="0.0" maxX="0.0" maxY="48"/>
                     <inset key="separatorInset" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
                 </tableView>
             </subviews>
@@ -35,16 +32,21 @@
                 <constraint firstItem="Cex-il-UIU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="kuQ-OL-8PN"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="sJU-Oc-U0X" userLabel="FooterView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="48"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="rv0-U7-B3Y">
-                    <rect key="frame" x="150" y="7" width="20" height="20"/>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="rv0-U7-B3Y">
+                    <rect key="frame" x="150" y="14" width="20" height="20"/>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="centerX" secondItem="rv0-U7-B3Y" secondAttribute="centerX" id="5pZ-1T-S5q"/>
+                <constraint firstAttribute="centerY" secondItem="rv0-U7-B3Y" secondAttribute="centerY" id="TTK-JL-3ku"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>

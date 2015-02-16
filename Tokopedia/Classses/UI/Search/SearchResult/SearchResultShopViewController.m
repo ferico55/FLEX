@@ -149,12 +149,12 @@
     //cache
     NSString* path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDSEARCH_CACHEFILEPATH];
     NSString *querry =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
-    NSString *deptid =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    NSString *deptid =[_params objectForKey:kTKPDSEARCH_APIDEPARTMENTIDKEY];
     
     _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDSEARCHSHOP_APIRESPONSEFILEFORMAT, querry?:deptid]];
-
+    
     _cachecontroller.filePath = _cachepath;
-//    _cachecontroller.URLCacheInterval = 86400.0;
+    //    _cachecontroller.URLCacheInterval = 86400.0;
     _cachecontroller.URLCacheInterval = 0;
     [_cachecontroller initCacheWithDocumentPath:path];
 }
@@ -198,15 +198,15 @@
 #pragma mark - Table View Delegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (_isnodata) {
-		cell.backgroundColor = [UIColor whiteColor];
-	}
+    if (_isnodata) {
+        cell.backgroundColor = [UIColor whiteColor];
+    }
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section]-1;
     
-	if (row == indexPath.row) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-		
+    if (row == indexPath.row) {
+        NSLog(@"%@", NSStringFromSelector(_cmd));
+        
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext !=0 ) {
             /** called if need to load next page **/
             [self loadData];
@@ -215,7 +215,7 @@
             [_act stopAnimating];
             _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
         }
-	}
+    }
 }
 
 #pragma mark - Table View Data Source
@@ -234,19 +234,19 @@
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         NSString *cellid = kTKPDSEARCHRESULTSHOPCELL_IDENTIFIER;
-		
-		cell = (SearchResultShopCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-		if (cell == nil) {
-			cell = [SearchResultShopCell newcell];
-			((SearchResultShopCell*)cell).delegate = self;
-		}
+        
+        cell = (SearchResultShopCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+        if (cell == nil) {
+            cell = [SearchResultShopCell newcell];
+            ((SearchResultShopCell*)cell).delegate = self;
+        }
         
         if (_product.count>indexPath.row) {
             
             ((SearchResultShopCell*)cell).indexpath = indexPath;
             
             List *list = [_product objectAtIndex:indexPath.row];
-
+            
             ((SearchResultShopCell*)cell).shopname.text = list.shop_name?:@"";
             //((UILabel*)((SearchResultCell*)cell).labelalbum[i]).text = searchitem.product_name?:@"";
             
@@ -262,11 +262,11 @@
             UIActivityIndicatorView *act = ((SearchResultShopCell*)cell).act;
             [act startAnimating];
             [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Warc-retain-cycles"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
                 [thumb setImage:image animated:YES];
                 [act stopAnimating];
-    #pragma clang diagnostic pop
+#pragma clang diagnostic pop
                 
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                 [act stopAnimating];
@@ -285,7 +285,7 @@
         cell.textLabel.text = kTKPDSEARCH_NODATACELLTITLE;
         cell.detailTextLabel.text = kTKPDSEARCH_NODATACELLDESCS;
     }
-	return cell;
+    return cell;
 }
 
 
@@ -312,6 +312,11 @@
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SearchResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY,
+                                                        kTKPDSEARCH_APISEARCH_URLKEY:kTKPDSEARCH_APISEARCH_URLKEY,
+                                                        kTKPDSEARCH_APIREDIRECTURLKEY:kTKPDSEARCH_APIREDIRECTURLKEY,
+                                                        kTKPDSEARCH_APIDEPARTMENTIDKEY:kTKPDSEARCH_APIDEPARTMENTIDKEY
+                                                        }];
     
     // setup object mappings
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[List class]];
@@ -329,10 +334,10 @@
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDSEARCH_APIURINEXTKEY:kTKPDSEARCH_APIURINEXTKEY}];
     
     /** redirect mapping & hascatalog **/
-    RKObjectMapping *redirectMapping = [RKObjectMapping mappingForClass:[SearchRedirect class]];
-    [redirectMapping addAttributeMappingsFromDictionary: @{kTKPDSEARCH_APIREDIRECTURLKEY:kTKPDSEARCH_APIREDIRECTURLKEY,
-                                                           kTKPDSEARCH_APIDEPARTEMENTIDKEY:kTKPDSEARCH_APIDEPARTEMENTIDKEY,
-                                                           kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY}];
+    //RKObjectMapping *redirectMapping = [RKObjectMapping mappingForClass:[SearchRedirect class]];
+    //[redirectMapping addAttributeMappingsFromDictionary: @{kTKPDSEARCH_APIREDIRECTURLKEY:kTKPDSEARCH_APIREDIRECTURLKEY,
+    //                                                       kTKPDSEARCH_APIDEPARTEMENTIDKEY:kTKPDSEARCH_APIDEPARTEMENTIDKEY,
+    //                                                       kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY}];
     
     //add list relationship
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
@@ -343,7 +348,7 @@
     // add page relationship
     RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSEARCH_APIPAGINGKEY toKeyPath:kTKPDSEARCH_APIPAGINGKEY withMapping:pagingMapping];
     [resultMapping addPropertyMapping:pageRel];
-
+    
     
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
@@ -362,11 +367,11 @@
     if (_request.isExecuting) return;
     
     _requestcount ++;
-
+    
     NSString *querry = [_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
     NSString *type = kTKPDSEARCH_DATASEARCHSHOPKEY;
-    NSString *deptid = [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-
+    NSString *deptid = [_params objectForKey:kTKPDSEARCH_APIDEPARTMENTIDKEY];
+    
     NSDictionary* param;
     if (deptid == nil ) {
         param = @{kTKPDSEARCH_APIQUERYKEY       :   querry?:@"",
@@ -380,7 +385,7 @@
                   kTKPDSEARCH_APIPRICEMAXKEY    :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
                   };
     } else {
-        param = @{kTKPDSEARCH_APIDEPARTEMENTIDKEY   :   deptid?:@"",
+        param = @{kTKPDSEARCH_APIDEPARTMENTIDKEY    :   deptid?:@"",
                   kTKPDSEARCH_APIACTIONTYPEKEY      :   type?:@"",
                   kTKPDSEARCH_APIPAGEKEY            :   @(_page),
                   kTKPDSEARCH_APILIMITKEY           :   @(kTKPDSEARCH_LIMITPAGE),
@@ -394,11 +399,11 @@
     
     _requestcount ++;
     
-	[_cachecontroller getFileModificationDate];
-	
+    [_cachecontroller getFileModificationDate];
+    
     _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
-	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
+    if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
         if (!_isrefreshview) {
             _table.tableFooterView = _footer;
             [_act startAnimating];
@@ -408,7 +413,7 @@
                                                                         method:RKRequestMethodPOST
                                                                           path:kTKPDSEARCH_APIPATH
                                                                     parameters:[param encrypt]];
-
+        
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [self requestsuccess:mappingResult withOperation:operation];
             [_table reloadData];
@@ -431,7 +436,7 @@
         }];
         
         [_operationQueue addOperation:_request];
-
+        
         _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
                                                   target:self
                                                 selector:@selector(requesttimeout)
@@ -445,7 +450,7 @@
         NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
         NSLog(@"cache and updated in last 24 hours.");
         [self requestfailure:nil];
-	}
+    }
 }
 
 
@@ -516,7 +521,7 @@
             BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                NSString *uriredirect = _searchitem.result.redirect_url.redirect_url;
+                NSString *uriredirect = _searchitem.result.redirect_url;
                 
                 if (uriredirect == nil) {
                     if (_page == 1) {
@@ -569,8 +574,8 @@
                     }
                     // redirect uri to search category
                     if ([querry[1] isEqualToString:@"p"]) {
-                        NSString *deptid = _searchitem.result.redirect_url.department_id;
-                        [_params setObject:deptid forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+                        NSString *deptid = _searchitem.result.department_id;
+                        [_params setObject:deptid forKey:kTKPDSEARCH_APIDEPARTMENTIDKEY];
                         [self loadData];
                     }
                 }
@@ -634,7 +639,7 @@
                                 kTKPDDETAIL_APISHOPISGOLD : list.shop_gold_status,
                                 kTKPDFILTERSORT_DATAINDEXPATHKEY : indexPath?:0,
                                 kTKPD_AUTHKEY:[_data objectForKey : kTKPD_AUTHKEY]?:@{}};
-
+    
     [self.navigationController pushViewController:shopViewController animated:YES];
 }
 
@@ -709,7 +714,7 @@
     [self refreshView:nil];
     [_act startAnimating];
     _table.tableFooterView = _footer;
-
+    
 }
 
 @end

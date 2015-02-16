@@ -1462,7 +1462,7 @@
                                 <action selector="tap:" destination="B6c-MU-e9O" id="0MQ-k9-FZw"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Selesai" id="Uqn-na-oEz">
+                        <barButtonItem key="rightBarButtonItem" tag="2" title="Selesai" id="Uqn-na-oEz">
                             <connections>
                                 <action selector="tap:" destination="B6c-MU-e9O" id="AC4-mY-f8K"/>
                             </connections>

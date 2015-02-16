@@ -11,7 +11,6 @@
 #import "DBManager.h"
 #import "CategoryViewController.h"
 #import "CategoryViewCell.h"
-#import "CategoryResultViewController.h"
 #import "TKPDTabNavigationController.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
@@ -66,6 +65,13 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
     [self initNotificationManager];
 }
 
@@ -161,30 +167,30 @@
     NSInteger index = indexpath.section+3*(indexpath.row);
     
     SearchResultViewController *vc = [SearchResultViewController new];
-    vc.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
+    vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
                kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
     
     SearchResultViewController *vc1 = [SearchResultViewController new];
-    vc1.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
+    vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
                 kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
     
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-    vc2.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
+    vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"",
                 kTKPDSEARCH_APIDEPARTEMENTTITLEKEY : [_category[index] objectForKey:kTKPDSEARCH_APITITLEKEY?:@""],
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
 
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
-    TKPDTabNavigationController *c = [TKPDTabNavigationController new];
-    [c setData:@{kTKPDCATEGORY_DATATYPEKEY: @(kTKPDCATEGORY_DATATYPECATEGORYKEY), kTKPDSEARCH_APIDEPARTEMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"", }];
-    [c setSelectedIndex:0];
-    [c setViewControllers:viewcontrollers];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-    nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [nav.navigationBar setTranslucent:NO];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
+    [viewController setData:@{kTKPDCATEGORY_DATATYPEKEY: @(kTKPDCATEGORY_DATATYPECATEGORYKEY), kTKPDSEARCH_APIDEPARTMENTIDKEY : [_category[index] objectForKey:kTKPDSEARCH_APIDIDKEY]?:@"", }];
+    [viewController setSelectedIndex:0];
+    [viewController setViewControllers:viewcontrollers];
+
+    self.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:viewController animated:YES];
+    self.hidesBottomBarWhenPushed = NO;
 }
 
 #pragma mark - Notification Manager

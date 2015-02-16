@@ -109,6 +109,8 @@
 
 - (void)viewDidLoad
 {
+    self.hidesBottomBarWhenPushed = YES;
+
     [super viewDidLoad];
     
     _isnodata = YES;
@@ -174,6 +176,8 @@
 {
     [super viewWillAppear:animated];
     
+    self.hidesBottomBarWhenPushed = YES;
+
     self.tableView.delegate = self;
 
     [self configureRestKit];
@@ -223,9 +227,7 @@
     if (_tableView.contentInset.top == -64) _contentOffset.y = 64;
 
     self.tableView.contentOffset = _contentOffset;
-    self.tableView.contentInset = UIEdgeInsetsMake(-64, 0, self.view.frame.size.height, 0);
-    
-    self.hidesBottomBarWhenPushed = YES;
+    self.tableView.contentInset = UIEdgeInsetsMake(-64, 0, self.view.frame.size.height, 0);    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -357,6 +359,8 @@
 #pragma mark - Actions
 
 -(IBAction)tap:(id)sender{
+    
+    self.hidesBottomBarWhenPushed = YES;
     
     [_searchBar resignFirstResponder];
     
@@ -504,7 +508,7 @@
     /** redirect mapping & hascatalog **/
     RKObjectMapping *redirectMapping = [RKObjectMapping mappingForClass:[SearchRedirect class]];
     [redirectMapping addAttributeMappingsFromDictionary: @{kTKPDSEARCH_APIREDIRECTURLKEY:kTKPDSEARCH_APIREDIRECTURLKEY,
-                                                           kTKPDSEARCH_APIDEPARTEMENTIDKEY:kTKPDSEARCH_APIDEPARTEMENTIDKEY,
+                                                           kTKPDSEARCH_APIDEPARTMENTIDKEY:kTKPDSEARCH_APIDEPARTMENTIDKEY,
                                                            kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY}];
     
     //add list relationship
@@ -890,8 +894,8 @@
 {
     [self cancel];
     //NSDictionary* userinfo = notification.userInfo;
-    [_detailfilter setObject:[userInfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@""
-                      forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    [_detailfilter setObject:[userInfo objectForKey:kTKPDSEARCH_APIDEPARTMENTIDKEY]?:@""
+                      forKey:kTKPDSEARCH_APIDEPARTMENTIDKEY];
     [self refreshView:nil];
 }
 

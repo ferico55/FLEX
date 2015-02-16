@@ -102,44 +102,44 @@
 		
 		_unloadSelectedIndex = -1;
 		_unloadViewControllers = nil;
-        }
+    }
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    NSString *iconPath = [[NSBundle mainBundle] pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"];
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:iconPath];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image
+                                                              style:UIBarButtonItemStylePlain
+                                                             target:self
+                                                             action:@selector(tapbutton:)];
+    } else {
+        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img
+                                                              style:UIBarButtonItemStylePlain
+                                                             target:self
+                                                             action:@selector(tapbutton:)];
     }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-	[barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
-    
-    //TODO:: Change image
-    //if ([[_data objectForKey:kTKPDCONTROLLER_DATATYPEKEY]  isEqual: @(kTKPDCONTROLLER_DATATYPECATEGORYKEY)]) {
-        img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"]];
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-            UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-            _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-        }
-        else
-            _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-        [_barbuttoncategory setTag:11];
-        [_barbuttoncategory setEnabled:NO];
-        self.navigationItem.rightBarButtonItem = _barbuttoncategory;
-    //}
+    [_barbuttoncategory setTag:11];
+    [_barbuttoncategory setEnabled:NO];
+    self.navigationItem.rightBarButtonItem = _barbuttoncategory;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     self.navigationItem.title = self.navigationTitle;
+    self.hidesBottomBarWhenPushed = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    self.hidesBottomBarWhenPushed = YES;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }

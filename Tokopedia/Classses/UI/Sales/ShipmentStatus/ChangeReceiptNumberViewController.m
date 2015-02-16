@@ -12,6 +12,7 @@
 @interface ChangeReceiptNumberViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextField *textField;
+@property (weak, nonatomic) IBOutlet UILabel *currentReceiptNumberLabel;
 
 @end
 
@@ -37,6 +38,9 @@
                                                                   action:@selector(tap:)];
     doneButton.tag = 2;
     self.navigationItem.rightBarButtonItem = doneButton;
+
+    _currentReceiptNumberLabel.text = _order.order_detail.detail_ship_ref_num;
+
 }
 
 - (void)didReceiveMemoryWarning {

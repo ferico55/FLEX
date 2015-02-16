@@ -97,7 +97,16 @@
     [super viewWillAppear:animated];
     
     [_searchbar becomeFirstResponder];
+
     [self initNotificationManager];
+
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    self.hidesBottomBarWhenPushed = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -255,14 +264,14 @@
                 kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
-    TKPDTabNavigationController *c = [TKPDTabNavigationController new];
-    [c setSelectedIndex:0];
-    [c setViewControllers:viewcontrollers];
-    [c setNavigationTitle:searchresult];
+    TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
+    [viewController setSelectedIndex:0];
+    [viewController setViewControllers:viewcontrollers];
+    [viewController setNavigationTitle:searchresult];
     
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-    [nav.navigationBar setTranslucent:NO];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    self.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:viewController animated:YES];
+    self.hidesBottomBarWhenPushed = NO;
 }
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -323,13 +332,14 @@
                     kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
         NSArray *viewcontrollers = @[vc,vc1,vc2];
         
-        TKPDTabNavigationController *c = [TKPDTabNavigationController new];
+        TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];
         
-        [c setSelectedIndex:0];
-        [c setViewControllers:viewcontrollers];
-        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-        [nav.navigationBar setTranslucent:NO];
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
+        [viewController setSelectedIndex:0];
+        [viewController setViewControllers:viewcontrollers];
+
+        self.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:viewController animated:YES];
+        self.hidesBottomBarWhenPushed = NO;
     }
     else
     {

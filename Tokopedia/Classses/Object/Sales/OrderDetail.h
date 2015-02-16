@@ -24,7 +24,7 @@
 @property NSInteger detail_force_insurance;
 @property (strong, nonatomic) NSString *detail_open_amount_idr;
 @property (strong, nonatomic) NSString *detail_additional_fee;
-@property NSInteger detail_order_id;
+@property (strong, nonatomic) NSString *detail_order_id;
 @property (strong, nonatomic) NSString *detail_total_add_fee_idr;
 @property (strong, nonatomic) NSString *detail_order_date;
 @property (strong, nonatomic) NSString *detail_shipping_price;

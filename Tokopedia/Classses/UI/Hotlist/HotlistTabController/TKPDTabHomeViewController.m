@@ -16,7 +16,13 @@
 #import "UserAuthentificationManager.h"
 
 
-@interface TKPDTabHomeViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate, UIScrollViewDelegate> {
+@interface TKPDTabHomeViewController ()
+<   UIPageViewControllerDataSource,
+    UIPageViewControllerDelegate,
+    UIScrollViewDelegate,
+    TKPDTabHomeDelegate
+>
+{
     NSDictionary *_auth;
     UIView *_view;
     UIView *_tabView;
@@ -79,16 +85,20 @@
     _hotListViewController = [HotlistViewController new];
     _hotListViewController.data = @{kTKPD_AUTHKEY : [_userManager getUserLoginData]?:@""};
     _hotListViewController.index = 1;
+    _hotListViewController.delegate = self;
     
     _productFeedViewController = [ProductFeedViewController new];
     _productFeedViewController.index = 2;
+    _productFeedViewController.delegate = self;
     
     _historyProductViewController = [HistoryProductViewController new];
     _historyProductViewController.index = 3;
+    _historyProductViewController.delegate = self;
     
     _favoritedShopViewController = [FavoritedShopViewController new];
     _favoritedShopViewController.index = 4;
-
+    _favoritedShopViewController.delegate = self;
+    
     NSArray *viewControllers = [NSArray arrayWithObject:_hotListViewController];
     [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward
                                    animated:NO
@@ -162,8 +172,6 @@
     _direction = UIPageViewControllerNavigationDirectionForward;
     
     _tabBarCanScrolling = YES;
-    
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -230,14 +238,20 @@
     [self.view addSubview:greenArrowImageView];
     
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
-    NSBundle* bundle = [NSBundle mainBundle];
-    UIImage *backgroundImage = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"]]; //navigation-bg
+    NSString *navigationBarImagePath = [[NSBundle mainBundle] pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"];
+    UIImage *backgroundImage = [[UIImage alloc] initWithContentsOfFile:navigationBarImagePath];
 
     [navigationBar setBackgroundImage:backgroundImage
                        forBarPosition:UIBarPositionAny
                            barMetrics:UIBarMetricsDefault];
     
     [navigationBar setShadowImage:[UIImage new]];
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
@@ -424,7 +438,17 @@
     }
 }
 
+#pragma mark - Child view contoller delegate
+
+- (void)pushViewController:(id)viewController
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:viewController animated:YES];
+    self.hidesBottomBarWhenPushed = NO;
+}
+
 #pragma mark - Notification Manager
+
 - (void)initNotificationManager {
     _notifManager = [NotificationManager new];
     [_notifManager setViewController:self];
@@ -445,7 +469,5 @@
     [self tapWindowBar];
     [self presentViewController:ui animated:YES completion:nil];
 }
-
-
 
 @end

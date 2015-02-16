@@ -21,6 +21,8 @@
     NSString *_receiptNumber;
     ShipmentCourier *_selectedCourier;
     ShipmentCourierPackage *_selectedCourierPackage;
+    
+    BOOL _shouldReloadData;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -52,6 +54,8 @@
     _changeCourier = NO;
     _selectedCourier = [_shipmentCouriers objectAtIndex:0];
     _selectedCourierPackage = [_selectedCourier.shipment_package objectAtIndex:0];
+    
+    _shouldReloadData = NO;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -126,6 +130,15 @@
     }
     
     return cell;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return @"pergantian kurir ditanggung sepenuhnya oleh penjual";
+    } else {
+        return nil;
+    }
 }
 
 #pragma mark - Table delegate
@@ -223,6 +236,7 @@
 - (void)changeSwitch:(id)sender
 {
     _changeCourier = [sender isOn];
+    
     NSArray *indexPaths = @[
                             [NSIndexPath indexPathForRow:1 inSection:0],
                             [NSIndexPath indexPathForRow:2 inSection:0],
