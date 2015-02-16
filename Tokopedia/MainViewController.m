@@ -10,7 +10,7 @@
 
 #import "LoginViewController.h"
 #import "SearchViewController.h"
-#import "CartViewController.h"
+
 //#import "TransactionCartViewController.h"
 #import "TransactionCartRootViewController.h"
 #import "MoreNavigationController.h"
@@ -23,7 +23,6 @@
 #import "ProductFeedViewController.h"
 #import "HistoryProductViewController.h"
 #import "FavoritedShopViewController.h"
-#import "LogoutViewController.h"
 
 #import "activation.h"
 
@@ -439,23 +438,37 @@
 
 - (void)applicationlogout:(NSNotification*)notification
 {
-	//NSDictionary* userinfo = notification.userInfo;
-    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Apakah Anda yakin ingin keluar ?"
+                                                        message:nil
+                                                       delegate:self
+                                              cancelButtonTitle:@"Batal"
+                                              otherButtonTitles:@"Iya", nil];
+    alertView.tag = 1;
+    [alertView show];
+}
 
+- (void)doApplicationLogout {
+    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+    
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
     [_cacheController initCacheWithDocumentPath:path];
     [_cacheController clearCache];
     
     
-	TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-	[storage resetKeychain];	//delete all previous sensitive data
-	[_auth removeAllObjects];
+    TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+    [storage resetKeychain];	//delete all previous sensitive data
+    [_auth removeAllObjects];
     
-    [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
-    
-    //TODO:: request delayed
-	//[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(requestdelayed) object:nil];
-	//[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(requestdelayedguardian) object:nil];
+    [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 1) {
+        if(buttonIndex == 1) {
+            [self doApplicationLogout];
+        }
+    }
 }
 
 @end

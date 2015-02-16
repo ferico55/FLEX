@@ -11,10 +11,10 @@
 #import "DepositSummaryCell.h"
 #import "string_deposit.h"
 #import "DepositFormViewController.h"
-
+#import "AlertDatePickerView.h"
 #import "NoResult.h"
 
-@interface DepositSummaryViewController () <UITableViewDataSource, UITableViewDelegate> {
+@interface DepositSummaryViewController () <UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate> {
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
@@ -33,6 +33,11 @@
     NSInteger _limit;
     
     NSString *_uriNext;
+    NSDate *_now;
+    NSDate *_oneMonthBeforeNow;
+    
+    NSString *_currentStartDate;
+    NSString *_currentEndDate;
     
     BOOL _isRefreshView;
     BOOL _isNoData;
@@ -45,6 +50,9 @@
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (strong, nonatomic) IBOutlet UILabel *saldoLabel;
 @property (strong, nonatomic) IBOutlet UIButton *withdrawalButton;
+@property (strong, nonatomic) IBOutlet UIButton *startDateButton;
+@property (strong, nonatomic) IBOutlet UIButton *endDateButton;
+@property (strong, nonatomic) IBOutlet UIButton *filterDateButton;
 
 - (void)configureRestkit;
 - (void)cancelCurrentAction;
@@ -63,12 +71,23 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     
     self.title = @"Detil Saldo";
+    self.hidesBottomBarWhenPushed = YES;
     
     if (self) {
         _isRefreshView = NO;
         _isNoData = YES;
     }
     return self;
+}
+
+- (void)initNotificationCenter {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadListDeposit:)
+                                                 name:@"reloadListDeposit" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(disableButtonWithdraw:)
+                                                 name:@"removeButtonWithdraw" object:nil];
 }
 
 #pragma mark - ViewController Life
@@ -81,11 +100,31 @@
     
     _table.delegate = self;
     _table.dataSource = self;
-    _table.tableHeaderView = _header;
+//    _table.tableHeaderView = _header;
+    _filterDateButton.layer.cornerRadius = 3.0;
+    _withdrawalButton.layer.cornerRadius = 3.0;
     _saldoLabel.text = [_data objectForKey:@"total_saldo"];
-    _withdrawalButton.backgroundColor = [UIColor colorWithRed:(231.0/255.0) green:(231.0/255.0) blue:(231.0/255.0) alpha:1.0];
+//    _withdrawalButton.backgroundColor = [UIColor colorWithRed:(231.0/255.0) green:(231.0/255.0) blue:(231.0/255.0) alpha:1.0];
     
     _page = 1;
+    [self disableButtonWithdraw];
+    
+    NSDateFormatter *dateFormat = [NSDateFormatter new];
+    [dateFormat setDateFormat:@" dd/MM/yyyy"];
+    
+    _now = [NSDate date];
+    NSCalendar *calendar = [[NSCalendar alloc]
+                            initWithCalendarIdentifier:NSGregorianCalendar];
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    [components setMonth:-1];
+    _oneMonthBeforeNow = [calendar dateByAddingComponents:components
+                                                        toDate:_now
+                                                       options:0];
+    
+    [_startDateButton setTitle:[dateFormat stringFromDate:_oneMonthBeforeNow] forState:UIControlStateNormal];
+    [_endDateButton setTitle:[dateFormat stringFromDate:_now] forState:UIControlStateNormal];
+    
+    [self initNotificationCenter];
     
     [self configureRestkit];
     [self loadData];
@@ -114,7 +153,12 @@
             
 //            NSString *timeLabel = [depositList.deposit_date_full substringFromIndex:MAX((int)[depositList.deposit_date_full length]-5, 0)];
             
-            [((DepositSummaryCell*)cell).currentSaldo setText:depositList.deposit_id];
+            [((DepositSummaryCell*)cell).currentSaldo setText:depositList.deposit_saldo_idr];
+            if([depositList.deposit_type isEqualToString:@"1"]) {
+                [((DepositSummaryCell*)cell).depositAmount setTextColor:[UIColor greenColor]];
+            } else {
+                [((DepositSummaryCell*)cell).depositAmount setTextColor:[UIColor redColor]];
+            }
             [((DepositSummaryCell*)cell).depositAmount setText:depositList.deposit_amount_idr];
             [((DepositSummaryCell*)cell).depositNotes setText:depositList.deposit_notes];
             [((DepositSummaryCell*)cell).withdrawalTime setText:depositList.deposit_date_full];
@@ -122,10 +166,6 @@
             [((DepositSummaryCell*)cell).depositNotes sizeToFit];
 
             ((DepositSummaryCell*)cell).depositNotes.numberOfLines = 0;
-            
-            [((DepositSummaryCell*)cell).depositNotes setBackgroundColor:[UIColor orangeColor]];
-
-
         } else {
 
         }
@@ -146,6 +186,21 @@
 #pragma mark - Tableview Delegate
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (_isNoData) {
+        cell.backgroundColor = [UIColor whiteColor];
+    }
+    
+    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
+    if (row == indexPath.row) {
+        if (_page && _page != 0) {
+            [self configureRestkit];
+            [self loadData];
+        } else {
+            _table.tableFooterView = nil;
+            [_act stopAnimating];
+        }
+    }
+    
     // Remove seperator inset
     if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
         [cell setSeparatorInset:UIEdgeInsetsZero];
@@ -239,15 +294,20 @@
         [_act stopAnimating];
     }
     
+    NSDateFormatter *dateFormatStr = [NSDateFormatter new];
+    [dateFormatStr setDateFormat:@"yyyyMMdd"];
+    
     NSDictionary *param = @{
                             @"action" : @"get_summary",
                             @"page"   :   @(_page),
-                            @"limit"  :   @(20)
+                            @"limit"  :   @(20),
+                            @"start_date" : _currentStartDate?:[dateFormatStr stringFromDate:_oneMonthBeforeNow],
+                            @"end_date" : _currentEndDate?:[dateFormatStr stringFromDate:_now]
                             };
     
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"deposit.pl" parameters:[param encrypt]];
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        _withdrawalButton.backgroundColor = [UIColor colorWithRed:(18.0/255.0) green:(199.0/255.0) blue:(0.0/255.0) alpha:1.0];
+//        _withdrawalButton.backgroundColor = [UIColor colorWithRed:(18.0/255.0) green:(199.0/255.0) blue:(0.0/255.0) alpha:1.0];
         [self requestSuccess:mappingResult withOperation:operation];
         
         [_table reloadData];
@@ -295,6 +355,10 @@
             [_depositSummary addObjectsFromArray: depositsummary.result.list];
             _useableSaldo = depositsummary.result.summary.summary_useable_deposit;
             _useableSaldoIDR = depositsummary.result.summary.summary_useable_deposit_idr;
+            
+            if([depositsummary.result.summary.summary_today_tries integerValue] < [depositsummary.result.summary.summary_daily_tries integerValue]) {
+                [self enableButtonWithdraw];
+            }
             
             if (_depositSummary.count >0) {
                 _isNoData = NO;
@@ -346,6 +410,8 @@
             
         }
     }
+    
+    _table.tableHeaderView = nil;
 }
 
 - (void)requestFail:(id)error {
@@ -359,6 +425,8 @@
 - (void)cancelCurrentAction {
     
 }
+
+
 
 #pragma mark - IBAction
 -(IBAction)tap:(id)sender {
@@ -381,18 +449,63 @@
         switch (button.tag) {
             case 10:
             {
-                if(!_request.isExecuting) {
+//                if(!_request.isExecuting) {
                     DepositFormViewController *formViewController = [DepositFormViewController new];
-                    formViewController.data = @{@"summary_useable_deposit_idr":_useableSaldoIDR, @"summary_useable_deposit":_useableSaldo};
-                    
+//                    formViewController.data = @{@"summary_useable_deposit_idr":_useableSaldoIDR, @"summary_useable_deposit":_useableSaldo};
+                
 //                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:formViewController];
 //                    nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
 //                    [nav.navigationBar setTranslucent:NO];
 //                    
 //                    [self.navigationController presentViewController:nav animated:YES completion:nil];
                     [self.navigationController pushViewController:formViewController animated:YES];
-                }
+//                }
                 
+                break;
+            }
+                
+            case 11 : {
+                AlertDatePickerView *datePicker = [AlertDatePickerView new];
+                
+                NSString *start = [_startDateButton titleForState:UIControlStateNormal];
+                NSDateFormatter *dateFormat = [NSDateFormatter new];
+                [dateFormat setDateFormat:@" dd/MM/yyyy"];
+                NSDate *date = [dateFormat dateFromString:start];
+                
+                datePicker.delegate = self;
+                datePicker.tag = 1;
+                datePicker.currentdate = date;
+                
+                
+                
+                [datePicker show];
+                
+                break;
+            }
+                
+            case 12 : {
+                AlertDatePickerView *datePicker = [AlertDatePickerView new];
+                
+                NSString *start = [_endDateButton titleForState:UIControlStateNormal];
+                NSDateFormatter *dateFormat = [NSDateFormatter new];
+                [dateFormat setDateFormat:@" dd/MM/yyyy"];
+                NSDate *date = [dateFormat dateFromString:start];
+                
+                datePicker.delegate = self;
+                datePicker.tag = 2;
+                datePicker.currentdate = date;
+
+                [datePicker show];
+                break;
+            }
+                
+            case 13 : {
+                [_depositSummary removeAllObjects];
+                [_table reloadData];
+                _table.tableFooterView = _footer;
+                _page = 1;
+                [self configureRestkit];
+                [self loadData];
                 break;
             }
                 
@@ -410,6 +523,47 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - TKPD Alert date picker delegate
+
+- (void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    AlertDatePickerView *datePicker = (AlertDatePickerView *)alertView;
+    NSDate *date = [datePicker.data objectForKey:kTKPDALERTVIEW_DATADATEPICKERKEY];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@" dd/MM/yyyy"];
+    
+    NSDateFormatter *dateFormatStr = [NSDateFormatter new];
+    [dateFormatStr setDateFormat:@"yyyyMMdd"];
+
+    if (datePicker.tag == 1) {
+        [_startDateButton setTitle:[dateFormatter stringFromDate:date] forState:UIControlStateNormal];
+        _currentStartDate = [dateFormatStr stringFromDate:date];
+    } else {
+        [_endDateButton setTitle:[dateFormatter stringFromDate:date] forState:UIControlStateNormal];
+        _currentEndDate = [dateFormatStr stringFromDate:date];
+    }
+}
+
+#pragma mark - Notification Action
+- (void)reloadListDeposit:(NSNotification*)notification  {
+    _table.tableHeaderView = _footer;
+    _page = 1;
+    [self configureRestkit];
+    [self loadData];
+}
+
+
+- (void)disableButtonWithdraw {
+    _withdrawalButton.enabled = NO;
+    [_withdrawalButton setAlpha:0.5];
+}
+
+- (void)enableButtonWithdraw {
+    _withdrawalButton.enabled = YES;
+    [_withdrawalButton setAlpha:1];
 }
 
 @end

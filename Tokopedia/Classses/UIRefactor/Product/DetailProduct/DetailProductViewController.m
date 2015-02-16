@@ -323,14 +323,14 @@
             case UIGestureRecognizerStateEnded: {
                 // go to shop
                 NSMutableArray *viewcontrollers = [NSMutableArray new];
-                NSInteger shopid = _product.result.shop_info.shop_id;
-                if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]==shopid) {
+                NSString *shopid = _product.result.shop_info.shop_id;
+                if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] isEqualToString:shopid]) {
                     [self.navigationController popViewControllerAnimated:YES];
                 }
                 else{
                     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
                     TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
-                    shopViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:@(shopid?:0),
+                    shopViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:shopid,
                                                 kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                     [self.navigationController pushViewController:shopViewController animated:YES];
                 }

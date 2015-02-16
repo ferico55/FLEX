@@ -160,6 +160,10 @@
     NSString *stringWithoutBr = [_review.review_message stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
     _commentlabel.text = stringWithoutBr;
     
+    if([[NSString stringWithFormat:@"%@", _userManager.getShopId]  isEqualToString:_review.review_shop_id]) {
+        _deleteReviewButton.hidden = YES;
+    }
+    
     _qualityrate.starscount = [_review.review_rate_quality integerValue];
     _speedrate.starscount = [_review.review_rate_speed integerValue];
     _servicerate.starscount = [_review.review_rate_service integerValue];
