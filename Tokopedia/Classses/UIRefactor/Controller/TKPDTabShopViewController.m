@@ -951,33 +951,6 @@
 }
 
 #pragma mark - UIPageViewController
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    
-    NSUInteger index = [(APPChildViewController *)viewController index];
-    
-    if (index == 0) {
-        return nil;
-    }
-    
-    index--;
-    
-    return [self viewControllerAtIndex:index];
-    
-}
 
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
-    
-    NSUInteger index = [(APPChildViewController *)viewController index];
-    
-    
-    index++;
-    
-    if (index == 5) {
-        return nil;
-    }
-    
-    return [self viewControllerAtIndex:index];
-    
-}
 
 @end
