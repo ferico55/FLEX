@@ -1366,14 +1366,6 @@
 		85A70E181A91D353004B896F /* OrderTransaction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderTransaction.h; sourceTree = "<group>"; };
 		85A70E191A91D353004B896F /* OrderTransaction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderTransaction.m; sourceTree = "<group>"; };
 		85A70E1A1A91D353004B896F /* string_order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_order.h; sourceTree = "<group>"; };
-		85A70E1B1A91D353004B896F /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
-		85A70E1C1A91D353004B896F /* Track.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Track.m; sourceTree = "<group>"; };
-		85A70E1D1A91D353004B896F /* TrackOrder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackOrder.h; sourceTree = "<group>"; };
-		85A70E1E1A91D353004B896F /* TrackOrder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackOrder.m; sourceTree = "<group>"; };
-		85A70E1F1A91D353004B896F /* TrackOrderDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackOrderDetail.h; sourceTree = "<group>"; };
-		85A70E201A91D353004B896F /* TrackOrderDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackOrderDetail.m; sourceTree = "<group>"; };
-		85A70E211A91D353004B896F /* TrackOrderResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackOrderResult.h; sourceTree = "<group>"; };
-		85A70E221A91D353004B896F /* TrackOrderResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackOrderResult.m; sourceTree = "<group>"; };
 		85A70E241A91D353004B896F /* HotlistDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HotlistDetail.h; sourceTree = "<group>"; };
 		85A70E251A91D353004B896F /* HotlistDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HotlistDetail.m; sourceTree = "<group>"; };
 		85A70E261A91D353004B896F /* List.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = List.h; sourceTree = "<group>"; };
@@ -2069,9 +2061,6 @@
 		85A7112E1A91D354004B896F /* ShipmentStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipmentStatusViewController.h; sourceTree = "<group>"; };
 		85A7112F1A91D354004B896F /* ShipmentStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentStatusViewController.m; sourceTree = "<group>"; };
 		85A711301A91D354004B896F /* ShipmentStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShipmentStatusViewController.xib; sourceTree = "<group>"; };
-		85A711311A91D354004B896F /* TrackOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackOrderViewController.h; sourceTree = "<group>"; };
-		85A711321A91D354004B896F /* TrackOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackOrderViewController.m; sourceTree = "<group>"; };
-		85A711331A91D354004B896F /* TrackOrderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TrackOrderViewController.xib; sourceTree = "<group>"; };
 		85A711341A91D354004B896F /* string_order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_order.h; sourceTree = "<group>"; };
 		85A711361A91D354004B896F /* search.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = search.h; sourceTree = "<group>"; };
 		85A711381A91D354004B896F /* SearchCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchCell.xib; sourceTree = "<group>"; };
@@ -3386,14 +3375,6 @@
 				85A70E181A91D353004B896F /* OrderTransaction.h */,
 				85A70E191A91D353004B896F /* OrderTransaction.m */,
 				85A70E1A1A91D353004B896F /* string_order.h */,
-				85A70E1B1A91D353004B896F /* Track.h */,
-				85A70E1C1A91D353004B896F /* Track.m */,
-				85A70E1D1A91D353004B896F /* TrackOrder.h */,
-				85A70E1E1A91D353004B896F /* TrackOrder.m */,
-				85A70E1F1A91D353004B896F /* TrackOrderDetail.h */,
-				85A70E201A91D353004B896F /* TrackOrderDetail.m */,
-				85A70E211A91D353004B896F /* TrackOrderResult.h */,
-				85A70E221A91D353004B896F /* TrackOrderResult.m */,
 			);
 			path = Sales;
 			sourceTree = "<group>";
@@ -4778,9 +4759,6 @@
 				85A7112E1A91D354004B896F /* ShipmentStatusViewController.h */,
 				85A7112F1A91D354004B896F /* ShipmentStatusViewController.m */,
 				85A711301A91D354004B896F /* ShipmentStatusViewController.xib */,
-				85A711311A91D354004B896F /* TrackOrderViewController.h */,
-				85A711321A91D354004B896F /* TrackOrderViewController.m */,
-				85A711331A91D354004B896F /* TrackOrderViewController.xib */,
 			);
 			path = ShipmentStatus;
 			sourceTree = "<group>";
