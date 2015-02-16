@@ -14,4 +14,5 @@
 @property (nonatomic, strong) NSString *file_path;
 @property (nonatomic, strong) NSString *file_th;
 
+@property (nonatomic, strong) NSString *file_name;
 @end

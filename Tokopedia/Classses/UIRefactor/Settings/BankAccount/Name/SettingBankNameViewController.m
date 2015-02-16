@@ -94,10 +94,9 @@
     [_banknames addObjectsFromArray:name];
     [_bankvalues addObjectsFromArray:value];
     if (bankid!=0) index = [_bankvalues indexOfObject:[NSString stringWithFormat:@"%zd",bankid]];
-    
     indexpath = (index == 0)?[_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]:[NSIndexPath indexPathForRow:index inSection:0];
     
-    [_selectedlocation setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHKEY];
+    [_selectedlocation setObject:indexpath?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDPROFILE_DATAINDEXPATHKEY];
     
     NSDictionary *temp;
     for (int i=0; i<_banknames.count;i++) {

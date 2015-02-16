@@ -18,7 +18,7 @@ typedef enum
 } TYPE_ADD_EDIT_PROFILE;
 
 #define kTKPDPROFILEEDIT_TITLE @"Edit Profile"
-#define kTKPDPROFILEEDITPHONEVERIFICATION_TITLE @"Verification Phone Number"
+#define kTKPDPROFILEEDITPHONEConfirmed_TITLE @"Confirmed Phone Number"
 
 #define kTKPDPROFILESETTING_TITLE @"Settings"
 #define kTKPDPROFILESETTINGNOTIFICATION_TITLE @"Setting Notification"
@@ -55,6 +55,8 @@ typedef enum
 #define kTKPDPROFILE_DATAEDITTYPEKEY @"edittype"
 #define kTKPDPROFILE_DATABANKINDEXPATHKEY @"bankindexpath"
 #define kTKPDPROFILE_DATALOCATIONNAMEKEY @"locationname"
+
+#define DATA_LIST_BANK_ACOUNT_KEY @"list_bank_account"
 
 #pragma mark - Action
 #define kTKPDPROFILE_APIGETFAVORITESHOPKEY @"get_favorit_shop"
@@ -152,6 +154,7 @@ typedef enum
 #define kTKPDPROFILESETTING_APIDISTRICTKEY @"district"
 #define kTKPDPROFILESETTING_APIUSERPASSWORDKEY @"user_password"
 
+#define API_BANK_ACCOUNT_KEY @"bank_account"
 #define kTKPDPROFILESETTING_APIBANKIDKEY @"bank_id"
 #define API_BANK_NAME_KEY @"bank_name"
 #define API_BANK_ACCOUNT_NAME_KEY @"bank_account_name"

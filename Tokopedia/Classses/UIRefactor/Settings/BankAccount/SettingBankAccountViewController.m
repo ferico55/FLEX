@@ -7,10 +7,10 @@
 //
 
 #import "profile.h"
-#import "BankAccountForm.h"
 #import "BankAccountGetDefaultForm.h"
 #import "ProfileSettings.h"
 #import "GeneralList1GestureCell.h"
+#import "GeneralCheckmarkCell.h"
 #import "SettingBankDetailViewController.h"
 #import "SettingBankEditViewController.h"
 #import "SettingBankAccountViewController.h"
@@ -57,6 +57,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (strong, nonatomic) IBOutlet UIView *addNewRekeningView;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -132,7 +133,16 @@
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(didEditBankAccount:) name:kTKPD_ADDACCOUNTBANKNOTIFICATIONNAMEKEY object:nil];
-
+    
+    if (_delegate == nil) {
+        _table.tableHeaderView = _addNewRekeningView;
+    }
+    
+    NSArray *lists = [_data objectForKey:DATA_LIST_BANK_ACOUNT_KEY];
+    if (lists.count>0) {
+        _isnodata = NO;
+        [_list addObjectsFromArray:lists];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -144,6 +154,15 @@
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
             [self request];
         }
+    }
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if (_delegate !=nil) {
+        [_delegate selectedObject:_selectedObject];
     }
 }
 
@@ -165,21 +184,20 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell* cell = nil;
-    if (!_isnodata) {
-        
-        NSString *cellid = kTKPDGENERALLIST1GESTURECELL_IDENTIFIER;
-		
-		cell = (GeneralList1GestureCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-		if (cell == nil) {
-			cell = [GeneralList1GestureCell newcell];
-			((GeneralList1GestureCell*)cell).delegate = self;
-		}
-        
-        if (_list.count > indexPath.row) {
+    
+    if (_list.count > indexPath.row) {
+        if (_delegate ==nil) {
+            NSString *cellid = kTKPDGENERALLIST1GESTURECELL_IDENTIFIER;
+            
+            cell = (GeneralList1GestureCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+            if (cell == nil) {
+                cell = [GeneralList1GestureCell newcell];
+                ((GeneralList1GestureCell*)cell).delegate = self;
+            }
+            
             BankAccountFormList *list = _list[indexPath.row];
             ((GeneralList1GestureCell*)cell).labelname.text = list.bank_account_name;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
-            [(GeneralList1GestureCell*)cell viewdetailresetposanimation:YES];
             ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
             if (!_ismanualsetdefault)((GeneralList1GestureCell*)cell).labeldefault.hidden = (list.is_default_bank==1)?NO:YES;
             else {
@@ -189,22 +207,22 @@
                     ((GeneralList1GestureCell*)cell).labeldefault.hidden = NO;
                 }
             }
+        }
+        else
+        {
+            NSString *cellid = GENERAL_CHECKMARK_CELL_IDENTIFIER;
             
+            cell = (GeneralCheckmarkCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+            if (cell == nil) {
+                cell = [GeneralCheckmarkCell newcell];
+            }
+            
+            BankAccountFormList *list = _list[indexPath.row];
+            ((GeneralCheckmarkCell*)cell).cellLabel.text = list.bank_account_name;
+            ((GeneralCheckmarkCell*)cell).checkmarkImageView.hidden = !([_selectedObject isEqual:list]);
         }
-        
-		return cell;
-    } else {
-        static NSString *CellIdentifier = kTKPDPROFILE_STANDARDTABLEVIEWCELLIDENTIFIER;
-        
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        }
-        
-        cell.textLabel.text = kTKPDPROFILE_NODATACELLTITLE;
-        cell.detailTextLabel.text = kTKPDPROFILE_NODATACELLDESCS;
     }
+        
     return cell;
 }
 
@@ -218,24 +236,31 @@
 #pragma mark - Table View Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BOOL isdefault;
-    BankAccountFormList *list = _list[indexPath.row];
-    if (_ismanualsetdefault)
-        isdefault = (indexPath.row == 0)?YES:NO;
+    if (_delegate ==nil) {
+        BOOL isdefault;
+        BankAccountFormList *list = _list[indexPath.row];
+        if (_ismanualsetdefault)
+            isdefault = (indexPath.row == 0)?YES:NO;
+        else
+        {
+            isdefault = (list.is_default_bank == 1)?YES:NO;
+        }
+
+        SettingBankDetailViewController *vc = [SettingBankDetailViewController new];
+        vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                    kTKPDPROFILE_DATABANKKEY : _list[indexPath.row]?:[BankAccountFormList new],
+                    kTKPDPROFILE_DATAINDEXPATHKEY : indexPath,
+                    kTKPDPROFILE_DATAISDEFAULTKEY : @(isdefault)
+                    };
+
+        vc.delegate = self;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
     else
     {
-        isdefault = (list.is_default_bank == 1)?YES:NO;
+        _selectedObject = _list[indexPath.row];
+        [_table reloadData];
     }
-
-    SettingBankDetailViewController *vc = [SettingBankDetailViewController new];
-    vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
-                kTKPDPROFILE_DATABANKKEY : _list[indexPath.row],
-                kTKPDPROFILE_DATAINDEXPATHKEY : indexPath,
-                kTKPDPROFILE_DATAISDEFAULTKEY : @(isdefault)
-                };
-
-    vc.delegate = self;
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -271,7 +296,7 @@
     else {
         //add new address
         SettingBankEditViewController *vc = [SettingBankEditViewController new];
-        vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
+        vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                     kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_ADD_NEW),
                     };
         [self.navigationController pushViewController:vc animated:YES];
@@ -300,8 +325,6 @@
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[BankAccountFormResult class]];
-    
-    
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[BankAccountFormList class]];
     [listMapping addAttributeMappingsFromArray:@[kTKPDPROFILESETTING_APIBANKIDKEY,

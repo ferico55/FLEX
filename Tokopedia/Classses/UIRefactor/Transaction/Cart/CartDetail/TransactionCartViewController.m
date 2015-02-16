@@ -6,6 +6,9 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
+#import "string_product.h"
+#import "string_transaction.h"
+
 #import "TransactionObjectMapping.h"
 
 #import "TransactionCartViewController.h"
@@ -356,20 +359,8 @@
             if (indexPath.row<indexPathFirstObjectProduct.row) {
                 ((UILabel*)_errorLabel[0]).text = list.cart_error_message_1;
                 NSString *string = list.cart_error_message_1;
-                
-                UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-                
-                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-                style.lineSpacing = 6.0;
-                
-                NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
-                                             NSFontAttributeName: font,
-                                             NSParagraphStyleAttributeName: style,
-                                             };
-                
-                NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string
-                                                                                                attributes:attributes];
-                ((UILabel*)_errorLabel[0]).attributedText = attributedText;
+                [_errorLabel[0] setText:string animated:YES];
+                [(UILabel*)_errorLabel[0] multipleLineLabel:(UILabel*)_errorLabel];
                 cell = _errorCells[indexPath.row];
             }
             else if (labs(indexPathFirstObjectProduct.row-indexPath.row) < rowCount)
@@ -468,6 +459,8 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 #define DEFAULT_ROW_HEIGHT 44
+#define CELL_ROW_HEIGHT 212
+    
     NSInteger listCount = _list.count;
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
 
@@ -485,7 +478,7 @@
             return ((UITableViewCell*)_errorCells[0]).frame.size.height;
         }
         else if (labs(indexPathFirstObjectProduct.row-indexPath.row)<products.count) {
-            return 236;
+            return CELL_ROW_HEIGHT;
         }
         else
             return DEFAULT_ROW_HEIGHT;
@@ -1196,10 +1189,9 @@
                                       API_PARTIAL_STRING_KEY :partialString,
                                       API_USE_DEPOSIT_KEY:@(_isUsingSaldoTokopedia),
                                       @"deposit_amt":usedSaldo,
-                                      API_VOUCHER_CODE_KEY : voucherCode
-                                      //@"enc_dec":@"off",
-                                      //kTKPD_USERIDKEY : [_auth objectForKey:kTKPD_USERIDKEY],
-                                      //kTKPD_SHOPIDKEY: [_auth objectForKey:kTKPD_SHOPIDKEY]
+                                      API_VOUCHER_CODE_KEY : voucherCode,
+                                      kTKPD_USERIDKEY : [_auth objectForKey:kTKPD_USERIDKEY],
+                                      kTKPD_SHOPIDKEY: [_auth objectForKey:kTKPD_SHOPIDKEY]
                                       };
     
     [param addEntriesFromDictionary:paramDictionary];
