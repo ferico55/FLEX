@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *shopImageView;
 @property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
 
 
 @end
