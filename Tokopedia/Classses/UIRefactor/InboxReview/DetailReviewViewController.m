@@ -102,6 +102,8 @@
     _operationQueue = [NSOperationQueue new];
     _operationDeleteCommentQueue = [NSOperationQueue new];
     
+    self.hidesBottomBarWhenPushed = YES;
+    
     [self initNavigationBar];
     [self initReviewData];
     [self initTalkInputView];

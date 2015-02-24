@@ -97,14 +97,23 @@
 @end
 
 @implementation ShopTalkViewController
+@synthesize indexNumber;
 
-#pragma mark - View Life Cycle
+#pragma mark - Init Notification
+- (void)initNotificationCenter {
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    
+    [nc addObserver:self selector:@selector(updateScrollViewPosition:) name:@"updateScrollViewPosition" object:nil];
+    
+}
+
 
 #pragma mark - View Life Cycle
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    [self initNotificationCenter];
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
     _operationUnfollowQueue = [NSOperationQueue new];
@@ -202,7 +211,7 @@
     if (_contentOffset.y > self.view.frame.size.height) _contentOffset.y = _header.frame.size.height - 109;
     else if (_tableView.contentInset.top == -64) _contentOffset.y = 64;
     
-    self.tableView.contentOffset = _contentOffset;
+//    self.tableView.contentOffset = _contentOffset;
     
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, self.view.frame.size.height, 0);
     if (_shopIsGold) self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0);
@@ -225,6 +234,7 @@
 //    [super viewDidDisappear:animated];
 //    self.tableView.delegate = nil;
 //}
+
 
 #pragma mark - Table View Data Source
 
@@ -687,7 +697,18 @@
     [self updateTabAppearance:scrollView.contentOffset];
     [self updateNavigationBarAppearance:scrollView.contentOffset];
     [_headerController didScroll:scrollView];
+    
+    NSLog(@"Y Scroll position : %f", _tableView.contentOffset.y);
+    
+    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:_tableView.contentOffset.y], @"yposition", nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateScrollViewPosition" object:nil userInfo:info];
+
 }
+
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+//    NSLog(@"Y Scroll position : %f", _tableView.contentOffset.y);
+//}
+
 
 #pragma mark - Methods
 
@@ -971,6 +992,12 @@
     return self;
 }
 
-
+#pragma mark - Notification Action
+- (void)updateScrollViewPosition:(NSNotification *)notification
+{
+    id userinfo = notification.userInfo;
+    CGPoint cgpoint = CGPointMake(0, [[userinfo objectForKey:@"yposition"] floatValue]);
+    _tableView.contentOffset = cgpoint;
+}
 
 @end
