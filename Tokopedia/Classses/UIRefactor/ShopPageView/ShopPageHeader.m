@@ -49,9 +49,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    _shopImageView.layer.cornerRadius = _shopImageView.frame.size.width/2;
-    _shopImageView.layer.borderColor = [UIColor whiteColor].CGColor;
-    _shopImageView.layer.borderWidth = 3.0f;
 }
 
 - (void)viewDidLoad
@@ -76,7 +73,15 @@
 }
 
 - (void)setHeaderData {
-    [_shopNameLabel setText:_shop.result.info.shop_name];
+    _scrollView.hidden = NO;
+    _descriptionView.nameLabel.text = _shop.result.info.shop_name;
+    _descriptionView.descriptionLabel.text = _shop.result.info.shop_description;
+    
+    if (_shop.result.info.shop_is_gold == 1) {
+        _descriptionView.badgeImageView.hidden = NO;
+    }
+    
+    [_descriptionView.nameLabel sizeToFit];
     // Set cover image
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_cover]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -101,11 +106,12 @@
     [_shopImageView setImageWithURLRequest:requestAvatar placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        
         _shopImageView.image = image;
         _shopImageView.hidden = NO;
         
-        
+        _shopImageView.layer.cornerRadius = _shopImageView.frame.size.height /2;
+        _shopImageView.layer.masksToBounds = YES;
+        _shopImageView.layer.borderWidth = 0;
 #pragma clang diagnostic pop
     } failure:nil];
     
@@ -125,8 +131,11 @@
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
 
-
-
+#pragma mark - Scroll view delegate
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    self.pageControl.currentPage = scrollView.contentOffset.x / self.view.frame.size.width;
+}
 
 
 @end
