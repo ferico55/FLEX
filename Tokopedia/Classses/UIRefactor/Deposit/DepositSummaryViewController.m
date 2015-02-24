@@ -100,11 +100,21 @@
     
     _table.delegate = self;
     _table.dataSource = self;
-//    _table.tableHeaderView = _header;
+
     _filterDateButton.layer.cornerRadius = 3.0;
     _withdrawalButton.layer.cornerRadius = 3.0;
     _saldoLabel.text = [_data objectForKey:@"total_saldo"];
-//    _withdrawalButton.backgroundColor = [UIColor colorWithRed:(231.0/255.0) green:(231.0/255.0) blue:(231.0/255.0) alpha:1.0];
+    
+    UIImage *searchImg = [UIImage imageNamed:@"icon_search@2x.png"];
+    
+    CGRect rect = CGRectMake(0.0, 0.0, _filterDateButton.frame.size.height - 10, _filterDateButton.frame.size.height -10);
+    UIGraphicsBeginImageContext(rect.size);
+    [searchImg drawInRect:rect];
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [_filterDateButton setImage:img forState:UIControlStateNormal];
+
     
     _page = 1;
     [self disableButtonWithdraw];
@@ -154,8 +164,8 @@
 //            NSString *timeLabel = [depositList.deposit_date_full substringFromIndex:MAX((int)[depositList.deposit_date_full length]-5, 0)];
             
             [((DepositSummaryCell*)cell).currentSaldo setText:depositList.deposit_saldo_idr];
-            if([depositList.deposit_type isEqualToString:@"1"]) {
-                [((DepositSummaryCell*)cell).depositAmount setTextColor:[UIColor greenColor]];
+            if([depositList.deposit_amount integerValue] > 0) {
+                [((DepositSummaryCell*)cell).depositAmount setTextColor:[UIColor colorWithRed:(10.0/255.0) green:(126.0/255.0) blue:(7.0/255.0) alpha:(1.0)]];
             } else {
                 [((DepositSummaryCell*)cell).depositAmount setTextColor:[UIColor redColor]];
             }
@@ -224,10 +234,11 @@
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[DepositSummary class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DepositSummaryResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"end_date" : @"end_date", @"start_date" : @"start_date"}];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"end_date" : @"end_date", @"start_date" : @"start_date", @"error_date" : @"error_date"}];
     
     RKObjectMapping *summaryDetailMapping = [RKObjectMapping mappingForClass:[DepositSummaryDetail class]];
     [summaryDetailMapping addAttributeMappingsFromDictionary:@{
@@ -380,6 +391,10 @@
                 _page = [[queries objectForKey:@"page"] integerValue];
             } else {
                 _isNoData = YES;
+                
+                if(depositsummary.result.error_date) {
+                    [_noResult setNoResultText:kTKPDMESSAGE_ERRORMESSAGEDATEKEY];
+                }
                 _table.tableFooterView = _noResult;
                 
             }

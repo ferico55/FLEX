@@ -39,6 +39,7 @@
 
 #define kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY @"Sukses"
 #define kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY @"Error"
+#define kTKPDMESSAGE_ERRORMESSAGEDATEKEY @"Rentang waktu maksimal pemeriksaan mutasi adalah 31 hari."
 
 #define kTKPDNETWORK_ERRORTITLE @"Network Error"
 #define kTKPDNETWORK_ERRORDESCS @"The Internet connection appears to be offline."
