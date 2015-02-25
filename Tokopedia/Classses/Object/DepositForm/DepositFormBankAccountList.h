@@ -17,5 +17,6 @@
 @property (nonatomic, strong) NSString *bank_name;
 @property (nonatomic, strong) NSString *bank_account_number;
 @property (nonatomic) NSInteger is_default_bank;
+@property (nonatomic) NSInteger is_verified_account;
 
 @end

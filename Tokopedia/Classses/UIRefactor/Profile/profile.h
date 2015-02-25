@@ -166,6 +166,7 @@ typedef enum
 #define API_BANK_ACCOUNT_ID_KEY @"bank_account_id"
 #define API_ACCOUNT_ID_KEY @"account_id"
 #define kTKPDPROFILESETTING_APIISDEFAULTBANKKEY @"is_default_bank"
+#define kTKPDPROFILESETTING_APIISVERIFIEDBANKKEY @"is_verified_account"
 #define API_DEFAULT_BANK_KEY @"default_bank"
 #define API_OWNER_ID_KEY @"owner_id"
 #define kTKPDPROFILESETTING_APIOTPCODEKEY @"otp_code"

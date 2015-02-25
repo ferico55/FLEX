@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		8559B04F1A9DBC6F00620030 /* DepositSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8559B04D1A9DBC6F00620030 /* DepositSummaryViewController.m */; };
+		8559B0501A9DBC6F00620030 /* DepositSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8559B04E1A9DBC6F00620030 /* DepositSummaryViewController.xib */; };
 		859A393E1A8376A70055BA8F /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAAEA4419F7534B00904AFB /* MainViewController.m */; };
 		859A39411A8376A70055BA8F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36DF9619B0656400AF74C1 /* AppDelegate.m */; };
 		859A39491A8379B60055BA8F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36DF9219B0656400AF74C1 /* main.m */; };
@@ -389,8 +391,6 @@
 		85A714F21A91D355004B896F /* DepositListBankViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85A70FD21A91D353004B896F /* DepositListBankViewController.xib */; };
 		85A714F31A91D355004B896F /* DepositSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A70FD41A91D353004B896F /* DepositSummaryCell.m */; };
 		85A714F41A91D355004B896F /* DepositSummaryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85A70FD51A91D353004B896F /* DepositSummaryCell.xib */; };
-		85A714F51A91D355004B896F /* DepositSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A70FD71A91D353004B896F /* DepositSummaryViewController.m */; };
-		85A714F61A91D355004B896F /* DepositSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85A70FD81A91D353004B896F /* DepositSummaryViewController.xib */; };
 		85A714F71A91D355004B896F /* GeneralAlertCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A70FDB1A91D353004B896F /* GeneralAlertCell.m */; };
 		85A714F81A91D355004B896F /* GeneralAlertCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85A70FDC1A91D353004B896F /* GeneralAlertCell.xib */; };
 		85A714F91A91D355004B896F /* GeneralCheckmarkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A70FDF1A91D353004B896F /* GeneralCheckmarkCell.m */; };
@@ -1030,6 +1030,9 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8559B04C1A9DBC6F00620030 /* DepositSummaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepositSummaryViewController.h; sourceTree = "<group>"; };
+		8559B04D1A9DBC6F00620030 /* DepositSummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepositSummaryViewController.m; sourceTree = "<group>"; };
+		8559B04E1A9DBC6F00620030 /* DepositSummaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DepositSummaryViewController.xib; sourceTree = "<group>"; };
 		85A70C9E1A91D353004B896F /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		85A70C9F1A91D353004B896F /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		85A70CA01A91D353004B896F /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -1752,9 +1755,6 @@
 		85A70FD31A91D353004B896F /* DepositSummaryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepositSummaryCell.h; sourceTree = "<group>"; };
 		85A70FD41A91D353004B896F /* DepositSummaryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepositSummaryCell.m; sourceTree = "<group>"; };
 		85A70FD51A91D353004B896F /* DepositSummaryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DepositSummaryCell.xib; sourceTree = "<group>"; };
-		85A70FD61A91D353004B896F /* DepositSummaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepositSummaryViewController.h; sourceTree = "<group>"; };
-		85A70FD71A91D353004B896F /* DepositSummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepositSummaryViewController.m; sourceTree = "<group>"; };
-		85A70FD81A91D353004B896F /* DepositSummaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DepositSummaryViewController.xib; sourceTree = "<group>"; };
 		85A70FDA1A91D353004B896F /* GeneralAlertCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralAlertCell.h; sourceTree = "<group>"; };
 		85A70FDB1A91D353004B896F /* GeneralAlertCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralAlertCell.m; sourceTree = "<group>"; };
 		85A70FDC1A91D353004B896F /* GeneralAlertCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralAlertCell.xib; sourceTree = "<group>"; };
@@ -4148,6 +4148,9 @@
 		85A70FC61A91D353004B896F /* Deposit */ = {
 			isa = PBXGroup;
 			children = (
+				8559B04C1A9DBC6F00620030 /* DepositSummaryViewController.h */,
+				8559B04D1A9DBC6F00620030 /* DepositSummaryViewController.m */,
+				8559B04E1A9DBC6F00620030 /* DepositSummaryViewController.xib */,
 				85A70FC71A91D353004B896F /* DepositFormAccountBankViewController.h */,
 				85A70FC81A91D353004B896F /* DepositFormAccountBankViewController.m */,
 				85A70FC91A91D353004B896F /* DepositFormAccountBankViewController.xib */,
@@ -4163,9 +4166,6 @@
 				85A70FD31A91D353004B896F /* DepositSummaryCell.h */,
 				85A70FD41A91D353004B896F /* DepositSummaryCell.m */,
 				85A70FD51A91D353004B896F /* DepositSummaryCell.xib */,
-				85A70FD61A91D353004B896F /* DepositSummaryViewController.h */,
-				85A70FD71A91D353004B896F /* DepositSummaryViewController.m */,
-				85A70FD81A91D353004B896F /* DepositSummaryViewController.xib */,
 			);
 			path = Deposit;
 			sourceTree = "<group>";
@@ -6149,7 +6149,6 @@
 				85A715201A91D355004B896F /* InboxMessageCell.xib in Resources */,
 				85A7150B1A91D355004B896F /* GeneralTableViewController.xib in Resources */,
 				85A7173B1A91D355004B896F /* icon_more_active.png in Resources */,
-				85A714F61A91D355004B896F /* DepositSummaryViewController.xib in Resources */,
 				85A716791A91D355004B896F /* icon_10@2x.png in Resources */,
 				85A7169E1A91D355004B896F /* icon_8@2x.png in Resources */,
 				85A7167D1A91D355004B896F /* icon_12@2x.png in Resources */,
@@ -6371,6 +6370,7 @@
 				85A717291A91D355004B896F /* ic_more.png in Resources */,
 				85A7174D1A91D355004B896F /* icon_more_grey.png in Resources */,
 				85A717201A91D355004B896F /* thumb_product.png in Resources */,
+				8559B0501A9DBC6F00620030 /* DepositSummaryViewController.xib in Resources */,
 				85A714F81A91D355004B896F /* GeneralAlertCell.xib in Resources */,
 				85A7165B1A91D355004B896F /* TxOrderConfirmedBankCell.xib in Resources */,
 				85A715FC1A91D355004B896F /* ShopNotesDetailViewController.xib in Resources */,
@@ -6758,7 +6758,6 @@
 				85A714E31A91D355004B896F /* NoResult.m in Sources */,
 				85A7137C1A91D355004B896F /* ExpiringCache.m in Sources */,
 				85A715971A91D355004B896F /* OrderDetailProductInformationCell.m in Sources */,
-				85A714F51A91D355004B896F /* DepositSummaryViewController.m in Sources */,
 				85A7160E1A91D355004B896F /* FilterLocationViewController.m in Sources */,
 				85A716241A91D355004B896F /* TransactionCartFormMandiriClickPayViewController.m in Sources */,
 				85A7149D1A91D355004B896F /* RegisterViewController.m in Sources */,
@@ -6895,6 +6894,7 @@
 				85A715641A91D355004B896F /* ProductReviewDetailViewController.m in Sources */,
 				85A714D11A91D355004B896F /* CategoryResultViewController.m in Sources */,
 				85A713BD1A91D355004B896F /* WholesalePrice.m in Sources */,
+				8559B04F1A9DBC6F00620030 /* DepositSummaryViewController.m in Sources */,
 				85A714951A91D355004B896F /* GeneratedHost.m in Sources */,
 				85A715B41A91D355004B896F /* ShipmentStatusViewController.m in Sources */,
 				85A7149F1A91D355004B896F /* AddressCell.m in Sources */,

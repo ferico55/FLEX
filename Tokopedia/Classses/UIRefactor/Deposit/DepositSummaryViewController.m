@@ -27,6 +27,11 @@
     
     NSString *_useableSaldoIDR;
     NSString *_useableSaldo;
+    NSString *_totalSaldoTokopedia;
+    NSString *_holdDepositByCsIDR;
+    NSString *_holdDepositByTokopedia;
+    
+    NSString *_reviewedSaldoIDR;
     
     
     NSInteger _page;
@@ -42,17 +47,26 @@
     BOOL _isRefreshView;
     BOOL _isNoData;
     NoResult *_noResult;
+    
+    UIBarButtonItem *_barbuttonleft;
+    UIBarButtonItem *_barbuttonright;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *table;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
+
 @property (strong, nonatomic) IBOutlet UILabel *saldoLabel;
 @property (strong, nonatomic) IBOutlet UIButton *withdrawalButton;
 @property (strong, nonatomic) IBOutlet UIButton *startDateButton;
 @property (strong, nonatomic) IBOutlet UIButton *endDateButton;
 @property (strong, nonatomic) IBOutlet UIButton *filterDateButton;
+@property (strong, nonatomic) IBOutlet UIButton *infoButton;
+
+@property (strong, nonatomic) IBOutlet UIView *infoReviewSaldo;
+@property (strong, nonatomic) IBOutlet UIView *filterDateArea;
+@property (strong, nonatomic) IBOutlet UILabel *reviewSaldo;
 
 - (void)configureRestkit;
 - (void)cancelCurrentAction;
@@ -80,13 +94,32 @@
     return self;
 }
 
+- (void)initBarButton {
+    //NSBundle* bundle = [NSBundle mainBundle];
+//    _barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Konfirmasi" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    
+    UIImage *infoImage = [UIImage imageNamed:@"icon_info_white.png"];
+    
+    CGRect frame = CGRectMake(0, 0, 20, 20);
+    UIButton* button = [[UIButton alloc] initWithFrame:frame];
+    [button setBackgroundImage:infoImage forState:UIControlStateNormal];
+    [button setShowsTouchWhenHighlighted:YES];
+    [button addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchDown];
+    [button setTag:14];
+    
+    _barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [_barbuttonright setCustomView:button];
+    self.navigationItem.rightBarButtonItem = _barbuttonright;
+}
+
+
 - (void)initNotificationCenter {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadListDeposit:)
                                                  name:@"reloadListDeposit" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(disableButtonWithdraw:)
+                                             selector:@selector(disableButtonWithdraw)
                                                  name:@"removeButtonWithdraw" object:nil];
 }
 
@@ -104,6 +137,8 @@
     _filterDateButton.layer.cornerRadius = 3.0;
     _withdrawalButton.layer.cornerRadius = 3.0;
     _saldoLabel.text = [_data objectForKey:@"total_saldo"];
+    _reviewSaldo.text = @"";
+    _infoReviewSaldo.hidden = YES;
     
     UIImage *searchImg = [UIImage imageNamed:@"icon_search@2x.png"];
     
@@ -135,6 +170,7 @@
     [_endDateButton setTitle:[dateFormat stringFromDate:_now] forState:UIControlStateNormal];
     
     [self initNotificationCenter];
+    [self initBarButton];
     
     [self configureRestkit];
     [self loadData];
@@ -367,7 +403,16 @@
             _useableSaldo = depositsummary.result.summary.summary_useable_deposit;
             _useableSaldoIDR = depositsummary.result.summary.summary_useable_deposit_idr;
             
-            if([depositsummary.result.summary.summary_today_tries integerValue] < [depositsummary.result.summary.summary_daily_tries integerValue]) {
+            _totalSaldoTokopedia = depositsummary.result.summary.summary_total_deposit_idr;
+            _holdDepositByCsIDR = depositsummary.result.summary.summary_deposit_hold_by_cs_idr;
+            _holdDepositByTokopedia = depositsummary.result.summary.summary_deposit_hold_tx_1_day_idr;
+            
+            if([depositsummary.result.summary.summary_deposit_hold_tx_1_day integerValue] > 0) {
+                _infoReviewSaldo.hidden = NO;
+                [_reviewSaldo setText:_holdDepositByTokopedia];
+            }
+            
+            if([depositsummary.result.summary.summary_today_tries integerValue] < [depositsummary.result.summary.summary_daily_tries integerValue] && [depositsummary.result.summary.summary_useable_deposit integerValue] > 0) {
                 [self enableButtonWithdraw];
             }
             
@@ -453,6 +498,24 @@
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
+            case 11:
+            {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info Saldo Tokopedia" message:
+                                          [NSString stringWithFormat: @"-%@ %@\n\n-%@ %@\n\n-%@\n\n-%@",
+                                           @"Total Saldo Anda",
+                                           _useableSaldoIDR,
+                                           @"Saldo Tokopedia yang dapat Anda tarik",
+                                           _useableSaldoIDR,
+                                           @"Anda hanya dapat melakukan penarikan dana sebanyak 1x dalam 1 hari",
+                                           @"Untuk hari ini Anda dapat melakukan penarikan dana sebanyak 1x lagi"
+                                           ]
+                                          
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil];
+                [alertView show];
+                break;
+            }
                 
             default:
                 break;
@@ -524,6 +587,35 @@
                 break;
             }
                 
+            case 14 :  {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info Saldo Tokopedia" message:
+                                          [NSString stringWithFormat: @"\n \n -%@ %@\n\n-%@ %@\n%@\n\n-%@ %@\n\n-%@\n\n-%@",
+                                           @" Total Saldo Tokopedia Anda adalah",
+                                           _totalSaldoTokopedia,
+                                           @" Saldo Tokopedia Anda yang sedang kami review sebesar",
+                                           _holdDepositByTokopedia,
+                                           @" Saldo ini sedang kami review dan akan di kembalikan ke Akun Tokopedia Anda dalam 3 x 24 jam",
+//                                           @" Saldo Tokopedia Anda yang sedang di tahan oleh Tokopedia sebesar",
+//                                           _holdDepositByTokopedia,
+                                           @" Saldo Tokopedia yang dapat Anda tarik sebesar",
+                                           _useableSaldoIDR,
+                                           @" Anda hanya dapat melakukan penarikan dana sebanyak 1x dalam 1 hari",
+                                           @" Untuk hari ini Anda dapat melakukan penarikan dana sebanyak 1x lagi"
+                                           ]
+                                          
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"OK"
+                                                          otherButtonTitles:nil];
+                [alertView show];
+
+                break;
+            }
+                
+            case 15 : {
+                
+                break;
+            }
+                
             default:
                 break;
         }
@@ -566,6 +658,7 @@
 - (void)reloadListDeposit:(NSNotification*)notification  {
     _table.tableHeaderView = _footer;
     _page = 1;
+    [_depositSummary removeAllObjects];
     [self configureRestkit];
     [self loadData];
 }
