@@ -18,7 +18,9 @@
 
 #import "inbox.h"
 #import "string_home.h"
+#import "string_product.h"
 #import "search.h"
+#import "sortfiltershare.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 #import "detail.h"
@@ -27,10 +29,17 @@
 #import "ShopPageHeader.h"
 
 #import "URLCacheController.h"
+#import "SortViewController.h"
+#import "MyShopEtalaseFilterViewController.h"
+#import "DetailProductViewController.h"
 
 @interface ShopProductPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
 TKPDTabInboxTalkNavigationControllerDelegate,
+ShopPageHeaderDelegate,
+SortViewControllerDelegate,
+MyShopEtalaseFilterViewControllerDelegate,
+GeneralProductCellDelegate,
 UIAlertViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -98,12 +107,15 @@ UIAlertViewDelegate>
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
     NSMutableArray *_product;
+    Shop *_shop;
+    
 }
 
 #pragma mark - Initialization
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self.hidesBottomBarWhenPushed = YES;
     if (self) {
         _isrefreshview = NO;
         _isNoData = YES;
@@ -121,29 +133,24 @@ UIAlertViewDelegate>
 
 
 #pragma mark - Life Cycle
-- (void)addBottomInsetWhen14inch {
-    if (is4inch) {
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 155;
-        _table.contentInset = inset;
-    }
-    else{
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 240;
-        _table.contentInset = inset;
-    }
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self addBottomInsetWhen14inch];
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _page = 1;
     
     _operationQueue = [NSOperationQueue new];
+    _limit = kTKPDSHOPPRODUCT_LIMITPAGE;
 
     _product = [NSMutableArray new];
+    
+
+    _isrefreshview = NO;
+    
+    // create initialitation
+    _paging = [NSMutableDictionary new];
+    _detailfilter = [NSMutableDictionary new];
+    _departmenttree = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
     
     
@@ -151,12 +158,29 @@ UIAlertViewDelegate>
     _table.dataSource = self;
     
     _shopPageHeader = [ShopPageHeader new];
+    _shopPageHeader.delegate = self;
+    _shopPageHeader.data = _data;
+    
     _header = _shopPageHeader.view;
+
     
     UIView *btmGreenLine = (UIView *)[_header viewWithTag:19];
     [btmGreenLine setHidden:NO];
     _stickyTab = [(UIView *)_header viewWithTag:18];
     
+    UIView *searchView = _shopPageHeader.searchView;
+    UISearchBar *searchBar = _shopPageHeader.searchBar;
+    searchBar.delegate = self;
+    
+    CGRect newHeaderPosition = searchView.frame;
+    newHeaderPosition.origin.y = _header.frame.size.height;
+    searchView.frame = newHeaderPosition;
+    
+    CGRect newFrame = _header.frame;
+    newFrame.size.height += 44;
+    _header.frame = newFrame;
+    
+    [_header addSubview:searchView];
     
     _table.tableFooterView = _footer;
     _table.tableHeaderView = _header;
@@ -178,6 +202,7 @@ UIAlertViewDelegate>
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    self.hidesBottomBarWhenPushed = YES;
     if (!_isrefreshview) {
         [self configureRestKit];
         
@@ -559,7 +584,7 @@ UIAlertViewDelegate>
     /** clear object **/
     [self cancel];
     _requestCount = 0;
-    //    [_talks removeAllObjects];
+    [_product removeAllObjects];
     _page = 1;
     _isrefreshview = YES;
     
@@ -576,7 +601,7 @@ UIAlertViewDelegate>
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height);
+    BOOL isFakeStickyVisible = scrollView.contentOffset.y > (_header.frame.size.height - _stickyTab.frame.size.height - _shopPageHeader.searchView.frame.size.height);
     
     if(isFakeStickyVisible) {
         _fakeStickyTab.hidden = NO;
@@ -610,6 +635,145 @@ UIAlertViewDelegate>
     CGPoint cgpoint = CGPointMake(0, ypos);
     _table.contentOffset = cgpoint;
 
+}
+
+#pragma mark - SearchBar Delegate
+- (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
+{
+    searchBar.showsCancelButton = YES;
+    return YES;
+}
+
+- (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
+{
+    searchBar.showsCancelButton = NO;
+    return YES;
+}
+
+-(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+//    _scrollOffset = self.table.contentOffset.y;
+    
+    [searchBar resignFirstResponder];
+    [_detailfilter setObject:searchBar.text forKey:kTKPDDETAIL_DATAQUERYKEY];
+    
+    [_product removeAllObjects];
+     _table.tableFooterView = _footer;
+    [_table reloadData];
+    _page = 1;
+    _requestCount = 0;
+    _isrefreshview = YES;
+    [self configureRestKit];
+    [self loadData];
+}
+
+- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
+{
+    [searchBar resignFirstResponder];
+    searchBar.showsCancelButton = NO;
+}
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [_searchBar resignFirstResponder];
+}
+
+#pragma mark - Action
+-(IBAction)tapButton:(id)sender {
+    
+    self.hidesBottomBarWhenPushed = YES;
+    
+    [_searchBar resignFirstResponder];
+    
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *button = (UIButton*)sender;
+        switch (button.tag) {
+            case 11: {
+                // sort button action
+                NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                SortViewController *vc = [SortViewController new];
+                vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY),
+                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
+                vc.delegate = self;
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                self.navigationController.navigationBar.alpha = 0;
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                break;
+            }
+                
+            case 12 : {
+                // etalase button action
+                NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
+                //ProductEtalaseViewController *vc = [ProductEtalaseViewController new];
+                vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
+                vc.delegate = self;
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                self.navigationController.navigationBar.alpha = 0;
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                break;
+            }
+                
+            case 13 : {
+                NSString *activityItem = [NSString stringWithFormat:@"%@ - %@ | Tokopedia %@", _shop.result.info.shop_name,
+                                          _shop.result.info.shop_location, _shop.result.info.shop_url];
+                UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
+                                                                                                 applicationActivities:nil];
+                activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+                [self presentViewController:activityController animated:YES completion:nil];
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
+
+#pragma mark - Shop header delegate
+
+- (void)didLoadImage:(UIImage *)image
+{
+//    _navigationImageView.image = [image applyLightEffect];
+}
+
+- (void)didReceiveShop:(Shop *)shop
+{
+    _shop = shop;
+}
+
+- (id)didReceiveNavigationController {
+    return self;
+}
+
+#pragma mark - Sort Delegate
+-(void)SortViewController:(SortViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+{
+    [_detailfilter addEntriesFromDictionary:userInfo];
+    [self refreshView:nil];
+}
+
+#pragma mark - Filter Delegate
+-(void)MyShopEtalaseFilterViewController:(MyShopEtalaseFilterViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+//-(void)setDepartmentID:(NSNotification*)notification
+{
+    [self cancel];
+    //NSDictionary* userinfo = notification.userInfo;
+    [_detailfilter setObject:[userInfo objectForKey:DATA_ETALASE_KEY]?:@""
+                      forKey:DATA_ETALASE_KEY];
+    [self refreshView:nil];
+}
+
+#pragma mark - Cell Delegate
+-(void)GeneralProductCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+{
+    NSInteger index = indexpath.section+2*(indexpath.row);
+    List *list = _product[index];
+    
+    DetailProductViewController *vc = [DetailProductViewController new];
+    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id, @"is_dismissed" : @YES};
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

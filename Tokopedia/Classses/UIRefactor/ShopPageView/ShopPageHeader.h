@@ -9,6 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "Shop.h"
 
+@protocol ShopPageHeaderDelegate <NSObject>
+
+- (void)didLoadImage:(UIImage *)image;
+- (void)didReceiveShop:(Shop *)shop;
+- (id)didReceiveNavigationController;
+
+@end
+
 @interface ShopPageHeader : UIViewController<UIPageViewControllerDataSource>
 
 @property (strong, nonatomic) UIPageViewController *pageController;
@@ -18,5 +26,9 @@
 
 
 @property (nonatomic, retain) IBOutlet UIView *header;
+@property (nonatomic, retain) IBOutlet UIView *searchView;
+@property (nonatomic, weak) IBOutlet UISearchBar *searchBar;
+@property (weak, nonatomic) id<ShopPageHeaderDelegate> delegate;
+
 
 @end

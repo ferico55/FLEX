@@ -28,6 +28,7 @@
 @interface ShopNotesPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
 TKPDTabInboxTalkNavigationControllerDelegate,
+ShopPageHeaderDelegate,
 UIAlertViewDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -90,6 +91,7 @@ UIAlertViewDelegate>
     NSTimeInterval _timeinterval;
     Notes *_notes;
     ShopPageHeader *_shopPageHeader;
+    Shop *_shop;
 }
 
 #pragma mark - Initialization
@@ -139,6 +141,10 @@ UIAlertViewDelegate>
     
     _table.delegate = self;
     _table.dataSource = self;
+    
+    _shopPageHeader = [ShopPageHeader new];
+    _shopPageHeader.delegate = self;
+    _shopPageHeader.data = _data;
     
     _header = _shopPageHeader.view;
     
@@ -467,6 +473,21 @@ UIAlertViewDelegate>
 }
 
 
+#pragma mark - Shop header delegate
+
+- (void)didLoadImage:(UIImage *)image
+{
+    //    _navigationImageView.image = [image applyLightEffect];
+}
+
+- (void)didReceiveShop:(Shop *)shop
+{
+    _shop = shop;
+}
+
+- (id)didReceiveNavigationController {
+    return self;
+}
 
 /*
  #pragma mark - Navigation

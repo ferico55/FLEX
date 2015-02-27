@@ -84,8 +84,8 @@
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     
     //opened when application is on background
-    NotificationManager *notifManager = [NotificationManager new];
     if(application.applicationState == UIApplicationStateInactive || application.applicationState == UIApplicationStateBackground) {
+        NotificationManager *notifManager = [NotificationManager new];
         [notifManager selectViewControllerToOpen:[[userInfo objectForKey:@"data"] objectForKey:@"tkp_code"]];
     } else {
         //refresh ticker notification

@@ -36,6 +36,7 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    self.hidesBottomBarWhenPushed = YES;
     if (self) {
         _isnodata = YES;
     }
@@ -45,9 +46,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
 
     self.navigationController.navigationBarHidden = NO;
     self.title = @"Pengaturan Toko";
+
     
     _shop = [_data objectForKey:kTKPDDETAIL_DATAINFOSHOPSKEY];
 

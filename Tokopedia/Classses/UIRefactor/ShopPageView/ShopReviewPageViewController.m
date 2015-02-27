@@ -28,6 +28,7 @@
 UITableViewDelegate,
 TKPDTabInboxTalkNavigationControllerDelegate,
 GeneralReviewCellDelegate,
+ShopPageHeaderDelegate,
 UIScrollViewDelegate,
 UIAlertViewDelegate>
 
@@ -91,6 +92,7 @@ UIAlertViewDelegate>
     URLCacheConnection *_cacheConnection;
     NSTimeInterval _timeInterval;
     Review *_review;
+    Shop *_shop;
     ShopPageHeader *_shopPageHeader;
 }
 
@@ -156,7 +158,11 @@ UIAlertViewDelegate>
     _table.delegate = self;
     _table.dataSource = self;
     
-    _header = [ShopPageHeader new];
+    _shopPageHeader = [ShopPageHeader new];
+    _shopPageHeader.delegate = self;
+    _shopPageHeader.data = _data;
+    
+    _header = _shopPageHeader.view;
     
     UIView *btmGreenLine = (UIView *)[_header viewWithTag:21];
     [btmGreenLine setHidden:NO];
@@ -670,6 +676,23 @@ UIAlertViewDelegate>
     _table.contentOffset = cgpoint;
 
 
+}
+
+
+#pragma mark - Shop header delegate
+
+- (void)didLoadImage:(UIImage *)image
+{
+    //    _navigationImageView.image = [image applyLightEffect];
+}
+
+- (void)didReceiveShop:(Shop *)shop
+{
+    _shop = shop;
+}
+
+- (id)didReceiveNavigationController {
+    return self;
 }
 
 
