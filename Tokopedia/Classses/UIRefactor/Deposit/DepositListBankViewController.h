@@ -24,6 +24,7 @@
 #endif
 
 @property (nonatomic, strong) NSDictionary *data;
+@property (nonatomic, strong) NSArray *listBankAccount;
 
 
 

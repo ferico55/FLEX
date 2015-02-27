@@ -12,4 +12,7 @@
 
 @property (nonatomic, retain) IBOutlet UIView *view;
 
+
+- (void)setNoResultText:(NSString*)string;
+
 @end

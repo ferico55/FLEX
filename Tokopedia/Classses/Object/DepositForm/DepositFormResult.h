@@ -14,6 +14,6 @@
 @property (nonatomic, strong) NSString *msisdn_verified;
 @property (nonatomic, strong) NSString *useable_deposit;
 @property (nonatomic, strong) NSString *useable_deposit_idr;
-@property (nonatomic, strong) DepositFormBankAccountList *bank_account;
+@property (nonatomic, strong) NSArray *bank_account;
 
 @end

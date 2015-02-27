@@ -44,6 +44,7 @@
     NSString *_bankAccountName;
     NSString *_bankAccountNumber;
     NSString *_bankAccountId;
+    NSString *_isVerifiedAccount;
     
     NSString *_withdrawAmount;
     NSString *_password;
@@ -55,6 +56,8 @@
     
     UIBarButtonItem *_barbuttonleft;
     UIBarButtonItem *_barbuttonright;
+    
+    NSMutableArray *_listBankAccount;
 
 }
 
@@ -76,6 +79,9 @@
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (strong, nonatomic) IBOutlet UIScrollView *containerScrollView;
 @property (strong, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
+@property (strong, nonatomic) IBOutlet UIView *otpViewArea;
+@property (strong, nonatomic) IBOutlet UIView *passwordViewArea;
+
 @property (nonatomic, strong) NSDictionary *userinfo;
 @property (nonatomic, strong) NSIndexPath *accountIndexPath;
 
@@ -148,11 +154,13 @@
     _operationQueue = [NSOperationQueue new];
     _operationDepositFormQueue = [NSOperationQueue new];
     _operationSendOTPQueue = [NSOperationQueue new];
+    _listBankAccount = [NSMutableArray new];
     
 //    [_useableSaldoIDR setText:[_data objectForKey:@"summary_useable_deposit_idr"]];
     [self configureDepositInfo];
     [self loadDepositInfo];
     _useableSaldoStr = @"Loading..";
+    _chooseAccountButton.enabled = NO;
     
     // Do any additional setup after loading the view from its nib.
 }
@@ -282,7 +290,8 @@
                                                            kTKPDPROFILESETTING_APIBANKACCOUNTNUMBERKEY,
                                                            kTKPDPROFILESETTING_APIBANKBRANCHKEY,
                                                            API_BANK_ACCOUNT_ID_KEY,
-                                                           kTKPDPROFILESETTING_APIISDEFAULTBANKKEY
+                                                           kTKPDPROFILESETTING_APIISDEFAULTBANKKEY,
+                                                           kTKPDPROFILESETTING_APIISVERIFIEDBANKKEY
                                                            ]];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
@@ -352,6 +361,8 @@
             if (status) {
                 [_useableSaldoIDR setText:depositForm.result.useable_deposit_idr];
                 _useableSaldoStr = depositForm.result.useable_deposit_idr;
+                _chooseAccountButton.enabled = YES;
+                [_listBankAccount addObjectsFromArray:depositForm.result.bank_account];
                 NSString *verifiedState = depositForm.result.msisdn_verified;
                 
                 [_kodeOTPButton setTitle:[verifiedState isEqualToString:@"1"] ? @"Kirim OTP ke HP" : @"Kirim OTP ke Email"  forState:UIControlStateNormal];
@@ -586,6 +597,7 @@
             case 11 : {
                 DepositListBankViewController *depositListVc = [DepositListBankViewController new];
                 depositListVc.data = @{@"account_indexpath" : _accountIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0]};
+                depositListVc.listBankAccount = _listBankAccount;
                 [self.navigationController pushViewController:depositListVc animated:YES];
                 break;
             }
@@ -600,16 +612,8 @@
                 
             case 13 : {
 
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info Saldo Tokopedia" message:
-                                                [NSString stringWithFormat: @"-%@ %@\n\n-%@ %@\n\n-%@\n\n-%@",
-                                                                            @"Total Saldo Anda",
-                                                                            _useableSaldoStr,
-                                                                            @"Saldo Tokopedia yang dapat Anda tarik",
-                                                                            _useableSaldoStr,
-                                                                            @"Anda hanya dapat melakukan penarikan dana sebanyak 1x dalam 1 hari",
-                                                                            @"Untuk hari ini Anda dapat melakukan penarikan dana sebanyak 1x lagi"
-                                                 ]
-                                                 
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info Saldo Tokopedia"
+                                                                    message: @"Permintaan Tarik Dana akan diproses dalam waktu 1x24 jam hari kerja bank (tidak termasuk hari Sabtu/Minggu/Libur) \n\n Penarikan dana dengan tujuan nomor rekening di luar bank BCA/Mandiri/BNI/BRI, dana akan masuk dalam waktu maksimal 2x24 jam hari kerja bank (tidak termasuk hari Sabtu/Minggu/Libur) dan apabila ada biaya tambahan yang dibebankan akan menjadi tanggungan pengguna. \n\n Anda akan mendapatkan email konfirmasi ketika dana sudah kami transfer dan ketika dana sudah berhasil masuk ke rekening Anda."
                                                                    delegate:self
                                                           cancelButtonTitle:@"OK"
                                                           otherButtonTitles:nil];
@@ -643,6 +647,22 @@
     _accountIndexPath = [_userinfo objectForKey:@"indexpath"];
     
     _bankAccountId = [_userinfo objectForKey:@"bank_account_id"];
+//    _isVerifiedAccount = [_userinfo objectForKey:@"is_verified_account"];
+    
+    if([[_userinfo objectForKey:@"is_verified_account"] integerValue] == 1) {
+        _otpViewArea.hidden = YES;
+        
+        CGRect newFrame = _passwordViewArea.frame;
+        newFrame.origin.y = 320;
+        _passwordViewArea.frame = newFrame;
+        
+    } else {
+        _otpViewArea.hidden = NO;
+        
+        CGRect newFrame = _passwordViewArea.frame;
+        newFrame.origin.y = 420;
+        _passwordViewArea.frame = newFrame;
+    }
     
     [_chooseAccountButton setTitle:[_userinfo objectForKey:@"bank_account_name"] forState:UIControlStateNormal];
 }
@@ -657,6 +677,11 @@
     _bankBranch = [_userinfo objectForKey:@"bank_branch"];
     _bankName = [_userinfo objectForKey:@"bank_name"];
     _bankId = [_userinfo objectForKey:@"bank_id"];
+    _otpViewArea.hidden = NO;
+    
+    CGRect newFrame = _passwordViewArea.frame;
+    newFrame.origin.y = 420;
+    _passwordViewArea.frame = newFrame;
     
     [_chooseAccountButton setTitle:bankName forState:UIControlStateNormal];
 }
@@ -726,7 +751,7 @@
             [messages addObject:@"Kata Sandi Tokopedia harus diisi"];
         }
         
-        if (!_kodeOTP.text || [_kodeOTP.text isEqualToString:@""]) {
+        if ((!_kodeOTP.text || [_kodeOTP.text isEqualToString:@""]) && ([[_userinfo objectForKey:@"is_verified_account"] integerValue] == 0)) {
             [messages addObject:@"Kode OTP harus diisi"];
         }
         

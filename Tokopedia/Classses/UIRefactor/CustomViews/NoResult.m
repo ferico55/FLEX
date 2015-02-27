@@ -8,8 +8,16 @@
 
 #import "NoResult.h"
 
-@implementation NoResult
+@interface NoResult ()
+{
 
+}
+
+@property (strong, nonatomic) IBOutlet UILabel *noResultLabel;
+
+@end
+
+@implementation NoResult
 
 #pragma mark - Initialization
 -(id)initWithFrame:(CGRect)frame
@@ -28,6 +36,10 @@
 {
     [super awakeFromNib];
     [self addSubview:self.view];
+}
+
+- (void)setNoResultText:(NSString*)string {
+    [_noResultLabel setText:string];
 }
 
 
