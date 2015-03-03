@@ -9,10 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "StarsRateView.h"
 #import "HPGrowingTextView.h"
+#import "Shop.h"
 
 @interface DetailReviewViewController : UIViewController
 
 @property (strong,nonatomic) NSDictionary *data;
+@property (strong,nonatomic) Shop *shop;
+@property (strong,nonatomic) NSString *is_owner;
 @property (nonatomic) NSString *index;
 
 

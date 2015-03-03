@@ -661,6 +661,7 @@
     DetailReviewViewController *vc = [DetailReviewViewController new];
     NSInteger row = indexpath.row;
     vc.data = _reviews[row];
+    vc.is_owner = @"1";
     vc.index = [NSString stringWithFormat:@"%ld",(long)row];
 
     [self.navigationController pushViewController:vc animated:YES];

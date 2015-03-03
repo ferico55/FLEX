@@ -127,7 +127,7 @@
     
     self.scrollView.hidden = YES;
     self.scrollView.delegate = self;
-    
+    _operationQueue = [NSOperationQueue new];
     
     [self.scrollView setContentSize:CGSizeMake(640, 77)];
     
@@ -149,6 +149,10 @@
     
     if (_shop.result.info.shop_is_gold == 1) {
         _descriptionView.badgeImageView.hidden = NO;
+    }
+    
+    if(_shop.result.info.shop_already_favorited == 1) {
+        [self setButtonFav];
     }
     
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:15];
@@ -224,8 +228,9 @@
     
     _shop = userinfo;
     [self.delegate didReceiveShop:_shop];
-    [self setHeaderData];
-    
+    if(_shop) {
+        [self setHeaderData];
+    }
 }
 
 #pragma mark - Memory Management
@@ -291,16 +296,8 @@
             // Favorite shop action
             [self configureFavoriteRestkit];
             [self favoriteShop:_shop.result.info.shop_id sender:_rightButton];
+            [self setButtonFav];
             
-            _rightButton.tag = 16;
-            [_rightButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
-            [_rightButton setImage:[UIImage imageNamed:@"icon_love_white.png"] forState:UIControlStateNormal];
-            [_rightButton.layer setBorderWidth:0];
-            _rightButton.tintColor = [UIColor whiteColor];
-            [UIView animateWithDuration:0.3 animations:^(void) {
-                [_rightButton setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
-                [_rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-            }];
             break;
         }
             
@@ -357,15 +354,28 @@
     [_objectManager addResponseDescriptor:responseDescriptorStatus];
 }
 
+- (void)setButtonFav {
+    _rightButton.tag = 16;
+    [_rightButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
+    [_rightButton setImage:[UIImage imageNamed:@"icon_love_white.png"] forState:UIControlStateNormal];
+    [_rightButton.layer setBorderWidth:0];
+    _rightButton.tintColor = [UIColor whiteColor];
+    [UIView animateWithDuration:0.3 animations:^(void) {
+        [_rightButton setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
+        [_rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }];
 
--(void)favoriteShop:(NSInteger)shop_id sender:(UIButton*)btn
+}
+
+
+-(void)favoriteShop:(NSString*)shop_id sender:(UIButton*)btn
 {
     if (_request.isExecuting) return;
     
     _requestCount ++;
     
     NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY   :   @"fav_shop",
-                            @"shop_id"              :   [@(shop_id) stringValue]};
+                            @"shop_id"              :   shop_id};
     
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST

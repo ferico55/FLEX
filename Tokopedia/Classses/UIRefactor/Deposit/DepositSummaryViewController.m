@@ -138,17 +138,18 @@
     _withdrawalButton.layer.cornerRadius = 3.0;
     _saldoLabel.text = [_data objectForKey:@"total_saldo"];
     _reviewSaldo.text = @"";
-    _infoReviewSaldo.hidden = YES;
+
     
-    UIImage *searchImg = [UIImage imageNamed:@"icon_search@2x.png"];
     
-    CGRect rect = CGRectMake(0.0, 0.0, _filterDateButton.frame.size.height - 10, _filterDateButton.frame.size.height -10);
-    UIGraphicsBeginImageContext(rect.size);
-    [searchImg drawInRect:rect];
-    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    [_filterDateButton setImage:img forState:UIControlStateNormal];
+//    UIImage *searchImg = [UIImage imageNamed:@"icon_search@2x.png"];
+//    
+//    CGRect rect = CGRectMake(0.0, 0.0, _filterDateButton.frame.size.height - 10, _filterDateButton.frame.size.height -10);
+//    UIGraphicsBeginImageContext(rect.size);
+//    [searchImg drawInRect:rect];
+//    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    
+//    [_filterDateButton setImage:img forState:UIControlStateNormal];
 
     
     _page = 1;
@@ -206,12 +207,25 @@
                 [((DepositSummaryCell*)cell).depositAmount setTextColor:[UIColor redColor]];
             }
             [((DepositSummaryCell*)cell).depositAmount setText:depositList.deposit_amount_idr];
-            [((DepositSummaryCell*)cell).depositNotes setText:depositList.deposit_notes];
+//            [((DepositSummaryCell*)cell).depositNotes setText:depositList.deposit_notes];
             [((DepositSummaryCell*)cell).withdrawalTime setText:depositList.deposit_date_full];
             
-            [((DepositSummaryCell*)cell).depositNotes sizeToFit];
-
-            ((DepositSummaryCell*)cell).depositNotes.numberOfLines = 0;
+            
+            UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+            
+            NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+            style.lineSpacing = 6.0;
+            
+            NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
+                                         NSFontAttributeName: font,
+                                         NSParagraphStyleAttributeName: style,
+                                         };
+            
+            NSAttributedString *depositNotesText = [[NSAttributedString alloc] initWithString:[NSString convertHTML:depositList.deposit_notes]
+                                                                                            attributes:attributes];
+            
+            ((DepositSummaryCell*)cell).depositNotes.attributedText = depositNotesText;
+            
         } else {
 
         }
@@ -408,8 +422,20 @@
             _holdDepositByTokopedia = depositsummary.result.summary.summary_deposit_hold_tx_1_day_idr;
             
             if([depositsummary.result.summary.summary_deposit_hold_tx_1_day integerValue] > 0) {
-                _infoReviewSaldo.hidden = NO;
                 [_reviewSaldo setText:_holdDepositByTokopedia];
+                CGRect newFrame2 = _filterDateArea.frame;
+                newFrame2.origin.y += 40;
+                _filterDateArea.frame = newFrame2;
+                
+                CGRect newFrame3 = _table.frame;
+                newFrame3.origin.y += 40;
+                _table.frame = newFrame3;
+                
+                [_withdrawalButton addSubview:_infoReviewSaldo];
+                CGRect newFrame4 = _infoReviewSaldo.frame;
+                newFrame4.origin.y += 35;
+                newFrame4.origin.x = -60;
+                _infoReviewSaldo.frame = newFrame4;
             }
             
             if([depositsummary.result.summary.summary_today_tries integerValue] < [depositsummary.result.summary.summary_daily_tries integerValue] && [depositsummary.result.summary.summary_useable_deposit integerValue] > 0) {
@@ -589,14 +615,14 @@
                 
             case 14 :  {
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Info Saldo Tokopedia" message:
-                                          [NSString stringWithFormat: @"\n \n -%@ %@\n\n-%@ %@\n%@\n\n-%@ %@\n\n-%@\n\n-%@",
+                                          [NSString stringWithFormat: @"\n \n -%@ %@\n\n-%@ %@\n%@\n\n-%@ %@\n\n-%@ %@\n\n-%@\n\n-%@",
                                            @" Total Saldo Tokopedia Anda adalah",
                                            _totalSaldoTokopedia,
                                            @" Saldo Tokopedia Anda yang sedang kami review sebesar",
                                            _holdDepositByTokopedia,
                                            @" Saldo ini sedang kami review dan akan di kembalikan ke Akun Tokopedia Anda dalam 3 x 24 jam",
-//                                           @" Saldo Tokopedia Anda yang sedang di tahan oleh Tokopedia sebesar",
-//                                           _holdDepositByTokopedia,
+                                           @" Saldo Tokopedia Anda yang sedang di tahan oleh Tokopedia sebesar",
+                                           _holdDepositByCsIDR,
                                            @" Saldo Tokopedia yang dapat Anda tarik sebesar",
                                            _useableSaldoIDR,
                                            @" Anda hanya dapat melakukan penarikan dana sebanyak 1x dalam 1 hari",

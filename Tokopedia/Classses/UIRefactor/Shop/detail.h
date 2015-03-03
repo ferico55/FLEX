@@ -318,6 +318,8 @@ typedef enum
 #define kTKPDDETAILSHOP_APISHOPNAME @"shop_name"
 #define kTKPDDETAILSHOP_APISHOPISGOLD @"shop_is_gold"
 #define API_IS_GOLD_SHOP_KEY @"shop_is_gold"
+#define API_IS_OWNER_SHOP_KEY @"shop_is_owner"
+
 #define kTKPDDETAILSHOP_APISHOPURLKEY @"shop_url"
 
 #define kTKPDDETAILSHOP_APISTATKEY @"stats"
@@ -504,6 +506,7 @@ typedef enum
 #define kTKPDREVIEW_APIPRODUCTIMAGEKEY @"review_product_image"
 
 #define kTKPDREVIEW_APIREVIEWPRODUCTOWNERKEY @"review_product_owner"
+#define kTKPDREVIEW_APIREVIEWISOWNERKEY @"review_is_owner"
 #define kTKPDREVIEW_APIUSERIDKEY @"user_id"
 #define kTKPDREVIEW_APIUSERIMAGEKEY @"user_image"
 #define kTKPDREVIEW_APIUSERNAME @"user_name"

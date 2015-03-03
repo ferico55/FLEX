@@ -23,6 +23,7 @@
 
 #import "URLCacheController.h"
 #import "ShopPageHeader.h"
+#import "NoResult.h"
 
 @interface ShopTalkPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
@@ -72,6 +73,7 @@ UIAlertViewDelegate>
     BOOL _isrefreshnav;
     BOOL _isNeedToInsertCache;
     BOOL _isLoadFromCache;
+    NoResult *_noResult;
     
     
     __weak RKObjectManager *_objectManager;
@@ -113,6 +115,10 @@ UIAlertViewDelegate>
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateTalkHeaderPosition:)
                                                  name:@"updateTalkHeaderPosition" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateTotalComment:)
+                                                 name:@"UpdateTotalComment" object:nil];
   
 }
 
@@ -145,7 +151,7 @@ UIAlertViewDelegate>
     _cachecontroller = [URLCacheController new];
     _list = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
-    
+    _noResult = [NoResult new];
     
     _table.delegate = self;
     _table.dataSource = self;
@@ -501,8 +507,10 @@ UIAlertViewDelegate>
                 _isNoData = NO;
                 
                 [self.table reloadData];
-                if (_list.count == 0) _act.hidden = YES;
-                
+                if (_list.count == 0) {
+                    _act.hidden = YES;
+                    _table.tableFooterView = _noResult;
+                }
             }
         }else{
             
@@ -727,7 +735,7 @@ UIAlertViewDelegate>
     /** clear object **/
     [self cancel];
     _requestCount = 0;
-    //    [_talks removeAllObjects];
+    [_list removeAllObjects];
     _page = 1;
     _isrefreshview = YES;
     

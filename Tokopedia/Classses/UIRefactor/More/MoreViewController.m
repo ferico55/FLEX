@@ -42,6 +42,7 @@
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "DepositSummaryViewController.h"
 #import "ShopContainerViewController.h"
+#import "ReputationPageViewController.h"
 
 @interface MoreViewController ()  {
     NSDictionary *_auth;
@@ -307,6 +308,10 @@
     }
     
     else if (indexPath.section == 4) {
+        if(indexPath.row == 2) {
+            ReputationPageViewController *reputationPageVc = [ReputationPageViewController new];
+            [self.navigationController pushViewController:reputationPageVc animated:YES];
+        }
         if(indexPath.row == 3) {
             InboxMessageViewController *vc = [InboxMessageViewController new];
             vc.data=@{@"nav":@"inbox-message"};

@@ -27,6 +27,7 @@
 @property (nonatomic, strong) NSString *shop_cover;
 @property (nonatomic, strong) NSString *shop_domain;
 @property (nonatomic, strong) NSString *shop_url;
+@property (nonatomic, strong) NSString *shop_is_owner;
 @property (nonatomic) NSInteger shop_is_gold;
 
 @property (nonatomic) NSArray *shop_pay_gateway;

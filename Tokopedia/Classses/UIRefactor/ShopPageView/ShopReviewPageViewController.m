@@ -24,7 +24,8 @@
 
 #import "URLCacheController.h"
 
-@interface ShopReviewPageViewController () <UITableViewDataSource,
+@interface ShopReviewPageViewController () <
+UITableViewDataSource,
 UITableViewDelegate,
 TKPDTabInboxTalkNavigationControllerDelegate,
 GeneralReviewCellDelegate,
@@ -58,6 +59,7 @@ UIAlertViewDelegate>
     
     NSString *_uriNext;
     NSString *_talkNavigationFlag;
+    NSString *_reviewIsOwner;
     
     UIRefreshControl *_refreshControl;
     NSInteger _requestCount;
@@ -255,6 +257,7 @@ UIAlertViewDelegate>
             
             ((GeneralReviewCell*)cell).userNamelabel.text = list.review_user_name;
             ((GeneralReviewCell*)cell).timelabel.text = list.review_create_time?:@"";
+            ((GeneralReviewCell*)cell).indexpath = indexPath;
             
             ((GeneralReviewCell*)cell).productNamelabel.text = list.review_product_name;
             
@@ -355,6 +358,7 @@ UIAlertViewDelegate>
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ReviewResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"is_owner":@"is_owner"}];
     
     RKObjectMapping *ratinglistMapping = [RKObjectMapping mappingForClass:[RatingList class]];
     [ratinglistMapping addAttributeMappingsFromArray:@[kTKPDREVIEW_APIRATINGSTARPOINTKEY,
@@ -377,6 +381,7 @@ UIAlertViewDelegate>
                                                  kTKPDREVIEW_APIPRODUCTNAMEKEY,
                                                  kTKPDREVIEW_APIPRODUCTIDKEY,
                                                  kTKPDREVIEW_APIPRODUCTIMAGEKEY,
+                                                 kTKPDREVIEW_APIREVIEWISOWNERKEY
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -541,6 +546,7 @@ UIAlertViewDelegate>
             
             if (status) {
                 NSArray *list = _review.result.list;
+                _reviewIsOwner = _review.result.is_owner;
                 [_list addObjectsFromArray:list];
                 _isNoData = NO;
                 
@@ -610,6 +616,8 @@ UIAlertViewDelegate>
     NSInteger row = indexpath.row;
     vc.data = _list[row];
     vc.index = [NSString stringWithFormat:@"%ld",(long)row];
+    vc.shop = _shop;
+    vc.is_owner = _reviewIsOwner;
     
     [self.navigationController pushViewController:vc animated:YES];
 }

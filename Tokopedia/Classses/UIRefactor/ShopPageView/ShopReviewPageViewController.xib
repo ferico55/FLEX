@@ -33,8 +33,8 @@
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="separatorColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
-                        <outlet property="dataSource" destination="-1" id="hWs-hj-x9m"/>
-                        <outlet property="delegate" destination="-1" id="jrQ-cO-MSb"/>
+                        <outlet property="dataSource" destination="-1" id="DIM-j3-CJw"/>
+                        <outlet property="delegate" destination="-1" id="MwX-ff-8eO"/>
                     </connections>
                 </tableView>
                 <view hidden="YES" tag="18" contentMode="scaleToFill" id="Az8-b2-vuG">

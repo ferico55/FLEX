@@ -300,6 +300,7 @@
                                                           kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
                                                           kTKPDDETAILSHOP_APISHOPISGOLD:kTKPDDETAILSHOP_APISHOPISGOLD,
                                                           kTKPDDETAILSHOP_APISHOPURLKEY:kTKPDDETAILSHOP_APISHOPURLKEY,
+                                                          API_IS_OWNER_SHOP_KEY:API_IS_OWNER_SHOP_KEY
                                                           }];
     
     RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
