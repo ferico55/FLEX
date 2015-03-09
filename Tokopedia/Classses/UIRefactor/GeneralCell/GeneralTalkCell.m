@@ -30,6 +30,7 @@
 + (id)newcell
 {
     NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"GeneralTalkCell" owner:nil options:0];
+    NSLog(@"%@", @"New Cell");
     for (id o in a) {
         if ([o isKindOfClass:[self class]]) {
             return o;

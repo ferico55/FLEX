@@ -103,6 +103,11 @@
 @property (strong, nonatomic) IBOutlet UILabel *screenNumber;
 @property (strong, nonatomic) UIPageViewController *pageController;
 
+@property (strong, nonatomic) ShopTalkViewController *shopTalkViewController;
+@property (strong, nonatomic) ShopReviewViewController *shopReviewViewController;
+@property (strong, nonatomic) ShopNotesViewController *shopNotesViewController;
+
+
 @end
 
 @implementation TKPDTabShopViewController
@@ -175,6 +180,38 @@
     if (_shopIsGold) {
         self.stickyTabVerticalSpace.constant = 64;
     }
+    
+    //uipage
+    self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
+    
+    _pageController.dataSource = self;
+    _pageController.delegate = self;
+    
+    _shopTalkViewController = [ShopTalkViewController new];
+    
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+    _shopTalkViewController = [storyboard instantiateViewControllerWithIdentifier:@"ShopTalkViewController"];
+    
+    _shopTalkViewController.data =_data;
+    _shopTalkViewController.index = 1;
+    
+    _shopReviewViewController = [storyboard instantiateViewControllerWithIdentifier:@"ShopReviewViewController"];
+    _shopReviewViewController.data =_data;
+    _shopReviewViewController.index = 2;
+    
+    _shopNotesViewController = [storyboard instantiateViewControllerWithIdentifier:@"ShopNotesViewController"];
+    _shopNotesViewController.data =_data;
+    _shopNotesViewController.index = 3;
+    
+    
+    NSArray *viewControllers = [NSArray arrayWithObject:_shopTalkViewController];
+    [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward
+                                   animated:NO
+                                 completion:nil];
+    
+    [self addChildViewController:self.pageController];
+    [[self view] addSubview:[self.pageController view]];
+    [self.pageController didMoveToParentViewController:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -831,6 +868,8 @@
     [self updateTabAppearance:scrollView.contentOffset];
     [self updateNavigationBarAppearance:scrollView.contentOffset];
     [_headerController didScroll:scrollView];
+    
+    
 }
 
 - (void)updateTabAppearance:(CGPoint)contentOffset
@@ -955,6 +994,71 @@
 }
 
 #pragma mark - UIPageViewController
+- (NSUInteger)getViewControllerIndex:(UIViewController*)viewController {
+    NSUInteger index;
+    if([viewController isKindOfClass:[ShopTalkViewController class]]) {
+        index = [(ShopTalkViewController *)viewController indexNumber];
+    } else if([viewController isKindOfClass:[ShopReviewViewController class]]) {
+        index = [(ShopReviewViewController *)viewController indexNumber];
+    } else if([viewController isKindOfClass:[ShopNotesViewController class]]) {
+        index = [(ShopNotesViewController *)viewController indexNumber];
+    }
+    
+    return index;
+}
+
+#pragma  - UIPageViewController Methods
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
+    
+    //    NSUInteger index = [self getViewControllerIndex:viewController];
+    //     NSUInteger index = [(PageChildViewController *)viewController indexNumber];
+    //
+    //    if (index == 0) {
+    //        return nil;
+    //    }
+    //
+    //    index--;
+    //
+    //    return [self viewControllerAtIndex:index];
+    if ([viewController isKindOfClass:[ShopTalkViewController class]]) {
+        return nil;
+    }
+    else if ([viewController isKindOfClass:[ShopReviewViewController class]]) {
+        return _shopTalkViewController;
+    }
+    else if ([viewController isKindOfClass:[ShopNotesViewController class]]) {
+        return _shopReviewViewController;
+    }
+    
+    return nil;
+    
+}
+
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
+    
+    //    NSUInteger index = [self getViewControllerIndex:viewController];
+    //     NSUInteger index = [(PageChildViewController *)viewController indexNumber];
+    //
+    //    index++;
+    //
+    //    if (index == 3) {
+    //        return nil;
+    //    }
+    //
+    //    return [self viewControllerAtIndex:index];
+    if ([viewController isKindOfClass:[ShopTalkViewController class]]) {
+        return _shopReviewViewController;
+    }
+    else if ([viewController isKindOfClass:[ShopReviewViewController class]]) {
+        return _shopNotesViewController;
+    }
+    else if ([viewController isKindOfClass:[ShopNotesViewController class]]) {
+        return nil;
+    }
+    
+    return nil;
+    
+}
 
 
 @end

@@ -323,6 +323,10 @@
     }
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    
+}
+
 - (void)tabButtonDidTap:(UIButton *)button
 {
     if (button.tag > _viewControllerIndex) {

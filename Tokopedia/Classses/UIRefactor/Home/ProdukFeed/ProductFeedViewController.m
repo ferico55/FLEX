@@ -15,7 +15,7 @@
 #import "ProductFeed.h"
 #import "DetailProductViewController.h"
 
-@interface ProductFeedViewController() <UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate>
+@interface ProductFeedViewController() <UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate, UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UIView *footer;
@@ -23,6 +23,18 @@
 
 @property (nonatomic, strong) NSMutableArray *product;
 @property (nonatomic)  BOOL *isDismissVc;
+@property (nonatomic, assign) CGFloat lastContentOffset;
+
+typedef enum ScrollDirection {
+    ScrollDirectionNone,
+    ScrollDirectionCrazy,
+    ScrollDirectionLeft,
+    ScrollDirectionRight,
+    ScrollDirectionUp,
+    ScrollDirectionDown,
+    ScrollDirectionHorizontal,
+    ScrollDirectionVertical
+} ScrollDirection;
 
 @end
 
@@ -199,11 +211,6 @@
 
     return cell;
   
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 202;
 }
 
 
@@ -464,5 +471,19 @@
     [((GeneralProductCell*)cell).viewcell makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
 }
 
-
+#pragma mark - ScrollView Delegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    ScrollDirection scrollDirection;
+    if (self.lastContentOffset > scrollView.contentOffset.x) {
+        scrollDirection = ScrollDirectionRight;
+        NSLog(@"Scrolling direction: right");
+    } else if (self.lastContentOffset < scrollView.contentOffset.x) {
+        scrollDirection = ScrollDirectionLeft;
+         NSLog(@"Scrolling direction: left");
+    }
+    self.lastContentOffset = scrollView.contentOffset.x;
+    
+    // do whatever you need to with scrollDirection here.
+}
 @end

@@ -106,7 +106,7 @@
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    self.hidesBottomBarWhenPushed = YES;
+//    self.hidesBottomBarWhenPushed = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated

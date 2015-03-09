@@ -140,7 +140,7 @@
     _table.tableHeaderView = _header;
     _page = 1;
     _auth = [NSMutableDictionary new];
-    
+    [_sendButton setEnabled:NO];
     //UIBarButtonItem *barbutton1;
     //NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
@@ -450,6 +450,7 @@
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILTALK_APIPATH parameters:[param encrypt]];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [_timer invalidate];
+            [_sendButton setEnabled:YES];
             _timer = nil;
             [_act stopAnimating];
             _table.hidden = NO;

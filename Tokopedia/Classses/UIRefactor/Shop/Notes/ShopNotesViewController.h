@@ -13,7 +13,10 @@
 
 @property (nonatomic, strong) NSDictionary *data;
 @property (assign, nonatomic) NSInteger pageIndex;
+@property (assign, nonatomic) NSInteger index;
+
 @property CGPoint contentOffset;
 @property (strong, nonatomic) Shop *shop;
+@property (assign, nonatomic) NSInteger indexNumber;
 
 @end

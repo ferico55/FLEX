@@ -278,7 +278,7 @@
     [resultMapping addPropertyMapping:listRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILSHOPETALASE_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILSHOP_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     //add response description to object manager
     [_objectmanager addResponseDescriptor:responseDescriptor];
@@ -293,10 +293,9 @@
     
 	NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETETALASEKEY,
                             kTKPDDETAIL_APISHOPIDKEY: @([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
-                            @"enc_dec" : @"off"
                             };
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILSHOPETALASE_APIPATH parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:[param encrypt]];
     
 	[_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);

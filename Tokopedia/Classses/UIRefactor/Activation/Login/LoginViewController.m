@@ -13,31 +13,38 @@
 #import "LoginViewController.h"
 
 #import "TKPDSecureStorage.h"
-#import "StickyAlert.h"
+#import "StickyAlertView.h"
 #import "TextField.h"
 
-@interface LoginViewController (){
+//#import <FacebookSDK/FacebookSDK.h>
+#import <QuartzCore/QuartzCore.h>
+
+@interface LoginViewController () {
     
     UITextField *_activetextfield;
     
     NSMutableDictionary *_activation;
     
-    BOOL _isnodata;    
+    BOOL _isnodata;
     NSInteger _requestcount;
     
     Login *_login;
     
     UIBarButtonItem *_barbuttonsignin;
-        
+    
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
+    
+    __weak RKObjectManager *_facebookObjectManager;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *container;
 @property (strong, nonatomic) IBOutlet TextField *emailTextField;
 @property (strong, nonatomic) IBOutlet TextField *passwordTextField;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (weak, nonatomic) IBOutlet UIView *facebookLoginButton;
+@property (weak, nonatomic) IBOutlet UIButton *loginButton;
 
 - (void)cancelLogin;
 - (void)configureRestKitLogin;
@@ -61,7 +68,6 @@
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    //self = [super initWithNibName:@"LoginViewController" bundle:nibBundleOrNil];
     /** Cecking UI device iPhone or iPad (different xib) **/
     self = ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)?[super initWithNibName:kTKPDACTIVATION_LOGINNIBNAMEIPHONE bundle:nil]:[super initWithNibName:kTKPDACTIVATION_LOGINNIBNAMEIPAD bundle:nil];
     
@@ -75,37 +81,57 @@
 
 #pragma mark - Life Cycle
 - (void)viewDidLoad
-{    
+{
     [super viewDidLoad];
     
-    UIBarButtonItem* barbutton1;
+    UIBarButtonItem *signUpButton = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up"
+                                                                     style:UIBarButtonItemStylePlain
+                                                                    target:(self)
+                                                                    action:@selector(tap:)];
+    signUpButton.tag = 11;
+    signUpButton.tintColor = [UIColor whiteColor];
+    self.navigationItem.rightBarButtonItem = signUpButton;
     
-    /** SIGN IN **/
-    _barbuttonsignin = [[UIBarButtonItem alloc] initWithTitle:@"Sign In" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonsignin setTag:10];
-    [_barbuttonsignin setTintColor:[UIColor blackColor]];
-    self.navigationItem.rightBarButtonItem = _barbuttonsignin;
+    if (_isPresentedViewController) {
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(tap:)];
+        cancelButton.tag = 13;
+        cancelButton.tintColor = [UIColor whiteColor];
+        self.navigationItem.leftBarButtonItem = cancelButton;
+    }
     
-    /** GO TO SIGN UP PAGE **/
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTag:11];
-    [barbutton1 setTintColor:[UIColor whiteColor]];
-    self.navigationItem.leftBarButtonItem = barbutton1;
-    
-    [_container setFrame:CGRectMake(0, self.navigationController.navigationBar.frame.size.height+64, _container.frame.size.width, _container.frame.size.height)];
+    [_container setFrame:CGRectMake(0,
+                                    self.navigationController.navigationBar.frame.size.height+64,
+                                    _container.frame.size.width,
+                                    _container.frame.size.height)];
     
     _activation = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
+    
+    [self configureRestKitLogin];
+    
+//    FBLoginView *loginView = [[FBLoginView alloc] init];
+//    loginView.delegate = self;
+//    loginView.readPermissions = @[@"public_profile", @"email"];
+//    loginView.frame = CGRectMake(0, 0,
+//                                 _facebookLoginButton.frame.size.width,
+//                                 _facebookLoginButton.frame.size.height);
+//    [_facebookLoginButton addSubview:loginView];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    _emailTextField.isTopRoundCorner = YES;
-    _passwordTextField.isBottomRoundCorner = YES;
+    _loginButton.layer.cornerRadius = 2;
     
-    [self configureRestKitLogin];
+    _emailTextField.isTopRoundCorner = YES;
+    _emailTextField.isBottomRoundCorner = YES;
+    
+    _passwordTextField.isTopRoundCorner = YES;
+    _passwordTextField.isBottomRoundCorner = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -118,7 +144,57 @@
 -(IBAction)tap:(id)sender
 {
     [_activetextfield resignFirstResponder];
-    
+    if([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton*)sender;
+        
+        switch (btn.tag) {
+            case 10:
+            {
+                /** SIGN IN **/
+                NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
+                NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
+                NSMutableArray *messages = [NSMutableArray new];
+                BOOL valid = NO;
+                NSString *message;
+                if (email && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""] && [email isEmail]) {
+                    valid = YES;
+                }
+                if (!email||[email isEqualToString:@""]) {
+                    message = @"Email harus diisi.";
+                    [messages addObject:message];
+                    valid = NO;
+                }
+                if (email) {
+                    if (![email isEmail]) {
+                        message = @"Format email salah.";
+                        [messages addObject:message];
+                        valid = NO;
+                    }
+                }
+                if (!pass || [pass isEqualToString:@""]) {
+                    message = @"Password harus diisi";
+                    [messages addObject:message];
+                    valid = NO;
+                }
+                
+                if (valid) {
+                    NSDictionary *userinfo = @{kTKPDACTIVATION_DATAEMAILKEY : email, kTKPDACTIVATION_DATAPASSKEY : pass};
+                    [_loginButton setEnabled:NO];
+                    [self configureRestKitLogin];
+                    [self requestActionLogin:userinfo];
+                }
+                else{
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                }
+                
+                NSLog(@"message : %@", messages);
+                break;
+            }
+            default:
+                break;
+        }
+    }
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         
@@ -154,6 +230,7 @@
                 
                 if (valid) {
                     NSDictionary *userinfo = @{kTKPDACTIVATION_DATAEMAILKEY : email, kTKPDACTIVATION_DATAPASSKEY : pass};
+
                     [self configureRestKitLogin];
                     [self requestActionLogin:userinfo];
                 }
@@ -161,8 +238,8 @@
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
-                    
-                    NSLog(@"message : %@", messages);
+                
+                NSLog(@"message : %@", messages);
                 break;
             }
             case 11:
@@ -170,6 +247,11 @@
                 /** GO TO SIGN UP PAGE **/
                 RegisterViewController *vc = [RegisterViewController new];
                 [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 13:
+            {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             }
             default:
@@ -213,31 +295,77 @@
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
                                                         kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
                                                         kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-
+    
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LoginResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDLOGIN_APIISLOGINKEY:kTKPDLOGIN_APIISLOGINKEY,
-                                                        kTKPDLOGIN_APISHOPIDKEY:kTKPDLOGIN_APISHOPIDKEY,
-                                                        kTKPDLOGIN_APIUSERIDKEY:kTKPDLOGIN_APIUSERIDKEY,
-                                                        kTKPDLOGIN_APIFULLNAMEKEY:kTKPDLOGIN_APIFULLNAMEKEY,
-                                                        kTKPDLOGIN_APIIMAGEKEY:kTKPDLOGIN_APIIMAGEKEY,
-                                                        kTKPDLOGIN_APISHOPNAMEKEY:kTKPDLOGIN_APISHOPNAMEKEY,
-                                                        kTKPDLOGIN_APISHOPAVATARKEY:kTKPDLOGIN_APISHOPAVATARKEY,
-                                                        kTKPDLOGIN_APISHOPISGOLDKEY:kTKPDLOGIN_APISHOPISGOLDKEY,
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDLOGIN_APIISLOGINKEY    : kTKPDLOGIN_APIISLOGINKEY,
+                                                        kTKPDLOGIN_APISHOPIDKEY     : kTKPDLOGIN_APISHOPIDKEY,
+                                                        kTKPDLOGIN_APIUSERIDKEY     : kTKPDLOGIN_APIUSERIDKEY,
+                                                        kTKPDLOGIN_APIFULLNAMEKEY   : kTKPDLOGIN_APIFULLNAMEKEY,
+                                                        kTKPDLOGIN_APIIMAGEKEY      : kTKPDLOGIN_APIIMAGEKEY,
+                                                        kTKPDLOGIN_APISHOPNAMEKEY   : kTKPDLOGIN_APISHOPNAMEKEY,
+                                                        kTKPDLOGIN_APISHOPAVATARKEY : kTKPDLOGIN_APISHOPAVATARKEY,
+                                                        kTKPDLOGIN_APISHOPISGOLDKEY : kTKPDLOGIN_APISHOPISGOLDKEY,
+                                                        kTKPDLOGIN_API_STATUS_KEY               : kTKPDLOGIN_API_STATUS_KEY,
+                                                        kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY   : kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY,
+                                                        kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY   : kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY,
                                                         }];
     //add relationship mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDLOGIN_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:kTKPDLOGIN_APIPATH
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
 
-- (void)requestActionLogin:(id)userinfo
+- (void)configureRestKitFacebookLogin
+{
+    // initialize RestKit
+    _facebookObjectManager =  [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Login class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[LoginResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDLOGIN_APIISLOGINKEY    : kTKPDLOGIN_APIISLOGINKEY,
+                                                        kTKPDLOGIN_APISHOPIDKEY     : kTKPDLOGIN_APISHOPIDKEY,
+                                                        kTKPDLOGIN_APIUSERIDKEY     : kTKPDLOGIN_APIUSERIDKEY,
+                                                        kTKPDLOGIN_APIFULLNAMEKEY   : kTKPDLOGIN_APIFULLNAMEKEY,
+                                                        kTKPDLOGIN_APIIMAGEKEY      : kTKPDLOGIN_APIIMAGEKEY,
+                                                        kTKPDLOGIN_APISHOPNAMEKEY   : kTKPDLOGIN_APISHOPNAMEKEY,
+                                                        kTKPDLOGIN_APISHOPAVATARKEY : kTKPDLOGIN_APISHOPAVATARKEY,
+                                                        kTKPDLOGIN_APISHOPISGOLDKEY : kTKPDLOGIN_APISHOPISGOLDKEY,
+                                                        kTKPDLOGIN_API_STATUS_KEY               : kTKPDLOGIN_API_STATUS_KEY,
+                                                        kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY   : kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY,
+                                                        kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY   : kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY,
+                                                        }];
+    //add relationship mapping
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:kTKPDLOGIN_FACEBOOK_APIPATH
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_facebookObjectManager addResponseDescriptor:responseDescriptorStatus];
+}
+
+- (void)requestActionLogin:(NSDictionary *)data
 {
     if (_request.isExecuting) return;
-    
-    NSDictionary *data = userinfo;
     
     _requestcount++;
     
@@ -246,52 +374,78 @@
                             kTKPDLOGIN_APIUSERPASSKEY : [data objectForKey:kTKPDACTIVATION_DATAPASSKEY]?:@(0)
                             };
     
-    _barbuttonsignin.enabled = NO;
-    
-//#if DEBUG
-//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//    NSDictionary* auth = [secureStorage keychainDictionary];
-//    
-//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-//    
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-//    
-//    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
-//                                                                    method:RKRequestMethodGET
-//                                                                      path:kTKPDLOGIN_APIPATH
-//                                                                parameters:paramDictionary];
-//#else
+    _loginButton.enabled = NO;
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:kTKPDLOGIN_APIPATH
                                                                 parameters:[param encrypt]];
-//#endif
     
-
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                      target:self
+                                                    selector:@selector(requesttimeoutLogin)
+                                                    userInfo:nil
+                                                     repeats:NO];
     
-    NSTimer *timer;
+    [[NSRunLoop currentRunLoop] addTimer:timer
+                                 forMode:NSRunLoopCommonModes];
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"clearCacheNotificationBar" object:self];
         [timer invalidate];
-        //[_act stopAnimating];
-        _barbuttonsignin.enabled = YES;
+        _loginButton.enabled = YES;
         [self requestsuccessLogin:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
         [timer invalidate];
-        //[_act stopAnimating];
-        _barbuttonsignin.enabled =YES;
+        _loginButton.enabled = YES;
         [self requestfailureLogin:error];
     }];
-    [_operationQueue addOperation:_request];
     
-    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeoutLogin) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    [_operationQueue addOperation:_request];
 }
+
+//- (void)requestLoginFacebookUser:(id<FBGraphUser>)user
+//{
+//    if (_request.isExecuting) return;
+//    
+//    _requestcount++;
+//    
+//    NSDictionary *param = @{
+//                            kTKPDREGISTER_APIACTIONKEY      : kTKPDREGISTER_APIDOLOGINKEY,
+//                            kTKPDLOGIN_API_APP_TYPE_KEY     : @"1",
+//                            kTKPDLOGIN_API_EMAIL_KEY        : [user objectForKey:@"email"]?:@"",
+//                            kTKPDLOGIN_API_NAME_KEY         : [user objectForKey:@"name"]?:@"",
+//                            kTKPDLOGIN_API_ID_KEY           : [user objectForKey:@"id"]?:@"",
+//                            kTKPDLOGIN_API_BIRTHDAY_KEY     : [user objectForKey:@"birthday"]?:@"",
+//                            kTKPDLOGIN_API_GENDER_KEY       : [user objectForKey:@"gender"]?:@"",
+//                            @"enc_dec"                      : @"off"
+//                            };
+//    
+//    _barbuttonsignin.enabled = NO;
+//    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+//                                                                    method:RKRequestMethodGET
+//                                                                      path:kTKPDLOGIN_FACEBOOK_APIPATH
+//                                                                parameters:param];
+//    
+//    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+//                                                      target:self
+//                                                    selector:@selector(requesttimeoutLogin)
+//                                                    userInfo:nil
+//                                                     repeats:NO];
+//    
+//    [[NSRunLoop currentRunLoop] addTimer:timer
+//                                 forMode:NSRunLoopCommonModes];
+//    
+//    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+//        [timer invalidate];
+//        _barbuttonsignin.enabled = YES;
+//        [self requestsuccessLogin:mappingResult withOperation:operation];
+//    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+//        [timer invalidate];
+//        _barbuttonsignin.enabled = YES;
+//        [self requestfailureLogin:error];
+//    }];
+//    
+//    [_operationQueue addOperation:_request];
+//}
 
 -(void)requestsuccessLogin:(id)object withOperation:(RKObjectRequestOperation*)operation
 {
@@ -304,7 +458,7 @@
     if (status) {
         
         _isnodata = NO;
-
+        
         if (!_login.message_error) {
             //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
             //[defaults saveCustomObject:_login.result key:kTKPD_AUTHKEY];
@@ -314,7 +468,7 @@
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-        
+            
             [secureStorage setKeychainWithValue:@(_login.result.user_id) withKey:kTKPD_USERIDKEY];
             [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
             [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
@@ -325,23 +479,33 @@
             [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
             
-            [self.tabBarController setSelectedIndex:0];
-            
-            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-            [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION object:nil userInfo:@{}];
+            if (_isPresentedViewController) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                [self.delegate redirectViewController:_redirectViewController];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                    object:nil
+                                                                  userInfo:nil];
+                
+            } else {
+                [self.tabBarController setSelectedIndex:0];
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION
+                                                                    object:nil
+                                                                  userInfo:nil];
+            }
         }
         else
         {
-            NSArray *messages = _login.message_error;
-            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
+                                                                           delegate:self];
+            [alert show];
         }
     }
     else
     {
-        NSArray *messages = [NSArray arrayWithObjects:@"Sign in gagal silahkan coba lagi.", nil];
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
+                                                                       delegate:self];
+        [alert show];
     }
 }
 
@@ -357,16 +521,14 @@
         }
         else
         {
-            NSArray *messages = [NSArray arrayWithObjects:@"Sign in gagal silahkan coba lagi.", nil];
-            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
+                                                                           delegate:self];
+            [alert show];
         }
-    }
-    else
-    {
-        NSString *errorDescription = [object localizedDescription];
-        UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-        [errorAlert show];
+    } else {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
+                                                                       delegate:self];
+        [alert show];
     }
 }
 
@@ -384,20 +546,15 @@
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
     if (textField == _emailTextField) {
-        //if (![textField.text isEqualToString:@""]) {
-            [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAEMAILKEY];
-        //}
-    }
-    else if (textField == _passwordTextField){
-        //if (![textField.text isEqualToString:@""]) {
-            [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAPASSKEY];
-        //}
+        [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAEMAILKEY];
+    } else if (textField == _passwordTextField){
+        [_activation setValue:textField.text forKey:kTKPDACTIVATION_DATAPASSKEY];
     }
 }
 
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField{
-
+    
     return YES;
 }
 
@@ -439,5 +596,47 @@
     _container.contentInset = contentInsets;
     _container.scrollIndicatorInsets = contentInsets;
 }
+
+#pragma mark - Facebook login delegate
+//
+//// Call method when user information has been fetched
+//- (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
+//    [self configureRestKitFacebookLogin];
+//    [self requestLoginFacebookUser:user];
+//}
+//
+//// Handle possible errors that can occur during login
+//- (void)loginView:(FBLoginView *)loginView handleError:(NSError *)error {
+//    NSString *alertMessage, *alertTitle;
+//    if ([FBErrorUtility shouldNotifyUserForError:error]) {
+//        
+//        alertTitle = @"Facebook error";
+//        alertMessage = [FBErrorUtility userMessageForError:error];
+//        
+//    } else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession) {
+//        
+//        alertTitle = @"Session Error";
+//        alertMessage = @"Your current session is no longer valid. Please log in again.";
+//        
+//    } else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled) {
+//        
+//        NSLog(@"user cancelled login");
+//        
+//    } else {
+//        
+//        alertTitle  = @"Something went wrong";
+//        alertMessage = @"Please try again later.";
+//        NSLog(@"Unexpected error:%@", error);
+//        
+//    }
+//    
+//    if (alertMessage) {
+//        [[[UIAlertView alloc] initWithTitle:alertTitle
+//                                    message:alertMessage
+//                                   delegate:nil
+//                          cancelButtonTitle:@"OK"
+//                          otherButtonTitles:nil] show];
+//    }
+//}
 
 @end

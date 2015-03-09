@@ -17,6 +17,7 @@
 #import "DepositFormAccountBankViewController.h"
 #import "URLCacheController.h"
 #import "URLCacheConnection.h"
+#import "DepositForm.h"
 
 
 #pragma mark - Setting Bank Account View Controller
@@ -121,10 +122,10 @@
     _cachecontroller = [URLCacheController new];
     _selectedIndexPath = [_data objectForKey:@"account_indexpath"];
     
-    [self initCache];
-    [self configureRestKit];
-    [self loadDataFromCache];
-    
+//    [self initCache];
+//    [self configureRestKit];
+//    [self loadDataFromCache];
+    [self requestProcess:_listBankAccount withOperation:nil];
     _page = 1;
     _table.delegate = self;
     _table.dataSource = self;
@@ -136,9 +137,9 @@
     [super viewWillAppear:animated];
     
     if (!_isrefreshview) {
-        [self configureRestKit];
+//        [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self loadData];
+//            [self loadData];
         }
     }
 }
@@ -218,8 +219,8 @@
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             /** called if need to load next page **/
             //NSLog(@"%@", NSStringFromSelector(_cmd));
-            [self configureRestKit];
-            [self loadData];
+//            [self configureRestKit];
+//            [self loadData];
         }
     }
 }
@@ -243,7 +244,7 @@
                 
             case 11: {
                 NSIndexPath *indexpath = _selectedIndexPath;
-                BankAccountFormList *list = _list[indexpath.row];
+                DepositFormBankAccountList *list = _list[indexpath.row];
                 NSString *bankName = [NSString stringWithFormat:@"%@ a/n %@ - %@", list.bank_account_number, list.bank_account_name, list.bank_name];
                 
                 
@@ -252,7 +253,8 @@
                 userinfo = @{
                              @"indexpath" : indexpath,
                              @"bank_account_name" : bankName,
-                             @"bank_account_id" : @(list.bank_account_id)
+                             @"bank_account_id" : @(list.bank_account_id),
+                             @"is_verified_account" : @(list.is_verified_account)?:0
                              };
                 
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"updateSelectedDepositBank" object:nil userInfo:userinfo];
@@ -314,7 +316,8 @@
                                                  kTKPDPROFILESETTING_APIBANKACCOUNTNUMBERKEY,
                                                  kTKPDPROFILESETTING_APIBANKBRANCHKEY,
                                                  API_BANK_ACCOUNT_ID_KEY,
-                                                 kTKPDPROFILESETTING_APIISDEFAULTBANKKEY
+                                                 kTKPDPROFILESETTING_APIISDEFAULTBANKKEY,
+                                                 kTKPDPROFILESETTING_APIISVERIFIEDBANKKEY
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -432,78 +435,78 @@
 -(void)requestProcess:(id)object  withOperation:(RKObjectRequestOperation *)operation
 {
     if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            BankAccountForm *bankaccount = stat;
-            BOOL status = [bankaccount.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [_list addObjectsFromArray:bankaccount.result.list];
+//        if ([object isKindOfClass:[RKMappingResult class]]) {
+//            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+//            id stat = [result objectForKey:@""];
+//            BankAccountForm *bankaccount = stat;
+//            BOOL status = [bankaccount.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        
+//            if (status) {
+                [_list addObjectsFromArray:object];
                 
-                if(operation) {
-                    [_cacheconnection connection:operation.HTTPRequestOperation.request
-                              didReceiveResponse:operation.HTTPRequestOperation.response];
-                    [_cachecontroller connectionDidFinish:_cacheconnection];
-                    
-                    [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-                }
+//                if(operation) {
+//                    [_cacheconnection connection:operation.HTTPRequestOperation.request
+//                              didReceiveResponse:operation.HTTPRequestOperation.response];
+//                    [_cachecontroller connectionDidFinish:_cacheconnection];
+//                    
+//                    [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+//                }
                 
                 
                 if (_list.count >0) {
                     _isnodata = NO;
-                    _urinext =  bankaccount.result.paging.uri_next;
-                    NSURL *url = [NSURL URLWithString:_urinext];
-                    NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                    
-                    NSMutableDictionary *queries = [NSMutableDictionary new];
-                    [queries removeAllObjects];
-                    for (NSString *keyValuePair in querry)
-                    {
-                        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                        NSString *key = [pairComponents objectAtIndex:0];
-                        NSString *value = [pairComponents objectAtIndex:1];
-                        
-                        [queries setObject:value forKey:key];
-                    }
-                    
-                    _page = [[queries objectForKey:kTKPDPROFILE_APIPAGEKEY] integerValue];
-                }
+//                    _urinext =  bankaccount.result.paging.uri_next;
+//                    NSURL *url = [NSURL URLWithString:_urinext];
+//                    NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+//                    
+//                    NSMutableDictionary *queries = [NSMutableDictionary new];
+//                    [queries removeAllObjects];
+//                    for (NSString *keyValuePair in querry)
+//                    {
+//                        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+//                        NSString *key = [pairComponents objectAtIndex:0];
+//                        NSString *value = [pairComponents objectAtIndex:1];
+//                        
+//                        [queries setObject:value forKey:key];
+//                    }
+//                    
+//                    _page = [[queries objectForKey:kTKPDPROFILE_APIPAGEKEY] integerValue];
+//                }
             }
-        }
-        else{
-            
-            [self cancel];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                    _table.tableFooterView = _footer;
-                    [_act startAnimating];
-                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                }
-                else
-                {
-                    [_act stopAnimating];
-                    _table.tableFooterView = nil;
-                    NSError *error = object;
-                    NSString *errorDescription = error.localizedDescription;
-                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                    [errorAlert show];
-                }
-            }
-            else
-            {
-                [_act stopAnimating];
-                _table.tableFooterView = nil;
-                NSError *error = object;
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-            
-        }
+////        }
+//        else{
+//            
+//            [self cancel];
+//            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
+//            if ([(NSError*)object code] == NSURLErrorCancelled) {
+//                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+//                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
+//                    _table.tableFooterView = _footer;
+//                    [_act startAnimating];
+//                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+//                    [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+//                }
+//                else
+//                {
+//                    [_act stopAnimating];
+//                    _table.tableFooterView = nil;
+//                    NSError *error = object;
+//                    NSString *errorDescription = error.localizedDescription;
+//                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+//                    [errorAlert show];
+//                }
+//            }
+//            else
+//            {
+//                [_act stopAnimating];
+//                _table.tableFooterView = nil;
+//                NSError *error = object;
+//                NSString *errorDescription = error.localizedDescription;
+//                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+//                [errorAlert show];
+//            }
+//            
+//        }
     }
 }
 

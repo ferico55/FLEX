@@ -41,6 +41,8 @@
 
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "DepositSummaryViewController.h"
+#import "ShopContainerViewController.h"
+#import "ReputationPageViewController.h"
 
 @interface MoreViewController ()  {
     NSDictionary *_auth;
@@ -89,8 +91,7 @@
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
     
-    
-    if([_auth objectForKey:@"shop_id"]  == 0) {
+    if([_auth objectForKey:@"shop_id"]) {
         _shopNameLabel.text = [_auth objectForKey:@"shop_name"];
         
         NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"shop_avatar"]]
@@ -283,13 +284,19 @@
     }
     
     else if (indexPath.section == 2 && indexPath.row == 0) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
-        shopViewController.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
-                                    MORE_AUTH : _auth,
-                                    MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
-                                    };
-        [self.navigationController pushViewController:shopViewController animated:YES];
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
+//        shopViewController.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
+//                                    MORE_AUTH : _auth,
+//                                    MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
+//                                    };
+        
+        ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+        container.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
+                                                               MORE_AUTH : _auth,
+                                                               MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
+                                                               };
+        [self.navigationController pushViewController:container animated:YES];
     }
     
     else if (indexPath.section == 2 && indexPath.row == 1) {
@@ -300,6 +307,10 @@
     }
     
     else if (indexPath.section == 4) {
+        if(indexPath.row == 2) {
+            ReputationPageViewController *reputationPageVc = [ReputationPageViewController new];
+            [self.navigationController pushViewController:reputationPageVc animated:YES];
+        }
         if(indexPath.row == 3) {
             InboxMessageViewController *vc = [InboxMessageViewController new];
             vc.data=@{@"nav":@"inbox-message"};

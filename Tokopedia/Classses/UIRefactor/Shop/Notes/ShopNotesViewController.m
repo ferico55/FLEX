@@ -83,6 +83,7 @@
 @end
 
 @implementation ShopNotesViewController
+@synthesize indexNumber;
 
 #pragma mark - View Life Cycle
 

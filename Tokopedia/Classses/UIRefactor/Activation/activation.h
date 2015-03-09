@@ -26,6 +26,7 @@
 #define kTKPDACTIVATIONLOGIN_APIRSPONSEFILE @"tmp/login.plist"
 
 #define kTKPDLOGIN_APIPATH @"login.pl"
+#define kTKPDLOGIN_FACEBOOK_APIPATH @"login-third-app.pl"
 #define kTKPDREGISTER_APIPATH @"action/register.pl"
 
 #define kTKPDLOGIN_APIUSEREMAILKEY @"user_email"
@@ -41,7 +42,19 @@
 #define kTKPDLOGIN_APISHOPAVATARKEY @"shop_avatar"
 #define kTKPDLOGIN_APISHOPISGOLDKEY @"shop_is_gold"
 
+#define kTKPDLOGIN_API_STATUS_KEY @"status"
+#define kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY @"msisdn_is_verified"
+#define kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY @"msisdn_show_dialog"
+
+#define kTKPDLOGIN_API_APP_TYPE_KEY @"app_type"
+#define kTKPDLOGIN_API_EMAIL_KEY    @"email"
+#define kTKPDLOGIN_API_NAME_KEY     @"name"
+#define kTKPDLOGIN_API_ID_KEY       @"id"
+#define kTKPDLOGIN_API_BIRTHDAY_KEY @"birthday"
+#define kTKPDLOGIN_API_GENDER_KEY   @"gender"
+
 #define kTKPDREGISTER_APIACTIONKEY @"action"
+#define kTKPDREGISTER_APIDOLOGINKEY @"do_login"
 #define kTKPDREGISTER_APIDOREGISTERKEY @"do_register"
 #define kTKPDREGISTER_APIFULLNAMEKEY @"full_name"
 #define kTKPDREGISTER_APIEMAILKEY @"email"

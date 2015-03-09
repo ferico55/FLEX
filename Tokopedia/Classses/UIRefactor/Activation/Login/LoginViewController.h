@@ -8,8 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol LoginViewDelegate <NSObject>
+
+@required
+- (void)redirectViewController:(id)viewController;
+
+@end
+
 @interface LoginViewController : UIViewController <UITextFieldDelegate>
 
 @property (strong,nonatomic) NSDictionary *data;
+@property BOOL isPresentedViewController;
+@property (weak, nonatomic) id<LoginViewDelegate> delegate;
+@property (strong, nonatomic) id redirectViewController;
 
 @end

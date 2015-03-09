@@ -16,6 +16,7 @@
 
 @property (nonatomic, strong) Paging *paging;
 @property (nonatomic, strong) AdvanceReview *advance_review;
+@property (nonatomic, strong) NSString *is_owner;
 @property (nonatomic, strong) NSArray *list;
 
 @end

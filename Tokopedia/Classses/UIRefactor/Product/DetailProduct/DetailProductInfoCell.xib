@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6205" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6198"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -69,22 +70,22 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="order_value" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dVc-xU-9CT">
-                                <rect key="frame" x="150" y="9" width="100" height="21"/>
+                                <rect key="frame" x="120" y="9" width="100" height="21"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="weight_value" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cc0-iw-hjh">
-                                <rect key="frame" x="150" y="38" width="100" height="21"/>
+                                <rect key="frame" x="120" y="38" width="100" height="21"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="insurance_value" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qQQ-44-8y4">
-                                <rect key="frame" x="150" y="68" width="100" height="21"/>
+                                <rect key="frame" x="120" y="68" width="100" height="21"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="condition_value" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CyT-a6-icH">
-                                <rect key="frame" x="150" y="98" width="100" height="21"/>
+                                <rect key="frame" x="120" y="98" width="100" height="21"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -97,7 +98,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button hidden="YES" opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RfU-qt-NEW">
-                                        <rect key="frame" x="143" y="-5" width="100" height="30"/>
+                                        <rect key="frame" x="113" y="-5" width="140" height="30"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <state key="normal" title="Button">
                                             <color key="titleColor" red="0.24313725489999999" green="0.66666666669999997" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -108,7 +109,7 @@
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FQH-9u-jNL">
-                                        <rect key="frame" x="143" y="15" width="100" height="30"/>
+                                        <rect key="frame" x="113" y="15" width="140" height="30"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <state key="normal" title="Button">
                                             <color key="titleColor" red="0.24313725489999999" green="0.66666666669999997" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -119,7 +120,7 @@
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gwc-Y6-mxy">
-                                        <rect key="frame" x="143" y="35" width="100" height="30"/>
+                                        <rect key="frame" x="113" y="35" width="140" height="30"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <state key="normal" title="Button">
                                             <color key="titleColor" red="0.24313725489999999" green="0.66666666669999997" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
@@ -140,15 +141,15 @@
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button hidden="YES" opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xd9-Yo-yUf">
-                                        <rect key="frame" x="143" y="-4" width="100" height="30"/>
+                                    <button opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xd9-Yo-yUf">
+                                        <rect key="frame" x="113" y="-4" width="100" height="30"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                         <state key="normal" title="Button">
                                             <color key="titleColor" red="0.24313725489999999" green="0.66666666669999997" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <action selector="tag:" destination="RcP-lh-rUh" eventType="touchUpInside" id="CWd-eD-xfd"/>
+                                            <action selector="tag:" destination="RcP-lh-rUh" eventType="touchUpInside" id="dlG-cZ-LJH"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -176,9 +177,6 @@
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4">
-            <size key="portraitSize" width="320" height="568"/>
-            <size key="landscapeSize" width="568" height="320"/>
-        </simulatedScreenMetrics>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
 </document>
