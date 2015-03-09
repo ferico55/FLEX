@@ -9,8 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "Notification.h"
 
+@protocol NotificationViewDelegate <NSObject>
+
+@optional
+- (void)pushViewController:(id)viewController;
+
+@end
+
 @interface NotificationViewController : UITableViewController
 
 @property (strong, nonatomic) Notification *notification;
+@property (weak, nonatomic) id<NotificationViewDelegate> delegate;
 
 @end

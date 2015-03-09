@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransactionCartResultCellIdentifier" rowHeight="130" id="Iyh-KE-p0V" customClass="TransactionCartResultCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="130"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Iyh-KE-p0V" id="23k-hv-OaH">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bank BCA" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7O-pF-cdI">
+                        <rect key="frame" x="15" y="15" width="180" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="QZJ-9h-8iu"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="16"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cab. Permata Hijau" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QXe-Jv-r4h">
+                        <rect key="frame" x="15" y="41" width="180" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="3eP-em-Zfb"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1233455676" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mH9-ep-De2">
+                        <rect key="frame" x="15" y="67" width="78" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="6ex-pz-HCM"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="a/n Tokopedia" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8CO-7Q-qvz">
+                        <rect key="frame" x="15" y="93" width="95" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="KSF-e5-9IB"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8Yd-w1-WmL">
+                        <rect key="frame" x="195" y="15" width="110" height="55"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="55" id="AdJ-YE-pIz"/>
+                            <constraint firstAttribute="width" constant="110" id="d6r-Lj-ZCA"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="8Yd-w1-WmL" firstAttribute="leading" secondItem="QXe-Jv-r4h" secondAttribute="trailing" id="1CG-mH-xav"/>
+                    <constraint firstItem="8Yd-w1-WmL" firstAttribute="leading" secondItem="K7O-pF-cdI" secondAttribute="trailing" id="3zx-WB-XKd"/>
+                    <constraint firstItem="QXe-Jv-r4h" firstAttribute="top" secondItem="K7O-pF-cdI" secondAttribute="bottom" constant="5" id="46N-Kv-uME"/>
+                    <constraint firstItem="8Yd-w1-WmL" firstAttribute="leading" secondItem="K7O-pF-cdI" secondAttribute="trailing" id="BIT-z7-ecO"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="8CO-7Q-qvz" secondAttribute="trailing" constant="125" id="QvQ-jR-P2n"/>
+                    <constraint firstAttribute="trailing" secondItem="8Yd-w1-WmL" secondAttribute="trailing" constant="15" id="Rvz-CB-yz1"/>
+                    <constraint firstItem="K7O-pF-cdI" firstAttribute="top" secondItem="23k-hv-OaH" secondAttribute="top" constant="15" id="Tem-ul-kl2"/>
+                    <constraint firstItem="K7O-pF-cdI" firstAttribute="leading" secondItem="23k-hv-OaH" secondAttribute="leading" constant="15" id="Tze-85-WxG"/>
+                    <constraint firstItem="mH9-ep-De2" firstAttribute="top" secondItem="QXe-Jv-r4h" secondAttribute="bottom" constant="5" id="Xqj-os-S4q"/>
+                    <constraint firstItem="8CO-7Q-qvz" firstAttribute="leading" secondItem="23k-hv-OaH" secondAttribute="leading" constant="15" id="dd4-XI-6sI"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="mH9-ep-De2" secondAttribute="trailing" constant="125" id="del-oU-D0L"/>
+                    <constraint firstItem="QXe-Jv-r4h" firstAttribute="leading" secondItem="23k-hv-OaH" secondAttribute="leading" constant="15" id="hPK-6d-izU"/>
+                    <constraint firstItem="8CO-7Q-qvz" firstAttribute="top" secondItem="mH9-ep-De2" secondAttribute="bottom" constant="5" id="mn8-3V-L7E"/>
+                    <constraint firstItem="mH9-ep-De2" firstAttribute="leading" secondItem="23k-hv-OaH" secondAttribute="leading" constant="15" id="n1B-f7-RZl"/>
+                    <constraint firstItem="8Yd-w1-WmL" firstAttribute="top" secondItem="23k-hv-OaH" secondAttribute="top" constant="15" id="q45-j8-AYR"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="accountNameLabel" destination="8CO-7Q-qvz" id="xfB-Wy-SEO"/>
+                <outlet property="accountNumberLabel" destination="mH9-ep-De2" id="4Dk-vX-V3O"/>
+                <outlet property="bankBranchLabel" destination="QXe-Jv-r4h" id="TAR-8p-csu"/>
+                <outlet property="bankNameLabel" destination="K7O-pF-cdI" id="dwx-Pa-Vk3"/>
+                <outlet property="logoBankImageView" destination="8Yd-w1-WmL" id="Rgt-jQ-eQq"/>
+            </connections>
+            <point key="canvasLocation" x="564" y="392"/>
+        </tableViewCell>
+    </objects>
+</document>

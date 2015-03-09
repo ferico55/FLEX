@@ -10,20 +10,11 @@
 #import "string_home.h"
 #import "HotlistViewController.h"
 #import "HotlistResultViewController.h"
-#import "InboxMessageViewController.h"
-#import "InboxTalkViewController.h"
-#import "InboxReviewViewController.h"
-#import "TKPDTabInboxMessageNavigationController.h"
-#import "TKPDTabInboxTalkNavigationController.h"
-#import "TKPDTabInboxReviewNavigationController.h"
+#import "SearchResultViewController.h"
 
 #import "URLCacheController.h"
 
 #pragma mark - HotlistView
-
-/* cache update interval in seconds */
-//const double URLCacheInterval = 86400.0;
-//const double URLCacheInterval = 30.0;
 
 @interface HotlistViewController ()
 {
@@ -128,27 +119,14 @@
     [NSURLCache setSharedURLCache:sharedCache];
     
     /* prepare to use our own on-disk cache */
-    //[_cachecontroller initCachePathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDHOMEHOTLIST_CACHEFILEPATH];
     _cachepath = [path stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
     
-    /* create and load the URL array using the strings stored in URLCache.plist */
-    //NSString* path = [[NSBundle mainBundle] pathForResource:@"URLCache" ofType:@"plist"];
-    //if (path) {
-    //    NSArray *array = [[NSArray alloc] initWithContentsOfFile:path];
-    //    _cachecontroller.urlArray = [NSMutableArray array];
-    //    for (NSString *element in array) {
-    //        [_cachecontroller.urlArray addObject:[NSURL URLWithString:element]];
-    //    }
-    //}
-    
     [[UINavigationBar appearance] setShadowImage:[[UIImage alloc] init]];
     [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    
-    [self initNotification];
     
     [self configureRestKit];
     [self loadData];
@@ -157,29 +135,6 @@
         [self loadData];
     }
 }
-
-- (void) initNotification {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(goToInboxMessage:)
-                                                 name:@"goToInboxMessage"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(goToInboxTalk:)
-                                                 name:@"goToInboxTalk"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(goToInboxReview:)
-                                                 name:@"goToInboxReview"
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(goToNewOrder:)
-                                                 name:@"goToNewOrder"
-                                               object:nil];
-}
-
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -340,7 +295,8 @@
     
     NSDictionary* param = @{kTKPDHOME_APIACTIONKEY :   kTKPDHOMEHOTLISTACT,
                             kTKPDHOME_APIPAGEKEY   :   @(_page),
-                            kTKPDHOME_APILIMITPAGEKEY  :   @(kTKPDHOMEHOTLIST_LIMITPAGE)};
+                            kTKPDHOME_APILIMITPAGEKEY  :   @(kTKPDHOMEHOTLIST_LIMITPAGE),
+                            };
     
 	[_cachecontroller getFileModificationDate];
 
@@ -350,7 +306,10 @@
 
 	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
         
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDHOMEHOTLIST_APIPATH parameters:[param encrypt]];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                        method:RKRequestMethodPOST
+                                                                          path:kTKPDHOMEHOTLIST_APIPATH
+                                                                    parameters:[param encrypt]];
         
         NSTimer *timer;
         //[_cachecontroller clearCache];
@@ -530,20 +489,21 @@
 #pragma mark - Delegate
 -(void)HotlistCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withimageview:(UIImageView *)imageview
 {
-    HotlistResultViewController *vc = [HotlistResultViewController new];
-    vc.image = ((HotlistCell*)cell).productimageview.image;
-
     HotlistList *hotlist = _product[indexpath.row];
-    NSArray *query = [[[NSURL URLWithString:hotlist.url] path] componentsSeparatedByString: @"/"];
-    
-    vc.data = @{kTKPDHOME_DATAQUERYKEY : query[2]?:@"",
-                kTKPHOME_DATAHEADERIMAGEKEY : imageview,
-                kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
-                kTKPDHOME_APIURLKEY : hotlist.url,
-                kTKPDHOME_APITITLEKEY : hotlist.title,
-                };
-    
-    [self.delegate pushViewController:vc];
+    if ([hotlist.url rangeOfString:@"/hot/"].length ||
+        [hotlist.url rangeOfString:@"/p/"].length) {
+        HotlistResultViewController *controller = [HotlistResultViewController new];
+        controller.image = ((HotlistCell*)cell).productimageview.image;
+        NSArray *query = [[[NSURL URLWithString:hotlist.url] path] componentsSeparatedByString: @"/"];
+        controller.data = @{
+                            kTKPDHOME_DATAQUERYKEY      : [query objectAtIndex:2]?:@"",
+                            kTKPHOME_DATAHEADERIMAGEKEY : imageview,
+                            kTKPD_AUTHKEY               : [_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
+                            kTKPDHOME_APIURLKEY         : hotlist.url,
+                            kTKPDHOME_APITITLEKEY       : hotlist.title,
+                            };
+        [self.delegate pushViewController:controller];
+    }
 }
 
 #pragma mark - Methods
@@ -559,7 +519,6 @@
     /** clear object **/
     [self cancel];
     _requestcount = 0;
-//    [_product removeAllObjects];
     _page = 1;
     _isrefreshview = YES;
     
@@ -568,75 +527,5 @@
     [self configureRestKit];
     [self loadData];
 }
-
-- (void)goToInboxMessage:(NSNotification*)userInfo {
-    InboxMessageViewController *vc = [InboxMessageViewController new];
-    vc.data=@{@"nav":@"inbox-message"};
-    
-    InboxMessageViewController *vc1 = [InboxMessageViewController new];
-    vc1.data=@{@"nav":@"inbox-message-sent"};
-    
-    InboxMessageViewController *vc2 = [InboxMessageViewController new];
-    vc2.data=@{@"nav":@"inbox-message-archive"};
-    
-    InboxMessageViewController *vc3 = [InboxMessageViewController new];
-    vc3.data=@{@"nav":@"inbox-message-trash"};
-    NSArray *vcs = @[vc,vc1, vc2, vc3];
-    
-    TKPDTabInboxMessageNavigationController *nc = [TKPDTabInboxMessageNavigationController new];
-    [nc setSelectedIndex:2];
-    [nc setViewControllers:vcs];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-    [nav.navigationBar setTranslucent:NO];
-    
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
-}
-
-- (void)goToInboxTalk:(NSNotification*)userInfo {
-    InboxTalkViewController *vc = [InboxTalkViewController new];
-    vc.data=@{@"nav":@"inbox-talk"};
-    
-    InboxTalkViewController *vc1 = [InboxTalkViewController new];
-    vc1.data=@{@"nav":@"inbox-talk-my-product"};
-    
-    InboxTalkViewController *vc2 = [InboxTalkViewController new];
-    vc2.data=@{@"nav":@"inbox-talk-following"};
-    
-    NSArray *vcs = @[vc,vc1, vc2];
-    
-    TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
-    [nc setSelectedIndex:2];
-    [nc setViewControllers:vcs];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-    [nav.navigationBar setTranslucent:NO];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
-}
-
-- (void)goToInboxReview:(NSNotification*)userInfo {
-    InboxReviewViewController *vc = [InboxReviewViewController new];
-    vc.data=@{@"nav":@"inbox-review"};
-    
-    InboxReviewViewController *vc1 = [InboxReviewViewController new];
-    vc1.data=@{@"nav":@"inbox-review-my-product"};
-    
-    InboxReviewViewController *vc2 = [InboxReviewViewController new];
-    vc2.data=@{@"nav":@"inbox-review-my-review"};
-    
-    NSArray *vcs = @[vc,vc1, vc2];
-    
-    TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
-    [nc setSelectedIndex:2];
-    [nc setViewControllers:vcs];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-    [nav.navigationBar setTranslucent:NO];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
-}
-
-
-
-- (void)goToNewOrder:(NSNotification*)userInfo {
-    
-}
-
 
 @end

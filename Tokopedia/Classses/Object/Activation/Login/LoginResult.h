@@ -20,7 +20,8 @@
 @property (nonatomic, strong) NSString *full_name;
 @property (nonatomic, strong) NSString *user_image;
 
-//- (void)encodeWithCoder:(NSCoder *)encoder;
-//- (id)initWithCoder:(NSCoder *)decoder;
+@property NSInteger status;
+@property NSInteger msisdn_is_verified;
+@property NSInteger msisdn_show_dialog;
 
 @end

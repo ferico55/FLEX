@@ -11,7 +11,7 @@
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "NotificationState.h"
 
-@interface NotificationManager () <NotificationDelegate>
+@interface NotificationManager () <NotificationDelegate, NotificationViewDelegate>
 
 @end
 
@@ -19,8 +19,6 @@
 
 - (id)init {
     self = [super init];
-    
-    
     if(self) {
         _userManager = [UserAuthentificationManager new];
         _notificationRequest = [NotificationRequest new];
@@ -29,7 +27,6 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(resetNotification) name:@"resetNotification" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setUnreadNotification:) name:@"setUnreadNotification" object:nil];
     }
-    
     return self;
 }
 
@@ -62,57 +59,29 @@
 }
 
 - (void)selectViewControllerToOpen:(NSString *)notificationCode{
-    switch ([notificationCode integerValue]) {
-        case STATE_NEW_MESSAGE: {
-            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-            [nc postNotificationName:@"goToInboxMessage" object:nil userInfo:@{}];
-            break;
-        }
-            
-        case STATE_NEW_TALK: {
-            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-            [nc postNotificationName:@"goToInboxTalk" object:nil userInfo:@{}];
-            break;
-        }
-            
-        case STATE_NEW_REVIEW: {
-            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-            [nc postNotificationName:@"goToInboxReview" object:nil userInfo:@{}];
-            break;
-        }
-            
-        case STATE_EDIT_REVIEW: {
-            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-            [nc postNotificationName:@"goToInboxReview" object:nil userInfo:@{}];
-            break;
-        }
-        case STATE_REPLY_REVIEW: {
-            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-            [nc postNotificationName:@"goToInboxReview" object:nil userInfo:@{}];
-            break;
-        }
-            
-        case STATE_NEW_ORDER: {
-            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-            [nc postNotificationName:@"goToNewOrder" object:nil userInfo:@{}];
-            break;
-        }
-            
-        default:
-            break;
+    NSDictionary *userInfo = nil;
+    if ([notificationCode integerValue] == STATE_NEW_MESSAGE) {
+        userInfo = @{@"name" : @"inboxMessage"};
+    } else if ([notificationCode integerValue] == STATE_NEW_TALK) {
+        userInfo = @{@"name" : @"inboxTalk"};
+    } else if ([notificationCode integerValue] == STATE_NEW_ORDER) {
+        userInfo = @{@"name" : @"newOrder"};
+    } else if ([notificationCode integerValue] == STATE_NEW_REVIEW ||
+               [notificationCode integerValue] == STATE_EDIT_REVIEW ||
+               [notificationCode integerValue] == STATE_REPLY_REVIEW) {
+        userInfo = @{@"name" : @"inboxReview"};
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"redirectAfterNotification" object:self userInfo:userInfo];
 }
 
 - (void)setViewController:(UIViewController*)vc {
     _attachedViewController = vc;
-    
     NSString* userId = [NSString stringWithFormat:@"%@", [_userManager getUserId]];
     if(![userId isEqualToString:IS_NOT_LOGIN]) {
         [self initNotificationBarButton];
         [self initNotificationRequest];
         [self initNotificationWindow];
-    }
-    
+    }    
 }
 
 - (void)tapNotificationBar {
@@ -127,6 +96,7 @@
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
     _notificationController = [storyboard instantiateViewControllerWithIdentifier:@"NotificationViewController"];
     _notificationController.notification = _notification;
+    _notificationController.delegate = self;
     
     [_notificationController.tableView beginUpdates];
     CGRect notificationTableFrame = _notificationController.tableView.frame;
@@ -147,11 +117,11 @@
     
     _notificationArrowImageView.alpha = 1;
     
-    [UIView animateWithDuration:0.7 animations:^{
+    [UIView animateWithDuration:0.4 animations:^{
         _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
     }];
     
-    [UIView animateWithDuration:0.55 animations:^{
+    [UIView animateWithDuration:0.25 animations:^{
         _notificationWindow.frame = CGRectMake(0, 0, _attachedViewController.view.frame.size.width, 568);
     }];
     
@@ -179,12 +149,12 @@
     CGRect windowFrame = _notificationWindow.frame;
     windowFrame.size.height = 0;
     
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         _notificationWindow.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0];
         _notificationArrowImageView.alpha = 0;
     }];
     
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.3 animations:^{
         _notificationWindow.frame = windowFrame;
     } completion:^(BOOL finished) {
         _notificationWindow.hidden = YES;
@@ -194,7 +164,9 @@
 - (void)didReceiveNotification:(Notification *)notification
 {
     _notification = notification;
-    [self.delegate didReceiveNotification:notification];    
+    if ([self.delegate respondsToSelector:@selector(didReceiveNotification:)]) {
+        [self.delegate didReceiveNotification:notification];
+    }
     if ([_notification.result.total_notif integerValue] == 0) {
         _notificationButton.badgeLabel.hidden = YES;
     } else {
@@ -218,6 +190,15 @@
             badgeLabelFrame.size.width = 50;
         }
         _notificationButton.badgeLabel.frame = badgeLabelFrame;
+    }
+}
+
+#pragma mark - Notification view delegate
+
+- (void)pushViewController:(id)viewController
+{
+    if ([self.delegate respondsToSelector:@selector(notificationManager:pushViewController:)]) {
+        [self.delegate notificationManager:self pushViewController:viewController];        
     }
 }
 

@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="245" id="KGk-i7-Jjw" customClass="CatalogShopCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="245"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hrF-rD-JaS" userLabel="Container View">
+                        <rect key="frame" x="10" y="15" width="300" height="229"/>
+                        <subviews>
+                            <view tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dqq-0d-ZIp">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="70"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XZa-rX-g75" userLabel="Border">
+                                        <rect key="frame" x="10" y="69" width="280" height="1"/>
+                                        <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="SUj-Ce-q7v"/>
+                                        </constraints>
+                                    </view>
+                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_toped_loading_grey-02.png" translatesAutoresizingMaskIntoConstraints="NO" id="gtP-EX-b5j">
+                                        <rect key="frame" x="10" y="10" width="50" height="50"/>
+                                        <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="deviceRGB"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YPx-vr-edZ">
+                                        <rect key="frame" x="68" y="15" width="212" height="21"/>
+                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
+                                        <color key="textColor" red="0.039215686274509803" green="0.49411764705882355" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="81H-Uk-YsE">
+                                        <rect key="frame" x="85" y="37" width="194" height="12"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                        <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_location_grey" translatesAutoresizingMaskIntoConstraints="NO" id="bu6-bZ-ndD">
+                                        <rect key="frame" x="68" y="36" width="14" height="14"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="XZa-rX-g75" secondAttribute="bottom" id="2sL-J5-KrL"/>
+                                    <constraint firstAttribute="trailing" secondItem="XZa-rX-g75" secondAttribute="trailing" constant="10" id="6Rr-es-l6m"/>
+                                    <constraint firstItem="XZa-rX-g75" firstAttribute="leading" secondItem="Dqq-0d-ZIp" secondAttribute="leading" constant="10" id="KoK-Sg-dzi"/>
+                                    <constraint firstAttribute="height" constant="70" id="LKR-zX-qiE"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="0ys-W8-mYU" appends="YES" id="w7m-jM-U5B"/>
+                                </connections>
+                            </view>
+                            <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ANF-hx-DfL">
+                                <rect key="frame" x="0.0" y="70" width="300" height="90"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R2T-Kt-HiZ" userLabel="Border">
+                                        <rect key="frame" x="10" y="89" width="280" height="1"/>
+                                        <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1" id="Vpw-eX-Wa5"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gzI-ib-jqq">
+                                        <rect key="frame" x="10" y="17" width="187" height="21"/>
+                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                                        <color key="textColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hjz-np-IZz">
+                                        <rect key="frame" x="10" y="38" width="187" height="12"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                        <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yaO-Zj-7nA">
+                                        <rect key="frame" x="10" y="52" width="187" height="21"/>
+                                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                                        <color key="textColor" red="1" green="0.3411764705882353" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="R2T-Kt-HiZ" secondAttribute="trailing" constant="10" id="4UU-Sf-9RP"/>
+                                    <constraint firstAttribute="bottom" secondItem="R2T-Kt-HiZ" secondAttribute="bottom" id="6yL-Nc-jAg"/>
+                                    <constraint firstAttribute="height" constant="90" id="leN-gA-XZc"/>
+                                    <constraint firstItem="R2T-Kt-HiZ" firstAttribute="leading" secondItem="ANF-hx-DfL" secondAttribute="leading" constant="10" id="wMx-fy-MHi"/>
+                                </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="7Ib-E0-FHo" appends="YES" id="3Xo-Cq-alg"/>
+                                </connections>
+                            </view>
+                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5A0-aT-MsB">
+                                <rect key="frame" x="10" y="170" width="280" height="30"/>
+                                <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Hq0-Gq-1l8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
+                                <state key="normal" title="BUY">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="QUv-6h-BQF" appends="YES" id="1mI-Nh-1Gy"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TUy-cG-4oA">
+                                <rect key="frame" x="66" y="200" width="168" height="29"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="29" id="E7J-6t-jbS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                <state key="normal" title="Lihat produk lainnya (6)">
+                                    <color key="titleColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="vxl-8A-NTL" appends="YES" id="q1g-Vy-oAf"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gpw-rT-PUR">
+                                <rect key="frame" x="0.0" y="210" width="300" height="19"/>
+                                <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="19" id="OmT-ri-LWW"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="TUy-cG-4oA" firstAttribute="leading" secondItem="hrF-rD-JaS" secondAttribute="leading" constant="66" id="6Zm-ol-EhZ"/>
+                            <constraint firstItem="5A0-aT-MsB" firstAttribute="leading" secondItem="hrF-rD-JaS" secondAttribute="leading" constant="10" id="9yl-iM-daz"/>
+                            <constraint firstAttribute="trailing" secondItem="5A0-aT-MsB" secondAttribute="trailing" constant="10" id="Cvk-19-1sc"/>
+                            <constraint firstAttribute="trailing" secondItem="Dqq-0d-ZIp" secondAttribute="trailing" id="DqB-QC-5qd"/>
+                            <constraint firstItem="ANF-hx-DfL" firstAttribute="leading" secondItem="hrF-rD-JaS" secondAttribute="leading" id="JsH-jM-c7k"/>
+                            <constraint firstItem="Dqq-0d-ZIp" firstAttribute="top" secondItem="hrF-rD-JaS" secondAttribute="top" id="MgQ-qr-Rzi"/>
+                            <constraint firstItem="5A0-aT-MsB" firstAttribute="top" secondItem="ANF-hx-DfL" secondAttribute="bottom" constant="10" id="RMi-3x-I6B"/>
+                            <constraint firstItem="Dqq-0d-ZIp" firstAttribute="leading" secondItem="hrF-rD-JaS" secondAttribute="leading" id="Tme-3F-AvP"/>
+                            <constraint firstItem="Gpw-rT-PUR" firstAttribute="leading" secondItem="hrF-rD-JaS" secondAttribute="leading" id="VFB-AY-bfR"/>
+                            <constraint firstItem="Gpw-rT-PUR" firstAttribute="top" secondItem="5A0-aT-MsB" secondAttribute="bottom" constant="10" id="as7-5K-Yer"/>
+                            <constraint firstItem="ANF-hx-DfL" firstAttribute="top" secondItem="Dqq-0d-ZIp" secondAttribute="bottom" id="fXm-Y1-aO4"/>
+                            <constraint firstAttribute="trailing" secondItem="TUy-cG-4oA" secondAttribute="trailing" constant="66" id="hhv-ne-fXt"/>
+                            <constraint firstAttribute="trailing" secondItem="Gpw-rT-PUR" secondAttribute="trailing" id="mqb-EW-k1W"/>
+                            <constraint firstItem="TUy-cG-4oA" firstAttribute="top" secondItem="5A0-aT-MsB" secondAttribute="bottom" id="nVz-5Q-M0u"/>
+                            <constraint firstAttribute="trailing" secondItem="ANF-hx-DfL" secondAttribute="trailing" id="s7D-nq-4a2"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="hrF-rD-JaS" secondAttribute="trailing" constant="10" id="NMB-HF-rtr"/>
+                    <constraint firstItem="hrF-rD-JaS" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="UPz-wq-wCt"/>
+                    <constraint firstAttribute="bottom" secondItem="hrF-rD-JaS" secondAttribute="bottom" id="aOZ-y2-M6I"/>
+                    <constraint firstItem="hrF-rD-JaS" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="pDH-8V-hVS"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
+            <connections>
+                <outlet property="buyButton" destination="5A0-aT-MsB" id="cor-eS-RFW"/>
+                <outlet property="containerView" destination="hrF-rD-JaS" id="k70-do-fR2"/>
+                <outlet property="masking" destination="Gpw-rT-PUR" id="6hY-f8-uqC"/>
+                <outlet property="productConditionLabel" destination="Hjz-np-IZz" id="14v-qa-7hx"/>
+                <outlet property="productNameLabel" destination="gzI-ib-jqq" id="v5g-E5-1SW"/>
+                <outlet property="productPriceLabel" destination="yaO-Zj-7nA" id="DBg-9n-wgU"/>
+                <outlet property="seeOtherProducts" destination="TUy-cG-4oA" id="asQ-u3-DLx"/>
+                <outlet property="shopImageView" destination="gtP-EX-b5j" id="A1D-Y4-CIn"/>
+                <outlet property="shopLocationLabel" destination="81H-Uk-YsE" id="BlW-Kx-Got"/>
+                <outlet property="shopNameLabel" destination="YPx-vr-edZ" id="RKH-Zc-fhf"/>
+            </connections>
+            <point key="canvasLocation" x="181" y="297"/>
+        </tableViewCell>
+        <tapGestureRecognizer id="0ys-W8-mYU" userLabel="Shop Tap Gesture Recognizer">
+            <connections>
+                <action selector="tap:" destination="KGk-i7-Jjw" id="tpQ-eG-FWJ"/>
+                <outlet property="delegate" destination="-1" id="Dki-3S-u3O"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="7Ib-E0-FHo" userLabel="Product Tap Gesture Recognizer">
+            <connections>
+                <action selector="tap:" destination="KGk-i7-Jjw" id="3pX-rn-YkT"/>
+                <outlet property="delegate" destination="-1" id="c9B-1w-Dof"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="QUv-6h-BQF" userLabel="Buy Button Tap Gesture Recognizer">
+            <connections>
+                <action selector="tap:" destination="KGk-i7-Jjw" id="3bH-cM-3iv"/>
+                <outlet property="delegate" destination="-1" id="V6m-fy-999"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="vxl-8A-NTL" userLabel="Other Product Tap Gesture Recognizer">
+            <connections>
+                <action selector="tap:" destination="KGk-i7-Jjw" id="Qh5-3N-nKq"/>
+                <outlet property="delegate" destination="-1" id="JBu-KD-2aa"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="icon_location_grey" width="14" height="14"/>
+        <image name="icon_toped_loading_grey-02.png" width="30" height="30"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

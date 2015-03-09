@@ -10,8 +10,6 @@
 
 #import "LoginViewController.h"
 #import "SearchViewController.h"
-#import "CartViewController.h"
-//#import "TransactionCartViewController.h"
 #import "TransactionCartRootViewController.h"
 #import "MoreNavigationController.h"
 #import "MoreViewController.h"
@@ -23,7 +21,6 @@
 #import "ProductFeedViewController.h"
 #import "HistoryProductViewController.h"
 #import "FavoritedShopViewController.h"
-#import "LogoutViewController.h"
 
 #import "activation.h"
 
@@ -366,45 +363,14 @@
 
 - (void)applicationLogin:(NSNotification*)notification
 {
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadNotificationBar" object:self];
-
-    
-    //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    //id auth = [defaults loadCustomObjectWithKey:kTKPD_AUTHKEY];
-    //_login = auth;
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-	NSDictionary* auth = [secureStorage keychainDictionary];
+    NSDictionary* auth = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
 	_auth = [auth mutableCopy];
     
-    BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY]boolValue];
+    BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
 
 	// Assume tabController is the tab controller
     // and newVC is the controller you want to be the new view controller at index 0
     NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
-    NSArray *titles;
-
-//    // array untuk view controller pada swipe vc
-//    NSMutableArray *arrays = [NSMutableArray arrayWithArray:_swipevc.viewControllers];
-//    if (!isauth) {
-//        // before login
-//        titles = kTKPD_HOMETITLEARRAY;
-//        [arrays removeObjectsInRange:NSMakeRange(1,3)];
-//    }
-//    else{
-//        // after login
-//        titles = kTKPD_HOMETITLEISAUTHARRAY;
-//        ProductFeedViewController *v1 = [ProductFeedViewController new];
-//        [arrays addObject:v1];
-//        HistoryProductViewController *v2 = [HistoryProductViewController new];
-//        [arrays addObject:v2];
-//        FavoritedShopViewController *v3 = [FavoritedShopViewController new];
-//        [arrays addObject:v3];
-//    }
-
-    /** Adjust View Controller **/
-    //TKPDTabHomeNavigationController *swipevc = [TKPDTabHomeNavigationController new];
-//    [_swipevc setViewControllers:arrays animated:YES withtitles:titles];
-//    [_swipevc setSelectedIndex:0];
 
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
     swipevcNav.navigationBar.translucent = NO;
@@ -439,14 +405,10 @@
 
 - (void)applicationlogout:(NSNotification*)notification
 {
-	//NSDictionary* userinfo = notification.userInfo;
-    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
     [_cacheController initCacheWithDocumentPath:path];
     [_cacheController clearCache];
-    
-    
+        
 	TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
 	[storage resetKeychain];	//delete all previous sensitive data
 	[_auth removeAllObjects];

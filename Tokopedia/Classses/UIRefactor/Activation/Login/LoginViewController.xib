@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController">
+            <connections>
+                <outlet property="emailTextField" destination="TaY-hL-DlK" id="0pG-0z-24H"/>
+                <outlet property="facebookLoginButton" destination="Gxv-a7-Kso" id="FDu-nS-hG0"/>
+                <outlet property="loginButton" destination="BjJ-ah-R04" id="dvv-2B-Ufl"/>
+                <outlet property="passwordTextField" destination="rJv-0e-sEO" id="wTA-pJ-GR0"/>
+                <outlet property="view" destination="lpZ-Wc-EfF" id="4lY-8H-fs8"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tapGestureRecognizer id="MgA-86-nNw">
+            <connections>
+                <action selector="tap:" destination="-1" id="H2M-00-kIT"/>
+            </connections>
+        </tapGestureRecognizer>
+        <view contentMode="redraw" id="lpZ-Wc-EfF">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="screen_login" translatesAutoresizingMaskIntoConstraints="NO" id="tu9-kn-elL">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                </imageView>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TaY-hL-DlK" customClass="TextField">
+                    <rect key="frame" x="15" y="50" width="290" height="44"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="Nea-BB-FHN"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="jj7-1N-qn8"/>
+                    </connections>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rJv-0e-sEO" customClass="TextField">
+                    <rect key="frame" x="15" y="100" width="290" height="44"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="b96-o2-QGm"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="GXp-wQ-NdF"/>
+                    </connections>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BjJ-ah-R04">
+                    <rect key="frame" x="15" y="150" width="290" height="44"/>
+                    <color key="backgroundColor" red="0.070588235294117646" green="0.7803921568627451" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="J8R-cu-Y1h"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                    <state key="normal" title="Log  In">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="qhs-2n-8Kv"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gxv-a7-Kso">
+                    <rect key="frame" x="15" y="262" width="290" height="44"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="cAc-Vd-kLC"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Forgot Password ?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ut9-rs-BMn">
+                    <rect key="frame" x="80" y="202" width="160" height="31"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="31" id="LYc-n2-OFB"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                    <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="TaY-hL-DlK" firstAttribute="top" secondItem="lpZ-Wc-EfF" secondAttribute="top" constant="50" id="4DL-YL-fhl"/>
+                <constraint firstItem="TaY-hL-DlK" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" constant="15" id="5xp-aM-8rS"/>
+                <constraint firstAttribute="trailing" secondItem="tu9-kn-elL" secondAttribute="trailing" id="CYC-T2-Wkq"/>
+                <constraint firstItem="ut9-rs-BMn" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" constant="80" id="FOD-Fs-kjm"/>
+                <constraint firstAttribute="trailing" secondItem="Gxv-a7-Kso" secondAttribute="trailing" constant="15" id="H9r-Lb-Mc1"/>
+                <constraint firstItem="tu9-kn-elL" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" id="IfZ-Ls-Ypu"/>
+                <constraint firstItem="tu9-kn-elL" firstAttribute="top" secondItem="lpZ-Wc-EfF" secondAttribute="top" id="LAP-Ww-79x"/>
+                <constraint firstItem="Gxv-a7-Kso" firstAttribute="top" secondItem="ut9-rs-BMn" secondAttribute="bottom" constant="29" id="MVV-3D-UUv"/>
+                <constraint firstItem="rJv-0e-sEO" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" constant="15" id="NJe-EL-KNa"/>
+                <constraint firstAttribute="trailing" secondItem="BjJ-ah-R04" secondAttribute="trailing" constant="15" id="O53-mB-BhP"/>
+                <constraint firstAttribute="trailing" secondItem="TaY-hL-DlK" secondAttribute="trailing" constant="15" id="UJh-9a-PeT"/>
+                <constraint firstItem="BjJ-ah-R04" firstAttribute="top" secondItem="rJv-0e-sEO" secondAttribute="bottom" constant="6" id="VNE-AJ-ZVS"/>
+                <constraint firstAttribute="trailing" secondItem="ut9-rs-BMn" secondAttribute="trailing" constant="80" id="XSL-pL-W0U"/>
+                <constraint firstItem="rJv-0e-sEO" firstAttribute="top" secondItem="TaY-hL-DlK" secondAttribute="bottom" constant="6" id="ec1-FB-EkC"/>
+                <constraint firstAttribute="trailing" secondItem="rJv-0e-sEO" secondAttribute="trailing" constant="15" id="g0D-ax-DyX"/>
+                <constraint firstAttribute="bottom" secondItem="tu9-kn-elL" secondAttribute="bottom" id="jq6-4S-nOC"/>
+                <constraint firstItem="BjJ-ah-R04" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" constant="15" id="ke6-yh-EoE"/>
+                <constraint firstItem="ut9-rs-BMn" firstAttribute="top" secondItem="BjJ-ah-R04" secondAttribute="bottom" constant="8" id="tdY-xn-Nw0"/>
+                <constraint firstItem="Gxv-a7-Kso" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" constant="15" id="th2-x2-zLa"/>
+            </constraints>
+            <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outletCollection property="gestureRecognizers" destination="MgA-86-nNw" appends="YES" id="HJr-tV-zMC"/>
+            </connections>
+            <point key="canvasLocation" x="97" y="156"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="screen_login" width="640" height="1136"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

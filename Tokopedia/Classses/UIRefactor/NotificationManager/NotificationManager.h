@@ -15,7 +15,9 @@
 
 @protocol NotificationManagerDelegate <NSObject>
 
+@optional
 - (void)didReceiveNotification:(Notification *)notification;
+- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController;
 
 @end
 

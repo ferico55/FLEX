@@ -15,6 +15,8 @@
 #import "StickyAlert.h"
 #import "NotificationManager.h"
 
+#import <FacebookSDK/FacebookSDK.h>
+
 @implementation AppDelegate
 {
     UITabBarController *_tabBarController;
@@ -41,6 +43,7 @@
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 	_window.tag = 0xCAFEBABE;	//used globally to identify main application window
 	_window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
+
 //#ifdef __IPHONE_7_0
 //	if ([_window respondsToSelector:@selector(setTintColor:)]) {
 //		_window.tintColor = kTKPDWINDOW_TINTLCOLOR;	//compatibility
@@ -49,8 +52,6 @@
 	
     _viewController = [MainViewController new];
 
-	//_viewController.data = _parameters;
-	//_parameters = nil;
     _window.backgroundColor = kTKPDNAVIGATION_NAVIGATIONBGCOLOR;
 	_window.rootViewController = _viewController;
 	[_window makeKeyAndVisible];
@@ -58,14 +59,6 @@
 	dispatch_async(dispatch_get_main_queue(), ^{
 		[self didFinishLaunchingWithOptionsQueued];
 	});
-	
-    //TODO:: CACHE
-    //NSlog(@"window frame: %@", NSStringFromCGRect(_window.frame));
-    //NSlog(@"tabbar frame: %@", NSStringFromCGRect(_viewController.view.frame));
-    //
-    //NSURLCache* cache = [NSURLCache sharedURLCache];
-    //NSLOG(@"nsurlcache capacity:%dKB, %dKB - current:%dKB, %dKB", cache.memoryCapacity >> 10, cache.diskCapacity >> 10, cache.currentMemoryUsage >> 10, cache.currentDiskUsage >> 10);
-    ////[cache removeAllCachedResponses];
     
     // Let the device know we want to receive push notifications
     [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
@@ -76,22 +69,25 @@
     return YES;
 }
 
+- (void)applicationDidBecomeActive:(UIApplication *)application {    
+    // Logs 'install' and 'app activate' App Events.
+    [FBAppEvents activateApp];
+}
+
 - (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
 {
     NSLog(@"My token is: %@", deviceToken);
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    
     //opened when application is on background
-    NotificationManager *notifManager = [NotificationManager new];
-    if(application.applicationState == UIApplicationStateInactive || application.applicationState == UIApplicationStateBackground) {
+    if(application.applicationState == UIApplicationStateInactive ||
+       application.applicationState == UIApplicationStateBackground) {
+        NotificationManager *notifManager = [NotificationManager new];
         [notifManager selectViewControllerToOpen:[[userInfo objectForKey:@"data"] objectForKey:@"tkp_code"]];
     } else {
-        //refresh ticker notification
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadNotificationBar" object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadNotification" object:self];
     }
-    
 }
 
 - (void)didFinishLaunchingWithOptionsQueued
@@ -104,71 +100,29 @@
 	[self preparepersistencedata];
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application
-{
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-}
-
 #pragma mark - methods
 - (void)adjustnavigationbar
 {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+    //navigation background
+    NSBundle* bundle = [NSBundle mainBundle];
+    UIImage* image = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"]];
     
-    #if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-    
-	NSBundle* bundle = [NSBundle mainBundle];
-	UIImage* image;
-	id proxy = [UINavigationBar appearance];
-
-	image = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"]]; //navigation-bg
-    
+    id proxy = [UINavigationBar appearance];
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"7.0.0")) { // iOS 7
         [proxy setBarTintColor:kTKPDNAVIGATION_NAVIGATIONBGCOLOR];
-    }
-    else
-    {
+    } else {
         [proxy setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
     }
     
     [proxy setTintColor:[UIColor whiteColor]];
     
-    //[proxy setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-    
-	//[proxy setTitleVerticalPositionAdjustment:kJYNAVIGATION_ITEMVERTICALADJUSTMENT forBarMetrics:UIBarMetricsDefault];	//TODO: navigation bar animation corruption
-        
-	[proxy setTitleTextAttributes:[[NSDictionary alloc] initWithObjectsAndKeys:kTKPDNAVIGATION_TITLEFONT, UITextAttributeFont,kTKPDNAVIGATION_TITLECOLOR, UITextAttributeTextColor, kTKPDNAVIGATION_TITLESHADOWCOLOR, UITextAttributeTextShadowColor, nil]];
-	
+    NSDictionary *titleTextAttributes = [[NSDictionary alloc] initWithObjectsAndKeys:
+                                         kTKPDNAVIGATION_TITLEFONT, UITextAttributeFont,
+                                         kTKPDNAVIGATION_TITLECOLOR, UITextAttributeTextColor,
+                                         kTKPDNAVIGATION_TITLESHADOWCOLOR, UITextAttributeTextShadowColor, nil];
+	[proxy setTitleTextAttributes:titleTextAttributes];
 	proxy = [UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil];
-    
-    //    [proxy setTintColor:[UIColor whiteColor]];
-    //image = [[[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"]] resizableImageWithCapInsets:kTKPDNAVIGATION_BUTTONINSET resizingMode:UIImageResizingModeStretch];
-    //
-    //[proxy setBackButtonBackgroundImage:image forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    //[proxy setBackButtonBackgroundImage:image forState:UIControlStateHighlighted barMetrics:UIBarMetricsDefault];
-
-	//[proxy setBackButtonBackgroundVerticalPositionAdjustment:kJYNAVIGATION_ITEMVERTICALADJUSTMENT forBarMetrics:UIBarMetricsDefault];	//TODO: navigation bar animation corruption
-
 #endif
 }
 
@@ -190,7 +144,7 @@
     return self;
 }
 
-- (void) receiveStickyMessage:(NSNotification *) notification
+- (void)receiveStickyMessage:(NSNotification *) notification
 {
     
     StickyAlert *stickyalert = [[StickyAlert alloc]init];
@@ -228,9 +182,8 @@
 	_isalertshown = NO;
 	_isNetworkAvailable = YES;
 	_isNetworkWiFi = NO;
-	_isPushNotificationRegistered = NO;
+    _isPushNotificationRegistered = NO;
 	
-    //_objectManager = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kTKPD_REACHABILITYURL]];
 	_objectManager = [RKObjectManager sharedClient];
 	
 #pragma clang diagnostic push
@@ -255,7 +208,7 @@
 			 
 		 } else {
              //TODO:: push notification
-			 if (!_isPushNotificationRegistered) {
+             if (!_isPushNotificationRegistered) {
 				 [[UIApplication sharedApplication] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
 			 }
 		 }
@@ -296,5 +249,16 @@
 		[storage resetKeychain];	//clear all previous sensitive data
 	}
 }
+
+#pragma mark - Facebook login
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    // attempt to extract a token from the url
+    return [FBAppCall handleOpenURL:url sourceApplication:sourceApplication];
+}
+
 
 @end

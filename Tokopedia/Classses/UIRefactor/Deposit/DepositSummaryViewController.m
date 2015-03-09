@@ -12,8 +12,6 @@
 #import "string_deposit.h"
 #import "DepositFormViewController.h"
 
-#import "NoResult.h"
-
 @interface DepositSummaryViewController () <UITableViewDataSource, UITableViewDelegate> {
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
@@ -36,7 +34,7 @@
     
     BOOL _isRefreshView;
     BOOL _isNoData;
-    NoResult *_noResult;
+    NoResultView *_noResultView;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *table;
@@ -77,7 +75,7 @@
     
     _operationQueue = [NSOperationQueue new];
     _depositSummary = [NSMutableArray new];
-    _noResult = [NoResult new];
+    _noResultView = [NoResultView new];
     
     _table.delegate = self;
     _table.dataSource = self;
@@ -316,7 +314,7 @@
                 _page = [[queries objectForKey:@"page"] integerValue];
             } else {
                 _isNoData = YES;
-                _table.tableFooterView = _noResult;
+                _table.tableFooterView = _noResultView;
                 
             }
         }
@@ -335,13 +333,13 @@
                 else
                 {
                     [_act stopAnimating];
-                    _table.tableFooterView = _noResult;
+                    _table.tableFooterView = _noResultView;
                 }
             }
             else
             {
                 [_act stopAnimating];
-                _table.tableFooterView = _noResult;
+                _table.tableFooterView = _noResultView;
             }
             
         }

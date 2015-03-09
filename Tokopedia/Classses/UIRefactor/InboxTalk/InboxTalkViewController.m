@@ -23,11 +23,14 @@
 
 #import "URLCacheController.h"
 
-@interface InboxTalkViewController () <UITableViewDataSource,
-                                        UITableViewDelegate,
-                                        TKPDTabInboxTalkNavigationControllerDelegate,
-                                        GeneralTalkCellDelegate,
-                                        UIAlertViewDelegate>
+@interface InboxTalkViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    TKPDTabInboxTalkNavigationControllerDelegate,
+    GeneralTalkCellDelegate,
+    UIAlertViewDelegate
+>
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -127,23 +130,10 @@
 }
 
 #pragma mark - Life Cycle
-- (void)addBottomInsetWhen14inch {
-    if (is4inch) {
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 155;
-        _table.contentInset = inset;
-    }
-    else{
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 240;
-        _table.contentInset = inset;
-    }
-}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self addBottomInsetWhen14inch];
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _talkListPage = 1;
     
@@ -160,7 +150,7 @@
     _table.dataSource = self;
     _table.tableFooterView = _footer;
     
-    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
     if (_talkList.count > 0) {
@@ -228,12 +218,10 @@
     }
 }
 
-
 #pragma mark - TableView Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return _isnodata ? 0 : _talkList.count;
 }
-
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell* cell = nil;
@@ -250,10 +238,8 @@
         if (_talkList.count > indexPath.row) {
             TalkList *list = _talkList[indexPath.row];
             
-//            ((GeneralTalkCell*)cell).deleteButton.hidden = NO;
-//            ((GeneralTalkCell*)cell).reportView.hidden = YES;
             ((GeneralTalkCell*)cell).indexpath = indexPath;
-            ((GeneralTalkCell*)cell).data = list;
+            ((GeneralTalkCell *)cell).data = list;
             [((GeneralTalkCell*)cell).userButton setTitle:list.talk_user_name forState:UIControlStateNormal];
             [((GeneralTalkCell*)cell).productButton setTitle:list.talk_product_name forState:UIControlStateNormal];
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
@@ -462,8 +448,6 @@
     
     _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-
-
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
@@ -538,10 +522,8 @@
                 [_act stopAnimating];
                 _table.tableFooterView = nil;
             }
-            
         }
     }
-
 }
 
 - (void)cancel {
@@ -555,12 +537,6 @@
 - (void)requesttimeout {
     
 }
-
-
-#pragma mark - Tap
-
-
-
 
 #pragma mark - General Talk Delegate
 - (void)GeneralTalkCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
@@ -809,17 +785,5 @@
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
-
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

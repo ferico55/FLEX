@@ -9,17 +9,16 @@
 #import <Foundation/Foundation.h>
 
 @interface UserAuthentificationManager : NSObject {
-    BOOL _isLogin;
     id userLoginData;
     NSString *_userId;
     NSString *_userShop;
 }
 
+@property (nonatomic) BOOL isLogin;
 
 - (id)getUserLoginData;
 - (NSString*)getUserId;
 - (NSString*)getShopId;
-- (void)setUserLoginData:(id)loginData;
 - (NSString*)addParameterAndConvertToString:(id)params;
 
 @end    
