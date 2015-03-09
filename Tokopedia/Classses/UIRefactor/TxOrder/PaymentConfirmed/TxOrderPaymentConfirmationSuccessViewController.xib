@@ -23,7 +23,6 @@
                 <outlet property="info2Label" destination="wTg-F7-3Ys" id="8nA-VD-eqn"/>
                 <outlet property="infoLabel" destination="3SI-bg-yxa" id="r8p-QC-ZNM"/>
                 <outlet property="successMessage" destination="mF2-Is-kca" id="Fnj-Uf-boz"/>
-                <outlet property="tap" destination="FYh-og-O2J" id="1Tr-cg-2Q6"/>
                 <outlet property="totalPaymentLabel" destination="r52-tG-qtj" id="Dxw-Zw-B5h"/>
                 <outlet property="totalPaymentValueLabel" destination="uqL-jT-XLh" id="N98-fN-Bot"/>
                 <outlet property="view" destination="iN0-l3-epB" id="0oS-Sf-D5v"/>
@@ -66,6 +65,9 @@ Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggun
                     <state key="normal">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="CDo-hv-Deq"/>
+                    </connections>
                 </button>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XBL-Mv-7jJ">
                     <rect key="frame" x="0.0" y="176" width="320" height="100"/>

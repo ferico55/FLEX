@@ -133,8 +133,9 @@
         default:
             break;
     }
-    self.navigationItem.rightBarButtonItem = _barbuttonedit;
-
+    if([_auth objectForKey:kTKPDDETAIL_APISHOPIDKEY]  == [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]) {
+        self.navigationItem.rightBarButtonItem = _barbuttonedit;
+    }
     
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
     _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTES_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue]]];
@@ -273,7 +274,7 @@
     
     _requestcount++;
     
-    NSInteger shopID = [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue];
+    NSInteger shopID = [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue] ?:[[_data objectForKey:kTKPD_SHOPIDKEY] integerValue];
     NSInteger noteID = [[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue];
     
 	NSDictionary* param = @{

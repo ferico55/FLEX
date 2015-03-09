@@ -67,39 +67,6 @@
 
 @implementation SalesTransactionListViewController
 
-typedef enum {
-    ORDER_CANCELED                       = 0,     // update by ADMIN/SYSTEM order canceled for some reason
-    ORDER_CANCELED_CHECKOUT              = 1,     // update by BUYER        cancel checkout baru, apabila dia 2x checkout
-    ORDER_REJECTED                       = 10,    // update by SELLER       seller rejected the order
-    ORDER_CHECKOUT_STATE                 = 90,    // update by BUYER        order status sebelum checkout, tidak tampil dimana2
-    ORDER_PENDING                        = 100,   // update by BUYER        checked out an item in the shopping cart
-    ORDER_PENDING_UNIK                   = 101,   // update by SYSTEM       fail UNIK payment
-    ORDER_CREDIT_CARD_CHALLENGE          = 102,   // update by BUYER        credit card payment status challenge
-    ORDER_PENDING_DUE_DATE               = 120,   // update by SYSTEM       after order age > 3 days
-    ORDER_PAYMENT_CONFIRM                = 200,   // update by BUYER        confirm a payment
-    ORDER_PAYMENT_CONFIRM_UNIK           = 201,   // update by BUYER        confirm a payment for UNIK
-    ORDER_PAYMENT_DUE_DATE               = 210,   // update by SYSTEM       after order age > 6 days
-    ORDER_PAYMENT_VERIFIED               = 220,   // update by SYSTEM       payment received and verified, ready to process
-    ORDER_PROCESS                        = 400,   // update by SELLER       seller accepted the order
-    ORDER_PROCESS_PARTIAL                = 401,   // update by SELLER       seller accepted the order, partially
-    ORDER_PROCESS_DUE_DATE               = 410,   // update by SYSTEM       untouch verified order after payment age > 3 days
-    ORDER_SHIPPING                       = 500,   // update by SELLER       seller confirm for shipment
-    ORDER_SHIPPING_DATE_EDITED           = 505,   // update by ADMIN        seller input an invalid shipping date
-    ORDER_SHIPPING_DUE_DATE              = 510,   // update by SYSTEM       seller not confirm for shipment after order accepted and payment age > 5 days
-    ORDER_SHIPPING_TRACKER_INVALID       = 520,   // update by SYSTEM       invalid shipping ref num
-    ORDER_SHIPPING_REF_NUM_EDITED        = 530,   // update by ADMIN        requested by user for shipping ref number correction because false entry
-    ORDER_DELIVERED                      = 600,   // update by TRACKER      tells that buyer received the packet
-    ORDER_CONFLICTED                     = 601,   // update by BUYER        Buyer open a case to finish an order
-    ORDER_DELIVERED_CONFIRM              = 610,   // update by BUYER        buyer confirm for delivery
-    ORDER_DELIVERED_DUE_DATE             = 620,   // update by SYSTEM       no response after delivery age > 3 days
-    ORDER_DELIVERY_FAILURE               = 630,   // update by BUYER        buyer claim that he/she does not received any package
-    ORDER_FINISHED                       = 700,   // update by ADMIN        order complete Confirmed
-    ORDER_FINISHED_BOUNCE_BACK           = 701,   // update by ADMIN        order yang dianggap selesai tetapi barang tidak sampai ke buyer
-    ORDER_REFUND                         = 800,   // update by ADMIN        order refund to the buyer for some reason
-    ORDER_ROLLBACK                       = 801,   // update by ADMIN        order rollback from finished
-    ORDER_BAD                            = 900    // update by ADMIN        bad order occurs and need further investigation} ORDER_STATUS;
-} ORDER_STATUS;
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     

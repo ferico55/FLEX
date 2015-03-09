@@ -120,7 +120,7 @@
              object:nil];
     
     //set default data
-    [_datainput setObject:@(0) forKey:kTKPDREGISTER_APIGENDERKEY];
+    [_datainput setObject:@(1) forKey:kTKPDREGISTER_APIGENDERKEY];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -159,7 +159,7 @@
                 NSString *fullname = [_datainput objectForKey:kTKPDREGISTER_APIFULLNAMEKEY];
                 NSString *phone = [_datainput objectForKey:kTKPDREGISTER_APIPHONEKEY];
                 NSString *email = [_datainput objectForKey:kTKPDREGISTER_APIEMAILKEY];
-                NSString *gender = [_datainput objectForKey:kTKPDREGISTER_APIGENDERKEY];
+                NSString *gender = [_datainput objectForKey:kTKPDREGISTER_APIGENDERKEY]?:@"1";
                 NSString *birthday = [_datainput objectForKey:kTKPDREGISTER_APIBIRTHDAYKEY];
                 NSString *birthmonth = [_datainput objectForKey:kTKPDREGISTER_APIBIRTHMONTHKEY];
                 NSString *birthyear = [_datainput objectForKey:kTKPDREGISTER_APIBITHYEARKEY];
@@ -281,7 +281,7 @@
 
 - (IBAction)tapsegment:(UISegmentedControl*)sender {
     [_activetextfield resignFirstResponder];
-    [_datainput setObject:@(sender.selectedSegmentIndex) forKey:kTKPDREGISTER_APIGENDERKEY];
+    [_datainput setObject:@(sender.selectedSegmentIndex+1) forKey:kTKPDREGISTER_APIGENDERKEY];
 }
 
 - (IBAction)gesture:(id)sender {
@@ -358,7 +358,7 @@
                             kTKPDREGISTER_APIFULLNAMEKEY:[data objectForKey:kTKPDREGISTER_APIFULLNAMEKEY],
                             kTKPDREGISTER_APIEMAILKEY:[data objectForKey:kTKPDREGISTER_APIEMAILKEY],
                             kTKPDREGISTER_APIPHONEKEY:[data objectForKey:kTKPDREGISTER_APIPHONEKEY],
-                            kTKPDREGISTER_APIGENDERKEY:[data objectForKey:kTKPDREGISTER_APIGENDERKEY],
+                            kTKPDREGISTER_APIGENDERKEY:[data objectForKey:kTKPDREGISTER_APIGENDERKEY]?:@"1",
                             kTKPDREGISTER_APIBIRTHDAYKEY:[data objectForKey:kTKPDREGISTER_APIBIRTHDAYKEY],
                             kTKPDREGISTER_APIBIRTHMONTHKEY:[data objectForKey:kTKPDREGISTER_APIBIRTHMONTHKEY],
                             kTKPDREGISTER_APIBITHYEARKEY:[data objectForKey:kTKPDREGISTER_APIBITHYEARKEY],

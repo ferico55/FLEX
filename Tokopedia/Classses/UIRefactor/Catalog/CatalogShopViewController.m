@@ -15,6 +15,7 @@
 #import "FilterCatalogViewController.h"
 #import "CatalogProductViewController.h"
 #import "DetailProductViewController.h"
+#import "ShopContainerViewController.h"
 
 @interface CatalogShopViewController ()
 <
@@ -433,7 +434,10 @@
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectShopAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    ShopContainerViewController *controller = [[ShopContainerViewController alloc] init];
+    CatalogShops *shop = [_catalog.result.catalog_shops objectAtIndex:indexPath.row];
+    controller.data = @{@"shop_id" : shop.shop_id};
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectProductAtIndexPath:(NSIndexPath *)indexPath

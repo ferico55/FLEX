@@ -45,14 +45,14 @@
 
 @implementation DetailShipmentStatusViewController
 
-typedef enum {
-    ORDER_SHIPPING                  = 500,
-    ORDER_SHIPPING_TRACKER_INVALID  = 520,
-    ORDER_SHIPPING_REF_NUM_EDITED   = 530,
-    ORDER_DELIVERED                 = 600,
-    ORDER_DELIVERED_CONFIRM         = 610,
-    ORDER_DELIVERED_DUE_DATE        = 620,
-} ORDER_STATUS;
+//typedef enum {
+//    ORDER_SHIPPING                  = 500,
+//    ORDER_SHIPPING_TRACKER_INVALID  = 520,
+//    ORDER_SHIPPING_REF_NUM_EDITED   = 530,
+//    ORDER_DELIVERED                 = 600,
+//    ORDER_DELIVERED_CONFIRM         = 610,
+//    ORDER_DELIVERED_DUE_DATE        = 620,
+//} ORDER_STATUS;
 
 - (void)viewDidLoad {
     

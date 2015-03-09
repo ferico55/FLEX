@@ -41,6 +41,8 @@
 
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "DepositSummaryViewController.h"
+#import "ShopContainerViewController.h"
+#import "ReputationPageViewController.h"
 
 @interface MoreViewController () <NotificationManagerDelegate> {
     NSDictionary *_auth;
@@ -66,6 +68,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *shopIsGoldBadge;
 
 @property (weak, nonatomic) IBOutlet UIButton *createShopButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingSaldo;
 
 
 @end
@@ -93,8 +96,7 @@
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
     
-    
-    if([_auth objectForKey:@"shop_id"]  == 0) {
+    if([_auth objectForKey:@"shop_id"]) {
         _shopNameLabel.text = [_auth objectForKey:@"shop_name"];
         
         NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"shop_avatar"]]
@@ -121,6 +123,10 @@
         }
     }
     
+   
+    
+
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -146,13 +152,19 @@
     // Set create shop button corner
     self.createShopButton.layer.cornerRadius = 2;
     
-    _depositLabel.text = @"Fetching Saldo Tokopedia...";
-
-        [self configureRestKit];
     
     if (_isNoDataDeposit) {
+        _depositLabel.hidden = YES;
+        _loadingSaldo.hidden = NO;
+        
+        [self configureRestKit];
         [self loadDataDeposit];
+    } else {
+        _depositLabel.hidden = NO;
+        _loadingSaldo.hidden = YES;
+        [_loadingSaldo stopAnimating];
     }
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -275,13 +287,19 @@
     }
     
     else if (indexPath.section == 2 && indexPath.row == 0) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
-        shopViewController.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
-                                    MORE_AUTH : _auth,
-                                    MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
-                                    };
-        [self.navigationController pushViewController:shopViewController animated:YES];
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//        TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
+//        shopViewController.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
+//                                    MORE_AUTH : _auth,
+//                                    MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
+//                                    };
+        
+        ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+        container.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
+                                                               MORE_AUTH : _auth,
+                                                               MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
+                                                               };
+        [self.navigationController pushViewController:container animated:YES];
     }
     
     else if (indexPath.section == 2 && indexPath.row == 1) {
@@ -292,6 +310,10 @@
     }
     
     else if (indexPath.section == 4) {
+        if(indexPath.row == 2) {
+            ReputationPageViewController *reputationPageVc = [ReputationPageViewController new];
+            [self.navigationController pushViewController:reputationPageVc animated:YES];
+        }
         if(indexPath.row == 3) {
             InboxMessageViewController *vc = [InboxMessageViewController new];
             vc.data=@{@"nav":@"inbox-message"};
@@ -423,6 +445,9 @@
     if (result) {
         Deposit *deposit = [result objectForKey:@""];
         _depositLabel.text = deposit.result.deposit_total;
+        _depositLabel.hidden = NO;
+        _loadingSaldo.hidden = YES;
+        _isNoDataDeposit = NO;
     }
 }
 

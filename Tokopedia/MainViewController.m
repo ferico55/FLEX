@@ -61,6 +61,15 @@
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(applicationLogin:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION object:nil];
     [center addObserver:self selector:@selector(applicationlogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil];
+
+    [center addObserver:self selector:@selector(updateTabBarMore:) name:UPDATE_TABBAR object:nil];
+
+
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 }
 
 #pragma mark - Memory Management
@@ -103,6 +112,9 @@
 
 -(void)createtabbarController
 {
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    _auth = [auth mutableCopy];
     BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     _tabBarController = [UITabBarController new];
     
@@ -371,7 +383,6 @@
 	// Assume tabController is the tab controller
     // and newVC is the controller you want to be the new view controller at index 0
     NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
-
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
     swipevcNav.navigationBar.translucent = NO;
     UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
@@ -403,21 +414,56 @@
     [self adjusttabbar];
 }
 
+- (void)updateTabBarMore:(NSNotification*)notification
+{
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    _auth = [auth mutableCopy];
+
+    NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
+
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+    MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+    [moreNavController.navigationBar setTranslucent:NO];
+    [newControllers replaceObjectAtIndex:4 withObject:moreNavController];
+    [_tabBarController setViewControllers:newControllers animated:YES];
+    
+    [self adjusttabbar];
+}
+
 - (void)applicationlogout:(NSNotification*)notification
 {
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Apakah Anda yakin ingin keluar ?"
+                                                        message:nil
+                                                       delegate:self
+                                              cancelButtonTitle:@"Batal"
+                                              otherButtonTitles:@"Iya", nil];
+    alertView.tag = 1;
+    [alertView show];
+}
+
+- (void)doApplicationLogout {
+    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+    
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
     [_cacheController initCacheWithDocumentPath:path];
     [_cacheController clearCache];
-        
-	TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-	[storage resetKeychain];	//delete all previous sensitive data
-	[_auth removeAllObjects];
     
-    [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
     
-    //TODO:: request delayed
-	//[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(requestdelayed) object:nil];
-	//[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(requestdelayedguardian) object:nil];
+    TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+    [storage resetKeychain];	//delete all previous sensitive data
+    [_auth removeAllObjects];
+    
+    [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 1) {
+        if(buttonIndex == 1) {
+            [self doApplicationLogout];
+        }
+    }
 }
 
 @end

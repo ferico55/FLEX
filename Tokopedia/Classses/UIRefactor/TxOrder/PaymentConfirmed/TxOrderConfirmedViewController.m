@@ -95,6 +95,11 @@
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshRequest)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(refreshRequest)
+                                                 name:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME
+                                               object:nil];
 }
 
 -(void)refreshRequest
@@ -107,6 +112,11 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Table View Data Source
@@ -144,12 +154,12 @@
 {
     BOOL isShowBank = [_isExpandedCell[indexPath.section] boolValue];
     if (indexPath.row == 0) {
-        return 124;
+        return 120;
     }
     else if (indexPath.row == 1)
         return isShowBank?181:44;
     else
-        return 44;
+        return 50;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -191,12 +201,9 @@
 {
     TxOrderConfirmedList *detailOrder = _list[indexPath.section];
     
-    if (detailOrder.has_user_bank ==1) {
-        TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
-        vc.isConfirmed = YES;
-        vc.paymentID = detailOrder.payment_id;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
+    //if (detailOrder.has_user_bank ==1) {
+    [_delegate editPayment:detailOrder];
+    //}
 }
 
 -(void)uploadProofAtIndexPath:(NSIndexPath *)indexPath
@@ -252,6 +259,7 @@
     [cell.totalPaymentLabel setText:detailOrder.payment_amount animated:YES];
     [cell.totalInvoiceButton setTitle:[NSString stringWithFormat:@"%@ Invoice", detailOrder.order_count] forState:UIControlStateNormal];
     
+    cell.indexPath = indexPath;
     return cell;
 }
 
@@ -265,10 +273,14 @@
     if (cell == nil) {
         cell = [TxOrderConfirmedBankCell newCell];
     }
-    [cell.userNameLabel setText:detailOrder.user_account_name animated:YES];
-    [cell.bankNameLabel setText:detailOrder.user_bank_name animated:YES];
-    [cell.nomorRekLabel setText:detailOrder.user_account_no animated:YES];
-    [cell.recieverNomorRekLabel setText:[NSString stringWithFormat:@"%@ - %@",detailOrder.bank_name,detailOrder.system_account_no] animated:YES];
+    [cell.userNameLabel setText:detailOrder.user_account_name?:@"" animated:NO];
+    [cell.bankNameLabel setText:detailOrder.user_bank_name?:@"" animated:NO];
+    [cell.nomorRekLabel setText:detailOrder.user_account_no?:@"" animated:NO];
+    [cell.recieverNomorRekLabel setText:[NSString stringWithFormat:@"%@ - %@",detailOrder.bank_name,detailOrder.system_account_no] animated:NO];
+    
+    if ([cell.userNameLabel.text isEqualToString:@""]) {
+        cell.userNameLabel.text =@"-";
+    }
     
     return cell;
 }
@@ -284,7 +296,9 @@
     }
     
     TxOrderConfirmedList *detailOrder = _list[indexPath.section];
-    cell.editButton.hidden = (detailOrder.has_user_bank != 1);
+    //cell.editButton.hidden = (detailOrder.has_user_bank != 1);
+    //cell.editButton.enabled = (detailOrder.has_user_bank == 1);
+    cell.uploadProodButton.hidden = ([[detailOrder.button objectForKey:API_ORDER_BUTTON_UPLOAD_PROOF_KEY] integerValue] != 1);
     cell.indexPath = indexPath;
     
     return cell;
@@ -350,13 +364,26 @@
     if (_request.isExecuting) return;
     NSTimer *timer;
     
-    
     NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_TX_ORDER_PAYMENT_CONFIRMED};
     
     _tableView.tableFooterView = _footer;
     [_act startAnimating];
     
+#if DEBUG
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    
+    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+    
+    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+    [paramDictionary addEntriesFromDictionary:param];
+    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
+    
+    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
+#else
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_TX_ORDER parameters:[param encrypt]];
+#endif
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];
@@ -517,7 +544,7 @@
 
 -(void)requestDetail:(id)object
 {
-    if (_request.isExecuting) return;
+    if (_requestDetail.isExecuting) return;
     NSTimer *timer;
     
     TxOrderConfirmedList *order = object;
@@ -532,10 +559,15 @@
         
 #if DEBUG
     
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    
+    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+    
     NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
     [paramDictionary addEntriesFromDictionary:param];
     [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:@"1176" forKey:@"user_id"];
+    [paramDictionary setObject:userID forKey:@"user_id"];
     
     _requestDetail = [_objectManagerDetail appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
 #else
@@ -637,7 +669,7 @@
 }
 
 
-#pragma mark Request Generate Host
+#pragma mark - Request Generate Host
 -(void)configureRestkitGenerateHost
 {
     _objectManagerGenerateHost =  [RKObjectManager sharedClient];
@@ -761,7 +793,7 @@
     [self cancelGenerateHost];
 }
 
-#pragma mark Request Action Upload Photo
+#pragma mark - Request Action Upload Photo
 -(void)configureRestkitUploadPhoto
 {
     _objectManagerUploadPhoto =  [RKObjectManager sharedClient];
@@ -775,7 +807,7 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[UploadImageResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY,
                                                         kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY:kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY,
-                                                        API_UPLOAD_PHOTO_ID_KEY:API_UPLOAD_PHOTO_ID_KEY
+                                                        @"file_name" : @"file_name"
                                                         }];
     
     // Relationship Mapping
@@ -806,14 +838,14 @@
     NSString *serverID = _generateHost.result.generated_host.server_id?:@"0";
     NSInteger userID = _generateHost.result.generated_host.user_id;
     
-    NSDictionary *param = @{ kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIUPLOADPRODUCTIMAGEKEY,
+    NSDictionary *param = @{ kTKPDDETAIL_APIACTIONKEY: ACTION_UPLOAD_PROOF_IMAGE,
                              kTKPDGENERATEDHOST_APISERVERIDKEY:serverID,
                              kTKPD_USERIDKEY : @(userID),
                              @"enc_dec" : @"off"
                              };
     
     _requestActionUploadPhoto = [NSMutableURLRequest requestUploadImageData:imageData
-                                                                   withName:API_UPLOAD_PRODUCT_IMAGE_DATA_NAME
+                                                                   withName:API_FORM_FIELD_NAME_PROOF
                                                                 andFileName:imageName
                                                       withRequestParameters:param
                                  ];
@@ -932,12 +964,16 @@
     
     TxOrderConfirmedList *selectedConfirmation = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
     
+    //contoh format URL :
+    //http://tkpdevel-pg.api/img/cache/100-square/temp/2015/2/16/20000/1176/1176-93b1b124-b5c1-11e4-8017-ebaa1cb33c34.jpg
+    
     NSString * paymentID = selectedConfirmation.payment_id?:@"";
     UploadImageResult *image = object;
-    NSString *fileName = [_dataInput objectForKey:API_FILE_NAME_KEY]?:@"";
+
     NSString *filePath = image.file_path?:@"";
+    NSString *fileName = image.file_name?:@"";
     
-    NSDictionary* param = @{API_ACTION_KEY : ACTION_UPLOAD_PAYMENT_PROOF,
+    NSDictionary* param = @{API_ACTION_KEY : ACTION_UPLOAD_PROOF_BY_PAYMENT_ID,
                             API_PAYMENT_ID_KEY: paymentID,
                             API_FILE_NAME_KEY: fileName,
                             API_FILE_PATH_KEY : filePath
@@ -952,7 +988,7 @@
     NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
     [paramDictionary addEntriesFromDictionary:param];
     [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
+    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
     
     _requestProof = [_objectManagerProof appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];
 #else

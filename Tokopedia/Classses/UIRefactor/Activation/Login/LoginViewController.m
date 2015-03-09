@@ -147,53 +147,9 @@
     
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
-        
         switch (btn.tag) {
-            case 10:
-            {
-                /** SIGN IN **/
-                NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
-                NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
-                NSMutableArray *messages = [NSMutableArray new];
-                BOOL valid = NO;
-                NSString *message;
-                if (email && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""] && [email isEmail]) {
-                    valid = YES;
-                }
-                if (!email||[email isEqualToString:@""]) {
-                    message = @"Email harus diisi.";
-                    [messages addObject:message];
-                    valid = NO;
-                }
-                if (email) {
-                    if (![email isEmail]) {
-                        message = @"Format email salah.";
-                        [messages addObject:message];
-                        valid = NO;
-                    }
-                }
-                if (!pass || [pass isEqualToString:@""]) {
-                    message = @"Password harus diisi";
-                    [messages addObject:message];
-                    valid = NO;
-                }
-                
-                if (valid) {
-                    NSDictionary *userinfo = @{kTKPDACTIVATION_DATAEMAILKEY : email, kTKPDACTIVATION_DATAPASSKEY : pass};
-                    [self configureRestKitLogin];
-                    [self requestActionLogin:userinfo];
-                }
-                else{
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                }
-                    
-                    NSLog(@"message : %@", messages);
-                break;
-            }
             case 11:
             {
-                /** GO TO SIGN UP PAGE **/
                 RegisterViewController *vc = [RegisterViewController new];
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
@@ -206,8 +162,46 @@
             default:
                 break;
         }
+    } else if ([sender isKindOfClass:[UIButton class]]) {
+        /** SIGN IN **/
+        NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
+        NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
+        NSMutableArray *messages = [NSMutableArray new];
+        BOOL valid = NO;
+        NSString *message;
+        if (email && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""] && [email isEmail]) {
+            valid = YES;
+        }
+        if (!email||[email isEqualToString:@""]) {
+            message = @"Email harus diisi.";
+            [messages addObject:message];
+            valid = NO;
+        }
+        if (email) {
+            if (![email isEmail]) {
+                message = @"Format email salah.";
+                [messages addObject:message];
+                valid = NO;
+            }
+        }
+        if (!pass || [pass isEqualToString:@""]) {
+            message = @"Password harus diisi";
+            [messages addObject:message];
+            valid = NO;
+        }
+        
+        if (valid) {
+            NSDictionary *userinfo = @{kTKPDACTIVATION_DATAEMAILKEY : email, kTKPDACTIVATION_DATAPASSKEY : pass};
+            [self configureRestKitLogin];
+            [self requestActionLogin:userinfo];
+        }
+        else{
+            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        }
+        
+        NSLog(@"message : %@", messages);
     }
-    
 }
 #pragma mark - Memory Management
 -(void)dealloc{

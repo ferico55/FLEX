@@ -16,6 +16,7 @@
 #import "SystemBankAcount.h"
 #import "MethodList.h"
 #import "OrderDetailForm.h"
+#import "TxOrderStatus.h"
 
 @interface TxOrderObjectMapping : NSObject
 
@@ -27,11 +28,16 @@
 -(RKObjectMapping*)orderShipmentsMapping;
 -(RKObjectMapping*)orderDestinationMapping;
 -(RKObjectMapping*)orderDetailMapping;
+-(RKObjectMapping*)orderButtonMapping;
 
 -(RKObjectMapping*)confirmedListMapping;
 -(RKObjectMapping*)bankAccountListMapping;
 -(RKObjectMapping*)systemBankListMapping;
 -(RKObjectMapping*)methodListMapping;
 -(RKObjectMapping*)confirmedOrderDetailMapping;
+
+-(RKObjectMapping*)orderDeadlineMapping;
+-(RKObjectMapping*)orderLastMapping;
+-(RKObjectMapping*)orderHistoryMapping;
 
 @end

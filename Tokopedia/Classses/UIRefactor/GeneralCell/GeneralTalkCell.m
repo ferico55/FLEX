@@ -30,6 +30,7 @@
 + (id)newcell
 {
     NSArray* a = [[NSBundle mainBundle] loadNibNamed:@"GeneralTalkCell" owner:nil options:0];
+    NSLog(@"%@", @"New Cell");
     for (id o in a) {
         if ([o isKindOfClass:[self class]]) {
             return o;
@@ -217,7 +218,7 @@
 
     if (buttonIndex == 0) {
         // if the comment is belong to the logged in user, the cliked button is delete button
-        if (talkList.talk_shop_id == [[auth objectForKey:@"shop_id"] stringValue] ||
+        if ([talkList.talk_shop_id isEqualToString:[[auth objectForKey:@"shop_id"] stringValue]] ||
             talkList.talk_user_id == [[auth objectForKey:@"user_id"] integerValue]) {
             
             [_delegate deleteTalk:self withindexpath:_indexpath];

@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InboxResolutionCenterOpenViewController">
+            <connections>
+                <outlet property="cellNote" destination="J5Y-Xs-nYt" id="K6B-Up-ZXR"/>
+                <outlet property="cellRefundAmount" destination="0Xa-ta-dnt" id="fgU-JR-4Cl"/>
+                <outlet property="cellSolution" destination="1Ut-Q1-pXK" id="8nO-QZ-6wT"/>
+                <outlet property="cellUploadPhotos" destination="B4T-ot-2eY" id="guj-rt-Uik"/>
+                <outlet property="choosenProblemSolutionLabel" destination="TcM-NM-b8R" id="UxC-hd-Kux"/>
+                <outlet property="contentViewUploadPhoto" destination="zgj-Ue-0eL" id="nzD-hO-Say"/>
+                <outlet property="fromTotalDescription" destination="XKM-n6-Vwo" id="Tsf-5S-6kh"/>
+                <outlet property="headerView" destination="XNM-YT-svC" id="4R9-v9-C3m"/>
+                <outlet property="invoiceLabel" destination="GVF-Pa-Jf1" id="geX-IB-670"/>
+                <outlet property="noteHeaderLabel" destination="tpe-0v-xmH" id="uZr-jX-pQL"/>
+                <outlet property="noteTextView" destination="3ME-nQ-g96" id="ct5-TY-qbU"/>
+                <outlet property="problemSolutionHeaderLabel" destination="XSr-k5-hIZ" id="kms-e4-nbu"/>
+                <outlet property="problemSolutionLabel" destination="Xvn-d6-hG1" id="crg-tr-Hem"/>
+                <outlet property="scrollViewUploadPhoto" destination="E9I-RD-rjI" id="Sg2-7C-jHZ"/>
+                <outlet property="shopImageView" destination="B1Q-dN-74m" id="KEK-Xx-DkP"/>
+                <outlet property="shopNameLabel" destination="SCK-gq-sNR" id="0BI-dq-HoB"/>
+                <outlet property="tableView" destination="jvf-FP-1Og" id="7TE-XM-Odf"/>
+                <outlet property="totalInvoiceLabel" destination="5Tq-Yr-44M" id="8qX-kg-uLO"/>
+                <outlet property="totalRefundTextField" destination="dBD-hC-Mwo" id="31m-yO-SwF"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+                <outletCollection property="uploadButtons" destination="wAj-wA-cgw" id="Mae-BD-SWQ"/>
+                <outletCollection property="uploadButtons" destination="KHn-7e-jJZ" id="bVI-cE-q2r"/>
+                <outletCollection property="uploadButtons" destination="8nL-7H-tIC" id="s52-pD-bMx"/>
+                <outletCollection property="uploadButtons" destination="PuV-sr-geZ" id="kzX-oR-fzj"/>
+                <outletCollection property="uploadButtons" destination="bQF-Yj-JsB" id="pWD-3n-BZ9"/>
+                <outletCollection property="uploadedImages" destination="5uc-Gr-auB" id="4SM-Mg-ohZ"/>
+                <outletCollection property="uploadedImages" destination="R4q-zH-iUn" id="m2A-U0-O3J"/>
+                <outletCollection property="uploadedImages" destination="4Mt-8d-V3D" id="jd1-Vf-UHJ"/>
+                <outletCollection property="uploadedImages" destination="Dii-Xj-cCd" id="je9-9u-Uwq"/>
+                <outletCollection property="uploadedImages" destination="nJS-eK-hqK" id="oFh-3k-LuG"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="jvf-FP-1Og">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="separatorColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="SQl-IO-srx"/>
+                        <outlet property="delegate" destination="-1" id="g0x-or-rnE"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="jvf-FP-1Og" secondAttribute="trailing" id="2Fc-7d-TFF"/>
+                <constraint firstAttribute="bottom" secondItem="jvf-FP-1Og" secondAttribute="bottom" id="46X-J4-kAt"/>
+                <constraint firstItem="jvf-FP-1Og" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="bt3-iK-IVO"/>
+                <constraint firstItem="jvf-FP-1Og" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="n7d-Q1-eJD"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+            <point key="canvasLocation" x="140" y="154"/>
+        </view>
+        <view contentMode="scaleToFill" id="XNM-YT-svC" userLabel="Header View">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="133"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6nK-XA-Kq4" userLabel="Invoice View">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="51"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INV/20150113/XV/I/8327373" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GVF-Pa-Jf1">
+                            <rect key="frame" x="0.0" y="15" width="320" height="21"/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
+                            <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ESy-kh-qtX" userLabel="Horizontal Border">
+                            <rect key="frame" x="0.0" y="50" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="9kz-eE-fd6" userLabel="User View">
+                    <rect key="frame" x="0.0" y="51" width="320" height="62"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_default_shop.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="B1Q-dN-74m">
+                            <rect key="frame" x="15" y="9" width="44" height="44"/>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pembelian dari" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fmz-nk-Ncu">
+                            <rect key="frame" x="67" y="14" width="140" height="17"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
+                            <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Thomas" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SCK-gq-sNR">
+                            <rect key="frame" x="67" y="29" width="223" height="21"/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                            <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0uR-OU-hUo" userLabel="Horizontal Border">
+                            <rect key="frame" x="0.0" y="61" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="507" y="-58.5"/>
+        </view>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="132" id="0Xa-ta-dnt">
+            <rect key="frame" x="0.0" y="-1" width="320" height="132"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0Xa-ta-dnt" id="pG9-P9-JuA">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0DV-NL-19D" userLabel="Invoice View">
+                        <rect key="frame" x="0.0" y="44" width="320" height="44"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Dari Total Invoice" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XKM-n6-Vwo">
+                                <rect key="frame" x="15" y="11" width="172" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LEI-E9-apz" userLabel="Horizontal Border">
+                                <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4LJ-eW-Cab" userLabel="Horizontal Border">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rp 514.000,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Tq-Yr-44M">
+                                <rect key="frame" x="153" y="11" width="152" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Jumlah pengembalian dana yang Anda inginkan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1DI-Ka-sb2">
+                        <rect key="frame" x="15" y="15" width="297" height="21"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                        <color key="textColor" red="0.30196078431372547" green="0.30196078431372547" blue="0.30196078431372547" alpha="1" colorSpace="deviceRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="O9F-U7-z1T">
+                        <rect key="frame" x="0.0" y="88" width="320" height="45"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Jumlah yang Anda inginkan" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dBD-hC-Mwo">
+                                <rect key="frame" x="15" y="1" width="305" height="43"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="-1" id="xG3-3n-g9B"/>
+                                </connections>
+                            </textField>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c0C-C0-g2i" userLabel="Horizontal Border">
+                                <rect key="frame" x="0.0" y="44" width="320" height="1"/>
+                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </subviews>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <point key="canvasLocation" x="512" y="109"/>
+        </tableViewCell>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="88" id="1Ut-Q1-pXK">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="88"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1Ut-Q1-pXK" id="9ak-KU-8dT">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1e8-zT-wUA" userLabel="Invoice View">
+                        <rect key="frame" x="0.0" y="44" width="320" height="44"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Masalah" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xvn-d6-hG1">
+                                <rect key="frame" x="15" y="11" width="123" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wcB-9B-Brk" userLabel="Horizontal Border">
+                                <rect key="frame" x="0.0" y="43" width="320" height="1"/>
+                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XAy-pX-wkV" userLabel="Horizontal Border">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Barang tidak sesuai deskripsi" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TcM-NM-b8R">
+                                <rect key="frame" x="85" y="11" width="204" height="21"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_arrow_right_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="kpJ-Hl-d2Y">
+                                <rect key="frame" x="299" y="14" width="13" height="15"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Masalah pada barang yang anda terima" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XSr-k5-hIZ">
+                        <rect key="frame" x="15" y="15" width="297" height="21"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                        <color key="textColor" red="0.30196078430000001" green="0.30196078430000001" blue="0.30196078430000001" alpha="1" colorSpace="deviceRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <point key="canvasLocation" x="512" y="273"/>
+        </tableViewCell>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="184" id="J5Y-Xs-nYt">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="184"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="J5Y-Xs-nYt" id="c5J-gy-1Ry">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pesan untuk Penjual" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tpe-0v-xmH">
+                        <rect key="frame" x="15" y="15" width="297" height="21"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                        <color key="textColor" red="0.30196078430000001" green="0.30196078430000001" blue="0.30196078430000001" alpha="1" colorSpace="deviceRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sfH-cc-PuB">
+                        <rect key="frame" x="0.0" y="44" width="320" height="132"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3ME-nQ-g96">
+                                <rect key="frame" x="11" y="8" width="292" height="116"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <connections>
+                                    <outlet property="delegate" destination="-1" id="5qw-Vo-fSM"/>
+                                </connections>
+                            </textView>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vum-iY-UND" userLabel="Horizontal Border">
+                                <rect key="frame" x="0.0" y="131" width="320" height="1"/>
+                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qEL-h7-QGj" userLabel="Horizontal Border">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                                <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </subviews>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <point key="canvasLocation" x="521" y="729"/>
+        </tableViewCell>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="226" id="B4T-ot-2eY">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="226"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="B4T-ot-2eY" id="qSp-a5-KnA">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lampirkan foto barang sebagai bukti" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FFL-ey-eNm">
+                        <rect key="frame" x="15" y="15" width="297" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="XzQ-c3-Htv"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                        <color key="textColor" red="0.30196078430000001" green="0.30196078430000001" blue="0.30196078430000001" alpha="1" colorSpace="deviceRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lampirkan foto barang sebagai bukti" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sfn-pT-ewE">
+                        <rect key="frame" x="11" y="98" width="297" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="fEY-bu-hiS"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                        <color key="textColor" red="0.30196078430000001" green="0.30196078430000001" blue="0.30196078430000001" alpha="1" colorSpace="deviceRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E9I-RD-rjI">
+                        <rect key="frame" x="0.0" y="44" width="320" height="118"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zgj-Ue-0eL">
+                                <rect key="frame" x="0.0" y="0.0" width="467" height="118"/>
+                                <subviews>
+                                    <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KHn-7e-jJZ">
+                                        <rect key="frame" x="15" y="90" width="70" height="20"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
+                                        <state key="normal" title="Unggah foto">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tap:" destination="-1" eventType="touchUpInside" id="fng-Vl-FqF"/>
+                                        </connections>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wAj-wA-cgw">
+                                        <rect key="frame" x="107" y="91" width="70" height="20"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
+                                        <state key="normal" title="Unggah foto">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tap:" destination="-1" eventType="touchUpInside" id="Tdc-RA-759"/>
+                                        </connections>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8nL-7H-tIC">
+                                        <rect key="frame" x="190" y="91" width="70" height="20"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
+                                        <state key="normal" title="Unggah foto">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tap:" destination="-1" eventType="touchUpInside" id="Py3-I0-ESk"/>
+                                        </connections>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PuV-sr-geZ">
+                                        <rect key="frame" x="280" y="91" width="70" height="20"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
+                                        <state key="normal" title="Unggah foto">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tap:" destination="-1" eventType="touchUpInside" id="DsF-K5-Lp8"/>
+                                        </connections>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" tag="14" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bQF-Yj-JsB">
+                                        <rect key="frame" x="377" y="91" width="70" height="20"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
+                                        <state key="normal" title="Unggah foto">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tap:" destination="-1" eventType="touchUpInside" id="dO0-dc-amy"/>
+                                        </connections>
+                                    </button>
+                                    <imageView tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5uc-Gr-auB">
+                                        <rect key="frame" x="15" y="13" width="70" height="70"/>
+                                        <gestureRecognizers/>
+                                    </imageView>
+                                    <imageView tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R4q-zH-iUn">
+                                        <rect key="frame" x="107" y="13" width="70" height="70"/>
+                                        <gestureRecognizers/>
+                                    </imageView>
+                                    <imageView tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Mt-8d-V3D">
+                                        <rect key="frame" x="190" y="13" width="70" height="70"/>
+                                        <gestureRecognizers/>
+                                    </imageView>
+                                    <imageView tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dii-Xj-cCd">
+                                        <rect key="frame" x="280" y="13" width="70" height="70"/>
+                                        <gestureRecognizers/>
+                                    </imageView>
+                                    <imageView tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nJS-eK-hqK">
+                                        <rect key="frame" x="377" y="13" width="70" height="70"/>
+                                        <gestureRecognizers/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <connections>
+                            <outlet property="delegate" destination="-1" id="zSb-uI-5C8"/>
+                        </connections>
+                    </scrollView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jFa-RM-DWt" userLabel="Horizontal Border">
+                        <rect key="frame" x="0.0" y="44" width="320" height="1"/>
+                        <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5i2-CJ-Ez9" userLabel="Horizontal Border">
+                        <rect key="frame" x="0.0" y="162" width="320" height="1"/>
+                        <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Besar file : Maksimum 500.000 bytes (500kilobytes)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pfb-An-PgD">
+                        <rect key="frame" x="15" y="170" width="297" height="21"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                        <color key="textColor" red="0.30196078430000001" green="0.30196078430000001" blue="0.30196078430000001" alpha="1" colorSpace="deviceRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jumlah file : Maksimum 5 foto" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vHY-Xw-UvH">
+                        <rect key="frame" x="15" y="192" width="297" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="6jJ-sf-ee3"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                        <color key="textColor" red="0.30196078430000001" green="0.30196078430000001" blue="0.30196078430000001" alpha="1" colorSpace="deviceRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailingMargin" secondItem="sfn-pT-ewE" secondAttribute="trailing" constant="4" id="0f5-lm-4CT"/>
+                    <constraint firstItem="jFa-RM-DWt" firstAttribute="trailing" secondItem="E9I-RD-rjI" secondAttribute="trailing" id="3h4-F7-eLz"/>
+                    <constraint firstItem="sfn-pT-ewE" firstAttribute="leading" secondItem="qSp-a5-KnA" secondAttribute="leadingMargin" constant="3" id="5iE-JO-37L"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="vHY-Xw-UvH" secondAttribute="bottom" constant="4" id="6W9-WD-WwK"/>
+                    <constraint firstItem="FFL-ey-eNm" firstAttribute="leading" secondItem="vHY-Xw-UvH" secondAttribute="leading" id="7Md-0Y-fcT"/>
+                    <constraint firstItem="FFL-ey-eNm" firstAttribute="trailing" secondItem="pfb-An-PgD" secondAttribute="trailing" id="Ddg-3k-ofu"/>
+                    <constraint firstItem="FFL-ey-eNm" firstAttribute="leading" secondItem="pfb-An-PgD" secondAttribute="leading" id="EE9-rE-rfr"/>
+                    <constraint firstItem="FFL-ey-eNm" firstAttribute="trailing" secondItem="qSp-a5-KnA" secondAttribute="trailingMargin" id="FCg-YG-MVy"/>
+                    <constraint firstItem="FFL-ey-eNm" firstAttribute="trailing" secondItem="vHY-Xw-UvH" secondAttribute="trailing" id="In0-ad-Pbu"/>
+                    <constraint firstItem="jFa-RM-DWt" firstAttribute="leading" secondItem="E9I-RD-rjI" secondAttribute="leading" id="K6O-K1-uwW"/>
+                    <constraint firstItem="jFa-RM-DWt" firstAttribute="top" secondItem="FFL-ey-eNm" secondAttribute="bottom" constant="8" symbolic="YES" id="MNq-0Z-1yi"/>
+                    <constraint firstAttribute="bottom" secondItem="jFa-RM-DWt" secondAttribute="bottom" constant="180" id="OSx-1H-Jxj"/>
+                    <constraint firstItem="sfn-pT-ewE" firstAttribute="top" secondItem="jFa-RM-DWt" secondAttribute="bottom" constant="53" id="We2-EP-74E"/>
+                    <constraint firstItem="FFL-ey-eNm" firstAttribute="leading" secondItem="qSp-a5-KnA" secondAttribute="leadingMargin" constant="7" id="YMs-bC-vNn"/>
+                    <constraint firstItem="pfb-An-PgD" firstAttribute="top" secondItem="5i2-CJ-Ez9" secondAttribute="bottom" constant="7" id="bf8-YR-knz"/>
+                    <constraint firstItem="E9I-RD-rjI" firstAttribute="leading" secondItem="qSp-a5-KnA" secondAttribute="leading" id="cbf-q4-9vL"/>
+                    <constraint firstAttribute="bottom" secondItem="5i2-CJ-Ez9" secondAttribute="bottom" constant="62" id="dr1-Mv-d20"/>
+                    <constraint firstItem="jFa-RM-DWt" firstAttribute="trailing" secondItem="5i2-CJ-Ez9" secondAttribute="trailing" id="fpg-pF-RCE"/>
+                    <constraint firstAttribute="trailing" secondItem="E9I-RD-rjI" secondAttribute="trailing" id="gvH-qu-ku7"/>
+                    <constraint firstItem="jFa-RM-DWt" firstAttribute="leading" secondItem="5i2-CJ-Ez9" secondAttribute="leading" id="ksm-4g-CpD"/>
+                    <constraint firstItem="5i2-CJ-Ez9" firstAttribute="top" secondItem="sfn-pT-ewE" secondAttribute="bottom" constant="43" id="l1J-cT-qEL"/>
+                    <constraint firstItem="5i2-CJ-Ez9" firstAttribute="top" secondItem="E9I-RD-rjI" secondAttribute="bottom" id="mR4-LW-zWb"/>
+                    <constraint firstItem="E9I-RD-rjI" firstAttribute="top" secondItem="FFL-ey-eNm" secondAttribute="bottom" constant="8" id="mkh-Pc-8aM"/>
+                    <constraint firstItem="vHY-Xw-UvH" firstAttribute="top" secondItem="pfb-An-PgD" secondAttribute="bottom" constant="1" id="nGe-zT-FY6"/>
+                    <constraint firstItem="FFL-ey-eNm" firstAttribute="top" secondItem="qSp-a5-KnA" secondAttribute="topMargin" constant="7" id="nfI-93-3dq"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <point key="canvasLocation" x="521" y="486"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="icon_arrow_right_grey.png" width="20" height="20"/>
+        <image name="icon_default_shop.jpg" width="80" height="80"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

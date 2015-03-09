@@ -215,11 +215,6 @@
   
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 202;
-}
-
 
 #pragma mark - Memory Management
 -(void)dealloc{

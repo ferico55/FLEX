@@ -102,6 +102,8 @@
     _operationQueue = [NSOperationQueue new];
     _operationDeleteCommentQueue = [NSOperationQueue new];
     
+    self.hidesBottomBarWhenPushed = YES;
+    
     [self initNavigationBar];
     [self initReviewData];
     [self initTalkInputView];
@@ -138,12 +140,6 @@
         [_commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];
         
         _respondView.hidden = YES;
-        NSString *userId = [NSString stringWithFormat:@"%@", _userManager.getUserId];
-        if([_review.review_user_id isEqualToString:userId]) {
-            [self hideInputView];
-        } else {
-            _talkInputView.hidden = NO;
-        }
         
     } else {
         [_commentbutton setTitle:@"1 Comment" forState:UIControlStateNormal];
@@ -156,9 +152,21 @@
         [_reviewRespondLabel sizeToFit];
     }
     
+    if([_review.review_response.response_message isEqualToString:@"0"] &&
+    [_review.review_response.response_create_time isEqualToString:@"0"] &&
+       [_is_owner isEqualToString:@"0"])
+    {
+        [self hideInputView];
+    }
+    
+    
     _productNamelabel.text = _review.review_product_name;
     NSString *stringWithoutBr = [_review.review_message stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
     _commentlabel.text = stringWithoutBr;
+    
+    if([[NSString stringWithFormat:@"%@", _userManager.getShopId]  isEqualToString:_review.review_shop_id]) {
+        _deleteReviewButton.hidden = YES;
+    }
     
     _qualityrate.starscount = [_review.review_rate_quality integerValue];
     _speedrate.starscount = [_review.review_rate_speed integerValue];

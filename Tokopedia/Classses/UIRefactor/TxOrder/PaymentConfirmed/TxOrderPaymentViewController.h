@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol TxOrderPaymentViewControllerDelegate <NSObject>
+- (void)shouldPopViewController;
+
+@end
+
 @interface TxOrderPaymentViewController : UIViewController
+
+@property (nonatomic, weak) IBOutlet id<TxOrderPaymentViewControllerDelegate> delegate;
+
 
 @property (nonatomic, strong) NSDictionary *data;
 @property BOOL isConfirmed;

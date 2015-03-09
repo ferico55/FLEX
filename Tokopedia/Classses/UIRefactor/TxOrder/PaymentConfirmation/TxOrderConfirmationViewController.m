@@ -27,7 +27,6 @@
     
     NSMutableDictionary *_dataInput;
     BOOL _isNodata;
-    BOOL _isFinishRequest;
     UIRefreshControl *_refreshControl;
     
     NSString *_URINext;
@@ -47,6 +46,8 @@
     
     NSMutableArray *_isSelectedOrders;
     NSMutableArray *_selectedOrders;
+    NSMutableArray *_selectedIndextPath;
+    NSMutableArray *_objectProcessingCancel;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -67,6 +68,8 @@
     _mapping = [TxOrderObjectMapping new];
     _isSelectedOrders = [NSMutableArray new];
     _selectedOrders = [NSMutableArray new];
+    _selectedIndextPath = [NSMutableArray new];
+    _objectProcessingCancel = [NSMutableArray new];
     
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -82,7 +85,18 @@
                                              selector:@selector(refreshRequest)
                                                  name:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME
                                                object:nil];
-    _isFinishRequest = YES;
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    self.title = @"";
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - View Action
@@ -91,14 +105,36 @@
     switch (button.tag) {
         case 10:
         {
-            [self cancelConfirmationAction];
+            if ([_selectedOrders count]>0) {
+                NSMutableArray *objects = [NSMutableArray new];
+                for (int i = 0; i<_selectedOrders.count;i++) {
+                    NSMutableDictionary *object = [NSMutableDictionary new];
+                    [object setObject:_selectedOrders[i] forKey:DATA_SELECTED_ORDER_KEY];
+                    [object setObject:_selectedIndextPath[i] forKey:DATA_INDEXPATH_SELECTED_ORDER];
+                    [objects addObject:object];
+                }
+                [_objectProcessingCancel addObjectsFromArray:objects];
+                [self configureRestKitCancelPaymentForm];
+                [self requestCancelPaymentForm:objects];
+            }
+            else{
+                UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"Pilih Payment terlebih dahulu" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+            }
+            
         }
             break;
         case 11:
         {
-            TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
-            vc.data = @{DATA_SELECTED_ORDER_KEY : _selectedOrders};
-            [self.navigationController pushViewController:vc animated:YES];
+            if ([_selectedOrders count]>0) {
+                TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
+                vc.data = @{DATA_SELECTED_ORDER_KEY : _selectedOrders};
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+            else{
+                UIAlertView* alert = [[UIAlertView alloc]initWithTitle:nil message:@"Pilih Payment terlebih dahulu" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+            }
         }
         break;
         default:
@@ -106,10 +142,6 @@
     }
 }
 
--(void)dealloc
-{
-    [[NSNotificationCenter defaultCenter]removeObserver:self];
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -121,14 +153,29 @@
     _isMultipleSelection = isMultipleSelection;
     _multipleSelectFooter.hidden = !(_isMultipleSelection);
     if (!_isMultipleSelection) {
+        _tableView.contentInset = UIEdgeInsetsZero;
+        [_selectedOrders removeAllObjects];
+        [_selectedIndextPath removeAllObjects];
         [_isSelectedOrders removeAllObjects];
         for (id selected in _list) {
             [_isSelectedOrders addObject:@(NO)];
         }
     }
-    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 0, 45);
+    else _tableView.contentInset = UIEdgeInsetsMake(0, 0, 45, 0);
     [_tableView reloadData];
 }
+
+//-(void)setIsSelectAll:(BOOL)isSelectAll
+//{
+//    _isSelectAll = isSelectAll;
+//    [_selectedOrders removeAllObjects];
+//    [_isSelectedOrders removeAllObjects];
+//    [_selectedOrders addObjectsFromArray:_list];
+//    for (id selected in _list) {
+//        [_isSelectedOrders addObject:@(isSelectAll)];
+//    }
+//    [_tableView reloadData];
+//}
 
 #pragma mark - Table View Data Source
 
@@ -154,10 +201,28 @@
     cell.deadlineDateLabel.text = detailOrder.confirmation.pay_due_date;
     cell.transactionDateLabel.text = detailOrder.confirmation.create_time;
     cell.shopNameLabel.text = detailOrder.confirmation.shop_list;
-    cell.totalInvoiceLabel.text = detailOrder.confirmation.open_amount;
+    cell.totalInvoiceLabel.text = detailOrder.confirmation.left_amount;
     cell.indexPath = indexPath;
     cell.selectionButton.hidden = !(_isMultipleSelection);
-    cell.selectionButton.selected = [_isSelectedOrders[indexPath.row] boolValue];
+    cell.frameView.hidden = !(_isMultipleSelection);
+    cell.selectionButton.selected = ([_isSelectedOrders count]>0)?[_isSelectedOrders[indexPath.row] boolValue]:NO;
+    
+    UIColor *selectedColor =[UIColor colorWithRed:18.0f/255.0f green:199.0f/255.0f blue:0.0f/255.0f alpha:1];
+    UIColor *unSelectColor = [UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1];
+    UIColor *enableColor = [UIColor colorWithRed:117.0f/255.0f green:117.0f/255.0f blue:117.0f/255.0f alpha:1];
+    
+    cell.cancelConfirmationButton.enabled = !(_isMultipleSelection);
+    if (!cell.cancelConfirmationButton.enabled)
+        [cell.cancelConfirmationButton setTitleColor:unSelectColor forState:UIControlStateNormal];
+    else [cell.cancelConfirmationButton setTitleColor:enableColor forState:UIControlStateNormal];
+    
+    cell.confirmationButton.enabled = !(_isMultipleSelection);
+    if (!cell.confirmationButton.enabled)
+        [cell.confirmationButton setTitleColor:unSelectColor forState:UIControlStateNormal];
+    else [cell.confirmationButton setTitleColor:enableColor forState:UIControlStateNormal];
+    
+    if (_isMultipleSelection)[cell.cancelConfirmationButton setTintColor:unSelectColor];
+    [cell.frameView setBackgroundColor:[_isSelectedOrders[indexPath.row] boolValue]?selectedColor:unSelectColor];
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -169,9 +234,15 @@
     if (_isMultipleSelection) {
         [_isSelectedOrders replaceObjectAtIndex:indexPath.row withObject:@(![_isSelectedOrders[indexPath.row] boolValue])];
         if ([_isSelectedOrders[indexPath.row] boolValue])
+        {
             [_selectedOrders addObject:_list[indexPath.row]];
+            [_selectedIndextPath addObject:indexPath];
+        }
         else
+        {
             [_selectedOrders removeObject:_list[indexPath.row]];
+            [_selectedIndextPath removeObject:indexPath];
+        }
         [_tableView reloadData];
     }
     else {
@@ -213,16 +284,23 @@
 #pragma mark - Delegate
 -(void)shouldCancelOrderAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!_isMultipleSelection && _isFinishRequest) {
-        //[_dataInput setObject:_list[indexPath.row] forKey:DATA_SELECTED_ORDER_KEY];
+    if (!_isMultipleSelection && !_requestCancelPayment.isExecuting) {
+        
         [_selectedOrders addObject:_list[indexPath.row]];
-        [self cancelConfirmationAction];
+        [_selectedIndextPath addObject:indexPath];
+        NSMutableDictionary *object = [NSMutableDictionary new];
+        [object setObject:_list[indexPath.row] forKey:DATA_SELECTED_ORDER_KEY];
+        [object setObject:indexPath forKey:DATA_INDEXPATH_SELECTED_ORDER];
+        [_objectProcessingCancel addObject:object];
+        
+        [self configureRestKitCancelPaymentForm];
+        [self requestCancelPaymentForm:@[object]];
     }
 }
 
 -(void)shouldConfirmOrderAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!_isMultipleSelection && _isFinishRequest) {
+    if (!_isMultipleSelection && !_requestCancelPayment.isExecuting && !_requestCancelPaymentForm.isExecuting) {
         TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
         vc.data = @{DATA_SELECTED_ORDER_KEY : @[_list[indexPath.row]]};
         [self.navigationController pushViewController:vc animated:YES];
@@ -233,9 +311,9 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 1) {
-        [self configureRestKitCancelPayment];
-        [self requestCancelPayment:_dataInput];
+        [self actionCancelConfirmationObject:_objectProcessingCancel];
     }
+    //[_objectProcessingCancel removeAllObjects];
 }
 
 #pragma mark - Request Get Transaction Order Payment Confirmation
@@ -263,7 +341,8 @@
     
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[TxOrderConfirmationList class]];
     [listMapping addAttributeMappingsFromArray:@[API_TOTAL_EXTRA_FEE_PLAIN,
-                                                 API_TOTAL_LOGISTIC_FEE_KEY
+                                                 API_TOTAL_LOGISTIC_FEE_KEY,
+                                                 API_TOTAL_EXTRA_FEE
                                                 ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -360,7 +439,21 @@
     _tableView.tableFooterView = _footer;
     [_act startAnimating];
     
+#if DEBUG
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    
+    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+    
+    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+    [paramDictionary addEntriesFromDictionary:param];
+    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
+    
+    _requestGetTransaction = [_objectManagerGetTransaction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
+#else
     _requestGetTransaction = [_objectManagerGetTransaction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_TX_ORDER parameters:[param encrypt]];
+#endif
     
     [_requestGetTransaction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessGetTransaction:mappingResult withOperation:operation];
@@ -506,17 +599,18 @@
     
 }
 
--(void)requestCancelPayment:(id)object
+-(void)requestCancelPayment:(NSArray*)objects
 {
     if (_requestCancelPayment.isExecuting) return;
     NSTimer *timer;
     
     NSMutableArray *confirmationIDs = [NSMutableArray new];
-    for (TxOrderConfirmationList *order in _selectedOrders) {
+
+    for (NSDictionary *object in objects) {
+        TxOrderConfirmationList *order =[object objectForKey:DATA_SELECTED_ORDER_KEY];
         [confirmationIDs addObject:order.confirmation.confirmation_id];
     }
-    _isMultipleSelection = !_isMultipleSelection;
-    [_list removeObjectsInArray:_selectedOrders];
+    
     [_isSelectedOrders removeObject:@(YES)];
     [_tableView reloadData];
     
@@ -529,31 +623,32 @@
     
 #if DEBUG
     
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    
+    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+    
     NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
     [paramDictionary addEntriesFromDictionary:param];
     [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:@"1176" forKey:@"user_id"];
+    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
     
-    _requestCancelPayment = [_objectManagerCancelPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];
+    _requestCancelPayment = [_objectManagerCancelPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];//API_PATH_ACTION_TX_ORDER
 #else
     _requestCancelPayment = [_objectManagerCancelPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_TX_ORDER parameters:[param encrypt]];
 #endif
-
-    _tableView.tableFooterView = _footer;
-    [_act startAnimating];
     
-    [_requestCancelPayment setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessCancelPayment:mappingResult withOperation:operation];
+    [_requestCancelPayment setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
+    {
+        [self requestSuccessCancelPayment:_objectProcessingCancel withOperation:operation withMappingResult:mappingResult];
         [_refreshControl endRefreshing];
         [timer invalidate];
-        _tableView.tableFooterView = nil;
-        [_act stopAnimating];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureCancelPayment:error];
+        [self requestFailureCancelPayment:_objectProcessingCancel withError:error];
         [_refreshControl endRefreshing];
         [timer invalidate];
-        _tableView.tableFooterView = nil;
-        [_act stopAnimating];
+        [_tableView reloadData];
+        
     }];
     
     [_operationQueue addOperation:_requestCancelPayment];
@@ -562,62 +657,75 @@
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
--(void)requestSuccessCancelPayment:(id)object withOperation:(RKObjectRequestOperation *)operation
+-(void)requestSuccessCancelPayment:(NSArray*)objects withOperation:(RKObjectRequestOperation *)operation withMappingResult:(RKMappingResult*)mappingResult
 {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    NSDictionary *result = mappingResult.dictionary;
     id stat = [result objectForKey:@""];
     TransactionAction *order = stat;
     BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [self requestProcessCancelPayment:object];
-    }
-}
-
--(void)requestFailureCancelPayment:(id)object
-{
-    [self requestProcessCancelPayment:object];
-}
-
--(void)requestProcessCancelPayment:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            TransactionAction *order = stat;
-            BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(order.message_error)
-                {
-                    NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                    [_list addObjectsFromArray:_selectedOrders];
-                    [_isSelectedOrders addObject:@(NO)];
-                    [_tableView reloadData];
-                }
-                if (order.result.is_success == 1) {
-                    NSArray *array = order.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-                    
-                    [self refreshRequest];
-                }
+        if(order.message_error)
+        {
+            for (NSDictionary *object in objects) {
+                TxOrderConfirmationList *order =[object objectForKey:DATA_SELECTED_ORDER_KEY];
+                NSIndexPath *indexPath = [object objectForKey:DATA_INDEXPATH_SELECTED_ORDER];
+                [_list insertObject:order atIndex:indexPath.row];
+                [_isSelectedOrders addObject:@(NO)];
             }
+            NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+            [_isSelectedOrders addObject:@(NO)];
+            [_tableView reloadData];
         }
-        else{
+        if (order.result.is_success == 1) {
+            NSArray *array = order.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
+            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
             
-            [self cancelCancelPayment];
-            NSError *error = object;
-            if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
+            NSDictionary *userInfo = @{DATA_PAYMENT_CONFIRMATION_COUNT_KEY:@(objects.count)};
+            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:userInfo];
+            
+            [self refreshRequest];
         }
     }
+    else
+    {
+        for (NSDictionary *object in objects) {
+            TxOrderConfirmationList *order =[object objectForKey:DATA_SELECTED_ORDER_KEY];
+            NSIndexPath *indexPath = [object objectForKey:DATA_INDEXPATH_SELECTED_ORDER];
+            [_list insertObject:order atIndex:indexPath.row];
+            [_isSelectedOrders addObject:@(NO)];
+        }
+        [_tableView reloadData];
+    }
+    [self requestProcessCancelPayment];
+}
+
+-(void)requestFailureCancelPayment:(NSArray*)objects withError:(NSError*)error
+{
+    if (error && [error code] != NSURLErrorCancelled) {
+        NSString *errorDescription = error.localizedDescription;
+        UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+        [errorAlert show];
+    }
+    
+    for (NSDictionary *object in objects) {
+        TxOrderConfirmationList *order =[object objectForKey:DATA_SELECTED_ORDER_KEY];
+        NSIndexPath *indexPath = [object objectForKey:DATA_INDEXPATH_SELECTED_ORDER];
+        [_list insertObject:order atIndex:indexPath.row];
+        [_isSelectedOrders addObject:@(NO)];
+    }
+    [_tableView reloadData];
+    
+    [self requestProcessCancelPayment];
+}
+
+-(void)requestProcessCancelPayment
+{
+    [_objectProcessingCancel removeAllObjects];
+    
 }
 
 -(void)requestTimeoutCancelPayment
@@ -666,7 +774,7 @@
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                             method:RKRequestMethodPOST
-                                                                                       pathPattern:API_PATH_ACTION_TX_ORDER
+                                                                                       pathPattern:API_PATH_TX_ORDER
                                                                                            keyPath:@""
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -674,61 +782,46 @@
     
 }
 
--(void)requestCancelPaymentForm:(id)object
+-(void)requestCancelPaymentForm:(NSArray*)objects
 {
     if (_requestCancelPaymentForm.isExecuting) return;
     NSTimer *timer;
     
     NSMutableArray *confirmationIDs = [NSMutableArray new];
-    for (TxOrderConfirmationList *order in _selectedOrders) {
+    
+    for (NSDictionary *object in objects) {
+        TxOrderConfirmationList *order =[object objectForKey:DATA_SELECTED_ORDER_KEY];
         [confirmationIDs addObject:order.confirmation.confirmation_id];
     }
-
-//    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Loading" message:@"\n\n"
-//                                            delegate:self
-//                                   cancelButtonTitle:nil
-//                                   otherButtonTitles:nil, nil];
-//    
-//    UIActivityIndicatorView *loading = [[UIActivityIndicatorView alloc]
-//                                        initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-//    loading.frame=CGRectMake(150, 150, 16, 16);
-//    [loading startAnimating];
-//    [alertView addSubview:loading];
-//    [alertView show];
-    
-    _isFinishRequest = NO;
     
     NSString * confirmationID = [[confirmationIDs valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
     
     NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_CANCEL_PAYMENT_FORM,
                             API_CONFIRMATION_CONFIRMATION_ID_KEY: confirmationID,
                             };
-    
 #if DEBUG
+    
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    
+    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
     
     NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
     [paramDictionary addEntriesFromDictionary:param];
     [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:@"1176" forKey:@"user_id"];
+    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
     
     _requestCancelPaymentForm = [_objectManagerCancelPaymentForm appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
 #else
-    _requestCancelPaymentForm = [_objectManagerCancelPaymentForm appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_TX_ORDER parameters:[param encrypt]];
+    _requestCancelPaymentForm = [_objectManagerCancelPaymentForm appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_TX_ORDER parameters:[param encrypt]];
 #endif
     
-    _tableView.tableFooterView = _footer;
-    [_act startAnimating];
-    
     [_requestCancelPaymentForm setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        _isFinishRequest = YES;
-        [self requestSuccessCancelPaymentForm:mappingResult withOperation:operation];
-        //[alertView dismissWithClickedButtonIndex:0 animated:YES];
+        [self requestSuccessCancelPaymentForm:_objectProcessingCancel withOperation:operation withMappingResult:mappingResult];
         [_refreshControl endRefreshing];
         [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        _isFinishRequest = YES;
-        [self requestFailureCancelPaymentForm:error];
-        //[alertView dismissWithClickedButtonIndex:0 animated:YES];
+        [self requestFailureCancelPaymentForm:_objectProcessingCancel withError:error];
         [_refreshControl endRefreshing];
         [timer invalidate];
     }];
@@ -739,74 +832,85 @@
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
--(void)requestSuccessCancelPaymentForm:(id)object withOperation:(RKObjectRequestOperation *)operation
+-(void)requestSuccessCancelPaymentForm:(NSArray*)objects withOperation:(RKObjectRequestOperation *)operation withMappingResult:(RKMappingResult*)mappingResult
 {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    NSDictionary *result = mappingResult.dictionary;
     id stat = [result objectForKey:@""];
     TxOrderCancelPaymentForm *order = stat;
     BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [self requestProcessCancelPaymentForm:object];
-    }
-}
-
--(void)requestFailureCancelPaymentForm:(id)object
-{
-    [self requestProcessCancelPaymentForm:object];
-}
-
--(void)requestProcessCancelPaymentForm:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            TxOrderCancelPaymentForm *order = stat;
-            BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        if(order.message_error)
+        {
+            NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
+            [alert show];
             
-            if (status) {
-                if(order.message_error)
-                {
-                    NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                    [_list addObjectsFromArray:_selectedOrders];
-                    [_tableView reloadData];
-                }
-                else
-                {
-                    UIAlertView *cancelAlert = [[UIAlertView alloc]initWithTitle:ALERT_TITLE_CANCEL_PAYMENT_CONFIRMATION message:ALERT_TITLE_CANCEL_PAYMENT_CONFIRMATION delegate:self cancelButtonTitle:@"Tidak" otherButtonTitles:@"Ya", nil];
-                    [cancelAlert show];
-                }
-            }
+            [self requestProcessCancelPaymentForm];
         }
-        else{
+        else
+        {
+            NSString *cancelAlertDesc;
+            NSString *totalRefund = [order.result.form.total_refund stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+            totalRefund = [totalRefund stringByReplacingOccurrencesOfString:@",-" withString:@""];
+            totalRefund = [totalRefund stringByReplacingOccurrencesOfString:@" " withString:@""];
+            if ([totalRefund isEqualToString:@"0"])
+                cancelAlertDesc = @"Apakah anda yakin membatalkan transaksi ini?";
+            else
+                cancelAlertDesc = [NSString stringWithFormat:ALERT_DESCRIPTION_CANCEL_PAYMENT_CONFIRMATION,order.result.form.total_refund];
             
-            [self cancelCancelPaymentForm];
-            NSError *error = object;
-            if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
+            UIAlertView *cancelAlert = [[UIAlertView alloc]initWithTitle:ALERT_TITLE_CANCEL_PAYMENT_CONFIRMATION
+                                                                 message:cancelAlertDesc
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Tidak"
+                                                       otherButtonTitles:@"Ya", nil];
+            [cancelAlert show];
+            NSDictionary *userInfo = @{DATA_PAYMENT_CONFIRMATION_COUNT_KEY:@(objects.count)};
+            [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:userInfo];
         }
     }
+    else
+    {
+        [self requestProcessCancelPaymentForm];
+    }
+    [self requestProcessCancelPaymentForm];
+}
+
+-(void)requestFailureCancelPaymentForm:(NSArray*)objects withError:(NSError*)error
+{
+    //[self cancelCancelPaymentForm];
+    if ([error code] != NSURLErrorCancelled) {
+        NSString *errorDescription = error.localizedDescription;
+        UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+        [errorAlert show];
+    }
+    [self requestProcessCancelPaymentForm];
+}
+
+-(void)requestProcessCancelPaymentForm
+{
+
 }
 
 -(void)requestTimeoutCancelPaymentForm
 {
-    [self cancelCancelPaymentForm];
+    //[self cancelCancelPaymentForm];
 }
-
 
 #pragma mark - Methods
 
-
--(void)cancelConfirmationAction
+-(void)actionCancelConfirmationObject:(NSArray*)objects
 {
-    [self configureRestKitCancelPaymentForm];
-    [self requestCancelPaymentForm:_dataInput];
+    for (NSDictionary *object in objects) {
+        TxOrderConfirmationList *order =[object objectForKey:DATA_SELECTED_ORDER_KEY];
+        [_list removeObject:order];
+        [_selectedOrders removeAllObjects];
+        [_selectedIndextPath removeAllObjects];
+    }
+    [_tableView reloadData];
+    
+    [self configureRestKitCancelPayment];
+    [self requestCancelPayment:objects];
 }
 
 -(void)refreshRequest

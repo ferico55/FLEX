@@ -49,6 +49,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
         self.navigationController.edgesForExtendedLayout = UIRectEdgeNone;
     }
@@ -56,6 +57,8 @@
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+    
+    
     
     _pageButtons = [NSArray sortViewsWithTagInArray:_pageButtons];
 
@@ -104,19 +107,10 @@
 
     //TODO:: create not log-in page to login view controller
     if (!_isLogin) {
-        int controllerIndex = 4;
-        UIView * fromView = self.tabBarController .selectedViewController.view;
-        UIView * toView = [[self.tabBarController.viewControllers objectAtIndex:controllerIndex] view];
-        
-        // Transition using a page curl.
-        [UIView transitionFromView:fromView
-                            toView:toView duration:1.0
-                           options:UIViewAnimationOptionTransitionNone
-                        completion:^(BOOL finished) {
-                            if (finished) {
-                                self.tabBarController.selectedIndex = controllerIndex;
-                            }
-                        }];
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];        
     }
 }
 
@@ -268,9 +262,14 @@
 
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-        UIBarButtonItem *barbutton = (UIBarButtonItem*)sender;
-        ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = !(barbutton.tag == TAG_BAR_BUTTON_TRANSACTION_BACK);
+        if (self.navigationController.viewControllers.count > 1) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else{
+            [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+            UIBarButtonItem *barbutton = (UIBarButtonItem*)sender;
+            ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = !(barbutton.tag == TAG_BAR_BUTTON_TRANSACTION_BACK);
+        }
     }
     else
     {

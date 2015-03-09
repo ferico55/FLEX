@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #pragma mark - Transaction Cart Payment Delegate
 @protocol SuccessPaymentConfirmationDelegate <NSObject>
-@required
+
 - (void)shouldPopViewController;
 
 @end
@@ -24,5 +24,6 @@
 
 @property (nonatomic, strong) NSString *totalPaymentValue;
 @property (nonatomic, strong) NSString *methodName;
+@property (nonatomic, strong) NSString *confirmationPayment;
 
 @end

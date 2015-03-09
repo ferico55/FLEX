@@ -30,6 +30,7 @@
 #import "NSDictionaryCategory.h"
 
 #import "URLCacheController.h"
+#import "ShopContainerViewController.h"
 
 @interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, SearchResultShopCellDelegate,SortViewControllerDelegate,FilterViewControllerDelegate>
 
@@ -632,19 +633,31 @@
 
 -(void)SearchResultShopCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
 {
+//    List *list = _product[indexpath.row];
+//    
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
+//    
+//    NSIndexPath *indexPath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+//    shopViewController.data = @{kTKPDDETAIL_APISHOPIDKEY : list.shop_id,
+//                                kTKPDDETAIL_APISHOPNAMEKEY : list.shop_name,
+//                                kTKPDDETAIL_APISHOPISGOLD : list.shop_gold_status,
+//                                kTKPDFILTERSORT_DATAINDEXPATHKEY : indexPath?:0,
+//                                kTKPD_AUTHKEY:[_data objectForKey : kTKPD_AUTHKEY]?:@{}};
+//
+//    [self.navigationController pushViewController:shopViewController animated:YES];
     List *list = _product[indexpath.row];
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
-    
+    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
     NSIndexPath *indexPath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    shopViewController.data = @{kTKPDDETAIL_APISHOPIDKEY : list.shop_id,
-                                kTKPDDETAIL_APISHOPNAMEKEY : list.shop_name,
-                                kTKPDDETAIL_APISHOPISGOLD : list.shop_gold_status,
-                                kTKPDFILTERSORT_DATAINDEXPATHKEY : indexPath?:0,
-                                kTKPD_AUTHKEY:[_data objectForKey : kTKPD_AUTHKEY]?:@{}};
-
-    [self.navigationController pushViewController:shopViewController animated:YES];
+    
+    container.data = @{kTKPDDETAIL_APISHOPIDKEY : list.shop_id,
+                       kTKPDDETAIL_APISHOPNAMEKEY : list.shop_name,
+                       kTKPDDETAIL_APISHOPISGOLD : list.shop_gold_status,
+                       kTKPDFILTERSORT_DATAINDEXPATHKEY : indexPath?:0,
+                       kTKPD_AUTHKEY:[_data objectForKey : kTKPD_AUTHKEY]?:@{}
+                       };
+    [self.navigationController pushViewController:container animated:YES];
 }
 
 #pragma mark - TKPDTabNavigationController Tap Button Notification

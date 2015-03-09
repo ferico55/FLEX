@@ -82,30 +82,26 @@
     pageControllerFrame.origin.y = 108;
     pageControllerFrame.size.height -= 108;
     [[self.pageController view] setFrame:pageControllerFrame];
-
-    _userManager = [UserAuthentificationManager new];
     
     _hotListViewController = [HotlistViewController new];
     _hotListViewController.data = @{kTKPD_AUTHKEY : [_userManager getUserLoginData]?:@""};
     _hotListViewController.index = 1;
     _hotListViewController.delegate = self;
     
-    if (_userManager.isLogin) {
-        _productFeedViewController = [ProductFeedViewController new];
-        _productFeedViewController.index = 2;
-        _productFeedViewController.delegate = self;
-        
-        _historyProductViewController = [HistoryProductViewController new];
-        _historyProductViewController.index = 3;
-        _historyProductViewController.delegate = self;
-        
-        _favoritedShopViewController = [FavoritedShopViewController new];
-        _favoritedShopViewController.index = 4;
-        _favoritedShopViewController.delegate = self;
-    }
+    _productFeedViewController = [ProductFeedViewController new];
+    _productFeedViewController.index = 2;
+    _productFeedViewController.delegate = self;
     
-    NSArray *viewControllers = [NSArray arrayWithObject:_hotListViewController];
-    [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward
+    _historyProductViewController = [HistoryProductViewController new];
+    _historyProductViewController.index = 3;
+    _historyProductViewController.delegate = self;
+    
+    _favoritedShopViewController = [FavoritedShopViewController new];
+    _favoritedShopViewController.index = 4;
+    _favoritedShopViewController.delegate = self;
+    
+    [self.pageController setViewControllers:@[_hotListViewController]
+                                  direction:UIPageViewControllerNavigationDirectionForward
                                    animated:NO
                                  completion:nil];
     
@@ -143,35 +139,29 @@
     [button1 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
     [_tabScrollView addSubview:button1];
     
-    if(!_userManager.isLogin) {
-        
-        _tabScrollView.scrollEnabled = NO;
-        
-    }else if([_userManager.getUserId isEqualToString:@"1"]) {
-        UIButton *button2 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*2, 0, (self.view.frame.size.width/3), 44)];
-        [button2 setTitle:@"Produk Feed" forState:UIControlStateNormal];
-        [button2 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
-        button2.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-        button2.tag = 2;
-        [button2 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
-        [_tabScrollView addSubview:button2];
-        
-        UIButton *button3 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*3, 0, (self.view.frame.size.width/3), 44)];
-        [button3 setTitle:@"Terakhir Dilihat" forState:UIControlStateNormal];
-        [button3 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
-        button3.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-        button3.tag = 3;
-        [button3 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
-        [_tabScrollView addSubview:button3];
-        
-        UIButton *button4 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*4, 0, (self.view.frame.size.width/3), 44)];
-        [button4 setTitle:@"Toko Favorit" forState:UIControlStateNormal];
-        [button4 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
-        button4.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-        button4.tag = 4;
-        [button4 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
-        [_tabScrollView addSubview:button4];
-    }
+    UIButton *button2 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*2, 0, (self.view.frame.size.width/3), 44)];
+    [button2 setTitle:@"Produk Feed" forState:UIControlStateNormal];
+    [button2 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
+    button2.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+    button2.tag = 2;
+    [button2 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
+    [_tabScrollView addSubview:button2];
+    
+    UIButton *button3 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*3, 0, (self.view.frame.size.width/3), 44)];
+    [button3 setTitle:@"Terakhir Dilihat" forState:UIControlStateNormal];
+    [button3 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
+    button3.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+    button3.tag = 3;
+    [button3 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
+    [_tabScrollView addSubview:button3];
+    
+    UIButton *button4 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*4, 0, (self.view.frame.size.width/3), 44)];
+    [button4 setTitle:@"Toko Favorit" forState:UIControlStateNormal];
+    [button4 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
+    button4.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+    button4.tag = 4;
+    [button4 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
+    [_tabScrollView addSubview:button4];
     
     UIView *border = [[UIView alloc] initWithFrame:CGRectMake(0, 43, _tabScrollView.contentSize.width, 1)];
     border.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1];
@@ -227,6 +217,29 @@
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    _userManager = [UserAuthentificationManager new];
+
+    if(_userManager.isLogin) {
+        _tabScrollView.scrollEnabled = YES;
+        for (id subview in _tabScrollView.subviews) {
+            if ([subview isKindOfClass:[UIButton class]]) {
+                UIButton *button = (UIButton *)subview;
+                button.hidden = NO;
+            }
+        }
+    } else {
+        _tabScrollView.scrollEnabled = NO;
+        _tabScrollView.contentOffset = CGPointMake(0, 0);
+        for (id subview in _tabScrollView.subviews) {
+            if ([subview isKindOfClass:[UIButton class]]) {
+                UIButton *button = (UIButton *)subview;
+                if (button.tag > 1) {
+                    button.hidden = YES;
+                }
+            }
+        }
+    }
 }
 
 - (void)viewDidDisappear:(BOOL)animated

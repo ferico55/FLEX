@@ -29,6 +29,7 @@
 @property (strong,nonatomic) NSIndexPath *indexPath;
 
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
+@property (weak, nonatomic) IBOutlet UIButton *uploadProodButton;
 
 +(id)newCell;
 

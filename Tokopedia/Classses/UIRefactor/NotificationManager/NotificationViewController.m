@@ -11,6 +11,7 @@
 #import "InboxTalkViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
+#import "InboxResolutionCenterTabViewController.h"
 
 @interface NotificationViewController ()
 
@@ -286,6 +287,15 @@
 
                 [self.delegate pushViewController:controller];
 
+                break;
+            }
+            case 5:
+            {
+                InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                [nav.navigationBar setTranslucent:NO];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"goToViewController" object:nil userInfo:@{@"nav":nav}];
                 break;
             }
             default:

@@ -7,6 +7,7 @@
 //
 #import "detail.h"
 #import "string_alert.h"
+#import "stringrestkit.h"
 
 #import "Review.h"
 #import "StarsRateView.h"
@@ -26,6 +27,7 @@
 #import "ShopTalkViewController.h"
 #import "ShopNotesViewController.h"
 #import "ShopInfoViewController.h"
+#import "DetailReviewViewController.h"
 
 @interface ShopReviewViewController () <UITableViewDataSource, UITableViewDelegate, ShopHeaderDelegate>
 {
@@ -76,12 +78,23 @@
 @end
 
 @implementation ShopReviewViewController
+@synthesize indexNumber;
+
+#pragma mark - Init Notification
+- (void)initNotificationCenter {
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    
+    [nc addObserver:self selector:@selector(updateScrollViewPosition:) name:@"updateScrollViewPosition" object:nil];
+
+}
 
 #pragma mark - View Life Cycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self initNotificationCenter];
     
     _isNoData = YES;
     
@@ -135,7 +148,7 @@
     if (!_isRefreshView) {
         [self configureRestKit];
         if (_isNoData || (_uriNext != NULL && ![_uriNext isEqualToString:@"0"] && _uriNext != 0)) {
-            [self request];
+            [self loadData];
         }
     }
     
@@ -186,7 +199,7 @@
     if (_contentOffset.y > self.view.frame.size.height) _contentOffset.y = _headerView.frame.size.height - 109;
     else if (_tableView.contentInset.top == -64) _contentOffset.y = 64;
 
-    self.tableView.contentOffset = _contentOffset;
+//    self.tableView.contentOffset = _contentOffset;
     
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, self.view.frame.size.height, 0);
     if (_shopIsGold) self.tableView.scrollIndicatorInsets = UIEdgeInsetsMake(64, 0, 0, 0);
@@ -229,6 +242,7 @@
 		cell = (GeneralReviewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
 			cell = [GeneralReviewCell newcell];
+            ((GeneralReviewCell*)cell).delegate = self;
 		}
         
         if (_list.count > indexPath.row) {
@@ -253,6 +267,16 @@
                 ((GeneralReviewCell *)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [list.review_message substringWithRange:stringRange]];
             } else {
                 ((GeneralReviewCell *)cell).commentlabel.text = list.review_message?:@"";
+            }
+            
+            if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
+                ((GeneralReviewCell *)cell).ratingView.hidden = YES;
+                ((GeneralReviewCell *)cell).inputReviewView.hidden = NO;
+                ((GeneralReviewCell *)cell).commentView.hidden = YES;
+            } else {
+                ((GeneralReviewCell *)cell).ratingView.hidden = NO;
+                ((GeneralReviewCell *)cell).inputReviewView.hidden = YES;
+                ((GeneralReviewCell *)cell).commentView.hidden = NO;
             }
             
             ((GeneralReviewCell*)cell).qualityrate.starscount = [list.review_rate_quality integerValue];
@@ -319,7 +343,7 @@
             /** called if need to load next page **/
             //NSLog(@"%@", NSStringFromSelector(_cmd));
             [self configureRestKit];
-            [self request];
+            [self loadData];
         } else {
             CGFloat insetBottom = self.view.frame.size.height - ((tableView.rowHeight * _list.count) + _tabView.frame.size.height + 64);
             _tableView.contentInset = UIEdgeInsetsMake(0, 0, insetBottom, 0);
@@ -335,6 +359,11 @@
     [self updateTabAppearance:scrollView.contentOffset];
     [self updateNavigationBarAppearance:scrollView.contentOffset];
     [_headerController didScroll:scrollView];
+    
+    NSLog(@"Y Scroll position : %f", _tableView.contentOffset.y);
+    
+    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:_tableView.contentOffset.y], @"yposition", nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateScrollViewPosition" object:nil userInfo:info];
 }
 
 #pragma mark - View Action
@@ -465,6 +494,26 @@
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
     
     //add relationship mapping
+    RKObjectMapping *reviewResponseMapping = [RKObjectMapping mappingForClass:[ReviewResponse class]];
+    [reviewResponseMapping addAttributeMappingsFromDictionary:@{
+                                                                REVIEW_RESPONSE_CREATE_TIME:REVIEW_RESPONSE_CREATE_TIME,
+                                                                REVIEW_RESPONSE_MESSAGE:REVIEW_RESPONSE_MESSAGE
+                                                                }];
+    
+    RKObjectMapping *reviewProductOwnerMapping = [RKObjectMapping mappingForClass:[ReviewProductOwner class]];
+    [reviewProductOwnerMapping addAttributeMappingsFromDictionary:@{
+                                                                    REVIEW_PRODUCT_OWNER_USER_ID:REVIEW_PRODUCT_OWNER_USER_ID,
+                                                                    REVIEW_PRODUCT_OWNER_USER_IMAGE:REVIEW_PRODUCT_OWNER_USER_IMAGE,
+                                                                    REVIEW_PRODUCT_OWNER_USER_NAME:REVIEW_PRODUCT_OWNER_USER_NAME
+                                                                    }];
+    
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:REVIEW_RESPONSE
+                                                                                toKeyPath:REVIEW_RESPONSE
+                                                                              withMapping:reviewResponseMapping]];
+    
+    [listMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:REVIEW_PRODUCT_OWNER
+                                                                                toKeyPath:REVIEW_PRODUCT_OWNER
+                                                                              withMapping:reviewProductOwnerMapping]];
 
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
@@ -484,14 +533,14 @@
     // register mappings with the provider using a response descriptor
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                   method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDDETAILSHOP_APIPATH
+                                                                                             pathPattern:@"shop.pl"
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectManager addResponseDescriptor:responseDescriptorStatus];
 }
 
-- (void)request
+- (void)loadData
 {
     if (_request.isExecuting) return;
     
@@ -511,7 +560,7 @@
         }
         _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                         method:RKRequestMethodPOST
-                                                                          path:kTKPDDETAILSHOP_APIPATH
+                                                                          path:@"shop.pl"
                                                                     parameters:[param encrypt]];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [_timer invalidate];
@@ -752,7 +801,7 @@
     [_tableView reloadData];
     /** request data **/
     [self configureRestKit];
-    [self request];
+    [self loadData];
 }
 
 #pragma mark - Navigation
@@ -777,6 +826,28 @@
 - (void)didReceiveShop:(Shop *)shop
 {
     _shop = shop;
+}
+
+#pragma mark - Review Cell Delegate
+- (id)navigationController:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    return self;
+}
+
+-(void)GeneralReviewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    DetailReviewViewController *vc = [DetailReviewViewController new];
+    NSInteger row = indexpath.row;
+    vc.data = _list[row];
+    vc.index = [NSString stringWithFormat:@"%ld",(long)row];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - Notification Action
+- (void)updateScrollViewPosition:(NSNotification *)notification
+{
+    id userinfo = notification.userInfo;
+    CGPoint cgpoint = CGPointMake(0, [[userinfo objectForKey:@"yposition"] floatValue]);
+    _tableView.contentOffset = cgpoint;
 }
 
 @end

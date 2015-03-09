@@ -18,4 +18,11 @@
 
 @property (weak, nonatomic) id<FilterSalesTransactionListDelegate> delegate;
 
+@property BOOL isOrderTransaction;
+
+@property (strong, nonatomic) NSString *invoiceMark;
+@property (strong, nonatomic) NSString *startDateMark;
+@property (strong, nonatomic) NSString *endDateMark;
+@property (strong, nonatomic) NSString *transactionStatusMark;
+
 @end

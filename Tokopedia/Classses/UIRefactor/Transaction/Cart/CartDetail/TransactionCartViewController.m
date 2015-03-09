@@ -1285,7 +1285,7 @@
                     [alert show];
                 }
                 else{
-                    NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:cart.result.transaction?:@"",
+                    NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:cart.result.transaction?:[TransactionSummaryDetail new],
                                                DATA_DROPSHIPPER_NAME_KEY: _senderNameDropshipper?:@"",
                                                DATA_DROPSHIPPER_PHONE_KEY:_senderPhoneDropshipper?:@"",
                                                DATA_PARTIAL_LIST_KEY:_stockPartialStrList?:@{},
@@ -1486,6 +1486,8 @@
                 if (cart.result.is_success == 1) {
                     NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:cart.result};
                     [_delegate didFinishRequestBuyData:userInfo];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
                 }
             }
         }
@@ -2479,13 +2481,8 @@
     cell.quantityLabel.attributedText = attributedString;
     
     NSIndexPath *indexPathCell = [NSIndexPath indexPathForRow:indexProduct inSection:indexPath.section-1];
-    cell.indexPath = indexPathCell;
-    cell.editButton.hidden = (_indexPage == 1);
-
-    [_textAttributes setObject:[UIColor blackColor] forKey:NSForegroundColorAttributeName];
-    NSAttributedString *remarkAttributedText = [[NSAttributedString alloc] initWithString:product.product_notes?:@"-"
-                                                                               attributes:_textAttributes];
-    cell.remarkLabel.attributedText = remarkAttributedText;
+    ((TransactionCartCell*)cell).indexPath = indexPathCell;
+    cell.remarkLabel.text = product.product_notes;
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_pic] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     

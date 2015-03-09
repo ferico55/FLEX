@@ -21,7 +21,7 @@
 @property (nonatomic, strong) NSString *user_image;
 
 @property NSInteger status;
-@property NSInteger msisdn_is_verified;
-@property NSInteger msisdn_show_dialog;
+@property (nonatomic, strong) NSString *msisdn_is_verified;
+@property (nonatomic, strong) NSString *msisdn_show_dialog;
 
 @end

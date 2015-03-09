@@ -17,7 +17,7 @@
 #import "TxOrderConfirmationList.h"
 #import "TxOrderPaymentViewController.h"
 
-@interface TxOrderConfirmationDetailViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface TxOrderConfirmationDetailViewController ()<UITableViewDataSource,UITableViewDelegate, TxOrderPaymentViewControllerDelegate>
 {
     NSArray *_list;
     BOOL _isNodata;
@@ -55,9 +55,15 @@
     {
         TxOrderConfirmationList *detailOrder = [_data objectForKey:DATA_SELECTED_ORDER_KEY];
         TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
+        vc.delegate = self;
         vc.data = @{DATA_SELECTED_ORDER_KEY : @[detailOrder]};
         [self.navigationController pushViewController:vc animated:YES];
     }
+}
+
+-(void)shouldPopViewController
+{
+    [self.navigationController popViewControllerAnimated:NO];
 }
 
 #pragma mark - Table View Data Source
@@ -169,10 +175,10 @@
     
     _payDueDateLabel.text = detailOrder.confirmation.pay_due_date;
     _transactionDatelLabel.text = detailOrder.confirmation.create_time;
-    _totalPaymentLabel.text = detailOrder.confirmation.open_amount_before_fee;
-    _depositAmountLabel.text = detailOrder.confirmation.deposit_amount;
-    _transferCodeLabel.text = detailOrder.total_extra_fee;
-    _grandTotalLabel.text = detailOrder.confirmation.open_amount;
+    _totalPaymentLabel.text = detailOrder.confirmation.open_amount_before_fee?:@"Rp 0,-";
+    _depositAmountLabel.text = detailOrder.confirmation.deposit_amount?:@"Rp 0,-";
+    _transferCodeLabel.text = detailOrder.total_extra_fee?:@"Rp 0,-";
+    _grandTotalLabel.text = detailOrder.confirmation.left_amount;
 }
 
 -(UITableViewCell*)cellProductAtIndexPath:(NSIndexPath*)indexPath
@@ -201,7 +207,7 @@
     
     UIImageView *thumb = cell.productThumbImageView;
     thumb.image = nil;
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         [thumb setImage:image animated:YES];
@@ -222,8 +228,7 @@
     
     TxOrderConfirmationListOrder *orderList = _list[indexPath.section];
     
-    //TODO:: Biaya Tambahan
-    cell.subtotalLabel.text = orderList.order_detail.detail_open_amount_idr;
+    cell.subtotalLabel.text = orderList.order_detail.detail_product_price_idr;
     cell.insuranceLabel.text = orderList.order_detail.detail_insurance_price_idr;
     cell.shipmentFeeLabel.text = orderList.order_detail.detail_shipping_price_idr;
     cell.totalPaymentLabel.text = orderList.order_detail.detail_open_amount_idr;

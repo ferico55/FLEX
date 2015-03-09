@@ -8,8 +8,9 @@
 
 #import "TxOrderInvoiceViewController.h"
 
-@interface TxOrderInvoiceViewController ()
+@interface TxOrderInvoiceViewController ()<UIWebViewDelegate>
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 
 @end
 
@@ -29,6 +30,16 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)webViewDidStartLoad:(UIWebView *)webView
+{
+    [_act startAnimating];
+}
+
+-(void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    [_act stopAnimating];
 }
 
 /*

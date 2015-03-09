@@ -291,6 +291,8 @@
 				
         if ([_selectedViewController isKindOfClass:[SearchResultShopViewController class]]) {
             self.navigationItem.rightBarButtonItem = nil;
+        } else {
+            self.navigationItem.rightBarButtonItem = _barbuttoncategory;
         }
         
 		if (animated && (deselect != nil) && (navigate != 0)) {

@@ -24,6 +24,7 @@
 #import "TransactionAction.h"
 
 #import "TxOrderPaymentConfirmationSuccessViewController.h"
+#import "StickyAlertView.h"
 
 #import "DBManager.h"
 
@@ -87,6 +88,8 @@
 
 @implementation TxOrderPaymentViewController
 
+
+#pragma mark - View LifeCycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -97,22 +100,36 @@
     _sectionNewRekeningCells = [NSArray sortViewsWithTagInArray:_sectionNewRekeningCells];
     _section3CashCells = [NSArray sortViewsWithTagInArray:_section3CashCells];
     
-    self.title = TITLE_PAYMENT_CONFIRMATION_FORM;
+    self.title = _isConfirmed?TITLE_PAYMENT_EDIT_CONFIRMATION_FORM:TITLE_PAYMENT_CONFIRMATION_FORM;
     
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Tidak" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [backBarButtonItem setTintColor:[UIColor whiteColor]];
-    backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
-    self.navigationItem.leftBarButtonItem = backBarButtonItem;
-    
-    backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Ya" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [backBarButtonItem setTintColor:[UIColor blackColor]];
-    backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
-    self.navigationItem.rightBarButtonItem = backBarButtonItem;
+    if (_isConfirmed) {
+        UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        [backBarButtonItem setTintColor:[UIColor whiteColor]];
+        backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
+        self.navigationItem.backBarButtonItem = backBarButtonItem;
+        
+        backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        [backBarButtonItem setTintColor:[UIColor blackColor]];
+        backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
+        self.navigationItem.rightBarButtonItem = backBarButtonItem;
+    }
+    else
+    {
+        UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Tidak" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        [backBarButtonItem setTintColor:[UIColor whiteColor]];
+        backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
+        self.navigationItem.leftBarButtonItem = backBarButtonItem;
+        
+        backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Ya" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+        [backBarButtonItem setTintColor:[UIColor blackColor]];
+        backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
+        self.navigationItem.rightBarButtonItem = backBarButtonItem;
+    }
     
     [_infoNominalLabel multipleLineLabel:_infoNominalLabel];
     [_infoConfirmation multipleLineLabel:_infoConfirmation];
 
-    NSString *string = @"Masukkan password login Tokopedia anda. \n\nProduct yang sudah dipesan dan dikonfirmasikan pembayarannya tidak dapat dibatalkan.";
+    NSString *string = @"Masukkan password login Tokopedia anda. \n\nProduk yang sudah dipesan dan dikonfirmasikan pembayarannya tidak dapat dibatalkan.";
     _passwordLabel.text = string;
     [_passwordLabel multipleLineLabel:_passwordLabel];
 
@@ -129,14 +146,26 @@
         
     _isNewRekening = NO;
     
+    [_dataInput setObject:[NSDate date] forKey:DATA_PAYMENT_DATE_KEY];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
     
-    [_dataInput setObject:[NSDate date] forKey:DATA_PAYMENT_DATE_KEY];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -265,12 +294,26 @@
     switch (indexPath.section) {
         case 0:
         {
-            UILabel *invoiceLabel = [_section0Cell[indexPath.row] detailTextLabel];
-            invoiceLabel.numberOfLines = 0;
-            invoiceLabel.textAlignment = NSTextAlignmentRight;
-            [invoiceLabel multipleLineLabel:invoiceLabel];
             CGFloat height = [_section0Cell[indexPath.row] frame].size.height;
-            if (indexPath.row == 0) return (invoiceLabel.frame.size.height+30);
+            if (indexPath.row == 0)
+            {
+                UILabel *invoiceLabel = [_section0Cell[indexPath.row] detailTextLabel];
+                invoiceLabel.numberOfLines = 0;
+                NSString *textString = invoiceLabel.text;
+                [invoiceLabel multipleLineLabel:invoiceLabel];
+                
+                //Calculate the expected size based on the font and linebreak mode of your label
+                CGSize maximumLabelSize = CGSizeMake(190,9999);
+                
+                CGSize expectedLabelSize = [textString sizeWithFont:invoiceLabel.font
+                                                  constrainedToSize:maximumLabelSize
+                                                      lineBreakMode:invoiceLabel.lineBreakMode];
+                
+                //adjust the label the the new height.
+                CGRect newFrame = invoiceLabel.frame;
+                newFrame.size.height = expectedLabelSize.height + 26;
+                return newFrame.size.height;
+            }
             else return height;
         }
             break;
@@ -307,13 +350,17 @@
     if (section == 3 && [self isPaymentTypeSaldoTokopedia]) {
         return _passwordFooterView.frame.size.height;
     }
-    
+
     NSInteger sectionCount = (([self isPaymentTypeBank]&&_isNewRekening) || [self isPaymentTypeTransfer])?5:4;
     if (section == sectionCount-1) {
         return _section3FooterView.frame.size.height;
     }
     if (section == 2 && _isNewRekening) {
         return  _branchFooterView.frame.size.height;
+    }
+    else if (section == 2 && [self isPaymentTypeBank] && !_isNewRekening)
+    {
+        return _section2FooterView.frame.size.height;
     }
     if (section == 1) {
         if ([self isPaymentTypeBank] && !_isNewRekening) return _addNewRekeningFooterView.frame.size.height;
@@ -335,13 +382,17 @@
     if (section == 3 && [self isPaymentTypeSaldoTokopedia]) {
         return _passwordFooterView;
     }
-    
     NSInteger sectionCount = (([self isPaymentTypeBank]&&_isNewRekening) || [self isPaymentTypeTransfer])?5:4;
     if (section == sectionCount-1) {
         return _section3FooterView;
     }
+    
     if (section == 2 && _isNewRekening) {
         return  _branchFooterView;
+    }
+    else if (section == 2 && [self isPaymentTypeBank] && !_isNewRekening)
+    {
+        return _section2FooterView;
     }
     
     if (section == 1) {
@@ -363,7 +414,8 @@
             if (indexPath.row == 0) {
                 AlertDatePickerView *paymentDate = [AlertDatePickerView newview];
                 paymentDate.delegate = self;
-                paymentDate.currentdate = [NSDate date];
+                NSDate *date = [_dataInput objectForKey:DATA_PAYMENT_DATE_KEY];
+                paymentDate.currentdate = date;
                 paymentDate.tag = 11;
                 paymentDate.isSetMinimumDate = NO;
                 [paymentDate show];
@@ -395,8 +447,8 @@
                     [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_SYSTEM_BANK_KEY];
                     [self pushToGeneralViewControllerAtIndextPath:indexPath];
                 }
-                else if ([self isPaymentTypeSaldoTokopedia])
-                    [_markTextView becomeFirstResponder];
+                //else if ([self isPaymentTypeSaldoTokopedia])
+                    //[_markTextView becomeFirstResponder];
                 else if ([self isPaymentTypeTransfer]) {
                     AlertInfoPaymentConfirmationView *alertInfo = [AlertInfoPaymentConfirmationView newview];
                     alertInfo.delegate = self;
@@ -438,10 +490,10 @@
             else if ([self isPaymentTypeSaldoTokopedia])
                  [_passwordTextField becomeFirstResponder];
             else
-                [_markTextView becomeFirstResponder];
+                //[_markTextView becomeFirstResponder];
         break;
         case 4:
-            [_markTextView becomeFirstResponder];
+            //[_markTextView becomeFirstResponder];
             break;
         default:
             break;
@@ -637,10 +689,15 @@
                             confirmationKey:confirmationID};
     
 #if DEBUG
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    
+    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+    
     NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
     [paramDictionary addEntriesFromDictionary:param];
     [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:@"1176" forKey:@"user_id"];
+    [paramDictionary setObject:userID forKey:@"user_id"];
     
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
 #else
@@ -710,7 +767,10 @@
             
             if (status) {
                 if([form message_error])
-                    [self request];
+                {
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:[form message_error] delegate:self];
+                    [alert show];
+                }
                 else{
                     if (_isConfirmed)
                         [self setDefaultDataConfirmed:((TxOrderPaymentEdit*)form).result.form];
@@ -817,6 +877,7 @@
         [confirmationIDs addObject:detail.confirmation.confirmation_id];
     }
     NSString * confirmationID = [[confirmationIDs valueForKey:@"description"] componentsJoinedByString:@"~"];
+    NSString *paymentID = _paymentID?:@"";
     NSString *token = form.token?:@"";
     NSString *methodID = method.method_id?:@"";
     NSDate *paymentDate = [_dataInput objectForKey:DATA_PAYMENT_DATE_KEY];
@@ -828,15 +889,19 @@
     NSString *comment = [_dataInput objectForKey:DATA_MARK_KEY]?:@"";
     NSString *password = [_dataInput objectForKey:DATA_PASSWORD_KEY]?:@"";
     NSString *systemBankID = systemBank.sysbank_id?:@"";
-    NSNumber *bankID = @(bank.bank_id?:-1);
+    NSNumber *bankID = @(bank.bank_id);
     NSString *bankName = bank.bank_name?:@"";
     NSString *bankAccountName = bank.bank_account_name?:@"";
     NSString *bankAccountBranch = bank.bank_branch?:@"";
     NSString *bankAccountNumber = bank.bank_account_number?:@"";
-    NSNumber *bankAccountID = @(bank.bank_account_id);
+    NSNumber *bankAccountID = _isNewRekening?@(0):@(bank.bank_account_id);
     NSString *depositor = [_dataInput objectForKey:DATA_DEPOSITOR_KEY]?:@"";
+    NSString *action = _isConfirmed?ACTION_EDIT_PAYMENT:ACTION_CONFIRM_PAYMENT;
     
-    NSDictionary* param = @{API_ACTION_KEY : ACTION_CONFIRM_PAYMENT,
+    //TODO:: File name & file path
+    
+    NSDictionary* param = @{API_ACTION_KEY : action,
+                            API_PAYMENT_ID_KEY : paymentID,
                             API_CONFIRMATION_CONFIRMATION_ID_KEY : confirmationID,
                             API_TOKEN_KEY : token,
                             API_METHOD_ID_KEY : methodID,
@@ -855,13 +920,19 @@
                             API_BANK_ACCOUNT_NUMBER_KEY : bankAccountNumber,
                             API_BANK_ACCOUNT_ID_KEY : bankAccountID,
                             API_SYSTEM_BANK_ID_KEY : systemBankID,
+                            
                             };
     
 #if DEBUG
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    
+    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+    
     NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
     [paramDictionary addEntriesFromDictionary:param];
     [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:@"1176" forKey:@"user_id"];
+    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
     
     _requestConfirmPayment = [_objectManagerConfirmPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];
 #else
@@ -919,19 +990,37 @@
                 }
                 if(order.result.is_success == 1)
                 {
-                    NSInteger paymentAmount = [[_dataInput objectForKey:DATA_TOTAL_PAYMENT_KEY] integerValue];
-                    MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
-                    TxOrderPaymentConfirmationSuccessViewController *vc = [TxOrderPaymentConfirmationSuccessViewController new];
-                    vc.delegate = self;
-                    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-                    [formatter setGroupingSeparator:@"."];
-                    [formatter setGroupingSize:3];
-                    [formatter setUsesGroupingSeparator:YES];
-                    [formatter setSecondaryGroupingSize:3];
-                    NSString *price = (paymentAmount>0)?[formatter stringFromNumber:@(paymentAmount)]:@"0";
-                    vc.totalPaymentValue = [NSString stringWithFormat:@"Rp %@,-",price];
-                    vc.methodName = method.method_name;
-                    [self.navigationController pushViewController:vc animated:YES];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME object:nil userInfo:nil];
+                    if (_isConfirmed) {
+                        NSArray *array = order.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
+                        StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
+                        [alert show];
+                        [self.navigationController popViewControllerAnimated:YES];
+                    }
+                    else{
+                        NSInteger paymentAmount = [[_dataInput objectForKey:DATA_TOTAL_PAYMENT_KEY] integerValue];
+                        MethodList *method = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
+                        NSMutableArray *viewControllers = [NSMutableArray new];
+                        [viewControllers addObjectsFromArray:self.navigationController.viewControllers];
+                        
+                        TxOrderPaymentConfirmationSuccessViewController *vc = [TxOrderPaymentConfirmationSuccessViewController new];
+                        vc.confirmationPayment = method.method_name;
+                        vc.delegate = self;
+                        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+                        [formatter setGroupingSeparator:@"."];
+                        [formatter setGroupingSize:3];
+                        [formatter setUsesGroupingSeparator:YES];
+                        [formatter setSecondaryGroupingSize:3];
+                        NSString *price = (paymentAmount>0)?[formatter stringFromNumber:@(paymentAmount)]:@"0";
+                        TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
+                        vc.totalPaymentValue = [self isPaymentTypeSaldoTokopedia]?form.order.order_left_amount_idr:[NSString stringWithFormat:@"Rp %@,-",price];
+                        vc.methodName = method.method_name;
+                        [viewControllers replaceObjectAtIndex:viewControllers.count-1 withObject:vc];
+                        self.navigationController.viewControllers = viewControllers;
+                        //[self.navigationController pushViewController:vc animated:YES];
+                        
+                        [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
+                    }
                 }
             }
         }
@@ -1002,13 +1091,31 @@
     
     switch (indexPath.section) {
         case 0:
-            if (indexPath.row == 0) textString = invoice;
+            if (indexPath.row == 0)
+            {
+                UILabel *invoiceLabel = [_section0Cell[indexPath.row] detailTextLabel];
+                invoiceLabel.numberOfLines = 0;
+                textString = invoice;
+                [invoiceLabel multipleLineLabel:invoiceLabel];
+                
+                //Calculate the expected size based on the font and linebreak mode of your label
+                CGSize maximumLabelSize = CGSizeMake(190,9999);
+                
+                CGSize expectedLabelSize = [textString sizeWithFont:invoiceLabel.font
+                                                  constrainedToSize:maximumLabelSize
+                                                      lineBreakMode:invoiceLabel.lineBreakMode];
+                
+                //adjust the label the the new height.
+                CGRect newFrame = invoiceLabel.frame;
+                newFrame.size.height = expectedLabelSize.height + 26;
+                invoiceLabel.frame = newFrame;
+            }
             else if (indexPath.row == 1) textString = (_isConfirmed)?formIsConfirmed.payment.order_left_amount_idr:form.order.order_left_amount_idr;
             break;
         case 1:
             if (indexPath.row == 0) textString = paymentDateString;
             else if (indexPath.row == 1)textString = selectedMethod.method_name;
-            else if (indexPath.row == 2)textString = selectedBank.bank_account_name?:@"Belum memiliki akun Bank";
+            else if (indexPath.row == 2)textString = selectedBank.bank_account_name?:@"Pilih Akun Bank";
             break;
         case 2:
             if (indexPath.row ==0)
@@ -1033,6 +1140,9 @@
 
 -(void)pushToGeneralViewControllerAtIndextPath:(NSIndexPath*)indexPath
 {
+    [_activeTextField resignFirstResponder];
+    [_activeTextView resignFirstResponder];
+
     NSIndexPath *indexPathSystemBank = [_dataInput objectForKey:DATA_INDEXPATH_SYSTEM_BANK_KEY];
     NSIndexPath *indexPathPaymentMethod = [_dataInput objectForKey:DATA_INDEXPATH_PAYMENT_METHOD_KEY];
     NSIndexPath *indexPathBankAccount = [_dataInput objectForKey:DATA_INDEXPATH_BANK_ACCOUNT_KEY];
@@ -1085,7 +1195,10 @@
         controller.selectedObject = [NSString stringWithFormat:@"%@\n%@\na/n %@",bankAccount.bank_name,bankAccount.bank_account_number, bankAccount.bank_account_name];
     }
     controller.objects = [controllerObjects copy];
+    
+    CGPoint scrollPosition = _tableView.contentOffset;
     [self.navigationController pushViewController:controller animated:YES];
+    _tableView.contentOffset = scrollPosition;
 }
 
 -(BOOL)isValidInput
@@ -1117,8 +1230,12 @@
         }
     }
     else if ([self isPaymentTypeBank]) {
-        if (!systemBank.sysbank_id) {
+        if (!systemBank.sysbank_id || [systemBank.sysbank_id isEqualToString:@""]) {
             [errorMessage addObject:ERRORMESSAGE_NILL_SYSTEM_BANK];
+            isValid = NO;
+        }
+        if (!bank.bank_id) {
+            [errorMessage addObject:ERRORMESSAGE_NILL_BANK_ACCOUNT];
             isValid = NO;
         }
     }
@@ -1130,10 +1247,21 @@
         }
     }
     else if ([self isPaymentTypeTransfer]) {}
+    NSString *paymentAmount = [_dataInput objectForKey:DATA_TOTAL_PAYMENT_KEY]?:@"";
+    
+    TxOrderConfirmPaymentFormForm *form = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
+    TxOrderPaymentEditForm *formIsConfirmed = [_dataInput objectForKey:DATA_DETAIL_ORDER_CONFIRMED_KEY];
+    
+    NSString *paymentOrderLeft = (_isConfirmed)?formIsConfirmed.payment.order_left_amount:form.order.order_left_amount;
+    
+    if (![self isPaymentTypeSaldoTokopedia] && [paymentAmount integerValue]<[paymentOrderLeft integerValue]) {
+        [errorMessage addObject:[NSString stringWithFormat:ERRORMESSAGE_INVALID_PAYMENT_AMOUNT,paymentOrderLeft]];
+        isValid = NO;
+    }
 
     if (!isValid) {
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:errorMessage,@"messages", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
+        [alert show];
     }
     
     return isValid;
@@ -1149,18 +1277,45 @@
         }
     }
     
-    NSInteger indexBankAcount;
     NSArray *bankAccountList = form.bank_account.bank_account_list;
-    indexBankAcount = [bankAccountList indexOfObject:form.bank_account.bank_account_id_chosen];
-    if (indexBankAcount == NSNotFound) {
-        indexBankAcount = 0;
+    BankAccountFormList *selectedBank;
+    for (BankAccountFormList *bank in bankAccountList) {
+        if ([form.bank_account.bank_account_id_chosen integerValue] == bank.bank_account_id) {
+            selectedBank = bank;
+        }
     }
-        
-    BankAccountFormList *selectedBank = bankAccountList[indexBankAcount];
+    
+    SystemBankAcount *selectedSystemBank;
+    NSArray *systemBankList = form.sysbank_account.sysbank_list;
+    for (SystemBankAcount *systemBank in systemBankList) {
+        if ([form.sysbank_account.sysbank_id_chosen isEqual:systemBank.sysbank_id]) {
+            selectedSystemBank = systemBank;
+        }
+    }
     
     [_dataInput setObject:selectedMethod?:[MethodList new] forKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
     [_dataInput setObject:selectedBank?:[BankAccountFormList new] forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    [_dataInput setObject:selectedSystemBank?:[SystemBankAcount new] forKey:DATA_SELECTED_SYSTEM_BANK_KEY];
+    
     [_dataInput setObject:form forKey:DATA_DETAIL_ORDER_CONFIRMED_KEY];
+    [_dataInput setObject:form.payment.order_payment_amount forKey:DATA_TOTAL_PAYMENT_KEY];
+    
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setGroupingSeparator:@"."];
+    [formatter setGroupingSize:3];
+    [formatter setUsesGroupingSeparator:YES];
+    [formatter setSecondaryGroupingSize:3];
+    NSString *num = form.payment.order_payment_amount ;
+    num = [num stringByReplacingOccurrencesOfString:@"." withString:@""];
+    NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
+    _totalPaymentTextField.text = str;
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"d M yyyy"];
+    NSString *dateString = [NSString stringWithFormat:@"%@ %@ %@",form.payment.order_payment_day,form.payment.order_payment_month,form.payment.order_payment_year];
+    NSDate *paymentDate = [[NSDate alloc]init];
+    paymentDate = [dateFormatter dateFromString:dateString]?:[NSDate date];
+    [_dataInput setObject:paymentDate forKey:DATA_PAYMENT_DATE_KEY];
 }
 
 -(void)setDefaultDataConfirmation:(TxOrderConfirmPaymentFormForm*)form
@@ -1191,20 +1346,20 @@
     
     NSIndexPath *paymentMethodIndexPath = [_dataInput objectForKey:DATA_INDEXPATH_PAYMENT_METHOD_KEY];
     NSIndexPath *bankAccountIndexPath = [_dataInput objectForKey:DATA_INDEXPATH_BANK_ACCOUNT_KEY];
-    NSIndexPath *systemBankIndexPath = [self.tableView indexPathForCell: _section2Cell[0]];
+    NSIndexPath *systemBankIndexPath = [_dataInput objectForKey:DATA_INDEXPATH_SYSTEM_BANK_KEY];
     
     NSArray *systemBankList =(_isConfirmed)?formIsConfirmed.sysbank_account.sysbank_list:form.sysbank_account;
      NSArray *methodList =(_isConfirmed)?formIsConfirmed.method.method_list:form.method;
     NSArray *bankAccountList = (_isConfirmed)?formIsConfirmed.bank_account.bank_account_list:form.bank_account;
     
-    if (indexPath == systemBankIndexPath) {
+    if ([indexPath isEqual:systemBankIndexPath]) {
         for (SystemBankAcount *systemBank in systemBankList) {
             if ([[NSString stringWithFormat:@"%@ %@ a/n %@",systemBank.sysbank_name, systemBank.sysbank_account_number, systemBank.sysbank_account_name] isEqualToString:(NSString*)object]) {
                 [_dataInput setObject:systemBank forKey:DATA_SELECTED_SYSTEM_BANK_KEY];
             }
         }
     }
-    if (indexPath == paymentMethodIndexPath) {
+    if ([indexPath isEqual:paymentMethodIndexPath]) {
         for (MethodList *method in methodList) {
             if ([method.method_name isEqualToString:(NSString*)object]) {
                 [_dataInput setObject:method forKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
@@ -1212,7 +1367,7 @@
         }
     }
     
-    if (indexPath == bankAccountIndexPath) {
+    if ([indexPath isEqual:bankAccountIndexPath]) {
         for (BankAccountFormList *bankAccount in bankAccountList) {
             if ([[NSString stringWithFormat:@"%@\n%@\na/n %@",bankAccount.bank_name,bankAccount.bank_account_number, bankAccount.bank_account_name] isEqualToString:(NSString*)object]) {
                 [_dataInput setObject:bankAccount forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
@@ -1248,7 +1403,8 @@
 
 -(void)shouldPopViewController
 {
-    [self.navigationController popViewControllerAnimated:NO];
+    [_delegate shouldPopViewController];
+    //[self.navigationController popViewControllerAnimated:NO];
 }
 
 #pragma mark - Alert Delegate
@@ -1306,7 +1462,7 @@
     
     if (textField == _totalPaymentTextField)
     {
-        NSString *totalPayment = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+        NSString *totalPayment = [textField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
         [_dataInput setObject:totalPayment forKey:DATA_TOTAL_PAYMENT_KEY];
     }
     
@@ -1317,7 +1473,7 @@
     if (textField == _depositorTextField) {
         [_dataInput setObject:textField.text forKey:DATA_DEPOSITOR_KEY];
     }
-    
+    _activeTextField = nil;
     return YES;
 }
 
@@ -1327,25 +1483,25 @@
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         if([string length]==0)
         {
-            [formatter setGroupingSeparator:@","];
+            [formatter setGroupingSeparator:@"."];
             [formatter setGroupingSize:4];
             [formatter setUsesGroupingSeparator:YES];
             [formatter setSecondaryGroupingSize:3];
             NSString *num = textField.text ;
-            num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+            num = [num stringByReplacingOccurrencesOfString:@"." withString:@""];
             NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
             textField.text = str;
             return YES;
         }
         else {
-            [formatter setGroupingSeparator:@","];
+            [formatter setGroupingSeparator:@"."];
             [formatter setGroupingSize:2];
             [formatter setUsesGroupingSeparator:YES];
             [formatter setSecondaryGroupingSize:3];
             NSString *num = textField.text ;
             if(![num isEqualToString:@""])
             {
-                num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+                num = [num stringByReplacingOccurrencesOfString:@"." withString:@""];
                 NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
                 textField.text = str;
             }
@@ -1369,6 +1525,7 @@
     if (textView == _markTextView) {
         [_dataInput setObject:textView.text forKey:DATA_MARK_KEY];
     }
+    _activeTextView = nil;
     return YES;
 }
 
@@ -1398,6 +1555,9 @@
     }
     if (_activeTextField == _totalPaymentTextField) {
         [_tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell: _section2Cell[1]] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    }
+    if (_activeTextView == _markTextView) {
+        [_tableView scrollToRowAtIndexPath:[self.tableView indexPathForCell: _markCell] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
 }
 

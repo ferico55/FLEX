@@ -129,6 +129,7 @@ typedef enum
 #define API_INSURANCE_KEY @"insurance"
 #define API_IS_SUCCESS_KEY @"is_success"
 
+
 #define API_AVAILABLE_COUNT_KEY @"available_count"
 #define API_PRODUCT_DETAIL_KEY @"product_detail"
 #define API_PRODUCT_KEY @"product"

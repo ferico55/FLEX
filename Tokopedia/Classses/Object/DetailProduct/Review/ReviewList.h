@@ -32,6 +32,7 @@
 
 @property (nonatomic) NSString* review_product_status;
 @property (nonatomic) NSString* review_is_allow_edit;
+@property (nonatomic) NSString* review_is_owner;
 
 
 @property (nonatomic, strong) NSString *review_product_name;
