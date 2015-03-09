@@ -85,17 +85,6 @@
     /** set max data per page request **/
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
     
-    /** set inset table for different size**/
-    UIEdgeInsets inset = _table.contentInset;
-    inset.top += 2;    
-    if (is4inch) {
-        inset.bottom += 155;
-    }
-    else{
-        inset.bottom += 240;
-    }
-    _table.contentInset = inset;
-    
     
     /** set table view datasource and delegate **/
     _table.delegate = self;
@@ -105,10 +94,11 @@
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
+    _table.contentInset = UIEdgeInsetsMake(0, 0, 53, 0);
+    
     if (_product.count > 0) {
         _isnodata = NO;
     }
-    
     
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -124,12 +114,17 @@
             [self loadData];
         }
     }
-
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
 }
 
 
@@ -453,11 +448,11 @@
 {
     NSInteger index = indexpath.section+2*(indexpath.row);
     HistoryProductList *list = _product[index];
+
     DetailProductViewController *vc = [DetailProductViewController new];
     vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id, @"is_dismissed" : @YES};
-//    [self.navigationController pushViewController:vc animated:YES];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    
+    [self.delegate pushViewController:vc];
 }
 
 

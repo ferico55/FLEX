@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SalesTransactionListViewController">
+            <connections>
+                <outlet property="activityIndicator" destination="6kt-9G-L7D" id="UNT-le-FVU"/>
+                <outlet property="footerView" destination="u7Z-aw-7Jp" id="bt4-Tb-tXy"/>
+                <outlet property="tableView" destination="Ofv-Q6-mwE" id="VLB-eL-2b2"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="260" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Ofv-Q6-mwE">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="435"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="435" id="Iyn-df-2iA"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="qP3-UD-2ub"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="pxH-tW-luK"/>
+                        <outlet property="delegate" destination="-1" id="Mtk-HH-Fni"/>
+                    </connections>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4mm-75-dWl" userLabel="Toolbar View">
+                    <rect key="frame" x="0.0" y="435" width="320" height="45"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0l0-vD-KX3" userLabel="Top Border">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <color key="backgroundColor" white="0.66666666669999997" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="q0W-wF-y8l"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZvM-F1-XW3">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <inset key="titleEdgeInsets" minX="-29" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="83" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Filter" image="icon_arrow_up.png">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="FbN-tx-UVP"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="ZvM-F1-XW3" secondAttribute="bottom" id="171-qO-qGn"/>
+                        <constraint firstItem="0l0-vD-KX3" firstAttribute="leading" secondItem="4mm-75-dWl" secondAttribute="leading" id="3Ma-HA-yMd"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="45" id="CDl-ha-K5o"/>
+                        <constraint firstItem="0l0-vD-KX3" firstAttribute="top" secondItem="4mm-75-dWl" secondAttribute="top" id="MxY-IV-6qX"/>
+                        <constraint firstItem="ZvM-F1-XW3" firstAttribute="leading" secondItem="4mm-75-dWl" secondAttribute="leading" id="VzZ-Jg-XwP"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="aYJ-Hj-yxs"/>
+                        <constraint firstItem="ZvM-F1-XW3" firstAttribute="top" secondItem="4mm-75-dWl" secondAttribute="top" id="dnx-SW-CUN"/>
+                        <constraint firstAttribute="height" constant="45" id="g5Q-GD-mWl"/>
+                        <constraint firstAttribute="trailing" secondItem="0l0-vD-KX3" secondAttribute="trailing" id="qaw-1d-ENk"/>
+                        <constraint firstAttribute="trailing" secondItem="ZvM-F1-XW3" secondAttribute="trailing" id="rfC-Hk-4T4"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Ofv-Q6-mwE" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="1ZA-Ow-5wd"/>
+                <constraint firstItem="Ofv-Q6-mwE" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="FRI-GI-Aca"/>
+                <constraint firstAttribute="bottom" secondItem="4mm-75-dWl" secondAttribute="bottom" id="Kkx-Ga-bNz"/>
+                <constraint firstAttribute="trailing" secondItem="Ofv-Q6-mwE" secondAttribute="trailing" id="V3e-8D-hLP"/>
+                <constraint firstItem="4mm-75-dWl" firstAttribute="top" secondItem="Ofv-Q6-mwE" secondAttribute="bottom" id="XC3-Oc-zC8"/>
+                <constraint firstItem="4mm-75-dWl" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="eHw-Xf-F6E"/>
+                <constraint firstAttribute="trailing" secondItem="4mm-75-dWl" secondAttribute="trailing" id="maR-nQ-BSC"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+        </view>
+        <view contentMode="scaleToFill" id="u7Z-aw-7Jp" userLabel="Footer View">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="6kt-9G-L7D">
+                    <rect key="frame" x="150" y="13" width="20" height="20"/>
+                </activityIndicatorView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="139" y="553.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_arrow_up.png" width="14" height="14"/>
+    </resources>
+</document>

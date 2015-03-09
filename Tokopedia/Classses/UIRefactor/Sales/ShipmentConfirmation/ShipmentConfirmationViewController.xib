@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ShipmentConfirmationViewController">
+            <connections>
+                <outlet property="activityIndicator" destination="qSo-gr-RSl" id="RkH-Tw-eic"/>
+                <outlet property="alertLabel" destination="EAK-KE-jCE" id="8jy-Ms-iB6"/>
+                <outlet property="footerView" destination="68R-yl-xgM" id="gQU-r9-vNc"/>
+                <outlet property="headerView" destination="ZPL-TF-QwN" id="5i8-tr-vQg"/>
+                <outlet property="tableView" destination="Uu6-bS-PnT" id="pJP-6H-4Hp"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="237" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Uu6-bS-PnT">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="435"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="nsS-Se-d0z"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="435" id="xdI-60-gYR"/>
+                    </constraints>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="8pN-Zg-IYx"/>
+                        <outlet property="delegate" destination="-1" id="V35-LH-XPV"/>
+                    </connections>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tLe-6f-te3" userLabel="Toolbar View">
+                    <rect key="frame" x="0.0" y="435" width="320" height="45"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XmB-j6-NGR" userLabel="Top Border">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <color key="backgroundColor" white="0.66666666669999997" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="R8G-Qr-JBD"/>
+                                <constraint firstAttribute="height" constant="1" id="mTU-tw-Vuo"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FgV-T3-wd5">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <inset key="titleEdgeInsets" minX="-29" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="83" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Filter" image="icon_arrow_up.png">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="w5C-Nz-AFt"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="FgV-T3-wd5" firstAttribute="top" secondItem="tLe-6f-te3" secondAttribute="top" id="GQa-An-B5A"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="Kkd-Ml-UZ7"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="45" id="Of6-yp-MIc"/>
+                        <constraint firstAttribute="bottom" secondItem="FgV-T3-wd5" secondAttribute="bottom" id="RTh-vj-ppq"/>
+                        <constraint firstItem="FgV-T3-wd5" firstAttribute="leading" secondItem="tLe-6f-te3" secondAttribute="leading" id="Uig-vt-yvS"/>
+                        <constraint firstAttribute="trailing" secondItem="XmB-j6-NGR" secondAttribute="trailing" id="YOy-mP-Zrx"/>
+                        <constraint firstItem="XmB-j6-NGR" firstAttribute="top" secondItem="tLe-6f-te3" secondAttribute="top" id="ebp-Qx-4r2"/>
+                        <constraint firstItem="XmB-j6-NGR" firstAttribute="leading" secondItem="tLe-6f-te3" secondAttribute="leading" id="iEG-ck-qfH"/>
+                        <constraint firstAttribute="trailing" secondItem="FgV-T3-wd5" secondAttribute="trailing" id="oTj-aK-KNI"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="tLe-6f-te3" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="0CP-Lk-1X3"/>
+                <constraint firstAttribute="bottom" secondItem="tLe-6f-te3" secondAttribute="bottom" id="Dm7-iw-Bol"/>
+                <constraint firstItem="Uu6-bS-PnT" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="JDL-6W-3kC"/>
+                <constraint firstItem="tLe-6f-te3" firstAttribute="top" secondItem="Uu6-bS-PnT" secondAttribute="bottom" id="SOq-Z2-P96"/>
+                <constraint firstAttribute="trailing" secondItem="Uu6-bS-PnT" secondAttribute="trailing" id="V5S-te-XgQ"/>
+                <constraint firstAttribute="trailing" secondItem="tLe-6f-te3" secondAttribute="trailing" id="h14-jl-XJH"/>
+                <constraint firstItem="tLe-6f-te3" firstAttribute="top" secondItem="Uu6-bS-PnT" secondAttribute="bottom" id="oUm-Gu-aUd"/>
+                <constraint firstItem="Uu6-bS-PnT" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="rpx-1J-vn1"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+        </view>
+        <view contentMode="scaleToFill" id="ZPL-TF-QwN" userLabel="Alert View">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Order anda akan otomatis kami batalkan apabila anda melewati batas waktu respon (3 hari) setelah order diverifikasi. " lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EAK-KE-jCE">
+                    <rect key="frame" x="15" y="0.0" width="290" height="56"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="0.97647058819999999" blue="0.76862745099999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="571" y="148"/>
+        </view>
+        <view contentMode="scaleToFill" id="68R-yl-xgM" userLabel="Footer View">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="qSo-gr-RSl">
+                    <rect key="frame" x="150" y="13" width="20" height="20"/>
+                </activityIndicatorView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="571" y="296.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_arrow_up.png" width="14" height="14"/>
+    </resources>
+</document>

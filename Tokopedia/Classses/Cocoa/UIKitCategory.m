@@ -96,14 +96,12 @@
 
 -(void)multipleLineLabel:(UILabel*)label
 {
-    
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-    
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
+    style.alignment = label.textAlignment;
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName: label.textColor,
-                                 NSFontAttributeName: font,
+                                 NSFontAttributeName: label.font,
                                  NSParagraphStyleAttributeName: style,
                                  };
     

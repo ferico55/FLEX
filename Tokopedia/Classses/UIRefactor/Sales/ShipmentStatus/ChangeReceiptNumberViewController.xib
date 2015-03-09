@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChangeReceiptNumberViewController">
+            <connections>
+                <outlet property="currentReceiptNumberLabel" destination="7yQ-Ho-dyi" id="XfS-mH-G7J"/>
+                <outlet property="textField" destination="A1k-BN-kGs" id="yMB-WA-9hD"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YsR-Mp-ZN6">
+                    <rect key="frame" x="0.0" y="34" width="320" height="45"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BoJ-G7-kc2" userLabel="Border">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.45000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="XUm-Tv-rl7"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RRh-pU-ifg" userLabel="Border">
+                            <rect key="frame" x="0.0" y="44" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.45000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="P9B-gI-cHL"/>
+                            </constraints>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nomor Resi Lama" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zlk-v2-ERh">
+                            <rect key="frame" x="15" y="0.0" width="132" height="45"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="132" id="p35-iV-chU"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nomor Resi Lama" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7yQ-Ho-dyi">
+                            <rect key="frame" x="147" y="0.0" width="158" height="45"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="RRh-pU-ifg" secondAttribute="trailing" id="Bxa-RR-Hvc"/>
+                        <constraint firstAttribute="bottom" secondItem="RRh-pU-ifg" secondAttribute="bottom" id="DWO-aL-614"/>
+                        <constraint firstAttribute="trailing" secondItem="7yQ-Ho-dyi" secondAttribute="trailing" constant="15" id="FV7-o0-k6K"/>
+                        <constraint firstItem="RRh-pU-ifg" firstAttribute="leading" secondItem="YsR-Mp-ZN6" secondAttribute="leading" id="FY9-H2-yId"/>
+                        <constraint firstItem="7yQ-Ho-dyi" firstAttribute="leading" secondItem="Zlk-v2-ERh" secondAttribute="trailing" id="FkA-Qq-dbQ"/>
+                        <constraint firstItem="BoJ-G7-kc2" firstAttribute="leading" secondItem="YsR-Mp-ZN6" secondAttribute="leading" id="M4R-1l-gng"/>
+                        <constraint firstItem="Zlk-v2-ERh" firstAttribute="top" secondItem="YsR-Mp-ZN6" secondAttribute="top" id="Rsf-eT-O5L"/>
+                        <constraint firstAttribute="height" constant="45" id="YXt-oM-yab"/>
+                        <constraint firstAttribute="trailing" secondItem="BoJ-G7-kc2" secondAttribute="trailing" id="ZKA-bs-H2g"/>
+                        <constraint firstItem="Zlk-v2-ERh" firstAttribute="leading" secondItem="YsR-Mp-ZN6" secondAttribute="leading" constant="15" id="b8O-cO-nWY"/>
+                        <constraint firstAttribute="bottom" secondItem="7yQ-Ho-dyi" secondAttribute="bottom" id="bvQ-QO-TiK"/>
+                        <constraint firstItem="BoJ-G7-kc2" firstAttribute="top" secondItem="YsR-Mp-ZN6" secondAttribute="top" id="von-YS-zfe"/>
+                        <constraint firstItem="7yQ-Ho-dyi" firstAttribute="top" secondItem="YsR-Mp-ZN6" secondAttribute="top" id="wmm-kY-bWB"/>
+                        <constraint firstAttribute="bottom" secondItem="Zlk-v2-ERh" secondAttribute="bottom" id="xUh-TB-xq0"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jlW-Dy-SVh">
+                    <rect key="frame" x="0.0" y="79" width="320" height="45"/>
+                    <subviews>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nomor Resi" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="A1k-BN-kGs">
+                            <rect key="frame" x="159" y="0.0" width="161" height="45"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="-1" id="CPP-sv-1gy"/>
+                            </connections>
+                        </textField>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nomor Resi Baru" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xa0-Ai-A4h">
+                            <rect key="frame" x="15" y="0.0" width="124" height="45"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="5Dk-uP-9nK"/>
+                                <constraint firstAttribute="width" constant="124" id="I1i-Yu-6j4"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Opb-qe-c1a" userLabel="Border">
+                            <rect key="frame" x="0.0" y="44" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.45000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="PhH-CF-rSJ"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pri-8C-Vc9">
+                            <rect key="frame" x="149" y="0.0" width="10" height="44"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="10" id="Vkk-LU-4Ve"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="Opb-qe-c1a" secondAttribute="bottom" id="4FH-Lh-JWs"/>
+                        <constraint firstItem="xa0-Ai-A4h" firstAttribute="top" secondItem="jlW-Dy-SVh" secondAttribute="top" id="A76-2M-Ojo"/>
+                        <constraint firstAttribute="trailing" secondItem="A1k-BN-kGs" secondAttribute="trailing" id="Etr-t8-Dfy"/>
+                        <constraint firstItem="xa0-Ai-A4h" firstAttribute="leading" secondItem="jlW-Dy-SVh" secondAttribute="leading" constant="15" id="F3H-35-67X"/>
+                        <constraint firstAttribute="bottom" secondItem="xa0-Ai-A4h" secondAttribute="bottom" id="GY0-6U-CLX"/>
+                        <constraint firstAttribute="height" constant="45" id="K2D-pw-XHb"/>
+                        <constraint firstItem="pri-8C-Vc9" firstAttribute="top" secondItem="jlW-Dy-SVh" secondAttribute="top" id="KeS-4B-rPe"/>
+                        <constraint firstAttribute="trailing" secondItem="Opb-qe-c1a" secondAttribute="trailing" id="SOb-SL-ZnN"/>
+                        <constraint firstItem="A1k-BN-kGs" firstAttribute="leading" secondItem="pri-8C-Vc9" secondAttribute="trailing" id="Wuj-9t-FJp"/>
+                        <constraint firstAttribute="bottom" secondItem="A1k-BN-kGs" secondAttribute="bottom" id="ebR-as-1GU"/>
+                        <constraint firstItem="A1k-BN-kGs" firstAttribute="top" secondItem="jlW-Dy-SVh" secondAttribute="top" id="f7h-lS-SG7"/>
+                        <constraint firstItem="A1k-BN-kGs" firstAttribute="top" secondItem="jlW-Dy-SVh" secondAttribute="top" id="hst-Mf-rwz"/>
+                        <constraint firstItem="A1k-BN-kGs" firstAttribute="leading" secondItem="pri-8C-Vc9" secondAttribute="trailing" id="lMn-wf-2qS"/>
+                        <constraint firstAttribute="bottom" secondItem="A1k-BN-kGs" secondAttribute="bottom" id="pxW-tg-oXK"/>
+                        <constraint firstItem="pri-8C-Vc9" firstAttribute="leading" secondItem="xa0-Ai-A4h" secondAttribute="trailing" constant="10" id="veh-ZB-iqp"/>
+                        <constraint firstItem="Opb-qe-c1a" firstAttribute="top" secondItem="pri-8C-Vc9" secondAttribute="bottom" id="vqt-BG-gHC"/>
+                        <constraint firstItem="Opb-qe-c1a" firstAttribute="leading" secondItem="jlW-Dy-SVh" secondAttribute="leading" id="ywR-4Z-1n3"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="jlW-Dy-SVh" secondAttribute="trailing" id="7y4-Jc-Lop"/>
+                <constraint firstAttribute="trailing" secondItem="jlW-Dy-SVh" secondAttribute="trailing" id="8A1-Q7-Mci"/>
+                <constraint firstItem="YsR-Mp-ZN6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="9Se-Xa-uW2"/>
+                <constraint firstItem="jlW-Dy-SVh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="CZM-o1-bVM"/>
+                <constraint firstItem="jlW-Dy-SVh" firstAttribute="top" secondItem="YsR-Mp-ZN6" secondAttribute="bottom" id="Cft-Ti-eiS"/>
+                <constraint firstAttribute="trailing" secondItem="YsR-Mp-ZN6" secondAttribute="trailing" id="K1e-ch-DyA"/>
+                <constraint firstItem="jlW-Dy-SVh" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Nc6-ti-KcO"/>
+                <constraint firstItem="YsR-Mp-ZN6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="34" id="R1d-wD-AQP"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+</document>

@@ -52,7 +52,7 @@
     //setting the body of the post to the request
     [request setHTTPBody:body];
     
-    NSString *url = @"http://www.tkpdevel-pg.api/ws/action/upload-image.pl";
+    NSString *url = [NSString stringWithFormat:@"%@/%@",kTkpdBaseURLString,@"action/upload-image.pl"];
     
     [request setURL:[NSURL URLWithString:url]];
     

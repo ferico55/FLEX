@@ -102,6 +102,13 @@
     [self initNotificationManager];
     [self initNotification];
     [super viewWillAppear:animated];
+
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
+
 }
 
 

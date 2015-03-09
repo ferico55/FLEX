@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TxOrderStatusViewController">
+            <connections>
+                <outlet property="act" destination="lI5-xt-RJP" id="gfB-fd-khN"/>
+                <outlet property="filterView" destination="Yif-0w-IvZ" id="9pW-wc-v4r"/>
+                <outlet property="footer" destination="SPu-YJ-oxh" id="8Dt-tz-ERV"/>
+                <outlet property="tableView" destination="63E-dj-1jg" id="tuw-1k-X24"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="280" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="63E-dj-1jg">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="deviceRGB"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="meL-Rh-83Y"/>
+                        <outlet property="delegate" destination="-1" id="NhA-4e-5g8"/>
+                    </connections>
+                </tableView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yif-0w-IvZ" userLabel="Toolbar View">
+                    <rect key="frame" x="0.0" y="523" width="320" height="45"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HPZ-f2-TcD" userLabel="Top Border">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <color key="backgroundColor" white="0.66666666669999997" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
+                        </view>
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="50R-Ay-R82">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                            <inset key="titleEdgeInsets" minX="-29" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="83" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Filter" image="icon_arrow_up.png">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="mdk-IP-nYS"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="HPZ-f2-TcD" firstAttribute="top" secondItem="Yif-0w-IvZ" secondAttribute="top" id="B4h-C8-klm"/>
+                        <constraint firstAttribute="trailing" secondItem="HPZ-f2-TcD" secondAttribute="trailing" id="Szn-GI-fxH"/>
+                        <constraint firstAttribute="height" constant="45" id="fP8-Ru-Gky"/>
+                        <constraint firstItem="HPZ-f2-TcD" firstAttribute="leading" secondItem="Yif-0w-IvZ" secondAttribute="leading" id="hm6-9b-hqz"/>
+                        <constraint firstAttribute="bottom" secondItem="HPZ-f2-TcD" secondAttribute="bottom" constant="44" id="p9l-rm-8e0"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="63E-dj-1jg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="1sl-tF-MSf"/>
+                <constraint firstAttribute="trailing" secondItem="63E-dj-1jg" secondAttribute="trailing" id="APh-XC-WBt"/>
+                <constraint firstAttribute="bottom" secondItem="Yif-0w-IvZ" secondAttribute="bottom" id="HEH-kd-aqJ"/>
+                <constraint firstItem="63E-dj-1jg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="N1J-gm-KNe"/>
+                <constraint firstAttribute="trailing" secondItem="Yif-0w-IvZ" secondAttribute="trailing" id="OO1-vb-X2S"/>
+                <constraint firstAttribute="bottom" secondItem="63E-dj-1jg" secondAttribute="bottom" id="xyi-eh-Oig"/>
+                <constraint firstItem="Yif-0w-IvZ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zeQ-bS-T8w"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+        <view contentMode="scaleToFill" id="SPu-YJ-oxh" userLabel="FooterView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="lI5-xt-RJP">
+                    <rect key="frame" x="150" y="7" width="20" height="20"/>
+                </activityIndicatorView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_arrow_up.png" width="14" height="14"/>
+    </resources>
+</document>

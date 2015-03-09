@@ -194,6 +194,7 @@
 - (void)didReceiveNotification:(Notification *)notification
 {
     _notification = notification;
+    
     [self.delegate didReceiveNotification:notification];    
     if ([_notification.result.total_notif integerValue] == 0) {
         _notificationButton.badgeLabel.hidden = YES;

@@ -12,6 +12,7 @@
 @interface TrackOrder : NSObject
 
 @property (strong, nonatomic) NSString *change;
+@property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSString *no_history;
 @property (strong, nonatomic) NSArray *track_history;
 @property (strong, nonatomic) NSString *receiver_name;

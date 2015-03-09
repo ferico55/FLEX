@@ -314,8 +314,7 @@
     NSTimer *timer;
     
 	NSDictionary* param = @{
-                            kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEFORMKEY,
-                            kTKPDPROFILE_APIUSERIDKEY : [auth objectForKey:kTKPDPROFILE_APIUSERIDKEY]
+                            kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEKEY
                             };
     _barbuttonsave.enabled = NO;
     [_act startAnimating];

@@ -84,6 +84,7 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
+    
     [self.navigationController.navigationBar setTranslucent:NO];
     
     _product = [NSMutableArray new];
@@ -96,17 +97,6 @@
     
     /** set max data per page request **/
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
-
-    /** set inset table for different size**/
-    UIEdgeInsets inset = _table.contentInset;
-    inset.top += 2;
-    if (is4inch) {
-        inset.bottom += 115;
-    }
-    else{
-        inset.bottom += 200;
-    }
-    _table.contentInset = inset;
     
     /** set table view datasource and delegate **/
     _table.delegate = self;
@@ -114,6 +104,8 @@
     
     /** set table footer view (loading act) **/
     _table.tableFooterView = _footer;
+    
+    _table.contentInset = UIEdgeInsetsMake(0, 0, 53, 0);
     
     if (_product.count > 0) {
         _isnodata = NO;
@@ -220,7 +212,6 @@
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         NSString *cellid = kTKPDHOTLISTCELL_IDENTIFIER;
-        UIFont * font = kTKPDHOME_FONTHOTLIST;
 		
 		cell = (HotlistCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
@@ -541,45 +532,18 @@
 {
     HotlistResultViewController *vc = [HotlistResultViewController new];
     vc.image = ((HotlistCell*)cell).productimageview.image;
+
     HotlistList *hotlist = _product[indexpath.row];
-    NSURL *url = [NSURL URLWithString:hotlist.url];
-    NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
+    NSArray *query = [[[NSURL URLWithString:hotlist.url] path] componentsSeparatedByString: @"/"];
     
-    if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTHOTKEY]) {
-        vc.data = @{kTKPDHOME_DATAQUERYKEY : querry[2]?:@"",
-                    kTKPHOME_DATAHEADERIMAGEKEY : imageview,
-                    kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
-                    kTKPDHOME_APIURLKEY : hotlist.url,
-                    kTKPDHOME_APITITLEKEY : hotlist.title,
-                    };
-        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-        nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
-    }
-    // redirect uri to search category
-    else if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTCATEGORY]) {
-        //TODO:: GO TO SEARCH
-        //SearchResultViewController *vc = [SearchResultViewController new];
-        //NSString *searchtext = hashtags.department_id;
-        //vc.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY};
-        //SearchResultViewController *vc1 = [SearchResultViewController new];
-        //vc1.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY};
-        //SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-        //vc2.data =@{kTKPDSEARCH_APIDEPARTEMENTIDKEY : searchtext?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY};
-        //NSArray *viewcontrollers = @[vc,vc1,vc2];
-        //
-        //TKPDTabNavigationController *c = [TKPDTabNavigationController new];
-        //
-        //[c setSelectedIndex:0];
-        //[c setViewControllers:viewcontrollers];
-        //UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-        //[nav.navigationBar setTranslucent:NO];
-        //[self.navigationController presentViewController:nav animated:YES completion:nil];
-    }
-    else{
-        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
-    }
+    vc.data = @{kTKPDHOME_DATAQUERYKEY : query[2]?:@"",
+                kTKPHOME_DATAHEADERIMAGEKEY : imageview,
+                kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                kTKPDHOME_APIURLKEY : hotlist.url?:@"",
+                kTKPDHOME_APITITLEKEY : hotlist.title?:@"",
+                };
+    
+    [self.delegate pushViewController:vc];
 }
 
 #pragma mark - Methods

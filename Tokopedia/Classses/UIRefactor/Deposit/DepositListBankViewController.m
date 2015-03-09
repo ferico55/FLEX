@@ -15,6 +15,8 @@
 #import "SettingBankEditViewController.h"
 #import "DepositListBankViewController.h"
 #import "DepositFormAccountBankViewController.h"
+#import "URLCacheController.h"
+#import "URLCacheConnection.h"
 
 
 #pragma mark - Setting Bank Account View Controller
@@ -39,20 +41,15 @@
     NSMutableArray *_list;
     NSIndexPath *_selectedIndexPath;
     
-    BOOL _isaddressexpanded;
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
     
-    __weak RKObjectManager *_objectmanagerActionSetDefault;
-    __weak RKManagedObjectRequestOperation *_requestActionSetDefault;
-    
-    __weak RKObjectManager *_objectmanagerActionGetDefaultForm;
-    __weak RKManagedObjectRequestOperation *_requestActionGetDefaultForm;
-    
-    __weak RKObjectManager *_objectmanagerActionDelete;
-    __weak RKManagedObjectRequestOperation *_requestActionDelete;
-    
     NSOperationQueue *_operationQueue;
+    
+    NSString *_cachepath;
+    URLCacheController *_cachecontroller;
+    URLCacheConnection *_cacheconnection;
+    NSTimeInterval _timeinterval;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -62,7 +59,7 @@
 
 -(void)cancel;
 -(void)configureRestKit;
--(void)request;
+-(void)loadData;
 -(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
 -(void)requestFailure:(id)object;
 -(void)requestProcess:(id)object;
@@ -88,6 +85,17 @@
     return self;
 }
 
+- (void)initCache {
+    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:@"bank-account"];
+    
+
+    _cachepath = [path stringByAppendingPathComponent:@"mybank-account"];
+    
+    _cachecontroller.filePath = _cachepath;
+    _cachecontroller.URLCacheInterval = 86400.0;
+    [_cachecontroller initCacheWithDocumentPath:path];
+}
+
 #pragma mark - View LifeCycle
 - (void)viewDidLoad
 {
@@ -109,7 +117,13 @@
     _list = [NSMutableArray new];
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
+    _cacheconnection = [URLCacheConnection new];
+    _cachecontroller = [URLCacheController new];
     _selectedIndexPath = [_data objectForKey:@"account_indexpath"];
+    
+    [self initCache];
+    [self configureRestKit];
+    [self loadDataFromCache];
     
     _page = 1;
     _table.delegate = self;
@@ -124,7 +138,7 @@
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
-            [self request];
+            [self loadData];
         }
     }
 }
@@ -205,7 +219,7 @@
             /** called if need to load next page **/
             //NSLog(@"%@", NSStringFromSelector(_cmd));
             [self configureRestKit];
-            [self request];
+            [self loadData];
         }
     }
 }
@@ -321,7 +335,39 @@
     
 }
 
--(void)request
+- (void)loadDataFromCache {
+    [_cachecontroller getFileModificationDate];
+    _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+    
+    
+    NSError* error;
+    NSData *data = [NSData dataWithContentsOfFile:_cachepath];
+    
+    if(data.length) {
+        id parsedData = [RKMIMETypeSerialization objectFromData:data
+                                                       MIMEType:RKMIMETypeJSON
+                                                          error:&error];
+        if (parsedData == nil && error) {
+            NSLog(@"parser error");
+        }
+        
+        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
+        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
+            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
+        }
+        
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData
+                                                                   mappingsDictionary:mappingsDictionary];
+        NSError *mappingError = nil;
+        BOOL isMapped = [mapper execute:&mappingError];
+        if (isMapped && !mappingError) {
+            RKMappingResult *mappingresult = [mapper mappingResult];
+            [self requestProcess:mappingresult withOperation:nil];
+        }
+    }
+}
+
+-(void)loadData
 {
     if (_request.isExecuting) return;
     
@@ -334,12 +380,8 @@
         [_act stopAnimating];
     }
     
-    NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-    
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIGETUSERBANKACCOUNTKEY,
                             kTKPDPROFILE_APIPAGEKEY : @(_page),
-                            kTKPDPROFILE_APILIMITKEY : @(5),
-                            //                            kTKPD_USERIDKEY : [auth objectForKey:kTKPD_USERIDKEY]
                             };
     _requestcount ++;
     
@@ -378,7 +420,7 @@
     BOOL status = [bankaccount.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [self requestProcess:object];
+        [self requestProcess:object withOperation:operation];
     }
 }
 
@@ -387,7 +429,7 @@
     [self requestProcess:object];
 }
 
--(void)requestProcess:(id)object
+-(void)requestProcess:(id)object  withOperation:(RKObjectRequestOperation *)operation
 {
     if (object) {
         if ([object isKindOfClass:[RKMappingResult class]]) {
@@ -398,6 +440,16 @@
             
             if (status) {
                 [_list addObjectsFromArray:bankaccount.result.list];
+                
+                if(operation) {
+                    [_cacheconnection connection:operation.HTTPRequestOperation.request
+                              didReceiveResponse:operation.HTTPRequestOperation.response];
+                    [_cachecontroller connectionDidFinish:_cacheconnection];
+                    
+                    [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
+                }
+                
+                
                 if (_list.count >0) {
                     _isnodata = NO;
                     _urinext =  bankaccount.result.paging.uri_next;
@@ -481,7 +533,7 @@
     [_table reloadData];
     /** request data **/
     [self configureRestKit];
-    [self request];
+    [self loadData];
 }
 
 

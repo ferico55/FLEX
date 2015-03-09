@@ -14,4 +14,6 @@
 @property (nonatomic, strong) NSString *shop_id;
 @property (nonatomic, strong) NSString *shop_name;
 
+@property (nonatomic, strong) NSString *shop_pic;
+
 @end

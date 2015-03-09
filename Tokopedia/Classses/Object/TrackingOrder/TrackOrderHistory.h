@@ -10,4 +10,8 @@
 
 @interface TrackOrderHistory : UIViewController
 
+@property (strong, nonatomic) NSString *date;
+@property (strong, nonatomic) NSString *status;
+@property (strong, nonatomic) NSString *city;
+
 @end

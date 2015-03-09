@@ -20,7 +20,7 @@
 @property (nonatomic, strong) NSString *system_account_no;
 @property (nonatomic, strong) NSString *payment_id;
 @property (nonatomic) NSInteger has_user_bank;
-@property (nonatomic, strong) NSString *button;
+@property (nonatomic, strong) NSDictionary *button;
 @property (nonatomic, strong) NSString *payment_amount;
 
 @end

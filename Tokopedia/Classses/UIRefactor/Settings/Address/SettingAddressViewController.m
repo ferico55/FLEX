@@ -113,37 +113,24 @@
     NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
     
     if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
-        _cancelBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [_cancelBarButtonItem setTintColor:[UIColor whiteColor]];
-        [_cancelBarButtonItem setTag:TAG_SETTING_ADDRESS_BARBUTTONITEM_BACK];
-        self.navigationItem.leftBarButtonItem = _cancelBarButtonItem;
-        
         _doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
         [_doneBarButtonItem setTintColor:[UIColor blackColor]];
         [_doneBarButtonItem setTag:TAG_SETTING_ADDRESS_BARBUTTONITEM_DONE];
         self.navigationItem.rightBarButtonItem = _doneBarButtonItem;
         
-        UIView *additionalView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 88)];
+        UIView *additionalView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 109)];
         [additionalView addSubview:_searchBarView];
         CGRect frame = _addNewAddressView.frame;
         frame.origin.y +=_searchBarView.frame.size.height;
         [_addNewAddressView setFrame:frame];
         [additionalView addSubview:_addNewAddressView];
         _table.tableHeaderView = additionalView;
-        //UISearchBar *searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 44.0)];
+
         _searchBar.delegate = self;
         _searchBar.placeholder = @"Cari Alamat";
         _searchBar.userInteractionEnabled=YES;
-        //searchBar.searchBarStyle = UISearchBarStyleMinimal;
-        //
-        //UIView *searchBarContainer = [[UIView alloc] initWithFrame:searchBar.frame];
-        //[searchBarContainer addSubview:searchBar];
-        //
-        //self.navigationItem.titleView = searchBarContainer;
 
-    }
-    else
-    {
+    } else {
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
         UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
         barButtonItem.tag = 10;
@@ -322,7 +309,7 @@
         return 44;
     }
     else
-        return 190;
+        return 243;
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -989,11 +976,7 @@
 #pragma mark - UISearchBar Delegate
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    //_table.tableHeaderView = _footer;
-    //[_act startAnimating];
     [searchBar resignFirstResponder];
-    //[self.navigationItem setRightBarButtonItem:_doneBarButtonItem];
-    //[self.navigationItem setLeftBarButtonItem:_cancelBarButtonItem];
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
@@ -1013,8 +996,6 @@
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:YES animated:YES];
-    //[self.navigationItem setRightBarButtonItem:nil];
-    //[self.navigationItem setLeftBarButtonItem:nil];
     return YES;
 }
 
