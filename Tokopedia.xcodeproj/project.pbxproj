@@ -1009,6 +1009,7 @@
 		85A717561A91D355004B896F /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 85A713771A91D355004B896F /* README.md */; };
 		85A7175A1A91D62B004B896F /* TxOrderConfirmationCostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A717581A91D62B004B896F /* TxOrderConfirmationCostCell.m */; };
 		85A7175B1A91D62B004B896F /* TxOrderConfirmationCostCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85A717591A91D62B004B896F /* TxOrderConfirmationCostCell.xib */; };
+		85A8D8E61AAD8C200067D822 /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = 85A8D8E51AAD8C200067D822 /* NSString+HTML.m */; };
 		85AB1DE71AA489C600AEB184 /* AlertReputation.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AB1DE51AA489C600AEB184 /* AlertReputation.m */; };
 		85AB1DE81AA489C600AEB184 /* AlertReputation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85AB1DE61AA489C600AEB184 /* AlertReputation.xib */; };
 		85AB1E121AA56D9100AEB184 /* ReputationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AB1DFC1AA56D9100AEB184 /* ReputationCell.m */; };
@@ -2631,6 +2632,8 @@
 		85A717571A91D62B004B896F /* TxOrderConfirmationCostCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationCostCell.h; sourceTree = "<group>"; };
 		85A717581A91D62B004B896F /* TxOrderConfirmationCostCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationCostCell.m; sourceTree = "<group>"; };
 		85A717591A91D62B004B896F /* TxOrderConfirmationCostCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmationCostCell.xib; sourceTree = "<group>"; };
+		85A8D8E41AAD8C200067D822 /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
+		85A8D8E51AAD8C200067D822 /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 		85AB1DE41AA489C600AEB184 /* AlertReputation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertReputation.h; sourceTree = "<group>"; };
 		85AB1DE51AA489C600AEB184 /* AlertReputation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertReputation.m; sourceTree = "<group>"; };
 		85AB1DE61AA489C600AEB184 /* AlertReputation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertReputation.xib; sourceTree = "<group>"; };
@@ -2793,6 +2796,8 @@
 		85A70CA41A91D353004B896F /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
+				85A8D8E41AAD8C200067D822 /* NSString+HTML.h */,
+				85A8D8E51AAD8C200067D822 /* NSString+HTML.m */,
 				85A70CA51A91D353004B896F /* DBManager.h */,
 				85A70CA61A91D353004B896F /* DBManager.m */,
 				85A70CA71A91D353004B896F /* ExpiringCache.h */,
@@ -7164,6 +7169,7 @@
 				85A714D71A91D355004B896F /* TKPDTabInboxReviewNavigationController.m in Sources */,
 				85A716591A91D355004B896F /* TableViewCell.m in Sources */,
 				85A715F31A91D355004B896F /* ShopInfoPaymentCell.m in Sources */,
+				85A8D8E61AAD8C200067D822 /* NSString+HTML.m in Sources */,
 				85AB1E1E1AA56D9100AEB184 /* ReputationPageViewController.m in Sources */,
 				85A715C21A91D355004B896F /* SettingAddressDetailViewController.m in Sources */,
 				85A7146C1A91D355004B896F /* TransactionCartResult.m in Sources */,

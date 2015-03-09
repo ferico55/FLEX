@@ -16,6 +16,7 @@
 #import "FavoritedShopCell.h"
 #import "FavoritedShop.h"
 #import "FavoriteShopAction.h"
+#import "ShopContainerViewController.h"
 
 @interface FavoritedShopViewController ()<UITableViewDataSource, UITableViewDelegate, FavoritedShopCellDelegate>
 {
@@ -165,7 +166,7 @@
             NSArray *sectionDictionary = [_shopdictionary objectForKey:sectionTitle];
             FavoritedShopList *shop = sectionDictionary[indexPath.row];
             
-            ((FavoritedShopCell*)cell).shopname.text = shop.shop_name;
+            ((FavoritedShopCell*)cell).shopname.text = [shop.shop_name kv_decodeHTMLCharacterEntities];
             ((FavoritedShopCell*)cell).shoplocation.text = shop.shop_location;
             
             if ([sectionTitle isEqualToString:@"Rekomendasi"]) {
@@ -601,21 +602,28 @@
     NSInteger section = indexpath.section;
     FavoritedShopList *list;
     
-    if(section == 1) {
+    if(section == 0) {
         list = _goldshop[indexpath.row];
     } else {
         list = _shop[indexpath.row];
     }
     
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
-    shopViewController.data = @{
-                                kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
-                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                                @"is_dismissed" : @YES
-                                };
-
-    [self.delegate pushViewController:shopViewController];
+    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    container.data = @{kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
+                       kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                       };
+    [self.navigationController pushViewController:container animated:YES];
+//
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+//    TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
+//    shopViewController.data = @{
+//                                kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
+//                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
+//                                @"is_dismissed" : @YES
+//                                };
+//
+//    [self.delegate pushViewController:shopViewController];
+    
 }
 
 

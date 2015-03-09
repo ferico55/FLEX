@@ -29,7 +29,7 @@
 #import "TKPDSecureStorage.h"
 #import "URLCacheController.h"
 
-@interface MainViewController ()
+@interface MainViewController () <UITabBarControllerDelegate, LoginViewDelegate>
 {
     UITabBarController *_tabBarController;
     TKPDTabHomeViewController *_swipevc;
@@ -210,6 +210,7 @@
     
     NSArray* controllers = [NSArray arrayWithObjects:swipevcNav, categoryNavBar, searchNavBar, cartNavBar, moreNavBar, nil];
     _tabBarController.viewControllers = controllers;
+    _tabBarController.delegate = self;
     //tabBarController.tabBarItem.title = nil;
     [self adjusttabbar];
 }
@@ -471,6 +472,27 @@
     if (alertView.tag == 1) {
         if(buttonIndex == 1) {
             [self doApplicationLogout];
+        }
+    }
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+    BOOL _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+    if(!_isLogin) {
+        if(tabBarController.selectedIndex == 3) {
+            UINavigationController *navigationController = [[UINavigationController alloc] init];
+            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+            navigationController.navigationBar.translucent = NO;
+            navigationController.navigationBar.tintColor = [UIColor whiteColor];
+            
+            
+            LoginViewController *controller = [LoginViewController new];
+            controller.delegate = self;
+            controller.isPresentedViewController = YES;
+            controller.redirectViewController = self;
+            navigationController.viewControllers = @[controller];
+            UIViewController *nav = _tabBarController.viewControllers[3];
+            [nav presentViewController:navigationController animated:YES completion:nil];
         }
     }
 }

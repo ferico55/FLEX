@@ -30,7 +30,7 @@
 
 - (NSString*)getUserId {
     [self getUserLoginData];
-    return [[_auth objectForKey:@"user_id"] stringValue] ?: @"0";
+    return [[_auth objectForKey:@"user_id"] stringValue] ?: nil;
 }
 
 - (NSString*)getShopId {

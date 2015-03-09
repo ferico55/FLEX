@@ -14,7 +14,7 @@
 
 #import "LoginViewController.h"
 
-@interface TransactionCartRootViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate, TransactionCartViewControllerDelegate, LoginViewDelegate>
+@interface TransactionCartRootViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate, TransactionCartViewControllerDelegate>
 {
     NSInteger _index;
     NSDictionary *_data;
@@ -26,6 +26,7 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
+@property (strong, nonatomic) IBOutlet UIView *noLoginView;
 @property (strong, nonatomic) UIPageViewController *pageController;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 
@@ -47,9 +48,7 @@
         self.navigationController.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    _auth = [secureStorage keychainDictionary];
-    _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+    
     
     
     
@@ -85,23 +84,16 @@
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
     
-    //TODO:: create not log-in page to login view controller
-    if (!_isLogin) {
-        UINavigationController *navigationController = [[UINavigationController alloc] init];
-        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-        navigationController.navigationBar.translucent = NO;
-        navigationController.navigationBar.tintColor = [UIColor whiteColor];
-        
-        
-        LoginViewController *controller = [LoginViewController new];
-        controller.delegate = self;
-        controller.isPresentedViewController = YES;
-        controller.redirectViewController = self;
-        navigationController.viewControllers = @[controller];
-        
-        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    _auth = [secureStorage keychainDictionary];
+    _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+    
+    if(!_isLogin) {
+        [[self view] addSubview:_noLoginView];
+        [_noLoginView setHidden:NO];
+    } else {
+        [_noLoginView setHidden:YES];
     }
-
 }
 
 -(void)setScrollEnabled:(BOOL)enabled forPageViewController:(UIPageViewController*)pageViewController{

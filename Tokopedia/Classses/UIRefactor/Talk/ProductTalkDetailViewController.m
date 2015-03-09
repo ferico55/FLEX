@@ -57,6 +57,7 @@
     
     NSTimeInterval _timeinterval;
     NSMutableDictionary *_auth;
+    UserAuthentificationManager *_userManager;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -136,6 +137,7 @@
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _datainput = [NSMutableDictionary new];
+    _userManager = [UserAuthentificationManager new];
     
     _table.tableHeaderView = _header;
     _page = 1;
@@ -368,6 +370,12 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if([_userManager getUserId]) {
+        [_talkInputView setHidden:NO];
+    } else {
+        [_talkInputView setHidden:YES];
+    }
     
     if (!_isrefreshview) {
         [self configureRestKit];
