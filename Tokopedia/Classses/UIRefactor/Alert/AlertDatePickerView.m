@@ -102,6 +102,7 @@
 			[_delegate didPresentAlertView:self];
 		}
 	}];
+    
     //TODO::
     _type = [[_data objectForKey:kTKPDALERTVIEW_DATATYPEKEY]integerValue];
     switch (_type) {

@@ -11,7 +11,7 @@
 @interface CatalogLocation : NSObject
 
 @property (nonatomic, strong) NSString *location_name;
-@property (nonatomic) NSInteger location_id;
+@property (nonatomic, strong) NSString *location_id;
 @property (nonatomic, strong) NSString *total_shop;
 
 @end

@@ -15,12 +15,22 @@
 #import "NotificationManager.h"
 #import "UserAuthentificationManager.h"
 
+#import "NotificationState.h"
+
+#import "InboxMessageViewController.h"
+#import "TKPDTabInboxMessageNavigationController.h"
+#import "TKPDTabInboxReviewNavigationController.h"
+#import "TKPDTabInboxReviewNavigationController.h"
+#import "TKPDTabInboxTalkNavigationController.h"
+#import "InboxTalkViewController.h"
+#import "InboxReviewViewController.h"
 
 @interface TKPDTabHomeViewController ()
 <   UIPageViewControllerDataSource,
     UIPageViewControllerDelegate,
     UIScrollViewDelegate,
-    TKPDTabHomeDelegate
+    TKPDTabHomeDelegate,
+    NotificationManagerDelegate
 >
 {
     NSDictionary *_auth;
@@ -47,23 +57,16 @@
 @property (strong, nonatomic) HistoryProductViewController *historyProductViewController;
 @property (strong, nonatomic) FavoritedShopViewController *favoritedShopViewController;
 
-
 @end
 
 @implementation TKPDTabHomeViewController
 
-
 #pragma mark - Init Notification
-- (void) initNotification {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc removeObserver:self name:@"goToViewController" object:nil];
-    [nc addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotificationBar" object:nil];
-    [nc addObserver:self selector:@selector(goToViewController:) name:@"goToViewController" object:nil];
-    
-}
 
 - (void)viewDidLoad
 {
+    _userManager = [UserAuthentificationManager new];
+
     self.modalPresentationStyle = UIModalPresentationCurrentContext;
     
     UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
@@ -79,8 +82,6 @@
     pageControllerFrame.origin.y = 108;
     pageControllerFrame.size.height -= 108;
     [[self.pageController view] setFrame:pageControllerFrame];
-
-    _userManager = [UserAuthentificationManager new];
     
     _hotListViewController = [HotlistViewController new];
     _hotListViewController.data = @{kTKPD_AUTHKEY : [_userManager getUserLoginData]?:@""};
@@ -99,8 +100,8 @@
     _favoritedShopViewController.index = 4;
     _favoritedShopViewController.delegate = self;
     
-    NSArray *viewControllers = [NSArray arrayWithObject:_hotListViewController];
-    [self.pageController setViewControllers:viewControllers direction:UIPageViewControllerNavigationDirectionForward
+    [self.pageController setViewControllers:@[_hotListViewController]
+                                  direction:UIPageViewControllerNavigationDirectionForward
                                    animated:NO
                                  completion:nil];
     
@@ -119,6 +120,16 @@
     _tabScrollView.delegate = self;
     [_tabScrollView setShowsHorizontalScrollIndicator:NO];
     [_tabView addSubview:_tabScrollView];
+    [self.view addSubview:_tabView];
+    
+    UIImageView *greenArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_green.png"]];
+    CGRect frame = greenArrowImageView.frame;
+    frame.size.width = 13;
+    frame.size.height = 13;
+    frame.origin.x = self.view.frame.size.width/2 - 6.5f;
+    frame.origin.y = 64;
+    greenArrowImageView.frame = frame;
+    [self.view addSubview:greenArrowImageView];
 
     UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*1, 0, (self.view.frame.size.width/3), 44)];
     [button1 setTitle:@"Hotlist" forState:UIControlStateNormal];
@@ -135,7 +146,7 @@
     button2.tag = 2;
     [button2 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
     [_tabScrollView addSubview:button2];
-
+    
     UIButton *button3 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*3, 0, (self.view.frame.size.width/3), 44)];
     [button3 setTitle:@"Terakhir Dilihat" forState:UIControlStateNormal];
     [button3 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
@@ -143,7 +154,7 @@
     button3.tag = 3;
     [button3 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
     [_tabScrollView addSubview:button3];
-
+    
     UIButton *button4 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*4, 0, (self.view.frame.size.width/3), 44)];
     [button4 setTitle:@"Toko Favorit" forState:UIControlStateNormal];
     [button4 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
@@ -151,14 +162,11 @@
     button4.tag = 4;
     [button4 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
     [_tabScrollView addSubview:button4];
-
-    CALayer *bottomBorder = [[CALayer alloc] init];
-    bottomBorder.frame = CGRectMake(0, 43, _tabView.frame.size.width, 1);
-    bottomBorder.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1].CGColor;
-    [_tabView.layer addSublayer:bottomBorder];
     
-    [[self view] addSubview:_tabView];
-
+    UIView *border = [[UIView alloc] initWithFrame:CGRectMake(0, 43, _tabScrollView.contentSize.width, 1)];
+    border.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1];
+    [_tabScrollView addSubview:border];
+    
     for (UIScrollView *scrollView in self.pageController.view.subviews) {
         if ([scrollView isKindOfClass:[UIScrollView class]]) {
             _pageScrollView = scrollView;
@@ -172,6 +180,11 @@
     _direction = UIPageViewControllerNavigationDirectionForward;
     
     _tabBarCanScrolling = YES;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(redirectAfterNotification:)
+                                                 name:@"redirectAfterNotification"
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -179,63 +192,15 @@
     [super viewWillAppear:animated];
     
     [self initNotificationManager];
-    [self initNotification];
-    _userManager = [UserAuthentificationManager new];
     
-    if(_userManager.getUserId == @"0") {
-        int i = 1;
-        for (UIView *subview in [_tabScrollView subviews]) {
-            if(i != 1) {
-                [subview removeFromSuperview];
-            }
-            i++;
-        }
-    } else {
-        UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*1, 0, (self.view.frame.size.width/3), 44)];
-        [button1 setTitle:@"Hotlist" forState:UIControlStateNormal];
-        [button1 setTitleColor:[UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1] forState:UIControlStateNormal];
-        button1.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-        button1.tag = 1;
-        [button1 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
-        [_tabScrollView addSubview:button1];
-        
-        UIButton *button2 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*2, 0, (self.view.frame.size.width/3), 44)];
-        [button2 setTitle:@"Produk Feed" forState:UIControlStateNormal];
-        [button2 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
-        button2.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-        button2.tag = 2;
-        [button2 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
-        [_tabScrollView addSubview:button2];
-        
-        UIButton *button3 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*3, 0, (self.view.frame.size.width/3), 44)];
-        [button3 setTitle:@"Terakhir Dilihat" forState:UIControlStateNormal];
-        [button3 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
-        button3.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-        button3.tag = 3;
-        [button3 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
-        [_tabScrollView addSubview:button3];
-        
-        UIButton *button4 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*4, 0, (self.view.frame.size.width/3), 44)];
-        [button4 setTitle:@"Toko Favorit" forState:UIControlStateNormal];
-        [button4 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
-        button4.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-        button4.tag = 4;
-        [button4 addTarget:self action:@selector(tabButtonDidTap:) forControlEvents:UIControlEventTouchUpInside];
-        [_tabScrollView addSubview:button4];
-    }
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadNotification)
+                                                 name:@"reloadNotification"
+                                               object:nil];
 
     [self.navigationController.navigationBar setTranslucent:NO];
     
     self.view.backgroundColor = [UIColor colorWithRed:243.0/255.0 green:243.0/255.0 blue:243.0/255.0 alpha:1];
-
-    UIImageView *greenArrowImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_green.png"]];
-    CGRect frame = greenArrowImageView.frame;
-    frame.size.width = 13;
-    frame.size.height = 13;
-    frame.origin.x = self.view.frame.size.width/2 - 6.5f;
-    frame.origin.y = 64;
-    greenArrowImageView.frame = frame;
-    [self.view addSubview:greenArrowImageView];
     
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     NSString *navigationBarImagePath = [[NSBundle mainBundle] pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"];
@@ -252,6 +217,35 @@
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    _userManager = [UserAuthentificationManager new];
+
+    if(_userManager.isLogin) {
+        _tabScrollView.scrollEnabled = YES;
+        for (id subview in _tabScrollView.subviews) {
+            if ([subview isKindOfClass:[UIButton class]]) {
+                UIButton *button = (UIButton *)subview;
+                button.hidden = NO;
+            }
+        }
+    } else {
+        _tabScrollView.scrollEnabled = NO;
+        _tabScrollView.contentOffset = CGPointMake(0, 0);
+        for (id subview in _tabScrollView.subviews) {
+            if ([subview isKindOfClass:[UIButton class]]) {
+                UIButton *button = (UIButton *)subview;
+                if (button.tag > 1) {
+                    button.hidden = YES;
+                }
+            }
+        }
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
@@ -309,6 +303,8 @@
     }
 }
 
+#pragma mark - Scroll delegate
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (scrollView.tag == 1 && _tabBarCanScrolling) {
@@ -323,9 +319,7 @@
     }
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    
-}
+#pragma mark - Other methods
 
 - (void)tabButtonDidTap:(UIButton *)button
 {
@@ -456,6 +450,7 @@
 - (void)initNotificationManager {
     _notifManager = [NotificationManager new];
     [_notifManager setViewController:self];
+    _notifManager.delegate = self;
     self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
 }
 
@@ -467,11 +462,98 @@
     [_notifManager tapWindowBar];
 }
 
-- (void)goToViewController:(NSNotification*)notification {
-    NSDictionary *userinfo = notification.userInfo;
-    UIViewController *ui  = (UIViewController*)[userinfo objectForKey:@"nav"];
-    [self tapWindowBar];
-    [self presentViewController:ui animated:YES completion:nil];
+#pragma mark - Notification delegate
+
+- (void)reloadNotification
+{
+    [self initNotificationManager];
+}
+
+- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
+{
+    [notificationManager tapWindowBar];
+    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
+}
+
+- (void)redirectAfterNotification:(NSNotification *)userInfo
+{
+    NSInteger code = [[[userInfo object] objectForKey:@"name"] integerValue];
+    if (code == STATE_NEW_MESSAGE) {
+        [self goToInboxMessage];
+    } else if (code == STATE_NEW_TALK) {
+        [self goToInboxTalk];
+    } else if (code == STATE_NEW_ORDER) {
+        [self goToNewOrder];
+    } else if (code == STATE_NEW_REVIEW ||
+               code == STATE_EDIT_REVIEW ||
+               code == STATE_REPLY_REVIEW) {
+        [self goToInboxReview];
+    }
+}
+
+- (void)goToInboxMessage {
+    InboxMessageViewController *vc = [InboxMessageViewController new];
+    vc.data=@{@"nav":@"inbox-message"};
+    
+    InboxMessageViewController *vc1 = [InboxMessageViewController new];
+    vc1.data=@{@"nav":@"inbox-message-sent"};
+    
+    InboxMessageViewController *vc2 = [InboxMessageViewController new];
+    vc2.data=@{@"nav":@"inbox-message-archive"};
+    
+    InboxMessageViewController *vc3 = [InboxMessageViewController new];
+    vc3.data=@{@"nav":@"inbox-message-trash"};
+    NSArray *vcs = @[vc,vc1, vc2, vc3];
+    
+    TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
+    [inboxController setSelectedIndex:2];
+    [inboxController setViewControllers:vcs];
+    
+    [self.navigationController pushViewController:inboxController animated:YES];
+}
+
+- (void)goToInboxTalk {
+    InboxTalkViewController *vc = [InboxTalkViewController new];
+    vc.data=@{@"nav":@"inbox-talk"};
+    
+    InboxTalkViewController *vc1 = [InboxTalkViewController new];
+    vc1.data=@{@"nav":@"inbox-talk-my-product"};
+    
+    InboxTalkViewController *vc2 = [InboxTalkViewController new];
+    vc2.data=@{@"nav":@"inbox-talk-following"};
+    
+    NSArray *vcs = @[vc,vc1, vc2];
+    
+    TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
+    [nc setSelectedIndex:2];
+    [nc setViewControllers:vcs];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+    [nav.navigationBar setTranslucent:NO];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)goToInboxReview {
+    InboxReviewViewController *vc = [InboxReviewViewController new];
+    vc.data=@{@"nav":@"inbox-review"};
+    
+    InboxReviewViewController *vc1 = [InboxReviewViewController new];
+    vc1.data=@{@"nav":@"inbox-review-my-product"};
+    
+    InboxReviewViewController *vc2 = [InboxReviewViewController new];
+    vc2.data=@{@"nav":@"inbox-review-my-review"};
+    
+    NSArray *vcs = @[vc,vc1, vc2];
+    
+    TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
+    [nc setSelectedIndex:2];
+    [nc setViewControllers:vcs];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+    [nav.navigationBar setTranslucent:NO];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
+- (void)goToNewOrder {
+    
 }
 
 @end

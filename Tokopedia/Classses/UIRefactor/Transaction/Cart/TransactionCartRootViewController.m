@@ -11,10 +11,15 @@
 #import "TransactionCartRootViewController.h"
 #import "TransactionCartViewController.h"
 #import "TransactionCartResultViewController.h"
+#import "NotificationManager.h"
 
-#import "LoginViewController.h"
-
-@interface TransactionCartRootViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate, TransactionCartViewControllerDelegate>
+@interface TransactionCartRootViewController ()
+<
+    UIPageViewControllerDataSource,
+    UIPageViewControllerDelegate,
+    TransactionCartViewControllerDelegate,
+    NotificationManagerDelegate
+>
 {
     NSInteger _index;
     NSDictionary *_data;
@@ -23,6 +28,8 @@
     TransactionCartResultViewController *_cartResultViewController;
     NSDictionary *_auth;
     BOOL _isLogin;
+    
+    NotificationManager *_notifManager;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
@@ -37,7 +44,7 @@
 @implementation TransactionCartRootViewController
 
 #define COUNT_CILD_VIEW_CONTROLLER 3
-#define COLOR_DEFAULT_BUTTON [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1.0]
+#define COLOR_DEFAULT_BUTTON [UIColor colorWithRed:214.0/255.0 green:214.0/255.0 blue:214.0/255.0 alpha:1.0]
 #define COLOR_SELECTED_BUTTON [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1.0]
 
 - (void)viewDidLoad {
@@ -81,6 +88,13 @@
 {
     [super viewWillAppear:animated];
     
+    [self initNotificationManager];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadNotification)
+                                                 name:@"reloadNotification"
+                                               object:nil];
+
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
     
@@ -96,6 +110,18 @@
     }
 }
 
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Methods
+
 -(void)setScrollEnabled:(BOOL)enabled forPageViewController:(UIPageViewController*)pageViewController{
     for(UIView* view in pageViewController.view.subviews){
         if([view isKindOfClass:[UIScrollView class]]){
@@ -106,12 +132,6 @@
     }
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - Methods
 -(UIViewController*)viewControllerAtIndex:(NSInteger)index
 {
     id childViewController;
@@ -238,15 +258,57 @@
 
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-        UIBarButtonItem *barbutton = (UIBarButtonItem*)sender;
-        ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = !(barbutton.tag == TAG_BAR_BUTTON_TRANSACTION_BACK);
+        if (self.navigationController.viewControllers.count > 1) {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+        else{
+            [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+            UIBarButtonItem *barbutton = (UIBarButtonItem*)sender;
+            ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = !(barbutton.tag == TAG_BAR_BUTTON_TRANSACTION_BACK);
+        }
     }
     else
     {
         UIButton *pageButton = (UIButton*)sender;
         [_pageController setViewControllers:@[[self viewControllerAtIndex:pageButton.tag-10]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
     }
+}
+
+#pragma mark - Notification Manager
+
+- (void)initNotificationManager {
+    _notifManager = [NotificationManager new];
+    [_notifManager setViewController:self];
+    _notifManager.delegate = self;
+    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+}
+
+- (void)tapNotificationBar {
+    [_notifManager tapNotificationBar];
+}
+
+- (void)tapWindowBar {
+    [_notifManager tapWindowBar];
+}
+
+- (void)reloadNotification
+{
+    [self initNotificationManager];
+}
+
+#pragma mark - Notification delegate
+
+- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
+{
+    [notificationManager tapWindowBar];
+    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
+}
+
+- (void)pushViewController:(id)viewController
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:viewController animated:YES];
+    self.hidesBottomBarWhenPushed = NO;
 }
 
 @end

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="KGk-i7-Jjw" customClass="CatalogProductCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="87"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QnW-mi-mbE">
+                        <rect key="frame" x="15" y="15" width="257" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="c1u-UC-loF"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                        <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4vM-1m-m1K">
+                        <rect key="frame" x="15" y="36" width="257" height="12"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="12" id="kXu-6g-h1h"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                        <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" tag="5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3fs-Uv-rug">
+                        <rect key="frame" x="15" y="50" width="257" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="sod-Mu-7Wl"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                        <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="QnW-mi-mbE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="7" id="1kR-CT-kzo"/>
+                    <constraint firstItem="QnW-mi-mbE" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="7" id="8rq-yp-uVj"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="QnW-mi-mbE" secondAttribute="trailing" constant="7" id="CBv-HO-QTs"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="4vM-1m-m1K" secondAttribute="trailing" constant="7" id="Qat-JK-5Dc"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="3fs-Uv-rug" secondAttribute="trailing" constant="7" id="TyC-pd-Ug3"/>
+                    <constraint firstItem="3fs-Uv-rug" firstAttribute="top" secondItem="4vM-1m-m1K" secondAttribute="bottom" constant="2" id="cUw-eW-9np"/>
+                    <constraint firstItem="4vM-1m-m1K" firstAttribute="top" secondItem="QnW-mi-mbE" secondAttribute="bottom" id="e9k-8L-5eB"/>
+                    <constraint firstItem="4vM-1m-m1K" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="7" id="eOg-7Z-uBD"/>
+                    <constraint firstItem="3fs-Uv-rug" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="7" id="s8T-au-aK0"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="productConditionLabel" destination="4vM-1m-m1K" id="2Zb-wC-oPc"/>
+                <outlet property="productNameLabel" destination="QnW-mi-mbE" id="kPy-hW-yxj"/>
+                <outlet property="productPriceLabel" destination="3fs-Uv-rug" id="Be8-Al-grc"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

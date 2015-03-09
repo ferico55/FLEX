@@ -11,6 +11,7 @@
 #import "InboxTalkViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
+#import "InboxResolutionCenterTabViewController.h"
 
 @interface NotificationViewController ()
 
@@ -159,42 +160,28 @@
 
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSInteger *section = [indexPath section];
-    
+    NSInteger section = indexPath.section;
     if(section == 1) {
-        NSInteger *row = [indexPath row];
+        NSInteger row = indexPath.row;
         if(row == 0 && [_notification.result.sales.sales_new_order integerValue] == 0) {
             return 0;
-        }
-        
-        if(row == 1 && [_notification.result.sales.sales_shipping_confirm integerValue] == 0) {
+        } else if(row == 1 && [_notification.result.sales.sales_shipping_confirm integerValue] == 0) {
+            return 0;
+        } else if(row == 2 && [_notification.result.sales.sales_shipping_status integerValue] == 0) {
             return 0;
         }
-        
-        if(row == 2 && [_notification.result.sales.sales_shipping_status integerValue] == 0) {
-            return 0;
-        }
-    }
-    
-    if(section == 2) {
-        NSInteger *row = [indexPath row];
+    } else if(section == 2) {
+        NSInteger row = indexPath.row;
         if(row == 0 && [_notification.result.purchase.purchase_reorder integerValue] == 0) {
             return 0;
-        }
-        
-        if(row == 1 && [_notification.result.purchase.purchase_payment_conf integerValue] == 0) {
+        } else if(row == 1 && [_notification.result.purchase.purchase_payment_conf integerValue] == 0) {
+            return 0;
+        } else if(row == 2 && [_notification.result.purchase.purchase_order_status integerValue] == 0) {
+            return 0;
+        } else if(row == 3 && [_notification.result.purchase.purchase_delivery_confirm integerValue] == 0) {
             return 0;
         }
-        
-        if(row == 2 && [_notification.result.purchase.purchase_order_status integerValue] == 0) {
-            return 0;
-        }
-        if(row == 3 && [_notification.result.purchase.purchase_delivery_confirm integerValue] == 0) {
-            return 0;
-        }
-
     }
-
     return 44;
 }
 
@@ -207,9 +194,7 @@
            ) {
             return  0;
         }
-    }
-    
-    if(section == 2) {
+    } else if(section == 2) {
         if([_notification.result.purchase.purchase_reorder integerValue] == 0 &&
            [_notification.result.purchase.purchase_payment_conf integerValue] == 0 &&
            [_notification.result.purchase.purchase_order_status integerValue] == 0 &&
@@ -218,7 +203,6 @@
             return 0;
         }
     }
-    
     return 34;
 }
 
@@ -257,27 +241,10 @@
     [label addSubview:redCircle];
 }
 
-- (IBAction)tap:(id)sender {
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton*)sender;
-        
-        switch (btn.tag) {
-                //archive
-            case 10: {
-                
-
-                break;
-            }
-                
-            
-            default:
-                break;
-        }
-        
-    }
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     if([indexPath section] == 0) {
         switch ([indexPath row]) {
             case 0:{
@@ -294,13 +261,11 @@
                 vc3.data=@{@"nav":@"inbox-message-trash"};
                 NSArray *vcs = @[vc,vc1, vc2, vc3];
                 
-                TKPDTabInboxMessageNavigationController *nc = [TKPDTabInboxMessageNavigationController new];
-                [nc setSelectedIndex:2];
-                [nc setViewControllers:vcs];
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-                [nav.navigationBar setTranslucent:NO];
+                TKPDTabInboxMessageNavigationController *controller = [TKPDTabInboxMessageNavigationController new];
+                [controller setSelectedIndex:2];
+                [controller setViewControllers:vcs];
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"goToViewController" object:nil userInfo:@{@"nav":nav}];
+                [self.delegate pushViewController:controller];
 
                 break;
             }
@@ -316,12 +281,20 @@
                 
                 NSArray *vcs = @[vc,vc1, vc2];
                 
-                TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
-                [nc setSelectedIndex:2];
-                [nc setViewControllers:vcs];
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-                [nav.navigationBar setTranslucent:NO];
+                TKPDTabInboxTalkNavigationController *controller = [TKPDTabInboxTalkNavigationController new];
+                [controller setSelectedIndex:2];
+                [controller setViewControllers:vcs];
 
+                [self.delegate pushViewController:controller];
+
+                break;
+            }
+            case 5:
+            {
+                InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
+                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
+                [nav.navigationBar setTranslucent:NO];
+                
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"goToViewController" object:nil userInfo:@{@"nav":nav}];
                 break;
             }
@@ -336,16 +309,5 @@
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver: self];
 }
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

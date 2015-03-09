@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *confirmPaymentButton;
 @property (weak, nonatomic) IBOutlet UILabel *listPaymentTitleLabel;
 
+@property (strong, nonatomic) IBOutlet UIView *tableHeaderView;
 @property (weak, nonatomic) IBOutlet UILabel *tableTitleLabel;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UITableViewCell *totalPaymentCell;
@@ -90,7 +91,7 @@
     }
 
     
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:14];
+    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
@@ -116,6 +117,9 @@
     NSString *tableTitleLabel = [NSString stringWithFormat:FORMAT_SUCCESS_BUY,_cartBuy.transaction.gateway_name];
     NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:tableTitleLabel
                                                                                attributes:attributes];
+
+    
+    _tableView.tableHeaderView = _tableHeaderView;
     _tableTitleLabel.attributedText = attributedText;
     _tableTitleLabel.textAlignment = NSTextAlignmentCenter;
     _confirmPaymentButton.layer.cornerRadius = 2;
@@ -182,7 +186,7 @@
     if (indexPath.section < _listTotalPayment.count)
         return _totalPaymentCell.frame.size.height;
     else
-        return  120;
+        return  130;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -190,7 +194,7 @@
     if (section == _listTotalPayment.count + _listSystemBank.count-1) {
         return ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_TOKOPEDIA)?_paymentStatusView.frame.size.height:_viewConfirmPayment.frame.size.height;
     }
-    return 20;
+    return 10;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath

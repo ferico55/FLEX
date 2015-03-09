@@ -36,26 +36,31 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
    
+    self.title = @"Edit";
+    
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
-//    _barButtonSave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-//    [_barButtonSave setTintColor:[UIColor blackColor]];
-//    _barButtonSave.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
-//    self.navigationItem.rightBarButtonItem = _barButtonSave;
+    _barButtonSave = [[UIBarButtonItem alloc] initWithTitle:@"Save"
+                                                      style:UIBarButtonItemStylePlain
+                                                     target:self
+                                                     action:@selector(tap:)];
+    [_barButtonSave setTintColor:[UIColor blackColor]];
+    _barButtonSave.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
+    self.navigationItem.rightBarButtonItem = _barButtonSave;
+    
+    [_remarkTextView setPlaceholder:@"Tulis keterangan"];
     
     [self setDefaultData:_data];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:YES];
-    [_delegate shouldEditCartWithUserInfo:_dataInput];
 }
 
 #pragma mark - View Action
@@ -64,15 +69,13 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         switch (button.tag) {
-            case TAG_BAR_BUTTON_TRANSACTION_BACK:
-                [self.navigationController popViewControllerAnimated:YES];
-                break;
             case TAG_BAR_BUTTON_TRANSACTION_DONE:
-                
+                [_delegate shouldEditCartWithUserInfo:_dataInput];
                 break;
             default:
                 break;
         }
+        [self.navigationController popViewControllerAnimated:YES];
     }
     if ([sender isKindOfClass:[UIStepper class]]) {
         UIStepper *stepper = (UIStepper*)sender;
@@ -109,7 +112,19 @@
     if (data) {
         [_dataInput addEntriesFromDictionary:_data];
         ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-        _productNameLabel.text = product.product_name;
+
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 8.0;
+        
+        NSDictionary *textAttributes = @{
+                                        NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+                                        NSParagraphStyleAttributeName  : style,
+                                        NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
+                                        };
+
+        NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:product.product_name
+                                                                             attributes:textAttributes];
+        _productNameLabel.attributedText = attributedText;
         _productPriceLabel.text = product.product_price_idr;
         _quantityStepper.value = [product.product_quantity integerValue];
         _quantityLabel.text = [NSString stringWithFormat:@"%zd",(NSInteger)_quantityStepper.value];

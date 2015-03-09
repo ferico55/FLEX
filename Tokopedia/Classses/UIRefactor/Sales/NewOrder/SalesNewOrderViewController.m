@@ -1064,7 +1064,10 @@
 
 #pragma mark - Order detail delegate
 
-- (void)didReceiveActionType:(NSString *)actionType reason:(NSString *)reason products:(NSArray *)products productQuantity:(NSArray *)productQuantity
+- (void)didReceiveActionType:(NSString *)actionType
+                      reason:(NSString *)reason
+                    products:(NSArray *)products
+             productQuantity:(NSArray *)productQuantity
 {
     [self requestActionType:actionType
                      reason:reason

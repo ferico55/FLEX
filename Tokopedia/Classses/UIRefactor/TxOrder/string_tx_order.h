@@ -27,11 +27,18 @@ typedef enum
     TYPE_PAYMENT_CASH_TRANSFER = 6
 }TYPE_PAYMENT;
 
+typedef enum
+{
+    TX_ORDER_STATUS_DEFAULT
+}TX_ORDER_STATUS;
+
 #define TITLE_PAYMENT_CONFIRMATION_FORM @"Konfirmasi Pembayaran"
+#define TITLE_PAYMENT_EDIT_CONFIRMATION_FORM @"Ubah Konfirmasi Pembayaran"
 
 #define DATA_DETAIL_ORDER_CONFIRMATION_KEY @"data_detail_order"
 #define DATA_DETAIL_ORDER_CONFIRMED_KEY @"data_detail_order_confirmed"
 #define DATA_SELECTED_ORDER_KEY @"selected_order"
+#define DATA_INDEXPATH_SELECTED_ORDER @"indexpath_selected_order"
 #define DATA_SELECTED_SYSTEM_BANK_KEY @"selected_system_bank"
 #define DATA_SELECTED_PAYMENT_METHOD_KEY @"selected_payment_method"
 #define DATA_PAYMENT_DATE_KEY @"payment_date"
@@ -43,17 +50,29 @@ typedef enum
 #define DATA_PASSWORD_KEY @"password"
 #define DATA_DEPOSITOR_KEY @"depositor"
 #define DATA_MARK_KEY @"mark"
+#define DATA_ORDER_DELIVERY_CONFIRM @"order_delivery_confirm"
+#define DATA_INDEXPATH_DELIVERY_CONFIRM @"indexpath_delivery_confirm"
+#define DATA_REQUEST_DELIVERY_CONFIRM @"request_delivery_confirm"
+
 
 #pragma mark - Action
 #define ACTION_GET_TX_ORDER_PAYMENT_CONFIRMED @"get_tx_order_payment_confirmed"
 #define ACTION_GET_TX_ORDER_PAYMENT_CONFIRMATION @"get_tx_order_payment_confirmation"
+#define ACTION_GET_TX_ORDER_STATUS @"get_tx_order_status"
 #define ACTION_CANCEL_PAYMENT @"cancel_payment"
 #define ACTION_GET_CANCEL_PAYMENT_FORM @"get_cancel_payment_form"
 #define ACTION_GET_CONFIRM_PAYMENT_FORM @"get_confirm_payment_form"
 #define ACTION_GET_EDIT_PAYMENT_FORM @"get_edit_payment_form"
 #define ACTION_GET_TX_ORDER_PAYMENT_CONFIRMED_DETAIL @"get_tx_order_payment_confirmed_detail"
 #define ACTION_CONFIRM_PAYMENT @"confirm_payment"
-#define ACTION_UPLOAD_PAYMENT_PROOF @"upload_payment_proof"
+#define ACTION_EDIT_PAYMENT @"edit_payment"
+#define ACTION_UPLOAD_PROOF_BY_ORDER_ID @"upload_payment_proof"
+#define ACTION_UPLOAD_PROOF_BY_PAYMENT_ID @"upload_proof_by_payment"
+#define ACTION_UPLOAD_PROOF_IMAGE @"upload_proof_image"
+#define ACTION_DELIVERY_FINISH_ORDER @"delivery_finish_order"
+#define ACTION_GET_TX_ORDER_DELIVER @"get_tx_order_deliver"
+#define ACTION_GET_TX_ORDER_LIST @"get_tx_order_list"
+#define ACTION_RE_ORDER @"reorder"
 #pragma mark -
 
 #define API_ACTION_KEY @"action"
@@ -61,9 +80,11 @@ typedef enum
 #define API_FORM_KEY @"form"
 #define API_TOKEN_KEY @"token"
 
+#define API_FORM_FIELD_NAME_PROOF @"payment_image"
+
 #pragma mark - String Alert
 #define ALERT_TITLE_CANCEL_PAYMENT_CONFIRMATION @"Konfirmasi Pembatalan Pembayaran"
-#define ALERT_DESCRIPTION_CANCEL_PAYMENT_CONFIRMATION @"Apakah anda yakin membatalkan transaksi ini? \n saldo Tokopedia yang akan dikembalikan adalah sebesar : 100" //TODO::
+#define ALERT_DESCRIPTION_CANCEL_PAYMENT_CONFIRMATION @"Apakah anda yakin membatalkan transaksi ini? \n saldo Tokopedia yang akan dikembalikan adalah sebesar : %@" //TODO::
 
 #define ALERT_TITLE_INVOICE_LIST @"Berikut Daftar Invoice dari Nomor Pembayaran \n%@"
 
@@ -88,12 +109,19 @@ typedef enum
 #pragma mark - Order List
 #define API_ORDER_LIST_KEY @"order_list"
 #define API_ORDER_LIST_JOB_STATUS_KEY @"order_JOB_status"
+#define API_ORDER_LIST_JOB_DETAIL_KEY @"order_JOB_detail"
 #define API_ORDER_LIST_PRODUCTS_KEY @"order_products"
 #define API_ORDER_LIST_SHOP_KEY @"order_shop"
+#define API_ORDER_LIST_BUTTON_KEY @"order_button"
 #define API_ORDER_LIST_SHIPMENT_KEY @"order_shipment"
 #define API_ORDER_LIST_DESTINATION_KEY @"order_destination"
 #define API_ORDER_LIST_DETAIL_KEY @"order_detail"
 #define API_ORDER_LIST_AUTO_RESI_KEY @"order_auto_resi"
+#define API_ORDER_LIST_AUTO_AWB_KEY @"order_auto_awb"
+#define API_ORDER_LIST_DEADLINE_KEY @"order_deadline"
+#define API_ORDER_LIST_LAST_KEY @"order_last"
+#define API_ORDER_LIST_HISTORY_KEY @"order_history"
+#define API_ORDER_LIST_DESTINATION_KEY @"order_destination"
 #pragma mark -
 
 #pragma mark - Order Products
@@ -117,6 +145,7 @@ typedef enum
 #define API_SHOP_URI_KEY @"shop_uri"
 #define API_SHOP_ID_KEY @"shop_id"
 #define API_SHOP_NAME_KEY @"shop_name"
+#define API_SHOP_PIC_KEY @"shop_pic"
 #pragma mark -
 
 #pragma mark - Order Shipment
@@ -174,6 +203,10 @@ typedef enum
 #define API_DETAIL_DROPSHIP_TELP        @"detail_dropship_telp"
 #pragma mark -
 
+#pragma mark - Order Deadline
+#define API_DEADLINE_PROCESS_DAY_LEFT_KEY @"deadline_process_day_left"
+#define API_DEADLINE_SHIPPING_DAY_LEFT_KEY @"deadline_shipping_day_left"
+
 #pragma mark - Order Extra Fee
 #define API_EXTRA_FEE_KEY @"extra_fee"
 #define API_EXTRA_FEE_AMOUNT_KEY @"extra_fee_amount"
@@ -220,7 +253,7 @@ typedef enum
 #define API_PAYMENT_DAY_KEY @"payment_day"
 #define API_PAYMENT_MONTH_KEY @"payment_month"
 #define API_PAYMENT_YEAR_KEY @"payment_year"
-#define API_PAYMENT_COMMENT_KEY @"comment"
+#define API_PAYMENT_COMMENT_KEY @"comments"
 #define API_PASSWORD_KEY @"password"
 #define API_PASSWORD_DEPOSIT_KEY @"password_deposit"
 #define API_DEPOSITOR_KEY @"depositor"
@@ -252,6 +285,8 @@ typedef enum
 #define ERRORMESSAGE_NILL_BANK_ACCOUNT_NUMBER @"Masukkan Nomor Rekening"
 #define ERRORMESSAGE_NILL_PASSWORD_TOKOPEDIA @"Masukkan Password Tokopedia"
 #define ERRORMESSAGE_NILL_SYSTEM_BANK @"Pilih Bank Tujuan"
+#define ERRORMESSAGE_NILL_BANK_ACCOUNT @"Pilih Akun Bank"
+#define ERRORMESSAGE_INVALID_PAYMENT_AMOUNT @"Jumlah pembayaran yang diinput tidak mencukupi. Total Pembayaran sebesar Rp %@,-"
 
 #pragma mark - Order Form
 #define API_ORDER_FORM_KEY @"order"
@@ -266,6 +301,45 @@ typedef enum
 #define API_ORDER_FORM_DEPOSIT_USED_KEY @"deposit_used"
 #define API_ORDER_FORM_DEPOSITABLE_KEY @"order_depositable"
 #define API_ORDER_FORM_GRAND_TOTAL_KEY @"order_grand_total"
+#define API_ORDER_FORM_PAYMENT_AMOUNT_KEY @"order_payment_amount"
+#define API_ORDER_FORM_PAYMENT_DAY_KEY @"order_payment_day"
+#define API_ORDER_FORM_PAYMENT_MONTH_KEY @"order_payment_month"
+#define API_ORDER_FORM_PAYMENT_YEAR_KEY @"order_payment_year"
+
+#pragma mark - Order Last
+#define API_LAST_ORDER_ID               @"last_order_id"
+#define API_LAST_SHIPMENT_ID            @"last_shipment_id"
+#define API_LAST_EST_SHIPPING_LEFT      @"last_est_shipping_left"
+#define API_LAST_ORDER_STATUS           @"last_order_status"
+#define API_LAST_ORDER_STATUS_DATE      @"last_status_date"
+#define API_LAST_POD_CODE               @"last_pod_code"
+#define API_LAST_POD_DESC               @"last_pod_desc"
+#define API_LAST_SHIPPING_REF_NUM       @"last_shipping_ref_num"
+#define API_LAST_POD_RECEIVER           @"last_pod_receiver"
+#define API_LAST_COMMENTS               @"last_comments"
+#define API_LAST_BUYER_STATUS           @"last_buyer_status"
+#define API_LAST_STATUS_DATE_WIB        @"last_status_date_wib"
+#define API_LAST_SELLER_STATUS          @"last_seller_status"
+
+#pragma mark - Order History
+#define API_HISTORY_STATUS_DATE         @"history_status_date"
+#define API_HISTORY_STATUS_DATE_FULL    @"history_status_date_full"
+#define API_HISTORY_ORDER_STATUS        @"history_order_status"
+#define API_HISTORY_COMMENTS            @"history_comments"
+#define API_HISTORY_ACTION_BY           @"history_action_by"
+#define API_HISTORY_BUYER_STATUS        @"history_buyer_status"
+#define API_HISTORY_SELLER_STATUS       @"history_seller_status"
+
+#pragma mark - Order Button
+#define API_BUTTON_OPEN_DISPUTE_KEY @"button_open_dispute"
+#define API_BUTTON_RES_CENTER_URL_KEY @"button_res_center_url"
+#define API_BUTTON_OPEN_TIME_LEFT_KEY @"button_open_time_left"
+#define API_BUTTON_RES_CENTER_GO_TO_KEY @"button_res_center_go_to"
+#define API_BUTTON_UPLOAD_PROOF_KEY @"button_upload_proof"
+
+#define API_ACTION_KEY @"action"
+#define API_IS_SUCCESS_KEY @"is_success"
+#define API_ORDER_ID_KEY @"order_id"
 
 #pragma mark - Confirmed
 #define API_ORDER_DETAIL_KEY @"tx_order_detail"
@@ -278,6 +352,21 @@ typedef enum
 #define API_PAYMENT_ID_KEY @"payment_id"
 #define API_PAYMENT_REF_KEY @"payment_ref"
 #define API_PAYMENT_DATE_KEY @"payment_date"
+
+#define API_TRANSACTION_STATUS_KEY @"status"
+#define API_TRANSACTION_START_DATE_KEY @"start"
+#define API_TRANSACTION_END_DATE_KEY @"end"
+
+#define COLOR_STATUS_CANCEL_3DAYS [UIColor colorWithRed:0/255.f green:121.f/255.f blue:255.f/255.f alpha:1]
+#define COLOR_STATUS_CANCEL_TOMORROW [UIColor colorWithRed:255.f/255.f green:145.f/255.f blue:0/255.f alpha:1]
+#define COLOR_STATUS_CANCEL_TODAY [UIColor colorWithRed:255.f/255.f green:59.f/255.f blue:48.f/255.f alpha:1]
+#define COLOR_STATUS_EXPIRED [UIColor colorWithRed:158.f/255.f green:158.f/255.f blue:158.f/255.f alpha:1]
+
+#define ALERT_DELIVERY_CONFIRM_FORMAT @"Sudah Diterima\nApakah Anda yakin pesanan dari toko %@ sudah diterima?"
+#define ALERT_DELIVERY_CONFIRM_DESCRIPTION @"Klik Selesai untuk menyelesaikan transaksi dan meneruskan dana ke penjual.\nKlik Komplain jika pesanan yang diterima berkendala (kurang/rusak/ lain-lain)."
+
+#define ALERT_REORDER_TITLE @"Pemesanan Ulang"
+#define ALERT_REORDER_DESCRIPTION @"Apakah Anda ingin melakukan pemesanan ulang terhadap produk ini ?"
 
 #pragma mark - Array
 //#define ARRAY_PAYMENT_METHOD @[@{DATA_NAME_KEY :@"Transfer ATM",DATA_VALUE_KEY:@(TYPE_PAYMENT_TRANSFER_ATM)},@{DATA_NAME_KEY :@"Internet Banking",DATA_VALUE_KEY:@(TYPE_PAYMENT_INTERNET_BANKING)}, @{DATA_NAME_KEY :@"Mobile Banking",DATA_VALUE_KEY:@(TYPE_PAYMENT_MOBILE_BANKING)}, @{DATA_NAME_KEY :@"Saldo Tokopedia",DATA_VALUE_KEY:@(TYPE_PAYMENT_SALDO_TOKOPEDIA)},@{DATA_NAME_KEY :@"Setoran/ Transfer Tunai",DATA_VALUE_KEY:@(TYPE_PAYMENT_CASH_TRANSFER)}]

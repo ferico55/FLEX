@@ -71,6 +71,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.title = @"Detail Pengiriman";
+    
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     _mapping = [TransactionObjectMapping new];
@@ -88,11 +90,6 @@
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
     
     if (_indexPage == 0) {
-//        UIBarButtonItem *saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-//        [saveBarButtonItem setTintColor:[UIColor blackColor]];
-//        saveBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
-//        self.navigationItem.rightBarButtonItem = saveBarButtonItem;
-        
         [self configureRestKitActionCalculate];
         [self requestActionCalculate:_dataInput];
         _isFinishCalculate = NO;
@@ -101,6 +98,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editInsurance:) name:EDIT_CART_POST_NOTIFICATION_NAME object:nil];
     
     _isFirstLoad = YES;
+    
+    self.tableView.contentInset = UIEdgeInsetsMake(-14, 0, 0, 0);
 }
 
 - (void)didReceiveMemoryWarning {
@@ -643,20 +642,7 @@
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
-    UIBarButtonItem *button = (UIBarButtonItem*)sender;
-    switch (button.tag) {
-        case TAG_BAR_BUTTON_TRANSACTION_BACK:
-            [self.navigationController popViewControllerAnimated:YES];
-            break;
-        case TAG_BAR_BUTTON_TRANSACTION_DONE:
-        {
-            [self configureRestKitActionEditAddress];
-            [self requestActionEditAddress:_dataInput];
-            break;
-        }
-        default:
-            break;
-    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Table View Data Source
@@ -871,7 +857,7 @@
     NSString *name = [ARRAY_INSURACE[index] objectForKey:DATA_NAME_KEY];
     
     cart.cart_insurance_prod =value;
-    cart.cart_insurance_price_idr = @"Processing ..";
+    cart.cart_insurance_price_idr = @"";
     cart.cart_insurance_name = name;
     [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
     [_tableView reloadData];
@@ -901,12 +887,12 @@
                 _addressStreetLabel.text = address.address_street?:@"-";
                 break;
             case 2:
-                cell.detailTextLabel.text = (!_isFinishCalculate)?@"Processing ...":shipment.shipment_name?:@"None";
+                cell.detailTextLabel.text = shipment.shipment_name;
                 break;
             case 3:
             {
                 NSString *shipmentPackageName = shipmentPackage.name?:cart.cart_shipments.shipment_package_name;
-                cell.detailTextLabel.text = (!_isFinishCalculate)?@"Processing ...":shipmentPackageName;
+                cell.detailTextLabel.text = shipmentPackageName;
                 break;
             }
             case 4:

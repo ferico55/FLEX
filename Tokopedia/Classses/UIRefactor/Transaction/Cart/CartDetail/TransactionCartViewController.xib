@@ -21,6 +21,9 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -32,11 +35,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionCartViewController">
             <connections>
+                <outlet property="act" destination="kvI-4t-wDf" id="yuS-lP-yqe"/>
+                <outlet property="buttonCancelVoucher" destination="Ykh-pd-XjA" id="SFH-lB-YJV"/>
+                <outlet property="buttonVoucherInfo" destination="0sG-Mm-AAO" id="5h4-6f-HTh"/>
                 <outlet property="buyButton" destination="aJd-4o-xMK" id="ml6-bq-Ni5"/>
                 <outlet property="buyView" destination="TE4-R8-Zrx" id="Oa0-FQ-ov0"/>
                 <outlet property="checkoutButton" destination="IRs-zw-g4I" id="Zsn-QE-48w"/>
                 <outlet property="checkoutView" destination="esW-Te-z8M" id="EpC-ez-KgJ"/>
                 <outlet property="footerView" destination="KDl-FM-LK1" id="SJG-4e-rGU"/>
+                <outlet property="grandTotalLabel" destination="6yM-Im-p4G" id="C1X-UC-14m"/>
                 <outlet property="passwordCell" destination="Mbe-do-c9y" id="9PE-pp-KYz"/>
                 <outlet property="passwordTextField" destination="hJb-lx-Y9Z" id="TlD-ew-hrh"/>
                 <outlet property="paymentGatewayCell" destination="60d-Jk-tyu" id="2na-gI-9aM"/>
@@ -52,6 +59,7 @@
                 <outlet property="view" destination="Gh7-DV-yXN" id="azQ-xw-Yce"/>
                 <outlet property="voucerCell" destination="v13-pk-jca" id="l4Z-or-uXE"/>
                 <outlet property="voucerCodeBeforeTapView" destination="7jP-3s-t2c" id="PGj-wW-pwn"/>
+                <outlet property="voucherAmountLabel" destination="7cA-0f-cDL" id="Eyr-7G-sZt"/>
                 <outlet property="voucherCodeButton" destination="fjF-sg-pi6" id="iyh-8E-9t7"/>
                 <outletCollection property="errorCells" destination="bcD-ei-uZV" id="GEX-aS-U0P"/>
                 <outletCollection property="errorCells" destination="rQU-GF-11J" id="zBk-wo-8TY"/>
@@ -90,12 +98,12 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="60d-Jk-tyu" id="Fwk-Au-75y">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Metode Pembayaran" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zl3-bd-RqO">
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Metode Pembayaran :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zl3-bd-RqO">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pilih Metode Pembayaran" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qpr-uJ-2jP">
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pilih" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qpr-uJ-2jP">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -118,12 +126,14 @@
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp.0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aek-0N-e9L">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <color key="tintColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
             </tableViewCellContentView>
+            <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="117" y="241"/>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="qiP-X2-TTW" detailTextLabel="Y4h-4r-aJ6" style="IBUITableViewCellStyleValue1" id="hHW-yd-Xhs">
@@ -147,7 +157,7 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="117" y="336"/>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="F8e-bq-qgA" detailTextLabel="INg-cN-cMe" style="IBUITableViewCellStyleValue1" id="gnN-iy-Hi0">
+        <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="F8e-bq-qgA" detailTextLabel="INg-cN-cMe" style="IBUITableViewCellStyleValue1" id="gnN-iy-Hi0">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gnN-iy-Hi0" id="APL-2c-yZQ">
@@ -160,29 +170,38 @@
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp.0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="INg-cN-cMe">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <color key="tintColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
             </tableViewCellContentView>
+            <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="131" y="522"/>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="zJt-OA-nVX" style="IBUITableViewCellStyleDefault" id="kA7-DJ-unt">
+        <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="zJt-OA-nVX" detailTextLabel="C23-Qs-vWu" style="IBUITableViewCellStyleValue1" id="kA7-DJ-unt">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kA7-DJ-unt" id="gOM-lm-fg5">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Metode Pembayaran :" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zJt-OA-nVX">
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Metode Pembayaran :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zJt-OA-nVX">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                        <color key="textColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="1" colorSpace="deviceRGB"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="C23-Qs-vWu">
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                        <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="968" y="69"/>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="v13-pk-jca">
@@ -191,11 +210,14 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v13-pk-jca" id="pFk-He-4KN">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7jP-3s-t2c">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7jP-3s-t2c">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                         <subviews>
-                            <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjF-sg-pi6">
+                            <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjF-sg-pi6">
                                 <rect key="frame" x="15" y="0.0" width="237" height="43"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="237" id="bMm-Im-DQd"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                 <state key="normal" title="Punya Kode Promo Tokopedia?">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -204,8 +226,12 @@
                                     <action selector="tap:" destination="-1" eventType="touchUpInside" id="0OF-yP-udi"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0sG-Mm-AAO">
+                            <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0sG-Mm-AAO">
                                 <rect key="frame" x="288" y="11" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="Rck-qc-WJI"/>
+                                    <constraint firstAttribute="width" constant="20" id="dwJ-8s-sVO"/>
+                                </constraints>
                                 <state key="normal" backgroundImage="icon_info_grey.png">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -213,12 +239,54 @@
                                     <action selector="tap:" destination="-1" eventType="touchUpInside" id="XaI-qD-r8i"/>
                                 </connections>
                             </button>
+                            <button hidden="YES" opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ykh-pd-XjA">
+                                <rect key="frame" x="276" y="0.0" width="44" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="44" id="Ujl-vO-pMp"/>
+                                    <constraint firstAttribute="height" constant="44" id="YUC-7m-aWx"/>
+                                </constraints>
+                                <state key="normal" image="icon_cancel_grey.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="tap:" destination="-1" eventType="touchUpInside" id="GJW-We-M4W"/>
+                                </connections>
+                            </button>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7cA-0f-cDL">
+                                <rect key="frame" x="15" y="0.0" width="265" height="43"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="265" id="U6q-vl-Q2H"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="0sG-Mm-AAO" secondAttribute="bottom" constant="12" id="06U-mQ-akj"/>
+                            <constraint firstItem="fjF-sg-pi6" firstAttribute="leading" secondItem="7jP-3s-t2c" secondAttribute="leading" constant="15" id="14G-IY-1kN"/>
+                            <constraint firstAttribute="bottom" secondItem="fjF-sg-pi6" secondAttribute="bottom" id="3S0-Yb-YLi"/>
+                            <constraint firstItem="0sG-Mm-AAO" firstAttribute="top" secondItem="7jP-3s-t2c" secondAttribute="top" constant="11" id="8Ss-xS-a0l"/>
+                            <constraint firstItem="fjF-sg-pi6" firstAttribute="top" secondItem="7jP-3s-t2c" secondAttribute="top" id="9S2-WK-RFT"/>
+                            <constraint firstAttribute="trailing" secondItem="0sG-Mm-AAO" secondAttribute="trailing" constant="12" id="9We-wu-MUJ"/>
+                            <constraint firstAttribute="trailing" secondItem="Ykh-pd-XjA" secondAttribute="trailing" id="AhY-rp-JHk"/>
+                            <constraint firstItem="Ykh-pd-XjA" firstAttribute="top" secondItem="7jP-3s-t2c" secondAttribute="top" id="SXt-o7-oZE"/>
+                            <constraint firstItem="7cA-0f-cDL" firstAttribute="top" secondItem="7jP-3s-t2c" secondAttribute="top" id="WBo-Fo-6dh"/>
+                            <constraint firstAttribute="bottom" secondItem="Ykh-pd-XjA" secondAttribute="bottom" constant="-1" id="fFo-gi-2dA"/>
+                            <constraint firstAttribute="bottom" secondItem="7cA-0f-cDL" secondAttribute="bottom" id="flQ-RV-B77"/>
+                            <constraint firstItem="7cA-0f-cDL" firstAttribute="leading" secondItem="7jP-3s-t2c" secondAttribute="leading" constant="15" id="xRr-rV-6zX"/>
+                        </constraints>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="7jP-3s-t2c" firstAttribute="top" secondItem="pFk-He-4KN" secondAttribute="top" id="5Ad-du-8Jv"/>
+                    <constraint firstAttribute="bottom" secondItem="7jP-3s-t2c" secondAttribute="bottom" id="TkE-Nx-emT"/>
+                    <constraint firstAttribute="trailing" secondItem="7jP-3s-t2c" secondAttribute="trailing" id="hZH-Bo-iaK"/>
+                    <constraint firstItem="7jP-3s-t2c" firstAttribute="leading" secondItem="pFk-He-4KN" secondAttribute="leading" id="vSI-H6-43s"/>
+                </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="567" y="87"/>
+            <point key="canvasLocation" x="567" y="85"/>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="u1p-Qm-vqC" detailTextLabel="6yM-Im-p4G" style="IBUITableViewCellStyleValue1" id="hTf-We-spw">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -251,7 +319,7 @@
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sI2-vl-FxW">
+                    <switch opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="sI2-vl-FxW">
                         <rect key="frame" x="259" y="6" width="51" height="31"/>
                     </switch>
                 </subviews>
@@ -260,12 +328,16 @@
             <point key="canvasLocation" x="567" y="175"/>
         </tableViewCell>
         <view contentMode="scaleToFill" id="esW-Te-z8M" userLabel="FooterView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IRs-zw-g4I">
-                    <rect key="frame" x="15" y="15" width="290" height="40"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IRs-zw-g4I">
+                    <rect key="frame" x="15" y="3" width="290" height="40"/>
                     <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="CNS-W0-hfO"/>
+                        <constraint firstAttribute="height" constant="40" id="hvC-5J-aSB"/>
+                    </constraints>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                     <inset key="contentEdgeInsets" minX="0.0" minY="1" maxX="0.0" maxY="0.0"/>
                     <state key="normal" title="CHECKOUT">
@@ -277,17 +349,23 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="IRs-zw-g4I" secondAttribute="bottom" constant="12" id="RXY-B5-ffw"/>
+                <constraint firstItem="IRs-zw-g4I" firstAttribute="top" secondItem="esW-Te-z8M" secondAttribute="top" constant="3" id="VIn-Wh-AdN"/>
+                <constraint firstAttribute="trailing" secondItem="IRs-zw-g4I" secondAttribute="trailing" constant="15" id="qKj-fA-mlg"/>
+                <constraint firstItem="IRs-zw-g4I" firstAttribute="leading" secondItem="esW-Te-z8M" secondAttribute="leading" constant="15" id="qj9-db-7He"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="597" y="681"/>
+            <point key="canvasLocation" x="597" y="680.5"/>
         </view>
         <view contentMode="scaleToFill" id="TE4-R8-Zrx" userLabel="FooterView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="55"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aJd-4o-xMK">
-                    <rect key="frame" x="0.0" y="30" width="320" height="50"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aJd-4o-xMK">
+                    <rect key="frame" x="15" y="3" width="290" height="40"/>
                     <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="16"/>
                     <state key="normal" title="BAYAR">
@@ -299,7 +377,13 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="aJd-4o-xMK" firstAttribute="leading" secondItem="TE4-R8-Zrx" secondAttribute="leading" constant="15" id="C39-xg-gXj"/>
+                <constraint firstItem="aJd-4o-xMK" firstAttribute="top" secondItem="TE4-R8-Zrx" secondAttribute="top" constant="3" id="Csn-9D-UR8"/>
+                <constraint firstAttribute="bottom" secondItem="aJd-4o-xMK" secondAttribute="bottom" constant="12" id="PwI-e3-CRc"/>
+                <constraint firstAttribute="trailing" secondItem="aJd-4o-xMK" secondAttribute="trailing" constant="15" id="tdA-T5-kWH"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
@@ -357,28 +441,46 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="tTs-1N-0vt" id="dU1-08-Srw">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EqA-4b-BnS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EqA-4b-BnS">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qX7-0U-F1U">
-                                <rect key="frame" x="0.0" y="0.0" width="60" height="44"/>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qX7-0U-F1U">
+                                <rect key="frame" x="0.0" y="0.0" width="60" height="43"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rp." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0BF-Ay-mae">
-                                        <rect key="frame" x="15" y="11" width="42" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0BF-Ay-mae">
+                                        <rect key="frame" x="15" y="0.0" width="44" height="43"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="43" id="3w3-Tr-l0k"/>
+                                            <constraint firstAttribute="width" constant="44" id="VAK-HR-snh"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xeG-pX-8fj">
-                                        <rect key="frame" x="59" y="0.0" width="1" height="40"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xeG-pX-8fj">
+                                        <rect key="frame" x="59" y="0.0" width="1" height="43"/>
                                         <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="f7c-Vn-Jhf"/>
+                                        </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="xeG-pX-8fj" secondAttribute="bottom" id="5bZ-rp-YmT"/>
+                                    <constraint firstAttribute="trailing" secondItem="xeG-pX-8fj" secondAttribute="trailing" id="HfS-yV-4lw"/>
+                                    <constraint firstItem="xeG-pX-8fj" firstAttribute="leading" secondItem="0BF-Ay-mae" secondAttribute="trailing" id="HiV-v5-VoE"/>
+                                    <constraint firstItem="0BF-Ay-mae" firstAttribute="top" secondItem="qX7-0U-F1U" secondAttribute="top" id="NP4-0O-jSP"/>
+                                    <constraint firstAttribute="height" constant="43" id="ZGZ-D4-FB2"/>
+                                    <constraint firstItem="xeG-pX-8fj" firstAttribute="top" secondItem="qX7-0U-F1U" secondAttribute="top" id="btM-Z9-J5n"/>
+                                    <constraint firstAttribute="width" constant="60" id="nnK-Wh-BbT"/>
+                                    <constraint firstItem="0BF-Ay-mae" firstAttribute="leading" secondItem="qX7-0U-F1U" secondAttribute="leading" constant="15" id="vkV-Rz-Cjw"/>
+                                    <constraint firstAttribute="bottom" secondItem="0BF-Ay-mae" secondAttribute="bottom" id="yL1-ge-uia"/>
+                                </constraints>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Pw6-lS-pBR">
-                                <rect key="frame" x="61" y="0.0" width="244" height="44"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Ketik jumlah saldo yang digunakan" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="Pw6-lS-pBR">
+                                <rect key="frame" x="70" y="3" width="235" height="40"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                 <connections>
                                     <outlet property="delegate" destination="-1" id="glh-7m-2Ki"/>
@@ -386,10 +488,25 @@
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Pw6-lS-pBR" firstAttribute="top" secondItem="EqA-4b-BnS" secondAttribute="top" constant="3" id="1OG-u3-5Nb"/>
+                            <constraint firstItem="qX7-0U-F1U" firstAttribute="top" secondItem="EqA-4b-BnS" secondAttribute="top" id="7N9-TO-MrP"/>
+                            <constraint firstAttribute="trailing" secondItem="Pw6-lS-pBR" secondAttribute="trailing" constant="15" id="OMo-al-2L8"/>
+                            <constraint firstItem="Pw6-lS-pBR" firstAttribute="leading" secondItem="qX7-0U-F1U" secondAttribute="trailing" constant="10" id="bJe-Ah-UI7"/>
+                            <constraint firstAttribute="bottom" secondItem="Pw6-lS-pBR" secondAttribute="bottom" id="fHH-Y6-ReS"/>
+                            <constraint firstItem="qX7-0U-F1U" firstAttribute="leading" secondItem="EqA-4b-BnS" secondAttribute="leading" id="h5q-Kg-8U4"/>
+                            <constraint firstAttribute="bottom" secondItem="qX7-0U-F1U" secondAttribute="bottom" id="iPR-ct-hJ9"/>
+                        </constraints>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="EqA-4b-BnS" firstAttribute="leading" secondItem="dU1-08-Srw" secondAttribute="leading" id="1NV-R3-tHy"/>
+                    <constraint firstAttribute="bottom" secondItem="EqA-4b-BnS" secondAttribute="bottom" id="PwZ-FN-GCp"/>
+                    <constraint firstAttribute="trailing" secondItem="EqA-4b-BnS" secondAttribute="trailing" id="YaN-yy-beZ"/>
+                    <constraint firstItem="EqA-4b-BnS" firstAttribute="top" secondItem="dU1-08-Srw" secondAttribute="top" id="c14-qu-v2L"/>
+                </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="504" y="336"/>
+            <point key="canvasLocation" x="161" y="637"/>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="Mbe-do-c9y">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -397,29 +514,49 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Mbe-do-c9y" id="cbv-gu-2yJ">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZEg-l7-f8o">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZEg-l7-f8o">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rGT-eV-rjU">
-                                <rect key="frame" x="0.0" y="0.0" width="108" height="44"/>
+                            <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rGT-eV-rjU">
+                                <rect key="frame" x="0.0" y="0.0" width="108" height="43"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eYt-OL-mvd">
-                                        <rect key="frame" x="15" y="11" width="73" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eYt-OL-mvd">
+                                        <rect key="frame" x="15" y="0.0" width="93" height="43"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="43" id="L57-bu-6ei"/>
+                                            <constraint firstAttribute="width" constant="93" id="Qek-x4-vgd"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tb8-S7-7jl">
-                                        <rect key="frame" x="107" y="0.0" width="1" height="40"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tb8-S7-7jl">
+                                        <rect key="frame" x="107" y="0.0" width="1" height="43"/>
                                         <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="WH5-Vy-695"/>
+                                        </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="Tb8-S7-7jl" firstAttribute="top" secondItem="rGT-eV-rjU" secondAttribute="top" id="79l-Da-BQi"/>
+                                    <constraint firstAttribute="bottom" secondItem="eYt-OL-mvd" secondAttribute="bottom" id="92A-IT-bIq"/>
+                                    <constraint firstAttribute="bottom" secondItem="Tb8-S7-7jl" secondAttribute="bottom" id="BOJ-qg-AI2"/>
+                                    <constraint firstAttribute="trailing" secondItem="Tb8-S7-7jl" secondAttribute="trailing" id="Nx1-PA-rSc"/>
+                                    <constraint firstAttribute="trailing" secondItem="eYt-OL-mvd" secondAttribute="trailing" id="QLq-on-WMU"/>
+                                    <constraint firstItem="eYt-OL-mvd" firstAttribute="top" secondItem="rGT-eV-rjU" secondAttribute="top" id="Yu5-O8-ocs"/>
+                                    <constraint firstItem="eYt-OL-mvd" firstAttribute="leading" secondItem="rGT-eV-rjU" secondAttribute="leading" constant="15" id="zaH-sy-X5x"/>
+                                </constraints>
                             </view>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kata sandi" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hJb-lx-Y9Z">
-                                <rect key="frame" x="111" y="0.0" width="201" height="44"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kata sandi" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hJb-lx-Y9Z">
+                                <rect key="frame" x="118" y="3" width="187" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="D5Y-Tt-w7O"/>
+                                    <constraint firstAttribute="width" constant="187" id="ZhB-OK-u0w"/>
+                                </constraints>
                                 <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                 <connections>
                                     <outlet property="delegate" destination="-1" id="aer-zZ-Rd3"/>
@@ -427,13 +564,26 @@
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rGT-eV-rjU" firstAttribute="top" secondItem="hJb-lx-Y9Z" secondAttribute="top" constant="-3" id="HoY-Jx-5Fc"/>
+                            <constraint firstItem="rGT-eV-rjU" firstAttribute="top" secondItem="ZEg-l7-f8o" secondAttribute="top" id="deZ-vC-NZh"/>
+                            <constraint firstItem="rGT-eV-rjU" firstAttribute="leading" secondItem="ZEg-l7-f8o" secondAttribute="leading" id="fNO-TT-Alk"/>
+                            <constraint firstItem="hJb-lx-Y9Z" firstAttribute="leading" secondItem="rGT-eV-rjU" secondAttribute="trailing" constant="10" id="itb-vd-BPZ"/>
+                        </constraints>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="ZEg-l7-f8o" secondAttribute="trailing" id="29W-lk-dSI"/>
+                    <constraint firstAttribute="bottom" secondItem="ZEg-l7-f8o" secondAttribute="bottom" id="XSz-u4-vSj"/>
+                    <constraint firstItem="ZEg-l7-f8o" firstAttribute="leading" secondItem="cbv-gu-2yJ" secondAttribute="leading" id="tkS-4P-ke2"/>
+                    <constraint firstItem="ZEg-l7-f8o" firstAttribute="top" secondItem="cbv-gu-2yJ" secondAttribute="top" id="xJH-ab-Hai"/>
+                </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="99" y="474"/>
+            <point key="canvasLocation" x="161" y="736"/>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="icon_cancel_grey.png" width="14" height="14"/>
         <image name="icon_info_grey.png" width="20" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

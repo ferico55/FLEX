@@ -21,4 +21,9 @@
 @property (nonatomic, strong) NSString *order_depositable;
 @property (nonatomic, strong) NSString *order_grand_total;
 
+@property (nonatomic, strong) NSString *order_payment_amount;
+@property (nonatomic, strong) NSString *order_payment_month;
+@property (nonatomic, strong) NSString *order_payment_day;
+@property (nonatomic, strong) NSString *order_payment_year;
+
 @end

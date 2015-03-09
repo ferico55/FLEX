@@ -158,6 +158,10 @@
 //    _cachecontroller.URLCacheInterval = 86400.0;
     _cachecontroller.URLCacheInterval = 0;
     [_cachecontroller initCacheWithDocumentPath:path];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
+                                                 name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
+                                               object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -727,7 +731,17 @@
     [self refreshView:nil];
     [_act startAnimating];
     _table.tableFooterView = _footer;
+}
 
+#pragma mark - Category notification
+
+- (void)changeCategory:(NSNotification *)notification
+{
+    [_product removeAllObjects];
+    [_params setObject:[notification.userInfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY] forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    [self refreshView:nil];
+    _table.tableFooterView = _footer;
+    [_act startAnimating];
 }
 
 @end

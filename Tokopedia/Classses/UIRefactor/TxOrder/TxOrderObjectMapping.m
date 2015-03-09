@@ -80,7 +80,8 @@
     RKObjectMapping *orderShopMapping = [RKObjectMapping mappingForClass:[OrderShop class]];
     [orderShopMapping addAttributeMappingsFromArray:@[API_SHOP_URI_KEY,
                                                       API_SHOP_ID_KEY,
-                                                      API_SHOP_NAME_KEY
+                                                      API_SHOP_NAME_KEY,
+                                                      API_SHOP_PIC_KEY
                                                       ]];
     return orderShopMapping;
 }
@@ -146,6 +147,64 @@
                                                         API_DETAIL_DROPSHIP_TELP
                                                         ]];
     return orderDetailMapping;
+}
+
+-(RKObjectMapping*)orderDeadlineMapping
+{
+    RKObjectMapping *deadlineMapping = [RKObjectMapping mappingForClass:[OrderDeadline class]];
+    [deadlineMapping addAttributeMappingsFromArray:@[API_DEADLINE_PROCESS_DAY_LEFT_KEY,
+                                                     API_DEADLINE_SHIPPING_DAY_LEFT_KEY
+                                                     ]];
+    
+    return deadlineMapping;
+}
+
+-(RKObjectMapping*)orderLastMapping
+{
+    RKObjectMapping *orderLastMapping = [RKObjectMapping mappingForClass:[OrderLast class]];
+    [orderLastMapping addAttributeMappingsFromDictionary:@{
+                                                           API_LAST_ORDER_ID            : API_LAST_ORDER_ID,
+                                                           API_LAST_SHIPMENT_ID         : API_LAST_SHIPMENT_ID,
+                                                           API_LAST_EST_SHIPPING_LEFT   : API_LAST_EST_SHIPPING_LEFT,
+                                                           API_LAST_ORDER_STATUS        : API_LAST_ORDER_STATUS,
+                                                           API_LAST_ORDER_STATUS_DATE   : API_LAST_ORDER_STATUS_DATE,
+                                                           API_LAST_POD_CODE            : API_LAST_POD_CODE,
+                                                           API_LAST_POD_DESC            : API_LAST_POD_DESC,
+                                                           API_LAST_SHIPPING_REF_NUM    : API_LAST_SHIPPING_REF_NUM,
+                                                           API_LAST_POD_RECEIVER        : API_LAST_POD_RECEIVER,
+                                                           API_LAST_COMMENTS            : API_LAST_COMMENTS,
+                                                           API_LAST_BUYER_STATUS        : API_LAST_BUYER_STATUS,
+                                                           API_LAST_STATUS_DATE_WIB     : API_LAST_STATUS_DATE_WIB,
+                                                           API_LAST_SELLER_STATUS       : API_LAST_SELLER_STATUS,
+                                                           }];
+    return orderLastMapping;
+}
+
+-(RKObjectMapping*)orderHistoryMapping
+{
+    RKObjectMapping *orderHistoryMapping = [RKObjectMapping mappingForClass:[OrderHistory class]];
+    [orderHistoryMapping addAttributeMappingsFromDictionary:@{
+                                                              API_HISTORY_STATUS_DATE       : API_HISTORY_STATUS_DATE,
+                                                              API_HISTORY_STATUS_DATE_FULL  : API_HISTORY_STATUS_DATE_FULL,
+                                                              API_HISTORY_ORDER_STATUS      : API_HISTORY_ORDER_STATUS,
+                                                              API_HISTORY_COMMENTS          : API_HISTORY_COMMENTS,
+                                                              API_HISTORY_ACTION_BY         : API_HISTORY_ACTION_BY,
+                                                              API_HISTORY_BUYER_STATUS      : API_HISTORY_BUYER_STATUS,
+                                                              API_HISTORY_SELLER_STATUS     : API_HISTORY_SELLER_STATUS,
+                                                              }];
+    return orderHistoryMapping;
+}
+
+-(RKObjectMapping*)orderButtonMapping
+{
+    RKObjectMapping *orderButtonMapping = [RKObjectMapping mappingForClass:[OrderButton class]];
+    [orderButtonMapping addAttributeMappingsFromArray:@[API_BUTTON_OPEN_DISPUTE_KEY,
+                                                        API_BUTTON_RES_CENTER_URL_KEY,
+                                                        API_BUTTON_OPEN_TIME_LEFT_KEY,
+                                                        API_BUTTON_RES_CENTER_GO_TO_KEY,
+                                                        API_BUTTON_UPLOAD_PROOF_KEY
+                                                        ]];
+    return orderButtonMapping;
 }
 
 #pragma mark - Confirmed
@@ -217,7 +276,12 @@
                                                   API_ORDER_FORM_CONFIRMATION_CODE_KEY,
                                                   API_ORDER_FORM_DEPOSIT_USED_KEY,
                                                   API_ORDER_FORM_DEPOSITABLE_KEY,
-                                                  API_ORDER_FORM_GRAND_TOTAL_KEY]];
+                                                  API_ORDER_FORM_GRAND_TOTAL_KEY,
+                                                  API_ORDER_FORM_PAYMENT_DAY_KEY,
+                                                  API_ORDER_FORM_PAYMENT_MONTH_KEY,
+                                                  API_ORDER_FORM_PAYMENT_YEAR_KEY,
+                                                  API_ORDER_FORM_PAYMENT_AMOUNT_KEY
+                                                  ]];
     return orderMapping;
 }
 

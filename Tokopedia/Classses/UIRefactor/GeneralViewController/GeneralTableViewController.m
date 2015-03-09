@@ -28,13 +28,6 @@
 - (void)viewDidLoad {
 
     [super viewDidLoad];
-
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                     style:UIBarButtonItemStyleBordered
-                                                                    target:self
-                                                                    action:@selector(tap:)];
-    cancelButton.tag = 1;
-    self.navigationItem.backBarButtonItem = cancelButton;
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 5.0;
@@ -65,12 +58,29 @@
         
         _searchResults = [NSMutableArray new];
     }
-}
+    
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
+                                                                   style:UIBarButtonItemStyleDone
+                                                                  target:self
+                                                                  action:@selector(tap:)];
+    doneButton.tag = 1;
+    self.navigationItem.rightBarButtonItem = doneButton;
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    [self.delegate didSelectObject:_selectedObject senderIndexPath:_senderIndexPath];
+    if (_isPresentedViewController) {
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                         style:UIBarButtonItemStyleBordered
+                                                                        target:self
+                                                                        action:@selector(tap:)];
+        cancelButton.tag = 2;
+        self.navigationItem.leftBarButtonItem = cancelButton;
+    } else {
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                       style:UIBarButtonItemStyleBordered
+                                                                      target:self
+                                                                      action:@selector(tap:)];
+        backButton.tag = 2;
+        self.navigationItem.backBarButtonItem = backButton;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -174,8 +184,24 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
         if (button.tag == 1) {
-            [self.delegate didSelectObject:_selectedObject senderIndexPath:_senderIndexPath];
-            [self.navigationController popViewControllerAnimated:YES];            
+            if ([self.delegate respondsToSelector:@selector(didSelectObject:senderIndexPath:)]) {
+                [self.delegate didSelectObject:_selectedObject senderIndexPath:_senderIndexPath];
+            } else if ([self.delegate respondsToSelector:@selector(didSelectObject:)]) {
+                [self.delegate didSelectObject:_selectedObject];
+            } else if ([self.delegate respondsToSelector:@selector(viewController:didSelectObject:)]) {
+                [self.delegate viewController:self didSelectObject:_selectedObject];
+            }
+            if (_isPresentedViewController) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            } else {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
+        } else if (button.tag == 2) {
+            if (_isPresentedViewController) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            } else {
+                [self.navigationController popViewControllerAnimated:YES];
+            }
         }
     }
 }

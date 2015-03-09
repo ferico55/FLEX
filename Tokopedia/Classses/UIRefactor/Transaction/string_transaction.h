@@ -70,7 +70,7 @@ typedef enum
 
 #define TITLE_FORM_MANDIRI_CLICK_PAY @"Form Mandiri Click Pay"
 
-#define STRING_DEFAULT_PAYMENT @"Pilih Metode Pembayaran"
+#define STRING_DEFAULT_PAYMENT @"Pilih"
 #define STRING_TOTAL_TAGIHAN @"Total Tagihan"
 #define STRING_JUMLAH_YANG_SUDAH_DIBAYAR @"Jumlah yang sudah dibayar"
 #define STRING_SALDO_TOKOPEDIA_TERPAKAI @"Saldo Tokopedia terpakai"
@@ -314,7 +314,7 @@ typedef enum
 #define FORMAT_CART_DROPSHIP_NAME_KEY @"dropship_name-%zd-%zd-%zd-%zd"
 #define FORMAT_CART_DROPSHIP_PHONE_KEY @"dropship_telp-%zd-%zd-%zd-%zd"
 #define FORMAT_CART_CANCEL_PARTIAL_PHONE_KEY @"fcancel_partial-%zd-%zd-%zd"
-#define FORMAT_CART_DROPSHIP_STR_KEY @"%zd~%zd~%zd~%zd"
+#define FORMAT_CART_DROPSHIP_STR_KEY @"%zd~%zd~%zd"
 #define FORMAT_CART_PARTIAL_STR_KEY FORMAT_CART_DROPSHIP_STR_KEY
 
 #define FORMAT_SUCCESS_BUY @"Terima kasih, Anda telah berhasil melakukan checkout pemesanan dengan memilih pembayaran %@"

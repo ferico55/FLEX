@@ -15,10 +15,15 @@
 
 #import "NotificationManager.h"
 
-@interface SearchViewController ()<
+@interface SearchViewController ()
+<
     UISearchBarDelegate,
     UISearchDisplayDelegate,
-    NotificationDelegate, UITableViewDelegate, UITableViewDataSource>
+    UITableViewDelegate,
+    UITableViewDataSource,
+    NotificationDelegate,
+    NotificationManagerDelegate
+>
 {
     /** real time search result array **/
     NSMutableArray *_searchresultarray;
@@ -48,7 +53,6 @@
 
 @implementation SearchViewController
 
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:@"SearchViewController" bundle:nibBundleOrNil];
@@ -63,16 +67,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(windowDidTap)
-                                                 name:@"tapNotification" object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(initNotificationManager)
-                                                 name:@"reloadNotificationBar" object:nil];
-    
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(goToViewController:) name:@"goToViewController" object:nil];
     
     [self.navigationController.navigationBar setTranslucent:NO];
 
@@ -100,6 +94,11 @@
 
     [self initNotificationManager];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadNotification)
+                                                 name:@"reloadNotification"
+                                               object:nil];
+    
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
@@ -109,9 +108,10 @@
 //    self.hidesBottomBarWhenPushed = YES;
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Memory Management
@@ -148,15 +148,7 @@
 {
     NSString *destPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
     destPath = [destPath stringByAppendingPathComponent:kTKPDSEARCH_SEARCHHISTORYPATHKEY];
-    
-    // If the file doesn't exist in the Documents Folder, copy it.
-//    NSFileManager *fileManager = [NSFileManager defaultManager];
-//    
-//    if (![fileManager fileExistsAtPath:destPath]) {
-//        NSString *sourcePath = [[NSBundle mainBundle] pathForResource:@"history_search" ofType:@"plist"];
-//        [fileManager copyItemAtPath:sourcePath toPath:destPath error:nil];
-//    }
-    
+        
     // Load the Property List
     [_historysearch addObjectsFromArray:[[NSArray alloc] initWithContentsOfFile:destPath]];
     
@@ -372,11 +364,12 @@
     _data = data;
 }
 
-
 #pragma mark - Notification Manager
+
 - (void)initNotificationManager {
     _notifManager = [NotificationManager new];
     [_notifManager setViewController:self];
+    _notifManager.delegate = self;
     self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
 }
 
@@ -388,10 +381,24 @@
     [_notifManager tapWindowBar];
 }
 
-- (void)goToViewController:(NSNotification*)notification {
-    NSDictionary *userinfo = notification.userInfo;
-    [self tapWindowBar];
+#pragma mark - Notification delegate
+
+- (void)reloadNotification
+{
+    [self initNotificationManager];
 }
 
+- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
+{
+    [notificationManager tapWindowBar];
+    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
+}
+
+- (void)pushViewController:(id)viewController
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:viewController animated:YES];
+    self.hidesBottomBarWhenPushed = NO;
+}
 
 @end

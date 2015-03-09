@@ -43,6 +43,8 @@
     NSOperationQueue *_operationQueue;
     NSTimer *_timer;
     
+    NSDictionary* _auth;
+    
     NSString *_cachePath;
     URLCacheController *_cacheController;
     URLCacheConnection *_cacheConnection;
@@ -50,6 +52,7 @@
     
     ShopDescriptionView *_descriptionView;
     ShopStatView *_statView;
+
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
@@ -102,9 +105,15 @@
     self.rightButton.layer.borderWidth = 1;
     self.rightButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
     
-    NSDictionary *auth = (NSDictionary *)[_data objectForKey:kTKPD_AUTHKEY];
-    if ([auth allValues] > 0) {
-        if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
+    if (!_auth) {
+        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+        NSDictionary* auth = [secureStorage keychainDictionary];
+        _auth = auth;
+    }
+    
+    //NSDictionary *auth = (NSDictionary *)[_data objectForKey:kTKPD_AUTHKEY]?:@{};
+    if ([_auth allValues] > 0) {
+        if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
             [self.leftButton setTitle:@"Settings" forState:UIControlStateNormal];
             [self.leftButton setImage:[UIImage imageNamed:@"icon_setting_grey"] forState:UIControlStateNormal];
 
@@ -535,9 +544,10 @@
 #pragma clang diagnostic pop
         
     } failure:nil];
+    
 
-    NSDictionary *auth = (NSDictionary *)[_data objectForKey:kTKPD_AUTHKEY];
-    if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue] != [[auth objectForKey:kTKPD_SHOPIDKEY] integerValue]) {
+    //NSDictionary *auth = (NSDictionary *)[_data objectForKey:kTKPD_AUTHKEY];
+    if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue] != [[_auth objectForKey:kTKPD_SHOPIDKEY] integerValue]) {
 
         if (_shop.result.info.shop_already_favorited == 1) {
             _rightButton.tag = 3;
@@ -597,14 +607,14 @@
 }
 
 
--(void)favoriteShop:(NSInteger)shop_id sender:(UIButton*)btn
+-(void)favoriteShop:(NSString *)shop_id sender:(UIButton*)btn
 {
     if (_request.isExecuting) return;
 
     _requestCount ++;
 
     NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY   :   @"fav_shop",
-                            @"shop_id"              :   [@(shop_id) stringValue]};
+                            @"shop_id"              :   shop_id};
     
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
@@ -670,12 +680,13 @@
 
 - (IBAction)tap:(id)sender
 {
-    NSDictionary *auth = (NSDictionary *)[_data objectForKey:kTKPD_AUTHKEY];
+    
+    //NSDictionary *auth = (NSDictionary *)[_data objectForKey:kTKPD_AUTHKEY];
     
     UIButton *button = (UIButton *)sender;
     switch (button.tag) {
         case 1: {
-            if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY] integerValue]) {
+            if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY] integerValue]) {
                 ShopSettingViewController *settingController = [ShopSettingViewController new];
                 settingController.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                                            kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result
@@ -695,7 +706,7 @@
 
         case 2: {
             
-            if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY] integerValue]) {
+            if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY] integerValue]) {
                 ProductAddEditViewController *productViewController = [ProductAddEditViewController new];
                 productViewController.data = @{
                                                kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},

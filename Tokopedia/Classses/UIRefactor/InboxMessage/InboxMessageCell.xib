@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -17,27 +17,28 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="84" id="3bV-z1-EMy" userLabel="InboxMessageCellIdentifier" customClass="InboxMessageCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3bV-z1-EMy" id="miF-nA-BVp">
+            <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3bV-z1-EMy" id="miF-nA-BVp">
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rYu-on-PC9">
-                        <rect key="frame" x="8" y="15" width="334" height="56"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rYu-on-PC9">
+                        <rect key="frame" x="15" y="13" width="305" height="57"/>
                         <subviews>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_unread.png" translatesAutoresizingMaskIntoConstraints="NO" id="rD6-FP-ZPL">
                                 <rect key="frame" x="281" y="24" width="10" height="10"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PPG-Zx-wp8">
                                 <rect key="frame" x="64" y="18" width="198" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kNT-dz-YOB">
-                                <rect key="frame" x="1" y="3" width="50" height="50"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pKq-no-j9h">
-                                <rect key="frame" x="1" y="3" width="50" height="50"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pKq-no-j9h">
+                                <rect key="frame" x="0.0" y="3" width="51" height="51"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="51" id="OFd-W5-K4b"/>
+                                    <constraint firstAttribute="height" constant="51" id="h4q-rj-XqI"/>
+                                </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WZM-UR-E6t">
                                 <rect key="frame" x="64" y="3" width="206" height="21"/>
@@ -51,16 +52,21 @@
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button hidden="YES" opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cc1-sF-lQo">
-                                <rect key="frame" x="40" y="3" width="20" height="20"/>
-                                <state key="normal" image="icon_checkmark_1.png">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="pKq-no-j9h" firstAttribute="leading" secondItem="rYu-on-PC9" secondAttribute="leading" id="RuU-M4-u2M"/>
+                            <constraint firstAttribute="bottom" secondItem="pKq-no-j9h" secondAttribute="bottom" constant="3" id="Vy9-i2-JZM"/>
+                            <constraint firstItem="pKq-no-j9h" firstAttribute="top" secondItem="rYu-on-PC9" secondAttribute="top" constant="3" id="aDi-vB-YdZ"/>
+                        </constraints>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="rYu-on-PC9" firstAttribute="top" secondItem="miF-nA-BVp" secondAttribute="top" constant="13" id="311-rW-nEO"/>
+                    <constraint firstAttribute="bottom" secondItem="rYu-on-PC9" secondAttribute="bottom" constant="13" id="369-gG-POh"/>
+                    <constraint firstItem="rYu-on-PC9" firstAttribute="leading" secondItem="miF-nA-BVp" secondAttribute="leading" constant="15" id="bXy-HO-471"/>
+                    <constraint firstAttribute="trailing" secondItem="rYu-on-PC9" secondAttribute="trailing" id="pe4-0F-buO"/>
+                </constraints>
             </tableViewCellContentView>
             <gestureRecognizers/>
             <connections>
@@ -69,14 +75,12 @@
                 <outlet property="message_reply" destination="vmQ-ds-6vr" id="IAQ-PI-Egp"/>
                 <outlet property="message_title" destination="WZM-UR-E6t" id="3Re-VH-7MU"/>
                 <outlet property="movingview" destination="rYu-on-PC9" id="2iL-Nu-MFs"/>
-                <outlet property="multicheckbtn" destination="cc1-sF-lQo" id="DCB-S1-KhV"/>
                 <outlet property="userimageview" destination="pKq-no-j9h" id="tkv-5W-eGo"/>
             </connections>
             <point key="canvasLocation" x="140" y="162"/>
         </tableViewCell>
     </objects>
     <resources>
-        <image name="icon_checkmark_1.png" width="40" height="40"/>
         <image name="icon_unread.png" width="40" height="40"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

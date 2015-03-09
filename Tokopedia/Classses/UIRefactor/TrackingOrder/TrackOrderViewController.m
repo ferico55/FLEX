@@ -13,6 +13,7 @@
 #import "TrackOrderDetail.h"
 
 #import "TrackOrderViewController.h"
+#import "TrackOrderHistoryCell.h"
 
 @interface TrackOrderViewController ()
 <
@@ -35,19 +36,24 @@
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 @property (weak, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (weak, nonatomic) IBOutlet UILabel *invalidStatusTitle;
+@property (strong, nonatomic) IBOutlet UIView *headerHistoryView;
+
+@property (weak, nonatomic) IBOutlet UILabel *invalidStatusDescLabel;
+@property (strong, nonatomic) IBOutlet UIView *invalidHeaderView;
 
 @end
 
 @implementation TrackOrderViewController
 
-typedef enum {
-    ORDER_SHIPPING                  = 500,
-    ORDER_SHIPPING_TRACKER_INVALID  = 520,
-    ORDER_SHIPPING_REF_NUM_EDITED   = 530,
-    ORDER_DELIVERED                 = 600,
-    ORDER_DELIVERED_CONFIRM         = 610,
-    ORDER_DELIVERED_DUE_DATE        = 620,
-} ORDER_STATUS;
+//typedef enum {
+//    ORDER_SHIPPING                  = 500,
+//    ORDER_SHIPPING_TRACKER_INVALID  = 520,
+//    ORDER_SHIPPING_REF_NUM_EDITED   = 530,
+//    ORDER_DELIVERED                 = 600,
+//    ORDER_DELIVERED_CONFIRM         = 610,
+//    ORDER_DELIVERED_DUE_DATE        = 620,
+//} ORDER_STATUS;
 
 - (void)viewDidLoad {
     
@@ -61,6 +67,12 @@ typedef enum {
     _tableView.tableFooterView = _footerView;
     [_activityIndicator startAnimating];
     
+    //TODO:: Invalid Detail Text
+    NSString *invalidDetail = @"Apabila sudah lewat 3x24 jam masih tidak ada update status pengiriman, ada beberapa kemungkinan:\n    \u25CF Penjual keliru menginput nomor resi atau tanggal pengiriman.\n    \u25CF Penjual menggunakan kurir yang berbeda dari pilihan pembeli.\n\nPembeli disarankan menghubungi penjual bersangkutan untuk informasi lebih lanjut.\n\nNamun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.";
+    _invalidStatusDescLabel.text = invalidDetail;
+    [_invalidStatusDescLabel multipleLineLabel:_invalidStatusDescLabel];
+    [_invalidStatusTitle multipleLineLabel:_invalidStatusTitle];
+    
     [self configureRestKit];
     [self request];
 }
@@ -72,6 +84,11 @@ typedef enum {
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    
+    if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_TRACKER_INVALID) {
+        return 0;
+    }
+    
     NSInteger sections = 0;
     if (_trackingOrder.detail.shipper_name) {
         sections += 2;    
@@ -83,6 +100,11 @@ typedef enum {
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    
+    if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_TRACKER_INVALID) {
+        return 0;
+    }
+    
     NSInteger rows = 0;
     if (_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {
         if (section == 0 || section == 1) rows = 2;
@@ -103,7 +125,8 @@ typedef enum {
             if (indexPath.section < 2){
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
             } else {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
+                cell = [self cellHistoryAtIndexPath:indexPath];
+                //cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
             }
         } else if (_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] == 0) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
@@ -120,14 +143,35 @@ typedef enum {
         if (indexPath.section < 2) {
             [self configureTrackingDetailCell:cell indexPath:indexPath];
         } else {
-            [self configureTrackingHistoryCell:cell indexPath:indexPath];
+            cell = [self cellHistoryAtIndexPath:indexPath];
+            //[self configureTrackingHistoryCell:cell indexPath:indexPath];
         }
     } else if (_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] == 0) {
         [self configureTrackingDetailCell:cell indexPath:indexPath];
     } else if (!_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {
-        [self configureTrackingHistoryCell:cell indexPath:indexPath];
+        cell = [self cellHistoryAtIndexPath:indexPath];
+        //[self configureTrackingHistoryCell:cell indexPath:indexPath];
     }
 
+    return cell;
+}
+
+-(UITableViewCell*)cellHistoryAtIndexPath:(NSIndexPath*)indexPath
+{
+    TrackOrderHistoryCell *cell;
+    NSString *cellID = TRACK_ORDER_HISTORY_CELL_IDENTIFIER;
+    
+    cell = (TrackOrderHistoryCell*)[_tableView dequeueReusableCellWithIdentifier:cellID];
+    if (cell == nil) {
+        cell = [TrackOrderHistoryCell newCell];
+    }
+    
+    TrackOrderHistory *trackHistory = _trackingOrder.track_history[indexPath.row];
+    
+    cell.dateHistoryLabel.text = trackHistory.date;
+    cell.statusLabel.text = trackHistory.status;
+    cell.cityLabel.text = trackHistory.city;
+    
     return cell;
 }
 
@@ -152,24 +196,54 @@ typedef enum {
     }
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_TRACKER_INVALID) {
+        return 0;
+    }
+    
+    if (_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {
+        if (indexPath.section < 2) {
+            return 44;
+        } else {
+            return 90;
+            //return 51;
+        }
+    } else if (!_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {
+        return 90;
+        //return 51;
+    }
+    return 44;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_TRACKER_INVALID) {
+        return 0;
+    }
+    
     if (_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {
         if (section < 2) {
             return 41;
         } else {
-            return 51;
+            return 88;
+            //return 51;
         }
     } else if (_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] == 0) {
         return 41;
     } else if (!_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {
-        return 51;
+        return 88;
+        //return 51;
     }
     return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_TRACKER_INVALID) {
+        return nil;
+    }
+    
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 41)];
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 8, self.view.frame.size.width-15, 41)];
@@ -182,7 +256,8 @@ typedef enum {
         } else if (section == 1) {
             label.text = @"PENERIMA";
         } else {
-            label.text = @"TRACKING HISTORY";
+            return _headerHistoryView;
+            //label.text = @"TRACKING HISTORY";
         }
     } else if (_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] == 0) {
         if (section == 0){
@@ -191,7 +266,8 @@ typedef enum {
             label.text = @"PENERIMA";
         }
     } else if (!_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {
-        label.text = @"TRACKING HISTORY";
+        return _headerHistoryView;
+        //label.text = @"TRACKING HISTORY";
     }
 
     [view addSubview:label];
@@ -276,14 +352,27 @@ typedef enum {
     
     NSDictionary* param = @{
                             API_ACTION_KEY           : API_ACTION_TRACK_ORDER,
-                            API_ORDER_ID_KEY         : _order.order_detail.detail_order_id,
+                            API_ORDER_ID_KEY         : _order.order_detail.detail_order_id?:@(_orderID),
                             API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
                             };
-
+    
+#if DEBUG
+    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+    [paramDictionary addEntriesFromDictionary:param];
+    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+    
+    _request = [_objectManager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodGET
+                                                                      path:API_TRACKING_ORDER_PATH
+                                                                parameters:paramDictionary];
+#else
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:API_TRACKING_ORDER_PATH
                                                                 parameters:[param encrypt]];
+#endif
+
+
 
     [_operationQueue addOperation:_request];
 
@@ -296,22 +385,22 @@ typedef enum {
             
             _trackingOrder = track.result.track_order;
             
-            TrackOrderHistory *history1 = [TrackOrderHistory new];
-            history1.date = @"06 Februari 2015";
-            history1.status = @"asdada";
-            history1.city = @"Jakarta";
-
-            TrackOrderHistory *history2 = [TrackOrderHistory new];
-            history2.date = @"06 Februari 2015";
-            history2.status = @"asdada";
-            history2.city = @"Bandung";
-
-            TrackOrderHistory *history3 = [TrackOrderHistory new];
-            history3.date = @"06 Februari 2015";
-            history3.status = @"asdada";
-            history3.city = @"Bali";
-            
-            _trackingOrder.track_history = @[history1, history2, history3];
+            //TrackOrderHistory *history1 = [TrackOrderHistory new];
+            //history1.date = @"06 Februari 2015, 11:34";
+            //history1.status = @"Terkirim dan Diterima oleh YASA";
+            //history1.city = @"PANDU SIWI BANDUNG";
+            //
+            //TrackOrderHistory *history2 = [TrackOrderHistory new];
+            //history2.date = @"06 Februari 2015, 11:00";
+            //history2.status = @"Proses pengiriman ke alamat tujuan";
+            //history2.city = @"PANDU SIWI BANDUNG";
+            //
+            //TrackOrderHistory *history3 = [TrackOrderHistory new];
+            //history3.date = @"06 Februari 2015";
+            //history3.status = @"Tiba di fasilitas operational PANDU SIWI BANDUNG";
+            //history3.city = @"PANDU SIWI BANDUNG";
+            //
+            //_trackingOrder.track_history = @[history1, history2, history3];
             
             _tableView.contentInset = UIEdgeInsetsMake(22, 0, 0, 0);
             [_tableView reloadData];
@@ -337,8 +426,8 @@ typedef enum {
                 } else {
                     statusLabel.text = @"On Process";
                 }
-                
-            } else {
+
+            }else {
                 
                 _tableView.tableHeaderView = _headerView;
 
@@ -355,6 +444,20 @@ typedef enum {
                 }
                 
             }
+        }
+        
+        //TODO:: Pandu
+        //if ([_trackingOrder.track_history count]>0)
+        //{
+        //    _tableView.tableHeaderView = _headerHistoryView;
+        //}
+        //if ([_trackingOrder.track_history count]==0)
+        //{
+        //    _tableView.tableHeaderView = _headerView;
+        //}
+        
+        if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_TRACKER_INVALID) {
+            _tableView.tableHeaderView = _invalidHeaderView;
         }
         
         [_activityIndicator stopAnimating];

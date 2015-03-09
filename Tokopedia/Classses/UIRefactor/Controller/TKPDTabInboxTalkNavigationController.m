@@ -30,6 +30,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *unreadBtn;
 @property (weak, nonatomic) IBOutlet UIView *allSign;
 @property (weak, nonatomic) IBOutlet UIView *unreadSign;
+@property (weak, nonatomic) IBOutlet UIView *buttonsContainer;
 
 - (IBAction)tap:(UISegmentedControl *)sender;
 - (UIEdgeInsets)contentInsetForContainerController;
@@ -49,8 +50,6 @@
 @dynamic contentInsetForChildController;
 
 @synthesize container = _container;
-
-
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -94,19 +93,6 @@
         _unloadViewControllers = nil;
     }
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-    [barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(enableButtonRead:)
                                                  name:@"enableButtonRead" object:nil];
@@ -115,7 +101,13 @@
                                              selector:@selector(disableButtonRead:)
                                                  name:@"disableButtonRead" object:nil];
     
+    self.hidesBottomBarWhenPushed = YES;
 
+    _verticalSpaceButtons.constant = -89;
+
+    CGRect frame = _buttonsContainer.frame;
+    frame.origin.y = -89;
+    _buttonsContainer.frame = frame;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -236,7 +228,6 @@
     UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
     
     if(_selectedIndex == SEGMENT_INBOX_TALK) {
-//        [titleLabel setTitle:_titleNavTalk forState:UIControlStateNormal];
         [self setLabelButtonWithArrow:titleLabel withString:_titleNavTalk];
         if([_titleNavTalk isEqualToString:ALL_TALK]) {
             [self markAllTalkButton];
@@ -246,7 +237,6 @@
     }
     
     if(_selectedIndex == SEGMENT_INBOX_TALK_MY_PRODUCT) {
-//        [titleLabel setTitle:_titleNavMyProductTalk forState:UIControlStateNormal];
         [self setLabelButtonWithArrow:titleLabel withString:_titleNavMyProductTalk];
         if([_titleNavMyProductTalk isEqualToString:ALL_TALK]) {
             [self markAllTalkButton];
@@ -256,7 +246,6 @@
     }
     
     if(_selectedIndex == SEGMENT_INBOX_TALK_FOLLOWING) {
-//        [titleLabel setTitle:_titleNavFollowingTalk forState:UIControlStateNormal];
         [self setLabelButtonWithArrow:titleLabel withString:_titleNavFollowingTalk];
         if([_titleNavFollowingTalk isEqualToString:ALL_TALK]) {
             [self markAllTalkButton];
@@ -277,11 +266,7 @@
     if (selectedIndex == _selectedIndex) return;
     
     if (_viewControllers != nil) {
-        
-        //UIView* selecttabbar;
         CGRect selectframe;
-        
-        //selecttabbar = _tabbar;
         selectframe = _tabbar.frame;
         
         UIViewController* deselect = _selectedViewController;
@@ -292,21 +277,14 @@
             
             UINavigationController* n = (UINavigationController*)select;
             if (!n.navigationBarHidden && !n.navigationBar.hidden) {
-                
-                //CGRect rect = n.navigationBar.frame;
                 selectframe.origin.y = inset.top;
-                //selectframe = CGRectOffset(selectframe, 0.0f, CGRectGetHeight(rect));
                 selectframe = CGRectZero;
             } else {
-                //selectframe.origin.y = inset.top;
                 selectframe = CGRectZero;
             }
         } else {
             selectframe = CGRectZero;
-            //selectframe.origin.y = inset.top;
         }
-        
-        //selecttabbar.frame = selectframe;
         
         int navigate = 0;
         
@@ -321,7 +299,6 @@
         
         [self setSelectedIndexTitle];
         
-        
         if (animated && (deselect != nil) && (navigate != 0)) {
             
             if (deselect != nil) {
@@ -329,7 +306,6 @@
             }
             
             [self addChildViewController:select];
-            //select.view.frame = _container.bounds;
             
             if (navigate == 0) {
                 select.view.frame = _container.bounds;	//dead code
@@ -341,12 +317,8 @@
                 }
             }
             
-            [self transitionFromViewController:deselect toViewController:select duration:0.3 options:(0 /*UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionFlipFromLeft*/) animations:^{
-                
+            [self transitionFromViewController:deselect toViewController:select duration:0.3 options:(0) animations:^{
                 if (navigate != 0) {
-                    //tabbar0.frame = frame0;
-                    //tabbar1.frame = frame1;
-                    
                     if (navigate > 0) {
                         deselect.view.frame = CGRectOffset(_container.bounds, -(CGRectGetWidth(_container.bounds)), 0.0f);
                     } else {
@@ -354,17 +326,12 @@
                     }
                     select.view.frame = _container.bounds;
                 }
-                
                 _tabbar.userInteractionEnabled = NO;	//race condition
-                
             } completion:^(BOOL finished) {
-                
                 [deselect removeFromParentViewController];
                 [select didMoveToParentViewController:self];
-                
                 _tabbar.userInteractionEnabled = YES;	//race condition
             }];
-            
         } else {
             if (deselect != nil) {
                 [deselect willMoveToParentViewController:nil];
@@ -435,36 +402,20 @@
             [_selectedViewController.view removeFromSuperview];
             [_selectedViewController removeFromParentViewController];
         }
-        
         _viewControllers = nil;
         _selectedViewController = nil;
         _selectedIndex = -1;
     }
-
 }
 
 -(IBAction)tapbutton:(id)sender
 {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
-        //UIBarButtonItem *barbutton1;
-        
-        switch (btn.tag) {
-            case 10:
-            {
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                //                [self.navigationController popViewControllerAnimated:YES];
-                break;
-            }
-                
-            default:
-                break;
+        if (btn.tag == 10) {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         }
-    }
-    
-    
-    
-    if([sender isKindOfClass:[UIButton class]]) {
+    } else if([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
         NSString *showReadSubfix;
         
@@ -479,28 +430,54 @@
         switch (btn.tag) {
             case 15: {
                 if(_readOption.isHidden) {
+
+                    _verticalSpaceButtons.constant = -89;
+                    
+                    CGRect frame = _buttonsContainer.frame;
+                    frame.origin.y = -89;
+                    _buttonsContainer.frame = frame;
+
                     _readOption.hidden = NO;
+                    _readOption.alpha = 0;
+                    [UIView animateWithDuration:0.2 animations:^{
+                        _readOption.alpha = 1;
+                    }];
+                    
+                    _verticalSpaceButtons.constant = 0;
+                    
+                    [UIView animateWithDuration:0.3 animations:^{
+                        CGRect frame = _buttonsContainer.frame;
+                        frame.origin.y = 0;
+                        _buttonsContainer.frame = frame;
+                    }];
                 } else {
-                    _readOption.hidden = YES;
+                    _verticalSpaceButtons.constant = -89;
+                    
+                    [UIView animateWithDuration:0.2 animations:^{
+                        CGRect frame = _buttonsContainer.frame;
+                        frame.origin.y = -89;
+                        _buttonsContainer.frame = frame;
+                    } completion:^(BOOL finished) {
+                        [UIView animateWithDuration:0.1 animations:^{
+                            _readOption.alpha = 0;
+                        } completion:^(BOOL finished) {
+                            _readOption.hidden = YES;
+                        }];
+                    }];
                 }
-                
                 break;
             }
-                
             case 16: {
                 UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
                 
                 if(_selectedIndex == SEGMENT_INBOX_TALK) {
                     _titleNavTalk = ALL_TALK;
-//                    [titleLabel setTitle:_titleNavTalk forState:UIControlStateNormal];
                     [self setLabelButtonWithArrow:titleLabel withString:_titleNavTalk];
                 } else if (_selectedIndex == SEGMENT_INBOX_TALK_MY_PRODUCT) {
                     _titleNavMyProductTalk = ALL_TALK;
-//                    [titleLabel setTitle:_titleNavMyProductTalk forState:UIControlStateNormal];
                     [self setLabelButtonWithArrow:titleLabel withString:_titleNavMyProductTalk];
                 } else if (_selectedIndex == SEGMENT_INBOX_TALK_FOLLOWING) {
                     _titleNavFollowingTalk = ALL_TALK;
-//                    [titleLabel setTitle:_titleNavFollowingTalk forState:UIControlStateNormal];
                     [self setLabelButtonWithArrow:titleLabel withString:_titleNavFollowingTalk];
                 }
                 
@@ -527,15 +504,12 @@
                 
                 if(_selectedIndex == SEGMENT_INBOX_TALK) {
                     _titleNavTalk = UNREAD_TALK;
-//                    [titleLabel setTitle:_titleNavTalk forState:UIControlStateNormal];
                     [self setLabelButtonWithArrow:titleLabel withString:_titleNavTalk];
                 } else if (_selectedIndex == SEGMENT_INBOX_TALK_MY_PRODUCT) {
                     _titleNavMyProductTalk = UNREAD_TALK;
-//                    [titleLabel setTitle:_titleNavMyProductTalk forState:UIControlStateNormal];
                     [self setLabelButtonWithArrow:titleLabel withString:_titleNavMyProductTalk];
                 } else if (_selectedIndex == SEGMENT_INBOX_TALK_FOLLOWING) {
                     _titleNavFollowingTalk = UNREAD_TALK;
-//                    [titleLabel setTitle:_titleNavFollowingTalk forState:UIControlStateNormal];
                     [self setLabelButtonWithArrow:titleLabel withString:_titleNavFollowingTalk];
                 }
                 
@@ -548,14 +522,25 @@
                 [self markUnreadTalkButton];
                 break;
             }
-            default:
-                
+            default: {
                 break;
+            }
         }
+    } else {
+        _verticalSpaceButtons.constant = -89;
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            CGRect frame = _buttonsContainer.frame;
+            frame.origin.y = -89;
+            _buttonsContainer.frame = frame;
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.1 animations:^{
+                _readOption.alpha = 0;
+            } completion:^(BOOL finished) {
+                _readOption.hidden = YES;
+            }];
+        }];
     }
-    
-    
-    
 }
 
 
@@ -584,13 +569,10 @@
             UINavigationController* n = (UINavigationController*)[self isChildViewControllersContainsNavigationController:self];
             if (n != nil) {
                 UINavigationBar* nbar = n.navigationBar;
-                //if (!n.navigationBarHidden && !nbar.hidden && nbar.translucent) {
                 if ((nbar != nil) && !n.navigationBarHidden && !nbar.hidden && nbar.translucent) {
-                    
                     if (_selectedViewController.view.window != nil) {	//TODO:
                         view = [_selectedViewController.view.superview convertRect:view toView:_selectedViewController.view.window];
                         NSAssert(_selectedViewController.view.window != nil, @"nil view's window");
-                        
                         if (CGRectIntersectsRect(bar, view)) {
                             bar = CGRectIntersection(bar, view);
                             inset.top += CGRectGetHeight(bar);
@@ -621,17 +603,19 @@
     return nil;
 }
 
-- (void)setLabelButtonWithArrow:(id)button withString:(NSString*)string {
-    NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
-    attachment.image = [UIImage imageNamed:@"navigate-down.png"];
+- (void)setLabelButtonWithArrow:(UIButton *)button withString:(NSString*)string {
+    NSDictionary *attributes = @{
+                                 NSForegroundColorAttributeName : [UIColor colorWithWhite:1 alpha:1],
+                                 NSFontAttributeName            : [UIFont boldSystemFontOfSize:16],
+                                 };
     
-    
-    NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
-    
-    NSMutableAttributedString *myString= [[NSMutableAttributedString alloc] initWithString:string attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:1 alpha:1]}];
-    [myString appendAttributedString:attachmentString];
-    
+    NSMutableAttributedString *myString = [[NSMutableAttributedString alloc] initWithString:string
+                                                                                 attributes:attributes];
     [button setAttributedTitle:myString forState:UIControlStateNormal];
+    UIImage *arrowImage = [UIImage imageNamed:@"icon_arrow_down_white.png"];
+    [button setImage:arrowImage forState:UIControlStateNormal];
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 10);
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 115, 0, -15);
 }
 
 #pragma mark - Notification
@@ -651,13 +635,39 @@
 
 #pragma mark - Button Read Action
 - (void)markAllTalkButton {
-    _readOption.hidden = YES;
+    _verticalSpaceButtons.constant = -89;
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = _buttonsContainer.frame;
+        frame.origin.y = -89;
+        _buttonsContainer.frame = frame;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.1 animations:^{
+            _readOption.alpha = 0;
+        } completion:^(BOOL finished) {
+            _readOption.hidden = YES;
+        }];
+    }];
+    
     _allSign.hidden = NO;
     _unreadSign.hidden = YES;
 }
 
 - (void)markUnreadTalkButton {
-    _readOption.hidden = YES;
+    _verticalSpaceButtons.constant = -89;
+    
+    [UIView animateWithDuration:0.2 animations:^{
+        CGRect frame = _buttonsContainer.frame;
+        frame.origin.y = -89;
+        _buttonsContainer.frame = frame;
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.1 animations:^{
+            _readOption.alpha = 0;
+        } completion:^(BOOL finished) {
+            _readOption.hidden = YES;
+        }];
+    }];
+    
     _allSign.hidden = YES;
     _unreadSign.hidden = NO;
 }

@@ -57,6 +57,21 @@
     return dataname;
 }
 
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+{
+    UILabel *label = (UILabel *)view;
+    if (!label)
+    {
+        label = [[UILabel alloc] init];
+        label.font = [UIFont fontWithName:@"GothamBook" size:16];
+        label.textAlignment = NSTextAlignmentCenter;
+        label.numberOfLines = 0;
+    }
+
+    label.text=[_pickerData[row] objectForKey:DATA_NAME_KEY];
+    return label;
+}
+
 // Catpure the picker view selection
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {

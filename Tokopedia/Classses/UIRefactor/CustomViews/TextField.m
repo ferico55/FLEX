@@ -7,16 +7,9 @@
 //
 
 #import "TextField.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation TextField
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-    }
-    return self;
-}
 
 - (void)drawRect:(CGRect)rect
 {
@@ -41,11 +34,15 @@
     
     self.layer.borderColor = [UIColor colorWithRed:189.0/255.0 green:189.0/255.0 blue:189.0/255.0 alpha:1].CGColor;
     self.layer.borderWidth = 1;
-    
-    //Add padding to left side
-    UIView *paddingView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 15, self.frame.size.height)];
-    self.leftView = paddingView;
-    self.leftViewMode = UITextFieldViewModeAlways;
+}
+
+- (CGRect)textRectForBounds:(CGRect)bounds {
+    return CGRectMake(bounds.origin.x + 10, bounds.origin.y + 8,
+                      bounds.size.width - 20, bounds.size.height - 16);
+}
+
+- (CGRect)editingRectForBounds:(CGRect)bounds {
+    return [self textRectForBounds:bounds];
 }
 
 @end

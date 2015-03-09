@@ -129,7 +129,7 @@
                 for (int i = 0; i<locations.count; i++) {
                     CatalogLocation *location = locations[i];
                     [_locationnames addObject:location.location_name];
-                    [_locationvalues addObject:@(location.location_id)];
+                    [_locationvalues addObject:location.location_id];
                 }
             }
             else{

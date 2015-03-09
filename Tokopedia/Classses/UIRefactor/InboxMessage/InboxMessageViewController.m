@@ -18,10 +18,18 @@
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "UserAuthentificationManager.h"
 #import "EncodeDecoderManager.h"
-#import "NoResult.h"
 
-@interface InboxMessageViewController () <UITableViewDataSource, UITableViewDelegate, MGSwipeTableCellDelegate, TKPDTabInboxMessageNavigationControllerDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
+@interface InboxMessageViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    UISearchBarDelegate,
+    UISearchDisplayDelegate,
+    MGSwipeTableCellDelegate,
+    TKPDTabInboxMessageNavigationControllerDelegate
+>
 
+@property (strong, nonatomic) IBOutlet UIView *searchView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -69,8 +77,7 @@
     NSString *_navthatwillrefresh;
     NSString *_messageNavigationFlag;
     
-    BOOL _isrefreshnav;
-    
+    BOOL _isrefreshnav;    
     
     __weak RKObjectManager *_objectmanager;
     __weak RKObjectManager *_objectmanagerarchive;
@@ -78,10 +85,9 @@
     __weak RKManagedObjectRequestOperation *_requestarchive;
     __weak RKManagedObjectRequestOperation *_requesttrash;
     NSOperationQueue *_operationQueue;
-    NoResult *_noresult;
+    NoResultView *_noresult;
     UserAuthentificationManager *_userManager;
     EncodeDecoderManager *_encodeDecodeManager;
-    
 }
 
 
@@ -135,24 +141,11 @@
     _messageNavigationFlag = [_data objectForKey:@"nav"];
     _userManager = [UserAuthentificationManager new];
     _encodeDecodeManager = [EncodeDecoderManager new];
-    _noresult = [NoResult new];
+    _noresult = [NoResultView new];
     
     /** set first page become 1 **/
     _page = 1;
     [self initNotification];
-    
-    /** set inset table for different size**/
-    if (is4inch) {
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 155;
-        _table.contentInset = inset;
-    }
-    else{
-        UIEdgeInsets inset = _table.contentInset;
-        inset.bottom += 240;
-        _table.contentInset = inset;
-    }
-    
     
     /** set table view datasource and delegate **/
     _table.delegate = self;
@@ -160,10 +153,6 @@
     
     /** set table footer view (loading act) **/
     _table.tableFooterView = _footer;
-    
-    
-    //    [self setHeaderData:_goldshop];
-    //    [_act startAnimating];
     
     if (_messages.count > 0) {
         _isnodata = NO;
@@ -183,7 +172,9 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
-    NSLog(@"going here first");
+    _table.tableHeaderView = _searchView;
+    _table.allowsSelectionDuringEditing = YES;
+    _table.allowsMultipleSelectionDuringEditing = YES;
 }
 
 
@@ -242,7 +233,6 @@
             //delete forever
             case 13 : {
                 [self messageaction:KTKPDMESSAGE_ACTIONDELETEFOREVERMESSAGE];
-//                _navthatwillrefresh = @"inbox-message-forever";
                 break;
             }
             case 14 : {
@@ -276,19 +266,14 @@
     
     NSString *joinedArr = [arr componentsJoinedByString:@"and"];
     
-    
     [_table beginUpdates];
     [_table deleteRowsAtIndexPaths:_messages_selected withRowAnimation:UITableViewRowAnimationFade];
     [_messages_selected removeAllObjects];
     [_table endUpdates];
     
-
     [self configureactionrestkit];
     [self doactionmessage:joinedArr withAction:action];
-
-
 }
-
 
 #pragma mark - UITableViewDataSource
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -313,14 +298,12 @@
             ((InboxMessageCell*)cell).delegate = self;
         }
         
-        
         if (_messages.count > indexPath.row ) {
             InboxMessageList *list = _messages[indexPath.row];
             
             ((InboxMessageCell*)cell).message_title.text = list.user_full_name;
             ((InboxMessageCell*)cell).message_create_time.text =list.message_create_time;
             ((InboxMessageCell*)cell).message_reply.text = list.message_reply;
-            ((InboxMessageCell*)cell).multicheckbtn.tag = indexPath.row;
             ((InboxMessageCell*)cell).indexpath = indexPath;
             
             
@@ -331,19 +314,7 @@
                     ((InboxMessageCell*)cell).is_unread.hidden = NO;
                 }
             }
-            
-            
-            if(_userinfo) {
-                if(_userinfo[@"show_check"] && ![_userinfo[@"show_check"] isEqualToString:@"-1"]) {
-                    ((InboxMessageCell*)cell).multicheckbtn.hidden = NO;
-                    ((InboxMessageCell*)cell).multicheckbtn.imageView.image = [UIImage imageNamed:@"icon_checkmark_1.png"];
-                    
-                } else {
-                    ((InboxMessageCell*)cell).multicheckbtn.hidden = YES;
-                    [_messages_selected removeAllObjects];
-                }
-            }
-            
+                        
             UIImageView *thumb = ((InboxMessageCell*)cell).userimageview;
             thumb = [UIImageView circleimageview:thumb];
             if(![list.user_image isEqualToString:@"0"]) {
@@ -354,26 +325,12 @@
                 [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"default-boy.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    //NSLOG(@"thumb: %@", thumb);
                     [thumb setImage:image];
-                    
 #pragma clang diagnostic pop
-                    
-                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                }];
+                } failure:nil];
             } else {
                 [thumb setImage:[UIImage imageNamed:@"default-boy.png"]];
             }
-            
-        }
-        
-        if ([_messages_selected containsObject:indexPath]) {
-            //            cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            ((InboxMessageCell*)cell).multicheckbtn.imageView.image = [UIImage imageNamed:@"icon_checkmark.png"];
-        }
-        else {
-            //            cell.accessoryType = UITableViewCellAccessoryNone;
-            ((InboxMessageCell*)cell).multicheckbtn.imageView.image = [UIImage imageNamed:@"icon_checkmark_1.png"];
         }
         
         return cell;
@@ -390,24 +347,36 @@
         cell.detailTextLabel.text = kTKPDHOME_NODATACELLDESCS;
     }
     
-    
-    
     return cell;
-    
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return  UITableViewCellEditingStyleNone;
+}
+
+
 #pragma mark - UITableViewDelegate
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(_iseditmode) {
+
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(_iseditmode || _table.isEditing) {
         if ([_messages_selected containsObject:indexPath]) {
             [_messages_selected removeObject:indexPath];
         }
-        else  {
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    if(_iseditmode || _table.isEditing) {
+        if (![_messages_selected containsObject:indexPath]) {
             [_messages_selected addObject:indexPath];
         }
-        
-        [_table reloadData];
     } else {
+
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        
         NSInteger index = indexPath.row;
         InboxMessageList *list = _messages[index];
         InboxMessageDetailViewController *vc = [InboxMessageDetailViewController new];
@@ -420,7 +389,6 @@
         [_table reloadData];
         [self.navigationController pushViewController:vc animated:YES];
     }
-
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -429,16 +397,11 @@
         cell.backgroundColor = [UIColor whiteColor];
     }
     
-    
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
     if (row == indexPath.row) {
         NSLog(@"%@", NSStringFromSelector(_cmd));
-        
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
-            /** called if need to load next page **/
-            //NSLog(@"%@", NSStringFromSelector(_cmd));
             [self configureRestKit];
-            
             [self loadData];
         } else {
             _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];;
@@ -462,29 +425,52 @@
         _inboxtrashforeverview.hidden = YES;
         _inboxtrashview.hidden = YES;
         _iseditmode = YES;
+
+        [_table setEditing:YES animated:YES];
+        [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
+
     //show OPTION move to trash forever + back to inbox
     } else if (selected_vc == 3){
         _editarchiveview.hidden = YES;
         _inboxtrashforeverview.hidden = NO;
         _inboxtrashview.hidden = YES;
         _iseditmode = YES;
-    
+
+        [_table setEditing:YES animated:YES];
+        [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
+
     } else if (selected_vc == 2) {
         _inboxtrashview.hidden = NO;
         _editarchiveview.hidden = YES;
         _inboxtrashforeverview.hidden = YES;
         _iseditmode = YES;
+
+        [_table setEditing:YES animated:YES];
+        [self performSelector:@selector(reloadData) withObject:nil afterDelay:0.2];
+
     } else {
         _editarchiveview.hidden = YES;
         _inboxtrashforeverview.hidden = YES;
         _inboxtrashview.hidden = YES;
         _iseditmode = NO;
+
+        [_table reloadData];
+        [self performSelector:@selector(disableEditing) withObject:nil afterDelay:0.05];
+        [_messages_selected removeAllObjects];
     }
-    
+}
+
+- (void)reloadData
+{
     [_table reloadData];
 }
 
--(void) showMessageWithFilter:(NSNotification*)notification {
+- (void)disableEditing
+{
+    [_table setEditing:NO animated:YES];
+}
+
+-(void)showMessageWithFilter:(NSNotification*)notification {
     if (_request.isExecuting) return;
     _userinfo = notification.userInfo;
     
@@ -627,7 +613,11 @@
     
     [_operationQueue addOperation:_request];
     
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                              target:self
+                                            selector:@selector(requesttimeout)
+                                            userInfo:nil
+                                             repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
@@ -827,7 +817,10 @@
                             };
     
     _requestarchivecount ++;
-    _requestarchive = [_objectmanagerarchive appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:KTKPDMESSAGEPRODUCTACTION_PATHURL parameters:[param encrypt]];
+    _requestarchive = [_objectmanagerarchive appropriateObjectRequestOperationWithObject:self
+                                                                                  method:RKRequestMethodPOST
+                                                                                    path:KTKPDMESSAGEPRODUCTACTION_PATHURL
+                                                                              parameters:[param encrypt]];
     
     [_requestarchive setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         
@@ -868,26 +861,21 @@
     if(status) {
         //if success
         if([inboxmessageaction.result.is_success isEqualToString:@"1"]) {
-            NSDictionary *dict = [[NSDictionary alloc] initWithObjectsAndKeys:_navthatwillrefresh, @"vc", nil];
             _isrefreshnav = NO;
-            
             
             if([_navthatwillrefresh isEqualToString:@"inbox-archive-sent"]) {
                 [self reloadInbox];
                 [self reloadArchive];
                 [self reloadSent];
             }
-            
-            if([_navthatwillrefresh isEqualToString:@"inbox-sent"]) {
+            else if([_navthatwillrefresh isEqualToString:@"inbox-sent"]) {
                 [self reloadInbox];
                 [self reloadSent];
             }
-            
-            if([_navthatwillrefresh isEqualToString:@"archive"]) {
+            else if([_navthatwillrefresh isEqualToString:@"archive"]) {
                 [self reloadArchive];
             }
-            
-            if([_navthatwillrefresh isEqualToString:@"trash"]) {
+            else if([_navthatwillrefresh isEqualToString:@"trash"]) {
                 [self reloadTrash];
             }
         } else {
@@ -1004,7 +992,6 @@
         [_datainput setObject:list.message_id forKey:@"message_id"];
 
         MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Delete" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
-//            [self deleteListAtIndexPath:indexPath];
             [self messageaction:KTKPDMESSAGE_ACTIONDELETEMESSAGE];
             _navthatwillrefresh = @"trash";
             return YES;
@@ -1033,20 +1020,7 @@
             
             return YES;
         }];
-        
-        
-//        MGSwipeButton * duplicate = [MGSwipeButton buttonWithTitle:BUTTON_DUPLICATE_PRODUCT backgroundColor:[UIColor colorWithRed:199.0/255 green:199.0/255.0 blue:199.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
-//            ManageProductList *list = _list[indexPath.row];
-//            ProductAddEditViewController *editProductVC = [ProductAddEditViewController new];
-//            editProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: @(list.product_id),
-//                                   kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-//                                   DATA_PRODUCT_DETAIL_KEY : list,
-//                                   DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_COPY),
-//                                   DATA_IS_GOLD_MERCHANT :@(0) //TODO:: Change Value
-//                                   };
-//            [self.navigationController pushViewController:editProductVC animated:YES];
-//            return YES;
-//        }];
+
         if([_messageNavigationFlag isEqualToString:@"inbox-message"] || [_messageNavigationFlag isEqualToString:@"inbox-message-sent"]) {
             return @[trash, archive];
         }
@@ -1058,23 +1032,8 @@
         if([_messageNavigationFlag isEqualToString:@"inbox-message-trash"]) {
             return @[backtoinbox, deleteforever];
         }
-
-
     }
-    
     return nil;
-    
 }
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

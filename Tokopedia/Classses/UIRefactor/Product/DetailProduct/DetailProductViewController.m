@@ -641,21 +641,21 @@
     return cell;
 }
 
--(void)productinfocell:(UITableViewCell*)cell withtableview:(UITableView*)tableView
+-(void)productinfocell:(DetailProductInfoCell *)cell withtableview:(UITableView*)tableView
 {
-
-    ((DetailProductInfoCell*)cell).minorderlabel.text = _product.result.product.product_min_order;
-    ((DetailProductInfoCell*)cell).weightlabel.text = [NSString stringWithFormat:@"%@ %@",_product.result.product.product_weight, _product.result.product.product_weight_unit];
-    ((DetailProductInfoCell*)cell).insurancelabel.text = _product.result.product.product_insurance;
-    ((DetailProductInfoCell*)cell).conditionlabel.text = _product.result.product.product_condition;
-    [((DetailProductInfoCell*)cell).etalasebutton setTitle:_product.result.product.product_etalase forState:UIControlStateNormal];
-    
+    cell.minorderlabel.text = [NSString stringWithFormat:@"%zd",_product.result.product.product_min_order];
+    cell.weightlabel.text = _product.result.product.product_weight_unit;
+    cell.insurancelabel.text = _product.result.product.product_insurance;
+    cell.conditionlabel.text = _product.result.product.product_condition;
     NSArray *breadcrumbs = _product.result.breadcrumb;
     for (int i = 0; i<breadcrumbs.count; i++) {
         Breadcrumb *breadcrumb = breadcrumbs[i];
-        [((UIButton*)((DetailProductInfoCell*)cell).categorybuttons[i]) setTitle:breadcrumb.department_name forState:UIControlStateNormal];
-        ((UIButton*)((DetailProductInfoCell*)cell).categorybuttons[i]).hidden = NO;
+        UIButton *button = [cell.categorybuttons objectAtIndex:i];
+        button.hidden = NO;
+        [button setTitle:breadcrumb.department_name forState:UIControlStateNormal];
     }
+    [cell.etalasebutton setTitle:_product.result.product.product_etalase?:@"-" forState:UIControlStateNormal];
+    cell.etalasebutton.hidden = NO;
 }
 
 #pragma mark - Memory Management

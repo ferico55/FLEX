@@ -19,9 +19,9 @@
 @property (nonatomic) NSInteger user_id;
 @property (nonatomic, strong) NSString *full_name;
 @property (nonatomic, strong) NSString *user_image;
+
+@property NSInteger status;
 @property (nonatomic, strong) NSString *msisdn_is_verified;
 @property (nonatomic, strong) NSString *msisdn_show_dialog;
-//- (void)encodeWithCoder:(NSCoder *)encoder;
-//- (id)initWithCoder:(NSCoder *)decoder;
 
 @end

@@ -12,5 +12,6 @@
 @interface TrackOrderViewController : UIViewController
 
 @property (strong, nonatomic) OrderTransaction *order;
+@property (nonatomic) NSInteger orderID;
 
 @end

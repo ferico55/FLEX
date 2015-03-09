@@ -156,24 +156,11 @@
                                                                          action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
 
-    NSString *iconPath = [[NSBundle mainBundle] pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"];
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:iconPath];
-    
-    // iOS 7
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) {
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image
-                                                              style:UIBarButtonItemStylePlain
-                                                             target:self
-                                                             action:@selector(tap:)];
-    } else {
-        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img
-                                                              style:UIBarButtonItemStylePlain
-                                                             target:self
-                                                             action:@selector(tap:)];
-    }
-	_barbuttoncategory.tag = 11;
-    _barbuttoncategory.enabled = NO;
+    _barbuttoncategory = [[UIBarButtonItem alloc] initWithTitle:@"Kategori"
+                                                          style:UIBarButtonItemStyleBordered
+                                                         target:self
+                                                         action:@selector(tap:)];
+    _barbuttoncategory.tag = 11;
     self.navigationItem.rightBarButtonItem = _barbuttoncategory;
     
     // adjust refresh control
@@ -395,16 +382,7 @@
                 UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
                 [nav.navigationBar setTranslucent:NO];
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
-
-                //[self loadData];
             }
-            // redirect uri to search hotlist
-            //if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTHOTKEY]) {
-            //    [_detailfilter setObject:querry[2] forKey:kTKPDHOME_APIQUERYKEY];
-            //    [_product removeAllObjects];
-            //    [_detailhotlist removeAllObjects];
-            //    [self loadData];
-            //}
         }
         else
         {
@@ -766,9 +744,12 @@
                     _isnodata = NO;
                     
                     _filterview.hidden = NO;
-                    _barbuttoncategory.enabled = YES;
                     
+                } else {
                     
+                    NoResultView *noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 103)];
+                    _table.tableFooterView = noResultView;
+                    _table.sectionFooterHeight = noResultView.frame.size.height;
                     
                 }
             }
@@ -849,47 +830,56 @@
         }];
     }
     
-    _descriptionlabel.text = [NSString convertHTML: _hotlistdetail.result.desc_key];
+    if (_hotlistdetail.result.desc_key) {
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 4.0;
+        style.alignment = NSTextAlignmentCenter;
+        
+        NSDictionary *attributes = @{
+                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
+                                     NSParagraphStyleAttributeName  : style,
+                                     NSForegroundColorAttributeName : [UIColor whiteColor],
+                                     };
+        
+        _descriptionlabel.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML: _hotlistdetail.result.desc_key]
+                                                                           attributes:attributes];
+    }
+    
     [self setHashtags];
 }
 
 -(void)setHashtags
 {
-    NSInteger widthcontenttop=0;
     _buttons = [NSMutableArray new];
     
-    NSArray *array = _hotlistdetail.result.hashtags;
+    NSArray *hashtags = _hotlistdetail.result.hashtags;
     
-    /** Adjust hashtags to Scrollview **/
-    for (int i = 0; i<array.count; i++) {
-        Hashtags *hashtag =array[i];
-        NSString *name = [NSString stringWithFormat:@"#%@", hashtag.name];
-        
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        [button addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
-        [button setTitle:name forState:UIControlStateNormal];
+    CGFloat previousButtonWidth = 10;
+    CGFloat totalWidth = 0;
+    
+    for (int i = 0; i<hashtags.count; i++) {
+        Hashtags *hashtag = hashtags[i];
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [button setTitle:[NSString stringWithFormat:@"#%@", hashtag.name] forState:UIControlStateNormal];
+        [button setTitleColor:kTKPDHOME_FONTSLIDETITLESCOLOR forState:UIControlStateNormal];
+        button.tintColor = kTKPDHOME_FONTSLIDETITLESCOLOR;
+        button.titleLabel.font = kTKPDHOME_FONTSLIDETITLES;
+        button.layer.borderColor = kTKPDHOME_FONTSLIDETITLESCOLOR.CGColor;
+        button.layer.borderWidth = 1;
+        button.layer.cornerRadius = 3;
 
-        UIFont * font = kTKPDHOME_FONTSLIDETITLES;
-        button.titleLabel.font = font;
-        //button.tintColor = [UIColor blackColor];
+        CGSize stringSize = [[NSString stringWithFormat:@"#%@", hashtag.name] sizeWithFont:kTKPDHOME_FONTSLIDETITLESACTIVE];
+        stringSize.width += 16;
+        button.frame = CGRectMake(previousButtonWidth, 9, stringSize.width, 30);
         
-        
-        [button setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-        CGSize stringSize = [name sizeWithFont:kTKPDHOME_FONTSLIDETITLESACTIVE];
-        CGFloat widthlabel = stringSize.width+10;
-        
-        
-        button.frame = CGRectMake(widthcontenttop,_hashtagsscrollview.frame.size.height/2-10,widthlabel,30);
-        button.tag = i+20;
-        button.titleEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 0);
-        
-        widthcontenttop +=widthlabel;
+        previousButtonWidth = button.frame.size.width + 20;
+        totalWidth += previousButtonWidth;
         
         [_buttons addObject:button];
-        [_hashtagsscrollview addSubview:_buttons[i]];
+        [_hashtagsscrollview addSubview:button];
     }
     
-    _hashtagsscrollview.contentSize = CGSizeMake(widthcontenttop+10, 0);
+    _hashtagsscrollview.contentSize = CGSizeMake(totalWidth, 40);
 }
 
 -(void)reset:(UITableViewCell*)cell
@@ -911,33 +901,6 @@
     [self configureRestKit];
     [self request];
 }
-
-#pragma mark - UIScrollView Delegate
-- (void)scrollViewDidScroll:(UIScrollView *)sender
-{
-//    if (sender.contentOffset.y < 0) {
-//        CGRect frame = _imageview.frame;
-//        CGPoint translation = [sender.panGestureRecognizer translationInView:sender.superview];
-//        if(translation.y > 0)
-//        {
-//            frame.origin.x = sender.contentOffset.y/2;
-//            frame.origin.y = sender.contentOffset.y;
-//            frame.size.height =  150 + fabsf(sender.contentOffset.y);
-//            frame.size.width = 320 + fabsf(sender.contentOffset.y);
-//        } else {
-//            frame.origin.x = 0;
-//            frame.origin.y = 0;
-//            frame.size.height = 150;
-//            frame.size.width = 320;
-//        }
-//        _imageview.frame = frame;
-//        
-//        if (_pagecontrol.currentPage==1) {
-//            _descriptionview.frame = _imageview.frame;
-//        }
-//    }
-}
-
 
 #pragma mark - Category Delegate
 - (void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo

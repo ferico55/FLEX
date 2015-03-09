@@ -1,0 +1,19 @@
+//
+//  OrderButton.h
+//  Tokopedia
+//
+//  Created by IT Tkpd on 2/23/15.
+//  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface OrderButton : NSObject
+
+@property (nonatomic) NSInteger button_open_dispute;
+@property (nonatomic) NSInteger button_res_center_url;
+@property (nonatomic) NSInteger button_open_time_left;
+@property (nonatomic) NSInteger button_res_center_go_to;
+@property (nonatomic) NSInteger button_upload_proof;
+
+@end

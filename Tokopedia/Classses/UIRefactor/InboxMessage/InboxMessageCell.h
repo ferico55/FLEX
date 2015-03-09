@@ -23,8 +23,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *message_reply;
 @property (weak, nonatomic) IBOutlet UIImageView *userimageview;
 @property (weak, nonatomic) IBOutlet UIImageView *is_unread;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (weak, nonatomic) IBOutlet UIButton *multicheckbtn;
 @property (weak, nonatomic) IBOutlet UIView *movingview;
 
 @property (strong, nonatomic) NSIndexPath *indexpath;

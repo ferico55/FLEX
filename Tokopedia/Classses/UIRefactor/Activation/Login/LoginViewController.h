@@ -10,7 +10,6 @@
 
 @protocol LoginViewDelegate <NSObject>
 
-@required
 - (void)redirectViewController:(id)viewController;
 
 @end

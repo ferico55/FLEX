@@ -16,6 +16,8 @@
 #import "camera.h"
 #import "CameraController.h"
 
+#import "TxOrderPaymentViewController.h"
+
 @interface TxOrderTabViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate, TxOrderConfirmedViewControllerDelegate>
 {
     NSInteger _index;
@@ -89,17 +91,18 @@
 
 -(IBAction)tapBarButton:(UIBarButtonItem*)sender
 {
-    _isMultipleSelect = !_isMultipleSelect;
-    NSString *barButtonTitle;
-
+    if (sender.tag == TAG_BAR_BUTTON_TRANSACTION_DONE) {
+        _isMultipleSelect = !_isMultipleSelect;
+    }
+    else
+    {
+        _isMultipleSelect = !_isMultipleSelect;
+    }
     [self viewControllerAtIndex:_index];
-    
-    barButtonTitle = _isMultipleSelect?@"Cancel":@"Select";
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:barButtonTitle style:UIBarButtonItemStylePlain target:(self) action:@selector(tapBarButton:)];
-    [backBarButtonItem setTintColor:[UIColor blackColor]];
-    backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
-    self.navigationItem.rightBarButtonItem = backBarButtonItem;
+    UIColor *disableColor =[UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1];
+    UIColor *enableColor = [UIColor colorWithRed:0/255.0f green:122.0f/255.0f blue:255.0f/255.0f alpha:1];
+    if (_isMultipleSelect)[_segmentControl setTintColor:disableColor]; else [_segmentControl setTintColor:enableColor];
+    _segmentControl.enabled = !_isMultipleSelect;
 }
 
 -(void)setScrollEnabled:(BOOL)enabled forPageViewController:(UIPageViewController*)pageViewController{
@@ -124,15 +127,26 @@
     switch (index) {
         case 0:
         {
-            NSString *barButtonTitle = _isMultipleSelect?@"Cancel":@"Select";
+            if (!_isMultipleSelect) {
+                UIBarButtonItem *selectBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Pilih" style:UIBarButtonItemStylePlain target:(self) action:@selector(tapBarButton:)];
+                [selectBarButtonItem setTintColor:[UIColor blackColor]];
+                selectBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
+                self.navigationItem.rightBarButtonItem = selectBarButtonItem;
+            }
+            else
+                self.navigationItem.rightBarButtonItem = nil;
             
-            UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:barButtonTitle style:UIBarButtonItemStylePlain target:(self) action:@selector(tapBarButton:)];
-            [backBarButtonItem setTintColor:[UIColor blackColor]];
-            backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
-            self.navigationItem.rightBarButtonItem = backBarButtonItem;
+            if (_isMultipleSelect) {
+                UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tapBarButton:)];
+                [backBarButtonItem setTintColor:[UIColor whiteColor]];
+                backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
+                self.navigationItem.leftBarButtonItem = backBarButtonItem;
+            }
+            else self.navigationItem.leftBarButtonItem = nil;
             
             if(!_confirmationViewController)_confirmationViewController = [TxOrderConfirmationViewController new];
             ((TxOrderConfirmationViewController*)_confirmationViewController).isMultipleSelection = _isMultipleSelect;
+            //((TxOrderConfirmationViewController*)_confirmationViewController).isSelectAll = _isSelectAll;
             childViewController = _confirmationViewController;
             break;
         }
@@ -197,6 +211,14 @@
     nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self.navigationController presentViewController:nav animated:YES completion:nil];
 
+}
+
+-(void)editPayment:(TxOrderConfirmedList*)object
+{
+    TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
+    vc.isConfirmed = YES;
+    vc.paymentID = object.payment_id;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Memory Management

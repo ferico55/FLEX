@@ -290,19 +290,7 @@
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
-    //    if ([sender isKindOfClass:[UIButton class]]) {
-    UIButton *btn = (UIButton*)sender;
-    switch (btn.tag) {
-        case 10:
-            // see more action
-            //                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-            [self.navigationController popViewControllerAnimated:YES];
-            break;
-        
-        default:
-            break;
-    }
-    //    }
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 

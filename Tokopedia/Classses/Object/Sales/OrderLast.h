@@ -19,7 +19,7 @@
 @property (strong, nonatomic) NSString *last_pod_desc;
 @property (strong, nonatomic) NSString *last_shipping_ref_num;
 @property NSInteger last_pod_receiver;
-@property NSInteger last_comments;
+@property (strong, nonatomic) NSString *last_comments;
 @property (strong, nonatomic) NSString *last_buyer_status;
 @property (strong, nonatomic) NSString *last_status_date_wib;
 @property (strong, nonatomic) NSString *last_seller_status;

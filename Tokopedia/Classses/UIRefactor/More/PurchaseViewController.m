@@ -9,8 +9,14 @@
 #import "PurchaseViewController.h"
 
 #import "TxOrderTabViewController.h"
+#import "TxOrderStatusViewController.h"
+#import "NotificationManager.h"
 
-@interface PurchaseViewController ()
+@interface PurchaseViewController ()<NotificationManagerDelegate>
+{
+    NotificationManager *_notificationManager;
+}
+
 @property (weak, nonatomic) IBOutlet UILabel *paymentConfirmationValueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *orderStatusValueLabel;
 @property (weak, nonatomic) IBOutlet UILabel *receiveConfirmationValueLabel;
@@ -31,7 +37,59 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _paymentConfirmationValueLabel.text = _notification.result.purchase.purchase_payment_confirm?:@"0";
+    
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(updateValues:)
+                                                name:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME
+                                              object:nil];
+    
+    [self setValues];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.hidesBottomBarWhenPushed = YES;
+    
+    _notificationManager = [NotificationManager new];
+    [_notificationManager initNotificationRequest];
+    _notificationManager.delegate = self;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+- (IBAction)paymentConfirmationDidTap:(id)sender {
+    TxOrderTabViewController *vc = [TxOrderTabViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (IBAction)orderStatusDidTap:(id)sender {
+    TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+    vc.action = @"get_tx_order_status";
+    vc.viewControllerTitle = @"Status Pemesanan";
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (IBAction)receiveConfirmationDidTap:(id)sender {
+    TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+    vc.action = @"get_tx_order_deliver";
+    vc.viewControllerTitle = @"Konfirmasi Penerimaan";
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (IBAction)listTransactionDidTap:(id)sender {
+    TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+    vc.action = @"get_tx_order_list";
+    vc.viewControllerTitle = @"Daftar Transaksi";
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)setValues
+{
+    _paymentConfirmationValueLabel.text = _notification.result.purchase.purchase_payment_conf?:@"0";
     _orderStatusValueLabel.text = _notification.result.purchase.purchase_order_status?:@"0";
     _receiveConfirmationValueLabel.text = _notification.result.purchase.purchase_delivery_confirm?:@"0";
     
@@ -47,10 +105,10 @@
     
     _paymentConfirmationLabel.attributedText = [[NSAttributedString alloc] initWithString:_paymentConfirmationLabel.text
                                                                                attributes:attributes];
-
+    
     _orderStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:_orderStatusLabel.text
                                                                        attributes:attributes];
-
+    
     _receiveStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:_receiveStatusLabel.text
                                                                          attributes:attributes];
     
@@ -58,28 +116,36 @@
                                                                            attributes:attributes];
 }
 
--(void)viewWillAppear:(BOOL)animated
+#pragma mark - Notification Manager Delegate
+
+-(void)updateValues:(NSNotification*)notification
 {
-    [super viewWillAppear:animated];
-    self.hidesBottomBarWhenPushed = YES;
+    _notificationManager = [NotificationManager new];
+    [_notificationManager initNotificationRequest];
+    _notificationManager.delegate = self;
+    
+    //NSDictionary* userInfo = notification.userInfo;
+    //
+    //NSString *paymentConfirmationValue = [userInfo objectForKey:DATA_PAYMENT_CONFIRMATION_COUNT_KEY]?:_notification.result.purchase.purchase_payment_conf;
+    //_notification.result.purchase.purchase_payment_conf = paymentConfirmationValue;
+    //
+    //NSString *orderStatusValue = [userInfo objectForKey:DATA_STATUS_COUNT_KEY]?:_notification.result.purchase.purchase_order_status;
+    //_notification.result.purchase.purchase_order_status = orderStatusValue;
+    //
+    //NSString *confirmDeliveryValue = [userInfo objectForKey:DATA_CONFIRM_DELIVERY_COUNT_KEY]?:_notification.result.purchase.purchase_delivery_confirm;
+    //_notification.result.purchase.purchase_delivery_confirm = confirmDeliveryValue;
+    
+    [self setValues];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
+- (void)didReceiveNotification:(Notification *)notification
+{
+    _notification = notification;
+    [self setValues];
 }
 
-- (IBAction)paymentConfirmationDidTap:(id)sender {
-    TxOrderTabViewController *vc = [TxOrderTabViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
-
-- (IBAction)orderStatusDidTap:(id)sender {
-}
-
-- (IBAction)receiveConfirmationDidTap:(id)sender {
-}
-
-- (IBAction)listTransactionDidTap:(id)sender {
-}
-
 @end

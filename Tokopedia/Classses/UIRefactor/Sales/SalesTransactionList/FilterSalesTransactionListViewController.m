@@ -11,6 +11,8 @@
 
 #import "AlertDatePickerView.h"
 
+#define ARRAY_FILTER_TRANSACTION @[@"Semua Status",@"Konfirmasi Pembayaran",@"Verifikasi Pembayaran",@"Dalam Proses",@"Dalam Pengiriman",@"Transaksi Terkirim",@"Transaksi Selesai",@"Transaksi Dibatalkan"]
+
 @interface FilterSalesTransactionListViewController ()
 <
     TKPDAlertViewDelegate,
@@ -19,8 +21,10 @@
 {
     NSString *_invoice;
     NSString *_transactionStatus;
-    NSString *_startDate;
-    NSString *_endDate;
+    NSDate *_startDate;
+    NSDate *_endDate;
+    NSString *_startDateString;
+    NSString *_endDateString;
 }
 
 @end
@@ -49,10 +53,37 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd/MM/yyyy"];
     
-    _startDate = [dateFormatter stringFromDate:[NSDate date]];
-    _endDate = [dateFormatter stringFromDate:[NSDate date]];
+    _startDate = [[NSDate date] dateByAddingTimeInterval:-7*24*60*60];
+    _endDate = [NSDate date];
+    _startDateString = [dateFormatter stringFromDate:_startDate];
+    _endDateString = [dateFormatter stringFromDate:_endDate];
+    
+    _endDate = (![_endDateMark isEqualToString:@""])?_endDateMark:[dateFormatter stringFromDate:[NSDate date]];
     
     _transactionStatus = @"Transaksi Belum Selesai";
+    if (_isOrderTransaction) {
+        if ([_transactionStatusMark isEqualToString:@"0"]) {
+            _transactionStatus = @"Semua Status";
+        } else if ([_transactionStatusMark isEqualToString:@"1"]) {
+            _transactionStatus = @"Transaksi Belum Selesai";
+        } else if ([_transactionStatus isEqualToString:@"2"]) {
+            _transactionStatus = @"Verifikasi Pembayaran";
+        } else if ([_transactionStatusMark isEqualToString:@"8"]) {
+            _transactionStatus = @"Dalam Proses";
+        } else if ([_transactionStatusMark isEqualToString:@"3"]) {
+            _transactionStatus = @"Dalam Pengiriman";
+        } else if ([_transactionStatusMark isEqualToString:@"9"]) {
+            _transactionStatus = @"Transaksi Terkirim";
+        } else if ([_transactionStatusMark isEqualToString:@"4"]) {
+            _transactionStatus = @"Transaksi Selesai";
+        } else if ([_transactionStatusMark isEqualToString:@"5"]) {
+            _transactionStatus = @"Transaksi Dibatalkan";
+        }
+        else
+        {
+            _transactionStatus = @"Semua Status";
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -81,7 +112,8 @@
         if (indexPath.section == 0) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
             UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width-30, 45)];
-            textField.placeholder = @"Nama Pembeli / Invoice";
+            textField.placeholder = _isOrderTransaction?@"Nama Penerima / Invoice":@"Nama Pembeli / Invoice";
+            textField.text = _invoiceMark?_invoiceMark:@"";
             textField.font = [UIFont fontWithName:@"GothamBook" size:14];
             [textField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
             [cell addSubview:textField];
@@ -96,10 +128,10 @@
                 cell.detailTextLabel.text = _transactionStatus;
             } else if (indexPath.row == 1) {
                 cell.textLabel.text = @"Tanggal Awal";
-                cell.detailTextLabel.text = _startDate;
+                cell.detailTextLabel.text = _startDateString;
             } else if (indexPath.row == 2) {
                 cell.textLabel.text = @"Tanggal Akhir";
-                cell.detailTextLabel.text = _endDate;
+                cell.detailTextLabel.text = _endDateString;
             }
         }
     }
@@ -127,6 +159,11 @@
                                    @"Transaksi Selesai",
                                    @"Transaksi Dibatalkan",
                                    ];
+
+            if (_isOrderTransaction) {
+                controller.objects = ARRAY_FILTER_TRANSACTION;
+            }
+            
             controller.selectedObject = _transactionStatus;
             [self.navigationController pushViewController:controller animated:YES];
             
@@ -135,7 +172,7 @@
             AlertDatePickerView *datePicker = [AlertDatePickerView new];
             datePicker.delegate = self;
             datePicker.tag = 1;
-            datePicker.startDate = [NSDate date];
+            datePicker.currentdate = _startDate;
             [datePicker show];
             
         } else if (indexPath.row == 2) {
@@ -143,7 +180,7 @@
             AlertDatePickerView *datePicker = [AlertDatePickerView new];
             datePicker.delegate = self;
             datePicker.tag = 2;
-            datePicker.startDate = [NSDate date];
+            datePicker.currentdate = _endDate;
             [datePicker show];
             
         }
@@ -161,18 +198,20 @@
     [dateFormatter setDateFormat:@"dd/MM/yyyy"];
     
     if (datePicker.tag == 1) {
-        
-        _startDate = [dateFormatter stringFromDate:date];
+
+        _startDate = date;
+        _startDateString = [dateFormatter stringFromDate:date];
         
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-        cell.detailTextLabel.text = _startDate;
+        cell.detailTextLabel.text = _startDateString;
         
     } else {
         
-        _endDate = [dateFormatter stringFromDate:date];
+        _endDate = date;
+        _endDateString = [dateFormatter stringFromDate:date];
         
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:1]];
-        cell.detailTextLabel.text = _endDate;
+        cell.detailTextLabel.text = _endDateString;
         
     }
 }
@@ -209,10 +248,32 @@
                 status = @"4";
             }
             
+            if (_isOrderTransaction) {
+                if (_isOrderTransaction) {
+                    if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[0]]) {
+                        status = @"0";
+                    } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[1]]) {
+                        status = @"1";
+                    } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[2]]) {
+                        status = @"2";
+                    } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[3]]) {
+                        status = @"8";
+                    } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[4]]) {
+                        status = @"3";
+                    } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[5]]) {
+                        status = @"9";
+                    } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[6]]) {
+                        status = @"4";
+                    } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[7]]) {
+                        status = @"5";
+                    }
+                }
+            }
+            
             [self.delegate filterOrderInvoice:_invoice
                             transactionStatus:status
-                                    startDate:_startDate
-                                      endDate:_endDate];
+                                    startDate:_startDateString
+                                      endDate:_endDateString];
         }
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }

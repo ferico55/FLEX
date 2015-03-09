@@ -53,7 +53,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *productButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreActionButton;
 
-@property (strong,nonatomic) NSDictionary *data;
+@property (strong,nonatomic) id data;
 @property (strong, nonatomic) NSIndexPath *indexpath;
 
 @property (nonatomic) BOOL talkFollowStatus;

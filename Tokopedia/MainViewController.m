@@ -10,8 +10,6 @@
 
 #import "LoginViewController.h"
 #import "SearchViewController.h"
-
-//#import "TransactionCartViewController.h"
 #import "TransactionCartRootViewController.h"
 #import "MoreNavigationController.h"
 #import "MoreViewController.h"
@@ -378,17 +376,10 @@
 
 - (void)applicationLogin:(NSNotification*)notification
 {
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadNotificationBar" object:self];
-
-    
-    //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    //id auth = [defaults loadCustomObjectWithKey:kTKPD_AUTHKEY];
-    //_login = auth;
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-	NSDictionary* auth = [secureStorage keychainDictionary];
+    NSDictionary* auth = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
 	_auth = [auth mutableCopy];
     
-    BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY]boolValue];
+    BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
 
 	// Assume tabController is the tab controller
     // and newVC is the controller you want to be the new view controller at index 0

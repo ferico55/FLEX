@@ -8,7 +8,6 @@
 
 #import "string_product.h"
 #import "string_transaction.h"
-#import "NoResult.h"
 
 #import "TransactionObjectMapping.h"
 
@@ -91,12 +90,16 @@
     
     TransactionObjectMapping *_mapping;
     BOOL _isLoadingRequest;
+    
+    NSString *_saldoTokopedia;
+    NSIndexPath *_switchSaldoIndexPath;
+    
+    NSMutableDictionary *_textAttributes;
 }
 
-@property (weak, nonatomic) IBOutlet UIView *voucherCodeView;
 @property (weak, nonatomic) IBOutlet UIView *voucerCodeBeforeTapView;
-@property (weak, nonatomic) IBOutlet UILabel *valueVoucherCodeLabel;
 @property (weak, nonatomic) IBOutlet UIButton *voucherCodeButton;
+@property (weak, nonatomic) IBOutlet UILabel *voucherAmountLabel;
 
 @property (strong, nonatomic) IBOutlet UITableViewCell *passwordCell;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
@@ -118,16 +121,16 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *checkoutButton;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) IBOutlet UIView *saldoTokopediaView;
 @property (weak, nonatomic) IBOutlet UIButton *buyButton;
 
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (strong, nonatomic) IBOutlet UITableViewCell *totalPaymentCell;
-@property (strong, nonatomic) IBOutlet UITableViewCell *buySummaryCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *saldoTokopediaCell;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (weak, nonatomic) IBOutlet UILabel *saldoTokopediaLabel;
-@property (weak, nonatomic) IBOutlet UIButton *isUsingSaldoTokopediaButton;
+@property (weak, nonatomic) IBOutlet UILabel *grandTotalLabel;
+
+@property (weak, nonatomic) IBOutlet UIButton *buttonVoucherInfo;
+@property (weak, nonatomic) IBOutlet UIButton *buttonCancelVoucher;
 
 -(void)cancelCartRequest;
 -(void)configureRestKitCart;
@@ -195,10 +198,6 @@
     _mapping = [TransactionObjectMapping new];
 
     _isUsingSaldoTokopedia = NO;
-    _isUsingSaldoTokopediaButton.layer.borderColor = [UIColor blackColor].CGColor;
-    _isUsingSaldoTokopediaButton.layer.borderWidth = 1;
-    _isUsingSaldoTokopediaButton.layer.cornerRadius = 2;
-    _checkoutButton.layer.cornerRadius = 2;
     
     _errorCells = [NSArray sortViewsWithTagInArray:_errorCells];
     _errorLabel = [NSArray sortViewsWithTagInArray:_errorLabel];
@@ -218,7 +217,7 @@
     _isnodata = YES;
     _isLoadingRequest = NO;
     _shouldRefresh = NO;
-    
+
     if (_indexPage == 0) {
         _refreshControl = [[UIRefreshControl alloc] init];
         _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -227,28 +226,66 @@
         
         [self configureRestKitCart];
         [self requestCart];
-        
-        _voucherCodeView.hidden = YES;
-        _voucherCodeButton.hidden = NO;
-        _voucerCodeBeforeTapView.hidden = NO;
-        _valueVoucherCodeLabel.hidden = YES;
     }
     
     TransactionCartGateway *gateway = [TransactionCartGateway new];
     gateway.gateway = @(-1);
     [_dataInput setObject:gateway forKey:DATA_CART_GATEWAY_KEY];
+    
+    if ([_tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [_tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+    
+    if ([_tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+        [_tableView setLayoutMargins:UIEdgeInsetsZero];
+    }
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 8.0;
+    
+    _textAttributes = [NSMutableDictionary dictionaryWithDictionary:@{
+                                                                      NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+                                                                      NSParagraphStyleAttributeName  : style,
+                                                                      NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
+                                                                      }];
+    
+    _saldoTokopediaAmountTextField.delegate = self;
+    
+    [_saldoTokopediaAmountTextField addTarget:self
+                                       action:@selector(saldoTextFieldDidChange:)
+                             forControlEvents:UIControlEventEditingChanged];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
     if (_indexPage==1)[self adjustTableViewData:_data];
     if (_shouldRefresh) {
         _isnodata = YES;
         [self configureRestKitCart];
         [self requestCart];
     }
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    if(!_requestCart.executing) _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
+
+    _tableView.scrollsToTop = YES;
+
+    if (_indexPage > 0) {
+        _tableView.contentInset = UIEdgeInsetsMake(-44, 0, 0, 0);
+        _tableView.contentOffset = CGPointMake(0, 0);
+    }
+    
+    _checkoutButton.layer.cornerRadius = 2;
+    _checkoutButton.layer.opacity = 1;
+
+    _buyButton.layer.cornerRadius = 2;
+    _buyButton.layer.opacity = 1;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -337,7 +374,6 @@
 
     NSInteger listCount = _list.count;
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-    _isUsingSaldoTokopediaButton.selected = _isUsingSaldoTokopedia;
     NSArray *gatewayList = _cart.gateway_list;
     BOOL isNullDeposit = YES;
     for (TransactionCartGateway *gateway in gatewayList) {
@@ -348,13 +384,11 @@
         if (_indexPage == 0) {
             cell = _paymentGatewayCell;
             cell.detailTextLabel.text = selectedGateway.gateway_name?:STRING_DEFAULT_PAYMENT;
-
         }
         else
         {
             cell = _paymentGatewaySummaryCell;
-            cell.textLabel.text = [NSString stringWithFormat:FORMAT_PAYMENT_METHOD,_cartSummary.gateway_name?:@""];
-
+            cell.detailTextLabel.text = _cartSummary.gateway_name?:@"";
         }
 
     }
@@ -419,7 +453,7 @@
                         case TYPE_GATEWAY_TOKOPEDIA:
                             cell = _usedSaldoCell;
                             [cell.detailTextLabel setText:_cartSummary.deposit_amount_idr animated:YES];
-
+                            break;
                         default:
                             break;
                     }
@@ -458,6 +492,13 @@
         else
         {
             cell = _saldoTokopediaCell;
+            if (indexPath.row == 0) {
+                UISwitch *switchSaldo = (UISwitch *)[cell viewWithTag:1];
+                [switchSaldo addTarget:self
+                                action:@selector(changeSwitchSaldo:)
+                      forControlEvents:UIControlEventValueChanged];
+                _switchSaldoIndexPath = indexPath;
+            }
             if (indexPath.row==1) {
                 cell = _saldoTextFieldCell;
             }
@@ -475,9 +516,6 @@
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
 }
-
-
-#pragma mark - Table View Delegate
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -543,17 +581,13 @@
         if (_indexPage==1 && [_cartSummary.deposit_amount integerValue]>0) {
             return 0;
         }
-        else
-            return (_indexPage==0)?0:_buyView.frame.size.height;
     }
-    else if (section == listCount+2 && _indexPage == 0)
-    {
-        return ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)])?_checkoutView.frame.size.height:0;
+    else if (section == _list.count+2 && _indexPage == 0) {
+        if (![selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)]) {
+            return 30;
+        }
     }
-    else
-    {
-        return (_indexPage==0)?_checkoutView.frame.size.height:_buyView.frame.size.height;
-    }
+    return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -569,6 +603,7 @@
         if (_indexPage==1) {
             headerView.shopNameLabel.textColor = [UIColor blackColor];
             headerView.deleteButton.hidden = YES;
+            headerView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1];
         }
         headerView.section = section-1;
         headerView.delegate = self;
@@ -583,12 +618,7 @@
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-    if (section == 0) {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-        view.backgroundColor = [UIColor clearColor];
-        return view;
-    }
-    else if (section <= _list.count)
+    if (section <= _list.count && section > 0)
     {
         TransactionCartList *list = _list[section-1];
         TransactionCartCostView *footerView = [TransactionCartCostView newview];
@@ -607,17 +637,22 @@
         if (_indexPage==1 && [_cartSummary.deposit_amount integerValue]>0) {
             return nil;
         }
-        else
-            return (_indexPage==0)?nil:_buyView;
     }
-    else if (section == _list.count+2 && _indexPage == 0)
-    {
-        return ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)])?_checkoutView:nil;
+    else if (section == _list.count+2 && _indexPage == 0) {
+        if (![selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)])
+        {
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
+
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width-15, 34)];
+            label.text = [NSString stringWithFormat:@"(Saldo Tokopedia anda %@)", _cart.deposit_idr];
+            label.font = [UIFont fontWithName:@"GothamBook" size:12];
+            label.textColor = [UIColor grayColor];
+            [view addSubview:label];
+            
+            return view;
+        }
     }
-    else
-    {
-        return (_indexPage==0)?_checkoutView:_buyView;
-    }
+    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -629,7 +664,13 @@
     if (row == indexPath.row) {
         NSLog(@"%@", NSStringFromSelector(_cmd));
     }
+    
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+    }
 }
+
+#pragma mark - Table View Delegate
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -674,24 +715,6 @@
                 picker.tag = indexPath.section;
                 picker.pickerData =ARRAY_IF_STOCK_AVAILABLE_PARTIALLY;
                 [picker show];
-            }
-        }
-        else if (indexPath.section == listCount+2)
-        {
-            _isUsingSaldoTokopedia = _isUsingSaldoTokopedia?NO:YES;
-            _isUsingSaldoTokopediaButton.selected = _isUsingSaldoTokopedia;
-            if (_isUsingSaldoTokopedia) {
-                [self.tableView beginUpdates];
-                NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
-                [self.tableView insertRowsAtIndexPaths:@[indexPath1] withRowAnimation:UITableViewRowAnimationRight];
-                [self.tableView endUpdates];
-            }
-            else
-            {
-                [self.tableView beginUpdates];
-                NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
-                [self.tableView deleteRowsAtIndexPaths:@[indexPath1] withRowAnimation:UITableViewRowAnimationLeft];
-                [self.tableView endUpdates];
             }
         }
         else
@@ -786,14 +809,13 @@
         [self requestSuccessCart:mappingResult withOperation:operation];
         [_refreshControl endRefreshing];
         [timer invalidate];
-        //_tableView.tableFooterView = nil;
         [_act stopAnimating];
         _isLoadingRequest = NO;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureCart:error];
         [_refreshControl endRefreshing];
         [timer invalidate];
-        _tableView.tableFooterView = nil;
+        _tableView.tableFooterView = _checkoutView;
         [_act stopAnimating];
         _isLoadingRequest = NO;
     }];
@@ -833,9 +855,9 @@
             if (status) {
                 if(cart.message_error)
                 {
-                    NSArray *array = cart.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                    [alert show];
                 }
                 else{
                     [_list removeAllObjects];
@@ -879,18 +901,18 @@
                         [_dropshipStrList addObject:@""];
                         [_stockPartialDetail addObject:@(0)];
                     }
-                    if (!_isnodata) {
+                    if (listCount>0) {
                         NSInteger indexSelectedShipment = [[_dataInput objectForKey:DATA_INDEX_KEY] integerValue]?:0;
                         NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:((TransactionCartList*)_list[indexSelectedShipment])};
                         [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_POST_NOTIFICATION_NAME object:nil userInfo:info];
-                        _tableView.tableFooterView = nil;
+                        _tableView.tableFooterView = _checkoutView;
                     }
                     else {
-                        NoResult *noResultView = [[NoResult alloc]initWithFrame:CGRectMake(0, 0, 320, 100)];
+                        NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, 320, 100)];
                         _tableView.tableFooterView = noResultView;
                     }
                     [_tableView reloadData];
-                    _tableView.contentInset = UIEdgeInsetsMake(-14.0, 0, 0, 0);
+                    _tableView.contentInset = UIEdgeInsetsMake(-44, 0, 0, 0);
                 }
             }
         }
@@ -1029,16 +1051,16 @@
             if (status) {
                 if(action.message_error)
                 {
-                    NSArray *array = action.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    NSArray *errorMessages = action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                    [alert show];
                 }
                 else{
                     if (action.result.is_success == 1) {
 
-                        NSArray *array = action.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                        NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+                        [alert show];
                         
                         [self refreshView:nil];
                     }
@@ -1206,17 +1228,20 @@
     [param addEntriesFromDictionary:partialDetail];
     
     _checkoutButton.enabled = NO;
-    [_checkoutButton setTitle:@"Processing ..." forState:UIControlStateNormal];
+    _checkoutButton.layer.opacity = 0.8;
+//    [_checkoutButton setTitle:@"Processing ..." forState:UIControlStateNormal];
     _requestActionCheckout = [_objectManagerActionCheckout appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_TRANSACTION_PATH parameters:[param encrypt]];
     [_requestActionCheckout setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionCheckout:mappingResult withOperation:operation];
         _checkoutButton.enabled = YES;
         [_checkoutButton setTitle:@"CHECKOUT" forState:UIControlStateNormal];
         [timer invalidate];
+        _tableView.tableFooterView = _buyView;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionCheckout:error];
         _checkoutButton.enabled = YES;
         [_checkoutButton setTitle:@"CHECKOUT" forState:UIControlStateNormal];
+        _tableView.tableFooterView = _buyView;
         [timer invalidate];
     }];
 
@@ -1255,12 +1280,12 @@
             if (status) {
                 if(cart.message_error)
                 {
-                    NSArray *array = cart.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                    [alert show];
                 }
                 else{
-                    NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:cart.result.transaction?:@"",
+                    NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:cart.result.transaction?:[TransactionSummaryDetail new],
                                                DATA_DROPSHIPPER_NAME_KEY: _senderNameDropshipper?:@"",
                                                DATA_DROPSHIPPER_PHONE_KEY:_senderPhoneDropshipper?:@"",
                                                DATA_PARTIAL_LIST_KEY:_stockPartialStrList?:@{},
@@ -1270,9 +1295,9 @@
                 }
                 if(cart.message_status)
                 {
-                    NSArray *array = cart.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    NSArray *successMessages = cart.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+                    [alert show];
                 }
             }
         }
@@ -1376,17 +1401,20 @@
                           };
     
     _buyButton.enabled = NO;
-    [_buyButton setTitle:@"Processing ..." forState:UIControlStateNormal];
+    _buyButton.layer.opacity = 0.8;
+//    [_buyButton setTitle:@"Processing ..." forState:UIControlStateNormal];
     _requestActionBuy = [_objectManagerActionBuy appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_TRANSACTION_PATH parameters:[param encrypt]];
     [_requestActionBuy setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionBuy:mappingResult withOperation:operation];
         [timer invalidate];
         _buyButton.enabled = YES;
+        _buyButton.layer.opacity = 1;
         [_buyButton setTitle:@"BAYAR" forState:UIControlStateNormal];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureActionBuy:error];
         [timer invalidate];
         _buyButton.enabled = YES;
+        _buyButton.layer.opacity = 1;
         [_buyButton setTitle:@"BAYAR" forState:UIControlStateNormal];
     }];
     
@@ -1427,9 +1455,11 @@
             if (status) {
                 if(cart.message_error)
                 {
-                    NSArray *array = cart.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+
+                    NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                    [alert show];
+                    
                     switch ([_cartSummary.gateway integerValue]) {
                         case TYPE_GATEWAY_TRANSFER_BANK:
                             break;
@@ -1449,13 +1479,15 @@
                 }
                 if(cart.message_status)
                 {
-                    NSArray *array = cart.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    NSArray *successMessages = cart.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+                    [alert show];
                 }
                 if (cart.result.is_success == 1) {
                     NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:cart.result};
                     [_delegate didFinishRequestBuyData:userInfo];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
                 }
             }
         }
@@ -1575,28 +1607,41 @@
             if (status) {
                 if(dataVoucher.message_error)
                 {
-                    NSArray *array = dataVoucher.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    NSArray *errorMessages = dataVoucher.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                    [alert show];
                 }
                 else{
-                    _voucerCodeBeforeTapView.hidden = NO;
-                    _voucherCodeView.hidden = YES;
-                    _valueVoucherCodeLabel.hidden = NO;
                     _voucherCodeButton.hidden = YES;
+                    _voucherAmountLabel.hidden = NO;
                     
-                    _valueVoucherCodeLabel.text = dataVoucher.result.data_voucher.voucher_amount;
+                    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+                    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+                    formatter.currencyCode = @"Rp ";
+                    formatter.currencyGroupingSeparator = @".";
+                    formatter.currencyDecimalSeparator = @",";
+                    formatter.maximumFractionDigits = 0;
+                    formatter.minimumFractionDigits = 0;
                     
-                    [self refreshView:nil];
+                    NSInteger voucher = [dataVoucher.result.data_voucher.voucher_amount integerValue];
+                    NSString *voucherString = [formatter stringFromNumber:[NSNumber numberWithInteger:voucher]];
+                    voucherString = [NSString stringWithFormat:@"Anda mendapatkan voucher %@,-", voucherString];
+                    _voucherAmountLabel.text = voucherString;
+                    _voucherAmountLabel.font = [UIFont fontWithName:@"GothamBook" size:12];
+                    
+                    _buttonVoucherInfo.hidden = YES;
+                    _buttonCancelVoucher.hidden = NO;
                 }
             }
         }
         else{
-            NSError *error = object;
-            if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = error.localizedDescription;
+            if ([object code] != NSURLErrorCancelled) {
+                
+                NSString *errorDescription = [object localizedDescription];
                 UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                 [errorAlert show];
+
+                [_dataInput setObject:@"" forKey:API_VOUCHER_CODE_KEY];
             }
         }
     }
@@ -1702,16 +1747,15 @@
             if (status) {
                 if(action.message_error)
                 {
-                    NSArray *array = action.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    NSArray *errorMessages = action.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                    [alert show];
                 }
                 else{
                     if (action.result.is_success == 1) {
-                        NSArray *array = action.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-                        
+                        NSArray *successMessages = action.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+                        [alert show];
                         [_tableView reloadData];
                     }
                 }
@@ -1761,6 +1805,15 @@
                     AlertInfoVoucherCodeView *alertInfo = [AlertInfoVoucherCodeView newview];
                     [alertInfo show];
                 }
+                case 12:
+                {
+                    _voucherCodeButton.hidden = NO;
+                    _voucherAmountLabel.hidden = YES;
+                    _buttonCancelVoucher.hidden = YES;
+                    _buttonVoucherInfo.hidden = NO;
+                    
+                    [_dataInput setObject:@"" forKey:API_VOUCHER_CODE_KEY];
+                }
                     break;
                 default:
                     if([self isValidInput]) {
@@ -1805,6 +1858,24 @@
             }
 
         }
+    }
+}
+
+- (void)changeSwitchSaldo:(UISwitch *)switchSaldo
+{
+    _isUsingSaldoTokopedia = _isUsingSaldoTokopedia?NO:YES;
+    if (_isUsingSaldoTokopedia) {
+        [self.tableView beginUpdates];
+        NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:_switchSaldoIndexPath.row+1 inSection:_switchSaldoIndexPath.section];
+        [self.tableView insertRowsAtIndexPaths:@[indexPath1] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+    }
+    else
+    {
+        [self.tableView beginUpdates];
+        NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:_switchSaldoIndexPath.row+1 inSection:_switchSaldoIndexPath.section];
+        [self.tableView deleteRowsAtIndexPaths:@[indexPath1] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
     }
 }
 
@@ -1888,9 +1959,8 @@
     }
     
     if (!isValid) {
-        NSArray *array = messageError;
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messageError delegate:self];
+        [alert show];
     }
 
     return  isValid;
@@ -1996,8 +2066,8 @@
             [self.tableView beginUpdates];
             NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
             NSIndexPath *indexPath2 = [NSIndexPath indexPathForRow:indexPath.row+2 inSection:indexPath.section];
-            [self.tableView insertRowsAtIndexPaths:@[indexPath1] withRowAnimation:UITableViewRowAnimationRight];
-            [self.tableView insertRowsAtIndexPaths:@[indexPath2] withRowAnimation:UITableViewRowAnimationRight];
+            [self.tableView insertRowsAtIndexPaths:@[indexPath1] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView insertRowsAtIndexPaths:@[indexPath2] withRowAnimation:UITableViewRowAnimationAutomatic];
             [self.tableView endUpdates];
             
             
@@ -2011,7 +2081,7 @@
             [self.tableView beginUpdates];
             NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
             NSIndexPath *indexPath2 = [NSIndexPath indexPathForRow:indexPath.row+2 inSection:indexPath.section];
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath1, indexPath2] withRowAnimation:UITableViewRowAnimationLeft];
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath1, indexPath2] withRowAnimation:UITableViewRowAnimationAutomatic];
             [self.tableView endUpdates];
             
             [_dropshipStrList replaceObjectAtIndex:indexPath.section-1 withObject:@""];
@@ -2121,8 +2191,7 @@
         {
             if (alertView.tag>0) {
                 NSInteger index = [[((AlertPickerView*)alertView).data objectForKey:DATA_INDEX_KEY] integerValue];
-                //NSInteger shopID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
-                TransactionCartList *list = _list[index-1];
+                TransactionCartList *list = _list[alertView.tag-1];
                 NSInteger shopID = [list.cart_shop.shop_id integerValue];
                 NSInteger addressID =list.cart_destination.address_id;
                 NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
@@ -2155,6 +2224,29 @@
 }
 
 #pragma mark - Textfield Delegate
+
+- (void)saldoTextFieldDidChange:(UITextField *)textField
+{
+    NSString *depositAmount = [textField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
+    NSInteger deposit = [depositAmount integerValue];
+    
+    if (deposit <= [_cart.grand_total integerValue]) {
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+        formatter.currencyCode = @"Rp ";
+        formatter.currencyGroupingSeparator = @".";
+        formatter.currencyDecimalSeparator = @",";
+        formatter.maximumFractionDigits = 0;
+        formatter.minimumFractionDigits = 0;
+        
+        NSInteger grandTotal = [_cart.grand_total integerValue] - deposit;
+        _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotal]];
+        _grandTotalLabel.text = [[formatter stringFromNumber:[NSNumber numberWithInteger:grandTotal]] stringByAppendingString:@",-"];
+        
+        [_dataInput setObject:depositAmount forKey:DATA_USED_SALDO_KEY];
+    }
+}
+
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     [textField resignFirstResponder];
     _activeTextField = textField;
@@ -2173,8 +2265,23 @@
     else if (textField.tag < 0)
         [_senderPhoneDropshipper replaceObjectAtIndex:-textField.tag-1 withObject:textField.text];
     if (textField == _saldoTokopediaAmountTextField) {
-        NSString *depositAmount = [textField.text stringByReplacingOccurrencesOfString:@"," withString:@""];
+        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+        formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+        formatter.currencyCode = @"Rp ";
+        formatter.currencyGroupingSeparator = @".";
+        formatter.currencyDecimalSeparator = @",";
+        formatter.maximumFractionDigits = 0;
+        formatter.minimumFractionDigits = 0;
+        
+        NSString *depositAmount = [textField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
+        NSInteger deposit = [depositAmount integerValue];
+        NSInteger grandTotal = [_cart.grand_total integerValue] - deposit;
+        _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotal]];
+        _grandTotalLabel.text = [[formatter stringFromNumber:[NSNumber numberWithInteger:grandTotal]] stringByAppendingString:@",-"];
+        
         [_dataInput setObject:depositAmount forKey:DATA_USED_SALDO_KEY];
+        
+        [_tableView reloadData];
     }
     if (textField == _passwordTextField) {
         [_dataInput setObject:textField.text forKey:API_PASSWORD_KEY];
@@ -2187,28 +2294,36 @@
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if (textField == _saldoTokopediaAmountTextField) {
+        
+        NSString *textFieldValue = [NSString stringWithFormat:@"%@%@", textField.text, string];
+        NSString *depositAmount = [textFieldValue stringByReplacingOccurrencesOfString:@"." withString:@""];
+        NSInteger deposit = [depositAmount integerValue];
+        if (deposit > [_cart.grand_total integerValue]) {
+            return NO;
+        }
+        
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         if([string length]==0)
         {
-            [formatter setGroupingSeparator:@","];
+            [formatter setGroupingSeparator:@"."];
             [formatter setGroupingSize:4];
             [formatter setUsesGroupingSeparator:YES];
             [formatter setSecondaryGroupingSize:3];
             NSString *num = textField.text ;
-            num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+            num = [num stringByReplacingOccurrencesOfString:@"." withString:@""];
             NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
             textField.text = str;
             return YES;
         }
         else {
-            [formatter setGroupingSeparator:@","];
+            [formatter setGroupingSeparator:@"."];
             [formatter setGroupingSize:2];
             [formatter setUsesGroupingSeparator:YES];
             [formatter setSecondaryGroupingSize:3];
             NSString *num = textField.text ;
             if(![num isEqualToString:@""])
             {
-                num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+                num = [num stringByReplacingOccurrencesOfString:@"." withString:@""];
                 NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
                 textField.text = str;
             }
@@ -2223,7 +2338,7 @@
     NSDictionary* info = [aNotification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     
-    UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(-44.0, 0.0, kbSize.height, 0.0);
     _tableView.contentInset = contentInsets;
     _tableView.scrollIndicatorInsets = contentInsets;
     
@@ -2233,7 +2348,7 @@
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(-44, 0, 0, 0);
     [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                           delay:0
                         options: UIViewAnimationOptionCurveEaseInOut
@@ -2271,10 +2386,9 @@
     }
     
     NSInteger choosenIndex = [_stockPartialStrList[indexPath.section-1] isEqualToString:@""]?0:1;
-    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = @"Stock Tersedia Sebagian";
     cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
-    //cell.textLabel.textColor = TEXT_COLOUR_DEFAULT_CELL_TEXT;
     cell.detailTextLabel.text = [ARRAY_IF_STOCK_AVAILABLE_PARTIALLY[choosenIndex]objectForKey:DATA_NAME_KEY];
     cell.detailTextLabel.font = FONT_DETAIL_DEFAULT_CELL_TKPD;
     cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
@@ -2290,25 +2404,22 @@
     TransactionCartList *list = _list[indexList];
     NSArray *products = list.cart_products;
     NSInteger rowCount = products.count+3;
-    NSString *placeholder = (isSaldoTokopediaTextField)?@"Saldo Tokopedia":(indexPath.row == rowCount)?@"Nama Pengirim":@"Nomor Telepon";
     UITableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(15, 0, self.view.frame.size.width-15, 44)];
+        NSString *placeholder = (isSaldoTokopediaTextField)?@"Saldo Tokopedia":(indexPath.row == rowCount)?@"Nama Pengirim":@"Nomor Telepon";
+        textField.placeholder = placeholder;
+        textField.text = (indexPath.section==_list.count+1)?@"":(indexPath.row == rowCount)?_senderNameDropshipper[indexPath.section-1]:_senderPhoneDropshipper[indexPath.section-1];
+        textField.delegate = self;
+        textField.tag = isSaldoTokopediaTextField?0:(indexPath.row == rowCount)?indexPath.section:-indexPath.section;
+        textField.font = FONT_DEFAULT_CELL_TKPD;
+        [cell addSubview:textField];
     }
-    UIView *accessoryView = [[UIView alloc]initWithFrame:CGRectMake(15, 0, 300, 30)];
-    UITextField *textField = [[UITextField alloc]initWithFrame:accessoryView.frame];
-    textField.placeholder = placeholder;
-    textField.text = (indexPath.section==_list.count+1)?@"":(indexPath.row == rowCount)?_senderNameDropshipper[indexPath.section-1]:_senderPhoneDropshipper[indexPath.section-1];
-    textField.delegate = self;
-    textField.tag = isSaldoTokopediaTextField?0:(indexPath.row == rowCount)?indexPath.section:-indexPath.section;
-    textField.font = FONT_DEFAULT_CELL_TKPD;
-    
-    [accessoryView addSubview:textField];
-    cell.accessoryView = accessoryView;
-    
+
     return cell;
 }
 
@@ -2333,34 +2444,49 @@
 {
     NSString *cellid = TRANSACTION_CART_CELL_IDENTIFIER;
     
-    UITableViewCell *cell = (TransactionCartCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
+    TransactionCartCell *cell = (TransactionCartCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
     if (cell == nil) {
         cell = [TransactionCartCell newcell];
         ((TransactionCartCell*)cell).delegate = self;
     }
     TransactionCartList *list = _list[indexPath.section-1];
-    NSInteger indexProduct = indexPath.row;//(list.cart_error_message_1)?indexPath.row-1:indexPath.row; //TODO:: adjust when error message appear
+    //(list.cart_error_message_1)?indexPath.row-1:indexPath.row;
+    //TODO:: adjust when error message appear
+    NSInteger indexProduct = indexPath.row;
     NSArray *listProducts = list.cart_products;
     ProductDetail *product = listProducts[indexProduct];
-    cell.backgroundColor = (_indexPage==0)?[UIColor whiteColor]:[UIColor colorWithRed:249.0f/255.0f green:249.0f/255.0f blue:249.0f/255.0f alpha:1];
-    [((TransactionCartCell*)cell).productNameLabel setText:product.product_name animated:YES];
-    if (_indexPage==1) ((TransactionCartCell*)cell).productNameLabel.textColor= [UIColor blackColor];
-    [((TransactionCartCell*)cell).productPriceLabel setText:product.product_total_price_idr animated:YES];
+    cell.backgroundColor = (_indexPage==0)?[UIColor whiteColor]:[UIColor colorWithRed:247.0f/255.0f green:247.0f/255.0f blue:247.0f/255.0f alpha:1];
+
+    NSAttributedString *attributedText;
+    if (_indexPage==0) {
+        UIColor *color = [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1];
+        [_textAttributes setObject:color forKey:NSForegroundColorAttributeName];
+        attributedText = [[NSAttributedString alloc] initWithString:product.product_name
+                                                         attributes:_textAttributes];
+    } else {
+        [_textAttributes setObject:[UIColor blackColor] forKey:NSForegroundColorAttributeName];
+        attributedText = [[NSAttributedString alloc] initWithString:product.product_name
+                                                         attributes:_textAttributes];
+    }
+    [cell.productNameLabel setAttributedText:attributedText];
+
+    [cell.productPriceLabel setText:product.product_total_price_idr animated:YES];
     
     NSString *weightTotal = [NSString stringWithFormat:@"%@ Barang (%@ kg)",product.product_quantity, product.product_total_weight];
-    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]  initWithString:weightTotal];
-    [attributedString addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_12 range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",product.product_total_weight]]];
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:weightTotal];
+    [attributedString addAttribute:NSFontAttributeName
+                             value:FONT_GOTHAM_BOOK_12
+                             range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",product.product_total_weight]]];
     [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1] range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",product.product_total_weight]]];
-    ((TransactionCartCell*)cell).quantityLabel.attributedText = attributedString;
+    cell.quantityLabel.attributedText = attributedString;
     
     NSIndexPath *indexPathCell = [NSIndexPath indexPathForRow:indexProduct inSection:indexPath.section-1];
     ((TransactionCartCell*)cell).indexPath = indexPathCell;
-    ((TransactionCartCell*)cell).editButton.hidden = (_indexPage == 1);
-    ((TransactionCartCell*)cell).remarkTextView.text = product.product_notes;
+    cell.remarkLabel.text = product.product_notes;
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_pic] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
-    UIImageView *thumb = ((TransactionCartCell*)cell).productThumbImageView;
+    UIImageView *thumb = cell.productThumbImageView;
     thumb.image = nil;
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
@@ -2389,20 +2515,9 @@
 }
 
 
-
-//TODO:: Change color Action Sheet cancel button
-//- (void)willPresentActionSheet:(UIActionSheet *)actionSheet
-//{
-//    for (UIView *subview in actionSheet.subviews) {
-//        if ([subview isKindOfClass:[UIButton class]]) {
-//            UIButton *button = (UIButton *)subview;
-//            button.titleLabel.textColor = [UIColor greenColor];
-//        }
-//    }
-//}
-
 -(void)dealloc
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
+
 @end
