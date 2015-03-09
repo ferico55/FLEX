@@ -147,7 +147,7 @@
         {
             if (buttonIndex == 1) {
                 //TODO:: Delegate
-                [_delegate shouldCancelComplain:_resolution];
+                [_delegate shouldCancelComplain:_resolution atIndexPath:_indexPath];
                 [self.navigationController popViewControllerAnimated:YES];
                 //[self configureRestKitCancelComplain];
                 //[self requestWithActionCancelComplain:_resolution.resolution_last.last_resolution_id];

@@ -21,6 +21,9 @@
 #define DATA_FILTER_READ_KEY @"filter_read"
 #define DATA_FILTER_SORTING_KEY @"filter_sorting"
 
+#define DATA_SELECTED_RESOLUTION_KEY @"selected_resolution"
+#define DATA_SELECTED_INDEXPATH_RESOLUTION_KEY @"seleted_indexpath_resolution"
+
 @interface InboxResolutionCenterComplainViewController ()<UITabBarControllerDelegate, UITableViewDataSource, GeneralTableViewControllerDelegate,FilterComplainViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate>
 {
     NSMutableArray *_list;
@@ -195,6 +198,7 @@
 {
     ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
     InboxResolutionCenterList *resolution = _list[indexPath.row];
+    vc.indexPath = indexPath;
     vc.resolution = resolution;
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
@@ -228,10 +232,13 @@
 }
 
 #pragma mark - Delegate
--(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution
+-(void)shouldCancelComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath*)indexPath
 {
     [self configureRestKitCancelComplain];
-    [self requestCancelComplain:resolution];
+    NSMutableDictionary *object = [NSMutableDictionary new];
+    [object setObject:resolution forKey:DATA_SELECTED_RESOLUTION_KEY];
+    [object setObject:indexPath forKey:DATA_SELECTED_INDEXPATH_RESOLUTION_KEY];
+    [self requestCancelComplain:object];
 }
 
 #pragma mark - Request List
@@ -538,13 +545,14 @@
     [_objectManagerCancelComplain addResponseDescriptor:responseDescriptor];
 }
 
--(void)requestCancelComplain:(InboxResolutionCenterList *)resolution
+-(void)requestCancelComplain:(NSDictionary *)object
 {
     if (_requestCancelComplain.isExecuting) return;
     
+    InboxResolutionCenterList *resolution = [object objectForKey:DATA_SELECTED_RESOLUTION_KEY];
     [_list removeObject:resolution];
     [_tableView reloadData];
-    [_objectCancelComplain addObject:resolution];
+    [_objectCancelComplain addObject:object];
     
     NSTimer *timer;
     
@@ -569,10 +577,10 @@
 #endif
     
     [_requestCancelComplain setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessCancelComplain:resolution withOperation:operation withMappingResult:mappingResult];
+        [self requestSuccessCancelComplain:object withOperation:operation withMappingResult:mappingResult];
         [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureCancelComplain:resolution withErrorMessage:error.description];
+        [self requestFailureCancelComplain:object withErrorMessage:error.description];
         [timer invalidate];
     }];
     
@@ -582,7 +590,7 @@
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
--(void)requestSuccessCancelComplain:(InboxResolutionCenterList*)complain withOperation:(RKObjectRequestOperation *)operation withMappingResult:(RKMappingResult*)mappingResult
+-(void)requestSuccessCancelComplain:(NSDictionary*)object withOperation:(RKObjectRequestOperation *)operation withMappingResult:(RKMappingResult*)mappingResult
 {
     NSDictionary *result = mappingResult.dictionary;
     id stat = [result objectForKey:@""];
@@ -596,30 +604,33 @@
             NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
             
-            [self requestFailureCancelComplain:complain withErrorMessage:nil];
+            [self requestFailureCancelComplain:object withErrorMessage:nil];
         }
         else if (resolution.result.is_success == 1) {
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:@[@"Sukses"] delegate:self];
             [alert show];
-            [_objectCancelComplain removeObject:complain];
+            [_objectCancelComplain removeObject:object];
         }
         else
         {
-            [self requestFailureCancelComplain:complain withErrorMessage:@"Error"];
+            [self requestFailureCancelComplain:object withErrorMessage:@"Error"];
         }
     }
     else
     {
-        [self requestFailureCancelComplain:complain withErrorMessage:resolution.status];
+        [self requestFailureCancelComplain:object withErrorMessage:resolution.status];
     }
     
     [self requestProcessCancelComplain];
 }
 
--(void)requestFailureCancelComplain:(InboxResolutionCenterList*)complain withErrorMessage:(NSString*)error
+-(void)requestFailureCancelComplain:(NSDictionary*)object withErrorMessage:(NSString*)error
 {
-    [_list addObject:complain];
-    [_objectCancelComplain removeObject:complain];
+    InboxResolutionCenterList *resolution = [object objectForKey:DATA_SELECTED_RESOLUTION_KEY];
+    NSIndexPath *indexPathResolution = [object objectForKey:DATA_SELECTED_INDEXPATH_RESOLUTION_KEY];
+    [_list insertObject:resolution atIndex:indexPathResolution.row];
+    [_objectCancelComplain removeObject:object];
+    [_tableView reloadData];
 }
 
 -(void)requestProcessCancelComplain
@@ -632,7 +643,7 @@
 
 -(void)requestTimeoutCancelComplain
 {
-    [self cancelRequestCancelComplain];
+    //[self cancelRequestCancelComplain];
 }
 
 
