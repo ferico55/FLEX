@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#define kTKPDDETAILPRODUCTINFOCELLIDENTIFIER @"DetailProductInfoIdentifier"
+#define kTKPDDETAILPRODUCTINFOCELLIDENTIFIER @"DetailProductInfoCellIdentifier"
 
 #pragma mark - Detail Product Info Cell Delegate
 @protocol DetailProductInfoCellDelegate <NSObject>
@@ -20,12 +20,7 @@
 #pragma mark - Detail Product Info Cell
 @interface DetailProductInfoCell : UITableViewCell
 
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-@property (nonatomic, weak) IBOutlet id<DetailProductInfoCellDelegate> delegate;
-#else
-@property (nonatomic, assign) IBOutlet id<DetailProductInfoCellDelegate> delegate;
-#endif
-
+@property (weak, nonatomic) id<DetailProductInfoCellDelegate> delegate;
 
 @property (weak, nonatomic) IBOutlet UIView *productInformationView;
 @property (weak, nonatomic) IBOutlet UILabel *minorderlabel;

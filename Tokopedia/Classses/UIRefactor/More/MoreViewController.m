@@ -91,8 +91,7 @@
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
     
-    
-    if([_auth objectForKey:@"shop_id"]  == 0) {
+    if([_auth objectForKey:@"shop_id"]) {
         _shopNameLabel.text = [_auth objectForKey:@"shop_name"];
         
         NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"shop_avatar"]]

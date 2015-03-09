@@ -16,9 +16,11 @@
 #import "SendMessageViewController.h"
 #import "ProductAddEditViewController.h"
 
+#import "LoginViewController.h"
+
 #import "FavoriteShopAction.h"
 
-@interface ShopPageHeader () <UIScrollViewDelegate, UISearchBarDelegate> {
+@interface ShopPageHeader () <UIScrollViewDelegate, UISearchBarDelegate, LoginViewDelegate> {
     ShopDescriptionView *_descriptionView;
     ShopStatView *_statView;
     UserAuthentificationManager *_userManager;
@@ -29,6 +31,8 @@
     __weak RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
     NSTimer *_timer;
+    
+    NSDictionary *_auth;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
@@ -76,9 +80,9 @@
     self.rightButton.layer.borderWidth = 1;
     self.rightButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
     
-    NSDictionary *auth = [_userManager getUserLoginData];
-    if ([auth allValues] > 0) {
-        if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
+    _auth = [_userManager getUserLoginData];
+    if ([_auth allValues] > 0) {
+        if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
             [self.leftButton setTitle:@"Settings" forState:UIControlStateNormal];
             [self.leftButton setImage:[UIImage imageNamed:@"icon_setting_grey"] forState:UIControlStateNormal];
             
@@ -108,7 +112,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    
+    _auth = [_userManager getUserLoginData];
 }
 
 - (void)viewDidLoad
@@ -154,6 +158,8 @@
     if(_shop.result.info.shop_already_favorited == 1) {
         [self setButtonFav];
     }
+    
+//    self.title = _shop.result.info.shop_name;
     
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:15];
     
@@ -209,7 +215,7 @@
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
-    [_shopImageView setImageWithURLRequest:requestAvatar placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [_shopImageView setImageWithURLRequest:requestAvatar placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         _shopImageView.image = image;
@@ -272,12 +278,32 @@
                 break;
             }
             
-            SendMessageViewController *messageController = [SendMessageViewController new];
-            messageController.data = @{
-                                       kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
-                                       kTKPDDETAIL_APISHOPNAMEKEY:_shop.result.info.shop_name
-                                       };
-            [nav.navigationController pushViewController:messageController animated:YES];
+            if(_auth) {
+                //Send Message
+                SendMessageViewController *messageController = [SendMessageViewController new];
+                messageController.data = @{
+                                           kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                                           kTKPDDETAIL_APISHOPNAMEKEY:_shop.result.info.shop_name
+                                           };
+                [nav.navigationController pushViewController:messageController animated:YES];
+               
+            } else {
+                UINavigationController *navigationController = [[UINavigationController alloc] init];
+                navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                navigationController.navigationBar.translucent = NO;
+                navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                
+                
+                LoginViewController *controller = [LoginViewController new];
+                controller.delegate = self;
+                controller.isPresentedViewController = YES;
+                controller.redirectViewController = self;
+                navigationController.viewControllers = @[controller];
+                
+                [nav.navigationController presentViewController:navigationController animated:YES completion:nil];
+            }
+            
+            
             break;
         }
             
@@ -293,10 +319,28 @@
                 break;
             }
             
-            // Favorite shop action
-            [self configureFavoriteRestkit];
-            [self favoriteShop:_shop.result.info.shop_id sender:_rightButton];
-            [self setButtonFav];
+            if(_auth) {
+                // Favorite shop action
+                [self configureFavoriteRestkit];
+                [self favoriteShop:_shop.result.info.shop_id sender:_rightButton];
+                [self setButtonFav];
+                
+            } else {
+                UINavigationController *navigationController = [[UINavigationController alloc] init];
+                navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                navigationController.navigationBar.translucent = NO;
+                navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                
+                
+                LoginViewController *controller = [LoginViewController new];
+                controller.delegate = self;
+                controller.isPresentedViewController = YES;
+                controller.redirectViewController = self;
+                navigationController.viewControllers = @[controller];
+                
+                [nav.navigationController presentViewController:navigationController animated:YES completion:nil];
+            }
+            
             
             break;
         }
@@ -409,6 +453,11 @@
 }
 
 -(void)requestFavoriteError:(id)object {
+    
+}
+
+#pragma mark - Login Delegate
+- (void)redirectViewController:(id)viewController {
     
 }
 

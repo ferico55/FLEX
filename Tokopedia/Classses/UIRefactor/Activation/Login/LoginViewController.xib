@@ -15,6 +15,7 @@
             <connections>
                 <outlet property="act" destination="mgc-3Z-LnV" id="hm2-0C-4pc"/>
                 <outlet property="emailTextField" destination="TaY-hL-DlK" id="0pG-0z-24H"/>
+                <outlet property="loginButton" destination="d2C-Cs-fz5" id="GCT-Mc-8jh"/>
                 <outlet property="passwordTextField" destination="rJv-0e-sEO" id="wTA-pJ-GR0"/>
                 <outlet property="view" destination="lpZ-Wc-EfF" id="4lY-8H-fs8"/>
             </connections>
@@ -32,8 +33,8 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="screen_login" translatesAutoresizingMaskIntoConstraints="NO" id="tu9-kn-elL">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                 </imageView>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TaY-hL-DlK" customClass="TextField">
-                    <rect key="frame" x="29" y="50" width="263" height="40"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="  Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TaY-hL-DlK" customClass="TextField">
+                    <rect key="frame" x="15" y="40" width="290" height="40"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
@@ -41,8 +42,8 @@
                         <outlet property="delegate" destination="-1" id="jj7-1N-qn8"/>
                     </connections>
                 </textField>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rJv-0e-sEO" customClass="TextField">
-                    <rect key="frame" x="29" y="100" width="263" height="40"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="  Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rJv-0e-sEO" customClass="TextField">
+                    <rect key="frame" x="15" y="90" width="290" height="40"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
@@ -51,23 +52,29 @@
                     </connections>
                 </textField>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Forgot Password" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ut9-rs-BMn">
-                    <rect key="frame" x="33" y="162" width="254" height="21"/>
+                    <rect key="frame" x="33" y="204" width="254" height="21"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                     <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Or Sign In with" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lvt-8M-BWF">
-                    <rect key="frame" x="33" y="256" width="254" height="21"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="mgc-3Z-LnV">
-                    <rect key="frame" x="150" y="204" width="20" height="20"/>
+                    <rect key="frame" x="150" y="228" width="20" height="20"/>
                 </activityIndicatorView>
+                <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d2C-Cs-fz5">
+                    <rect key="frame" x="15" y="158" width="290" height="44"/>
+                    <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                    <state key="normal" title="Log  In">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="2sJ-vX-mnk"/>
+                    </connections>
+                </button>
                 <button opaque="NO" contentMode="scaleAspectFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Srz-Q7-TvU">
-                    <rect key="frame" x="96" y="285" width="128" height="44"/>
-                    <state key="normal" title="Button" image="button_login_facebook">
+                    <rect key="frame" x="105" y="284" width="110" height="44"/>
+                    <state key="normal" backgroundImage="button_login_facebook">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>

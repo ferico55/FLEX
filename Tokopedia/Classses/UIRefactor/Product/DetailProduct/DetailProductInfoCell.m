@@ -54,4 +54,11 @@
     }
 }
 
+- (IBAction)tap:(id)sender {
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton *)sender;
+        
+    }
+}
+
 @end

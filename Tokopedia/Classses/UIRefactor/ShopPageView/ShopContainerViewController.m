@@ -11,7 +11,7 @@
 #import "ShopProductPageViewController.h"
 #import "ShopReviewPageViewController.h"
 #import "ShopNotesPageViewController.h"
-
+#import "ShopInfoViewController.h"
 
 #import "URLCacheController.h"
 
@@ -71,11 +71,29 @@
     return self;
 }
 
+- (void)initBarButton {
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    barButtonItem.tag = 1;
+    [self.navigationItem setBackBarButtonItem:barButtonItem];
+    
+    UIImage *infoImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
+    UIBarButtonItem *infoBarButton = [[UIBarButtonItem alloc] initWithImage:infoImage
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    infoBarButton.tag = 2;
+    self.navigationItem.rightBarButtonItem = infoBarButton;
+
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self initNotificationCenter];
+    [self initBarButton];
     // Do any additional setup after loading the view from its nib.
     
     _isNoData = YES;
@@ -193,45 +211,14 @@
 #pragma mark - Init Notification
 - (void)initNotificationCenter {
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+
+    [nc addObserver:self selector:@selector(showNavigationShopTitle:) name:@"showNavigationShopTitle" object:nil];
+    [nc addObserver:self selector:@selector(hideNavigationShopTitle:) name:@"hideNavigationShopTitle" object:nil];
  }
 
-- (IBAction)tap:(id)sender {
-    if ([sender isKindOfClass: [UIButton class]]) {
-        UIButton *btn = (UIButton *)sender;
 
-        switch (btn.tag) {
-            case 10:
-            {
-                [_pageController setViewControllers:@[_shopTalkViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self postNotificationSetShopHeader];
-                break;
-            }
-            case 11:
-            {
-                [_pageController setViewControllers:@[_shopReviewViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self postNotificationSetShopHeader];
-                break;
-            }
-            case 12:
-            {
-               
-                [_pageController setViewControllers:@[_shopNotesViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self postNotificationSetShopHeader];
-                break;
-            }
-                
-            case 13:
-            {
-                
-                [_pageController setViewControllers:@[_shopProductViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
-                [self postNotificationSetShopHeader];
-                break;
-            }
-            default:
-                break;
-        }
-    }
-}
+
+
 
 - (void)postNotificationSetShopHeader {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderShopPage" object:nil userInfo:_shop];
@@ -535,6 +522,8 @@
     [self cancel];
 }
 
+
+
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
@@ -542,5 +531,86 @@
 }
 
 
+#pragma mark - Notification Action
+- (void)showNavigationShopTitle:(NSNotification *)notification
+{
+    [UIView animateWithDuration:0.2 animations:^(void) {
+        self.title = [_data objectForKey:kTKPDDETAIL_APISHOPNAMEKEY];
+    } completion:^(BOOL finished) {
+        
+    }];
+    
+}
 
+- (void)hideNavigationShopTitle:(NSNotification *)notification
+{
+    [UIView animateWithDuration:0.2 animations:^(void) {
+        self.title = @"";
+    } completion:^(BOOL finished) {
+        
+    }];
+    
+}
+
+#pragma mark - Tap Action
+- (IBAction)tap:(id)sender {
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *button = (UIBarButtonItem*)sender;
+        switch (button.tag) {
+            case 1:
+            {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                break;
+            }
+            case 2:
+            {
+                if (_shop) {
+                    ShopInfoViewController *vc = [[ShopInfoViewController alloc] init];
+                    vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
+                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+                    [self.navigationController pushViewController:vc animated:YES];
+                }
+                break;
+            }
+            default:
+                break;
+        }
+    }
+    
+    if ([sender isKindOfClass: [UIButton class]]) {
+        UIButton *btn = (UIButton *)sender;
+        
+        switch (btn.tag) {
+            case 10:
+            {
+                [_pageController setViewControllers:@[_shopTalkViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
+                [self postNotificationSetShopHeader];
+                break;
+            }
+            case 11:
+            {
+                [_pageController setViewControllers:@[_shopReviewViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
+                [self postNotificationSetShopHeader];
+                break;
+            }
+            case 12:
+            {
+                
+                [_pageController setViewControllers:@[_shopNotesViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
+                [self postNotificationSetShopHeader];
+                break;
+            }
+                
+            case 13:
+            {
+                
+                [_pageController setViewControllers:@[_shopProductViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
+                [self postNotificationSetShopHeader];
+                break;
+            }
+            default:
+                break;
+        }
+    }
+}
 @end

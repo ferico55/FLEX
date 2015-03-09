@@ -21,6 +21,7 @@
 #import "string_inbox_talk.h"
 #import "detail.h"
 #import "ShopPageHeader.h"
+#import "NoResult.h"
 
 #import "URLCacheController.h"
 
@@ -96,6 +97,7 @@ UIAlertViewDelegate>
     Review *_review;
     Shop *_shop;
     ShopPageHeader *_shopPageHeader;
+    NoResult *_noResult;
 }
 
 #pragma mark - Initialization
@@ -147,6 +149,7 @@ UIAlertViewDelegate>
     [self addBottomInsetWhen14inch];
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _page = 1;
+    _noResult = [NoResult new];
     
     _operationQueue = [NSOperationQueue new];
     _operationUnfollowQueue = [NSOperationQueue new];
@@ -569,7 +572,10 @@ UIAlertViewDelegate>
                 NSLog(@"next page : %zd",_page);
                 
                 [_table reloadData];
-                if (_list.count == 0) _act.hidden = YES;
+                if (_list.count == 0) {
+                    _act.hidden = YES;
+                    _table.tableFooterView = _noResult;
+                }
                 
             }
             else{

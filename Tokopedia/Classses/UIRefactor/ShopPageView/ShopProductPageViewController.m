@@ -33,6 +33,8 @@
 #import "MyShopEtalaseFilterViewController.h"
 #import "DetailProductViewController.h"
 
+#import "NoResult.h"
+
 @interface ShopProductPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
 TKPDTabInboxTalkNavigationControllerDelegate,
@@ -108,7 +110,9 @@ UIAlertViewDelegate>
     NSTimeInterval _timeinterval;
     NSMutableArray *_product;
     Shop *_shop;
+    NoResult *_noResult;
     
+    BOOL _navigationBarIsAnimating;
 }
 
 #pragma mark - Initialization
@@ -143,7 +147,7 @@ UIAlertViewDelegate>
     _limit = kTKPDSHOPPRODUCT_LIMITPAGE;
 
     _product = [NSMutableArray new];
-    
+    _noResult = [NoResult new];
 
     _isrefreshview = NO;
     
@@ -160,6 +164,7 @@ UIAlertViewDelegate>
     _shopPageHeader = [ShopPageHeader new];
     _shopPageHeader.delegate = self;
     _shopPageHeader.data = _data;
+    _navigationBarIsAnimating = NO;
     
     _header = _shopPageHeader.view;
 
@@ -291,7 +296,7 @@ UIAlertViewDelegate>
                 
                 ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.catalog_price?:list.product_price;
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
-                ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
+               
                 
                 NSString *urlstring = list.catalog_image?:list.product_image;
                 
@@ -431,6 +436,10 @@ UIAlertViewDelegate>
         etalaseid = etalase.etalase_id?:@"";
     }
     
+    if([_data objectForKey:@"product_etalase_id"]) {
+        etalaseid = [_data objectForKey:@"product_etalase_id"];
+    }
+    
     NSDictionary *param = @{kTKPDDETAIL_APIACTIONKEY    :   kTKPDDETAIL_APIGETSHOPPRODUCTKEY,
                             kTKPDDETAIL_APISHOPIDKEY    :   @(shopID),
                             kTKPDDETAIL_APIPAGEKEY      :   @(_page),
@@ -540,10 +549,14 @@ UIAlertViewDelegate>
                     
                     _isNoData = NO;
                     
-                    if (_product.count == 0) _act.hidden = YES;
+                    if (_product.count == 0) {
+                        _table.tableFooterView = _noResult;
+                        _act.hidden = YES;
+                    }
                     
                 } else {
                     _isNoData = YES;
+                    _table.tableFooterView = _noResult;
                 }
             }
         }
@@ -609,7 +622,16 @@ UIAlertViewDelegate>
         _fakeStickyTab.hidden = YES;
     }
     [self determineOtherScrollView:scrollView];
+    [self determineNavTitle:scrollView];
     
+}
+
+- (void)determineNavTitle:(UIScrollView*)scrollView {
+    if(scrollView.contentOffset.y > 180) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"showNavigationShopTitle" object:nil userInfo:nil];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"hideNavigationShopTitle" object:nil userInfo:nil];
+    }
 }
 
 
@@ -761,6 +783,9 @@ UIAlertViewDelegate>
     //NSDictionary* userinfo = notification.userInfo;
     [_detailfilter setObject:[userInfo objectForKey:DATA_ETALASE_KEY]?:@""
                       forKey:DATA_ETALASE_KEY];
+    
+    [_detailfilter setObject:[userInfo objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:@""
+                      forKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY];
     [self refreshView:nil];
 }
 

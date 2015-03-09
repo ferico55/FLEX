@@ -12,7 +12,9 @@
 #import "TransactionCartViewController.h"
 #import "TransactionCartResultViewController.h"
 
-@interface TransactionCartRootViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate, TransactionCartViewControllerDelegate>
+#import "LoginViewController.h"
+
+@interface TransactionCartRootViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate, TransactionCartViewControllerDelegate, LoginViewDelegate>
 {
     NSInteger _index;
     NSDictionary *_data;
@@ -40,6 +42,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
         self.navigationController.edgesForExtendedLayout = UIRectEdgeNone;
     }
@@ -47,6 +50,8 @@
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+    
+    
     
     _pageButtons = [NSArray sortViewsWithTagInArray:_pageButtons];
 
@@ -82,21 +87,19 @@
     
     //TODO:: create not log-in page to login view controller
     if (!_isLogin) {
-        int controllerIndex = 4;
-        UIView * fromView = self.tabBarController .selectedViewController.view;
-        UIView * toView = [[self.tabBarController.viewControllers objectAtIndex:controllerIndex] view];
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
-        // Transition using a page curl.
-        [UIView transitionFromView:fromView toView:toView duration:1.0
-                           options:UIViewAnimationOptionTransitionNone
-         
-                        completion:^(BOOL finished) {
-                            
-                            if (finished) {
-                                self.tabBarController.selectedIndex = controllerIndex;
-                            }
-                            
-                        }];
+        
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = self;
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = self;
+        navigationController.viewControllers = @[controller];
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
     }
 
 }

@@ -63,6 +63,15 @@
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(applicationLogin:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION object:nil];
     [center addObserver:self selector:@selector(applicationlogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil];
+
+    [center addObserver:self selector:@selector(updateTabBarMore:) name:UPDATE_TABBAR object:nil];
+
+
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
 }
 
 #pragma mark - Memory Management
@@ -105,6 +114,9 @@
 
 -(void)createtabbarController
 {
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    _auth = [auth mutableCopy];
     BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     _tabBarController = [UITabBarController new];
     
@@ -380,31 +392,6 @@
 	// Assume tabController is the tab controller
     // and newVC is the controller you want to be the new view controller at index 0
     NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
-    NSArray *titles;
-
-//    // array untuk view controller pada swipe vc
-//    NSMutableArray *arrays = [NSMutableArray arrayWithArray:_swipevc.viewControllers];
-//    if (!isauth) {
-//        // before login
-//        titles = kTKPD_HOMETITLEARRAY;
-//        [arrays removeObjectsInRange:NSMakeRange(1,3)];
-//    }
-//    else{
-//        // after login
-//        titles = kTKPD_HOMETITLEISAUTHARRAY;
-//        ProductFeedViewController *v1 = [ProductFeedViewController new];
-//        [arrays addObject:v1];
-//        HistoryProductViewController *v2 = [HistoryProductViewController new];
-//        [arrays addObject:v2];
-//        FavoritedShopViewController *v3 = [FavoritedShopViewController new];
-//        [arrays addObject:v3];
-//    }
-
-    /** Adjust View Controller **/
-    //TKPDTabHomeNavigationController *swipevc = [TKPDTabHomeNavigationController new];
-//    [_swipevc setViewControllers:arrays animated:YES withtitles:titles];
-//    [_swipevc setSelectedIndex:0];
-
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
     swipevcNav.navigationBar.translucent = NO;
     UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
@@ -433,6 +420,23 @@
 
     [_tabBarController setViewControllers:newControllers animated:YES];
 
+    [self adjusttabbar];
+}
+
+- (void)updateTabBarMore:(NSNotification*)notification
+{
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary* auth = [secureStorage keychainDictionary];
+    _auth = [auth mutableCopy];
+
+    NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
+
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
+    MoreNavigationController *moreNavController = [storyboard instantiateViewControllerWithIdentifier:@"MoreNavigationViewController"];
+    [moreNavController.navigationBar setTranslucent:NO];
+    [newControllers replaceObjectAtIndex:4 withObject:moreNavController];
+    [_tabBarController setViewControllers:newControllers animated:YES];
+    
     [self adjusttabbar];
 }
 

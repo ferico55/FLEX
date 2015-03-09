@@ -11,6 +11,7 @@
 #import "stringrestkit.h"
 #import "string_product.h"
 #import "string_transaction.h"
+#import "string_more.h"
 #import "Product.h"
 
 #import "StarsRateView.h"
@@ -35,14 +36,21 @@
 #import "ShopNotesViewController.h"
 
 #import "TransactionATCViewController.h"
+#import "ShopContainerViewController.h"
+#import "UserAuthentificationManager.h"
 
 #import "URLCacheController.h"
+#import "TheOtherProduct.h"
+#import "FavoriteShopAction.h"
+
+#import "LoginViewController.h"
 
 #pragma mark - Detail Product View Controller
-@interface DetailProductViewController () <UITableViewDelegate, UITableViewDataSource, DetailProductInfoCellDelegate, DetailProductOtherViewDelegate>
+@interface DetailProductViewController () <UITableViewDelegate, UITableViewDataSource, DetailProductInfoCellDelegate, DetailProductOtherViewDelegate, LoginViewDelegate>
 {
     NSMutableDictionary *_datatalk;
     NSMutableArray *_otherproductviews;
+    NSMutableArray *_otherProductObj;
     
     NSMutableArray *_expandedSections;
     CGFloat _descriptionHeight;
@@ -59,19 +67,34 @@
     NSInteger _heightDescSection;
     Product *_product;
     BOOL is_dismissed;
+    NSDictionary *_auth;
     
     __weak RKObjectManager *_objectmanager;
     __weak RKManagedObjectRequestOperation *_request;
     RKResponseDescriptor *_responseDescriptor;
     NSOperationQueue *_operationQueue;
     
+    __weak RKObjectManager *_objectOtherProductManager;
+    __weak RKManagedObjectRequestOperation *_requestOtherProduct;
+    NSOperationQueue *_operationOtherProductQueue;
+    OtherProduct *_otherProduct;
+    NSInteger _requestOtherProductCount;
+    
+    __weak RKObjectManager *_objectFavoriteManager;
+    __weak RKManagedObjectRequestOperation *_requestFavorite;
+    NSOperationQueue *_operationFavoriteQueue;
+    NSInteger _requestFavoriteCount;
+    
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    UserAuthentificationManager *_userManager;
+    NSTimer *_timer;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *otherProductIndicator;
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 
@@ -80,7 +103,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *reviewbutton;
 @property (weak, nonatomic) IBOutlet UIButton *talkaboutbutton;
 @property (weak, nonatomic) IBOutlet UIImageView *shopthumb;
-@property (weak, nonatomic) IBOutlet UILabel *shopname;
+@property (weak, nonatomic) IBOutlet UIButton *shopname;
 @property (weak, nonatomic) IBOutlet UILabel *accuracynumberlabel;
 @property (weak, nonatomic) IBOutlet UILabel *qualitynumberlabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *imagescrollview;
@@ -100,6 +123,7 @@
 
 @property (weak, nonatomic) IBOutlet UIScrollView *otherproductscrollview;
 @property (weak, nonatomic) IBOutlet UIButton *buyButton;
+@property (weak, nonatomic) IBOutlet UIButton *favButton;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -138,9 +162,14 @@
     _datatalk = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
     _otherproductviews = [NSMutableArray new];
+    _otherProductObj = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
+    _operationOtherProductQueue = [NSOperationQueue new];
+    _operationFavoriteQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
+    _userManager = [UserAuthentificationManager new];
+    _auth = [_userManager getUserLoginData];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -159,9 +188,7 @@
         }
     }
     
-    UIEdgeInsets inset = _table.contentInset;
-    inset.bottom += 198;
-    _table.contentInset = inset;
+    
     _table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
     
@@ -185,13 +212,38 @@
     _buyButton.hidden = YES;
 }
 
+
+- (void)setButtonFav {
+    _favButton.tag = 18;
+    [_favButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
+    [_favButton setImage:[UIImage imageNamed:@"icon_love_white.png"] forState:UIControlStateNormal];
+    [_favButton.layer setBorderWidth:0];
+    _favButton.tintColor = [UIColor whiteColor];
+    [UIView animateWithDuration:0.3 animations:^(void) {
+        [_favButton setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
+        [_favButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    }];
+    
+}
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
     self.hidesBottomBarWhenPushed = YES;
+    UIEdgeInsets inset = _table.contentInset;
+    inset.bottom += 20;
+    _table.contentInset = inset;
+    _auth = [_userManager getUserLoginData];
     
     [self configureRestKit];
+    
+    _favButton.layer.cornerRadius = 3;
+    _favButton.layer.borderWidth = 1;
+    _favButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
+    _favButton.enabled = YES;
+    _favButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
+    
  
     if (_isnodata) {
         [self loadData];
@@ -276,9 +328,119 @@
             case 16:
             {
                 //Buy
-                TransactionATCViewController *transactionVC = [TransactionATCViewController new];
-                transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:_product.result};
-                [self.navigationController pushViewController:transactionVC animated:YES];
+                if(_auth) {
+                    TransactionATCViewController *transactionVC = [TransactionATCViewController new];
+                    transactionVC.data = @{DATA_DETAIL_PRODUCT_KEY:_product.result};
+                    [self.navigationController pushViewController:transactionVC animated:YES];
+                } else {
+                    UINavigationController *navigationController = [[UINavigationController alloc] init];
+                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                    navigationController.navigationBar.translucent = NO;
+                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                    
+                    
+                    LoginViewController *controller = [LoginViewController new];
+                    controller.delegate = self;
+                    controller.isPresentedViewController = YES;
+                    controller.redirectViewController = self;
+                    navigationController.viewControllers = @[controller];
+                    
+                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                    
+//                    LoginViewController *loginVc = [LoginViewController new];
+//                    loginVc.isPresentedViewController = YES;
+//                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginVc];
+//                    [self.navigationController presentViewController:nav animated:YES completion:nil];
+                }
+
+                break;
+            }
+                
+            case 17 : {
+                if (_requestFavorite.isExecuting) return;
+                if(_auth) {
+                    //Love Shop
+                    [self configureFavoriteRestkit];
+                    [self favoriteShop:_product.result.shop_info.shop_id];
+                    [self setButtonFav];
+                } else {
+                    UINavigationController *navigationController = [[UINavigationController alloc] init];
+                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                    navigationController.navigationBar.translucent = NO;
+                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                    
+                    
+                    LoginViewController *controller = [LoginViewController new];
+                    controller.delegate = self;
+                    controller.isPresentedViewController = YES;
+                    controller.redirectViewController = self;
+                    navigationController.viewControllers = @[controller];
+                    
+                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                }
+
+                
+                break;
+
+            }
+                
+            case 18 : {
+                if (_requestFavorite.isExecuting) return;
+                if(_auth) {
+                    //UnLove Shop
+                    [self configureFavoriteRestkit];
+                    [self favoriteShop:_product.result.shop_info.shop_id];
+                    
+                    _favButton.tag = 17;
+                    
+                    [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
+                    [_favButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+                    [_favButton.layer setBorderWidth:1];
+                    _favButton.tintColor = [UIColor lightGrayColor];
+                    [UIView animateWithDuration:0.3 animations:^(void) {
+                        [_favButton setBackgroundColor:[UIColor whiteColor]];
+                        [_favButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                    }];
+                } else {
+                    UINavigationController *navigationController = [[UINavigationController alloc] init];
+                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                    navigationController.navigationBar.translucent = NO;
+                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                    
+                    
+                    LoginViewController *controller = [LoginViewController new];
+                    controller.delegate = self;
+                    controller.isPresentedViewController = YES;
+                    controller.redirectViewController = self;
+                    navigationController.viewControllers = @[controller];
+                    
+                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                }
+                
+                
+                break;
+            }
+                
+            case 20 : {
+                NSMutableArray *viewcontrollers = [NSMutableArray new];
+                NSString *shopid = _product.result.shop_info.shop_id;
+                if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] isEqualToString:shopid]) {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                else{
+
+                    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+                    
+                    container.data = @{kTKPDDETAIL_APISHOPIDKEY:shopid,
+                                       kTKPD_AUTHKEY:_auth?:@{}};
+                    [self.navigationController pushViewController:container animated:YES];
+                    
+                }
+                
+                break;
+            }
+            case 21 : {
+                
                 break;
             }
             default:
@@ -300,18 +462,7 @@
             }
             case UIGestureRecognizerStateEnded: {
                 // go to shop
-                NSMutableArray *viewcontrollers = [NSMutableArray new];
-                NSString *shopid = _product.result.shop_info.shop_id;
-                if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] isEqualToString:shopid]) {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-                else{
-                    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-                    TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
-                    shopViewController.data = @{kTKPDDETAIL_APISHOPIDKEY:shopid,
-                                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-                    [self.navigationController pushViewController:shopViewController animated:YES];
-                }
+               
                 break;
             }
         }
@@ -478,7 +629,7 @@
             DetailProductInfoCell *productCell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
             if (productCell == nil) {
                 productCell = [DetailProductInfoCell newcell];
-                ((DetailProductInfoCell*)cell).delegate = self;
+                ((DetailProductInfoCell*)productCell).delegate = self;
                 _informationHeight = productCell.productInformationView.frame.size.height;
             }
             [self productinfocell:productCell withtableview:tableView];
@@ -493,10 +644,12 @@
 -(void)productinfocell:(UITableViewCell*)cell withtableview:(UITableView*)tableView
 {
 
-    ((DetailProductInfoCell*)cell).minorderlabel.text = [NSString stringWithFormat:@"%zd",_product.result.product.product_min_order];
-    ((DetailProductInfoCell*)cell).weightlabel.text = _product.result.product.product_weight_unit;
+    ((DetailProductInfoCell*)cell).minorderlabel.text = _product.result.product.product_min_order;
+    ((DetailProductInfoCell*)cell).weightlabel.text = [NSString stringWithFormat:@"%@ %@",_product.result.product.product_weight, _product.result.product.product_weight_unit];
     ((DetailProductInfoCell*)cell).insurancelabel.text = _product.result.product.product_insurance;
     ((DetailProductInfoCell*)cell).conditionlabel.text = _product.result.product.product_condition;
+    [((DetailProductInfoCell*)cell).etalasebutton setTitle:_product.result.product.product_etalase forState:UIControlStateNormal];
+    
     NSArray *breadcrumbs = _product.result.breadcrumb;
     for (int i = 0; i<breadcrumbs.count; i++) {
         Breadcrumb *breadcrumb = breadcrumbs[i];
@@ -536,10 +689,13 @@
     RKObjectMapping *infoMapping = [RKObjectMapping mappingForClass:[ProductDetail class]];
     [infoMapping addAttributeMappingsFromDictionary:@{API_PRODUCT_NAME_KEY:API_PRODUCT_NAME_KEY,
                                                       API_PRODUCT_WEIGHT_UNIT_KEY:API_PRODUCT_WEIGHT_UNIT_KEY,
+                                                      API_PRODUCT_WEIGHT_KEY:API_PRODUCT_WEIGHT_KEY,
                                                       API_PRODUCT_DESCRIPTION_KEY:API_PRODUCT_DESCRIPTION_KEY,
                                                       API_PRODUCT_PRICE_KEY:API_PRODUCT_PRICE_KEY,
                                                       API_PRODUCT_INSURANCE_KEY:API_PRODUCT_INSURANCE_KEY,
                                                       API_PRODUCT_CONDITION_KEY:API_PRODUCT_CONDITION_KEY,
+                                                      API_PRODUCT_ETALASE_ID_KEY:API_PRODUCT_ETALASE_ID_KEY,
+                                                      API_PRODUCT_ETALASE_KEY:API_PRODUCT_ETALASE_KEY,
                                                       API_PRODUCT_MINIMUM_ORDER_KEY:API_PRODUCT_MINIMUM_ORDER_KEY,
                                                       kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY:kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY,
                                                       kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY,
@@ -655,6 +811,8 @@
             [timer invalidate];
             [_act stopAnimating];
             _buyButton.enabled = YES;
+            [self configureGetOtherProductRestkit];
+            [self loadDataOtherProduct];
             [self requestsuccess:mappingResult withOperation:operation];
         } failure:^(RKObjectRequestOperation *operation, NSError *error) {
             [timer invalidate];
@@ -765,6 +923,21 @@
                 _table.hidden = NO;
                 _buyButton.hidden = NO;
                 
+                if(_product.result.shop_info.shop_already_favorited == 1) {
+                    [self setButtonFav];
+                } else {
+                    [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
+                    [_favButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+                    _favButton.tintColor = [UIColor lightGrayColor];
+                    _favButton.tag = 17;
+                }
+                
+                if(_auth && [[([_auth objectForKey:@"shop_id"]) stringValue] isEqualToString:_product.result.shop_info.shop_id]) {
+                    _favButton.hidden = YES;
+                } else {
+                    _favButton.hidden = NO;
+                }
+                
                 // UIView below table view (View More Product button)
                 CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+100);
                 UIView *backgroundGreyView = [[UIView alloc] initWithFrame:frame];
@@ -853,6 +1026,12 @@
         case 13:
         {
             // Etalase
+            ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+            
+            container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
+                               kTKPD_AUTHKEY:_auth?:[NSNull null],
+                               @"product_etalase_id" : _product.result.product.product_etalase_id};
+            [self.navigationController pushViewController:container animated:YES];
             
             break;
         }
@@ -865,7 +1044,7 @@
 #pragma mark - View Delegate
 - (void)DetailProductOtherView:(UIView *)view withindex:(NSInteger)index
 {
-    OtherProduct *product = _product.result.other_product[index];
+    OtherProduct *product = _otherProductObj[index];
     if ([[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue] != [product.product_id integerValue]) {
         DetailProductViewController *vc = [DetailProductViewController new];
         vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : product.product_id};
@@ -932,6 +1111,7 @@
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:image.image_src] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         
+        
         UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
         
         thumb.image = nil;
@@ -947,7 +1127,7 @@
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         }];
-        
+
         thumb.contentMode = UIViewContentModeScaleAspectFit;
         
         [_imagescrollview addSubview:thumb];
@@ -968,7 +1148,7 @@
 
 -(void)setFooterViewData
 {
-    _shopname.text = _product.result.shop_info.shop_name;
+    [_shopname setTitle:_product.result.shop_info.shop_name forState:UIControlStateNormal];
     _shoplocation.text = _product.result.shop_info.shop_location;
     
     _ratespeedshop.starscount = _product.result.shop_info.shop_stats.shop_speed_rate;
@@ -1000,16 +1180,30 @@
 -(void)setOtherProducts
 {
 
-        for(int i = 0; i< _product.result.other_product.count; i++)
+        for(int i = 0; i< _otherProductObj.count; i++)
         {
-            CGFloat y = i * 155;
-            
-            OtherProduct *product = _product.result.other_product[i];
+            OtherProduct *product = _otherProductObj[i];
             
             DetailProductOtherView *v = [DetailProductOtherView newview];
-            [v setFrame:CGRectMake(y + 10, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
+            
+            int x;
+            if(i == 0) {
+                x = 10;
+            } else if(i == 1) {
+                x = 165;
+            } else if(i == 2) {
+                x = 330;
+            } else if(i == 3) {
+                x = 485;
+            } else if(i == 4) {
+                x = 650;
+            } else if(i == 5) {
+                x = 805;
+            }
+            [v setFrame:CGRectMake(x, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
             v.delegate = self;
             v.index = i;
+            [v.act startAnimating];
             v.namelabel.text = product.product_name;
             v.pricelabel.text = product.product_price;
             //DetailProductOtherView *v = [[DetailProductOtherView alloc]initWithFrame:CGRectMake(y, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
@@ -1043,5 +1237,218 @@
         _otherproductscrollview.contentSize = CGSizeMake(_otherproductviews.count*160,0);
 }
 
+
+#pragma mark - Request & Mapping Other Product
+- (void)configureGetOtherProductRestkit {
+    _objectOtherProductManager = [RKObjectManager sharedClient];
+    
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TheOtherProduct class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TheOtherProductResult class]];
+    
+    RKObjectMapping *otherProductListMapping = [RKObjectMapping mappingForClass:[TheOtherProductList class]];
+    [otherProductListMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,API_PRODUCT_NAME_KEY,kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY]];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY toKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY withMapping:otherProductListMapping];
+    [resultMapping addPropertyMapping:listRel];
+    
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectOtherProductManager addResponseDescriptor:responseDescriptor];
+
+}
+
+- (void)loadDataOtherProduct {
+    if(_requestOtherProduct.isExecuting) return;
+    
+    _requestOtherProductCount++;
+    NSDictionary *param = @{@"action" : @"get_other_product", @"product_id" : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]};
+    [_otherProductIndicator startAnimating];
+    
+    _requestOtherProduct = [_objectOtherProductManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILPRODUCT_APIPATH parameters:[param encrypt]];
+    NSTimer *timer;
+    
+    [_requestOtherProduct setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [timer invalidate];
+        [_otherProductIndicator stopAnimating];
+        [self requestSuccessOtherProduct:mappingResult withOperation:operation];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [timer invalidate];
+        [self requestFailureOtherProduct:error];
+    }];
+    
+    [_operationOtherProductQueue addOperation:_requestOtherProduct];
+    
+    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutOtherProduct) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+
+}
+
+- (void)requestSuccessOtherProduct:(id)object withOperation:(RKObjectRequestOperation*)operation {
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    id stat = [result objectForKey:@""];
+    TheOtherProduct *otherProduct = stat;
+    BOOL status = [otherProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+
+    if(status) {
+        [self requestProcessOtherProduct:object];
+    }
+    
+}
+
+- (void)requestFailureOtherProduct:(id)error {
+    
+}
+
+- (void)requestProcessOtherProduct:(id)object {
+    if (object) {
+        if ([object isKindOfClass:[RKMappingResult class]]) {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            id stat = [result objectForKey:@""];
+            TheOtherProduct *otherProduct = stat;
+            BOOL status = [otherProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                [_otherProductObj addObjectsFromArray: otherProduct.result.other_product];
+                [self setOtherProducts];
+            }
+        }
+        else{
+            
+            [self cancelOtherProduct];
+            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
+            if ([(NSError*)object code] == NSURLErrorCancelled) {
+                if (_requestOtherProductCount<kTKPDREQUESTCOUNTMAX) {
+                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestOtherProductCount);
+
+                    [_otherProductIndicator startAnimating];
+                    [self performSelector:@selector(configureGetOtherProductRestkit)
+                               withObject:nil
+                               afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                    [self performSelector:@selector(loadDataOtherProduct)
+                               withObject:nil
+                               afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+                }
+                else
+                {
+                    [_otherProductIndicator stopAnimating];
+                }
+            }
+            else
+            {
+                [_otherProductIndicator stopAnimating];
+                NSError *error = object;
+                if (!([error code] == NSURLErrorCancelled)){
+                    NSString *errorDescription = error.localizedDescription;
+                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                    [errorAlert show];
+                }
+            }
+            
+        }
+    }
+}
+
+- (void)requestTimeoutOtherProduct {
+    
+}
+
+- (void)cancelOtherProduct {
+    
+}
+
+#pragma mark - Request and mapping favorite action
+
+-(void)configureFavoriteRestkit {
+    
+    // initialize RestKit
+    _objectFavoriteManager =  [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[FavoriteShopAction class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[FavoriteShopActionResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"content":@"content",
+                                                        @"is_success":@"is_success"}];
+    
+    //relation
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    //register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:@"action/favorite-shop.pl"
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectFavoriteManager addResponseDescriptor:responseDescriptorStatus];
+}
+
+
+-(void)favoriteShop:(NSString*)shop_id
+{
+    
+    
+    _requestFavoriteCount ++;
+    
+    NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY   :   @"fav_shop",
+                            @"shop_id"              :   shop_id};
+    
+    _requestFavorite = [_objectFavoriteManager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:@"action/favorite-shop.pl"
+                                                                parameters:[param encrypt]];
+    
+    [_requestFavorite setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestFavoriteResult:mappingResult withOperation:operation];
+        [_timer invalidate];
+        _timer = nil;
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+        [self requestFavoriteError:error];
+        [_timer invalidate];
+        _timer = nil;
+    }];
+    
+    [_operationFavoriteQueue addOperation:_requestFavorite];
+    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                              target:self
+                                            selector:@selector(requestTimeoutFavorite)
+                                            userInfo:nil
+                                             repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+}
+
+-(void)requestFavoriteResult:(id)mappingResult withOperation:(NSOperationQueue *)operation {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
+}
+
+-(void)requestFavoriteError:(id)object {
+    
+}
+
+- (void)requestTimeoutFavorite {
+    
+}
+
+#pragma mark - LoginView Delegate
+- (void)redirectViewController:(id)viewController{
+    
+}
 
 @end

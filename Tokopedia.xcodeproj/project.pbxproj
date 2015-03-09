@@ -1028,6 +1028,9 @@
 		85BAA7031A8B51650015F530 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85BAA7011A8B51650015F530 /* Tokopedia-Info.plist */; };
 		85BAA7061A8B51A90015F530 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 85BAA7041A8B51A90015F530 /* InfoPlist.strings */; };
 		85BAB6F11A8CAAE40015F530 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85BAB3461A8CAAE30015F530 /* Main.storyboard */; };
+		85FA826A1AA6C004002AD5B4 /* TheOtherProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = 85FA82651AA6C004002AD5B4 /* TheOtherProduct.m */; };
+		85FA826B1AA6C004002AD5B4 /* TheOtherProductList.m in Sources */ = {isa = PBXBuildFile; fileRef = 85FA82671AA6C004002AD5B4 /* TheOtherProductList.m */; };
+		85FA826C1AA6C004002AD5B4 /* TheOtherProductResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 85FA82691AA6C004002AD5B4 /* TheOtherProductResult.m */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
 		FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */; };
@@ -2657,6 +2660,12 @@
 		85BAA7021A8B51650015F530 /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		85BAA7051A8B51A90015F530 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		85BAB3461A8CAAE30015F530 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		85FA82641AA6C004002AD5B4 /* TheOtherProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TheOtherProduct.h; sourceTree = "<group>"; };
+		85FA82651AA6C004002AD5B4 /* TheOtherProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TheOtherProduct.m; sourceTree = "<group>"; };
+		85FA82661AA6C004002AD5B4 /* TheOtherProductList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TheOtherProductList.h; sourceTree = "<group>"; };
+		85FA82671AA6C004002AD5B4 /* TheOtherProductList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TheOtherProductList.m; sourceTree = "<group>"; };
+		85FA82681AA6C004002AD5B4 /* TheOtherProductResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TheOtherProductResult.h; sourceTree = "<group>"; };
+		85FA82691AA6C004002AD5B4 /* TheOtherProductResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TheOtherProductResult.m; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -2835,6 +2844,7 @@
 		85A70CCB1A91D353004B896F /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				85FA82631AA6C004002AD5B4 /* TheOtherProduct */,
 				85A70CCC1A91D353004B896F /* Activation */,
 				85A70CD71A91D353004B896F /* Deposit */,
 				85A70CDD1A91D353004B896F /* DepositForm */,
@@ -5900,6 +5910,20 @@
 			path = ReputationHeader;
 			sourceTree = "<group>";
 		};
+		85FA82631AA6C004002AD5B4 /* TheOtherProduct */ = {
+			isa = PBXGroup;
+			children = (
+				85FA82641AA6C004002AD5B4 /* TheOtherProduct.h */,
+				85FA82651AA6C004002AD5B4 /* TheOtherProduct.m */,
+				85FA82661AA6C004002AD5B4 /* TheOtherProductList.h */,
+				85FA82671AA6C004002AD5B4 /* TheOtherProductList.m */,
+				85FA82681AA6C004002AD5B4 /* TheOtherProductResult.h */,
+				85FA82691AA6C004002AD5B4 /* TheOtherProductResult.m */,
+			);
+			name = TheOtherProduct;
+			path = DetailProduct/TheOtherProduct;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -6977,6 +7001,7 @@
 				85A715AE1A91D355004B896F /* DetailShipmentStatusViewController.m in Sources */,
 				85AB1E1A1AA56D9100AEB184 /* ReputationMyProductViewController.m in Sources */,
 				859A393E1A8376A70055BA8F /* MainViewController.m in Sources */,
+				85FA826A1AA6C004002AD5B4 /* TheOtherProduct.m in Sources */,
 				85A714A91A91D355004B896F /* AlertInfoPaymentConfirmationView.m in Sources */,
 				85A713861A91D355004B896F /* UIImage+ImageEffects.m in Sources */,
 				85A713E91A91D355004B896F /* NotificationPurchase.m in Sources */,
@@ -7049,6 +7074,7 @@
 				85A716381A91D355004B896F /* TransactionCartRootViewController.m in Sources */,
 				85A7140B1A91D355004B896F /* NotificationFormNotif.m in Sources */,
 				85A715D21A91D355004B896F /* SettingBankEditViewController.m in Sources */,
+				85FA826C1AA6C004002AD5B4 /* TheOtherProductResult.m in Sources */,
 				85A7165A1A91D355004B896F /* TxOrderConfirmedBankCell.m in Sources */,
 				85A7144E1A91D355004B896F /* JNE.m in Sources */,
 				85A714651A91D355004B896F /* TransactionBuyResult.m in Sources */,
@@ -7151,6 +7177,7 @@
 				85A715371A91D355004B896F /* SalesViewController.m in Sources */,
 				859A39411A8376A70055BA8F /* AppDelegate.m in Sources */,
 				85A714521A91D355004B896F /* ShippingInfoResult.m in Sources */,
+				85FA826B1AA6C004002AD5B4 /* TheOtherProductList.m in Sources */,
 				85A714231A91D355004B896F /* HotlistDetail.m in Sources */,
 				85A716401A91D355004B896F /* TransactionOrderViewController.m in Sources */,
 				85A713CC1A91D355004B896F /* DepartmentChild2.m in Sources */,

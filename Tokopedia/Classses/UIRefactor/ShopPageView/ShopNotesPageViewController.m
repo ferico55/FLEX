@@ -25,6 +25,8 @@
 #import "URLCacheController.h"
 #import "ShopPageHeader.h"
 
+#import "NoResult.h"
+
 @interface ShopNotesPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
 TKPDTabInboxTalkNavigationControllerDelegate,
@@ -92,6 +94,7 @@ UIAlertViewDelegate>
     Notes *_notes;
     ShopPageHeader *_shopPageHeader;
     Shop *_shop;
+    NoResult *_noResult;
 }
 
 #pragma mark - Initialization
@@ -147,6 +150,7 @@ UIAlertViewDelegate>
     _shopPageHeader.data = _data;
     
     _header = _shopPageHeader.view;
+
     
     UIView *btmGreenLine = (UIView *)[_header viewWithTag:22];
     [btmGreenLine setHidden:NO];
@@ -154,6 +158,7 @@ UIAlertViewDelegate>
     
     _table.tableFooterView = _footer;
     _table.tableHeaderView = _header;
+    _noResult = [NoResult new];
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
@@ -201,9 +206,12 @@ UIAlertViewDelegate>
     vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
                 kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
                 kTKPDNOTES_APINOTEIDKEY:list.note_id,
-                kTKPDNOTES_APINOTETITLEKEY:list.note_title
+                kTKPDNOTES_APINOTETITLEKEY:list.note_title,
+                @"shop_id" : [_data objectForKey:@"shop_id"]
                 };
+    
     [self.navigationController pushViewController:vc animated:YES];
+    
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -412,7 +420,10 @@ UIAlertViewDelegate>
                 
                 
                 [self.table reloadData];
-                if (_list.count == 0) _act.hidden = YES;
+                if (_list.count == 0) {
+                    _table.tableFooterView = _noResult;
+                    _act.hidden = YES;
+                }
                 
             }
         }else{
@@ -430,13 +441,13 @@ UIAlertViewDelegate>
                 else
                 {
                     [_act stopAnimating];
-                    self.table.tableFooterView = nil;
+                    self.table.tableFooterView = _noResult;
                 }
             }
             else
             {
                 [_act stopAnimating];
-                self.table.tableFooterView = nil;
+                self.table.tableFooterView = _noResult;
             }
         }
     }
