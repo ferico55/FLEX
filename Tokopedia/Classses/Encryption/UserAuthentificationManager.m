@@ -41,9 +41,8 @@
     }
 }
 
-- (NSString*)getUserId {
-    [self getUserLoginData];
-    return [[_auth objectForKey:@"user_id"] stringValue] ?: nil;
+- (NSString *)getUserId {
+    return [[_auth objectForKey:@"user_id"] stringValue] ?: @"0";
 }
 
 - (NSString *)getShopId {

@@ -28,6 +28,7 @@
     TransactionCartResultViewController *_cartResultViewController;
     NSDictionary *_auth;
     BOOL _isLogin;
+    BOOL _isShouldRefreshingCart;
     
     NotificationManager *_notifManager;
 }
@@ -55,8 +56,8 @@
         self.navigationController.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    
-    
+    _isShouldRefreshingCart = NO;
+    [self initNotification];
     
     
     _pageButtons = [NSArray sortViewsWithTagInArray:_pageButtons];
@@ -106,7 +107,17 @@
         [[self view] addSubview:_noLoginView];
         [_noLoginView setHidden:NO];
     } else {
+
+        if(_isShouldRefreshingCart) {
+            [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+            ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
+            _isShouldRefreshingCart = NO;
+        } else {
+            ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = NO;
+        }
+        
         [_noLoginView setHidden:YES];
+        
     }
 }
 
@@ -310,5 +321,18 @@
     [self.navigationController pushViewController:viewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
 }
+
+#pragma mark - Notification Center
+- (void)initNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(doRefreshingCart)
+                                                 name:@"doRefreshingCart" object:nil];
+    
+}
+
+- (void)doRefreshingCart {
+    _isShouldRefreshingCart = YES;
+}
+
 
 @end
