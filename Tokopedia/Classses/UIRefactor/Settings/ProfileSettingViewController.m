@@ -33,6 +33,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = TITLE_SETTING_PROFILE_MENU;
+        self.hidesBottomBarWhenPushed = YES;
     }
     return self;
 }

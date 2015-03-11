@@ -7,7 +7,6 @@
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
             <string>GothamBook</string>
-            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -160,7 +159,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Belum punya akun Tokopedia ? " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wkG-ey-LZo">
-                    <rect key="frame" x="20" y="264" width="280" height="42"/>
+                    <rect key="frame" x="20" y="221" width="280" height="42"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
@@ -169,15 +168,9 @@
                     <rect key="frame" x="125" y="128" width="70" height="70"/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Daftar disini." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7VT-Zc-Plb">
-                    <rect key="frame" x="20" y="281" width="280" height="42"/>
+                    <rect key="frame" x="20" y="238" width="280" height="42"/>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
                     <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Silakan login terlebih dahulu agar dapat berbelanja." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dTP-ab-yCn">
-                    <rect key="frame" x="0.0" y="231" width="320" height="42"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>

@@ -17,13 +17,13 @@ typedef enum
     TYPE_ADD_EDIT_PROFILE_ATC
 } TYPE_ADD_EDIT_PROFILE;
 
-#define kTKPDPROFILEEDIT_TITLE @"Edit Profile"
+#define kTKPDPROFILEEDIT_TITLE @"Atur Profil"
 #define kTKPDPROFILEEDITPHONEConfirmed_TITLE @"Confirmed Phone Number"
 
 #define kTKPDPROFILESETTING_TITLE @"Settings"
 #define kTKPDPROFILESETTINGNOTIFICATION_TITLE @"Setting Notification"
 #define kTKPDPROFILESETTINGPRIVACY_TITLE @"Setting Privacy"
-#define kTKPDPROFILESETTINGPASSWORD_TITLE @"Change Password"
+#define kTKPDPROFILESETTINGPASSWORD_TITLE @"Ubah Kata Sandi"
 #define kTKPDPROFILESETTINGBANKACCOUNT_TITLE @"Setting Bank Account"
 #define kTKPDPROFILESETTINGADDRESS_TITLE @"Setting Address"
 #define TITLE_NEW_ADDRESS @"Tambah Alamat"
@@ -219,10 +219,10 @@ typedef enum
 #define kTKPDPROFILE_APIRESPONSEFILEFORMAT @"profile%zd"
 #define kTKPDPFAVORITESHOP_APIRESPONSEFILEFORMAT @"profilefavshop%zd"
 
-#define ARRAY_GENDER @[@{DATA_NAME_KEY:@"Male", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Female", DATA_VALUE_KEY:@(2)}]
+#define ARRAY_GENDER @[@{DATA_NAME_KEY:@"Pria", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Wanita", DATA_VALUE_KEY:@(2)}]
 #define ARRAY_LIST_MENU_SETTING_PROFILE @[@[@"Ubah Password"],@[@"Daftar Alamat", @"Akun Bank", @"Notifikasi", @"Pengaturan Privasi"]]
 
-#define kTKPDPROFILE_DATAGENDERARRAYKEY @[@"Male",@"Female"]
+#define kTKPDPROFILE_DATAGENDERARRAYKEY @[@"Pria",@"Wanita"]
 #define kTKPDPROFILE_DATAGENDERVALUEARRAYKEY @[@"1",@"2"]
 
 #define kTKPDPROFILE_DATAPRIVACYARRAYKEY @[@"Do not show", @"Show to public"]

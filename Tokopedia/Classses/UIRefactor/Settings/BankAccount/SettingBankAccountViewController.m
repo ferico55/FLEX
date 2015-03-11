@@ -135,6 +135,7 @@
     [nc addObserver:self selector:@selector(didEditBankAccount:) name:kTKPD_ADDACCOUNTBANKNOTIFICATIONNAMEKEY object:nil];
     
     if (_delegate == nil) {
+        _addNewRekeningView.backgroundColor = [UIColor whiteColor];
         _table.tableHeaderView = _addNewRekeningView;
     }
     

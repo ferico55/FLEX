@@ -171,7 +171,7 @@
 
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
+    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_setting_grey" ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
@@ -1043,7 +1043,7 @@
         if (auth && ![auth isEqual:[NSNull null]]) {
             if ([[_data objectForKey:kTKPD_USERIDKEY]integerValue] == [[auth objectForKey:kTKPD_USERIDKEY]integerValue]) {
                 
-                [_button setTitle:@"Edit Profile" forState:UIControlStateNormal];
+                [_button setTitle:@"Edit Profil" forState:UIControlStateNormal];
                 [_button setImage:nil forState:UIControlStateNormal];
                 
                 self.navigationItem.rightBarButtonItem = _barbuttoninfo;

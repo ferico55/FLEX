@@ -10,7 +10,9 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
-            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -34,7 +36,7 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Sisa Saldo" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x5V-7E-wme">
                                 <rect key="frame" x="8" y="76" width="97" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                                 <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -46,7 +48,7 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rp.xxx.xxx" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UQ1-Mp-ZI7">
                                 <rect key="frame" x="183" y="92" width="129" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                                 <color key="textColor" red="0.95294117649999999" green="0.22352941179999999" blue="0.3803921569" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>

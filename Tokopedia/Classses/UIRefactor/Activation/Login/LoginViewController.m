@@ -84,7 +84,7 @@
 {    
     [super viewDidLoad];
     
-    UIBarButtonItem *signUpButton = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up"
+    UIBarButtonItem *signUpButton = [[UIBarButtonItem alloc] initWithTitle:kTKPDREGISTER_TITLE
                                                                      style:UIBarButtonItemStylePlain
                                                                     target:(self)
                                                                     action:@selector(tap:)];

@@ -310,6 +310,9 @@
     }
     
     else if (indexPath.section == 4) {
+        if(indexPath.row == 0) {
+            
+        }
         if(indexPath.row == 2) {
             ReputationPageViewController *reputationPageVc = [ReputationPageViewController new];
             [self.navigationController pushViewController:reputationPageVc animated:YES];

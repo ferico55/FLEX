@@ -68,4 +68,7 @@
 #define kTKPDREGISTER_APIISACTIVEKEY @"is_active"
 #define kTKPDREGISTER_APIUIKEY @"u_id"
 
+#define kTKPDREGISTER_TITLE @"Daftar"
+#define kTKPDREGISTER_NEW_TITLE @"Daftar Baru"
+
 #endif

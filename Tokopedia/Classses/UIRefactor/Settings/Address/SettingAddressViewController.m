@@ -241,7 +241,24 @@
                 
                 if (_list.count > indexPath.section) {
                     AddressFormList *list = _list[indexPath.section];
-                    ((GeneralList1GestureCell*)cell).labelname.text = list.address_name;
+                    
+                    UIFont *font = [UIFont fontWithName:@"GothamMedium" size:14];
+                    
+                    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+                    style.lineSpacing = 6.0;
+                    
+                    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
+                                                 NSFontAttributeName: font,
+                                                 NSParagraphStyleAttributeName: style,
+                                                 };
+                    
+                    NSAttributedString *addressAttributedText = [[NSAttributedString alloc] initWithString:list.address_name
+                                                                                                attributes:attributes];
+                    
+                    ((GeneralList1GestureCell*)cell).labelname.attributedText = addressAttributedText;
+                    
+//                    ((GeneralList1GestureCell*)cell).labelname.text = addressAttributedText;
+                    
                     ((GeneralList1GestureCell*)cell).indexpath = indexPath;
                     [(GeneralList1GestureCell*)cell viewdetailresetposanimation:YES];
                     ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
