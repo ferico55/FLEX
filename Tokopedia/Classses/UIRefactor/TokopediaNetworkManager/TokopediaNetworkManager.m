@@ -58,14 +58,14 @@
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
-- (void)requestProcess:(id)processResult {
+- (void)requestProcess:(id)processResult withOperation:(RKObjectRequestOperation*)operation{
     if(processResult) {
         if([processResult isKindOfClass:[RKMappingResult class]]) {
             NSDictionary *result = ((RKMappingResult*)processResult).dictionary;
             id processResult = [result objectForKey:@""];
             
-            if (_delegate && [_delegate respondsToSelector:@selector(actionAfterRequest:)]) {
-                [_delegate actionAfterRequest:processResult];
+            if (_delegate && [_delegate respondsToSelector:@selector(actionAfterRequest:withOperation:)]) {
+                [_delegate actionAfterRequest:processResult withOperation:operation];
             }
             
 
@@ -84,7 +84,7 @@
     if(successResult) {
         NSString* status = [_delegate getRequestStatus:successResult];
         if([status isEqualToString:@"OK"]) {
-            [self requestProcess:successResult];
+            [self requestProcess:successResult withOperation:operation];
         } else if ([status isEqualToString:@"INVALID_REQUEST"]) {
             
         } else if ([status isEqualToString:@"UNDER_MAINTENANCE"]) {
@@ -94,7 +94,7 @@
 }
 
 - (void)requestFail:(id)errorResult {
-    [self requestProcess:errorResult];
+    [self requestProcess:errorResult withOperation:nil];
 }
 
 - (void)requestTimeout {

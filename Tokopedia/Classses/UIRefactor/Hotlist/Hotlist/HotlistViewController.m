@@ -33,6 +33,11 @@
     NSTimeInterval _timeinterval;
     TokopediaNetworkManager *_networkManager;
     __weak RKObjectManager  *_objectmanager;
+    
+    /**cache part*/
+    NSString *_cachePath;
+    URLCacheConnection *_cacheConnection;
+    URLCacheController *_cacheController;
 
 }
 
@@ -66,6 +71,8 @@
     _product = [NSMutableArray new];
     _page = 1;
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
+    _cacheConnection = [URLCacheConnection new];
+    _cacheController = [URLCacheController new];
     
     /** set table view datasource and delegate **/
     _table.delegate = self;
@@ -89,7 +96,14 @@
     
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
-    [_networkManager doRequest];
+    
+    [self initCacheHotlist];
+    if([self getFromCache] && _page == 1) {
+        [_networkManager requestSuccess:[self getFromCache] withOperation:nil];
+    } else {
+        [_networkManager doRequest];
+    }
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -220,10 +234,8 @@
     _page = 1;
     _isrefreshview = YES;
     
-    [_product removeAllObjects];
+//    [_product removeAllObjects];
     [_table reloadData];
-
-
     [_networkManager doRequest];
 }
 
@@ -297,7 +309,7 @@
     }
 }
 
-- (void)actionAfterRequest:(id)successResult {
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation{
     Hotlist *hotlist = successResult;
     [_product addObjectsFromArray: hotlist.result.list];
     [_refreshControl endRefreshing];
@@ -308,9 +320,66 @@
         _page = [[_networkManager splitUriToPage:_urinext] integerValue];
     }
     
+    if((_page - 1) == 1) {
+        [self setToCache:operation];
+    }
+
     [_table reloadData];
 }
 
+#pragma mark - Caching Part 
+- (void)initCacheHotlist {
+    if(_page == 1) {
+        NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:@"hotlist"];
+        _cachePath = [path stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
+        
+        _cacheController.filePath = _cachePath;
+        _cacheController.URLCacheInterval = 86400.0;
+        [_cacheController initCacheWithDocumentPath:path];
+    }
+}
 
+- (void)setToCache:(RKObjectRequestOperation*)operation {
+    [_cacheConnection connection:operation.HTTPRequestOperation.request
+              didReceiveResponse:operation.HTTPRequestOperation.response];
+    
+    [_cacheController connectionDidFinish:_cacheConnection];
+    [operation.HTTPRequestOperation.responseData writeToFile:_cachePath atomically:YES];
+}
+
+- (id)getFromCache {
+    [_cacheController getFileModificationDate];
+    _timeinterval = fabs([_cacheController.fileDate timeIntervalSinceNow]);
+    
+    NSError* error;
+    NSData *data = [NSData dataWithContentsOfFile:_cachePath];
+    
+    if(data.length) {
+        id parsedData = [RKMIMETypeSerialization objectFromData:data
+                                                       MIMEType:RKMIMETypeJSON
+                                                          error:&error];
+        if (parsedData == nil && error) {
+            NSLog(@"parser error");
+        }
+        
+        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
+        _objectmanager = [self getObjectManager];
+        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
+            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
+        }
+        
+        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData
+                                                                   mappingsDictionary:mappingsDictionary];
+        NSError *mappingError = nil;
+        BOOL isMapped = [mapper execute:&mappingError];
+        if (isMapped && !mappingError) {
+            RKMappingResult *mappingresult = [mapper mappingResult];
+            
+            return mappingresult;
+        }
+    }
+    
+    return nil;
+}
 
 @end

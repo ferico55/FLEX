@@ -21,7 +21,7 @@
 
 @optional
 - (void)actionBeforeRequest;
-- (void)actionAfterRequest:(id)successResult;
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation;
 
 - (void)actionAfterRequestAsync;
 - (void)actionAfterRequestFailAsync;
