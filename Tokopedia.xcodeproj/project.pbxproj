@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		85141CD81AAFF03600899829 /* TokopediaNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 85141CD71AAFF03600899829 /* TokopediaNetworkManager.m */; };
+		85141CE01AB1558700899829 /* TokopediaCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 85141CDF1AB1558700899829 /* TokopediaCacheManager.m */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		859A393E1A8376A70055BA8F /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAAEA4419F7534B00904AFB /* MainViewController.m */; };
 		859A39411A8376A70055BA8F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36DF9619B0656400AF74C1 /* AppDelegate.m */; };
@@ -1137,6 +1138,8 @@
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		85141CD61AAFF03600899829 /* TokopediaNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TokopediaNetworkManager.h; path = Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/TokopediaNetworkManager.h; sourceTree = SOURCE_ROOT; };
 		85141CD71AAFF03600899829 /* TokopediaNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TokopediaNetworkManager.m; path = Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/TokopediaNetworkManager.m; sourceTree = SOURCE_ROOT; };
+		85141CDE1AB1558700899829 /* TokopediaCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TokopediaCacheManager.h; path = Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/TokopediaCacheManager.h; sourceTree = SOURCE_ROOT; };
+		85141CDF1AB1558700899829 /* TokopediaCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TokopediaCacheManager.m; path = Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/TokopediaCacheManager.m; sourceTree = SOURCE_ROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		85A8D98B1AADC20D0067D822 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		85A8D98C1AADC20D0067D822 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
@@ -2935,6 +2938,8 @@
 			children = (
 				85141CD61AAFF03600899829 /* TokopediaNetworkManager.h */,
 				85141CD71AAFF03600899829 /* TokopediaNetworkManager.m */,
+				85141CDE1AB1558700899829 /* TokopediaCacheManager.h */,
+				85141CDF1AB1558700899829 /* TokopediaCacheManager.m */,
 			);
 			name = TokopediaNetworkManager;
 			path = TokopediaNetworkManage;
@@ -7101,6 +7106,7 @@
 				85A8E2201AADC2100067D822 /* TxOrderCancelPaymentResult.m in Sources */,
 				85A8E3101AADC2100067D822 /* MyShopShipmentInfoViewController.m in Sources */,
 				85A8E14C1AADC2100067D822 /* TalkResult.m in Sources */,
+				85141CE01AB1558700899829 /* TokopediaCacheManager.m in Sources */,
 				85A8E3BF1AADC2100067D822 /* ShopInfoPaymentCell.m in Sources */,
 				85A8E20F1AADC2100067D822 /* TransactionEditAddressFormResult.m in Sources */,
 				85A8E2901AADC2100067D822 /* NoResultView.m in Sources */,

@@ -27,6 +27,7 @@
     
     BOOL _isrefreshview;
     BOOL _isnodata;
+    BOOL _isNeedToRemoveAllObject;
     
     UIRefreshControl *_refreshControl;
 
@@ -56,6 +57,7 @@
     if (self) {
         _isrefreshview = NO;
         _isnodata = YES;
+        _isNeedToRemoveAllObject = NO;
     }
     return self;
 }
@@ -109,6 +111,16 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [_cacheController getFileModificationDate];
+    _timeinterval = fabs([_cacheController.fileDate timeIntervalSinceNow]);
+    
+    if(_timeinterval > _cacheController.URLCacheInterval) {
+        _page = 1;
+        _isNeedToRemoveAllObject = YES;
+        [_networkManager doRequest];
+        _table.contentOffset = CGPointMake(0, 0 - _table.contentInset.top);
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -233,6 +245,7 @@
 {
     _page = 1;
     _isrefreshview = YES;
+    _isNeedToRemoveAllObject = YES;
     
 //    [_product removeAllObjects];
     [_table reloadData];
@@ -311,9 +324,18 @@
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation{
     Hotlist *hotlist = successResult;
-    [_product addObjectsFromArray: hotlist.result.list];
-    [_refreshControl endRefreshing];
     
+    if(_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
+    }
+    
+    if(_isNeedToRemoveAllObject) {
+       [_product removeAllObjects];
+        _isNeedToRemoveAllObject = NO;
+    }
+    
+    [_product addObjectsFromArray: hotlist.result.list];
+
     if (_product.count >0) {
         _isnodata = NO;
         _urinext =  hotlist.result.paging.uri_next;
@@ -334,7 +356,7 @@
         _cachePath = [path stringByAppendingPathComponent:kTKPDHOMEHOTLIST_APIRESPONSEFILE];
         
         _cacheController.filePath = _cachePath;
-        _cacheController.URLCacheInterval = 86400.0;
+        _cacheController.URLCacheInterval = 300.0;
         [_cacheController initCacheWithDocumentPath:path];
     }
 }
