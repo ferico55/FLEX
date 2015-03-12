@@ -65,11 +65,11 @@
 @property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *shopIsGoldLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *shopImageView;
-@property (weak, nonatomic) IBOutlet UIImageView *shopIsGoldBadge;
 
 @property (weak, nonatomic) IBOutlet UIButton *createShopButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *loadingSaldo;
 
+@property (weak, nonatomic) IBOutlet UITableViewCell *shopCell;
 
 @end
 
@@ -114,19 +114,19 @@
                                        } failure: nil];
         
         if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
-            _shopIsGoldLabel.text = @"Gold Merchant";
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
+            imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
+                                         _shopIsGoldLabel.frame.origin.y,
+                                         22, 22);
+            [_shopCell addSubview:imageView];
+            _shopIsGoldLabel.text = @"        Gold Merchant";
         } else {
-            _shopIsGoldBadge.hidden = YES;
+            _shopIsGoldLabel.text = @"Regular Merchant";
             CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
             shopIsGoldLabelFrame.origin.x = 83;
             _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
         }
-    }
-    
-   
-    
-
-    
+    }    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -287,13 +287,6 @@
     }
     
     else if (indexPath.section == 2 && indexPath.row == 0) {
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//        TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
-//        shopViewController.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
-//                                    MORE_AUTH : _auth,
-//                                    MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
-//                                    };
-        
         ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
         container.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
                                                                MORE_AUTH : _auth,

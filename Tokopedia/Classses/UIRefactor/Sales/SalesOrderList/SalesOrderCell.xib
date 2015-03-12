@@ -203,6 +203,7 @@
                 <outlet property="remainingDaysLabel" destination="M7n-Xq-FLP" id="SQW-pl-dW7"/>
                 <outlet property="userImageView" destination="wX1-bF-tN8" id="VwX-6d-TFC"/>
                 <outlet property="userNameLabel" destination="WpT-5U-BVh" id="vuN-AI-tsc"/>
+                <outlet property="userView" destination="RpZ-zw-C1g" id="Gcg-72-lGa"/>
             </connections>
             <point key="canvasLocation" x="366" y="352"/>
         </tableViewCell>

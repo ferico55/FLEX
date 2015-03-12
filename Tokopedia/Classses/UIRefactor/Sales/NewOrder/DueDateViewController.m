@@ -19,6 +19,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _selectedIndexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Pilih"
+                                                               style:UIBarButtonItemStyleDone
+                                                              target:self
+                                                              action:@selector(tap:)];
+    button.tag = 1;
+    self.navigationItem.rightBarButtonItem = button;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -57,8 +64,18 @@
     
     cell = [tableView cellForRowAtIndexPath:_selectedIndexPath];
     cell.accessoryType = UITableViewCellAccessoryCheckmark;
+}
 
-    [self.delegate didSelectDueDate:cell.textLabel.text];
+- (void)tap:(id)sender
+{
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *button = (UIBarButtonItem *)sender;
+        if (button.tag == 1) {
+            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:_selectedIndexPath];
+            [self.delegate didSelectDueDate:cell.textLabel.text];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }
 }
 
 @end

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -213,6 +213,7 @@
                 <outlet property="statusLabel" destination="ge6-wx-Ciw" id="h0s-he-Vxz"/>
                 <outlet property="statusView" destination="l4E-3B-j63" id="M1V-cA-91V"/>
                 <outlet property="twoButtonsView" destination="kZo-Iu-qxn" id="R1V-v9-Tge"/>
+                <outlet property="userView" destination="RpZ-zw-C1g" id="EqL-9h-Q65"/>
             </connections>
             <point key="canvasLocation" x="366" y="363"/>
         </tableViewCell>

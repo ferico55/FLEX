@@ -15,6 +15,7 @@
 #import "OrderDetailViewController.h"
 #import "FilterShipmentConfirmationViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
+#import "TKPDTabProfileNavigationController.h"
 #import "CancelShipmentViewController.h"
 #import "ActionOrder.h"
 #import "StickyAlertView.h"
@@ -118,8 +119,6 @@
     
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
     self.tableView.tableHeaderView = _headerView;
-    self.tableView.tableFooterView = _footerView;
-    [_activityIndicator startAnimating];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
@@ -236,7 +235,7 @@
                                        } failure:nil];
     
     cell.paymentAmountLabel.text = transaction.order_detail.detail_open_amount_idr;
-    cell.dueDateLabel.text = [NSString stringWithFormat:@"Batas Respon : %@", transaction.order_payment.payment_process_due_date];
+    cell.dueDateLabel.text = [NSString stringWithFormat:@"Batas Respon : %@", transaction.order_payment.payment_shipping_due_date];
     
     [cell.rejectButton setTitle:@"Batal" forState:UIControlStateNormal];
     [cell.acceptButton setTitle:@"Konfirmasi" forState:UIControlStateNormal];
@@ -306,6 +305,16 @@
     controller.delegate = self;
     controller.shipmentCouriers = _shipmentCouriers;
     
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)tableViewCell:(UITableViewCell *)cell didSelectUserAtIndexPath:(NSIndexPath *)indexPath
+{
+    _selectedOrder = [_orders objectAtIndex:indexPath.row];
+    _selectedIndexPath = indexPath;
+    
+    TKPDTabProfileNavigationController *controller = [TKPDTabProfileNavigationController new];
+    controller.data = @{API_USER_ID_KEY:_selectedOrder.order_customer.customer_id};
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -538,7 +547,10 @@
     if (_request.isExecuting) return;
     
     _requestCount++;
-    
+
+    self.tableView.tableFooterView = _footerView;
+    [_activityIndicator startAnimating];
+
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *auth = [secureStorage keychainDictionary];
     
@@ -633,15 +645,19 @@
         
         _isNoData = NO;
 
-        if (_orders.count == 0) {
-            _activityIndicator.hidden = YES;
-        }
-        
         if (_page == 0) {
             [_activityIndicator stopAnimating];
-            _tableView.tableFooterView = nil;
         }
-        
+
+        if (_orders.count == 0) {
+            _activityIndicator.hidden = YES;
+            
+            CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
+            NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+            _tableView.tableFooterView = noResultView;
+            _tableView.sectionFooterHeight = noResultView.frame.size.height;
+        }
+
         [_tableView reloadData];
     }
 }
@@ -653,13 +669,7 @@
 
 - (void)cancel
 {
-//    _isRefreshView = NO;
-//    [_refreshControl endRefreshing];
-//    
-//    [_timer invalidate];
-//    _timer = nil;
-//
-//    _tableView.tableFooterView = nil;
+
 }
 
 #pragma mark - Actions
@@ -782,10 +792,9 @@
                             API_SHIPMENT_PACKAGE_ID_KEY : courierPackage.sp_id ?: _selectedOrder.order_shipment.shipment_package_id,
                             API_SHIPMENT_REF_KEY        : receiptNumber ?: @"",
                             API_REASON_KEY              : rejectionReason ?: @"",
-                            @"enc_dec"                  : @"off"
                             };
     
-    _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_NEW_ORDER_ACTION_PATH parameters:param];
+    _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_NEW_ORDER_ACTION_PATH parameters:[param encrypt]];
     [_operationQueue addOperation:_actionRequest];
     
     NSLog(@"\n\n\nRequest Operation : %@\n\n\n", _actionRequest);

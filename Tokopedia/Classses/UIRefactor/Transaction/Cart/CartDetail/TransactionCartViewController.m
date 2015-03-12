@@ -254,7 +254,6 @@
     [_saldoTokopediaAmountTextField addTarget:self
                                        action:@selector(saldoTextFieldDidChange:)
                              forControlEvents:UIControlEventEditingChanged];
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -272,7 +271,9 @@
                                                                          action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    if(!_requestCart.executing) _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
+    if (_list.count > 0) {
+        if(!_requestCart.executing) _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
+    }
 
     _tableView.scrollsToTop = YES;
 
@@ -291,15 +292,11 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
-
-
 
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -905,14 +902,18 @@
                         NSInteger indexSelectedShipment = [[_dataInput objectForKey:DATA_INDEX_KEY] integerValue]?:0;
                         NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:((TransactionCartList*)_list[indexSelectedShipment])};
                         [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_POST_NOTIFICATION_NAME object:nil userInfo:info];
+                        _checkoutView.hidden = NO;
                         _tableView.tableFooterView = _checkoutView;
                     }
                     else {
                         NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, 320, 100)];
+                        noResultView.titleLabel.text = @"Keranjang belanja Anda kosong.";
                         _tableView.tableFooterView = noResultView;
                     }
                     [_tableView reloadData];
-                    _tableView.contentInset = UIEdgeInsetsMake(-44, 0, 0, 0);
+                    if (_indexPage > 0) {
+                        _tableView.contentInset = UIEdgeInsetsMake(-44, 0, 0, 0);
+                    }
                 }
             }
         }

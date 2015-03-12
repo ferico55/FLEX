@@ -141,13 +141,12 @@
     id childViewController;
     for (UIButton *button in _pageButtons) {
         button.backgroundColor = COLOR_DEFAULT_BUTTON;
-        //button.enabled = NO;
+        button.enabled = NO;
     }
     switch (index) {
         case 0:
         {
             if(!_cartViewController)_cartViewController = [TransactionCartViewController new];
-            //TransactionCartViewController *cartViewController = [TransactionCartViewController new];
             _cartViewController.delegate = self;
             ((UIButton*)_pageButtons[index]).enabled = YES;
             childViewController = _cartViewController;
@@ -245,6 +244,9 @@
 #pragma mark -   Delegate
 -(void)didFinishRequestCheckoutData:(NSDictionary *)data
 {
+    if (data) {
+        _pageControlView.hidden = NO;
+    }    
     _data = data;
     [_pageController setViewControllers:@[[self viewControllerAtIndex:1]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
 }

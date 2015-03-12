@@ -17,6 +17,7 @@
 #import "DetailShipmentStatusViewController.h"
 #import "ChangeReceiptNumberViewController.h"
 #import "TrackOrderViewController.h"
+#import "TKPDTabProfileNavigationController.h"
 
 #import "ShipmentStatusCell.h"
 #import "StickyAlertView.h"
@@ -80,7 +81,7 @@
     [_activityIndicator startAnimating];
     
     [self configureRestKit];
-    [self request];
+    [self requestInvoice:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -181,7 +182,7 @@
         if (_nextURI != NULL && ![_nextURI isEqualToString:@"0"] && _nextURI != 0) {
             _tableView.tableFooterView = _footerView;
             [_activityIndicator startAnimating];
-            [self request];
+            [self requestInvoice:nil];
         } else {
             _tableView.tableFooterView = nil;
         }
@@ -424,7 +425,7 @@
     [_objectManager addResponseDescriptor:responseDescriptorStatus];    
 }
 
-- (void)request
+- (void)requestInvoice:(NSString *)invoice
 {
     NSLog(@"%@", NSStringFromSelector(_cmd));
     
@@ -438,8 +439,8 @@
     NSDictionary* param = @{
                             API_ACTION_KEY           : API_GET_NEW_ORDER_STATUS_KEY,
                             API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
+                            API_INVOICE_KEY          : invoice ?: @"",
                             API_PAGE_KEY             : [NSNumber numberWithInteger:_page],
-//                            API_INVOICE_KEY          : _status ?: @"",
                             };
     
     NSLog(@"\n\n\n\n%@\n\n\n\n", param);
@@ -523,14 +524,19 @@
         _page = [[queries objectForKey:API_PAGE_KEY] integerValue];
         
         NSLog(@"next page : %ld",(long)_page);
-
-        if (_shipments.count == 0) {
-            _activityIndicator.hidden = YES;
-        }
         
         if (_page == 0) {
             [_activityIndicator stopAnimating];
             _tableView.tableFooterView = nil;
+        }
+
+        if (_shipments.count == 0) {
+            _activityIndicator.hidden = YES;
+            
+            CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
+            NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+            _tableView.tableFooterView = noResultView;
+            _tableView.sectionFooterHeight = noResultView.frame.size.height;
         }
 
         [_tableView reloadData];
@@ -664,6 +670,14 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)didTapUserAtIndexPath:(NSIndexPath *)indexPath
+{
+    _selectedOrder = [_shipments objectAtIndex:indexPath.row];
+    
+    TKPDTabProfileNavigationController *controller = [TKPDTabProfileNavigationController new];
+    controller.data = @{API_USER_ID_KEY:_selectedOrder.order_customer.customer_id};
+    [self.navigationController pushViewController:controller animated:YES];
+}
 
 #pragma mark - Action
 
@@ -694,7 +708,7 @@
     [_tableView reloadData];
     
     [self configureRestKit];
-    [self request];
+    [self requestInvoice:invoice];
 }
 
 #pragma mark - Change receipt number delegate

@@ -32,11 +32,13 @@
     
     UIBarButtonItem *_barbuttonsignin;
         
-    __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
+    RKObjectManager *_objectmanager;
+    RKManagedObjectRequestOperation *_request;
     NSOperationQueue *_operationQueue;
 
-    __weak RKObjectManager *_facebookObjectManager;
+    RKObjectManager *_facebookObjectManager;
+    RKManagedObjectRequestOperation *_requestFacebookLogin;
+    NSOperationQueue *_operationQueueFacebookLogin;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *container;
@@ -109,16 +111,15 @@
     
     _activation = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
+    _operationQueueFacebookLogin = [NSOperationQueue new];
     
-    [self configureRestKitLogin];
-
     FBLoginView *loginView = [[FBLoginView alloc] init];
     loginView.delegate = self;
     loginView.readPermissions = @[@"public_profile", @"email"];
     loginView.frame = CGRectMake(0, 0,
                                  _facebookLoginButton.frame.size.width,
                                  _facebookLoginButton.frame.size.height);
-    [_facebookLoginButton addSubview:loginView];
+    [_facebookLoginButton addSubview:loginView];    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -131,7 +132,7 @@
     _emailTextField.isBottomRoundCorner = YES;
     
     _passwordTextField.isTopRoundCorner = YES;
-    _passwordTextField.isBottomRoundCorner = YES;
+    _passwordTextField.isBottomRoundCorner = YES;    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -226,6 +227,12 @@
     _request = nil;
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
+    
+    [_requestFacebookLogin cancel];
+    _requestFacebookLogin = nil;
+    
+    [_facebookObjectManager.operationQueue cancelAllOperations];
+    _facebookObjectManager = nil;
 }
 
 - (void)configureRestKitLogin
@@ -309,6 +316,8 @@
 - (void)requestActionLogin:(NSDictionary *)data
 {
     if (_request.isExecuting) return;
+ 
+    [self configureRestKitLogin];
     
     _requestcount++;
     
@@ -349,6 +358,8 @@
 {
     if (_request.isExecuting) return;
     
+    [self configureRestKitFacebookLogin];
+    
     _requestcount++;
     
     NSDictionary *param = @{
@@ -359,15 +370,18 @@
                             kTKPDLOGIN_API_ID_KEY           : [user objectForKey:@"id"]?:@"",
                             kTKPDLOGIN_API_BIRTHDAY_KEY     : [user objectForKey:@"birthday"]?:@"",
                             kTKPDLOGIN_API_GENDER_KEY       : [user objectForKey:@"gender"]?:@"",
-                            @"enc_dec"                      : @"off"
                             };
     
-    _barbuttonsignin.enabled = NO;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodGET
-                                                                      path:kTKPDLOGIN_FACEBOOK_APIPATH
-                                                                parameters:param];
+    NSLog(@"\n\n\n%@\n\n\n", param);
     
+    _barbuttonsignin.enabled = NO;
+    _requestFacebookLogin = [_facebookObjectManager appropriateObjectRequestOperationWithObject:self
+                                                                                         method:RKRequestMethodPOST
+                                                                                           path:kTKPDLOGIN_FACEBOOK_APIPATH
+                                                                                     parameters:[param encrypt]];
+
+    NSLog(@"\n\n\n%@\n\n\n", _requestFacebookLogin);
+
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
                                                       target:self
                                                     selector:@selector(requesttimeoutLogin)
@@ -377,7 +391,7 @@
     [[NSRunLoop currentRunLoop] addTimer:timer
                                  forMode:NSRunLoopCommonModes];
 
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [_requestFacebookLogin setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [timer invalidate];
         _barbuttonsignin.enabled = YES;
         [self requestsuccessLogin:mappingResult withOperation:operation];
@@ -387,7 +401,7 @@
         [self requestfailureLogin:error];
     }];
     
-    [_operationQueue addOperation:_request];
+    [_operationQueueFacebookLogin addOperation:_requestFacebookLogin];
 }
 
 -(void)requestsuccessLogin:(id)object withOperation:(RKObjectRequestOperation*)operation
@@ -540,8 +554,17 @@
 
 // Call method when user information has been fetched
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
-    [self configureRestKitFacebookLogin];
     [self requestLoginFacebookUser:user];
+}
+
+- (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView
+{
+    
+}
+
+- (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView
+{
+    [self cancelLogin];    
 }
 
 // Handle possible errors that can occur during login

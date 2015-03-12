@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "MainViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
 
+#import "MainViewController.h"
 #import "LoginViewController.h"
 #import "SearchViewController.h"
 #import "TransactionCartRootViewController.h"
@@ -89,9 +90,6 @@
 
 - (void)viewDidLoadQueued
 {
-	//NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];	//TODO: secure storage
-    //id auth = [defaults loadCustomObjectWithKey:kTKPD_AUTHKEY];
-    //id auth = [defaults objectForKey:kTKPD_AUTHKEY];
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
 	NSDictionary* auth = [secureStorage keychainDictionary];
 	_auth = [auth mutableCopy];
@@ -443,16 +441,21 @@
 }
 
 - (void)doApplicationLogout {
-    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-    
+    [[FBSession activeSession] closeAndClearTokenInformation];
+    [[FBSession activeSession] close];
+    [FBSession setActiveSession:nil];
+
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
     [_cacheController initCacheWithDocumentPath:path];
     [_cacheController clearCache];
     
-    
     TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-    [storage resetKeychain];	//delete all previous sensitive data
+    [storage resetKeychain];
     [_auth removeAllObjects];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION
+                                                        object:nil
+                                                      userInfo:@{}];
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
 }

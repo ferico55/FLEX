@@ -20,23 +20,31 @@
     
     self.remainingDaysLabel.layer.cornerRadius = 1;
 
-    UITapGestureRecognizer *priceViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
-    priceViewTap.numberOfTapsRequired = 1;
-    
-    _priceView.userInteractionEnabled = YES;
-    [_priceView addGestureRecognizer:priceViewTap];
-
     [self.acceptButton.titleLabel setFont:[UIFont fontWithName:@"GothamBook" size:12]];
     [self.acceptButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
 
     [self.rejectButton.titleLabel setFont:[UIFont fontWithName:@"GothamBook" size:12]];
     [self.rejectButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
+    
+    UITapGestureRecognizer *invoiceTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    self.invoiceNumberLabel.userInteractionEnabled = YES;
+    [self.invoiceNumberLabel addGestureRecognizer:invoiceTap];
+    
+    UITapGestureRecognizer *buyerTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    self.userView.tag = 1;
+    self.userView.userInteractionEnabled = YES;
+    [self.userView addGestureRecognizer:buyerTap];
+
+
+    UITapGestureRecognizer *priceViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    _priceView.tag = 2;
+    _priceView.userInteractionEnabled = YES;
+    [_priceView addGestureRecognizer:priceViewTap];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 }
-
 
 #pragma mark - Actions
 
@@ -48,10 +56,15 @@
         } else {
             [self.delegate tableViewCell:self acceptOrderAtIndexPath:self.indexPath];        
         }
-    } else {
+    } else if ([[sender view] isKindOfClass:[UILabel class]]) {
         [self.delegate tableViewCell:self didSelectPriceAtIndexPath:self.indexPath];
+    } else {
+        if ([[sender view] tag] == 1) {
+            [self.delegate tableViewCell:self didSelectUserAtIndexPath:self.indexPath];
+        } else if ([[sender view] tag] == 2) {
+            [self.delegate tableViewCell:self didSelectPriceAtIndexPath:self.indexPath];
+        }
     }
 }
-
 
 @end

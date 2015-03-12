@@ -20,6 +20,7 @@
 #import "TrackOrderViewController.h"
 #import "ChangeReceiptNumberViewController.h"
 #import "DetailShipmentStatusViewController.h"
+#import "TKPDTabProfileNavigationController.h"
 
 @interface SalesTransactionListViewController ()
 <
@@ -254,6 +255,14 @@
     TrackOrderViewController *controller = [TrackOrderViewController new];
     controller.order = _selectedOrder;
     
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)didTapUserAtIndexPath:(NSIndexPath *)indexPath{
+    _selectedOrder = [_orders objectAtIndex:indexPath.row];
+    
+    TKPDTabProfileNavigationController *controller = [TKPDTabProfileNavigationController new];
+    controller.data = @{API_USER_ID_KEY:_selectedOrder.order_customer.customer_id};
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -496,15 +505,17 @@
     _tableView.tableFooterView = _footerView;
     [_activityIndicatorView startAnimating];
     
-    NSDictionary* param = @{
+    NSDictionary *param = @{
                             API_ACTION_KEY           : API_GET_NEW_ORDER_LIST_KEY,
                             API_USER_ID_KEY          : [_auth objectForKey:API_USER_ID_KEY],
                             API_PAGE_KEY             : [NSNumber numberWithInteger:_page],
                             API_INVOICE_KEY          : _invoice ?: @"",
-                            API_FILTER_KEY           : _transactionStatus ?: @"",
+                            API_STATUS_KEY           : _transactionStatus ?: @"",
                             API_START_KEY            : _startDate ?: @"",
                             API_END_KEY              : _endDate ?: @"",
                             };
+    
+    NSLog(@"\n\n\n%@\n\n\n", param);
     
     if (_page >= 1) {
         
@@ -589,7 +600,15 @@
         
         [_activityIndicatorView stopAnimating];
 
-        _tableView.tableFooterView = nil;
+        if (_orders.count == 0) {
+            CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
+            NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+            _tableView.tableFooterView = noResultView;
+            _tableView.sectionFooterHeight = noResultView.frame.size.height;
+        } else {
+            _tableView.tableFooterView = nil;
+        }
+        
         [_tableView reloadData];
     }
 }
@@ -704,8 +723,6 @@
 
 - (void)filterOrderInvoice:(NSString *)invoice transactionStatus:(NSString *)transactionStatus startDate:(NSString *)startDate endDate:(NSString *)endDate
 {
-    [self configureRestKit];
-    
     _page = 1;
     _requestCount = 0;
     

@@ -58,7 +58,10 @@
     _startDateString = [dateFormatter stringFromDate:_startDate];
     _endDateString = [dateFormatter stringFromDate:_endDate];
     
-    _endDate = (![_endDateMark isEqualToString:@""])?_endDateMark:[dateFormatter stringFromDate:[NSDate date]];
+    if (_isOrderTransaction) {
+        _endDate = [dateFormatter dateFromString:_endDateMark];
+        _endDateString = (![_endDateMark isEqualToString:@""])?_endDateMark:[dateFormatter stringFromDate:[NSDate date]];
+    }
     
     _transactionStatus = @"Transaksi Belum Selesai";
     if (_isOrderTransaction) {
@@ -230,46 +233,42 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
         if (button.tag == 2) {
-            
             NSString *status = @"";
-            if ([_transactionStatus isEqualToString:@"Semua Status"]) {
-                status = @"9";
-            } else if ([_transactionStatus isEqualToString:@"Pesanan Baru"]) {
-                status = @"1";
-            } else if ([_transactionStatus isEqualToString:@"Dalam Pengiriman"]) {
-                status = @"2";
-            } else if ([_transactionStatus isEqualToString:@"Transaksi Resi Invalid"]) {
-                status = @"6";
-            } else if ([_transactionStatus isEqualToString:@"Transaksi Terkirim"]) {
-                status = @"7";
-            } else if ([_transactionStatus isEqualToString:@"Transaksi Selesai"]) {
-                status = @"3";
-            } else if ([_transactionStatus isEqualToString:@"Transaksi Dibatalkan"]) {
-                status = @"4";
-            }
-            
             if (_isOrderTransaction) {
-                if (_isOrderTransaction) {
-                    if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[0]]) {
-                        status = @"0";
-                    } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[1]]) {
-                        status = @"1";
-                    } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[2]]) {
-                        status = @"2";
-                    } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[3]]) {
-                        status = @"8";
-                    } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[4]]) {
-                        status = @"3";
-                    } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[5]]) {
-                        status = @"9";
-                    } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[6]]) {
-                        status = @"4";
-                    } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[7]]) {
-                        status = @"5";
-                    }
+                if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[0]]) {
+                    status = @"0";
+                } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[1]]) {
+                    status = @"1";
+                } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[2]]) {
+                    status = @"2";
+                } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[3]]) {
+                    status = @"8";
+                } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[4]]) {
+                    status = @"3";
+                } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[5]]) {
+                    status = @"9";
+                } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[6]]) {
+                    status = @"4";
+                } else if ([_transactionStatus isEqualToString:ARRAY_FILTER_TRANSACTION[7]]) {
+                    status = @"5";
                 }
-            }
-            
+            } else {
+                if ([_transactionStatus isEqualToString:@"Semua Status"]) {
+                    status = @"9";
+                } else if ([_transactionStatus isEqualToString:@"Pesanan Baru"]) {
+                    status = @"1";
+                } else if ([_transactionStatus isEqualToString:@"Dalam Pengiriman"]) {
+                    status = @"2";
+                } else if ([_transactionStatus isEqualToString:@"Transaksi Resi Invalid"]) {
+                    status = @"6";
+                } else if ([_transactionStatus isEqualToString:@"Transaksi Terkirim"]) {
+                    status = @"7";
+                } else if ([_transactionStatus isEqualToString:@"Transaksi Selesai"]) {
+                    status = @"3";
+                } else if ([_transactionStatus isEqualToString:@"Transaksi Dibatalkan"]) {
+                    status = @"4";
+                }
+            }            
             [self.delegate filterOrderInvoice:_invoice
                             transactionStatus:status
                                     startDate:_startDateString

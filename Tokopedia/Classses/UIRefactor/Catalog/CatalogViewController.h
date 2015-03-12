@@ -13,4 +13,9 @@
 
 @property (strong, nonatomic) List *list;
 
+@property (strong, nonatomic) NSString *catalogID;
+@property (strong, nonatomic) NSString *catalogName;
+@property (strong, nonatomic) NSString *catalogPrice;
+@property (strong, nonatomic) NSString *catalogImage;
+
 @end

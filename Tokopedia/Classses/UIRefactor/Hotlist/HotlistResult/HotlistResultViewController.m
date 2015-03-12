@@ -347,7 +347,9 @@
                             DATA_PUSH_COUNT_CONTROL : @([[_detailfilter objectForKey:DATA_PUSH_COUNT_CONTROL]integerValue])
                             };
                 vc.delegate = self;
-                [self.navigationController pushViewController:vc animated:YES];
+                
+                UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:vc];
+                [self.navigationController presentViewController:navigationController animated:YES completion:nil];                
             }
             default:
                 break;
@@ -376,12 +378,10 @@
                 NSArray *viewcontrollers = @[vc,vc1,vc2];
                 
                 TKPDTabNavigationController *c = [TKPDTabNavigationController new];
-                
+                [c setNavigationTitle:hashtags.name];
                 [c setSelectedIndex:0];
                 [c setViewControllers:viewcontrollers];
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-                [nav.navigationBar setTranslucent:NO];
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                [self.navigationController pushViewController:c animated:YES];
             }
         }
         else
@@ -855,24 +855,27 @@
     NSArray *hashtags = _hotlistdetail.result.hashtags;
     
     CGFloat previousButtonWidth = 10;
-    CGFloat totalWidth = 0;
+    CGFloat totalWidth = 10;
     
     for (int i = 0; i<hashtags.count; i++) {
         Hashtags *hashtag = hashtags[i];
         UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         [button setTitle:[NSString stringWithFormat:@"#%@", hashtag.name] forState:UIControlStateNormal];
-        [button setTitleColor:kTKPDHOME_FONTSLIDETITLESCOLOR forState:UIControlStateNormal];
-        button.tintColor = kTKPDHOME_FONTSLIDETITLESCOLOR;
-        button.titleLabel.font = kTKPDHOME_FONTSLIDETITLES;
-        button.layer.borderColor = kTKPDHOME_FONTSLIDETITLESCOLOR.CGColor;
+        [button setTitleColor:[UIColor lightGrayColor]
+                     forState:UIControlStateNormal];
+        button.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:10];
+        button.layer.borderColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.5].CGColor;
         button.layer.borderWidth = 1;
         button.layer.cornerRadius = 3;
+        button.tag = 20+i;
 
-        CGSize stringSize = [[NSString stringWithFormat:@"#%@", hashtag.name] sizeWithFont:kTKPDHOME_FONTSLIDETITLESACTIVE];
-        stringSize.width += 16;
-        button.frame = CGRectMake(previousButtonWidth, 9, stringSize.width, 30);
+        [button addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
         
-        previousButtonWidth = button.frame.size.width + 20;
+        CGSize stringSize = [button.titleLabel.text sizeWithFont:kTKPDHOME_FONTSLIDETITLESACTIVE];
+        stringSize.width += 30;
+        button.frame = CGRectMake(totalWidth, 5, stringSize.width, 30);
+        
+        previousButtonWidth = button.frame.size.width + 7;
         totalWidth += previousButtonWidth;
         
         [_buttons addObject:button];

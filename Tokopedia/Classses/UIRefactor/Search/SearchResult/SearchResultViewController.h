@@ -13,8 +13,5 @@
 @interface SearchResultViewController : UIViewController
 
 @property (strong,nonatomic) NSDictionary *data;
-@property (weak, nonatomic) IBOutlet UILabel *pricelabel;
-@property (weak, nonatomic, setter = setImageUrl:) NSString *urlstring;
-@property (weak, nonatomic) IBOutlet UIImageView *productimageview;
 
 @end

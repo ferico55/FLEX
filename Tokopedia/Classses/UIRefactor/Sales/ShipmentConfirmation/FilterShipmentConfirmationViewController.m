@@ -108,7 +108,7 @@
         controller.title = @"Jatuh Tempo";
         controller.objects = @[
                                @"Pilih",
-                               @"Hari\nini",
+                               @"Hari ini",
                                @"Besok",
                                @"2 Hari",
                                @"3 Hari",

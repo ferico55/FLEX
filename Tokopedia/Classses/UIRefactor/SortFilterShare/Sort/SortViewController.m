@@ -57,14 +57,18 @@
     
     _selectedsort = [NSMutableDictionary new];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
     barButtonItem.tag = 10;
     self.navigationItem.leftBarButtonItem = barButtonItem;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 
     UIBarButtonItem *barbutton1;
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [barbutton1 setTintColor:[UIColor blackColor]];
+    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
+                                                  style:UIBarButtonItemStyleDone
+                                                 target:(self) action:@selector(tap:)];
 	[barbutton1 setTag:11];
     self.navigationItem.rightBarButtonItem = barbutton1;
     

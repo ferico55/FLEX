@@ -185,6 +185,11 @@
                                              selector:@selector(redirectAfterNotification:)
                                                  name:@"redirectAfterNotification"
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadPageController)
+                                                 name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -221,16 +226,27 @@
     _userManager = [UserAuthentificationManager new];
 
     if(_userManager.isLogin) {
+
         _tabScrollView.scrollEnabled = YES;
+        
         for (id subview in _tabScrollView.subviews) {
             if ([subview isKindOfClass:[UIButton class]]) {
                 UIButton *button = (UIButton *)subview;
                 button.hidden = NO;
             }
         }
+
+        for(id view in _pageController.view.subviews){
+            if([view isKindOfClass:[UIScrollView class]]){
+                [(UIScrollView *)view setScrollEnabled:YES];
+            }
+        }
+
     } else {
+        
         _tabScrollView.scrollEnabled = NO;
         _tabScrollView.contentOffset = CGPointMake(0, 0);
+
         for (id subview in _tabScrollView.subviews) {
             if ([subview isKindOfClass:[UIButton class]]) {
                 UIButton *button = (UIButton *)subview;
@@ -239,6 +255,13 @@
                 }
             }
         }
+        
+        for(id view in _pageController.view.subviews){
+            if([view isKindOfClass:[UIScrollView class]]){
+                [(UIScrollView *)view setScrollEnabled:NO];
+            }
+        }
+
     }
 }
 
@@ -250,10 +273,7 @@
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
-    if ([viewController isKindOfClass:[HotlistViewController class]]) {
-        return nil;
-    }
-    else if ([viewController isKindOfClass:[ProductFeedViewController class]]) {
+    if ([viewController isKindOfClass:[ProductFeedViewController class]]) {
         return _hotListViewController;
     }
     else if ([viewController isKindOfClass:[HistoryProductViewController class]]) {
@@ -275,9 +295,6 @@
     }
     else if ([viewController isKindOfClass:[HistoryProductViewController class]]) {
         return _favoritedShopViewController;
-    }
-    else if ([viewController isKindOfClass:[FavoritedShopViewController class]]) {
-        return nil;
     }
     return nil;
 }
@@ -314,8 +331,6 @@
             _totalOffset = scrollView.contentOffset.x + ((_viewControllerIndex-1) * self.view.frame.size.width);
         }
         _tabScrollView.contentOffset = CGPointMake((_totalOffset / 3) - (self.view.frame.size.width/3), 0);
-
-        NSLog(@"%f dari %f", _tabScrollView.contentOffset.x, scrollView.contentOffset.x);
     }
 }
 
@@ -554,6 +569,14 @@
 
 - (void)goToNewOrder {
     
+}
+
+- (void)reloadPageController
+{
+    [self.pageController setViewControllers:@[_hotListViewController]
+                                  direction:UIPageViewControllerNavigationDirectionForward
+                                   animated:NO
+                                 completion:nil];
 }
 
 @end

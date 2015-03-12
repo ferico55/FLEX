@@ -157,21 +157,16 @@
     size.height = size.height - _tapview.frame.size.height-64;
     _scrollview.contentSize = size;
     
-    NSBundle* bundle = [NSBundle mainBundle];
-    UIBarButtonItem *backBarButtonItem;
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-    }
-    else
-    backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-    backBarButtonItem.tag = 10;
-    self.navigationItem.leftBarButtonItem = backBarButtonItem;
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(tap:)];
+    backButton.tag = 10;
+    self.navigationItem.backBarButtonItem = backButton;
 
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
         _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
@@ -510,9 +505,6 @@
 #pragma mark View actions
 -(IBAction)tap:(UIButton*) sender
 {
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        
-    }
 	if (_viewControllers != nil) {
 		
 		NSInteger index = _selectedIndex;
@@ -845,13 +837,11 @@
     
 	NSDictionary* param = @{
                             kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEINFOKEY,
-                            kTKPDPROFILE_APIUSERIDKEY : @([[_data objectForKey:kTKPDPROFILE_APIUSERIDKEY]integerValue])
+                            kTKPDPROFILE_APIUSERIDKEY : [_data objectForKey:kTKPDPROFILE_APIUSERIDKEY]
                             };
     
     [_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-    
-//	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
         NSTimer *timer;
         [_act startAnimating];
 
@@ -861,8 +851,6 @@
                                                                     parameters:[param encrypt]];
         
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        //[_objectmanager getObjectsAtPath:kTKPDPROFILE_PEOPLEAPIPATH parameters:param success:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            
             [self requestsuccess:mappingResult withOperation:operation];
             [_act stopAnimating];
             [timer invalidate];
@@ -878,15 +866,7 @@
         
         timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-////    }else {
-//        [_act stopAnimating];
-//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-//        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-//        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-//        NSLog(@"cache and updated in last 24 hours.");
-//        [self requestfailure:nil];
-//	}
+
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation

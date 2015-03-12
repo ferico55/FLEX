@@ -73,6 +73,10 @@
 #define kTKPDSEARCH_APIDEPARTEMENTTITLEKEY @"department_title"
 #define kTKPDSEARCH_APIDEPARTEMENTIDKEY @"department_id"
 
+#define kTKPDSEARCH_APIDEPARTMENT_1 @"department_1"
+#define kTKPDSEARCH_APIDEPARTMENT_2 @"department_2"
+#define kTKPDSEARCH_APIDEPARTMENT_3 @"department_3"
+
 /** has catalog **/
 #define kTKPDSEARCH_APIHASCATALOGKEY @"has_catalog"
 
@@ -101,6 +105,7 @@
 #define kTKPDSEARCH_APIMINPRICEKEY @"pmin"
 #define kTKPDSEARCH_APIMAXPRICEKEY @"pmax"
 #define kTKPDSEARCH_APIIMAGESIZEKEY @"img_size"
+#define kTKPDSEARCH_APIOBKEY @"ob"
 #define kTKPDSEARCH_APIORDERBYKEY @"order_by"
 
 #define kTKPDSEARCH_APIPRODUCTIDKEY @"product_id"

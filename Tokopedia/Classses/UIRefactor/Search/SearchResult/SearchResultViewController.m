@@ -426,6 +426,10 @@
         kTKPDSEARCH_APIPRICEMINKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
         kTKPDSEARCH_APIPRICEMAXKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@"",
         kTKPDSEARCH_APIDEPARTEMENTIDKEY :   [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"",
+
+        kTKPDSEARCH_APIDEPARTMENT_1     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_1]?:@"",
+        kTKPDSEARCH_APIDEPARTMENT_2     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_2]?:@"",
+        kTKPDSEARCH_APIDEPARTMENT_3     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_3]?:@"",
     }];
     
     if (query != nil && ![query isEqualToString:@""] && !isredirect) {
@@ -433,7 +437,25 @@
     }
     else{
         [param setObject:deptid forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-    }    
+    }
+
+    if ([_params objectForKey:kTKPDSEARCH_APIMINPRICEKEY]) {
+        [param setObject:[_params objectForKey:kTKPDSEARCH_APIMINPRICEKEY] forKey:kTKPDSEARCH_APIPRICEMINKEY];
+    }
+    if ([_params objectForKey:kTKPDSEARCH_APIMAXPRICEKEY]) {
+        [param setObject:[_params objectForKey:kTKPDSEARCH_APIMAXPRICEKEY] forKey:kTKPDSEARCH_APIPRICEMAXKEY];
+    }
+    if ([_params objectForKey:kTKPDSEARCH_APIOBKEY]) {
+        [param setObject:[_params objectForKey:kTKPDSEARCH_APIOBKEY] forKey:kTKPDSEARCH_APIORDERBYKEY];
+    }
+    if ([_params objectForKey:kTKPDSEARCH_APILOCATIONIDKEY]) {
+        [param setObject:[_params objectForKey:kTKPDSEARCH_APILOCATIONIDKEY] forKey:kTKPDSEARCH_APILOCATIONKEY];
+    }
+    if ([_params objectForKey:kTKPDSEARCH_APIGOLDMERCHANTKEY]) {
+        [param setObject:[_params objectForKey:kTKPDSEARCH_APIGOLDMERCHANTKEY] forKey:kTKPDSEARCH_APISHOPTYPEKEY];
+    }
+    
+    NSLog(@"%@", param);
     
     if (!_isrefreshview) {
         _table.tableFooterView = _footer;

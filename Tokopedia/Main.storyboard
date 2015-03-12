@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -677,14 +677,11 @@
                                                     <rect key="frame" x="15" y="12" width="60" height="60"/>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gold Merchant" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dh2-ka-A8J">
-                                                    <rect key="frame" x="112" y="44" width="149" height="21"/>
+                                                    <rect key="frame" x="83" y="44" width="149" height="21"/>
                                                     <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="12"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="Hdw-Vi-POr">
-                                                    <rect key="frame" x="83" y="44" width="22" height="22"/>
-                                                </imageView>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -861,8 +858,8 @@
                         <outlet property="fullNameLabel" destination="zS1-Sd-l5d" id="4rB-zu-sqS"/>
                         <outlet property="loadingSaldo" destination="FKa-7u-9lb" id="AsJ-vU-1Tl"/>
                         <outlet property="profilePictureImageView" destination="7rT-h3-2GE" id="3Kf-Ny-nTf"/>
+                        <outlet property="shopCell" destination="lVm-Ld-6SW" id="jq9-lW-ETZ"/>
                         <outlet property="shopImageView" destination="QKf-vE-6ME" id="e46-Un-xfy"/>
-                        <outlet property="shopIsGoldBadge" destination="Hdw-Vi-POr" id="mOe-En-f61"/>
                         <outlet property="shopIsGoldLabel" destination="Dh2-ka-A8J" id="emH-hp-WL5"/>
                         <outlet property="shopNameLabel" destination="oUN-ui-gC8" id="BSH-hd-Cq5"/>
                     </connections>
@@ -3200,7 +3197,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Badges_gold_merchant" width="40" height="40"/>
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>
         <image name="icon_default_shop.jpg" width="80" height="80"/>
         <image name="icon_info_grey" width="14" height="14"/>

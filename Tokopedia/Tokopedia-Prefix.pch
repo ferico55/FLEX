@@ -35,5 +35,4 @@
     #import "NoResultView.h"
     #import "Tkpd.h"
     #import "string.h"
-
 #endif

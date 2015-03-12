@@ -17,15 +17,16 @@
 - (BOOL)isMutable
 {
 	@try {
-		[(id)self setObject:@"" forKey:@""];	//TODO: unique key...
-		[(id)self removeObjectForKey:@""];
-		return YES;
+        if ([self objectForKey:@""]) {
+            [(id)self setObject:@"" forKey:@""];	//TODO: unique key...
+            [(id)self removeObjectForKey:@""];
+            return YES;
+        }
+        return NO;
 	}
 	@catch (NSException *exception) {
 		return NO;
 	}
-	//@finally {
-	//}
     return YES;
 }
 
