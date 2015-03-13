@@ -12,6 +12,9 @@
 #import "ShopReviewPageViewController.h"
 #import "ShopNotesPageViewController.h"
 #import "ShopInfoViewController.h"
+#import "SendMessageViewController.h"
+#import "ShopSettingViewController.h"
+#import "ProductAddEditViewController.h"
 
 #import "URLCacheController.h"
 
@@ -19,6 +22,7 @@
 #import "detail.h"
 #import "string_product.h"
 
+#import "FavoriteShopAction.h"
 
 
 @interface ShopContainerViewController () <UIScrollViewDelegate> {
@@ -36,6 +40,8 @@
     URLCacheController *_cacheController;
     URLCacheConnection *_cacheConnection;
     NSTimeInterval _timeInterval;
+    
+    NSDictionary *_auth;
     
 }
 
@@ -79,14 +85,39 @@
     barButtonItem.tag = 1;
     [self.navigationItem setBackBarButtonItem:barButtonItem];
     
-    UIImage *infoImage = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
-    UIBarButtonItem *infoBarButton = [[UIBarButtonItem alloc] initWithImage:infoImage
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:@selector(tap:)];
-    infoBarButton.tag = 2;
-    self.navigationItem.rightBarButtonItem = infoBarButton;
+    UIBarButtonItem* infoBarButton = [self createBarButton:CGRectMake(0,0,22,22) withImage:[UIImage imageNamed:@"icon_info.png"] withAction:@selector(infoTap:)];
+    UIBarButtonItem* addProductBarButton = [self createBarButton:CGRectMake(22,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_addproduct_2x.png"] withAction:@selector(addProductTap:)];
+    UIBarButtonItem* settingBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_setting_2x.png"] withAction:@selector(settingTap:)];
+    
+    UIBarButtonItem* messageBarButton = [self createBarButton:CGRectMake(22,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_message_2x.png"] withAction:@selector(messageTap:)];
+    UIBarButtonItem* favoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_favorite_2x.png"] withAction:@selector(favoriteTap:)];
 
+    
+    _auth = [_data objectForKey:kTKPD_AUTHKEY];
+    if ([_auth allValues] > 0) {
+        //toko sendiri dan login
+        if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
+            self.navigationItem.rightBarButtonItems = @[infoBarButton, addProductBarButton, settingBarButton];
+        } else {
+            self.navigationItem.rightBarButtonItems = @[infoBarButton, messageBarButton, favoriteBarButton];
+        }
+
+    } else {
+            self.navigationItem.rightBarButtonItems = @[infoBarButton, messageBarButton, messageBarButton];
+    }
+    
+
+}
+
+- (UIBarButtonItem*)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action {
+    UIImageView *infoImageView = [[UIImageView alloc] initWithImage:image];
+    infoImageView.frame = frame;
+    infoImageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:action];
+    [infoImageView addGestureRecognizer:tapGesture];
+    UIBarButtonItem *infoBarButton = [[UIBarButtonItem alloc] initWithCustomView:infoImageView];
+    
+    return infoBarButton;
 }
 
 - (void)viewDidLoad
@@ -553,7 +584,62 @@
 }
 
 #pragma mark - Tap Action
+- (IBAction)infoTap:(id)sender {
+    if (_shop) {
+        ShopInfoViewController *vc = [[ShopInfoViewController alloc] init];
+        vc.data = @{kTKPDDETAIL_DATAINFOSHOPSKEY : _shop,
+                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+}
+
+- (IBAction)messageTap:(id)sender {
+    if (_auth) {
+        SendMessageViewController *messageController = [SendMessageViewController new];
+        messageController.data = @{
+                                   kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
+                                   kTKPDDETAIL_APISHOPNAMEKEY:_shop.result.info.shop_name
+                                   };
+        [self.navigationController pushViewController:messageController animated:YES];
+    }
+}
+
+- (IBAction)favoriteTap:(id)sender {
+//    [self configureFavoriteRestkit];
+//    //
+//    [self favoriteShop:_shop.result.info.shop_id sender:_rightButton];
+//
+//    [UIView animateWithDuration:0.3 animations:^(void) {
+//        [_rightButton setBackgroundColor:[UIColor whiteColor]];
+//        [_rightButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    }];
+}
+
+- (IBAction)unFavoriteTap:(id)sender {
+    
+}
+
+- (IBAction)settingTap:(id)sender {
+    ShopSettingViewController *settingController = [ShopSettingViewController new];
+    settingController.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                               kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result
+                               };
+    
+
+    [self.navigationController pushViewController:settingController animated:YES];
+}
+
+- (IBAction)addProductTap:(id)sender {
+    ProductAddEditViewController *productViewController = [ProductAddEditViewController new];
+    productViewController.data = @{
+                                   kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                                   DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_ADD),
+                                   };
+    [self.navigationController pushViewController:productViewController animated:YES];
+}
+
 - (IBAction)tap:(id)sender {
+    
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         switch (button.tag) {
@@ -593,7 +679,7 @@
                 [self postNotificationSetShopHeader];
                 break;
             }
-            case 12:
+            case 20:
             {
                 
                 [_pageController setViewControllers:@[_shopNotesViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
@@ -613,4 +699,98 @@
         }
     }
 }
+
+
+#pragma mark - Request and mapping favorite action
+
+-(void)configureFavoriteRestkit {
+    
+    // initialize RestKit
+    _objectManager =  [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[FavoriteShopAction class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[FavoriteShopActionResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"content":@"content",
+                                                        @"is_success":@"is_success"}];
+    
+    //relation
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    //register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:@"action/favorite-shop.pl"
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectManager addResponseDescriptor:responseDescriptorStatus];
+}
+
+- (void)setButtonFav {
+//    _rightButton.tag = 16;
+//    [_rightButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
+//    [_rightButton setImage:[UIImage imageNamed:@"icon_love_white.png"] forState:UIControlStateNormal];
+//    [_rightButton.layer setBorderWidth:0];
+//    _rightButton.tintColor = [UIColor whiteColor];
+//    [UIView animateWithDuration:0.3 animations:^(void) {
+//        [_rightButton setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
+//        [_rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    }];
+    
+}
+
+
+-(void)favoriteShop:(NSString*)shop_id sender:(UIButton*)btn
+{
+    if (_request.isExecuting) return;
+    
+    _requestCount ++;
+    
+    NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY   :   @"fav_shop",
+                            @"shop_id"              :   shop_id};
+    
+    _request = [_objectManager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:@"action/favorite-shop.pl"
+                                                                parameters:[param encrypt]];
+    
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestFavoriteResult:mappingResult withOperation:operation];
+        [_timer invalidate];
+        _timer = nil;
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+        [self requestFavoriteError:error];
+        [_timer invalidate];
+        _timer = nil;
+    }];
+    
+    [_operationQueue addOperation:_request];
+    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                              target:self
+                                            selector:@selector(requestTimeout)
+                                            userInfo:nil
+                                             repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+}
+
+-(void)requestFavoriteResult:(id)mappingResult withOperation:(NSOperationQueue *)operation {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
+}
+
+-(void)requestFavoriteError:(id)object {
+    
+}
+
+
+
 @end

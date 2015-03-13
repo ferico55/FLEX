@@ -1043,7 +1043,7 @@
         if (auth && ![auth isEqual:[NSNull null]]) {
             if ([[_data objectForKey:kTKPD_USERIDKEY]integerValue] == [[auth objectForKey:kTKPD_USERIDKEY]integerValue]) {
                 
-                [_button setTitle:@"Edit Profil" forState:UIControlStateNormal];
+                [_button setTitle:@"Ubah Profil" forState:UIControlStateNormal];
                 [_button setImage:nil forState:UIControlStateNormal];
                 
                 self.navigationItem.rightBarButtonItem = _barbuttoninfo;

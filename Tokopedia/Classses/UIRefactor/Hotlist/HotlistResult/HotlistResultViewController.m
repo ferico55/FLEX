@@ -29,6 +29,7 @@
 #import "DetailProductViewController.h"
 
 #import "URLCacheController.h"
+#import "GeneralAlertCell.h"
 
 @interface HotlistResultViewController () <UITableViewDataSource,UITableViewDelegate, GeneralProductCellDelegate, CategoryMenuViewDelegate, SortViewControllerDelegate, FilterViewControllerDelegate>
 {
@@ -227,20 +228,18 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+
     UITableViewCell* cell = nil;
     if (!_isnodata) {
         
         NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
-		
-		cell = (GeneralProductCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-		if (cell == nil) {
-			cell = [GeneralProductCell newcell];
-			((GeneralProductCell*)cell).delegate = self;
-		}
         
-       [self reset:(GeneralProductCell*)cell];
-		
+        cell = (GeneralProductCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+        if (cell == nil) {
+            cell = [GeneralProductCell newcell];
+            ((GeneralProductCell *)cell).delegate = self;
+        }
+        
         if (_product.count > indexPath.row) {
             /** Flexible view count **/
             NSUInteger indexsegment = indexPath.row * 2;
@@ -256,6 +255,11 @@
                 ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
                 (((GeneralProductCell*)cell).indexpath) = indexPath;
                 
+                UIView *view = ((UIView*)((GeneralProductCell*)cell).viewcell[i]);
+                CGRect newFrame = view.frame;
+                newFrame.size.height = 195;
+                view.frame = newFrame;
+                
                 ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.catalog_price?:list.product_price;
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
                 ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
@@ -266,39 +270,26 @@
                 
                 UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
                 thumb.image = nil;
-                
-                UIActivityIndicatorView *act = (UIActivityIndicatorView*)((GeneralProductCell*)cell).act[i];
-                [act startAnimating];
-                
-                NSLog(@"============================== START GET IMAGE =====================");
                 [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-    #pragma clang diagnostic push
-    #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    [thumb setImage:image animated:YES];
-                    [thumb setContentMode:UIViewContentModeScaleAspectFill];
-                    [act stopAnimating];
-    #pragma clang diagnostic pop
-                    
-                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                    [act stopAnimating];
-                    
-                }];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                    [thumb setImage:image];
+#pragma clang diagnostic pop
+                } failure:nil];
             }
         }
-	} else {
-		static NSString *CellIdentifier = kTKPDHOME_STANDARDTABLEVIEWCELLIDENTIFIER;
-		
-		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (cell == nil) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		}
-		
-		cell.textLabel.text = kTKPDHOME_NODATACELLTITLE;
-		cell.detailTextLabel.text = kTKPDHOME_NODATACELLDESCS;
-	}
-	
-	return cell;
+    } else {
+        
+        static NSString *CellIdentifier = @"GeneralAlertCell";
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        
+        if (cell == nil) {
+            cell = [GeneralAlertCell newCell];
+        }
+        
+    }
+    
+    return cell;
 }
 
 #pragma mark - Table View Delegate

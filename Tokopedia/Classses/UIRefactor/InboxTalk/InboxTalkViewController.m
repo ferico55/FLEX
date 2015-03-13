@@ -107,6 +107,10 @@
                                              selector:@selector(updateTotalComment:)
                                                  name:@"UpdateTotalComment" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateUnreadTalk:)
+                                                 name:@"updateUnreadTalk" object:nil];
+    
     
     
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -254,6 +258,16 @@
                 CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
                 newFrame.origin.x = 75;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
+                ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
+            }
+            
+            if([list.talk_read_status isEqualToString:@"1"]) {
+                ((GeneralTalkCell*)cell).subContentView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+                ((GeneralTalkCell*)cell).subContentView.layer.borderWidth = 1.0;
+                ((GeneralTalkCell*)cell).unreadIcon.hidden = NO;
+            } else {
+                ((GeneralTalkCell*)cell).subContentView.layer.borderWidth = 0;
+                ((GeneralTalkCell*)cell).unreadIcon.hidden = YES;
             }
             
             if ([list.talk_message length] > 30) {
@@ -548,6 +562,7 @@
     ProductTalkDetailViewController *vc = [ProductTalkDetailViewController new];
     NSInteger row = indexpath.row;
     TalkList *list = _talkList[row];
+    
     vc.data = @{
                 TKPD_TALK_MESSAGE:list.talk_message?:0,
                 TKPD_TALK_USER_IMG:list.talk_user_image?:0,
@@ -750,6 +765,17 @@
     list.talk_total_comment = [NSString stringWithFormat:@"%@",[userinfo objectForKey:TKPD_TALK_TOTAL_COMMENT]];
     [_table reloadData];
 }
+
+- (void)updateUnreadTalk : (NSNotification*)notification {
+    NSDictionary *userinfo = notification.userInfo;
+    NSInteger index = [[userinfo objectForKey:kTKPDDETAIL_DATAINDEXKEY]integerValue];
+    
+    TalkList *list = _talkList[index];
+    list.talk_read_status = @"2";
+    [_table reloadData];
+}
+
+
 
 
 -(void) showTalkWithFilter:(NSNotification*)notification {

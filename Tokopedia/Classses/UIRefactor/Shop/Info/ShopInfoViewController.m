@@ -50,7 +50,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelopensince;
 @property (weak, nonatomic) IBOutlet UIButton *buttonofflocation;
 @property (weak, nonatomic) IBOutlet UIButton *buttonArrowLocation;
-
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *avatarIndicator;
 
 @property (weak, nonatomic) IBOutlet UILabel *labelsuccessfulltransaction;
 @property (weak, nonatomic) IBOutlet UILabel *labelsold;
@@ -403,7 +403,22 @@
 -(void)setShopInfoData
 {
     _labelshopname.text = _shop.result.info.shop_name;
-    _labelshoptagline.text = _shop.result.info.shop_tagline;
+//    _labelshoptagline.text = _shop.result.info.shop_tagline;
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
+                                 NSParagraphStyleAttributeName  : style
+                                 };
+    
+    NSString *tagline = _shop.result.info.shop_tagline;
+    _labelshoptagline.attributedText = [[NSAttributedString alloc] initWithString:tagline
+                                                                       attributes:attributes];
+    _labelshoptagline.numberOfLines = 0;
+    [_labelshoptagline sizeToFit];
+    
     _labelshopdescription.text = _shop.result.info.shop_description;
     [_buttonfav setTitle:_shop.result.info.shop_total_favorit forState:UIControlStateNormal];
     [_buttonitemsold setTitle:_shop.result.info.shop_total_favorit forState:UIControlStateNormal];
@@ -432,13 +447,13 @@
     //thumb.hidden = YES;	//@prepareforreuse then @reset
     
     //[((ShopInfoPaymentCell*)cell).act startAnimating];
-    
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [_avatarIndicator startAnimating];
+    [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         //NSLOG(@"thumb: %@", thumb);
         [thumb setImage:image];
-        
+        [_avatarIndicator stopAnimating];
         //[((ShopInfoPaymentCell*)cell).act stopAnimating];
 #pragma clang diagnostic pop
         
@@ -479,7 +494,7 @@
     
     [_labelshopdescription sizeToFit];
     
-    height += _labelshopdescription.frame.size.height + _labelshopdescription.frame.origin.y + 18;
+    height += _labelshopdescription.frame.origin.y + 18;
     
     [_labelshopdescription layoutIfNeeded];
     CGRect shopDetailFrame = _shopdetailview.frame;

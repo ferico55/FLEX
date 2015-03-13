@@ -500,16 +500,16 @@
     [bt addTarget:self action:@selector(expandCollapseButton:) forControlEvents:UIControlEventTouchUpInside];
     switch (section) {
         case 0:
-            [bt setTitle: @"Product Description" forState: UIControlStateNormal];
+            [bt setTitle: PRODUCT_DESC forState: UIControlStateNormal];
             break;
         case 1:
             if (!_isnodatawholesale)
-                [bt setTitle: @"Wholesale Price " forState: UIControlStateNormal];
+                [bt setTitle: PRODUCT_WHOLESALE forState: UIControlStateNormal];
             else
-                [bt setTitle: @"Product Information" forState: UIControlStateNormal];
+                [bt setTitle: PRODUCT_INFO forState: UIControlStateNormal];
             break;
         case 2:
-            [bt setTitle: @"Product Information" forState: UIControlStateNormal];
+            [bt setTitle: PRODUCT_INFO forState: UIControlStateNormal];
             break;
             
         default:
@@ -1061,6 +1061,7 @@
     _productnamelabel.text = _product.result.product.product_name?:@"";
 
     NSString *productName = _product.result.product.product_name?:@"";
+    self.title = productName;
 
     UIFont *font = [UIFont fontWithName:@"GothamMedium" size:15];
 
@@ -1087,14 +1088,14 @@
     _header.frame = newHeaderFrame;
     
     _pricelabel.text = _product.result.product.product_price;
-    _countsoldlabel.text = [NSString stringWithFormat:@"%@ Sold", _product.result.statistic.product_sold];
-    _countviewlabel.text = [NSString stringWithFormat:@"%@ View", _product.result.statistic.product_view];
+    _countsoldlabel.text = [NSString stringWithFormat:@"%@ Terjual", _product.result.statistic.product_sold];
+    _countviewlabel.text = [NSString stringWithFormat:@"%@ Dilihat", _product.result.statistic.product_view];
 
-    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Reviews",_product.result.statistic.product_review] forState:UIControlStateNormal];
+    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Ulasan",_product.result.statistic.product_review] forState:UIControlStateNormal];
     [_reviewbutton.layer setBorderWidth:1];
     [_reviewbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
-    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Talk About it",_product.result.statistic.product_talk] forState:UIControlStateNormal];
+    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Diskusi",_product.result.statistic.product_talk] forState:UIControlStateNormal];
     [_talkaboutbutton.layer setBorderWidth:1];
     [_talkaboutbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
@@ -1102,6 +1103,7 @@
     _qualityrateview.starscount = _product.result.statistic.product_quality_rate;
     
     _accuracynumberlabel.text = [NSString stringWithFormat:@"%zd", _product.result.statistic.product_accuracy_point];
+    _accuracyrateview.starscount = _product.result.statistic.product_accuracy_rate;
     
     NSArray *images = _product.result.product_images;
     

@@ -263,7 +263,12 @@ UIAlertViewDelegate>
 
 #pragma mark - TableView Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _isNoData ? 0 : _product.count;
+    NSInteger count = (_product.count%2==0)?_product.count/2:_product.count/2+1;
+#ifdef kTKPDPRODUCTHOTLIST_NODATAENABLE
+    return _isNoData ? 1 : count;
+#else
+    return _isNoData ? 0 : count;
+#endif
 }
 
 
