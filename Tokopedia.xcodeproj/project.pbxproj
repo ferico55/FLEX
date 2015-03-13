@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		85141CD81AAFF03600899829 /* TokopediaNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 85141CD71AAFF03600899829 /* TokopediaNetworkManager.m */; };
+		85141CE01AB1558700899829 /* TokopediaCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 85141CDF1AB1558700899829 /* TokopediaCacheManager.m */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		859441371AB2A1D5004838FE /* icon_shop_addproduct_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8594412B1AB2A1D5004838FE /* icon_shop_addproduct_2x.png */; };
 		859441381AB2A1D5004838FE /* icon_shop_addproduct.png in Resources */ = {isa = PBXBuildFile; fileRef = 8594412C1AB2A1D5004838FE /* icon_shop_addproduct.png */; };
@@ -1146,6 +1148,10 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		85141CD61AAFF03600899829 /* TokopediaNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TokopediaNetworkManager.h; path = Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/TokopediaNetworkManager.h; sourceTree = SOURCE_ROOT; };
+		85141CD71AAFF03600899829 /* TokopediaNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TokopediaNetworkManager.m; path = Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/TokopediaNetworkManager.m; sourceTree = SOURCE_ROOT; };
+		85141CDE1AB1558700899829 /* TokopediaCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TokopediaCacheManager.h; path = Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/TokopediaCacheManager.h; sourceTree = SOURCE_ROOT; };
+		85141CDF1AB1558700899829 /* TokopediaCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TokopediaCacheManager.m; path = Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/TokopediaCacheManager.m; sourceTree = SOURCE_ROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8594412B1AB2A1D5004838FE /* icon_shop_addproduct_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_addproduct_2x.png; sourceTree = "<group>"; };
 		8594412C1AB2A1D5004838FE /* icon_shop_addproduct.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_addproduct.png; sourceTree = "<group>"; };
@@ -2951,6 +2957,18 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		85141CD51AAFF00600899829 /* TokopediaNetworkManager */ = {
+			isa = PBXGroup;
+			children = (
+				85141CD61AAFF03600899829 /* TokopediaNetworkManager.h */,
+				85141CD71AAFF03600899829 /* TokopediaNetworkManager.m */,
+				85141CDE1AB1558700899829 /* TokopediaCacheManager.h */,
+				85141CDF1AB1558700899829 /* TokopediaCacheManager.m */,
+			);
+			name = TokopediaNetworkManager;
+			path = TokopediaNetworkManage;
+			sourceTree = "<group>";
+		};
 		85A8D9891AADC20D0067D822 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
@@ -4254,6 +4272,7 @@
 		85A8DC521AADC20E0067D822 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				85141CD51AAFF00600899829 /* TokopediaNetworkManager */,
 				85A8DC531AADC20E0067D822 /* Activation */,
 				85A8DC5E1AADC20E0067D822 /* Address */,
 				85A8DC661AADC20E0067D822 /* Alert */,
@@ -7135,6 +7154,7 @@
 				85A8E2201AADC2100067D822 /* TxOrderCancelPaymentResult.m in Sources */,
 				85A8E3101AADC2100067D822 /* MyShopShipmentInfoViewController.m in Sources */,
 				85A8E14C1AADC2100067D822 /* TalkResult.m in Sources */,
+				85141CE01AB1558700899829 /* TokopediaCacheManager.m in Sources */,
 				85A8E3BF1AADC2100067D822 /* ShopInfoPaymentCell.m in Sources */,
 				85A8E20F1AADC2100067D822 /* TransactionEditAddressFormResult.m in Sources */,
 				85A8E2901AADC2100067D822 /* NoResultView.m in Sources */,
@@ -7260,6 +7280,7 @@
 				85A8E1291AADC2100067D822 /* DepositSummaryList.m in Sources */,
 				85A8E35A1AADC2100067D822 /* NewOrderRequest.m in Sources */,
 				85A8E1131AADC2100067D822 /* NSUserDefaultCategory.m in Sources */,
+				85141CD81AAFF03600899829 /* TokopediaNetworkManager.m in Sources */,
 				859A39491A8379B60055BA8F /* main.m in Sources */,
 				85A8E1C81AADC2100067D822 /* SearchModel.xcdatamodeld in Sources */,
 				85A8E1CD1AADC2100067D822 /* ShipmentCourier.m in Sources */,
