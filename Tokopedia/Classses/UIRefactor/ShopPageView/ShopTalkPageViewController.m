@@ -596,6 +596,7 @@ substringWithRange:stringRange]]
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
                 TKPD_TALK_SHOP_ID:list.talk_shop_id?:0,
                 TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image,
+                TKPD_TALK_PRODUCT_NAME:list.talk_product_name,
                 kTKPDDETAIL_DATAINDEXKEY : @(row)?:0
                 };
     [self.navigationController pushViewController:vc animated:YES];
