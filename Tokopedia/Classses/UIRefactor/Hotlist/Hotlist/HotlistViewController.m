@@ -14,10 +14,11 @@
 #import "string_home.h"
 
 #import "TokopediaNetworkManager.h"
+#import "LoadingView.h"
 
 #pragma mark - HotlistView
 
-@interface HotlistViewController () <TokopediaNetworkManagerDelegate>
+@interface HotlistViewController () <TokopediaNetworkManagerDelegate, LoadingViewDelegate>
 {
     NSMutableArray *_product;
     
@@ -39,6 +40,7 @@
     NSString *_cachePath;
     URLCacheConnection *_cacheConnection;
     URLCacheController *_cacheController;
+    LoadingView *_loadingView;
 
 }
 
@@ -80,6 +82,8 @@
     _table.delegate = self;
     _table.dataSource = self;
     _table.tableFooterView = _footer;
+    _loadingView = [LoadingView new];
+    _loadingView.delegate = self;
     
     _table.contentInset = UIEdgeInsetsMake(0, 0, 53, 0);
     
@@ -349,6 +353,11 @@
     [_table reloadData];
 }
 
+- (void)actionAfterFailRequestMaxTries {
+    [_refreshControl endRefreshing];
+    _table.tableFooterView = _loadingView.view;
+}
+
 #pragma mark - Caching Part 
 - (void)initCacheHotlist {
     if(_page == 1) {
@@ -402,6 +411,12 @@
     }
     
     return nil;
+}
+
+#pragma mark - Delegate LoadingView
+- (void)pressRetryButton {
+    _table.tableFooterView = _footer;
+    [_networkManager doRequest];
 }
 
 @end

@@ -255,10 +255,7 @@
                 ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
                 (((GeneralProductCell*)cell).indexpath) = indexPath;
                 
-                UIView *view = ((UIView*)((GeneralProductCell*)cell).viewcell[i]);
-                CGRect newFrame = view.frame;
-                newFrame.size.height = 195;
-                view.frame = newFrame;
+
                 
                 ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.catalog_price?:list.product_price;
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;

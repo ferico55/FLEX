@@ -7,6 +7,7 @@
 //
 
 #import "TokopediaNetworkManager.h"
+#import "MaintenanceViewController.h"
 
 @implementation TokopediaNetworkManager
 
@@ -98,11 +99,19 @@
 }
 
 - (void)requestTimeout {
-    
+    if(_requestCount < kTKPDREQUESTCOUNTMAX) {
+        [self cancel];
+        [self doRequest];
+    } else {
+        [_delegate actionAfterFailRequestMaxTries];
+    }
 }
 
 - (void)requestMaintenance  {
     //TODO:: Create MaintenanceViewController
+    MaintenanceViewController *maintenanceController = [MaintenanceViewController new];
+    UIViewController *vc = _delegate;
+    [vc.navigationController pushViewController:maintenanceController animated:YES];
 }
 
 - (void)requestRetryWithButton  {
@@ -126,6 +135,19 @@
     }
     
     return [queries objectForKey:@"page"];
+}
+
+- (void)cancel {
+    [_objectRequest cancel];
+    _objectRequest = nil;
+    
+    [_objectManager.operationQueue cancelAllOperations];
+    _objectManager = nil;
+
+}
+
+- (void)resetRequestCount {
+    _requestCount = 0;
 }
 
 

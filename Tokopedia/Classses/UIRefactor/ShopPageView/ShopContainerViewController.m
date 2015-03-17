@@ -36,12 +36,25 @@
     NSOperationQueue *_operationQueue;
     NSTimer *_timer;
     
+    NSInteger _requestFavoriteCount;
+    
+    __weak RKObjectManager *_objectFavoriteManager;
+    __weak RKManagedObjectRequestOperation *_requestFavorite;
+    NSOperationQueue *_operationFavoriteQueue;
+    NSTimer *_timerFavorite;
+    
     NSString *_cachePath;
     URLCacheController *_cacheController;
     URLCacheConnection *_cacheConnection;
     NSTimeInterval _timeInterval;
     
     NSDictionary *_auth;
+    UIBarButtonItem *_favoriteBarButton;
+    UIBarButtonItem *_unfavoriteBarButton;
+    UIBarButtonItem *_infoBarButton;
+    UIBarButtonItem *_addProductBarButton;
+    UIBarButtonItem *_settingBarButton;
+    UIBarButtonItem *_messageBarButton;
     
 }
 
@@ -85,25 +98,26 @@
     barButtonItem.tag = 1;
     [self.navigationItem setBackBarButtonItem:barButtonItem];
     
-    UIBarButtonItem* infoBarButton = [self createBarButton:CGRectMake(0,0,22,22) withImage:[UIImage imageNamed:@"icon_info.png"] withAction:@selector(infoTap:)];
-    UIBarButtonItem* addProductBarButton = [self createBarButton:CGRectMake(22,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_addproduct_2x.png"] withAction:@selector(addProductTap:)];
-    UIBarButtonItem* settingBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_setting_2x.png"] withAction:@selector(settingTap:)];
+    _infoBarButton = [self createBarButton:CGRectMake(0,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_info_2x.png"] withAction:@selector(infoTap:)];
+    _addProductBarButton = [self createBarButton:CGRectMake(22,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_addproduct_2x.png"] withAction:@selector(addProductTap:)];
+    _settingBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_setting_2x.png"] withAction:@selector(settingTap:)];
     
-    UIBarButtonItem* messageBarButton = [self createBarButton:CGRectMake(22,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_message_2x.png"] withAction:@selector(messageTap:)];
-    UIBarButtonItem* favoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_favorite_2x.png"] withAction:@selector(favoriteTap:)];
+    _messageBarButton = [self createBarButton:CGRectMake(22,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_message_2x.png"] withAction:@selector(messageTap:)];
+    _favoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_favorite_2x.png"] withAction:@selector(favoriteTap:)];
+    _unfavoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_unfavorite_2x.png"] withAction:@selector(unfavoriteTap:)];
 
     
-    _auth = [_data objectForKey:kTKPD_AUTHKEY];
-    if ([_auth allValues] > 0) {
+    _auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
+    if ([_auth count] > 0) {
         //toko sendiri dan login
         if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
-            self.navigationItem.rightBarButtonItems = @[infoBarButton, addProductBarButton, settingBarButton];
+            self.navigationItem.rightBarButtonItems = @[_infoBarButton, _addProductBarButton, _settingBarButton];
         } else {
-            self.navigationItem.rightBarButtonItems = @[infoBarButton, messageBarButton, favoriteBarButton];
+            self.navigationItem.rightBarButtonItems = @[_infoBarButton, _messageBarButton, _favoriteBarButton];
         }
 
     } else {
-            self.navigationItem.rightBarButtonItems = @[infoBarButton, messageBarButton, messageBarButton];
+            self.navigationItem.rightBarButtonItems = @[_infoBarButton, _messageBarButton, _favoriteBarButton];
     }
     
 
@@ -132,6 +146,7 @@
     _requestCount = 0;
     
     _operationQueue = [NSOperationQueue new];
+    _operationFavoriteQueue = [NSOperationQueue new];
     
     _cacheController = [URLCacheController new];
     _cacheController.URLCacheInterval = 86400.0;
@@ -526,6 +541,17 @@
             _shop = stats;
             BOOL status = [_shop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             if (status) {
+                if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
+                    self.navigationItem.rightBarButtonItems = @[_infoBarButton, _addProductBarButton, _settingBarButton];
+                } else {
+                    if(_shop.result.info.shop_already_favorited == 1) {
+                        self.navigationItem.rightBarButtonItems = @[_infoBarButton, _messageBarButton, _favoriteBarButton];
+                    } else {
+                        self.navigationItem.rightBarButtonItems = @[_infoBarButton, _messageBarButton, _unfavoriteBarButton];
+                    }
+                }
+                
+                
                 _isNoData = NO;
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"setHeaderShopPage" object:nil userInfo:_shop];
             }
@@ -605,17 +631,23 @@
 }
 
 - (IBAction)favoriteTap:(id)sender {
-//    [self configureFavoriteRestkit];
-//    //
-//    [self favoriteShop:_shop.result.info.shop_id sender:_rightButton];
-//
-//    [UIView animateWithDuration:0.3 animations:^(void) {
-//        [_rightButton setBackgroundColor:[UIColor whiteColor]];
-//        [_rightButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-//    }];
+    if(_requestFavorite.isExecuting) return;
+    
+    _requestFavoriteCount = 0;
+    [self configureFavoriteRestkit];
+    [self favoriteShop:_shop.result.info.shop_id];
+
+    self.navigationItem.rightBarButtonItems = @[_infoBarButton, _messageBarButton, _unfavoriteBarButton];
 }
 
-- (IBAction)unFavoriteTap:(id)sender {
+- (IBAction)unfavoriteTap:(id)sender {
+    if(_requestFavorite.isExecuting) return;
+    
+    _requestFavoriteCount = 0;
+    [self configureFavoriteRestkit];
+    [self favoriteShop:_shop.result.info.shop_id];
+    
+    self.navigationItem.rightBarButtonItems = @[_infoBarButton, _messageBarButton, _favoriteBarButton];
     
 }
 
@@ -706,7 +738,7 @@
 -(void)configureFavoriteRestkit {
     
     // initialize RestKit
-    _objectManager =  [RKObjectManager sharedClient];
+    _objectFavoriteManager =  [RKObjectManager sharedClient];
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[FavoriteShopAction class]];
@@ -730,38 +762,26 @@
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
-    [_objectManager addResponseDescriptor:responseDescriptorStatus];
-}
-
-- (void)setButtonFav {
-//    _rightButton.tag = 16;
-//    [_rightButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
-//    [_rightButton setImage:[UIImage imageNamed:@"icon_love_white.png"] forState:UIControlStateNormal];
-//    [_rightButton.layer setBorderWidth:0];
-//    _rightButton.tintColor = [UIColor whiteColor];
-//    [UIView animateWithDuration:0.3 animations:^(void) {
-//        [_rightButton setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
-//        [_rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-//    }];
-    
+    [_objectFavoriteManager addResponseDescriptor:responseDescriptorStatus];
 }
 
 
--(void)favoriteShop:(NSString*)shop_id sender:(UIButton*)btn
+
+-(void)favoriteShop:(NSString*)shop_id
 {
-    if (_request.isExecuting) return;
+    if (_requestFavorite.isExecuting) return;
     
-    _requestCount ++;
+    _requestFavoriteCount ++;
     
     NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY   :   @"fav_shop",
                             @"shop_id"              :   shop_id};
     
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self
+    _requestFavorite = [_objectFavoriteManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:@"action/favorite-shop.pl"
                                                                 parameters:[param encrypt]];
     
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [_requestFavorite setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestFavoriteResult:mappingResult withOperation:operation];
         [_timer invalidate];
         _timer = nil;
@@ -773,14 +793,14 @@
         _timer = nil;
     }];
     
-    [_operationQueue addOperation:_request];
+    [_operationFavoriteQueue addOperation:_requestFavorite];
     
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+    _timerFavorite = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
                                               target:self
                                             selector:@selector(requestTimeout)
                                             userInfo:nil
                                              repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    [[NSRunLoop currentRunLoop] addTimer:_timerFavorite forMode:NSRunLoopCommonModes];
 }
 
 -(void)requestFavoriteResult:(id)mappingResult withOperation:(NSOperationQueue *)operation {

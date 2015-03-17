@@ -113,6 +113,10 @@ UIAlertViewDelegate>
     NoResult *_noResult;
     
     BOOL _navigationBarIsAnimating;
+    
+    CGPoint _keyboardPosition;
+    CGSize _keyboardSize;
+
 }
 
 #pragma mark - Initialization
@@ -133,6 +137,16 @@ UIAlertViewDelegate>
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateProductHeaderPosition:)
                                                  name:@"updateProductHeaderPosition" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 
@@ -811,6 +825,18 @@ UIAlertViewDelegate>
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+#pragma mark - Keyboard
+- (void)keyboardWillShow:(NSNotification *)info {
+    _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
+    _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+    
+    CGPoint cgpoint = CGPointMake(0, _keyboardSize.height);
+    _table.contentOffset = cgpoint;
+}
+
+- (void)keyboardWillHide:(NSNotification *)info {
+ 
+}
 
 /*
  #pragma mark - Navigation

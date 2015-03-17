@@ -166,7 +166,7 @@
             NSArray *sectionDictionary = [_shopdictionary objectForKey:sectionTitle];
             FavoritedShopList *shop = sectionDictionary[indexPath.row];
             
-            ((FavoritedShopCell*)cell).shopname.text = [shop.shop_name kv_decodeHTMLCharacterEntities];
+            ((FavoritedShopCell*)cell).shopname.text = shop.shop_name;
             ((FavoritedShopCell*)cell).shoplocation.text = shop.shop_location;
             
             if ([sectionTitle isEqualToString:@"Rekomendasi"]) {

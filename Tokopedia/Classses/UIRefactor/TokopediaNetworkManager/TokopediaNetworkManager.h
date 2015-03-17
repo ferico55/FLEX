@@ -26,6 +26,8 @@
 - (void)actionAfterRequestAsync;
 - (void)actionAfterRequestFailAsync;
 
+- (void)actionAfterFailRequestMaxTries;
+
 @end
 
 @interface TokopediaNetworkManager : NSObject {
@@ -39,7 +41,7 @@
     NSTimer *_requestTimer;
     NSInteger *_nextPage;
     NSInteger *_limitPerPage;
-    NSInteger *_requestCount;
+    NSInteger _requestCount;
     NSDictionary *_parameter;
     NSOperationQueue *_operationQueue;
     
@@ -57,6 +59,8 @@
 - (void)requestTimeout;
 - (void)requestMaintenance;
 - (void)requestRetryWithButton;
+- (void)resetRequestCount;
 - (NSString*)splitUriToPage:(NSString*)uri;
+
 
 @end
