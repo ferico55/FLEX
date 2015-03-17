@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1B723626600D60114F195DEE /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		859A393E1A8376A70055BA8F /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAAEA4419F7534B00904AFB /* MainViewController.m */; };
@@ -1105,7 +1106,6 @@
 		85BAA7031A8B51650015F530 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85BAA7011A8B51650015F530 /* Tokopedia-Info.plist */; };
 		85BAA7061A8B51A90015F530 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 85BAA7041A8B51A90015F530 /* InfoPlist.strings */; };
 		85BAB6F11A8CAAE40015F530 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85BAB3461A8CAAE30015F530 /* Main.storyboard */; };
-		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
 		FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */; };
 		FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8A19B0656400AF74C1 /* UIKit.framework */; };
@@ -2897,7 +2897,7 @@
 				85A8E5471AAE8D4D0067D822 /* FacebookSDK.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
 				FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */,
-				D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */,
+				1B723626600D60114F195DEE /* libPods-Tokopedia.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
