@@ -9,7 +9,29 @@
 /* Begin PBXBuildFile section */
 		1B723626600D60114F195DEE /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		85141CD81AAFF03600899829 /* TokopediaNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 85141CD71AAFF03600899829 /* TokopediaNetworkManager.m */; };
+		85141CE01AB1558700899829 /* TokopediaCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 85141CDF1AB1558700899829 /* TokopediaCacheManager.m */; };
+		853AE5D41AB6CC2C000F92CC /* LoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 853AE5D21AB6CC2C000F92CC /* LoadingView.m */; };
+		853AE5D51AB6CC2C000F92CC /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 853AE5D31AB6CC2C000F92CC /* LoadingView.xib */; };
+		853AE5DB1AB7D1FD000F92CC /* Promote.m in Sources */ = {isa = PBXBuildFile; fileRef = 853AE5D81AB7D1FD000F92CC /* Promote.m */; };
+		853AE5DC1AB7D1FD000F92CC /* PromoteResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 853AE5DA1AB7D1FD000F92CC /* PromoteResult.m */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		859441371AB2A1D5004838FE /* icon_shop_addproduct_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8594412B1AB2A1D5004838FE /* icon_shop_addproduct_2x.png */; };
+		859441381AB2A1D5004838FE /* icon_shop_addproduct.png in Resources */ = {isa = PBXBuildFile; fileRef = 8594412C1AB2A1D5004838FE /* icon_shop_addproduct.png */; };
+		859441391AB2A1D5004838FE /* icon_shop_favorite_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8594412D1AB2A1D5004838FE /* icon_shop_favorite_2x.png */; };
+		8594413A1AB2A1D5004838FE /* icon_shop_favorite.png in Resources */ = {isa = PBXBuildFile; fileRef = 8594412E1AB2A1D5004838FE /* icon_shop_favorite.png */; };
+		8594413B1AB2A1D5004838FE /* icon_shop_info_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 8594412F1AB2A1D5004838FE /* icon_shop_info_2x.png */; };
+		8594413C1AB2A1D5004838FE /* icon_shop_info.png in Resources */ = {isa = PBXBuildFile; fileRef = 859441301AB2A1D5004838FE /* icon_shop_info.png */; };
+		8594413D1AB2A1D5004838FE /* icon_shop_message_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 859441311AB2A1D5004838FE /* icon_shop_message_2x.png */; };
+		8594413E1AB2A1D5004838FE /* icon_shop_message.png in Resources */ = {isa = PBXBuildFile; fileRef = 859441321AB2A1D5004838FE /* icon_shop_message.png */; };
+		8594413F1AB2A1D5004838FE /* icon_shop_setting_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 859441331AB2A1D5004838FE /* icon_shop_setting_2x.png */; };
+		859441401AB2A1D5004838FE /* icon_shop_setting.png in Resources */ = {isa = PBXBuildFile; fileRef = 859441341AB2A1D5004838FE /* icon_shop_setting.png */; };
+		859441411AB2A1D5004838FE /* icon_shop_unfavorite_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 859441351AB2A1D5004838FE /* icon_shop_unfavorite_2x.png */; };
+		859441421AB2A1D5004838FE /* icon_shop_unfavorite.png in Resources */ = {isa = PBXBuildFile; fileRef = 859441361AB2A1D5004838FE /* icon_shop_unfavorite.png */; };
+		859441461AB2EF2C004838FE /* MaintenanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 859441441AB2EF2C004838FE /* MaintenanceViewController.m */; };
+		859441471AB2EF2C004838FE /* MaintenanceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 859441451AB2EF2C004838FE /* MaintenanceViewController.xib */; };
+		8594414A1AB2F08E004838FE /* icon_maintenance_grey_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 859441481AB2F08E004838FE /* icon_maintenance_grey_2x.png */; };
+		8594414B1AB2F08E004838FE /* icon_maintenance_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = 859441491AB2F08E004838FE /* icon_maintenance_grey.png */; };
 		859A393E1A8376A70055BA8F /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAAEA4419F7534B00904AFB /* MainViewController.m */; };
 		859A39411A8376A70055BA8F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36DF9619B0656400AF74C1 /* AppDelegate.m */; };
 		859A39491A8379B60055BA8F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36DF9219B0656400AF74C1 /* main.m */; };
@@ -1134,7 +1156,35 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		85141CD61AAFF03600899829 /* TokopediaNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TokopediaNetworkManager.h; path = Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/TokopediaNetworkManager.h; sourceTree = SOURCE_ROOT; };
+		85141CD71AAFF03600899829 /* TokopediaNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TokopediaNetworkManager.m; path = Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/TokopediaNetworkManager.m; sourceTree = SOURCE_ROOT; };
+		85141CDE1AB1558700899829 /* TokopediaCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TokopediaCacheManager.h; path = Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/TokopediaCacheManager.h; sourceTree = SOURCE_ROOT; };
+		85141CDF1AB1558700899829 /* TokopediaCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TokopediaCacheManager.m; path = Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/TokopediaCacheManager.m; sourceTree = SOURCE_ROOT; };
+		853AE5D11AB6CC2C000F92CC /* LoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadingView.h; sourceTree = "<group>"; };
+		853AE5D21AB6CC2C000F92CC /* LoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadingView.m; sourceTree = "<group>"; };
+		853AE5D31AB6CC2C000F92CC /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
+		853AE5D71AB7D1FD000F92CC /* Promote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Promote.h; sourceTree = "<group>"; };
+		853AE5D81AB7D1FD000F92CC /* Promote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Promote.m; sourceTree = "<group>"; };
+		853AE5D91AB7D1FD000F92CC /* PromoteResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PromoteResult.h; sourceTree = "<group>"; };
+		853AE5DA1AB7D1FD000F92CC /* PromoteResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PromoteResult.m; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8594412B1AB2A1D5004838FE /* icon_shop_addproduct_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_addproduct_2x.png; sourceTree = "<group>"; };
+		8594412C1AB2A1D5004838FE /* icon_shop_addproduct.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_addproduct.png; sourceTree = "<group>"; };
+		8594412D1AB2A1D5004838FE /* icon_shop_favorite_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_favorite_2x.png; sourceTree = "<group>"; };
+		8594412E1AB2A1D5004838FE /* icon_shop_favorite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_favorite.png; sourceTree = "<group>"; };
+		8594412F1AB2A1D5004838FE /* icon_shop_info_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_info_2x.png; sourceTree = "<group>"; };
+		859441301AB2A1D5004838FE /* icon_shop_info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_info.png; sourceTree = "<group>"; };
+		859441311AB2A1D5004838FE /* icon_shop_message_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_message_2x.png; sourceTree = "<group>"; };
+		859441321AB2A1D5004838FE /* icon_shop_message.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_message.png; sourceTree = "<group>"; };
+		859441331AB2A1D5004838FE /* icon_shop_setting_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_setting_2x.png; sourceTree = "<group>"; };
+		859441341AB2A1D5004838FE /* icon_shop_setting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_setting.png; sourceTree = "<group>"; };
+		859441351AB2A1D5004838FE /* icon_shop_unfavorite_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_unfavorite_2x.png; sourceTree = "<group>"; };
+		859441361AB2A1D5004838FE /* icon_shop_unfavorite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_shop_unfavorite.png; sourceTree = "<group>"; };
+		859441431AB2EF2C004838FE /* MaintenanceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MaintenanceViewController.h; path = Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/MaintenanceViewController.h; sourceTree = SOURCE_ROOT; };
+		859441441AB2EF2C004838FE /* MaintenanceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MaintenanceViewController.m; path = Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/MaintenanceViewController.m; sourceTree = SOURCE_ROOT; };
+		859441451AB2EF2C004838FE /* MaintenanceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MaintenanceViewController.xib; path = Tokopedia/Classses/UIRefactor/TokopediaNetworkManager/MaintenanceViewController.xib; sourceTree = SOURCE_ROOT; };
+		859441481AB2F08E004838FE /* icon_maintenance_grey_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_maintenance_grey_2x.png; sourceTree = "<group>"; };
+		859441491AB2F08E004838FE /* icon_maintenance_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_maintenance_grey.png; sourceTree = "<group>"; };
 		85A8D98B1AADC20D0067D822 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		85A8D98C1AADC20D0067D822 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		85A8D98D1AADC20D0067D822 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -2927,6 +2977,32 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		85141CD51AAFF00600899829 /* TokopediaNetworkManager */ = {
+			isa = PBXGroup;
+			children = (
+				85141CD61AAFF03600899829 /* TokopediaNetworkManager.h */,
+				85141CD71AAFF03600899829 /* TokopediaNetworkManager.m */,
+				85141CDE1AB1558700899829 /* TokopediaCacheManager.h */,
+				85141CDF1AB1558700899829 /* TokopediaCacheManager.m */,
+				859441431AB2EF2C004838FE /* MaintenanceViewController.h */,
+				859441441AB2EF2C004838FE /* MaintenanceViewController.m */,
+				859441451AB2EF2C004838FE /* MaintenanceViewController.xib */,
+			);
+			name = TokopediaNetworkManager;
+			path = TokopediaNetworkManage;
+			sourceTree = "<group>";
+		};
+		853AE5D61AB7D1FD000F92CC /* Promote */ = {
+			isa = PBXGroup;
+			children = (
+				853AE5D71AB7D1FD000F92CC /* Promote.h */,
+				853AE5D81AB7D1FD000F92CC /* Promote.m */,
+				853AE5D91AB7D1FD000F92CC /* PromoteResult.h */,
+				853AE5DA1AB7D1FD000F92CC /* PromoteResult.m */,
+			);
+			path = Promote;
+			sourceTree = "<group>";
+		};
 		85A8D9891AADC20D0067D822 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
@@ -3008,6 +3084,7 @@
 		85A8D9BA1AADC20D0067D822 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				853AE5D61AB7D1FD000F92CC /* Promote */,
 				85A8D9BB1AADC20D0067D822 /* Activation */,
 				85A8D9C61AADC20D0067D822 /* Deposit */,
 				85A8D9CC1AADC20D0067D822 /* DepositForm */,
@@ -4230,6 +4307,7 @@
 		85A8DC521AADC20E0067D822 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				85141CD51AAFF00600899829 /* TokopediaNetworkManager */,
 				85A8DC531AADC20E0067D822 /* Activation */,
 				85A8DC5E1AADC20E0067D822 /* Address */,
 				85A8DC661AADC20E0067D822 /* Alert */,
@@ -4494,6 +4572,9 @@
 		85A8DCDA1AADC20E0067D822 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				853AE5D11AB6CC2C000F92CC /* LoadingView.h */,
+				853AE5D21AB6CC2C000F92CC /* LoadingView.m */,
+				853AE5D31AB6CC2C000F92CC /* LoadingView.xib */,
 				85A8DCDB1AADC20E0067D822 /* BackgroundLayer.h */,
 				85A8DCDC1AADC20E0067D822 /* BackgroundLayer.m */,
 				85A8DCDD1AADC20E0067D822 /* ImageShaper.h */,
@@ -5900,6 +5981,20 @@
 		85A8DFF91AADC20F0067D822 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				859441481AB2F08E004838FE /* icon_maintenance_grey_2x.png */,
+				859441491AB2F08E004838FE /* icon_maintenance_grey.png */,
+				8594412B1AB2A1D5004838FE /* icon_shop_addproduct_2x.png */,
+				8594412C1AB2A1D5004838FE /* icon_shop_addproduct.png */,
+				8594412D1AB2A1D5004838FE /* icon_shop_favorite_2x.png */,
+				8594412E1AB2A1D5004838FE /* icon_shop_favorite.png */,
+				8594412F1AB2A1D5004838FE /* icon_shop_info_2x.png */,
+				859441301AB2A1D5004838FE /* icon_shop_info.png */,
+				859441311AB2A1D5004838FE /* icon_shop_message_2x.png */,
+				859441321AB2A1D5004838FE /* icon_shop_message.png */,
+				859441331AB2A1D5004838FE /* icon_shop_setting_2x.png */,
+				859441341AB2A1D5004838FE /* icon_shop_setting.png */,
+				859441351AB2A1D5004838FE /* icon_shop_unfavorite_2x.png */,
+				859441361AB2A1D5004838FE /* icon_shop_unfavorite.png */,
 				85A8E5481AAEA73F0067D822 /* icon_no_data_grey_2x.png */,
 				85A8E5491AAEA73F0067D822 /* icon_no_data_grey.png */,
 				85A8DFFA1AADC20F0067D822 /* balloon_read_left.png */,
@@ -6499,6 +6594,7 @@
 				85A8E4641AADC2100067D822 /* icon_17@2x.png in Resources */,
 				85A8E2E61AADC2100067D822 /* ResolutionCenterSystemCell.xib in Resources */,
 				85A8E4C61AADC2100067D822 /* icon_order_cancel.png in Resources */,
+				853AE5D51AB6CC2C000F92CC /* LoadingView.xib in Resources */,
 				85A8E4DC1AADC2100067D822 /* icon_star_active@2x.png in Resources */,
 				85A8E2CD1AADC2100067D822 /* InboxMessageCell.xib in Resources */,
 				85A8E4781AADC2100067D822 /* icon_7.png in Resources */,
@@ -6560,6 +6656,7 @@
 				85A8E4E11AADC2100067D822 /* icon_toped_loading_grey-02@2x.png in Resources */,
 				85A8E5211AADC2100067D822 /* icon_more_active@2x.png in Resources */,
 				85A8E3A51AADC2100067D822 /* SettingPasswordViewController.xib in Resources */,
+				8594413B1AB2A1D5004838FE /* icon_shop_info_2x.png in Resources */,
 				85A8E3BE1AADC2100067D822 /* ShopInfoAddressView.xib in Resources */,
 				85A8E4461AADC2100067D822 /* TxOrderTabViewController.xib in Resources */,
 				85A8E4931AADC2100067D822 /* icon_category_white.png in Resources */,
@@ -6572,6 +6669,7 @@
 				85A8E2961AADC2100067D822 /* StarsRateView.xib in Resources */,
 				85A8E2F51AADC2100067D822 /* MoreViewController.xib in Resources */,
 				85A8E33A1AADC2100067D822 /* ProfileBiodataCell.xib in Resources */,
+				8594413F1AB2A1D5004838FE /* icon_shop_setting_2x.png in Resources */,
 				85A8E3F21AADC2100067D822 /* ProductTalkFormViewController.xib in Resources */,
 				85A8E2A51AADC2100067D822 /* GeneralAlertCell.xib in Resources */,
 				85A8E4431AADC2100067D822 /* TxOrderPaymentViewController.xib in Resources */,
@@ -6626,6 +6724,7 @@
 				85A8E49B1AADC2100067D822 /* icon_checkmark_1@2x.png in Resources */,
 				85A8E4B21AADC2100067D822 /* icon_lock_grey.png in Resources */,
 				85A8E3C41AADC2100067D822 /* ShopInfoShipmentCell.xib in Resources */,
+				859441391AB2A1D5004838FE /* icon_shop_favorite_2x.png in Resources */,
 				85A8E4581AADC2100067D822 /* icon_11@2x.png in Resources */,
 				85A8E26B1AADC2100067D822 /* CatalogSpecificationCell.xib in Resources */,
 				85A8E34B1AADC2100067D822 /* ReputationDetailViewController.xib in Resources */,
@@ -6674,6 +6773,7 @@
 				85A8E47D1AADC2100067D822 /* icon_9@2x.png in Resources */,
 				85A8E3171AADC2100067D822 /* DetailProductDescriptionCell.xib in Resources */,
 				85A8E33E1AADC2100067D822 /* ProfileBiodataViewController.xib in Resources */,
+				8594414B1AB2F08E004838FE /* icon_maintenance_grey.png in Resources */,
 				85A8E44D1AADC2100067D822 /* Lato-Regular.ttf in Resources */,
 				85A8E2C01AADC2100067D822 /* TKPDTabHomeNavigationController.xib in Resources */,
 				85A8E45D1AADC2100067D822 /* icon_14.png in Resources */,
@@ -6712,10 +6812,12 @@
 				85A8E5381AADC2100067D822 /* icon_info_grey_small.png in Resources */,
 				85A8E4871AADC2100067D822 /* icon_arrow_down_white.png in Resources */,
 				85A8E27D1AADC2100067D822 /* CategoryResultViewController.xib in Resources */,
+				8594413E1AB2A1D5004838FE /* icon_shop_message.png in Resources */,
 				85A8E3361AADC2100067D822 /* ProductListMyShopCell.xib in Resources */,
 				85A8E3091AADC2100067D822 /* MyShopNoteDetailViewController.xib in Resources */,
 				85A8E4BE1AADC2100067D822 /* icon_nav_arrow_down.png in Resources */,
 				85A8E3051AADC2100067D822 /* MyShopEtalaseFilterViewController.xib in Resources */,
+				8594413D1AB2A1D5004838FE /* icon_shop_message_2x.png in Resources */,
 				85A8E43F1AADC2100067D822 /* TxOrderInvoiceViewController.xib in Resources */,
 				85A8E49F1AADC2100067D822 /* icon_default_shop@2x.jpg in Resources */,
 				85A8E4321AADC2100067D822 /* TxOrderDropshipCell.xib in Resources */,
@@ -6765,6 +6867,7 @@
 				85A8E32C1AADC2100067D822 /* ProductAddEditDetailViewController.xib in Resources */,
 				85A8E4F61AADC2100067D822 /* icon_view_28px.png in Resources */,
 				85A8E4651AADC2100067D822 /* icon_18.png in Resources */,
+				8594413A1AB2A1D5004838FE /* icon_shop_favorite.png in Resources */,
 				85A8E24D1AADC2100067D822 /* AlertDatePickerView.xib in Resources */,
 				85A8E2D51AADC2100067D822 /* FilterComplainViewController.xib in Resources */,
 				85A8E40E1AADC2100067D822 /* TransactionCartResultCell.xib in Resources */,
@@ -6778,6 +6881,7 @@
 				85A8E45E1AADC2100067D822 /* icon_14@2x.png in Resources */,
 				85A8E3DA1AADC2100067D822 /* ShopProductPageViewController.xib in Resources */,
 				85A8E4191AADC2100067D822 /* TxOrderStatusCell.xib in Resources */,
+				859441381AB2A1D5004838FE /* icon_shop_addproduct.png in Resources */,
 				85A8E4B01AADC2100067D822 /* icon_location.png in Resources */,
 				85A8E39D1AADC2100067D822 /* SettingBankDetailViewController.xib in Resources */,
 				85A8E3491AADC2100067D822 /* ReputationDetailFormViewController.xib in Resources */,
@@ -6792,6 +6896,7 @@
 				85A8E4D21AADC2100067D822 /* icon_quote@2x.png in Resources */,
 				85A8E2411AADC2100067D822 /* LoginViewController.xib in Resources */,
 				85A8E38F1AADC2100067D822 /* SettingAddressDetailViewController.xib in Resources */,
+				8594414A1AB2F08E004838FE /* icon_maintenance_grey_2x.png in Resources */,
 				85A8E3E21AADC2100067D822 /* FilterConditionViewController.xib in Resources */,
 				85A8E35E1AADC2100067D822 /* ProductQuantityCell.xib in Resources */,
 				85A8E4531AADC2100067D822 /* icon_0@2x.png in Resources */,
@@ -6801,6 +6906,7 @@
 				85A8E30F1AADC2100067D822 /* MyShopPaymentViewController.xib in Resources */,
 				85A8E3DE1AADC2100067D822 /* ShopTalkPageViewController.xib in Resources */,
 				85A8E4DE1AADC2100067D822 /* icon_telephone@2x.png in Resources */,
+				859441401AB2A1D5004838FE /* icon_shop_setting.png in Resources */,
 				85A8E2701AADC2100067D822 /* CatalogSellerHeaderView.xib in Resources */,
 				85A8E2851AADC2100067D822 /* TKPDTabInboxTalkNavigationController.xib in Resources */,
 				85A8E3931AADC2100067D822 /* SettingAddressExpandedCell.xib in Resources */,
@@ -6831,6 +6937,7 @@
 				85A8E2E01AADC2100067D822 /* ResolutionCenterDetailCell.xib in Resources */,
 				85A8E3F91AADC2100067D822 /* TransactionATCViewController.xib in Resources */,
 				85A8E2AA1AADC2100067D822 /* GeneralNoResult.xib in Resources */,
+				859441421AB2A1D5004838FE /* icon_shop_unfavorite.png in Resources */,
 				85A8E4A21AADC2100067D822 /* icon_diskusi_report_grey.png in Resources */,
 				85A8E4911AADC2100067D822 /* icon_cancel.png in Resources */,
 				85A8E34F1AADC2100067D822 /* ReputationMyProductViewController.xib in Resources */,
@@ -6856,12 +6963,14 @@
 				85A8E3D21AADC2100067D822 /* ShopTalkViewController.xib in Resources */,
 				85A8E47F1AADC2100067D822 /* icon_house@2x.png in Resources */,
 				85A8E52E1AADC2100067D822 /* icon_cancel_grey.png in Resources */,
+				859441371AB2A1D5004838FE /* icon_shop_addproduct_2x.png in Resources */,
 				85A8E4721AADC2100067D822 /* icon_4.png in Resources */,
 				85A8E26F1AADC2100067D822 /* CatalogSellerCell.xib in Resources */,
 				85A8E2C51AADC2100067D822 /* HotlistCell.xib in Resources */,
 				85A8E4291AADC2100067D822 /* TxOrderConfirmationDetailViewController.xib in Resources */,
 				85A8E3F71AADC2100067D822 /* TrackOrderViewController.xib in Resources */,
 				85A8E24F1AADC2100067D822 /* AlertInfoPaymentConfirmationView.xib in Resources */,
+				859441411AB2A1D5004838FE /* icon_shop_unfavorite_2x.png in Resources */,
 				FC36DF9919B0656400AF74C1 /* Images.xcassets in Resources */,
 				85A8E44C1AADC2100067D822 /* Lato-Bold.ttf in Resources */,
 				85A8E4A11AADC2100067D822 /* icon_diskusi_comment_grey@2x.png in Resources */,
@@ -6918,6 +7027,7 @@
 				85A8E4211AADC2100067D822 /* TxOrderTransactionDetailViewController.xib in Resources */,
 				85A8E4BF1AADC2100067D822 /* icon_nav_arrow_down@2x.png in Resources */,
 				85A8E44A1AADC2100067D822 /* GothamLight.ttf in Resources */,
+				8594413C1AB2A1D5004838FE /* icon_shop_info.png in Resources */,
 				85A8E2751AADC2100067D822 /* CategoryViewController.xib in Resources */,
 				85A8E3641AADC2100067D822 /* OrderDetailProductCell.xib in Resources */,
 				85A8E4541AADC2100067D822 /* icon_1.png in Resources */,
@@ -6942,6 +7052,7 @@
 				85A8E52B1AADC2100067D822 /* icon_arrow_down_grey@2x.png in Resources */,
 				85A8E4F41AADC2100067D822 /* icon_sold_28px.png in Resources */,
 				85A8E4071AADC2100067D822 /* TransactionCartShippingViewController.xib in Resources */,
+				859441471AB2EF2C004838FE /* MaintenanceViewController.xib in Resources */,
 				85A8E2FD1AADC2100067D822 /* MyShopAddressViewController.xib in Resources */,
 				85A8E3EC1AADC2100067D822 /* SortCell.xib in Resources */,
 				85A8E4811AADC2100067D822 /* tab_btm_shadow@2x.png in Resources */,
@@ -7087,6 +7198,7 @@
 				85A8E2201AADC2100067D822 /* TxOrderCancelPaymentResult.m in Sources */,
 				85A8E3101AADC2100067D822 /* MyShopShipmentInfoViewController.m in Sources */,
 				85A8E14C1AADC2100067D822 /* TalkResult.m in Sources */,
+				85141CE01AB1558700899829 /* TokopediaCacheManager.m in Sources */,
 				85A8E3BF1AADC2100067D822 /* ShopInfoPaymentCell.m in Sources */,
 				85A8E20F1AADC2100067D822 /* TransactionEditAddressFormResult.m in Sources */,
 				85A8E2901AADC2100067D822 /* NoResultView.m in Sources */,
@@ -7094,6 +7206,7 @@
 				85A8E1FC1AADC2100067D822 /* TrackOrderResult.m in Sources */,
 				85A8E24C1AADC2100067D822 /* AlertDatePickerView.m in Sources */,
 				85A8E38E1AADC2100067D822 /* SettingAddressDetailViewController.m in Sources */,
+				853AE5DB1AB7D1FD000F92CC /* Promote.m in Sources */,
 				85A8E3BA1AADC2100067D822 /* ShopHeaderViewController.m in Sources */,
 				85A8E41A1AADC2100067D822 /* TxOrderStatusDetailCell.m in Sources */,
 				85A8E3561AADC2100067D822 /* ChooseProductViewController.m in Sources */,
@@ -7151,6 +7264,7 @@
 				85A8E1161AADC2100067D822 /* UIImage+ImageEffects.m in Sources */,
 				85A8E2041AADC2100067D822 /* TransactionATCFormResult.m in Sources */,
 				85A8E2481AADC2100067D822 /* Alert1ButtonView.m in Sources */,
+				853AE5DC1AB7D1FD000F92CC /* PromoteResult.m in Sources */,
 				85A8E2071AADC2100067D822 /* TransactionSystemBank.m in Sources */,
 				85A8E1781AADC2100067D822 /* ResolutionCenterDetailResult.m in Sources */,
 				85A8E2C31AADC2100067D822 /* ProductInfoTableViewController.m in Sources */,
@@ -7212,6 +7326,7 @@
 				85A8E1291AADC2100067D822 /* DepositSummaryList.m in Sources */,
 				85A8E35A1AADC2100067D822 /* NewOrderRequest.m in Sources */,
 				85A8E1131AADC2100067D822 /* NSUserDefaultCategory.m in Sources */,
+				85141CD81AAFF03600899829 /* TokopediaNetworkManager.m in Sources */,
 				859A39491A8379B60055BA8F /* main.m in Sources */,
 				85A8E1C81AADC2100067D822 /* SearchModel.xcdatamodeld in Sources */,
 				85A8E1CD1AADC2100067D822 /* ShipmentCourier.m in Sources */,
@@ -7284,6 +7399,7 @@
 				85A8E21C1AADC2100067D822 /* TransactionVoucherData.m in Sources */,
 				85A8E1141AADC2100067D822 /* RKObjectManagerCategory.m in Sources */,
 				85A8E3ED1AADC2100067D822 /* SortViewController.m in Sources */,
+				859441461AB2EF2C004838FE /* MaintenanceViewController.m in Sources */,
 				85A8E1F91AADC2100067D822 /* TrackOrder.m in Sources */,
 				85A8E26C1AADC2100067D822 /* CatalogViewController.m in Sources */,
 				85A8E1D51AADC2100067D822 /* NoteDetailResult.m in Sources */,
@@ -7310,6 +7426,7 @@
 				85A8E2FA1AADC2100067D822 /* MyShopAddressEditViewController.m in Sources */,
 				85A8E1871AADC2100067D822 /* InboxTalkList.m in Sources */,
 				85A8E3B61AADC2100067D822 /* ShopFavoritedViewController.m in Sources */,
+				853AE5D41AB6CC2C000F92CC /* LoadingView.m in Sources */,
 				85A8E1071AADC2100067D822 /* URLCacheAlert.m in Sources */,
 				85A8E1331AADC2100067D822 /* CatalogSpecs.m in Sources */,
 				85A8E2681AADC2100067D822 /* CatalogShopViewController.m in Sources */,

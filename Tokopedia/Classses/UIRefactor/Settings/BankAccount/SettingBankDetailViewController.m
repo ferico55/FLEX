@@ -40,7 +40,7 @@
     
     [self setDefaultData:_data];
     UIBarButtonItem *barbutton1;
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:kTKPDPROFILEEDIT style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [barbutton1 setTintColor:[UIColor blackColor]];
     barbutton1.tag = 11;
     self.navigationItem.rightBarButtonItem = barbutton1;

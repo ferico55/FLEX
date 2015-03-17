@@ -245,15 +245,15 @@
     SearchResultViewController *vc = [SearchResultViewController new];
     vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchresult?:@"" ,
                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
-               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+               kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     SearchResultViewController *vc1 = [SearchResultViewController new];
     vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchresult?:@"" ,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
     vc2.data =@{kTKPDSEARCH_DATASEARCHKEY : searchresult?:@"" ,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,
-                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
+                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     NSArray *viewcontrollers = @[vc,vc1,vc2];
     
     TKPDTabNavigationController *viewController = [TKPDTabNavigationController new];

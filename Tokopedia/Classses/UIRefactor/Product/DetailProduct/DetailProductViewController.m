@@ -27,6 +27,7 @@
 #import "SearchResultShopViewController.h"
 #import "ProductReviewViewController.h"
 #import "ProductTalkViewController.h"
+#import "ProductAddEditViewController.h"
 
 #import "DetailProductOtherView.h"
 
@@ -42,11 +43,13 @@
 #import "URLCacheController.h"
 #import "TheOtherProduct.h"
 #import "FavoriteShopAction.h"
+#import "Promote.h"
 
 #import "LoginViewController.h"
+#import "TokopediaNetworkManager.h"
 
 #pragma mark - Detail Product View Controller
-@interface DetailProductViewController () <UITableViewDelegate, UITableViewDataSource, DetailProductInfoCellDelegate, DetailProductOtherViewDelegate, LoginViewDelegate>
+@interface DetailProductViewController () <UITableViewDelegate, UITableViewDataSource, DetailProductInfoCellDelegate, DetailProductOtherViewDelegate, LoginViewDelegate, TokopediaNetworkManagerDelegate>
 {
     NSMutableDictionary *_datatalk;
     NSMutableArray *_otherproductviews;
@@ -91,6 +94,10 @@
     NSTimeInterval _timeinterval;
     UserAuthentificationManager *_userManager;
     NSTimer *_timer;
+    
+    __weak RKObjectManager  *_objectPromoteManager;
+    
+    TokopediaNetworkManager *_promoteNetworkManager;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -124,6 +131,7 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *otherproductscrollview;
 @property (weak, nonatomic) IBOutlet UIButton *buyButton;
 @property (weak, nonatomic) IBOutlet UIButton *favButton;
+@property (weak, nonatomic) IBOutlet UIButton *dinkButton;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -170,6 +178,8 @@
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
+    _promoteNetworkManager = [TokopediaNetworkManager new];
+    _promoteNetworkManager.delegate = self;
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -210,6 +220,7 @@
     
     self.table.hidden = YES;
     _buyButton.hidden = YES;
+    _dinkButton.hidden = YES;
 }
 
 
@@ -273,6 +284,22 @@
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIBarButtonItem *btn = (UIBarButtonItem *)sender;
+        switch (btn.tag) {
+            case 22 : {
+                ProductAddEditViewController *editProductVC = [ProductAddEditViewController new];
+                editProductVC.data = @{kTKPDDETAIL_APIPRODUCTIDKEY: _product.result.product.product_id,
+                                       kTKPD_AUTHKEY : _auth?:@{},
+                                       DATA_PRODUCT_DETAIL_KEY : _product.result.product,
+                                       DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_EDIT),
+                                       DATA_IS_GOLD_MERCHANT :@(0) //TODO:: Change Value
+                                       };
+                [self.navigationController pushViewController:editProductVC animated:YES];
+                break;
+            }
+        }
+    }
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton *)sender;
         switch (btn.tag) {
@@ -440,9 +467,12 @@
                 break;
             }
             case 21 : {
-                
+                [_promoteNetworkManager resetRequestCount];
+                [_promoteNetworkManager doRequest];
                 break;
             }
+                
+            
             default:
                 break;
         }
@@ -500,16 +530,16 @@
     [bt addTarget:self action:@selector(expandCollapseButton:) forControlEvents:UIControlEventTouchUpInside];
     switch (section) {
         case 0:
-            [bt setTitle: @"Product Description" forState: UIControlStateNormal];
+            [bt setTitle: PRODUCT_DESC forState: UIControlStateNormal];
             break;
         case 1:
             if (!_isnodatawholesale)
-                [bt setTitle: @"Wholesale Price " forState: UIControlStateNormal];
+                [bt setTitle: PRODUCT_WHOLESALE forState: UIControlStateNormal];
             else
-                [bt setTitle: @"Product Information" forState: UIControlStateNormal];
+                [bt setTitle: PRODUCT_INFO forState: UIControlStateNormal];
             break;
         case 2:
-            [bt setTitle: @"Product Information" forState: UIControlStateNormal];
+            [bt setTitle: PRODUCT_INFO forState: UIControlStateNormal];
             break;
             
         default:
@@ -727,7 +757,6 @@
     [shopinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPINFOKEY:kTKPDDETAILPRODUCT_APISHOPINFOKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY:kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
                                                           kTKPDDETAIL_APISHOPIDKEY:kTKPDDETAIL_APISHOPIDKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY:kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY:kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY,
@@ -906,6 +935,24 @@
                     _isnodatawholesale = NO;
                 }
                 
+                if([_product.result.shop_info.shop_id isEqualToString:[([_auth objectForKey:@"shop_id"]) stringValue]]) {
+                    NSBundle* bundle = [NSBundle mainBundle];
+                    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"]];
+                    
+                    UIBarButtonItem *barbutton;
+                    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+                        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+                        barbutton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+                    }
+                    else
+                        barbutton = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+                    
+                    [barbutton setTag:22];
+                    self.navigationItem.rightBarButtonItem = barbutton;
+                } else {
+                    self.navigationItem.rightBarButtonItem = nil;
+                }
+                
                 //decide description height
                 id cell = [DetailProductDescriptionCell newcell];
                 NSString *productdesc = _product.result.product.product_description;
@@ -923,7 +970,15 @@
                 [_table reloadData];
                 
                 _table.hidden = NO;
-                _buyButton.hidden = NO;
+                
+                if([_product.result.shop_info.shop_id isEqualToString:[([_auth objectForKey:@"shop_id"]) stringValue]]) {
+                    _dinkButton.hidden = NO;
+                    _buyButton.hidden = YES;
+                } else {
+                    _buyButton.hidden = NO;
+                    _dinkButton.hidden = YES;
+                }
+
                 
                 if(_product.result.shop_info.shop_already_favorited == 1) {
                     [self setButtonFav];
@@ -1061,6 +1116,7 @@
     _productnamelabel.text = _product.result.product.product_name?:@"";
 
     NSString *productName = _product.result.product.product_name?:@"";
+    self.title = productName;
 
     UIFont *font = [UIFont fontWithName:@"GothamMedium" size:15];
 
@@ -1087,14 +1143,14 @@
     _header.frame = newHeaderFrame;
     
     _pricelabel.text = _product.result.product.product_price;
-    _countsoldlabel.text = [NSString stringWithFormat:@"%@ Sold", _product.result.statistic.product_sold];
-    _countviewlabel.text = [NSString stringWithFormat:@"%@ View", _product.result.statistic.product_view];
+    _countsoldlabel.text = [NSString stringWithFormat:@"%@ Terjual", _product.result.statistic.product_sold];
+    _countviewlabel.text = [NSString stringWithFormat:@"%@ Dilihat", _product.result.statistic.product_view];
 
-    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Reviews",_product.result.statistic.product_review] forState:UIControlStateNormal];
+    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Ulasan",_product.result.statistic.product_review] forState:UIControlStateNormal];
     [_reviewbutton.layer setBorderWidth:1];
     [_reviewbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
-    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Talk About it",_product.result.statistic.product_talk] forState:UIControlStateNormal];
+    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Diskusi",_product.result.statistic.product_talk] forState:UIControlStateNormal];
     [_talkaboutbutton.layer setBorderWidth:1];
     [_talkaboutbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
@@ -1102,6 +1158,7 @@
     _qualityrateview.starscount = _product.result.statistic.product_quality_rate;
     
     _accuracynumberlabel.text = [NSString stringWithFormat:@"%zd", _product.result.statistic.product_accuracy_point];
+    _accuracyrateview.starscount = _product.result.statistic.product_accuracy_rate;
     
     NSArray *images = _product.result.product_images;
     
@@ -1450,6 +1507,82 @@
 
 #pragma mark - LoginView Delegate
 - (void)redirectViewController:(id)viewController{
+    
+}
+
+#pragma mark - Promosi
+- (NSDictionary *)getParameter {
+    NSDictionary *parameter = @{@"action" : @"promote_product", @"product_id" : _product.result.product.product_id};
+    
+    return parameter;
+}
+
+- (NSString *)getPath {
+    return @"action/product.pl";
+}
+
+- (id)getObjectManager {
+    _objectPromoteManager = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Promote class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[PromoteResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"is_dink":@"is_dink"}];
+    
+    //relation
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    //register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:@"action/product.pl"
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectPromoteManager addResponseDescriptor:responseDescriptorStatus];
+    
+    return _objectPromoteManager;
+}
+
+- (NSString *)getRequestStatus:(id)result {
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    Promote *action = stat;
+    
+    return action.status;
+}
+
+- (void)actionBeforeRequest {
+    [_dinkButton setTitle:@"Sedang Mempromosikan.." forState:UIControlStateNormal];
+    [_dinkButton setEnabled:NO];
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation{
+    Promote* promoteObject = successResult;
+    
+    if([promoteObject.result.is_dink isEqualToString:@"1"]) {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Sign in gagal silahkan coba lagi."]
+                                                                       delegate:self];
+        [alert show];
+    } else {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda belum dapat menggunakan fitur Promo pada saat ini. Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko."]
+                                                                       delegate:self];
+        [alert show];
+    }
+    
+    [_dinkButton setTitle:@"Promosi" forState:UIControlStateNormal];
+    [_dinkButton setEnabled:YES];
+}
+
+- (void)actionAfterFailRequestMaxTries {
     
 }
 

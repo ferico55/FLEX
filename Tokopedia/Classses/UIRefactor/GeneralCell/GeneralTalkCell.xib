@@ -73,12 +73,6 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </imageView>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="characterWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="h7v-ML-7J6" userLabel="Message Label">
-                                        <rect key="frame" x="90" y="29" width="200" height="20"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <view contentMode="scaleToFill" id="ytf-Uz-GFn" userLabel="Horizontal Border">
                                         <rect key="frame" x="10" y="0.0" width="280" height="1"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -96,6 +90,12 @@
                                             <action selector="tap:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="1lm-0N-y20"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label Label Label Label Label Label Label Label Label Label Label Label" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="h7v-ML-7J6" userLabel="Message Label">
+                                        <rect key="frame" x="90" y="36" width="200" height="35"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </view>
@@ -140,6 +140,10 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                                     </view>
+                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_unread.png" id="Oqa-zP-9jh">
+                                        <rect key="frame" x="282" y="15" width="10" height="10"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
                                 </subviews>
                             </view>
                             <button opaque="NO" tag="16" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="a6p-Q1-IF0" userLabel="More Action Button">
@@ -173,6 +177,7 @@
                 <outlet property="timelabel" destination="ExC-ZT-7dP" id="OMZ-vu-i04"/>
                 <outlet property="topView" destination="0fc-in-38T" id="bBC-4F-BV4"/>
                 <outlet property="unfollowButton" destination="ONs-sZ-J5M" id="Y7G-e6-fWA"/>
+                <outlet property="unreadIcon" destination="Oqa-zP-9jh" id="ev8-RS-Hhw"/>
                 <outlet property="userButton" destination="R2d-xR-ceh" id="NsF-vv-oS3"/>
             </connections>
             <point key="canvasLocation" x="140" y="144"/>
@@ -183,6 +188,7 @@
         <image name="icon_arrow_down" width="14" height="14"/>
         <image name="icon_diskusi_comment_grey.png" width="14" height="14"/>
         <image name="icon_diskusi_unfollow_grey" width="14" height="14"/>
+        <image name="icon_unread.png" width="40" height="40"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

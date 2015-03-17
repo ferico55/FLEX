@@ -71,6 +71,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *talkProductImage;
 @property (weak, nonatomic) IBOutlet UIView *talkInputView;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
+@property (weak, nonatomic) IBOutlet UIButton *talkProductName;
 
 @property (strong, nonatomic) IBOutlet UIView *header;
 
@@ -154,6 +155,10 @@
     
     [self setHeaderData:_data];
     [self initTalkInputView];
+    
+    NSDictionary *userinfo;
+    userinfo = @{kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userinfo];
     
     //cache
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILPRODUCT_CACHEFILEPATH];
@@ -305,7 +310,48 @@
 #pragma mark - Methods
 -(void)setHeaderData:(NSDictionary*)data
 {
-    _talkmessagelabel.text = [data objectForKey:TKPD_TALK_MESSAGE];
+//    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+//    
+//    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+//    style.lineSpacing = 3.0;
+//    style.alignment = NSTextAlignmentLeft;
+//    
+//    NSDictionary *attributes = @{
+//                                 NSForegroundColorAttributeName: [UIColor blackColor],
+//                                 NSFontAttributeName: font,
+//                                 NSParagraphStyleAttributeName: style,
+//                                 };
+//    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:[data objectForKey:TKPD_TALK_MESSAGE] attributes:attributes];
+//    
+//    _talkmessagelabel.attributedText = attributedText;
+//    _talkmessagelabel.numberOfLines = 5;
+//    [_talkmessagelabel sizeToFit];
+    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 3.0;
+
+    
+    
+    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
+                                 NSFontAttributeName: font,
+                                 NSParagraphStyleAttributeName: style
+                                 };
+    
+    NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:[data objectForKey:TKPD_TALK_MESSAGE]
+                                                                                    attributes:attributes];
+    _talkmessagelabel.attributedText = productNameAttributedText;
+    _talkmessagelabel.textAlignment = NSTextAlignmentLeft;
+    _talkmessagelabel.numberOfLines = 4;
+    
+    CGRect newFrame = CGRectMake(94, 106, 210, 110);
+    _talkmessagelabel.frame = newFrame;
+    [_talkmessagelabel sizeToFit];
+    
+    CGRect myFrame = _talkmessagelabel.frame;
+    myFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y, 210, myFrame.size.height);
+    _talkmessagelabel.frame = myFrame;
+    
     _talkcreatetimelabel.text = [data objectForKey:TKPD_TALK_CREATE_TIME];
     _talkusernamelabel.text = [data objectForKey:TKPD_TALK_USER_NAME];
     _talktotalcommentlabel.text = [NSString stringWithFormat:@"%@ Comment",[data objectForKey:TKPD_TALK_TOTAL_COMMENT]];
@@ -336,7 +382,7 @@
         
     }];
 
-    
+    [_talkProductName setTitle:[data objectForKey:TKPD_TALK_PRODUCT_NAME] forState:UIControlStateNormal];
 }
 
 - (void) initTalkInputView {

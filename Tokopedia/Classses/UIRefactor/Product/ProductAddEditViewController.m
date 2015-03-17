@@ -933,12 +933,16 @@
             BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if ([_generatehost.result.generated_host.server_id integerValue] == 0 || _generatehost.message_error) {
-                    [self configureRestkitGenerateHost];
-                    [self requestGenerateHost];
+                if(_generatehost.message_error) {
+                    //show error message here
                 }
                 else
                 {
+                    if ([_generatehost.result.generated_host.server_id integerValue] == 0) {
+                        [self configureRestkitGenerateHost];
+                        [self requestGenerateHost];
+                    }
+                    
                     [_addImageButtons makeObjectsPerformSelector:@selector(setEnabled:) withObject:@(YES)];
                     [_dataInput setObject:_generatehost.result.generated_host.server_id forKey:API_SERVER_ID_KEY];
                 }

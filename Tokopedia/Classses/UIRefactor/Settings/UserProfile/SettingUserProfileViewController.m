@@ -128,7 +128,7 @@
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:kTKPDPROFILESAVE style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [_barbuttonsave setTintColor:[UIColor blackColor]];
 	[_barbuttonsave setTag:11];
     self.navigationItem.rightBarButtonItem = _barbuttonsave;

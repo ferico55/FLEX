@@ -36,7 +36,7 @@
 {
     _categorybuttons = [NSArray sortViewsWithTagInArray:_categorybuttons];
     self.productInformationView.layer.borderWidth = 0.5f;
-    self.productInformationView.layer.borderColor = [UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1].CGColor;
+    self.productInformationView.layer.borderColor = [UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1].CGColor;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

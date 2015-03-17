@@ -35,7 +35,7 @@
 //
 
 - (NSString *)kv_decodeHTMLCharacterEntities {
-    if ([self rangeOfString:@"&"].location == NSNotFound && [self rangeOfString:@"<br/>"].location == NSNotFound) {
+    if ([self rangeOfString:@"&"].location == NSNotFound && [self rangeOfString:@"<br"].location == NSNotFound) {
         return self;
     } else {
         NSMutableString *escaped = [NSMutableString stringWithString:self];
@@ -121,6 +121,15 @@
         range = [self rangeOfString:@"<br/>"];
         if (range.location != NSNotFound) {
             [escaped replaceOccurrencesOfString:@"<br/>"
+                                     withString:@"\n"
+                                        options:NSLiteralSearch
+                                          range:NSMakeRange(0, [escaped length])];
+        }
+        
+        // @"<br>"
+        range = [self rangeOfString:@"<br>"];
+        if (range.location != NSNotFound) {
+            [escaped replaceOccurrencesOfString:@"<br>"
                                      withString:@"\n"
                                         options:NSLiteralSearch
                                           range:NSMakeRange(0, [escaped length])];

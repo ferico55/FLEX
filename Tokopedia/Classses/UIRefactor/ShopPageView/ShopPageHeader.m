@@ -18,7 +18,7 @@
 
 #import "LoginViewController.h"
 
-#import "FavoriteShopAction.h"
+
 
 @interface ShopPageHeader () <UIScrollViewDelegate, UISearchBarDelegate, LoginViewDelegate> {
     ShopDescriptionView *_descriptionView;
@@ -37,11 +37,13 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *coverImageView;
 @property (weak, nonatomic) IBOutlet UIImageView *shopImageView;
+@property (weak, nonatomic) IBOutlet UIImageView *goldBadgeView;
 @property (weak, nonatomic) IBOutlet UILabel *shopNameLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIPageControl *pageControl;
 @property (weak, nonatomic) IBOutlet UIButton *leftButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightButton;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *avatarIndicator;
 
 
 @end
@@ -72,15 +74,27 @@
 }
 
 - (void)initButton {
-    self.leftButton.layer.cornerRadius = 3;
-    self.leftButton.layer.borderWidth = 1;
-    self.leftButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
-    
-    self.rightButton.layer.cornerRadius = 3;
-    self.rightButton.layer.borderWidth = 1;
-    self.rightButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
-    
+//    self.leftButton.layer.cornerRadius = 3;
+//    self.leftButton.layer.borderWidth = 1;
+//    self.leftButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
+//    
+//    self.rightButton.layer.cornerRadius = 3;
+//    self.rightButton.layer.borderWidth = 1;
+//    self.rightButton.layer.borderColor = [[UIColor blackColor] colorWithAlphaComponent:0.3].CGColor;
+//
     _auth = [_userManager getUserLoginData];
+    if ([_auth allValues] > 0) {
+        //toko sendiri dan login
+         if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
+             
+         } else {
+             
+         }
+    }
+    
+    
+    
+    
     if ([_auth allValues] > 0) {
         if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
             [self.leftButton setTitle:@"Settings" forState:UIControlStateNormal];
@@ -94,7 +108,7 @@
             
             [self.rightButton setTitle:@"Favorite" forState:UIControlStateNormal];
             [self.rightButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-            self.rightButton.tintColor = [UIColor lightGrayColor];
+//            self.rightButton.tintColor = [UIColor lightGrayColor];
         }
     } else {
         [self.leftButton setTitle:@"Message" forState:UIControlStateNormal];
@@ -102,7 +116,7 @@
         
         [self.rightButton setTitle:@"Favorite" forState:UIControlStateNormal];
         [self.rightButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-        self.rightButton.tintColor = [UIColor lightGrayColor];
+//        self.rightButton.tintColor = [UIColor lightGrayColor];
     }
     
     self.leftButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
@@ -129,6 +143,7 @@
     _statView = [ShopStatView newView];
     [self.scrollView addSubview:_statView];
     
+ 
     self.scrollView.hidden = YES;
     self.scrollView.delegate = self;
     _operationQueue = [NSOperationQueue new];
@@ -148,73 +163,89 @@
     _leftButton.enabled = YES;
     _rightButton.enabled = YES;
     
-    _descriptionView.nameLabel.text = _shop.result.info.shop_name;
-    [_descriptionView.nameLabel sizeToFit];
+    _descriptionView.nameLabel.text = [NSString stringWithFormat:@"Terakhir Online : %@", _shop.result.info.shop_owner_last_login];
+    
+//    [_descriptionView.nameLabel sizeToFit];
     
     if (_shop.result.info.shop_is_gold == 1) {
-        _descriptionView.badgeImageView.hidden = NO;
+        _goldBadgeView.hidden = NO;
     }
     
     if(_shop.result.info.shop_already_favorited == 1) {
-        [self setButtonFav];
+//        [self setButtonFav];
     }
     
 //    self.title = _shop.result.info.shop_name;
     
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:15];
+    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
+    style.lineSpacing = 3.0;
+    style.alignment = NSTextAlignmentCenter;
+
     
     NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
                                  NSFontAttributeName: font,
-                                 NSParagraphStyleAttributeName: style,
+                                 NSParagraphStyleAttributeName: style
                                  };
 
     NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:_shop.result.info.shop_description
                                                                                     attributes:attributes];
     _descriptionView.descriptionLabel.attributedText = productNameAttributedText;
     _descriptionView.descriptionLabel.textAlignment = NSTextAlignmentCenter;
+    _descriptionView.descriptionLabel.numberOfLines = 4;
     
-    _statView.locationLabel.text = [NSString stringWithFormat:@"     %@", _shop.result.info.shop_location];
-    UIImageView *iconLocation = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_location.png"]];
-    iconLocation.frame = CGRectMake(0, 0, 20, 20);
-    [_statView.locationLabel addSubview:iconLocation];
+    CGRect newFrame = CGRectMake(20, 50, 280, 150);
+    _descriptionView.descriptionLabel.frame = newFrame;
+    [_descriptionView.descriptionLabel sizeToFit];
     
-    _statView.openStatusLabel.text = [NSString stringWithFormat:@"Last Online : %@", _shop.result.info.shop_owner_last_login];
+    CGRect myFrame = _descriptionView.descriptionLabel.frame;
+    myFrame = CGRectMake(myFrame.origin.x, myFrame.origin.y, 280, myFrame.size.height);
+    _descriptionView.descriptionLabel.frame = myFrame;
     
-    UIFont *boldFont = [UIFont fontWithName:@"GothamMedium" size:15];
     
-    NSString *stats = [NSString stringWithFormat:@"%@ Favorited %@ Sold Items",
-                       _shop.result.info.shop_total_favorit,
-                       _shop.result.stats.shop_item_sold];
     
-    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:stats];
-    [attributedText addAttribute:NSFontAttributeName value:boldFont range:NSMakeRange(0, [_shop.result.info.shop_total_favorit length])];
-    [attributedText addAttribute:NSFontAttributeName value:boldFont range:NSMakeRange([_shop.result.info.shop_total_favorit length] + 11, [_shop.result.stats.shop_item_sold length])];
     
-    [_statView.statLabel setAttributedText:attributedText];
+    
+    _statView.locationLabel.text = _shop.result.info.shop_name;
+    
+    
+    _statView.openStatusLabel.text = _shop.result.info.shop_location;
+    
+    
+    NSString *stats = [NSString stringWithFormat:@"%@ Barang Terjual & %@ Favorit",
+                       _shop.result.stats.shop_item_sold,
+                       _shop.result.info.shop_total_favorit];
+    
+
+    
+    [_statView.statLabel setText:stats];
     // Set cover image
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_cover]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    
-    [_coverImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    if(_shop.result.info.shop_is_gold == 1) {
+        [_coverImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        
-        _coverImageView.image = image;
-        _coverImageView.hidden = NO;
-
-        
+            
+            _coverImageView.image = image;
+            _coverImageView.hidden = NO;
+            
+            
 #pragma clang diagnostic pop
-    } failure:nil];
+        } failure:nil];
+    } else {
+        [_coverImageView setBackgroundColor:[UIColor clearColor]];
+    }
+    
     
     //set shop image
     NSURLRequest* requestAvatar = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_avatar]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
+    [_avatarIndicator startAnimating];
     [_shopImageView setImageWithURLRequest:requestAvatar placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -309,151 +340,61 @@
             
         case 15: {
             
-            if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY] integerValue]) {
-                ProductAddEditViewController *productViewController = [ProductAddEditViewController new];
-                productViewController.data = @{
-                                               kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                                               DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_ADD),
-                                               };
-                [nav.navigationController pushViewController:productViewController animated:YES];
-                break;
-            }
-            
-            if(_auth) {
-                // Favorite shop action
-                [self configureFavoriteRestkit];
-                [self favoriteShop:_shop.result.info.shop_id sender:_rightButton];
-                [self setButtonFav];
-                
-            } else {
-                UINavigationController *navigationController = [[UINavigationController alloc] init];
-                navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-                navigationController.navigationBar.translucent = NO;
-                navigationController.navigationBar.tintColor = [UIColor whiteColor];
-                
-                
-                LoginViewController *controller = [LoginViewController new];
-                controller.delegate = self;
-                controller.isPresentedViewController = YES;
-                controller.redirectViewController = self;
-                navigationController.viewControllers = @[controller];
-                
-                [nav.navigationController presentViewController:navigationController animated:YES completion:nil];
-            }
+//            if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] integerValue] == [[auth objectForKey:kTKPD_SHOPIDKEY] integerValue]) {
+//                ProductAddEditViewController *productViewController = [ProductAddEditViewController new];
+//                productViewController.data = @{
+//                                               kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+//                                               DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_ADD),
+//                                               };
+//                [nav.navigationController pushViewController:productViewController animated:YES];
+//                break;
+//            }
+//            
+//            if(_auth) {
+//                // Favorite shop action
+//                [self configureFavoriteRestkit];
+//                [self favoriteShop:_shop.result.info.shop_id sender:_rightButton];
+//                [self setButtonFav];
+//                
+//            } else {
+//                UINavigationController *navigationController = [[UINavigationController alloc] init];
+//                navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+//                navigationController.navigationBar.translucent = NO;
+//                navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//                
+//                
+//                LoginViewController *controller = [LoginViewController new];
+//                controller.delegate = self;
+//                controller.isPresentedViewController = YES;
+//                controller.redirectViewController = self;
+//                navigationController.viewControllers = @[controller];
+//                
+//                [nav.navigationController presentViewController:navigationController animated:YES completion:nil];
+//            }
             
             
             break;
         }
             
         case 16: {
-            [self configureFavoriteRestkit];
-            
-            [self favoriteShop:_shop.result.info.shop_id sender:_rightButton];
-            
-            _rightButton.tag = 15;
-            [_rightButton setTitle:@"Favorite" forState:UIControlStateNormal];
-            [_rightButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-            [_rightButton.layer setBorderWidth:1];
-            self.rightButton.tintColor = [UIColor lightGrayColor];
-            [UIView animateWithDuration:0.3 animations:^(void) {
-                [_rightButton setBackgroundColor:[UIColor whiteColor]];
-                [_rightButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            }];
+//            [self configureFavoriteRestkit];
+//            
+//            [self favoriteShop:_shop.result.info.shop_id sender:_rightButton];
+//            
+//            _rightButton.tag = 15;
+//            [_rightButton setTitle:@"Favorite" forState:UIControlStateNormal];
+//            [_rightButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+//            [_rightButton.layer setBorderWidth:1];
+////            self.rightButton.tintColor = [UIColor lightGrayColor];
+//            [UIView animateWithDuration:0.3 animations:^(void) {
+//                [_rightButton setBackgroundColor:[UIColor whiteColor]];
+//                [_rightButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//            }];
         }
             
         default:
             break;
     }
-}
-
-#pragma mark - Request and mapping favorite action
-
--(void)configureFavoriteRestkit {
-    
-    // initialize RestKit
-    _objectManager =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[FavoriteShopAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[FavoriteShopActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"content":@"content",
-                                                        @"is_success":@"is_success"}];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:@"action/favorite-shop.pl"
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManager addResponseDescriptor:responseDescriptorStatus];
-}
-
-- (void)setButtonFav {
-    _rightButton.tag = 16;
-    [_rightButton setTitle:@"Unfavorite" forState:UIControlStateNormal];
-    [_rightButton setImage:[UIImage imageNamed:@"icon_love_white.png"] forState:UIControlStateNormal];
-    [_rightButton.layer setBorderWidth:0];
-    _rightButton.tintColor = [UIColor whiteColor];
-    [UIView animateWithDuration:0.3 animations:^(void) {
-        [_rightButton setBackgroundColor:[UIColor colorWithRed:240.0/255.0 green:60.0/255.0 blue:100.0/255.0 alpha:1]];
-        [_rightButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    }];
-
-}
-
-
--(void)favoriteShop:(NSString*)shop_id sender:(UIButton*)btn
-{
-    if (_request.isExecuting) return;
-    
-    _requestCount ++;
-    
-    NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY   :   @"fav_shop",
-                            @"shop_id"              :   shop_id};
-    
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:@"action/favorite-shop.pl"
-                                                                parameters:[param encrypt]];
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestFavoriteResult:mappingResult withOperation:operation];
-        [_timer invalidate];
-        _timer = nil;
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestFavoriteError:error];
-        [_timer invalidate];
-        _timer = nil;
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(requestTimeout)
-                                            userInfo:nil
-                                             repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestFavoriteResult:(id)mappingResult withOperation:(NSOperationQueue *)operation {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
-}
-
--(void)requestFavoriteError:(id)object {
-    
 }
 
 #pragma mark - Login Delegate

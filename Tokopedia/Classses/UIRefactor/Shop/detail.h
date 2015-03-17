@@ -42,7 +42,7 @@ typedef enum
 #define kTKPDTITLE_SHOP_NOTES @"Shop Note"
 #define kTKPDTITLE_SEND_MESSAGE @"Send Message"
 #define kTKPDTITLE_NEW_TALK @"New Talk About It"
-#define kTKPDTITLE_SHOP_INFO @"Shop Information"
+#define kTKPDTITLE_SHOP_INFO @"Informasi Toko"
 #define KTKPDTITLE_FAV_THIS_SHOP @"People who Favorited This Shop"
 #define KTKPDTITLE_PEOPLE @"People Information"
 #define KTKPDTITLE_BIODATA @"Biodata"
@@ -70,7 +70,7 @@ typedef enum
 
 #define kTKPTITLE_PAYMENT @"Pembayaran"
 
-#define KTKPDETAIL_DESCRIPTION_EMPTY @"No description"
+#define KTKPDETAIL_DESCRIPTION_EMPTY @"Tidak ada deskripsi"
 
 #define kTKPDDETAIL_DATASHOPSKEY @"shop"
 #define kTKPDDETAIL_DATACLOSEDINFOKEY @"closedinfo"
