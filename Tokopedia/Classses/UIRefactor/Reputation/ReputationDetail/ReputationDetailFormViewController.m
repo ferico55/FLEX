@@ -12,6 +12,7 @@
 #import "GeneralAction.h"
 #import "DetailProductViewController.h"
 
+
 #import "string_inbox_review.h"
 
 @interface ReputationDetailFormViewController () <RateViewDelegate, UITextViewDelegate>
@@ -52,6 +53,7 @@
     NSMutableArray *_errorMessages;
     UIBarButtonItem *_barbuttonright;
     NSDictionary *_editedParam;
+
 }
 
 #pragma mark - Initialization
@@ -115,6 +117,7 @@
     _reviewMessage.text = @"Tulis Review-mu disini";
     _reviewMessage.textColor = [UIColor lightGrayColor];
 }
+
 
 - (void)initProductView {
     _selectedReviewDetail = (ReviewList *)_data;

@@ -251,6 +251,11 @@
             
             if(list.talk_follow_status == 1 && ![list.talk_own isEqualToString:@"1"]) {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = NO;
+                
+                CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
+                newFrame.origin.x = 0;
+                ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
+                ((GeneralTalkCell*)cell).buttonsDividers.hidden = NO;
             } else {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
