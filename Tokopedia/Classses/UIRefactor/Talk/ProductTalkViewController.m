@@ -228,6 +228,17 @@
                 followStatus = TKPD_TALK_UNFOLLOW;
             }
             [((GeneralTalkCell*)cell).unfollowButton setTitle:followStatus forState:UIControlStateNormal];
+            
+            if(![list.talk_own isEqualToString:@"1"]) {
+                ((GeneralTalkCell*)cell).unfollowButton.hidden = NO;
+            } else {
+                ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
+                ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
+                
+                CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
+                newFrame.origin.x = 75;
+                ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
+            }
             ((GeneralTalkCell*)cell).productViewIsHidden = YES;
             ((GeneralTalkCell*)cell).indexpath = indexPath;
             

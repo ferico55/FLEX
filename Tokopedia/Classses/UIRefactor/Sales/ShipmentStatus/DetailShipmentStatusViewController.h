@@ -12,5 +12,6 @@
 @interface DetailShipmentStatusViewController : UIViewController
 
 @property (strong, nonatomic) OrderTransaction *order;
+@property BOOL is_allow_manage_tx;
 
 @end

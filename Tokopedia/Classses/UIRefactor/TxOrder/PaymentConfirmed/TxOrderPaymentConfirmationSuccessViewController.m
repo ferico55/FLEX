@@ -22,7 +22,6 @@
 @implementation TxOrderPaymentConfirmationSuccessViewController
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
     
     UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
@@ -38,7 +37,6 @@
     [_successMessage multipleLineLabel:_successMessage];
     [_infoLabel multipleLineLabel:_infoLabel];
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.alignment = NSTextAlignmentCenter;
     style.lineSpacing = 6.0;
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]  initWithString:_info2Label.text];
     [attributedString addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_12 range:[_info2Label.text rangeOfString:@"Klik disini"]];

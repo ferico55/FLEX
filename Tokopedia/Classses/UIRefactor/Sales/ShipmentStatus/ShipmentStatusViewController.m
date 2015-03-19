@@ -147,32 +147,19 @@
     cell.dateFinishLabel.hidden = YES;
     cell.finishLabel.hidden = YES;
     
-    NSLog(@"%ld %ld", (long)indexPath.row, (long)order.order_detail.detail_order_status);
-    
     if ([_resultOrder.result.order.is_allow_manage_tx boolValue] && order.order_detail.detail_ship_ref_num) {
-
-        if (order.order_detail.detail_order_status == ORDER_DELIVERED) {
-            
-            [cell showTrackButton];
-            
-        } else if (order.order_detail.detail_order_status == ORDER_DELIVERED_CONFIRM) {
         
+        if (order.order_detail.detail_order_status >= ORDER_DELIVERED) {
+            [cell hideAllButton];
+        } else if (order.order_detail.detail_order_status >= ORDER_SHIPPING) {
+            [cell showAllButton];
+        }
+        
+        if (order.order_detail.detail_order_status == ORDER_DELIVERED_CONFIRM) {
             cell.dateFinishLabel.hidden = NO;
             cell.finishLabel.hidden = NO;
-            
             OrderHistory *history = [order.order_history objectAtIndex:0];
             cell.dateFinishLabel.text = [history.history_status_date_full substringToIndex:[history.history_status_date_full length]-6];
-    
-        } else if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
-                   order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED ||
-                   order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID) {
-            
-            [cell showAllButton];
-            
-        } else {
-            
-            [cell hideAllButton];
-        
         }
     }
     
@@ -204,18 +191,14 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     OrderTransaction *order = [_shipments objectAtIndex:indexPath.row];
-    CGFloat height = 0;
     if ([_resultOrder.result.order.is_allow_manage_tx boolValue] && order.order_detail.detail_ship_ref_num) {
-        if (order.order_detail.detail_order_status == ORDER_DELIVERED ||
-            order.order_detail.detail_order_status == ORDER_SHIPPING ||
-            order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED ||
-            order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID) {
-            height = tableView.rowHeight;
-        } else {
-            height = tableView.rowHeight - 45;
+        if (order.order_detail.detail_order_status >= ORDER_DELIVERED) {
+            return tableView.rowHeight - 45;
+        } else if (order.order_detail.detail_order_status >= ORDER_SHIPPING) {
+            return tableView.rowHeight;
         }
     }
-    return height;
+    return tableView.rowHeight - 45;
 }
 
 #pragma mark - Reskit methods
@@ -456,7 +439,7 @@
                             API_ACTION_KEY           : API_GET_NEW_ORDER_STATUS_KEY,
                             API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
                             API_PAGE_KEY             : [NSNumber numberWithInteger:_page],
-                            API_INVOICE_KEY          : _status ?: @"",
+//                            API_INVOICE_KEY          : _status ?: @"",
                             };
     
     NSLog(@"\n\n\n\n%@\n\n\n\n", param);
@@ -677,6 +660,7 @@
 
     DetailShipmentStatusViewController *controller = [DetailShipmentStatusViewController new];
     controller.order = order;
+    controller.is_allow_manage_tx = _resultOrder.result.order.is_allow_manage_tx;
     [self.navigationController pushViewController:controller animated:YES];
 }
 

@@ -14,7 +14,7 @@
 #import "CategoryMenuViewController.h"
 #import "DepartmentTree.h"
 
-@interface CategoryMenuViewController () <CategoryMenuViewCellDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface CategoryMenuViewController () <UITableViewDataSource, UITableViewDelegate>
 {
     // ceck berapa kali view di tampilkan
     NSInteger _pushcount;
@@ -50,72 +50,27 @@
 {
     [super viewDidLoad];
     
+    self.title = @"Categories";
+    
     [self.navigationController.navigationBar setTranslucent:NO];
     
     _choosenindexpaths = [NSMutableArray new];
     _paging = [NSMutableDictionary new];
     _menu = [NSMutableArray new];
     _selectedcategory = [NSMutableDictionary new];
-    
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    UIImage *img;
-    
 
-    
-    //UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    //if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-    //    UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    //    barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    //}
-    //else
-    //    barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    //[barbutton1 setTag:10];
-    //self.navigationItem.leftBarButtonItem = barbutton1;
-    //
-    //if (self.navigationController.viewControllers.count==1) {
-    //    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    //    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-    //        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    //        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    //    }
-    //    else
-    //        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    //    
-    //    [barbutton1 setTag:11];
-    //    self.navigationItem.rightBarButtonItem = barbutton1;
-    //}
-    //else
-    //{
-    //    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    //    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-    //        //UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    //        //barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    //        barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    //        [barbutton1 setTintColor:[UIColor blackColor]];
-    //        
-    //    }
-    //    else
-            //barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-            //[barbutton1 setTag:12];
-            //self.navigationItem.rightBarButtonItem = barbutton1;
-    //
-    //}
-    
-
-    
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor blackColor]];
-    barbutton1.tag = 12;
-    self.navigationItem.rightBarButtonItem = barbutton1;
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                               style:UIBarButtonItemStyleBordered
+                                                              target:self
+                                                              action:@selector(tap:)];
+    button.tag = 13;
+    self.navigationItem.leftBarButtonItem = button;
     
     /** set max data per page request **/
     _table.delegate = self;
     _table.dataSource = self;
     
     [self adjustCategoryMenu];
-    
-
     
     NSArray *choosenIndexPath =[_data objectForKey:kTKPDCATEGORY_DATACHOSENINDEXPATHKEY];
     [_choosenindexpaths removeAllObjects];
@@ -146,16 +101,6 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    NSString *previousTitle = [_data objectForKey:kTKPDCATEGORY_DATATITLEKEY];
-    //self.navigationItem.title = previousTitle?:@"";
-    //TODO::selector setBackBarButton not working yet
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:previousTitle?:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    //self.navigationItem.leftBarButtonItem = barButtonItem;
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -214,25 +159,9 @@
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
-            case 12:
+            case 13:
             {
-                //Done Action
-                _pushcount =self.navigationController.viewControllers.count-2; //TODO::
-
-                NSIndexPath *indexpath = [_selectedcategory objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                if (indexpath) {
-                    NSDictionary *userinfo = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY],
-                                               
-                                               kTKPDCATEGORY_DATAPUSHCOUNTKEY : @(_pushcount?:0),
-                                               kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : _choosenindexpaths?:@[],
-                                               kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY : @(YES),
-                                               kTKPDCATEGORY_DATACATEGORYINDEXPATHKEY :indexpath,
-                                               kTKPDCATEGORY_DATATITLEKEY : [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY]
-                                               };
-                    UIViewController *popViewController = (UIViewController*)self.delegate;
-                    [self.navigationController popToViewController:popViewController animated:YES];
-                    [_delegate CategoryMenuViewController:self userInfo:userinfo];
-                }
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             }
             default:
                 break;
@@ -273,8 +202,7 @@
 		cell = (CategoryMenuViewCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
 		if (cell == nil) {
 			cell = [CategoryMenuViewCell newcell];
-			((CategoryMenuViewCell*)cell).delegate = self;
-		}
+        }
 
         if (_menu.count > indexPath.row) {
             NSIndexPath *selectedindex =[_selectedcategory objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY];
@@ -306,6 +234,52 @@
 	}
 	
 	return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if([[_menu[indexPath.row] objectForKey:kTKPDCATEGORY_DATAISNULLCHILD] isEqual:@(0)]){
+        NSInteger pushcount =self.navigationController.viewControllers.count-2;
+        if (_choosenindexpaths.count>pushcount) {
+            [_choosenindexpaths removeLastObject];
+        }
+        [_choosenindexpaths addObject:indexPath];
+        CategoryMenuViewController *vc = [CategoryMenuViewController new];
+        NSArray *childs =[_menu[indexPath.row] objectForKey:kTKPDCATEGORY_APIDEPARTMENTCHILDKEY]?:@[];
+        vc.data = @{kTKPDCATEGORY_APIDEPARTMENTTREEKEY : childs,
+                    kTKPDCATEGORY_DATADIDALLCATEGORYKEY: [_menu[indexPath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY]?:[NSNull null],
+                    kTKPDCATEGORY_DATATITLEKEY : [_menu[indexPath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY],
+                    kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : _choosenindexpaths?:@[],
+                    kTKPDCATEGORY_DATAINDEXPATHKEY : indexPath,
+                    kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexPath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY],
+                    DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE : @([[_data objectForKey:DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE]integerValue])
+                    };
+        vc.delegate = self.delegate;
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else{
+        NSInteger pushcount = self.navigationController.viewControllers.count-2;
+        if (_choosenindexpaths.count > pushcount) {
+            [_choosenindexpaths removeLastObject];
+        }
+        [_choosenindexpaths addObject:indexPath];
+        [_selectedcategory setObject:indexPath forKey:kTKPDCATEGORY_DATAINDEXPATHKEY];
+        [_table reloadData];
+        
+        _pushcount =self.navigationController.viewControllers.count-2; //TODO::
+        
+        NSIndexPath *indexpath = [_selectedcategory objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+        NSDictionary *userinfo = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY],
+                                   
+                                   kTKPDCATEGORY_DATAPUSHCOUNTKEY : @(_pushcount?:0),
+                                   kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : _choosenindexpaths?:@[],
+                                   kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY : @(YES),
+                                   kTKPDCATEGORY_DATACATEGORYINDEXPATHKEY :indexpath,
+                                   kTKPDCATEGORY_DATATITLEKEY : [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY]
+                                   };
+        [_delegate CategoryMenuViewController:self userInfo:userinfo];
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 #pragma mark - Methods
@@ -401,38 +375,6 @@
     }
 }
 
-#pragma mark - Cell Delegate
--(void)CategoryMenuViewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath{
-    if([[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATAISNULLCHILD] isEqual:@(0)]){
-        NSInteger pushcount =self.navigationController.viewControllers.count-2;
-        if (_choosenindexpaths.count>pushcount) {
-            [_choosenindexpaths removeLastObject];
-        }
-        [_choosenindexpaths addObject:indexpath];
-        CategoryMenuViewController *vc = [CategoryMenuViewController new];
-        NSArray *childs =[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_APIDEPARTMENTCHILDKEY]?:@[];
-        vc.data = @{kTKPDCATEGORY_APIDEPARTMENTTREEKEY : childs,
-                    kTKPDCATEGORY_DATADIDALLCATEGORYKEY: [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY]?:[NSNull null],
-                    kTKPDCATEGORY_DATATITLEKEY : [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY],
-                    kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : _choosenindexpaths?:@[],
-                    kTKPDCATEGORY_DATAINDEXPATHKEY : indexpath,
-                    kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY],
-                    DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE : @([[_data objectForKey:DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE]integerValue])
-                    };
-        vc.delegate = self.delegate;
-        [self.navigationController pushViewController:vc animated:YES];
-    }
-    else{
-        NSInteger pushcount =self.navigationController.viewControllers.count-2;
-        if (_choosenindexpaths.count>pushcount) {
-            [_choosenindexpaths removeLastObject];
-        }
-        [_choosenindexpaths addObject:indexpath];
-        [_selectedcategory setObject:indexpath forKey:kTKPDCATEGORY_DATAINDEXPATHKEY];
-        [_table reloadData];
-    }
-}
-
 -(void)adjustChoosenIndexPath:(NSNotification*)notification
 {
     NSDictionary *userInfo = notification.userInfo;
@@ -442,7 +384,6 @@
     [_choosenindexpaths addObjectsFromArray:choosenNotification];
     [_choosenindexpaths removeLastObject];
     _pushcount -=1;
-    
 }
 
 @end

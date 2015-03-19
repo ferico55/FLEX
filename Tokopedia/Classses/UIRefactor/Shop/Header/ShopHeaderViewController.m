@@ -473,10 +473,10 @@
     [_descriptionView.nameLabel sizeToFit];
     
     if (_shop.result.info.shop_is_gold == 1) {
-        _descriptionView.badgeImageView.hidden = NO;
+//        _descriptionView.badgeImageView.hidden = NO;
     }
     
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:15];
+    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
@@ -494,22 +494,22 @@
     
     _statView.locationLabel.text = [NSString stringWithFormat:@"     %@", _shop.result.info.shop_location];
     UIImageView *iconLocation = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_location.png"]];
-    iconLocation.frame = CGRectMake(0, 0, 20, 20);
+    iconLocation.frame = CGRectMake(0, 0, 15, 15);
     [_statView.locationLabel addSubview:iconLocation];
     
-    _statView.openStatusLabel.text = [NSString stringWithFormat:@"Last Online : %@", _shop.result.info.shop_owner_last_login];
+    _statView.openStatusLabel.text = [NSString stringWithFormat:@"Terakhir Online : %@", _shop.result.info.shop_owner_last_login];
     
-    UIFont *boldFont = [UIFont fontWithName:@"GothamMedium" size:15];
+    UIFont *boldFont = [UIFont fontWithName:@"GothamMedium" size:13];
     
-    NSString *stats = [NSString stringWithFormat:@"%@ Favorited %@ Sold Items",
+    NSString *stats = [NSString stringWithFormat:@"%@ Favorit %@ Barang Terjual",
                        _shop.result.info.shop_total_favorit,
                        _shop.result.stats.shop_item_sold];
+//    
+//    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:stats];
+//    [attributedText addAttribute:NSFontAttributeName value:boldFont range:NSMakeRange(0, [_shop.result.info.shop_total_favorit length])];
+//    [attributedText addAttribute:NSFontAttributeName value:boldFont range:NSMakeRange([_shop.result.info.shop_total_favorit length] + 11, [_shop.result.stats.shop_item_sold length])];
     
-    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:stats];
-    [attributedText addAttribute:NSFontAttributeName value:boldFont range:NSMakeRange(0, [_shop.result.info.shop_total_favorit length])];
-    [attributedText addAttribute:NSFontAttributeName value:boldFont range:NSMakeRange([_shop.result.info.shop_total_favorit length] + 11, [_shop.result.stats.shop_item_sold length])];
-    
-    [_statView.statLabel setAttributedText:attributedText];
+    [_statView.statLabel setText:stats];
     
     self.scrollView.hidden = NO;
     self.pageControl.hidden = NO;
@@ -607,14 +607,14 @@
 }
 
 
--(void)favoriteShop:(NSInteger)shop_id sender:(UIButton*)btn
+-(void)favoriteShop:(NSString *)shop_id sender:(UIButton*)btn
 {
     if (_request.isExecuting) return;
 
     _requestCount ++;
 
     NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY   :   @"fav_shop",
-                            @"shop_id"              :   [@(shop_id) stringValue]};
+                            @"shop_id"              :   shop_id};
     
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST

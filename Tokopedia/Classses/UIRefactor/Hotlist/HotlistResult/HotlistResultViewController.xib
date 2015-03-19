@@ -5,6 +5,9 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
         <mutableArray key="GothamLight.ttf">
             <string>GothamLight</string>
             <string>GothamLight</string>
@@ -36,7 +39,7 @@
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="215" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="NpJ-7r-c1k">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="521"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="pfk-Fo-J5i"/>
                         <outlet property="delegate" destination="-1" id="l59-D3-irF"/>
@@ -103,7 +106,6 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.9137254901960784" green="0.9137254901960784" blue="0.9137254901960784" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="NpJ-7r-c1k" secondAttribute="trailing" id="04P-0B-U4Q"/>
                 <constraint firstItem="vHm-Tc-Aus" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="B2x-oe-efl"/>
@@ -116,73 +118,85 @@
             <nil key="simulatedStatusBarMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="ZTM-NR-ebR" userLabel="FooterView">
-            <rect key="frame" x="0.0" y="0.0" width="319" height="34"/>
+            <rect key="frame" x="0.0" y="0.0" width="319" height="44"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Nhx-0E-74X">
-                    <rect key="frame" x="150" y="7" width="20" height="20"/>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Nhx-0E-74X">
+                    <rect key="frame" x="150" y="12" width="20" height="20"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="color" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="centerX" secondItem="Nhx-0E-74X" secondAttribute="centerX" id="aIK-wY-gfT"/>
+                <constraint firstAttribute="centerY" secondItem="Nhx-0E-74X" secondAttribute="centerY" id="lOH-AV-TLT"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <view hidden="YES" contentMode="scaleToFill" id="HKl-uZ-hi3" userLabel="HeaderView">
+        <view contentMode="scaleToFill" id="HKl-uZ-hi3" userLabel="HeaderView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="190"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q9k-15-37M" userLabel="Hashtags Scroll View">
-                    <rect key="frame" x="8" y="150" width="304" height="42"/>
-                    <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
-                    <inset key="scrollIndicatorInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q9k-15-37M" userLabel="Hashtags Scroll View">
+                    <rect key="frame" x="0.0" y="150" width="320" height="40"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="fdA-1u-QWh"/>
                     </connections>
                 </scrollView>
-                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="CGm-73-BvT">
+                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CGm-73-BvT">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <color key="tintColor" red="0.95202105979999996" green="0.95202105979999996" blue="0.95202105979999996" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <gestureRecognizers/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="150" id="SHx-Wq-ceZ"/>
+                    </constraints>
                     <connections>
                         <outletCollection property="gestureRecognizers" destination="pSV-5V-5RB" appends="YES" id="i58-DX-Fsp"/>
                     </connections>
                 </imageView>
-                <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="wpV-ue-3NP">
+                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="2" translatesAutoresizingMaskIntoConstraints="NO" id="wpV-ue-3NP">
                     <rect key="frame" x="140" y="113" width="39" height="37"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="39" id="a2s-hP-ASY"/>
+                        <constraint firstAttribute="height" constant="37" id="rFK-4c-FyU"/>
+                    </constraints>
                 </pageControl>
-            </subviews>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-            <nil key="simulatedStatusBarMetrics"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-        </view>
-        <view hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" id="91z-Sh-o8k" userLabel="DescriptionView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <subviews>
-                <view alpha="0.40000000000000002" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XlR-8a-cQk">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
-                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                </view>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="309" translatesAutoresizingMaskIntoConstraints="NO" id="mBb-aS-tY9">
-                    <rect key="frame" x="5" y="0.0" width="309" height="150"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="mBb-aS-tY9" firstAttribute="top" secondItem="91z-Sh-o8k" secondAttribute="top" id="96m-ad-K8d"/>
-                <constraint firstAttribute="bottom" secondItem="mBb-aS-tY9" secondAttribute="bottom" id="EYO-fa-thd"/>
-                <constraint firstAttribute="bottom" secondItem="XlR-8a-cQk" secondAttribute="bottom" id="bKX-dG-JKq"/>
-                <constraint firstItem="XlR-8a-cQk" firstAttribute="leading" secondItem="91z-Sh-o8k" secondAttribute="leading" id="fai-jB-iWA"/>
-                <constraint firstAttribute="trailing" secondItem="mBb-aS-tY9" secondAttribute="trailing" constant="6" id="gL7-6M-va9"/>
-                <constraint firstItem="XlR-8a-cQk" firstAttribute="top" secondItem="91z-Sh-o8k" secondAttribute="top" id="koW-Bi-kBf"/>
-                <constraint firstItem="mBb-aS-tY9" firstAttribute="leading" secondItem="91z-Sh-o8k" secondAttribute="leading" constant="5" id="so0-qS-bnP"/>
-                <constraint firstAttribute="trailing" secondItem="XlR-8a-cQk" secondAttribute="trailing" id="uxK-oc-Nvp"/>
+                <constraint firstAttribute="trailing" secondItem="CGm-73-BvT" secondAttribute="trailing" id="GNO-Hr-yuv"/>
+                <constraint firstItem="wpV-ue-3NP" firstAttribute="top" secondItem="HKl-uZ-hi3" secondAttribute="top" constant="113" id="IKf-CJ-Sdc"/>
+                <constraint firstItem="Q9k-15-37M" firstAttribute="top" secondItem="wpV-ue-3NP" secondAttribute="bottom" id="PI4-04-vjD"/>
+                <constraint firstAttribute="bottom" secondItem="Q9k-15-37M" secondAttribute="bottom" id="RLj-K1-X0n"/>
+                <constraint firstItem="CGm-73-BvT" firstAttribute="top" secondItem="HKl-uZ-hi3" secondAttribute="top" id="dvs-M0-enr"/>
+                <constraint firstItem="Q9k-15-37M" firstAttribute="leading" secondItem="HKl-uZ-hi3" secondAttribute="leading" id="g6K-Rd-zb9"/>
+                <constraint firstAttribute="trailing" secondItem="Q9k-15-37M" secondAttribute="trailing" id="hAX-n9-V5b"/>
+                <constraint firstItem="CGm-73-BvT" firstAttribute="leading" secondItem="HKl-uZ-hi3" secondAttribute="leading" id="wQW-kG-Mzi"/>
+                <constraint firstAttribute="centerX" secondItem="wpV-ue-3NP" secondAttribute="centerX" id="wTd-lj-hHv"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="91z-Sh-o8k" userLabel="DescriptionView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="150"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="290" translatesAutoresizingMaskIntoConstraints="NO" id="mBb-aS-tY9">
+                    <rect key="frame" x="15" y="25" width="290" height="100"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="mBb-aS-tY9" firstAttribute="leading" secondItem="91z-Sh-o8k" secondAttribute="leading" constant="15" id="ZeR-iz-QLL"/>
+                <constraint firstItem="mBb-aS-tY9" firstAttribute="top" secondItem="91z-Sh-o8k" secondAttribute="top" constant="25" id="aR8-SA-aLX"/>
+                <constraint firstAttribute="trailing" secondItem="mBb-aS-tY9" secondAttribute="trailing" constant="15" id="hA2-Fn-pgK"/>
+                <constraint firstAttribute="bottom" secondItem="mBb-aS-tY9" secondAttribute="bottom" constant="25" id="rHb-eD-9Qi"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

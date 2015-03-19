@@ -50,8 +50,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     self.hidesBottomBarWhenPushed = YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     
     _notificationManager = [NotificationManager new];
     [_notificationManager initNotificationRequest];
@@ -131,15 +135,16 @@
 - (void)viewController:(UIViewController *)viewController numberOfProcessedOrder:(NSInteger)totalOrder
 {
     if ([viewController isKindOfClass:[SalesNewOrderViewController class]]) {
-        totalOrder = [_notification.result.sales.sales_new_order integerValue] - totalOrder;
-        _notification.result.sales.sales_new_order = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:totalOrder]];
-
+        NSInteger salesNewOrder = [_notification.result.sales.sales_new_order integerValue];
+        _notification.result.sales.sales_new_order = [NSString stringWithFormat:@"%@",
+                                                      [NSNumber numberWithInteger:(salesNewOrder - totalOrder)]];
+        [self setValues];
     } else if ([viewController isKindOfClass:[ShipmentConfirmationViewController class]]) {
-        totalOrder = [_notification.result.sales.sales_shipping_confirm integerValue] - totalOrder;
-        _notification.result.sales.sales_shipping_confirm = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:totalOrder]];
-    
+        NSInteger shipmentConfirmation = [_notification.result.sales.sales_shipping_confirm integerValue];
+        _notification.result.sales.sales_shipping_confirm = [NSString stringWithFormat:@"%@",
+                                                             [NSNumber numberWithInteger:(shipmentConfirmation - totalOrder)]];
+        [self setValues];
     }
-    [self setValues];
 }
 
 @end

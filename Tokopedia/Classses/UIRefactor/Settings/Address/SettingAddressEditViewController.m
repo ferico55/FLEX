@@ -460,9 +460,9 @@
         NSString *postalcode = list.postal_code?[NSString stringWithFormat:@"%zd",list.postal_code]:@"";
         _textfieldpostcode.text = postalcode;
         _textfieldphonenumber.text = list.receiver_phone?:@"";
-        [_buttonprovince setTitle:list.province_name?:@"none" forState:UIControlStateNormal];
-        [_buttoncity setTitle:list.city_name?:@"none" forState:UIControlStateNormal];
-        [_buttondistrict setTitle:list.district_name?:@"none" forState:UIControlStateNormal];
+        [_buttonprovince setTitle:list.province_name?:kTKPDPROFILE_UNSETORIGIN forState:UIControlStateNormal];
+        [_buttoncity setTitle:list.city_name?:kTKPDPROFILE_UNSETORIGIN forState:UIControlStateNormal];
+        [_buttondistrict setTitle:list.district_name?:kTKPDPROFILE_UNSETORIGIN forState:UIControlStateNormal];
         
         if (list.province_id == 0) {
             _buttondistrict.enabled = NO;

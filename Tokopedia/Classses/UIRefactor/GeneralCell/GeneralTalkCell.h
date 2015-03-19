@@ -39,6 +39,7 @@
 @property (strong, nonatomic) IBOutlet UIView *subContentView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *thumb;
+@property (weak, nonatomic) IBOutlet UIImageView *unreadIcon;
 @property (weak, nonatomic) IBOutlet UILabel *namelabel;
 @property (weak, nonatomic) IBOutlet UILabel *timelabel;
 @property (weak, nonatomic) IBOutlet UILabel *commentlabel;
@@ -53,7 +54,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *productButton;
 @property (weak, nonatomic) IBOutlet UIButton *moreActionButton;
 
-@property (strong,nonatomic) NSDictionary *data;
+@property (strong,nonatomic) id data;
 @property (strong, nonatomic) NSIndexPath *indexpath;
 
 @property (nonatomic) BOOL talkFollowStatus;

@@ -31,8 +31,11 @@
     #import "NSMutableURLRequest+TKPDURLRequestUploadImage.h"
     #import "TKPDSecureStorage.h"
     #import "UITextView+UITextView_Placeholder.h"
-    #import "StickyAlertView.h"
+    #import "NSString+HTML.h"
+    #import "UserAuthentificationManager.h"
 
+    #import "StickyAlertView.h"
+    #import "NoResultView.h"
     #import "Tkpd.h"
     #import "string.h"
 

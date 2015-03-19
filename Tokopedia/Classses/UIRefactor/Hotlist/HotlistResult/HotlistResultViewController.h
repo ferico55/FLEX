@@ -14,4 +14,6 @@
 @property (weak, nonatomic) IBOutlet UIImage *image;
 @property (strong, nonatomic) NSDictionary *data;
 
+- (id)init;
+
 @end

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamMedium.ttf">
@@ -19,35 +20,55 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="62"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GfF-sh-Y4H">
+                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GfF-sh-Y4H">
                         <rect key="frame" x="81" y="31" width="186" height="21"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                         <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Ejk-zf-Iv6">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ejk-zf-Iv6">
                         <rect key="frame" x="275" y="27" width="30" height="30"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="xvn-tW-rMN"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <state key="normal" image="icon_love.png">
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                     </button>
-                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" id="hry-u8-Sr8">
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="hry-u8-Sr8">
                         <rect key="frame" x="30" y="31" width="20" height="20"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="pQs-Wd-BlV"/>
+                        </constraints>
                     </activityIndicatorView>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_default_shop.jpg" id="2WS-eh-gEh">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_default_shop.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="2WS-eh-gEh">
                         <rect key="frame" x="15" y="16" width="50" height="50"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
-                    <view contentMode="scaleToFill" id="pFJ-bs-b6G" userLabel="Horizontal Border">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pFJ-bs-b6G" userLabel="Horizontal Border">
                         <rect key="frame" x="15" y="81" width="305" height="1"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="GfF-sh-Y4H" firstAttribute="leading" secondItem="2WS-eh-gEh" secondAttribute="trailing" constant="16" id="0GW-uf-jk1"/>
+                    <constraint firstAttribute="bottom" secondItem="pFJ-bs-b6G" secondAttribute="bottom" id="6DT-FE-CQ8"/>
+                    <constraint firstItem="2WS-eh-gEh" firstAttribute="centerY" secondItem="hry-u8-Sr8" secondAttribute="centerY" id="7TH-VS-WOJ"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Ejk-zf-Iv6" secondAttribute="trailing" constant="7" id="I0S-eb-A0e"/>
+                    <constraint firstItem="GfF-sh-Y4H" firstAttribute="leading" secondItem="hry-u8-Sr8" secondAttribute="trailing" constant="31" id="IS2-iM-gLt"/>
+                    <constraint firstItem="pFJ-bs-b6G" firstAttribute="leading" secondItem="2WS-eh-gEh" secondAttribute="leading" id="KqQ-Q5-OyU"/>
+                    <constraint firstItem="2WS-eh-gEh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="7" id="PF8-gM-n9l"/>
+                    <constraint firstItem="Ejk-zf-Iv6" firstAttribute="leading" secondItem="GfF-sh-Y4H" secondAttribute="trailing" constant="8" symbolic="YES" id="R1f-bK-gWe"/>
+                    <constraint firstItem="pFJ-bs-b6G" firstAttribute="top" secondItem="2WS-eh-gEh" secondAttribute="bottom" constant="15" id="ZBS-ot-Iak"/>
+                    <constraint firstItem="pFJ-bs-b6G" firstAttribute="top" secondItem="Ejk-zf-Iv6" secondAttribute="bottom" constant="24" id="c6y-Wo-yP3"/>
+                    <constraint firstItem="pFJ-bs-b6G" firstAttribute="top" secondItem="GfF-sh-Y4H" secondAttribute="bottom" constant="29" id="ctP-m3-wWP"/>
+                    <constraint firstItem="hry-u8-Sr8" firstAttribute="top" secondItem="GfF-sh-Y4H" secondAttribute="top" id="erm-sj-JOL"/>
+                    <constraint firstItem="GfF-sh-Y4H" firstAttribute="centerY" secondItem="hry-u8-Sr8" secondAttribute="centerY" id="fqb-IC-80Q"/>
+                    <constraint firstItem="Ejk-zf-Iv6" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="19" id="nIU-YN-KxO"/>
+                    <constraint firstAttribute="trailing" secondItem="pFJ-bs-b6G" secondAttribute="trailing" id="p42-kB-Aqb"/>
+                    <constraint firstItem="hry-u8-Sr8" firstAttribute="centerX" secondItem="2WS-eh-gEh" secondAttribute="centerX" id="qQU-Dz-77P"/>
+                    <constraint firstItem="hry-u8-Sr8" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="w6H-Q1-p5y"/>
+                </constraints>
             </tableViewCellContentView>
             <gestureRecognizers/>
             <connections>
@@ -69,9 +90,4 @@
         <image name="icon_default_shop.jpg" width="80" height="80"/>
         <image name="icon_love.png" width="20" height="20"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>

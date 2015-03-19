@@ -17,7 +17,12 @@
 #import "NotificationManager.h"
 
 
-@interface CategoryViewController () <CategoryViewCellDelegate, UITableViewDelegate>
+@interface CategoryViewController ()
+<
+    CategoryViewCellDelegate,
+    NotificationManagerDelegate,
+    UITableViewDelegate
+>
 {
     NSMutableArray *_category;
     NotificationManager *_notifManager;
@@ -46,8 +51,6 @@
 {
     [super viewDidLoad];
     
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(goToViewController:) name:@"goToViewController" object:nil];
     /** Initialization variable **/
     _category = [NSMutableArray new];
     
@@ -73,6 +76,17 @@
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     [self initNotificationManager];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadNotification)
+                                                 name:@"reloadNotification"
+                                               object:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)viewDidLayoutSubviews
@@ -194,9 +208,11 @@
 }
 
 #pragma mark - Notification Manager
+
 - (void)initNotificationManager {
     _notifManager = [NotificationManager new];
     [_notifManager setViewController:self];
+    _notifManager.delegate = self;
     self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
 }
 
@@ -208,10 +224,24 @@
     [_notifManager tapWindowBar];
 }
 
-- (void)goToViewController:(NSNotification*)notification {
-    [self tapWindowBar];
+#pragma mark - Notification delegate
+
+- (void)reloadNotification
+{
+    [self initNotificationManager];
 }
 
+- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
+{
+    [notificationManager tapWindowBar];
+    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
+}
 
+- (void)pushViewController:(id)viewController
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:viewController animated:YES];
+    self.hidesBottomBarWhenPushed = NO;
+}
 
 @end

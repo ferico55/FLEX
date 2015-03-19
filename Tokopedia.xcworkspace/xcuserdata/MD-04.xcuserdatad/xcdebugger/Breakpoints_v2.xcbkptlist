@@ -721,7 +721,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "393"
             endingLineNumber = "393"
-            landmarkName = "-requestActionLogin:"
+            landmarkName = "-requestsuccessLogin:withOperation:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -737,7 +737,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "397"
             endingLineNumber = "397"
-            landmarkName = "-requestActionLogin:"
+            landmarkName = "-requestsuccessLogin:withOperation:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -753,7 +753,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "389"
             endingLineNumber = "389"
-            landmarkName = "-requestActionLogin:"
+            landmarkName = "-requestLoginFacebookUser:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

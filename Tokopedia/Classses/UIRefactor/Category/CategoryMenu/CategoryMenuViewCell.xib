@@ -51,11 +51,6 @@
             </connections>
             <point key="canvasLocation" x="427" y="346"/>
         </tableViewCell>
-        <tapGestureRecognizer id="Kne-53-vsg">
-            <connections>
-                <action selector="gesture:" destination="KGk-i7-Jjw" id="U9l-s1-hKb"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="ic_arrow_right.png" width="1024" height="1024"/>

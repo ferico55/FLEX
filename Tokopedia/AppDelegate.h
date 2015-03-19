@@ -34,7 +34,6 @@
 #define kTKPDNAVIGATION_NAVIGATIONBGCOLOR [UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1]
 #define kTKPDNAVIGATION_NAVIGATIONITEMCOLOR [UIColor whiteColor]
 
-
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate>
 
 @property (assign, nonatomic) BOOL isNetworkAvailable;
@@ -42,8 +41,6 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UIViewController *viewController;
 @property (strong, nonatomic) UIViewController *navigationController;
-
-//TODO:: Push Notifiation
 @property (assign, nonatomic) BOOL isPushNotificationRegistered;
 
 @end

@@ -44,7 +44,7 @@
 #import "ShopContainerViewController.h"
 #import "ReputationPageViewController.h"
 
-@interface MoreViewController ()  {
+@interface MoreViewController () <NotificationManagerDelegate> {
     NSDictionary *_auth;
     
     Deposit *_deposit;
@@ -80,6 +80,11 @@
     
     [super viewDidLoad];
     
+    // Add logo in navigation bar
+    self.title = kTKPDMORE_TITLE;
+    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
+    [self.navigationItem setTitleView:logo];
+
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
     _auth = [_auth mutableCopy];
@@ -129,14 +134,11 @@
     [super viewWillAppear:animated];
     
     [self initNotificationManager];
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(goToViewController:) name:@"goToViewController" object:nil];
-    [nc addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotificationBar" object:nil];
 
-    // Add logo in navigation bar
-    self.title = kTKPDMORE_TITLE;
-    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-    [self.navigationItem setTitleView:logo];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadNotification)
+                                                 name:@"reloadNotification"
+                                               object:nil];
 
     // Remove default table inset
     self.tableView.contentInset = UIEdgeInsetsMake(-35, 0, 0, 0);
@@ -165,9 +167,10 @@
     
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
+    [super viewDidDisappear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -307,6 +310,9 @@
     }
     
     else if (indexPath.section == 4) {
+        if(indexPath.row == 0) {
+            
+        }
         if(indexPath.row == 2) {
             ReputationPageViewController *reputationPageVc = [ReputationPageViewController new];
             [self.navigationController pushViewController:reputationPageVc animated:YES];
@@ -325,12 +331,10 @@
             vc3.data=@{@"nav":@"inbox-message-trash"};
             NSArray *vcs = @[vc,vc1, vc2, vc3];
             
-            TKPDTabInboxMessageNavigationController *nc = [TKPDTabInboxMessageNavigationController new];
-            [nc setSelectedIndex:2];
-            [nc setViewControllers:vcs];
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-            [nav.navigationBar setTranslucent:NO];
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            TKPDTabInboxMessageNavigationController *inboxController = [TKPDTabInboxMessageNavigationController new];
+            [inboxController setSelectedIndex:2];
+            [inboxController setViewControllers:vcs];
+            [self.navigationController pushViewController:inboxController animated:YES];
         } else if(indexPath.row == 4) {
             InboxTalkViewController *vc = [InboxTalkViewController new];
             vc.data=@{@"nav":@"inbox-talk"};
@@ -346,9 +350,7 @@
             TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
             [nc setSelectedIndex:2];
             [nc setViewControllers:vcs];
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-            [nav.navigationBar setTranslucent:NO];
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            [self.navigationController pushViewController:nc animated:YES];
         } else if (indexPath.row == 5) {
             InboxReviewViewController *vc = [InboxReviewViewController new];
             vc.data=@{@"nav":@"inbox-review"};
@@ -364,9 +366,7 @@
             TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
             [nc setSelectedIndex:2];
             [nc setViewControllers:vcs];
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-            [nav.navigationBar setTranslucent:NO];
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            [self.navigationController pushViewController:nc animated:YES];
             
         }
         
@@ -456,9 +456,11 @@
 }
 
 #pragma mark - Notification Manager
+
 - (void)initNotificationManager {
     _notifManager = [NotificationManager new];
     [_notifManager setViewController:self];
+    _notifManager.delegate = self;
     self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
 }
 
@@ -470,8 +472,24 @@
     [_notifManager tapWindowBar];
 }
 
-- (void)goToViewController:(NSNotification*)notification {
-    [self tapWindowBar];
+- (void)reloadNotification
+{
+    [self initNotificationManager];
+}
+
+#pragma mark - Notification delegate
+
+- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
+{
+    [notificationManager tapWindowBar];
+    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
+}
+
+- (void)pushViewController:(id)viewController
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:viewController animated:YES];
+    self.hidesBottomBarWhenPushed = NO;
 }
 
 #pragma mark - Memory Management

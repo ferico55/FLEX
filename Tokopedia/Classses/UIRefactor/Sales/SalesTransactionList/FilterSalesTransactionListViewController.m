@@ -21,8 +21,10 @@
 {
     NSString *_invoice;
     NSString *_transactionStatus;
-    NSString *_startDate;
-    NSString *_endDate;
+    NSDate *_startDate;
+    NSDate *_endDate;
+    NSString *_startDateString;
+    NSString *_endDateString;
 }
 
 @end
@@ -51,13 +53,10 @@
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"dd/MM/yyyy"];
     
-    _startDate = [dateFormatter stringFromDate:[NSDate date]];
-    if (_isOrderTransaction) {
-        NSDateComponents* deltaComps = [NSDateComponents new];
-        [deltaComps setDay:-7];
-        NSDate* startDate = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
-        _startDate =  (![_startDateMark isEqualToString:@""])?_startDateMark:[dateFormatter stringFromDate:startDate];
-    }
+    _startDate = [[NSDate date] dateByAddingTimeInterval:-7*24*60*60];
+    _endDate = [NSDate date];
+    _startDateString = [dateFormatter stringFromDate:_startDate];
+    _endDateString = [dateFormatter stringFromDate:_endDate];
     
     _endDate = (![_endDateMark isEqualToString:@""])?_endDateMark:[dateFormatter stringFromDate:[NSDate date]];
     
@@ -129,10 +128,10 @@
                 cell.detailTextLabel.text = _transactionStatus;
             } else if (indexPath.row == 1) {
                 cell.textLabel.text = @"Tanggal Awal";
-                cell.detailTextLabel.text = _startDate;
+                cell.detailTextLabel.text = _startDateString;
             } else if (indexPath.row == 2) {
                 cell.textLabel.text = @"Tanggal Akhir";
-                cell.detailTextLabel.text = _endDate;
+                cell.detailTextLabel.text = _endDateString;
             }
         }
     }
@@ -173,17 +172,7 @@
             AlertDatePickerView *datePicker = [AlertDatePickerView new];
             datePicker.delegate = self;
             datePicker.tag = 1;
-            
-            NSDateComponents* deltaComps = [NSDateComponents new];
-            [deltaComps setDay:-7];
-            NSDate* startDate = [[NSCalendar currentCalendar] dateByAddingComponents:deltaComps toDate:[NSDate date] options:0];
-            datePicker.startDate = _isOrderTransaction?startDate:[NSDate date];
-            if (_isOrderTransaction) {
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-                
-                datePicker.currentdate = [dateFormatter dateFromString:_startDate];
-            }
+            datePicker.currentdate = _startDate;
             [datePicker show];
             
         } else if (indexPath.row == 2) {
@@ -191,13 +180,7 @@
             AlertDatePickerView *datePicker = [AlertDatePickerView new];
             datePicker.delegate = self;
             datePicker.tag = 2;
-            datePicker.startDate = [NSDate date];
-            if (_isOrderTransaction) {
-                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-                [dateFormatter setDateFormat:@"dd/MM/yyyy"];
-                
-                datePicker.currentdate = [dateFormatter dateFromString:_endDate];
-            }
+            datePicker.currentdate = _endDate;
             [datePicker show];
             
         }
@@ -215,18 +198,20 @@
     [dateFormatter setDateFormat:@"dd/MM/yyyy"];
     
     if (datePicker.tag == 1) {
-        
-        _startDate = [dateFormatter stringFromDate:date];
+
+        _startDate = date;
+        _startDateString = [dateFormatter stringFromDate:date];
         
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:1]];
-        cell.detailTextLabel.text = _startDate;
+        cell.detailTextLabel.text = _startDateString;
         
     } else {
         
-        _endDate = [dateFormatter stringFromDate:date];
+        _endDate = date;
+        _endDateString = [dateFormatter stringFromDate:date];
         
         UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:2 inSection:1]];
-        cell.detailTextLabel.text = _endDate;
+        cell.detailTextLabel.text = _endDateString;
         
     }
 }
@@ -287,8 +272,8 @@
             
             [self.delegate filterOrderInvoice:_invoice
                             transactionStatus:status
-                                    startDate:_startDate
-                                      endDate:_endDate];
+                                    startDate:_startDateString
+                                      endDate:_endDateString];
         }
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }

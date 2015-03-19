@@ -41,6 +41,8 @@
 
 @property (nonatomic, copy, setter = setData:) NSDictionary *data;
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceButtons;
+
 //+ (id)allocinit;
 - (void)setViewControllers:(NSArray *)viewControllers animated:(BOOL)animated;
 - (void)setSelectedViewController:(UIViewController *)selectedViewController animated:(BOOL)animated;

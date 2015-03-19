@@ -10,7 +10,10 @@
 
 @protocol GeneralTableViewControllerDelegate <NSObject>
 
+@optional
 - (void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath;
+- (void)didSelectObject:(id)object;
+- (void)viewController:(UITableViewController *)viewController didSelectObject:(id)object;
 
 @end
 
@@ -19,9 +22,13 @@
 @property (strong, nonatomic) NSArray *objects;
 @property (strong, nonatomic) id selectedObject;
 @property (strong, nonatomic) NSIndexPath *senderIndexPath;
-@property (weak, nonatomic) id<GeneralTableViewControllerDelegate> delegate;
+@property (strong, nonatomic) id<GeneralTableViewControllerDelegate> delegate;
 @property UITableViewCellStyle tableViewCellStyle;
 
+@property NSInteger tag;
+
 @property BOOL enableSearch;
+
+@property (nonatomic) BOOL isPresentedViewController;
 
 @end

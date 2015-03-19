@@ -113,6 +113,10 @@ UIAlertViewDelegate>
     NoResult *_noResult;
     
     BOOL _navigationBarIsAnimating;
+    
+    CGPoint _keyboardPosition;
+    CGSize _keyboardSize;
+
 }
 
 #pragma mark - Initialization
@@ -133,6 +137,16 @@ UIAlertViewDelegate>
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateProductHeaderPosition:)
                                                  name:@"updateProductHeaderPosition" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 
@@ -263,7 +277,12 @@ UIAlertViewDelegate>
 
 #pragma mark - TableView Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return _isNoData ? 0 : _product.count;
+    NSInteger count = (_product.count%2==0)?_product.count/2:_product.count/2+1;
+#ifdef kTKPDPRODUCTHOTLIST_NODATAENABLE
+    return _isNoData ? 1 : count;
+#else
+    return _isNoData ? 0 : count;
+#endif
 }
 
 
@@ -293,6 +312,11 @@ UIAlertViewDelegate>
                 List *list = [_product objectAtIndex:indexsegment + i];
                 ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
                 (((GeneralProductCell*)cell).indexpath) = indexPath;
+                
+                UIView *view = ((UIView*)((GeneralProductCell*)cell).viewcell[i]);
+                CGRect newFrame = view.frame;
+                newFrame.size.height = 195;
+                view.frame = newFrame;
                 
                 ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.catalog_price?:list.product_price;
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
@@ -801,6 +825,18 @@ UIAlertViewDelegate>
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+#pragma mark - Keyboard
+- (void)keyboardWillShow:(NSNotification *)info {
+    _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
+    _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+    
+    CGPoint cgpoint = CGPointMake(0, _keyboardSize.height);
+    _table.contentOffset = cgpoint;
+}
+
+- (void)keyboardWillHide:(NSNotification *)info {
+ 
+}
 
 /*
  #pragma mark - Navigation

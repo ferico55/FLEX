@@ -24,6 +24,7 @@
 #import "URLCacheController.h"
 #import "ShopPageHeader.h"
 #import "NoResult.h"
+#import "NSString+HTML.h"
 
 @interface ShopTalkPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
@@ -258,16 +259,49 @@ UIAlertViewDelegate>
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             [((GeneralTalkCell*)cell).commentbutton setTitle:[NSString stringWithFormat:@"%@ %@", list.talk_total_comment, COMMENT_TALK] forState:UIControlStateNormal];
             
-            if([[_data objectForKey:@"nav"] isEqualToString:NAV_TALK_MYPRODUCT]) {
-                ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
+            NSString *followStatus;
+            if(!list.talk_follow_status) {
+                followStatus = TKPD_TALK_FOLLOW;
             } else {
+                followStatus = TKPD_TALK_UNFOLLOW;
+            }
+            [((GeneralTalkCell*)cell).unfollowButton setTitle:followStatus forState:UIControlStateNormal];
+            
+            if(![list.talk_own isEqualToString:@"1"]) {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = NO;
+            } else {
+                ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
+                ((GeneralTalkCell*)cell).buttonsDividers.hidden = YES;
+                
+                CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
+                newFrame.origin.x = 75;
+                ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
             }
             
             if ([list.talk_message length] > 30) {
-                NSRange stringRange = {0, MIN([list.talk_message length], 30)};
+                NSRange stringRange = {0, MIN([list.talk_message length], 50)};
                 stringRange = [list.talk_message rangeOfComposedCharacterSequencesForRange:stringRange];
-                ((GeneralTalkCell*)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [list.talk_message substringWithRange:stringRange]];
+                
+//                ((GeneralTalkCell*)cell).commentlabel.text = ;
+                UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+                
+                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+                style.lineSpacing = 5.0;
+                
+                NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
+                                             NSFontAttributeName: font,
+                                             NSParagraphStyleAttributeName: style,
+                                             };
+                
+                NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@...", [list.talk_message
+substringWithRange:stringRange]]
+                                                                                                attributes:attributes];
+                ((GeneralTalkCell*)cell).commentlabel.attributedText = productNameAttributedText;
+                ((GeneralTalkCell*)cell).commentlabel.numberOfLines = 0;
+                [((GeneralTalkCell*)cell).commentlabel sizeToFit];
+
+                
+                
             } else {
                 ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             }
@@ -562,6 +596,7 @@ UIAlertViewDelegate>
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
                 TKPD_TALK_SHOP_ID:list.talk_shop_id?:0,
                 TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image,
+                TKPD_TALK_PRODUCT_NAME:list.talk_product_name,
                 kTKPDDETAIL_DATAINDEXKEY : @(row)?:0
                 };
     [self.navigationController pushViewController:vc animated:YES];

@@ -19,7 +19,6 @@
 #import "ShopTalkViewController.h"
 
 #import "URLCacheController.h"
-#import "NoResult.h"
 
 #pragma mark - Profile Favorite Shop View Controller
 @interface ProfileFavoriteShopViewController ()<UITableViewDataSource, UITableViewDelegate, ProfileFavoriteShopCellDelegate>
@@ -45,7 +44,7 @@
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
-    NoResult *_noResult;
+    NoResultView *_noResultView;
     NSTimeInterval _timeinterval;
 }
 
@@ -83,7 +82,7 @@
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
-    _noResult = [NoResult new];
+    _noResultView = [NoResultView new];
     
     _list = [NSMutableArray new];
     
@@ -412,7 +411,7 @@
                     [_table reloadData];
                 } else {
                     _isnodata = YES;
-                    _table.tableFooterView = _noResult;
+                    _table.tableFooterView = _noResultView;
                 }
                 
             }

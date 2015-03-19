@@ -47,6 +47,7 @@
     BOOL _isRefreshView;
     BOOL _isNoData;
     NoResult *_noResult;
+    NoResultView *_noResultView;
     
     UIBarButtonItem *_barbuttonleft;
     UIBarButtonItem *_barbuttonright;
@@ -129,7 +130,7 @@
     
     _operationQueue = [NSOperationQueue new];
     _depositSummary = [NSMutableArray new];
-    _noResult = [NoResult new];
+    _noResultView = [NoResultView new];
     
     _table.delegate = self;
     _table.dataSource = self;
@@ -485,13 +486,13 @@
                 else
                 {
                     [_act stopAnimating];
-                    _table.tableFooterView = _noResult;
+                    _table.tableFooterView = _noResultView;
                 }
             }
             else
             {
                 [_act stopAnimating];
-                _table.tableFooterView = _noResult;
+                _table.tableFooterView = _noResultView;
             }
             
         }

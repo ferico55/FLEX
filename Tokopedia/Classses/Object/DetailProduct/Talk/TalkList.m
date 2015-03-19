@@ -10,4 +10,8 @@
 
 @implementation TalkList
 
+- (NSString*)talk_message {
+    return [_talk_message kv_decodeHTMLCharacterEntities];
+}
+
 @end

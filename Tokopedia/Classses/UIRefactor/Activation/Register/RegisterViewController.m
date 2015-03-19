@@ -87,6 +87,7 @@
     self.textfielddob.isBottomRoundCorner = YES;    
     self.textfieldpassword.isTopRoundCorner = YES;
     self.textfieldconfirmpass.isBottomRoundCorner = YES;
+    self.title = kTKPDREGISTER_NEW_TITLE;
     
     _datainput = [NSMutableDictionary new];
     _operationQueue =[NSOperationQueue new];
@@ -105,10 +106,10 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     /** SIGN UP **/
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Sign Up" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTag:11];
-    barbutton1.tintColor = [UIColor blackColor];
-    self.navigationItem.rightBarButtonItem = barbutton1;
+//    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:kTKPDREGISTER_TITLE style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+//    [barbutton1 setTag:11];
+//    barbutton1.tintColor = [UIColor blackColor];
+//    self.navigationItem.rightBarButtonItem = barbutton1;
     
     // keyboard notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -154,6 +155,42 @@
             {
                 //done button action
                 
+            }
+
+            default:
+                break;
+        }
+
+    }
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton*)sender;
+        switch (btn.tag) {
+            case 10:
+            {
+                // go to login
+                [self.navigationController popViewControllerAnimated:YES];
+                break;
+            }
+            case 11:
+            {
+                // go to terms of service
+                break;
+            }
+            case 12:{
+                // button agreement
+                if (!btn.selected)
+                    btn.selected = YES;
+                else btn.selected = NO;
+                if (_buttonagreement.selected) {
+                    [_datainput setObject:@(YES) forKey:kTKPDACTIVATION_DATAISAGREEKEY];
+                }
+                else{
+                    [_datainput setObject:@(NO) forKey:kTKPDACTIVATION_DATAISAGREEKEY];
+                }
+                break;
+            }
+            case 13 : {
+                
                 NSMutableArray *messages = [NSMutableArray new];
                 
                 NSString *fullname = [_datainput objectForKey:kTKPDREGISTER_APIFULLNAMEKEY];
@@ -179,9 +216,9 @@
                     confirmpass && ![confirmpass isEqualToString:@""]&&
                     [pass isEqualToString:confirmpass] && phoneCharCount>=6 && passCharCount >=6 &&
                     isagree) {
-                        [self configureRestKit];
-                        [self LoadDataAction:_datainput];
-                    }
+                    [self configureRestKit];
+                    [self LoadDataAction:_datainput];
+                }
                 else
                 {
                     if (!fullname || [fullname isEqualToString:@""]) {
@@ -238,39 +275,6 @@
                 NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
                 [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 
-                break;
-            }
-
-            default:
-                break;
-        }
-
-    }
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton*)sender;
-        switch (btn.tag) {
-            case 10:
-            {
-                // go to login
-                [self.navigationController popViewControllerAnimated:YES];
-                break;
-            }
-            case 11:
-            {
-                // go to terms of service
-                break;
-            }
-            case 12:{
-                // button agreement
-                if (!btn.selected)
-                    btn.selected = YES;
-                else btn.selected = NO;
-                if (_buttonagreement.selected) {
-                    [_datainput setObject:@(YES) forKey:kTKPDACTIVATION_DATAISAGREEKEY];
-                }
-                else{
-                    [_datainput setObject:@(NO) forKey:kTKPDACTIVATION_DATAISAGREEKEY];
-                }
                 break;
             }
             default:

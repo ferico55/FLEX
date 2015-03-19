@@ -94,6 +94,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _isnodataprofile = YES;
+        self.hidesBottomBarWhenPushed = YES;
     }
     return self;
 }
@@ -105,6 +106,8 @@
     
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationItem setTitle:kTKPDPROFILEEDIT_TITLE];
+    self.title = kTKPDPROFILEEDIT_TITLE;
+    
     
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
@@ -125,7 +128,7 @@
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:kTKPDPROFILESAVE style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [_barbuttonsave setTintColor:[UIColor blackColor]];
 	[_barbuttonsave setTag:11];
     self.navigationItem.rightBarButtonItem = _barbuttonsave;

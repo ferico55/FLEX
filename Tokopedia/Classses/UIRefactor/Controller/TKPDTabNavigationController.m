@@ -10,6 +10,7 @@
 #import "category.h"
 #import "TKPDTabNavigationController.h"
 #import "CategoryMenuViewController.h"
+#import "SearchResultShopViewController.h"
 
 @interface TKPDTabNavigationController () <CategoryMenuViewDelegate>{
 	UIView* _tabbar;
@@ -110,20 +111,10 @@
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    NSString *iconPath = [[NSBundle mainBundle] pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"];
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:iconPath];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:image
-                                                              style:UIBarButtonItemStylePlain
-                                                             target:self
-                                                             action:@selector(tapbutton:)];
-    } else {
-        _barbuttoncategory = [[UIBarButtonItem alloc] initWithImage:img
-                                                              style:UIBarButtonItemStylePlain
-                                                             target:self
-                                                             action:@selector(tapbutton:)];
-    }
+    _barbuttoncategory = [[UIBarButtonItem alloc] initWithTitle:@"Kategori"
+                                                          style:UIBarButtonItemStyleBordered
+                                                         target:self
+                                                         action:@selector(tapbutton:)];
     [_barbuttoncategory setTag:11];
     [_barbuttoncategory setEnabled:NO];
     self.navigationItem.rightBarButtonItem = _barbuttoncategory;
@@ -198,39 +189,8 @@
 	if (viewControllers != nil) {
 		NSUInteger count = viewControllers.count;
         [_segmentcontrol setSelectedSegmentIndex:0];
-//		if (count == 2) {
-//			_tabbar = _tabbartwos;
-//			_tabbar.hidden = NO;
-//			_tabbarthrees.hidden = YES;
-//			
-//		} else if (count == 3) {	//not default to 3
-//			_tabbar = _tabbarthrees;
-//			_tabbar.hidden = NO;
-//			_tabbartwos.hidden = YES;
-//			
-//		} else {
-//			_tabbar = nil;
-//			_tabbarthrees.hidden = YES;
-//			_tabbartwos.hidden = YES;
-//		}
 
 		[self setViewControllers:nil animated:NO];
-		
-//		if (count == 2) {
-//			_tabbar = _tabbartwos;
-//			_tabbar.hidden = NO;
-//			_tabbarthrees.hidden = YES;
-//			
-//		} else if (count == 3) {	//not default to 3
-//			_tabbar = _tabbarthrees;
-//			_tabbar.hidden = NO;
-//			_tabbartwos.hidden = YES;
-//			
-//		} else {
-//			_tabbar = nil;
-//			_tabbarthrees.hidden = YES;
-//			_tabbartwos.hidden = YES;
-//		}
 		
 		UIViewController* c;
 		for (NSInteger i = 0; i < count; i++) {
@@ -258,7 +218,6 @@
 		_viewControllers = nil;
 		_selectedViewController = nil;
 		_selectedIndex = -1;
-		//_navigationIndex = -1;
 	}
 }
 
@@ -298,10 +257,8 @@
 	
 	if (_viewControllers != nil) {
 		
-		//UIView* selecttabbar;
 		CGRect selectframe;
         
-		//selecttabbar = _tabbar;
 		selectframe = _tabbar.frame;
 		
 		UIViewController* deselect = _selectedViewController;
@@ -312,23 +269,14 @@
 			
 			UINavigationController* n = (UINavigationController*)select;
 			if (!n.navigationBarHidden && !n.navigationBar.hidden) {
-				
-				//CGRect rect = n.navigationBar.frame;
-				//rect = [self.view convertRect:rect fromView:n.navigationBar.superview];
-				//(*selectframe).origin.y = CGRectGetMaxY(rect);
 				selectframe.origin.y = inset.top;
-				//selectframe = CGRectOffset(selectframe, 0.0f, CGRectGetHeight(rect));
 				selectframe = CGRectZero;
 			} else {
-				//selectframe.origin.y = inset.top;
                 selectframe = CGRectZero;
 			}
 		} else {
             selectframe = CGRectZero;
-			//selectframe.origin.y = inset.top;
 		}
-		
-		//selecttabbar.frame = selectframe;
 		
 		int navigate = 0;
 
@@ -341,16 +289,19 @@
 		_selectedIndex = selectedIndex;
 		_selectedViewController = _viewControllers[selectedIndex];
 				
+        if ([_selectedViewController isKindOfClass:[SearchResultShopViewController class]]) {
+            self.navigationItem.rightBarButtonItem = nil;
+        } else {
+            self.navigationItem.rightBarButtonItem = _barbuttoncategory;
+        }
+        
 		if (animated && (deselect != nil) && (navigate != 0)) {
 			
 			if (deselect != nil) {
 				[deselect willMoveToParentViewController:nil];
-				//[deselect.view removeFromSuperview];
-				//[deselect removeFromParentViewController];
 			}
 			
 			[self addChildViewController:select];
-			//select.view.frame = _container.bounds;
 			
 			if (navigate == 0) {
 				select.view.frame = _container.bounds;	//dead code
@@ -362,12 +313,9 @@
 				}
 			}
 			
-			[self transitionFromViewController:deselect toViewController:select duration:0.3 options:(0 /*UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionShowHideTransitionViews | UIViewAnimationOptionTransitionFlipFromLeft*/) animations:^{
+			[self transitionFromViewController:deselect toViewController:select duration:0.3 options:(0) animations:^{
 				
 				if (navigate != 0) {
-					//tabbar0.frame = frame0;
-					//tabbar1.frame = frame1;
-					
 					if (navigate > 0) {
 						deselect.view.frame = CGRectOffset(_container.bounds, -(CGRectGetWidth(_container.bounds)), 0.0f);
 					} else {
@@ -455,21 +403,10 @@
             switch (sender.selectedSegmentIndex) {
                 //case 1:
                 case 0: {
-                    //if (_selectedIndex > 2) {
-                    //	index = (_navigationIndex != -1) ? _navigationIndex : 0;
-                    //}
-                    //if (_selectedIndex > 0) {
-                    //    index = _selectedIndex - 1;
-                    //} else {
-                    //    index = 0;
-                    //}
                     index = sender.selectedSegmentIndex;
                     break;
                 }
                 case 1: {
-                    //if (_selectedIndex < 3) {
-                    //	index = (_navigationIndex != -1) ? _navigationIndex : 3;
-                    //}
                     if (_hascatalog) {
                         index = sender.selectedSegmentIndex;
                     }
@@ -524,7 +461,8 @@
                 NSInteger d_id = [[_data objectForKey:kTKPDCONTROLLER_DATADEPARTMENTIDKEY] integerValue];
                 vc.data = @{kTKPDCONTROLLER_DATADEPARTMENTIDKEY:@(d_id)};
                 vc.delegate = self;
-                [self.navigationController pushViewController:vc animated:YES];
+                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
+                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
             }
             default:
                 break;
@@ -539,9 +477,6 @@
 - (UIEdgeInsets)contentInsetForContainerController
 {
 	UIEdgeInsets inset = UIEdgeInsetsZero;
-	
-	//if (self.parentViewController && [self.parentViewController isKindOfClass:[TKPDTabBarController class]]) {
-	//	UIEdgeInsets bar = self.TKPDTabBarController.contentInsetForChildController;
 	if ((self.parentViewController != nil) && [self.parentViewController respondsToSelector:@selector(contentInsetForChildController)]) {
 		UIEdgeInsets bar = [((id)self.parentViewController) contentInsetForChildController];
 		
@@ -580,7 +515,6 @@
 			}
 		}
 	}
-	
 	return inset;
 }
 
@@ -600,7 +534,9 @@
 #pragma mark - Category delegate
 -(void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
+                                                        object:nil
+                                                      userInfo:userInfo];
 }
 
 #pragma mark - Notification setsegmentcontroll
@@ -616,8 +552,6 @@
         [_segmentcontrol insertSegmentWithTitle:@"Shop" atIndex:1 animated:NO];
         _tabbar = _segmentcontrol;
         [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
-        //_tabbar.hidden = NO;
-        //_tabbarthrees.hidden = YES;
         _hascatalog = NO;
         _catalogproductbuttonview.hidden = NO;
     } else if (count == 3) {	//not default to 3
@@ -628,8 +562,6 @@
         [_segmentcontrol insertSegmentWithTitle:@"Shop" atIndex:2 animated:NO];
         _tabbar = _segmentcontrol;
         [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
-        //_tabbar.hidden = NO;
-        //_tabbartwos.hidden = YES;
         _hascatalog = YES;
     }
     if ( [[_data objectForKey:kTKPDCATEGORY_DATATYPEKEY]  isEqual: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)]) {
@@ -639,8 +571,6 @@
             [_segmentcontrol insertSegmentWithTitle:@"Product" atIndex:0 animated:NO];
             _tabbar = _segmentcontrol;
             [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
-            //_tabbar.hidden = NO;
-            //_tabbarthrees.hidden = YES;
             _hascatalog = NO;
             _catalogproductbuttonview.hidden = NO;
         } else if (count == 3) {	//not default to 3
@@ -650,8 +580,6 @@
             [_segmentcontrol insertSegmentWithTitle:@"Catalog" atIndex:1 animated:NO];
             _tabbar = _segmentcontrol;
             [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
-            //_tabbar.hidden = NO;
-            //_tabbartwos.hidden = YES;
             _hascatalog = YES;
         }
     }
@@ -682,20 +610,15 @@
 	return nil;
 }
 
-//static void* const kTKPDTabNavigationItemKey = (void*)&kTKPDTabNavigationItemKey;
-
 @dynamic TKPDTabNavigationItem;
 
 - (TKPDTabNavigationItem *)TKPDTabNavigationItem
 {
-	//return objc_getAssociatedObject(self, @selector(TKPDTabNavigationItem));
 	id o = objc_getAssociatedObject(self, @selector(TKPDTabNavigationItem));
-	
 	if (o == nil) {
 		o = self.tabBarItem;
 		[self setTKPDTabNavigationItem:o];
 	}
-	
 	return o;
 }
 

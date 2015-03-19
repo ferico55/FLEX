@@ -10,4 +10,8 @@
 
 @implementation TalkCommentList
 
+- (NSString*)comment_message {
+    return [_comment_message kv_decodeHTMLCharacterEntities];
+}
+
 @end

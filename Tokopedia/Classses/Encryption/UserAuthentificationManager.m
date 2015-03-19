@@ -13,29 +13,39 @@
     NSDictionary *_auth;
 }
 
-- (BOOL)isLogin {
-    
-    return YES;
-}
-
-- (id)getUserLoginData {
-    if([self isLogin]) {
+- (id)init
+{
+    self = [super init];
+    if (self) {
         TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
         _auth = [secureStorage keychainDictionary];
         _auth = [_auth mutableCopy];
     }
-    
-    return _auth;
+    return self;
 }
 
-- (NSString*)getUserId {
-    [self getUserLoginData];
+- (BOOL)isLogin
+{
+    if (![[self getUserId] isEqualToString:@"0"]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (id)getUserLoginData {
+    if([self isLogin]) {
+        return _auth;
+    } else {
+        return nil;
+    }
+}
+
+- (NSString *)getUserId {
     return [[_auth objectForKey:@"user_id"] stringValue] ?: @"0";
 }
 
-- (NSString*)getShopId {
-    [self getUserLoginData];
-    
+- (NSString *)getShopId {
     return [_auth objectForKey:@"shop_id"]?:@"0";
 }
 

@@ -18,7 +18,7 @@
 #import "DepartmentTree.h"
 
 #import "DetailProductViewController.h"
-#import "DetailCatalogViewController.h"
+#import "CatalogViewController.h"
 
 #import "GeneralProductCell.h"
 #import "SearchResultViewController.h"
@@ -27,12 +27,18 @@
 #import "HotlistResultViewController.h"
 #import "TKPDTabNavigationController.h"
 
-#import "NoResult.h"
-
 #import "URLCacheController.h"
 
 #pragma mark - Search Result View Controller
-@interface SearchResultViewController () <GeneralProductCellDelegate, TKPDTabNavigationControllerDelegate, UITableViewDataSource, UITableViewDelegate, SortViewControllerDelegate, FilterViewControllerDelegate>
+@interface SearchResultViewController ()
+<
+    GeneralProductCellDelegate,
+    TKPDTabNavigationControllerDelegate,
+    UITableViewDataSource,
+    UITableViewDelegate,
+    SortViewControllerDelegate,
+    FilterViewControllerDelegate
+>
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -151,7 +157,11 @@
     
     if ([_data objectForKey:API_DEPARTMENT_ID_KEY]) {
         self.toolbarView.hidden = YES;
-    }    
+    }
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
+                                                 name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
+                                               object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -370,12 +380,6 @@
     
     RKObjectMapping *departmentMapping = [RKObjectMapping mappingForClass:[DepartmentTree class]];
     [departmentMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APIHREFKEY, kTKPDSEARCH_APITREEKEY, kTKPDSEARCH_APIDIDKEY, kTKPDSEARCH_APITITLEKEY,kTKPDSEARCH_APICHILDTREEKEY]];
-    
-    /** redirect mapping & hascatalog **/
-    //RKObjectMapping *redirectMapping = [RKObjectMapping mappingForClass:[SearchRedirect class]];
-    //[redirectMapping addAttributeMappingsFromDictionary: @{kTKPDSEARCH_APIREDIRECTURLKEY:kTKPDSEARCH_APIREDIRECTURLKEY,
-    //                                                       kTKPDSEARCH_APIDEPARTEMENTIDKEY:kTKPDSEARCH_APIDEPARTEMENTIDKEY,
-    //                                                       kTKPDSEARCH_APIHASCATALOGKEY:kTKPDSEARCH_APIHASCATALOGKEY}];
 
     //add list relationship
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
@@ -412,18 +416,18 @@
     NSString *deptid =[_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"";
     BOOL isredirect = [[_params objectForKey:kTKPDSEARCH_DATAISREDIRECTKEY] boolValue];
     
-    NSMutableDictionary* param = [NSMutableDictionary new];
-    NSDictionary *paramDefault = @{
-              kTKPDSEARCH_APIACTIONTYPEKEY    :   type?:@"",
-              kTKPDSEARCH_APIPAGEKEY          :   @(_page),
-              kTKPDSEARCH_APILIMITKEY         :   @(kTKPDSEARCH_LIMITPAGE),
-              kTKPDSEARCH_APIORDERBYKEY       :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
-              kTKPDSEARCH_APILOCATIONKEY      :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
-              kTKPDSEARCH_APISHOPTYPEKEY      :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
-              kTKPDSEARCH_APIPRICEMINKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-              kTKPDSEARCH_APIPRICEMAXKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@""
-              };
-    [param addEntriesFromDictionary:paramDefault];
+    NSMutableDictionary *param = [NSMutableDictionary dictionaryWithDictionary:@{
+        kTKPDSEARCH_APIACTIONTYPEKEY    :   type?:@"",
+        kTKPDSEARCH_APIPAGEKEY          :   @(_page),
+        kTKPDSEARCH_APILIMITKEY         :   @(kTKPDSEARCH_LIMITPAGE),
+        kTKPDSEARCH_APIORDERBYKEY       :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+        kTKPDSEARCH_APILOCATIONKEY      :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+        kTKPDSEARCH_APISHOPTYPEKEY      :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+        kTKPDSEARCH_APIPRICEMINKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+        kTKPDSEARCH_APIPRICEMAXKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@"",
+        kTKPDSEARCH_APIDEPARTEMENTIDKEY :   [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"",
+    }];
+    
     if (query != nil && ![query isEqualToString:@""] && !isredirect) {
         [param setObject:query forKey:kTKPDSEARCH_APIQUERYKEY];
     }
@@ -431,50 +435,39 @@
         [param setObject:deptid forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     }    
     
-    //[_cachecontroller getFileModificationDate];
-	
-    //_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+    if (!_isrefreshview) {
+        _table.tableFooterView = _footer;
+        [_act startAnimating];
+    }
 
-    //if (_timeinterval > _cachecontroller.URLCacheInterval || _page>1 || _isrefreshview) {
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:kTKPDSEARCH_APIPATH
+                                                                parameters:[param encrypt]];
+    
+    NSTimer *timer;
+    
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestsuccess:mappingResult withOperation:operation];
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        [timer invalidate];
         
-        if (!_isrefreshview) {
-            _table.tableFooterView = _footer;
-            [_act startAnimating];
-        }
-
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDSEARCH_APIPATH parameters:[param encrypt]];
-        
-        NSTimer *timer;
-        
-        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            [self requestsuccess:mappingResult withOperation:operation];
-            _isrefreshview = NO;
-            [_refreshControl endRefreshing];
-            [timer invalidate];
-            
-        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            [self requestfailure:error];
-            _isrefreshview = NO;
-            [_refreshControl endRefreshing];
-            [timer invalidate];
-        }];
-        
-        [_operationQueue addOperation:_request];
-        
-        timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                                  target:self
-                                                selector:@selector(requesttimeout)
-                                                userInfo:nil
-                                                 repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    //}else {
-    //    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    //    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    //    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    //    NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-    //    NSLog(@"cache and updated in last 24 hours.");
-    //    [self requestfailure:nil];
-    //}
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [self requestfailure:error];
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        [timer invalidate];
+    }];
+    
+    [_operationQueue addOperation:_request];
+    
+    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                              target:self
+                                            selector:@selector(requesttimeout)
+                                            userInfo:nil
+                                             repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -482,53 +475,15 @@
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id stats = [result objectForKey:@""];
     _searchitem = stats;
-    BOOL status = [_searchitem.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
+    BOOL status = [_searchitem.status isEqualToString:kTKPDREQUEST_OKSTATUS];    
     if (status) {
-        //if (_page<=1 && !_isrefreshview) {
-        //    [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-        //    [_cachecontroller connectionDidFinish:_cacheconnection];
-        //    //save response data to plist
-        //    [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-        //}
-        
         [self requestprocess:object];
     }
 }
 
 -(void)requestfailure:(id)object
 {
-    //if (_timeinterval > _cachecontroller.URLCacheInterval || _page>1 || _isrefreshview) {
-        [self requestprocess:object];
-    //}
-    //else{
-    //    NSError* error;
-    //    NSData *data = [NSData dataWithContentsOfFile:_cachepath];
-    //    id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-    //    if (parsedData == nil && error) {
-    //        NSLog(@"parser error");
-    //    }
-    //    
-    //    NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-    //    for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
-    //        [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-    //    }
-    //    
-    //    RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-    //    NSError *mappingError = nil;
-    //    BOOL isMapped = [mapper execute:&mappingError];
-    //    if (isMapped && !mappingError) {
-    //        RKMappingResult *mappingresult = [mapper mappingResult];
-    //        NSDictionary *result = mappingresult.dictionary;
-    //        id stats = [result objectForKey:@""];
-    //        _searchitem = stats;
-    //        BOOL status = [_searchitem.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    //        
-    //        if (status) {
-    //            [self requestprocess:mappingresult];
-    //        }
-    //    }
-    //}
+    [self requestprocess:object];
 }
 
 -(void)requestprocess:(id)object
@@ -568,7 +523,7 @@
                     
                     if (_product.count == 0) {
                         [_act stopAnimating];
-                        NoResult *noResultView = [[NoResult alloc]initWithFrame:CGRectMake(0, 0, 320, 100)];
+                        NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, 320, 100)];
                         _table.tableFooterView = noResultView;
                     }
                     
@@ -671,12 +626,11 @@
     else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY])
     {
         // Go to catalog detail
-        DetailCatalogViewController *vc = [DetailCatalogViewController new];
-        NSInteger index = indexpath.section+2*(indexpath.row);
-        List *list = _product[index];
-        vc.data = @{kTKPDDETAIL_APICATALOGIDKEY : list.catalog_id?:@(0),
-                    kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-        [self.navigationController pushViewController:vc animated:YES];
+        NSInteger index = indexpath.section + 2 * indexpath.row;
+        CatalogViewController *controller = [CatalogViewController new];
+        controller.list = _product[index];
+        
+        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 
@@ -784,4 +738,16 @@
     _table.tableFooterView = _footer;
     [_act startAnimating];
 }
+
+#pragma mark - Category notification
+
+- (void)changeCategory:(NSNotification *)notification
+{
+    [_product removeAllObjects];
+    [_params setObject:[notification.userInfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY] forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
+    [self refreshView:nil];
+    _table.tableFooterView = _footer;
+    [_act startAnimating];
+}
+
 @end

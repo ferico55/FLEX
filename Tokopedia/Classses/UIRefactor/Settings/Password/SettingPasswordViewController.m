@@ -68,12 +68,13 @@
     [super viewDidLoad];
     
     [self.navigationController.navigationItem setTitle:kTKPDPROFILESETTINGPASSWORD_TITLE];
+    self.title = kTKPDPROFILESETTINGPASSWORD_TITLE;
     
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
-    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonsave setTintColor:[UIColor whiteColor]];
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Simpan" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [_barbuttonsave setTintColor:[UIColor blackColor]];
     _barbuttonsave.tag = 11;
     _act= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     UIBarButtonItem * barbuttonact = [[UIBarButtonItem alloc] initWithCustomView:_act];

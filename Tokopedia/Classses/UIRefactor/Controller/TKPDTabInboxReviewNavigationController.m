@@ -95,18 +95,18 @@
         _unloadViewControllers = nil;
     }
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-    }
-    else
-        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-    [barbutton1 setTag:10];
-    self.navigationItem.leftBarButtonItem = barbutton1;
+//    UIBarButtonItem *barbutton1;
+//    NSBundle* bundle = [NSBundle mainBundle];
+//    //TODO:: Change image
+//    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
+//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+//        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+//        barbutton1 = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+//    }
+//    else
+//        barbutton1 = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+//    [barbutton1 setTag:10];
+//    self.navigationItem.leftBarButtonItem = barbutton1;
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(enableButtonRead:)

@@ -73,13 +73,17 @@
     _receiptNumberLabel.text = _order.order_detail.detail_ship_ref_num;
     
     _operationQueue = [NSOperationQueue new];
-    
-    if (_order.order_detail.detail_order_status == ORDER_SHIPPING ||
-        _order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED ||
-        _order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
-        _order.order_detail.detail_order_status == ORDER_DELIVERED_CONFIRM) {
+
+    if (_is_allow_manage_tx && _order.order_detail.detail_ship_ref_num) {
+        if (_order.order_detail.detail_order_status >= ORDER_SHIPPING) {
+            _changeReceiptButton.enabled = YES;
+        } else {
+            _changeReceiptButton.enabled = NO;
+        }
+    } else {
         _changeReceiptButton.enabled = NO;
     }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated

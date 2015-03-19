@@ -52,12 +52,12 @@
 
 - (void)showAllButton
 {
-    _oneButtonView.hidden = NO;
+    _twoButtonsView.hidden = NO;
 }
 
 - (void)showTrackButton
 {
-    _twoButtonsView.hidden = NO;
+    _oneButtonView.hidden = NO;
 }
 
 - (void)hideDayLeftInformation

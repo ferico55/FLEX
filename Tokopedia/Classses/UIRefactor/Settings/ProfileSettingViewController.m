@@ -14,6 +14,7 @@
 #import "SettingBankAccountViewController.h"
 #import "SettingPrivacyViewController.h"
 #import "SettingNotificationViewController.h"
+#import "SettingUserProfileViewController.h"
 
 #pragma mark - Profile Setting View Controller
 @interface ProfileSettingViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -33,6 +34,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = TITLE_SETTING_PROFILE_MENU;
+        self.hidesBottomBarWhenPushed = YES;
     }
     return self;
 }
@@ -106,8 +108,10 @@
             }
             case 14:
             {
-                //privacy settings
-                SettingPrivacyViewController *vc = [SettingPrivacyViewController new];
+                //ubah profil
+//                SettingPrivacyViewController *vc = [SettingPrivacyViewController new];
+//                vc.data = @{kTKPD_AUTHKEY : auth};
+                SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
                 vc.data = @{kTKPD_AUTHKEY : auth};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
@@ -159,6 +163,8 @@
     
     cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
     cell.textLabel.text = _listMenu[indexPath.section][indexPath.row];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
     
     return cell;
 }
@@ -201,7 +207,7 @@
             case 3:
             {
                 //privacy settings
-                SettingPrivacyViewController *vc = [SettingPrivacyViewController new];
+                SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
                 vc.data = @{kTKPD_AUTHKEY : auth};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;

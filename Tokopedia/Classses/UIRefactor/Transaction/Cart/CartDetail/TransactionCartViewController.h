@@ -10,9 +10,12 @@
 
 #pragma mark - Transaction Cart Cell Delegate
 @protocol TransactionCartViewControllerDelegate <NSObject>
+
 @required
 - (void)didFinishRequestCheckoutData:(NSDictionary*)data;
 - (void)didFinishRequestBuyData:(NSDictionary*)data;
+
+@optional
 - (void)shouldBackToFirstPage;
 
 @end

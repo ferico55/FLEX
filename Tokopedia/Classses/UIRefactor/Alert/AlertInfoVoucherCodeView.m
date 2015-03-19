@@ -12,13 +12,14 @@
 
 - (void)awakeFromNib
 {
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+    UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
     style.alignment = NSTextAlignmentCenter;
     
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
+    NSDictionary *attributes = @{
+                                 NSForegroundColorAttributeName: [UIColor whiteColor],
                                  NSFontAttributeName: font,
                                  NSParagraphStyleAttributeName: style,
                                  };

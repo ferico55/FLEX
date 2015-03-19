@@ -2,39 +2,34 @@
 //  SalesTransactionListViewController.m
 //  Tokopedia
 //
-//  Created by Feizal Badri Asmoro on 2/5/15.
+//  Created by Feizal Badri Asmoro on 2/22/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
 #import "string_order.h"
 
-#import "SalesTransactionListViewController.h"
-#import "FilterSalesTransactionListViewController.h"
-#import "ChangeReceiptNumberViewController.h"
-#import "FilterShipmentStatusViewController.h"
-#import "DetailShipmentStatusViewController.h"
-#import "TrackOrderViewController.h"
-
-#import "StickyAlertView.h"
-
-#import "ShipmentStatusCell.h"
-#import "SalesOrderCell.h"
-
 #import "Order.h"
 #import "OrderTransaction.h"
 #import "ActionOrder.h"
+
+#import "ShipmentStatusCell.h"
+#import "StickyAlertView.h"
+
+#import "SalesTransactionListViewController.h"
+#import "FilterSalesTransactionListViewController.h"
+#import "TrackOrderViewController.h"
+#import "ChangeReceiptNumberViewController.h"
+#import "DetailShipmentStatusViewController.h"
 
 @interface SalesTransactionListViewController ()
 <
     UITableViewDataSource,
     UITableViewDelegate,
     ShipmentStatusCellDelegate,
-    ChangeReceiptNumberDelegate,
-    FilterSalesTransactionListDelegate
+    FilterSalesTransactionListDelegate,
+    ChangeReceiptNumberDelegate
 >
 {
-    NSMutableArray *_orders;
-    
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     RKResponseDescriptor *_responseDescriptorStatus;
@@ -49,39 +44,59 @@
     NSInteger _requestCount;
     NSString *_nextURI;
     NSTimer *_timer;
-    
+
     UIRefreshControl *_refreshControl;
     
+    NSMutableArray *_orders;
     Order *_resultOrder;
     OrderTransaction *_selectedOrder;
+    
+    NSString *_invoice;
+    NSString *_transactionStatus;
+    NSString *_startDate;
+    NSString *_endDate;
+    
+    NSDictionary *_auth;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footerView;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
 
 @end
 
 @implementation SalesTransactionListViewController
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
     
     _page = 1;
     _requestCount = 0;
     
+    _invoice = @"";
+    _transactionStatus = @"";
+    _startDate = @"";
+    _endDate = @"";
+    
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    _auth = [secureStorage keychainDictionary];
+
     _orders = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
     
+    _tableView.tableFooterView = _footerView;
+    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
+    
+    [_activityIndicatorView startAnimating];
+
     [self configureRestKit];
-    [self requestInvoice:nil transactionStatus:nil startDate:nil endDate:nil];
+    [self request];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
     self.title = @"Daftar Transaksi";
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
@@ -89,7 +104,7 @@
                                                                          target:self
                                                                          action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
-
+    
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
 }
 
@@ -97,7 +112,7 @@
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark - Tabel data source
+#pragma mark - Table data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -112,18 +127,14 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
-    CGFloat height = 0;
     if ([_resultOrder.result.order.is_allow_manage_tx boolValue] && order.order_detail.detail_ship_ref_num) {
-        if (order.order_detail.detail_order_status == ORDER_DELIVERED ||
-            order.order_detail.detail_order_status == ORDER_SHIPPING ||
-            order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED ||
-            order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID) {
-            height = tableView.rowHeight;
-        } else {
-            height = tableView.rowHeight - 45;
+        if (order.order_detail.detail_order_status >= ORDER_DELIVERED) {
+            return tableView.rowHeight - 45;
+        } else if (order.order_detail.detail_order_status >= ORDER_SHIPPING) {
+            return tableView.rowHeight;
         }
     }
-    return height;
+    return tableView.rowHeight - 45;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -136,16 +147,15 @@
                                                                options:nil];
         cell = [topLevelObjects objectAtIndex:0];
     }
-
+    
     cell.delegate = self;
     cell.indexPath = indexPath;
-    
+
     OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
     
     cell.invoiceNumberLabel.text = order.order_detail.detail_invoice;
-    
     cell.buyerNameLabel.text = order.order_customer.customer_name;
-    
+
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:order.order_customer.customer_image]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -163,35 +173,24 @@
     
     if ([_resultOrder.result.order.is_allow_manage_tx boolValue] && order.order_detail.detail_ship_ref_num) {
         
-        if (order.order_detail.detail_order_status == ORDER_DELIVERED) {
-            
-            [cell showTrackButton];
-            
-        } else if (order.order_detail.detail_order_status == ORDER_DELIVERED_CONFIRM) {
-            
+        if (order.order_detail.detail_order_status >= ORDER_DELIVERED) {
+            [cell hideAllButton];
+        } else if (order.order_detail.detail_order_status >= ORDER_SHIPPING) {
+            [cell showAllButton];
+        }
+        
+        if (order.order_detail.detail_order_status == ORDER_DELIVERED_CONFIRM) {
             cell.dateFinishLabel.hidden = NO;
             cell.finishLabel.hidden = NO;
-            
             if ([order.order_history count]) {
                 OrderHistory *history = [order.order_history objectAtIndex:0];
                 cell.dateFinishLabel.text = [history.history_status_date_full substringToIndex:[history.history_status_date_full length]-6];
             } else {
                 cell.dateFinishLabel.text = @"";
             }
-            
-        } else if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
-                   order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED ||
-                   order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID) {
-            
-            [cell showAllButton];
-            
-        } else {
-            
-            [cell hideAllButton];
-            
         }
     }
-    
+
     if ([order.order_history count]) {
         [cell setStatusLabelText:[[order.order_history objectAtIndex:0] history_seller_status]];
     } else {
@@ -208,26 +207,15 @@
         NSLog(@"%@", NSStringFromSelector(_cmd));
         if (_nextURI != NULL && ![_nextURI isEqualToString:@"0"] && _nextURI != 0) {
             _tableView.tableFooterView = _footerView;
-            [_activityIndicator startAnimating];
-            [self requestInvoice:nil transactionStatus:nil startDate:nil endDate:nil];
+            [_activityIndicatorView startAnimating];
+            [self request];
         } else {
             _tableView.tableFooterView = nil;
         }
     }
 }
 
-#pragma mark - Table cell delegate
-
-- (void)didTapTrackButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath
-{
-    OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
-    _selectedOrder = order;
-    
-    TrackOrderViewController *controller = [TrackOrderViewController new];
-    controller.order = _selectedOrder;
-        
-    [self.navigationController pushViewController:controller animated:YES];
-}
+#pragma mark - Cell delegate
 
 - (void)didTapReceiptButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath
 {
@@ -254,51 +242,29 @@
     
     DetailShipmentStatusViewController *controller = [DetailShipmentStatusViewController new];
     controller.order = order;
+    controller.is_allow_manage_tx = _resultOrder.result.order.is_allow_manage_tx;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-#pragma mark - Filter delegate
-
-- (void)filterOrderInvoice:(NSString *)invoice transactionStatus:(NSString *)transactionStatus startDate:(NSString *)startDate endDate:(NSString *)endDate
+- (void)didTapTrackButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath
 {
-    _page = 1;
-    _requestCount = 0;
+    OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
+    _selectedOrder = order;
     
-    [_orders removeAllObjects];
-    [_tableView reloadData];
+    TrackOrderViewController *controller = [TrackOrderViewController new];
+    controller.order = _selectedOrder;
     
-    [self configureRestKit];
-    [self requestInvoice:invoice transactionStatus:transactionStatus startDate:startDate endDate:endDate];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
-#pragma mark - Change receipt number delegate
+#pragma mark - Change receipt delegate
 
 - (void)changeReceiptNumber:(NSString *)receiptNumber
 {
     [self requestChangeReceiptNumber:receiptNumber];
 }
 
-#pragma mark - Actions
-
-- (IBAction)tap:(id)sender {
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton *)sender;
-        if (button.tag == 1) {
-            UINavigationController *navigationController = [[UINavigationController alloc] init];
-            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-            navigationController.navigationBar.translucent = NO;
-            navigationController.navigationBar.tintColor = [UIColor whiteColor];
-
-            FilterSalesTransactionListViewController *controller = [FilterSalesTransactionListViewController new];
-            controller.delegate = self;
-            navigationController.viewControllers = @[controller];
-            
-            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-        }
-    }
-}
-
-#pragma mark - Restkit methods
+#pragma mark - Rest Kit Methods
 
 - (void)configureRestKit
 {
@@ -521,35 +487,28 @@
     [_objectManager addResponseDescriptor:responseDescriptorStatus];
 }
 
-- (void)requestInvoice:(NSString *)invoice transactionStatus:(NSString *)transactionStatus startDate:(NSString *)startDate endDate:(NSString *)endDate
+- (void)request
 {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
-    
     if (_request.isExecuting) return;
     
     _requestCount++;
     
     _tableView.tableFooterView = _footerView;
-    [_activityIndicator startAnimating];
-    
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
+    [_activityIndicatorView startAnimating];
     
     NSDictionary* param = @{
                             API_ACTION_KEY           : API_GET_NEW_ORDER_LIST_KEY,
-                            API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
+                            API_USER_ID_KEY          : [_auth objectForKey:API_USER_ID_KEY],
                             API_PAGE_KEY             : [NSNumber numberWithInteger:_page],
-                            API_INVOICE_KEY          : invoice ?: @"",
-                            API_FILTER_KEY           : transactionStatus ?: @"",
-                            API_START_KEY            : startDate ?: @"",
-                            API_END_KEY              : endDate ?: @"",
+                            API_INVOICE_KEY          : _invoice ?: @"",
+                            API_FILTER_KEY           : _transactionStatus ?: @"",
+                            API_START_KEY            : _startDate ?: @"",
+                            API_END_KEY              : _endDate ?: @"",
                             };
-    
-    NSLog(@"\n\n\n\n%@\n\n\n\n", param);
     
     if (_page >= 1) {
         
-        [_activityIndicator startAnimating];
+        [_activityIndicatorView startAnimating];
         
         _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                         method:RKRequestMethodPOST
@@ -599,7 +558,8 @@
     }
     else
     {
-        
+        [_activityIndicatorView stopAnimating];
+        _tableView.tableFooterView = nil;
     }
 }
 
@@ -627,27 +587,23 @@
         
         NSLog(@"next page : %ld",(long)_page);
         
-        if (_orders.count == 0) {
-            _activityIndicator.hidden = YES;
-        }
-        
-        if (_page == 0) {
-            [_activityIndicator stopAnimating];
-            _tableView.tableFooterView = nil;
-        }
-        
+        [_activityIndicatorView stopAnimating];
+
+        _tableView.tableFooterView = nil;
         [_tableView reloadData];
     }
 }
 
 - (void)requestFailure:(id)object
 {
-    
+    [_activityIndicatorView stopAnimating];
+    _tableView.tableFooterView = nil;
 }
 
 - (void)cancel
 {
-    
+    [_activityIndicatorView stopAnimating];
+    _tableView.tableFooterView = nil;
 }
 
 #pragma mark - Reskit action methods
@@ -720,7 +676,49 @@
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Proses rubah sesi gagal."] delegate:self];
         [alert show];
         
-    }];    
+    }];
+}
+
+#pragma mark - Actions
+
+- (IBAction)tap:(id)sender
+{
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *button = (UIButton *)sender;
+        if (button.tag == 1) {
+            UINavigationController *navigationController = [[UINavigationController alloc] init];
+            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+            navigationController.navigationBar.translucent = NO;
+            navigationController.navigationBar.tintColor = [UIColor whiteColor];
+            
+            FilterSalesTransactionListViewController *controller = [FilterSalesTransactionListViewController new];
+            controller.delegate = self;
+            navigationController.viewControllers = @[controller];
+            
+            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+        }
+    }
+}
+
+#pragma mark - Filter delegate
+
+- (void)filterOrderInvoice:(NSString *)invoice transactionStatus:(NSString *)transactionStatus startDate:(NSString *)startDate endDate:(NSString *)endDate
+{
+    [self configureRestKit];
+    
+    _page = 1;
+    _requestCount = 0;
+    
+    _invoice = invoice;
+    _transactionStatus = transactionStatus;
+    _startDate = startDate;
+    _endDate = endDate;
+    
+    [_orders removeAllObjects];
+    [_tableView reloadData];
+    
+    [self configureRestKit];
+    [self request];
 }
 
 @end

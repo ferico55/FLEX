@@ -10,8 +10,6 @@
 
 #import "LoginViewController.h"
 #import "SearchViewController.h"
-
-//#import "TransactionCartViewController.h"
 #import "TransactionCartRootViewController.h"
 #import "MoreNavigationController.h"
 #import "MoreViewController.h"
@@ -29,7 +27,7 @@
 #import "TKPDSecureStorage.h"
 #import "URLCacheController.h"
 
-@interface MainViewController ()
+@interface MainViewController () <UITabBarControllerDelegate, LoginViewDelegate>
 {
     UITabBarController *_tabBarController;
     TKPDTabHomeViewController *_swipevc;
@@ -210,6 +208,7 @@
     
     NSArray* controllers = [NSArray arrayWithObjects:swipevcNav, categoryNavBar, searchNavBar, cartNavBar, moreNavBar, nil];
     _tabBarController.viewControllers = controllers;
+    _tabBarController.delegate = self;
     //tabBarController.tabBarItem.title = nil;
     [self adjusttabbar];
 }
@@ -377,17 +376,13 @@
 
 - (void)applicationLogin:(NSNotification*)notification
 {
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"reloadNotificationBar" object:self];
-
-    
-    //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    //id auth = [defaults loadCustomObjectWithKey:kTKPD_AUTHKEY];
-    //_login = auth;
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-	NSDictionary* auth = [secureStorage keychainDictionary];
+    NSDictionary* auth = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
 	_auth = [auth mutableCopy];
     
-    BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY]boolValue];
+    BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+    
+    //refreshing cart when first login
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"doRefreshingCart" object:nil userInfo:nil];
 
 	// Assume tabController is the tab controller
     // and newVC is the controller you want to be the new view controller at index 0
@@ -473,6 +468,31 @@
             [self doApplicationLogout];
         }
     }
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+    BOOL _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+//    if(!_isLogin) {
+//        if(tabBarController.selectedIndex == 3) {
+//            UINavigationController *navigationController = [[UINavigationController alloc] init];
+//            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+//            navigationController.navigationBar.translucent = NO;
+//            navigationController.navigationBar.tintColor = [UIColor whiteColor];
+//            
+//            
+//            LoginViewController *controller = [LoginViewController new];
+//            controller.delegate = _tabBarController.viewControllers[3];
+//            controller.isPresentedViewController = YES;
+//            controller.redirectViewController = _tabBarController.viewControllers[3];
+//            navigationController.viewControllers = @[controller];
+//            UIViewController *nav = _tabBarController.viewControllers[3];
+//            [nav presentViewController:navigationController animated:YES completion:nil];
+//        }
+//    }
+}
+
+-(void)redirectViewController:(id)viewController {
+    
 }
 
 @end

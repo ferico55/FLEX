@@ -11,6 +11,7 @@
 
 @protocol NotificationDelegate <NSObject>
 
+@optional
 - (void)didReceiveNotification:(Notification *)notification;
 
 @end

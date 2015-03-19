@@ -20,6 +20,6 @@
 @property (nonatomic, strong) NSString *catalog_name;
 @property (nonatomic, strong) CatalogPrice *catalog_price;
 @property (nonatomic, strong) NSArray *catalog_images;
-@property (nonatomic, strong) NSString *catalog_uri;
+@property (nonatomic, strong) NSString *catalog_url;
 
 @end

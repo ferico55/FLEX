@@ -84,24 +84,25 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
     
-    //initiate back button
-    //UIBarButtonItem *barbutton1;
-    //NSBundle* bundle = [NSBundle mainBundle];
-    _operationQueue = [NSOperationQueue new];
-    _page = 1;
+    self.title = [_data objectForKey:KTKPDMESSAGE_TITLEKEY];
     
-    
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
     barButtonItem.tag = 10;
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
+    _operationQueue = [NSOperationQueue new];
+    _page = 1;
     
     /** set table view datasource and delegate **/
     _table.delegate = self;
     _table.dataSource = self;
+    _table.contentInset = UIEdgeInsetsMake(5, 0, 0, 0);
     
     /** set table footer view (loading act) **/
     _table.tableHeaderView = _header;
@@ -111,13 +112,9 @@
         _isnodata = NO;
     }
     
-    _titlelabel.text = [_data objectForKey:KTKPDMESSAGE_TITLEKEY];
-    _titlebetween.text = nil;
     _buttonsend.enabled = NO;
     
     [self setMessagingView];
-
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated  {
@@ -143,7 +140,6 @@
 
 - (void) setMessagingView {
     _growingtextview = [[HPGrowingTextView alloc] initWithFrame:CGRectMake(10, 10, 240, 45)];
-//    [_growingtextview becomeFirstResponder];
     _growingtextview.isScrollable = NO;
     _growingtextview.contentInset = UIEdgeInsetsMake(0, 5, 0, 5);
     _growingtextview.layer.borderWidth = 0.5f;
@@ -156,7 +152,6 @@
     // you can also set the maximum height in points with maxHeight
     // textView.maxHeight = 200.0f;
     _growingtextview.returnKeyType = UIReturnKeyGo; //just as an example
-//    _growingtextview.font = [UIFont fontWithName:@"GothamBook" size:13.0f];
     _growingtextview.delegate = self;
     _growingtextview.internalTextView.scrollIndicatorInsets = UIEdgeInsetsMake(5, 0, 5, 0);
     _growingtextview.backgroundColor = [UIColor whiteColor];
@@ -194,72 +189,33 @@
 }
 
 
--(void)configureCell:(id)cell atIndexPath:(NSIndexPath*)indexPath {
-    InboxMessageDetailCell* ccell = (InboxMessageDetailCell*)cell;
-    
+-(void)configureCell:(id)aCell atIndexPath:(NSIndexPath*)indexPath {
+    InboxMessageDetailCell *cell = (InboxMessageDetailCell*)aCell;
     if(_messages.count > indexPath.row) {
-        InboxMessageDetailList *messagedetaillist = _messages[indexPath.row];
-        
-        ccell.messageLabel.text = messagedetaillist.message_reply;
-        ccell.timeLabel.text = messagedetaillist.message_reply_time_fmt;
-        
-        if([messagedetaillist.message_action isEqualToString:@"1"]) {
-            ccell.sent = YES;
-//            ccell.avatarImageView.image = [UIImage imageNamed:@"default-boy.png"];
-            ccell.avatarImageView.image = nil;
+        InboxMessageDetailList *message = _messages[indexPath.row];
+        cell.messageLabel.text = message.message_reply;
+        cell.timeLabel.text = message.message_reply_time_fmt;
+        if([message.message_action isEqualToString:@"1"]) {
+            cell.sent = YES;
+            cell.avatarImageView.image = nil;
         } else {
-            ccell.sent = NO;
-//            ccell.avatarImageView.image = [UIImage imageNamed:@"default-girl.png"];
+            cell.sent = NO;
+            cell.avatarImageView.image = nil;
             
-            ccell.avatarImageView.image = nil;
-            
-            if([messagedetaillist.user_image isEqualToString:@"0"]) {
-                ccell.avatarImageView.image = [UIImage imageNamed:@"default-boy.png"];
+            if([message.user_image isEqualToString:@"0"]) {
+                cell.avatarImageView.image = [UIImage imageNamed:@"default-boy.png"];
             } else {
-                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:messagedetaillist.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-                [ccell.avatarImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    //NSLOG(@"thumb: %@", thumb);
-                    [ccell.avatarImageView setImage:image];
-                    
-#pragma clang diagnostic pop
-                    
-                } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                    
-                }];
+                NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:message.user_image]
+                                                              cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                          timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+                [cell.avatarImageView setImageWithURLRequest:request
+                                            placeholderImage:[UIImage imageNamed:@"default-boy.png"]
+                                                     success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                    [cell.avatarImageView setImage:image];
+                } failure:nil];
             }
-        
         }
-        
-        
-//        if(messagedetaillist.is_not_delivered) {
-//            ccell.avatarImageView.image = [UIImage imageNamed:@"icon_report.png"];
-//        } else {
-//            ccell.avatarImageView.image = nil;
-//        }
     }
-
-    
-}
-
-#pragma mark - UITableView Delegate
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-//    if (_isnodata) {
-//        cell.backgroundColor = [UIColor whiteColor];
-//    }
-//    
-//    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-//    if (row == indexPath.row) {
-//        NSLog(@"%@", NSStringFromSelector(_cmd));
-//        
-//        if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
-//            /** called if need to load next page **/
-//            //NSLog(@"%@", NSStringFromSelector(_cmd));
-//            [self configureRestKit];
-//            [self loadData];
-//        }
-//    }
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -371,8 +327,6 @@
         
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
-//        [self requestfailure:error];
-
         _table.tableFooterView = nil;
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
@@ -435,10 +389,30 @@
                 InboxMessageDetailBetween *m_between = between[i];
                 [between_name addObject:m_between.user_name];
             }
-            NSString *joinedString = [between_name componentsJoinedByString:@","];
-            NSString *btw = [NSString stringWithFormat:@"%@ : %@", @"Between", joinedString];
             
-            _titlebetween.text = btw;
+            NSString *btw;
+            if (between_name.count == 2) {
+                btw = [NSString stringWithFormat:@"Between : %@ dan %@", between_name[1], between_name[0]];
+            } else {
+                btw = [NSString stringWithFormat:@"Between : %@", [between_name componentsJoinedByString:@", "]];
+            }
+            
+            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 206, 44)];
+            label.numberOfLines = 2;
+            label.font = [UIFont systemFontOfSize: 14.0f];
+            label.textAlignment = NSTextAlignmentCenter;
+            label.textColor = [UIColor whiteColor];
+            
+            NSString *title = [NSString stringWithFormat:@"%@\n%@", [_data objectForKey:KTKPDMESSAGE_TITLEKEY], btw];
+            
+            NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
+            [attributedText addAttribute:NSFontAttributeName
+                                   value:[UIFont boldSystemFontOfSize: 16.0f]
+                                   range:NSMakeRange(0, [[_data objectForKey:KTKPDMESSAGE_TITLEKEY] length])];
+            
+            label.attributedText = attributedText;
+            
+            self.navigationItem.titleView = label;
             
             [_table setContentOffset:CGPointMake(0, CGFLOAT_MAX)];
         }
@@ -506,13 +480,11 @@
 
 #pragma mark - IBAction
 - (IBAction)tap :(id)sender {
-//    [_growingtextview resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         
         switch (btn.tag) {
             case 10:{
-//                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
@@ -537,7 +509,6 @@
                 if(_growingtextview.text.length > 0) {
                     NSInteger lastindexpathrow = [_messages count];
                     
-//                    NSMutableArray =  addObjectsFromArray
                     InboxMessageDetailList *sendmessage = [InboxMessageDetailList new];
                     sendmessage.message_reply = _growingtextview.text;
                     
@@ -729,16 +700,5 @@
 - (void)requestsendtimeout {
     
 }
-
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

@@ -10,4 +10,8 @@
 
 @implementation CatalogShops
 
+- (NSString*)shop_name {
+    return [_shop_id kv_decodeHTMLCharacterEntities];
+}
+
 @end
