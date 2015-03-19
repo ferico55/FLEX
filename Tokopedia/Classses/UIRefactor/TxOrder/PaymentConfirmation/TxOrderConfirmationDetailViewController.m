@@ -8,6 +8,8 @@
 
 #import "string_tx_order.h"
 
+#import "NavigateViewController.h"
+
 #import "TxOrderConfirmationDetailViewController.h"
 #import "TxOrderConfirmationDetailHeaderView.h"
 #import "TxOrderConfirmationProductCell.h"
@@ -17,10 +19,19 @@
 #import "TxOrderConfirmationList.h"
 #import "TxOrderPaymentViewController.h"
 
-@interface TxOrderConfirmationDetailViewController ()<UITableViewDataSource,UITableViewDelegate, TxOrderPaymentViewControllerDelegate>
+@interface TxOrderConfirmationDetailViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    TxOrderPaymentViewControllerDelegate,
+    TxOrderConfirmationDetailHeaderViewDelegate,
+    TxOrderConfirmationProductCellDelegate
+>
 {
     NSArray *_list;
     BOOL _isNodata;
+    
+    NavigateViewController *_navigate;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
@@ -38,18 +49,40 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _navigate = [NavigateViewController new];
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [backBarButtonItem setTintColor:[UIColor whiteColor]];
+    backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
     [self setData];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.title = @"Detail Transaksi";
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    self.title = @" ";
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - View Action
 - (IBAction)tap:(id)sender {
     UIButton *button = (UIButton*)sender;
     if (button.tag == 10) {
-        [_delegate shouldCancelOrderAtIndexPath:_indexPath];
-        [self.navigationController popViewControllerAnimated:YES];
+        [_delegate shouldCancelOrderAtIndexPath:_indexPath viewController:self];
     }
     else
     {
@@ -61,9 +94,20 @@
     }
 }
 
--(void)shouldPopViewController
+
+#pragma mark - Cell Delegate
+-(void)didTapImageViewAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.navigationController popViewControllerAnimated:NO];
+    TxOrderConfirmationListOrder *orderList = _list[indexPath.section];
+    OrderProduct *product = orderList.order_products[indexPath.row];
+    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+}
+
+-(void)didTapProductAtIndexPath:(NSIndexPath *)indexPath
+{
+    TxOrderConfirmationListOrder *orderList = _list[indexPath.section];
+    OrderProduct *product = orderList.order_products[indexPath.row];
+    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
 }
 
 #pragma mark - Table View Data Source
@@ -141,6 +185,8 @@
     TxOrderConfirmationDetailHeaderView *headerView = [TxOrderConfirmationDetailHeaderView newview];
     headerView.shopNameLabel.text = orderShop.shop_name;
     headerView.invoiceLabel.text = orderDetail.detail_invoice;
+    headerView.delegate = self;
+    headerView.section = section;
     
     return headerView;
 }
@@ -164,6 +210,30 @@
     }
 }
 
+#pragma mark - AlertDelegate
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        //[self actionCancelConfirmationObject:_objectProcessingCancel];
+        [_delegate didTapAlertCancelOrder];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+    //[_objectProcessingCancel removeAllObjects];
+}
+
+#pragma mark - Header Delegate
+-(void)goToInvoiceAtSection:(NSInteger)section
+{
+    TxOrderConfirmationListOrder *orderList = _list[section];
+    [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:orderList.order_detail.detail_pdf_uri];
+}
+
+-(void)goToShopAtSection:(NSInteger)section
+{
+    TxOrderConfirmationListOrder *orderList = _list[section];
+    [_navigate navigateToShopFromViewController:self withShopID:orderList.order_shop.shop_id];
+}
+
 #pragma mark - Methods
 -(void)setData
 {
@@ -181,6 +251,7 @@
     _grandTotalLabel.text = detailOrder.confirmation.left_amount;
 }
 
+
 -(UITableViewCell*)cellProductAtIndexPath:(NSIndexPath*)indexPath
 {
     NSString *cellid = TRANSACTION_ORDER_CONFIRMATION_PRODUCT_CELL_IDENTIFIER;
@@ -188,6 +259,7 @@
     TxOrderConfirmationProductCell *cell = (TxOrderConfirmationProductCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
     if (cell == nil) {
         cell = [TxOrderConfirmationProductCell newCell];
+        cell.delegate = self;
     }
     
     TxOrderConfirmationListOrder *orderList = _list[indexPath.section];
@@ -214,6 +286,9 @@
 #pragma clang diagnosti c pop
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
+    
+    cell.indexPath = indexPath;
+    
     return cell;
 }
 

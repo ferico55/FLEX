@@ -11,7 +11,7 @@
 @interface OrderButton : NSObject
 
 @property (nonatomic) NSInteger button_open_dispute;
-@property (nonatomic) NSInteger button_res_center_url;
+@property (nonatomic, strong) NSString *button_res_center_url;
 @property (nonatomic) NSInteger button_open_time_left;
 @property (nonatomic) NSInteger button_res_center_go_to;
 @property (nonatomic) NSInteger button_upload_proof;

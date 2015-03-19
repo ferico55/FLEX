@@ -76,4 +76,49 @@
     return nil;
 }
 
++ (NSString*) timeLeftSinceDate:(NSDate *)dateT
+{
+    NSString *timeLeft;
+    
+    NSDate *today10am =[NSDate date];
+    
+    NSInteger seconds = [today10am timeIntervalSinceDate:dateT];
+    
+    NSInteger days = (int) (floor(seconds / (3600 * 24)));
+    if(days) seconds -= days * 3600 * 24;
+    
+    NSInteger hours = (int) (floor(seconds / 3600));
+    if(hours) seconds -= hours * 3600;
+    
+    NSInteger minutes = (int) (floor(seconds / 60));
+    if(minutes) seconds -= minutes * 60;
+    
+    if(days) {
+        if (days<0) {
+            days = days*-1;
+        }
+        timeLeft = [NSString stringWithFormat:@"%ld hari yang lalu", (long)days];
+    }
+    else if(hours) {
+        if (hours<0) {
+            hours = hours*-1;
+        }
+        timeLeft = [NSString stringWithFormat: @"%ld jam yang lalu", (long)hours];
+    }
+    else if(minutes) {
+        if (minutes<0) {
+            minutes = minutes*-1;
+        }
+        timeLeft = [NSString stringWithFormat: @"%ld menit yang lalu", (long)minutes];
+    }
+    else if(seconds)
+    {
+        if (seconds<0) {
+            seconds = seconds*-1;
+        }
+        timeLeft = [NSString stringWithFormat: @"%lds detik yang lalu", (long)seconds];
+    }
+    return timeLeft;
+}
+
 @end

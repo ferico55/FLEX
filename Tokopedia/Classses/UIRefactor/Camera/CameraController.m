@@ -93,18 +93,34 @@
             [_picker.navigationController.navigationBar addSubview:statusBarView];
         }
         
-        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        if (_isTakePicture) {
+            if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+            {
+                [self presentPickerSourceTypeCamera];
+            }
+            else
+            {
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"No Camera" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                [alert show];
+                [self dismissViewControllerAnimated:NO completion:nil];
+            }
+        }
+        else
         {
-            UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:
-                                    @"Camera",
-                                    @"Library",
-                                    nil];
-            popup.tag = 1;
-            [popup showInView:[UIApplication sharedApplication].keyWindow];
-        }else
-        {
-            [self presentPickerSourceTypePhotoLibrary];
-
+            if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+            {
+                UIActionSheet *popup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:nil otherButtonTitles:
+                                        @"Camera",
+                                        @"Library",
+                                        nil];
+                popup.tag = 1;
+                [popup showInView:[UIApplication sharedApplication].keyWindow];
+            }
+            else
+            {
+                [self presentPickerSourceTypePhotoLibrary];
+                
+            }
         }
     }
 }
@@ -197,7 +213,7 @@
     else{
         imageDataResizedImage =  UIImagePNGRepresentation(resizedImage);
     }
-    
+        
     [_data setValue:@{
                       kTKPDCAMERA_DATARAWPHOTOKEY:rawImage?:@"",
                       kTKPDCAMERA_DATAMEDIATYPEKEY:mediaType?:@"",
@@ -207,9 +223,8 @@
                       } forKey:kTKPDCAMERA_DATAPHOTOKEY];
     
     [_delegate didDismissCameraController:self withUserInfo:_data];
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }];
+    
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker

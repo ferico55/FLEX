@@ -31,6 +31,8 @@
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *twoButtons;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UIView *markView;
+@property (weak, nonatomic) IBOutlet UIButton *oneButton;
+@property (weak, nonatomic) IBOutlet UIView *oneButtonView;
 
 +(id)newCell;
 @property NSIndexPath *indexPath;

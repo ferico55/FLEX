@@ -1,5 +1,5 @@
 //
-//  TxOrderInvoiceViewController.h
+//  WebViewInvoiceViewController.h
 //  Tokopedia
 //
 //  Created by IT Tkpd on 2/13/15.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TxOrderInvoiceViewController : UIViewController
+@interface WebViewInvoiceViewController : UIViewController
 
 @property (nonatomic, strong) NSString *urlAddress;
 

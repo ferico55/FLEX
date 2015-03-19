@@ -30,7 +30,7 @@
                     <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0C7-Rd-VAb">
                         <rect key="frame" x="10" y="5" width="300" height="188"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2EG-ut-MZN" userLabel="Invoice View">
+                            <view tag="10" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2EG-ut-MZN" userLabel="Invoice View">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="51"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INV/20150113/XV/I/8327373" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S27-Xw-i9v">
@@ -55,19 +55,27 @@
                                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="26 Januari 2015 10:13" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q12-uK-cRI">
-                                        <rect key="frame" x="10" y="27" width="104" height="17"/>
+                                        <rect key="frame" x="10" y="27" width="169" height="17"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                         <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="G8C-kZ-p1X" appends="YES" id="G9l-dt-4Gd"/>
+                                </connections>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5QU-W0-oEF" userLabel="User View">
+                            <view tag="11" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5QU-W0-oEF" userLabel="User View">
                                 <rect key="frame" x="0.0" y="51" width="300" height="62"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_default_shop.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="kzr-BZ-Moe">
+                                    <imageView tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_default_shop.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="kzr-BZ-Moe">
                                         <rect key="frame" x="10" y="9" width="44" height="44"/>
+                                        <gestureRecognizers/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="VBr-af-EVW" appends="YES" id="iLr-e5-JTs"/>
+                                        </connections>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pembelian dari" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PaP-wX-LL2">
                                         <rect key="frame" x="62" y="14" width="140" height="17"/>
@@ -87,8 +95,12 @@
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="ZBv-X1-SOK" appends="YES" id="1Ps-4X-F0U"/>
+                                </connections>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XBG-Y8-6Zp" userLabel="Price View">
+                            <view tag="12" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XBG-Y8-6Zp" userLabel="Price View">
                                 <rect key="frame" x="0.0" y="113" width="300" height="76"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Solusi terakhir" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YQS-Yx-xVc">
@@ -112,6 +124,10 @@
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="f77-OD-62t" appends="YES" id="3CC-kX-ruQ"/>
+                                </connections>
                             </view>
                         </subviews>
                     </view>
@@ -129,6 +145,26 @@
             </connections>
             <point key="canvasLocation" x="366" y="334"/>
         </tableViewCell>
+        <tapGestureRecognizer id="G8C-kZ-p1X">
+            <connections>
+                <action selector="gesture:" destination="GyV-91-6B2" id="6QN-ci-GqH"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="ZBv-X1-SOK">
+            <connections>
+                <action selector="gesture:" destination="GyV-91-6B2" id="G3c-ch-6bF"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="f77-OD-62t">
+            <connections>
+                <action selector="gesture:" destination="GyV-91-6B2" id="pus-G8-aJ4"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="VBr-af-EVW">
+            <connections>
+                <action selector="gesture:" destination="GyV-91-6B2" id="zzy-Zc-qwu"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>

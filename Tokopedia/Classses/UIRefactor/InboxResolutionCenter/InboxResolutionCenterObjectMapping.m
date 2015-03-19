@@ -28,7 +28,10 @@
                                                            API_LAST_TROUBLE_TYPE_KEY,
                                                            API_LAST_SHOW_ACCEPT_ADMIN_BUTTON_KEY,
                                                            API_LAST_CREATE_TIME_KEY,
-                                                           API_LAST_FLAG_RECIEVED_KEY
+                                                           API_LAST_FLAG_RECIEVED_KEY,
+                                                           API_LAST_SHOW_ACCEPT_BUTTON_KEY,
+                                                           API_LAST_SHOW_INPUT_RESI_BUTTON_KEY,
+                                                           API_LAST_SHOW_FINISH_BUTTON_KEY
                                                            ]];
     return resolutionLastMapping;
 }
@@ -102,6 +105,7 @@
     RKObjectMapping *resolutionConversationMapping = [RKObjectMapping mappingForClass:[ResolutionConversation class]];
     [resolutionConversationMapping addAttributeMappingsFromArray:@[
                                                                    API_CONVERSATION_REMARK_KEY,
+                                                                   API_CONVERSATION_ID_KEY,
                                                                    API_CONVERSATION_TIME_AGO_KEY,
                                                                    API_CONVERSATION_CREATE_TIME_KEY,
                                                                    API_CONVERSATION_REFUND_AMOUNT_KEY,

@@ -96,6 +96,9 @@
     _atachmentView.hidden = YES;
     
 }
+- (IBAction)gesture:(id)sender {
+    [_delegate goToShopOrProfileIndexPath:_indexPath];
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];

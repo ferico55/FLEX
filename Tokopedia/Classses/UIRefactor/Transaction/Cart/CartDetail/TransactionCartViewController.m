@@ -9,6 +9,7 @@
 #import "string_product.h"
 #import "string_transaction.h"
 #import "NoResult.h"
+#import "NavigateViewController.h"
 
 #import "TransactionObjectMapping.h"
 
@@ -91,6 +92,8 @@
     
     TransactionObjectMapping *_mapping;
     BOOL _isLoadingRequest;
+    
+    NavigateViewController *_navigate;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *voucherCodeView;
@@ -193,6 +196,7 @@
     _stockPartialDetail = [NSMutableArray new];
     _listProductFirstObjectIndexPath =[NSMutableArray new];
     _mapping = [TransactionObjectMapping new];
+    _navigate = [NavigateViewController new];
 
     _isUsingSaldoTokopedia = NO;
     _isUsingSaldoTokopediaButton.layer.borderColor = [UIColor blackColor].CGColor;
@@ -1823,6 +1827,24 @@
     [self configureRestKitActionEditProductCart];
     [self requestActionEditProductCart:_dataInput];
 }
+#pragma mark - Cell Delegate
+-(void)didTapImageViewAtIndexPath:(NSIndexPath *)indexPath
+{
+    TransactionCartList *list = _list[indexPath.section];
+    NSInteger indexProduct = indexPath.row;
+    NSArray *listProducts = list.cart_products;
+    ProductDetail *product = listProducts[indexProduct];
+    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+}
+
+-(void)didTapProductAtIndexPath:(NSIndexPath *)indexPath
+{
+    TransactionCartList *list = _list[indexPath.section];
+    NSInteger indexProduct = indexPath.row;
+    NSArray *listProducts = list.cart_products;
+    ProductDetail *product = listProducts[indexProduct];
+    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+}
 
 #pragma mark - Methods
 
@@ -2341,10 +2363,14 @@
         ((TransactionCartCell*)cell).delegate = self;
     }
     TransactionCartList *list = _list[indexPath.section-1];
-    NSInteger indexProduct = indexPath.row;//(list.cart_error_message_1)?indexPath.row-1:indexPath.row; //TODO:: adjust when error message appear
+    NSInteger indexProduct = indexPath.row;
     NSArray *listProducts = list.cart_products;
     ProductDetail *product = listProducts[indexProduct];
     cell.backgroundColor = (_indexPage==0)?[UIColor whiteColor]:[UIColor colorWithRed:249.0f/255.0f green:249.0f/255.0f blue:249.0f/255.0f alpha:1];
+    
+    cell.productView.userInteractionEnabled = (_indexPage==0);
+    cell.imageView.userInteractionEnabled = (_indexPage==0);
+    
     [((TransactionCartCell*)cell).productNameLabel setText:product.product_name animated:YES];
     if (_indexPage==1) ((TransactionCartCell*)cell).productNameLabel.textColor= [UIColor blackColor];
     [((TransactionCartCell*)cell).productPriceLabel setText:product.product_total_price_idr animated:YES];
@@ -2363,7 +2389,7 @@
     
     UIImageView *thumb = ((TransactionCartCell*)cell).productThumbImageView;
     thumb.image = nil;
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         [thumb setImage:image animated:YES];

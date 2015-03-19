@@ -351,7 +351,7 @@
 	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
         
         _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDHOMEHOTLIST_APIPATH parameters:[param encrypt]];
-        
+    
         NSTimer *timer;
         //[_cachecontroller clearCache];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -511,6 +511,7 @@
                     _table.tableFooterView = nil;
                 }
             }
+            
             else
             {
                 [_act stopAnimating];

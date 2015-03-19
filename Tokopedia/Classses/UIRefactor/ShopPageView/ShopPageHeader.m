@@ -171,17 +171,17 @@
                                  NSParagraphStyleAttributeName: style,
                                  };
 
-    NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:_shop.result.info.shop_description
+    NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:_shop.result.info.shop_description?:@""
                                                                                     attributes:attributes];
     _descriptionView.descriptionLabel.attributedText = productNameAttributedText;
     _descriptionView.descriptionLabel.textAlignment = NSTextAlignmentCenter;
     
-    _statView.locationLabel.text = [NSString stringWithFormat:@"     %@", _shop.result.info.shop_location];
+    _statView.locationLabel.text = [NSString stringWithFormat:@"     %@", _shop.result.info.shop_location?:@""];
     UIImageView *iconLocation = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon_location.png"]];
     iconLocation.frame = CGRectMake(0, 0, 20, 20);
     [_statView.locationLabel addSubview:iconLocation];
     
-    _statView.openStatusLabel.text = [NSString stringWithFormat:@"Last Online : %@", _shop.result.info.shop_owner_last_login];
+    _statView.openStatusLabel.text = [NSString stringWithFormat:@"Last Online : %@", _shop.result.info.shop_owner_last_login?:@""];
     
     UIFont *boldFont = [UIFont fontWithName:@"GothamMedium" size:15];
     
@@ -195,7 +195,7 @@
     
     [_statView.statLabel setAttributedText:attributedText];
     // Set cover image
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_cover]
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_cover?:@""]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
@@ -211,7 +211,7 @@
     } failure:nil];
     
     //set shop image
-    NSURLRequest* requestAvatar = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_avatar]
+    NSURLRequest* requestAvatar = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.info.shop_avatar?:@""]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     

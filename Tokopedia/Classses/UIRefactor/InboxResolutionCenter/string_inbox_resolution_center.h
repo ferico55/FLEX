@@ -32,6 +32,12 @@ typedef enum {
 
 #define API_ACTION_KEY @"action"
 #define API_RESOLUTION_ID_KEY @"resolution_id"
+#define API_SHIPPING_REF_KEY @"shipping_ref"
+#define API_REPLAY_MESSAGE_KEY @"reply_msg"
+#define API_REMARK_KEY @"remark"
+#define API_SHIPMENT_KEY @"shipment"
+#define API_SHIPMENT_ID_KEY @"shipment_id"
+#define API_CONVERSATION_ID_KEY @"conversation_id"
 #define API_LAST_UPDATE_TIME_KEY @"last_ut"
 #define API_START_UPDATE_TIME_KEY @"start_ut"
 #define API_STATUS_KEY @"status"
@@ -47,14 +53,26 @@ typedef enum {
 #define API_REMARK_KEY @"remark"
 #define API_PHOTOS_KEY @"photos"
 #define API_SERVER_ID_KEY @"server_id"
+#define API_EDIT_SOLUTION_FLAG_KEY @"edit_solution_flag"
 #define API_UPLOAD_PRODUCT_IMAGE_DATA_NAME @"fileToUpload"
 
 #define ACTION_GET_RESOLUTION_CENTER @"get_resolution_center"
-#define ACTION_CREATE_RESOLUTION @"create_resolution"
-#define ACTION_UPLOAD_CONTACT_IMAGE @"upload_contact_image"
 #define ACTION_GET_RESOLUTION_CENTER_DETAIL @"get_resolution_center_detail"
 #define ACTION_GET_RESOLUTION_CENTER_DETAIL_LOAD_MORE @"get_resolution_center_show_more"
+#define ACTION_GET_SHIPMENT_LIST @"get_kurir_list"
+
+#define ACTION_CREATE_RESOLUTION @"create_resolution"
+#define ACTION_UPLOAD_CONTACT_IMAGE @"upload_contact_image"
 #define ACTION_CANCEL_RESOLUTION @"cancel_resolution"
+#define ACTION_INPUT_RECEIPT @"input_resi_resolution"
+#define ACTION_EDIT_RECEIPT @"edit_resi_resolution"
+#define ACTION_INPUT_RECEIPT @"input_resi_resolution"
+#define ACTION_ACCEPT_SOLUTION @"accept_resolution"
+#define ACTION_ACCEPT_ADMIN_SOLUTION @"accept_admin_resolution"
+#define ACTION_FINISH_RESOLUTION @"finish_resolution_retur"
+#define ACTION_REPLY_CONVERSATION @"reply_conversation"
+#define ACTION_APPEAL @"reject_admin_solution"
+#define ACTION_REPORT_RESOLUTION @"report_resolution"
 
 #define API_RESOLUTION_DETAIL_KEY @"resolution_detail"
 #define API_RESOLUTION_DETAIL_CONVERSATION_KEY @"detail"
@@ -75,6 +93,9 @@ typedef enum {
 #define API_LAST_SHOW_ACCEPT_ADMIN_BUTTON_KEY @"last_show_accept_admin_button"
 #define API_LAST_CREATE_TIME_KEY @"last_create_time"
 #define API_LAST_FLAG_RECIEVED_KEY @"last_flag_received"
+#define API_LAST_SHOW_ACCEPT_BUTTON_KEY @"last_show_accept_button"
+#define API_LAST_SHOW_INPUT_RESI_BUTTON_KEY @"last_show_input_resi_button"
+#define API_LAST_SHOW_FINISH_BUTTON_KEY @"last_show_finish_button"
 
 #pragma mark - Resolution Order
 #define API_RESOLUTION_ORDER_KEY @"resolution_order"
@@ -119,6 +140,7 @@ typedef enum {
 #pragma mark - Resolution Conversation
 #define API_RESOLUTION_CONVERSATION_KEY @"resolution_conversation"
 #define API_CONVERSATION_REMARK_KEY @"remark"
+#define API_CONVERSATION_ID_KEY @"conversation_id"
 #define API_CONVERSATION_TIME_AGO_KEY @"time_ago"
 #define API_CONVERSATION_CREATE_TIME_KEY @"create_time"
 #define API_CONVERSATION_REFUND_AMOUNT_KEY @"refund_amt"
@@ -171,6 +193,7 @@ typedef enum {
 
 #define ERRORMESSAGE_NULL_REMARK @"Alasan harus diisi."
 #define ERRORMESSAGE_NULL_REFUND @"Jumlah Pengembalian harus diisi."
+#define ERRORMESSAGE_NULL_MESSAGE @"Pesan diskusi harus diisi"
 
 #define ERRORMESSAGE_INVALID_REFUND @"Nominal maksimal pengembalian dana adalah %@."
 

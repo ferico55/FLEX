@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
     
+#import "UserAuthentificationManager.h"
+#import "NavigateViewController.h"
 
 #import "TxOrderStatusViewController.h"
 #import "TxOrderStatusDetailViewController.h"
@@ -14,6 +16,7 @@
 #import "TrackOrderViewController.h"
 #import "FilterSalesTransactionListViewController.h"
 #import "TransactionCartRootViewController.h"
+#import "ResolutionCenterDetailViewController.h"
 
 #import "InboxResolutionCenterOpenViewController.h"
 
@@ -34,7 +37,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate>
+@interface TxOrderStatusViewController () <UITableViewDataSource, UITableViewDelegate, TxOrderStatusCellDelegate, UIAlertViewDelegate, FilterSalesTransactionListDelegate, TxOrderStatusDetailViewControllerDelegate, TrackOrderViewControllerDelegate>
 {
     NSMutableArray *_list;
     NSOperationQueue *_operationQueue;
@@ -61,6 +64,8 @@
     NSMutableArray *_objectsConfirmRequest;
     
     NSInteger _totalButtonsShow;
+    
+    NavigateViewController *_navigate;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -76,11 +81,12 @@
     [super viewDidLoad];
     
     _dataInput = [NSMutableDictionary new];
+    _navigate = [NavigateViewController new];
     
     self.title = _viewControllerTitle?:@"";
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
+                                                                          style:UIBarButtonItemStylePlain
                                                                          target:self
                                                                          action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
@@ -115,13 +121,13 @@
 {
     [super viewWillAppear:animated];
     
-    self.title = _viewControllerTitle?:@"";
+    self.title = _viewControllerTitle?:@" ";
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    self.navigationController.title = nil;
+    self.navigationController.title = @" ";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -170,8 +176,7 @@
     [object setObject:order forKey:DATA_ORDER_DELIVERY_CONFIRM];
     [object setObject:indexPath forKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
     
-    
-    [_list removeObjectAtIndex:indexPath.row];
+    [_list removeObject:order];
     [_tableView reloadData];
     
     [self configureRestKitFinishOrder];
@@ -198,6 +203,12 @@
     [_dataInput setObject:endDate?:@"" forKey:API_TRANSACTION_END_DATE_KEY];
 
     [self refreshRequest];
+}
+
+#pragma mark - Track Order delegate
+-(void)shouldRefreshRequest
+{
+    [_refreshControll beginRefreshing];
 }
 
 #pragma mark - Table View Data Source
@@ -250,22 +261,23 @@
     NSString *lastStatus = [NSString convertHTML:order.order_last.last_buyer_status];
     
     BOOL showResi = false;
-    NSString *refNumberString;
+    NSMutableArray *comment = [NSMutableArray new];
+
+    if (lastStatus &&![lastStatus isEqualToString:@""]&&![lastStatus isEqualToString:@"0"]) {
+        [comment addObject:lastStatus];
+    }
     if (shipRef &&
         ![shipRef isEqualToString:@""] &&
         ![shipRef isEqualToString:@"0"])
     {
-        showResi = YES;
-        refNumberString = [NSString stringWithFormat:@"%@.\nNomor resi :%@",lastStatus, order.order_last.last_shipping_ref_num];
-    };
+        [comment addObject:[NSString stringWithFormat:@"Nomor resi :%@", order.order_last.last_shipping_ref_num]];
+    }
     if (lastComment && ![lastComment isEqualToString:@"0"] && [lastComment isEqualToString:@""]) {
         showResi = NO;
-        [NSString stringWithFormat:@"%@.\n%@",lastStatus, lastComment];
+        [comment addObject:lastComment];
     }
     
-    NSString *statusString = showResi?
-                            refNumberString:
-                            lastStatus;
+    NSString *statusString = [[comment valueForKey:@"description"] componentsJoinedByString:@"\n"];
     
     [cell.statusLabel setText:statusString animated:YES];
     [cell.statusLabel multipleLineLabel:cell.statusLabel];
@@ -280,15 +292,65 @@
     if ([self isShowButtonReorder:order])
         cell.oneButtonReOrderView.hidden = NO;
     if ([self isShowTwoButtonsOrder:order])
+    {
         cell.twoButtonsView.hidden = NO;
+        [self adjustTwoButtonOrder:order cell:cell];
+    }
     if ([self isShowThreeButtonsOrder:order])
         cell.threeButtonsView.hidden = NO;
 
-    
     cell.indexPath = indexPath;
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
+}
+
+-(void)adjustTwoButtonOrder:(TxOrderStatusList*)order cell:(TxOrderStatusCell*)cell
+{
+    NSString *title1 = @"";
+    NSString *title2 = @"";
+    if ([self isShowButtonTrackOrder:order]) {
+        if ([title1 isEqualToString:@""])
+            title1 = @"Lacak";
+        else
+            title2 = @"Lacak";
+    }
+    if ([self isShowButtonConfirmOrder:order]) {
+        if ([title1 isEqualToString:@""])
+            title1 = @"Sudah Terima";
+        else
+            title2 = @"Sudah Terima";
+    }
+    if ([self isShowButtonComplainOrder:order]) {
+        if ([title1 isEqualToString:@""])
+            title1 = @"Komplain";
+        else
+            title2 = @"Komplain";
+    }
+    
+    UIButton *button1 = (UIButton*)cell.twoButtons[0];
+    UIButton *button2 = (UIButton*)cell.twoButtons[1];
+    
+    [button1 setTitle:title1 forState:UIControlStateNormal];
+    [button1 setImage:[UIImage imageNamed:[self imageNameButton:button1]] forState:UIControlStateNormal];
+    
+    [button2 setTitle:title2 forState:UIControlStateNormal];
+    [button2 setImage:[UIImage imageNamed:[self imageNameButton:button2]] forState:UIControlStateNormal];
+}
+
+-(NSString*)imageNameButton:(UIButton*)button
+{
+    NSString *imageName = @"";
+    if ([button.titleLabel.text isEqualToString:@"Lacak"]) {
+        imageName = @"icon_track_grey.png";
+    }
+    if ([button.titleLabel.text isEqualToString:@"Sudah Terima"]) {
+        imageName = @"icon_order_check-01.png";
+    }
+    if ([button.titleLabel.text isEqualToString:@"Komplain"]) {
+        imageName = @"icon_cancel_grey.png";
+    }
+    return imageName;
 }
 
 #pragma mark - Table View Delegate
@@ -559,6 +621,7 @@
                         }
                         
                         _page = [[queries objectForKey:API_PAGE_KEY] integerValue];
+                        _tableView.tableFooterView = NO;
                     }
                     else
                     {
@@ -571,8 +634,7 @@
             }
         }
         else{
-            
-            //[self cancel];
+            _tableView.tableFooterView = NO;
             NSError *error = object;
             if ([error code] != NSURLErrorCancelled) {
                 NSString *errorDescription = error.localizedDescription;
@@ -897,6 +959,7 @@
 -(void)confirmDeliveryAtIndexPath:(NSIndexPath *)indexPath
 {
     TxOrderStatusList *order = _list[indexPath.row];
+    [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
     [_dataInput setObject:order forKey:DATA_ORDER_DELIVERY_CONFIRMATION];
     [self showAlertDeliver:order];
 }
@@ -915,12 +978,34 @@
     [self showAlertViewOpenComplain];
 }
 
+-(void)goToComplaintDetailAtIndexPath:(NSIndexPath *)indexPath
+{
+    TxOrderStatusList *order = _list[indexPath.row];
+    ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
+    NSDictionary *queries = [NSDictionary dictionaryFromURLString:order.order_button.button_res_center_url];
+    NSString *resolutionID = [queries objectForKey:@"id"];
+    vc.resolutionID = resolutionID;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 -(void)failedConfirmDelivery:(NSDictionary*)object
 {
     TxOrderStatusList *order = [object objectForKey:DATA_ORDER_DELIVERY_CONFIRM];
     NSIndexPath *indexPath = [object objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
     [_list insertObject:order atIndex:indexPath.row];
     [_tableView reloadData];
+}
+
+-(void)goToShopAtIndexPath:(NSIndexPath *)indexPath
+{
+    TxOrderStatusList *order = _list[indexPath.row];
+    [_navigate navigateToShopFromViewController:self withShopID:order.order_shop.shop_id];
+}
+
+-(void)goToInvoiceAtIndexPath:(NSIndexPath *)indexPath
+{
+    TxOrderStatusList *order = _list[indexPath.row];
+    [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:order.order_detail.detail_pdf_uri];
 }
 
 #pragma mark - Alert View Delegate
@@ -932,14 +1017,12 @@
             case 1://Selesai
             {
                 TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_DELIVERY_CONFIRMATION];
-                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:alertView.tag inSection:0];
+                NSIndexPath *indexPath = [_dataInput objectForKey:DATA_INDEXPATH_DELIVERY_CONFIRM];
                 [self confirmDelivery:order atIndexPath:(NSIndexPath*)indexPath];
             }
                 break;
             case 2://Complain
             {
-                TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_DELIVERY_CONFIRMATION];
-                [_dataInput setObject:order forKey:DATA_ORDER_COMPLAIN_KEY];
                 [self showAlertViewOpenComplain];
             }
                 break;
@@ -979,6 +1062,7 @@
     {
         TxOrderStatusList *order = [_dataInput objectForKey:DATA_ORDER_COMPLAIN_KEY];
         InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
+        vc.controllerTitle = @"Buka Komplain";
         if (buttonIndex == 0) {
             //Tidak Terima Barang
             vc.isGotTheOrder = NO;
@@ -989,7 +1073,10 @@
             vc.isGotTheOrder = YES;
             
         }
+        vc.isChangeSolution = NO;
+        vc.isCanEditProblem = YES;
         vc.order = order;
+        vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -1093,9 +1180,21 @@
 
 -(BOOL)isShowTwoButtonsOrder:(TxOrderStatusList*)order
 {
-    if ([self isShowButtonTrackOrder:order] &&
-        [self isShowButtonConfirmOrder:order])
+    int buttonCount = 0;
+    if ([self isShowButtonTrackOrder:order]) {
+        buttonCount +=1;
+    }
+    if ([self isShowButtonConfirmOrder:order]) {
+        buttonCount +=1;
+    }
+    if ([self isShowButtonComplainOrder:order]) {
+        buttonCount +=1;
+    }
+    
+    if (buttonCount == 2) {
         return YES;
+    }
+
     return NO;
 }
 
@@ -1140,6 +1239,7 @@
 -(void)shouldTrackOrder:(TxOrderStatusList*)order
 {
     TrackOrderViewController *vc = [TrackOrderViewController new];
+    vc.delegate = self;
     vc.orderID = [order.order_detail.detail_order_id integerValue];
     [self.navigationController pushViewController:vc animated:YES];
 }

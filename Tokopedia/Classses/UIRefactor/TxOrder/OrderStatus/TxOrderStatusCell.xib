@@ -38,10 +38,13 @@
                     <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <inset key="imageEdgeInsets" minX="-6" minY="-4" maxX="0.0" maxY="0.0"/>
-                    <state key="normal" title="Lihat Komplain" image="icon_track_grey.png">
+                    <state key="normal" title="Lihat Komplain" image="icon_lihat_komplain.png">
                         <color key="titleColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="tap:" destination="Fm6-ri-DEn" eventType="touchUpInside" id="ejS-Hm-dOe"/>
+                    </connections>
                 </button>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e2j-bM-1ri" userLabel="Horizontal Border">
                     <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
@@ -61,12 +64,12 @@
                     <inset key="contentEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <inset key="imageEdgeInsets" minX="-6" minY="-4" maxX="0.0" maxY="0.0"/>
-                    <state key="normal" title="Pesan Ulang" image="icon_track_grey.png">
+                    <state key="normal" title="Pesan Ulang" image="icon_pesan_ulang.png">
                         <color key="titleColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tapReOrder:" destination="Fm6-ri-DEn" eventType="touchUpInside" id="b8C-cj-n5o"/>
+                        <action selector="tap:" destination="Fm6-ri-DEn" eventType="touchUpInside" id="ZkO-er-pSi"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6EE-4e-Liu" userLabel="Horizontal Border">
@@ -91,7 +94,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tapTrackOrder:" destination="Fm6-ri-DEn" eventType="touchUpInside" id="dIp-0Y-PiS"/>
+                        <action selector="tap:" destination="Fm6-ri-DEn" eventType="touchUpInside" id="AHj-Io-QG6"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YTY-rP-vEE" userLabel="Horizontal Border">
@@ -112,13 +115,13 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tapConfirm:" destination="Fm6-ri-DEn" eventType="touchUpInside" id="A6m-MB-Ccz"/>
+                        <action selector="tap:" destination="Fm6-ri-DEn" eventType="touchUpInside" id="GVq-xO-UrK"/>
                     </connections>
                 </button>
             </subviews>
             <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="366" y="561"/>
+            <point key="canvasLocation" x="560" y="481"/>
         </view>
         <view hidden="YES" contentMode="scaleToFill" id="N4b-Lh-0Zu" userLabel="Tree Buttons View">
             <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
@@ -129,12 +132,12 @@
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <inset key="imageEdgeInsets" minX="-6" minY="-2" maxX="0.0" maxY="0.0"/>
-                    <state key="normal" title="Komplain" image="icon_cancel_grey.png">
+                    <state key="normal" title="Komplain" image="icon_komplain.png">
                         <color key="titleColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tapComplain:" destination="Fm6-ri-DEn" eventType="touchUpInside" id="AcX-FH-DTf"/>
+                        <action selector="tap:" destination="Fm6-ri-DEn" eventType="touchUpInside" id="Cfj-rs-0Uo"/>
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rm4-ne-sok" userLabel="Horizontal Border">
@@ -159,7 +162,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tapConfirm:" destination="Fm6-ri-DEn" eventType="touchUpInside" id="T2L-Ve-Iqz"/>
+                        <action selector="tap:" destination="Fm6-ri-DEn" eventType="touchUpInside" id="sWB-kI-5lY"/>
                     </connections>
                 </button>
                 <button opaque="NO" tag="2" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uz4-2o-dyw">
@@ -172,7 +175,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="tapTrackOrder:" destination="Fm6-ri-DEn" eventType="touchUpInside" id="Mju-5f-ge4"/>
+                        <action selector="tap:" destination="Fm6-ri-DEn" eventType="touchUpInside" id="ghV-aC-Ush"/>
                     </connections>
                 </button>
             </subviews>
@@ -182,7 +185,7 @@
         </view>
         <tapGestureRecognizer id="pcn-EE-m2r">
             <connections>
-                <action selector="tap:" destination="Fm6-ri-DEn" id="r51-ua-aRf"/>
+                <action selector="gesture:" destination="Fm6-ri-DEn" id="Pvd-xr-jK6"/>
             </connections>
         </tapGestureRecognizer>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TxOrderStatusCellIdentifier" rowHeight="280" id="Fm6-ri-DEn" userLabel="ShipmentStatusCell" customClass="TxOrderStatusCell">
@@ -195,7 +198,7 @@
                     <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6t1-2F-Axq">
                         <rect key="frame" x="10" y="10" width="300" height="265"/>
                         <subviews>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zrl-mk-2Wc" userLabel="Invoice View">
+                            <view tag="10" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zrl-mk-2Wc" userLabel="Invoice View">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="51"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INV/20150113/XV/I/8327" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8e-Ao-yjP">
@@ -227,12 +230,17 @@
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="bUn-my-zY2" appends="YES" id="K70-PE-Ibu"/>
+                                </connections>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R0C-JF-Txb" userLabel="User View">
+                            <view tag="11" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R0C-JF-Txb" userLabel="User View">
                                 <rect key="frame" x="0.0" y="51" width="300" height="62"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_default_shop.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="rDZ-by-DVF">
                                         <rect key="frame" x="10" y="9" width="44" height="44"/>
+                                        <gestureRecognizers/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pembelian dari" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="arG-sD-ajV">
                                         <rect key="frame" x="62" y="14" width="140" height="17"/>
@@ -258,8 +266,12 @@
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="dWX-cj-G7Y" appends="YES" id="eLV-8U-vT0"/>
+                                </connections>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ezl-in-rwc" userLabel="Price View">
+                            <view tag="12" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ezl-in-rwc" userLabel="Price View">
                                 <rect key="frame" x="0.0" y="113" width="300" height="108"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Status terakhir" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s4U-dd-naA">
@@ -283,11 +295,11 @@
                                     </view>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="pcn-EE-m2r" appends="YES" id="x4j-iQ-ir3"/>
+                                </connections>
                             </view>
                         </subviews>
-                        <connections>
-                            <outletCollection property="gestureRecognizers" destination="pcn-EE-m2r" appends="YES" id="I1s-k4-6Dg"/>
-                        </connections>
                     </view>
                 </subviews>
             </tableViewCellContentView>
@@ -306,15 +318,29 @@
                 <outlet property="statusView" destination="Ezl-in-rwc" id="z3m-X3-KBo"/>
                 <outlet property="threeButtonsView" destination="N4b-Lh-0Zu" id="W4b-De-e2c"/>
                 <outlet property="twoButtonsView" destination="jgi-e0-KIQ" id="phd-Rg-oZF"/>
+                <outletCollection property="twoButtons" destination="X12-Ue-yp2" id="avQ-1j-f3M"/>
+                <outletCollection property="twoButtons" destination="ktj-St-LWh" id="76e-bN-MVj"/>
             </connections>
             <point key="canvasLocation" x="158" y="368"/>
         </tableViewCell>
+        <tapGestureRecognizer id="bUn-my-zY2">
+            <connections>
+                <action selector="gesture:" destination="Fm6-ri-DEn" id="Ti4-3M-Rc0"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="dWX-cj-G7Y">
+            <connections>
+                <action selector="gesture:" destination="Fm6-ri-DEn" id="xe4-1e-4oo"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>
-        <image name="icon_cancel_grey.png" width="14" height="14"/>
         <image name="icon_default_shop.jpg" width="80" height="80"/>
+        <image name="icon_komplain.png" width="14" height="14"/>
+        <image name="icon_lihat_komplain.png" width="14" height="14"/>
         <image name="icon_order_check-01.png" width="14" height="14"/>
+        <image name="icon_pesan_ulang.png" width="14" height="14"/>
         <image name="icon_track_grey.png" width="14" height="14"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

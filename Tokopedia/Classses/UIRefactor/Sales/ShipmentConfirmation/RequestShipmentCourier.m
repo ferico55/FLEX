@@ -111,7 +111,7 @@
             [self.delegate didReceiveShipmentCourier:shipment.result.shipment];
         }
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self.delegate requestShipmentCourierError:error];
+        [self.delegate requestShipmentCourierError:error]; //TODO:: Create function
     }];
     
     [_operationQueue addOperation:_request];

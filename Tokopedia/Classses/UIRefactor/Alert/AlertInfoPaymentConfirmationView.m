@@ -12,20 +12,9 @@
 
 - (void)awakeFromNib
 {
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
-    style.alignment = NSTextAlignmentCenter;
-    
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
-                                 NSFontAttributeName: font,
-                                 NSParagraphStyleAttributeName: style,
-                                 };
-    NSString *string = @"Pastikan slip Setoran / Transfer Tunai berisi keterangan e-mail, nama atau nomor invoice Anda.\n\nApabila lupa mengisi, kirimkan bukti pembayaran via scan e-mail ke";
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
-    
-    _info1Label.attributedText = attributedText;
+    [_info1Label multipleLineLabel:_info1Label];
+    [_info2Label multipleLineLabel:_info2Label];
+    [_info3Label multipleLineLabel:_info3Label];
     
     self.layer.cornerRadius = 5;
 }

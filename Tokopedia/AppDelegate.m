@@ -20,7 +20,6 @@
     UITabBarController *_tabBarController;
     BOOL _isauth;
     NSDictionary* _parameters;
-    NSDictionary* _auth;
     
     BOOL _isalertshown;
 	RKObjectManager* _objectManager;

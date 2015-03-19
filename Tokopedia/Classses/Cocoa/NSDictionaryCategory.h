@@ -12,7 +12,6 @@
 
 - (BOOL)isMutable;
 - (NSDictionary *)encrypt;
-
-- (NSDictionary *)encrypt;
++ (NSDictionary*)dictionaryFromURLString:(NSString *)URLString;
 
 @end

@@ -55,6 +55,7 @@
         cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellid];
     }
     
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = (indexPath.row==0)?_filterProcess:_filterRead;
     
     return cell;

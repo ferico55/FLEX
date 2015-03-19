@@ -10,9 +10,9 @@
 #define Tokopedia_Tkpd_h
 
 #if DEBUG
-    #define kTkpdBaseURLString @"http://www.tkpdevel-pg.api/ws"
+    #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"//http://www.tkpdevel-pg.api/ws"
 #else
-    #define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
+    #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 #endif
 
 #define kTkpdAPIkey @"8b0c367dd3ef0860f5730ec64e3bbdc9" //TODO:: Remove api key
@@ -65,6 +65,15 @@ typedef enum {
     ORDER_ROLLBACK                       = 801,   // update by ADMIN        order rollback from finished
     ORDER_BAD                            = 900    // update by ADMIN        bad order occurs and need further investigation} ORDER_STATUS;
 } ORDER_STATUS;
+
+typedef enum {
+    RESOLUTION_CANCELED     = 0,
+    RESOLUTION_OPEN         = 100,
+    RESOLUTION_DO_ACTION    = 200,
+    RESOLUTION_CS_ANSWERED  = 300,
+    RESOLUTION_APPEAL       = 400,
+    RESOLUTION_FINISHED     = 500
+} DISPUTE_STATUS;
 
 #define is4inch  ([[UIScreen mainScreen] bounds].size.height == 568)?TRUE:FALSE
 

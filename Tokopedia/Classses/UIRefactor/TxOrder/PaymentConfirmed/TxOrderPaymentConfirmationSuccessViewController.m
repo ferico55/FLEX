@@ -29,7 +29,10 @@
     [doneBarButtonItem setTintColor:[UIColor whiteColor]];
     doneBarButtonItem.tag = 10;
     self.navigationItem.rightBarButtonItem = doneBarButtonItem;
-    self.navigationItem.leftBarButtonItem = nil;
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [barButtonItem setTintColor:[UIColor whiteColor]];
+    barButtonItem.tag = 11;
+    self.navigationItem.leftBarButtonItem = barButtonItem;
     
     _successMessage.text = [NSString stringWithFormat:@"Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggunakan %@.",_confirmationPayment];
     [_successMessage multipleLineLabel:_successMessage];
@@ -52,7 +55,7 @@
     
 }
 
--(void)viewDidDisappear:(BOOL)animated
+-(void)viewDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
@@ -74,7 +77,8 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    self.navigationController.title = nil;
+    self.navigationController.title = @" ";
+    self.title = @" ";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -85,13 +89,16 @@
 
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        UIViewController *destinationVC;
-        for (UIViewController *viewController in self.navigationController.viewControllers) {
-            if ([viewController isKindOfClass:[TxOrderTabViewController class]]) {
-                destinationVC = viewController;
+        UIBarButtonItem *button = (UIBarButtonItem*)sender;
+        if (button.tag==10) {
+            UIViewController *destinationVC;
+            for (UIViewController *viewController in self.navigationController.viewControllers) {
+                if ([viewController isKindOfClass:[TxOrderTabViewController class]]) {
+                    destinationVC = viewController;
+                }
             }
+            [self.navigationController popToViewController:destinationVC animated:YES];
         }
-        [self.navigationController popToViewController:destinationVC animated:YES];
     }
     else
     {

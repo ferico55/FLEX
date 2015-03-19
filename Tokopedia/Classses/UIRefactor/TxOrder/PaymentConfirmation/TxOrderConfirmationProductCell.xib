@@ -25,7 +25,7 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pzq-T3-oxp" id="dmg-2y-me8">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0xk-2a-29l">
+                    <view tag="10" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0xk-2a-29l">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Value" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="185" translatesAutoresizingMaskIntoConstraints="NO" id="bcy-Cs-wNt">
@@ -37,8 +37,12 @@
                                 <rect key="frame" x="15" y="87" width="290" height="1"/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ozd-II-I0T">
+                            <imageView clipsSubviews="YES" tag="11" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ozd-II-I0T">
                                 <rect key="frame" x="15" y="9" width="70" height="70"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="DnE-9K-vrT" appends="YES" id="NsW-Kb-4bN"/>
+                                </connections>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Value" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="210" translatesAutoresizingMaskIntoConstraints="NO" id="5cP-S8-CZr">
                                 <rect key="frame" x="97" y="40" width="210" height="19"/>
@@ -48,6 +52,10 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="deviceRGB"/>
+                        <gestureRecognizers/>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="LOo-tg-6d3" appends="YES" id="cdH-gE-Pme"/>
+                        </connections>
                     </view>
                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xFO-Vb-rAN" userLabel="View jumlah Barang">
                         <rect key="frame" x="0.0" y="89" width="320" height="44"/>
@@ -105,5 +113,15 @@
             </connections>
             <point key="canvasLocation" x="524" y="566"/>
         </tableViewCell>
+        <tapGestureRecognizer id="LOo-tg-6d3">
+            <connections>
+                <action selector="gesture:" destination="pzq-T3-oxp" id="Sof-FF-84l"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="DnE-9K-vrT">
+            <connections>
+                <action selector="gesture:" destination="pzq-T3-oxp" id="RCo-Sh-y7F"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
 </document>
