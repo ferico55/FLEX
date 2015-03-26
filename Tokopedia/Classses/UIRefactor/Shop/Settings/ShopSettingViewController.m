@@ -26,7 +26,6 @@
     BOOL _isnodata;
 }
 
-@property (weak, nonatomic) IBOutlet UITableView *table;
 - (IBAction)gesture:(id)sender;
 
 @end
@@ -63,7 +62,6 @@
     if (_listMenu.count >0) {
         _isnodata = NO;
     }
-    _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)didReceiveMemoryWarning

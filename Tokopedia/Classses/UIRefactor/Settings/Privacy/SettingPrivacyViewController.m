@@ -10,7 +10,6 @@
 #import "profile.h"
 #import "PrivacyForm.h"
 #import "ProfileSettings.h"
-#import "Alert1ButtonView.h"
 #import "SettingPrivacyViewController.h"
 #import "SettingPrivacyCell.h"
 #import "StickyAlert.h"

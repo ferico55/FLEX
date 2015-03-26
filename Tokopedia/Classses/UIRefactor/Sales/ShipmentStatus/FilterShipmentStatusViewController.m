@@ -57,7 +57,8 @@
 
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
         
-        UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width-30, 45)];
+        CGRect frame = CGRectMake(15, 0, self.view.frame.size.width-30, 45);
+        UITextField *textField = [[UITextField alloc] initWithFrame:frame];
         textField.placeholder = @"Invoice / Nama Pembeli / Nomor Resi";
         textField.font = [UIFont fontWithName:@"GothamBook" size:14];
         [textField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
@@ -81,10 +82,18 @@
 {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
-        if (button.tag == 2) {
-            [self.delegate filterShipmentStatusInvoice:_invoice];
+        if (button.tag == 1) {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        } else if (button.tag == 2) {
+            if (_invoice.length > 4) {
+                [self.delegate filterShipmentStatusInvoice:_invoice];
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+            } else {
+                NSString *message = @"Search Keyword terlalu pendek, minimum 5 karakter";
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[message] delegate:self];
+                [alert show];
+            }
         }
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
 }
 

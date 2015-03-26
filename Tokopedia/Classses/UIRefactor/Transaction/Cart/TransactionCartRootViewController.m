@@ -36,12 +36,14 @@
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (strong, nonatomic) IBOutlet UIView *noLoginView;
-@property (strong, nonatomic) UIPageViewController *pageController;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
-
 @property (weak, nonatomic) IBOutlet UIView *pageControlView;
 @property (weak, nonatomic) IBOutlet UIButton *registerText;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *pageButtons;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tabHeightConstraint;
+
+@property (strong, nonatomic) UIPageViewController *pageController;
+
 @end
 
 @implementation TransactionCartRootViewController
@@ -65,7 +67,6 @@
     _pageButtons = [NSArray sortViewsWithTagInArray:_pageButtons];
 
     for (UIButton *button in _pageButtons) {
-        //button.enabled = NO;
         button.backgroundColor = COLOR_DEFAULT_BUTTON;
         button.layer.cornerRadius = button.frame.size.width/2;
         button.clipsToBounds=YES;
@@ -119,7 +120,6 @@
         }
         
         [_noLoginView setHidden:YES];
-        
     }
 }
 
@@ -150,13 +150,12 @@
     id childViewController;
     for (UIButton *button in _pageButtons) {
         button.backgroundColor = COLOR_DEFAULT_BUTTON;
-        //button.enabled = NO;
+        button.enabled = NO;
     }
     switch (index) {
         case 0:
         {
             if(!_cartViewController)_cartViewController = [TransactionCartViewController new];
-            //TransactionCartViewController *cartViewController = [TransactionCartViewController new];
             _cartViewController.delegate = self;
             ((UIButton*)_pageButtons[index]).enabled = YES;
             childViewController = _cartViewController;
@@ -254,14 +253,27 @@
 #pragma mark -   Delegate
 -(void)didFinishRequestCheckoutData:(NSDictionary *)data
 {
+    if (data) {
+        _pageControlView.hidden = NO;
+        _tabHeightConstraint.constant = 44;
+    } else {
+        _pageControlView.hidden = YES;
+        _tabHeightConstraint.constant = 0;
+    }
     _data = data;
-    [_pageController setViewControllers:@[[self viewControllerAtIndex:1]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+    [_pageController setViewControllers:@[[self viewControllerAtIndex:1]]
+                              direction:UIPageViewControllerNavigationDirectionForward
+                               animated:YES
+                             completion:nil];
 }
 
 -(void)didFinishRequestBuyData:(NSDictionary *)data
 {
     _data = data;
-    [_pageController setViewControllers:@[[self viewControllerAtIndex:2]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+    [_pageController setViewControllers:@[[self viewControllerAtIndex:2]]
+                              direction:UIPageViewControllerNavigationDirectionForward
+                               animated:YES
+                             completion:nil];
 
 }
 

@@ -14,17 +14,23 @@
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet UIView *statusView;
+@property (weak, nonatomic) IBOutlet UIView *userView;
 
 @end
 
 @implementation ShipmentStatusCell
 
-- (void)awakeFromNib {    
+- (void)awakeFromNib
+{    
+    _oneButtonView.hidden = YES;
+    
     CGRect frame = _oneButtonView.frame;
     frame.origin.y = 201;
     _oneButtonView.frame = frame;
     [_containerView addSubview:_oneButtonView];
 
+    _twoButtonsView.hidden = YES;
+    
     frame = _twoButtonsView.frame;
     frame.origin.y = 201;
     _twoButtonsView.frame = frame;
@@ -39,9 +45,21 @@
                                 NSParagraphStyleAttributeName   : style,
                               };
     
+    UITapGestureRecognizer *invoiceTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                                 action:@selector(tap:)];
+    _invoiceNumberLabel.tag = 1;
+    _invoiceNumberLabel.userInteractionEnabled = YES;
+    [_invoiceNumberLabel addGestureRecognizer:invoiceTap];
+
+    UITapGestureRecognizer *userTap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                              action:@selector(tap:)];
+    _userView.tag = 1;
+    _userView.userInteractionEnabled = YES;
+    [_userView addGestureRecognizer:userTap];
+    
     UITapGestureRecognizer *statusViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                     action:@selector(tap:)];
-    statusViewTap.numberOfTapsRequired = 1;
+    _statusView.tag = 2;
     _statusView.userInteractionEnabled = YES;
     [_statusView addGestureRecognizer:statusViewTap];
 }
@@ -90,8 +108,14 @@
         } else if (button.tag == 2) {
             [self.delegate didTapReceiptButton:button indexPath:_indexPath];
         }
-    } else {
+    } else if ([[sender view] isKindOfClass:[UILabel class]]) {
         [self.delegate didTapStatusAtIndexPath:_indexPath];
+    } else if ([[sender view] isKindOfClass:[UIView class]]) {
+        if ([[sender view] tag] == 1) {
+            [self.delegate didTapUserAtIndexPath:_indexPath];
+        } else if ([[sender view] tag] == 2) {
+            [self.delegate didTapStatusAtIndexPath:_indexPath];
+        }
     }
 }
 

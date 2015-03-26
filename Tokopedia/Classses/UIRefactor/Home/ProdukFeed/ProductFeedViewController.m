@@ -439,9 +439,9 @@ typedef enum ScrollDirection {
 }
 
 #pragma mark - Cell Delegate
--(void)GeneralProductCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+-(void)didSelectCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger index = indexpath.section+2*(indexpath.row);
+    NSInteger index = indexPath.section+2*(indexPath.row);
     ProductFeedList *list = _product[index];
 
     DetailProductViewController *vc = [DetailProductViewController new];

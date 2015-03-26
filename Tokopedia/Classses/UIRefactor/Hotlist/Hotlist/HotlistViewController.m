@@ -7,11 +7,14 @@
 //
 
 #import "Hotlist.h"
+#import "search.h"
+#import "string_home.h"
 #import "HotlistViewController.h"
 #import "HotlistResultViewController.h"
 #import "SearchResultViewController.h"
+#import "CatalogViewController.h"
 
-#import "string_home.h"
+#import "URLCacheController.h"
 
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
@@ -164,9 +167,11 @@
             
             HotlistList *hotlist = _product[indexPath.row];
             ((HotlistCell*)cell).indexpath = indexPath;
+            ((HotlistCell *)cell).namelabel.text = hotlist.title;
             ((HotlistCell*)cell).pricelabel.text = hotlist.price_start;
-            ((HotlistCell*)cell).namelabel.text = hotlist.title;
             [((HotlistCell*)cell).act startAnimating];
+
+            NSLog(@"\n\n\n%ld %@\n\n\n", (long)indexPath.row, hotlist.url);
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:hotlist.image_url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
 
@@ -215,26 +220,6 @@
             [_networkManager doRequest];
         }
 	}
-}
-
-#pragma mark - Delegate
--(void)HotlistCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withimageview:(UIImageView *)imageview
-{
-    HotlistList *hotlist = _product[indexpath.row];
-    if ([hotlist.url rangeOfString:@"/hot/"].length ||
-        [hotlist.url rangeOfString:@"/p/"].length) {
-        HotlistResultViewController *controller = [HotlistResultViewController new];
-        controller.image = ((HotlistCell*)cell).productimageview.image;
-        NSArray *query = [[[NSURL URLWithString:hotlist.url] path] componentsSeparatedByString: @"/"];
-        controller.data = @{
-                            kTKPDHOME_DATAQUERYKEY      : [query objectAtIndex:2]?:@"",
-                            kTKPHOME_DATAHEADERIMAGEKEY : imageview,
-                            kTKPD_AUTHKEY               : [_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
-                            kTKPDHOME_APIURLKEY         : hotlist.url,
-                            kTKPDHOME_APITITLEKEY       : hotlist.title,
-                            };
-        [self.delegate pushViewController:controller];
-    }
 }
 
 #pragma mark - Methods
@@ -417,6 +402,73 @@
 - (void)pressRetryButton {
     _table.tableFooterView = _footer;
     [_networkManager doRequest];
+}
+
+#pragma mark - Delegate
+-(void)HotlistCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withimageview:(UIImageView *)imageview
+{
+    HotlistList *hotlist = _product[indexpath.row];
+    
+    if ([hotlist.url rangeOfString:@"/hot/"].length) {
+    
+        HotlistResultViewController *controller = [HotlistResultViewController new];
+        controller.image = ((HotlistCell*)cell).productimageview.image;
+        NSArray *query = [[[NSURL URLWithString:hotlist.url] path] componentsSeparatedByString: @"/"];
+        controller.data = @{
+                            kTKPDHOME_DATAQUERYKEY      : [query objectAtIndex:2]?:@"",
+                            kTKPHOME_DATAHEADERIMAGEKEY : imageview,
+                            kTKPD_AUTHKEY               : [_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null],
+                            kTKPDHOME_APIURLKEY         : hotlist.url,
+                            kTKPDHOME_APITITLEKEY       : hotlist.title,
+                            };
+        [self.delegate pushViewController:controller];
+    
+    } else if ([hotlist.url rangeOfString:@"/p/"].length) {
+        
+        NSURL *url = [NSURL URLWithString:hotlist.url];
+        
+        NSMutableDictionary *parameters = [NSMutableDictionary new];
+        
+        for (int i = 2; i < url.pathComponents.count; i++) {
+            if (i == 2) {
+                [parameters setValue:[url.pathComponents objectAtIndex:i] forKey:kTKPDSEARCH_APIDEPARTMENT_1];
+            } else if (i == 3) {
+                [parameters setValue:[url.pathComponents objectAtIndex:i] forKey:kTKPDSEARCH_APIDEPARTMENT_2];
+            } else if (i == 4) {
+                [parameters setValue:[url.pathComponents objectAtIndex:i] forKey:kTKPDSEARCH_APIDEPARTMENT_3];
+            }
+        }
+        
+        for (NSString *parameter in [url.query componentsSeparatedByString:@"&"]) {
+            NSString *key = [[parameter componentsSeparatedByString:@"="] objectAtIndex:0];
+            if ([key isEqualToString:kTKPDSEARCH_APIMINPRICEKEY]) {
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIMINPRICEKEY];
+            } else if ([key isEqualToString:kTKPDSEARCH_APIMAXPRICEKEY]) {
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIMAXPRICEKEY];
+            } else if ([key isEqualToString:kTKPDSEARCH_APIOBKEY]) {
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIOBKEY];
+            } else if ([key isEqualToString:kTKPDSEARCH_APILOCATIONIDKEY]) {
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APILOCATIONIDKEY];
+            } else if ([key isEqualToString:kTKPDSEARCH_APIGOLDMERCHANTKEY]) {
+                [parameters setValue:[[parameter componentsSeparatedByString:@"="] objectAtIndex:1] forKey:kTKPDSEARCH_APIGOLDMERCHANTKEY];
+            }
+        }
+        
+        SearchResultViewController *controller = [SearchResultViewController new];
+        controller.data = parameters;
+        [self.delegate pushViewController:controller];
+        
+    } else if ([hotlist.url rangeOfString:@"/catalog/"].length) {
+
+        NSString *catalogID = [[hotlist.url componentsSeparatedByString:@"/"] objectAtIndex:4];
+        CatalogViewController *controller = [CatalogViewController new];
+        controller.catalogID = catalogID;
+        controller.catalogName = hotlist.title;
+        controller.catalogImage = hotlist.image_url;
+        controller.catalogPrice = hotlist.price_start;
+        [self.delegate pushViewController:controller];
+    
+    }
 }
 
 @end

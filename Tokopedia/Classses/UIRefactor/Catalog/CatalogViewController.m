@@ -69,6 +69,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.hidesBottomBarWhenPushed = YES;
+    
     self.title = @"Detil Katalog";
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@""
@@ -77,25 +79,15 @@
                                                                   action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backButton;
 
+    UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
+                                                                                  target:self
+                                                                                  action:@selector(tap:)];
+    actionButton.tag = 1;
+    self.navigationItem.rightBarButtonItem = actionButton;
+
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
     
-    NSDictionary *attributes = @{
-                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:15],
-                                 NSParagraphStyleAttributeName  : style,
-                                 NSForegroundColorAttributeName : [UIColor colorWithRed:66.0/255.0
-                                                                                  green:66.0/255.0
-                                                                                   blue:66.0/255.0
-                                                                                  alpha:1],
-                                 };
-    
-    self.productNameLabel.attributedText = [[NSAttributedString alloc] initWithString:@"Apple iPhone 6 Plus 64GB Original Apple International" attributes:attributes];
-    self.productNameLabel.numberOfLines = 0;
-    [self.productNameLabel sizeToFit];
-    
-    self.productPriceLabel.text = _list.catalog_price;
-    [self.productPriceLabel sizeToFit];
-
     _specificationTitles = [NSMutableArray new];
 
     _specificationValues = [NSMutableArray new];
@@ -106,15 +98,38 @@
     
     _hideTableRows = NO;
     
-    UIBarButtonItem *actionButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
-                                                                                  target:self
-                                                                                  action:@selector(tap:)];
-    actionButton.tag = 1;
-    self.navigationItem.rightBarButtonItem = actionButton;
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:15],
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : [UIColor colorWithRed:66.0/255.0
+                                                                                  green:66.0/255.0
+                                                                                   blue:66.0/255.0
+                                                                                  alpha:1],
+                                 };
+    
+    NSString *catalogName, *catalogPrice, *catalogImageURL;
+    
+    if (_catalogID) {
+        catalogName = _catalogName;
+        catalogPrice = _catalogPrice;
+        catalogImageURL = _catalogImage;
+    } else if (_list) {
+        catalogName = _list.catalog_name;
+        catalogPrice = _list.catalog_price;
+        catalogImageURL = _list.catalog_image;
+    }
+
+    self.productNameLabel.attributedText = [[NSAttributedString alloc] initWithString:catalogName
+                                                                           attributes:attributes];
+    self.productNameLabel.numberOfLines = 0;
+    [self.productNameLabel sizeToFit];
+    
+    self.productPriceLabel.text = catalogPrice;
+    [self.productPriceLabel sizeToFit];
 
     CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.width);
     UIImageView *catalogImageView = [[UIImageView alloc] initWithFrame:frame];
-    [catalogImageView setImageWithURL:[NSURL URLWithString:_list.catalog_image]
+    [catalogImageView setImageWithURL:[NSURL URLWithString:catalogImageURL]
                      placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey.png"]];
     [_productPhotoScrollView addSubview:catalogImageView];
     
@@ -333,7 +348,7 @@
     
     NSDictionary *parameters = @{
                                  API_ACTION_KEY         : API_GET_CATALOG_DETAIL_KEY,
-                                 API_CATALOG_ID_KEY     : _list.catalog_id,
+                                 API_CATALOG_ID_KEY     : _catalogID ?: _list.catalog_id,
                                  };
 
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self

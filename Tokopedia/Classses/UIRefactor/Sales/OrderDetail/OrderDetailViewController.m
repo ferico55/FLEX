@@ -18,6 +18,8 @@
 #import "ShipmentStatusViewController.h"
 #import "CancelShipmentViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
+#import "TKPDTabProfileNavigationController.h"
+#import "DetailProductViewController.h"
 
 @interface OrderDetailViewController ()
 <
@@ -85,6 +87,12 @@
     [super viewDidLoad];
     
     self.title = @"Detail Transaksi";
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backButton;
     
     _tableView.tableHeaderView = _orderHeaderView;
     _tableView.tableFooterView = _orderFooterView;
@@ -200,7 +208,7 @@
         
             // Update table height
             CGRect frame = _orderFooterView.frame;
-            frame.size.height -= (_dropshipView.frame.size.height-3);
+            frame.size.height -= (_dropshipView.frame.size.height-15);
             _orderFooterView.frame = frame;
 
         } else  {
@@ -233,7 +241,7 @@
             
             // Update table height
             CGRect frame = _orderFooterView.frame;
-            frame.size.height -= _dropshipView.frame.size.height;
+            frame.size.height -= _dropshipView.frame.size.height - 15;
             _orderFooterView.frame = frame;
             
             // Update transaction view position
@@ -281,7 +289,7 @@
             
             // Update table height
             CGRect frame = _orderFooterView.frame;
-            frame.size.height -= (_dropshipView.frame.size.height-3);
+            frame.size.height -= (_dropshipView.frame.size.height-15);
             _orderFooterView.frame = frame;
             
         } else {
@@ -399,6 +407,25 @@
     }
 }
 
+#pragma mark - Table delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    DetailProductViewController *controller = [DetailProductViewController new];
+    controller.data = @{@"product_id":[[_transaction.order_products objectAtIndex:indexPath.row] product_id]};
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == 1) {
+        return NO;
+    }
+    return YES;
+}
+
 #pragma mark - Action
 
 - (IBAction)tap:(id)sender {
@@ -409,6 +436,29 @@
         } else if ([_delegate isKindOfClass:[ShipmentConfirmationViewController class]]) {
             [self shipmentConfirmationActionButton:button];
         }
+    } else if ([[sender view] isKindOfClass:[UILabel class]]) {
+        
+        NSURL *desktopURL = [NSURL URLWithString:_transaction.order_detail.detail_pdf_uri];
+
+        NSString *pdf = [[[[[desktopURL query] componentsSeparatedByString:@"&"] objectAtIndex:0] componentsSeparatedByString:@"="] objectAtIndex:1];
+        NSString *invoiceID = [[[[[desktopURL query] componentsSeparatedByString:@"&"] objectAtIndex:1] componentsSeparatedByString:@"="] objectAtIndex:1];
+
+        UserAuthentificationManager *authManager = [UserAuthentificationManager new];
+        NSString *userID = authManager.getUserId;
+        
+        NSString *url = [NSString stringWithFormat:@"%@/invoice.pl?invoice_pdf=%@&id=%@&user_id=%@",
+                         kTkpdBaseURLString, pdf, invoiceID, userID];
+        
+        UIWebView *webView = [[UIWebView alloc] initWithFrame:[self.view bounds]];
+        [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
+        UIViewController *controller = [UIViewController new];
+        controller.title = _transaction.order_detail.detail_invoice;
+        [controller.view addSubview:webView];
+        [self.navigationController pushViewController:controller animated:YES];
+    } else if ([[sender view] isKindOfClass:[UIView class]]) {
+        TKPDTabProfileNavigationController *controller = [TKPDTabProfileNavigationController new];
+        controller.data = @{@"user_id":_transaction.order_customer.customer_id};
+        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 
@@ -706,7 +756,7 @@
         
     } else {
         
-        _dayLeftLabel.text = [NSString stringWithFormat:@"%d Hari lagi", (int)_transaction.order_payment.payment_process_day_left];
+        _dayLeftLabel.text = [NSString stringWithFormat:@"%d Hari lagi", (int)dayLeft];
         
         _dayLeftLabel.backgroundColor = [UIColor colorWithRed:0.0/255.0
                                                         green:121.0/255.0

@@ -70,6 +70,7 @@ typedef enum
 #define kTKPDPROFILE_APIGETPROFILEKEY @"get_profile"
 #define kTKPDPROFILE_APISETUSERPROFILEKEY @"set_user_profile"
 #define kTKPDPROFILE_APISETPASSWORDKEY @"set_password"
+#define kTKPDPROFILE_APIEDITPASSWORDKEY @"edit_password"
 #define kTKPDPROFILE_APISETEMAILNOTIFKEY @"set_email_notification"
 #define kTKPDPROFILE_APIGETEMAILNOTIFKEY @"get_notification"
 #define kTKPDPROFILE_APIGETPRIVACYKEY @"get_privacy_form"
@@ -119,6 +120,7 @@ typedef enum
 #define kTKPDPROFILE_APIBIRTHYEARKEY @"birth_year"
 #define kTKPDPROFILE_APIGENDERKEY @"gender"
 
+#define kTKPDPROFILESETTING_APIUSERIDKEY @"user_id"
 #define kTKPDPROFILESETTING_APIPASSKEY @"password"
 #define kTKPDPROFILESETTING_APINEWPASSKEY @"new_password"
 #define kTKPDPROFILESETTING_APIPASSCONFIRMKEY @"confirm_password"

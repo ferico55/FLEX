@@ -6,8 +6,9 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "MainViewController.h"
+#import <FacebookSDK/FacebookSDK.h>
 
+#import "MainViewController.h"
 #import "LoginViewController.h"
 #import "SearchViewController.h"
 #import "TransactionCartRootViewController.h"
@@ -28,11 +29,15 @@
 #import "URLCacheController.h"
 #import "UserAuthentificationManager.h"
 
-@interface MainViewController () <UITabBarControllerDelegate, LoginViewDelegate>
+@interface MainViewController ()
+<
+    UITabBarControllerDelegate,
+    LoginViewDelegate
+>
 {
     UITabBarController *_tabBarController;
-    TKPDTabHomeViewController *_swipevc;
     NSMutableDictionary *_auth;
+    TKPDTabHomeViewController *_swipevc;
     URLCacheController *_cacheController;
     
     UserAuthentificationManager *_userManager;
@@ -66,8 +71,6 @@
     [center addObserver:self selector:@selector(applicationlogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil];
 
     [center addObserver:self selector:@selector(updateTabBarMore:) name:UPDATE_TABBAR object:nil];
-
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -92,9 +95,6 @@
 
 - (void)viewDidLoadQueued
 {
-	//NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];	//TODO: secure storage
-    //id auth = [defaults loadCustomObjectWithKey:kTKPD_AUTHKEY];
-    //id auth = [defaults objectForKey:kTKPD_AUTHKEY];
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
 	NSDictionary* auth = [secureStorage keychainDictionary];
 	_auth = [auth mutableCopy];
@@ -155,7 +155,6 @@
 //    /** Adjust View Controller **/
     _swipevc = [TKPDTabHomeViewController new];
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
-    
     
     /** TAB BAR INDEX 2 **/
     CategoryViewController *categoryvc = [CategoryViewController new];
@@ -237,8 +236,7 @@
         
         [tabBarItem1 setImage:image];
         [tabBarItem1 setSelectedImage:image_active];
-        
-        
+
     }
     else{
         [tabBarItem1 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
@@ -246,12 +244,11 @@
     //tabBarItem1.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     tabBarItem1.title = kTKPDNAVIGATION_TABBARTITLEARRAY[0];
     
-    [tabBarItem1 setTitleTextAttributes:
-     [NSDictionary dictionaryWithObjectsAndKeys:
-      [UIColor blackColor], UITextAttributeTextColor,
-      [UIFont fontWithName:@"GothamBook" size:9.0], UITextAttributeFont,
-      nil]
-                               forState:UIControlStateNormal];
+    NSDictionary *textAttributes = @{
+                                    UITextAttributeTextColor:[UIColor blackColor],
+                                    UITextAttributeFont:[UIFont fontWithName:@"GothamBook" size:9.0]
+                                    };
+    [tabBarItem1 setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
     
     /** set tab bar item 2**/
     image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_CATEGORY];
@@ -395,7 +392,7 @@
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
     swipevcNav.navigationBar.translucent = NO;
     UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-    [_swipevc.navigationItem setTitleView:logo];
+    _swipevc.navigationItem.titleView = logo;
 
     UINavigationController *searchNavBar = newControllers[2];
     id search = searchNavBar.viewControllers[0];
@@ -429,6 +426,8 @@
     NSDictionary* auth = [secureStorage keychainDictionary];
     _auth = [auth mutableCopy];
 
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"doRefreshingCart" object:nil userInfo:nil];
+    
     NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
 
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
@@ -452,16 +451,21 @@
 }
 
 - (void)doApplicationLogout {
-    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-    
+    [[FBSession activeSession] closeAndClearTokenInformation];
+    [[FBSession activeSession] close];
+    [FBSession setActiveSession:nil];
+
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
     [_cacheController initCacheWithDocumentPath:path];
     [_cacheController clearCache];
     
-    
     TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-    [storage resetKeychain];	//delete all previous sensitive data
+    [storage resetKeychain];
     [_auth removeAllObjects];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION
+                                                        object:nil
+                                                      userInfo:@{}];
     
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
 }
@@ -476,28 +480,9 @@
 }
 
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
-    BOOL _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
-//    if(!_isLogin) {
-//        if(tabBarController.selectedIndex == 3) {
-//            UINavigationController *navigationController = [[UINavigationController alloc] init];
-//            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-//            navigationController.navigationBar.translucent = NO;
-//            navigationController.navigationBar.tintColor = [UIColor whiteColor];
-//            
-//            
-//            LoginViewController *controller = [LoginViewController new];
-//            controller.delegate = _tabBarController.viewControllers[3];
-//            controller.isPresentedViewController = YES;
-//            controller.redirectViewController = _tabBarController.viewControllers[3];
-//            navigationController.viewControllers = @[controller];
-//            UIViewController *nav = _tabBarController.viewControllers[3];
-//            [nav presentViewController:navigationController animated:YES completion:nil];
-//        }
-//    }
 }
 
 -(void)redirectViewController:(id)viewController {
-    
 }
 
 @end

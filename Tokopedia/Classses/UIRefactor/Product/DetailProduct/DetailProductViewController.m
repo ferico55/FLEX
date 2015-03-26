@@ -998,7 +998,7 @@
                     _favButton.tag = 17;
                 }
                 
-                if(_auth && [[([_auth objectForKey:@"shop_id"]) stringValue] isEqualToString:_product.result.shop_info.shop_id]) {
+                if(_auth && [[[_auth objectForKey:@"shop_id"] stringValue] isEqualToString:_product.result.shop_info.shop_id]) {
                     _favButton.hidden = YES;
                 } else {
                     _favButton.hidden = NO;

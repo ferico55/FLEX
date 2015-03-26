@@ -10,9 +10,11 @@
 #import "AddressFormList.h"
 #import "SettingAddressDetailViewController.h"
 #import "SettingAddressEditViewController.h"
+#import "SettingAddressViewController.h"
 
 #pragma mark - Setting Address Detail View Controller
-@interface SettingAddressDetailViewController () <UIScrollViewDelegate>
+@interface SettingAddressDetailViewController () <UIScrollViewDelegate, SettingAddressEditViewControllerDelegate>
+
 @property (weak, nonatomic) IBOutlet UILabel *labelreceivername;
 @property (weak, nonatomic) IBOutlet UILabel *labeladdressname;
 @property (weak, nonatomic) IBOutlet UILabel *labeladdress;
@@ -46,29 +48,34 @@
     
     [self setDefaultData:_data];
     
-    UIBarButtonItem *barbutton1;
+    UIBarButtonItem *editBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit"
+                                                                      style:UIBarButtonItemStyleDone
+                                                                     target:self
+                                                                     action:@selector(tap:)];
     
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor blackColor]];
-    barbutton1.tag = 11;
-    self.navigationItem.rightBarButtonItem = barbutton1;
+    editBarButton.tag = 11;
+    self.navigationItem.rightBarButtonItem = editBarButton;
+    
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backBarButton;
+    backBarButton.tag = 10;
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    [self.scrollView addSubview:_contentView];
+    self.scrollView.delegate = self;
+    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width,
+                                               self.contentView.frame.size.height)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.scrollView.delegate = self;
-    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, self.contentView.frame.size.height)];
-
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-
 }
 
--(void)viewWillLayoutSubviews
+- (void)viewWillLayoutSubviews
 {
     _scrollView.contentSize = _contentView.frame.size;
 }
@@ -76,7 +83,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - View Action
@@ -93,7 +99,11 @@
                             kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_EDIT),
                             kTKPDPROFILE_DATAINDEXPATHKEY : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]
                             };
-                [self.navigationController pushViewController:vc animated:YES];
+                vc.delegate = self;
+                vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                nav.navigationBar.translucent = NO;
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
             case 12:
@@ -137,7 +147,7 @@
         self.title = list.receiver_name?:TITLE_DETAIL_ADDRESS_DEFAULT;
         _labelreceivername.text = list.receiver_name?:@"";
         _labeladdressname.text = list.address_name?:@"";
-        _labeladdress.text = list.address_street?:@"";
+        _labeladdress.text = [NSString convertHTML:list.address_street?:@""];
         NSString *postalcode = list.postal_code?[NSString stringWithFormat:@"%zd",list.postal_code]:@"";
         _labelpostcode.text = postalcode;
         _labelcity.text = list.city_name?:@"";
@@ -148,6 +158,35 @@
         _viewdefault.hidden = !isdefault;
         _viewsetasdefault.hidden = isdefault;
     }
+}
+
+#pragma mark - Edit address delegate
+
+- (void)successEditAddress:(AddressFormList *)address
+{
+    self.labeladdressname.text = address.address_name;
+    self.labelreceivername.text = address.receiver_name;
+
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : [UIColor colorWithRed:117.0/255.0
+                                                                                  green:117.0/255.0
+                                                                                   blue:117.0/255.0
+                                                                                  alpha:1],
+                                 };
+    
+    self.labeladdress.attributedText = [[NSAttributedString alloc] initWithString:address.address_street
+                                                                       attributes:attributes];
+    
+    self.labelpostcode.text = address.postal_code;
+    self.labelprovince.text = address.province_name;
+    self.labelcity.text = address.city_name;
+    self.labeldistrict.text = address.district_name;
+    self.labelphonenumber.text = address.receiver_phone;
 }
 
 @end

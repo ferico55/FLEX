@@ -8,166 +8,263 @@
         <mutableArray key="GothamBook.ttf">
             <string>GothamBook</string>
             <string>GothamBook</string>
-            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegisterViewController">
             <connections>
-                <outlet property="act" destination="9cP-LW-euo" id="8hM-7I-tlN"/>
-                <outlet property="buttonagreement" destination="Om5-rq-kus" id="1id-mj-frG"/>
-                <outlet property="container" destination="5rq-kc-cRU" id="T3H-Vz-fbZ"/>
-                <outlet property="texfieldfullname" destination="W9c-XX-w7W" id="c7F-Tn-yar"/>
-                <outlet property="textfieldconfirmpass" destination="1GC-F6-b5V" id="jC2-cO-L4F"/>
-                <outlet property="textfielddob" destination="4q8-DK-AgL" id="ZwM-mT-JrE"/>
-                <outlet property="textfieldemail" destination="ry4-mz-X5c" id="k6M-bA-X8c"/>
-                <outlet property="textfieldpassword" destination="ekn-6v-JpQ" id="vMO-FO-9x5"/>
-                <outlet property="textfieldphonenumber" destination="Kz1-ge-iSa" id="ZhL-4e-Be6"/>
-                <outlet property="view" destination="UQr-Xi-rcP" id="fu6-Qh-chq"/>
+                <outlet property="act" destination="ZWH-II-caf" id="Jyc-EQ-R4W"/>
+                <outlet property="agreementLabel" destination="95o-gu-FPH" id="HTa-YE-40l"/>
+                <outlet property="buttonagreement" destination="Om5-rq-kus" id="6b9-qz-xwM"/>
+                <outlet property="container" destination="5rq-kc-cRU" id="d7w-ld-Qry"/>
+                <outlet property="contentView" destination="i5M-Pr-FkT" id="iMc-WM-HUS"/>
+                <outlet property="facebookLoginActivityIndicator" destination="qR5-xw-F6Q" id="gDd-sd-YV6"/>
+                <outlet property="facebookLoginView" destination="Vwu-wq-o6E" id="kG4-CL-OcM"/>
+                <outlet property="loadingView" destination="XHS-ID-Xcp" id="R2A-f8-cDg"/>
+                <outlet property="signUpButton" destination="y3x-eA-9Vz" id="4PS-nz-c44"/>
+                <outlet property="texfieldfullname" destination="W9c-XX-w7W" id="Kae-l7-km9"/>
+                <outlet property="textfieldconfirmpass" destination="1GC-F6-b5V" id="gSg-jY-kCb"/>
+                <outlet property="textfielddob" destination="4q8-DK-AgL" id="uBW-EB-nfG"/>
+                <outlet property="textfieldemail" destination="ry4-mz-X5c" id="Lfv-XL-iRo"/>
+                <outlet property="textfieldpassword" destination="ekn-6v-JpQ" id="ov4-Ko-2J2"/>
+                <outlet property="textfieldphonenumber" destination="Kz1-ge-iSa" id="YHi-Ih-9PU"/>
+                <outlet property="view" destination="UQr-Xi-rcP" id="gYb-9u-LIh"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="UQr-Xi-rcP">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5rq-kc-cRU">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <subviews>
-                        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i5M-Pr-FkT">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                            <subviews>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nama lengkap" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W9c-XX-w7W" customClass="TextField">
-                                    <rect key="frame" x="15" y="12" width="290" height="44"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
-                                    <connections>
-                                        <outlet property="delegate" destination="-1" id="Xo9-Cl-Se3"/>
-                                    </connections>
-                                </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nomor telepon" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Kz1-ge-iSa" customClass="TextField">
-                                    <rect key="frame" x="15" y="55" width="290" height="44"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next"/>
-                                    <connections>
-                                        <outlet property="delegate" destination="-1" id="Pod-ep-ncX"/>
-                                    </connections>
-                                </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ry4-mz-X5c" customClass="TextField">
-                                    <rect key="frame" x="15" y="98" width="290" height="44"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="next"/>
-                                    <connections>
-                                        <outlet property="delegate" destination="-1" id="PQv-Rd-grX"/>
-                                    </connections>
-                                </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tanggal lahir" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4q8-DK-AgL" customClass="TextField">
-                                    <rect key="frame" x="15" y="141" width="290" height="44"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                    <connections>
-                                        <outlet property="delegate" destination="-1" id="imF-hy-4GD"/>
-                                    </connections>
-                                </textField>
-                                <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="dh2-Tl-g6u">
-                                    <rect key="frame" x="15" y="196" width="290" height="29"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <segments>
-                                        <segment title="Perempuan"/>
-                                        <segment title="Laki-Laki"/>
-                                    </segments>
-                                    <connections>
-                                        <action selector="tapsegment:" destination="-1" eventType="valueChanged" id="CvA-Uh-hkd"/>
-                                    </connections>
-                                </segmentedControl>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kata sandi" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ekn-6v-JpQ" customClass="TextField">
-                                    <rect key="frame" x="15" y="236" width="290" height="44"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" returnKeyType="next" secureTextEntry="YES"/>
-                                    <connections>
-                                        <outlet property="delegate" destination="-1" id="V2r-Oc-r53"/>
-                                    </connections>
-                                </textField>
-                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Konfirmasi kata sandi" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1GC-F6-b5V" customClass="TextField">
-                                    <rect key="frame" x="15" y="279" width="290" height="44"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
-                                    <connections>
-                                        <outlet property="delegate" destination="-1" id="d6V-jt-pIt"/>
-                                    </connections>
-                                </textField>
-                                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="9cP-LW-euo">
-                                    <rect key="frame" x="150" y="164" width="20" height="20"/>
-                                </activityIndicatorView>
-                                <button opaque="NO" tag="12" contentMode="scaleAspectFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Om5-rq-kus">
-                                    <rect key="frame" x="15" y="348" width="28" height="28"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    <state key="normal">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <state key="selected" image="icon_check_orange.png"/>
-                                    <connections>
-                                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="Yyy-0g-hWU"/>
-                                    </connections>
-                                </button>
-                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Saya sudah membaca dan menerima syarat dan ketentuan serta kebijakan privasi." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="233" translatesAutoresizingMaskIntoConstraints="NO" id="95o-gu-FPH">
-                                    <rect key="frame" x="51" y="344" width="254" height="36"/>
-                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i0v-rs-uOa">
-                                    <rect key="frame" x="0.0" y="396" width="320" height="43"/>
-                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                                    <state key="normal" title="Syarat dan Ketentuan, serta Kebijakan Privasi">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="vaD-Te-sHA"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y3x-eA-9Vz">
-                                    <rect key="frame" x="15" y="395" width="290" height="44"/>
-                                    <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                    <state key="normal" title="Daftar">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="gBK-9q-b7m"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
-                        </view>
-                    </subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5rq-kc-cRU">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
-                        <outlet property="delegate" destination="-1" id="ddv-3P-iAh"/>
+                        <outlet property="delegate" destination="-1" id="S0O-m3-r2c"/>
                     </connections>
                 </scrollView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XHS-ID-Xcp" userLabel="LoadingView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="qR5-xw-F6Q">
+                            <rect key="frame" x="150" y="230" width="20" height="20"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="centerX" secondItem="qR5-xw-F6Q" secondAttribute="centerX" id="TiV-OX-WyD"/>
+                        <constraint firstAttribute="centerY" secondItem="qR5-xw-F6Q" secondAttribute="centerY" id="ePN-Qn-rWy"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <gestureRecognizers/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="5rq-kc-cRU" secondAttribute="bottom" id="4Wc-nF-Iuq"/>
+                <constraint firstItem="XHS-ID-Xcp" firstAttribute="leading" secondItem="UQr-Xi-rcP" secondAttribute="leading" id="DRw-EF-Hvf"/>
+                <constraint firstAttribute="trailing" secondItem="5rq-kc-cRU" secondAttribute="trailing" id="EBG-rI-2Lu"/>
+                <constraint firstItem="XHS-ID-Xcp" firstAttribute="top" secondItem="UQr-Xi-rcP" secondAttribute="top" id="SzH-YE-ZOi"/>
+                <constraint firstAttribute="trailing" secondItem="XHS-ID-Xcp" secondAttribute="trailing" id="YwW-oU-KsU"/>
+                <constraint firstAttribute="bottom" secondItem="XHS-ID-Xcp" secondAttribute="bottom" id="bz2-dC-pFk"/>
+                <constraint firstItem="5rq-kc-cRU" firstAttribute="top" secondItem="UQr-Xi-rcP" secondAttribute="top" id="doA-qH-Yc2"/>
+                <constraint firstItem="5rq-kc-cRU" firstAttribute="leading" secondItem="UQr-Xi-rcP" secondAttribute="leading" id="vnY-4h-dQh"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
-            <connections>
-                <outletCollection property="gestureRecognizers" destination="EI6-qX-7SG" appends="YES" id="eiD-QW-SSC"/>
-            </connections>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="-306" y="-436"/>
         </view>
-        <tapGestureRecognizer id="EI6-qX-7SG">
-            <connections>
-                <action selector="gesture:" destination="-1" id="Fqc-7N-cVk"/>
-            </connections>
-        </tapGestureRecognizer>
+        <tapGestureRecognizer id="5bz-xB-0WU"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="558"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nama Lengkap" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="W9c-XX-w7W" customClass="TextField">
+                    <rect key="frame" x="15" y="15" width="290" height="44"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="rzA-4G-gvV"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="next"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="JRH-Ef-dme"/>
+                    </connections>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nomor HP" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Kz1-ge-iSa" customClass="TextField">
+                    <rect key="frame" x="15" y="58" width="290" height="44"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="xl3-30-VM5"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="ri8-4L-lDB"/>
+                    </connections>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Alamat Email" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ry4-mz-X5c" customClass="TextField">
+                    <rect key="frame" x="15" y="101" width="290" height="44"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="Lbp-ix-nUv"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="next"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="hVN-89-a7L"/>
+                    </connections>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tanggal Lahir" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="4q8-DK-AgL" customClass="TextField">
+                    <rect key="frame" x="15" y="144" width="290" height="44"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="mXl-d1-FKd"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="Ml7-r2-IR9"/>
+                    </connections>
+                </textField>
+                <segmentedControl opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="dh2-Tl-g6u">
+                    <rect key="frame" x="15" y="199" width="290" height="29"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="28" id="dSY-Pd-fVr"/>
+                    </constraints>
+                    <segments>
+                        <segment title="Perempuan"/>
+                        <segment title="Laki-Laki"/>
+                    </segments>
+                    <connections>
+                        <action selector="tapsegment:" destination="-1" eventType="touchUpInside" id="esm-3c-t69"/>
+                    </connections>
+                </segmentedControl>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kata Sandi" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ekn-6v-JpQ" customClass="TextField">
+                    <rect key="frame" x="15" y="239" width="290" height="44"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="dqd-bd-6r7"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="next" secureTextEntry="YES"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="hVj-qN-Ia8"/>
+                    </connections>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Ulangi Kata Sandi" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1GC-F6-b5V" customClass="TextField">
+                    <rect key="frame" x="15" y="282" width="290" height="44"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="W0T-tb-ZZ2"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
+                    <connections>
+                        <outlet property="delegate" destination="-1" id="2r5-7O-13T"/>
+                    </connections>
+                </textField>
+                <button opaque="NO" tag="12" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Om5-rq-kus">
+                    <rect key="frame" x="10" y="342" width="30" height="30"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="H6I-mN-k68"/>
+                        <constraint firstAttribute="width" constant="30" id="oya-ic-1dt"/>
+                    </constraints>
+                    <state key="normal" image="icon_circle.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected" image="icon_checkmark_green-01.png"/>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="L8G-Rq-hLX"/>
+                    </connections>
+                </button>
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Saya sudah membaca dan menerima syarat dan ketentuan serta kebijakan privasi." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="233" translatesAutoresizingMaskIntoConstraints="NO" id="95o-gu-FPH">
+                    <rect key="frame" x="44" y="342" width="261" height="36"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="36" id="IDN-xk-z9A"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="5bz-xB-0WU" appends="YES" id="snJ-q9-vl0"/>
+                    </connections>
+                </label>
+                <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y3x-eA-9Vz">
+                    <rect key="frame" x="15" y="398" width="290" height="44"/>
+                    <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="pD6-N2-MZp"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                    <state key="normal" title="Daftar">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="kcA-Gd-KcM"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vwu-wq-o6E" userLabel="Facebook Login View">
+                    <rect key="frame" x="15" y="478" width="290" height="44"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="L2Z-5Y-TLb"/>
+                    </constraints>
+                </view>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="ZWH-II-caf">
+                    <rect key="frame" x="272" y="410" width="20" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="20" id="0vU-lD-Zd6"/>
+                        <constraint firstAttribute="height" constant="20" id="bLc-pQ-7bO"/>
+                    </constraints>
+                </activityIndicatorView>
+            </subviews>
+            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+            <constraints>
+                <constraint firstItem="4q8-DK-AgL" firstAttribute="top" secondItem="Kz1-ge-iSa" secondAttribute="bottom" constant="42" id="06o-dB-qHs"/>
+                <constraint firstAttribute="trailing" secondItem="4q8-DK-AgL" secondAttribute="trailing" constant="15" id="4IV-NE-dBt"/>
+                <constraint firstAttribute="trailing" secondItem="Kz1-ge-iSa" secondAttribute="trailing" constant="15" id="7HD-LM-GE9"/>
+                <constraint firstAttribute="trailing" secondItem="ZWH-II-caf" secondAttribute="trailing" constant="28" id="9XC-JA-hOI"/>
+                <constraint firstItem="Vwu-wq-o6E" firstAttribute="top" secondItem="y3x-eA-9Vz" secondAttribute="bottom" constant="36" id="C5K-85-Udz"/>
+                <constraint firstItem="Om5-rq-kus" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="Cq6-yM-oeJ"/>
+                <constraint firstAttribute="trailing" secondItem="y3x-eA-9Vz" secondAttribute="trailing" constant="15" id="Dlh-gL-jvI"/>
+                <constraint firstItem="ry4-mz-X5c" firstAttribute="top" secondItem="W9c-XX-w7W" secondAttribute="bottom" constant="42" id="F8d-yI-dYI"/>
+                <constraint firstItem="dh2-Tl-g6u" firstAttribute="top" secondItem="4q8-DK-AgL" secondAttribute="bottom" constant="11" id="FU5-Yh-dpt"/>
+                <constraint firstItem="1GC-F6-b5V" firstAttribute="top" secondItem="dh2-Tl-g6u" secondAttribute="bottom" constant="55" id="Fju-VT-NhV"/>
+                <constraint firstItem="4q8-DK-AgL" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="Hdg-8W-uT4"/>
+                <constraint firstItem="ekn-6v-JpQ" firstAttribute="top" secondItem="dh2-Tl-g6u" secondAttribute="bottom" constant="12" id="IB2-Ij-ZWP"/>
+                <constraint firstItem="Kz1-ge-iSa" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="JaU-BV-0ES"/>
+                <constraint firstItem="ry4-mz-X5c" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="QhF-Cb-u9s"/>
+                <constraint firstItem="y3x-eA-9Vz" firstAttribute="top" secondItem="95o-gu-FPH" secondAttribute="bottom" constant="20" id="Svo-a3-PBq"/>
+                <constraint firstItem="ekn-6v-JpQ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="TiC-dh-MRi"/>
+                <constraint firstItem="Om5-rq-kus" firstAttribute="top" secondItem="1GC-F6-b5V" secondAttribute="bottom" constant="16" id="ZY6-SM-bTM"/>
+                <constraint firstAttribute="trailing" secondItem="95o-gu-FPH" secondAttribute="trailing" constant="15" id="Zw9-uA-sqp"/>
+                <constraint firstAttribute="trailing" secondItem="Vwu-wq-o6E" secondAttribute="trailing" constant="15" id="a1S-k5-Evd"/>
+                <constraint firstItem="95o-gu-FPH" firstAttribute="leading" secondItem="Om5-rq-kus" secondAttribute="trailing" constant="4" id="bon-R3-S9b"/>
+                <constraint firstItem="Kz1-ge-iSa" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="58" id="e2Q-Bj-p3f"/>
+                <constraint firstAttribute="trailing" secondItem="W9c-XX-w7W" secondAttribute="trailing" constant="15" id="fQB-cQ-UF3"/>
+                <constraint firstAttribute="trailing" secondItem="1GC-F6-b5V" secondAttribute="trailing" constant="15" id="iG8-8y-Z4y"/>
+                <constraint firstItem="W9c-XX-w7W" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="15" id="iRY-Dv-erG"/>
+                <constraint firstAttribute="trailing" secondItem="dh2-Tl-g6u" secondAttribute="trailing" constant="15" id="iVO-KY-jkg"/>
+                <constraint firstItem="ZWH-II-caf" firstAttribute="top" secondItem="95o-gu-FPH" secondAttribute="bottom" constant="32" id="jgP-Re-a1q"/>
+                <constraint firstItem="95o-gu-FPH" firstAttribute="top" secondItem="1GC-F6-b5V" secondAttribute="bottom" constant="16" id="k8b-Qd-IK7"/>
+                <constraint firstItem="W9c-XX-w7W" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="qYZ-dU-Bq1"/>
+                <constraint firstAttribute="trailing" secondItem="ekn-6v-JpQ" secondAttribute="trailing" constant="15" id="sV4-9X-vWj"/>
+                <constraint firstAttribute="trailing" secondItem="ry4-mz-X5c" secondAttribute="trailing" constant="15" id="tKb-fD-yUr"/>
+                <constraint firstItem="y3x-eA-9Vz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="w88-Ql-stW"/>
+                <constraint firstItem="dh2-Tl-g6u" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="wiP-qp-sZ3"/>
+                <constraint firstItem="1GC-F6-b5V" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="yAp-sb-2S0"/>
+                <constraint firstItem="Vwu-wq-o6E" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="15" id="ylJ-nn-XjK"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="91" y="-392"/>
+        </view>
     </objects>
     <resources>
-        <image name="icon_check_orange.png" width="14" height="14"/>
+        <image name="icon_checkmark_green-01.png" width="20" height="20"/>
+        <image name="icon_circle.png" width="20" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

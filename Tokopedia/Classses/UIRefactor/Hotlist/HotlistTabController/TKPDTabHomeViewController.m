@@ -71,13 +71,15 @@
     
     UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
+
+    _viewControllerIndex = 1;
     
     self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
                                                           navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal
                                                                         options:nil];
     self.pageController.dataSource = self;
     self.pageController.delegate = self;
-    
+
     CGRect pageControllerFrame = [[self view] bounds];
     pageControllerFrame.origin.y = 108;
     pageControllerFrame.size.height -= 108;
@@ -87,7 +89,12 @@
     _hotListViewController.data = @{kTKPD_AUTHKEY : [_userManager getUserLoginData]?:@""};
     _hotListViewController.index = 1;
     _hotListViewController.delegate = self;
-    
+
+    [self.pageController setViewControllers:@[_hotListViewController]
+                                  direction:UIPageViewControllerNavigationDirectionForward
+                                   animated:NO
+                                 completion:nil];
+
     _productFeedViewController = [ProductFeedViewController new];
     _productFeedViewController.index = 2;
     _productFeedViewController.delegate = self;
@@ -99,11 +106,6 @@
     _favoritedShopViewController = [FavoritedShopViewController new];
     _favoritedShopViewController.index = 4;
     _favoritedShopViewController.delegate = self;
-    
-    [self.pageController setViewControllers:@[_hotListViewController]
-                                  direction:UIPageViewControllerNavigationDirectionForward
-                                   animated:NO
-                                 completion:nil];
     
     [self addChildViewController:self.pageController];
     [[self view] addSubview:[self.pageController view]];
@@ -175,8 +177,6 @@
         }
     }
     
-    _viewControllerIndex = 1;
- 
     _direction = UIPageViewControllerNavigationDirectionForward;
     
     _tabBarCanScrolling = YES;
@@ -184,6 +184,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(redirectAfterNotification:)
                                                  name:@"redirectAfterNotification"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadPageController)
+                                                 name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
                                                object:nil];
 }
 
@@ -218,6 +223,16 @@
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
+    if ([[_pageController.viewControllers objectAtIndex:0] isKindOfClass:[HotlistViewController class]]) {
+        _tabScrollView.contentOffset = CGPointMake(0, 0);
+    } else if ([[_pageController.viewControllers objectAtIndex:0] isKindOfClass:[ProductFeedViewController class]]) {
+        _tabScrollView.contentOffset = CGPointMake(self.view.frame.size.width/3, 0);
+    } else if ([[_pageController.viewControllers objectAtIndex:0] isKindOfClass:[HistoryProductViewController class]]) {
+        _tabScrollView.contentOffset = CGPointMake(2*(self.view.frame.size.width/3), 0);
+    } else if ([[_pageController.viewControllers objectAtIndex:0] isKindOfClass:[FavoritedShopViewController class]]) {        
+        _tabScrollView.contentOffset = CGPointMake(3*(self.view.frame.size.width/3), 0);
+    }
+    
     _userManager = [UserAuthentificationManager new];
 
     if(_userManager.isLogin) {
@@ -239,6 +254,8 @@
 
     } else {
         
+        _viewControllerIndex = 1;
+
         _tabScrollView.scrollEnabled = NO;
         _tabScrollView.contentOffset = CGPointMake(0, 0);
 
@@ -256,7 +273,12 @@
                 [(UIScrollView *)view setScrollEnabled:NO];
             }
         }
-
+        
+        [self.pageController setViewControllers:@[_hotListViewController]
+                                      direction:UIPageViewControllerNavigationDirectionForward
+                                       animated:NO
+                                     completion:nil];
+        
     }
 }
 
@@ -568,6 +590,14 @@
 
 - (void)goToNewOrder {
     
+}
+
+- (void)reloadPageController
+{
+    [self.pageController setViewControllers:@[_hotListViewController]
+                                  direction:UIPageViewControllerNavigationDirectionForward
+                                   animated:NO
+                                 completion:nil];
 }
 
 @end

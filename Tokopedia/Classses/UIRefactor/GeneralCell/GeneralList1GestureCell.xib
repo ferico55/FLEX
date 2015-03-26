@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
             <string>GothamBook</string>
         </mutableArray>
     </customFonts>
@@ -18,64 +21,58 @@
                 <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Goo-SG-4rw">
-                        <rect key="frame" x="120" y="0.0" width="100" height="44"/>
-                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                        <state key="normal" title="Set as Default">
-                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="tap:" destination="hlp-qI-BRx" eventType="touchUpInside" id="4Fm-T8-xuH"/>
-                        </connections>
-                    </button>
-                    <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wEJ-jw-SGt">
-                        <rect key="frame" x="220" y="0.0" width="100" height="44"/>
-                        <color key="backgroundColor" red="0.81568627449999997" green="0.090196078430000007" blue="0.086274509799999996" alpha="1" colorSpace="calibratedRGB"/>
-                        <state key="normal" title="Delete">
-                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                        </state>
-                        <connections>
-                            <action selector="tap:" destination="hlp-qI-BRx" eventType="touchUpInside" id="4jt-D0-HwW"/>
-                        </connections>
-                    </button>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BBf-Mq-Kjb">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BBf-Mq-Kjb">
+                        <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                         <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0jQ-Yp-iGW">
-                                <rect key="frame" x="15" y="11" width="154" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0jQ-Yp-iGW">
+                                <rect key="frame" x="15" y="0.0" width="180" height="43"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="43" id="FQi-TT-jvG"/>
+                                    <constraint firstAttribute="width" constant="180" id="aXB-jx-lKu"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                 <color key="textColor" red="0.25882352941176467" green="0.25882352941176467" blue="0.25882352941176467" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Default" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x6F-El-BTL">
-                                <rect key="frame" x="216" y="11" width="67" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Default" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x6F-El-BTL">
+                                <rect key="frame" x="195" y="0.0" width="92" height="43"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
                                 <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Value" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="daH-W3-qWe">
-                                <rect key="frame" x="166" y="11" width="117" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="daH-W3-qWe">
+                                <rect key="frame" x="195" y="0.0" width="92" height="43"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <color key="textColor" red="0.15686274509803921" green="0.45098039215686275" blue="0.99607843137254903" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1Kh-Cl-7Eo">
-                                <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                                <color key="backgroundColor" red="0.78431372549019607" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="daH-W3-qWe" secondAttribute="bottom" id="2V6-S5-keN"/>
+                            <constraint firstAttribute="trailing" secondItem="daH-W3-qWe" secondAttribute="trailing" id="4lE-od-mjq"/>
+                            <constraint firstAttribute="trailing" secondItem="x6F-El-BTL" secondAttribute="trailing" id="6aa-Wk-ejh"/>
+                            <constraint firstItem="x6F-El-BTL" firstAttribute="top" secondItem="BBf-Mq-Kjb" secondAttribute="top" id="7Cu-Vm-bmT"/>
+                            <constraint firstItem="0jQ-Yp-iGW" firstAttribute="top" secondItem="BBf-Mq-Kjb" secondAttribute="top" id="DCi-et-41d"/>
+                            <constraint firstAttribute="bottom" secondItem="x6F-El-BTL" secondAttribute="bottom" id="HEr-hW-MEr"/>
+                            <constraint firstItem="0jQ-Yp-iGW" firstAttribute="leading" secondItem="BBf-Mq-Kjb" secondAttribute="leading" constant="15" id="ObF-qv-4IY"/>
+                            <constraint firstItem="x6F-El-BTL" firstAttribute="leading" secondItem="0jQ-Yp-iGW" secondAttribute="trailing" id="d6E-xE-i5G"/>
+                            <constraint firstItem="daH-W3-qWe" firstAttribute="top" secondItem="BBf-Mq-Kjb" secondAttribute="top" id="ecC-oV-GHi"/>
+                            <constraint firstAttribute="bottom" secondItem="0jQ-Yp-iGW" secondAttribute="bottom" id="lw3-q3-qYW"/>
+                            <constraint firstItem="daH-W3-qWe" firstAttribute="leading" secondItem="0jQ-Yp-iGW" secondAttribute="trailing" id="y7K-Cy-zPo"/>
+                        </constraints>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="BBf-Mq-Kjb" secondAttribute="trailing" id="9sG-fv-Ig9"/>
+                    <constraint firstAttribute="bottom" secondItem="BBf-Mq-Kjb" secondAttribute="bottom" id="Mng-wk-VXq"/>
+                    <constraint firstItem="BBf-Mq-Kjb" firstAttribute="top" secondItem="lNT-DO-r2h" secondAttribute="top" id="cTa-K6-dZR"/>
+                    <constraint firstItem="BBf-Mq-Kjb" firstAttribute="leading" secondItem="lNT-DO-r2h" secondAttribute="leading" id="wmk-jS-92Q"/>
+                </constraints>
             </tableViewCellContentView>
             <gestureRecognizers/>
             <connections>
-                <outlet property="buttondefault" destination="Goo-SG-4rw" id="MKZ-T0-And"/>
-                <outlet property="buttondelete" destination="wEJ-jw-SGt" id="L8g-pB-H8u"/>
                 <outlet property="labeldefault" destination="x6F-El-BTL" id="HKW-Lt-vjR"/>
                 <outlet property="labelname" destination="0jQ-Yp-iGW" id="J01-JF-rs2"/>
                 <outlet property="labelvalue" destination="daH-W3-qWe" id="Cnm-Ri-S4D"/>

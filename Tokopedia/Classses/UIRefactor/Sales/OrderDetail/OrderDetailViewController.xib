@@ -92,7 +92,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="zme-T8-wvu">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="zme-T8-wvu">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <inset key="scrollIndicatorInsets" minX="0.0" minY="45" maxX="0.0" maxY="0.0"/>
@@ -607,7 +607,7 @@
                                 <constraint firstAttribute="height" constant="1" id="Ouk-cZ-7EE"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="INV/20150113/XV/I/8327373" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q5n-8Z-LHW">
+                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="INV/20150113/XV/I/8327373" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q5n-8Z-LHW">
                             <rect key="frame" x="15" y="7" width="190" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="190" id="HLG-xf-8Ie"/>
@@ -616,6 +616,9 @@
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
                             <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="Z2X-qZ-wne" appends="YES" id="yn0-mb-VcT"/>
+                            </connections>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Batal Otomatis" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5c7-2m-n2T">
                             <rect key="frame" x="225" y="9" width="80" height="12"/>
@@ -708,9 +711,13 @@
                         <constraint firstAttribute="width" constant="320" id="WsG-ST-9yR"/>
                         <constraint firstAttribute="height" constant="62" id="x4B-IX-epH"/>
                     </constraints>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="Rp7-WS-7fX" appends="YES" id="OXf-fC-fZe"/>
+                    </connections>
                 </view>
             </subviews>
             <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="QqC-Zc-o9c" firstAttribute="top" secondItem="UHY-fP-XhB" secondAttribute="top" id="1Q5-rw-CeR"/>
                 <constraint firstItem="mBx-Wp-tGy" firstAttribute="leading" secondItem="UHY-fP-XhB" secondAttribute="leading" id="F3B-wb-0uv"/>
@@ -795,6 +802,18 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="1267" y="289.5"/>
         </view>
+        <tapGestureRecognizer id="Rp7-WS-7fX">
+            <connections>
+                <action selector="tap:" destination="-1" id="fwi-dS-AOP"/>
+                <outlet property="delegate" destination="-1" id="Nad-OS-hzK"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="Z2X-qZ-wne">
+            <connections>
+                <action selector="tap:" destination="-1" id="dMs-p5-vWu"/>
+                <outlet property="delegate" destination="-1" id="0Y6-rW-RPE"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_order_cancel.png" width="14" height="14"/>

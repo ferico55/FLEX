@@ -15,6 +15,7 @@
 #import "TKPDSecureStorage.h"
 #import "ProductQuantityViewController.h"
 #import "OrderDetailViewController.h"
+#import "TKPDTabProfileNavigationController.h"
 
 #import "Order.h"
 #import "OrderTransaction.h"
@@ -55,10 +56,11 @@
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
 
-    __weak RKObjectManager *_actionObjectManager;
-    __weak RKManagedObjectRequestOperation *_actionRequest;
+    RKObjectManager *_actionObjectManager;
+    RKManagedObjectRequestOperation *_actionRequest;
 
     NSOperationQueue *_operationQueue;
+    NSOperationQueue *_operationQueueAction;
     NSTimer *_timer;
 
     UIRefreshControl *_refreshControl;
@@ -103,6 +105,7 @@
     _paging = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     _orderInProcess = [NSMutableDictionary new];
+    _operationQueueAction = [NSOperationQueue new];
     
     [self configureRestKit];
     [self request];
@@ -353,6 +356,16 @@
     controller.transaction = [_transactions objectAtIndex:indexPath.row];
     controller.delegate = self;
 
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)tableViewCell:(UITableViewCell *)cell didSelectUserAtIndexPath:(NSIndexPath *)indexPath
+{
+    _selectedTransaction = [_transactions objectAtIndex:indexPath.row];
+    _selectedIndexPath = indexPath;
+
+    TKPDTabProfileNavigationController *controller = [TKPDTabProfileNavigationController new];
+    controller.data = @{API_USER_ID_KEY:_selectedTransaction.order_customer.customer_id};
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -765,10 +778,7 @@
     
         [_activityIndicator startAnimating];
         
-        _request = [_objectManager appropriateObjectRequestOperationWithObject:self
-                                                                        method:RKRequestMethodPOST
-                                                                          path:API_NEW_ORDER_PATH
-                                                                    parameters:[param encrypt]];
+        _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_NEW_ORDER_PATH parameters:[param encrypt]];
 
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             
@@ -883,6 +893,13 @@
             _tableView.tableFooterView = nil;
         }
         
+        if (_transactions.count == 0) {
+            CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
+            NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+            _tableView.tableFooterView = noResultView;
+            _tableView.sectionFooterHeight = noResultView.frame.size.height;
+        }
+        
         [_tableView reloadData];
     }
 }
@@ -948,10 +965,9 @@
                             API_REASON_KEY           : reason ?: @"",
                             API_LIST_PRODUCT_ID_KEY  : productIds ?: @"",
                             API_PRODUCT_QUANTITY_KEY : productQuantities ?: @"",
-                            @"enc_dec"               : @"off",
                             };
 
-    _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_NEW_ORDER_ACTION_PATH parameters:param];
+    _actionRequest = [_actionObjectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_NEW_ORDER_ACTION_PATH parameters:[param encrypt]];
     
     NSLog(@"\n\n\n%@\n\n\n", _actionRequest);
     
@@ -992,7 +1008,7 @@
 
     }];
     
-    [_operationQueue addOperation:_actionRequest];
+    [_operationQueueAction addOperation:_actionRequest];
     
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }

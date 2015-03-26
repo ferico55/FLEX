@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingAddressViewController">
             <connections>
@@ -67,17 +62,13 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cxr-RD-2mr">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_plus_blue" translatesAutoresizingMaskIntoConstraints="NO" id="DNj-ti-qKK">
-                            <rect key="frame" x="67" y="14" width="15" height="15"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="15" id="bLp-fB-fyF"/>
-                                <constraint firstAttribute="height" constant="15" id="gUC-el-EFZ"/>
-                            </constraints>
-                        </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g3N-M4-7ME">
-                            <rect key="frame" x="90" y="0.0" width="244" height="44"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                            <state key="normal" title="Tambah Alamat Baru">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g3N-M4-7ME">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="0.0"/>
+                            <state key="normal" title="Tambah Alamat Baru" image="icon_plus_blue">
+                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -87,20 +78,20 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GRW-Tx-azr" userLabel="Border Bottom">
                             <rect key="frame" x="0.0" y="43" width="320" height="1"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="DFC-Kb-PVM"/>
+                            </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="g3N-M4-7ME" firstAttribute="leading" secondItem="DNj-ti-qKK" secondAttribute="trailing" constant="8" symbolic="YES" id="8mC-gB-tQP"/>
-                        <constraint firstItem="GRW-Tx-azr" firstAttribute="top" secondItem="DNj-ti-qKK" secondAttribute="bottom" constant="14" id="KXQ-an-Pry"/>
-                        <constraint firstAttribute="trailing" secondItem="GRW-Tx-azr" secondAttribute="trailing" id="O6r-uY-fjZ"/>
-                        <constraint firstItem="g3N-M4-7ME" firstAttribute="top" secondItem="Cxr-RD-2mr" secondAttribute="top" id="R5w-EW-Ymf"/>
-                        <constraint firstItem="DNj-ti-qKK" firstAttribute="leading" secondItem="Cxr-RD-2mr" secondAttribute="leading" constant="67" id="Yib-ML-jRr"/>
-                        <constraint firstAttribute="bottom" secondItem="GRW-Tx-azr" secondAttribute="bottom" id="bf4-ar-Uk5"/>
-                        <constraint firstItem="DNj-ti-qKK" firstAttribute="top" secondItem="Cxr-RD-2mr" secondAttribute="top" constant="14" id="eaj-5f-D0m"/>
-                        <constraint firstItem="GRW-Tx-azr" firstAttribute="leading" secondItem="Cxr-RD-2mr" secondAttribute="leading" id="fDh-r8-jud"/>
-                        <constraint firstAttribute="trailing" secondItem="g3N-M4-7ME" secondAttribute="trailing" constant="-14" id="gw9-Qm-Mgd"/>
-                        <constraint firstItem="GRW-Tx-azr" firstAttribute="bottom" secondItem="g3N-M4-7ME" secondAttribute="bottom" id="uI1-2m-aUg"/>
+                        <constraint firstAttribute="bottom" secondItem="GRW-Tx-azr" secondAttribute="bottom" id="9FB-Ph-M5P"/>
+                        <constraint firstAttribute="bottom" secondItem="g3N-M4-7ME" secondAttribute="bottom" id="H1T-7f-96u"/>
+                        <constraint firstItem="g3N-M4-7ME" firstAttribute="leading" secondItem="Cxr-RD-2mr" secondAttribute="leading" id="MrE-8g-FyK"/>
+                        <constraint firstAttribute="trailing" secondItem="GRW-Tx-azr" secondAttribute="trailing" id="OOj-Ub-aa9"/>
+                        <constraint firstItem="g3N-M4-7ME" firstAttribute="top" secondItem="Cxr-RD-2mr" secondAttribute="top" id="QKd-dM-kvG"/>
+                        <constraint firstAttribute="trailing" secondItem="g3N-M4-7ME" secondAttribute="trailing" id="p1P-pa-odC"/>
+                        <constraint firstItem="GRW-Tx-azr" firstAttribute="leading" secondItem="Cxr-RD-2mr" secondAttribute="leading" id="xbd-a9-M6d"/>
                     </constraints>
                 </view>
             </subviews>
@@ -112,7 +103,7 @@
                 <constraint firstAttribute="bottom" secondItem="Cxr-RD-2mr" secondAttribute="bottom" constant="21" id="lAg-ZU-KYs"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="520" y="273"/>
+            <point key="canvasLocation" x="703" y="271.5"/>
         </view>
         <view contentMode="scaleToFill" id="mMR-Gb-1FO">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
