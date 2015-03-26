@@ -164,7 +164,7 @@ typedef enum
 #define ACTION_EDIT_PRODUCT_KEY @"edit_product"
 #define ACTION_MOVE_TO_WAREHOUSE @"move_to_warehouse"
 #define kTKPDDETAIL_APIDELETEPRODUCTKEY @"delete_product"
-#define kTKPDDETAIL_APIUPLOADPRODUCTIMAGEKEY @"upload_product_image"
+#define ACTION_UPLOAD_PRODUCT_IMAGE @"upload_product_image"
 #define ACTION_DELETE_IMAGE @"delete_product_pic"
 
 #define kTKPDDETAIL_APIPAGEKEY @"page"

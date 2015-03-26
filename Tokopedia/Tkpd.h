@@ -68,6 +68,15 @@ typedef enum {
     ORDER_BAD                            = 900    // update by ADMIN        bad order occurs and need further investigation} ORDER_STATUS;
 } ORDER_STATUS;
 
+typedef enum {
+    RESOLUTION_CANCELED     = 0,
+    RESOLUTION_OPEN         = 100,
+    RESOLUTION_DO_ACTION    = 200,
+    RESOLUTION_CS_ANSWERED  = 300,
+    RESOLUTION_APPEAL       = 400,
+    RESOLUTION_FINISHED     = 500
+} DISPUTE_STATUS;
+
 #define is4inch  ([[UIScreen mainScreen] bounds].size.height == 568)?TRUE:FALSE
 
 #define kTkpdIndexSetStatusCodeOK [NSIndexSet indexSetWithIndex:200] //statuscode 200 = OK

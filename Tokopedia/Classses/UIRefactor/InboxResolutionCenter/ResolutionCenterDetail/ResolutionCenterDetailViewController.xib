@@ -28,6 +28,7 @@
                 <outlet property="invoiceLabel" destination="LLB-VF-pFH" id="WwB-RH-5ip"/>
                 <outlet property="loadMoreButton" destination="Cti-C9-twK" id="jY7-XB-QyE"/>
                 <outlet property="loadMoreCell" destination="mbZ-4F-JG8" id="JgR-iI-Ykq"/>
+                <outlet property="replayConversationView" destination="kuE-5j-1wg" id="zOD-pT-byo"/>
                 <outlet property="tableView" destination="0AH-ao-Wjz" id="Wfr-H5-K0V"/>
                 <outlet property="usernameLabel" destination="WjT-eU-CUZ" id="Ulp-of-REf"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -39,19 +40,19 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="0AH-ao-Wjz">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="518"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="iVq-v7-P1m"/>
                         <outlet property="delegate" destination="-1" id="LoW-Dc-y9a"/>
                     </connections>
                 </tableView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kuE-5j-1wg">
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kuE-5j-1wg">
                     <rect key="frame" x="0.0" y="518" width="320" height="50"/>
                     <subviews>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="N0B-0l-7Aq" userLabel="Horizontal Border">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0aw-Ah-gfv">
                             <rect key="frame" x="20" y="10" width="280" height="30"/>
@@ -74,23 +75,22 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="0AH-ao-Wjz" secondAttribute="trailing" id="6cp-RV-TKI"/>
-                <constraint firstItem="kuE-5j-1wg" firstAttribute="top" secondItem="0AH-ao-Wjz" secondAttribute="bottom" id="HjM-dO-bYv"/>
+                <constraint firstAttribute="bottom" secondItem="0AH-ao-Wjz" secondAttribute="bottom" id="1PH-8a-RDB"/>
+                <constraint firstAttribute="trailing" secondItem="0AH-ao-Wjz" secondAttribute="trailing" id="4p7-J4-v1S"/>
                 <constraint firstItem="kuE-5j-1wg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="L0k-Iw-0JC"/>
-                <constraint firstItem="kuE-5j-1wg" firstAttribute="top" secondItem="0AH-ao-Wjz" secondAttribute="bottom" id="fSm-7z-tda"/>
                 <constraint firstAttribute="bottom" secondItem="kuE-5j-1wg" secondAttribute="bottom" id="fbY-XV-r2U"/>
-                <constraint firstItem="0AH-ao-Wjz" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="jYt-yS-mjI"/>
-                <constraint firstItem="0AH-ao-Wjz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="rgI-ng-69r"/>
+                <constraint firstItem="0AH-ao-Wjz" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="fdv-p4-SLA"/>
+                <constraint firstItem="0AH-ao-Wjz" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="xt6-Ng-1fI"/>
                 <constraint firstAttribute="trailing" secondItem="kuE-5j-1wg" secondAttribute="trailing" id="z2v-k6-TUL"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-            <point key="canvasLocation" x="166" y="191.5"/>
+            <point key="canvasLocation" x="166" y="191"/>
         </view>
         <view contentMode="scaleToFill" id="s8o-KD-9LU" userLabel="Header View">
             <rect key="frame" x="0.0" y="0.0" width="320" height="123"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Gk-vx-1N6" userLabel="Invoice View">
+                <view tag="10" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Gk-vx-1N6" userLabel="Invoice View">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="51"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INV/20150113/XV/I/8327373" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LLB-VF-pFH">
@@ -105,8 +105,12 @@
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="zD8-oc-nhU" appends="YES" id="wiG-Og-YVT"/>
+                    </connections>
                 </view>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dU4-qr-U1K" userLabel="User View">
+                <view tag="11" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dU4-qr-U1K" userLabel="User View">
                     <rect key="frame" x="0.0" y="51" width="320" height="62"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_profile_picture.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="FFc-W4-g7O">
@@ -116,12 +120,6 @@
                             <rect key="frame" x="67" y="31" width="140" height="17"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                             <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Thomas" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WjT-eU-CUZ">
-                            <rect key="frame" x="67" y="13" width="223" height="21"/>
-                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
-                            <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b7V-XF-Bi8" userLabel="Horizontal Border">
@@ -135,8 +133,18 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Thomas" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WjT-eU-CUZ">
+                            <rect key="frame" x="67" y="10" width="223" height="21"/>
+                            <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                            <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <gestureRecognizers/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="Zxk-7X-Ti6" appends="YES" id="Wm9-K4-iNK"/>
+                    </connections>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -178,6 +186,16 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="507" y="146"/>
         </tableViewCell>
+        <tapGestureRecognizer id="zD8-oc-nhU">
+            <connections>
+                <action selector="gesture:" destination="-1" id="qf9-Sn-UOv"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="Zxk-7X-Ti6">
+            <connections>
+                <action selector="gesture:" destination="-1" id="qsH-BG-565"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_profile_picture.jpeg" width="200" height="200"/>

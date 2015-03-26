@@ -19,6 +19,11 @@
 - (void)trackOrderAtIndexPath:(NSIndexPath*)indexPath;
 - (void)reOrderAtIndexPath:(NSIndexPath*)indexPath;
 - (void)complainAtIndexPath:(NSIndexPath*)indexPath;
+- (void)goToComplaintDetailAtIndexPath:(NSIndexPath *)indexPath;
+
+- (void)goToInvoiceAtIndexPath:(NSIndexPath *)indexPath;
+- (void)goToShopAtIndexPath:(NSIndexPath *)indexPath;
+
 @end
 
 @interface TxOrderStatusCell : UITableViewCell
@@ -46,6 +51,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (weak, nonatomic) IBOutlet UIView *statusView;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *twoButtons;
 
 @property (nonatomic) NSInteger deadlineProcessDayLeft;
 

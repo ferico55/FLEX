@@ -32,12 +32,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Konfirmasi Pembayaran";
-    
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
         self.navigationController.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    
     
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
@@ -63,8 +60,20 @@
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
     backBarButtonItem.tag = 10;
     self.navigationItem.leftBarButtonItem = backBarButtonItem;
-    
 }
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.title = @"Konfirmasi Pembayaran";
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.title = nil;
+}
+
 -(IBAction)back:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];

@@ -8,6 +8,8 @@
 
 #import "string_product.h"
 #import "string_transaction.h"
+#import "NoResult.h"
+#import "NavigateViewController.h"
 
 #import "TransactionObjectMapping.h"
 
@@ -90,6 +92,8 @@
     
     TransactionObjectMapping *_mapping;
     BOOL _isLoadingRequest;
+    
+    NavigateViewController *_navigate;
     
     NSString *_saldoTokopedia;
     NSIndexPath *_switchSaldoIndexPath;
@@ -196,6 +200,7 @@
     _stockPartialDetail = [NSMutableArray new];
     _listProductFirstObjectIndexPath =[NSMutableArray new];
     _mapping = [TransactionObjectMapping new];
+    _navigate = [NavigateViewController new];
 
     _isUsingSaldoTokopedia = NO;
     
@@ -1892,6 +1897,24 @@
     [self configureRestKitActionEditProductCart];
     [self requestActionEditProductCart:_dataInput];
 }
+#pragma mark - Cell Delegate
+-(void)didTapImageViewAtIndexPath:(NSIndexPath *)indexPath
+{
+    TransactionCartList *list = _list[indexPath.section];
+    NSInteger indexProduct = indexPath.row;
+    NSArray *listProducts = list.cart_products;
+    ProductDetail *product = listProducts[indexProduct];
+    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+}
+
+-(void)didTapProductAtIndexPath:(NSIndexPath *)indexPath
+{
+    TransactionCartList *list = _list[indexPath.section];
+    NSInteger indexProduct = indexPath.row;
+    NSArray *listProducts = list.cart_products;
+    ProductDetail *product = listProducts[indexProduct];
+    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+}
 
 #pragma mark - Methods
 
@@ -2488,7 +2511,7 @@
     
     UIImageView *thumb = cell.productThumbImageView;
     thumb.image = nil;
-    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         [thumb setImage:image animated:YES];

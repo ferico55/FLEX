@@ -32,4 +32,16 @@
     // Configure the view for the selected state
 }
 
+
+- (IBAction)gesture:(id)sender {
+    UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+    if (gesture.view.tag == 10) {
+        [_delegate didTapProductAtIndexPath:_indexPath];
+    }
+    else
+    {
+        [_delegate didTapImageViewAtIndexPath:_indexPath];
+    }
+}
+
 @end

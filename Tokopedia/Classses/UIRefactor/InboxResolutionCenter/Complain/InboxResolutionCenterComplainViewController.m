@@ -6,12 +6,15 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
+#import "NavigateViewController.h"
+
 #import "InboxResolutionCenterComplainViewController.h"
 #import "InboxResolutionCenterComplainCell.h"
 #import "InboxResolutionCenterObjectMapping.h"
 #import "FilterComplainViewController.h"
 
 #import "ResolutionCenterDetailViewController.h"
+#import "TxOrderStatusViewController.h"
 
 #import "GeneralTableViewController.h"
 
@@ -24,8 +27,9 @@
 #define DATA_SELECTED_RESOLUTION_KEY @"selected_resolution"
 #define DATA_SELECTED_INDEXPATH_RESOLUTION_KEY @"seleted_indexpath_resolution"
 
-@interface InboxResolutionCenterComplainViewController ()<UITabBarControllerDelegate, UITableViewDataSource, GeneralTableViewControllerDelegate,FilterComplainViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate>
+@interface InboxResolutionCenterComplainViewController ()<UITabBarControllerDelegate, UITableViewDataSource, GeneralTableViewControllerDelegate,FilterComplainViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate, InboxResolutionCenterComplainCellDelegate>
 {
+    NavigateViewController *_navigate;
     NSMutableArray *_list;
     NSString *_URINext;
     BOOL _isNodata;
@@ -45,6 +49,7 @@
     
     NSMutableArray *_objectCancelComplain;
 }
+@property (strong, nonatomic) IBOutlet UIView *headerView;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -57,6 +62,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _navigate = [NavigateViewController new];
     _list = [NSMutableArray new];
     _operationQueue = [NSOperationQueue new];
     _mapping = [InboxResolutionCenterObjectMapping new];
@@ -72,6 +78,10 @@
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshRequest)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
+    
+    if (_isMyComplain) {
+        _tableView.tableHeaderView = _headerView;
+    }
     
     [self refreshRequest];
 }
@@ -102,12 +112,21 @@
         vc.delegate = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    self.title = nil;
+    
+    if (button.tag == 12) {
+        //Status Pemesanan
+        TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+        vc.action = @"get_tx_order_status";
+        vc.viewControllerTitle = @"Status Pemesanan";
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    if (button.tag == 13) {
+        //Daftar Transaksi
+        TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+        vc.action = @"get_tx_order_list";
+        vc.viewControllerTitle = @"Daftar Transaksi";
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -142,6 +161,7 @@
     cell = (InboxResolutionCenterComplainCell*)[tableView dequeueReusableCellWithIdentifier:cellID];
     if (cell == nil) {
         cell = [InboxResolutionCenterComplainCell newCell];
+        cell.delegate = self;
     }
     
     ResolutionDetail *resolution = ((InboxResolutionCenterList*)_list[indexPath.row]).resolution_detail;
@@ -167,13 +187,13 @@
     NSString *lastSolution;
     
     if (lastSolutionType == SOLUTION_REFUND) {
-        lastSolution = [NSString stringWithFormat:@"Pembelian dana kepada pembeli sebesar %@",resolution.resolution_order.order_open_amount_idr];
+        lastSolution = [NSString stringWithFormat:@"Pembelian dana kepada pembeli sebesar %@",resolution.resolution_last.last_refund_amt_idr];
     }
     else if (lastSolutionType == SOLUTION_RETUR) {
         lastSolution = [NSString stringWithFormat:@"Tukar barang sesuai pesanan"];
     }
     else if (lastSolutionType == SOLUTION_RETUR_REFUND) {
-        lastSolution = [NSString stringWithFormat:@"Pembelian barang dan dana sebesar %@",resolution.resolution_order.order_open_amount_idr];
+        lastSolution = [NSString stringWithFormat:@"Pembelian barang dan dana sebesar %@",resolution.resolution_last.last_refund_amt_idr];
     }
     else if (lastSolutionType == SOLUTION_SELLER_WIN) {
         lastSolution = [NSString stringWithFormat:@"Pengembalian dana penuh"];
@@ -181,6 +201,8 @@
     else if (lastSolutionType == SOLUTION_SEND_REMAINING) {
         lastSolution = [NSString stringWithFormat:@"Kirimkan sisanya"];
     }
+    else
+        lastSolution = @"";
     
     cell.invoiceDateLabel.text = resolution.resolution_dispute.dispute_create_time;
     cell.invoiceNumberLabel.text = resolution.resolution_order.order_invoice_ref_num;
@@ -188,9 +210,56 @@
     [cell.lastStatusLabel multipleLineLabel:cell.lastStatusLabel];
     cell.disputeStatus = resolution.resolution_dispute.dispute_status;
     cell.buyerOrSellerLabel.text = _isMyComplain?@"Pembelian dari":@"Pembelian oleh";
+    cell.indexPath = indexPath;
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
+}
+
+#pragma mark - Cell Delegate
+-(void)goToInvoiceAtIndexPath:(NSIndexPath *)indexPath
+{
+    InboxResolutionCenterList *resolution = _list[indexPath.row];
+    [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:resolution.resolution_detail.resolution_order.order_pdf_url];
+}
+
+-(void)goToShopOrProfileAtIndexPath:(NSIndexPath *)indexPath
+{
+    InboxResolutionCenterList *resolution = _list[indexPath.row];
+    if (_isMyComplain)
+    {
+        //gotoshop
+        [_navigate navigateToShopFromViewController:self withShopID:(resolution.resolution_detail.resolution_shop.shop_id)?:@""];
+    }
+    else
+    {
+        //gotoProfile
+        [_navigate navigateToProfileFromViewController:self withUserID:(resolution.resolution_detail.resolution_customer.customer_id)?:@""];
+    }
+}
+
+-(void)showImageAtIndexPath:(NSIndexPath *)indexPath
+{
+    InboxResolutionCenterList *resolution = _list[indexPath.row];
+
+    NSString *imageURLString = @"";
+    if (_isMyComplain)
+        imageURLString = resolution.resolution_detail.resolution_shop.shop_image;
+    else
+        imageURLString = resolution.resolution_detail.resolution_customer.customer_image;
+
+    [_navigate navigateToShowImageFromViewController:self withImageURLStrings:@[imageURLString]];
+}
+
+-(void)goToResolutionDetailAtIndexPath:(NSIndexPath *)indexPath
+{
+    ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
+    InboxResolutionCenterList *resolution = _list[indexPath.row];
+    vc.indexPath = indexPath;
+    vc.resolution = resolution;
+    vc.resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
+    vc.delegate = self;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Table View Delegate
@@ -200,6 +269,7 @@
     InboxResolutionCenterList *resolution = _list[indexPath.row];
     vc.indexPath = indexPath;
     vc.resolution = resolution;
+    vc.resolutionID = [resolution.resolution_detail.resolution_last.last_resolution_id stringValue];
     vc.delegate = self;
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -223,6 +293,7 @@
     }
 }
 
+#pragma mark - Cell Delegate
 
 -(void)refreshRequest
 {
@@ -571,16 +642,16 @@
     [paramDictionary setObject:@"off" forKey:@"enc_dec"];
     [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
     
-    _requestCancelComplain = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:@"asd" parameters:paramDictionary];
+    _requestCancelComplain = [_objectManagerCancelComplain appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_RESOLUTION_CENTER parameters:paramDictionary];
 #else
-    _requestCancelComplain = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_RESOLUTION_CENTER parameters:[param encrypt]];
+    _requestCancelComplain = [_objectManagerCancelComplain appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_RESOLUTION_CENTER parameters:[param encrypt]];
 #endif
     
     [_requestCancelComplain setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessCancelComplain:object withOperation:operation withMappingResult:mappingResult];
         [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureCancelComplain:object withErrorMessage:error.description];
+        [self requestFailureCancelComplain:object withErrorMessage:@[error.localizedDescription]];
         [timer invalidate];
     }];
     
@@ -600,11 +671,7 @@
     if (status) {
         if(resolution.message_error)
         {
-            NSArray *array = resolution.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-            
-            [self requestFailureCancelComplain:object withErrorMessage:nil];
+            [self requestFailureCancelComplain:object withErrorMessage:resolution.message_error];
         }
         else if (resolution.result.is_success == 1) {
             StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:@[@"Sukses"] delegate:self];
@@ -613,19 +680,22 @@
         }
         else
         {
-            [self requestFailureCancelComplain:object withErrorMessage:@"Error"];
+            [self requestFailureCancelComplain:object withErrorMessage:@[@"Error"]];
         }
     }
     else
     {
-        [self requestFailureCancelComplain:object withErrorMessage:resolution.status];
+        [self requestFailureCancelComplain:object withErrorMessage:@[resolution.status]];
     }
     
     [self requestProcessCancelComplain];
 }
 
--(void)requestFailureCancelComplain:(NSDictionary*)object withErrorMessage:(NSString*)error
+-(void)requestFailureCancelComplain:(NSDictionary*)object withErrorMessage:(NSArray*)error
 {
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:error delegate:self];
+    [alert show];
+        
     InboxResolutionCenterList *resolution = [object objectForKey:DATA_SELECTED_RESOLUTION_KEY];
     NSIndexPath *indexPathResolution = [object objectForKey:DATA_SELECTED_INDEXPATH_RESOLUTION_KEY];
     [_list insertObject:resolution atIndex:indexPathResolution.row];

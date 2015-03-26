@@ -13,5 +13,6 @@
 @property (nonatomic, strong) NSString *shop_image;
 @property (nonatomic, strong) NSString *shop_name;
 @property (nonatomic, strong) NSString *shop_url;
+@property (nonatomic, strong) NSString *shop_id;
 
 @end

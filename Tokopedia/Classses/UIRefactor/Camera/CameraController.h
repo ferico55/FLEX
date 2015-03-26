@@ -24,6 +24,7 @@
 @property (nonatomic, strong) NSDictionary *data;
 @property (nonatomic, strong) UIImage* snappedImage;
 @property NSInteger tag;
+@property BOOL isTakePicture;
 
 -(void)snap;
 

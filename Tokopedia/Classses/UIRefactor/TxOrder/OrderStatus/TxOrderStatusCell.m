@@ -116,20 +116,35 @@
     // Configure the view for the selected state
 }
 - (IBAction)tap:(id)sender {
-    [_delegate statusDetailAtIndexPath:_indexPath];
+    UIButton *button = (UIButton*)sender;
+    if ([button.titleLabel.text isEqualToString:@"Lacak"]) {
+        [_delegate trackOrderAtIndexPath:_indexPath];
+    }
+    if ([button.titleLabel.text isEqualToString:@"Komplain"]){
+        [_delegate complainAtIndexPath:_indexPath];
+    }
+    if ([button.titleLabel.text isEqualToString:@"Sudah Terima"]) {
+        [_delegate confirmDeliveryAtIndexPath:_indexPath];
+    }
+    if ([button.titleLabel.text isEqualToString:@"Lihat Komplain"]) {
+        [_delegate goToComplaintDetailAtIndexPath:_indexPath];
+    }
+    if ([button.titleLabel.text isEqualToString:@"Pesan Ulang"]) {
+        [_delegate reOrderAtIndexPath:_indexPath];
+    }
 }
-- (IBAction)tapConfirm:(id)sender {
-    [_delegate confirmDeliveryAtIndexPath:_indexPath];
+    
+- (IBAction)gesture:(id)sender {
+    UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+    if (gesture.view.tag == 10) {
+        [_delegate goToInvoiceAtIndexPath:_indexPath];
+    }
+    else if (gesture.view.tag == 11)
+    {
+        [_delegate goToShopAtIndexPath:_indexPath];
+    }
+    else
+        [_delegate statusDetailAtIndexPath:_indexPath];
 }
-- (IBAction)tapTrackOrder:(id)sender {
-    [_delegate trackOrderAtIndexPath:_indexPath];
-}
-- (IBAction)tapReOrder:(id)sender {
-    [_delegate reOrderAtIndexPath:_indexPath];
-}
-- (IBAction)tapComplain:(id)sender {
-    [_delegate complainAtIndexPath:_indexPath];
-}
-
 
 @end

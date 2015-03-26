@@ -42,8 +42,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Konfirmasi Pembayaran";
-    
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
         self.navigationController.edgesForExtendedLayout = UIRectEdgeNone;
     }
@@ -71,6 +69,21 @@
     _isMultipleSelect = NO;
     
 }
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.title = @"Konfirmasi Pembayaran";
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    self.title = @" ";
+}
+
 - (IBAction)tap:(UISegmentedControl*)sender {
     switch (sender.selectedSegmentIndex) {
         case 0:

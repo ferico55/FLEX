@@ -11,5 +11,7 @@
 
 @interface AlertInfoPaymentConfirmationView : TKPDAlertView
 @property (weak, nonatomic) IBOutlet UILabel *info1Label;
+@property (weak, nonatomic) IBOutlet UILabel *info2Label;
+@property (weak, nonatomic) IBOutlet UILabel *info3Label;
 
 @end

@@ -65,12 +65,12 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="63E-dj-1jg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="1sl-tF-MSf"/>
-                <constraint firstAttribute="trailing" secondItem="63E-dj-1jg" secondAttribute="trailing" id="APh-XC-WBt"/>
                 <constraint firstAttribute="bottom" secondItem="Yif-0w-IvZ" secondAttribute="bottom" id="HEH-kd-aqJ"/>
-                <constraint firstItem="63E-dj-1jg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="N1J-gm-KNe"/>
                 <constraint firstAttribute="trailing" secondItem="Yif-0w-IvZ" secondAttribute="trailing" id="OO1-vb-X2S"/>
-                <constraint firstAttribute="bottom" secondItem="63E-dj-1jg" secondAttribute="bottom" id="xyi-eh-Oig"/>
+                <constraint firstItem="63E-dj-1jg" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="PJ7-9T-DZ2"/>
+                <constraint firstItem="63E-dj-1jg" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="dQV-to-aCL"/>
+                <constraint firstAttribute="trailing" secondItem="63E-dj-1jg" secondAttribute="trailing" id="jxi-Sb-Ttj"/>
+                <constraint firstAttribute="bottom" secondItem="63E-dj-1jg" secondAttribute="bottom" id="vOK-zv-qfB"/>
                 <constraint firstItem="Yif-0w-IvZ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zeQ-bS-T8w"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>

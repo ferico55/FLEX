@@ -10,7 +10,20 @@
 
 #define TRANSACTION_ORDER_CONFIRMATION_PRODUCT_CELL_IDENTIFIER @"TxOrderConfirmationProductCellIdentifier"
 
+@protocol TxOrderConfirmationProductCellDelegate <NSObject>
+@required
+- (void)didTapImageViewAtIndexPath:(NSIndexPath*)indexPath;
+- (void)didTapProductAtIndexPath:(NSIndexPath*)indexPath;
+
+@end
+
 @interface TxOrderConfirmationProductCell : UITableViewCell
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+@property (nonatomic, weak) IBOutlet id<TxOrderConfirmationProductCellDelegate> delegate;
+#else
+@property (nonatomic, assign) IBOutlet id<TxOrderConfirmationProductCellDelegate> delegate;
+#endif
 
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
 
@@ -20,5 +33,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *productThumbImageView;
 
 +(id)newCell;
+
+@property NSIndexPath *indexPath;
 
 @end
