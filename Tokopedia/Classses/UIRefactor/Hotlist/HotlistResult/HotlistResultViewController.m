@@ -261,6 +261,12 @@
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
                 ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
                 
+                if([list.shop_gold_status isEqualToString:@"1"]) {
+                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = NO;
+                } else {
+                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = NO;
+                }
+                
                 NSString *urlstring = list.catalog_image?:list.product_image;
                 
                 NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -580,7 +586,7 @@
                                                                 parameters:[param encrypt]];
 	[_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
+//	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
         //[_cachecontroller clearCache];
         _table.tableFooterView = _footer;
         [_act startAnimating];
@@ -607,15 +613,15 @@
         
         _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    }
-	else {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-        NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
-	}
+//    }
+//	else {
+//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+//        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+//        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+//        NSLog(@"cache and updated in last 24 hours.");
+//        [self requestfailure:nil];
+//	}
 }
 
 

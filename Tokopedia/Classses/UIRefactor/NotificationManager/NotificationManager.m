@@ -61,15 +61,15 @@
 - (void)selectViewControllerToOpen:(NSString *)notificationCode{
     NSDictionary *userInfo = nil;
     if ([notificationCode integerValue] == STATE_NEW_MESSAGE) {
-        userInfo = @{@"name" : @"inboxMessage"};
+        userInfo = @{@"state" : @(STATE_NEW_MESSAGE)};
     } else if ([notificationCode integerValue] == STATE_NEW_TALK) {
-        userInfo = @{@"name" : @"inboxTalk"};
+        userInfo = @{@"state" : @(STATE_NEW_TALK)};
     } else if ([notificationCode integerValue] == STATE_NEW_ORDER) {
-        userInfo = @{@"name" : @"newOrder"};
+        userInfo = @{@"state" : @(STATE_NEW_ORDER)};
     } else if ([notificationCode integerValue] == STATE_NEW_REVIEW ||
                [notificationCode integerValue] == STATE_EDIT_REVIEW ||
                [notificationCode integerValue] == STATE_REPLY_REVIEW) {
-        userInfo = @{@"name" : @"inboxReview"};
+        userInfo = @{@"state" : @(STATE_NEW_REVIEW)};
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"redirectAfterNotification" object:self userInfo:userInfo];
 }

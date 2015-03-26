@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPDTabInboxTalkNavigationController">
             <connections>
                 <outlet property="allBtn" destination="0Kb-ol-9H9" id="E36-qH-U2R"/>
-                <outlet property="allSign" destination="QM3-nI-Ttk" id="2Az-vN-Kpp"/>
+                <outlet property="allSign" destination="Zcu-9X-V2C" id="Kw3-Md-Q5V"/>
                 <outlet property="container" destination="6yB-o3-Oev" id="ahQ-Bf-YhH"/>
                 <outlet property="readOption" destination="TG6-Ga-jeZ" id="EYU-bn-IH5"/>
                 <outlet property="segmentcontrol" destination="UQ4-Ca-nLF" id="5fR-xm-BrH"/>
                 <outlet property="unreadBtn" destination="IdI-k9-kXu" id="xB9-LU-hmO"/>
-                <outlet property="unreadSign" destination="z35-0n-Tzx" id="nec-tm-TQC"/>
+                <outlet property="unreadSign" destination="6e1-iQ-P28" id="GGY-4W-DMh"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -73,14 +73,12 @@
                             <rect key="frame" x="0.0" y="49" width="320" height="1"/>
                             <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
-                        <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QM3-nI-Ttk">
-                            <rect key="frame" x="0.0" y="0.0" width="5" height="50"/>
-                            <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
-                        </view>
-                        <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="z35-0n-Tzx">
-                            <rect key="frame" x="0.0" y="50" width="5" height="50"/>
-                            <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
-                        </view>
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_check_orange.png" translatesAutoresizingMaskIntoConstraints="NO" id="Zcu-9X-V2C">
+                            <rect key="frame" x="287" y="17" width="15" height="15"/>
+                        </imageView>
+                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_check_orange.png" translatesAutoresizingMaskIntoConstraints="NO" id="6e1-iQ-P28">
+                            <rect key="frame" x="287" y="67" width="15" height="15"/>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
@@ -90,6 +88,7 @@
         </view>
     </objects>
     <resources>
+        <image name="icon_check_orange.png" width="14" height="14"/>
         <image name="tab_btm_shadow.png" width="320" height="32"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

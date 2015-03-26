@@ -428,13 +428,13 @@
     
     if (_selectedIndex == SEGMENT_MESSAGE_SENT) {
         self.navigationItem.titleView = nil;
-        self.navigationItem.title = @"Sent";
+//        self.navigationItem.title = @"Sent";
     } else if (_selectedIndex == SEGMENT_MESSAGE_ARCHIVE) {
         self.navigationItem.titleView = nil;
-        self.navigationItem.title = @"Archive";
+//        self.navigationItem.title = @"Archive";
     } else if (_selectedIndex == SEGMENT_MESSAGE_TRASH) {
         self.navigationItem.titleView = nil;
-        self.navigationItem.title = @"Trash";
+//        self.navigationItem.title = @"Trash";
     }
 }
 

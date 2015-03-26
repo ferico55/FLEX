@@ -141,7 +141,7 @@
     NSInteger numberOfRows = 0;
     switch (section) {
         case 0:
-            numberOfRows = 6;
+            numberOfRows = 3;
             break;
             
         case 1:

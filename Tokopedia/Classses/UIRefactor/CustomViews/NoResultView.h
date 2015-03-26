@@ -11,5 +11,10 @@
 @interface NoResultView : UIView
 
 @property (nonatomic, retain) IBOutlet UIView *view;
+@property (nonatomic, retain) IBOutlet UILabel *noResultLabel;
+
+- (void)setNoResultText:(NSString*)string;
+
+
 
 @end

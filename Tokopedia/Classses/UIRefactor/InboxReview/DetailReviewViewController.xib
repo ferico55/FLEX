@@ -367,6 +367,7 @@
                 <constraint firstAttribute="bottom" secondItem="W0x-wc-Tvn" secondAttribute="bottom" constant="498" id="tbl-i2-Y8c"/>
                 <constraint firstItem="W0x-wc-Tvn" firstAttribute="trailing" secondItem="TF2-Ms-twf" secondAttribute="trailing" id="vmn-W5-xzq"/>
             </constraints>
+            <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="140" y="154"/>
         </view>

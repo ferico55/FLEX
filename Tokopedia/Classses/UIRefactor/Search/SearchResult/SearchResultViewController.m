@@ -97,6 +97,8 @@
         _isrefreshview = NO;
         _isnodata = YES;
         _requestcount = 0;
+        
+        
     }
     return self;
 }
@@ -129,9 +131,12 @@
     if (_data) {
         [_params addEntriesFromDictionary:_data];
     }
-    
+        
     _table.tableFooterView = _footer;
     [_act startAnimating];
+    
+    
+
     
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -268,6 +273,13 @@
                     
                     UIActivityIndicatorView *act = (UIActivityIndicatorView*)((GeneralProductCell*)cell).act[i];
                     [act startAnimating];
+                    
+                    if([list.shop_gold_status isEqualToString:@"1"]) {
+                        ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = NO;
+                    } else {
+                        ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = YES;
+                    }
+                    
                     
                     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
@@ -747,6 +759,7 @@
     [_params setObject:[notification.userInfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY] forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     [self refreshView:nil];
     _table.tableFooterView = _footer;
+    
     [_act startAnimating];
 }
 

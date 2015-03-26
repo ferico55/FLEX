@@ -40,7 +40,7 @@
         [self attributedTextWithArray:messages color:textColor];
         
         CGRect frame = self.view.frame;
-        frame.size.height = _textLabel.frame.size.height + 6;
+        frame.size.height = _textLabel.frame.size.height + 8;
         self.view.frame = frame;
         
         frame = self.frame;
@@ -120,7 +120,7 @@
 - (void)attributedTextWithArray:(NSArray *)texts color:(UIColor *)color
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
+    style.lineSpacing = 3.0;
     
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName : color,

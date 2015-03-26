@@ -309,7 +309,7 @@
 - (void)requestActionLogin:(NSDictionary *)data
 {
     if (_request.isExecuting) return;
-    
+    [_loginButton setTitle:@"Loading.." forState:UIControlStateNormal];
     _requestcount++;
     
     NSDictionary* param = @{
@@ -398,6 +398,7 @@
     
     _login = stats;
     BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    [_loginButton setTitle:@"Masuk" forState:UIControlStateNormal];
     if (status) {
         
         _isnodata = NO;
@@ -422,9 +423,13 @@
             [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
 
-            if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController)]) {
+            if (_isPresentedViewController) {
                 [self.delegate redirectViewController:_redirectViewController];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                    object:nil
+                                                                  userInfo:nil];
             } else {
                 [self.tabBarController setSelectedIndex:0];
                 

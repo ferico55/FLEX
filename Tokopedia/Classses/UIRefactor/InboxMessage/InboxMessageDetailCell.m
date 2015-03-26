@@ -13,9 +13,9 @@
 
 @synthesize delegate = _delegate;
 
-static CGFloat textMarginHorizontal = 15.0f;
-static CGFloat textMarginVertical = 7.5f;
-static CGFloat messageTextSize = 15.0;
+static CGFloat textMarginHorizontal = 13.0f;
+static CGFloat textMarginVertical = 6.5f;
+static CGFloat messageTextSize = 13.0;
 
 @synthesize sent, messageLabel, messageView, timeLabel, avatarImageView, balloonView;
 
@@ -50,7 +50,7 @@ static CGFloat messageTextSize = 15.0;
 }
 
 +(CGSize)messageSize:(NSString*)message {
-    return [message sizeWithFont:[UIFont systemFontOfSize:messageTextSize] constrainedToSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
+    return [message sizeWithFont:[UIFont fontWithName:@"GothamBook" size:messageTextSize] constrainedToSize:CGSizeMake([InboxMessageDetailCell maxTextWidth], CGFLOAT_MAX) lineBreakMode:NSLineBreakByWordWrapping];
 }
 
 +(UIImage*)balloonImage:(BOOL)sent isSelected:(BOOL)selected {
@@ -86,14 +86,15 @@ static CGFloat messageTextSize = 15.0;
         
         /*Message-Label*/
         self.messageLabel.backgroundColor = [UIColor clearColor];
-        self.messageLabel.font = [UIFont systemFontOfSize:messageTextSize];
+        self.messageLabel.font = [UIFont fontWithName:@"GothamBook" size:messageTextSize];
+
         self.timeLabel.textColor = [UIColor whiteColor];
         self.messageLabel.lineBreakMode = NSLineBreakByWordWrapping;
         self.messageLabel.numberOfLines = 0;
         
         /*Time-Label*/
-        self.timeLabel.font = [UIFont boldSystemFontOfSize:10.0f];
-        self.timeLabel.textColor = [UIColor darkGrayColor];
+        self.timeLabel.font = [UIFont fontWithName:@"GothamBook" size:10.0f];;
+        self.timeLabel.textColor = [UIColor lightGrayColor];
         self.timeLabel.backgroundColor = [UIColor clearColor];
         
         /*...and adds them to the view.*/
@@ -139,7 +140,7 @@ static CGFloat messageTextSize = 15.0;
     if (self.sent == YES) {
         ballonViewFrame = CGRectMake(self.frame.size.width - (textSize.width + 2*textMarginHorizontal), timeLabelFrame.size.height, textSize.width + 2*textMarginHorizontal, textSize.height + 2*textMarginVertical + 5.0f);
         
-        timeLabelFrame = CGRectMake(self.frame.size.width - dateSize.width - textMarginHorizontal, ballonViewFrame.size.height, dateSize.width, dateSize.height);
+        timeLabelFrame = CGRectMake(self.frame.size.width - dateSize.width - textMarginHorizontal, ballonViewFrame.size.height +5, dateSize.width, dateSize.height);
         
         messageLabelFrame = CGRectMake(self.frame.size.width - (textSize.width + textMarginHorizontal),  ballonViewFrame.origin.y + textMarginVertical, textSize.width, textSize.height);
         
@@ -150,7 +151,7 @@ static CGFloat messageTextSize = 15.0;
     } else {
         ballonViewFrame = CGRectMake(55.0f, timeLabelFrame.size.height, textSize.width + 2*textMarginHorizontal, textSize.height + 2*textMarginVertical + 5.0f);
         
-        timeLabelFrame = CGRectMake(60.0f, ballonViewFrame.size.height , dateSize.width, dateSize.height);
+        timeLabelFrame = CGRectMake(60.0f, ballonViewFrame.size.height +5 , dateSize.width, dateSize.height);
         
         messageLabelFrame = CGRectMake(textMarginHorizontal + 55.0f, ballonViewFrame.origin.y + textMarginVertical, textSize.width, textSize.height);
         

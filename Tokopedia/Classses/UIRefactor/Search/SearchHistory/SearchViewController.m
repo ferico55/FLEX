@@ -328,10 +328,9 @@
         
         [viewController setSelectedIndex:0];
         [viewController setViewControllers:viewcontrollers];
+        [viewController setNavigationTitle:_searchbar.text];
 
-        self.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:viewController animated:YES];
-        self.hidesBottomBarWhenPushed = NO;
     }
     else
     {

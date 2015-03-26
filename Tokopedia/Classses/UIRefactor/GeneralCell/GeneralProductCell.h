@@ -32,6 +32,7 @@
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labelprice;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labeldescription;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labelalbum;
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *isGoldShop;
 
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong, nonatomic) NSIndexPath *indexpath;

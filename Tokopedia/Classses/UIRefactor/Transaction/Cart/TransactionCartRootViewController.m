@@ -12,6 +12,7 @@
 #import "TransactionCartViewController.h"
 #import "TransactionCartResultViewController.h"
 #import "NotificationManager.h"
+#import "RegisterViewController.h"
 
 @interface TransactionCartRootViewController ()
 <
@@ -39,6 +40,7 @@
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
 
 @property (weak, nonatomic) IBOutlet UIView *pageControlView;
+@property (weak, nonatomic) IBOutlet UIButton *registerText;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *pageButtons;
 @end
 
@@ -281,7 +283,13 @@
     else
     {
         UIButton *pageButton = (UIButton*)sender;
-        [_pageController setViewControllers:@[[self viewControllerAtIndex:pageButton.tag-10]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+        if(pageButton.tag == 10) {
+            RegisterViewController *vc = [RegisterViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            [_pageController setViewControllers:@[[self viewControllerAtIndex:pageButton.tag-10]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+        }
+        
     }
 }
 

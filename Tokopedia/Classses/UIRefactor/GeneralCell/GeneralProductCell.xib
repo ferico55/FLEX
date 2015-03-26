@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -71,6 +71,10 @@
                                 <color key="textColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView hidden="YES" userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" id="eLE-i5-1fj" userLabel="Gold Badges">
+                                <rect key="frame" x="109" y="8" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
@@ -90,6 +94,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="145" height="145"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            </imageView>
+                            <imageView hidden="YES" userInteractionEnabled="NO" tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" id="WoT-c0-YUh" userLabel="Gold Badges">
+                                <rect key="frame" x="109" y="8" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="o8z-rc-9Xo">
                                 <rect key="frame" x="6" y="166" width="103" height="21"/>
@@ -132,11 +140,14 @@
                 <outletCollection property="viewcell" destination="EJe-fO-eTj" id="had-f2-8r9"/>
                 <outletCollection property="labelalbum" destination="hk6-2p-0Br" id="1o2-I5-T52"/>
                 <outletCollection property="labelalbum" destination="QoJ-3F-OuS" id="sHm-vn-jhf"/>
+                <outletCollection property="isGoldShop" destination="eLE-i5-1fj" id="0rW-Ze-uQE"/>
+                <outletCollection property="isGoldShop" destination="WoT-c0-YUh" id="8s8-MN-JaW"/>
             </connections>
             <point key="canvasLocation" x="140" y="152.5"/>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="Badges_gold_merchant" width="40" height="40"/>
         <image name="icon_toped_loading_grey.png" width="20" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -50,6 +50,7 @@
 @property (weak, nonatomic) IBOutlet UIView *commentView;
 @property (weak, nonatomic) IBOutlet UIView *inputReviewView;
 @property (weak, nonatomic) IBOutlet UIView *contentReview;
+@property (weak, nonatomic) IBOutlet UIView *topContent;
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong, nonatomic) NSIndexPath *indexpath;
 

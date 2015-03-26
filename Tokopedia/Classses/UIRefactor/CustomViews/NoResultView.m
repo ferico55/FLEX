@@ -29,5 +29,9 @@
     [super awakeFromNib];
 }
 
+- (void)setNoResultText:(NSString*)string {
+    [_noResultLabel setText:string];
+}
+
 
 @end

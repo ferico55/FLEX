@@ -19,7 +19,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="345" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="1qn-Lv-QRV">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="400"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="y5q-FO-GWm"/>
@@ -29,10 +29,10 @@
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="1qn-Lv-QRV" secondAttribute="bottom" id="SHU-T9-bX4"/>
-                <constraint firstItem="1qn-Lv-QRV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ViS-Al-knZ"/>
-                <constraint firstAttribute="trailing" secondItem="1qn-Lv-QRV" secondAttribute="trailing" id="WJx-0a-kEP"/>
-                <constraint firstItem="1qn-Lv-QRV" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="pym-4R-tAp"/>
+                <constraint firstItem="1qn-Lv-QRV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="GXa-2U-nQQ"/>
+                <constraint firstItem="1qn-Lv-QRV" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="OfB-kV-BcF"/>
+                <constraint firstAttribute="bottom" secondItem="1qn-Lv-QRV" secondAttribute="bottom" constant="80" id="TOK-O3-u9w"/>
+                <constraint firstAttribute="trailing" secondItem="1qn-Lv-QRV" secondAttribute="trailing" id="fpK-ij-qvQ"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="140" y="154"/>

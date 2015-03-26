@@ -178,6 +178,13 @@
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).attributedText = attributedString ;
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).lineBreakMode = NSLineBreakByTruncatingTail;
                 
+                if([list.shop_gold_status isEqualToString:@"1"]) {
+                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = NO;
+                } else {
+                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = YES;
+                }
+                
+                
                 //                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
                 ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
                 
