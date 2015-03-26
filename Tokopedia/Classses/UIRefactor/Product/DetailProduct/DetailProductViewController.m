@@ -643,10 +643,12 @@
 
 -(void)productinfocell:(DetailProductInfoCell *)cell withtableview:(UITableView*)tableView
 {
-    cell.minorderlabel.text = [NSString stringWithFormat:@"%zd",_product.result.product.product_min_order];
-    cell.weightlabel.text = _product.result.product.product_weight_unit;
-    cell.insurancelabel.text = _product.result.product.product_insurance;
-    cell.conditionlabel.text = _product.result.product.product_condition;
+    ((DetailProductInfoCell*)cell).minorderlabel.text = _product.result.product.product_min_order;
+    ((DetailProductInfoCell*)cell).weightlabel.text = [NSString stringWithFormat:@"%@ %@",_product.result.product.product_weight, _product.result.product.product_weight_unit];
+    ((DetailProductInfoCell*)cell).insurancelabel.text = _product.result.product.product_insurance;
+    ((DetailProductInfoCell*)cell).conditionlabel.text = _product.result.product.product_condition;
+    [((DetailProductInfoCell*)cell).etalasebutton setTitle:_product.result.product.product_etalase forState:UIControlStateNormal];
+    
     NSArray *breadcrumbs = _product.result.breadcrumb;
     for (int i = 0; i<breadcrumbs.count; i++) {
         Breadcrumb *breadcrumb = breadcrumbs[i];
@@ -932,7 +934,7 @@
                     _favButton.tag = 17;
                 }
                 
-                if(_auth && [[([_auth objectForKey:@"shop_id"]) stringValue] isEqualToString:_product.result.shop_info.shop_id]) {
+                if(_auth && [[[_auth objectForKey:@"shop_id"] stringValue] isEqualToString:_product.result.shop_info.shop_id]) {
                     _favButton.hidden = YES;
                 } else {
                     _favButton.hidden = NO;

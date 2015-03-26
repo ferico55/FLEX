@@ -28,16 +28,20 @@
     TransactionCartResultViewController *_cartResultViewController;
     NSDictionary *_auth;
     BOOL _isLogin;
+    BOOL _isShouldRefreshingCart;
     
     NotificationManager *_notifManager;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
-@property (strong, nonatomic) UIPageViewController *pageController;
+@property (strong, nonatomic) IBOutlet UIView *noLoginView;
 @property (weak, nonatomic) IBOutlet UIProgressView *progressView;
-
 @property (weak, nonatomic) IBOutlet UIView *pageControlView;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *pageButtons;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tabHeightConstraint;
+
+@property (strong, nonatomic) UIPageViewController *pageController;
+
 @end
 
 @implementation TransactionCartRootViewController
@@ -54,16 +58,13 @@
         self.navigationController.edgesForExtendedLayout = UIRectEdgeNone;
     }
     
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    _auth = [secureStorage keychainDictionary];
-    _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
-    
+    _isShouldRefreshingCart = NO;
+    [self initNotification];
     
     
     _pageButtons = [NSArray sortViewsWithTagInArray:_pageButtons];
 
     for (UIButton *button in _pageButtons) {
-        //button.enabled = NO;
         button.backgroundColor = COLOR_DEFAULT_BUTTON;
         button.layer.cornerRadius = button.frame.size.width/2;
         button.clipsToBounds=YES;
@@ -99,18 +100,24 @@
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
     
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
-                                                                          style:UIBarButtonItemStyleBordered
-                                                                         target:self
-                                                                         action:@selector(tap:)];
-    self.navigationItem.backBarButtonItem = backBarButtonItem;
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    _auth = [secureStorage keychainDictionary];
+    _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+    
+    if(!_isLogin) {
+        [[self view] addSubview:_noLoginView];
+        [_noLoginView setHidden:NO];
+    } else {
 
-    //TODO:: create not log-in page to login view controller
-    if (!_isLogin) {
-        UINavigationController *navigationController = [[UINavigationController alloc] init];
-        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-        navigationController.navigationBar.translucent = NO;
-        navigationController.navigationBar.tintColor = [UIColor whiteColor];        
+        if(_isShouldRefreshingCart) {
+            [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+            ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
+            _isShouldRefreshingCart = NO;
+        } else {
+            ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = NO;
+        }
+        
+        [_noLoginView setHidden:YES];
     }
 }
 
@@ -246,15 +253,25 @@
 {
     if (data) {
         _pageControlView.hidden = NO;
-    }    
+        _tabHeightConstraint.constant = 44;
+    } else {
+        _pageControlView.hidden = YES;
+        _tabHeightConstraint.constant = 0;
+    }
     _data = data;
-    [_pageController setViewControllers:@[[self viewControllerAtIndex:1]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+    [_pageController setViewControllers:@[[self viewControllerAtIndex:1]]
+                              direction:UIPageViewControllerNavigationDirectionForward
+                               animated:YES
+                             completion:nil];
 }
 
 -(void)didFinishRequestBuyData:(NSDictionary *)data
 {
     _data = data;
-    [_pageController setViewControllers:@[[self viewControllerAtIndex:2]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+    [_pageController setViewControllers:@[[self viewControllerAtIndex:2]]
+                              direction:UIPageViewControllerNavigationDirectionForward
+                               animated:YES
+                             completion:nil];
 
 }
 
@@ -316,5 +333,18 @@
     [self.navigationController pushViewController:viewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
 }
+
+#pragma mark - Notification Center
+- (void)initNotification {
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(doRefreshingCart)
+                                                 name:@"doRefreshingCart" object:nil];
+    
+}
+
+- (void)doRefreshingCart {
+    _isShouldRefreshingCart = YES;
+}
+
 
 @end

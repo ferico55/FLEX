@@ -8,7 +8,9 @@
 
 #import "StickyAlertView.h"
 
-@interface StickyAlertView ()
+@interface StickyAlertView () {
+    id _delegate;
+}
 
 @property (nonatomic, retain) IBOutlet UIView *view;
 @property (strong, nonatomic) IBOutlet UILabel *textLabel;
@@ -35,18 +37,11 @@
     self = [super init];
     if (self) {
         self.hidden = YES;
-
+        _delegate = delegate;
+        
         self.view.backgroundColor = backgroundColor;
         [self attributedTextWithArray:messages color:textColor];
         
-        CGRect frame = self.view.frame;
-        frame.size.height = _textLabel.frame.size.height + 6;
-        self.view.frame = frame;
-        
-        frame = self.frame;
-        frame.size.height = self.view.frame.size.height;
-        self.frame = frame;
-    
         NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3
                                                           target:self
                                                         selector:@selector(timeout)
@@ -55,7 +50,7 @@
         
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
         
-        [[(UIViewController *)delegate view] addSubview:self];
+        [[[(UIViewController *)delegate view] window] addSubview:self];
     }
     return self;
 }
@@ -122,22 +117,28 @@
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
     
-    NSDictionary *attributes = @{
-                                 NSForegroundColorAttributeName : color,
-                                 NSFontAttributeName            : _textLabel.font,
-                                 NSParagraphStyleAttributeName  : style,
-                                 };
+    NSDictionary *dict = @{
+        NSForegroundColorAttributeName : color,
+        NSFontAttributeName            : _textLabel.font,
+        NSParagraphStyleAttributeName  : style,
+    };
+
+    NSMutableDictionary *attributes = [[NSMutableDictionary alloc] initWithDictionary:dict];
     
     NSString *joinedString = @"";
     if ([texts count] > 1) {
         joinedString = [NSString stringWithFormat:@"\u25CF %@", [[texts valueForKey:@"description"] componentsJoinedByString:@"\n\u25CF "]];
     } else {
-        joinedString = [texts objectAtIndex:0];
+        joinedString = [texts objectAtIndex:0]?:@"";
     }
     
     _textLabel.attributedText = [[NSAttributedString alloc] initWithString:joinedString attributes:attributes];
     _textLabel.numberOfLines = 0;
     [_textLabel sizeToFit];
+    
+    self.view.frame = CGRectMake(0, 0, [_delegate view].frame.size.width, _textLabel.frame.size.height + 24);
+
+    self.frame = CGRectMake(0, 64, self.frame.size.width, self.frame.size.height);
 }
 
 @end

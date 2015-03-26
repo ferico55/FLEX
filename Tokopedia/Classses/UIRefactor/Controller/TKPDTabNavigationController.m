@@ -108,7 +108,8 @@
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
-                                                                         action:nil];
+                                                                         action:@selector(tapbutton:)];
+    backBarButtonItem.tag = 10;
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     _barbuttoncategory = [[UIBarButtonItem alloc] initWithTitle:@"Kategori"
@@ -122,7 +123,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.navigationItem.title = self.navigationTitle;
+    self.navigationItem.title = [self.navigationTitle capitalizedString];
     self.hidesBottomBarWhenPushed = YES;
 }
 
@@ -452,7 +453,7 @@
         switch (btn.tag) {
             case 10:
             {
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
             case 11:
@@ -543,7 +544,7 @@
 -(void)SetHiddenSegmentController:(NSNotification*)notification
 {
     NSDictionary *userinfo = notification.userInfo;
-    NSInteger count = [[userinfo objectForKey:@"count"]integerValue];
+    NSInteger count = [[userinfo objectForKey:@"count"] integerValue];
     
     if (count == 2) {
         _segmentcontrol.hidden = NO;

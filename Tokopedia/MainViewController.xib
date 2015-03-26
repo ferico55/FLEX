@@ -15,27 +15,43 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="login.png" translatesAutoresizingMaskIntoConstraints="NO" id="oR5-6Y-OLO">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" red="0.24471801360000001" green="0.66666666669999997" blue="0.14011867850000001" alpha="1" colorSpace="calibratedRGB"/>
-                </imageView>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fsb-Kv-twj">
-                    <rect key="frame" x="0.0" y="167" width="320" height="59"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="WZm-w8-Ppi">
-                            <rect key="frame" x="112" y="18" width="97" height="21"/>
-                        </imageView>
-                    </subviews>
-                    <color key="backgroundColor" red="0.24471801360000001" green="0.66666666669999997" blue="0.14011867850000001" alpha="1" colorSpace="calibratedRGB"/>
+                <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1QR-j0-WeV">
+                    <rect key="frame" x="0.0" y="519" width="320" height="49"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="49" id="H03-eH-NnL"/>
+                    </constraints>
+                    <items/>
+                </tabBar>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="whx-NL-F90">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                    <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="Q0s-TV-OPf"/>
+                    </constraints>
                 </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="launch_image.png" translatesAutoresizingMaskIntoConstraints="NO" id="g4d-4p-y4P">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                </imageView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="whx-NL-F90" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="3L8-sw-hs5"/>
+                <constraint firstItem="g4d-4p-y4P" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="4Gl-Ov-gbK"/>
+                <constraint firstAttribute="trailing" secondItem="whx-NL-F90" secondAttribute="trailing" id="Slx-U9-yE9"/>
+                <constraint firstAttribute="trailing" secondItem="g4d-4p-y4P" secondAttribute="trailing" id="Z9m-KE-OLp"/>
+                <constraint firstItem="1QR-j0-WeV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="eZ5-Z0-j3X"/>
+                <constraint firstItem="whx-NL-F90" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="h6q-JU-WaS"/>
+                <constraint firstAttribute="bottom" secondItem="1QR-j0-WeV" secondAttribute="bottom" id="lG6-Yw-kec"/>
+                <constraint firstAttribute="bottom" secondItem="g4d-4p-y4P" secondAttribute="bottom" id="lvV-yJ-qfh"/>
+                <constraint firstAttribute="trailing" secondItem="1QR-j0-WeV" secondAttribute="trailing" id="nMc-Jd-0py"/>
+                <constraint firstItem="g4d-4p-y4P" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zFn-ds-6eI"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
         </view>
     </objects>
     <resources>
-        <image name="login.png" width="320" height="568"/>
-        <image name="logo.png" width="97" height="21"/>
+        <image name="launch_image.png" width="375" height="667"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

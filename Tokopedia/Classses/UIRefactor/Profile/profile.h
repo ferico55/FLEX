@@ -17,13 +17,13 @@ typedef enum
     TYPE_ADD_EDIT_PROFILE_ATC
 } TYPE_ADD_EDIT_PROFILE;
 
-#define kTKPDPROFILEEDIT_TITLE @"Edit Profile"
+#define kTKPDPROFILEEDIT_TITLE @"Atur Profil"
 #define kTKPDPROFILEEDITPHONEConfirmed_TITLE @"Confirmed Phone Number"
 
 #define kTKPDPROFILESETTING_TITLE @"Settings"
 #define kTKPDPROFILESETTINGNOTIFICATION_TITLE @"Setting Notification"
 #define kTKPDPROFILESETTINGPRIVACY_TITLE @"Setting Privacy"
-#define kTKPDPROFILESETTINGPASSWORD_TITLE @"Change Password"
+#define kTKPDPROFILESETTINGPASSWORD_TITLE @"Ubah Kata Sandi"
 #define kTKPDPROFILESETTINGBANKACCOUNT_TITLE @"Setting Bank Account"
 #define kTKPDPROFILESETTINGADDRESS_TITLE @"Setting Address"
 #define TITLE_NEW_ADDRESS @"Tambah Alamat"
@@ -55,6 +55,7 @@ typedef enum
 #define kTKPDPROFILE_DATAEDITTYPEKEY @"edittype"
 #define kTKPDPROFILE_DATABANKINDEXPATHKEY @"bankindexpath"
 #define kTKPDPROFILE_DATALOCATIONNAMEKEY @"locationname"
+#define kTKPDPROFILE_UNSETORIGIN    @"Pilih"
 
 #define DATA_LIST_BANK_ACOUNT_KEY @"list_bank_account"
 
@@ -67,6 +68,7 @@ typedef enum
 #define kTKPDPROFILE_APIGETPROFILEKEY @"get_profile"
 #define kTKPDPROFILE_APISETUSERPROFILEKEY @"set_user_profile"
 #define kTKPDPROFILE_APISETPASSWORDKEY @"set_password"
+#define kTKPDPROFILE_APIEDITPASSWORDKEY @"edit_password"
 #define kTKPDPROFILE_APISETEMAILNOTIFKEY @"set_email_notification"
 #define kTKPDPROFILE_APIGETEMAILNOTIFKEY @"get_email_notification_form"
 #define kTKPDPROFILE_APIGETPRIVACYKEY @"get_privacy_form"
@@ -116,6 +118,7 @@ typedef enum
 #define kTKPDPROFILE_APIBIRTHYEARKEY @"birth_year"
 #define kTKPDPROFILE_APIGENDERKEY @"gender"
 
+#define kTKPDPROFILESETTING_APIUSERIDKEY @"user_id"
 #define kTKPDPROFILESETTING_APIPASSKEY @"password"
 #define kTKPDPROFILESETTING_APINEWPASSKEY @"new_password"
 #define kTKPDPROFILESETTING_APIPASSCONFIRMKEY @"confirm_password"
@@ -219,10 +222,10 @@ typedef enum
 #define kTKPDPROFILE_APIRESPONSEFILEFORMAT @"profile%zd"
 #define kTKPDPFAVORITESHOP_APIRESPONSEFILEFORMAT @"profilefavshop%zd"
 
-#define ARRAY_GENDER @[@{DATA_NAME_KEY:@"Male", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Female", DATA_VALUE_KEY:@(2)}]
+#define ARRAY_GENDER @[@{DATA_NAME_KEY:@"Pria", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Wanita", DATA_VALUE_KEY:@(2)}]
 #define ARRAY_LIST_MENU_SETTING_PROFILE @[@[@"Ubah Password"],@[@"Daftar Alamat", @"Akun Bank", @"Notifikasi", @"Pengaturan Privasi"]]
 
-#define kTKPDPROFILE_DATAGENDERARRAYKEY @[@"Male",@"Female"]
+#define kTKPDPROFILE_DATAGENDERARRAYKEY @[@"Pria",@"Wanita"]
 #define kTKPDPROFILE_DATAGENDERVALUEARRAYKEY @[@"1",@"2"]
 
 #define kTKPDPROFILE_DATAPRIVACYARRAYKEY @[@"Do not show", @"Show to public"]

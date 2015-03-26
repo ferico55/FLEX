@@ -29,10 +29,14 @@
 #import "URLCacheController.h"
 
 @interface MainViewController ()
+<
+    UITabBarControllerDelegate,
+    LoginViewDelegate
+>
 {
     UITabBarController *_tabBarController;
-    TKPDTabHomeViewController *_swipevc;
     NSMutableDictionary *_auth;
+    TKPDTabHomeViewController *_swipevc;
     URLCacheController *_cacheController;
 }
 
@@ -64,8 +68,6 @@
     [center addObserver:self selector:@selector(applicationlogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil];
 
     [center addObserver:self selector:@selector(updateTabBarMore:) name:UPDATE_TABBAR object:nil];
-
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -151,7 +153,6 @@
     _swipevc = [TKPDTabHomeViewController new];
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
     
-    
     /** TAB BAR INDEX 2 **/
     CategoryViewController *categoryvc = [CategoryViewController new];
     UINavigationController *categoryNavBar = [[UINavigationController alloc]initWithRootViewController:categoryvc];
@@ -206,6 +207,7 @@
     
     NSArray* controllers = [NSArray arrayWithObjects:swipevcNav, categoryNavBar, searchNavBar, cartNavBar, moreNavBar, nil];
     _tabBarController.viewControllers = controllers;
+    _tabBarController.delegate = self;
     //tabBarController.tabBarItem.title = nil;
     [self adjusttabbar];
 }
@@ -231,8 +233,7 @@
         
         [tabBarItem1 setImage:image];
         [tabBarItem1 setSelectedImage:image_active];
-        
-        
+
     }
     else{
         [tabBarItem1 setFinishedSelectedImage:image_active withFinishedUnselectedImage:image];
@@ -240,12 +241,11 @@
     //tabBarItem1.imageInsets = UIEdgeInsetsMake(5, 0, -5, 0);
     tabBarItem1.title = kTKPDNAVIGATION_TABBARTITLEARRAY[0];
     
-    [tabBarItem1 setTitleTextAttributes:
-     [NSDictionary dictionaryWithObjectsAndKeys:
-      [UIColor blackColor], UITextAttributeTextColor,
-      [UIFont fontWithName:@"GothamBook" size:9.0], UITextAttributeFont,
-      nil]
-                               forState:UIControlStateNormal];
+    NSDictionary *textAttributes = @{
+                                    UITextAttributeTextColor:[UIColor blackColor],
+                                    UITextAttributeFont:[UIFont fontWithName:@"GothamBook" size:9.0]
+                                    };
+    [tabBarItem1 setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
     
     /** set tab bar item 2**/
     image =[UIImage imageNamed:kTKPDIMAGE_ICONTABBAR_CATEGORY];
@@ -377,6 +377,9 @@
 	_auth = [auth mutableCopy];
     
     BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+    
+    //refreshing cart when first login
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"doRefreshingCart" object:nil userInfo:nil];
 
 	// Assume tabController is the tab controller
     // and newVC is the controller you want to be the new view controller at index 0
@@ -384,7 +387,7 @@
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
     swipevcNav.navigationBar.translucent = NO;
     UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-    [_swipevc.navigationItem setTitleView:logo];
+    _swipevc.navigationItem.titleView = logo;
 
     UINavigationController *searchNavBar = newControllers[2];
     id search = searchNavBar.viewControllers[0];
@@ -418,6 +421,8 @@
     NSDictionary* auth = [secureStorage keychainDictionary];
     _auth = [auth mutableCopy];
 
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"doRefreshingCart" object:nil userInfo:nil];
+    
     NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
 
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle: nil];
@@ -467,6 +472,12 @@
             [self doApplicationLogout];
         }
     }
+}
+
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
+}
+
+-(void)redirectViewController:(id)viewController {
 }
 
 @end

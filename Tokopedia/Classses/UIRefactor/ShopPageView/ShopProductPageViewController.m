@@ -31,28 +31,47 @@
 #import "URLCacheController.h"
 #import "SortViewController.h"
 #import "MyShopEtalaseFilterViewController.h"
+
+#import "GeneralSingleProductCell.h"
+#import "GeneralPhotoProductCell.h"
 #import "DetailProductViewController.h"
 
 #import "NoResult.h"
 
-@interface ShopProductPageViewController () <UITableViewDataSource,
-UITableViewDelegate,
-TKPDTabInboxTalkNavigationControllerDelegate,
-ShopPageHeaderDelegate,
-SortViewControllerDelegate,
-MyShopEtalaseFilterViewControllerDelegate,
-GeneralProductCellDelegate,
-UIAlertViewDelegate>
+typedef NS_ENUM(NSInteger, UITableViewCellType) {
+    UITableViewCellTypeOneColumn,
+    UITableViewCellTypeTwoColumn,
+    UITableViewCellTypeThreeColumn,
+};
+
+@interface ShopProductPageViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    UIAlertViewDelegate,
+    UISearchBarDelegate,
+    TKPDTabInboxTalkNavigationControllerDelegate,
+    ShopPageHeaderDelegate,
+    SortViewControllerDelegate,
+    MyShopEtalaseFilterViewControllerDelegate,
+    GeneralProductCellDelegate,
+    GeneralSingleProductDelegate,
+    GeneralPhotoProductDelegate
+>
 
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (strong, nonatomic) IBOutlet UIView *header;
 @property (weak, nonatomic) IBOutlet UITableView *table;
-@property (nonatomic, strong) NSDictionary *userinfo;
-@property (nonatomic, strong) NSMutableArray *list;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (strong, nonatomic) IBOutlet UIView *fakeStickyTab;
 @property (strong, nonatomic) IBOutlet UIView *stickyTab;
+@property (weak, nonatomic) IBOutlet UIButton *changeGridButton;
+
+@property (nonatomic, strong) NSDictionary *userinfo;
+@property (nonatomic, strong) NSMutableArray *list;
+
+@property (nonatomic) UITableViewCellType cellType;
 
 @end
 
@@ -200,9 +219,9 @@ UIAlertViewDelegate>
     [self initNotification];
     [self configureRestKit];
     [self loadData];
-    
+ 
+    self.cellType = UITableViewCellTypeTwoColumn;
 }
-
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -260,60 +279,26 @@ UIAlertViewDelegate>
     }
 }
 
-
 #pragma mark - TableView Source
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return _isNoData ? 0 : _product.count;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.cellType == UITableViewCellTypeOneColumn) {
+        return 230;
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+        return 215;
+    } else {
+        return 103;
+    }
+}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell* cell = nil;
-    if (!_isNoData) {
-        
-        NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
-        
-        cell = (GeneralProductCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-        if (cell == nil) {
-            cell = [GeneralProductCell newcell];
-            ((GeneralProductCell *)cell).delegate = self;
-        }
-        
-        if (_product.count > indexPath.row) {
-            /** Flexible view count **/
-            NSUInteger indexsegment = indexPath.row * 2;
-            NSUInteger indexmax = indexsegment + 2;
-            NSUInteger indexlimit = MIN(indexmax, _product.count);
-            
-            NSAssert(!(indexlimit > _product.count), @"producs out of bounds");
-            
-            NSUInteger i;
-            
-            for (i = 0; (indexsegment + i) < indexlimit; i++) {
-                List *list = [_product objectAtIndex:indexsegment + i];
-                ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
-                (((GeneralProductCell*)cell).indexpath) = indexPath;
-                
-                ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.catalog_price?:list.product_price;
-                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
-               
-                
-                NSString *urlstring = list.catalog_image?:list.product_image;
-                
-                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-                
-                UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
-                thumb.image = nil;
-                [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    [thumb setImage:image];
-#pragma clang diagnostic pop
-                } failure:nil];
-            }
-        }
-    } else {
-        
+    if (_isNoData) {
         static NSString *CellIdentifier = @"GeneralAlertCell";
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         
@@ -325,6 +310,160 @@ UIAlertViewDelegate>
             cell.textLabel.text = [NSString stringWithFormat:@"No result found for '%@'", _searchBar.text];
         } else {
             cell.textLabel.text = @"No product";
+        }
+    } else {
+        if (self.cellType == UITableViewCellTypeOneColumn) {
+            cell = [self tableView:tableView oneColumnCellForRowAtIndexPath:indexPath];
+        } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+            cell = [self tableView:tableView twoColumnCellForRowAtIndexPath:indexPath];
+        } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+            cell = [self tableView:tableView threeColumnCellForRowAtIndexPath:indexPath];
+        }
+    }
+    return cell;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView oneColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    GeneralSingleProductCell *cell;
+    
+    NSString *cellIdentifier = kTKPDGENERAL_SINGLE_PRODUCT_CELL_IDENTIFIER;
+    
+    cell = (GeneralSingleProductCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [GeneralSingleProductCell initCell];
+        cell.delegate = self;
+    }
+    
+    List *list = [_product objectAtIndex:indexPath.row];
+    
+    cell.productNameLabel.text = list.product_name;
+    cell.productPriceLabel.text = list.product_price;
+    
+    UIFont *boldFont = [UIFont fontWithName:@"GothamMedium" size:12];
+    
+    NSString *stats = [NSString stringWithFormat:@"%@ Review   %@ Ulasan", list.product_review_count, list.product_talk_count];
+    
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:stats];
+    [attributedText addAttribute:NSFontAttributeName value:boldFont range:NSMakeRange(0, list.product_review_count.length)];
+    [attributedText addAttribute:NSFontAttributeName value:boldFont range:NSMakeRange(list.product_review_count.length + 10, list.product_talk_count.length)];
+    
+    cell.productInfoLabel.attributedText = attributedText;
+    
+    cell.indexPath = indexPath;
+    
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image_full]
+                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    cell.productImageView.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+    cell.productImageView.contentMode = UIViewContentModeCenter;
+    
+    [cell.productImageView setImageWithURLRequest:request
+                                 placeholderImage:nil
+                                          success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                              [cell.productImageView setImage:image animated:YES];
+                                              [cell.productImageView setContentMode:UIViewContentModeScaleAspectFill];
+                                          } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                              cell.productImageView.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+                                          }];
+    
+    return cell;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView twoColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
+    UITableViewCell* cell = nil;
+    
+    cell = (GeneralProductCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+    if (cell == nil) {
+        cell = [GeneralProductCell newcell];
+        ((GeneralProductCell *)cell).delegate = self;
+    }
+    
+    if (_product.count > indexPath.row) {
+        /** Flexible view count **/
+        NSUInteger indexsegment = indexPath.row * 2;
+        NSUInteger indexmax = indexsegment + 2;
+        NSUInteger indexlimit = MIN(indexmax, _product.count);
+        
+        NSAssert(!(indexlimit > _product.count), @"producs out of bounds");
+        
+        NSUInteger i;
+        
+        for (i = 0; (indexsegment + i) < indexlimit; i++) {
+            List *list = [_product objectAtIndex:indexsegment + i];
+            ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
+            (((GeneralProductCell*)cell).indexpath) = indexPath;
+            
+            UIView *view = ((UIView*)((GeneralProductCell*)cell).viewcell[i]);
+            CGRect newFrame = view.frame;
+            newFrame.size.height = 195;
+            view.frame = newFrame;
+            
+            ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.catalog_price?:list.product_price;
+            ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;            
+            
+            NSString *urlstring = list.catalog_image?:list.product_image;
+            
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring]
+                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            
+            UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
+            thumb.image = nil;
+            [thumb setImageWithURLRequest:request placeholderImage:nil
+                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                [thumb setImage:image];
+#pragma clang diagnostic pop
+            } failure:nil];
+        }
+    }
+    return cell;
+}
+
+- (GeneralPhotoProductCell *)tableView:(UITableView *)tableView threeColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cellIdentifier = kTKPDGENERAL_PHOTO_PRODUCT_CELL_IDENTIFIER;
+    
+    GeneralPhotoProductCell *cell;
+    
+    cell = (GeneralPhotoProductCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [GeneralPhotoProductCell initCell];
+        cell.delegate = self;
+    }
+    cell.indexPath = indexPath;
+    
+    NSUInteger index = indexPath.row * 3;
+    
+    for (int i = 0; i < cell.productImageViews.count; i++) {
+        NSUInteger indexProduct = index + i;
+        if (indexProduct < _product.count) {
+            List *list = [_product objectAtIndex:indexProduct];
+            NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image]
+                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            
+            UIImageView *thumb = [cell.productImageViews objectAtIndex:i];
+            thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+            thumb.contentMode = UIViewContentModeCenter;
+            thumb.hidden = NO;
+            
+            [thumb setImageWithURLRequest:request
+                         placeholderImage:nil
+                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                      thumb.image = image;
+                                      thumb.contentMode = UIViewContentModeScaleAspectFill;
+#pragma clang diagnostic pop
+                                  } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                      thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+                                  }];
         }
     }
     
@@ -358,9 +497,12 @@ UIAlertViewDelegate>
     // searchs list mapping
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[List class]];
     [listMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APIPRODUCTIMAGEKEY,
+                                                 kTKPDSEARCH_APIPRODUCTIMAGEFULLKEY,
                                                  kTKPDSEARCH_APIPRODUCTPRICEKEY,
                                                  kTKPDSEARCH_APIPRODUCTNAMEKEY,
                                                  kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY,
+                                                 kTKPDSEARCH_APIPRODUCTTALKCOUNTKEY,
+                                                 kTKPDSEARCH_APIPRODUCTREVIEWCOUNTKEY,
                                                  kTKPDSEARCH_APICATALOGIMAGEKEY,
                                                  kTKPDSEARCH_APICATALOGNAMEKEY,
                                                  kTKPDSEARCH_APICATALOGPRICEKEY,
@@ -448,8 +590,6 @@ UIAlertViewDelegate>
                             kTKPDDETAIL_APIKEYWORDKEY   :   querry,
                             kTKPDDETAIL_APIETALASEIDKEY :   etalaseid};
     
-    
-        
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST
                                                                       path:kTKPDDETAILSHOP_APIPATH
                                                                 parameters:[param encrypt]];
@@ -505,9 +645,6 @@ UIAlertViewDelegate>
 
 -(void)requestFailure:(id)object
 {
-    
-    NSError* error;
-
 }
 
 -(void)requestProcess:(id)object
@@ -710,7 +847,7 @@ UIAlertViewDelegate>
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton*)sender;
         switch (button.tag) {
-            case 11: {
+            case 10: {
                 // sort button action
                 NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 SortViewController *vc = [SortViewController new];
@@ -723,7 +860,7 @@ UIAlertViewDelegate>
                 break;
             }
                 
-            case 12 : {
+            case 11 : {
                 // etalase button action
                 NSIndexPath *indexpath = [_detailfilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 MyShopEtalaseFilterViewController *vc =[MyShopEtalaseFilterViewController new];
@@ -737,15 +874,39 @@ UIAlertViewDelegate>
                 break;
             }
                 
-            case 13 : {
-                NSString *activityItem = [NSString stringWithFormat:@"%@ - %@ | Tokopedia %@", _shop.result.info.shop_name,
-                                          _shop.result.info.shop_location, _shop.result.info.shop_url];
+            case 12 : {
+                NSString *activityItem = [NSString stringWithFormat:@"%@ - %@ | Tokopedia %@",
+                                          _shop.result.info.shop_name,
+                                          _shop.result.info.shop_location,
+                                          _shop.result.info.shop_url];
                 UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
                                                                                                  applicationActivities:nil];
                 activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
                 [self presentViewController:activityController animated:YES completion:nil];
                 break;
             }
+            case 13:
+            {
+                if (self.cellType == UITableViewCellTypeOneColumn) {
+                    self.cellType = UITableViewCellTypeTwoColumn;
+                    [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
+                                           forState:UIControlStateNormal];
+                    
+                } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+                    self.cellType = UITableViewCellTypeThreeColumn;
+                    [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                                           forState:UIControlStateNormal];
+                    
+                } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+                    self.cellType = UITableViewCellTypeOneColumn;
+                    [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
+                                           forState:UIControlStateNormal];
+                    
+                }
+                self.table.contentOffset = CGPointMake(0, self.header.frame.size.height-84);
+                [self.table reloadData];
+                break;
+            }            
             default:
                 break;
         }
@@ -790,9 +951,17 @@ UIAlertViewDelegate>
 }
 
 #pragma mark - Cell Delegate
--(void)GeneralProductCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+-(void)didSelectCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger index = indexpath.section+2*(indexpath.row);
+    NSInteger index = 0;
+    if (self.cellType == UITableViewCellTypeOneColumn) {
+        index = indexPath.row;
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+        index = indexPath.section+2*(indexPath.row);
+    } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+        index = indexPath.section+3*(indexPath.row);
+    }
+
     List *list = _product[index];
     
     DetailProductViewController *vc = [DetailProductViewController new];

@@ -303,6 +303,9 @@
     }
     
     else if (indexPath.section == 4) {
+        if(indexPath.row == 0) {
+            
+        }
         if(indexPath.row == 2) {
             ReputationPageViewController *reputationPageVc = [ReputationPageViewController new];
             [self.navigationController pushViewController:reputationPageVc animated:YES];
@@ -340,9 +343,7 @@
             TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
             [nc setSelectedIndex:2];
             [nc setViewControllers:vcs];
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-            [nav.navigationBar setTranslucent:NO];
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            [self.navigationController pushViewController:nc animated:YES];
         } else if (indexPath.row == 5) {
             InboxReviewViewController *vc = [InboxReviewViewController new];
             vc.data=@{@"nav":@"inbox-review"};
@@ -358,9 +359,7 @@
             TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
             [nc setSelectedIndex:2];
             [nc setViewControllers:vcs];
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-            [nav.navigationBar setTranslucent:NO];
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            [self.navigationController pushViewController:nc animated:YES];
             
         }
         

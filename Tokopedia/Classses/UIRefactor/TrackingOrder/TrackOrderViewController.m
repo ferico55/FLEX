@@ -131,7 +131,6 @@
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
             } else {
                 cell = [self cellHistoryAtIndexPath:indexPath];
-                //cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
             }
         } else if (_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] == 0) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
@@ -419,6 +418,8 @@
                     statusLabel.text = @"Nomor Resi diganti oleh penjual";
                 } else if ([_trackingOrder.order_status integerValue] == ORDER_DELIVERED) {
                     statusLabel.text = @"Delivered";
+                } else if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_WAITING) {
+                    statusLabel.text = @"Belum ada update status pengiriman dari kurir";
                 } else {
                     statusLabel.text = @"On Process";
                 }

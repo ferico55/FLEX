@@ -20,12 +20,17 @@
 
 @implementation ShipmentStatusCell
 
-- (void)awakeFromNib {    
+- (void)awakeFromNib
+{    
+    _oneButtonView.hidden = YES;
+    
     CGRect frame = _oneButtonView.frame;
     frame.origin.y = 201;
     _oneButtonView.frame = frame;
     [_containerView addSubview:_oneButtonView];
 
+    _twoButtonsView.hidden = YES;
+    
     frame = _twoButtonsView.frame;
     frame.origin.y = 201;
     _twoButtonsView.frame = frame;

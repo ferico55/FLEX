@@ -50,7 +50,7 @@
     [super viewDidLoad];
     
     _table.tableFooterView = _footer;
-    
+        
     // add notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_SETUSERINFODATANOTIFICATIONNAMEKEY object:nil];
@@ -81,16 +81,6 @@
     else return 0;
 }
 
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-//    //For each section, you must return here it's label
-//    if(section == 0) {
-//        return kTKPDTITLE_SHOP_INFO;
-//    } else if (section == 1) {
-//        return KTKPDTITLE_BIODATA;
-//    }
-//    return @"";
-//}
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 35)];
@@ -107,7 +97,6 @@
 
     return headerView;
 }
-
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

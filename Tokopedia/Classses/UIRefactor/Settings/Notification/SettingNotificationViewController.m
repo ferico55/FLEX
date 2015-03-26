@@ -11,8 +11,6 @@
 #import "ProfileSettings.h"
 #import "NotificationForm.h"
 
-#import "Alert1ButtonView.h"
-
 #import "SettingNotificationViewController.h"
 #import "SettingNotificationCell.h"
 

@@ -83,7 +83,7 @@
                         <constraint firstItem="3gY-Wm-LpU" firstAttribute="leading" secondItem="UGu-Sr-Afb" secondAttribute="leading" id="ypb-ck-xBW"/>
                     </constraints>
                 </view>
-                <searchBar contentMode="redraw" placeholder="Cari produk / toko" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Xm-Sf-r27">
+                <searchBar contentMode="scaleToFill" placeholder="Cari produk / toko" showsCancelButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7Xm-Sf-r27">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="BpI-NQ-T71"/>

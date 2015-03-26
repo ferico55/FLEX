@@ -22,7 +22,7 @@
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
-- (IBAction)tap:(id)sender;
+
 @end
 
 @implementation ProfileSettingViewController
@@ -33,6 +33,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.title = TITLE_SETTING_PROFILE_MENU;
+        self.hidesBottomBarWhenPushed = YES;
     }
     return self;
 }
@@ -44,81 +45,23 @@
     [super viewDidLoad];
     _table.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:nil];
+    self.navigationItem.backBarButtonItem = backBarButton;
     
     _listMenu = ARRAY_LIST_MENU_SETTING_PROFILE;
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-#pragma mark - View Action
-- (IBAction)tap:(id)sender {
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton *)sender;
-        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-        switch (btn.tag) {
-            case 10:
-            {    //change password
-                SettingPasswordViewController *vc = [SettingPasswordViewController new];
-                vc.data = @{kTKPD_AUTHKEY : auth};
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            case 11:
-            {
-                //address list
-                SettingAddressViewController *vc = [SettingAddressViewController new];
-                vc.data = @{kTKPD_AUTHKEY : auth};
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            case 12:
-            {
-                //bank account
-                SettingBankAccountViewController *vc = [SettingBankAccountViewController new];
-                vc.data = @{kTKPD_AUTHKEY : auth};
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            case 13:
-            {
-                //notification
-                SettingNotificationViewController *vc = [SettingNotificationViewController new];
-                vc.data = @{kTKPD_AUTHKEY : auth};
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            case 14:
-            {
-                //privacy settings
-                SettingPrivacyViewController *vc = [SettingPrivacyViewController new];
-                vc.data = @{kTKPD_AUTHKEY : auth};
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            default:
-                break;
-        }
-    }
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
 }
 
 #pragma mark - TableView Data Source
@@ -166,6 +109,8 @@
 #pragma mark - TableView Delegeta
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
     if (indexPath.section == 0 && indexPath.row == 0) {
         SettingPasswordViewController *vc = [SettingPasswordViewController new];

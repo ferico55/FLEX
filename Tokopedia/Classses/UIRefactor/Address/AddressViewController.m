@@ -23,7 +23,6 @@
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (nonatomic, strong) NSMutableArray *locationnames;
 @property (nonatomic, strong) NSMutableArray *locationvalues;
-@property (weak, nonatomic) IBOutlet UILabel *labeltitle;
 
 @end
 
@@ -51,20 +50,12 @@
     _locationvalues = [NSMutableArray new];
     _selectedlocation = [NSMutableDictionary new];
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor blackColor]];
-	[barbutton1 setTag:11];
-    self.navigationItem.rightBarButtonItem = barbutton1;
+    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Pilih"
+                                                                      style:UIBarButtonItemStyleDone
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    doneBarButton.tag = 11;
+    self.navigationItem.rightBarButtonItem = doneBarButton;
     
     NSArray *name;
     NSArray *value;
@@ -76,7 +67,7 @@
         case kTKPDLOCATION_DATATYPEPROVINCEKEY:
         {
             NSInteger provid = [[_data objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]integerValue];
-            _labeltitle.text = @"   PROVINCE";
+            self.title = @"Pilih Provinsi";
             name = [[DBManager getSharedInstance]LoadDataQueryLocationName:[NSString stringWithFormat:@"select province_name from ws_province order by province_name"]];
             
             value = [[DBManager getSharedInstance]LoadDataQueryLocationValue:[NSString stringWithFormat:@"select province_id from ws_province order by province_name"]];
@@ -87,7 +78,7 @@
         }
         case kTKPDLOCATION_DATATYPEREGIONKEY:
         {
-            _labeltitle.text = @"   REGENCY";
+            self.title = @"Pilih Kota";
             NSInteger provid = [[_data objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]integerValue];
             NSInteger cityid = [[_data objectForKey:kTKPDLOCATION_DATACITYIDKEY]integerValue];
             name = [[DBManager getSharedInstance]LoadDataQueryLocationName:[NSString stringWithFormat:@"select city_name from ws_city d WHERE province_id = %zd order by city_name",provid]];
@@ -100,7 +91,7 @@
         }
         case kTKPDLOCATION_DATATYPEDISTICTKEY:
         {
-            _labeltitle.text = @"   SUB DISTRICT";
+            self.title = @"Pilih Kecamatan";
             NSInteger provid = [[_data objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]integerValue];
             NSInteger cityid = [[_data objectForKey:kTKPDLOCATION_DATACITYIDKEY]integerValue];
             NSInteger districtid = [[_data objectForKey:kTKPDLOCATION_DATADISTRICTIDKEY]integerValue];

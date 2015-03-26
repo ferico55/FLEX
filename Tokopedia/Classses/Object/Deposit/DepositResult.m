@@ -10,4 +10,8 @@
 
 @implementation DepositResult
 
+-  (NSString *)deposit_total {
+    return [_deposit_total kv_decodeHTMLCharacterEntities];
+}
+
 @end

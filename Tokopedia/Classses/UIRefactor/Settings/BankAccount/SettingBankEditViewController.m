@@ -50,6 +50,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *OTPTextField;
 @property (weak, nonatomic) IBOutlet UIButton *sendOTPButton;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UILabel *bankInformationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *otpInformationLabel;
 
 -(void)cancelActionSendOTP;
 -(void)configureRestKitActionSendOTP;
@@ -91,18 +93,43 @@
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                                        style:UIBarButtonItemStyleBordered
+                                                                       target:self
+                                                                       action:@selector(tap:)];
+    cancelBarButton.tag = 10;
+    self.navigationItem.leftBarButtonItem = cancelBarButton;
     
-    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonsave setTintColor:[UIColor blackColor]];
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
+                                                      style:UIBarButtonItemStyleDone
+                                                     target:self
+                                                     action:@selector(tap:)];
     _barbuttonsave.tag = 11;
-    self.navigationItem.rightBarButtonItems = @[_barbuttonsave];
+    self.navigationItem.rightBarButtonItem = _barbuttonsave;
+
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : [UIColor colorWithRed:117.0/255.0
+                                                                                  green:117.0/255.0
+                                                                                   blue:117.0/255.0
+                                                                                  alpha:1],
+                                 };
+    
+    _bankInformationLabel.attributedText = [[NSAttributedString alloc] initWithString:_bankInformationLabel.text
+                                                                 attributes:attributes];
+    _otpInformationLabel.attributedText = [[NSAttributedString alloc] initWithString:_otpInformationLabel.text
+                                                                           attributes:attributes];
     
     [self setDefaultData:_data];
+    
+    [self.container addSubview:_contentView];
+    [self.container setContentSize:CGSizeMake(self.view.frame.size.width,
+                                              self.contentView.frame.size.height)];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -232,6 +259,9 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 
                 break;
+            }
+            case 10: {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             }
             default:
                 break;

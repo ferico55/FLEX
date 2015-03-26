@@ -129,13 +129,16 @@
 {
     OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
     if ([_resultOrder.result.order.is_allow_manage_tx boolValue] && order.order_detail.detail_ship_ref_num) {
-        if (order.order_detail.detail_order_status >= ORDER_DELIVERED) {
-            return tableView.rowHeight - 45;
-        } else if (order.order_detail.detail_order_status >= ORDER_SHIPPING) {
+        if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED) {
             return tableView.rowHeight;
+        } else {
+            return tableView.rowHeight - 50;
         }
     }
-    return tableView.rowHeight - 45;
+    return tableView.rowHeight - 50;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -173,11 +176,14 @@
     cell.finishLabel.hidden = YES;
     
     if ([_resultOrder.result.order.is_allow_manage_tx boolValue] && order.order_detail.detail_ship_ref_num) {
-        
-        if (order.order_detail.detail_order_status >= ORDER_DELIVERED) {
-            [cell hideAllButton];
-        } else if (order.order_detail.detail_order_status >= ORDER_SHIPPING) {
+
+        if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED) {
             [cell showAllButton];
+        } else {
+            [cell hideAllButton];
         }
         
         if (order.order_detail.detail_order_status == ORDER_DELIVERED_CONFIRM) {

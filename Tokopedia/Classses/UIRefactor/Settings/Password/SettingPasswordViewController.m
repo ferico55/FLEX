@@ -11,11 +11,10 @@
 #import "ProfileSettings.h"
 
 #import "SettingPasswordViewController.h"
-
-#import "Alert1ButtonView.h"
+#import "UserAuthentificationManager.h"
 
 #pragma mark - Setting Password View Controller
-@interface SettingPasswordViewController ()<UITextFieldDelegate>
+@interface SettingPasswordViewController () <UITextFieldDelegate>
 {
     BOOL _isnodata;
     
@@ -68,30 +67,23 @@
     [super viewDidLoad];
     
     [self.navigationController.navigationItem setTitle:kTKPDPROFILESETTINGPASSWORD_TITLE];
+    self.title = kTKPDPROFILESETTINGPASSWORD_TITLE;
     
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
-    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonsave setTintColor:[UIColor whiteColor]];
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
+                                                      style:UIBarButtonItemStyleDone
+                                                     target:(self)
+                                                     action:@selector(tap:)];
     _barbuttonsave.tag = 11;
-    _act= [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    UIBarButtonItem * barbuttonact = [[UIBarButtonItem alloc] initWithCustomView:_act];
-    self.navigationItem.rightBarButtonItems = @[_barbuttonsave,barbuttonact];
+
+    _act = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
     [_act setHidesWhenStopped:YES];
     
+    self.navigationItem.rightBarButtonItem = _barbuttonsave;
+    
     [self configureActionRestKit];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 12;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -99,7 +91,6 @@
     [super viewWillDisappear:animated];
     [self cancelAction];
 }
-
 
 #pragma mark - Memory Management
 -(void)dealloc{
@@ -122,7 +113,7 @@
             case 11:
             {
                 //submit button
-                NSMutableArray *message = [NSMutableArray new];
+                NSMutableArray *errorMessages = [NSMutableArray new];
                 NSDictionary *userinfo = _datainput;
                 NSString *pass = [_datainput objectForKey:kTKPDPROFILESETTING_APIPASSKEY];
                 NSString *newpass = [_datainput objectForKey:kTKPDPROFILESETTING_APINEWPASSKEY];
@@ -132,19 +123,21 @@
                 }
                 else
                 {
-                    if (!pass) {
-                        [message addObject:@"Kata Sandi Lama harus diisi."];
+                    if (!pass || [pass isEqualToString:@""]) {
+                        [errorMessages addObject:@"Kata Sandi Lama harus diisi."];
                     }
-                    if (!newpass) {
-                        [message addObject:@"Kata Sandi Baru harus diisi."];
+                    if (!newpass || [newpass isEqualToString:@""]) {
+                        [errorMessages addObject:@"Kata Sandi Baru harus diisi."];
                     }
-                    if (!confirmpass) {
-                        [message addObject:@"Konfirmasi Kata Sandi Baru harus diisi."];
+                    if (!confirmpass || [confirmpass isEqualToString:@""]) {
+                        [errorMessages addObject:@"Konfirmasi Kata Sandi Baru harus diisi."];
                     }
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:message ,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                    [alert show];
+                    
+                    _barbuttonsave.enabled = YES;
                     self.navigationItem.rightBarButtonItem = _barbuttonsave;
-                    [_barbuttonsave setEnabled:YES];
                 }
                 break;
             }
@@ -173,51 +166,59 @@
 
 - (void)configureActionRestKit
 {
-    // initialize AFNetworking HTTPClient + restkit
-    //TraktAPIClient *client = [TraktAPIClient sharedClient];
-    _objectmanager = [RKObjectManager sharedClient];
-    
+    _objectmanager = [RKObjectManager sharedClient];    
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileSettings class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
+    [statusMapping addAttributeMappingsFromArray:@[kTKPD_APIERRORMESSAGEKEY,
+                                                   kTKPD_APISTATUSMESSAGEKEY,
+                                                   kTKPD_APISTATUSKEY,
+                                                   kTKPD_APISERVERPROCESSTIMEKEY,
+                                                   ]];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileSettingsResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDPROFILE_APIISSUCCESSKEY:kTKPDPROFILE_APIISSUCCESSKEY}];
+    [resultMapping addAttributeMappingsFromArray:@[kTKPDPROFILE_APIISSUCCESSKEY]];
     
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptor];
-    
-    
 }
 
 - (void)requestAction:(id)userinfo
 {
     if (_requestAction.isExecuting) return;
     
+    _requestcount ++;
+
     NSDictionary *data = userinfo;
     
     [_act startAnimating];
     _barbuttonsave.enabled = NO;
     
-    NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APISETPASSWORDKEY,
-                            kTKPDPROFILESETTING_APIPASSKEY : [data objectForKey:kTKPDPROFILESETTING_APIPASSKEY],
-                            kTKPDPROFILESETTING_APINEWPASSKEY : [data objectForKey:kTKPDPROFILESETTING_APINEWPASSKEY],
-                            kTKPDPROFILESETTING_APIPASSCONFIRMKEY :[data objectForKey:kTKPDPROFILESETTING_APINEWPASSKEY]
+    UIBarButtonItem *barButtonLoading = [[UIBarButtonItem alloc] initWithCustomView:_act];
+    self.navigationItem.rightBarButtonItem = barButtonLoading;
+    
+    NSDictionary *param = @{
+                            kTKPDPROFILE_APIACTIONKEY               : kTKPDPROFILE_APIEDITPASSWORDKEY,
+                            kTKPDPROFILESETTING_APIPASSKEY          : [data objectForKey:kTKPDPROFILESETTING_APIPASSKEY],
+                            kTKPDPROFILESETTING_APINEWPASSKEY       : [data objectForKey:kTKPDPROFILESETTING_APINEWPASSKEY],
+                            kTKPDPROFILESETTING_APIPASSCONFIRMKEY   : [data objectForKey:kTKPDPROFILESETTING_APINEWPASSKEY],
                             };
-    _requestcount ++;
     
-    _requestAction = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:[param encrypt]];
+    _requestAction = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                          method:RKRequestMethodPOST
+                                                                            path:kTKPDPROFILE_PROFILESETTINGAPIPATH
+                                                                      parameters:[param encrypt]];
     
-    //[_cachecontroller clearCache];
-    /* file doesn't exist or hasn't been updated */
     [_requestAction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessAction:mappingResult withOperation:operation];
         [_act stopAnimating];
@@ -238,18 +239,19 @@
     
     [_operationQueue addOperation:_requestAction];
     
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutAction) userInfo:nil repeats:NO];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                              target:self
+                                            selector:@selector(requestTimeoutAction)
+                                            userInfo:nil
+                                             repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
--(void)requestSuccessAction:(id)object withOperation:(RKObjectRequestOperation *)operation{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    ProfileSettings *setting = stat;
+-(void)requestSuccessAction:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation{
+    ProfileSettings *setting = [mappingResult.dictionary objectForKey:@""];
     BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
     if (status) {
-        [self requestProcessAction:object];
+        [self requestProcessAction:mappingResult];
     }
 }
 
@@ -259,60 +261,50 @@
     [self cancelAction];
 }
 
-
 -(void)requestFailureAction:(id)object
 {
-    [self requestProcessAction:object];
+    [self cancelAction];
+    NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
+    if ([(NSError*)object code] == NSURLErrorCancelled) {
+        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+            NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
+        } else {
+            [_act stopAnimating];
+            self.navigationItem.rightBarButtonItem = _barbuttonsave;
+        }
+    } else {
+        [_act stopAnimating];
+        self.navigationItem.rightBarButtonItem = _barbuttonsave;
+    }
 }
 
--(void)requestProcessAction:(id)object
+-(void)requestProcessAction:(RKMappingResult *)mappingResult
 {
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            ProfileSettings *setting = stat;
+    _barbuttonsave.enabled = YES;
+    self.navigationItem.rightBarButtonItem = _barbuttonsave;
+
+    if (mappingResult) {
+        if ([mappingResult isKindOfClass:[RKMappingResult class]]) {
+            ProfileSettings *setting = [mappingResult.dictionary objectForKey:@""];
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
             if (status) {
-                if (!setting.message_error) {
+                if (setting.message_status) {
                     if (setting.result.is_success == 1) {
-                        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:@[@"Anda telah berhasil mengubah password.",] ,@"messages", nil];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:setting.message_status
+                                                                                         delegate:self];
+                        [alert show];
                         [self.navigationController popViewControllerAnimated:YES];
                     } else {
-                        
+                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Ubah kata sandi gagal."]
+                                                                                       delegate:self];
+                        [alert show];
                     }
-                }
-                else
-                {
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:setting.message_error ,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                    self.navigationItem.rightBarButtonItem = _barbuttonsave;
-                    [_barbuttonsave setEnabled:YES];
+                } else if (setting.message_error) {
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:setting.message_error
+                                                                                   delegate:self];
+                    [alert show];
                 }
             }
-        }
-        else{
-            
-            [self cancelAction];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                    //[_act startAnimating];
-                    //TODO: Reload handler
-                }
-                else
-                {
-                    //[_act stopAnimating];
-                }
-            }
-            else
-            {
-                //[_act stopAnimating];
-            }
-            
         }
     }
 }
@@ -345,11 +337,9 @@
 {
     if (textField == _textfieldOldPass) {
         [_datainput setObject:textField.text forKey:kTKPDPROFILESETTING_APIPASSKEY];
-    }
-    if (textField == _textfieldNewPass) {
+    } else if (textField == _textfieldNewPass) {
         [_datainput setObject:textField.text forKey:kTKPDPROFILESETTING_APINEWPASSKEY];
-    }
-    if (textField == _textfieldConfirmPass) {
+    } else if (textField == _textfieldConfirmPass) {
         [_datainput setObject:textField.text forKey:kTKPDPROFILESETTING_APIPASSCONFIRMKEY];
     }
     return YES;

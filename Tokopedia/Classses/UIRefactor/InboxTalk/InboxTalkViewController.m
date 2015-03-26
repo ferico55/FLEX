@@ -245,10 +245,15 @@
             ((GeneralTalkCell*)cell).timelabel.text = list.talk_create_time;
             [((GeneralTalkCell*)cell).commentbutton setTitle:[NSString stringWithFormat:@"%@ %@", list.talk_total_comment, COMMENT_TALK] forState:UIControlStateNormal];
             
-            if([[_data objectForKey:@"nav"] isEqualToString:NAV_TALK_MYPRODUCT]) {
-                ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
-            } else {
+            if(list.talk_follow_status == 1 && ![list.talk_own isEqualToString:@"1"]) {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = NO;
+            } else {
+                ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
+                ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
+                
+                CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
+                newFrame.origin.x = 75;
+                ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
             }
             
             if ([list.talk_message length] > 30) {

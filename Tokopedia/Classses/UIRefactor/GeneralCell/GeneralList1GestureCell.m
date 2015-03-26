@@ -10,9 +10,8 @@
 #import "GeneralList1GestureCell.h"
 
 @interface GeneralList1GestureCell ()
-@property (weak, nonatomic) IBOutlet UIButton *buttondelete;
-@property (weak, nonatomic) IBOutlet UIView *viewcell;
 
+@property (weak, nonatomic) IBOutlet UIView *viewcell;
 
 @end
 
@@ -40,9 +39,6 @@
 
 - (void)awakeFromNib
 {
-    self.buttondefault.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    self.buttondefault.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.buttondefault setTitle: @"Set as\nDefault" forState: UIControlStateNormal];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -107,73 +103,13 @@
 #pragma mark - Methods
 -(void)viewdetailshowanimation:(BOOL)animated
 {
-    if (animated) {
-        [UIView animateWithDuration:0.5
-                              delay:0
-                            options: UIViewAnimationCurveEaseOut
-                         animations:^{
-                             CGRect frame = _viewcell.frame;
-                             if(frame.origin.x == 0){
-                                 switch (_type) {
-                                     case kTKPDGENERALCELL_DATATYPEONEBUTTONKEY:
-                                         frame.origin.x -= (_buttondelete.frame.size.width);
-                                         _buttondefault.hidden = YES;
-                                         _buttondelete.hidden = NO;
-                                         break;
-                                     case kTKPDGENERALCELL_DATATYPETWOBUTTONKEY:
-                                         frame.origin.x -= (_buttondelete.frame.size.width+_buttondefault.frame.size.width);
-                                         _buttondefault.hidden = NO;
-                                         _buttondelete.hidden = NO;
-                                         break;
-                                     default:
-                                         frame.origin.x -= (_buttondelete.frame.size.width+_buttondefault.frame.size.width);
-                                         _buttondefault.hidden = NO;
-                                         _buttondelete.hidden = NO;
-                                         break;
-                                 }
-                                 
-
-                             }
-                             [_viewcell setFrame:frame];
-                         }
-                         completion:^(BOOL finished){
-                         }];
-    }
 }
 -(void)viewdetailresetposanimation:(BOOL)animated
 {
-    if (animated) {
-        [UIView animateWithDuration:0.5
-                              delay:0
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             CGRect frame = _viewcell.frame;
-                             frame.origin.x = 0;
-                             [_viewcell setFrame:frame];
-                         }
-                         completion:^(BOOL finished){
-                             _buttondefault.hidden = YES;
-                             _buttondelete.hidden = YES;
-                         }];
-    }
 }
 
 -(void)setType:(NSInteger)type
 {
-    _type = type;
-    switch (type) {
-        case kTKPDGENERALCELL_DATATYPEONEBUTTONKEY:
-            _buttondefault.hidden = YES;
-            _buttondelete.hidden = YES;
-            break;
-        case kTKPDGENERALCELL_DATATYPETWOBUTTONKEY:
-            _buttondefault.hidden = NO;
-            _buttondelete.hidden = NO;
-        default:
-            _buttondefault.hidden = YES;
-            _buttondelete.hidden = YES;
-            break;
-    }
 }
 
 @end

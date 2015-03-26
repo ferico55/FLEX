@@ -126,7 +126,7 @@
         <!--Pengiriman-->
         <scene sceneID="CDn-5X-dWQ">
             <objects>
-                <tableViewController storyboardIdentifier="ShipmentSettingViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ykq-Mk-Fne" customClass="ShipmentSettingViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="MyShopShipmentViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Ykq-Mk-Fne" customClass="MyShopShipmentViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="r4I-5D-NRx">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

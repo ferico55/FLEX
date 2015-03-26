@@ -437,8 +437,20 @@
             [self shipmentConfirmationActionButton:button];
         }
     } else if ([[sender view] isKindOfClass:[UILabel class]]) {
+        
+        NSURL *desktopURL = [NSURL URLWithString:_transaction.order_detail.detail_pdf_uri];
+
+        NSString *pdf = [[[[[desktopURL query] componentsSeparatedByString:@"&"] objectAtIndex:0] componentsSeparatedByString:@"="] objectAtIndex:1];
+        NSString *invoiceID = [[[[[desktopURL query] componentsSeparatedByString:@"&"] objectAtIndex:1] componentsSeparatedByString:@"="] objectAtIndex:1];
+
+        UserAuthentificationManager *authManager = [UserAuthentificationManager new];
+        NSString *userID = authManager.getUserId;
+        
+        NSString *url = [NSString stringWithFormat:@"%@/invoice.pl?invoice_pdf=%@&id=%@&user_id=%@",
+                         kTkpdBaseURLString, pdf, invoiceID, userID];
+        
         UIWebView *webView = [[UIWebView alloc] initWithFrame:[self.view bounds]];
-        [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:_transaction.order_detail.detail_pdf_uri]]];
+        [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
         UIViewController *controller = [UIViewController new];
         controller.title = _transaction.order_detail.detail_invoice;
         [controller.view addSubview:webView];

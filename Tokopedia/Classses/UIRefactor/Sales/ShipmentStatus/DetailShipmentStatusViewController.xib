@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -115,14 +115,27 @@
                             <color key="textColor" red="0.039215686274509803" green="0.49411764705882355" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uK9-xt-yZ0">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                            <state key="normal">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="bPg-hj-vDF"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="7QR-K0-SnY" secondAttribute="bottom" id="25W-P4-nxN"/>
+                        <constraint firstItem="uK9-xt-yZ0" firstAttribute="leading" secondItem="bE1-Kb-Msc" secondAttribute="leading" id="90t-On-d3z"/>
+                        <constraint firstAttribute="bottom" secondItem="uK9-xt-yZ0" secondAttribute="bottom" id="E7D-kB-w88"/>
+                        <constraint firstAttribute="trailing" secondItem="uK9-xt-yZ0" secondAttribute="trailing" id="Hkm-8j-q1a"/>
                         <constraint firstItem="7QR-K0-SnY" firstAttribute="leading" secondItem="bE1-Kb-Msc" secondAttribute="leading" id="TnX-fG-JuE"/>
                         <constraint firstItem="7QR-K0-SnY" firstAttribute="top" secondItem="bE1-Kb-Msc" secondAttribute="top" id="YC6-10-n6a"/>
                         <constraint firstAttribute="trailing" secondItem="7QR-K0-SnY" secondAttribute="trailing" id="dXM-RP-LEF"/>
                         <constraint firstAttribute="height" constant="50" id="nnX-Jy-mHJ"/>
+                        <constraint firstItem="uK9-xt-yZ0" firstAttribute="top" secondItem="bE1-Kb-Msc" secondAttribute="top" id="pW7-OL-Wcg"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DiN-6b-3gh" userLabel="Horizontal Border">

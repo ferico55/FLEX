@@ -8,10 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SearchResultDelegate <NSObject>
+
+- (void)pushViewController:(id)viewController animated:(BOOL)animated;
+
+@end
+
 #pragma mark - Search Result View Controller
 
 @interface SearchResultViewController : UIViewController
 
 @property (strong,nonatomic) NSDictionary *data;
+@property (weak, nonatomic) id<SearchResultDelegate> delegate;
 
 @end

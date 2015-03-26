@@ -12,8 +12,6 @@
 #import "SettingBankDetailViewController.h"
 
 @interface SettingBankDetailViewController ()
-{
-}
 
 @property (weak, nonatomic) IBOutlet UILabel *labelaccountowner;
 @property (weak, nonatomic) IBOutlet UILabel *labelaccountnumber;
@@ -21,6 +19,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelbranch;
 @property (weak, nonatomic) IBOutlet UIView *viewdefault;
 @property (weak, nonatomic) IBOutlet UIView *viewsetasdefault;
+@property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
+
 @end
 
 @implementation SettingBankDetailViewController
@@ -39,12 +40,23 @@
     [super viewDidLoad];
     
     [self setDefaultData:_data];
-    UIBarButtonItem *barbutton1;
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor blackColor]];
-    barbutton1.tag = 11;
-    self.navigationItem.rightBarButtonItem = barbutton1;
 
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:nil];
+    self.navigationItem.backBarButtonItem = backBarButton;
+    
+    UIBarButtonItem *editBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit"
+                                                                      style:UIBarButtonItemStyleDone
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    editBarButton.tag = 11;
+    self.navigationItem.rightBarButtonItem = editBarButton;
+
+    [self.scrollView addSubview:_contentView];
+    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width,
+                                             self.view.frame.size.height-63);
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -74,11 +86,17 @@
             case 11:
             {   //Edit
                 SettingBankEditViewController *vc = [SettingBankEditViewController new];
+                vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 vc.data = @{kTKPDPROFILE_DATABANKKEY : [_data objectForKey:kTKPDPROFILE_DATABANKKEY],
                             kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
                             kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_EDIT)
                             };
-                [self.navigationController pushViewController:vc animated:YES];
+
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                nav.navigationBar.translucent = NO;
+                
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                
                 break;
             }
             case 12:

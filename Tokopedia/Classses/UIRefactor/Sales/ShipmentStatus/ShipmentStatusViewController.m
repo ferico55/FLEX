@@ -59,8 +59,8 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UIView *footerView;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (strong, nonatomic) IBOutlet UIView *footerView;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -130,7 +130,6 @@
     OrderTransaction *order = [_shipments objectAtIndex:indexPath.row];
     
     cell.invoiceNumberLabel.text = order.order_detail.detail_invoice;
-    
     cell.buyerNameLabel.text = order.order_customer.customer_name;
     
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:order.order_customer.customer_image]
@@ -150,10 +149,15 @@
     
     if ([_resultOrder.result.order.is_allow_manage_tx boolValue] && order.order_detail.detail_ship_ref_num) {
         
-        if (order.order_detail.detail_order_status >= ORDER_DELIVERED) {
-            [cell hideAllButton];
-        } else if (order.order_detail.detail_order_status >= ORDER_SHIPPING) {
+        if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED) {
             [cell showAllButton];
+        } else if (order.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED) {
+            [cell showTrackButton];
+        } else {
+            [cell hideAllButton];
         }
         
         if (order.order_detail.detail_order_status == ORDER_DELIVERED_CONFIRM) {
@@ -193,10 +197,14 @@
 {
     OrderTransaction *order = [_shipments objectAtIndex:indexPath.row];
     if ([_resultOrder.result.order.is_allow_manage_tx boolValue] && order.order_detail.detail_ship_ref_num) {
-        if (order.order_detail.detail_order_status >= ORDER_DELIVERED) {
-            return tableView.rowHeight - 45;
-        } else if (order.order_detail.detail_order_status >= ORDER_SHIPPING) {
+        if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED ||
+            order.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED) {
             return tableView.rowHeight;
+        } else {
+            return tableView.rowHeight - 45;
         }
     }
     return tableView.rowHeight - 45;
@@ -433,6 +441,9 @@
     
     _requestCount++;
     
+    _tableView.tableFooterView = _footerView;
+    [_activityIndicator startAnimating];
+    
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *auth = [secureStorage keychainDictionary];
     
@@ -491,13 +502,8 @@
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     BOOL status = [[[result objectForKey:@""] status] isEqualToString:kTKPDREQUEST_OKSTATUS];
-    if (status)
-    {
+    if (status) {
         [self requestProcess:object];
-    }
-    else
-    {
-        
     }
 }
 
@@ -698,8 +704,9 @@
 
 - (void)filterShipmentStatusInvoice:(NSString *)invoice
 {
-    [self configureRestKit];
-    
+    _tableView.tableFooterView = _footerView;
+    [_activityIndicator startAnimating];
+
     _status = invoice;
     _page = 1;
     _requestCount = 0;
