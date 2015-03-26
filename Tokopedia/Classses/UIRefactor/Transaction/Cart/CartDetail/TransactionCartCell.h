@@ -14,7 +14,8 @@
 @protocol TransactionCartCellDelegate <NSObject>
 @required
 - (void)tapMoreButtonActionAtIndexPath:(NSIndexPath*)indexPath;
-
+- (void)didTapProductAtIndexPath:(NSIndexPath*)indexPath;
+- (void)didTapImageAtIndexPath:(NSIndexPath*)indexPath;
 @end
 
 @interface TransactionCartCell : UITableViewCell
@@ -32,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *remarkLabel;
 @property (strong, nonatomic) NSIndexPath *indexPath;
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
+@property (weak, nonatomic) IBOutlet UIView *productView;
 
 +(id)newcell;
 

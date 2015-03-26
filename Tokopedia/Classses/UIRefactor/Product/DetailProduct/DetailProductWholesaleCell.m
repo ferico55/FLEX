@@ -85,8 +85,8 @@
     }
     
     if (indexPath.row == 0) {
-        ((DetailProductWholesaleTableCell*)cell).quantity.text = @"Quality Range";
-        ((DetailProductWholesaleTableCell*)cell).price.text = @"Price Per Item";
+        ((DetailProductWholesaleTableCell*)cell).quantity.text = @"Rentang Jumlah";
+        ((DetailProductWholesaleTableCell*)cell).price.text = @"Harga per barang";
     } else {
         WholesalePrice *wholesale = _wholesales[indexPath.row-1];
         if (indexPath.row == _wholesales.count-1)

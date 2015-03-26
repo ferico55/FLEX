@@ -10,9 +10,11 @@
 #define Tokopedia_string_track_order_h
 
 #define API_TRACKING_ORDER_PATH         @"tracking-order.pl"
+#define API_TRACKING_INBOX_RESOLUTION_PATH         @"inbox-resolution-center.pl"
 
 #define API_ACTION_KEY                  @"action"
 #define API_ACTION_TRACK_ORDER          @"track_order"
+#define API_ACTION_TRACK_SHIPPING_REF   @"track_shipping_ref"
 #define API_ORDER_ID_KEY                @"order_id"
 #define API_USER_ID_KEY                 @"user_id"
 
@@ -21,6 +23,7 @@
 #define API_RESULT_KEY                  @"result"
 
 #define API_TRACK_ORDER_KEY             @"track_order"
+#define API_TRACK_SHIPPING_KEY          @"track_shipping"
 
 #define API_CHANGE_KEY                  @"change"
 #define API_NO_HISTORY_KEY              @"no_history"
@@ -41,5 +44,8 @@
 #define API_SEND_DATE_KEY               @"send_date"
 #define API_RECEIVER_NAME_KEY           @"receiver_name"
 #define API_SERVICE_CODE_KEY            @"service_code"
+
+#define API_SHIPPING_REF_KEY            @"shipping_ref"
+#define API_SHIPMENT_ID_KEY             @"shipment_id"
 
 #endif

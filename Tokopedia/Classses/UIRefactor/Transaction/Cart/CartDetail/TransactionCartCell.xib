@@ -23,7 +23,7 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nrB-Gb-lSt" id="ObG-qm-9Xr">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WOu-9t-o2o">
+                    <view tag="10" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WOu-9t-o2o">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="91"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9B8-Qh-nPX">
@@ -43,12 +43,16 @@
                                     <constraint firstAttribute="height" constant="1" id="Rti-QR-WXZ"/>
                                 </constraints>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fWE-ZZ-SIy">
+                            <imageView clipsSubviews="YES" tag="11" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fWE-ZZ-SIy">
                                 <rect key="frame" x="15" y="10" width="70" height="70"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="70" id="Eiz-yU-9mx"/>
                                     <constraint firstAttribute="width" constant="70" id="bXE-Nh-UQc"/>
                                 </constraints>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="mWV-Hp-z5U" appends="YES" id="XA2-rS-huF"/>
+                                </connections>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="syi-Ey-9on">
                                 <rect key="frame" x="95" y="39" width="175" height="21"/>
@@ -75,6 +79,7 @@
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="LJv-fK-LmM" secondAttribute="trailing" constant="15" id="1xZ-n7-9Aa"/>
                             <constraint firstItem="fWE-ZZ-SIy" firstAttribute="leading" secondItem="WOu-9t-o2o" secondAttribute="leading" constant="15" id="2kY-av-vvc"/>
@@ -92,6 +97,9 @@
                             <constraint firstItem="VEf-5u-Ef6" firstAttribute="leading" secondItem="9B8-Qh-nPX" secondAttribute="trailing" constant="5" id="oOd-Ei-THE"/>
                             <constraint firstItem="VEf-5u-Ef6" firstAttribute="top" secondItem="WOu-9t-o2o" secondAttribute="top" id="uoK-Hf-aF0"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Ete-Sa-i4W" appends="YES" id="kyQ-Oh-T6p"/>
+                        </connections>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Cg-Lu-tNO" userLabel="View Name">
                         <rect key="frame" x="0.0" y="91" width="320" height="46"/>
@@ -183,11 +191,18 @@
                 <outlet property="productNameLabel" destination="9B8-Qh-nPX" id="gUV-uK-K9f"/>
                 <outlet property="productPriceLabel" destination="syi-Ey-9on" id="dvu-4c-pDA"/>
                 <outlet property="productThumbImageView" destination="fWE-ZZ-SIy" id="iYJ-AZ-AvC"/>
+                <outlet property="productView" destination="WOu-9t-o2o" id="Ozx-uI-QCZ"/>
                 <outlet property="quantityLabel" destination="2I2-9g-225" id="HIR-W0-0HX"/>
                 <outlet property="remarkLabel" destination="dDt-Mq-1QP" id="DaK-Eg-h2P"/>
             </connections>
             <point key="canvasLocation" x="430" y="500"/>
         </tableViewCell>
+        <tapGestureRecognizer id="Ete-Sa-i4W">
+            <connections>
+                <action selector="gesture:" destination="nrB-Gb-lSt" id="SYY-cv-Tfc"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="mWV-Hp-z5U"/>
     </objects>
     <resources>
         <image name="icon_more_grey.png" width="20" height="20"/>

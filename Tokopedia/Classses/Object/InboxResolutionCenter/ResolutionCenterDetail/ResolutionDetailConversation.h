@@ -25,7 +25,7 @@
 @property (nonatomic, strong) ResolutionBy *resolution_by;
 @property (nonatomic, strong) ResolutionShop *resolution_shop;
 @property (nonatomic, strong) ResolutionCustomer *resolution_customer;
-@property (nonatomic, strong) NSNumber *resolution_can_conversation;
+@property (nonatomic) NSInteger resolution_can_conversation;
 @property (nonatomic, strong) NSArray *resolution_conversation;
 @property (nonatomic, strong) ResolutionOrder *resolution_order;
 @property (nonatomic, strong) ResolutionDispute *resolution_dispute;

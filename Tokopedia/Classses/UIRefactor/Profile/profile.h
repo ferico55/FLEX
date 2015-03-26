@@ -19,6 +19,8 @@ typedef enum
 
 #define kTKPDPROFILEEDIT_TITLE @"Atur Profil"
 #define kTKPDPROFILEEDITPHONEConfirmed_TITLE @"Confirmed Phone Number"
+#define kTKPDPROFILESAVE @"Simpan"
+#define kTKPDPROFILEEDIT @"Ubah"
 
 #define kTKPDPROFILESETTING_TITLE @"Settings"
 #define kTKPDPROFILESETTINGNOTIFICATION_TITLE @"Setting Notification"
@@ -55,7 +57,7 @@ typedef enum
 #define kTKPDPROFILE_DATAEDITTYPEKEY @"edittype"
 #define kTKPDPROFILE_DATABANKINDEXPATHKEY @"bankindexpath"
 #define kTKPDPROFILE_DATALOCATIONNAMEKEY @"locationname"
-#define kTKPDPROFILE_UNSETORIGIN    @"Pilih"
+#define kTKPDPROFILE_UNSETORIGIN @"Pilih"
 
 #define DATA_LIST_BANK_ACOUNT_KEY @"list_bank_account"
 
@@ -70,7 +72,7 @@ typedef enum
 #define kTKPDPROFILE_APISETPASSWORDKEY @"set_password"
 #define kTKPDPROFILE_APIEDITPASSWORDKEY @"edit_password"
 #define kTKPDPROFILE_APISETEMAILNOTIFKEY @"set_email_notification"
-#define kTKPDPROFILE_APIGETEMAILNOTIFKEY @"get_email_notification_form"
+#define kTKPDPROFILE_APIGETEMAILNOTIFKEY @"get_notification"
 #define kTKPDPROFILE_APIGETPRIVACYKEY @"get_privacy_form"
 #define kTKPDPROFILE_APISETPRIVACYKEY @"get_privacy"
 #define kTKPDPROFILE_APIGETUSERADDRESSKEY @"get_address"
@@ -223,7 +225,7 @@ typedef enum
 #define kTKPDPFAVORITESHOP_APIRESPONSEFILEFORMAT @"profilefavshop%zd"
 
 #define ARRAY_GENDER @[@{DATA_NAME_KEY:@"Pria", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Wanita", DATA_VALUE_KEY:@(2)}]
-#define ARRAY_LIST_MENU_SETTING_PROFILE @[@[@"Ubah Password"],@[@"Daftar Alamat", @"Akun Bank", @"Notifikasi", @"Pengaturan Privasi"]]
+#define ARRAY_LIST_MENU_SETTING_PROFILE @[@[@"Ubah Password"],@[@"Daftar Alamat", @"Akun Bank", @"Notifikasi", @"Ubah Profil"]]
 
 #define kTKPDPROFILE_DATAGENDERARRAYKEY @[@"Pria",@"Wanita"]
 #define kTKPDPROFILE_DATAGENDERVALUEARRAYKEY @[@"1",@"2"]

@@ -454,7 +454,6 @@
     [viewcontrollers addObject:v1];
     ProfileContactViewController *v2 = [ProfileContactViewController new];
     [viewcontrollers addObject:v2];
-    // Adjust View Controller
     TKPDTabProfileNavigationController *tapnavcon = [TKPDTabProfileNavigationController new];
     tapnavcon.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(userid),
                        kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};

@@ -29,10 +29,14 @@
                 <outlet property="headerReorderView" destination="Mkm-1I-Ljn" id="UYh-gB-bzh"/>
                 <outlet property="headerTwoButton" destination="7QK-eg-YKk" id="ceH-sn-DhB"/>
                 <outlet property="headerViewWithoutButton" destination="VVl-Qv-b1E" id="vvT-6r-zVl"/>
-                <outlet property="invoiceLabel" destination="tyy-dU-Fdv" id="i5G-Hm-1cU"/>
                 <outlet property="tableView" destination="hJ3-x5-b5j" id="HJw-LU-Mb8"/>
                 <outlet property="transactionDetailButton" destination="0aZ-z6-Nd3" id="LcQ-bx-2Mw"/>
                 <outlet property="view" destination="FBf-uv-uKQ" id="ecN-Nj-EE1"/>
+                <outletCollection property="invoiceLabel" destination="Cra-ke-GNO" id="QCN-yF-oNL"/>
+                <outletCollection property="invoiceLabel" destination="cdu-7L-3XP" id="YZ8-Ra-caL"/>
+                <outletCollection property="invoiceLabel" destination="BhW-47-Irp" id="Ikf-Vb-kMf"/>
+                <outletCollection property="invoiceLabel" destination="1c0-qs-pXn" id="BvC-Ej-sqM"/>
+                <outletCollection property="invoiceLabel" destination="tyy-dU-Fdv" id="rug-GG-onr"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -105,11 +109,15 @@
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dB8-5d-cOS" userLabel="Invoice Number View">
                     <rect key="frame" x="0.0" y="44" width="320" height="50"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INV/20140507/XIV/V/11395" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tyy-dU-Fdv">
+                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INV/20140507/XIV/V/11395" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tyy-dU-Fdv">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                            <gestureRecognizers/>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="16"/>
                             <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="JBw-9l-LaP" appends="YES" id="dzo-3l-AiG"/>
+                            </connections>
                         </label>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WNv-CJ-8Do" userLabel="Horizontal Border">
                             <rect key="frame" x="0.0" y="49" width="320" height="1"/>
@@ -139,7 +147,7 @@
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <inset key="imageEdgeInsets" minX="-6" minY="-2" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Komplain" image="icon_order_cancel.png">
+                            <state key="normal" title="Komplain" image="icon_komplain.png">
                                 <color key="titleColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -170,11 +178,15 @@
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BHe-qg-GQF" userLabel="Invoice Number View">
                     <rect key="frame" x="0.0" y="44" width="320" height="50"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INV/20140507/XIV/V/11395" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BhW-47-Irp">
+                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INV/20140507/XIV/V/11395" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BhW-47-Irp">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                            <gestureRecognizers/>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="16"/>
                             <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="KKE-Fq-UfX" appends="YES" id="vPP-kF-08A"/>
+                            </connections>
                         </label>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xcx-2W-tQW" userLabel="Horizontal Border">
                             <rect key="frame" x="0.0" y="49" width="320" height="1"/>
@@ -218,8 +230,9 @@
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qG3-8Y-HwY" userLabel="Invoice Number View">
                     <rect key="frame" x="0.0" y="44" width="320" height="50"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INV/20140507/XIV/V/11395" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cra-ke-GNO">
+                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INV/20140507/XIV/V/11395" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cra-ke-GNO">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                            <gestureRecognizers/>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="16"/>
                             <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -230,6 +243,9 @@
                         </view>
                     </subviews>
                     <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="deviceRGB"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="tcO-Ml-Eby" appends="YES" id="TzN-oq-PW5"/>
+                    </connections>
                 </view>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V6q-gJ-LGT" userLabel="Buttons View">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -239,7 +255,7 @@
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <inset key="imageEdgeInsets" minX="-6" minY="-4" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Lihat Komplain" image="icon_order_check.png">
+                            <state key="normal" title="Lihat Komplain" image="icon_lihat_komplain.png">
                                 <color key="titleColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -266,11 +282,15 @@
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8e6-Pm-9kS" userLabel="Invoice Number View">
                     <rect key="frame" x="0.0" y="44" width="320" height="50"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INV/20140507/XIV/V/11395" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cdu-7L-3XP">
+                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INV/20140507/XIV/V/11395" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cdu-7L-3XP">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                            <gestureRecognizers/>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="16"/>
                             <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="CTe-z4-jih" appends="YES" id="DAX-RS-8TN"/>
+                            </connections>
                         </label>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="myx-lG-JWq" userLabel="Horizontal Border">
                             <rect key="frame" x="0.0" y="49" width="320" height="1"/>
@@ -287,7 +307,7 @@
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                             <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                             <inset key="imageEdgeInsets" minX="-6" minY="-4" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Pesan Ulang" image="icon_order_check.png">
+                            <state key="normal" title="Pesan Ulang" image="icon_pesan_ulang.png">
                                 <color key="titleColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -314,11 +334,15 @@
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1M2-LI-pAG" userLabel="Invoice Number View">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INV/20140507/XIV/V/11395" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1c0-qs-pXn">
+                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INV/20140507/XIV/V/11395" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1c0-qs-pXn">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                            <gestureRecognizers/>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="16"/>
                             <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
+                            <connections>
+                                <outletCollection property="gestureRecognizers" destination="Lfd-nm-yDu" appends="YES" id="I84-vG-oCo"/>
+                            </connections>
                         </label>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="rgV-WF-UhF" userLabel="Horizontal Border">
                             <rect key="frame" x="0.0" y="49" width="320" height="1"/>
@@ -332,9 +356,36 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="124" y="688"/>
         </view>
+        <tapGestureRecognizer id="Lfd-nm-yDu">
+            <connections>
+                <action selector="gesture:" destination="-1" id="5cz-3Y-cmY"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="KKE-Fq-UfX">
+            <connections>
+                <action selector="gesture:" destination="-1" id="W9d-x7-k0j"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="CTe-z4-jih">
+            <connections>
+                <action selector="gesture:" destination="-1" id="XcC-ml-e19"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="JBw-9l-LaP">
+            <connections>
+                <action selector="gesture:" destination="-1" id="x5I-gT-HSC"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="tcO-Ml-Eby">
+            <connections>
+                <action selector="gesture:" destination="-1" id="B9Z-br-4Xc"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
-        <image name="icon_order_cancel.png" width="14" height="14"/>
+        <image name="icon_komplain.png" width="14" height="14"/>
+        <image name="icon_lihat_komplain.png" width="14" height="14"/>
         <image name="icon_order_check.png" width="14" height="14"/>
+        <image name="icon_pesan_ulang.png" width="14" height="14"/>
     </resources>
 </document>

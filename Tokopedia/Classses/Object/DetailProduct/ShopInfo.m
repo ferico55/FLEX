@@ -14,4 +14,8 @@
     return [_shop_description kv_decodeHTMLCharacterEntities];
 }
 
+- (NSString*) shop_name {
+    return [_shop_name kv_decodeHTMLCharacterEntities];
+}
+
 @end

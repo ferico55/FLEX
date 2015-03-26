@@ -15,6 +15,11 @@
     frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
     _twoButtonView.frame = frame;
     [_containerView addSubview:_twoButtonView];
+    
+    frame = _oneButtonView.frame;
+    frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
+    _oneButtonView.frame = frame;
+    [_containerView addSubview:_oneButtonView];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
@@ -40,7 +45,8 @@
 
 - (void)hideAllViews
 {
-    _twoButtonView.hidden = YES;    
+    _twoButtonView.hidden = YES;
+    _oneButtonView.hidden = YES;
 }
 
 @end

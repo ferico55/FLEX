@@ -22,4 +22,15 @@
     return nil;
 }
 
+
+- (IBAction)gesture:(id)sender {
+    UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+    if (gesture.view.tag == 10) {
+        [_delegate goToInvoiceAtSection:_section];
+    }
+    else{
+        [_delegate goToShopAtSection:_section];
+    }
+}
+
 @end

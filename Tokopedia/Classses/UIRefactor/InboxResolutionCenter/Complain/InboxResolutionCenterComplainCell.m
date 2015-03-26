@@ -37,19 +37,41 @@
 -(void)setDisputeStatus:(NSString *)disputeStatus
 {
     _disputeStatus = disputeStatus;
-    if ([_disputeStatus isEqualToString:@"100"]) {
+    
+    NSInteger disputeStatusInteger = [_disputeStatus integerValue];
+    
+    if (disputeStatusInteger == RESOLUTION_OPEN)
+    {
         _statusLabel.text = @"Diskusi";
         _statusLabel.backgroundColor = COLOR_STATUS_PROCESSING;
     }
-    else if ([_disputeStatus isEqualToString:@"300"]) {
+    else if (disputeStatusInteger == RESOLUTION_DO_ACTION)
+    {
+        _statusLabel.text = @"Retur";
+        _statusLabel.backgroundColor = COLOR_STATUS_PROCESSING;
+    }
+    else if(disputeStatusInteger == RESOLUTION_CS_ANSWERED)
+    {
         _statusLabel.text = @"Solusi";
         _statusLabel.backgroundColor = COLOR_STATUS_PROCESSING;
     }
-    else if ([_disputeStatus isEqualToString:@"0"])
+    else if (disputeStatusInteger == RESOLUTION_CANCELED || disputeStatusInteger == RESOLUTION_FINISHED)
     {
         _statusLabel.text = @"Selesai";
         _statusLabel.backgroundColor = COLOR_STATUS_DONE;
     }
+
+}
+- (IBAction)gesture:(id)sender {
+    UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+    if (gesture.view.tag == 10)
+        [_delegate goToInvoiceAtIndexPath:_indexPath];
+    else if(gesture.view.tag == 11)
+        [_delegate goToShopOrProfileAtIndexPath:_indexPath];
+    else if (gesture.view.tag == 12)
+        [_delegate goToResolutionDetailAtIndexPath:_indexPath];
+    else if (gesture.view.tag == 13)
+        [_delegate showImageAtIndexPath:_indexPath];
 }
 
 @end

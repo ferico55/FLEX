@@ -31,17 +31,25 @@
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Value" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b2J-83-UK4">
+                <label opaque="NO" clipsSubviews="YES" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Value" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b2J-83-UK4">
                     <rect key="frame" x="66" y="37" width="239" height="20"/>
+                    <gestureRecognizers/>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                     <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="Qpf-px-Q1a" appends="YES" id="cNp-DN-3id"/>
+                    </connections>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Value" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dcb-EP-Dij">
-                    <rect key="frame" x="15" y="11" width="239" height="27"/>
+                <label opaque="NO" clipsSubviews="YES" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Value" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dcb-EP-Dij">
+                    <rect key="frame" x="15" y="11" width="290" height="27"/>
+                    <gestureRecognizers/>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                     <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
+                    <connections>
+                        <outletCollection property="gestureRecognizers" destination="owI-Gp-OEE" appends="YES" id="dER-3L-8c8"/>
+                    </connections>
                 </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -52,5 +60,15 @@
             </connections>
             <point key="canvasLocation" x="524" y="313"/>
         </view>
+        <tapGestureRecognizer id="owI-Gp-OEE">
+            <connections>
+                <action selector="gesture:" destination="MmN-HU-u9c" id="JMp-rI-moX"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="Qpf-px-Q1a">
+            <connections>
+                <action selector="gesture:" destination="MmN-HU-u9c" id="kwd-rl-Kbe"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
 </document>

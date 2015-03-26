@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
+#import "ResolutionCenterDetailViewController.h"
+#import "TxOrderStatusViewController.h"
 #import "InboxResolutionCenterOpenViewController.h"
 #import "string_inbox_resolution_center.h"
 #import "detail.h"
@@ -17,21 +19,24 @@
 #import "CameraController.h"
 
 #import "GeneralTableViewController.h"
-
+#import "UserAuthentificationManager.h"
 #import "StickyAlertView.h"
+
+#import "requestGenerateHost.h"
 
 #define DATA_PHOTO_UPLOADING @"data_photo_uploading"
 #define DATA_IMAGEVIEW_UPLOADING @"data_imageview_uploading"
 
-@interface InboxResolutionCenterOpenViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, GeneralTableViewControllerDelegate, CameraControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate>
+#define TITLE_APPEAL @"Naik Banding"
+#define TITLE_CHANGE_SOLUTION @"Ubah Solusi"
+#define TITLE_OPEN_COMPLAIN @"Buka Komplain"
+
+@interface InboxResolutionCenterOpenViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, GeneralTableViewControllerDelegate, CameraControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, GenerateHostDelegate>
 {
     BOOL _isNodata;
     NSString *_URINext;
     NSMutableDictionary *_dataInput;
     NSMutableArray *_photos;
-    NSString *_selectedSolution;
-    NSString *_totalRefund;
-    NSString *_remark;
     
     UITextField *_activeTextField;
     UITextView *_activeTextView;
@@ -42,10 +47,9 @@
     
     __weak RKObjectManager *_objectManagerComplain;
     __weak RKManagedObjectRequestOperation *_requestComplain;
+    
     __weak RKObjectManager *_objectManagerUploadPhoto;
     NSURLRequest *_requestActionUploadPhoto;
-    __weak RKObjectManager *_objectManagerGenerateHost;
-    __weak RKManagedObjectRequestOperation *_requestGenerateHost;
     
     BOOL _isFinishUploadingImage;
 }
@@ -86,11 +90,7 @@
     _generatehost = [GenerateHost new];
     _photos = [NSMutableArray new];
     _uploadingPhotos = [NSMutableArray new];
-    
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:(_indexPage==0&&_isGotTheOrder)?@"Lanjut":@"Komplain" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [backBarButtonItem setTintColor:[UIColor whiteColor]];
-    backBarButtonItem.tag = 11;
-    self.navigationItem.rightBarButtonItem = backBarButtonItem;
+
     
     [self setData];
     
@@ -102,22 +102,66 @@
                name:UIKeyboardWillHideNotification
              object:nil];
     
-    [self configureRestkitGenerateHost];
-    [self requestGenerateHost];
+    _isFinishUploadingImage = YES;
+    
+    RequestGenerateHost *requestHost = [RequestGenerateHost new];
+    [requestHost configureRestkitGenerateHost];
+    [requestHost requestGenerateHost];
+    requestHost.delegate = self;
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.title = _controllerTitle;
+    
+    NSString *titleSecondPage = @"";
+    if ([_controllerTitle isEqualToString:TITLE_APPEAL]) {
+        titleSecondPage = @"Konfirmasi";
+    }
+    else if ([_controllerTitle isEqualToString:TITLE_OPEN_COMPLAIN])
+    {
+        titleSecondPage = @"Komplain";
+    }
+    else if ([_controllerTitle isEqualToString:TITLE_CHANGE_SOLUTION])
+    {
+        titleSecondPage = @"Ubah";
+    }
+    else
+        titleSecondPage = @"Selesai";
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:(_indexPage==0&&_isGotTheOrder)?@"Lanjut":titleSecondPage style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [backBarButtonItem setTintColor:[UIColor whiteColor]];
+    backBarButtonItem.tag = 11;
+    self.navigationItem.rightBarButtonItem = backBarButtonItem;
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.title = @"";
+}
+
+-(void)successGenerateHost:(GenerateHost *)generateHost
+{
+    _generatehost = generateHost;
+    [[_uploadButtons objectAtIndex:0] setEnabled:YES];
+    [_dataInput setObject:_generatehost.result.generated_host.server_id forKey:API_SERVER_ID_KEY];
 }
 
 -(void)updateDataSolution:(NSString *)selectedSolution refundAmount:(NSString *)refund remark:(NSString *)note
 {
     _selectedSolution = selectedSolution;
     _totalRefund = refund;
-    _remark = note;
+    _note = note;
 }
 
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     if (_indexPage == 1) {
-        [_delegate updateDataSolution:_selectedSolution refundAmount:_totalRefund remark:_remark];
+        //[_delegate updateDataSolution:_selectedSolution refundAmount:_totalRefund remark:_remark];
     }
 }
 
@@ -148,9 +192,6 @@
     [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
-    //[_uploadButtons makeObjectsPerformSelector:@selector(setEnabled:) withObject:@(NO)];
-    //[_uploadButtons makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
     
     for (UIButton *button in _uploadButtons) {
         if (button.tag == controller.tag) {
@@ -184,7 +225,7 @@
 {
     [_activeTextView resignFirstResponder];
     [_noteTextView resignFirstResponder];
-    _remark = _noteTextView.text;
+    _note = _noteTextView.text;
     _activeTextView = nil;
     
     if ([sender isKindOfClass:[UIButton class]]) {
@@ -207,29 +248,87 @@
                 StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Belum selesai meng-upload image"] delegate:self];
                 [alert show];
             }
+            else if(!_isGotTheOrder)
+                [self didTapDoneBarButtonItem];
             else
-            {
-                InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
-                vc.indexPage = 1;
-                vc.selectedProblem = _selectedProblem;
-                vc.isGotTheOrder = _isGotTheOrder;
-                vc.order = _order;
-                vc.uploadedPhotos = _photos;
-                vc.generatehost = _generatehost;
-                vc.delegate = self;
-                [self.navigationController pushViewController:vc animated:YES];
+                [self goToSecondPage];
+        }
+        else
+            [self didTapDoneBarButtonItem];
+    }
+}
+
+-(void)goToSecondPage
+{
+    InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
+    vc.indexPage = 1;
+    vc.selectedProblem = _selectedProblem;
+    vc.isGotTheOrder = _isGotTheOrder;
+    vc.order = _order?:[TxOrderStatusList new];
+    vc.uploadedPhotos = _photos;
+    vc.generatehost = _generatehost;
+    vc.delegate = _delegate;
+    vc.detailOpenAmount = _detailOpenAmount;
+    vc.detailOpenAmountIDR = _detailOpenAmountIDR;
+    vc.shippingPriceIDR = _shippingPriceIDR;
+    vc.selectedProblem = _selectedProblem;
+    vc.selectedSolution = _selectedSolution;
+    vc.invoice = _invoice;
+    vc.shopName = _shopName;
+    vc.shopPic = _shopPic;
+    vc.note = _note;
+    vc.isChangeSolution = _isChangeSolution;
+    vc.totalRefund = _totalRefund;
+    vc.controllerTitle = _controllerTitle;
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)didTapDoneBarButtonItem
+{
+    if ([self isValidInput]) {
+        NSString *troubleType = [self troubleType]?:@"";
+        NSString *solutionType = [self solutionType]?:@"";
+        
+        NSMutableArray *fileThumbImage = [NSMutableArray new];
+        for (UploadImageResult *image in _uploadedPhotos) {
+            [fileThumbImage addObject:image.file_th];
+        }
+       
+        NSString *photos = [[fileThumbImage valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
+       
+        NSString *serverID = _generatehost.result.generated_host.server_id?:@"0";
+        
+        if ([self.title isEqualToString:TITLE_APPEAL]) {
+
+            [_delegate appealSolution:solutionType refundAmount:_totalRefund remark:_note photo:photos serverID:serverID];
+            NSArray *viewControllers = self.navigationController.viewControllers;
+            UIViewController *destinationVC;
+            for (UIViewController *vc in viewControllers) {
+                if ([vc isKindOfClass:[_delegate class]]) {
+                    destinationVC = vc;
+                }
             }
+            [self.navigationController popToViewController:destinationVC animated:YES];
+        }
+        else if([self.title isEqualToString:TITLE_CHANGE_SOLUTION])
+        {
+            [_delegate changeSolution:solutionType troubleType:troubleType refundAmount:_totalRefund remark:_note photo:photos serverID:serverID];
+            NSArray *viewControllers = self.navigationController.viewControllers;
+            UIViewController *destinationVC;
+            for (UIViewController *vc in viewControllers) {
+                if ([vc isKindOfClass:[_delegate class]]) {
+                    destinationVC = vc;
+                }
+            }
+            [self.navigationController popToViewController:destinationVC animated:YES];
         }
         else
         {
-            if ([self isValidInput]) {
-                [self configureRestKitComplain];
-                [self requestComplain];
-            }
-            
+            [self configureRestKitComplain];
+            [self requestComplain];
         }
     }
-
 }
 
 -(BOOL)isValidInput
@@ -237,9 +336,9 @@
     BOOL isValid = YES;
     NSMutableArray *errorMessage = [NSMutableArray new];
     
-    if ([_remark isEqualToString:@""] || !(_remark)) {
+    if ([_note isEqualToString:@""] || !(_note)) {
         isValid = NO;
-        [errorMessage addObject:ERRORMESSAGE_NULL_REMARK];
+        [errorMessage addObject:_isChangeSolution?ERRORMESSAGE_NULL_MESSAGE:ERRORMESSAGE_NULL_REMARK];
     }
     
     if ([_selectedSolution isEqualToString:ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[0]]||
@@ -247,15 +346,16 @@
         [_selectedSolution isEqualToString:ARRAY_SOLUTION_DIFFERENT_QTY[0]]||
         [_selectedSolution isEqualToString:ARRAY_SOLUTION_DIFFERENT_QTY[2]])
     {
+        _totalRefund = [_totalRefundTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
         if ([_totalRefund isEqualToString:@""]||!(_totalRefund)) {
             isValid = NO;
             [errorMessage addObject:ERRORMESSAGE_NULL_REFUND];
         }
-        NSString *totalAmount = [_order.order_detail.detail_open_amount stringByReplacingOccurrencesOfString:@"." withString:@""];
+        NSString *totalAmount = [_order.order_detail.detail_open_amount?:_detailOpenAmount stringByReplacingOccurrencesOfString:@"." withString:@""];
         totalAmount = [totalAmount stringByReplacingOccurrencesOfString:@",-" withString:@""];
         if ([_totalRefund integerValue] > [totalAmount integerValue]) {
             isValid = NO;
-            [errorMessage addObject:[NSString stringWithFormat:ERRORMESSAGE_INVALID_REFUND,_order.order_detail.detail_open_amount_idr]];
+            [errorMessage addObject:[NSString stringWithFormat:ERRORMESSAGE_INVALID_REFUND,_order.order_detail.detail_open_amount_idr?:_detailOpenAmountIDR]];
         }
     }
     
@@ -289,7 +389,7 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (_isGotTheOrder)
+    if (_isGotTheOrder && _indexPage == 1)
         return ([self isNeed3Section])?3:2;
     else
         return 2;
@@ -335,10 +435,12 @@
     [_activeTextField resignFirstResponder];
     if (indexPath.section==0 && _isGotTheOrder) {
         if (_indexPage == 0) {
-            [self shouldPushGeneralViewControllerTitle:@"Pilih Masalah"
-                                               Objects:ARRAY_PROBLEM_COMPLAIN
-                                             indexPath:indexPath
-                                        selectedObject:_selectedProblem];
+            if (_isCanEditProblem) {
+                [self shouldPushGeneralViewControllerTitle:@"Pilih Masalah"
+                                                   Objects:ARRAY_PROBLEM_COMPLAIN
+                                                 indexPath:indexPath
+                                            selectedObject:_selectedProblem];
+            }
         }
         else
         {
@@ -348,19 +450,6 @@
                                         selectedObject:_selectedSolution];
         }
     }
-}
-
-
--(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section==0 && _isGotTheOrder) {
-        if (_indexPage == 0)
-            _selectedProblem = object;
-        else
-            _selectedSolution = object;
-    }
-    
-    [_tableView reloadData];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -376,6 +465,26 @@
         NSLog(@"%ld", (long)row);
         
     }
+}
+
+#pragma mark - General View Controller Delegate 
+
+-(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
+{
+    
+    if (indexPath.section==0 && _isGotTheOrder) {
+        if (_indexPage == 0)
+        {
+            if ([_selectedProblem isEqual:object]) {
+                _selectedSolution = [[self solutions] firstObject];
+            }
+            _selectedProblem = object;
+        }
+        else
+            _selectedSolution = object;
+    }
+    
+    [_tableView reloadData];
 }
 
 #pragma mark - Cell
@@ -405,6 +514,8 @@
     UITableViewCell* cell;
     if (_indexPage == 0)
         cell = _cellUploadPhotos;
+    else if ([_selectedProblem isEqualToString:ARRAY_PROBLEM_COMPLAIN[3]])
+        cell = _cellNote;
     else if ([_selectedSolution isEqualToString:ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[0]]||
              [_selectedSolution isEqualToString:ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[2]]||
              [_selectedSolution isEqualToString:ARRAY_SOLUTION_DIFFERENT_QTY[0]]||
@@ -418,6 +529,7 @@
 #pragma mark - Text Field Delegate
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     [_activeTextView resignFirstResponder];
+    [_noteTextView resignFirstResponder];
     _activeTextView = nil;
     _activeTextField = textField;
     return YES;
@@ -434,7 +546,6 @@
     if (textField == _totalRefundTextField) {
         _totalRefund = textField.text;
     }
-    _activeTextField = nil;
     return YES;
 }
 
@@ -445,25 +556,25 @@
         NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         if([string length]==0)
         {
-            [formatter setGroupingSeparator:@","];
+            [formatter setGroupingSeparator:@"."];
             [formatter setGroupingSize:4];
             [formatter setUsesGroupingSeparator:YES];
             [formatter setSecondaryGroupingSize:3];
             NSString *num = textField.text ;
-            num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+            num = [num stringByReplacingOccurrencesOfString:@"." withString:@""];
             NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
             textField.text = str;
             return YES;
         }
         else {
-            [formatter setGroupingSeparator:@","];
+            [formatter setGroupingSeparator:@"."];
             [formatter setGroupingSize:2];
             [formatter setUsesGroupingSeparator:YES];
             [formatter setSecondaryGroupingSize:3];
             NSString *num = textField.text ;
             if(![num isEqualToString:@""])
             {
-                num = [num stringByReplacingOccurrencesOfString:@"," withString:@""];
+                num = [num stringByReplacingOccurrencesOfString:@"." withString:@""];
                 NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
                 textField.text = str;
             }
@@ -474,6 +585,16 @@
 }
 
 #pragma mark - Text View Delegate
+- (void)textViewDidChange:(UITextView *)textView
+{
+    UILabel *placeholderLabel = (UILabel *)[textView viewWithTag:1];
+    if (textView.text.length > 0) {
+        placeholderLabel.hidden = YES;
+    } else {
+        placeholderLabel.hidden = NO;
+    }
+}
+
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
     [_activeTextField resignFirstResponder];
@@ -485,7 +606,7 @@
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
     if (textView == _noteTextView) {
-        _remark = textView.text;
+        _note = textView.text;
     }
     _activeTextView = nil;
     return YES;
@@ -503,7 +624,7 @@
     if (_activeTextField == _totalRefundTextField) {
         [_tableView scrollToRowAtIndexPath:[_tableView indexPathForCell:_cellRefundAmount] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
-    if ([_noteTextView becomeFirstResponder]) {
+    if (_activeTextView == _noteTextView) {
         [_tableView scrollToRowAtIndexPath:[_tableView indexPathForCell:_cellNote] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
 }
@@ -525,10 +646,10 @@
 -(void)setData
 {
     _tableView.tableHeaderView = _headerView;
-    _invoiceLabel.text = _order.order_detail.detail_invoice;
-    _shopNameLabel.text = _order.order_shop.shop_name;
+    _invoiceLabel.text = _order.order_detail.detail_invoice?:_invoice?:@"";
+    _shopNameLabel.text = _order.order_shop.shop_name?:_shopName?:@"";
     
-    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_order.order_shop.shop_pic]
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_order.order_shop.shop_pic?:_shopPic?:@""]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
@@ -547,17 +668,55 @@
     _selectedSolution = _selectedSolution?:[[self solutions] firstObject];
     _selectedProblem = _selectedProblem?:[ARRAY_PROBLEM_COMPLAIN firstObject];
     
-    [_noteTextView setPlaceholder:@"Isi alasan Anda disini"];
+    [self setPlaceholder];
+    
+    if (!_isCanEditProblem && _indexPage == 0) {
+        _choosenProblemSolutionLabel.textColor = [UIColor grayColor];
+    }
+    
+    if (_uploadedPhotos.count>0) {
+        for (int i = 0; i<_uploadedPhotos.count; i++) {
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_uploadedPhotos[i]] cachePolicy:
+                                     NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            
+            UIImageView *thumb = (UIImageView*)_uploadedImages[i];
+            thumb.image = nil;
+            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                [thumb setImage:image animated:YES];
+#pragma clang diagnosti c pop
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            }];
+        }
+    }
+    
+    _noteTextView.text = _note?:@"";
+    
+    _totalRefundTextField.text = [_totalRefund isEqualToString:@"0"]?@"":_totalRefund;
+}
+
+- (void)setPlaceholder
+{
+    _noteTextView.delegate = self;
+    
+    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, _noteTextView.frame.size.width, 40)];
+    placeholderLabel.text = _isChangeSolution?@"Isi pesan diskusi di sini...":@"Isi alasan Anda di sini...";
+    placeholderLabel.font = [UIFont fontWithName:_noteTextView.font.fontName size:_noteTextView.font.pointSize];
+    placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
+    placeholderLabel.tag = 1;
+    [_noteTextView addSubview:placeholderLabel];
 }
 
 -(void)adjustDataCellAtIndexPath:(NSIndexPath*)indexPath
 {
     if (_isGotTheOrder) {
-        _problemSolutionHeaderLabel.text = (_indexPage == 0)?@"Masalah pada barang yang Anda terima":@"Solusi yang Anda inginkan untuk masalah ini?";
+        if(_isActionBySeller) _problemSolutionHeaderLabel.text = (_indexPage == 0)?@"Masalah pada barang yang diterima pembeli":@"Solusi yang Anda inginkan untuk masalah ini?";
+        else _problemSolutionHeaderLabel.text = (_indexPage == 0)?@"Masalah pada barang yang Anda terima":@"Solusi yang Anda inginkan untuk masalah ini?";
         _problemSolutionLabel.text = (_indexPage == 0)?@"Masalah":@"Solution";
         _choosenProblemSolutionLabel.text = (_indexPage == 0)?_selectedProblem:_selectedSolution;
         
-        _noteHeaderLabel.text = @"Pesan untuk penjual";
+        _noteHeaderLabel.text = _isChangeSolution?@"Diskusikan permasalahan Anda":@"Pesan untuk penjual";
     }
     else
     {
@@ -566,12 +725,12 @@
     
     if ([_selectedProblem isEqualToString:ARRAY_PROBLEM_COMPLAIN[3]]) {
         _fromTotalDescription.text = @"Dari Total Ongkos Kirim";
-        _totalInvoiceLabel.text = _order.order_detail.detail_shipping_price_idr;
+        _totalInvoiceLabel.text = _order.order_detail.detail_shipping_price_idr?:_shippingPriceIDR?:@"";
     }
     else
     {
         _fromTotalDescription.text = @"Dari Total Invoice";
-        _totalInvoiceLabel.text = _order.order_detail.detail_open_amount_idr;
+        _totalInvoiceLabel.text = _order.order_detail.detail_open_amount_idr?:_detailOpenAmountIDR?:@"";
     }
 }
 
@@ -602,6 +761,9 @@
 
 -(BOOL)isNeed3Section
 {
+    if ([_selectedProblem isEqualToString:ARRAY_PROBLEM_COMPLAIN[3]]) {
+        return NO;
+    }
     if ([_selectedSolution isEqualToString:ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[0]]||
         [_selectedSolution isEqualToString:ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[2]]||
         [_selectedSolution isEqualToString:ARRAY_SOLUTION_DIFFERENT_QTY[0]]||
@@ -612,7 +774,7 @@
     return NO;
 }
 
-#pragma mark - Request Get Transaction Order Payment Confirmation
+#pragma mark - Request Complaint
 -(void)cancelComplain
 {
     [_requestComplain cancel];
@@ -687,7 +849,7 @@
     else if ([_selectedSolution isEqualToString:ARRAY_SOLUTION_PRODUCT_NOT_SAME_AS_DESCRIPTION[2]]) {
         solutionType = @"3";
     }
-    else if ([_selectedSolution isEqualToString:ARRAY_SOLUTION_DIFFERENT_QTY[2]]) {
+    else if ([_selectedSolution isEqualToString:ARRAY_SOLUTION_DIFFERENT_QTY[1]]) {
         solutionType = @"5";
     }
     return solutionType;
@@ -713,7 +875,7 @@
                             API_TROUBLE_TYPE_KEY: troubleType,
                             API_SOLUTION_KEY : solutionType,
                             API_REFUND_AMOUNT_KEY : _totalRefund?:@"",
-                            API_REMARK_KEY : _remark?:@"",
+                            API_REMARK_KEY : _note?:@"",
                             API_PHOTOS_KEY : photos,
                             API_SERVER_ID_KEY : _generatehost.result.generated_host.server_id?:@"0"
                             };
@@ -784,7 +946,14 @@
                 else{
                     [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:self];
                     [[NSNotificationCenter defaultCenter]postNotificationName:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME object:self];
-                    //TODO:: detail complain
+                    NSArray *viewControllers = self.navigationController.viewControllers;
+                    UIViewController *destinationVC;
+                    for (UIViewController *vc in viewControllers) {
+                        if ([vc isKindOfClass:[_delegate class]]) {
+                            destinationVC = vc;
+                        }
+                    }
+                    [self.navigationController popToViewController:destinationVC animated:YES];
                     
                 }
             }
@@ -806,148 +975,6 @@
 {
     [self cancelComplain];
 }
-
-#pragma mark Request Generate Host
--(void)configureRestkitGenerateHost
-{
-    _objectManagerGenerateHost =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GenerateHost class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GenerateHostResult class]];
-    
-    RKObjectMapping *generatedhostMapping = [RKObjectMapping mappingForClass:[GeneratedHost class]];
-    [generatedhostMapping addAttributeMappingsFromDictionary:@{
-                                                               kTKPDGENERATEDHOST_APISERVERIDKEY:kTKPDGENERATEDHOST_APISERVERIDKEY,
-                                                               kTKPDGENERATEDHOST_APIUPLOADHOSTKEY:kTKPDGENERATEDHOST_APIUPLOADHOSTKEY,
-                                                               kTKPDGENERATEDHOST_APIUSERIDKEY:kTKPDGENERATEDHOST_APIUSERIDKEY
-                                                               }];
-    // Relationship Mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDGENERATEDHOST_APIGENERATEDHOSTKEY toKeyPath:kTKPDGENERATEDHOST_APIGENERATEDHOSTKEY withMapping:generatedhostMapping]];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerGenerateHost addResponseDescriptor:responseDescriptor];
-}
-
--(void)cancelGenerateHost
-{
-    [_requestGenerateHost cancel];
-    _requestGenerateHost = nil;
-    
-    [_objectManagerGenerateHost.operationQueue cancelAllOperations];
-    _objectManagerGenerateHost = nil;
-}
-
-- (void)requestGenerateHost
-{
-    if(_requestGenerateHost.isExecuting) return;
-    
-    NSTimer *timer;
-    
-    NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIUPLOADGENERATEHOSTKEY,
-                            };
-    
-#if DEBUG
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-    
-    _requestGenerateHost = [_objectManagerGenerateHost appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAIL_UPLOADIMAGEAPIPATH parameters:paramDictionary];
-
-#else
-    _requestGenerateHost = [_objectManagerGenerateHost appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAIL_UPLOADIMAGEAPIPATH parameters:[param encrypt]];
-
-#endif
-    
-    
-    [_requestGenerateHost setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessGenerateHost:mappingResult withOperation:operation];
-        [timer invalidate];
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestFailureGenerateHost:error];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_requestGenerateHost];
-    
-    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutGenerateHost) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
-
--(void)requestSuccessGenerateHost:(id)object withOperation:(RKObjectRequestOperation*)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id info = [result objectForKey:@""];
-    _generatehost = info;
-    NSString *statusstring = _generatehost.status;
-    BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessGenerateHost:object];
-    }
-}
-
--(void)requestFailureGenerateHost:(id)object
-{
-    
-}
-
--(void)requestProcessGenerateHost:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id info = [result objectForKey:@""];
-            _generatehost = info;
-            NSString *statusstring = _generatehost.status;
-            BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if ([_generatehost.result.generated_host.server_id integerValue] == 0 || _generatehost.message_error) {
-                    [self configureRestkitGenerateHost];
-                    [self requestGenerateHost];
-                }
-                else
-                {
-                    [[_uploadButtons objectAtIndex:0] setEnabled:YES];
-                    [_dataInput setObject:_generatehost.result.generated_host.server_id forKey:API_SERVER_ID_KEY];
-                }
-                
-            }
-        }
-        else
-        {
-            NSError *error = object;
-            if (!([error code] == NSURLErrorCancelled)){
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-        }
-    }
-}
-
--(void)requestTimeoutGenerateHost
-{
-    [self cancelGenerateHost];
-}
-
 
 #pragma mark Request Action Upload Photo
 -(void)configureRestkitUploadPhoto
@@ -998,9 +1025,11 @@
     NSDictionary *imagePhoto = [uploadingObject objectForKey:DATA_PHOTO_UPLOADING];
     UIImageView *imageView = [uploadingObject objectForKey:DATA_IMAGEVIEW_UPLOADING];
     
+    NSLog(@"imagePhoto : %@",imagePhoto);
+    
     NSDictionary *photo = [imagePhoto objectForKey: kTKPDCAMERA_DATAPHOTOKEY];
     NSData* imageData = [photo objectForKey:DATA_CAMERA_IMAGEDATA];
-    NSString* imageName = [photo objectForKey:DATA_CAMERA_IMAGENAME];
+    NSString *imageName = [[photo objectForKey:DATA_CAMERA_IMAGENAME]lowercaseString];
     NSString *serverID = _generatehost.result.generated_host.server_id?:@"0";
     
     NSDictionary *param = @{ API_ACTION_KEY:ACTION_UPLOAD_CONTACT_IMAGE,
@@ -1015,7 +1044,7 @@
     
     NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
     [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+    //[paramDictionary setObject:@"off" forKey:@"enc_dec"];
     [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
     
     _requestActionUploadPhoto = [NSMutableURLRequest requestUploadImageData:imageData
@@ -1024,11 +1053,10 @@
                                                       withRequestParameters:paramDictionary
                                  ];
 
-
+    NSLog(@"%@",paramDictionary);
+    
     _isFinishUploadingImage = NO;
     
-    NSUInteger index = [[_dataInput objectForKey:kTKPDDETAIL_DATAINDEXKEY] integerValue];
-    NSLog(@"Index image %zd", index);
     UIImageView *thumbProductImage = imageView;
     thumbProductImage.alpha = 0.5f;
     
@@ -1037,7 +1065,9 @@
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
                                NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
                                NSString *responsestring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                               NSLog(@"%@",responsestring);
                                if ([httpResponse statusCode] == 200) {
+                                
                                    _isFinishUploadingImage = YES;
                                    id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
                                    if (parsedData == nil && error) {

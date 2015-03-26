@@ -14,7 +14,7 @@
 @protocol ResolutionCenterDetailCellDelegate <NSObject>
 @required
 - (void)tapCellButton:(UIButton*)sender atIndexPath:(NSIndexPath*)indexPath;
-
+-(void)goToShopOrProfileIndexPath:(NSIndexPath *)indexPath;
 @end
 
 @interface ResolutionCenterDetailCell : UITableViewCell

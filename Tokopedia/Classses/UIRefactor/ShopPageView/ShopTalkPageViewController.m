@@ -279,23 +279,23 @@ UIAlertViewDelegate>
             }
             
             if ([list.talk_message length] > 30) {
-                NSRange stringRange = {0, MIN([list.talk_message length], 100)};
+                NSRange stringRange = {0, MIN([list.talk_message length], 50)};
                 stringRange = [list.talk_message rangeOfComposedCharacterSequencesForRange:stringRange];
                 
 //                ((GeneralTalkCell*)cell).commentlabel.text = ;
                 UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
                 
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-                style.lineSpacing = 6.0;
+                style.lineSpacing = 5.0;
                 
                 NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
                                              NSFontAttributeName: font,
                                              NSParagraphStyleAttributeName: style,
                                              };
                 
-                NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:[[NSString stringWithFormat:@"%@...", [list.talk_message substringWithRange:stringRange]] kv_decodeHTMLCharacterEntities]
+                NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@...", [list.talk_message
+substringWithRange:stringRange]]
                                                                                                 attributes:attributes];
-                
                 ((GeneralTalkCell*)cell).commentlabel.attributedText = productNameAttributedText;
                 ((GeneralTalkCell*)cell).commentlabel.numberOfLines = 0;
                 [((GeneralTalkCell*)cell).commentlabel sizeToFit];
@@ -596,6 +596,7 @@ UIAlertViewDelegate>
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
                 TKPD_TALK_SHOP_ID:list.talk_shop_id?:0,
                 TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image,
+                TKPD_TALK_PRODUCT_NAME:list.talk_product_name,
                 kTKPDDETAIL_DATAINDEXKEY : @(row)?:0
                 };
     [self.navigationController pushViewController:vc animated:YES];

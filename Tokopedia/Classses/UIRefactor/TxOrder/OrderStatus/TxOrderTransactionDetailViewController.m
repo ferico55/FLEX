@@ -8,10 +8,15 @@
 
 #import "TxOrderTransactionDetailViewController.h"
 
+#import "NavigateViewController.h"
+
 #import "TransactionCartCell.h"
 #import "string_tx_order.h"
 
-@interface TxOrderTransactionDetailViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface TxOrderTransactionDetailViewController () <UITableViewDelegate, UITableViewDataSource, TransactionCartCellDelegate>
+{
+    NavigateViewController *_navigate;
+}
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *shopView;
@@ -44,6 +49,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _navigate = [NavigateViewController new];
+    
     self.title = @"Detail Transaksi";
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
@@ -65,8 +72,19 @@
 {
 
 }
+- (IBAction)gesture:(id)sender {
+    UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
+    if (gesture.view.tag == 10) {
+        [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:_order.order_detail.detail_pdf];
+    }
+    else
+    {
+        [_navigate navigateToShopFromViewController:self withShopID:_order.order_shop.shop_id];
+    }
+}
 
 #pragma mark - Table View Data Source
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return _order.order_products.count;
@@ -80,6 +98,21 @@
     return cell;
 }
 
+#pragma mark - Cell Delegate
+-(void)didTapImageViewAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray *listProducts = _order.order_products;
+    OrderProduct *product = listProducts[indexPath.row];
+    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+}
+
+-(void)didTapProductAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSArray *listProducts = _order.order_products;
+    OrderProduct *product = listProducts[indexPath.row];
+    [_navigate navigateToProductFromViewController:self withProductID:product.product_id];
+}
+
 -(UITableViewCell*)cellTransactionCartAtIndexPath:(NSIndexPath*)indexPath
 {
     NSString *cellid = TRANSACTION_CART_CELL_IDENTIFIER;
@@ -87,6 +120,7 @@
     TransactionCartCell *cell = (TransactionCartCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
     if (cell == nil) {
         cell = [TransactionCartCell newcell];
+        cell.delegate = self;
     }
     
     NSInteger indexProduct = indexPath.row;//(list.cart_error_message_1)?indexPath.row-1:indexPath.row; //TODO:: adjust when error message appear
@@ -161,6 +195,8 @@
     _shopNameLabel.text = _order.order_shop.shop_name;
     _invoiceLabel.text = _order.order_detail.detail_invoice;
     
+    [_invoiceLabel multipleLineLabel:_invoiceLabel];
+    
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_order.order_shop.shop_pic] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
     UIImageView *thumb = _shopThumb;
@@ -179,7 +215,14 @@
     _totalPaymentLabel.text = _order.order_detail.detail_open_amount_idr;
     _recieverName.text = _order.order_destination.receiver_name;
     _recieverPhone.text = _order.order_destination.receiver_phone;
-    _addressStreetLabel.text = _order.order_destination.address_street;
+    NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@, %@ %@",
+                         _order.order_destination.address_street,
+                         _order.order_destination.address_city
+                         ,_order.order_destination.address_district,
+                         _order.order_destination.address_province,
+                         _order.order_destination.address_postal];
+    _addressStreetLabel.text = address;
+    [_addressStreetLabel multipleLineLabel:_addressStreetLabel];
     _cityLabel.text = _order.order_destination.address_city;
     _countryLabel.text = [NSString stringWithFormat:@"%@, %@ %@",_order.order_destination.address_district,_order.order_destination.address_province, _order.order_destination.address_postal];
     _shipmentLabel.text = [NSString stringWithFormat:@"%@ - %@",_order.order_shipment.shipment_name,_order.order_shipment.shipment_product];
@@ -189,7 +232,7 @@
     if (!dropshipName || [dropshipName isEqualToString:@""] || [dropshipName isEqualToString:@"0"]) {
         _dropshipView.hidden = YES;
         CGRect frame = _detailView.frame;
-        frame.size.height -= 165;
+        frame.size.height -= _dropshipView.frame.size.height;
         _detailView.frame = frame;
         _tableView.tableFooterView = _detailView;
     }

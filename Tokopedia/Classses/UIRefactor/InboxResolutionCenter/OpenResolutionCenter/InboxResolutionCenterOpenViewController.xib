@@ -35,6 +35,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="InboxResolutionCenterOpenViewController">
             <connections>
+                <outlet property="buyerSellerLabel" destination="Fmz-nk-Ncu" id="viG-KI-CtR"/>
                 <outlet property="cellNote" destination="J5Y-Xs-nYt" id="K6B-Up-ZXR"/>
                 <outlet property="cellRefundAmount" destination="0Xa-ta-dnt" id="fgU-JR-4Cl"/>
                 <outlet property="cellSolution" destination="1Ut-Q1-pXK" id="8nO-QZ-6wT"/>

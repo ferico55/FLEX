@@ -202,6 +202,7 @@
             }
             
             BankAccountFormList *list = _list[indexPath.row];
+            ((GeneralList1GestureCell*)cell).selectionStyle = UITableViewCellSelectionStyleNone;
             ((GeneralList1GestureCell*)cell).labelname.text = list.bank_account_name;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
             ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;

@@ -15,6 +15,8 @@
 #import "TrackOrderViewController.h"
 #import "TrackOrderHistoryCell.h"
 
+#import "UserAuthentificationManager.h"
+
 @interface TrackOrderViewController ()
 <
     UITableViewDataSource,
@@ -79,7 +81,7 @@
     [_invalidStatusTitle multipleLineLabel:_invalidStatusTitle];
     
     [self configureRestKit];
-    [self request];
+    [self request];    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -319,7 +321,7 @@
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
     
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_TRACK_ORDER_KEY
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:_isShippingTracking?API_TRACK_SHIPPING_KEY:API_TRACK_ORDER_KEY
                                                                                   toKeyPath:API_TRACK_ORDER_KEY
                                                                                 withMapping:trackOrderMapping]];
     
@@ -329,11 +331,12 @@
     
     [trackOrderMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_DETAIL_KEY
                                                                                       toKeyPath:API_DETAIL_KEY
-                                                                                    withMapping:trackDetailMapping]];    
+                                                                                    withMapping:trackDetailMapping]];
+    
  
     RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
                                                                                                   method:RKRequestMethodPOST
-                                                                                             pathPattern:API_TRACKING_ORDER_PATH
+                                                                                             pathPattern:_isShippingTracking?API_TRACKING_INBOX_RESOLUTION_PATH: API_TRACKING_ORDER_PATH
                                                                                                  keyPath:@""
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -343,13 +346,17 @@
 
 - (void)request
 {
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
+    //www.tkpdevel-pg.ekarisky/ws/inbox-resolution-center.pl?action=track_shipping_ref&shipping_ref=ASD134567898&shipment_id=2
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+   
+    NSString *userID = [auth getUserId];
     
     NSDictionary* param = @{
-                            API_ACTION_KEY           : API_ACTION_TRACK_ORDER,
-                            API_ORDER_ID_KEY         : _order.order_detail.detail_order_id?:@(_orderID),
-                            API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
+                            API_ACTION_KEY           : _isShippingTracking?API_ACTION_TRACK_SHIPPING_REF:API_ACTION_TRACK_ORDER,
+                            API_ORDER_ID_KEY         : _order.order_detail.detail_order_id?:@(_orderID)?:@"",
+                            API_USER_ID_KEY          : userID?:@"",
+                            API_SHIPPING_REF_KEY     : _shippingRef?:@"",
+                            API_SHIPMENT_ID_KEY      : _shipmentID?:@""
                             };
     
 #if DEBUG
@@ -359,12 +366,12 @@
     
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodGET
-                                                                      path:API_TRACKING_ORDER_PATH
+                                                                      path:_isShippingTracking?API_TRACKING_INBOX_RESOLUTION_PATH:API_TRACKING_ORDER_PATH
                                                                 parameters:paramDictionary];
 #else
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
-                                                                      path:API_TRACKING_ORDER_PATH
+                                                                      path:_isShippingTracking?API_TRACKING_INBOX_RESOLUTION_PATH:API_TRACKING_ORDER_PATH
                                                                 parameters:[param encrypt]];
 #endif
 
@@ -379,6 +386,10 @@
         BOOL status = [track.status isEqualToString:kTKPDREQUEST_OKSTATUS];
         if (status && track.result.track_order) {
             
+            if ([track.result.track_order.order_status integerValue] == ORDER_DELIVERED)
+            {
+                [_delegate shouldRefreshRequest];
+            }
             _trackingOrder = track.result.track_order;
             
             _tableView.contentInset = UIEdgeInsetsMake(22, 0, 0, 0);

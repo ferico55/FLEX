@@ -13,5 +13,6 @@
 @property (nonatomic, strong) NSString *customer_image;
 @property (nonatomic, strong) NSString *customer_name;
 @property (nonatomic, strong) NSString *customer_url;
+@property (nonatomic, strong) NSString *customer_id;
 
 @end

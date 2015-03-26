@@ -26,6 +26,8 @@
 #endif
 
 @property InboxResolutionCenterList *resolution;
+
 @property NSIndexPath *indexPath;
+@property NSString *resolutionID;
 
 @end

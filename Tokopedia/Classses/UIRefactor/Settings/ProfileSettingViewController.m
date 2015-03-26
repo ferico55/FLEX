@@ -14,6 +14,7 @@
 #import "SettingBankAccountViewController.h"
 #import "SettingPrivacyViewController.h"
 #import "SettingNotificationViewController.h"
+#import "SettingUserProfileViewController.h"
 
 #pragma mark - Profile Setting View Controller
 @interface ProfileSettingViewController ()<UITableViewDataSource, UITableViewDelegate>
@@ -64,6 +65,62 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - View Action
+- (IBAction)tap:(id)sender {
+    if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *btn = (UIButton *)sender;
+        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+        switch (btn.tag) {
+            case 10:
+            {    //change password
+                SettingPasswordViewController *vc = [SettingPasswordViewController new];
+                vc.data = @{kTKPD_AUTHKEY : auth};
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 11:
+            {
+                //address list
+                SettingAddressViewController *vc = [SettingAddressViewController new];
+                vc.data = @{kTKPD_AUTHKEY : auth};
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 12:
+            {
+                //bank account
+                SettingBankAccountViewController *vc = [SettingBankAccountViewController new];
+                vc.data = @{kTKPD_AUTHKEY : auth};
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 13:
+            {
+                //notification
+                SettingNotificationViewController *vc = [SettingNotificationViewController new];
+                vc.data = @{kTKPD_AUTHKEY : auth};
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 14:
+            {
+                //ubah profil
+//                SettingPrivacyViewController *vc = [SettingPrivacyViewController new];
+//                vc.data = @{kTKPD_AUTHKEY : auth};
+                SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
+                vc.data = @{kTKPD_AUTHKEY : auth};
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            default:
+                break;
+        }
+    }
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
 #pragma mark - TableView Data Source
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -102,6 +159,8 @@
     
     cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
     cell.textLabel.text = _listMenu[indexPath.section][indexPath.row];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
     
     return cell;
 }
@@ -146,7 +205,7 @@
             case 3:
             {
                 //privacy settings
-                SettingPrivacyViewController *vc = [SettingPrivacyViewController new];
+                SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
                 vc.data = @{kTKPD_AUTHKEY : auth};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;

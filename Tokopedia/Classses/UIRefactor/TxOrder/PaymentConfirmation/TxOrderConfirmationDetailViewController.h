@@ -7,20 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+@class TxOrderConfirmationDetailViewController;
 
-#pragma mark - Transaction Order Payment Confirmation Delegate
-@protocol TxOrderPaymentConfirmationViewControllerDelegate <NSObject>
+#pragma mark - Delegate
+@protocol TxOrderConfirmationDetailViewControllerDelegate <NSObject>
 @required
--(void)shouldCancelOrderAtIndexPath:(NSIndexPath *)indexPath;
-
+-(void)shouldCancelOrderAtIndexPath:(NSIndexPath *)indexPath viewController:(TxOrderConfirmationDetailViewController*)viewController;
+-(void)didTapAlertCancelOrder;
 @end
 
 @interface TxOrderConfirmationDetailViewController : UIViewController
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
-@property (nonatomic, weak) IBOutlet id<TxOrderPaymentConfirmationViewControllerDelegate> delegate;
+@property (nonatomic, weak) IBOutlet id<TxOrderConfirmationDetailViewControllerDelegate> delegate;
 #else
-@property (nonatomic, assign) IBOutlet id<TxOrderPaymentConfirmationViewControllerDelegate> delegate;
+@property (nonatomic, assign) IBOutlet id<TxOrderConfirmationDetailViewControllerDelegate> delegate;
 #endif
 
 @property (strong, nonatomic) NSDictionary *data;

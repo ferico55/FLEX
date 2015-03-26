@@ -14,6 +14,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TxOrderConfirmationViewController">
             <connections>
                 <outlet property="act" destination="Dyg-9q-gD8" id="Cam-06-CQj"/>
+                <outlet property="cancelButton" destination="ZDa-N3-rT0" id="6eR-dl-CDE"/>
+                <outlet property="confirmationButton" destination="QpZ-zZ-TgL" id="7kb-UX-9Zo"/>
                 <outlet property="footer" destination="Kaz-cw-wZ6" id="ps4-Wu-c8y"/>
                 <outlet property="multipleSelectFooter" destination="RiG-1C-3Io" id="Zym-ya-o0w"/>
                 <outlet property="tableView" destination="iPI-Bg-ruD" id="IOd-iB-cGe"/>

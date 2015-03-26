@@ -39,6 +39,7 @@
 @property (strong, nonatomic) IBOutlet UIView *subContentView;
 
 @property (weak, nonatomic) IBOutlet UIImageView *thumb;
+@property (weak, nonatomic) IBOutlet UIImageView *unreadIcon;
 @property (weak, nonatomic) IBOutlet UILabel *namelabel;
 @property (weak, nonatomic) IBOutlet UILabel *timelabel;
 @property (weak, nonatomic) IBOutlet UILabel *commentlabel;

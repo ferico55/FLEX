@@ -10,4 +10,8 @@
 
 @implementation InboxMessageDetailList
 
+- (NSString*)message_reply {
+    return [_message_reply kv_decodeHTMLCharacterEntities];
+}
+
 @end

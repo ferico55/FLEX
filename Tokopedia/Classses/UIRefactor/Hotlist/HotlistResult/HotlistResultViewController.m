@@ -29,6 +29,7 @@
 #import "DetailProductViewController.h"
 
 #import "URLCacheController.h"
+#import "GeneralAlertCell.h"
 
 #import "GeneralSingleProductCell.h"
 #import "GeneralPhotoProductCell.h"

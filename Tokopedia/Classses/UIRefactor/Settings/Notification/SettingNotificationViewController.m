@@ -86,7 +86,7 @@
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:kTKPDPROFILESAVE style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [_saveBarButtonItem setTintColor:[UIColor blackColor]];
     _saveBarButtonItem.tag = 11;
     self.navigationItem.rightBarButtonItem = _saveBarButtonItem;
@@ -177,7 +177,7 @@
     ((SettingNotificationCell*)cell).notificationName.text = _listMenu[indexPath.row];
     ((SettingNotificationCell*)cell).notificationDetail.text = _listDescription[indexPath.row];
     NSInteger listSwitchStatusCount = _listSwitchStatus.count;
-    ((SettingNotificationCell*)cell).settingSwitch.on = (listSwitchStatusCount>0)?[_listSwitchStatus[indexPath.row]boolValue]:NO;
+    ((SettingNotificationCell*)cell).settingSwitch.on = (listSwitchStatusCount>0)?[_listSwitchStatus[indexPath.row]boolValue]:YES;
     
     return cell;
 }

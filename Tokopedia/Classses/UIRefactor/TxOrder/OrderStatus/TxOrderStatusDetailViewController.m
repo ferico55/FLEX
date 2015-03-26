@@ -12,6 +12,8 @@
 
 #import "TxOrderStatusDetailViewController.h"
 
+#import "NavigateViewController.h"
+
 #import "TxOrderTransactionDetailViewController.h"
 #import "TrackOrderViewController.h"
 
@@ -19,11 +21,16 @@
 #import "InboxResolutionCenterOpenViewController.h"
 #import "TransactionCartRootViewController.h"
 
+#import "ResolutionCenterDetailViewController.h"
+
 #define TAG_ALERT_REORDER 10
 #define TAG_ALERT_COMPLAIN 11
 #define TAG_ALERT_CONFIRMATION 12
 
 @interface TxOrderStatusDetailViewController () <UITableViewDataSource, UITableViewDelegate>
+{
+    NavigateViewController *_navigate;
+}
 
 @property (strong, nonatomic) IBOutlet UIView *headerTwoButton;
 @property (strong, nonatomic) IBOutlet UIView *headerOneButtonComplain;
@@ -31,7 +38,7 @@
 @property (strong, nonatomic) IBOutlet UIView *headerViewWithoutButton;
 @property (weak, nonatomic) IBOutlet UIButton *transactionDetailButton;
 @property (strong, nonatomic) IBOutlet UIView *headerReorderView;
-@property (weak, nonatomic) IBOutlet UILabel *invoiceLabel;
+@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *invoiceLabel;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @end
 
@@ -39,7 +46,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-        
+    
+    _navigate = [NavigateViewController new];
+    
     self.title = @"Detail Status";
     
     switch (_buttonHeaderCount) {
@@ -62,7 +71,7 @@
         _tableView.tableHeaderView = _headerReorderView;
     }
     
-    _invoiceLabel.text = _order.order_detail.detail_invoice;
+    [_invoiceLabel makeObjectsPerformSelector:@selector(setText:) withObject:_order.order_detail.detail_invoice];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
@@ -85,8 +94,6 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-
 
 #pragma mark - Table view data source
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -168,6 +175,11 @@
         else if (button.tag == 12)
         {
             //lihat complain
+            ResolutionCenterDetailViewController *vc = [ResolutionCenterDetailViewController new];
+            NSDictionary *queries = [NSDictionary dictionaryFromURLString:_order.order_button.button_res_center_url];
+            NSString *resolutionID = [queries objectForKey:@"id"];
+            vc.resolutionID = resolutionID;
+            [self.navigationController pushViewController:vc animated:YES];
         }
         else if (button.tag == 13)
         {
@@ -188,6 +200,9 @@
         }
     }
 }
+- (IBAction)gesture:(id)sender {
+    [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:_order.order_detail.detail_pdf_uri];
+}
 
 -(void)showAlertViewOpenComplain
 {
@@ -206,6 +221,7 @@
     else if (alertView.tag == TAG_ALERT_COMPLAIN)
     {
         InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
+        vc.controllerTitle = @"Buka Komplain";
         if (buttonIndex == 0) {
             //Tidak Terima Barang
             vc.isGotTheOrder = NO;
@@ -217,6 +233,8 @@
             
         }
         vc.order = _order;
+        vc.isCanEditProblem = YES;
+        vc.delegate = self.navigationController.viewControllers[self.navigationController.viewControllers.count-2];
         [self.navigationController pushViewController:vc animated:YES];
     }
     else if (alertView.tag == TAG_ALERT_CONFIRMATION)
@@ -237,5 +255,7 @@
         }
     }
 }
+
+
 
 @end
