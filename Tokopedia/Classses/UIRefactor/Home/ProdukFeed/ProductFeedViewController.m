@@ -181,6 +181,13 @@ typedef enum ScrollDirection {
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).lineBreakMode = NSLineBreakByTruncatingTail;
                 ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
                 
+                if([list.shop_gold_status isEqualToString:@"1"]) {
+                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = NO;
+                } else {
+                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = YES;
+                }
+                
+                
                 NSString *urlstring = list.product_image;
                 
                 NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];

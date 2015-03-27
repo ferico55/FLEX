@@ -24,6 +24,7 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
@@ -64,7 +65,7 @@
                 <outletCollection property="errorCells" destination="bcD-ei-uZV" id="GEX-aS-U0P"/>
                 <outletCollection property="errorCells" destination="rQU-GF-11J" id="zBk-wo-8TY"/>
                 <outletCollection property="errorLabel" destination="idp-IE-Bsj" id="ZtN-aP-QJs"/>
-                <outletCollection property="errorLabel" destination="X39-l3-3GN" id="ZTo-FJ-zln"/>
+                <outletCollection property="errorLabel" destination="u2O-zp-4Vh" id="Kj0-SJ-auY"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -74,7 +75,7 @@
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="QKG-0J-91A">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <color key="sectionIndexTrackingBackgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -100,7 +101,7 @@
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Metode Pembayaran :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zl3-bd-RqO">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pilih" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Qpr-uJ-2jP">
@@ -121,12 +122,12 @@
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Total Invoice" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="KES-B2-wTQ">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp.0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aek-0N-e9L">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -144,12 +145,12 @@
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Kode Transfer" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qiP-X2-TTW">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp.0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Y4h-4r-aJ6">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -165,12 +166,12 @@
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Saldo Tokopedia Terpakai" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="F8e-bq-qgA">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp.0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="INg-cN-cMe">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -188,7 +189,7 @@
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Metode Pembayaran :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zJt-OA-nVX">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -218,7 +219,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="237" id="bMm-Im-DQd"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <state key="normal" title="Punya Kode Promo Tokopedia?">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -257,7 +258,7 @@
                                 <constraints>
                                     <constraint firstAttribute="width" constant="265" id="U6q-vl-Q2H"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -296,12 +297,12 @@
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Total Pembayaran" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="u1p-Qm-vqC">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="16"/>
+                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp 0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6yM-Im-p4G">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="16"/>
+                        <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -316,7 +317,7 @@
                 <subviews>
                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gunakan Saldo Tokopedia" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bpc-Rx-yiu">
                         <rect key="frame" x="15" y="11" width="196" height="21"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <switch opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="sI2-vl-FxW">
@@ -403,34 +404,54 @@
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="66" id="rQU-GF-11J">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
+        <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="rQU-GF-11J">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rQU-GF-11J" id="vTj-hg-W4a">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Layanan YES dari JNE tidak mendukung pengiriman dari lokasi penjual ke Kedurang, Kab. Bengkulu Selatan" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idp-IE-Bsj">
-                        <rect key="frame" x="15" y="5" width="300" height="56"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <label opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Akun QC tidak boleh membeli barang dari luar" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idp-IE-Bsj">
+                        <rect key="frame" x="15" y="15" width="290" height="19"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="8vm-KL-IIv"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="19" id="gbb-Ki-W02"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="idp-IE-Bsj" secondAttribute="trailing" constant="15" id="Khi-mE-ikt"/>
+                    <constraint firstItem="idp-IE-Bsj" firstAttribute="leading" secondItem="vTj-hg-W4a" secondAttribute="leading" constant="15" id="cSh-Yv-tuA"/>
+                    <constraint firstItem="idp-IE-Bsj" firstAttribute="top" secondItem="vTj-hg-W4a" secondAttribute="top" constant="15" id="lw9-tM-eMJ"/>
+                    <constraint firstAttribute="bottom" secondItem="idp-IE-Bsj" secondAttribute="bottom" constant="15" id="u3h-wK-8wY"/>
+                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="0.71420329792628423" blue="0.68935233308714128" alpha="1" colorSpace="calibratedRGB"/>
-            <point key="canvasLocation" x="618" y="-26"/>
+            <point key="canvasLocation" x="535" y="-80"/>
         </tableViewCell>
         <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="66" id="bcD-ei-uZV">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bcD-ei-uZV" id="6zq-5H-b7Y">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Layanan YES dari JNE tidak mendukung pengiriman dari lokasi penjual ke Kedurang, Kab. Bengkulu Selatan" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X39-l3-3GN">
-                        <rect key="frame" x="15" y="5" width="300" height="56"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <label opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Akun QC tidak boleh membeli barang dari luar" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u2O-zp-4Vh">
+                        <rect key="frame" x="15" y="15" width="290" height="19"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="19" id="7fs-T5-h2C"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="T7m-tJ-tla"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="u2O-zp-4Vh" secondAttribute="bottom" constant="15" id="OfX-O3-uDy"/>
+                    <constraint firstAttribute="trailing" secondItem="u2O-zp-4Vh" secondAttribute="trailing" constant="15" id="gjc-Yb-6D1"/>
+                    <constraint firstItem="u2O-zp-4Vh" firstAttribute="leading" secondItem="6zq-5H-b7Y" secondAttribute="leading" constant="15" id="voe-zK-ZLW"/>
+                    <constraint firstItem="u2O-zp-4Vh" firstAttribute="top" secondItem="6zq-5H-b7Y" secondAttribute="top" constant="15" id="w6j-MP-lES"/>
+                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="1" green="0.71420329790000003" blue="0.68935233309999999" alpha="1" colorSpace="calibratedRGB"/>
             <point key="canvasLocation" x="618" y="-142"/>
@@ -453,7 +474,7 @@
                                             <constraint firstAttribute="height" constant="43" id="3w3-Tr-l0k"/>
                                             <constraint firstAttribute="width" constant="44" id="VAK-HR-snh"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -526,7 +547,7 @@
                                             <constraint firstAttribute="height" constant="43" id="L57-bu-6ei"/>
                                             <constraint firstAttribute="width" constant="93" id="Qek-x4-vgd"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>

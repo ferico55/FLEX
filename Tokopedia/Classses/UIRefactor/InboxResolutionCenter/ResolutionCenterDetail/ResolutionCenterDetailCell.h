@@ -45,8 +45,13 @@
 @property (nonatomic) BOOL isMark;
 @property (nonatomic) BOOL isShowAttachment;
 @property NSIndexPath *indexPath;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *twobuttonConstraintHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *imageConstraintHeight;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *oneButtonConstraintHeight;
 
 +(id)newCell;
 -(void)hideAllViews;
+
+
 
 @end

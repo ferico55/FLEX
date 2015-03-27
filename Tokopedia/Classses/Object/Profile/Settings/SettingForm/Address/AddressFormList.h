@@ -24,5 +24,10 @@
 @property (nonatomic, strong) NSNumber *city_id;
 @property (nonatomic, strong) NSNumber *district_id;
 @property (nonatomic, strong) NSString *city_name;
+@property (nonatomic, strong) NSString *address_country;
+@property (nonatomic, strong) NSString *address_postal;
+@property (nonatomic, strong) NSString *address_district;
+@property (nonatomic, strong) NSString *address_city;
+@property (nonatomic, strong) NSString *address_province;
 
 @end

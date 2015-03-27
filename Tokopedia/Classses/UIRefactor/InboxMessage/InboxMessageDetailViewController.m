@@ -193,7 +193,23 @@
     InboxMessageDetailCell *cell = (InboxMessageDetailCell*)aCell;
     if(_messages.count > indexPath.row) {
         InboxMessageDetailList *message = _messages[indexPath.row];
-        cell.messageLabel.text = message.message_reply;
+        
+        UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
+        
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 4.0;
+        style.alignment = NSTextAlignmentLeft;
+        
+        NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor whiteColor],
+                                     NSFontAttributeName: font,
+                                     NSParagraphStyleAttributeName: style,
+                                     };
+        NSString *string = message.message_reply;
+        NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string attributes:attributes];
+        
+        cell.messageLabel.attributedText = attributedText;
+//        cell.messageLabel.text = message.message_reply;
+        
         cell.timeLabel.text = message.message_reply_time_fmt;
         if([message.message_action isEqualToString:@"1"]) {
             cell.sent = YES;
@@ -222,7 +238,7 @@
     InboxMessageDetailList *messagedetaillist = _messages[indexPath.row];
     CGSize messageSize = [InboxMessageDetailCell messageSize:messagedetaillist.message_reply];
     
-    return messageSize.height + 2*[InboxMessageDetailCell textMarginVertical] + 20.0f;
+    return messageSize.height + 2*[InboxMessageDetailCell textMarginVertical] + 30.0f;
 }
 
 -(void) scrollViewWillBeginDragging:(UIScrollView *)scrollView {
@@ -392,14 +408,14 @@
             
             NSString *btw;
             if (between_name.count == 2) {
-                btw = [NSString stringWithFormat:@"Between : %@ dan %@", between_name[1], between_name[0]];
+                btw = [NSString stringWithFormat:@"Antara : %@ dan %@", between_name[1], between_name[0]];
             } else {
-                btw = [NSString stringWithFormat:@"Between : %@", [between_name componentsJoinedByString:@", "]];
+                btw = [NSString stringWithFormat:@"Antara : %@", [between_name componentsJoinedByString:@", "]];
             }
             
             UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 206, 44)];
             label.numberOfLines = 2;
-            label.font = [UIFont systemFontOfSize: 14.0f];
+            label.font = [UIFont systemFontOfSize: 11.0f];
             label.textAlignment = NSTextAlignmentCenter;
             label.textColor = [UIColor whiteColor];
             

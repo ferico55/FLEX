@@ -350,6 +350,7 @@
 - (void)requestActionLogin:(NSDictionary *)data
 {
     if (_request.isExecuting) return;
+    [_loginButton setTitle:@"Loading.." forState:UIControlStateNormal];
  
     [self configureRestKitLogin];
     
@@ -442,6 +443,7 @@
 {
     _login = [mappingResult.dictionary objectForKey:@""];
     BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    [_loginButton setTitle:@"Masuk" forState:UIControlStateNormal];
     if (status) {
         _isnodata = NO;
         if ([_login.result.status isEqualToString:@"2"]) {
@@ -534,6 +536,10 @@
             if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
                 [self.delegate redirectViewController:_redirectViewController];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                    object:nil
+                                                                  userInfo:nil];
             } else {
                 [self.tabBarController setSelectedIndex:0];
                 

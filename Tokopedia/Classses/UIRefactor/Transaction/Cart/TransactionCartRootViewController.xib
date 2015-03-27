@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -23,7 +23,6 @@
                 <outlet property="noLoginView" destination="43p-Yg-N4d" id="OhK-JS-LZx"/>
                 <outlet property="pageControlView" destination="Udz-dt-e2a" id="Oox-rG-PNd"/>
                 <outlet property="progressView" destination="jGJ-QC-MGX" id="dBh-Sf-EQq"/>
-                <outlet property="tabHeightConstraint" destination="L6b-2V-g0K" id="jzY-pY-5kI"/>
                 <outlet property="view" destination="l92-7M-7T4" id="qm6-o5-QNJ"/>
                 <outletCollection property="pageButtons" destination="a5P-Vi-EW1" id="WP1-UL-mEK"/>
                 <outletCollection property="pageButtons" destination="gh9-uw-Jix" id="GQe-nN-XgD"/>
@@ -35,10 +34,6 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uXr-F6-eiV">
-                    <rect key="frame" x="0.0" y="44" width="320" height="436"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-                </view>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Udz-dt-e2a">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <subviews>
@@ -68,7 +63,7 @@
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="PYk-2V-6Ce"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="11" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gh9-uw-Jix">
+                        <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gh9-uw-Jix">
                             <rect key="frame" x="150" y="11" width="21" height="21"/>
                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
@@ -87,7 +82,7 @@
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="KOs-ff-Od3"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="12" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sNe-IO-Odd">
+                        <button opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sNe-IO-Odd">
                             <rect key="frame" x="289" y="11" width="21" height="21"/>
                             <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
@@ -131,8 +126,12 @@
                         <constraint firstItem="SWl-Nn-Cf3" firstAttribute="top" secondItem="a5P-Vi-EW1" secondAttribute="bottom" constant="12" id="lrX-Kj-8Jg"/>
                     </constraints>
                 </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uXr-F6-eiV">
+                    <rect key="frame" x="0.0" y="44" width="320" height="436"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
-            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="uXr-F6-eiV" secondAttribute="bottom" id="4oZ-aF-Z6H"/>
                 <constraint firstItem="uXr-F6-eiV" firstAttribute="top" secondItem="Udz-dt-e2a" secondAttribute="bottom" id="7Th-xI-gFb"/>

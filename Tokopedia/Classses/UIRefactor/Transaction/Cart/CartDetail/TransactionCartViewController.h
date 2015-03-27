@@ -14,6 +14,7 @@
 @required
 - (void)didFinishRequestCheckoutData:(NSDictionary*)data;
 - (void)didFinishRequestBuyData:(NSDictionary*)data;
+- (void)isNodata:(BOOL)isNodata;
 
 @optional
 - (void)shouldBackToFirstPage;

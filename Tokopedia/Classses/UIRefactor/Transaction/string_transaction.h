@@ -122,10 +122,13 @@ typedef enum
 #define ACTION_EDIT_ADDRESS_CART @"edit_address"
 #define ACTION_EDIT_INSURANCE @"edit_insurance"
 #define ACTION_CECK_VOUCHER_CODE @"check_voucher_code"
+#define ACTION_VALIDATE_CODE_EMONEY @"validate_code"
+#define ACTION_START_UP_EMONEY @"startup"
 #pragma mark -
 
 #define API_VOUCHER_CODE_KEY @"voucher_code"
 #define API_ACTION_KEY @"action"
+#define API_MANDIRI_ID_KEY @"mandiri_id"
 #define API_INSURANCE_KEY @"insurance"
 #define API_IS_SUCCESS_KEY @"is_success"
 
@@ -232,7 +235,7 @@ typedef enum
 #define API_DROPSHIP_STRING_KEY @"dropship_str"
 #define API_PARTIAL_STRING_KEY @"partial_str"
 #define API_USE_DEPOSIT_KEY @"use_deposit"
-#define API_DEPOSIT_AMOUNT_KEY @"deposit_amount"
+#define API_DEPOSIT_AMT_KEY @"deposit_amt"
 
 #define API_MANDIRI_TOKEN_KEY @"mandiri_token"
 #define API_CARD_NUMBER_KEY @"card_no"
@@ -277,6 +280,7 @@ typedef enum
 
 #define API_TRANSACTION_SUMMARY_KEY @"transaction"
 #define API_TRANSACTION_SUMMARY_PRODUCT_KET @"carts"
+#define API_TRANSACTION_DATA_SHOW_KEY @"data_show"
 
 #define API_DATA_VOUCHER_KEY @"data_voucher"
 #define API_DATA_VOUCHER_AMOUNT_KEY @"voucher_amount"
@@ -284,6 +288,15 @@ typedef enum
 #define API_DATA_VOUCHER_STATUS_KEY @"voucher_status"
 #define API_DATA_VOUCHER_EXPIRED_KEY @"voucher_expired_time"
 #define API_DATA_VOUCHER_MINIMAL_AMOUNT_KEY @"voucher_minimal_amount"
+
+#define API_EMONEY_DATA_KEY @"data"
+#define API_TRACE_NUM_KEY @"trace_num"
+#define API_STATUS_KEY @"status"
+#define API_NOMOR_HP_KEY @"no_hp"
+#define API_TRX_ID_KEY @"trx_id"
+#define API_ID_EMONEY_KEY @"id_emoney"
+
+#define API_LINK_MANDIRI_KEY @"link_mandiri"
 
 #define CALCULATE_PRODUCT @""
 #define CALCULATE_ADDRESS @"calculate_address_shipping"
@@ -294,6 +307,8 @@ typedef enum
 #define API_TRANSACTION_CART_PATH @"tx-cart.pl"
 #define API_ACTION_TRANSACTION_PATH @"action/tx-cart.pl"
 #define API_CHECK_VOUCHER_PATH @"tx-voucher.pl"
+#define API_EMONEY_PATH @"tx-payment-emoney.pl"
+#define API_BCA_KLICK_PAY_PATH @"tx-payment-bcaklikpay.pl"
 
 #define TRANSACTION_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"
 #define TRANSACTION_NODATACELLTITLE @"no data"

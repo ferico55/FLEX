@@ -24,7 +24,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="UQ4-Ca-nLF">
-                    <rect key="frame" x="9" y="7" width="302" height="29"/>
+                    <rect key="frame" x="9" y="16" width="302" height="29"/>
                     <segments>
                         <segment title="Semua"/>
                         <segment title="Produk Saya"/>
@@ -34,15 +34,15 @@
                         <action selector="tap:" destination="-1" eventType="valueChanged" id="efS-aV-Srk"/>
                     </connections>
                 </segmentedControl>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WrU-lg-ldF" userLabel="Border">
-                    <rect key="frame" x="0.0" y="42" width="320" height="1"/>
-                    <color key="backgroundColor" red="0.89019607840000003" green="0.89019607840000003" blue="0.8980392157" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6yB-o3-Oev">
-                    <rect key="frame" x="0.0" y="43" width="320" height="438"/>
+                    <rect key="frame" x="0.0" y="60" width="320" height="438"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <gestureRecognizers/>
                 </view>
+                <imageView userInteractionEnabled="NO" contentMode="bottomLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tab_btm_shadow.png" translatesAutoresizingMaskIntoConstraints="NO" id="QmK-YC-PEf">
+                    <rect key="frame" x="0.0" y="60" width="320" height="32"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </imageView>
                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TG6-Ga-jeZ">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
@@ -135,21 +135,19 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="WrU-lg-ldF" secondAttribute="trailing" id="6U7-D2-aJe"/>
-                <constraint firstItem="WrU-lg-ldF" firstAttribute="leading" secondItem="TG6-Ga-jeZ" secondAttribute="leading" id="JZp-mQ-IGf"/>
+                <constraint firstItem="6yB-o3-Oev" firstAttribute="top" secondItem="UQ4-Ca-nLF" secondAttribute="bottom" constant="16" id="7oL-JN-0jG"/>
+                <constraint firstItem="6yB-o3-Oev" firstAttribute="leading" secondItem="TG6-Ga-jeZ" secondAttribute="leading" id="ADV-sB-8M1"/>
+                <constraint firstItem="6yB-o3-Oev" firstAttribute="top" secondItem="QmK-YC-PEf" secondAttribute="top" id="BdG-Je-mZC"/>
+                <constraint firstAttribute="bottom" secondItem="6yB-o3-Oev" secondAttribute="bottom" constant="-18" id="DVM-kw-XoM"/>
+                <constraint firstItem="6yB-o3-Oev" firstAttribute="centerX" secondItem="UQ4-Ca-nLF" secondAttribute="centerX" id="GeQ-bc-BkF"/>
+                <constraint firstItem="6yB-o3-Oev" firstAttribute="leading" secondItem="QmK-YC-PEf" secondAttribute="leading" id="Kf8-rN-jWv"/>
                 <constraint firstAttribute="bottom" secondItem="TG6-Ga-jeZ" secondAttribute="bottom" constant="-88" id="NXb-Dl-JCB"/>
-                <constraint firstItem="WrU-lg-ldF" firstAttribute="top" secondItem="UQ4-Ca-nLF" secondAttribute="bottom" constant="7" id="P0b-eA-NDm"/>
-                <constraint firstAttribute="bottom" secondItem="6yB-o3-Oev" secondAttribute="bottom" constant="-1" id="Q1z-rd-n2g"/>
-                <constraint firstItem="6yB-o3-Oev" firstAttribute="trailing" secondItem="WrU-lg-ldF" secondAttribute="trailing" id="W24-4r-OCw"/>
-                <constraint firstItem="UQ4-Ca-nLF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="9" id="a52-3L-mfJ"/>
-                <constraint firstItem="WrU-lg-ldF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="dll-Wp-d8i"/>
+                <constraint firstItem="6yB-o3-Oev" firstAttribute="trailing" secondItem="QmK-YC-PEf" secondAttribute="trailing" id="XCH-iG-pe8"/>
                 <constraint firstItem="TG6-Ga-jeZ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="fLL-X4-AaD"/>
-                <constraint firstItem="6yB-o3-Oev" firstAttribute="leading" secondItem="WrU-lg-ldF" secondAttribute="leading" id="qYw-Yo-q1g"/>
-                <constraint firstItem="UQ4-Ca-nLF" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="7" id="qmK-wc-2FK"/>
-                <constraint firstItem="WrU-lg-ldF" firstAttribute="centerX" secondItem="UQ4-Ca-nLF" secondAttribute="centerX" id="qyO-ar-qPh"/>
-                <constraint firstItem="6yB-o3-Oev" firstAttribute="top" secondItem="WrU-lg-ldF" secondAttribute="bottom" id="rY8-LQ-gOy"/>
-                <constraint firstItem="6yB-o3-Oev" firstAttribute="top" secondItem="UQ4-Ca-nLF" secondAttribute="bottom" constant="8" symbolic="YES" id="tDE-Q7-qVP"/>
-                <constraint firstItem="WrU-lg-ldF" firstAttribute="trailing" secondItem="TG6-Ga-jeZ" secondAttribute="trailing" id="zuN-0O-CSz"/>
+                <constraint firstItem="6yB-o3-Oev" firstAttribute="trailing" secondItem="TG6-Ga-jeZ" secondAttribute="trailing" id="fbh-d3-Hrp"/>
+                <constraint firstItem="6yB-o3-Oev" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="nox-Vp-aMr"/>
+                <constraint firstItem="6yB-o3-Oev" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="60" id="rds-SR-jS1"/>
+                <constraint firstItem="UQ4-Ca-nLF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="9" id="vCJ-wi-ae2"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="497" y="187"/>
@@ -163,5 +161,6 @@
     </objects>
     <resources>
         <image name="icon_check_orange.png" width="14" height="14"/>
+        <image name="tab_btm_shadow.png" width="320" height="32"/>
     </resources>
 </document>

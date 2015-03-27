@@ -22,6 +22,7 @@
 #import "detail.h"
 
 #import "URLCacheController.h"
+#import "NoResultView.h"
 
 @interface InboxTalkViewController ()
 <
@@ -87,6 +88,10 @@
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    
+    NSIndexPath *_selectedIndexPath;
+    NoResultView *_noResultView;
+    
 }
 
 #pragma mark - Initialization
@@ -148,7 +153,7 @@
     _cachecontroller = [URLCacheController new];
     _talkList = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
-
+    _noResultView = [NoResultView new];
     
     _table.delegate = self;
     _table.dataSource = self;
@@ -251,6 +256,11 @@
             
             if(list.talk_follow_status == 1 && ![list.talk_own isEqualToString:@"1"]) {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = NO;
+                
+                CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
+                newFrame.origin.x = 0;
+                ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
+                ((GeneralTalkCell*)cell).buttonsDividers.hidden = NO;
             } else {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
@@ -515,7 +525,7 @@
                 
             } else {
                 _isnodata = YES;
-                _table.tableFooterView = nil;
+                _table.tableFooterView = _noResultView;
             }
         }
         else{
@@ -533,13 +543,13 @@
                 else
                 {
                     [_act stopAnimating];
-                    _table.tableFooterView = nil;
+                    _table.tableFooterView = _noResultView;
                 }
             }
             else
             {
                 [_act stopAnimating];
-                _table.tableFooterView = nil;
+                _table.tableFooterView = _noResultView;
             }
         }
     }
@@ -573,7 +583,8 @@
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : list.talk_product_id,
                 TKPD_TALK_SHOP_ID:list.talk_shop_id?:0,
                 TKPD_TALK_PRODUCT_IMAGE:list.talk_product_image,
-                kTKPDDETAIL_DATAINDEXKEY : @(row)?:0
+                kTKPDDETAIL_DATAINDEXKEY : @(row)?:0,
+                TKPD_TALK_PRODUCT_NAME:list.talk_product_name
                 };
     [self.navigationController pushViewController:vc animated:YES];
     
@@ -684,6 +695,7 @@
 }
 
 - (void)deleteTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    _selectedIndexPath = indexpath;
     UIAlertView *alert = [[UIAlertView alloc]
                           initWithTitle:PROMPT_DELETE_TALK
                           message:PROMPT_DELETE_TALK_MESSAGE
@@ -698,8 +710,9 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     //delete talk
     if(buttonIndex == 1) {
-        TalkList *list = _talkList[buttonIndex];
-        [_talkList removeObjectAtIndex:buttonIndex];
+        NSInteger row = [_selectedIndexPath row];
+        TalkList *list = _talkList[row];
+        [_talkList removeObjectAtIndex:row];
         [_table reloadData];
         [self configureDeleteRestkit];
         

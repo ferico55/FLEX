@@ -154,21 +154,21 @@
     NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_SHIPMENT_LIST};
  
     
-#if DEBUG
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
-    
-    _requestShipment = [_objectManagerShipment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_INBOX_RESOLUTION_CENTER parameters:paramDictionary];
-#else
+//#if DEBUG
+//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+//    NSDictionary* auth = [secureStorage keychainDictionary];
+//    
+//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+//    
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
+//    
+//    _requestShipment = [_objectManagerShipment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_INBOX_RESOLUTION_CENTER parameters:paramDictionary];
+//#else
     _requestShipment = [_objectManagerShipment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_INBOX_RESOLUTION_CENTER parameters:[param encrypt]];
-#endif
+//#endif
     
     [_requestShipment setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessShipment:mappingResult withOperation:operation];

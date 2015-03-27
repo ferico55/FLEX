@@ -35,8 +35,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-   
-    self.title = @"Edit";
     
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
@@ -49,13 +47,21 @@
     _barButtonSave.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
     self.navigationItem.rightBarButtonItem = _barButtonSave;
     
-    [_remarkTextView setPlaceholder:@"Tulis keterangan"];
+    if ([_remarkTextView.text isEqualToString:@""]) {
+        [_remarkTextView setPlaceholder:@"Tulis keterangan"];
+    }
     
     [self setDefaultData:_data];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.title = @"Ubah Pesanan";
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -70,8 +76,13 @@
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         switch (button.tag) {
             case TAG_BAR_BUTTON_TRANSACTION_DONE:
+            {
+                ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+                product.product_notes = _remarkTextView.text;
+                [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
                 [_delegate shouldEditCartWithUserInfo:_dataInput];
-                break;
+            }
+            break;
             default:
                 break;
         }
@@ -86,24 +97,6 @@
     }
 }
 
-#pragma mark - TextView Delegate
--(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
-    [textView resignFirstResponder];
-    _activeTextView = textView;
-    
-    return YES;
-}
-
-
--(BOOL)textViewShouldEndEditing:(UITextView *)textView
-{
-    if (textView == _remarkTextView) {
-        ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
-        product.product_notes = textView.text;
-        [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
-    }
-    return YES;
-}
 
 #pragma mark - Methods
 -(void)setDefaultData:(NSDictionary*)data

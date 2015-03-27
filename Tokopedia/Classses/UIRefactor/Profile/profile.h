@@ -159,6 +159,11 @@ typedef enum
 #define kTKPDPROFILESETTING_APIPROVINCEKEY @"province"
 #define kTKPDPROFILESETTING_APIDISTRICTKEY @"district"
 #define kTKPDPROFILESETTING_APIUSERPASSWORDKEY @"user_password"
+#define API_ADDRESS_COUNTRY @"address_country"
+#define API_ADDRESS_POSTAL @"address_postal"
+#define API_ADDRESS_DISTRICT @"address_district"
+#define API_ADDRESS_CITY @"address_city"
+#define API_ADDRESS_PROVINCE @"address_province"
 
 #define API_BANK_ACCOUNT_KEY @"bank_account"
 #define kTKPDPROFILESETTING_APIBANKIDKEY @"bank_id"

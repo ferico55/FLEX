@@ -50,7 +50,7 @@
 {
     [super viewDidLoad];
     
-    self.title = @"Categories";
+    self.title = @"Kategori";
     
     [self.navigationController.navigationBar setTranslucent:NO];
     
@@ -156,6 +156,7 @@
             {
                 CategoryMenuViewController *vc = [CategoryMenuViewController new];
                 vc.delegate = self.delegate;
+
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -289,7 +290,7 @@
     if (departmenttree && departmenttree.count>0) {
         NSInteger previousViewType = [[_data objectForKey:DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE]integerValue];
         if (previousViewType == 0) {
-            [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:[_data objectForKey:kTKPDCATEGORY_DATADIDALLCATEGORYKEY]?:@(0),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:[NSString stringWithFormat:@"All Category %@",[_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]?:@""]}];
+            [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:[_data objectForKey:kTKPDCATEGORY_DATADIDALLCATEGORYKEY]?:@(0),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:[NSString stringWithFormat:@"Semua Kategori %@",[_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]?:@""]}];
         }
         for (int i = 0 ; i<departmenttree.count; i++) {
             _departmenttree = departmenttree[i];
@@ -306,10 +307,10 @@
         NSInteger previousViewType = [[_data objectForKey:DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE]integerValue];
         if (previousViewType != CATEGORY_MENU_PREVIOUS_VIEW_ADD_PRODUCT) {
             if (![_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]) {
-                [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:@(parentid),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:@"All Category"}];
+                [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:@(parentid),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:@"Semua Kategori"}];
             }
             else{
-                [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:@(parentid),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:[NSString stringWithFormat:@"All Category %@",[_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]]}];
+                [_menu addObject:@{kTKPDCATEGORY_DATADIDKEY:@(parentid),kTKPDCATEGORY_DATAISNULLCHILD:@(1),kTKPDCATEGORY_DATATITLEKEY:[NSString stringWithFormat:@"Semua Kategori %@",[_data objectForKey:kTKPDCATEGORY_DATATITLEKEY]]}];
             }
             NSArray *data = [[DBManager getSharedInstance]LoadDataQueryDepartement:[NSString stringWithFormat:@"select d_id,name,tree from ws_department where parent=\"%zd\" order by weight",parentid]];
             

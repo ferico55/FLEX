@@ -202,6 +202,7 @@
     [viewController setNavigationTitle:[_category[index] objectForKey:kTKPDCATEGORY_DATATITLEKEY]];
     [viewController setSelectedIndex:0];
     [viewController setViewControllers:viewcontrollers];
+    [viewController setNavigationTitle:[_category[index] objectForKey:@"title"]?:@""];
 
     self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:YES];

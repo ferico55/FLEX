@@ -10,4 +10,12 @@
 
 @implementation ProductFeedList
 
+- (NSString*)product_name {
+    return [_product_name kv_decodeHTMLCharacterEntities];
+}
+
+- (NSString*)shop_name {
+    return [_shop_name kv_decodeHTMLCharacterEntities];
+}
+
 @end

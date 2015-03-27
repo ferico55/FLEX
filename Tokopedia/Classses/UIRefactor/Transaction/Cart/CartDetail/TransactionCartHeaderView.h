@@ -13,7 +13,7 @@
 @protocol TransactionCartHeaderViewDelegate <NSObject>
 @required
 - (void)deleteTransactionCartHeaderView:(TransactionCartHeaderView*)view atSection:(NSInteger)section;
-
+- (void)didTapShopAtSection:(NSInteger)section;
 @end
 
 @interface TransactionCartHeaderView : UIView

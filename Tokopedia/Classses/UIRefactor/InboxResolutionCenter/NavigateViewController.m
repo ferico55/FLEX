@@ -17,7 +17,6 @@
 #import "ProfileContactViewController.h"
 #import "ProfileFavoriteShopViewController.h"
 #import "TKPDTabProfileNavigationController.h"
-#import "DisplayImageViewController.h"
 #import "DetailProductViewController.h"
 
 @implementation NavigateViewController
@@ -65,13 +64,7 @@
 
 -(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageURLStrings:(NSArray*)imageURLStrings
 {
-    DisplayImageViewController *vc = [DisplayImageViewController new];
-    vc.imageURLStrings = imageURLStrings;
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-    nav.wantsFullScreenLayout = YES;
-    nav.modalPresentationStyle = UIModalPresentationFullScreen;
-    nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    [viewController.navigationController presentViewController:nav animated:YES completion:nil];
+     //TODO::
 }
 
 -(void)navigateToProductFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID

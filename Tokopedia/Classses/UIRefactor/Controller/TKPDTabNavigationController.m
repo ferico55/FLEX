@@ -549,8 +549,8 @@
     if (count == 2) {
         _segmentcontrol.hidden = NO;
         [_segmentcontrol removeAllSegments];
-        [_segmentcontrol insertSegmentWithTitle:@"Product" atIndex:0 animated:NO];
-        [_segmentcontrol insertSegmentWithTitle:@"Shop" atIndex:1 animated:NO];
+        [_segmentcontrol insertSegmentWithTitle:@"Produk" atIndex:0 animated:NO];
+        [_segmentcontrol insertSegmentWithTitle:@"Toko" atIndex:1 animated:NO];
         _tabbar = _segmentcontrol;
         [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
         _hascatalog = NO;
@@ -558,9 +558,9 @@
     } else if (count == 3) {	//not default to 3
         _segmentcontrol.hidden = NO;
         [_segmentcontrol removeAllSegments];
-        [_segmentcontrol insertSegmentWithTitle:@"Product" atIndex:0 animated:NO];
-        [_segmentcontrol insertSegmentWithTitle:@"Catalog" atIndex:1 animated:NO];
-        [_segmentcontrol insertSegmentWithTitle:@"Shop" atIndex:2 animated:NO];
+        [_segmentcontrol insertSegmentWithTitle:@"Produk" atIndex:0 animated:NO];
+        [_segmentcontrol insertSegmentWithTitle:@"Katalog" atIndex:1 animated:NO];
+        [_segmentcontrol insertSegmentWithTitle:@"Toko" atIndex:2 animated:NO];
         _tabbar = _segmentcontrol;
         [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
         _hascatalog = YES;

@@ -79,7 +79,7 @@
     UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
 //    [titleLabel setTitle:ALL_REVIEW forState:UIControlStateNormal];
     [self setLabelButtonWithArrow:titleLabel withString:ALL_REVIEW];
-    titleLabel.frame = CGRectMake(0, 0, 70, 44);
+//    titleLabel.frame = CGRectMake(0, 0, 70, 44);
     titleLabel.tag = 15;
     [titleLabel addTarget:self action:@selector(tapbutton:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.titleView = titleLabel;
@@ -622,17 +622,20 @@
     return nil;
 }
 
-- (void)setLabelButtonWithArrow:(id)button withString:(NSString*)string {
-    NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
-    attachment.image = [UIImage imageNamed:@"navigate-down.png"];
+- (void)setLabelButtonWithArrow:(UIButton*)button withString:(NSString*)string {
+    NSDictionary *attributes = @{
+                                 NSForegroundColorAttributeName : [UIColor colorWithWhite:1 alpha:1],
+                                 NSFontAttributeName            : [UIFont boldSystemFontOfSize:16],
+                                 };
     
-    
-    NSAttributedString *attachmentString = [NSAttributedString attributedStringWithAttachment:attachment];
-    
-    NSMutableAttributedString *myString= [[NSMutableAttributedString alloc] initWithString:string attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:1 alpha:1]}];
-    [myString appendAttributedString:attachmentString];
-    
+    NSMutableAttributedString *myString = [[NSMutableAttributedString alloc] initWithString:string
+                                                                                 attributes:attributes];
     [button setAttributedTitle:myString forState:UIControlStateNormal];
+    UIImage *arrowImage = [UIImage imageNamed:@"icon_arrow_down_white.png"];
+    [button setImage:arrowImage forState:UIControlStateNormal];
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 10);
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 115, 0, -15);
+    
 }
 
 #pragma mark - Notification

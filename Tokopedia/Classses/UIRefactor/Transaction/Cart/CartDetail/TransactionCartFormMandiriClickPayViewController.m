@@ -92,7 +92,7 @@
     _transactionNumberLabel.text = transactionNumber;
     
     if (_numberCreditCardTextField.text.length==16) {
-        _lastNumberDebitCardLabel.text = [_numberCreditCardTextField.text substringFromIndex:_numberCreditCardTextField.text.length - 10];
+        _lastNumberDebitCardLabel.text = [_numberCreditCardTextField.text substringFromIndex:_numberCreditCardTextField.text.length - 9];
     }
 }
 
@@ -120,7 +120,6 @@
 #pragma mark - Text Field Delegate
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    [_activeTextField resignFirstResponder];
     _activeTextField = textField;
 }
 
@@ -128,6 +127,7 @@
 {
     if (![textField.text isEqualToString:@""]) {
         if (textField == _numberCreditCardTextField) {
+        _lastNumberDebitCardLabel.text = [_numberCreditCardTextField.text substringFromIndex:_numberCreditCardTextField.text.length - 10];
             [_dataInput setObject:textField.text forKey:API_CARD_NUMBER_KEY];
         }
         else
@@ -136,18 +136,7 @@
         }
     }
 }
--(BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    if([_numberCreditCardTextField isFirstResponder]){
-        
-        [_tokenResponseTextField becomeFirstResponder];
-    }
-    else if ([_tokenResponseTextField isFirstResponder]){
-        
-        [_tokenResponseTextField resignFirstResponder];
-    }
-    return YES;
-}
+
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
@@ -156,14 +145,14 @@
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if (textField == _numberCreditCardTextField) {
-        if (range.location==15) {
-            _lastNumberDebitCardLabel.text = [textField.text substringFromIndex: [textField.text length] - 10];
-        }
-        else if(range.location==16)
-            return NO;
-        else _lastNumberDebitCardLabel.text = @"";
-    }
+//    if (textField == _numberCreditCardTextField) {
+//        if (range.location==15) {
+//            _lastNumberDebitCardLabel.text = [textField.text substringFromIndex: [textField.text length] - 10];
+//        }
+//        else if(range.location==16)
+//            return NO;
+//        else _lastNumberDebitCardLabel.text = @"";
+//    }
     return YES;
 }
 

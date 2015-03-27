@@ -27,6 +27,7 @@
 
 #import "TKPDSecureStorage.h"
 #import "URLCacheController.h"
+#import "UserAuthentificationManager.h"
 
 @interface MainViewController ()
 <
@@ -38,6 +39,8 @@
     NSMutableDictionary *_auth;
     TKPDTabHomeViewController *_swipevc;
     URLCacheController *_cacheController;
+    
+    UserAuthentificationManager *_userManager;
 }
 
 @end
@@ -374,7 +377,9 @@
 - (void)applicationLogin:(NSNotification*)notification
 {
     NSDictionary* auth = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
-	_auth = [auth mutableCopy];
+//	_auth = [auth mutableCopy];
+    _userManager = [UserAuthentificationManager new];
+    _auth = [_userManager getUserLoginData];
     
     BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
     
@@ -436,7 +441,7 @@
 
 - (void)applicationlogout:(NSNotification*)notification
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Apakah Anda yakin ingin keluar ?"
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Apakah Anda ingin keluar ?"
                                                         message:nil
                                                        delegate:self
                                               cancelButtonTitle:@"Batal"

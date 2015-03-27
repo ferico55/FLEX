@@ -13,8 +13,8 @@
 - (id)init
 {
     // Badge label. contains notification number
-    _badgeLabel = [[UILabel alloc]initWithFrame:CGRectMake(-5, -3, 20, 20)];
-    [_badgeLabel setFont:[UIFont fontWithName:@"GothamMedium" size:12]];
+    _badgeLabel = [[UILabel alloc]initWithFrame:CGRectMake(-5, -5, 17, 17)];
+    [_badgeLabel setFont:[UIFont fontWithName:@"GothamMedium" size:10]];
     [_badgeLabel setBackgroundColor:[UIColor redColor]];
     [_badgeLabel setTextColor:[UIColor whiteColor]];
     [_badgeLabel.layer setCornerRadius:10];
@@ -26,7 +26,7 @@
     // Button for bar button item
     UIButton *button =  [UIButton buttonWithType:UIButtonTypeCustom];
     [button setImage:[UIImage imageNamed:@"icon_notification_toped"] forState:UIControlStateNormal];
-    [button setFrame:CGRectMake(0, 0, 34, 34)];
+    [button setFrame:CGRectMake(0, 0, 25, 25)];
     [button addSubview:_badgeLabel];
     
     self.customView = button;

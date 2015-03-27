@@ -31,6 +31,6 @@
 @interface UILabel(TkpdCategory)
 
 - (void)setText:(NSString*)text animated:(BOOL)animated;
--(void)multipleLineLabel:(UILabel*)label;
+-(void)setCustomAttributedText:(NSString *)text;
 
 @end

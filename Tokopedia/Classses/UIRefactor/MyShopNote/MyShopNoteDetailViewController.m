@@ -133,9 +133,9 @@
         default:
             break;
     }
-    if([_auth objectForKey:kTKPDDETAIL_APISHOPIDKEY]  == [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]) {
+    //if([_auth objectForKey:kTKPDDETAIL_APISHOPIDKEY]  == [_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]) {
         self.navigationItem.rightBarButtonItem = _barbuttonedit;
-    }
+    //}
     
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
     _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTES_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue]]];

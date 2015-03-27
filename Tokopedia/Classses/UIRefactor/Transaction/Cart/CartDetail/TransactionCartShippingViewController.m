@@ -55,6 +55,9 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *tableViewCell;
+@property (weak, nonatomic) IBOutlet UILabel *district;
+@property (weak, nonatomic) IBOutlet UILabel *city;
+@property (weak, nonatomic) IBOutlet UILabel *country;
 @property (weak, nonatomic) IBOutlet UILabel *addressStreetLabel;
 @property (weak, nonatomic) IBOutlet UILabel *recieverNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *recieverPhoneLabel;
@@ -62,6 +65,8 @@
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *tableViewSummaryCell;
 @property (weak, nonatomic) IBOutlet UILabel *senderNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *senderPhoneLabel;
+
+@property (weak, nonatomic) IBOutlet UIView *viewAddressCell;
 
 @end
 
@@ -86,8 +91,10 @@
     
     TransactionCartList *cartList = [_data objectForKey:DATA_CART_DETAIL_LIST_KEY];
     [_dataInput setObject:cartList forKey:DATA_CART_DETAIL_LIST_KEY];
-    AddressFormList *address = cartList.cart_destination;
+    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY]?:cartList.cart_destination;
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
+
+    [self setTextAddress:address];
     
     if (_indexPage == 0) {
         [self configureRestKitActionCalculate];
@@ -98,13 +105,33 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editInsurance:) name:EDIT_CART_POST_NOTIFICATION_NAME object:nil];
     
     _isFirstLoad = YES;
+
     
     self.tableView.contentInset = UIEdgeInsetsMake(-14, 0, 0, 0);
+}
+
+-(void)setTextAddress:(AddressFormList*)address
+{
+    _recieverNameLabel.text = address.receiver_name?:@"-";
+    _recieverPhoneLabel.text = address.receiver_phone?:@"-";
+    [_addressStreetLabel setCustomAttributedText: [NSString convertHTML:address.address_street]?:@"-"];
+    _district.text = address.address_district;
+    _city.text = address.address_city;
+    _country.text = [NSString stringWithFormat:@"%@ - %@, %zd",
+                     address.address_province,
+                     address.address_country,
+                     address.address_postal];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -230,11 +257,10 @@
                             //API_SHIPPING_PRODUCT_KEY:@(shippingProduct),
                             API_CALCULATE_WEIGHT_KEY:weight,
                             kTKPD_SHOPIDKEY:cart.cart_shop.shop_id?:@"",
-                            @"enc_dec" : @"off",
                             kTKPD_USERIDKEY : [_auth objectForKey:kTKPD_USERIDKEY]?:@(0)
                             };
     
-    _requestActionCalculate = [_objectManagerActionCalculate appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_TRANSACTION_CART_PATH parameters:param];
+    _requestActionCalculate = [_objectManagerActionCalculate appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_TRANSACTION_CART_PATH parameters:[param encrypt]];
     
     [_requestActionCalculate setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionCalculate:mappingResult withOperation:operation];
@@ -697,9 +723,16 @@
     if (_indexPage==0) {
         if(indexPath.section==0) cell = _tableViewCell[indexPath.row];
         else cell = _tableViewCell[indexPath.row + 5];
+
     }
     else
+    {
         cell = _tableViewSummaryCell[indexPath.row];
+        TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
+        if ([cart.cart_total_product integerValue] == 1 && indexPath.row == 4) {
+            return 0;
+        }
+    }
     return cell.frame.size.height;
 }
 
@@ -709,14 +742,16 @@
     switch (indexPath.row) {
         case 0:
         {
-            AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-            SettingAddressViewController *addressViewController = [SettingAddressViewController new];
-            addressViewController.delegate = self;
-            NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-            addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
-                                           DATA_INDEXPATH_KEY: selectedIndexPath,
-                                           DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]};
-            [self.navigationController pushViewController:addressViewController animated:YES];
+            if (_indexPage == 0) {
+                AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+                SettingAddressViewController *addressViewController = [SettingAddressViewController new];
+                addressViewController.delegate = self;
+                NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
+                                               DATA_INDEXPATH_KEY: selectedIndexPath,
+                                               DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]};
+                [self.navigationController pushViewController:addressViewController animated:YES];
+            }
             break;
         }
         case 2:
@@ -781,6 +816,11 @@
 -(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
     AddressFormList *address = [userInfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
+    address.address_country = address.country_name;
+    address.address_district = address.district_name;
+    address.address_postal = address.postal_code;
+    address.address_city = address.city_name;
+    address.address_province = address.province_name;
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
     
     NSIndexPath *selectedIndexPath = [userInfo objectForKey:DATA_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
@@ -857,7 +897,6 @@
     NSString *name = [ARRAY_INSURACE[index] objectForKey:DATA_NAME_KEY];
     
     cart.cart_insurance_prod =value;
-    cart.cart_insurance_price_idr = @"";
     cart.cart_insurance_name = name;
     [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
     [_tableView reloadData];
@@ -882,9 +921,9 @@
                 cell.detailTextLabel.text = address.address_name?:@"None";
                 break;
             case 1:
-                _recieverNameLabel.text = address.receiver_name?:@"-";
-                _recieverPhoneLabel.text = address.receiver_phone?:@"-";
-                _addressStreetLabel.text = address.address_street?:@"-";
+            {
+                [self setTextAddress:address];
+            }
                 break;
             case 2:
                 cell.detailTextLabel.text = shipment.shipment_name;
@@ -958,9 +997,6 @@
             cell.detailTextLabel.text = address.address_name?:@"";
             break;
         case 1:
-            _recieverNameLabel.text = address.receiver_name?:@"";
-            _recieverPhoneLabel.text = address.receiver_phone?:@"";
-            _addressStreetLabel.text = address.address_street?:@"";
             break;
         case 2:
         {

@@ -44,6 +44,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *leftButton;
 @property (weak, nonatomic) IBOutlet UIButton *rightButton;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *avatarIndicator;
+@property (weak, nonatomic) IBOutlet UIView *manipulatedView;
 
 
 @end
@@ -169,6 +170,23 @@
     
     if (_shop.result.info.shop_is_gold == 1) {
         _goldBadgeView.hidden = NO;
+        
+//        CGRect newFrame = self.view.frame;
+//        newFrame.size.height += 70;
+//        self.view.frame = newFrame;
+//        
+//        CGRect newFrame2 = _manipulatedView.frame;
+//        newFrame2.origin.y += 70;
+//        _manipulatedView.frame = newFrame2;
+    } else {
+//        CGRect newFrame = _manipulatedView.frame;
+//        newFrame.origin.y = 0;
+//        _manipulatedView.frame = newFrame;
+        
+//        CGRect newFrame2 = self.view.frame;
+//        newFrame2.size.height -= 70;
+//        self.view.frame = newFrame2;
+        
     }
     
     if(_shop.result.info.shop_already_favorited == 1) {

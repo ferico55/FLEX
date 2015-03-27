@@ -73,6 +73,11 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UIView *filterView;
 
+@property (strong, nonatomic) IBOutlet UIView *threeButtonsView;
+@property (strong, nonatomic) IBOutlet UIView *twoButtonsView;
+@property (strong, nonatomic) IBOutlet UIView *oneButtonView;
+@property (strong, nonatomic) IBOutlet UIView *oneButtonReOrderView;
+
 @end
 
 @implementation TxOrderStatusViewController
@@ -109,12 +114,26 @@
         UIEdgeInsets inset = _tableView.contentInset;
         inset.bottom += _filterView.frame.size.height;
         _tableView.contentInset = inset;
+        _tableView.scrollIndicatorInsets = inset;
     }
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshRequest)
                                                  name:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME
                                                object:nil];
+    
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(didChangePreferredContentSize:)
+//                                                 name:UIContentSizeCategoryDidChangeNotification object:nil];
+//
+//    _tableView.estimatedRowHeight = 100.0;
+//    _tableView.rowHeight = UITableViewAutomaticDimension;
+    
+}
+
+- (void)didChangePreferredContentSize:(NSNotification *)notification
+{
+    [self.tableView reloadData];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -212,12 +231,13 @@
 }
 
 #pragma mark - Table View Data Source
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return _list.count;
+}
+
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-#ifdef TRANSACTION_SHIPMENT_ISNODATA_ENABLE
-    return _isNodata ? 1 : _list.count;
-#else
-    return _isNodata ? 0 : _list.count;
-#endif
+    return 1;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -280,12 +300,12 @@
     NSString *statusString = [[comment valueForKey:@"description"] componentsJoinedByString:@"\n"];
     
     [cell.statusLabel setText:statusString animated:YES];
-    [cell.statusLabel multipleLineLabel:cell.statusLabel];
+    [cell.statusLabel setCustomAttributedText:cell.statusLabel.text];
     
     if ([cell.statusLabel.text isEqualToString:@"0"] || [cell.statusLabel.text isEqual:@""]) {
         cell.statusLabel.text = @"-";
     }
-    
+
     [cell hideAllButton];
     if ([self isShowButtonSeeComplainOrder:order])
         cell.oneButtonView.hidden = NO;
@@ -298,6 +318,16 @@
     }
     if ([self isShowThreeButtonsOrder:order])
         cell.threeButtonsView.hidden = NO;
+    
+//    if ([self isShowTwoButtonsOrder:order] ||
+//        [self isShowThreeButtonsOrder:order] ||
+//        [self isShowButtonSeeComplainOrder:order] ||
+//        [self isShowButtonSeeComplainOrder:order] ||
+//        [self isShowButtonReorder:order]) {
+//        [cell.buttonsConstraintHeight makeObjectsPerformSelector:@selector(setConstant:)withObject:@(44)];
+//    } else {
+//        [cell.buttonsConstraintHeight makeObjectsPerformSelector:@selector(setConstant:)withObject:@(0)];
+//    }
 
     cell.indexPath = indexPath;
 
@@ -353,20 +383,24 @@
     return imageName;
 }
 
+
 #pragma mark - Table View Delegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TxOrderStatusList *order = _list[indexPath.row];
-    CGFloat height = 0;
-    if ([self isShowTwoButtonsOrder:order] ||
-        [self isShowThreeButtonsOrder:order] ||
-        [self isShowButtonSeeComplainOrder:order]||
-        [self isShowButtonSeeComplainOrder:order]||
-        [self isShowButtonReorder:order]) {
-        height = tableView.rowHeight;
-    } else {
-        height = tableView.rowHeight - 45;
+    CGFloat height = tableView.rowHeight;
+    if (height>=0) {
+        if ([self isShowTwoButtonsOrder:order] ||
+            [self isShowThreeButtonsOrder:order] ||
+            [self isShowButtonSeeComplainOrder:order] ||
+            [self isShowButtonSeeComplainOrder:order] ||
+            [self isShowButtonReorder:order]) {
+            height = tableView.rowHeight;
+        } else {
+            height = tableView.rowHeight - 45;
+        }
     }
+
     return height;
 }
 
@@ -381,7 +415,7 @@
         cell.backgroundColor = [UIColor whiteColor];
     }
     
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
+    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.row] -1;
     
     if (row == indexPath.row) {
         NSLog(@"%@", NSStringFromSelector(_cmd));
@@ -529,21 +563,21 @@
     _tableView.tableFooterView = _footer;
     [_act startAnimating];
     
-#if DEBUG
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-    
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
-#else
+//#if DEBUG
+//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+//    NSDictionary* auth = [secureStorage keychainDictionary];
+//    
+//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+//    
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
+//    
+//    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
+//#else
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_TX_ORDER parameters:[param encrypt]];
-#endif
+//#endif
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];
@@ -621,7 +655,7 @@
                         }
                         
                         _page = [[queries objectForKey:API_PAGE_KEY] integerValue];
-                        _tableView.tableFooterView = NO;
+                        _tableView.tableFooterView = nil;
                     }
                     else
                     {
@@ -634,7 +668,7 @@
             }
         }
         else{
-            _tableView.tableFooterView = NO;
+            _tableView.tableFooterView = nil;
             NSError *error = object;
             if ([error code] != NSURLErrorCancelled) {
                 NSString *errorDescription = error.localizedDescription;
@@ -710,25 +744,22 @@
     
     NSDictionary* param = @{API_ACTION_KEY : ACTION_DELIVERY_FINISH_ORDER,
                             API_ORDER_ID_KEY : order.order_detail.detail_order_id};
-    
-    _tableView.tableFooterView = _footer;
-    [_act startAnimating];
-    
-#if DEBUG
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-    
-    _requestFinishOrder = [_objectManagerFinishOrder appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];
-#else
+
+//#if DEBUG
+//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+//    NSDictionary* auth = [secureStorage keychainDictionary];
+//    
+//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+//    
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
+//    
+//    _requestFinishOrder = [_objectManagerFinishOrder appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];
+//#else
     _requestFinishOrder = [_objectManagerFinishOrder appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_TX_ORDER parameters:[param encrypt]];
-#endif
+//#endif
     
     [_requestFinishOrder setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessFinishOrder:object
@@ -736,14 +767,12 @@
                       withMappingResult:mappingResult];
         [_objectsConfirmRequest removeObject:processingObject];
         [timer invalidate];
-        _tableView.tableFooterView = nil;
         [_act stopAnimating];
         [self requestProcessFinishOrder];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self failedConfirmDelivery:object];
         [self requestFailureFinishOrder:error];
         [timer invalidate];
-        _tableView.tableFooterView = nil;
         [_act stopAnimating];
         [_objectsConfirmRequest removeObject:processingObject];
         [self requestProcessFinishOrder];
@@ -860,37 +889,32 @@
     
     NSDictionary* param = @{API_ACTION_KEY : ACTION_RE_ORDER,
                             API_ORDER_ID_KEY : order.order_detail.detail_order_id};
-    
-    _tableView.tableFooterView = _footer;
-    [_act startAnimating];
-    
-#if DEBUG
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-    
-    _requestReOrder = [_objectManagerReOrder appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];
-#else
+
+//#if DEBUG
+//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+//    NSDictionary* auth = [secureStorage keychainDictionary];
+//    
+//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+//    
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
+//    
+//    _requestReOrder = [_objectManagerReOrder appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];
+//#else
     _requestReOrder = [_objectManagerReOrder appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_TX_ORDER parameters:[param encrypt]];
-#endif
+//#endif
     
     [_requestReOrder setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessReOrder:order
                           withOperation:operation
                       withMappingResult:mappingResult];
         [timer invalidate];
-        _tableView.tableFooterView = nil;
         [_act stopAnimating];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureReOrder:order withError:error];
         [timer invalidate];
-        _tableView.tableFooterView = nil;
         [_act stopAnimating];
     }];
     

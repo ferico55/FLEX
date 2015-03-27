@@ -125,6 +125,7 @@
             CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
             shopIsGoldLabelFrame.origin.x = 83;
             _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
+            _shopIsGoldLabel.text = @"";
         }
     }    
 }
@@ -145,9 +146,13 @@
 
     // Set round corner profile picture
     self.profilePictureImageView.layer.cornerRadius = self.profilePictureImageView.frame.size.width/2;
+    self.profilePictureImageView.layer.borderColor = [UIColor colorWithRed:(224/255) green:(224/255) blue:(224/255) alpha:(0.1)].CGColor;
+    self.profilePictureImageView.layer.borderWidth = 1.0;
 
     // Set round corner profile picture
     self.shopImageView.layer.cornerRadius = self.shopImageView.frame.size.width/2;
+    self.shopImageView.layer.borderColor = [UIColor colorWithRed:(224/255) green:(224/255) blue:(224/255) alpha:(0.1)].CGColor;
+    self.shopImageView.layer.borderWidth = 1.0;
 
     // Set create shop button corner
     self.createShopButton.layer.cornerRadius = 2;
@@ -181,7 +186,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 6;
+    return 7;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -210,10 +215,14 @@
             break;
             
         case 4:
-            return 6;
+            return 3;
             break;
             
         case 5:
+            return 2;
+            break;
+            
+        case 6:
             return 1;
             break;
             
@@ -237,6 +246,8 @@
             [[_auth objectForKey:@"shop_id"] integerValue] > 0)
             return @"";
         else return @"TOKO SAYA";
+    } else if(section == 4) {
+        return @"Kotak Masuk";
     }
     return @"";
 }
@@ -304,13 +315,6 @@
     
     else if (indexPath.section == 4) {
         if(indexPath.row == 0) {
-            
-        }
-        if(indexPath.row == 2) {
-            ReputationPageViewController *reputationPageVc = [ReputationPageViewController new];
-            [self.navigationController pushViewController:reputationPageVc animated:YES];
-        }
-        if(indexPath.row == 3) {
             InboxMessageViewController *vc = [InboxMessageViewController new];
             vc.data=@{@"nav":@"inbox-message"};
             
@@ -328,7 +332,7 @@
             [inboxController setSelectedIndex:2];
             [inboxController setViewControllers:vcs];
             [self.navigationController pushViewController:inboxController animated:YES];
-        } else if(indexPath.row == 4) {
+        } else if(indexPath.row == 1) {
             InboxTalkViewController *vc = [InboxTalkViewController new];
             vc.data=@{@"nav":@"inbox-talk"};
             
@@ -344,7 +348,7 @@
             [nc setSelectedIndex:2];
             [nc setViewControllers:vcs];
             [self.navigationController pushViewController:nc animated:YES];
-        } else if (indexPath.row == 5) {
+        } else if (indexPath.row == 2) {
             InboxReviewViewController *vc = [InboxReviewViewController new];
             vc.data=@{@"nav":@"inbox-review"};
             
@@ -365,7 +369,7 @@
         
     }
     
-    else if (indexPath.section == 5) {
+    else if (indexPath.section == 6) {
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
         [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil userInfo:@{}];
         [nc postNotificationName:@"clearCacheNotificationBar" object:nil];

@@ -50,9 +50,9 @@
     _isnodata = YES;
     _wholesales = [NSMutableArray new];
     
-    self.tabel.layer.borderColor = [UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1].CGColor;
+    self.tabel.layer.borderColor = [UIColor colorWithRed:(224/255.0) green:(224/255.0) blue:(224.0/255.0) alpha:1.0].CGColor;
     self.tabel.layer.borderWidth = 0.5;
-    self.tabel.backgroundColor = [UIColor colorWithRed:249.0/255.0 green:249.0/255.0 blue:249.0/255.0 alpha:1];    
+    self.tabel.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -86,7 +86,9 @@
     
     if (indexPath.row == 0) {
         ((DetailProductWholesaleTableCell*)cell).quantity.text = @"Rentang Jumlah";
+        ((DetailProductWholesaleTableCell*)cell).quantity.textColor = [UIColor lightGrayColor];
         ((DetailProductWholesaleTableCell*)cell).price.text = @"Harga per barang";
+        ((DetailProductWholesaleTableCell*)cell).price.textColor = [UIColor lightGrayColor];
     } else {
         WholesalePrice *wholesale = _wholesales[indexPath.row-1];
         if (indexPath.row == _wholesales.count-1)

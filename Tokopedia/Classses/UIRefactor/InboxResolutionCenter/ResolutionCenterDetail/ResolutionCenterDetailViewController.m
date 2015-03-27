@@ -22,6 +22,7 @@
 #import "InboxResolutionCenterObjectMapping.h"
 
 #define TAG_ALERT_CANCEL_COMPLAIN 10
+#define TAG_CHANGE_SOLUTION 11
 #define DATA_SELECTED_SHIPMENT_KEY @"data_selected_shipment"
 
 #define BUTTON_TITLE_ACCEPT_SOLUTION  @"Terima Solusi"
@@ -121,6 +122,24 @@
     [self requestWithAction:ACTION_GET_RESOLUTION_CENTER_DETAIL];
     
     _inputConversation.layer.cornerRadius = 2;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didChangePreferredContentSize:)
+                                                 name:UIContentSizeCategoryDidChangeNotification object:nil];
+    
+    _tableView.estimatedRowHeight = 100.0;
+    _tableView.rowHeight = UITableViewAutomaticDimension;
+    
+}
+
+- (void)didChangePreferredContentSize:(NSNotification *)notification
+{
+    [self.tableView reloadData];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 -(void)setHeaderData
@@ -202,56 +221,56 @@
         [_dataInput setObject:selectedShipment forKey:DATA_SELECTED_SHIPMENT_KEY];
     }
     
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
-
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    ResolutionConversation *conversation = _listResolutionConversation[indexPath.row];
-    NSInteger rowHeight;
-    NSInteger deltaHeightCell = 10;
-    
-    if (conversation.view_more == 1)
-    {
-        rowHeight = _loadMoreCell.frame.size.height;
-    }
-    else if (conversation.system_flag == 1 && ![conversation.user_name isEqualToString:@"Admin Tokopedia"])
-    {
-        NSInteger cellRowHeight = CELL_SYSTEM_HEIGHT;
-        ResolutionCenterSystemCell *cell = (ResolutionCenterSystemCell*)[self cellSystemResolutionAtIndexPath:indexPath];
-        
-        rowHeight = cellRowHeight - cell.twoButtonView.frame.size.height + deltaHeightCell;
-        if ([self isShowOneButton:conversation atIndexPath:indexPath] ||
-            [self isShowTwoButton:conversation]
-            ) {
-            rowHeight = cellRowHeight + deltaHeightCell;
-        }
-    }
-    else
-    {
-        ResolutionCenterDetailCell *cell = (ResolutionCenterDetailCell*)[self cellDetailResolutionAtIndexPath:indexPath];
-        NSInteger cellRowHeight = CELL_DETAIL_HEIGHT;
-        NSInteger attachmentHeight = VIEW_ATTACHMENT_HEIGHT;
-        
-        rowHeight = cellRowHeight + deltaHeightCell;
-        if ([self isShowOneButton:conversation atIndexPath:indexPath] || [self isShowTwoButton:conversation]) {
-            rowHeight = cellRowHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
-        }
-        if ([self isShowAttachment:conversation]) {
-            rowHeight = cellRowHeight + attachmentHeight + deltaHeightCell;
-        }
-        if ([self isShowAttachmentWithButton:conversation]) {
-            rowHeight = cellRowHeight + attachmentHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
-        }
-        if ([cell.markLabel.text isEqualToString:@""]) {
-            rowHeight = rowHeight - VIEW_MARK_HEIGHT + deltaHeightCell;
-        }
-    }
-    
-    return rowHeight;
-}
+//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    ResolutionConversation *conversation = _listResolutionConversation[indexPath.row];
+//    NSInteger rowHeight;
+//    NSInteger deltaHeightCell = 10;
+//    
+//    if (conversation.view_more == 1)
+//    {
+//        rowHeight = _loadMoreCell.frame.size.height;
+//    }
+//    else if (conversation.system_flag == 1 && ![conversation.user_name isEqualToString:@"Admin Tokopedia"])
+//    {
+//        NSInteger cellRowHeight = CELL_SYSTEM_HEIGHT;
+//        ResolutionCenterSystemCell *cell = (ResolutionCenterSystemCell*)[self cellSystemResolutionAtIndexPath:indexPath];
+//        
+//        rowHeight = cellRowHeight - cell.twoButtonView.frame.size.height + deltaHeightCell;
+//        if ([self isShowOneButton:conversation atIndexPath:indexPath] ||
+//            [self isShowTwoButton:conversation]
+//            ) {
+//            rowHeight = cellRowHeight + deltaHeightCell;
+//        }
+//    }
+//    else
+//    {
+//        ResolutionCenterDetailCell *cell = (ResolutionCenterDetailCell*)[self cellDetailResolutionAtIndexPath:indexPath];
+//        NSInteger cellRowHeight = CELL_DETAIL_HEIGHT;
+//        NSInteger attachmentHeight = VIEW_ATTACHMENT_HEIGHT;
+//        
+//        rowHeight = cellRowHeight + deltaHeightCell;
+//        if ([self isShowOneButton:conversation atIndexPath:indexPath] || [self isShowTwoButton:conversation]) {
+//            rowHeight = cellRowHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
+//        }
+//        if ([self isShowAttachment:conversation]) {
+//            rowHeight = cellRowHeight + attachmentHeight + deltaHeightCell;
+//        }
+//        if ([self isShowAttachmentWithButton:conversation]) {
+//            rowHeight = cellRowHeight + attachmentHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
+//        }
+//        if ([cell.markLabel.text isEqualToString:@""]) {
+//            rowHeight = rowHeight - VIEW_MARK_HEIGHT + deltaHeightCell;
+//        }
+//    }
+//    
+//    return rowHeight;
+//}
 
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
@@ -281,6 +300,18 @@
             }
         }
             break;
+            
+        case TAG_CHANGE_SOLUTION:
+        {
+            if (buttonIndex == 1) {
+                [self resolutionOpenIsGotTheOrder:YES];
+            }
+            else
+            {
+                [self resolutionOpenIsGotTheOrder:NO];
+            }
+            break;
+        }
             
         default:
             break;
@@ -355,40 +386,56 @@
         [self requestAction:ACTION_FINISH_RESOLUTION];
     }
     if ([sender.titleLabel.text isEqualToString:BUTTON_TITLE_APPEAL]) {
-        InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
-        vc.isGotTheOrder = ([_resolutionDetail.resolution_last.last_flag_received integerValue]==1);
-        vc.isChangeSolution = YES;
-        vc.detailOpenAmount = _resolutionDetail.resolution_order.order_open_amount;
-        vc.detailOpenAmountIDR = _resolutionDetail.resolution_order.order_open_amount_idr;
-        vc.shippingPriceIDR = _resolutionDetail.resolution_order.order_shipping_price_idr;
-        vc.selectedProblem = [self trouble];
-        vc.invoice = _resolutionDetail.resolution_order.order_invoice_ref_num;
-        vc.delegate = self;
-        vc.isCanEditProblem = NO;
-        vc.controllerTitle = BUTTON_TITLE_APPEAL;
-        NSString *totalRefund = [_resolutionDetail.resolution_last.last_refund_amt stringValue];
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        [formatter setGroupingSeparator:@"."];
-        [formatter setGroupingSize:3];
-        NSString *num = totalRefund;
-        NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
-        totalRefund = str;
-        vc.totalRefund = totalRefund;
+        BOOL isGotTheOrder = [_resolutionDetail.resolution_last.last_flag_received boolValue];
         
-        if (_resolutionDetail.resolution_by.by_customer == 1) {
-            vc.shopName = _resolutionDetail.resolution_shop.shop_name;
-            vc.shopPic = _resolutionDetail.resolution_shop.shop_image;
-            vc.buyerSellerLabel.text = @"Pembelian dari";
-        }
-        if (_resolutionDetail.resolution_by.by_seller == 1) {
-            vc.shopName = _resolutionDetail.resolution_customer.customer_name;
-            vc.shopPic = _resolutionDetail.resolution_customer.customer_image;
-            vc.buyerSellerLabel.text = @"Pembelian oleh";
-            vc.isActionBySeller = YES;
-        }
-        [self.navigationController pushViewController:vc animated:YES];
+        //if (isGotTheOrder) {
+            [self resolutionOpenIsGotTheOrder:isGotTheOrder];
+        //}
+        //else
+        //{
+        //    UIAlertView *alertChangeSolution = [[UIAlertView alloc]initWithTitle:@"Konfirmasi" message:@"Apakah barang telah diterima?\nAnda tidak bisa mengubah menjadi tidak terima barang, setelah Anda konfirmasi terima barang." delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"Ya",@"Tidak", nil];
+        //    alertChangeSolution.tag = TAG_CHANGE_SOLUTION;
+        //    [alertChangeSolution show];
+        //}
     }
 }
+
+-(void)resolutionOpenIsGotTheOrder:(BOOL)isGotTheOrder
+{
+    InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
+    vc.isGotTheOrder = isGotTheOrder;
+    vc.isChangeSolution = YES;
+    vc.detailOpenAmount = _resolutionDetail.resolution_order.order_open_amount;
+    vc.detailOpenAmountIDR = _resolutionDetail.resolution_order.order_open_amount_idr;
+    vc.shippingPriceIDR = _resolutionDetail.resolution_order.order_shipping_price_idr;
+    vc.selectedProblem = [self trouble];
+    vc.invoice = _resolutionDetail.resolution_order.order_invoice_ref_num;
+    vc.delegate = self;
+    vc.isCanEditProblem = NO;
+    vc.controllerTitle = BUTTON_TITLE_APPEAL;
+    NSString *totalRefund = [_resolutionDetail.resolution_last.last_refund_amt stringValue];
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    [formatter setGroupingSeparator:@"."];
+    [formatter setGroupingSize:3];
+    NSString *num = totalRefund;
+    NSString *str = [formatter stringFromNumber:[NSNumber numberWithDouble:[num doubleValue]]];
+    totalRefund = str;
+    vc.totalRefund = totalRefund;
+    
+    if (_resolutionDetail.resolution_by.by_customer == 1) {
+        vc.shopName = _resolutionDetail.resolution_shop.shop_name;
+        vc.shopPic = _resolutionDetail.resolution_shop.shop_image;
+        vc.buyerSellerLabel.text = @"Pembelian dari";
+    }
+    if (_resolutionDetail.resolution_by.by_seller == 1) {
+        vc.shopName = _resolutionDetail.resolution_customer.customer_name;
+        vc.shopPic = _resolutionDetail.resolution_customer.customer_image;
+        vc.buyerSellerLabel.text = @"Pembelian oleh";
+        vc.isActionBySeller = YES;
+    }
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 -(void)goToShopOrProfileIndexPath:(NSIndexPath *)indexPath
 {
     ResolutionConversation *conversation = _listResolutionConversation[indexPath.row];
@@ -554,8 +601,22 @@
         [self adjustOneButtonTitleConversation:conversation cell:cell];
     }
     
-    [cell.markLabel multipleLineLabel:cell.markLabel];
+    [cell.markLabel setCustomAttributedText:cell.markLabel.text];
     cell.indexPath = indexPath;
+    
+
+    if (!([self isShowOneButton:conversation atIndexPath:indexPath] ||
+        [self isShowTwoButton:conversation]
+        )) {
+        cell.oneButtonConstraintHeight.constant = 0;
+        cell.twoButtonConstraintHeight.constant = 0;
+    }
+    else {
+        cell.oneButtonConstraintHeight.constant = 44;
+        cell.twoButtonConstraintHeight.constant = 44;
+    }
+    
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
 }
@@ -584,12 +645,12 @@
     cell.markLabel.text = [NSString convertHTML:[self markConversation:conversation]];
     
     [self adjustActionByLabel:cell.buyerSellerLabel conversation:conversation];
-    [cell.markLabel multipleLineLabel:cell.markLabel];
+    [cell.markLabel setCustomAttributedText:cell.markLabel.text];
     
-    if (conversation.system_flag == 1) {
-        //TODO:: yellow background
-        //cell.backgroundColor = [UIColor yellowColor];
-    }
+    //if (conversation.system_flag == 1) {
+    //    //yellow background
+    //    cell.markView.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:194.0/255.0 alpha:1];
+    //}
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:conversation.user_img] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
@@ -610,7 +671,7 @@
     if ([self isShowAttachment:conversation]) {
         [self adjustAttachmentCell:cell conversation:conversation];
         cell.markAttachmentLabel.text = conversation.remark;
-        [cell.markAttachmentLabel multipleLineLabel:cell.markAttachmentLabel];
+        [cell.markAttachmentLabel setCustomAttributedText:cell.markAttachmentLabel.text];
         cell.atachmentView.hidden = NO;
         cell.isShowAttachment = YES;
     }
@@ -639,6 +700,24 @@
     
     cell.indexPath = indexPath;
     
+    if (!([self isShowOneButton:conversation atIndexPath:indexPath] || [self isShowTwoButton:conversation]))
+    {
+        cell.twobuttonConstraintHeight.constant = 0;
+        cell.oneButtonConstraintHeight.constant = 0;
+    }
+    else
+    {
+        cell.twobuttonConstraintHeight.constant = 44.0;
+        cell.oneButtonConstraintHeight.constant = 44.0;
+    }
+    if (![self isShowAttachment:conversation]) {
+        cell.imageConstraintHeight.constant = 0;
+    }
+    else
+    {
+        cell.imageConstraintHeight.constant = 74.0;
+    }
+
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -896,9 +975,7 @@
         [marks addObject:[self problemAndSolutionConversation:conversation]];
     }
     
-    if (![self isShowAttachment:conversation]) {
-        [marks addObject:conversation.remark_str?:@""];
-    }
+    [marks addObject:conversation.remark_str?:@""];
     
     if (conversation.input_resi) {
         [marks addObject:[NSString stringWithFormat:@"Nomor Resi : %@ (%@)",conversation.input_resi,conversation.kurir_name]];
@@ -1169,21 +1246,21 @@
     
     _loadMoreButton.enabled = NO;
     
-#if DEBUG
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
-    
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_INBOX_RESOLUTION_CENTER parameters:paramDictionary];
-#else
+//#if DEBUG
+//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+//    NSDictionary* auth = [secureStorage keychainDictionary];
+//    
+//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+//    
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
+//    
+//    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_INBOX_RESOLUTION_CENTER parameters:paramDictionary];
+//#else
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_INBOX_RESOLUTION_CENTER parameters:[param encrypt]];
-#endif
+//#endif
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation withAction:action];
@@ -1374,21 +1451,21 @@
                             API_RESOLUTION_ID_KEY : _resolutionID?:@"",
                             };
     
-#if DEBUG
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
-    
-    _requestAction = [_objectManagerAction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_RESOLUTION_CENTER parameters:paramDictionary];
-#else
+//#if DEBUG
+//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+//    NSDictionary* auth = [secureStorage keychainDictionary];
+//    
+//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+//    
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
+//    
+//    _requestAction = [_objectManagerAction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_RESOLUTION_CENTER parameters:paramDictionary];
+//#else
     _requestAction = [_objectManagerAction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_RESOLUTION_CENTER parameters:[param encrypt]];
-#endif
+//#endif
     
     [_requestAction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessAction:action mappingResult:mappingResult withOperation:operation];
@@ -1507,21 +1584,21 @@
                             API_CONVERSATION_ID_KEY : conversation.conversation_id?:@""
                             };
     
-#if DEBUG
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
-    
-    _requestEditReceipt = [_objectManagerEditReceipt appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_RESOLUTION_CENTER parameters:paramDictionary];
-#else
+//#if DEBUG
+//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+//    NSDictionary* auth = [secureStorage keychainDictionary];
+//    
+//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+//    
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
+//    
+//    _requestEditReceipt = [_objectManagerEditReceipt appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_RESOLUTION_CENTER parameters:paramDictionary];
+//#else
     _requestEditReceipt = [_objectManagerEditReceipt appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_RESOLUTION_CENTER parameters:[param encrypt]];
-#endif
+//#endif
     
     [_requestEditReceipt setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessEditReceipt:mappingResult withOperation:operation];
@@ -1640,30 +1717,30 @@
                             API_PHOTOS_KEY : photo,
                             API_SERVER_ID_KEY : serverID,
                             API_EDIT_SOLUTION_FLAG_KEY:@(editSolutionFlag),
-                            API_SOLUTION_KEY : solution,
+                            API_SOLUTION_KEY : (!received)?@(1):solution,
                             API_REFUND_AMOUNT_KEY : refunAmount,
                             API_FLAG_RECIEVED_KEY : @(received),
                             API_TROUBLE_TYPE_KEY : trouble,
                             };
     
-#if DEBUG
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
-    
-    _requestReplay = [_objectManagerReplay appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_RESOLUTION_CENTER parameters:paramDictionary];
-#else
+//#if DEBUG
+//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+//    NSDictionary* auth = [secureStorage keychainDictionary];
+//    
+//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+//    
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
+//    
+//    _requestReplay = [_objectManagerReplay appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_RESOLUTION_CENTER parameters:paramDictionary];
+//#else
     _requestReplay = [_objectManagerReplay appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_RESOLUTION_CENTER parameters:[param encrypt]];
-#endif
+//#endif
     
     [_requestReplay setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessReplay:mappingResult withOperation:operation];
+        [self requestSuccessReplay:mappingResult withOperation:operation isChangeSolution:editSolutionFlag];
         [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureReplayWithErrorMessage:@[error.localizedDescription]];
@@ -1676,7 +1753,7 @@
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
--(void)requestSuccessReplay:(RKMappingResult*)mappingResult withOperation:(RKObjectRequestOperation *)operation
+-(void)requestSuccessReplay:(RKMappingResult*)mappingResult withOperation:(RKObjectRequestOperation *)operation isChangeSolution:(BOOL)isChangeSolution
 {
     NSDictionary *result = mappingResult.dictionary;
     id stat = [result objectForKey:@""];
@@ -1690,7 +1767,8 @@
             [self requestFailureReplayWithErrorMessage:resolution.message_error];
         }
         else if (resolution.result.is_success == 1) {
-            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:@[@"Sukses"] delegate:self];
+            NSArray *successMessage = isChangeSolution?@[@"Anda telah berhasil mengubah solusi"]:@[@"Sukses mengirim pesan diskusi"];
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:resolution.message_status?:successMessage delegate:self];
             [alert show];
         }
         else

@@ -39,12 +39,12 @@
     NSInteger _viewControllerIndex;
     CGFloat _totalOffset;
     UIPageViewControllerNavigationDirection _direction;
-    
+
     BOOL _tabBarCanScrolling;
-    
+
     NotificationManager *_notifManager;
     UserAuthentificationManager *_userManager;
-    
+
 }
 
 @property (strong, nonatomic) UIPageViewController *pageController;
@@ -66,7 +66,7 @@
 - (void)viewDidLoad
 {
     _userManager = [UserAuthentificationManager new];
-    
+
     self.modalPresentationStyle = UIModalPresentationCurrentContext;
     
     UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
@@ -112,10 +112,10 @@
     [self.pageController didMoveToParentViewController:self];
     
     _totalOffset = 0;
-    
+
     _tabView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width*3, 44)];
     _tabView.backgroundColor = [UIColor whiteColor];
-    
+
     _tabScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     _tabScrollView.tag = 2;
     _tabScrollView.contentSize = CGSizeMake((self.view.frame.size.width/3)*6, 44);
@@ -132,7 +132,7 @@
     frame.origin.y = 64;
     greenArrowImageView.frame = frame;
     [self.view addSubview:greenArrowImageView];
-    
+
     UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*1, 0, (self.view.frame.size.width/3), 44)];
     [button1 setTitle:@"Hotlist" forState:UIControlStateNormal];
     [button1 setTitleColor:[UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1] forState:UIControlStateNormal];
@@ -180,7 +180,7 @@
     _direction = UIPageViewControllerNavigationDirectionForward;
     
     _tabBarCanScrolling = YES;
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(redirectAfterNotification:)
                                                  name:@"redirectAfterNotification"
@@ -202,7 +202,7 @@
                                              selector:@selector(reloadNotification)
                                                  name:@"reloadNotification"
                                                object:nil];
-    
+
     [self.navigationController.navigationBar setTranslucent:NO];
     
     self.view.backgroundColor = [UIColor colorWithRed:243.0/255.0 green:243.0/255.0 blue:243.0/255.0 alpha:1];
@@ -210,7 +210,7 @@
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     NSString *navigationBarImagePath = [[NSBundle mainBundle] pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"];
     UIImage *backgroundImage = [[UIImage alloc] initWithContentsOfFile:navigationBarImagePath];
-    
+
     [navigationBar setBackgroundImage:backgroundImage
                        forBarPosition:UIBarPositionAny
                            barMetrics:UIBarMetricsDefault];
@@ -234,9 +234,9 @@
     }
     
     _userManager = [UserAuthentificationManager new];
-    
+
     if(_userManager.isLogin) {
-        
+
         _tabScrollView.scrollEnabled = YES;
         
         for (id subview in _tabScrollView.subviews) {
@@ -245,20 +245,20 @@
                 button.hidden = NO;
             }
         }
-        
+
         for(id view in _pageController.view.subviews){
             if([view isKindOfClass:[UIScrollView class]]){
                 [(UIScrollView *)view setScrollEnabled:YES];
             }
         }
-        
+
     } else {
         
         _viewControllerIndex = 1;
 
         _tabScrollView.scrollEnabled = NO;
         _tabScrollView.contentOffset = CGPointMake(0, 0);
-        
+
         for (id subview in _tabScrollView.subviews) {
             if ([subview isKindOfClass:[UIButton class]]) {
                 UIButton *button = (UIButton *)subview;
@@ -382,7 +382,7 @@
                                              _tabBarCanScrolling = YES;
                                          }];
         }
-            break;
+             break;
             
         case 2: {
             
@@ -509,7 +509,9 @@
 
 - (void)redirectAfterNotification:(NSNotification *)userInfo
 {
-    NSInteger code = [[[userInfo object] objectForKey:@"name"] integerValue];
+    NSDictionary *userDict = userInfo.userInfo;
+    NSInteger code = [[userDict objectForKey:@"state"] integerValue];
+    
     if (code == STATE_NEW_MESSAGE) {
         [self goToInboxMessage];
     } else if (code == STATE_NEW_TALK) {
@@ -559,9 +561,10 @@
     TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
     [nc setSelectedIndex:2];
     [nc setViewControllers:vcs];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-    [nav.navigationBar setTranslucent:NO];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+//    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+//    [nav.navigationBar setTranslucent:NO];
+//    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    [self.navigationController pushViewController:nc animated:YES];
 }
 
 - (void)goToInboxReview {
@@ -579,9 +582,10 @@
     TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
     [nc setSelectedIndex:2];
     [nc setViewControllers:vcs];
-    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-    [nav.navigationBar setTranslucent:NO];
-    [self.navigationController presentViewController:nav animated:YES completion:nil];
+//    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+//    [nav.navigationBar setTranslucent:NO];
+//    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    [self.navigationController pushViewController:nc animated:YES];
 }
 
 - (void)goToNewOrder {

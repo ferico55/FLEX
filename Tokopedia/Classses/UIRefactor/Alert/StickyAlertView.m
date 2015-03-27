@@ -115,7 +115,7 @@
 - (void)attributedTextWithArray:(NSArray *)texts color:(UIColor *)color
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
+    style.lineSpacing = 3.0;
     
     NSDictionary *dict = @{
         NSForegroundColorAttributeName : color,

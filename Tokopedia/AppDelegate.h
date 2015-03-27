@@ -11,7 +11,7 @@
 #ifdef DEBUG
 #define kTKPD_REACHABILITYURL @"http://www.google.com"
 #else
-#define kTKPD_REACHABILITYURL @"https://"
+#define kTKPD_REACHABILITYURL @"http://www.google.com"
 #endif
 #define kTKPD_REACHABILITYDELAY 3.0
 

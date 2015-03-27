@@ -56,27 +56,23 @@
     [self setScrollEnabled:NO forPageViewController:_pageController];
     
     
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Kembali" style:UIBarButtonItemStylePlain target:(self) action:@selector(back:)];
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
     backBarButtonItem.tag = 10;
-    self.navigationItem.leftBarButtonItem = backBarButtonItem;
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.title = @"Konfirmasi Pembayaran";
+    self.title = @"Pusat Resolusi";
+    self.hidesBottomBarWhenPushed = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     self.title = nil;
-}
-
--(IBAction)back:(id)sender
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)tap:(UISegmentedControl*)sender {

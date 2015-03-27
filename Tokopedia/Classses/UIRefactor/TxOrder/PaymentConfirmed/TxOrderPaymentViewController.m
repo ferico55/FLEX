@@ -126,16 +126,14 @@
         self.navigationItem.rightBarButtonItem = backBarButtonItem;
     }
     
-    [_infoNominalLabel multipleLineLabel:_infoNominalLabel];
-    [_infoConfirmation multipleLineLabel:_infoConfirmation];
+    [_infoNominalLabel setCustomAttributedText:_infoNominalLabel.text];
+    [_infoConfirmation setCustomAttributedText:_infoConfirmation.text];
 
     NSString *string = @"Masukkan password login Tokopedia anda. \n\nProduk yang sudah dipesan dan dikonfirmasikan pembayarannya tidak dapat dibatalkan.";
-    _passwordLabel.text = string;
-    [_passwordLabel multipleLineLabel:_passwordLabel];
+    [_passwordLabel setCustomAttributedText:string];
 
     string = @"Untuk Bank selain BCA diharuskan mengisi Kantor Cabang beserta kota tempat Bank berada. \nContoh: Pondok Indah - Jakarta Selatan";
-    _branchViewLabel.text = string;
-    [_branchViewLabel multipleLineLabel:_branchViewLabel];
+    [_branchViewLabel setCustomAttributedText:string];
 
     _addNewRekeningButton.layer.cornerRadius = 2;
     
@@ -300,7 +298,7 @@
                 UILabel *invoiceLabel = [_section0Cell[indexPath.row] detailTextLabel];
                 invoiceLabel.numberOfLines = 0;
                 NSString *textString = invoiceLabel.text;
-                [invoiceLabel multipleLineLabel:invoiceLabel];
+                [invoiceLabel setCustomAttributedText:textString];
                 
                 //Calculate the expected size based on the font and linebreak mode of your label
                 CGSize maximumLabelSize = CGSizeMake(190,9999);
@@ -688,21 +686,21 @@
     NSDictionary* param = @{API_ACTION_KEY : action,
                             confirmationKey:confirmationID};
     
-#if DEBUG
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID forKey:@"user_id"];
-    
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
-#else
+//#if DEBUG
+//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+//    NSDictionary* auth = [secureStorage keychainDictionary];
+//    
+//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+//    
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    [paramDictionary setObject:userID forKey:@"user_id"];
+//    
+//    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
+//#else
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_TX_ORDER parameters:[param encrypt]];
-#endif
+//#endif
     
     _tableView.tableFooterView = _footerView;
     [_act startAnimating];
@@ -923,21 +921,21 @@
                             
                             };
     
-#if DEBUG
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-    
-    _requestConfirmPayment = [_objectManagerConfirmPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];
-#else
+//#if DEBUG
+//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+//    NSDictionary* auth = [secureStorage keychainDictionary];
+//    
+//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+//    
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
+//    
+//    _requestConfirmPayment = [_objectManagerConfirmPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];
+//#else
     _requestConfirmPayment = [_objectManagerConfirmPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_TX_ORDER parameters:[param encrypt]];
-#endif
+//#endif
     
     [_requestConfirmPayment setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessConfirmPayment:mappingResult withOperation:operation];
@@ -1078,7 +1076,7 @@
     MethodList *selectedMethod = [_dataInput objectForKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
     BankAccountFormList *selectedBank = [_dataInput objectForKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     
-    NSString *systemBankString = (!selectedSystemBank.sysbank_name)?@"Pilih Rekening Tujuan":[NSString stringWithFormat:@"%@ %@ a/n %@",selectedSystemBank.sysbank_name, selectedSystemBank.sysbank_account_number, selectedSystemBank.sysbank_account_name];
+    NSString *systemBankString = (!selectedSystemBank.sysbank_name)?@"Pilih Rekening Tujuan":[NSString stringWithFormat:@"%@",selectedSystemBank.sysbank_name];
     
     NSDate *paymentDate = [_dataInput objectForKey:DATA_PAYMENT_DATE_KEY];
     
@@ -1096,7 +1094,7 @@
                 UILabel *invoiceLabel = [_section0Cell[indexPath.row] detailTextLabel];
                 invoiceLabel.numberOfLines = 0;
                 textString = invoice;
-                [invoiceLabel multipleLineLabel:invoiceLabel];
+                [invoiceLabel setCustomAttributedText:invoice];
                 
                 //Calculate the expected size based on the font and linebreak mode of your label
                 CGSize maximumLabelSize = CGSizeMake(190,9999);
@@ -1169,10 +1167,10 @@
         [controllerObjects addObject:@"Pilih Rekening Tujuan"];
         
         for (SystemBankAcount *systemBank in listSystemBank) {
-            [controllerObjects addObject:[NSString stringWithFormat:@"%@ %@ a/n %@",systemBank.sysbank_name, systemBank.sysbank_account_number, systemBank.sysbank_account_name]];
+            [controllerObjects addObject:[NSString stringWithFormat:@"%@",systemBank.sysbank_name]];
         }
         
-        controller.selectedObject = ([selectedSystemBank.sysbank_id isEqualToString:@"-1"])?@"Pilih Rekening Tujuan":[NSString stringWithFormat:@"%@ %@ a/n %@",selectedSystemBank.sysbank_name, selectedSystemBank.sysbank_account_number, selectedSystemBank.sysbank_account_name];
+        controller.selectedObject = ([selectedSystemBank.sysbank_id isEqualToString:@"-1"])?@"Pilih Rekening Tujuan":[NSString stringWithFormat:@"%@",selectedSystemBank.sysbank_name];
     }
     else if (indexPath == indexPathPaymentMethod)
     {
@@ -1354,7 +1352,7 @@
     
     if ([indexPath isEqual:systemBankIndexPath]) {
         for (SystemBankAcount *systemBank in systemBankList) {
-            if ([[NSString stringWithFormat:@"%@ %@ a/n %@",systemBank.sysbank_name, systemBank.sysbank_account_number, systemBank.sysbank_account_name] isEqualToString:(NSString*)object]) {
+            if ([[NSString stringWithFormat:@"%@",systemBank.sysbank_name] isEqualToString:(NSString*)object]) {
                 [_dataInput setObject:systemBank forKey:DATA_SELECTED_SYSTEM_BANK_KEY];
             }
         }

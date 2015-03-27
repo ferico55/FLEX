@@ -103,16 +103,16 @@
                                  NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
                                  };
     
-    _paymentConfirmationLabel.attributedText = [[NSAttributedString alloc] initWithString:_paymentConfirmationLabel.text
+    _paymentConfirmationLabel.attributedText = [[NSAttributedString alloc] initWithString:_paymentConfirmationLabel.text?:@""
                                                                                attributes:attributes];
     
-    _orderStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:_orderStatusLabel.text
+    _orderStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:_orderStatusLabel.text?:@""
                                                                        attributes:attributes];
     
-    _receiveStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:_receiveStatusLabel.text
+    _receiveStatusLabel.attributedText = [[NSAttributedString alloc] initWithString:_receiveStatusLabel.text?:@""
                                                                          attributes:attributes];
     
-    _transactionListLabel.attributedText = [[NSAttributedString alloc] initWithString:_transactionListLabel.text
+    _transactionListLabel.attributedText = [[NSAttributedString alloc] initWithString:_transactionListLabel.text?:@""
                                                                            attributes:attributes];
 }
 

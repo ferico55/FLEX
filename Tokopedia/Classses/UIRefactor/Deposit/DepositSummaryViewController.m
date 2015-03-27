@@ -13,6 +13,7 @@
 #import "DepositFormViewController.h"
 #import "AlertDatePickerView.h"
 #import "NoResult.h"
+#import "NoResultView.h"
 
 @interface DepositSummaryViewController () <UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate> {
     __weak RKObjectManager *_objectManager;
@@ -131,6 +132,7 @@
     _operationQueue = [NSOperationQueue new];
     _depositSummary = [NSMutableArray new];
     _noResultView = [NoResultView new];
+    _noResult = [NoResult new];
     
     _table.delegate = self;
     _table.dataSource = self;
@@ -465,9 +467,9 @@
                 _isNoData = YES;
                 
                 if(depositsummary.result.error_date) {
-                    [_noResult setNoResultText:kTKPDMESSAGE_ERRORMESSAGEDATEKEY];
+//                    [_noResultView setNoResultText:kTKPDMESSAGE_ERRORMESSAGEDATEKEY];
                 }
-                _table.tableFooterView = _noResult;
+                _table.tableFooterView = _noResultView;
                 
             }
         }

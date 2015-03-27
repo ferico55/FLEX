@@ -196,7 +196,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6t1-2F-Axq">
-                        <rect key="frame" x="10" y="10" width="300" height="265"/>
+                        <rect key="frame" x="10" y="10" width="300" height="264"/>
                         <subviews>
                             <view tag="10" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Zrl-mk-2Wc" userLabel="Invoice View">
                                 <rect key="frame" x="0.0" y="0.0" width="300" height="51"/>
@@ -281,7 +281,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gAh-i2-ud4">
-                                        <rect key="frame" x="10" y="28" width="256" height="70"/>
+                                        <rect key="frame" x="10" y="28" width="256" height="69"/>
                                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="11"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>

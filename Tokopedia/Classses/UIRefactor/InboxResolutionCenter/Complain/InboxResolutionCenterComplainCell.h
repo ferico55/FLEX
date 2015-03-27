@@ -41,6 +41,9 @@
 
 @property (strong, nonatomic) NSIndexPath *indexPath;
 
+@property (weak, nonatomic) IBOutlet UILabel *warningLabel;
+
+
 +(id)newCell;
 
 @end

@@ -15,5 +15,6 @@
 @property (nonatomic, strong) TransactionSummaryDetail *transaction;
 @property (nonatomic, strong) NSArray *system_bank;
 @property (nonatomic) NSInteger is_success;
+@property (nonatomic, strong) NSString *link_mandiri;
 
 @end
