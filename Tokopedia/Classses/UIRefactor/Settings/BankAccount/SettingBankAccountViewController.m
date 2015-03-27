@@ -121,11 +121,18 @@
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
     barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationItem.backBarButtonItem = barButtonItem;
+
+    UIBarButtonItem *addBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                  target:self
+                                                                                  action:@selector(tap:)];
+    addBarButton.tag = 11;
+    self.navigationItem.rightBarButtonItem = addBarButton;
     
     _list = [NSMutableArray new];
     _datainput = [NSMutableDictionary new];
@@ -202,20 +209,16 @@
             }
             
             BankAccountFormList *list = _list[indexPath.row];
-            ((GeneralList1GestureCell*)cell).selectionStyle = UITableViewCellSelectionStyleNone;
             ((GeneralList1GestureCell*)cell).labelname.text = list.bank_account_name;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
             ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
             
-            if (_ismanualsetdefault) {
-                if ([indexPath isEqual:[_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY]]) {
-                    ((GeneralList1GestureCell*)cell).labeldefault.hidden = NO;
-                } else {
-                    ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
-                }
+            if (indexPath.row == 0) {
+                ((GeneralList1GestureCell*)cell).labeldefault.hidden = NO;
             } else {
-                ((GeneralList1GestureCell*)cell).labeldefault.hidden = (list.is_default_bank==1)?NO:YES;
+                ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
             }
+            
         }
         else
         {
@@ -302,15 +305,20 @@
 #pragma mark - View Action 
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else {
-        //add new address
-        SettingBankEditViewController *vc = [SettingBankEditViewController new];
-        vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                    kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_ADD_NEW),
-                    };
-        [self.navigationController pushViewController:vc animated:YES];
+        UIBarButtonItem *button = (UIBarButtonItem *)sender;
+        if (button.tag == 10) {
+            [self.navigationController popViewControllerAnimated:YES];
+        } else if (button.tag == 11) {
+            SettingBankEditViewController *vc = [SettingBankEditViewController new];
+            vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                        kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_ADD_NEW),
+                        };
+
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            nav.navigationBar.translucent = NO;
+            
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+        }
     }
 }
 
@@ -378,12 +386,9 @@
         [_act stopAnimating];
     }
     
-    NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-    
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIGETUSERBANKACCOUNTKEY,
                             kTKPDPROFILE_APIPAGEKEY : @(_page),
                             kTKPDPROFILE_APILIMITKEY : @(kTKPDPROFILESETTINGBANKACCOUNT_LIMITPAGE),
-//                            kTKPD_USERIDKEY : [auth objectForKey:kTKPD_USERIDKEY]
                             };
     _requestcount ++;
     
@@ -393,6 +398,7 @@
         [self requestSuccess:mappingResult withOperation:operation];
         [_act stopAnimating];
         _table.tableFooterView = nil;
+        _table.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
         [_table reloadData];
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
@@ -504,147 +510,6 @@
     [self cancel];
 }
 
-#pragma mark - Request Action Get Default Form
--(void)cancelActionGetDefaultForm
-{
-    [_requestActionSetDefault cancel];
-    _requestActionSetDefault = nil;
-    [_objectmanagerActionSetDefault.operationQueue cancelAllOperations];
-    _objectmanagerActionSetDefault = nil;
-}
-
--(void)configureRestKitActionGetDefaultForm
-{
-    _objectmanagerActionGetDefaultForm = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[BankAccountGetDefaultForm class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[BankAccountGetDefaultFormResult class]];
-
-    RKObjectMapping *defaultBankMapping = [RKObjectMapping mappingForClass:[BankAccountGetDefaultFormDefaultBank class]];
-    [defaultBankMapping addAttributeMappingsFromDictionary:@{API_BANK_ACCOUNT_ID_KEY:API_BANK_ACCOUNT_ID_KEY,
-                                                             API_BANK_NAME_KEY:API_BANK_NAME_KEY,
-                                                             API_BANK_ACCOUNT_NAME_KEY:API_BANK_ACCOUNT_NAME_KEY,
-                                                             API_BANK_OWNER_ID_KEY:API_BANK_OWNER_ID_KEY,
-                                                             API_TOKEN_KEY:API_TOKEN_KEY
-                                                             }];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_DEFAULT_BANK_KEY toKeyPath:API_DEFAULT_BANK_KEY withMapping:defaultBankMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDPROFILE_SETTINGAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanagerActionGetDefaultForm addResponseDescriptor:responseDescriptor];
-    
-}
-
--(void)requestActionGetDefaultForm:(id)object
-{
-    if (_requestActionGetDefaultForm.isExecuting) return;
-    NSTimer *timer;
-    
-    NSDictionary *userinfo = (NSDictionary*)object;
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
-    
-    NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:ACTION_GET_DEFAULT_BANK_FORM,
-                            API_ACCOUNT_ID_KEY : @([[userinfo objectForKey:API_BANK_ACCOUNT_ID_KEY] integerValue])?:@(0),
-                            kTKPD_USERIDKEY : [auth objectForKey:kTKPD_USERIDKEY]
-                            };
-    _requestcount ++;
-    
-    _requestActionGetDefaultForm = [_objectmanagerActionGetDefaultForm appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_SETTINGAPIPATH parameters:[param encrypt]];
-    
-    [_requestActionGetDefaultForm setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionGetDefaultForm:mappingResult withOperation:operation];
-        [_table reloadData];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [timer invalidate];
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestFailureActionGetDefaultForm:error];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_requestActionGetDefaultForm];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionGetDefaultForm) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
--(void)requestTimeoutActionGetDefaultForm
-{
-    [self cancelActionGetDefaultForm];
-}
-
--(void)requestSuccessActionGetDefaultForm:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    BankAccountGetDefaultForm *defaultBankForm = stat;
-    BOOL status = [defaultBankForm.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessActionGetDefaultForm:object];
-    }
-}
-
--(void)requestFailureActionGetDefaultForm:(id)object
-{
-    [self requestProcessActionGetDefaultForm:object];
-}
-
--(void)requestProcessActionGetDefaultForm:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            BankAccountGetDefaultForm *defaultBankForm = stat;
-            BOOL status = [defaultBankForm.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(defaultBankForm.message_error)
-                {
-                    [self cancelActionGetDefaultForm];
-                    NSArray *array = defaultBankForm.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                }
-                if (defaultBankForm.result.default_bank) {
-                    [_datainput setObject:defaultBankForm.result.default_bank.bank_owner_id forKey:API_OWNER_ID_KEY];
-                    [self configureRestKitActionSetDefault];
-                    [self requestActionSetDefault:_datainput];
-                }
-                else
-                {
-                    [self cancelSetAsDefault];
-                }
-            }
-        }
-        else{
-            
-            [self cancelActionSetDefault];
-            [self cancelSetAsDefault];
-            NSError *error = object;
-            NSString *errorDescription = error.localizedDescription;
-            UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-            [errorAlert show];
-        }
-    }
-}
 
 #pragma mark - Request Set Default
 -(void)cancelActionSetDefault
@@ -661,19 +526,27 @@
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileSettings class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
+    [statusMapping addAttributeMappingsFromArray:@[
+                                                   kTKPD_APISTATUSMESSAGEKEY,
+                                                   kTKPD_APIERRORMESSAGEKEY,
+                                                   kTKPD_APISTATUSKEY,
+                                                   kTKPD_APISERVERPROCESSTIMEKEY,
+                                                   ]];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileSettingsResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDPROFILE_APIISSUCCESSKEY:kTKPDPROFILE_APIISSUCCESSKEY}];
+    [resultMapping addAttributeMappingsFromArray:@[kTKPDPROFILE_APIISSUCCESSKEY,]];
+     
     
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanagerActionSetDefault addResponseDescriptor:responseDescriptor];
     
@@ -685,17 +558,18 @@
     NSTimer *timer;
     
     NSDictionary *userinfo = (NSDictionary*)object;
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary *auth = [secureStorage keychainDictionary];
     
-    NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APISETDEFAULTBANKACCOUNTKEY,
-                            API_ACCOUNT_ID_KEY : @([[userinfo objectForKey:API_BANK_ACCOUNT_ID_KEY] integerValue])?:@(0),
-                            kTKPD_USERIDKEY : [auth objectForKey:kTKPD_USERIDKEY],
-                            API_OWNER_ID_KEY : [userinfo objectForKey:API_OWNER_ID_KEY]
+    NSDictionary* param = @{
+                            kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIEDITDEFAULTBANKACCOUNTKEY,
+                            API_ACCOUNT_ID_KEY  : @([[userinfo objectForKey:API_BANK_ACCOUNT_ID_KEY] integerValue])?:@(0),
+                            API_OWNER_ID_KEY    : @([[userinfo objectForKey:API_BANK_ACCOUNT_ID_KEY] integerValue])?:@(0),
                             };
     _requestcount ++;
     
-    _requestActionSetDefault = [_objectmanagerActionSetDefault appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:[param encrypt]];
+    _requestActionSetDefault = [_objectmanagerActionSetDefault appropriateObjectRequestOperationWithObject:self
+                                                                                                    method:RKRequestMethodPOST
+                                                                                                      path:kTKPDPROFILE_PROFILESETTINGAPIPATH
+                                                                                                parameters:[param encrypt]];
     
     [_requestActionSetDefault setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionSetDefault:mappingResult withOperation:operation];
@@ -714,7 +588,12 @@
     
     [_operationQueue addOperation:_requestActionSetDefault];
     
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionSetDefault) userInfo:nil repeats:NO];
+    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                            target:self
+                                          selector:@selector(requestTimeoutActionSetDefault)
+                                          userInfo:nil
+                                           repeats:NO];
+    
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
@@ -747,19 +626,15 @@
             if (status) {
                 if(setting.message_error)
                 {
-                    [self cancelSetAsDefault];
-                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    NSArray *errorMessages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                    [alert show];
                 }
                 if (setting.result.is_success == 1) {
-                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-                }
-                else
-                {
-                    [self cancelSetAsDefault];
+                    NSArray *successMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+                    [alert show];
+                    _ismanualsetdefault = NO;
                 }
             }
         }
@@ -795,19 +670,24 @@
     
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileSettings class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
+    [statusMapping addAttributeMappingsFromArray:@[kTKPD_APISTATUSMESSAGEKEY,
+                                                   kTKPD_APIERRORMESSAGEKEY,
+                                                   kTKPD_APISTATUSKEY,
+                                                   kTKPD_APISERVERPROCESSTIMEKEY]];
+
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileSettingsResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDPROFILE_APIISSUCCESSKEY:kTKPDPROFILE_APIISSUCCESSKEY}];
+    [resultMapping addAttributeMappingsFromArray:@[kTKPDPROFILE_APIISSUCCESSKEY]];
     
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanagerActionDelete addResponseDescriptor:responseDescriptor];
     
@@ -816,12 +696,12 @@
 -(void)requestActionDelete:(id)object
 {
     if (_requestActionDelete.isExecuting) return;
-    NSTimer *timer;
     
-    NSDictionary *userinfo = (NSDictionary*)object;
+    BankAccountFormList *bankAccount = [_datainput objectForKey:kTKPDPROFILE_DATADELETEDOBJECTKEY];
     
-    NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIDELETEBANKKEY,
-                            kTKPDPROFILESETTING_APIBANKIDKEY : [userinfo objectForKey:kTKPDPROFILESETTING_APIBANKIDKEY]?:@(0)
+    NSDictionary* param = @{
+                            kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIDELETEBANKKEY,
+                            kTKPDPROFILESETTING_APIACCOUNTIDKEY : @(bankAccount.bank_account_id)?:@(0)
                             };
     _requestcount ++;
     
@@ -830,6 +710,14 @@
                                                                                               path:kTKPDPROFILE_PROFILESETTINGAPIPATH
                                                                                         parameters:[param encrypt]];
     
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                      target:self
+                                                    selector:@selector(requestTimeoutActionDelete)
+                                                    userInfo:nil
+                                                     repeats:NO];
+    
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+
     [_requestActionDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionDelete:mappingResult withOperation:operation];
         [_table reloadData];
@@ -846,9 +734,6 @@
     }];
     
     [_operationQueue addOperation:_requestActionDelete];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionDelete) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)requestSuccessActionDelete:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -881,14 +766,16 @@
                 if(setting.message_error)
                 {
                     [self cancelDeleteRow];
-                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+
+                    NSArray *errorMessages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                    [alert show];
                 }
                 if (setting.result.is_success == 1) {
-                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    NSArray *successMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages
+                                                                                     delegate:self];
+                    [alert show];
                 }
                 else
                 {
@@ -957,14 +844,17 @@
 -(void)setAsDefaultAtIndexPath:(NSIndexPath*)indexPath
 {
     _ismanualsetdefault = YES;
-
+    
     BankAccountFormList *bankAccount = _list[indexPath.row];
     [_datainput setObject:@(bankAccount.bank_account_id) forKey:API_BANK_ACCOUNT_ID_KEY];
-    [self configureRestKitActionGetDefaultForm];
-    [self requestActionGetDefaultForm:_datainput];
-
-    [_datainput setObject:indexPath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
+    [self configureRestKitActionSetDefault];
+    [self requestActionSetDefault:_datainput];
     
+    NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
+    [self tableView:_table moveRowAtIndexPath:indexPath toIndexPath:indexPath1];
+    
+    [_datainput setObject:indexPath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
+
     [_table reloadData];
 }
 
@@ -991,8 +881,11 @@
 -(void)cancelDeleteRow
 {
     NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHDELETEKEY];
-    [_list insertObject:[_datainput objectForKey:kTKPDPROFILE_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
-    [_table reloadData];
+    BankAccountFormList *deletedData = [_datainput objectForKey:kTKPDPROFILE_DATADELETEDOBJECTKEY];
+    if (![_list containsObject:deletedData]) {
+        [_list insertObject:[_datainput objectForKey:kTKPDPROFILE_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
+        [_table reloadData];
+    }
 }
 
 -(void)refreshView:(UIRefreshControl*)refresh

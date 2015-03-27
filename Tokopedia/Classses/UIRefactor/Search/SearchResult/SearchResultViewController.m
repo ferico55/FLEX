@@ -41,14 +41,14 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 @interface SearchResultViewController ()
 <
-UITableViewDataSource,
-UITableViewDelegate,
-GeneralProductCellDelegate,
-TKPDTabNavigationControllerDelegate,
-SortViewControllerDelegate,
-FilterViewControllerDelegate,
-GeneralPhotoProductDelegate,
-GeneralSingleProductDelegate
+    UITableViewDataSource,
+    UITableViewDelegate,
+    GeneralProductCellDelegate,
+    TKPDTabNavigationControllerDelegate,
+    SortViewControllerDelegate,
+    FilterViewControllerDelegate,
+    GeneralPhotoProductDelegate,
+    GeneralSingleProductDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -118,7 +118,7 @@ GeneralSingleProductDelegate
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+        
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
@@ -299,8 +299,8 @@ GeneralSingleProductDelegate
         
         cell.productNameLabel.text = list.product_name;
         cell.productPriceLabel.text = list.product_price;
-        
-        NSString *stats = [NSString stringWithFormat:@"%@ Review   %@ Ulasan",
+
+        NSString *stats = [NSString stringWithFormat:@"%@ Ulasan   %@ Diskusi",
                            list.product_review_count,
                            list.product_talk_count];
         
@@ -310,7 +310,7 @@ GeneralSingleProductDelegate
                                range:NSMakeRange(0, list.product_review_count.length)];
         [attributedText addAttribute:NSFontAttributeName
                                value:boldFont
-                               range:NSMakeRange(list.product_review_count.length + 10, list.product_talk_count.length)];
+                               range:NSMakeRange(list.product_review_count.length + 11, list.product_talk_count.length)];
         
         cell.productInfoLabel.attributedText = attributedText;
         
@@ -419,7 +419,7 @@ GeneralSingleProductDelegate
                 //thumb.hidden = YES;	//@prepareforreuse then @reset
                 
                 NSLog(@"============================== START GET %@ IMAGE =====================",
-                      [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+                [_data objectForKey:kTKPDSEARCH_DATATYPE]);
                 [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -573,20 +573,20 @@ GeneralSingleProductDelegate
     BOOL isredirect = [[_params objectForKey:kTKPDSEARCH_DATAISREDIRECTKEY] boolValue];
     
     NSMutableDictionary *param = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                                 kTKPDSEARCH_APIACTIONTYPEKEY    :   type?:@"",
-                                                                                 kTKPDSEARCH_APIPAGEKEY          :   @(_page),
-                                                                                 kTKPDSEARCH_APILIMITKEY         :   @(kTKPDSEARCH_LIMITPAGE),
-                                                                                 kTKPDSEARCH_APIORDERBYKEY       :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
-                                                                                 kTKPDSEARCH_APILOCATIONKEY      :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
-                                                                                 kTKPDSEARCH_APISHOPTYPEKEY      :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
-                                                                                 kTKPDSEARCH_APIPRICEMINKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-                                                                                 kTKPDSEARCH_APIPRICEMAXKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@"",
-                                                                                 kTKPDSEARCH_APIDEPARTEMENTIDKEY :   [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"",
-                                                                                 
-                                                                                 kTKPDSEARCH_APIDEPARTMENT_1     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_1]?:@"",
-                                                                                 kTKPDSEARCH_APIDEPARTMENT_2     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_2]?:@"",
-                                                                                 kTKPDSEARCH_APIDEPARTMENT_3     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_3]?:@"",
-                                                                                 }];
+        kTKPDSEARCH_APIACTIONTYPEKEY    :   type?:@"",
+        kTKPDSEARCH_APIPAGEKEY          :   @(_page),
+        kTKPDSEARCH_APILIMITKEY         :   @(kTKPDSEARCH_LIMITPAGE),
+        kTKPDSEARCH_APIORDERBYKEY       :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+        kTKPDSEARCH_APILOCATIONKEY      :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+        kTKPDSEARCH_APISHOPTYPEKEY      :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+        kTKPDSEARCH_APIPRICEMINKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+        kTKPDSEARCH_APIPRICEMAXKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@"",
+        kTKPDSEARCH_APIDEPARTEMENTIDKEY :   [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"",
+
+        kTKPDSEARCH_APIDEPARTMENT_1     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_1]?:@"",
+        kTKPDSEARCH_APIDEPARTMENT_2     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_2]?:@"",
+        kTKPDSEARCH_APIDEPARTMENT_3     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_3]?:@"",
+    }];
     
     if (query != nil && ![query isEqualToString:@""] && !isredirect) {
         [param setObject:query forKey:kTKPDSEARCH_APIQUERYKEY];

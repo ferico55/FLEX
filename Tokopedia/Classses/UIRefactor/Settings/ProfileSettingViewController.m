@@ -159,8 +159,6 @@
     
     cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
     cell.textLabel.text = _listMenu[indexPath.section][indexPath.row];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-
     
     return cell;
 }

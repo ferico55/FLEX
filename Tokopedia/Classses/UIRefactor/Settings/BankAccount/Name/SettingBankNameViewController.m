@@ -24,9 +24,11 @@
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+
 @property (nonatomic, strong) NSMutableArray *banknames;
 @property (nonatomic, strong) NSMutableArray *bankvalues;
-@property (weak, nonatomic) IBOutlet UILabel *labeltitle;
+
 - (IBAction)gesture:(id)sender;
 
 @end
@@ -46,7 +48,7 @@
 {
     [super viewDidLoad];
  
-    self.navigationItem.title = @"Choose Bank";
+    self.navigationItem.title = @"Pilih Bank";
     
     [self.navigationController.navigationBar setTranslucent:NO];
     /** create new **/
@@ -57,29 +59,15 @@
     _selectedlocation = [NSMutableDictionary new];
     _tempresultarray =[NSMutableArray new];
     
-    UIBarButtonItem *barbutton1;
-    NSBundle* bundle = [NSBundle mainBundle];
-    //TODO:: Change image
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor blackColor]];
-    [barbutton1 setTintColor:[UIColor blackColor]];
-	[barbutton1 setTag:11];
-    self.navigationItem.rightBarButtonItem = barbutton1;
+    UIBarButtonItem *doneBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Pilih"
+                                                                      style:UIBarButtonItemStyleDone
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    doneBarButton.tag = 11;
+    self.navigationItem.rightBarButtonItem = doneBarButton;
     
     _table.delegate = self;
     _table.dataSource = self;
-    
-    /** Set isnull value **/
-    //[_locationvalues addObject:@""];
-    //[_locationnames addObject:@"None"];
     
     NSArray *name;
     NSArray *value;
@@ -114,15 +102,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-    UIEdgeInsets inset = _table.contentInset;
-    inset.top -= 15;
-    if (is4inch) {
-        inset.bottom += 70;
-    } else {
-        inset.bottom += 150;
-    }
-    _table.contentInset = inset;
 }
 
 #pragma mark - Memory Management
@@ -209,19 +188,6 @@
 	}
 	
 	return cell;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return @"BANK NAME";
-}
-
-#pragma mark - Table View Delegate
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-	if (_isnodata) {
-		cell.backgroundColor = [UIColor whiteColor];
-	}
 }
 
 #pragma mark - Cell Delegate

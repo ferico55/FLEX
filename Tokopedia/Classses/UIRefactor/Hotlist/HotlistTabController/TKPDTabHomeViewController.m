@@ -79,7 +79,7 @@
                                                                         options:nil];
     self.pageController.dataSource = self;
     self.pageController.delegate = self;
-
+    
     CGRect pageControllerFrame = [[self view] bounds];
     pageControllerFrame.origin.y = 108;
     pageControllerFrame.size.height -= 108;

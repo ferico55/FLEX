@@ -10,10 +10,10 @@
 
 @interface NotificationFormNotif : NSObject
 
-@property (nonatomic) BOOL flag_talk_product;
-@property (nonatomic) BOOL flag_admin_message;
-@property (nonatomic) BOOL flag_message;
-@property (nonatomic) BOOL flag_review;
-@property (nonatomic) BOOL flag_newsletter;
+@property (strong, nonatomic) NSString *flag_talk_product;
+@property (strong, nonatomic) NSString *flag_admin_message;
+@property (strong, nonatomic) NSString *flag_message;
+@property (strong, nonatomic) NSString *flag_review;
+@property (strong, nonatomic) NSString *flag_newsletter;
 
 @end

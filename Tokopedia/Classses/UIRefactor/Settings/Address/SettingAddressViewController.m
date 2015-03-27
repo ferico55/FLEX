@@ -117,14 +117,6 @@
                                                              action:@selector(tap:)];
         _doneBarButtonItem.tag = TAG_SETTING_ADDRESS_BARBUTTONITEM_DONE;
         self.navigationItem.rightBarButtonItem = _doneBarButtonItem;
-        
-//        UIView *additionalView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 109)];
-//        [additionalView addSubview:_searchBarView];
-//        CGRect frame = _addNewAddressView.frame;
-//        frame.origin.y +=_searchBarView.frame.size.height;
-//        [_addNewAddressView setFrame:frame];
-//        [additionalView addSubview:_addNewAddressView];
-//        _table.tableHeaderView = additionalView;
 
         _searchBar.delegate = self;
         _searchBar.placeholder = @"Cari Alamat";
@@ -144,10 +136,6 @@
                                                                          action:@selector(tap:)];
         backBarButton.tag = 10;
         self.navigationItem.backBarButtonItem = backBarButton;
-        
-//        UIView *additionalView = [[UIView alloc]initWithFrame:_addNewAddressView.frame];
-//        [additionalView addSubview:_addNewAddressView];
-//        _table.tableHeaderView = additionalView;
     }
 
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -173,8 +161,6 @@
     
     _selectedIndexPath = [_data objectForKey:DATA_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     _limit = kTKPDPROFILESETTINGADDRESS_LIMITPAGE;
-    
-    _table.contentInset = UIEdgeInsetsMake(-14, 0, 0, 0);
 }
 
 
@@ -600,7 +586,7 @@
                     [self.navigationController pushViewController:vc animated:NO];
                 }
                 [_table reloadData];
-
+                _table.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
             }
         }
         else{
