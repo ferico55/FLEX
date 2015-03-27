@@ -89,39 +89,43 @@
 {
     [super viewWillAppear:animated];
     
-    [self initNotificationManager];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadNotification)
-                                                 name:@"reloadNotification"
-                                               object:nil];
-
-    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-    [self.navigationItem setTitleView:logo];
-    
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    _auth = [secureStorage keychainDictionary];
-    _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
-    
-    if(!_isLogin) {
-        [[self view] addSubview:_noLoginView];
-        [_noLoginView setHidden:NO];
-    } else {
-
-        if(_isShouldRefreshingCart) {
-            [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-            ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
-            _isShouldRefreshingCart = NO;
+    if (_index == 0) {
+        
+        [self initNotificationManager];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reloadNotification)
+                                                     name:@"reloadNotification"
+                                                   object:nil];
+        
+        UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
+        [self.navigationItem setTitleView:logo];
+        
+        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+        _auth = [secureStorage keychainDictionary];
+        _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+        
+        if(!_isLogin) {
+            [[self view] addSubview:_noLoginView];
+            [_noLoginView setHidden:NO];
         } else {
-            ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = NO;
+            
+            if(_isShouldRefreshingCart) {
+                [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+                ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
+                _isShouldRefreshingCart = NO;
+            } else {
+                ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = NO;
+            }
+            
+            [_noLoginView setHidden:YES];
+            
         }
-        
-        [_noLoginView setHidden:YES];
-        
     }
+
 }
 
-- (void)viewDidDisappear:(BOOL)animated
+- (void)viewWillDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
 }
@@ -146,6 +150,7 @@
 -(UIViewController*)viewControllerAtIndex:(NSInteger)index
 {
     id childViewController;
+    _index = index;
     for (UIButton *button in _pageButtons) {
         button.backgroundColor = COLOR_DEFAULT_BUTTON;
         //button.enabled = NO;
@@ -161,7 +166,14 @@
             [_progressView setProgress:0 animated:YES];
             ((UIButton*)_pageButtons[index]).backgroundColor = COLOR_SELECTED_BUTTON;
             self.navigationItem.leftBarButtonItem = nil;
-            self.navigationItem.rightBarButtonItem = nil; //TODO::
+            
+            if (self.navigationController.viewControllers.count>1) {
+                UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+                [backBarButtonItem setTintColor:[UIColor whiteColor]];
+                backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
+                self.navigationItem.leftBarButtonItem = backBarButtonItem;
+            }
+            self.navigationItem.rightBarButtonItem = nil;
             break;
         }
         case 1:
@@ -249,7 +261,7 @@
     return [self viewControllerAtIndex:index];
 }
 
-#pragma mark -   Delegate
+#pragma mark - Delegate
 -(void)didFinishRequestCheckoutData:(NSDictionary *)data
 {
     _data = data;
@@ -263,19 +275,26 @@
 
 }
 
+-(void)shouldBackToFirstPage
+{
+    [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+    ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
+    ((TransactionCartViewController*)[self viewControllerAtIndex:0]).indexPage = 0;
+}
+
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
 }
 
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        if (self.navigationController.viewControllers.count > 1) {
-            [self.navigationController popViewControllerAnimated:YES];
+        if (self.navigationController.viewControllers.count > 1 && _index!=1) {
+            UIViewController *destinationVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count-3];
+            [self.navigationController popToViewController:destinationVC animated:YES];
         }
         else{
             [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
-            UIBarButtonItem *barbutton = (UIBarButtonItem*)sender;
-            ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = !(barbutton.tag == TAG_BAR_BUTTON_TRANSACTION_BACK);
+            ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
         }
     }
     else
@@ -334,5 +353,15 @@
     _isShouldRefreshingCart = YES;
 }
 
+
+-(void)isNodata:(BOOL)isNodata
+{
+    _pageControlView.hidden = isNodata;
+    _containerView.hidden = isNodata;
+    if (isNodata) {
+        NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, 320, 100)];
+        [self.view addSubview:noResultView];
+    }
+}
 
 @end

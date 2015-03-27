@@ -171,6 +171,7 @@
     
     [self configureRestKitFormATC];
     [self requestFormATC];
+    _buyButton.hidden = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -556,6 +557,8 @@
         _tableView.tableFooterView = nil;
         [_act stopAnimating];
         [self buyButtonIsLoading:NO];
+        _buyButton.hidden = NO;
+        _tableView.contentInset = UIEdgeInsetsMake(0, 0, 28, 0);
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureFormATC:error];
         _isRefreshRequest = NO;
@@ -565,6 +568,7 @@
         _tableView.tableFooterView = nil;
         [_act stopAnimating];
         [self buyButtonIsLoading:NO];
+        _buyButton.hidden = YES;
     }];
     
     [_operationQueue addOperation:_requestFormATC];
@@ -814,6 +818,9 @@
                     [alert show];
                 }
                 if (setting.result.is_success == 1) {
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:SHOULD_REFRESH_CART object:nil userInfo:nil];
+                    
                     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:[setting.message_status firstObject] delegate:self cancelButtonTitle:@"Kembali Belanja" otherButtonTitles:@"Ke Keranjang Belanja",nil];
                     alertView.tag=TAG_BUTTON_TRANSACTION_BUY;
                     [alertView show];

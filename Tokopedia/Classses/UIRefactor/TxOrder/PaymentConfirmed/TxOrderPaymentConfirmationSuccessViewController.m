@@ -33,9 +33,8 @@
     barButtonItem.tag = 11;
     self.navigationItem.leftBarButtonItem = barButtonItem;
     
-    _successMessage.text = [NSString stringWithFormat:@"Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggunakan %@.",_confirmationPayment];
-    [_successMessage multipleLineLabel:_successMessage];
-    [_infoLabel multipleLineLabel:_infoLabel];
+    [_successMessage setCustomAttributedText:[NSString stringWithFormat:@"Terima kasih, Anda telah berhasil melakukan konfirmasi pembayaran dengan menggunakan %@.",_confirmationPayment]];
+    [_infoLabel setCustomAttributedText:_infoLabel.text];
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]  initWithString:_info2Label.text];

@@ -17,9 +17,11 @@
 #import "ShopEditViewController.h"
 #import "ShopEditStatusViewController.h"
 #import "CameraController.h"
+#import "RequestGenerateHost.h"
+#import "RequestUploadImage.h"
 
 #pragma mark - Shop Edit View Controller
-@interface ShopEditViewController () <UITextViewDelegate, ShopEditStatusViewControllerDelegate,CameraControllerDelegate>
+@interface ShopEditViewController () <UITextViewDelegate, ShopEditStatusViewControllerDelegate,CameraControllerDelegate, GenerateHostDelegate, RequestUploadImageDelegate>
 {
     UITextView *_activetextview;
     
@@ -73,6 +75,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelsloganplaceholder;
 @property (weak, nonatomic) IBOutlet UILabel *labeldeskripsiplaceholder;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *actthumb;
+@property (weak, nonatomic) IBOutlet UIImageView *badgesMembership;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -114,7 +117,7 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonsave setTintColor:[UIColor blackColor]];
+    [_barbuttonsave setTintColor:[UIColor whiteColor]];
     _barbuttonsave.tag = 11;
     self.navigationItem.rightBarButtonItem = _barbuttonsave;
     
@@ -122,34 +125,34 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     
-    _labelsloganplaceholder.hidden = NO;
-    _labeldeskripsiplaceholder.hidden = NO;
-    
     _shop = [_data objectForKey:kTKPDDETAIL_DATASHOPSKEY];
     
-    [self configureRestkitGenerateHost];
-    [self requestGenerateHost];
+    RequestGenerateHost *requestHost = [RequestGenerateHost new];
+    [requestHost configureRestkitGenerateHost];
+    [requestHost requestGenerateHost];
+    requestHost.delegate = self;
     _buttoneditimage.enabled = NO;
-    
-    //TODO:: add constraint when landscape
-    //NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:_viewcontent
-    //                                                                  attribute:NSLayoutAttributeLeading
-    //                                                                  relatedBy:0
-    //                                                                     toItem:self.view
-    //                                                                  attribute:NSLayoutAttributeLeft
-    //                                                                 multiplier:1.0
-    //                                                                   constant:0];
-    //[self.view addConstraint:leftConstraint];
-    //
-    //NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:_viewcontent
-    //                                                                   attribute:NSLayoutAttributeTrailing
-    //                                                                   relatedBy:0
-    //                                                                      toItem:self.view
-    //                                                                   attribute:NSLayoutAttributeRight
-    //                                                                  multiplier:1.0
-    //                                                                    constant:0];
-    //[self.view addConstraint:rightConstraint];
 
+}
+
+- (void)textView:(UITextView*)textView setPlaceholder:(NSString *)placeholderText
+{
+    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, textView.frame.size.width, 40)];
+    placeholderLabel.text = placeholderText;
+    placeholderLabel.font = [UIFont fontWithName:textView.font.fontName size:textView.font.pointSize];
+    placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
+    placeholderLabel.tag = 1;
+    [textView addSubview:placeholderLabel];
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    UILabel *placeholderLabel = (UILabel *)[textView viewWithTag:1];
+    if (textView.text.length > 0) {
+        placeholderLabel.hidden = YES;
+    } else {
+        placeholderLabel.hidden = NO;
+    }
 }
 
 -(void)viewDidLayoutSubviews
@@ -330,305 +333,54 @@
 }
 
 #pragma mark Request Generate Host
--(void)configureRestkitGenerateHost
+-(void)successGenerateHost:(GenerateHost *)generateHost
 {
-    _objectmanagerGenerateHost =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GenerateHost class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GenerateHostResult class]];
-    
-    RKObjectMapping *generatedhostMapping = [RKObjectMapping mappingForClass:[GeneratedHost class]];
-    [generatedhostMapping addAttributeMappingsFromDictionary:@{
-                                                               kTKPDGENERATEDHOST_APISERVERIDKEY:kTKPDGENERATEDHOST_APISERVERIDKEY,
-                                                               kTKPDGENERATEDHOST_APIUPLOADHOSTKEY:kTKPDGENERATEDHOST_APIUPLOADHOSTKEY,
-                                                               kTKPDGENERATEDHOST_APIUSERIDKEY:kTKPDGENERATEDHOST_APIUSERIDKEY
-                                                               }];
-    // Relationship Mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDGENERATEDHOST_APIGENERATEDHOSTKEY toKeyPath:kTKPDGENERATEDHOST_APIGENERATEDHOSTKEY withMapping:generatedhostMapping]];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanagerGenerateHost addResponseDescriptor:responseDescriptor];
-}
-
--(void)cancelGenerateHost
-{
-    [_requestGenerateHost cancel];
-    _requestGenerateHost = nil;
-    
-    [_objectmanagerGenerateHost.operationQueue cancelAllOperations];
-    _objectmanagerGenerateHost = nil;
-}
-
-- (void)requestGenerateHost
-{
-    if(_requestGenerateHost.isExecuting) return;
-    
-    _requestcount ++;
-    
-    NSTimer *timer;
-    
-	NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIUPLOADGENERATEHOSTKEY
-                            };
-    
-    _requestGenerateHost = [_objectmanagerGenerateHost appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAIL_UPLOADIMAGEAPIPATH parameters:[param encrypt]];
-    
-    [_requestGenerateHost setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestsuccessGenerateHost:mappingResult withOperation:operation];
-        [timer invalidate];
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestfailureGenerateHost:error];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_requestGenerateHost];
-    
-    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeoutGenerateHost) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-}
-
-
--(void)requestsuccessGenerateHost:(id)object withOperation:(RKObjectRequestOperation*)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id info = [result objectForKey:@""];
-    _generatehost = info;
-    NSString *statusstring = _generatehost.status;
-    BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestprocessGenerateHost:object];
-    }
-}
-
--(void)requestfailureGenerateHost:(id)object
-{
-    [self requestfailureGenerateHost:object];
-}
-
--(void)requestprocessGenerateHost:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id info = [result objectForKey:@""];
-            _generatehost = info;
-            NSString *statusstring = _generatehost.status;
-            BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                    if ([_generatehost.result.generated_host.server_id integerValue] == 0)
-                    {
-                        [self configureRestkitGenerateHost];
-                        [self requestGenerateHost];
-                    }
-                    else
-                        _buttoneditimage.enabled = YES;
-            }
-        }
-    }
-    else
-    {
-        NSError *error = object;
-        if (!([error code] == NSURLErrorCancelled)){
-            NSString *errorDescription = error.localizedDescription;
-            UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-            [errorAlert show];
-        }
-    }
-}
-
--(void)requesttimeoutGenerateHost
-{
-    [self cancelGenerateHost];
+    _buttoneditimage.enabled = YES;
+    _generatehost = generateHost;
 }
 
 #pragma mark Request Action Upload Photo
--(void)configureRestkitUploadPhoto
+-(void)actionUploadImage:(id)object
 {
-    _objectmanagerUploadPhoto =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[UploadImage class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[UploadImageResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY,
-                                                        kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY:kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY
-                                                        }];
-    
-    // Relationship Mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanagerUploadPhoto addResponseDescriptor:responseDescriptor];
-    
-    [_objectmanagerUploadPhoto setAcceptHeaderWithMIMEType:RKMIMETypeJSON];
-    [_objectmanagerUploadPhoto setRequestSerializationMIMEType:RKMIMETypeJSON];
+    _thumb.alpha = 0.5;
+    RequestUploadImage *uploadImage = [RequestUploadImage new];
+    uploadImage.imageObject = object;
+    uploadImage.delegate = self;
+    uploadImage.generateHost = _generatehost;
+    uploadImage.action = kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY;
+    uploadImage.fieldName = API_UPLOAD_SHOP_IMAGE_FORM_FIELD_NAME;
+    [uploadImage configureRestkitUploadPhoto];
+    [uploadImage requestActionUploadPhoto];
 }
 
-
-- (void)cancelActionUploadPhoto
+-(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
-	[_requestActionUploadPhoto cancel];
-	_requestActionUploadPhoto = nil;
-	
-    [_objectmanagerUploadPhoto.operationQueue cancelAllOperations];
-    _objectmanagerUploadPhoto = nil;
+    _thumb.alpha = 1.0;
+    
+    NSDictionary *userinfo = @{kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY :_images.result.file_th?:@"",
+                               kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:_images.result.file_path?:@""
+                               };
+    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
 }
 
-- (void)requestActionUploadPhoto:(id)object
+-(void)failedUploadObject:(id)object
 {
+    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
-    if (_requestActionUploadPhoto.isExecuting) return;
+    UIImageView *thumb = _thumb;
+    thumb.image = nil;
     
-	NSDictionary* userInfo = object;
-    
-    NSDictionary* photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    NSData* imageData = [photo objectForKey:DATA_CAMERA_IMAGEDATA];
-    NSString* imageName = [photo objectForKey:DATA_CAMERA_IMAGENAME];
-    
-    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY,
-              kTKPDSHOPEDIT_APIUSERIDKEY:@(_generatehost.result.generated_host.user_id),
-              kTKPDGENERATEDHOST_APISERVERIDKEY :_generatehost.result.generated_host.server_id,
-              };
-    
-    _thumb.alpha = 0.5f;
-    NSMutableURLRequest *request = [NSMutableURLRequest requestUploadImageData:imageData
-                                                                      withName:API_UPLOAD_SHOP_IMAGE_FORM_FIELD_NAME
-                                                                   andFileName:imageName
-                                                         withRequestParameters:param
-                                    ];
-    [NSURLConnection sendAsynchronousRequest:request
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                               
-                               NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-                               
-                               NSString *responsestring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                               if ([httpResponse statusCode] == 200) {
-                                   id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-                                   if (parsedData == nil && error) {
-                                       NSLog(@"parser error");
-                                   }
-                                   
-                                   NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-                                   for (RKResponseDescriptor *descriptor in _objectmanagerUploadPhoto.responseDescriptors) {
-                                       [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-                                   }
-                                   
-                                   RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-                                   NSError *mappingError = nil;
-                                   BOOL isMapped = [mapper execute:&mappingError];
-                                   if (isMapped && !mappingError) {
-                                       NSLog(@"result %@",[mapper mappingResult]);
-                                       RKMappingResult *mappingresult = [mapper mappingResult];
-                                       NSDictionary *result = mappingresult.dictionary;
-                                       id stat = [result objectForKey:@""];
-                                       _images = stat;
-                                       BOOL status = [_images.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-                                       
-                                       if (status) {
-                                            [self requestProcessUploadPhoto:mappingresult];
-                                       }
-                                   }
-                                   
-                               }
-                               NSLog(@"%@",responsestring);
-                           }];
-}
-
-- (void)requestSuccessUploadPhoto:(id)object withOperation:(RKObjectRequestOperation *)operation
-{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id info = [result objectForKey:@""];
-    _images = info;
-    NSString *statusstring = _images.status;
-    BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
-    if (status) {
-        [self requestProcessUploadPhoto:object];
-    }
-}
-
-- (void)requestFailureUploadPhoto:(id)object
-{
-    [self requestProcessUploadPhoto:object];
-}
-
-- (void)requestProcessUploadPhoto:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id info = [result objectForKey:@""];
-            _images = info;
-            NSString *statusstring = _images.status;
-            BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if (_settings.message_status) {
-                    NSArray *array = _settings.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-                }
-                else
-                {
-                    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION animations:^{
-                        _thumb.alpha = 1.0;
-                    }];
-                    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_images.result.file_th] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-                    //request.URL = url;
-                    
-                    UIImageView *thumb = _thumb;
-                    thumb = [UIImageView circleimageview:thumb];
-                    
-                    thumb.image = nil;
-                    //thumb.hidden = YES;	//@prepareforreuse then @reset
-                    
-                    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                        //NSLOG(@"thumb: %@", thumb);
-                        [thumb setImage:image animated:YES];
-#pragma clang diagnostic pop
-                        
-                    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                    }];
-                    
-                    NSDictionary *userinfo = @{kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY :_images.result.file_th?:@"",
-                                               kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:_images.result.file_path?:@""
-                                               };
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
-                }
-            }
-        }
-        else
-        {
-            NSError *error = object;
-            if (!([error code] == NSURLErrorCancelled)){
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-        }
-    }
-}
--(void)requesttimeoutUploadPhoto
-{
-    [self cancelActionUploadPhoto];
+        [thumb setImage:image animated:YES];
+        
+        [_actthumb stopAnimating];
+#pragma clang diagnosti c pop
+        
+    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+    }];
+    _thumb.alpha = 1;
 }
 
 #pragma mark - View Action
@@ -732,19 +484,18 @@
         NSString *string = _shop.info.shop_tagline;
         _textviewslogan.text = string?:@"";
         if (string) {
-            _labelsloganplaceholder.hidden = YES;
             _labelslogancharcount.text = [NSString stringWithFormat:@"%zd", limit - _textviewslogan.text.length + (string.length - string.length)];
         }
-        else _labelsloganplaceholder.hidden = NO;
+        else
+          [self textView:_textviewslogan setPlaceholder:@"Slogan"];
         
         limit = 140;
         string = _shop.info.shop_description;
         _textviewdesc.text = string?:@"";
         if (string) {
-            _labeldeskripsiplaceholder.hidden = YES;
             _labeldesccharcount.text = [NSString stringWithFormat:@"%zd", limit - _textviewslogan.text.length + (string.length - string.length)];
         }
-        else _labeldeskripsiplaceholder.hidden = NO;
+        else [self textView:_textviewdesc setPlaceholder:@"Deskripsi"];
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
         //request.URL = url;
@@ -785,64 +536,30 @@
         }
         [_buttonshopstatus setTitle:status forState:UIControlStateNormal];
         
+        
         //if gold merchant
         if (!_shop.info.shop_is_gold) {
-            CGRect frame = _viewmembership.frame;
-            frame.size.height = 90;
-            _viewmembership.frame = frame;
             _labelmembership.text = @"Regular Merchant";
-            _labelregularmembership.hidden = NO;
-            _buttonlearnmore.hidden = NO;
-            
-            frame = _viewotherdesc.frame;
-            frame.origin.y = _viewmembership.frame.origin.y+_viewmembership.frame.size.height;
-            _viewotherdesc.frame = frame;
+            _badgesMembership.image = [UIImage imageNamed:@"Badges_gold_merchant"];
         }
         else
         {
+            _badgesMembership.hidden = YES;
             _labelmembership.text = @"Gold Merchant";
-            _labelregularmembership.hidden = YES;
-            _buttonlearnmore.hidden = YES;
         }
     }
 }
 
 #pragma mark - TextView Delegate
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
-    [textView resignFirstResponder];
     _activetextview = textView;
-    
-    if (textView == _textviewslogan) {
-        _labelsloganplaceholder.hidden = YES;
-    }
-    else if (textView == _textviewdesc)
-    {
-        _labeldeskripsiplaceholder.hidden = YES;
-    }
     
     return YES;
 }
 
--(void) textViewDidChange:(UITextView *)textView
-{
-    if (textView == _textviewslogan) {
-        if(_textviewslogan.text.length == 0){
-            _labelsloganplaceholder.hidden = NO;
-            [_textviewslogan resignFirstResponder];
-        }
-    }
-    else if (textView == _textviewdesc)
-    {
-        if(_textviewdesc.text.length == 0){
-            _labeldeskripsiplaceholder.hidden = NO;
-            [_textviewdesc resignFirstResponder];
-        }
-    }
-}
 
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
-    
     if (textView == _textviewslogan) {
         if(textView.text.length != 0 && ![textView.text isEqualToString:@""]){
             [_datainput setObject:textView.text forKey:kTKPDSHOPEDIT_APITAGLINEKEY];
@@ -886,8 +603,17 @@
 #pragma mark - Delegate Camera Controller
 -(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
 {
-    [self configureRestkitUploadPhoto];
-    [self requestActionUploadPhoto:userinfo];
+    NSDictionary *object = @{DATA_SELECTED_PHOTO_KEY : userinfo,
+                             DATA_SELECTED_IMAGE_VIEW_KEY :_thumb};
+    
+    NSDictionary* photo = [userinfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
+    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    _thumb.image = image;
+    [self actionUploadImage:object];
 }
 
 #pragma mark - Keyboard Notification
@@ -899,24 +625,19 @@
         
         _scrollviewContentSize = [_scrollview contentSize];
         _scrollviewContentSize.height += _keyboardSize.height;
-        [_scrollview setContentSize:_scrollviewContentSize];
     }else{
         [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                               delay:0
                             options: UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             _scrollviewContentSize = [_scrollview contentSize];
                              _scrollviewContentSize.height -= _keyboardSize.height;
-                             
                              _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
                              _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
                              _scrollviewContentSize.height += _keyboardSize.height;
-                             if ((self.view.frame.origin.y + _activetextview.frame.origin.y+_activetextview.frame.size.height)> _keyboardPosition.y) {
-                                 UIEdgeInsets inset = _scrollview.contentInset;
-                                 inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activetextview.frame.origin.y+_activetextview.frame.size.height + 10));
-                                 //[_scrollview setContentSize:_scrollviewContentSize];
-                                 [_scrollview setContentInset:inset];
-                             }
+
+                             UIEdgeInsets inset = _scrollview.contentInset;
+                             inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activetextview.frame.origin.y+_activetextview.frame.size.height + 10));
+                             [_scrollview setContentInset:inset];
                          }
                          completion:^(BOOL finished){
                          }];

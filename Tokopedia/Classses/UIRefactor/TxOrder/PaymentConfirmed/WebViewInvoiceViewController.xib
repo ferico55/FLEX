@@ -17,18 +17,27 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2jG-UM-qsu">
+                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2jG-UM-qsu">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="0IZ-6a-Hrd"/>
                     </connections>
                 </webView>
-                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="dXx-ce-K0M">
-                    <rect key="frame" x="150" y="274" width="20" height="20"/>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="dXx-ce-K0M">
+                    <rect key="frame" x="142" y="266" width="37" height="37"/>
+                    <color key="color" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="2jG-UM-qsu" secondAttribute="trailing" id="F0o-7A-eWI"/>
+                <constraint firstAttribute="centerY" secondItem="dXx-ce-K0M" secondAttribute="centerY" id="MTY-rA-cmN"/>
+                <constraint firstItem="2jG-UM-qsu" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="NNK-i0-ytg"/>
+                <constraint firstAttribute="bottom" secondItem="2jG-UM-qsu" secondAttribute="bottom" id="ZOQ-OA-Fgf"/>
+                <constraint firstAttribute="centerX" secondItem="dXx-ce-K0M" secondAttribute="centerX" id="sRp-9q-cQ0"/>
+                <constraint firstItem="2jG-UM-qsu" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="xce-Fh-09r"/>
+            </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
     </objects>

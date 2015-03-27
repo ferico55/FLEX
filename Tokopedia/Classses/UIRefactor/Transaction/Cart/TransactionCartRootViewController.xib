@@ -34,11 +34,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uXr-F6-eiV">
-                    <rect key="frame" x="0.0" y="44" width="320" height="436"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-                </view>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Udz-dt-e2a">
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Udz-dt-e2a">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <subviews>
                         <progressView contentMode="scaleToFill" verticalHuggingPriority="750" misplaced="YES" progress="1" translatesAutoresizingMaskIntoConstraints="NO" id="jGJ-QC-MGX">
@@ -130,8 +126,12 @@
                         <constraint firstItem="SWl-Nn-Cf3" firstAttribute="top" secondItem="a5P-Vi-EW1" secondAttribute="bottom" constant="12" id="lrX-Kj-8Jg"/>
                     </constraints>
                 </view>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uXr-F6-eiV">
+                    <rect key="frame" x="0.0" y="44" width="320" height="436"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                </view>
             </subviews>
-            <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="uXr-F6-eiV" secondAttribute="bottom" id="4oZ-aF-Z6H"/>
                 <constraint firstItem="uXr-F6-eiV" firstAttribute="top" secondItem="Udz-dt-e2a" secondAttribute="bottom" id="7Th-xI-gFb"/>

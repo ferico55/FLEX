@@ -12,9 +12,9 @@
 
 - (void)awakeFromNib
 {
-    [_info1Label multipleLineLabel:_info1Label];
-    [_info2Label multipleLineLabel:_info2Label];
-    [_info3Label multipleLineLabel:_info3Label];
+    [_info1Label setCustomAttributedText:_info1Label.text];
+    [_info2Label setCustomAttributedText:_info2Label.text];
+    [_info3Label setCustomAttributedText:_info3Label.text];
     
     self.layer.cornerRadius = 5;
 }

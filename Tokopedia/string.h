@@ -53,7 +53,7 @@
 #define ERROR_CANCEL_BUTTON_TITLE @"OK"
 #define ERROR_REQUEST_TIMEOUT @"Request Timeout"
 
-#define FONT_DEFAULT_CELL_TKPD [UIFont fontWithName:@"GothamBook" size:14.0f]
+#define FONT_DEFAULT_CELL_TKPD [UIFont fontWithName:@"GothamBook" size:13.0f]
 #define FONT_DETAIL_DEFAULT_CELL_TKPD [UIFont fontWithName:@"GothamBook" size:12.0f]
 
 #define FONT_GOTHAM_MEDIUM_12 [UIFont fontWithName:@"GothamMedium" size:12.0f]

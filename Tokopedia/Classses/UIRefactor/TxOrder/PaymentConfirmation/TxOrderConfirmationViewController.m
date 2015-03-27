@@ -476,21 +476,21 @@
     _tableView.tableFooterView = _footer;
     [_act startAnimating];
     
-#if DEBUG
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-    
-    _requestGetTransaction = [_objectManagerGetTransaction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
-#else
+//#if DEBUG
+//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+//    NSDictionary* auth = [secureStorage keychainDictionary];
+//    
+//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+//    
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
+//    
+//    _requestGetTransaction = [_objectManagerGetTransaction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
+//#else
     _requestGetTransaction = [_objectManagerGetTransaction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_TX_ORDER parameters:[param encrypt]];
-#endif
+//#endif
     NSLog(@"%@",_requestGetTransaction.HTTPRequestOperation.request);
     
     [_requestGetTransaction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -665,22 +665,22 @@
                             API_CONFIRMATION_CONFIRMATION_ID_KEY: confirmationID,
                             };
     
-#if DEBUG
-    
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-    
-    _requestCancelPayment = [_objectManagerCancelPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];//API_PATH_ACTION_TX_ORDER
-#else
+//#if DEBUG
+//    
+//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+//    NSDictionary* auth = [secureStorage keychainDictionary];
+//    
+//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+//    
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
+//    
+//    _requestCancelPayment = [_objectManagerCancelPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_TX_ORDER parameters:paramDictionary];//API_PATH_ACTION_TX_ORDER
+//#else
     _requestCancelPayment = [_objectManagerCancelPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_TX_ORDER parameters:[param encrypt]];
-#endif
+//#endif
     
     [_requestCancelPayment setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult)
     {
@@ -843,22 +843,22 @@
     NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_CANCEL_PAYMENT_FORM,
                             API_CONFIRMATION_CONFIRMATION_ID_KEY: confirmationID,
                             };
-#if DEBUG
-    
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-    
-    _requestCancelPaymentForm = [_objectManagerCancelPaymentForm appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
-#else
+//#if DEBUG
+//    
+//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+//    NSDictionary* auth = [secureStorage keychainDictionary];
+//    
+//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+//    
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
+//    
+//    _requestCancelPaymentForm = [_objectManagerCancelPaymentForm appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
+//#else
     _requestCancelPaymentForm = [_objectManagerCancelPaymentForm appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_TX_ORDER parameters:[param encrypt]];
-#endif
+//#endif
     
     [_requestCancelPaymentForm setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessCancelPaymentForm:_objectProcessingCancel

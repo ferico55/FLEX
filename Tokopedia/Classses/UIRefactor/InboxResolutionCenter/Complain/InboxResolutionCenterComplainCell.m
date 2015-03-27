@@ -9,6 +9,7 @@
 #import "InboxResolutionCenterComplainCell.h"
 #import "string_inbox_resolution_center.h"
 
+
 @implementation InboxResolutionCenterComplainCell
 
 #pragma mark - Factory methods
@@ -25,6 +26,8 @@
 
 
 - (void)awakeFromNib {
+    
+    [_warningLabel setCustomAttributedText:@"Komplain lebih dari 30 hari"];
 }
 
 
@@ -72,6 +75,14 @@
         [_delegate goToResolutionDetailAtIndexPath:_indexPath];
     else if (gesture.view.tag == 13)
         [_delegate showImageAtIndexPath:_indexPath];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    [self.contentView layoutIfNeeded];
+    self.statusLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.statusLabel.frame);
 }
 
 @end

@@ -39,9 +39,9 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="0AH-ao-Wjz">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="none" rowHeight="44" sectionHeaderHeight="5" sectionFooterHeight="5" translatesAutoresizingMaskIntoConstraints="NO" id="0AH-ao-Wjz">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="iVq-v7-P1m"/>
                         <outlet property="delegate" destination="-1" id="LoW-Dc-y9a"/>
@@ -73,7 +73,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="0AH-ao-Wjz" secondAttribute="bottom" id="1PH-8a-RDB"/>
                 <constraint firstAttribute="trailing" secondItem="0AH-ao-Wjz" secondAttribute="trailing" id="4p7-J4-v1S"/>
@@ -164,14 +164,17 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="mbZ-4F-JG8">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="51"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mbZ-4F-JG8" id="9az-Qc-hMA">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cti-C9-twK">
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cti-C9-twK">
                         <rect key="frame" x="10" y="10" width="300" height="30"/>
                         <color key="backgroundColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="bFB-z8-ooC"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <state key="normal" title="Lihat 8 Pesan Sebelumnya">
                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -182,6 +185,12 @@
                         </connections>
                     </button>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="Cti-C9-twK" firstAttribute="top" secondItem="9az-Qc-hMA" secondAttribute="top" constant="10" id="AVR-Eo-cbd"/>
+                    <constraint firstAttribute="trailing" secondItem="Cti-C9-twK" secondAttribute="trailing" constant="10" id="ICf-wE-YSd"/>
+                    <constraint firstItem="Cti-C9-twK" firstAttribute="leading" secondItem="9az-Qc-hMA" secondAttribute="leading" constant="10" id="X6E-5l-Uz3"/>
+                    <constraint firstAttribute="bottom" secondItem="Cti-C9-twK" secondAttribute="bottom" constant="10" id="ZcR-4E-gTx"/>
+                </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="507" y="146"/>

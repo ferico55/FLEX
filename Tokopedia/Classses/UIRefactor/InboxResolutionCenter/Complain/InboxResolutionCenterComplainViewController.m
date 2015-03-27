@@ -84,6 +84,19 @@
     }
     
     [self refreshRequest];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didChangePreferredContentSize:)
+                                                 name:UIContentSizeCategoryDidChangeNotification object:nil];
+    
+    _tableView.estimatedRowHeight = 100.0;
+    _tableView.rowHeight = UITableViewAutomaticDimension;
+    
+}
+
+- (void)didChangePreferredContentSize:(NSNotification *)notification
+{
+    [self.tableView reloadData];
 }
 
 
@@ -155,6 +168,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
+    //TODO:: add counter_30_days
     InboxResolutionCenterComplainCell* cell = nil;
     NSString *cellID = INBOX_RESOLUTION_CENTER_MY_COMPLAIN_CELL_IDENTIFIER;
     
@@ -204,13 +218,14 @@
     else
         lastSolution = @"";
     
-    cell.invoiceDateLabel.text = resolution.resolution_dispute.dispute_create_time;
+    cell.invoiceDateLabel.text = resolution.resolution_dispute.dispute_update_time;
     cell.invoiceNumberLabel.text = resolution.resolution_order.order_invoice_ref_num;
-    cell.lastStatusLabel.text = lastSolution;
-    [cell.lastStatusLabel multipleLineLabel:cell.lastStatusLabel];
+    [cell.lastStatusLabel setCustomAttributedText:lastSolution];
     cell.disputeStatus = resolution.resolution_dispute.dispute_status;
     cell.buyerOrSellerLabel.text = _isMyComplain?@"Pembelian dari":@"Pembelian oleh";
     cell.indexPath = indexPath;
+    
+    cell.warningLabel.hidden = !(resolution.resolution_dispute.dispute_30_days == 1);
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -442,9 +457,9 @@
         unread = @"2";
     
     if ([filterSort isEqualToString:ARRAY_FILTER_SORT[0]])
-        sortType = @"1";
-    else if([filterSort isEqualToString:ARRAY_FILTER_SORT[1]])
         sortType = @"2";
+    else if([filterSort isEqualToString:ARRAY_FILTER_SORT[1]])
+        sortType = @"1";
     
     NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_RESOLUTION_CENTER,
                             API_COMPLAIN_TYPE_KEY : _isMyComplain?@(0):@(1),
@@ -457,21 +472,21 @@
     _tableView.tableFooterView = _footer;
     [_act startAnimating];
     
-#if DEBUG
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-    
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_INBOX_RESOLUTION_CENTER parameters:paramDictionary];
-#else
+//#if DEBUG
+//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+//    NSDictionary* auth = [secureStorage keychainDictionary];
+//    
+//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+//    
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
+//    
+//    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_INBOX_RESOLUTION_CENTER parameters:paramDictionary];
+//#else
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_INBOX_RESOLUTION_CENTER parameters:[param encrypt]];
-#endif
+//#endif
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];
@@ -552,6 +567,11 @@
                         
                         _page = [[queries objectForKey:API_PAGE_KEY] integerValue];
                     }
+                    else
+                    {
+                        NoResultView *noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 103)];
+                        _tableView.tableFooterView = noResultView;
+                    }
                     
                     [_tableView reloadData];
                 }
@@ -631,21 +651,21 @@
                             API_RESOLUTION_ID_KEY : resolution.resolution_detail.resolution_last.last_resolution_id?:@"",
                             };
     
-#if DEBUG
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
-    
-    _requestCancelComplain = [_objectManagerCancelComplain appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_RESOLUTION_CENTER parameters:paramDictionary];
-#else
+//#if DEBUG
+//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+//    NSDictionary* auth = [secureStorage keychainDictionary];
+//    
+//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
+//    
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    [paramDictionary setObject:userID forKey:kTKPD_USERIDKEY];
+//    
+//    _requestCancelComplain = [_objectManagerCancelComplain appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_ACTION_RESOLUTION_CENTER parameters:paramDictionary];
+//#else
     _requestCancelComplain = [_objectManagerCancelComplain appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_ACTION_RESOLUTION_CENTER parameters:[param encrypt]];
-#endif
+//#endif
     
     [_requestCancelComplain setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessCancelComplain:object withOperation:operation withMappingResult:mappingResult];

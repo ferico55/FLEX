@@ -11,11 +11,11 @@
 
 #define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
 
-//#if DEBUG
-//    #define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
-//#else
-//    #define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
-//#endif
+#if DEBUG
+    #define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
+#else
+    #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+#endif
 
 #define kTkpdAPIkey @"8b0c367dd3ef0860f5730ec64e3bbdc9" //TODO:: Remove api key
 #define kTKPD_AUTHKEY @"auth"
@@ -123,6 +123,7 @@ typedef enum {
 #define kTKPD_INTERRUPTNOTIFICATIONNAMEKEY @"tokopedia.kTKPD_INTERRUPTNOTIFICATIONNAMEKEY"
 
 #define EDIT_CART_POST_NOTIFICATION_NAME @"tokopedia.EDIT_CART_POST_NOTIFICATION_NAME"
+#define SHOULD_REFRESH_CART @"SHOULD_REFRESH_CART"
 
 #define UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME @"tokopedia.UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME"
 

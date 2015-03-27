@@ -23,6 +23,9 @@
 		FC36DFA219B0656400AF74C1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8A19B0656400AF74C1 /* UIKit.framework */; };
 		FC36DFAA19B0656400AF74C1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC36DFA819B0656400AF74C1 /* InfoPlist.strings */; };
 		FC36DFAC19B0656400AF74C1 /* TokopediaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36DFAB19B0656400AF74C1 /* TokopediaTests.m */; };
+		FC414F8D1ABC2EBC0077B65C /* TxEmoney.m in Sources */ = {isa = PBXBuildFile; fileRef = FC414F8C1ABC2EBC0077B65C /* TxEmoney.m */; };
+		FC414F901ABFBD3A0077B65C /* TxEMoneyResult.m in Sources */ = {isa = PBXBuildFile; fileRef = FC414F8F1ABFBD3A0077B65C /* TxEMoneyResult.m */; };
+		FC414F931ABFBD490077B65C /* TxEMoneyData.m in Sources */ = {isa = PBXBuildFile; fileRef = FC414F921ABFBD490077B65C /* TxEMoneyData.m */; };
 		FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FC681F6619B6D62200C58548 /* libsqlite3.dylib */; };
 		FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
 		FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */; };
@@ -46,7 +49,6 @@
 		FCFF5EF71ABA79230076000E /* TKPDSecureStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF57331ABA79200076000E /* TKPDSecureStorage.m */; };
 		FCFF5EF81ABA79230076000E /* UIImage+ImageEffects.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF57351ABA79200076000E /* UIImage+ImageEffects.m */; };
 		FCFF5EF91ABA79230076000E /* UIKitCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF57371ABA79200076000E /* UIKitCategory.m */; };
-		FCFF5EFA1ABA79230076000E /* UITextField+WithInset.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF57391ABA79200076000E /* UITextField+WithInset.m */; };
 		FCFF5EFB1ABA79230076000E /* UITextView+UITextView_Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF573B1ABA79200076000E /* UITextView+UITextView_Placeholder.m */; };
 		FCFF5EFC1ABA79230076000E /* EncodeDecoderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF573E1ABA79200076000E /* EncodeDecoderManager.m */; };
 		FCFF5EFD1ABA79230076000E /* public_key.der in Resources */ = {isa = PBXBuildFile; fileRef = FCFF573F1ABA79200076000E /* public_key.der */; };
@@ -471,12 +473,8 @@
 		FCFF60A01ABA79230076000E /* GeneralTalkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCFF5AB91ABA79210076000E /* GeneralTalkCell.xib */; };
 		FCFF60A11ABA79230076000E /* GeneralTalkCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF5ABB1ABA79210076000E /* GeneralTalkCommentCell.m */; };
 		FCFF60A21ABA79230076000E /* GeneralTalkCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCFF5ABC1ABA79210076000E /* GeneralTalkCommentCell.xib */; };
-		FCFF60A31ABA79230076000E /* DisplayImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF5ABF1ABA79210076000E /* DisplayImageViewController.m */; };
-		FCFF60A41ABA79230076000E /* DisplayImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCFF5AC01ABA79210076000E /* DisplayImageViewController.xib */; };
 		FCFF60A51ABA79230076000E /* GeneralTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF5AC21ABA79210076000E /* GeneralTableViewController.m */; };
 		FCFF60A61ABA79230076000E /* GeneralTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCFF5AC31ABA79210076000E /* GeneralTableViewController.xib */; };
-		FCFF60A71ABA79230076000E /* scrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF5AC51ABA79210076000E /* scrollViewController.m */; };
-		FCFF60A81ABA79230076000E /* scrollViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCFF5AC61ABA79210076000E /* scrollViewController.xib */; };
 		FCFF60A91ABA79230076000E /* FavoritedShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF5ACA1ABA79210076000E /* FavoritedShopCell.m */; };
 		FCFF60AA1ABA79230076000E /* FavoritedShopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCFF5ACB1ABA79210076000E /* FavoritedShopCell.xib */; };
 		FCFF60AB1ABA79230076000E /* FavoritedShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF5ACD1ABA79210076000E /* FavoritedShopViewController.m */; };
@@ -783,7 +781,6 @@
 		FCFF61DA1ABA79230076000E /* FilterLocationViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF5CF21ABA79220076000E /* FilterLocationViewCell.m */; };
 		FCFF61DB1ABA79230076000E /* FilterLocationViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCFF5CF31ABA79220076000E /* FilterLocationViewCell.xib */; };
 		FCFF61DC1ABA79230076000E /* FilterLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF5CF51ABA79220076000E /* FilterLocationViewController.m */; };
-		FCFF61DD1ABA79230076000E /* FilterLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCFF5CF61ABA79220076000E /* FilterLocationViewController.xib */; };
 		FCFF61DE1ABA79230076000E /* FilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF5CF81ABA79220076000E /* FilterViewController.m */; };
 		FCFF61DF1ABA79230076000E /* FilterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCFF5CF91ABA79220076000E /* FilterViewController.xib */; };
 		FCFF61E01ABA79230076000E /* SortCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FCFF5CFC1ABA79220076000E /* SortCell.m */; };
@@ -1201,6 +1198,12 @@
 		FC36DFAB19B0656400AF74C1 /* TokopediaTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TokopediaTests.m; sourceTree = "<group>"; };
 		FC36E1CD19B067AD00AF74C1 /* Tkpd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tkpd.h; sourceTree = "<group>"; };
 		FC36E1CE19B067AD00AF74C1 /* TkpdImg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TkpdImg.h; sourceTree = "<group>"; };
+		FC414F8B1ABC2EBC0077B65C /* TxEmoney.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxEmoney.h; sourceTree = "<group>"; };
+		FC414F8C1ABC2EBC0077B65C /* TxEmoney.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxEmoney.m; sourceTree = "<group>"; };
+		FC414F8E1ABFBD3A0077B65C /* TxEMoneyResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxEMoneyResult.h; sourceTree = "<group>"; };
+		FC414F8F1ABFBD3A0077B65C /* TxEMoneyResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxEMoneyResult.m; sourceTree = "<group>"; };
+		FC414F911ABFBD490077B65C /* TxEMoneyData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxEMoneyData.h; sourceTree = "<group>"; };
+		FC414F921ABFBD490077B65C /* TxEMoneyData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxEMoneyData.m; sourceTree = "<group>"; };
 		FC681F6619B6D62200C58548 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		FC6B1C1B1AB03DC900581B3B /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -1243,8 +1246,6 @@
 		FCFF57351ABA79200076000E /* UIImage+ImageEffects.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+ImageEffects.m"; sourceTree = "<group>"; };
 		FCFF57361ABA79200076000E /* UIKitCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIKitCategory.h; sourceTree = "<group>"; };
 		FCFF57371ABA79200076000E /* UIKitCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIKitCategory.m; sourceTree = "<group>"; };
-		FCFF57381ABA79200076000E /* UITextField+WithInset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextField+WithInset.h"; sourceTree = "<group>"; };
-		FCFF57391ABA79200076000E /* UITextField+WithInset.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextField+WithInset.m"; sourceTree = "<group>"; };
 		FCFF573A1ABA79200076000E /* UITextView+UITextView_Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+UITextView_Placeholder.h"; sourceTree = "<group>"; };
 		FCFF573B1ABA79200076000E /* UITextView+UITextView_Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+UITextView_Placeholder.m"; sourceTree = "<group>"; };
 		FCFF573D1ABA79200076000E /* EncodeDecoderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncodeDecoderManager.h; sourceTree = "<group>"; };
@@ -2043,15 +2044,9 @@
 		FCFF5ABA1ABA79210076000E /* GeneralTalkCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralTalkCommentCell.h; sourceTree = "<group>"; };
 		FCFF5ABB1ABA79210076000E /* GeneralTalkCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralTalkCommentCell.m; sourceTree = "<group>"; };
 		FCFF5ABC1ABA79210076000E /* GeneralTalkCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralTalkCommentCell.xib; sourceTree = "<group>"; };
-		FCFF5ABE1ABA79210076000E /* DisplayImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayImageViewController.h; sourceTree = "<group>"; };
-		FCFF5ABF1ABA79210076000E /* DisplayImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayImageViewController.m; sourceTree = "<group>"; };
-		FCFF5AC01ABA79210076000E /* DisplayImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DisplayImageViewController.xib; sourceTree = "<group>"; };
 		FCFF5AC11ABA79210076000E /* GeneralTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GeneralTableViewController.h; sourceTree = "<group>"; };
 		FCFF5AC21ABA79210076000E /* GeneralTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralTableViewController.m; sourceTree = "<group>"; };
 		FCFF5AC31ABA79210076000E /* GeneralTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralTableViewController.xib; sourceTree = "<group>"; };
-		FCFF5AC41ABA79210076000E /* scrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scrollViewController.h; sourceTree = "<group>"; };
-		FCFF5AC51ABA79210076000E /* scrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = scrollViewController.m; sourceTree = "<group>"; };
-		FCFF5AC61ABA79210076000E /* scrollViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = scrollViewController.xib; sourceTree = "<group>"; };
 		FCFF5AC91ABA79210076000E /* FavoritedShopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritedShopCell.h; sourceTree = "<group>"; };
 		FCFF5ACA1ABA79210076000E /* FavoritedShopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritedShopCell.m; sourceTree = "<group>"; };
 		FCFF5ACB1ABA79210076000E /* FavoritedShopCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoritedShopCell.xib; sourceTree = "<group>"; };
@@ -3112,6 +3107,19 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		FC414F8A1ABC2EAF0077B65C /* TxEMoney */ = {
+			isa = PBXGroup;
+			children = (
+				FC414F8B1ABC2EBC0077B65C /* TxEmoney.h */,
+				FC414F8C1ABC2EBC0077B65C /* TxEmoney.m */,
+				FC414F8E1ABFBD3A0077B65C /* TxEMoneyResult.h */,
+				FC414F8F1ABFBD3A0077B65C /* TxEMoneyResult.m */,
+				FC414F911ABFBD490077B65C /* TxEMoneyData.h */,
+				FC414F921ABFBD490077B65C /* TxEMoneyData.m */,
+			);
+			path = TxEMoney;
+			sourceTree = "<group>";
+		};
 		FCFF57131ABA79200076000E /* Classses */ = {
 			isa = PBXGroup;
 			children = (
@@ -3168,8 +3176,6 @@
 				FCFF57351ABA79200076000E /* UIImage+ImageEffects.m */,
 				FCFF57361ABA79200076000E /* UIKitCategory.h */,
 				FCFF57371ABA79200076000E /* UIKitCategory.m */,
-				FCFF57381ABA79200076000E /* UITextField+WithInset.h */,
-				FCFF57391ABA79200076000E /* UITextField+WithInset.m */,
 				FCFF573A1ABA79200076000E /* UITextView+UITextView_Placeholder.h */,
 				FCFF573B1ABA79200076000E /* UITextView+UITextView_Placeholder.m */,
 			);
@@ -4143,6 +4149,7 @@
 		FCFF59481ABA79200076000E /* Transaction */ = {
 			isa = PBXGroup;
 			children = (
+				FC414F8A1ABC2EAF0077B65C /* TxEMoney */,
 				FCFF59491ABA79200076000E /* TransactionAction */,
 				FCFF594E1ABA79210076000E /* TransactionAddressShippingForm */,
 				FCFF59551ABA79210076000E /* TransactionATCForm */,
@@ -4800,15 +4807,9 @@
 		FCFF5ABD1ABA79210076000E /* GeneralViewController */ = {
 			isa = PBXGroup;
 			children = (
-				FCFF5ABE1ABA79210076000E /* DisplayImageViewController.h */,
-				FCFF5ABF1ABA79210076000E /* DisplayImageViewController.m */,
-				FCFF5AC01ABA79210076000E /* DisplayImageViewController.xib */,
 				FCFF5AC11ABA79210076000E /* GeneralTableViewController.h */,
 				FCFF5AC21ABA79210076000E /* GeneralTableViewController.m */,
 				FCFF5AC31ABA79210076000E /* GeneralTableViewController.xib */,
-				FCFF5AC41ABA79210076000E /* scrollViewController.h */,
-				FCFF5AC51ABA79210076000E /* scrollViewController.m */,
-				FCFF5AC61ABA79210076000E /* scrollViewController.xib */,
 			);
 			path = GeneralViewController;
 			sourceTree = "<group>";
@@ -6870,7 +6871,6 @@
 				FCFF60731ABA79230076000E /* TKPDTabProfileNavigationController.xib in Resources */,
 				FCFF61631ABA79230076000E /* SalesTransactionListViewController.xib in Resources */,
 				FCFF61021ABA79230076000E /* MyShopPaymentCell.xib in Resources */,
-				FCFF60A81ABA79230076000E /* scrollViewController.xib in Resources */,
 				FCFF60981ABA79230076000E /* GeneralProductCell.xib in Resources */,
 				FCFF62661ABA79230076000E /* icon_21.png in Resources */,
 				FCFF60F41ABA79230076000E /* MyShopEtalaseDetailViewController.xib in Resources */,
@@ -7036,7 +7036,6 @@
 				FCFF62481ABA79230076000E /* balloon_read_right.png in Resources */,
 				FCFF61921ABA79230076000E /* SettingBankDetailViewController.xib in Resources */,
 				FCFF61D11ABA79230076000E /* ShopReviewPageViewController.xib in Resources */,
-				FCFF60A41ABA79230076000E /* DisplayImageViewController.xib in Resources */,
 				FCFF62DE1ABA79230076000E /* icon_shop_setting.png in Resources */,
 				FCFF62A91ABA79230076000E /* icon_location.png in Resources */,
 				FCFF62E21ABA79230076000E /* icon_star.png in Resources */,
@@ -7067,7 +7066,6 @@
 				FCFF61FA1ABA79230076000E /* TransactionCartFormMandiriClickPayViewController.xib in Resources */,
 				FCFF621A1ABA79230076000E /* TxOrderTransactionDetailViewController.xib in Resources */,
 				FCFF63081ABA79230076000E /* top_bg.png in Resources */,
-				FCFF61DD1ABA79230076000E /* FilterLocationViewController.xib in Resources */,
 				FCFF62A31ABA79230076000E /* icon_google.png in Resources */,
 				FCFF60FA1ABA79230076000E /* MyShopEtalaseFilterViewController.xib in Resources */,
 				FCFF62041ABA79230076000E /* TransactionCartWebViewViewController.xib in Resources */,
@@ -7693,6 +7691,7 @@
 				FCFF601A1ABA79230076000E /* OrderButton.m in Sources */,
 				FCFF5FAD1ABA79230076000E /* SearchRedirect.m in Sources */,
 				FCFF5F151ABA79230076000E /* CatalogSpecs.m in Sources */,
+				FC414F931ABFBD490077B65C /* TxEMoneyData.m in Sources */,
 				FCFF5F611ABA79230076000E /* ResolutionOrder.m in Sources */,
 				FCFF61971ABA79230076000E /* SettingNotificationViewController.m in Sources */,
 				FCFF5FAC1ABA79230076000E /* SearchModel.xcdatamodeld in Sources */,
@@ -7793,6 +7792,7 @@
 				FCFF61D21ABA79230076000E /* ShopTalkPageViewController.m in Sources */,
 				FCFF61B41ABA79230076000E /* ShopInfoPaymentCell.m in Sources */,
 				FCFF601D1ABA79230076000E /* TxOrderStatusResult.m in Sources */,
+				FC414F901ABFBD3A0077B65C /* TxEMoneyResult.m in Sources */,
 				FCFF5EF31ABA79230076000E /* NSString+HTML.m in Sources */,
 				FCFF5F4A1ABA79230076000E /* InboxMessageActionResult.m in Sources */,
 				FCFF62031ABA79230076000E /* TransactionCartWebViewViewController.m in Sources */,
@@ -7818,7 +7818,6 @@
 				FCFF617F1ABA79230076000E /* SearchResultShopViewController.m in Sources */,
 				FCFF60701ABA79230076000E /* TKPDTabNavigationController.m in Sources */,
 				FCFF61F71ABA79230076000E /* TransactionCartEditViewController.m in Sources */,
-				FCFF60A71ABA79230076000E /* scrollViewController.m in Sources */,
 				FCFF61131ABA79230076000E /* DetailProductWholesaleCell.m in Sources */,
 				FCFF5FF11ABA79230076000E /* TransactionCartResult.m in Sources */,
 				FCFF60601ABA79230076000E /* CategoryViewCell.m in Sources */,
@@ -7929,7 +7928,6 @@
 				FCFF5FC71ABA79230076000E /* AddProductPictureResult.m in Sources */,
 				FCFF5FCA1ABA79230076000E /* AddProductValidation.m in Sources */,
 				FCFF5F461ABA79230076000E /* HotlistList.m in Sources */,
-				FCFF60A31ABA79230076000E /* DisplayImageViewController.m in Sources */,
 				FCFF60B61ABA79230076000E /* HotlistViewController.m in Sources */,
 				FCFF60E91ABA79230076000E /* MoreViewController.m in Sources */,
 				FCFF610B1ABA79230076000E /* DetailProductDescriptionCell.m in Sources */,
@@ -8019,6 +8017,7 @@
 				FCFF5F161ABA79230076000E /* DetailCatalogResult.m in Sources */,
 				FCFF5FE71ABA79230076000E /* TransactionATCFormDetail.m in Sources */,
 				FCFF60281ABA79230076000E /* AddressCell.m in Sources */,
+				FC414F8D1ABC2EBC0077B65C /* TxEmoney.m in Sources */,
 				FCFF60BE1ABA79230076000E /* InboxMessageCell.m in Sources */,
 				FCFF60AB1ABA79230076000E /* FavoritedShopViewController.m in Sources */,
 				FCFF5F131ABA79230076000E /* CatalogReview.m in Sources */,
@@ -8027,7 +8026,6 @@
 				FCFF5F9D1ABA79230076000E /* OrderDeadline.m in Sources */,
 				FCFF5F391ABA79230076000E /* FavoriteShopAction.m in Sources */,
 				FCFF61A91ABA79230076000E /* ShopFavoritedCell.m in Sources */,
-				FCFF5EFA1ABA79230076000E /* UITextField+WithInset.m in Sources */,
 				FCFF61061ABA79230076000E /* MyShopShipmentViewController.m in Sources */,
 				FCFF5F4F1ABA79230076000E /* InboxMessageList.m in Sources */,
 				FCFF615E1ABA79230076000E /* SalesOrderCell.m in Sources */,
@@ -8179,8 +8177,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iOS Development: Tokopedia App (TT6A3N9KTC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -8198,7 +8196,7 @@
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "31bc8e43-07ac-46c4-b613-be99ceb80b28";
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};
@@ -8210,8 +8208,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iOS Development: Tokopedia App (TT6A3N9KTC)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -8229,7 +8227,7 @@
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "31bc8e43-07ac-46c4-b613-be99ceb80b28";
+				PROVISIONING_PROFILE = "";
 				VALID_ARCHS = "arm64 armv7 armv7s";
 				WRAPPER_EXTENSION = app;
 			};

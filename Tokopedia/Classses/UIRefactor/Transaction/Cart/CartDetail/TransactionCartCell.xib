@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -32,7 +32,7 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="RGW-F0-mrB"/>
                                     <constraint firstAttribute="width" constant="175" id="tPf-C1-iRN"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <color key="textColor" red="0.039215686274509803" green="0.49411764705882355" blue="0.027450980392156862" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -102,23 +102,23 @@
                         </connections>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Cg-Lu-tNO" userLabel="View Name">
-                        <rect key="frame" x="0.0" y="91" width="320" height="46"/>
+                        <rect key="frame" x="0.0" y="91" width="320" height="44"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jumlah Barang" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z1a-8b-h8n">
-                                <rect key="frame" x="15" y="0.0" width="116" height="46"/>
+                                <rect key="frame" x="15" y="0.0" width="116" height="44"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="116" id="4a6-Rk-yTb"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="5 Barang (12. kg)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2I2-9g-225">
-                                <rect key="frame" x="138" y="0.0" width="167" height="46"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                <rect key="frame" x="138" y="0.0" width="167" height="44"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dzP-i3-O6o" userLabel="Border Bottom">
-                                <rect key="frame" x="15" y="45" width="290" height="1"/>
+                                <rect key="frame" x="15" y="43" width="290" height="1"/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="WGr-eL-eaL"/>
@@ -133,7 +133,7 @@
                             <constraint firstAttribute="trailing" secondItem="2I2-9g-225" secondAttribute="trailing" constant="15" id="72k-XP-Zgo"/>
                             <constraint firstItem="2I2-9g-225" firstAttribute="top" secondItem="0Cg-Lu-tNO" secondAttribute="top" id="7ek-Ut-Smb"/>
                             <constraint firstItem="z1a-8b-h8n" firstAttribute="top" secondItem="0Cg-Lu-tNO" secondAttribute="top" id="LO7-It-1aO"/>
-                            <constraint firstAttribute="height" constant="46" id="O0A-4x-SHu"/>
+                            <constraint firstAttribute="height" constant="44" id="O0A-4x-SHu"/>
                             <constraint firstItem="z1a-8b-h8n" firstAttribute="leading" secondItem="0Cg-Lu-tNO" secondAttribute="leading" constant="15" id="RPI-e6-OOF"/>
                             <constraint firstItem="2I2-9g-225" firstAttribute="leading" secondItem="z1a-8b-h8n" secondAttribute="trailing" constant="7" id="RdX-TW-xr7"/>
                             <constraint firstAttribute="bottom" secondItem="dzP-i3-O6o" secondAttribute="bottom" id="g6m-zM-61S"/>
@@ -141,7 +141,7 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CLh-ZD-D84" userLabel="View Name">
-                        <rect key="frame" x="0.0" y="137" width="320" height="76"/>
+                        <rect key="frame" x="0.0" y="135" width="320" height="76"/>
                         <subviews>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keterangan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="unQ-M8-7Wu">
                                 <rect key="frame" x="15" y="9" width="76" height="21"/>
@@ -149,7 +149,7 @@
                                     <constraint firstAttribute="width" constant="76" id="5qN-yS-Tx9"/>
                                     <constraint firstAttribute="height" constant="21" id="FxU-0J-5KK"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -158,7 +158,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="x0J-cn-WCg"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>

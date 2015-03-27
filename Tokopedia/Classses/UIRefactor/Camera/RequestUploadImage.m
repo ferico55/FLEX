@@ -27,8 +27,6 @@
     _operationQueue = [NSOperationQueue new];
     _requestActionUploadPhoto = [NSMutableURLRequest new];
     
-    _objectManagerUploadPhoto =  [RKObjectManager sharedClient];
-    
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[UploadImage class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
@@ -94,69 +92,77 @@
                                NSString *responsestring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                NSLog(@"responsestring %@",responsestring);
                                
-                               if ([httpResponse statusCode] == 200) {
-                                   
-                                   id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-                                   if (parsedData == nil && error) {
-                                       StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Error"] delegate:_delegate];
-                                       [alert show];
-                                       [_delegate failedUploadObject:_imageObject];
-                                       NSLog(@"parser error");
-                                       return;
-                                   }
-                                   
-                                   NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-                                   for (RKResponseDescriptor *descriptor in _objectManagerUploadPhoto.responseDescriptors) {
-                                       [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-                                   }
-                                   
-                                   RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-                                   NSError *mappingError = nil;
-                                   BOOL isMapped = [mapper execute:&mappingError];
-                                   if (isMapped && !mappingError) {
-                                       NSLog(@"result %@",[mapper mappingResult]);
-                                       RKMappingResult *mappingresult = [mapper mappingResult];
-                                       NSDictionary *result = mappingresult.dictionary;
-                                       id stat = [result objectForKey:@""];
-                                       UploadImage *images = stat;
-                                       BOOL status = [images.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-                                       
-                                       if (status) {
-                                           if (images.message_error) {
-                                               NSArray *array = images.message_error?:[[NSArray alloc] initWithObjects:@"failed", nil];
-                                               
-                                               StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:_delegate];
-                                               [alert show];
-                                               [_delegate failedUploadObject:_imageObject];
-                                           }
-                                           else if (images.result.file_path) {
-                                               [_delegate successUploadObject:_imageObject withMappingResult:images];
-                                           }
-                                           else
-                                           {
-                                               NSArray *array = images.message_error?:[[NSArray alloc] initWithObjects:@"failed", nil];
-                                               
-                                               StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:_delegate];
-                                               [alert show];
-                                               [_delegate failedUploadObject:_imageObject];
-                                           }
-                                       }
-                                       else
-                                       {
-                                           StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[images.status] delegate:_delegate];
-                                           [alert show];
-                                           [_delegate failedUploadObject:_imageObject];
-                                       }
-                                   }
-                                   else
-                                   {
-                                       if (!([error code] == NSURLErrorCancelled)){
-                                           NSString *errorDescription = error.localizedDescription;
-                                           UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:_delegate cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                                           [errorAlert show];
-                                       }
-                                   }
-                               }
+       if ([httpResponse statusCode] == 200) {
+           
+           id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
+           if (parsedData == nil && error) {
+               StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Error"] delegate:_delegate];
+               [alert show];
+               [_delegate failedUploadObject:_imageObject];
+               NSLog(@"parser error");
+               return;
+           }
+           
+           NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
+           for (RKResponseDescriptor *descriptor in _objectManagerUploadPhoto.responseDescriptors) {
+               [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
+           }
+           
+           RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
+           NSError *mappingError = nil;
+           BOOL isMapped = [mapper execute:&mappingError];
+           if (isMapped && !mappingError) {
+               NSLog(@"result %@",[mapper mappingResult]);
+               RKMappingResult *mappingresult = [mapper mappingResult];
+               NSDictionary *result = mappingresult.dictionary;
+               id stat = [result objectForKey:@""];
+               UploadImage *images = stat;
+               BOOL status = [images.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+               
+               if (status) {
+                   if (images.message_error) {
+                       NSArray *array = images.message_error?:[[NSArray alloc] initWithObjects:@"failed", nil];
+                       
+                       StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:_delegate];
+                       [alert show];
+                       [_delegate failedUploadObject:_imageObject];
+                   }
+                   else if (images.result.file_path) {
+                       [_delegate successUploadObject:_imageObject withMappingResult:images];
+                   }
+                   else
+                   {
+                       NSArray *array = images.message_error?:[[NSArray alloc] initWithObjects:@"failed", nil];
+                       
+                       StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:_delegate];
+                       [alert show];
+                       [_delegate failedUploadObject:_imageObject];
+                   }
+               }
+               else
+               {
+                   StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[images.status] delegate:_delegate];
+                   [alert show];
+                   [_delegate failedUploadObject:_imageObject];
+               }
+           }
+           else
+           {
+               if (!([error code] == NSURLErrorCancelled)){
+                   NSString *errorDescription = error.localizedDescription;
+                   UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:_delegate cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                   [errorAlert show];
+                   [_delegate failedUploadObject:_imageObject];
+               }
+           }
+       }
+       else
+       {
+           UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:[@([httpResponse statusCode]) stringValue] message:nil delegate:_delegate cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+           [errorAlert show];
+           [_delegate failedUploadObject:_imageObject];
+       }
+                               
                            }];
 }
 

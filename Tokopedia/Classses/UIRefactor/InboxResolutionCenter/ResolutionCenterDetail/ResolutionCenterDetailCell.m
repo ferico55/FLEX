@@ -24,65 +24,65 @@
 
 -(void)setIsMark:(BOOL)isMark
 {
-    _isMark = isMark;
-    if (!_isMark) {
-        CGRect frame = _markView.frame;
-        frame.size.height = 0;
-        _markView.frame = frame;
-        
-        frame = _atachmentView.frame;
-        frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
-        _atachmentView.frame = frame;
-        [_containerView addSubview:_atachmentView];
-        
-        frame = _oneButtonView.frame;
-        frame.origin.y = 104;
-        _oneButtonView.frame = frame;
-        [_atachmentView addSubview:_oneButtonView];
-    }
+//    _isMark = isMark;
+//    if (!_isMark) {
+//        CGRect frame = _markView.frame;
+//        frame.size.height = 0;
+//        _markView.frame = frame;
+//        
+//        frame = _atachmentView.frame;
+//        frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
+//        _atachmentView.frame = frame;
+//        [_containerView addSubview:_atachmentView];
+//        
+//        frame = _oneButtonView.frame;
+//        frame.origin.y = 104;
+//        _oneButtonView.frame = frame;
+//        [_atachmentView addSubview:_oneButtonView];
+//    }
 }
 
--(void)setIsShowAttachment:(BOOL)isShowAttachment
-{
-    _isShowAttachment = isShowAttachment;
-    if (isShowAttachment) {
-        CGRect frame = _oneButtonView.frame;
-        frame.origin.y = 104;
-        _oneButtonView.frame = frame;
-        [_atachmentView addSubview:_oneButtonView];
-        
-        frame = _twoButtonView.frame;
-        frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
-        _twoButtonView.frame = frame;
-        [_atachmentView addSubview:_twoButtonView];
-    }
-    else
-    {
-        CGRect frame = _oneButtonView.frame;
-        frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
-        _oneButtonView.frame = frame;
-        [_containerView addSubview:_oneButtonView];
-        
-        frame = _twoButtonView.frame;
-        frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
-        _twoButtonView.frame = frame;
-        [_containerView addSubview:_twoButtonView];
-        
-    }
-}
+//-(void)setIsShowAttachment:(BOOL)isShowAttachment
+//{
+//    _isShowAttachment = isShowAttachment;
+//    if (isShowAttachment) {
+//        CGRect frame = _oneButtonView.frame;
+//        frame.origin.y = 104;
+//        _oneButtonView.frame = frame;
+//        [_atachmentView addSubview:_oneButtonView];
+//        
+//        frame = _twoButtonView.frame;
+//        frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
+//        _twoButtonView.frame = frame;
+//        [_atachmentView addSubview:_twoButtonView];
+//    }
+//    else
+//    {
+//        CGRect frame = _oneButtonView.frame;
+//        frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
+//        _oneButtonView.frame = frame;
+//        [_containerView addSubview:_oneButtonView];
+//        
+//        frame = _twoButtonView.frame;
+//        frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
+//        _twoButtonView.frame = frame;
+//        [_containerView addSubview:_twoButtonView];
+//        
+//    }
+//}
 
 - (void)awakeFromNib {
     
-    CGRect frame = _atachmentView.frame;
-    frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
-    _atachmentView.frame = frame;
-    [_containerView addSubview:_atachmentView];
-    
-    frame = _atachmentView.frame;
-    frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
-    _atachmentView.frame = frame;
-    [_containerView addSubview:_atachmentView];
-    
+//    CGRect frame = _atachmentView.frame;
+//    frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
+//    _atachmentView.frame = frame;
+//    [_containerView addSubview:_atachmentView];
+//    
+//    frame = _atachmentView.frame;
+//    frame.origin.y = _markView.frame.origin.y + _markView.frame.size.height;
+//    _atachmentView.frame = frame;
+//    [_containerView addSubview:_atachmentView];
+//    
 
 }
 - (IBAction)tap:(id)sender {
@@ -104,6 +104,15 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    [self.contentView layoutIfNeeded];
+    self.markLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.markLabel.frame);
 }
 
 @end

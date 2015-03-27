@@ -26,5 +26,8 @@
 - (IBAction)tap:(id)sender {
     [_delegate deleteTransactionCartHeaderView:self atSection:_section];
 }
+- (IBAction)gesture:(id)sender {
+    [_delegate didTapShopAtSection:_section];
+}
 
 @end

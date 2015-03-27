@@ -83,7 +83,7 @@
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     UIBarButtonItem *barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor blackColor]];
+    [barbutton1 setTintColor:[UIColor whiteColor]];
     barbutton1.tag = 11;
     self.navigationItem.rightBarButtonItem = barbutton1;
     

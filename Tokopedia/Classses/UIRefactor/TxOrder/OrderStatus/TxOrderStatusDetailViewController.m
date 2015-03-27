@@ -79,7 +79,7 @@
     
     if (_buttonHeaderCount >0) {
         UIBarButtonItem *trackBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Lacak" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [trackBarButtonItem setTintColor:[UIColor blackColor]];
+        [trackBarButtonItem setTintColor:[UIColor whiteColor]];
         self.navigationItem.rightBarButtonItem = trackBarButtonItem;
     }
 }

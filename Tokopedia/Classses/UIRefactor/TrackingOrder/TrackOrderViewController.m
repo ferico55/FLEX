@@ -71,9 +71,8 @@
     
     //TODO:: Invalid Detail Text
     NSString *invalidDetail = @"Apabila sudah lewat 3x24 jam masih tidak ada update status pengiriman, ada beberapa kemungkinan:\n    \u25CF Penjual keliru menginput nomor resi atau tanggal pengiriman.\n    \u25CF Penjual menggunakan kurir yang berbeda dari pilihan pembeli.\n\nPembeli disarankan menghubungi penjual bersangkutan untuk informasi lebih lanjut.\n\nNamun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.";
-    _invalidStatusDescLabel.text = invalidDetail;
-    [_invalidStatusDescLabel multipleLineLabel:_invalidStatusDescLabel];
-    [_invalidStatusTitle multipleLineLabel:_invalidStatusTitle];
+    [_invalidStatusDescLabel setCustomAttributedText:invalidDetail];
+    [_invalidStatusTitle setCustomAttributedText:_invalidStatusTitle.text];
     
     [self configureRestKit];
     [self request];    
@@ -155,6 +154,7 @@
         //[self configureTrackingHistoryCell:cell indexPath:indexPath];
     }
 
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
@@ -363,21 +363,21 @@
                             API_SHIPMENT_ID_KEY      : _shipmentID?:@""
                             };
     
-#if DEBUG
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodGET
-                                                                      path:_isShippingTracking?API_TRACKING_INBOX_RESOLUTION_PATH:API_TRACKING_ORDER_PATH
-                                                                parameters:paramDictionary];
-#else
+//#if DEBUG
+//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
+//    [paramDictionary addEntriesFromDictionary:param];
+//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
+//    
+//    _request = [_objectManager appropriateObjectRequestOperationWithObject:self
+//                                                                    method:RKRequestMethodGET
+//                                                                      path:_isShippingTracking?API_TRACKING_INBOX_RESOLUTION_PATH:API_TRACKING_ORDER_PATH
+//                                                                parameters:paramDictionary];
+//#else
     _request = [_objectManager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:_isShippingTracking?API_TRACKING_INBOX_RESOLUTION_PATH:API_TRACKING_ORDER_PATH
                                                                 parameters:[param encrypt]];
-#endif
+//#endif
 
 
 
