@@ -25,6 +25,8 @@
 
 #define kTKPDACTIVATIONLOGIN_APIRSPONSEFILE @"tmp/login.plist"
 
+#define kTKPDCREATE_PASSWORD_IS_SUCCESS @"is_success"
+
 #define kTKPDLOGIN_APIPATH @"login.pl"
 #define kTKPDLOGIN_FACEBOOK_APIPATH @"login-third-app.pl"
 #define kTKPDREGISTER_APIPATH @"action/register.pl"
@@ -56,6 +58,7 @@
 #define kTKPDREGISTER_APIACTIONKEY @"action"
 #define kTKPDREGISTER_APIDOLOGINKEY @"do_login"
 #define kTKPDREGISTER_APIDOREGISTERKEY @"do_register"
+#define kTKPDREGISTER_APICREATE_PASSWORD_KEY @"create_password"
 #define kTKPDREGISTER_APIFULLNAMEKEY @"full_name"
 #define kTKPDREGISTER_APIEMAILKEY @"email"
 #define kTKPDREGISTER_APIPHONEKEY @"phone"
@@ -67,8 +70,20 @@
 #define kTKPDREGISTER_APICONFIRMPASSKEY @"confirm_password"
 #define kTKPDREGISTER_APIISACTIVEKEY @"is_active"
 #define kTKPDREGISTER_APIUIKEY @"u_id"
+#define kTKPDREGISTER_API_REGISTER_TOS  @"register_tos"
+#define kTKPDREGISTER_API_MSISDN        @"msisdn"
 
 #define kTKPDREGISTER_TITLE @"Daftar"
 #define kTKPDREGISTER_NEW_TITLE @"Daftar Baru"
+
+#define API_NEW_PASSWORD_KEY        @"new_pass"
+#define API_CONFIRM_PASSWORD_KEY    @"confirm_pass"
+#define API_REGISTER_TOS_KEY        @"register_tos"
+#define API_MSISDN_KEY              @"msisdn"
+#define API_BIRTHDAY_DAY_KEY        @"bday_dd"
+#define API_BIRTHDAY_MONTH_KEY      @"bday_mm"
+#define API_BIRTHDAY_YEAR_KEY       @"bday_yy"
+#define API_GENDER_KEY              @"gender"
+#define API_FULL_NAME_KEY           @"full_name"
 
 #endif

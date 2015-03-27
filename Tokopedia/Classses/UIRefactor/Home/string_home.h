@@ -59,13 +59,16 @@
 #define kTKPDHOME_APIQUERYKEY @"key"
 #define kTKPDHOME_APILIMITKEY @"limit"
 
-#define kTKPDHOME_APIPRODUCTPRICEKEY @"product_price"
-#define kTKPDHOME_APIPRODUCTIDKEY @"product_id"
-#define kTKPDHOME_APISHOPGOLDSTATUSKEY @"shop_gold_status"
-#define kTKPDHOME_APISHOPLOCATIONKEY @"shop_location"
-#define kTKPDHOME_APISHOPNAMEKEY @"shop_name"
-#define kTKPDHOME_APIPRODUCTIMAGEKEY @"product_image"
-#define kTKPDHOME_APIPRODUCTNAMEKEY @"product_name"
+#define kTKPDHOME_APIPRODUCTPRICEKEY        @"product_price"
+#define kTKPDHOME_APIPRODUCTIDKEY           @"product_id"
+#define kTKPDHOME_APISHOPGOLDSTATUSKEY      @"shop_gold_status"
+#define kTKPDHOME_APISHOPLOCATIONKEY        @"shop_location"
+#define kTKPDHOME_APISHOPNAMEKEY            @"shop_name"
+#define kTKPDHOME_APIPRODUCTIMAGEFULLKEY    @"product_image_full"
+#define kTKPDHOME_APIPRODUCTIMAGEKEY        @"product_image"
+#define kTKPDHOME_APIPRODUCTNAMEKEY         @"product_name"
+#define kTKPDHOME_APIPRODUCTTALKCOUNTKEY    @"product_talk_count"
+#define kTKPDHOME_APIPRODUCTREVIEWCOUNTKEY  @"product_review_count"
 
 #define kTKPDHOME_APICOVERIMAGEKEY @"cover_image"
 #define KTKPDHOME_APIDESCRIPTION1KEY @"desc_key"
@@ -106,8 +109,8 @@
 
 #define kTKPDHOME_APIQUERYKEY @"key"
 
-#define kTKPDHOME_FONTSLIDETITLES [UIFont fontWithName:@"GothamBook" size:12.0]
-#define kTKPDHOME_FONTSLIDETITLESACTIVE [UIFont fontWithName:@"GothamBook" size:12.0]
+#define kTKPDHOME_FONTSLIDETITLES [UIFont fontWithName:@"GothamBook" size:10.0]
+#define kTKPDHOME_FONTSLIDETITLESACTIVE [UIFont fontWithName:@"GothamBook" size:10.0]
 #define kTKPDHOME_FONTHOTLIST [UIFont fontWithName:@"GothamMedium" size:12.0]
 
 #define kTKPDHOME_FONTSLIDETITLESCOLOR [UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1]

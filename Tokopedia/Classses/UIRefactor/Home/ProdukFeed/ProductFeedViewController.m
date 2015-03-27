@@ -181,6 +181,13 @@ typedef enum ScrollDirection {
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).lineBreakMode = NSLineBreakByTruncatingTail;
                 ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
                 
+                if([list.shop_gold_status isEqualToString:@"1"]) {
+                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = NO;
+                } else {
+                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = YES;
+                }
+                
+                
                 NSString *urlstring = list.product_image;
                 
                 NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlstring] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -432,9 +439,9 @@ typedef enum ScrollDirection {
 }
 
 #pragma mark - Cell Delegate
--(void)GeneralProductCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+-(void)didSelectCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger index = indexpath.section+2*(indexpath.row);
+    NSInteger index = indexPath.section+2*(indexPath.row);
     ProductFeedList *list = _product[index];
 
     DetailProductViewController *vc = [DetailProductViewController new];

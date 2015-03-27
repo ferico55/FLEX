@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
             <string>GothamBook</string>
-            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LoginViewController">
             <connections>
+                <outlet property="activityIndicator" destination="OfY-Za-Mqc" id="dml-LN-7Hq"/>
                 <outlet property="emailTextField" destination="TaY-hL-DlK" id="0pG-0z-24H"/>
                 <outlet property="facebookLoginButton" destination="Gxv-a7-Kso" id="FDu-nS-hG0"/>
+                <outlet property="forgetPasswordButton" destination="ut9-rs-BMn" id="m1N-oY-ceJ"/>
+                <outlet property="loadingView" destination="QfQ-ON-DwI" id="aQb-OX-Tg9"/>
                 <outlet property="loginButton" destination="BjJ-ah-R04" id="dvv-2B-Ufl"/>
                 <outlet property="passwordTextField" destination="rJv-0e-sEO" id="wTA-pJ-GR0"/>
+                <outlet property="screenLogin" destination="tu9-kn-elL" id="oKK-HZ-puV"/>
                 <outlet property="view" destination="lpZ-Wc-EfF" id="4lY-8H-fs8"/>
             </connections>
         </placeholder>
@@ -45,7 +51,7 @@
                         <outlet property="delegate" destination="-1" id="jj7-1N-qn8"/>
                     </connections>
                 </textField>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rJv-0e-sEO" customClass="TextField">
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Kata Sandi" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rJv-0e-sEO" customClass="TextField">
                     <rect key="frame" x="15" y="93" width="290" height="44"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -63,7 +69,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="J8R-cu-Y1h"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
                     <state key="normal" title="Masuk">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -88,15 +94,32 @@
                     <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QfQ-ON-DwI" userLabel="LoadingView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="OfY-Za-Mqc">
+                            <rect key="frame" x="150" y="230" width="20" height="20"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="centerY" secondItem="OfY-Za-Mqc" secondAttribute="centerY" id="8vt-mV-bVK"/>
+                        <constraint firstAttribute="centerX" secondItem="OfY-Za-Mqc" secondAttribute="centerX" id="ZBR-bd-a0m"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="rJv-0e-sEO" firstAttribute="top" secondItem="lpZ-Wc-EfF" secondAttribute="top" constant="93" id="1h0-b5-SOW"/>
+                <constraint firstAttribute="trailing" secondItem="QfQ-ON-DwI" secondAttribute="trailing" id="2yg-yP-Uk0"/>
                 <constraint firstItem="TaY-hL-DlK" firstAttribute="top" secondItem="lpZ-Wc-EfF" secondAttribute="top" constant="50" id="4DL-YL-fhl"/>
+                <constraint firstAttribute="trailing" secondItem="QfQ-ON-DwI" secondAttribute="trailing" id="50i-vM-P9y"/>
+                <constraint firstAttribute="bottom" secondItem="QfQ-ON-DwI" secondAttribute="bottom" id="5Hl-WU-Sz4"/>
                 <constraint firstItem="TaY-hL-DlK" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" constant="15" id="5xp-aM-8rS"/>
                 <constraint firstAttribute="trailing" secondItem="tu9-kn-elL" secondAttribute="trailing" id="CYC-T2-Wkq"/>
                 <constraint firstItem="ut9-rs-BMn" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" constant="80" id="FOD-Fs-kjm"/>
                 <constraint firstAttribute="trailing" secondItem="Gxv-a7-Kso" secondAttribute="trailing" constant="15" id="H9r-Lb-Mc1"/>
+                <constraint firstItem="QfQ-ON-DwI" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" id="IMU-Db-7zd"/>
                 <constraint firstItem="tu9-kn-elL" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" id="IfZ-Ls-Ypu"/>
                 <constraint firstItem="tu9-kn-elL" firstAttribute="top" secondItem="lpZ-Wc-EfF" secondAttribute="top" id="LAP-Ww-79x"/>
                 <constraint firstItem="BjJ-ah-R04" firstAttribute="top" secondItem="rJv-0e-sEO" secondAttribute="bottom" constant="13" id="MAC-7e-W0i"/>
@@ -108,6 +131,10 @@
                 <constraint firstAttribute="trailing" secondItem="ut9-rs-BMn" secondAttribute="trailing" constant="80" id="XSL-pL-W0U"/>
                 <constraint firstAttribute="bottom" secondItem="tu9-kn-elL" secondAttribute="bottom" id="jq6-4S-nOC"/>
                 <constraint firstItem="BjJ-ah-R04" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" constant="15" id="ke6-yh-EoE"/>
+                <constraint firstItem="QfQ-ON-DwI" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" id="mUf-2O-BzJ"/>
+                <constraint firstAttribute="bottom" secondItem="QfQ-ON-DwI" secondAttribute="bottom" id="n75-up-kCn"/>
+                <constraint firstItem="QfQ-ON-DwI" firstAttribute="top" secondItem="lpZ-Wc-EfF" secondAttribute="top" id="pqp-lJ-77a"/>
+                <constraint firstItem="QfQ-ON-DwI" firstAttribute="top" secondItem="lpZ-Wc-EfF" secondAttribute="top" id="rqG-rv-Vfg"/>
                 <constraint firstItem="ut9-rs-BMn" firstAttribute="top" secondItem="BjJ-ah-R04" secondAttribute="bottom" constant="8" id="tdY-xn-Nw0"/>
                 <constraint firstItem="Gxv-a7-Kso" firstAttribute="leading" secondItem="lpZ-Wc-EfF" secondAttribute="leading" constant="15" id="th2-x2-zLa"/>
             </constraints>

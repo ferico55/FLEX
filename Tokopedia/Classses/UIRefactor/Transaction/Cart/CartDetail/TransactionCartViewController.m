@@ -339,10 +339,7 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
-
-
 
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -1005,6 +1002,7 @@
                         NSInteger indexSelectedShipment = [[_dataInput objectForKey:DATA_INDEX_KEY] integerValue]?:0;
                         NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:((TransactionCartList*)_list[indexSelectedShipment])};
                         [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_POST_NOTIFICATION_NAME object:nil userInfo:info];
+                        _checkoutView.hidden = NO;
                         _tableView.tableFooterView = _checkoutView;
                     }
                     

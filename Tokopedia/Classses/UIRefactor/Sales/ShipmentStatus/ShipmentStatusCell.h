@@ -13,6 +13,7 @@
 - (void)didTapTrackButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath;
 - (void)didTapReceiptButton:(UIButton *)button indexPath:(NSIndexPath *)indexPath;
 - (void)didTapStatusAtIndexPath:(NSIndexPath *)indexPath;
+- (void)didTapUserAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
 

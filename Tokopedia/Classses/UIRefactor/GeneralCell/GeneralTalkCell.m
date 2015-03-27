@@ -43,6 +43,16 @@
 {
     // round user profile picture
     self.thumb.layer.cornerRadius = self.thumb.layer.frame.size.width / 2;
+    
+    // add gesture to product image
+    UITapGestureRecognizer* productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];
+    [self.productImageView addGestureRecognizer:productGesture];
+    [self.productImageView setUserInteractionEnabled:YES];
+    
+    // add gesture to label message
+    UITapGestureRecognizer *messageGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapMessage)];
+    [self.commentlabel addGestureRecognizer:messageGesture];
+    [self.commentlabel setUserInteractionEnabled:YES];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -84,7 +94,27 @@
     }
 }
 
+
+
 #pragma mark - View Action
+- (void)tapProduct {
+    NSIndexPath* indexpath = _indexpath;
+    
+    TalkList *talkList = (TalkList *)_data;
+    NSString *productId = talkList.talk_product_id;
+    UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
+    
+    DetailProductViewController *vc = [DetailProductViewController new];
+    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : productId};
+    [nav.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)tapMessage {
+    NSIndexPath* indexpath = _indexpath;
+    
+    [_delegate GeneralTalkCell:self withindexpath:indexpath];
+}
+
 -(IBAction)tap:(id)sender
 {
     if ([sender isKindOfClass:[UIButton class]]) {
@@ -182,19 +212,19 @@
                 if ((loginUserId == talkList.talk_user_id && talkList.talk_user_id)
                     || talkIsOwner.length > 0
                     ) {
-                    [buttonTitles addObject:@"Delete"];
+                    [buttonTitles addObject:@"Hapus"];
                 }
                 
                 // If the comment is not user's comment, Report button added
                 if (loginUserId && loginUserId != talkList.talk_user_id && !talkIsOwner.length) {
-                    [buttonTitles addObject:@"Report"];
+                    [buttonTitles addObject:@"Lapor"];
                 }
                 
                 NSString *otherButtonTitles = [buttonTitles componentsJoinedByString:@","];
 
                 UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                          delegate:self
-                                                                cancelButtonTitle:@"Cancel"
+                                                                cancelButtonTitle:@"Batal"
                                                            destructiveButtonTitle:nil
                                                                 otherButtonTitles:otherButtonTitles, nil];
                 [actionSheet showInView:self.contentView];

@@ -34,7 +34,7 @@
     NSString *text = nil;
     
     html = [html stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-
+    
     myScanner = [NSScanner scannerWithString:html];
     
     while ([myScanner isAtEnd] == NO) {

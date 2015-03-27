@@ -54,8 +54,8 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *barButton = (UIBarButtonItem *)sender;
         if (barButton.tag == 2) {
-            NSString *deadline = @"";
-            if ([_dueDate isEqualToString:@"Hari ini"]) {
+            NSString *deadline = @"0";
+            if ([_dueDate isEqualToString:@"Hari Ini"]) {
                 deadline = @"4";
             } else if ([_dueDate isEqualToString:@"Besok"]) {
                 deadline = @"3";

@@ -17,6 +17,7 @@
 #import "DetailShipmentStatusViewController.h"
 #import "ChangeReceiptNumberViewController.h"
 #import "TrackOrderViewController.h"
+#import "TKPDTabProfileNavigationController.h"
 
 #import "ShipmentStatusCell.h"
 #import "StickyAlertView.h"
@@ -58,8 +59,8 @@
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
-@property (weak, nonatomic) IBOutlet UIView *footerView;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+@property (strong, nonatomic) IBOutlet UIView *footerView;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @end
 
@@ -80,7 +81,7 @@
     [_activityIndicator startAnimating];
     
     [self configureRestKit];
-    [self request];
+    [self requestInvoice:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -129,7 +130,6 @@
     OrderTransaction *order = [_shipments objectAtIndex:indexPath.row];
     
     cell.invoiceNumberLabel.text = order.order_detail.detail_invoice;
-    
     cell.buyerNameLabel.text = order.order_customer.customer_name;
     
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:order.order_customer.customer_image]
@@ -149,10 +149,15 @@
     
     if ([_resultOrder.result.order.is_allow_manage_tx boolValue] && order.order_detail.detail_ship_ref_num) {
         
-        if (order.order_detail.detail_order_status >= ORDER_DELIVERED) {
-            [cell hideAllButton];
-        } else if (order.order_detail.detail_order_status >= ORDER_SHIPPING) {
+        if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED) {
             [cell showAllButton];
+        } else if (order.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED) {
+            [cell showTrackButton];
+        } else {
+            [cell hideAllButton];
         }
         
         if (order.order_detail.detail_order_status == ORDER_DELIVERED_CONFIRM) {
@@ -181,7 +186,7 @@
         if (_nextURI != NULL && ![_nextURI isEqualToString:@"0"] && _nextURI != 0) {
             _tableView.tableFooterView = _footerView;
             [_activityIndicator startAnimating];
-            [self request];
+            [self requestInvoice:nil];
         } else {
             _tableView.tableFooterView = nil;
         }
@@ -192,10 +197,14 @@
 {
     OrderTransaction *order = [_shipments objectAtIndex:indexPath.row];
     if ([_resultOrder.result.order.is_allow_manage_tx boolValue] && order.order_detail.detail_ship_ref_num) {
-        if (order.order_detail.detail_order_status >= ORDER_DELIVERED) {
-            return tableView.rowHeight - 45;
-        } else if (order.order_detail.detail_order_status >= ORDER_SHIPPING) {
+        if (order.order_detail.detail_order_status == ORDER_SHIPPING ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_WAITING ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_TRACKER_INVALID ||
+            order.order_detail.detail_order_status == ORDER_SHIPPING_REF_NUM_EDITED ||
+            order.order_detail.detail_order_status == ORDER_PAYMENT_VERIFIED) {
             return tableView.rowHeight;
+        } else {
+            return tableView.rowHeight - 45;
         }
     }
     return tableView.rowHeight - 45;
@@ -424,7 +433,7 @@
     [_objectManager addResponseDescriptor:responseDescriptorStatus];    
 }
 
-- (void)request
+- (void)requestInvoice:(NSString *)invoice
 {
     NSLog(@"%@", NSStringFromSelector(_cmd));
     
@@ -432,14 +441,17 @@
     
     _requestCount++;
     
+    _tableView.tableFooterView = _footerView;
+    [_activityIndicator startAnimating];
+    
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *auth = [secureStorage keychainDictionary];
     
     NSDictionary* param = @{
                             API_ACTION_KEY           : API_GET_NEW_ORDER_STATUS_KEY,
                             API_USER_ID_KEY          : [auth objectForKey:API_USER_ID_KEY],
+                            API_INVOICE_KEY          : invoice ?: @"",
                             API_PAGE_KEY             : [NSNumber numberWithInteger:_page],
-//                            API_INVOICE_KEY          : _status ?: @"",
                             };
     
     NSLog(@"\n\n\n\n%@\n\n\n\n", param);
@@ -490,13 +502,8 @@
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     BOOL status = [[[result objectForKey:@""] status] isEqualToString:kTKPDREQUEST_OKSTATUS];
-    if (status)
-    {
+    if (status) {
         [self requestProcess:object];
-    }
-    else
-    {
-        
     }
 }
 
@@ -523,14 +530,19 @@
         _page = [[queries objectForKey:API_PAGE_KEY] integerValue];
         
         NSLog(@"next page : %ld",(long)_page);
-
-        if (_shipments.count == 0) {
-            _activityIndicator.hidden = YES;
-        }
         
         if (_page == 0) {
             [_activityIndicator stopAnimating];
             _tableView.tableFooterView = nil;
+        }
+
+        if (_shipments.count == 0) {
+            _activityIndicator.hidden = YES;
+            
+            CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, 103);
+            NoResultView *noResultView = [[NoResultView alloc] initWithFrame:frame];
+            _tableView.tableFooterView = noResultView;
+            _tableView.sectionFooterHeight = noResultView.frame.size.height;
         }
 
         [_tableView reloadData];
@@ -664,6 +676,14 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)didTapUserAtIndexPath:(NSIndexPath *)indexPath
+{
+    _selectedOrder = [_shipments objectAtIndex:indexPath.row];
+    
+    TKPDTabProfileNavigationController *controller = [TKPDTabProfileNavigationController new];
+    controller.data = @{API_USER_ID_KEY:_selectedOrder.order_customer.customer_id};
+    [self.navigationController pushViewController:controller animated:YES];
+}
 
 #pragma mark - Action
 
@@ -684,8 +704,9 @@
 
 - (void)filterShipmentStatusInvoice:(NSString *)invoice
 {
-    [self configureRestKit];
-    
+    _tableView.tableFooterView = _footerView;
+    [_activityIndicator startAnimating];
+
     _status = invoice;
     _page = 1;
     _requestCount = 0;
@@ -694,7 +715,7 @@
     [_tableView reloadData];
     
     [self configureRestKit];
-    [self request];
+    [self requestInvoice:invoice];
 }
 
 #pragma mark - Change receipt number delegate

@@ -16,48 +16,22 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="oeI-O0-zn1">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="oeI-O0-zn1">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <color key="separatorColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="Laf-qC-DeN"/>
                         <outlet property="delegate" destination="-1" id="ib3-UI-uTX"/>
                     </connections>
                 </tableView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bg2-lJ-Xbz">
-                    <rect key="frame" x="0.0" y="524" width="320" height="44"/>
-                    <subviews>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WCL-bI-Q0T" userLabel="Horizontal Border">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                            <color key="backgroundColor" white="0.66666666666666663" alpha="0.26000000000000001" colorSpace="calibratedWhite"/>
-                        </view>
-                        <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nPT-UL-RXT">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                            <state key="normal" title="RESET">
-                                <color key="titleColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="uxU-6I-zSn"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="37s-oN-mwD"/>
-                        <constraint firstAttribute="width" constant="320" id="IKz-zm-yat"/>
-                    </constraints>
-                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="oeI-O0-zn1" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8rH-Ja-88I"/>
                 <constraint firstAttribute="trailing" secondItem="oeI-O0-zn1" secondAttribute="trailing" id="Fdj-i5-15J"/>
                 <constraint firstItem="oeI-O0-zn1" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="WWj-6L-ydx"/>
-                <constraint firstItem="bg2-lJ-Xbz" firstAttribute="top" secondItem="oeI-O0-zn1" secondAttribute="bottom" id="XES-4v-uUd"/>
-                <constraint firstAttribute="bottom" secondItem="bg2-lJ-Xbz" secondAttribute="bottom" id="qD9-Xl-M0C"/>
-                <constraint firstAttribute="trailing" secondItem="bg2-lJ-Xbz" secondAttribute="trailing" id="t8d-oo-nJb"/>
+                <constraint firstAttribute="bottom" secondItem="oeI-O0-zn1" secondAttribute="bottom" id="zzX-w0-Mvw"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>

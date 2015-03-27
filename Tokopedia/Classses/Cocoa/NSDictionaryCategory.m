@@ -16,23 +16,17 @@
 
 - (BOOL)isMutable
 {
-    if ([(id)self isMemberOfClass:[NSMutableDictionary class]]) {
-        return YES;
-    }
-     else
-     {
-         return NO;
-     }
-//	@try {
-//		[(id)self setObject:@"" forKey:@""];	//TODO: unique key...
-//		[(id)self removeObjectForKey:@""];
-//		return YES;
-//	}
-//	@catch (NSException *exception) {
-//		return NO;
-//	}
-	//@finally {
-	//}
+	@try {
+        if ([self objectForKey:@""]) {
+            [(id)self setObject:@"" forKey:@""];	//TODO: unique key...
+            [(id)self removeObjectForKey:@""];
+            return YES;
+        }
+        return NO;
+	}
+	@catch (NSException *exception) {
+		return NO;
+	}
     return YES;
 }
 

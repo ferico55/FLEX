@@ -131,7 +131,7 @@
     if(![loggedInUserId isEqualToString:@"0"] && ![loggedInUserId isEqual:[_data objectForKey:TKPD_TALK_SHOP_ID]]) {
 
         UIBarButtonItem *rightbar;
-        UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONINFO ofType:@"png"]];
+        UIImage *imgadd = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_addproduct" ofType:@"png"]];
         if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
             UIImage * image = [imgadd imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
             rightbar = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
@@ -240,6 +240,8 @@
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
             }
             ((GeneralTalkCell*)cell).productViewIsHidden = YES;
+            ((GeneralTalkCell*)cell).messageLabel.hidden = NO;
+            ((GeneralTalkCell*)cell).messageLabel.text = list.talk_message;
             ((GeneralTalkCell*)cell).indexpath = indexPath;
             
             if(list.disable_comment) {
@@ -703,6 +705,8 @@
                 TKPD_TALK_TOTAL_COMMENT : list.talk_total_comment?:0,
                 kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product_id,
                 TKPD_TALK_SHOP_ID:list.talk_shop_id?:0,
+                TKPD_TALK_PRODUCT_IMAGE:[_data objectForKey:@"talk_product_image"],
+                TKPD_TALK_PRODUCT_NAME:[_data objectForKey:@"product_name"],
                 //utk notification, apabila total comment bertambah, maka list ke INDEX akan berubah pula
                 kTKPDDETAIL_DATAINDEXKEY : @(row)?:0
                 };
@@ -726,7 +730,21 @@
 #pragma mark - Methods
 -(void)setHeaderData:(NSDictionary*)data
 {
-    _productnamelabel.text = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY];
+    UIFont *font = [UIFont fontWithName:@"GothamMedium" size:15];
+    
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 6.0;
+    style.alignment = NSTextAlignmentLeft;
+    
+    NSDictionary *attributes = @{
+                                 NSForegroundColorAttributeName: [UIColor blackColor],
+                                 NSFontAttributeName: font,
+                                 NSParagraphStyleAttributeName: style,
+                                 };
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:[data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY] attributes:attributes];
+    
+    _productnamelabel.attributedText = attributedText;
+    
     _pricelabel.text = [data objectForKey:API_PRODUCT_PRICE_KEY];
     _headerimages = [data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIMAGESKEY];
     for (int i = 0; i<_headerimages.count; i++) {

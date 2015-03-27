@@ -48,15 +48,6 @@
 
 @implementation TrackOrderViewController
 
-//typedef enum {
-//    ORDER_SHIPPING                  = 500,
-//    ORDER_SHIPPING_TRACKER_INVALID  = 520,
-//    ORDER_SHIPPING_REF_NUM_EDITED   = 530,
-//    ORDER_DELIVERED                 = 600,
-//    ORDER_DELIVERED_CONFIRM         = 610,
-//    ORDER_DELIVERED_DUE_DATE        = 620,
-//} ORDER_STATUS;
-
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -69,10 +60,25 @@
     _tableView.tableFooterView = _footerView;
     [_activityIndicator startAnimating];
     
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    style.alignment = NSTextAlignmentCenter;
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:14],
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : [UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1],
+                                 };
+    
+    NSString *invalidTitle = @"Belum ada update status pengiriman dari kurir";
+    _invalidStatusTitle.attributedText = [[NSAttributedString alloc] initWithString:invalidTitle
+                                                                         attributes:attributes];
+    
     //TODO:: Invalid Detail Text
-    NSString *invalidDetail = @"Apabila sudah lewat 3x24 jam masih tidak ada update status pengiriman, ada beberapa kemungkinan:\n    \u25CF Penjual keliru menginput nomor resi atau tanggal pengiriman.\n    \u25CF Penjual menggunakan kurir yang berbeda dari pilihan pembeli.\n\nPembeli disarankan menghubungi penjual bersangkutan untuk informasi lebih lanjut.\n\nNamun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.";
+    NSString *invalidDetail = @"Apabila sudah lewat 3x24 jam masih tidak ada update status pengiriman, ada beberapa kemungkinan:\n\n\u25CF Penjual keliru menginput nomor resi atau tanggal pengiriman.\n\u25CF Penjual menggunakan kurir yang berbeda dari pilihan pembeli.\n\n\nPembeli disarankan menghubungi penjual bersangkutan untuk informasi lebih lanjut.\n\nNamun tidak perlu khawatir karena staff kami selalu melakukan pengecekan.";
+    _invalidStatusDescLabel.text = invalidDetail;
     [_invalidStatusDescLabel setCustomAttributedText:invalidDetail];
-    [_invalidStatusTitle setCustomAttributedText:_invalidStatusTitle.text];
+    [_invalidStatusTitle setCustomAttributedText:invalidTitle];
     
     [self configureRestKit];
     [self request];    
@@ -127,7 +133,6 @@
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
             } else {
                 cell = [self cellHistoryAtIndexPath:indexPath];
-                //cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil];
             }
         } else if (_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] == 0) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
@@ -145,13 +150,11 @@
             [self configureTrackingDetailCell:cell indexPath:indexPath];
         } else {
             cell = [self cellHistoryAtIndexPath:indexPath];
-            //[self configureTrackingHistoryCell:cell indexPath:indexPath];
         }
     } else if (_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] == 0) {
         [self configureTrackingDetailCell:cell indexPath:indexPath];
     } else if (!_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {
         cell = [self cellHistoryAtIndexPath:indexPath];
-        //[self configureTrackingHistoryCell:cell indexPath:indexPath];
     }
 
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -209,11 +212,9 @@
             return 44;
         } else {
             return 90;
-            //return 51;
         }
     } else if (!_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {
         return 90;
-        //return 51;
     }
     return 44;
 }
@@ -229,13 +230,11 @@
             return 41;
         } else {
             return 88;
-            //return 51;
         }
     } else if (_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] == 0) {
         return 41;
     } else if (!_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {
         return 88;
-        //return 51;
     }
     return 0;
 }
@@ -259,7 +258,6 @@
             label.text = @"PENERIMA";
         } else {
             return _headerHistoryView;
-            //label.text = @"TRACKING HISTORY";
         }
     } else if (_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] == 0) {
         if (section == 0){
@@ -269,7 +267,6 @@
         }
     } else if (!_trackingOrder.detail.shipper_name && [_trackingOrder.track_history count] > 0) {
         return _headerHistoryView;
-        //label.text = @"TRACKING HISTORY";
     }
 
     [view addSubview:label];
@@ -396,23 +393,6 @@
             }
             _trackingOrder = track.result.track_order;
             
-            //TrackOrderHistory *history1 = [TrackOrderHistory new];
-            //history1.date = @"06 Februari 2015, 11:34";
-            //history1.status = @"Terkirim dan Diterima oleh YASA";
-            //history1.city = @"PANDU SIWI BANDUNG";
-            //
-            //TrackOrderHistory *history2 = [TrackOrderHistory new];
-            //history2.date = @"06 Februari 2015, 11:00";
-            //history2.status = @"Proses pengiriman ke alamat tujuan";
-            //history2.city = @"PANDU SIWI BANDUNG";
-            //
-            //TrackOrderHistory *history3 = [TrackOrderHistory new];
-            //history3.date = @"06 Februari 2015";
-            //history3.status = @"Tiba di fasilitas operational PANDU SIWI BANDUNG";
-            //history3.city = @"PANDU SIWI BANDUNG";
-            //
-            //_trackingOrder.track_history = @[history1, history2, history3];
-            
             _tableView.contentInset = UIEdgeInsetsMake(22, 0, 0, 0);
             [_tableView reloadData];
 
@@ -450,22 +430,14 @@
                     statusLabel.text = @"Nomor Resi diganti oleh penjual";
                 } else if ([_trackingOrder.order_status integerValue] == ORDER_DELIVERED) {
                     statusLabel.text = @"Delivered";
+                } else if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_WAITING) {
+                    statusLabel.text = @"Belum ada update status pengiriman dari kurir";
                 } else {
                     statusLabel.text = @"On Process";
                 }
                 
             }
         }
-        
-        //TODO:: Pandu
-        //if ([_trackingOrder.track_history count]>0)
-        //{
-        //    _tableView.tableHeaderView = _headerHistoryView;
-        //}
-        //if ([_trackingOrder.track_history count]==0)
-        //{
-        //    _tableView.tableHeaderView = _headerView;
-        //}
         
         if ([_trackingOrder.order_status integerValue] == ORDER_SHIPPING_TRACKER_INVALID) {
             _tableView.tableHeaderView = _invalidHeaderView;

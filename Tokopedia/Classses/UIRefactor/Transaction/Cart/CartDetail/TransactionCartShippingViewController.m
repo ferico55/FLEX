@@ -818,7 +818,7 @@
     AddressFormList *address = [userInfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
     address.address_country = address.country_name;
     address.address_district = address.district_name;
-    address.address_postal = [@(address.postal_code)stringValue];
+    address.address_postal = address.postal_code;
     address.address_city = address.city_name;
     address.address_province = address.province_name;
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];

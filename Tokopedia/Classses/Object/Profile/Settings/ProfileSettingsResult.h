@@ -10,6 +10,6 @@
 
 @interface ProfileSettingsResult : NSObject
 
-@property (nonatomic) BOOL is_success;
+@property NSInteger is_success;
 
 @end

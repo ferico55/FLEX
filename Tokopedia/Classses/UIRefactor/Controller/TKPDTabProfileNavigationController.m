@@ -157,29 +157,29 @@
     size.height = size.height - _tapview.frame.size.height-64;
     _scrollview.contentSize = size;
     
-    NSBundle* bundle = [NSBundle mainBundle];
-    UIBarButtonItem *backBarButtonItem;
-    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONBACK ofType:@"png"]];
-    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-    }
-    else
-    backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-    backBarButtonItem.tag = 10;
-    self.navigationItem.leftBarButtonItem = backBarButtonItem;
-
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:nil];
+    self.navigationItem.backBarButtonItem = backBarButton;
     
-    img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_setting_grey" ofType:@"png"]];
+    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"icon_shop_setting" ofType:@"png"]];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
         UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
+        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:image
+                                                          style:UIBarButtonItemStylePlain
+                                                         target:self
+                                                         action:@selector(tapbutton:)];
+    } else {
+        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:img
+                                                          style:UIBarButtonItemStylePlain
+                                                         target:self
+                                                         action:@selector(tapbutton:)];
     }
-    else
-        _barbuttoninfo = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tapbutton:)];
-	[_barbuttoninfo setTag:11];
-    
+    _barbuttoninfo.tag = 11;
+
     [_scrollview addSubview:_contentview];
     
     _operationQueue = [NSOperationQueue new];
@@ -194,6 +194,7 @@
 
     _button.layer.cornerRadius = 2;
     
+    self.hidesBottomBarWhenPushed = YES;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -1109,6 +1110,5 @@
 {
 	objc_setAssociatedObject(self, @selector(TKPDTabProfileNavigationItem), TKPDTabProfileNavigationItem, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
-
 
 @end

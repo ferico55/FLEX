@@ -16,7 +16,7 @@
 @property (nonatomic) NSInteger address_id;
 @property (nonatomic, strong) NSString *receiver_phone;
 @property (nonatomic, strong) NSString *province_name;
-@property (nonatomic) NSInteger postal_code;
+@property (nonatomic, strong) NSString *postal_code;
 @property (nonatomic) NSInteger address_status;
 @property (nonatomic, strong) NSString *address_street;
 @property (nonatomic, strong) NSString *district_name;

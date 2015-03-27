@@ -11,6 +11,8 @@
 #import "activation.h"
 #import "RegisterViewController.h"
 #import "LoginViewController.h"
+#import "CreatePasswordViewController.h"
+#import "UserAuthentificationManager.h"
 
 #import "TKPDSecureStorage.h"
 #import "StickyAlertView.h"
@@ -19,7 +21,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <QuartzCore/QuartzCore.h>
 
-@interface LoginViewController () <FBLoginViewDelegate> {
+@interface LoginViewController () <FBLoginViewDelegate, LoginViewDelegate, CreatePasswordDelegate> {
     
     UITextField *_activetextfield;
     
@@ -37,21 +39,31 @@
     NSOperationQueue *_operationQueue;
 
     __weak RKObjectManager *_facebookObjectManager;
+    __weak RKManagedObjectRequestOperation *_requestFacebookLogin;
+    NSOperationQueue *_operationQueueFacebookLogin;
+    
+    FBLoginView *_loginView;
+    
+    id<FBGraphUser> _facebookUser;
 }
 
-@property (weak, nonatomic) IBOutlet UIScrollView *container;
 @property (strong, nonatomic) IBOutlet TextField *emailTextField;
 @property (strong, nonatomic) IBOutlet TextField *passwordTextField;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UIView *facebookLoginButton;
 @property (weak, nonatomic) IBOutlet UIButton *loginButton;
+@property (weak, nonatomic) IBOutlet UIView *loadingView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
+
+@property (weak, nonatomic) IBOutlet UIImageView *screenLogin;
+@property (weak, nonatomic) IBOutlet UILabel *forgetPasswordButton;
+
 
 - (void)cancelLogin;
 - (void)configureRestKitLogin;
 - (void)requestActionLogin:(id)userinfo;
-- (void)requestsuccessLogin:(id)object withOperation:(RKObjectRequestOperation*)operation;
-- (void)requestfailureLogin:(id)object;
-- (void)requesttimeoutLogin;
+- (void)requestSuccessLogin:(id)object withOperation:(RKObjectRequestOperation*)operation;
+- (void)requestFailureLogin:(id)object;
+- (void)requestTimeoutLogin;
 
 - (void)keyboardWillShow:(NSNotification *)notification;
 - (void)keyboardWillHidden:(NSNotification*)aNotification;
@@ -84,6 +96,12 @@
 {    
     [super viewDidLoad];
     
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backButton;
+    
     UIBarButtonItem *signUpButton = [[UIBarButtonItem alloc] initWithTitle:kTKPDREGISTER_TITLE
                                                                      style:UIBarButtonItemStylePlain
                                                                     target:(self)
@@ -102,28 +120,28 @@
         self.navigationItem.leftBarButtonItem = cancelButton;
     }
     
-    [_container setFrame:CGRectMake(0,
-                                    self.navigationController.navigationBar.frame.size.height+64,
-                                    _container.frame.size.width,
-                                    _container.frame.size.height)];
+    _loginView = [[FBLoginView alloc] init];
+    _loginView.readPermissions = @[@"public_profile", @"email"];
+    _loginView.frame = CGRectMake(0, 0,
+                                 _facebookLoginButton.frame.size.width,
+                                 _facebookLoginButton.frame.size.height);
+    [_facebookLoginButton addSubview:_loginView];
     
     _activation = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
-    
-    [self configureRestKitLogin];
-
-    FBLoginView *loginView = [[FBLoginView alloc] init];
-    loginView.delegate = self;
-    loginView.readPermissions = @[@"public_profile", @"email"];
-    loginView.frame = CGRectMake(0, 0,
-                                 _facebookLoginButton.frame.size.width,
-                                 _facebookLoginButton.frame.size.height);
-    [_facebookLoginButton addSubview:loginView];
+    _operationQueueFacebookLogin = [NSOperationQueue new];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [[FBSession activeSession] closeAndClearTokenInformation];
+    [[FBSession activeSession] close];
+    [FBSession setActiveSession:nil];
+    
+    TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+    [storage resetKeychain];
     
     _loginButton.layer.cornerRadius = 2;
     
@@ -132,12 +150,15 @@
     
     _passwordTextField.isTopRoundCorner = YES;
     _passwordTextField.isBottomRoundCorner = YES;
+    
+    _loginView.delegate = self;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     [self cancelLogin];
+    _loginView.delegate = nil;
 }
 
 #pragma mark - View Actipn
@@ -150,8 +171,8 @@
         switch (btn.tag) {
             case 11:
             {
-                RegisterViewController *vc = [RegisterViewController new];
-                [self.navigationController pushViewController:vc animated:YES];
+                RegisterViewController *controller = [RegisterViewController new];
+                [self.navigationController pushViewController:controller animated:YES];
                 break;
             }
             case 13:
@@ -196,8 +217,8 @@
             [self requestActionLogin:userinfo];
         }
         else{
-            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+            [alert show];
         }
         
         NSLog(@"message : %@", messages);
@@ -220,12 +241,32 @@
 }
 
 #pragma mark - Request and Mapping
+
 -(void)cancelLogin
 {
     [_request cancel];
     _request = nil;
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
+    
+    [_requestFacebookLogin cancel];
+    _requestFacebookLogin = nil;
+    
+    [_facebookObjectManager.operationQueue cancelAllOperations];
+    _facebookObjectManager = nil;
+    
+    _loadingView.hidden = YES;
+    _emailTextField.hidden = NO;
+    _passwordTextField.hidden = NO;
+    _loginButton.hidden = NO;
+    _forgetPasswordButton.hidden = NO;
+    _facebookLoginButton.hidden = NO;
+    
+    [_activityIndicator stopAnimating];
+
+    [[FBSession activeSession] closeAndClearTokenInformation];
+    [[FBSession activeSession] close];
+    [FBSession setActiveSession:nil];
 }
 
 - (void)configureRestKitLogin
@@ -309,6 +350,9 @@
 - (void)requestActionLogin:(NSDictionary *)data
 {
     if (_request.isExecuting) return;
+    [_loginButton setTitle:@"Loading.." forState:UIControlStateNormal];
+ 
+    [self configureRestKitLogin];
     
     _requestcount++;
     
@@ -325,7 +369,7 @@
 
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
                                                       target:self
-                                                    selector:@selector(requesttimeoutLogin)
+                                                    selector:@selector(requestTimeoutLogin)
                                                     userInfo:nil
                                                      repeats:NO];
     
@@ -335,11 +379,11 @@
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [timer invalidate];
         _barbuttonsignin.enabled = YES;
-        [self requestsuccessLogin:mappingResult withOperation:operation];
+        [self requestSuccessLogin:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [timer invalidate];
         _barbuttonsignin.enabled = YES;
-        [self requestfailureLogin:error];
+        [self requestFailureLogin:error];
     }];
     
     [_operationQueue addOperation:_request];
@@ -347,7 +391,9 @@
 
 - (void)requestLoginFacebookUser:(id<FBGraphUser>)user
 {
-    if (_request.isExecuting) return;
+    if (_requestFacebookLogin.isExecuting) return;
+    
+    [self configureRestKitFacebookLogin];
     
     _requestcount++;
     
@@ -359,76 +405,141 @@
                             kTKPDLOGIN_API_ID_KEY           : [user objectForKey:@"id"]?:@"",
                             kTKPDLOGIN_API_BIRTHDAY_KEY     : [user objectForKey:@"birthday"]?:@"",
                             kTKPDLOGIN_API_GENDER_KEY       : [user objectForKey:@"gender"]?:@"",
-                            @"enc_dec"                      : @"off"
                             };
     
-    _barbuttonsignin.enabled = NO;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodGET
-                                                                      path:kTKPDLOGIN_FACEBOOK_APIPATH
-                                                                parameters:param];
+    NSLog(@"\n\n\n%@\n\n\n", param);
     
+    _barbuttonsignin.enabled = NO;
+    _requestFacebookLogin = [_facebookObjectManager appropriateObjectRequestOperationWithObject:self
+                                                                                         method:RKRequestMethodPOST
+                                                                                           path:kTKPDLOGIN_FACEBOOK_APIPATH
+                                                                                     parameters:[param encrypt]];
+
+    NSLog(@"\n\n\n%@\n\n\n", _requestFacebookLogin);
+
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
                                                       target:self
-                                                    selector:@selector(requesttimeoutLogin)
+                                                    selector:@selector(requestTimeoutLogin)
                                                     userInfo:nil
                                                      repeats:NO];
 
     [[NSRunLoop currentRunLoop] addTimer:timer
                                  forMode:NSRunLoopCommonModes];
 
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    [_requestFacebookLogin setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [timer invalidate];
         _barbuttonsignin.enabled = YES;
-        [self requestsuccessLogin:mappingResult withOperation:operation];
+        [self requestFacebookLoginResult:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [timer invalidate];
         _barbuttonsignin.enabled = YES;
-        [self requestfailureLogin:error];
+        [self requestFailureLogin:error];
     }];
     
-    [_operationQueue addOperation:_request];
+    [_operationQueueFacebookLogin addOperation:_requestFacebookLogin];
 }
 
--(void)requestsuccessLogin:(id)object withOperation:(RKObjectRequestOperation*)operation
+- (void)requestFacebookLoginResult:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation
 {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    
-    id stats = [result objectForKey:@""];
-    
-    _login = stats;
+    _login = [mappingResult.dictionary objectForKey:@""];
     BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    [_loginButton setTitle:@"Masuk" forState:UIControlStateNormal];
     if (status) {
-        
         _isnodata = NO;
-
-        if (!_login.message_error) {
-            //NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            //[defaults saveCustomObject:_login.result key:kTKPD_AUTHKEY];
-            //[defaults setObject:operation.HTTPRequestOperation.responseData forKey:kTKPD_AUTHKEY];
-            //[defaults synchronize];
-            //TODO:: api key
-            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+        if ([_login.result.status isEqualToString:@"2"]) {
             
+            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
-        
-            [secureStorage setKeychainWithValue:@(_login.result.user_id) withKey:kTKPD_USERIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
             [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
             [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
-            
-            [secureStorage setKeychainWithValue:@(_login.result.shop_id) withKey:kTKPD_SHOPIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
             [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
             [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
             [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
-
-            if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController)]) {
+            
+            if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
                 [self.delegate redirectViewController:_redirectViewController];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             } else {
                 [self.tabBarController setSelectedIndex:0];
                 
-                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION
+                [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                    object:nil
+                                                                  userInfo:nil];
+            }
+        }
+        else if ([_login.result.status isEqualToString:@"1"]) {
+
+            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
+            [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
+            
+            CreatePasswordViewController *controller = [CreatePasswordViewController new];
+            controller.login = _login;
+            controller.delegate = self;
+            controller.facebookUser = _facebookUser;
+            
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+            navigationController.navigationBar.translucent = NO;
+            
+            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+            
+        }
+        else
+        {
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
+                                                                           delegate:self];
+            [alert show];
+            [self cancelLogin];
+        }
+    }
+    else
+    {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
+                                                                       delegate:self];
+        [alert show];
+        [self cancelLogin];
+    }
+}
+
+- (void)requestSuccessLogin:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation*)operation
+{
+    _login = [mappingResult.dictionary objectForKey:@""];
+    BOOL status = [_login.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    if (status) {
+        _isnodata = NO;
+        if (_login.result.is_login) {
+            TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+            [secureStorage setKeychainWithValue:@(_login.result.is_login) withKey:kTKPD_ISLOGINKEY];
+            [secureStorage setKeychainWithValue:_login.result.user_id withKey:kTKPD_USERIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.full_name withKey:kTKPD_FULLNAMEKEY];
+            [secureStorage setKeychainWithValue:_login.result.user_image withKey:kTKPD_USERIMAGEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_id withKey:kTKPD_SHOPIDKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_name withKey:kTKPD_SHOPNAMEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
+            [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
+
+            if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
+                [self.delegate redirectViewController:_redirectViewController];
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                                    object:nil
+                                                                  userInfo:nil];
+            } else {
+                [self.tabBarController setSelectedIndex:0];
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
                                                                     object:nil
                                                                   userInfo:nil];
             }
@@ -438,6 +549,7 @@
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_login.message_error
                                                                            delegate:self];
             [alert show];
+            [self cancelLogin];
         }
     }
     else
@@ -445,10 +557,11 @@
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
                                                                        delegate:self];
         [alert show];
+        [self cancelLogin];
     }
 }
 
--(void)requestfailureLogin:(id)object
+-(void)requestFailureLogin:(id)object
 {
     [self cancelLogin];
     NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
@@ -463,15 +576,17 @@
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
                                                                            delegate:self];
             [alert show];
+            [self cancelLogin];
         }
     } else {
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Sign in gagal silahkan coba lagi."]
                                                                                  delegate:self];
         [alert show];
+        [self cancelLogin];
     }
 }
 
--(void)requesttimeoutLogin
+-(void)requestTimeoutLogin
 {
     [self cancelLogin];
 }
@@ -516,8 +631,8 @@
     NSDictionary* info = [notification userInfo];
     CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
-    _container.contentInset = contentInsets;
-    _container.scrollIndicatorInsets = contentInsets;
+//    _container.contentInset = contentInsets;
+//    _container.scrollIndicatorInsets = contentInsets;
     
     // If active text field is hidden by keyboard, scroll it so it's visible
     // Your application might not need or want this behavior.
@@ -525,23 +640,46 @@
     aRect.size.height -= kbSize.height;
     if (!CGRectContainsPoint(aRect, _activetextfield.frame.origin) ) {
         CGPoint scrollPoint = CGPointMake(0.0, _activetextfield.frame.origin.y-kbSize.height);
-        [_container setContentOffset:scrollPoint animated:YES];
+//        [_container setContentOffset:scrollPoint animated:YES];
     }
 }
 // Called when the UIKeyboardWillHideNotification is sent
 - (void)keyboardWillHidden:(NSNotification*)aNotification
 {
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    _container.contentInset = contentInsets;
-    _container.scrollIndicatorInsets = contentInsets;
+//    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+//    _container.contentInset = contentInsets;
+//    _container.scrollIndicatorInsets = contentInsets;
 }
 
 #pragma mark - Facebook login delegate
 
 // Call method when user information has been fetched
 - (void)loginViewFetchedUserInfo:(FBLoginView *)loginView user:(id<FBGraphUser>)user {
-    [self configureRestKitFacebookLogin];
-    [self requestLoginFacebookUser:user];
+    UserAuthentificationManager *authManager = [UserAuthentificationManager new];
+    if (authManager.isLogin == NO && [[FBSession activeSession] isOpen]) {
+        [self requestLoginFacebookUser:user];
+
+        _facebookUser = user;
+        
+        _loadingView.hidden = NO;
+        _emailTextField.hidden = YES;
+        _passwordTextField.hidden = YES;
+        _loginButton.hidden = YES;
+        _forgetPasswordButton.hidden = YES;
+        _facebookLoginButton.hidden = YES;
+        
+        [_activityIndicator startAnimating];
+    }
+}
+
+- (void)loginViewShowingLoggedInUser:(FBLoginView *)loginView
+{
+
+}
+
+- (void)loginViewShowingLoggedOutUser:(FBLoginView *)loginView
+{
+    [self cancelLogin];    
 }
 
 // Handle possible errors that can occur during login
@@ -575,6 +713,29 @@
                                    delegate:nil
                           cancelButtonTitle:@"OK"
                           otherButtonTitles:nil] show];
+    }
+}
+
+#pragma mark - Login delegate
+
+- (void)redirectViewController:(id)viewController
+{
+    [self.delegate redirectViewController:_redirectViewController];
+    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Create password delegate
+
+- (void)createPasswordSuccess
+{
+    if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
+        [self.delegate redirectViewController:_redirectViewController];
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [self.tabBarController setSelectedIndex:0];        
+        [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR
+                                                            object:nil
+                                                          userInfo:nil];
     }
 }
 

@@ -127,9 +127,11 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+
     if (self) {
         _isRefreshing = NO;
         _isNoData = YES;
+
     }
     
     return self;
@@ -151,7 +153,6 @@
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
-
     
     _reviews = [NSMutableArray new];
     _reviewPage = 1;
@@ -183,12 +184,11 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+
     if (!_isRefreshing) {
         [self configureRestkit];
         
@@ -262,7 +262,20 @@
                 NSString *stringWithoutBr = [list.review_message stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
                 
                 
-                ((GeneralReviewCell *)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [stringWithoutBr substringWithRange:stringRange]];
+                UIFont *font = [UIFont fontWithName:@"GothamLight" size:12];
+                
+                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+                style.lineSpacing = 3.0;
+                NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
+                                             NSFontAttributeName: font,
+                                             NSParagraphStyleAttributeName: style,
+                                             };
+                
+                NSString *commentString = [NSString stringWithFormat:@"%@...", [stringWithoutBr substringWithRange:stringRange]];
+                NSAttributedString *myString = [[NSAttributedString alloc] initWithString:commentString
+                                                                               attributes:attributes];
+                ((GeneralReviewCell *)cell).commentlabel.attributedText = myString;
+                [((GeneralReviewCell *)cell).commentlabel sizeToFit];
             } else {
                 ((GeneralReviewCell *)cell).commentlabel.text = [list.review_message isEqualToString:@"0"] ? @"" : list.review_message;
             }
@@ -271,10 +284,14 @@
                 ((GeneralReviewCell *)cell).ratingView.hidden = YES;
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = NO;
                 ((GeneralReviewCell *)cell).commentView.hidden = YES;
+                
             } else {
                 ((GeneralReviewCell *)cell).ratingView.hidden = NO;
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = YES;
                 ((GeneralReviewCell *)cell).commentView.hidden = NO;
+                
+                CGRect newFrame = ((GeneralReviewCell *)cell).frame;
+                
             }
             
             
@@ -332,7 +349,7 @@
         cellHeight =  325;
     }
    
-    return cellHeight;
+    return 325;
 }
 
 

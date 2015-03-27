@@ -28,27 +28,40 @@
 #import "TKPDTabNavigationController.h"
 
 #import "URLCacheController.h"
+#import "GeneralPhotoProductCell.h"
+#import "GeneralSingleProductCell.h"
 
 #pragma mark - Search Result View Controller
+
+typedef NS_ENUM(NSInteger, UITableViewCellType) {
+    UITableViewCellTypeOneColumn,
+    UITableViewCellTypeTwoColumn,
+    UITableViewCellTypeThreeColumn,
+};
+
 @interface SearchResultViewController ()
 <
-    GeneralProductCellDelegate,
-    TKPDTabNavigationControllerDelegate,
-    UITableViewDataSource,
-    UITableViewDelegate,
-    SortViewControllerDelegate,
-    FilterViewControllerDelegate
+UITableViewDataSource,
+UITableViewDelegate,
+GeneralProductCellDelegate,
+TKPDTabNavigationControllerDelegate,
+SortViewControllerDelegate,
+FilterViewControllerDelegate,
+GeneralPhotoProductDelegate,
+GeneralSingleProductDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (strong, nonatomic) NSMutableArray *product;
 @property (weak, nonatomic) IBOutlet UIView *catalogproductview;
-@property (weak, nonatomic) IBOutlet UIView *shopview;
+
+@property (strong, nonatomic) NSMutableArray *product;
+@property (nonatomic) UITableViewCellType cellType;
 
 //toolbar view without share button
 @property (weak, nonatomic) IBOutlet UIView *toolbarView;
+@property (weak, nonatomic) IBOutlet UIButton *changeGridButton;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -105,7 +118,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
@@ -140,8 +153,8 @@
     [_table addSubview:_refreshControl];
     
     [_params setObject:[_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-        _catalogproductview.hidden = YES;
-
+    _catalogproductview.hidden = YES;
+    
     //cache
     NSString* path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDSEARCH_CACHEFILEPATH];
     NSString *query =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
@@ -149,11 +162,11 @@
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
         _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDSEARCHPRODUCT_APIRESPONSEFILEFORMAT,query?:deptid]];
     }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-         _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDSEARCHCATALOG_APIRESPONSEFILEFORMAT,query?:deptid]];
+        _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDSEARCHCATALOG_APIRESPONSEFILEFORMAT,query?:deptid]];
     }
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
+    [_cachecontroller initCacheWithDocumentPath:path];
     
     if ([_data objectForKey:API_DEPARTMENT_ID_KEY]) {
         self.toolbarView.hidden = YES;
@@ -162,6 +175,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
                                                object:nil];
+    
+    self.cellType = UITableViewCellTypeTwoColumn;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -195,15 +210,15 @@
 #pragma mark - Table View Delegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (_isnodata) {
-		cell.backgroundColor = [UIColor whiteColor];
-	}
+    if (_isnodata) {
+        cell.backgroundColor = [UIColor whiteColor];
+    }
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section]-1;
-
-	if (row == indexPath.row) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-		
+    
+    if (row == indexPath.row) {
+        NSLog(@"%@", NSStringFromSelector(_cmd));
+        
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext !=0 ) {
             /** called if need to load next page **/
             [self request];
@@ -212,7 +227,7 @@
             [_act stopAnimating];
             _table.tableFooterView = nil;
         }
-	}
+    }
 }
 
 #pragma mark - Table View Data Source
@@ -226,114 +241,249 @@
 #endif
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.cellType == UITableViewCellTypeOneColumn) {
+        return 230;
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+        return 215;
+    } else {
+        return 103;
+    }
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell* cell = nil;
-    if (!_isnodata) {
+    if (_isnodata) {
+        static NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
         
-        NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
-		
-		cell = (GeneralProductCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-		if (cell == nil) {
-			cell = [GeneralProductCell newcell];
-			((GeneralProductCell*)cell).delegate = self;
-		}
-        
-        if (_product.count > indexPath.row) {
-            //reset cell
-            [self reset:(GeneralProductCell*)cell];
-            
-            /** Flexible view count **/
-            NSUInteger indexsegment = indexPath.row * 2;
-            NSUInteger indexmax = indexsegment + 2;
-            NSUInteger indexlimit = MIN(indexmax, _product.count);
-            
-            NSAssert(!(indexlimit > _product.count), @"producs out of bounds");
-            
-            for (int i = 0; (indexsegment + i) < indexlimit; i++) {
-                List *list = [_product objectAtIndex:indexsegment + i];
-                ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
-                (((GeneralProductCell*)cell).indexpath) = indexPath;
-                
-                if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
-                    ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
-                    ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.product_price?:@"";
-                    ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.product_name?:@"";
-                    ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
-                    
-                    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-                    
-                    UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
-                    thumb.image = nil;
-                    
-                    UIActivityIndicatorView *act = (UIActivityIndicatorView*)((GeneralProductCell*)cell).act[i];
-                    [act startAnimating];
-                    
-                    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                        //NSLOG(@"thumb: %@", thumb);
-                        [thumb setImage:image animated:YES];
-                        
-                        [act stopAnimating];
-#pragma clang diagnostic pop
-                        
-                    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                        [act stopAnimating];
-                        
-                    }];
-                    
-                }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-                    ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
-                    ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.catalog_price?:@"";
-                    ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:@"";
-                    ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.product_name?:@"";
-                    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.catalog_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-                    //request.URL = url;
-                    
-                    UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
-                    thumb.image = nil;
-                    //thumb.hidden = YES;	//@prepareforreuse then @reset
-                    
-                    UIActivityIndicatorView *act = (UIActivityIndicatorView*)((GeneralProductCell*)cell).act[i];
-                    [act startAnimating];
-                    
-                    NSLog(@"============================== START GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-                    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-                        //NSLOG(@"thumb: %@", thumb);
-                        [thumb setImage:image];
-                        
-                        [act stopAnimating];
-                        
-                        NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-#pragma clang diagnostic pop
-                        
-                    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                        [act stopAnimating];
-                        NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
-                    }];
-                }
-            }
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
         }
-	} else {
-		static NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
-		
-		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (cell == nil) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		}
-		
-		cell.textLabel.text = kTKPDSEARCH_NODATACELLTITLE;
-		cell.detailTextLabel.text = kTKPDSEARCH_NODATACELLDESCS;
-	}
-	return cell;
+        
+        cell.textLabel.text = kTKPDSEARCH_NODATACELLTITLE;
+        cell.detailTextLabel.text = kTKPDSEARCH_NODATACELLDESCS;
+    } else {
+        if (self.cellType == UITableViewCellTypeOneColumn) {
+            cell = [self tableView:tableView oneColumnCellForRowAtIndexPath:indexPath];
+        } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+            cell = [self tableView:tableView twoColumnCellForRowAtIndexPath:indexPath];
+        } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+            cell = [self tableView:tableView threeColumnCellForRowAtIndexPath:indexPath];
+        }
+    }
+    return cell;
 }
 
+- (GeneralSingleProductCell *)tableView:(UITableView *)tableView oneColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cellIdentifier = kTKPDGENERAL_SINGLE_PRODUCT_CELL_IDENTIFIER;
+    
+    GeneralSingleProductCell *cell;
+    cell = (GeneralSingleProductCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [GeneralSingleProductCell initCell];
+        cell.delegate = self;
+    }
+    
+    List *list = [_product objectAtIndex:indexPath.row];
+    
+    UIFont *boldFont = [UIFont fontWithName:@"GothamMedium" size:12];
+    
+    cell.indexPath = indexPath;
+    
+    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+        
+        cell.productNameLabel.text = list.product_name;
+        cell.productPriceLabel.text = list.product_price;
+        
+        NSString *stats = [NSString stringWithFormat:@"%@ Review   %@ Ulasan",
+                           list.product_review_count,
+                           list.product_talk_count];
+        
+        NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:stats];
+        [attributedText addAttribute:NSFontAttributeName
+                               value:boldFont
+                               range:NSMakeRange(0, list.product_review_count.length)];
+        [attributedText addAttribute:NSFontAttributeName
+                               value:boldFont
+                               range:NSMakeRange(list.product_review_count.length + 10, list.product_talk_count.length)];
+        
+        cell.productInfoLabel.attributedText = attributedText;
+        
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image_full]
+                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        
+        cell.productImageView.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+        cell.productImageView.contentMode = UIViewContentModeCenter;
+        
+        [cell.productImageView setImageWithURLRequest:request
+                                     placeholderImage:nil
+                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                  [cell.productImageView setImage:image animated:YES];
+                                                  [cell.productImageView setContentMode:UIViewContentModeScaleAspectFill];
+                                              } failure:nil];
+        
+    } else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+        cell.productNameLabel.text = list.catalog_name;
+        cell.productPriceLabel.text = list.catalog_price;
+        
+        NSString *stat = [NSString stringWithFormat:@"%@ Toko", list.catalog_count_shop];
+        NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:stat];
+        [attributedText addAttribute:NSFontAttributeName
+                               value:boldFont
+                               range:NSMakeRange(0, list.catalog_count_shop.length)];
+        cell.productInfoLabel.attributedText = attributedText;
+        
+        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.catalog_image]
+                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        
+        cell.productImageView.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+        cell.productImageView.contentMode = UIViewContentModeCenter;
+        
+        [cell.productImageView setImageWithURLRequest:request
+                                     placeholderImage:nil
+                                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                                  [cell.productImageView setImage:image animated:YES];
+                                                  [cell.productImageView setContentMode:UIViewContentModeScaleAspectFill];
+                                              } failure:nil];
+    }
+    
+    return cell;
+}
 
+- (UITableViewCell *)tableView:(UITableView *)tableView twoColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
+    UITableViewCell* cell = nil;
+    
+    cell = (GeneralProductCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+    if (cell == nil) {
+        cell = [GeneralProductCell newcell];
+        ((GeneralProductCell*)cell).delegate = self;
+    }
+    
+    if (_product.count > indexPath.row) {
+        //reset cell
+        [self reset:(GeneralProductCell*)cell];
+        
+        /** Flexible view count **/
+        NSUInteger indexsegment = indexPath.row * 2;
+        NSUInteger indexmax = indexsegment + 2;
+        NSUInteger indexlimit = MIN(indexmax, _product.count);
+        
+        NSAssert(!(indexlimit > _product.count), @"producs out of bounds");
+        
+        for (int i = 0; (indexsegment + i) < indexlimit; i++) {
+            List *list = [_product objectAtIndex:indexsegment + i];
+            ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
+            (((GeneralProductCell*)cell).indexpath) = indexPath;
+            
+            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+                ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
+                ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.product_price?:@"";
+                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.product_name?:@"";
+                ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
+                
+                NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image]
+                                                              cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                          timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+                
+                UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
+                thumb.image = nil;
+                
+                [thumb setImageWithURLRequest:request placeholderImage:nil
+                                      success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                          //NSLOG(@"thumb: %@", thumb);
+                                          [thumb setImage:image animated:YES];
+#pragma clang diagnostic pop
+                                      } failure:nil];
+                
+            } else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+                ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
+                ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.catalog_price?:@"";
+                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:@"";
+                ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.product_name?:@"";
+                NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.catalog_image_300] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+                //request.URL = url;
+                
+                UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
+                thumb.image = nil;
+                //thumb.hidden = YES;	//@prepareforreuse then @reset
+                
+                NSLog(@"============================== START GET %@ IMAGE =====================",
+                      [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+                [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                    //NSLOG(@"thumb: %@", thumb);
+                    [thumb setImage:image];
+                    NSLog(@"============================== DONE GET %@ IMAGE =====================", [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+#pragma clang diagnostic pop
+                    
+                } failure:nil];
+            }
+        }
+    }
+    return cell;
+}
 
+- (GeneralPhotoProductCell *)tableView:(UITableView *)tableView threeColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *cellIdentifier = kTKPDGENERAL_PHOTO_PRODUCT_CELL_IDENTIFIER;
+    
+    GeneralPhotoProductCell *cell;
+    cell = (GeneralPhotoProductCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil) {
+        cell = [GeneralPhotoProductCell initCell];
+        cell.delegate = self;
+    }
+    cell.indexPath = indexPath;
+    
+    NSUInteger index = indexPath.row * 3;
+    
+    for (int i = 0; i < cell.productImageViews.count; i++) {
+        NSUInteger indexProduct = index + i;
+        if (indexProduct < _product.count) {
+            List *list = [_product objectAtIndex:indexProduct];
+            
+            NSString *imageURL;
+            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+                imageURL = list.product_image;
+            } else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+                imageURL = list.catalog_image_300;
+            }
+            
+            NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:imageURL]
+                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            
+            UIImageView *thumb = [cell.productImageViews objectAtIndex:i];
+            thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+            thumb.contentMode = UIViewContentModeCenter;
+            thumb.hidden = NO;
+            
+            [thumb setImageWithURLRequest:request
+                         placeholderImage:nil
+                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                      thumb.image = image;
+                                      thumb.contentMode = UIViewContentModeScaleAspectFill;
+#pragma clang diagnostic pop
+                                  } failure:nil];
+        }
+    }
+    
+    return cell;
+}
 
 #pragma mark - Request + Mapping
 -(void)cancel
@@ -365,14 +515,20 @@
     // searchs list mapping
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[List class]];
     [listMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APIPRODUCTIMAGEKEY,
-                                                   kTKPDSEARCH_APIPRODUCTPRICEKEY,
-                                                   kTKPDSEARCH_APIPRODUCTNAMEKEY,
-                                                   kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY,
-                                                   kTKPDSEARCH_APICATALOGIMAGEKEY,
-                                                   kTKPDSEARCH_APICATALOGNAMEKEY,
-                                                   kTKPDSEARCH_APICATALOGPRICEKEY,
-                                                   kTKPDSEARCH_APIPRODUCTIDKEY,
-                                                   kTKPDSEARCH_APICATALOGIDKEY]];
+                                                 kTKPDSEARCH_APIPRODUCTIMAGEFULLKEY,
+                                                 kTKPDSEARCH_APIPRODUCTPRICEKEY,
+                                                 kTKPDSEARCH_APIPRODUCTNAMEKEY,
+                                                 kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY,
+                                                 kTKPDSEARCH_APIPRODUCTIDKEY,
+                                                 kTKPDSEARCH_APIPRODUCTREVIEWCOUNTKEY,
+                                                 kTKPDSEARCH_APIPRODUCTTALKCOUNTKEY,
+                                                 kTKPDSEARCH_APICATALOGIMAGEKEY,
+                                                 kTKPDSEARCH_APICATALOGIMAGE300KEY,
+                                                 kTKPDSEARCH_APICATALOGNAMEKEY,
+                                                 kTKPDSEARCH_APICATALOGPRICEKEY,
+                                                 kTKPDSEARCH_APICATALOGIDKEY,
+                                                 kTKPDSEARCH_APICATALOGCOUNTSHOPKEY,
+                                                 ]];
     
     // paging mapping
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -380,7 +536,7 @@
     
     RKObjectMapping *departmentMapping = [RKObjectMapping mappingForClass:[DepartmentTree class]];
     [departmentMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APIHREFKEY, kTKPDSEARCH_APITREEKEY, kTKPDSEARCH_APIDIDKEY, kTKPDSEARCH_APITITLEKEY,kTKPDSEARCH_APICHILDTREEKEY]];
-
+    
     //add list relationship
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
@@ -417,29 +573,51 @@
     BOOL isredirect = [[_params objectForKey:kTKPDSEARCH_DATAISREDIRECTKEY] boolValue];
     
     NSMutableDictionary *param = [NSMutableDictionary dictionaryWithDictionary:@{
-        kTKPDSEARCH_APIACTIONTYPEKEY    :   type?:@"",
-        kTKPDSEARCH_APIPAGEKEY          :   @(_page),
-        kTKPDSEARCH_APILIMITKEY         :   @(kTKPDSEARCH_LIMITPAGE),
-        kTKPDSEARCH_APIORDERBYKEY       :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
-        kTKPDSEARCH_APILOCATIONKEY      :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
-        kTKPDSEARCH_APISHOPTYPEKEY      :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
-        kTKPDSEARCH_APIPRICEMINKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-        kTKPDSEARCH_APIPRICEMAXKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@"",
-        kTKPDSEARCH_APIDEPARTEMENTIDKEY :   [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"",
-    }];
+                                                                                 kTKPDSEARCH_APIACTIONTYPEKEY    :   type?:@"",
+                                                                                 kTKPDSEARCH_APIPAGEKEY          :   @(_page),
+                                                                                 kTKPDSEARCH_APILIMITKEY         :   @(kTKPDSEARCH_LIMITPAGE),
+                                                                                 kTKPDSEARCH_APIORDERBYKEY       :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+                                                                                 kTKPDSEARCH_APILOCATIONKEY      :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+                                                                                 kTKPDSEARCH_APISHOPTYPEKEY      :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+                                                                                 kTKPDSEARCH_APIPRICEMINKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+                                                                                 kTKPDSEARCH_APIPRICEMAXKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@"",
+                                                                                 kTKPDSEARCH_APIDEPARTEMENTIDKEY :   [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"",
+                                                                                 
+                                                                                 kTKPDSEARCH_APIDEPARTMENT_1     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_1]?:@"",
+                                                                                 kTKPDSEARCH_APIDEPARTMENT_2     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_2]?:@"",
+                                                                                 kTKPDSEARCH_APIDEPARTMENT_3     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_3]?:@"",
+                                                                                 }];
     
     if (query != nil && ![query isEqualToString:@""] && !isredirect) {
         [param setObject:query forKey:kTKPDSEARCH_APIQUERYKEY];
     }
     else{
         [param setObject:deptid forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-    }    
+    }
+    
+    if ([_params objectForKey:kTKPDSEARCH_APIMINPRICEKEY]) {
+        [param setObject:[_params objectForKey:kTKPDSEARCH_APIMINPRICEKEY] forKey:kTKPDSEARCH_APIPRICEMINKEY];
+    }
+    if ([_params objectForKey:kTKPDSEARCH_APIMAXPRICEKEY]) {
+        [param setObject:[_params objectForKey:kTKPDSEARCH_APIMAXPRICEKEY] forKey:kTKPDSEARCH_APIPRICEMAXKEY];
+    }
+    if ([_params objectForKey:kTKPDSEARCH_APIOBKEY]) {
+        [param setObject:[_params objectForKey:kTKPDSEARCH_APIOBKEY] forKey:kTKPDSEARCH_APIORDERBYKEY];
+    }
+    if ([_params objectForKey:kTKPDSEARCH_APILOCATIONIDKEY]) {
+        [param setObject:[_params objectForKey:kTKPDSEARCH_APILOCATIONIDKEY] forKey:kTKPDSEARCH_APILOCATIONKEY];
+    }
+    if ([_params objectForKey:kTKPDSEARCH_APIGOLDMERCHANTKEY]) {
+        [param setObject:[_params objectForKey:kTKPDSEARCH_APIGOLDMERCHANTKEY] forKey:kTKPDSEARCH_APISHOPTYPEKEY];
+    }
+    
+    NSLog(@"%@", param);
     
     if (!_isrefreshview) {
         _table.tableFooterView = _footer;
         [_act startAnimating];
     }
-
+    
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:kTKPDSEARCH_APIPATH
@@ -463,10 +641,10 @@
     [_operationQueue addOperation:_request];
     
     timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(requesttimeout)
-                                            userInfo:nil
-                                             repeats:NO];
+                                             target:self
+                                           selector:@selector(requesttimeout)
+                                           userInfo:nil
+                                            repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
@@ -475,7 +653,7 @@
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id stats = [result objectForKey:@""];
     _searchitem = stats;
-    BOOL status = [_searchitem.status isEqualToString:kTKPDREQUEST_OKSTATUS];    
+    BOOL status = [_searchitem.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
         [self requestprocess:object];
     }
@@ -501,20 +679,21 @@
             if (status) {
                 
                 NSString *uriredirect = _searchitem.result.redirect_url;
-                //NSString *uriredirect = _searchitem.result.redirect_url.redirect_url;
                 NSString *hascatalog = _searchitem.result.has_catalog;
+                
+                if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+                    hascatalog = @"1";
+                }
                 
                 if (uriredirect == nil) {
                     //setting is this product has catalog or not
-                    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
-                        if ([hascatalog isEqualToString:@"1"] && hascatalog) {
-                            NSDictionary *userInfo = @{@"count":@(3)};
-                            [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
-                        }
-                        else if ([hascatalog isEqualToString:@"0"] && hascatalog){
-                            NSDictionary *userInfo = @{@"count":@(2)};
-                            [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
-                        }
+                    if ([hascatalog isEqualToString:@"1"] && hascatalog) {
+                        NSDictionary *userInfo = @{@"count":@(3)};
+                        [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
+                    }
+                    else if ([hascatalog isEqualToString:@"0"] && hascatalog){
+                        NSDictionary *userInfo = @{@"count":@(2)};
+                        [[NSNotificationCenter defaultCenter] postNotificationName: kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userInfo];
                     }
                     if (_page == 1) {
                         [_product removeAllObjects];
@@ -559,9 +738,19 @@
                     
                     // Redirect URI to hotlist
                     if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTHOTKEY]) {
+                        
                         HotlistResultViewController *vc = [HotlistResultViewController new];
-                        vc.data = @{kTKPDSEARCH_DATAISSEARCHHOTLISTKEY : @(YES), kTKPDSEARCHHOTLIST_APIQUERYKEY : query[2]};
-                        [self.navigationController pushViewController:vc animated:NO];
+                        vc.data = @{
+                                    kTKPDSEARCH_DATAISSEARCHHOTLISTKEY : @(YES),
+                                    kTKPDSEARCHHOTLIST_APIQUERYKEY : query[2]
+                                    };
+                        
+                        [self.navigationController popViewControllerAnimated:NO];
+                        
+                        if ([self.delegate respondsToSelector:@selector(pushViewController:animated:)]) {
+                            [self.delegate pushViewController:vc animated:NO];
+                        }
+                        
                     }
                     // redirect uri to search category
                     if ([query[1] isEqualToString:kTKPDSEARCH_DATAURLREDIRECTCATEGORY]) {
@@ -612,12 +801,21 @@
 
 
 #pragma mark - Cell Delegate
--(void)GeneralProductCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+-(void)didSelectCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]){
         // Go to product detail
+        
+        NSInteger index = 0;
+        if (self.cellType == UITableViewCellTypeOneColumn) {
+            index = indexPath.row;
+        } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+            index = indexPath.section+2*(indexPath.row);
+        } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+            index = indexPath.section+3*(indexPath.row);
+        }
+        
         DetailProductViewController *vc = [DetailProductViewController new];
-        NSInteger index = indexpath.section+2*(indexpath.row);
         List *list = _product[index];
         vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id?:@(0),
                     kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
@@ -626,7 +824,7 @@
     else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY])
     {
         // Go to catalog detail
-        NSInteger index = indexpath.section + 2 * indexpath.row;
+        NSInteger index = indexPath.section + 2 * indexPath.row;
         CatalogViewController *controller = [CatalogViewController new];
         controller.list = _product[index];
         
@@ -643,7 +841,7 @@
         {
             NSIndexPath *indexpath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
             // Action Urutkan Button
-            SortViewController *vc = [SortViewController new]; 
+            SortViewController *vc = [SortViewController new];
             if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
                 vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEPRODUCTVIEWKEY),
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:0};
@@ -692,6 +890,28 @@
                                                                                              applicationActivities:nil];
             activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
             [self presentViewController:activityController animated:YES completion:nil];
+            break;
+        }
+        case 13:
+        {
+            if (self.cellType == UITableViewCellTypeOneColumn) {
+                self.cellType = UITableViewCellTypeTwoColumn;
+                [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
+                                       forState:UIControlStateNormal];
+                
+            } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+                self.cellType = UITableViewCellTypeThreeColumn;
+                [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                                       forState:UIControlStateNormal];
+                
+            } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+                self.cellType = UITableViewCellTypeOneColumn;
+                [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
+                                       forState:UIControlStateNormal];
+                
+            }
+            self.table.contentOffset = CGPointMake(0, 0);
+            [self.table reloadData];
             break;
         }
         default:

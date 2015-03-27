@@ -37,12 +37,12 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r0y-ak-8VP" userLabel="shopView">
                     <rect key="frame" x="0.0" y="435" width="320" height="45"/>
                     <subviews>
-                        <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m3O-OD-9Qo">
+                        <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m3O-OD-9Qo">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <inset key="contentEdgeInsets" minX="0.0" minY="4" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Filter Result">
+                            <state key="normal" title="Filter Hasil Pencarian">
                                 <color key="titleColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -50,14 +50,24 @@
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="J5X-if-yad"/>
                             </connections>
                         </button>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nGU-1p-eDC" userLabel="Top Border">
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nGU-1p-eDC" userLabel="Top Border">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
                             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="hDc-z4-2kX"/>
+                            </constraints>
                         </view>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
+                        <constraint firstAttribute="trailing" secondItem="nGU-1p-eDC" secondAttribute="trailing" id="0E1-3y-8LP"/>
                         <constraint firstAttribute="height" constant="45" id="8vh-zv-ppJ"/>
+                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="leading" secondItem="r0y-ak-8VP" secondAttribute="leading" id="Qf6-Ve-2Vk"/>
+                        <constraint firstItem="nGU-1p-eDC" firstAttribute="top" secondItem="r0y-ak-8VP" secondAttribute="top" id="U18-ha-YM0"/>
+                        <constraint firstItem="nGU-1p-eDC" firstAttribute="leading" secondItem="r0y-ak-8VP" secondAttribute="leading" id="bDH-Ew-JMc"/>
+                        <constraint firstAttribute="bottom" secondItem="m3O-OD-9Qo" secondAttribute="bottom" id="ipu-gA-IrX"/>
+                        <constraint firstItem="m3O-OD-9Qo" firstAttribute="top" secondItem="r0y-ak-8VP" secondAttribute="top" id="mxT-iy-6zp"/>
+                        <constraint firstAttribute="trailing" secondItem="m3O-OD-9Qo" secondAttribute="trailing" id="zmT-sY-7HH"/>
                     </constraints>
                 </view>
             </subviews>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+        <mutableArray key="GothamMedium.ttf">
+            <string>GothamMedium</string>
+        </mutableArray>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GeneralSingleProductCell" rowHeight="230" id="KGk-i7-Jjw" customClass="GeneralSingleProductCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="230"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lqh-fx-Yfr">
+                        <rect key="frame" x="10" y="10" width="300" height="219"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" tag="1" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_loading_grey-02.png" translatesAutoresizingMaskIntoConstraints="NO" id="DCx-bP-Gnp">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="170"/>
+                                <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="170" id="9tj-1C-Z3j"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" tag="2" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2j1-sd-8sF">
+                                <rect key="frame" x="10" y="176" width="280" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="6qj-7T-QsI"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
+                                <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" tag="3" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ycg-hj-FGp">
+                                <rect key="frame" x="10" y="197" width="130" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="T5S-7f-7xx"/>
+                                    <constraint firstAttribute="width" constant="130" id="dF9-HZ-MQE"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" tag="4" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h6V-mT-DJM">
+                                <rect key="frame" x="130" y="197" width="160" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="160" id="TZN-Pe-XIa"/>
+                                    <constraint firstAttribute="height" constant="16" id="gTg-od-NwN"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="h6V-mT-DJM" firstAttribute="top" secondItem="2j1-sd-8sF" secondAttribute="bottom" id="5ME-wH-Qkq"/>
+                            <constraint firstItem="Ycg-hj-FGp" firstAttribute="top" secondItem="2j1-sd-8sF" secondAttribute="bottom" id="6gz-3l-VrD"/>
+                            <constraint firstAttribute="trailing" secondItem="h6V-mT-DJM" secondAttribute="trailing" constant="10" id="6rV-Du-DiH"/>
+                            <constraint firstAttribute="trailing" secondItem="2j1-sd-8sF" secondAttribute="trailing" constant="10" id="GjJ-EM-aNe"/>
+                            <constraint firstItem="Ycg-hj-FGp" firstAttribute="leading" secondItem="lqh-fx-Yfr" secondAttribute="leading" constant="10" id="Imb-wQ-Aio"/>
+                            <constraint firstItem="2j1-sd-8sF" firstAttribute="top" secondItem="DCx-bP-Gnp" secondAttribute="bottom" constant="6" id="iSw-iJ-jcj"/>
+                            <constraint firstAttribute="trailing" secondItem="DCx-bP-Gnp" secondAttribute="trailing" id="oxt-gs-Eq8"/>
+                            <constraint firstItem="2j1-sd-8sF" firstAttribute="leading" secondItem="lqh-fx-Yfr" secondAttribute="leading" constant="10" id="ptU-ra-IS7"/>
+                            <constraint firstItem="DCx-bP-Gnp" firstAttribute="leading" secondItem="lqh-fx-Yfr" secondAttribute="leading" id="v8f-jn-N6m"/>
+                            <constraint firstItem="DCx-bP-Gnp" firstAttribute="top" secondItem="lqh-fx-Yfr" secondAttribute="top" id="wgm-NO-0rc"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="lqh-fx-Yfr" secondAttribute="trailing" constant="10" id="2io-Wi-aXi"/>
+                    <constraint firstItem="lqh-fx-Yfr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="GEn-rR-lNO"/>
+                    <constraint firstAttribute="bottom" secondItem="lqh-fx-Yfr" secondAttribute="bottom" id="n0n-nO-1xF"/>
+                    <constraint firstItem="lqh-fx-Yfr" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="wkF-lN-Iyf"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
+            <connections>
+                <outlet property="productImageView" destination="DCx-bP-Gnp" id="WNN-GB-3GA"/>
+                <outlet property="productInfoLabel" destination="h6V-mT-DJM" id="JHc-xo-6Cm"/>
+                <outlet property="productNameLabel" destination="2j1-sd-8sF" id="JK5-4R-puB"/>
+                <outlet property="productPriceLabel" destination="Ycg-hj-FGp" id="QKC-v3-o6J"/>
+                <outletCollection property="gestureRecognizers" destination="08Q-9Y-p3o" appends="YES" id="J5X-1u-ht6"/>
+            </connections>
+            <point key="canvasLocation" x="230" y="223"/>
+        </tableViewCell>
+        <tapGestureRecognizer id="08Q-9Y-p3o">
+            <connections>
+                <action selector="tap:" destination="KGk-i7-Jjw" id="z8Z-hB-rEC"/>
+            </connections>
+        </tapGestureRecognizer>
+    </objects>
+    <resources>
+        <image name="icon_toped_loading_grey-02.png" width="30" height="30"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

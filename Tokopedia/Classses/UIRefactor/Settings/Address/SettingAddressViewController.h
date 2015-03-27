@@ -25,5 +25,6 @@
 #endif
 
 @property(strong, nonatomic) NSDictionary *data;
+@property (nonatomic, strong) NSMutableArray *list;
 
 @end

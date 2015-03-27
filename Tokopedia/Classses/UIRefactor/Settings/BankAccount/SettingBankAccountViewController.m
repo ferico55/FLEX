@@ -18,7 +18,13 @@
 #import "MGSwipeButton.h"
 
 #pragma mark - Setting Bank Account View Controller
-@interface SettingBankAccountViewController () <UITableViewDataSource, UITableViewDelegate, SettingBankDetailViewControllerDelegate,MGSwipeTableCellDelegate>
+@interface SettingBankAccountViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    SettingBankDetailViewControllerDelegate,
+    MGSwipeTableCellDelegate
+>
 {
     BOOL _isnodata;
     
@@ -135,7 +141,6 @@
     [nc addObserver:self selector:@selector(didEditBankAccount:) name:kTKPD_ADDACCOUNTBANKNOTIFICATIONNAMEKEY object:nil];
     
     if (_delegate == nil) {
-        _addNewRekeningView.backgroundColor = [UIColor whiteColor];
         _table.tableHeaderView = _addNewRekeningView;
     }
     
@@ -201,13 +206,15 @@
             ((GeneralList1GestureCell*)cell).labelname.text = list.bank_account_name;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
             ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
-            if (!_ismanualsetdefault)((GeneralList1GestureCell*)cell).labeldefault.hidden = (list.is_default_bank==1)?NO:YES;
-            else {
-                ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
-                NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY];
-                if (indexPath.row == indexpath.row) {
+            
+            if (_ismanualsetdefault) {
+                if ([indexPath isEqual:[_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY]]) {
                     ((GeneralList1GestureCell*)cell).labeldefault.hidden = NO;
+                } else {
+                    ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
                 }
+            } else {
+                ((GeneralList1GestureCell*)cell).labeldefault.hidden = (list.is_default_bank==1)?NO:YES;
             }
         }
         else
@@ -238,6 +245,8 @@
 #pragma mark - Table View Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     if (_delegate ==nil) {
         BOOL isdefault;
         BankAccountFormList *list = _list[indexPath.row];
@@ -948,14 +957,14 @@
 -(void)setAsDefaultAtIndexPath:(NSIndexPath*)indexPath
 {
     _ismanualsetdefault = YES;
-    [_table reloadData];
+
     BankAccountFormList *bankAccount = _list[indexPath.row];
     [_datainput setObject:@(bankAccount.bank_account_id) forKey:API_BANK_ACCOUNT_ID_KEY];
     [self configureRestKitActionGetDefaultForm];
     [self requestActionGetDefaultForm:_datainput];
-    NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
-    [self tableView:_table moveRowAtIndexPath:indexPath toIndexPath:indexPath1];
+
     [_datainput setObject:indexPath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
+    
     [_table reloadData];
 }
 
@@ -1027,19 +1036,20 @@
         
         CGFloat padding = 15;
         NSIndexPath *indexPath = ((GeneralList1GestureCell*) cell).indexpath;
-        //MGSwipeButton *trash = [MGSwipeButton buttonWithTitle:@"" icon:[UIImage imageNamed:@"icon_love.png"] backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] callback:^BOOL(MGSwipeTableCell *sender) {
-        //    [self deleteListAtIndexPath:indexpath];
-        //    return YES;
-        //}];
+
         MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Delete" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             [self deleteListAtIndexPath:indexPath];
             return YES;
         }];
+        trash.titleLabel.font = [UIFont fontWithName:trash.titleLabel.font.fontName size:12];
+
         MGSwipeButton * flag = [MGSwipeButton buttonWithTitle:@"Set As\nDefault" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             //edit
             [self setAsDefaultAtIndexPath:indexPath];
             return YES;
         }];
+        flag.titleLabel.font = [UIFont fontWithName:flag.titleLabel.font.fontName size:12];
+        
         return @[trash, flag];
     }
     

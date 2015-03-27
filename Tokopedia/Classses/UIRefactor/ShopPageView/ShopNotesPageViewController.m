@@ -199,6 +199,7 @@ UIAlertViewDelegate>
 }
 
 #pragma mark - TableView Delegate
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NotesList *list = _list[indexPath.row];
@@ -258,8 +259,6 @@ UIAlertViewDelegate>
             ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
             ((GeneralList1GestureCell*)cell).type = kTKPDGENERALCELL_DATATYPETWOBUTTONKEY;
-            [((GeneralList1GestureCell*)cell).buttondefault setTitle:@"Ubah\nCatatan" forState:UIControlStateNormal];
-            
         }
         
         return cell;

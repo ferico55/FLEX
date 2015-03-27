@@ -79,6 +79,8 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        self.hidesBottomBarWhenPushed = YES;
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillShow:)
                                                      name:UIKeyboardWillShowNotification
@@ -88,6 +90,8 @@
                                                  selector:@selector(keyboardWillHide:)
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
+        
+        
     }
     
     return self;
@@ -101,8 +105,6 @@
     _userManager = [UserAuthentificationManager new];
     _operationQueue = [NSOperationQueue new];
     _operationDeleteCommentQueue = [NSOperationQueue new];
-    
-    self.hidesBottomBarWhenPushed = YES;
     
     [self initNavigationBar];
     [self initReviewData];

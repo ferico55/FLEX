@@ -47,6 +47,7 @@
 
 #import "LoginViewController.h"
 #import "TokopediaNetworkManager.h"
+#import "ProductGalleryViewController.h"
 
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController () <UITableViewDelegate, UITableViewDataSource, DetailProductInfoCellDelegate, DetailProductOtherViewDelegate, LoginViewDelegate, TokopediaNetworkManagerDelegate>
@@ -110,6 +111,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *reviewbutton;
 @property (weak, nonatomic) IBOutlet UIButton *talkaboutbutton;
 @property (weak, nonatomic) IBOutlet UIImageView *shopthumb;
+@property (weak, nonatomic) IBOutlet UIImageView *goldShop;
 @property (weak, nonatomic) IBOutlet UIButton *shopname;
 @property (weak, nonatomic) IBOutlet UILabel *accuracynumberlabel;
 @property (weak, nonatomic) IBOutlet UILabel *qualitynumberlabel;
@@ -207,6 +209,11 @@
     _imagescrollview.pagingEnabled = YES;
     _imagescrollview.contentMode = UIViewContentModeScaleAspectFit;
     
+    //add gesture to imagescrollview
+    UITapGestureRecognizer* galleryGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProductGallery)];
+    [_imagescrollview addGestureRecognizer:galleryGesture];
+    [_imagescrollview setUserInteractionEnabled:YES];
+    
     //cache
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILPRODUCT_CACHEFILEPATH];
     _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILPRODUCT_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue]]];
@@ -245,6 +252,7 @@
     UIEdgeInsets inset = _table.contentInset;
     inset.bottom += 20;
     _table.contentInset = inset;
+    _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
     
     [self configureRestKit];
@@ -335,6 +343,7 @@
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:_datatalk];
                 [data setObject:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null] forKey:kTKPD_AUTHKEY];
+                [data setObject:image.image_src forKey:@"talk_product_image"];
                 vc.data = data;
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
@@ -764,7 +773,8 @@
                                                           kTKPDDETAILPRODUCT_APISHOPISFAVKEY:kTKPDDETAILPRODUCT_APISHOPISFAVKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY,
                                                           kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY
+                                                          kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
+                                                          API_IS_GOLD_SHOP_KEY:API_IS_GOLD_SHOP_KEY
                                                           }];
     
     RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
@@ -937,7 +947,7 @@
                 
                 if([_product.result.shop_info.shop_id isEqualToString:[([_auth objectForKey:@"shop_id"]) stringValue]]) {
                     NSBundle* bundle = [NSBundle mainBundle];
-                    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"]];
+                    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_setting" ofType:@"png"]];
                     
                     UIBarButtonItem *barbutton;
                     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
@@ -989,7 +999,7 @@
                     _favButton.tag = 17;
                 }
                 
-                if(_auth && [[([_auth objectForKey:@"shop_id"]) stringValue] isEqualToString:_product.result.shop_info.shop_id]) {
+                if(_auth && [[[_auth objectForKey:@"shop_id"] stringValue] isEqualToString:_product.result.shop_info.shop_id]) {
                     _favButton.hidden = YES;
                 } else {
                     _favButton.hidden = NO;
@@ -1050,34 +1060,44 @@
 }
 
 #pragma mark - Cell Delegate
+- (void)gotToSearchWithDepartment:(NSInteger)index {
+    NSArray *breadcrumbs = _product.result.breadcrumb;
+    Breadcrumb *breadcrumb = breadcrumbs[index-10];
+    
+    SearchResultViewController *vc = [SearchResultViewController new];
+    NSString *deptid = breadcrumb.department_id;
+    vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    SearchResultViewController *vc1 = [SearchResultViewController new];
+    vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
+    vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
+    NSArray *viewcontrollers = @[vc,vc1,vc2];
+    
+    TKPDTabNavigationController *c = [TKPDTabNavigationController new];
+    
+    [c setSelectedIndex:0];
+    [c setViewControllers:viewcontrollers];
+    [c setNavigationTitle:breadcrumb.department_name];
+    [self.navigationController pushViewController:c animated:YES];
+}
 -(void)DetailProductInfoCell:(UITableViewCell *)cell withbuttonindex:(NSInteger)index
 {
     switch (index) {
-        case 10:
-        case 11:
+        case 10: {
+            [self gotToSearchWithDepartment:10];
+            break;
+        }
+        case 11: {
+            [self gotToSearchWithDepartment:11];
+            break;
+        }
         case 12:
         {
-            // Tag 10 until 12 is category
-            /** Goto category **/
             NSArray *breadcrumbs = _product.result.breadcrumb;
-            Breadcrumb *breadcrumb = breadcrumbs[index-10];
+            if([breadcrumbs count] == 3) {
+                [self gotToSearchWithDepartment:12];
+            }
             
-            SearchResultViewController *vc = [SearchResultViewController new];
-            NSString *deptid = breadcrumb.department_id;
-            vc.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:0};
-            SearchResultViewController *vc1 = [SearchResultViewController new];
-            vc1.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:0};
-            SearchResultShopViewController *vc2 = [SearchResultShopViewController new];
-            vc2.data =@{kTKPDSEARCH_APIDEPARTMENTIDKEY : deptid?:@"" , kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHSHOPKEY,kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:0};
-            NSArray *viewcontrollers = @[vc,vc1,vc2];
-            
-            TKPDTabNavigationController *c = [TKPDTabNavigationController new];
-            
-            [c setSelectedIndex:0];
-            [c setViewControllers:viewcontrollers];
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-            [nav.navigationBar setTranslucent:NO];
-            [self.navigationController presentViewController:nav animated:YES completion:nil];
             break;
         }
         case 13:
@@ -1209,6 +1229,12 @@
 {
     [_shopname setTitle:_product.result.shop_info.shop_name forState:UIControlStateNormal];
     _shoplocation.text = _product.result.shop_info.shop_location;
+    
+    if(_product.result.shop_info.shop_is_gold == 1) {
+        _goldShop.hidden = NO;
+    } else {
+        _goldShop.hidden = YES;
+    }
     
     _ratespeedshop.starscount = _product.result.shop_info.shop_stats.shop_speed_rate;
     _rateserviceshop.starscount = _product.result.shop_info.shop_stats.shop_service_rate;
@@ -1569,7 +1595,8 @@
     Promote* promoteObject = successResult;
     
     if([promoteObject.result.is_dink isEqualToString:@"1"]) {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Sign in gagal silahkan coba lagi."]
+        NSString *successMessage = [NSString stringWithFormat:@"Promo pada product %@ telah berhasil! Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko.", _product.result.product.product_name];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[successMessage]
                                                                        delegate:self];
         [alert show];
     } else {
@@ -1584,6 +1611,20 @@
 
 - (void)actionAfterFailRequestMaxTries {
     
+}
+
+#pragma mark - Tap Product Gallery
+- (void)tapProductGallery {
+    NSDictionary *data = @{
+                           @"image_index" : @(_pageheaderimages),
+                           @"images" : _product.result.product_images
+                           };
+    
+    ProductGalleryViewController *vc = [ProductGalleryViewController new];
+    vc.data = data;
+    
+    [self.navigationController presentViewController:vc animated:YES completion:nil];
+//    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

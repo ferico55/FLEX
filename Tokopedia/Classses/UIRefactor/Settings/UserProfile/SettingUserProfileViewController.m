@@ -17,7 +17,6 @@
 
 #import "AlertDatePickerView.h"
 #import "AlertListView.h"
-#import "Alert1ButtonView.h"
 #import "AlertPickerView.h"
 #import "CameraController.h"
 #import "RequestUploadImage.h"
@@ -108,8 +107,8 @@
     
     [self.navigationController.navigationBar setTranslucent:NO];
     [self.navigationController.navigationItem setTitle:kTKPDPROFILEEDIT_TITLE];
-    self.title = kTKPDPROFILEEDIT_TITLE;
     
+    self.title = kTKPDPROFILEEDIT_TITLE;
     
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
@@ -124,10 +123,12 @@
                name:UIKeyboardWillHideNotification
              object:nil];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
     barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
+    self.navigationItem.backBarButtonItem = barButtonItem;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:kTKPDPROFILESAVE style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];

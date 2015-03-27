@@ -111,13 +111,13 @@
     if ([_auth count] > 0) {
         //toko sendiri dan login
         if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
-            self.navigationItem.rightBarButtonItems = @[_infoBarButton, _addProductBarButton, _settingBarButton];
+            self.navigationItem.rightBarButtonItems = @[_settingBarButton, _addProductBarButton, _infoBarButton];
         } else {
-            self.navigationItem.rightBarButtonItems = @[_infoBarButton, _messageBarButton, _favoriteBarButton];
+            self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
         }
 
     } else {
-            self.navigationItem.rightBarButtonItems = @[_infoBarButton, _messageBarButton, _favoriteBarButton];
+            self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton ];
     }
     
 
@@ -542,12 +542,12 @@
             BOOL status = [_shop.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             if (status) {
                 if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue] == [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue]) {
-                    self.navigationItem.rightBarButtonItems = @[_infoBarButton, _addProductBarButton, _settingBarButton];
+                    self.navigationItem.rightBarButtonItems = @[_settingBarButton, _addProductBarButton, _infoBarButton];
                 } else {
                     if(_shop.result.info.shop_already_favorited == 1) {
-                        self.navigationItem.rightBarButtonItems = @[_infoBarButton, _messageBarButton, _favoriteBarButton];
+                        self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
                     } else {
-                        self.navigationItem.rightBarButtonItems = @[_infoBarButton, _messageBarButton, _unfavoriteBarButton];
+                        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _messageBarButton, _infoBarButton];
                     }
                 }
                 
@@ -589,6 +589,12 @@
 
 
 #pragma mark - Notification Action
+
+- (void)checkIsLogin {
+    if(_auth) {
+        
+    }
+}
 - (void)showNavigationShopTitle:(NSNotification *)notification
 {
     [UIView animateWithDuration:0.2 animations:^(void) {
@@ -634,10 +640,13 @@
     if(_requestFavorite.isExecuting) return;
     
     _requestFavoriteCount = 0;
-    [self configureFavoriteRestkit];
-    [self favoriteShop:_shop.result.info.shop_id];
-
-    self.navigationItem.rightBarButtonItems = @[_infoBarButton, _messageBarButton, _unfavoriteBarButton];
+    
+    if(_auth) {
+        [self configureFavoriteRestkit];
+        [self favoriteShop:_shop.result.info.shop_id];
+        
+        self.navigationItem.rightBarButtonItems = @[_unfavoriteBarButton, _messageBarButton, _infoBarButton];
+    }
 }
 
 - (IBAction)unfavoriteTap:(id)sender {
@@ -647,7 +656,7 @@
     [self configureFavoriteRestkit];
     [self favoriteShop:_shop.result.info.shop_id];
     
-    self.navigationItem.rightBarButtonItems = @[_infoBarButton, _messageBarButton, _favoriteBarButton];
+    self.navigationItem.rightBarButtonItems = @[_favoriteBarButton, _messageBarButton, _infoBarButton];
     
 }
 
@@ -711,7 +720,7 @@
                 [self postNotificationSetShopHeader];
                 break;
             }
-            case 20:
+            case 12:
             {
                 
                 [_pageController setViewControllers:@[_shopNotesViewController] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];

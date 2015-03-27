@@ -20,7 +20,9 @@
 @property (nonatomic, strong) NSString *catalog_id;
 @property (nonatomic, strong) NSString *catalog_name;
 @property (nonatomic, strong) NSString *catalog_image;
+@property (nonatomic, strong) NSString *catalog_image_300;
 @property (nonatomic, strong) NSString *catalog_price;
+@property (nonatomic, strong) NSString *catalog_count_shop;
 
 /** product **/
 @property (nonatomic, strong) NSString *product_price;
@@ -29,8 +31,9 @@
 @property (nonatomic, strong) NSString *shop_location;
 @property (nonatomic, strong) NSString *shop_name;
 @property (nonatomic, strong) NSString *product_image;
+@property (nonatomic, strong) NSString *product_image_full;
 @property (nonatomic, strong) NSString *product_name;
-
-
+@property (nonatomic, strong) NSString *product_talk_count;
+@property (nonatomic, strong) NSString *product_review_count;
 
 @end

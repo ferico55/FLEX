@@ -10,7 +10,6 @@
 #import "profile.h"
 #import "ProfileSettings.h"
 #import "SettingUserPhoneViewController.h"
-#import "Alert1ButtonView.h"
 
 #pragma mark - Profile Edit Phone View Controller
 @interface SettingUserPhoneViewController ()

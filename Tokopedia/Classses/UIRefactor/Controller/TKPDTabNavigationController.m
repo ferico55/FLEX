@@ -108,7 +108,8 @@
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
-                                                                         action:nil];
+                                                                         action:@selector(tapbutton:)];
+    backBarButtonItem.tag = 10;
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     _barbuttoncategory = [[UIBarButtonItem alloc] initWithTitle:@"Kategori"
@@ -122,7 +123,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    self.navigationItem.title = self.navigationTitle;
+    self.navigationItem.title = [self.navigationTitle capitalizedString];
     self.hidesBottomBarWhenPushed = YES;
 }
 
@@ -452,7 +453,7 @@
         switch (btn.tag) {
             case 10:
             {
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
             case 11:
@@ -543,13 +544,13 @@
 -(void)SetHiddenSegmentController:(NSNotification*)notification
 {
     NSDictionary *userinfo = notification.userInfo;
-    NSInteger count = [[userinfo objectForKey:@"count"]integerValue];
+    NSInteger count = [[userinfo objectForKey:@"count"] integerValue];
     
     if (count == 2) {
         _segmentcontrol.hidden = NO;
         [_segmentcontrol removeAllSegments];
-        [_segmentcontrol insertSegmentWithTitle:@"Product" atIndex:0 animated:NO];
-        [_segmentcontrol insertSegmentWithTitle:@"Shop" atIndex:1 animated:NO];
+        [_segmentcontrol insertSegmentWithTitle:@"Produk" atIndex:0 animated:NO];
+        [_segmentcontrol insertSegmentWithTitle:@"Toko" atIndex:1 animated:NO];
         _tabbar = _segmentcontrol;
         [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
         _hascatalog = NO;
@@ -557,9 +558,9 @@
     } else if (count == 3) {	//not default to 3
         _segmentcontrol.hidden = NO;
         [_segmentcontrol removeAllSegments];
-        [_segmentcontrol insertSegmentWithTitle:@"Product" atIndex:0 animated:NO];
-        [_segmentcontrol insertSegmentWithTitle:@"Catalog" atIndex:1 animated:NO];
-        [_segmentcontrol insertSegmentWithTitle:@"Shop" atIndex:2 animated:NO];
+        [_segmentcontrol insertSegmentWithTitle:@"Produk" atIndex:0 animated:NO];
+        [_segmentcontrol insertSegmentWithTitle:@"Katalog" atIndex:1 animated:NO];
+        [_segmentcontrol insertSegmentWithTitle:@"Toko" atIndex:2 animated:NO];
         _tabbar = _segmentcontrol;
         [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
         _hascatalog = YES;

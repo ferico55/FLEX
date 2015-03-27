@@ -12,6 +12,15 @@
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "InboxResolutionCenterTabViewController.h"
+#import "ShipmentConfirmationViewController.h"
+
+#import "SalesNewOrderViewController.h"
+#import "ShipmentStatusViewController.h"
+
+#import "TxOrderTabViewController.h"
+#import "TxOrderStatusViewController.h"
+#import "TxOrderStatusViewController.h"
+
 
 @interface NotificationViewController ()
 
@@ -141,7 +150,7 @@
     NSInteger numberOfRows = 0;
     switch (section) {
         case 0:
-            numberOfRows = 6;
+            numberOfRows = 3;
             break;
             
         case 1:
@@ -297,6 +306,43 @@
             }
             default:
                 break;
+        }
+    }
+    
+    if([indexPath section] == 1) {
+        if([indexPath row] == 0) {
+            SalesNewOrderViewController *controller = [[SalesNewOrderViewController alloc] init];
+            controller.delegate = self;
+            [self.delegate pushViewController:controller];
+        } else if ([indexPath row] == 1) {
+            ShipmentConfirmationViewController *controller = [[ShipmentConfirmationViewController alloc] init];
+            controller.delegate = self;
+            [self.delegate pushViewController:controller];
+        } else if ([indexPath row] == 2) {
+            ShipmentStatusViewController *controller = [[ShipmentStatusViewController alloc] init];
+            [self.delegate pushViewController:controller];
+        }
+    }
+    
+    if([indexPath section] == 2) {
+        if([indexPath row] == 0) {
+            TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+            vc.action = @"get_tx_order_status";
+            vc.viewControllerTitle = @"Status Pemesanan";
+            [self.delegate pushViewController:vc];
+        } else if ([indexPath row] == 1) {
+            TxOrderTabViewController *vc = [TxOrderTabViewController new];
+            [self.delegate pushViewController:vc];
+        } else if ([indexPath row] == 2) {
+            TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+            vc.action = @"get_tx_order_status";
+            vc.viewControllerTitle = @"Status Pemesanan";
+            [self.delegate pushViewController:vc];
+        } else if ([indexPath row] == 3) {
+            TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+            vc.action = @"get_tx_order_deliver";
+            vc.viewControllerTitle = @"Konfirmasi Penerimaan";
+            [self.delegate pushViewController:vc];
         }
     }
 }

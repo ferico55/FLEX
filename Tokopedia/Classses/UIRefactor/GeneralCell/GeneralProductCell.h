@@ -12,8 +12,8 @@
 
 #pragma mark - Hotlist Result  Cell Delegate
 @protocol GeneralProductCellDelegate <NSObject>
-@required
--(void)GeneralProductCell:(UITableViewCell*)cell withindexpath:(NSIndexPath*)indexpath;
+
+- (void)didSelectCell:(UITableViewCell*)cell atIndexPath:(NSIndexPath*)indexPath;
 
 @end
 
@@ -27,11 +27,11 @@
 #endif
 
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *viewcell;
-@property (strong, nonatomic) IBOutletCollection(UIActivityIndicatorView) NSArray *act;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *thumb;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labelprice;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labeldescription;
 @property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *labelalbum;
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *isGoldShop;
 
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong, nonatomic) NSIndexPath *indexpath;

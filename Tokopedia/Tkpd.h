@@ -9,15 +9,14 @@
 #ifndef Tokopedia_Tkpd_h
 #define Tokopedia_Tkpd_h
 
-#define kTkpdBaseURLString @"http://beta.tokopedia.com/ws"
+#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 
 #if DEBUG
-    #define kTkpdBaseURLString @"http://www.ef-risky.dvl/ws"
+    #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 #else
     #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 #endif
 
-#define kTkpdAPIkey @"8b0c367dd3ef0860f5730ec64e3bbdc9" //TODO:: Remove api key
 #define kTKPD_AUTHKEY @"auth"
 
 #define kTKPD_AUTHKEY @"auth"
@@ -52,6 +51,7 @@ typedef enum {
     ORDER_PROCESS_PARTIAL                = 401,   // update by SELLER       seller accepted the order, partially
     ORDER_PROCESS_DUE_DATE               = 410,   // update by SYSTEM       untouch verified order after payment age > 3 days
     ORDER_SHIPPING                       = 500,   // update by SELLER       seller confirm for shipment
+    ORDER_SHIPPING_WAITING               = 501,   // Menunggu status dari kurir
     ORDER_SHIPPING_DATE_EDITED           = 505,   // update by ADMIN        seller input an invalid shipping date
     ORDER_SHIPPING_DUE_DATE              = 510,   // update by SYSTEM       seller not confirm for shipment after order accepted and payment age > 5 days
     ORDER_SHIPPING_TRACKER_INVALID       = 520,   // update by SYSTEM       invalid shipping ref num
@@ -120,6 +120,7 @@ typedef enum {
 
 #define kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION @"tokopedia.kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION"
 #define kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION @"tokopedia.kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION"
+#define kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION @"tokopedia.kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION"
 #define kTKPD_INTERRUPTNOTIFICATIONNAMEKEY @"tokopedia.kTKPD_INTERRUPTNOTIFICATIONNAMEKEY"
 
 #define EDIT_CART_POST_NOTIFICATION_NAME @"tokopedia.EDIT_CART_POST_NOTIFICATION_NAME"

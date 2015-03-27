@@ -320,6 +320,7 @@
                 <outlet property="skipReviewButton" destination="Oq8-C5-5MT" id="BXq-NB-39i"/>
                 <outlet property="speedrate" destination="4Es-61-x0M" id="Jfd-4D-4NY"/>
                 <outlet property="timelabel" destination="0wA-8g-UoU" id="DMJ-CB-IvJ"/>
+                <outlet property="topContent" destination="Adz-MB-5mC" id="hso-Xu-7VU"/>
                 <outlet property="userImageView" destination="xp4-uU-tcG" id="qIP-xQ-mhY"/>
                 <outlet property="userNamelabel" destination="Ot1-QP-SIl" id="gMa-2V-XLd"/>
             </connections>

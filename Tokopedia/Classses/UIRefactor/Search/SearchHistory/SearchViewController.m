@@ -21,6 +21,7 @@
     UISearchDisplayDelegate,
     UITableViewDelegate,
     UITableViewDataSource,
+    SearchResultDelegate,
     NotificationDelegate,
     NotificationManagerDelegate
 >
@@ -104,8 +105,6 @@
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
-    
-//    self.hidesBottomBarWhenPushed = YES;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -243,10 +242,12 @@
     }
     
     SearchResultViewController *vc = [SearchResultViewController new];
+    vc.delegate = self;
     vc.data =@{kTKPDSEARCH_DATASEARCHKEY : searchresult?:@"" ,
                kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHPRODUCTKEY,
                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
     SearchResultViewController *vc1 = [SearchResultViewController new];
+    vc1.delegate = self;
     vc1.data =@{kTKPDSEARCH_DATASEARCHKEY : searchresult?:@"" ,
                 kTKPDSEARCH_DATATYPE:kTKPDSEARCH_DATASEARCHCATALOGKEY,
                 kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
@@ -328,10 +329,9 @@
         
         [viewController setSelectedIndex:0];
         [viewController setViewControllers:viewcontrollers];
+        [viewController setNavigationTitle:_searchbar.text];
 
-        self.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:viewController animated:YES];
-        self.hidesBottomBarWhenPushed = NO;
     }
     else
     {
@@ -344,6 +344,8 @@
 {
     [_searchbar setText:@""];
     [_searchbar resignFirstResponder];
+    self.hidesBottomBarWhenPushed = YES;
+    self.navigationController.tabBarController.tabBar.hidden = NO;
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
@@ -399,6 +401,12 @@
     self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
+}
+
+- (void)pushViewController:(id)viewController animated:(BOOL)animated
+{
+    self.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:viewController animated:animated];
 }
 
 @end

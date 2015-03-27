@@ -135,7 +135,7 @@
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     if (section == 0) {
-        return @"pergantian kurir ditanggung sepenuhnya oleh penjual";
+        return @"Biaya pergantian kurir ditanggung sepenuhnya oleh penjual";
     } else {
         return nil;
     }

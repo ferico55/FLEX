@@ -15,11 +15,10 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *labelname;
 @property (weak, nonatomic) IBOutlet UILabel *labeldefault;
-@property (strong, nonatomic) NSIndexPath *indexpath;
-@property (weak, nonatomic) IBOutlet UIButton *buttondefault;
 @property (weak, nonatomic) IBOutlet UILabel *labelvalue;
 
 @property (nonatomic) NSInteger type;
+@property (strong, nonatomic) NSIndexPath *indexpath;
 
 +(id)newcell;
 -(void)viewdetailresetposanimation:(BOOL)animated;

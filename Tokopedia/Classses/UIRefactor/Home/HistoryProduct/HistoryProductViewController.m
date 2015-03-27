@@ -178,6 +178,13 @@
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).attributedText = attributedString ;
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).lineBreakMode = NSLineBreakByTruncatingTail;
                 
+                if([list.shop_gold_status isEqualToString:@"1"]) {
+                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = NO;
+                } else {
+                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = YES;
+                }
+                
+                
                 //                ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:list.product_name;
                 ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
                 
@@ -439,9 +446,10 @@
 }
 
 #pragma mark - Cell Delegate
--(void)GeneralProductCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+
+-(void)didSelectCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    NSInteger index = indexpath.section+2*(indexpath.row);
+    NSInteger index = indexPath.section+2*(indexPath.row);
     HistoryProductList *list = _product[index];
 
     DetailProductViewController *vc = [DetailProductViewController new];

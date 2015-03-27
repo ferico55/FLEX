@@ -632,9 +632,13 @@
                             [shipmentPackages removeObject:package];
                         }
                     }
-                    ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
-                    [_dataInput setObject:shipment forKey:DATA_SELECTED_SHIPMENT_KEY];
-                    [_dataInput setObject:shipmentPackage forKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
+                    
+                    if (shipmentPackages.count > 0) {
+                        ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
+                        [_dataInput setObject:shipment forKey:DATA_SELECTED_SHIPMENT_KEY];
+                        [_dataInput setObject:shipmentPackage forKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];                        
+                    }
+
                     [self setAddress:address];
                     _isnodata = NO;
                     [_tableView reloadData];

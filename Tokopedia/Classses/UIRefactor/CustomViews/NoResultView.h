@@ -11,5 +11,6 @@
 @interface NoResultView : UIView
 
 @property (nonatomic, retain) IBOutlet UIView *view;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
 
 @end

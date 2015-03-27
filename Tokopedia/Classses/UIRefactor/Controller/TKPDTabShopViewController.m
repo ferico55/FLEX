@@ -810,10 +810,10 @@
 
 #pragma mark - Cell Delegate
 
--(void)GeneralProductCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
+-(void)didSelectCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     [_searchBar resignFirstResponder];
-    NSInteger index = indexpath.section+2*(indexpath.row);
+    NSInteger index = indexPath.section+2*(indexPath.row);
     List *list = _product[index];
     DetailProductViewController *vc = [DetailProductViewController new];
     vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : list.product_id,

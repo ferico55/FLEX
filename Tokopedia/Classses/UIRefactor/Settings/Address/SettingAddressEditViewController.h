@@ -7,12 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AddressFormList.h"
+
 @class SettingAddressEditViewController;
 
 #pragma mark - Address Add Edit View Controller Delegate
 @protocol SettingAddressEditViewControllerDelegate <NSObject>
 @optional
 - (void)SettingAddressEditViewController:(SettingAddressEditViewController *)viewController withUserInfo:(NSDictionary*)userInfo;
+- (void)successEditAddress:(AddressFormList *)address;
+
 @end
 
 @interface SettingAddressEditViewController : UIViewController

@@ -55,23 +55,30 @@
 #define kTKPDSEARCH_APISHOPGOLDSHOP @"shop_gold_shop"
 #define kTKPDSEARCH_APISHOPGOLDSTATUS @"shop_gold_status"
 /** product **/
-#define kTKPDSEARCH_APIPRODUCTIMAGEKEY @"product_image"
-#define kTKPDSEARCH_APIPRODUCTNAMEKEY @"product_name"
-#define kTKPDSEARCH_APIPRODUCTPRICEKEY @"product_price"
-#define kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY @"shop_name"
-#define kTKPDSEARCH_APIPRODUCTIDKEY @"product_id"
+#define kTKPDSEARCH_APIPRODUCTIMAGEKEY      @"product_image"
+#define kTKPDSEARCH_APIPRODUCTIMAGEFULLKEY  @"product_image_full"
+#define kTKPDSEARCH_APIPRODUCTNAMEKEY       @"product_name"
+#define kTKPDSEARCH_APIPRODUCTPRICEKEY      @"product_price"
+#define kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY   @"shop_name"
+#define kTKPDSEARCH_APIPRODUCTIDKEY         @"product_id"
 
 /** catalog **/
-#define kTKPDSEARCH_APICATALOGIMAGEKEY @"catalog_image"
-#define kTKPDSEARCH_APICATALOGNAMEKEY @"catalog_name"
-#define kTKPDSEARCH_APICATALOGPRICEKEY @"catalog_price"
-#define kTKPDSEARCH_APICATALOGIDKEY @"catalog_id"
+#define kTKPDSEARCH_APICATALOGIMAGEKEY      @"catalog_image"
+#define kTKPDSEARCH_APICATALOGIMAGE300KEY   @"catalog_image_300"
+#define kTKPDSEARCH_APICATALOGNAMEKEY       @"catalog_name"
+#define kTKPDSEARCH_APICATALOGPRICEKEY      @"catalog_price"
+#define kTKPDSEARCH_APICATALOGIDKEY         @"catalog_id"
+#define kTKPDSEARCH_APICATALOGCOUNTSHOPKEY  @"catalog_count_shop"
 
 /** redirect url **/
 #define kTKPDSEARCH_APIREDIRECTURLKEY @"redirect_url"
 #define kTKPDSEARCH_APIDEPARTMENTIDKEY @"department_id"
 #define kTKPDSEARCH_APIDEPARTEMENTTITLEKEY @"department_title"
 #define kTKPDSEARCH_APIDEPARTEMENTIDKEY @"department_id"
+
+#define kTKPDSEARCH_APIDEPARTMENT_1 @"department_1"
+#define kTKPDSEARCH_APIDEPARTMENT_2 @"department_2"
+#define kTKPDSEARCH_APIDEPARTMENT_3 @"department_3"
 
 /** has catalog **/
 #define kTKPDSEARCH_APIHASCATALOGKEY @"has_catalog"
@@ -101,9 +108,13 @@
 #define kTKPDSEARCH_APIMINPRICEKEY @"pmin"
 #define kTKPDSEARCH_APIMAXPRICEKEY @"pmax"
 #define kTKPDSEARCH_APIIMAGESIZEKEY @"img_size"
+#define kTKPDSEARCH_APIOBKEY @"ob"
 #define kTKPDSEARCH_APIORDERBYKEY @"order_by"
 
 #define kTKPDSEARCH_APIPRODUCTIDKEY @"product_id"
+#define kTKPDSEARCH_APIPRODUCTREVIEWCOUNTKEY    @"product_review_count"
+#define kTKPDSEARCH_APIPRODUCTTALKCOUNTKEY      @"product_talk_count"
+
 #define kTKDPSEARCH_APICATALOGIDKEY @"catalog_id"
 
 #define kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER @"cell"

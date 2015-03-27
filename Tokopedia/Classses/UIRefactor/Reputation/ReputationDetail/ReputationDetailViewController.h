@@ -7,8 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HPGrowingTextView.h"
 
-@interface ReputationDetailViewController : UIViewController
+@interface ReputationDetailViewController : UIViewController <HPGrowingTextViewDelegate>
+{
+    HPGrowingTextView *_growingtextview;
+}
 
 @property (strong, nonatomic) IBOutlet UILabel *commentLabel;
 @property (strong, nonatomic) IBOutlet UILabel *commentReplyLabel;
@@ -19,6 +23,7 @@
 @property (strong, nonatomic) IBOutlet UIView *view;
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UIView *contentView;
+
 
 
 @end

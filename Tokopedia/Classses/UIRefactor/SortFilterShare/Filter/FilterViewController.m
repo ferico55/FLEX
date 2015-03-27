@@ -47,6 +47,8 @@
 @property (strong, nonatomic) IBOutlet UIView *detailcatalogview;
 @property (weak, nonatomic) IBOutlet UIButton *detailcataloglocationbutton;
 
+@property (weak, nonatomic) IBOutlet UIButton *resetButton;
+
 @end
 
 @implementation FilterViewController
@@ -73,27 +75,22 @@
         case kTKPDFILTER_DATATYPEHOTLISTVIEWKEY:
         case kTKPDFILTER_DATATYPEPRODUCTVIEWKEY:
         {
-            [self.view addSubview: _productview];
+            [self.view insertSubview:_productview belowSubview:_resetButton];
             break;
         }
         case kTKPDFILTER_DATATYPECATALOGVIEWKEY:
         { 
-            [self.view addSubview: _catalogview];
-            break;
-        }
-        case kTKPDFILTER_DATATYPEDETAILCATALOGVIEWKEY:
-        {
-            [self.view addSubview: _detailcatalogview];
+            [self.view insertSubview:_catalogview belowSubview:_resetButton];
             break;
         }
         case kTKPDFILTER_DATATYPESHOPVIEWKEY:
         {
-            [self.view addSubview: _shopview];
+            [self.view insertSubview:_shopview belowSubview:_resetButton];
             break;
         }
         case kTKPDFILTER_DATATYPESHOPPRODUCTVIEWKEY:
         {
-            [self.view addSubview: _shopview];
+            [self.view insertSubview:_shopview belowSubview:_resetButton];
             break;
         }
         default:
@@ -102,13 +99,18 @@
     
     UIBarButtonItem *barbutton1;
     //TODO:: Change image
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                  style:UIBarButtonItemStylePlain
+                                                 target:(self)
+                                                 action:@selector(tap:)];
     [barbutton1 setTintColor:[UIColor whiteColor]];
     [barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
 
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor blackColor]];
+    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
+                                                  style:UIBarButtonItemStyleDone
+                                                 target:(self)
+                                                 action:@selector(tap:)];
 	[barbutton1 setTag:11];
     self.navigationItem.rightBarButtonItem = barbutton1;
     
