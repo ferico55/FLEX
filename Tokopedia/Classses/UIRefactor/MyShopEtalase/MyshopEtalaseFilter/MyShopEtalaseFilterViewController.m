@@ -70,17 +70,20 @@
     _cachecontroller = [URLCacheController new];
     
     _table.tableFooterView = _footer;
-    //_table.contentInset = UIEdgeInsetsMake(0, 0, 16, 0);
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:nil style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    barButtonItem.image = [UIImage imageNamed:@"icon_cancel_white"];
-    barButtonItem.style = UIBarButtonItemStyleBordered;
-    barButtonItem.tag = 10;
-    self.navigationItem.leftBarButtonItem = barButtonItem;
 
-    UIBarButtonItem  *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [rightBarButton setTintColor:[UIColor blackColor]];
-	[rightBarButton setTag:11];
+    UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                                        style:UIBarButtonItemStyleBordered
+                                                                       target:self
+                                                                       action:@selector(tap:)];
+    cancelBarButton.tag = 10;
+    self.navigationItem.leftBarButtonItem = cancelBarButton;
+    
+    UIBarButtonItem  *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
+                                                                        style:UIBarButtonItemStyleDone
+                                                                       target:(self)
+                                                                       action:@selector(tap:)];
+    rightBarButton.tag = 11;
     self.navigationItem.rightBarButtonItem = rightBarButton;
     
     _etalase = [[Etalase alloc] init];

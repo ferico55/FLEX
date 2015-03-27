@@ -300,7 +300,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         cell.productNameLabel.text = list.product_name;
         cell.productPriceLabel.text = list.product_price;
 
-        NSString *stats = [NSString stringWithFormat:@"%@ Review   %@ Ulasan",
+        NSString *stats = [NSString stringWithFormat:@"%@ Ulasan   %@ Diskusi",
                            list.product_review_count,
                            list.product_talk_count];
         
@@ -310,7 +310,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                range:NSMakeRange(0, list.product_review_count.length)];
         [attributedText addAttribute:NSFontAttributeName
                                value:boldFont
-                               range:NSMakeRange(list.product_review_count.length + 10, list.product_talk_count.length)];
+                               range:NSMakeRange(list.product_review_count.length + 11, list.product_talk_count.length)];
         
         cell.productInfoLabel.attributedText = attributedText;
         

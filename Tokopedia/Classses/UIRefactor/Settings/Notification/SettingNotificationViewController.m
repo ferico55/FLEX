@@ -39,8 +39,6 @@
     UIBarButtonItem *_saveBarButtonItem;
 }
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (weak, nonatomic) IBOutlet UIView *viewContent;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 -(void)cancel;
@@ -80,14 +78,10 @@
     _operationQueue = [NSOperationQueue new];
     _listSwitchStatus = [NSMutableArray new];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:kTKPDPROFILESAVE style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_saveBarButtonItem setTintColor:[UIColor blackColor]];
+    _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:kTKPDPROFILESAVE
+                                                          style:UIBarButtonItemStyleDone
+                                                         target:(self)
+                                                         action:@selector(tap:)];
     _saveBarButtonItem.tag = 11;
     self.navigationItem.rightBarButtonItem = _saveBarButtonItem;
 
@@ -98,12 +92,13 @@
     
     _listMenu = ARRAY_LIST_NOTIFICATION;
     _listDescription = ARRAY_LIST_NOTIFICATION_DESCRIPTION;
+
+    _tableView.contentInset = UIEdgeInsetsMake(-10, 0, 0, 0);
 }
 
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    _scrollView.contentSize = _viewContent.frame.size;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -175,7 +170,21 @@
 
     ((SettingNotificationCell*)cell).indexPath = indexPath;
     ((SettingNotificationCell*)cell).notificationName.text = _listMenu[indexPath.row];
-    ((SettingNotificationCell*)cell).notificationDetail.text = _listDescription[indexPath.row];
+
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:12],
+                                 NSParagraphStyleAttributeName  : style,
+                                 NSForegroundColorAttributeName : [UIColor colorWithRed:117.0/255.0
+                                                                                  green:117.0/255.0
+                                                                                   blue:117.0/255.0
+                                                                                  alpha:1],
+                                 };
+    
+    ((SettingNotificationCell*)cell).notificationDetail.attributedText = [[NSAttributedString alloc] initWithString:_listDescription[indexPath.row]
+                                                                                                         attributes:attributes];
     NSInteger listSwitchStatusCount = _listSwitchStatus.count;
     ((SettingNotificationCell*)cell).settingSwitch.on = (listSwitchStatusCount>0)?[_listSwitchStatus[indexPath.row]boolValue]:YES;
     
@@ -397,11 +406,11 @@
     _saveBarButtonItem.enabled = NO;
     
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APISETEMAILNOTIFKEY,
-                            kTKPDPROFILESETTING_APIFLAGNEWSLATTERKEY : [data objectForKey:kTKPDPROFILESETTING_APIFLAGNEWSLATTERKEY]?:@(_form.result.notification.flag_newsletter),
-                            kTKPDPROFILESETTING_APIFLAGREVIEWKEY : [data objectForKey:kTKPDPROFILESETTING_APIFLAGREVIEWKEY]?:@(_form.result.notification.flag_review),
-                            kTKPDPROFILESETTING_APIFLAGTALKPRODUCTKEY :[data objectForKey:kTKPDPROFILESETTING_APIFLAGTALKPRODUCTKEY]?:@(_form.result.notification.flag_talk_product),
-                            kTKPDPROFILESETTING_APIFLAGMESSAGEKEY:[data objectForKey:kTKPDPROFILESETTING_APIFLAGMESSAGEKEY]?:@(_form.result.notification.flag_message),
-                            kTKPDPROFILESETTING_APIFLAGADMINMESSAGEKEY:[data objectForKey:kTKPDPROFILESETTING_APIFLAGADMINMESSAGEKEY]?:@(_form.result.notification.flag_admin_message)
+                            kTKPDPROFILESETTING_APIFLAGNEWSLATTERKEY : [data objectForKey:kTKPDPROFILESETTING_APIFLAGNEWSLATTERKEY]?:_form.result.notification.flag_newsletter,
+                            kTKPDPROFILESETTING_APIFLAGREVIEWKEY : [data objectForKey:kTKPDPROFILESETTING_APIFLAGREVIEWKEY]?:_form.result.notification.flag_review,
+                            kTKPDPROFILESETTING_APIFLAGTALKPRODUCTKEY :[data objectForKey:kTKPDPROFILESETTING_APIFLAGTALKPRODUCTKEY]?:_form.result.notification.flag_talk_product,
+                            kTKPDPROFILESETTING_APIFLAGMESSAGEKEY:[data objectForKey:kTKPDPROFILESETTING_APIFLAGMESSAGEKEY]?:_form.result.notification.flag_message,
+                            kTKPDPROFILESETTING_APIFLAGADMINMESSAGEKEY:[data objectForKey:kTKPDPROFILESETTING_APIFLAGADMINMESSAGEKEY]?:_form.result.notification.flag_admin_message
                             };
     _requestCountAction ++;
     
@@ -495,12 +504,11 @@
 {
     NotificationFormNotif *notif = object;
     if (notif) {
-        [_listSwitchStatus addObject:@(notif.flag_newsletter)];
-        [_listSwitchStatus addObject:@(notif.flag_review)];
-        [_listSwitchStatus addObject:@(notif.flag_talk_product)];
-        [_listSwitchStatus addObject:@(notif.flag_message)];
-        [_listSwitchStatus addObject:@(notif.flag_admin_message)];
-
+        [_listSwitchStatus addObject:notif.flag_newsletter];
+        [_listSwitchStatus addObject:notif.flag_review];
+        [_listSwitchStatus addObject:notif.flag_talk_product];
+        [_listSwitchStatus addObject:notif.flag_message];
+        [_listSwitchStatus addObject:notif.flag_admin_message];
     }
 }
 
