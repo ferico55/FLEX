@@ -25,7 +25,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hom-Wp-SJz">
-                    <rect key="frame" x="0.0" y="60" width="320" height="438"/>
+                    <rect key="frame" x="0.0" y="60" width="320" height="420"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <gestureRecognizers/>
                 </view>
@@ -137,7 +137,7 @@
             <constraints>
                 <constraint firstItem="HIc-y5-HzX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="1ob-UM-Glk"/>
                 <constraint firstItem="hom-Wp-SJz" firstAttribute="top" secondItem="cqz-CH-bj9" secondAttribute="top" id="4uf-3J-4q4"/>
-                <constraint firstAttribute="bottom" secondItem="hom-Wp-SJz" secondAttribute="bottom" constant="-18" id="Ccg-Zq-z82"/>
+                <constraint firstAttribute="bottom" secondItem="hom-Wp-SJz" secondAttribute="bottom" id="Ccg-Zq-z82"/>
                 <constraint firstItem="cqz-CH-bj9" firstAttribute="trailing" secondItem="hom-Wp-SJz" secondAttribute="trailing" id="Czb-rg-dqA"/>
                 <constraint firstItem="cqz-CH-bj9" firstAttribute="top" secondItem="Mda-ty-KT2" secondAttribute="bottom" constant="16" id="Jfh-SZ-Vg3"/>
                 <constraint firstAttribute="bottom" secondItem="HIc-y5-HzX" secondAttribute="bottom" id="KHn-6O-H6m"/>

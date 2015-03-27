@@ -343,6 +343,7 @@
                 NSMutableDictionary *data = [NSMutableDictionary new];
                 [data addEntriesFromDictionary:_datatalk];
                 [data setObject:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null] forKey:kTKPD_AUTHKEY];
+                [data setObject:image.image_src forKey:@"talk_product_image"];
                 vc.data = data;
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
@@ -946,7 +947,7 @@
                 
                 if([_product.result.shop_info.shop_id isEqualToString:[([_auth objectForKey:@"shop_id"]) stringValue]]) {
                     NSBundle* bundle = [NSBundle mainBundle];
-                    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:kTKPDIMAGE_ICONMORECATEGORY ofType:@"png"]];
+                    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_setting" ofType:@"png"]];
                     
                     UIBarButtonItem *barbutton;
                     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7

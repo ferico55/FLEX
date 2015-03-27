@@ -17,8 +17,16 @@
 #import "MGSwipeTableCell.h"
 #import "MGSwipeButton.h"
 #import "GeneralAction.h"
+#import "DetailProductViewController.h"
+
+#import "ProfileBiodataViewController.h"
+#import "ProfileFavoriteShopViewController.h"
+#import "ProfileContactViewController.h"
+#import "TKPDTabProfileNavigationController.h"
+
 
 #import "stringrestkit.h"
+#import "string_more.h"
 
 @interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate>
 {
@@ -152,6 +160,17 @@
     barButtonItem.tag = 10;
     [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    // add gesture to product image
+    UITapGestureRecognizer* productGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];
+    [_talkProductImage addGestureRecognizer:productGesture];
+    [_talkProductImage setUserInteractionEnabled:YES];
     
     [self setHeaderData:_data];
     [self initTalkInputView];
@@ -662,6 +681,13 @@
 }
 
 #pragma mark - View Action
+
+- (void)tapProduct {
+    DetailProductViewController *vc = [DetailProductViewController new];
+    vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:@"product_id"]};
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 -(IBAction)tap:(id)sender {
     
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
@@ -672,6 +698,8 @@
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
+                
+            
                 
             default:
             break;
@@ -721,6 +749,39 @@
                 
                  _growingtextview.text = nil;
                 [_growingtextview resignFirstResponder];
+                break;
+            }
+                
+            case 11 : {
+                DetailProductViewController *vc = [DetailProductViewController new];
+                vc.data = @{kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:@"product_id"]};
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+                
+            case 12 : {
+                NSMutableArray *viewControllers = [NSMutableArray new];
+                
+                ProfileBiodataViewController *biodataController = [ProfileBiodataViewController new];
+                [viewControllers addObject:biodataController];
+                
+                ProfileFavoriteShopViewController *favoriteController = [ProfileFavoriteShopViewController new];
+                favoriteController.data = @{MORE_USER_ID:[_auth objectForKey:MORE_USER_ID],
+                                            MORE_SHOP_ID:[_auth objectForKey:MORE_SHOP_ID],
+                                            MORE_AUTH:_auth?:[NSNull null]};
+                [viewControllers addObject:favoriteController];
+                
+                ProfileContactViewController *contactController = [ProfileContactViewController new];
+                [viewControllers addObject:contactController];
+                
+                TKPDTabProfileNavigationController *profileController = [TKPDTabProfileNavigationController new];
+                profileController.data = @{MORE_USER_ID:[_auth objectForKey:MORE_USER_ID],
+                                           MORE_AUTH:_auth?:[NSNull null]};
+                [profileController setViewControllers:viewControllers animated:YES];
+                [profileController setSelectedIndex:0];
+                
+                [self.navigationController pushViewController:profileController animated:YES];
+                
                 break;
             }
             default:
@@ -803,7 +864,7 @@
             TalkCommentList *commentlist = _list[_list.count-1];
             commentlist.is_not_delivered = @"1";
         } else {
-            NSString *totalcomment = [NSString stringWithFormat:@"%zd %@",_list.count, @"Comment"];
+            NSString *totalcomment = [NSString stringWithFormat:@"%zd %@",_list.count, @"Komentar"];
             _talktotalcommentlabel.text = totalcomment;
             
             NSDictionary *userinfo;

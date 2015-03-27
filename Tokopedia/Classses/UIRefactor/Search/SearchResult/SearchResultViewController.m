@@ -41,14 +41,14 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 @interface SearchResultViewController ()
 <
-    UITableViewDataSource,
-    UITableViewDelegate,
-    GeneralProductCellDelegate,
-    TKPDTabNavigationControllerDelegate,
-    SortViewControllerDelegate,
-    FilterViewControllerDelegate,
-    GeneralPhotoProductDelegate,
-    GeneralSingleProductDelegate
+UITableViewDataSource,
+UITableViewDelegate,
+GeneralProductCellDelegate,
+TKPDTabNavigationControllerDelegate,
+SortViewControllerDelegate,
+FilterViewControllerDelegate,
+GeneralPhotoProductDelegate,
+GeneralSingleProductDelegate
 >
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -110,8 +110,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         _isrefreshview = NO;
         _isnodata = YES;
         _requestcount = 0;
-        
-        
     }
     return self;
 }
@@ -120,7 +118,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-        
+    
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
@@ -144,12 +142,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     if (_data) {
         [_params addEntriesFromDictionary:_data];
     }
-        
+    
     _table.tableFooterView = _footer;
     [_act startAnimating];
-    
-    
-
     
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -158,8 +153,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [_table addSubview:_refreshControl];
     
     [_params setObject:[_data objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"" forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
-        _catalogproductview.hidden = YES;
-
+    _catalogproductview.hidden = YES;
+    
     //cache
     NSString* path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDSEARCH_CACHEFILEPATH];
     NSString *query =[_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
@@ -167,11 +162,11 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
         _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDSEARCHPRODUCT_APIRESPONSEFILEFORMAT,query?:deptid]];
     }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-         _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDSEARCHCATALOG_APIRESPONSEFILEFORMAT,query?:deptid]];
+        _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDSEARCHCATALOG_APIRESPONSEFILEFORMAT,query?:deptid]];
     }
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
+    [_cachecontroller initCacheWithDocumentPath:path];
     
     if ([_data objectForKey:API_DEPARTMENT_ID_KEY]) {
         self.toolbarView.hidden = YES;
@@ -180,7 +175,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
                                                object:nil];
-
+    
     self.cellType = UITableViewCellTypeTwoColumn;
 }
 
@@ -215,15 +210,15 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 #pragma mark - Table View Delegate
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	if (_isnodata) {
-		cell.backgroundColor = [UIColor whiteColor];
-	}
+    if (_isnodata) {
+        cell.backgroundColor = [UIColor whiteColor];
+    }
     
     NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section]-1;
-
-	if (row == indexPath.row) {
-		NSLog(@"%@", NSStringFromSelector(_cmd));
-		
+    
+    if (row == indexPath.row) {
+        NSLog(@"%@", NSStringFromSelector(_cmd));
+        
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext !=0 ) {
             /** called if need to load next page **/
             [self request];
@@ -232,7 +227,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
             [_act stopAnimating];
             _table.tableFooterView = nil;
         }
-	}
+    }
 }
 
 #pragma mark - Table View Data Source
@@ -261,16 +256,16 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     UITableViewCell* cell = nil;
     if (_isnodata) {
-		static NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
-		
-		cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-		if (cell == nil) {
-			cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-			cell.selectionStyle = UITableViewCellSelectionStyleNone;
-		}
-		
-		cell.textLabel.text = kTKPDSEARCH_NODATACELLTITLE;
-		cell.detailTextLabel.text = kTKPDSEARCH_NODATACELLDESCS;
+        static NSString *CellIdentifier = kTKPDSEARCH_STANDARDTABLEVIEWCELLIDENTIFIER;
+        
+        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        cell.textLabel.text = kTKPDSEARCH_NODATACELLTITLE;
+        cell.detailTextLabel.text = kTKPDSEARCH_NODATACELLDESCS;
     } else {
         if (self.cellType == UITableViewCellTypeOneColumn) {
             cell = [self tableView:tableView oneColumnCellForRowAtIndexPath:indexPath];
@@ -280,13 +275,13 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
             cell = [self tableView:tableView threeColumnCellForRowAtIndexPath:indexPath];
         }
     }
-	return cell;
+    return cell;
 }
 
 - (GeneralSingleProductCell *)tableView:(UITableView *)tableView oneColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *cellIdentifier = kTKPDGENERAL_SINGLE_PRODUCT_CELL_IDENTIFIER;
-
+    
     GeneralSingleProductCell *cell;
     cell = (GeneralSingleProductCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
@@ -299,12 +294,12 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UIFont *boldFont = [UIFont fontWithName:@"GothamMedium" size:12];
     
     cell.indexPath = indexPath;
-
-    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
     
+    if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+        
         cell.productNameLabel.text = list.product_name;
         cell.productPriceLabel.text = list.product_price;
-
+        
         NSString *stats = [NSString stringWithFormat:@"%@ Review   %@ Ulasan",
                            list.product_review_count,
                            list.product_talk_count];
@@ -332,7 +327,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                                   [cell.productImageView setImage:image animated:YES];
                                                   [cell.productImageView setContentMode:UIViewContentModeScaleAspectFill];
                                               } failure:nil];
-
+        
     } else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
         cell.productNameLabel.text = list.catalog_name;
         cell.productPriceLabel.text = list.catalog_price;
@@ -366,7 +361,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 {
     NSString *cellid = kTKPDGENERALPRODUCTCELL_IDENTIFIER;
     UITableViewCell* cell = nil;
-
+    
     cell = (GeneralProductCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
     if (cell == nil) {
         cell = [GeneralProductCell newcell];
@@ -395,30 +390,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.product_name?:@"";
                 ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
                 
-<<<<<<< HEAD
-                if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
-                    ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
-                    ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.product_price?:@"";
-                    ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.product_name?:@"";
-                    ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
-                    
-                    NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-                    
-                    UIImageView *thumb = (UIImageView*)((GeneralProductCell*)cell).thumb[i];
-                    thumb.image = nil;
-                    
-                    UIActivityIndicatorView *act = (UIActivityIndicatorView*)((GeneralProductCell*)cell).act[i];
-                    [act startAnimating];
-                    
-                    if([list.shop_gold_status isEqualToString:@"1"]) {
-                        ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = NO;
-                    } else {
-                        ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = YES;
-                    }
-                    
-                    
-                    [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-=======
                 NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image]
                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                           timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -428,13 +399,12 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 
                 [thumb setImageWithURLRequest:request placeholderImage:nil
                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
->>>>>>> 7dcfba6b4bc0764dbb953254bf8942de0063139a
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                    //NSLOG(@"thumb: %@", thumb);
-                    [thumb setImage:image animated:YES];
+                                          //NSLOG(@"thumb: %@", thumb);
+                                          [thumb setImage:image animated:YES];
 #pragma clang diagnostic pop
-                } failure:nil];
+                                      } failure:nil];
                 
             } else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
                 ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
@@ -449,7 +419,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 //thumb.hidden = YES;	//@prepareforreuse then @reset
                 
                 NSLog(@"============================== START GET %@ IMAGE =====================",
-                [_data objectForKey:kTKPDSEARCH_DATATYPE]);
+                      [_data objectForKey:kTKPDSEARCH_DATATYPE]);
                 [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -468,7 +438,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 - (GeneralPhotoProductCell *)tableView:(UITableView *)tableView threeColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *cellIdentifier = kTKPDGENERAL_PHOTO_PRODUCT_CELL_IDENTIFIER;
-
+    
     GeneralPhotoProductCell *cell;
     cell = (GeneralPhotoProductCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
@@ -566,7 +536,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     RKObjectMapping *departmentMapping = [RKObjectMapping mappingForClass:[DepartmentTree class]];
     [departmentMapping addAttributeMappingsFromArray:@[kTKPDSEARCH_APIHREFKEY, kTKPDSEARCH_APITREEKEY, kTKPDSEARCH_APIDIDKEY, kTKPDSEARCH_APITITLEKEY,kTKPDSEARCH_APICHILDTREEKEY]];
-
+    
     //add list relationship
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
@@ -603,20 +573,20 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     BOOL isredirect = [[_params objectForKey:kTKPDSEARCH_DATAISREDIRECTKEY] boolValue];
     
     NSMutableDictionary *param = [NSMutableDictionary dictionaryWithDictionary:@{
-        kTKPDSEARCH_APIACTIONTYPEKEY    :   type?:@"",
-        kTKPDSEARCH_APIPAGEKEY          :   @(_page),
-        kTKPDSEARCH_APILIMITKEY         :   @(kTKPDSEARCH_LIMITPAGE),
-        kTKPDSEARCH_APIORDERBYKEY       :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
-        kTKPDSEARCH_APILOCATIONKEY      :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
-        kTKPDSEARCH_APISHOPTYPEKEY      :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
-        kTKPDSEARCH_APIPRICEMINKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
-        kTKPDSEARCH_APIPRICEMAXKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@"",
-        kTKPDSEARCH_APIDEPARTEMENTIDKEY :   [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"",
-
-        kTKPDSEARCH_APIDEPARTMENT_1     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_1]?:@"",
-        kTKPDSEARCH_APIDEPARTMENT_2     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_2]?:@"",
-        kTKPDSEARCH_APIDEPARTMENT_3     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_3]?:@"",
-    }];
+                                                                                 kTKPDSEARCH_APIACTIONTYPEKEY    :   type?:@"",
+                                                                                 kTKPDSEARCH_APIPAGEKEY          :   @(_page),
+                                                                                 kTKPDSEARCH_APILIMITKEY         :   @(kTKPDSEARCH_LIMITPAGE),
+                                                                                 kTKPDSEARCH_APIORDERBYKEY       :   [_params objectForKey:kTKPDSEARCH_APIORDERBYKEY]?:@"",
+                                                                                 kTKPDSEARCH_APILOCATIONKEY      :   [_params objectForKey:kTKPDSEARCH_APILOCATIONKEY]?:@"",
+                                                                                 kTKPDSEARCH_APISHOPTYPEKEY      :   [_params objectForKey:kTKPDSEARCH_APISHOPTYPEKEY]?:@"",
+                                                                                 kTKPDSEARCH_APIPRICEMINKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMINKEY]?:@"",
+                                                                                 kTKPDSEARCH_APIPRICEMAXKEY      :   [_params objectForKey:kTKPDSEARCH_APIPRICEMAXKEY]?:@"",
+                                                                                 kTKPDSEARCH_APIDEPARTEMENTIDKEY :   [_params objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY]?:@"",
+                                                                                 
+                                                                                 kTKPDSEARCH_APIDEPARTMENT_1     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_1]?:@"",
+                                                                                 kTKPDSEARCH_APIDEPARTMENT_2     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_2]?:@"",
+                                                                                 kTKPDSEARCH_APIDEPARTMENT_3     :   [_params objectForKey:kTKPDSEARCH_APIDEPARTMENT_3]?:@"",
+                                                                                 }];
     
     if (query != nil && ![query isEqualToString:@""] && !isredirect) {
         [param setObject:query forKey:kTKPDSEARCH_APIQUERYKEY];
@@ -624,7 +594,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     else{
         [param setObject:deptid forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     }
-
+    
     if ([_params objectForKey:kTKPDSEARCH_APIMINPRICEKEY]) {
         [param setObject:[_params objectForKey:kTKPDSEARCH_APIMINPRICEKEY] forKey:kTKPDSEARCH_APIPRICEMINKEY];
     }
@@ -647,7 +617,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         _table.tableFooterView = _footer;
         [_act startAnimating];
     }
-
+    
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
                                                                     method:RKRequestMethodPOST
                                                                       path:kTKPDSEARCH_APIPATH
@@ -671,10 +641,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [_operationQueue addOperation:_request];
     
     timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(requesttimeout)
-                                            userInfo:nil
-                                             repeats:NO];
+                                             target:self
+                                           selector:@selector(requesttimeout)
+                                           userInfo:nil
+                                            repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
@@ -683,7 +653,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
     id stats = [result objectForKey:@""];
     _searchitem = stats;
-    BOOL status = [_searchitem.status isEqualToString:kTKPDREQUEST_OKSTATUS];    
+    BOOL status = [_searchitem.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
         [self requestprocess:object];
     }
@@ -714,7 +684,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
                     hascatalog = @"1";
                 }
-            
+                
                 if (uriredirect == nil) {
                     //setting is this product has catalog or not
                     if ([hascatalog isEqualToString:@"1"] && hascatalog) {
@@ -776,7 +746,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                     };
                         
                         [self.navigationController popViewControllerAnimated:NO];
-
+                        
                         if ([self.delegate respondsToSelector:@selector(pushViewController:animated:)]) {
                             [self.delegate pushViewController:vc animated:NO];
                         }
@@ -835,7 +805,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 {
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]){
         // Go to product detail
-
+        
         NSInteger index = 0;
         if (self.cellType == UITableViewCellTypeOneColumn) {
             index = indexPath.row;
@@ -871,7 +841,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         {
             NSIndexPath *indexpath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
             // Action Urutkan Button
-            SortViewController *vc = [SortViewController new]; 
+            SortViewController *vc = [SortViewController new];
             if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY])
                 vc.data = @{kTKPDFILTER_DATAFILTERTYPEVIEWKEY:@(kTKPDFILTER_DATATYPEPRODUCTVIEWKEY),
                             kTKPDFILTER_DATAINDEXPATHKEY: indexpath?:0};
@@ -997,7 +967,6 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [_params setObject:[notification.userInfo objectForKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY] forKey:kTKPDSEARCH_APIDEPARTEMENTIDKEY];
     [self refreshView:nil];
     _table.tableFooterView = _footer;
-    
     [_act startAnimating];
 }
 
