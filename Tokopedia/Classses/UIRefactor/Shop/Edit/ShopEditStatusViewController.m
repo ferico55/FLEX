@@ -76,6 +76,8 @@
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
+    self.title = @"Ubah Status Toko";
+    
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
     barButtonItem.tag = 10;
@@ -90,9 +92,8 @@
     _type = [[_data objectForKey:kTKPDDETAIL_DATASTATUSSHOPKEY]integerValue];
     
     [self setDefaultData:_data];
-    // register for keyboard notifications
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardDidHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardDidHideNotification object:nil];
     
 }
 
@@ -100,9 +101,8 @@
 {
     [super viewWillDisappear:animated];
     
-    // unregister for keyboard notifications
-    //[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
-    //[[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -213,8 +213,7 @@
             {
                 _viewcontentclose.hidden = NO;
                 NSString *note = [_data objectForKey:kTKPDSHOPEDIT_APICLOSEDNOTEKEY];
-                _textviewnote.text = note;
-                _labelcatatan.hidden = !(!note);
+                _textviewnote.text = [note isEqualToString:@"0"]?@"":note;
                 [_datainput setObject:note forKey:kTKPDSHOPEDIT_APICLOSEDNOTEKEY];
                 
                 ((UIImageView*)_thumbicon[0]).hidden = YES;
@@ -275,15 +274,6 @@
     return YES;
 }
 
--(void) textViewDidChange:(UITextView *)textView
-{
-    if (textView == _textviewnote) {
-        if(_textviewnote.text.length == 0){
-            _labelcatatan.hidden = YES;
-        }
-    }
-}
-
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
     if (textView == _textviewnote) {
@@ -295,51 +285,11 @@
 }
 
 #pragma mark - Keyboard Notification
-// Called when the UIKeyboardWillShowNotification is sent
-//- (void)keyboardWillShow:(NSNotification *)info {
-//    if(_keyboardSize.height < 0){
-//        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-//        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-//        
-//        _scrollviewContentSize = [_scrollview contentSize];
-//        _scrollviewContentSize.height += _keyboardSize.height;
-//        [_scrollview setContentSize:_scrollviewContentSize];
-//    }else{
-//        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-//                              delay:0
-//                            options: UIViewAnimationCurveEaseOut
-//                         animations:^{
-//                             _scrollviewContentSize = [_scrollview contentSize];
-//                             _scrollviewContentSize.height -= _keyboardSize.height;
-//                             
-//                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-//                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-//                             _scrollviewContentSize.height += _keyboardSize.height;
-//                             if ((self.view.frame.origin.y + _activetextview.frame.origin.y+_activetextview.frame.size.height)> _keyboardPosition.y) {
-//                                 UIEdgeInsets inset = _scrollview.contentInset;
-//                                 inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activetextview.frame.origin.y+_activetextview.frame.size.height + 10));
-//                                 [_scrollview setContentSize:_scrollviewContentSize];
-//                                 [_scrollview setContentInset:inset];
-//                             }
-//                         }
-//                         completion:^(BOOL finished){
-//                         }];
-//        
-//    }
-//}
-//
-//- (void)keyboardWillHide:(NSNotification *)info {
-//    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-//    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-//                          delay:0
-//                        options: UIViewAnimationCurveEaseOut
-//                     animations:^{
-//                         _scrollview.contentInset = contentInsets;
-//                         _scrollview.scrollIndicatorInsets = contentInsets;
-//                     }
-//                     completion:^(BOOL finished){
-//                     }];
-//}
+- (void)keyboardWillShow:(NSNotification *)info {
 
+}
+
+- (void)keyboardWillHide:(NSNotification *)info {
+}
 
 @end

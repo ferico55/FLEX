@@ -150,7 +150,7 @@
     NSInteger numberOfRows = 0;
     switch (section) {
         case 0:
-            numberOfRows = 3;
+            numberOfRows = 4;
             break;
             
         case 1:
@@ -298,7 +298,7 @@
 
                 break;
             }
-            case 5:
+            case 3:
             {
                 InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
                 [self.delegate pushViewController:vc];
