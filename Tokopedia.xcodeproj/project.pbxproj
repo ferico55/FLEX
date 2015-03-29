@@ -1177,6 +1177,8 @@
 		7AB2F1F31AC3C2970033F08D /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2ED621AC3C2960033F08D /* MGSwipeTableCell.m */; };
 		7AB2F1F41AC3C2970033F08D /* MGSwipeTableCell.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 7AB2ED631AC3C2960033F08D /* MGSwipeTableCell.podspec */; };
 		7AB2F1F51AC3C2970033F08D /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2ED641AC3C2960033F08D /* README.md */; };
+		7AEDF3B21AC5D9A400AF6180 /* ScrollViewSimultaneousGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEDF3AF1AC5D9A400AF6180 /* ScrollViewSimultaneousGesture.m */; };
+		7AEDF3B31AC5D9A400AF6180 /* TableViewScrollAndSwipe.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEDF3B11AC5D9A400AF6180 /* TableViewScrollAndSwipe.m */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		859A393E1A8376A70055BA8F /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAAEA4419F7534B00904AFB /* MainViewController.m */; };
 		859A39411A8376A70055BA8F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36DF9619B0656400AF74C1 /* AppDelegate.m */; };
@@ -2074,13 +2076,13 @@
 		7AB2E9421AC3C2950033F08D /* GeneralTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneralTableViewController.m; sourceTree = "<group>"; };
 		7AB2E9431AC3C2950033F08D /* GeneralTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = GeneralTableViewController.xib; sourceTree = "<group>"; };
 		7AB2E9441AC3C2950033F08D /* scrollViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = scrollViewController.h; sourceTree = "<group>"; };
-		7AB2E9451AC3C2950033F08D /* scrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = scrollViewController.m; sourceTree = "<group>"; };
+		7AB2E9451AC3C2950033F08D /* scrollViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = scrollViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2E9461AC3C2950033F08D /* scrollViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = scrollViewController.xib; sourceTree = "<group>"; };
 		7AB2E9491AC3C2950033F08D /* FavoritedShopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritedShopCell.h; sourceTree = "<group>"; };
 		7AB2E94A1AC3C2950033F08D /* FavoritedShopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritedShopCell.m; sourceTree = "<group>"; };
 		7AB2E94B1AC3C2950033F08D /* FavoritedShopCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoritedShopCell.xib; sourceTree = "<group>"; };
 		7AB2E94C1AC3C2950033F08D /* FavoritedShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritedShopViewController.h; sourceTree = "<group>"; };
-		7AB2E94D1AC3C2950033F08D /* FavoritedShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritedShopViewController.m; sourceTree = "<group>"; };
+		7AB2E94D1AC3C2950033F08D /* FavoritedShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = FavoritedShopViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2E94E1AC3C2950033F08D /* FavoritedShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoritedShopViewController.xib; sourceTree = "<group>"; };
 		7AB2E9501AC3C2950033F08D /* HistoryProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryProductViewController.h; sourceTree = "<group>"; };
 		7AB2E9511AC3C2950033F08D /* HistoryProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryProductViewController.m; sourceTree = "<group>"; };
@@ -2125,7 +2127,7 @@
 		7AB2E9811AC3C2950033F08D /* InboxResolutionCenterComplainCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxResolutionCenterComplainCell.m; sourceTree = "<group>"; };
 		7AB2E9821AC3C2950033F08D /* InboxResolutionCenterComplainCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxResolutionCenterComplainCell.xib; sourceTree = "<group>"; };
 		7AB2E9831AC3C2950033F08D /* InboxResolutionCenterComplainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxResolutionCenterComplainViewController.h; sourceTree = "<group>"; };
-		7AB2E9841AC3C2950033F08D /* InboxResolutionCenterComplainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxResolutionCenterComplainViewController.m; sourceTree = "<group>"; };
+		7AB2E9841AC3C2950033F08D /* InboxResolutionCenterComplainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = InboxResolutionCenterComplainViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2E9851AC3C2950033F08D /* InboxResolutionCenterComplainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxResolutionCenterComplainViewController.xib; sourceTree = "<group>"; };
 		7AB2E9861AC3C2950033F08D /* InboxResolutionCenterObjectMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxResolutionCenterObjectMapping.h; sourceTree = "<group>"; };
 		7AB2E9871AC3C2950033F08D /* InboxResolutionCenterObjectMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxResolutionCenterObjectMapping.m; sourceTree = "<group>"; };
@@ -2135,13 +2137,13 @@
 		7AB2E98B1AC3C2950033F08D /* NavigateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavigateViewController.h; sourceTree = "<group>"; };
 		7AB2E98C1AC3C2950033F08D /* NavigateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavigateViewController.m; sourceTree = "<group>"; };
 		7AB2E98E1AC3C2950033F08D /* InboxResolutionCenterOpenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxResolutionCenterOpenViewController.h; sourceTree = "<group>"; };
-		7AB2E98F1AC3C2950033F08D /* InboxResolutionCenterOpenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxResolutionCenterOpenViewController.m; sourceTree = "<group>"; };
+		7AB2E98F1AC3C2950033F08D /* InboxResolutionCenterOpenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = InboxResolutionCenterOpenViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2E9901AC3C2950033F08D /* InboxResolutionCenterOpenViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxResolutionCenterOpenViewController.xib; sourceTree = "<group>"; };
 		7AB2E9921AC3C2950033F08D /* ResolutionCenterDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterDetailCell.h; sourceTree = "<group>"; };
 		7AB2E9931AC3C2950033F08D /* ResolutionCenterDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterDetailCell.m; sourceTree = "<group>"; };
 		7AB2E9941AC3C2950033F08D /* ResolutionCenterDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterDetailCell.xib; sourceTree = "<group>"; };
 		7AB2E9951AC3C2950033F08D /* ResolutionCenterDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterDetailViewController.h; sourceTree = "<group>"; };
-		7AB2E9961AC3C2950033F08D /* ResolutionCenterDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterDetailViewController.m; sourceTree = "<group>"; };
+		7AB2E9961AC3C2950033F08D /* ResolutionCenterDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ResolutionCenterDetailViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2E9971AC3C2950033F08D /* ResolutionCenterDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterDetailViewController.xib; sourceTree = "<group>"; };
 		7AB2E9981AC3C2950033F08D /* ResolutionCenterInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterInputViewController.h; sourceTree = "<group>"; };
 		7AB2E9991AC3C2950033F08D /* ResolutionCenterInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterInputViewController.m; sourceTree = "<group>"; };
@@ -2218,12 +2220,12 @@
 		7AB2E9E81AC3C2950033F08D /* MyShopPaymentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyShopPaymentCell.m; sourceTree = "<group>"; };
 		7AB2E9E91AC3C2950033F08D /* MyShopPaymentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyShopPaymentCell.xib; sourceTree = "<group>"; };
 		7AB2E9EA1AC3C2950033F08D /* MyShopPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyShopPaymentViewController.h; sourceTree = "<group>"; };
-		7AB2E9EB1AC3C2950033F08D /* MyShopPaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyShopPaymentViewController.m; sourceTree = "<group>"; };
+		7AB2E9EB1AC3C2950033F08D /* MyShopPaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MyShopPaymentViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2E9EC1AC3C2950033F08D /* MyShopPaymentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyShopPaymentViewController.xib; sourceTree = "<group>"; };
 		7AB2E9EE1AC3C2950033F08D /* MyShopShipmentInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyShopShipmentInfoViewController.h; sourceTree = "<group>"; };
 		7AB2E9EF1AC3C2950033F08D /* MyShopShipmentInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyShopShipmentInfoViewController.m; sourceTree = "<group>"; };
 		7AB2E9F01AC3C2950033F08D /* MyShopShipmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyShopShipmentViewController.h; sourceTree = "<group>"; };
-		7AB2E9F11AC3C2950033F08D /* MyShopShipmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyShopShipmentViewController.m; sourceTree = "<group>"; };
+		7AB2E9F11AC3C2950033F08D /* MyShopShipmentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MyShopShipmentViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2E9F31AC3C2950033F08D /* NotificationBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationBarButton.h; sourceTree = "<group>"; };
 		7AB2E9F41AC3C2950033F08D /* NotificationBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationBarButton.m; sourceTree = "<group>"; };
 		7AB2E9F51AC3C2950033F08D /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
@@ -2243,7 +2245,7 @@
 		7AB2EA051AC3C2950033F08D /* DetailProductOtherView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailProductOtherView.m; sourceTree = "<group>"; };
 		7AB2EA061AC3C2950033F08D /* DetailProductOtherView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailProductOtherView.xib; sourceTree = "<group>"; };
 		7AB2EA071AC3C2950033F08D /* DetailProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailProductViewController.h; sourceTree = "<group>"; };
-		7AB2EA081AC3C2950033F08D /* DetailProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailProductViewController.m; sourceTree = "<group>"; };
+		7AB2EA081AC3C2950033F08D /* DetailProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = DetailProductViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EA091AC3C2950033F08D /* DetailProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailProductViewController.xib; sourceTree = "<group>"; };
 		7AB2EA0A1AC3C2950033F08D /* DetailProductWholesaleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailProductWholesaleCell.h; sourceTree = "<group>"; };
 		7AB2EA0B1AC3C2950033F08D /* DetailProductWholesaleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailProductWholesaleCell.m; sourceTree = "<group>"; };
@@ -2270,10 +2272,10 @@
 		7AB2EA231AC3C2950033F08D /* ProductAddEditDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductAddEditDetailViewController.m; sourceTree = "<group>"; };
 		7AB2EA241AC3C2950033F08D /* ProductAddEditDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductAddEditDetailViewController.xib; sourceTree = "<group>"; };
 		7AB2EA251AC3C2950033F08D /* ProductAddEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductAddEditViewController.h; sourceTree = "<group>"; };
-		7AB2EA261AC3C2950033F08D /* ProductAddEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductAddEditViewController.m; sourceTree = "<group>"; };
+		7AB2EA261AC3C2950033F08D /* ProductAddEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ProductAddEditViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EA271AC3C2950033F08D /* ProductAddEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductAddEditViewController.xib; sourceTree = "<group>"; };
 		7AB2EA281AC3C2950033F08D /* ProductEditImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductEditImageViewController.h; sourceTree = "<group>"; };
-		7AB2EA291AC3C2950033F08D /* ProductEditImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductEditImageViewController.m; sourceTree = "<group>"; };
+		7AB2EA291AC3C2950033F08D /* ProductEditImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ProductEditImageViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EA2A1AC3C2950033F08D /* ProductEditImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductEditImageViewController.xib; sourceTree = "<group>"; };
 		7AB2EA2B1AC3C2950033F08D /* ProductEditWholesaleCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductEditWholesaleCell.h; sourceTree = "<group>"; };
 		7AB2EA2C1AC3C2950033F08D /* ProductEditWholesaleCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductEditWholesaleCell.m; sourceTree = "<group>"; };
@@ -2285,7 +2287,7 @@
 		7AB2EA321AC3C2950033F08D /* ProductListMyShopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductListMyShopCell.m; sourceTree = "<group>"; };
 		7AB2EA331AC3C2950033F08D /* ProductListMyShopCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductListMyShopCell.xib; sourceTree = "<group>"; };
 		7AB2EA341AC3C2950033F08D /* ProductListMyShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductListMyShopViewController.h; sourceTree = "<group>"; };
-		7AB2EA351AC3C2950033F08D /* ProductListMyShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductListMyShopViewController.m; sourceTree = "<group>"; };
+		7AB2EA351AC3C2950033F08D /* ProductListMyShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ProductListMyShopViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EA361AC3C2950033F08D /* ProductListMyShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductListMyShopViewController.xib; sourceTree = "<group>"; };
 		7AB2EA371AC3C2950033F08D /* string_product.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_product.h; sourceTree = "<group>"; };
 		7AB2EA3A1AC3C2950033F08D /* ProfileBiodataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileBiodataCell.h; sourceTree = "<group>"; };
@@ -2415,10 +2417,10 @@
 		7AB2EAC61AC3C2950033F08D /* SearchResultShopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultShopCell.m; sourceTree = "<group>"; };
 		7AB2EAC71AC3C2950033F08D /* SearchResultShopCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultShopCell.xib; sourceTree = "<group>"; };
 		7AB2EAC81AC3C2950033F08D /* SearchResultShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultShopViewController.h; sourceTree = "<group>"; };
-		7AB2EAC91AC3C2950033F08D /* SearchResultShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultShopViewController.m; sourceTree = "<group>"; };
+		7AB2EAC91AC3C2950033F08D /* SearchResultShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SearchResultShopViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EACA1AC3C2950033F08D /* SearchResultShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultShopViewController.xib; sourceTree = "<group>"; };
 		7AB2EACB1AC3C2950033F08D /* SearchResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchResultViewController.h; sourceTree = "<group>"; };
-		7AB2EACC1AC3C2950033F08D /* SearchResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultViewController.m; sourceTree = "<group>"; };
+		7AB2EACC1AC3C2950033F08D /* SearchResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = SearchResultViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EACD1AC3C2950033F08D /* SearchResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultViewController.xib; sourceTree = "<group>"; };
 		7AB2EAD01AC3C2950033F08D /* SettingAddressDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingAddressDetailViewController.h; sourceTree = "<group>"; };
 		7AB2EAD11AC3C2950033F08D /* SettingAddressDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingAddressDetailViewController.m; sourceTree = "<group>"; };
@@ -2477,7 +2479,7 @@
 		7AB2EB0E1AC3C2950033F08D /* ShopEditStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopEditStatusViewController.m; sourceTree = "<group>"; };
 		7AB2EB0F1AC3C2950033F08D /* ShopEditStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopEditStatusViewController.xib; sourceTree = "<group>"; };
 		7AB2EB101AC3C2950033F08D /* ShopEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopEditViewController.h; sourceTree = "<group>"; };
-		7AB2EB111AC3C2950033F08D /* ShopEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopEditViewController.m; sourceTree = "<group>"; };
+		7AB2EB111AC3C2950033F08D /* ShopEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ShopEditViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EB121AC3C2950033F08D /* ShopEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopEditViewController.xib; sourceTree = "<group>"; };
 		7AB2EB141AC3C2950033F08D /* ShopFavoritedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopFavoritedCell.h; sourceTree = "<group>"; };
 		7AB2EB151AC3C2950033F08D /* ShopFavoritedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopFavoritedCell.m; sourceTree = "<group>"; };
@@ -2490,7 +2492,7 @@
 		7AB2EB1D1AC3C2950033F08D /* ShopDescriptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopDescriptionView.m; sourceTree = "<group>"; };
 		7AB2EB1E1AC3C2950033F08D /* ShopDescriptionView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopDescriptionView.xib; sourceTree = "<group>"; };
 		7AB2EB1F1AC3C2950033F08D /* ShopHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopHeaderViewController.h; sourceTree = "<group>"; };
-		7AB2EB201AC3C2950033F08D /* ShopHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopHeaderViewController.m; sourceTree = "<group>"; };
+		7AB2EB201AC3C2950033F08D /* ShopHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ShopHeaderViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EB211AC3C2950033F08D /* ShopStatView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopStatView.h; sourceTree = "<group>"; };
 		7AB2EB221AC3C2950033F08D /* ShopStatView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopStatView.m; sourceTree = "<group>"; };
 		7AB2EB231AC3C2950033F08D /* ShopStatView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopStatView.xib; sourceTree = "<group>"; };
@@ -2538,7 +2540,7 @@
 		7AB2EB541AC3C2950033F08D /* ShopPageHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopPageHeader.m; sourceTree = "<group>"; };
 		7AB2EB551AC3C2950033F08D /* ShopPageHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopPageHeader.xib; sourceTree = "<group>"; };
 		7AB2EB561AC3C2950033F08D /* ShopProductPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopProductPageViewController.h; sourceTree = "<group>"; };
-		7AB2EB571AC3C2950033F08D /* ShopProductPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopProductPageViewController.m; sourceTree = "<group>"; };
+		7AB2EB571AC3C2950033F08D /* ShopProductPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = ShopProductPageViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EB581AC3C2950033F08D /* ShopProductPageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopProductPageViewController.xib; sourceTree = "<group>"; };
 		7AB2EB591AC3C2950033F08D /* ShopReviewPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopReviewPageViewController.h; sourceTree = "<group>"; };
 		7AB2EB5A1AC3C2950033F08D /* ShopReviewPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopReviewPageViewController.m; sourceTree = "<group>"; };
@@ -2594,7 +2596,7 @@
 		7AB2EB941AC3C2950033F08D /* TrackOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrackOrderViewController.m; sourceTree = "<group>"; };
 		7AB2EB951AC3C2950033F08D /* TrackOrderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TrackOrderViewController.xib; sourceTree = "<group>"; };
 		7AB2EB981AC3C2950033F08D /* TransactionATCViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionATCViewController.h; sourceTree = "<group>"; };
-		7AB2EB991AC3C2950033F08D /* TransactionATCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionATCViewController.m; sourceTree = "<group>"; };
+		7AB2EB991AC3C2950033F08D /* TransactionATCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TransactionATCViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EB9A1AC3C2950033F08D /* TransactionATCViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionATCViewController.xib; sourceTree = "<group>"; };
 		7AB2EB9D1AC3C2950033F08D /* TransactionCartCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartCell.h; sourceTree = "<group>"; };
 		7AB2EB9E1AC3C2950033F08D /* TransactionCartCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartCell.m; sourceTree = "<group>"; };
@@ -2603,7 +2605,7 @@
 		7AB2EBA11AC3C2950033F08D /* TransactionCartCostView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartCostView.m; sourceTree = "<group>"; };
 		7AB2EBA21AC3C2950033F08D /* TransactionCartCostView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartCostView.xib; sourceTree = "<group>"; };
 		7AB2EBA31AC3C2950033F08D /* TransactionCartEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartEditViewController.h; sourceTree = "<group>"; };
-		7AB2EBA41AC3C2950033F08D /* TransactionCartEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartEditViewController.m; sourceTree = "<group>"; };
+		7AB2EBA41AC3C2950033F08D /* TransactionCartEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TransactionCartEditViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EBA51AC3C2950033F08D /* TransactionCartEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartEditViewController.xib; sourceTree = "<group>"; };
 		7AB2EBA61AC3C2950033F08D /* TransactionCartFormMandiriClickPayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartFormMandiriClickPayViewController.h; sourceTree = "<group>"; };
 		7AB2EBA71AC3C2950033F08D /* TransactionCartFormMandiriClickPayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartFormMandiriClickPayViewController.m; sourceTree = "<group>"; };
@@ -2618,7 +2620,7 @@
 		7AB2EBB01AC3C2950033F08D /* TransactionCartShippingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartShippingViewController.m; sourceTree = "<group>"; };
 		7AB2EBB11AC3C2950033F08D /* TransactionCartShippingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartShippingViewController.xib; sourceTree = "<group>"; };
 		7AB2EBB21AC3C2950033F08D /* TransactionCartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartViewController.h; sourceTree = "<group>"; };
-		7AB2EBB31AC3C2950033F08D /* TransactionCartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartViewController.m; sourceTree = "<group>"; };
+		7AB2EBB31AC3C2950033F08D /* TransactionCartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TransactionCartViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EBB41AC3C2950033F08D /* TransactionCartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartViewController.xib; sourceTree = "<group>"; };
 		7AB2EBB51AC3C2950033F08D /* TransactionCartWebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartWebViewViewController.h; sourceTree = "<group>"; };
 		7AB2EBB61AC3C2950033F08D /* TransactionCartWebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartWebViewViewController.m; sourceTree = "<group>"; };
@@ -2632,7 +2634,7 @@
 		7AB2EBBF1AC3C2950033F08D /* TransactionCartResultPaymentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartResultPaymentCell.m; sourceTree = "<group>"; };
 		7AB2EBC01AC3C2950033F08D /* TransactionCartResultPaymentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartResultPaymentCell.xib; sourceTree = "<group>"; };
 		7AB2EBC11AC3C2950033F08D /* TransactionCartResultViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartResultViewController.h; sourceTree = "<group>"; };
-		7AB2EBC21AC3C2950033F08D /* TransactionCartResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartResultViewController.m; sourceTree = "<group>"; };
+		7AB2EBC21AC3C2950033F08D /* TransactionCartResultViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TransactionCartResultViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EBC31AC3C2950033F08D /* TransactionCartResultViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartResultViewController.xib; sourceTree = "<group>"; };
 		7AB2EBC41AC3C2950033F08D /* TransactionCartRootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartRootViewController.h; sourceTree = "<group>"; };
 		7AB2EBC51AC3C2950033F08D /* TransactionCartRootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartRootViewController.m; sourceTree = "<group>"; };
@@ -2653,10 +2655,10 @@
 		7AB2EBD71AC3C2950033F08D /* TxOrderStatusDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderStatusDetailViewController.m; sourceTree = "<group>"; };
 		7AB2EBD81AC3C2950033F08D /* TxOrderStatusDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderStatusDetailViewController.xib; sourceTree = "<group>"; };
 		7AB2EBD91AC3C2950033F08D /* TxOrderStatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderStatusViewController.h; sourceTree = "<group>"; };
-		7AB2EBDA1AC3C2950033F08D /* TxOrderStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderStatusViewController.m; sourceTree = "<group>"; };
+		7AB2EBDA1AC3C2950033F08D /* TxOrderStatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TxOrderStatusViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EBDB1AC3C2950033F08D /* TxOrderStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderStatusViewController.xib; sourceTree = "<group>"; };
 		7AB2EBDC1AC3C2950033F08D /* TxOrderTransactionDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderTransactionDetailViewController.h; sourceTree = "<group>"; };
-		7AB2EBDD1AC3C2950033F08D /* TxOrderTransactionDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderTransactionDetailViewController.m; sourceTree = "<group>"; };
+		7AB2EBDD1AC3C2950033F08D /* TxOrderTransactionDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TxOrderTransactionDetailViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EBDE1AC3C2950033F08D /* TxOrderTransactionDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderTransactionDetailViewController.xib; sourceTree = "<group>"; };
 		7AB2EBE01AC3C2950033F08D /* TxOrderConfirmationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationCell.h; sourceTree = "<group>"; };
 		7AB2EBE11AC3C2950033F08D /* TxOrderConfirmationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationCell.m; sourceTree = "<group>"; };
@@ -2668,7 +2670,7 @@
 		7AB2EBE71AC3C2950033F08D /* TxOrderConfirmationDetailHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationDetailHeaderView.m; sourceTree = "<group>"; };
 		7AB2EBE81AC3C2950033F08D /* TxOrderConfirmationDetailHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmationDetailHeaderView.xib; sourceTree = "<group>"; };
 		7AB2EBE91AC3C2950033F08D /* TxOrderConfirmationDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationDetailViewController.h; sourceTree = "<group>"; };
-		7AB2EBEA1AC3C2950033F08D /* TxOrderConfirmationDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationDetailViewController.m; sourceTree = "<group>"; };
+		7AB2EBEA1AC3C2950033F08D /* TxOrderConfirmationDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = TxOrderConfirmationDetailViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		7AB2EBEB1AC3C2950033F08D /* TxOrderConfirmationDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TxOrderConfirmationDetailViewController.xib; sourceTree = "<group>"; };
 		7AB2EBEC1AC3C2950033F08D /* TxOrderConfirmationDropshipCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TxOrderConfirmationDropshipCell.h; sourceTree = "<group>"; };
 		7AB2EBED1AC3C2950033F08D /* TxOrderConfirmationDropshipCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TxOrderConfirmationDropshipCell.m; sourceTree = "<group>"; };
@@ -3026,6 +3028,10 @@
 		7AB2ED631AC3C2960033F08D /* MGSwipeTableCell.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MGSwipeTableCell.podspec; sourceTree = "<group>"; };
 		7AB2ED641AC3C2960033F08D /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7AB2F1F61AC409ED0033F08D /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
+		7AEDF3AE1AC5D9A400AF6180 /* ScrollViewSimultaneousGesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewSimultaneousGesture.h; sourceTree = "<group>"; };
+		7AEDF3AF1AC5D9A400AF6180 /* ScrollViewSimultaneousGesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewSimultaneousGesture.m; sourceTree = "<group>"; };
+		7AEDF3B01AC5D9A400AF6180 /* TableViewScrollAndSwipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewScrollAndSwipe.h; sourceTree = "<group>"; };
+		7AEDF3B11AC5D9A400AF6180 /* TableViewScrollAndSwipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewScrollAndSwipe.m; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		85A8E5461AAE8D4D0067D822 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		85BAA7011A8B51650015F530 /* Tokopedia-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tokopedia-Info.plist"; sourceTree = "<group>"; };
@@ -4741,6 +4747,10 @@
 		7AB2E8EE1AC3C2940033F08D /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
+				7AEDF3AE1AC5D9A400AF6180 /* ScrollViewSimultaneousGesture.h */,
+				7AEDF3AF1AC5D9A400AF6180 /* ScrollViewSimultaneousGesture.m */,
+				7AEDF3B01AC5D9A400AF6180 /* TableViewScrollAndSwipe.h */,
+				7AEDF3B11AC5D9A400AF6180 /* TableViewScrollAndSwipe.m */,
 				7AB2E8EF1AC3C2940033F08D /* BackgroundLayer.h */,
 				7AB2E8F01AC3C2940033F08D /* BackgroundLayer.m */,
 				7AB2E8F11AC3C2940033F08D /* ImageShaper.h */,
@@ -7885,6 +7895,7 @@
 				7AB2EFD21AC3C2960033F08D /* DueDateViewController.m in Sources */,
 				7AB2EE9C1AC3C2960033F08D /* OrderButton.m in Sources */,
 				859A393E1A8376A70055BA8F /* MainViewController.m in Sources */,
+				7AEDF3B31AC5D9A400AF6180 /* TableViewScrollAndSwipe.m in Sources */,
 				7AB2EE141AC3C2960033F08D /* PrivacyFormResult.m in Sources */,
 				7AB2EEFD1AC3C2960033F08D /* LoadingView.m in Sources */,
 				7AB2EE7F1AC3C2960033F08D /* TransactionSummaryDetail.m in Sources */,
@@ -8011,6 +8022,7 @@
 				7AB2EE521AC3C2960033F08D /* ShopSettings.m in Sources */,
 				7AB2EEE41AC3C2960033F08D /* CategoryViewCell.m in Sources */,
 				7AB2EFD01AC3C2960033F08D /* ChooseProductViewController.m in Sources */,
+				7AEDF3B21AC5D9A400AF6180 /* ScrollViewSimultaneousGesture.m in Sources */,
 				7AB2ED7B1AC3C2960033F08D /* UserAuthentificationManager.m in Sources */,
 				7AB2EDB51AC3C2960033F08D /* FavoritedShopList.m in Sources */,
 				7AB2EDBB1AC3C2960033F08D /* HistoryProduct.m in Sources */,

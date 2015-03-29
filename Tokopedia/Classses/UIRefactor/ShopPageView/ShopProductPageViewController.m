@@ -381,7 +381,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [cell.productImageView setImageWithURLRequest:request
                                  placeholderImage:nil
                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                              [cell.productImageView setImage:image animated:YES];
+                                              [cell.productImageView setImage:image];
                                               [cell.productImageView setContentMode:UIViewContentModeScaleAspectFill];
                                           } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                               cell.productImageView.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];

@@ -151,7 +151,7 @@
                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                              [thumb setImage:image animated:YES];
+                              [thumb setImage:image];
 #pragma clang diagnosti c pop
                           } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                           }];
@@ -601,7 +601,7 @@
     [thumb setImageWithURLRequest:request placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image animated:YES];
+        [thumb setImage:image];
 #pragma clang diagnosti c pop
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
@@ -774,7 +774,7 @@
             [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image animated:YES];
+                [thumb setImage:image];
 #pragma clang diagnosti c pop
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
             }];

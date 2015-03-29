@@ -18,10 +18,11 @@
 
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
+#import "TableViewScrollAndSwipe.h"
 
 #pragma mark - HotlistView
 
-@interface HotlistViewController () <TokopediaNetworkManagerDelegate, LoadingViewDelegate>
+@interface HotlistViewController () <TokopediaNetworkManagerDelegate, LoadingViewDelegate, UIGestureRecognizerDelegate>
 {
     NSMutableArray *_product;
     
@@ -112,6 +113,9 @@
     } else {
         [_networkManager doRequest];
     }
+    
+    
+
 
 }
 
@@ -170,8 +174,6 @@
             ((HotlistCell *)cell).namelabel.text = hotlist.title;
             ((HotlistCell*)cell).pricelabel.text = hotlist.price_start;
             [((HotlistCell*)cell).act startAnimating];
-
-            NSLog(@"\n\n\n%ld %@\n\n\n", (long)indexPath.row, hotlist.url);
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:hotlist.image_url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
 
@@ -180,7 +182,7 @@
             [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image animated:YES];
+                [thumb setImage:image];
                 [thumb setContentMode:UIViewContentModeScaleAspectFill];
 #pragma clang diagnosti c pop
                 
@@ -469,6 +471,11 @@
         [self.delegate pushViewController:controller];
     
     }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    NSLog(@"scrolling %f Y", scrollView.contentOffset.y);
+    NSLog(@"scrolling %f X", scrollView.contentOffset.x);
 }
 
 @end

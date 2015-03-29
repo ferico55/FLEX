@@ -1200,7 +1200,7 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             //NSLOG(@"thumb: %@", thumb);
-            [thumb setImage:image animated:YES];
+            [thumb setImage:image];
             
 #pragma clang diagnostic pop
             

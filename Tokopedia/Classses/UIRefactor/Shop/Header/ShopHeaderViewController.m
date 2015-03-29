@@ -540,7 +540,7 @@
     [_avatarImageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [_avatarImageView setImage:image animated:YES];
+        [_avatarImageView setImage:image];
 #pragma clang diagnostic pop
         
     } failure:nil];

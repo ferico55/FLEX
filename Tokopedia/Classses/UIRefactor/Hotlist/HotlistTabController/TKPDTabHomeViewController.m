@@ -25,6 +25,8 @@
 #import "InboxTalkViewController.h"
 #import "InboxReviewViewController.h"
 
+#import "ScrollViewSimultaneousGesture.h"
+
 @interface TKPDTabHomeViewController ()
 <   UIPageViewControllerDataSource,
     UIPageViewControllerDelegate,
@@ -50,12 +52,14 @@
 @property (strong, nonatomic) UIPageViewController *pageController;
 
 @property (strong, nonatomic) UIScrollView *tabScrollView;
-@property (strong, nonatomic) UIScrollView *pageScrollView;
+@property (strong, nonatomic) IBOutlet UIScrollView *containerScrollView;
 
 @property (strong, nonatomic) HotlistViewController *hotListViewController;
 @property (strong, nonatomic) ProductFeedViewController *productFeedViewController;
 @property (strong, nonatomic) HistoryProductViewController *historyProductViewController;
 @property (strong, nonatomic) FavoritedShopViewController *favoritedShopViewController;
+
+
 
 @end
 
@@ -80,8 +84,8 @@
     self.pageController.dataSource = self;
     self.pageController.delegate = self;
 
-    CGRect pageControllerFrame = [[self view] bounds];
-    pageControllerFrame.origin.y = 108;
+    CGRect pageControllerFrame = [[self containerScrollView] bounds];
+    pageControllerFrame.origin.y = 44;
     pageControllerFrame.size.height -= 108;
     [[self.pageController view] setFrame:pageControllerFrame];
     
@@ -108,7 +112,9 @@
     _favoritedShopViewController.delegate = self;
     
     [self addChildViewController:self.pageController];
-    [[self view] addSubview:[self.pageController view]];
+    [[self containerScrollView] addSubview:[self.pageController view]];
+    [self containerScrollView].delegate = self;
+    
     [self.pageController didMoveToParentViewController:self];
     
     _totalOffset = 0;
@@ -171,9 +177,7 @@
     
     for (UIScrollView *scrollView in self.pageController.view.subviews) {
         if ([scrollView isKindOfClass:[UIScrollView class]]) {
-            _pageScrollView = scrollView;
-            _pageScrollView.delegate = self;
-            _pageScrollView.tag = 1;
+            ScrollViewSimultaneousGesture *pageScrollView = (ScrollViewSimultaneousGesture*)scrollView;
         }
     }
     
@@ -190,6 +194,9 @@
                                              selector:@selector(reloadPageController)
                                                  name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
                                                object:nil];
+    
+    self.containerScrollView.contentSize = CGSizeMake(self.view.frame.size.width * 2, self.view.frame.size.height);
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -345,9 +352,9 @@
         if (_viewControllerIndex == 1) {
             _totalOffset = scrollView.contentOffset.x;
         } else {
-            _totalOffset = scrollView.contentOffset.x + ((_viewControllerIndex-1) * self.view.frame.size.width);
+            _totalOffset = scrollView.contentOffset.x + ((_viewControllerIndex-1) * self.containerScrollView.frame.size.width);
         }
-        _tabScrollView.contentOffset = CGPointMake((_totalOffset / 3) - (self.view.frame.size.width/3), 0);
+        _tabScrollView.contentOffset = CGPointMake((_totalOffset / 3) - (self.containerScrollView.frame.size.width/3), 0);
     }
 }
 

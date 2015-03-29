@@ -323,7 +323,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [cell.productImageView setImageWithURLRequest:request
                  placeholderImage:nil
                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                              [cell.productImageView setImage:image animated:YES];
+                              [cell.productImageView setImage:image];
                               [cell.productImageView setContentMode:UIViewContentModeScaleAspectFill];
                           } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                               cell.productImageView.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
@@ -382,7 +382,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image animated:YES];
+                [thumb setImage:image];
                 [thumb setContentMode:UIViewContentModeScaleAspectFill];
 #pragma clang diagnostic pop
             } failure:nil];
@@ -993,7 +993,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-            [thumb setImage:image animated:YES];
+            [thumb setImage:image];
 #pragma clang diagnostic pop
             [_act stopAnimating];
             [_act setHidden:YES];

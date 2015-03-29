@@ -324,7 +324,7 @@ GeneralSingleProductDelegate
         [cell.productImageView setImageWithURLRequest:request
                                      placeholderImage:nil
                                               success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                  [cell.productImageView setImage:image animated:YES];
+                                                  [cell.productImageView setImage:image];
                                                   [cell.productImageView setContentMode:UIViewContentModeScaleAspectFill];
                                               } failure:nil];
         
@@ -349,7 +349,7 @@ GeneralSingleProductDelegate
         [cell.productImageView setImageWithURLRequest:request
                                      placeholderImage:nil
                                               success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                                  [cell.productImageView setImage:image animated:YES];
+                                                  [cell.productImageView setImage:image];
                                                   [cell.productImageView setContentMode:UIViewContentModeScaleAspectFill];
                                               } failure:nil];
     }
@@ -402,7 +402,7 @@ GeneralSingleProductDelegate
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                                           //NSLOG(@"thumb: %@", thumb);
-                                          [thumb setImage:image animated:YES];
+                                          [thumb setImage:image];
 #pragma clang diagnostic pop
                                       } failure:nil];
                 
