@@ -1136,7 +1136,29 @@
     _productnamelabel.text = _product.result.product.product_name?:@"";
 
     NSString *productName = _product.result.product.product_name?:@"";
-    self.title = productName;
+
+    
+    UILabel *productLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 480, 44)];
+    productLabel.backgroundColor = [UIColor clearColor];
+    productLabel.numberOfLines = 2;
+    productLabel.textAlignment = NSTextAlignmentRight;
+    UIFont *productLabelFont = [UIFont fontWithName:@"GothamMedium" size:14];
+    
+    NSMutableParagraphStyle *productLabelStyle = [[NSMutableParagraphStyle alloc] init];
+    productLabelStyle.lineSpacing = 4.0;
+    
+    NSDictionary *productLabelAtts = @{NSForegroundColorAttributeName: [UIColor whiteColor],
+                                 NSFontAttributeName: productLabelFont,
+                                 NSParagraphStyleAttributeName: productLabelStyle,
+                                 };
+    
+    NSAttributedString *productNameLabeAttributedText = [[NSAttributedString alloc] initWithString:productName
+                                                                                    attributes:productLabelAtts];
+    
+    productLabel.attributedText = productNameLabeAttributedText;
+
+    self.navigationItem.titleView = productLabel;
+    
 
     UIFont *font = [UIFont fontWithName:@"GothamMedium" size:15];
 

@@ -24,13 +24,15 @@
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "InboxTalkViewController.h"
 #import "InboxReviewViewController.h"
+#import "ScrollViewSimultaneousGesture.h"
 
 @interface TKPDTabHomeViewController ()
 <   UIPageViewControllerDataSource,
-    UIPageViewControllerDelegate,
-    UIScrollViewDelegate,
-    TKPDTabHomeDelegate,
-    NotificationManagerDelegate
+UIPageViewControllerDelegate,
+UIScrollViewDelegate,
+TKPDTabHomeDelegate,
+NotificationManagerDelegate,
+UIGestureRecognizerDelegate
 >
 {
     NSDictionary *_auth;
@@ -39,13 +41,20 @@
     NSInteger _viewControllerIndex;
     CGFloat _totalOffset;
     UIPageViewControllerNavigationDirection _direction;
-
+    
     BOOL _tabBarCanScrolling;
-
+    
     NotificationManager *_notifManager;
     UserAuthentificationManager *_userManager;
-
+    NSInteger *_counter;
+    NSInteger *_savedCounter;
+    
+    NSTimer *_timer;
+    CGPoint _velocity;
+    BOOL _isCanProcess;
 }
+
+
 
 @property (strong, nonatomic) UIPageViewController *pageController;
 
@@ -56,22 +65,32 @@
 @property (strong, nonatomic) ProductFeedViewController *productFeedViewController;
 @property (strong, nonatomic) HistoryProductViewController *historyProductViewController;
 @property (strong, nonatomic) FavoritedShopViewController *favoritedShopViewController;
+@property (nonatomic, assign) CGFloat lastContentOffset;
 
 @end
 
 @implementation TKPDTabHomeViewController
+
+typedef enum ScrollDirection {
+    ScrollDirectionNone,
+    ScrollDirectionRight,
+    ScrollDirectionLeft,
+    ScrollDirectionUp,
+    ScrollDirectionDown,
+    ScrollDirectionCrazy,
+} ScrollDirection;
 
 #pragma mark - Init Notification
 
 - (void)viewDidLoad
 {
     _userManager = [UserAuthentificationManager new];
-
+    
     self.modalPresentationStyle = UIModalPresentationCurrentContext;
     
     UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
-
+    
     _viewControllerIndex = 1;
     
     self.pageController = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll
@@ -79,22 +98,40 @@
                                                                         options:nil];
     self.pageController.dataSource = self;
     self.pageController.delegate = self;
-
+    _isCanProcess = YES;
+    
     CGRect pageControllerFrame = [[self view] bounds];
     pageControllerFrame.origin.y = 108;
     pageControllerFrame.size.height -= 108;
+    
     [[self.pageController view] setFrame:pageControllerFrame];
+    
+    for (UIScrollView *scrollView in self.pageController.view.subviews) {
+        if ([scrollView isKindOfClass:[UIScrollView class]]) {
+            for (UIGestureRecognizer *gesture in scrollView.gestureRecognizers) {
+                if([gesture isKindOfClass:[UIPanGestureRecognizer class]]) {
+                                        [scrollView removeGestureRecognizer:gesture];
+                    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(didPan:)];
+                    
+                    panGesture.delegate = self;
+                    scrollView.delegate = self;
+                    [scrollView addGestureRecognizer:panGesture];
+                    _pageScrollView = scrollView;
+                }
+            }
+        }
+    }
     
     _hotListViewController = [HotlistViewController new];
     _hotListViewController.data = @{kTKPD_AUTHKEY : [_userManager getUserLoginData]?:@""};
     _hotListViewController.index = 1;
     _hotListViewController.delegate = self;
-
+    
     [self.pageController setViewControllers:@[_hotListViewController]
                                   direction:UIPageViewControllerNavigationDirectionForward
                                    animated:NO
                                  completion:nil];
-
+    
     _productFeedViewController = [ProductFeedViewController new];
     _productFeedViewController.index = 2;
     _productFeedViewController.delegate = self;
@@ -108,18 +145,25 @@
     _favoritedShopViewController.delegate = self;
     
     [self addChildViewController:self.pageController];
+    
+    //    for (UIScrollView *scrollView in self.pageController.view.subviews) {
+    //        if ([scrollView isKindOfClass:[UIScrollView class]]) {
+    //            _pageScrollView = scrollView;
+    //        }
+    //    }
+    
     [[self view] addSubview:[self.pageController view]];
     [self.pageController didMoveToParentViewController:self];
     
     _totalOffset = 0;
-
+    
     _tabView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, self.view.frame.size.width*3, 44)];
     _tabView.backgroundColor = [UIColor whiteColor];
-
+    
     _tabScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
     _tabScrollView.tag = 2;
     _tabScrollView.contentSize = CGSizeMake((self.view.frame.size.width/3)*6, 44);
-    _tabScrollView.delegate = self;
+    //    _tabScrollView.delegate = self;
     [_tabScrollView setShowsHorizontalScrollIndicator:NO];
     [_tabView addSubview:_tabScrollView];
     [self.view addSubview:_tabView];
@@ -132,7 +176,7 @@
     frame.origin.y = 64;
     greenArrowImageView.frame = frame;
     [self.view addSubview:greenArrowImageView];
-
+    
     UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*1, 0, (self.view.frame.size.width/3), 44)];
     [button1 setTitle:@"Hotlist" forState:UIControlStateNormal];
     [button1 setTitleColor:[UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1] forState:UIControlStateNormal];
@@ -169,18 +213,12 @@
     border.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.1];
     [_tabScrollView addSubview:border];
     
-    for (UIScrollView *scrollView in self.pageController.view.subviews) {
-        if ([scrollView isKindOfClass:[UIScrollView class]]) {
-            _pageScrollView = scrollView;
-            _pageScrollView.delegate = self;
-            _pageScrollView.tag = 1;
-        }
-    }
+    
     
     _direction = UIPageViewControllerNavigationDirectionForward;
     
     _tabBarCanScrolling = YES;
-
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(redirectAfterNotification:)
                                                  name:@"redirectAfterNotification"
@@ -190,7 +228,7 @@
                                              selector:@selector(reloadPageController)
                                                  name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
                                                object:nil];
-
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -203,7 +241,7 @@
                                              selector:@selector(reloadNotification)
                                                  name:@"reloadNotification"
                                                object:nil];
-
+    
     [self.navigationController.navigationBar setTranslucent:NO];
     
     self.view.backgroundColor = [UIColor colorWithRed:243.0/255.0 green:243.0/255.0 blue:243.0/255.0 alpha:1];
@@ -211,7 +249,7 @@
     UINavigationBar *navigationBar = self.navigationController.navigationBar;
     NSString *navigationBarImagePath = [[NSBundle mainBundle] pathForResource:kTKPDIMAGE_NAVBARBG ofType:@"png"];
     UIImage *backgroundImage = [[UIImage alloc] initWithContentsOfFile:navigationBarImagePath];
-
+    
     [navigationBar setBackgroundImage:backgroundImage
                        forBarPosition:UIBarPositionAny
                            barMetrics:UIBarMetricsDefault];
@@ -230,14 +268,14 @@
         _tabScrollView.contentOffset = CGPointMake(self.view.frame.size.width/3, 0);
     } else if ([[_pageController.viewControllers objectAtIndex:0] isKindOfClass:[HistoryProductViewController class]]) {
         _tabScrollView.contentOffset = CGPointMake(2*(self.view.frame.size.width/3), 0);
-    } else if ([[_pageController.viewControllers objectAtIndex:0] isKindOfClass:[FavoritedShopViewController class]]) {        
+    } else if ([[_pageController.viewControllers objectAtIndex:0] isKindOfClass:[FavoritedShopViewController class]]) {
         _tabScrollView.contentOffset = CGPointMake(3*(self.view.frame.size.width/3), 0);
     }
     
     _userManager = [UserAuthentificationManager new];
-
+    
     if(_userManager.isLogin) {
-
+        
         _tabScrollView.scrollEnabled = YES;
         
         for (id subview in _tabScrollView.subviews) {
@@ -246,20 +284,20 @@
                 button.hidden = NO;
             }
         }
-
+        
         for(id view in _pageController.view.subviews){
             if([view isKindOfClass:[UIScrollView class]]){
                 [(UIScrollView *)view setScrollEnabled:YES];
             }
         }
-
+        
     } else {
         
         _viewControllerIndex = 1;
-
+        
         _tabScrollView.scrollEnabled = NO;
         _tabScrollView.contentOffset = CGPointMake(0, 0);
-
+        
         for (id subview in _tabScrollView.subviews) {
             if ([subview isKindOfClass:[UIButton class]]) {
                 UIButton *button = (UIButton *)subview;
@@ -340,21 +378,22 @@
 
 #pragma mark - Scroll delegate
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    if (scrollView.tag == 1 && _tabBarCanScrolling) {
-        if (_viewControllerIndex == 1) {
-            _totalOffset = scrollView.contentOffset.x;
-        } else {
-            _totalOffset = scrollView.contentOffset.x + ((_viewControllerIndex-1) * self.view.frame.size.width);
-        }
-        _tabScrollView.contentOffset = CGPointMake((_totalOffset / 3) - (self.view.frame.size.width/3), 0);
-    }
-}
+//- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+//{
+//    if (scrollView.tag == 1 && _tabBarCanScrolling) {
+//        if (_viewControllerIndex == 1) {
+//            _totalOffset = scrollView.contentOffset.x;
+//        } else {
+//            _totalOffset = scrollView.contentOffset.x + ((_viewControllerIndex-1) * self.view.frame.size.width);
+//        }
+//        _tabScrollView.contentOffset = CGPointMake((_totalOffset / 3) - (self.view.frame.size.width/3), 0);
+//    }
+//}
 
 #pragma mark - Other methods
 
-- (void)tabButtonDidTap:(UIButton *)button {
+- (void)tabButtonDidTap:(UIButton *)button
+{
     if (button.tag > _viewControllerIndex) {
         _direction = UIPageViewControllerNavigationDirectionForward;
     } else {
@@ -382,7 +421,7 @@
                                              _tabBarCanScrolling = YES;
                                          }];
         }
-             break;
+            break;
             
         case 2: {
             
@@ -561,9 +600,9 @@
     TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
     [nc setSelectedIndex:2];
     [nc setViewControllers:vcs];
-//    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-//    [nav.navigationBar setTranslucent:NO];
-//    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    //    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+    //    [nav.navigationBar setTranslucent:NO];
+    //    [self.navigationController presentViewController:nav animated:YES completion:nil];
     [self.navigationController pushViewController:nc animated:YES];
 }
 
@@ -582,9 +621,9 @@
     TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
     [nc setSelectedIndex:2];
     [nc setViewControllers:vcs];
-//    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-//    [nav.navigationBar setTranslucent:NO];
-//    [self.navigationController presentViewController:nav animated:YES completion:nil];
+    //    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
+    //    [nav.navigationBar setTranslucent:NO];
+    //    [self.navigationController presentViewController:nav animated:YES completion:nil];
     [self.navigationController pushViewController:nc animated:YES];
 }
 
@@ -599,5 +638,122 @@
                                    animated:NO
                                  completion:nil];
 }
+
+- (void)didPan:(id)sender {
+    UIPanGestureRecognizer *panGesture = (UIPanGestureRecognizer*)sender;
+    CGPoint vel = [panGesture velocityInView:_pageScrollView];
+    
+    if(_isCanProcess) {
+        if (vel.x < 0){
+            NSLog(@"Right");
+            _direction = UIPageViewControllerNavigationDirectionForward;
+            [self chooseToRightViewController];
+        }
+        else {
+            NSLog(@"Left");
+            _direction = UIPageViewControllerNavigationDirectionReverse;
+            [self chooseToLeftViewController];
+            
+        }
+    }
+    
+}
+
+- (void)chooseToRightViewController {
+    if ([[_pageController.viewControllers objectAtIndex:0] isKindOfClass:[HotlistViewController class]]) {
+        [self setToProductFeed];
+    } else if ([[_pageController.viewControllers objectAtIndex:0] isKindOfClass:[ProductFeedViewController class]]) {
+        [self setToHistory];
+    } else if ([[_pageController.viewControllers objectAtIndex:0] isKindOfClass:[HistoryProductViewController class]]) {
+        [self setToFavShop];
+    }
+}
+
+- (void)chooseToLeftViewController {
+    if ([[_pageController.viewControllers objectAtIndex:0] isKindOfClass:[ProductFeedViewController class]]) {
+        [self setPageToHotlist];
+    } else if ([[_pageController.viewControllers objectAtIndex:0] isKindOfClass:[HistoryProductViewController class]]) {
+        [self setToProductFeed];
+    } else if ([[_pageController.viewControllers objectAtIndex:0] isKindOfClass:[FavoritedShopViewController class]]) {
+        [self setToHistory];
+    }
+}
+
+- (void)setPageToHotlist {
+    [self.pageController setViewControllers:@[_hotListViewController]
+                                  direction:_direction
+                                   animated:YES
+                                 completion:^(BOOL finished) {
+                                     _tabBarCanScrolling = YES;
+                                 }];
+    
+    _isCanProcess = NO;
+    _timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(setTimerNil) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+}
+
+- (void)setToHistory {
+    [self.pageController setViewControllers:@[_historyProductViewController]
+                                  direction:_direction
+                                   animated:YES
+                                 completion:^(BOOL finished) {
+                                     _tabBarCanScrolling = YES;
+                                 }];
+    
+    _isCanProcess = NO;
+    _timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(setTimerNil) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+}
+
+- (void)setTimerNil {
+    _isCanProcess = YES;
+    _timer = nil;
+    [_timer invalidate];
+}
+
+- (void)setToProductFeed {
+    [self.pageController setViewControllers:@[_productFeedViewController]
+                                  direction:_direction
+                                   animated:YES
+                                 completion:^(BOOL finished) {
+                                     _tabBarCanScrolling = YES;
+                                 }];
+    
+    _isCanProcess = NO;
+    _timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(setTimerNil) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+}
+
+- (void)setToFavShop {
+    [self.pageController setViewControllers:@[_favoritedShopViewController]
+                                  direction:_direction
+                                   animated:YES
+                                 completion:^(BOOL finished) {
+                                     _tabBarCanScrolling = YES;
+                                 }];
+    _isCanProcess = NO;
+    _timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(setTimerNil) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+}
+//
+//- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+//    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+//        CGPoint velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:_pageScrollView];
+//        if (abs(velocity.y) * 2 < abs(velocity.x)) {
+//            return YES;
+//        }
+//    }
+//    return NO;
+//
+//
+//}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)panGestureRecognizer {
+    CGPoint velocity = [panGestureRecognizer velocityInView:_pageScrollView];
+    return fabs(velocity.y) > fabs(velocity.x);
+}
+
+
+
 
 @end

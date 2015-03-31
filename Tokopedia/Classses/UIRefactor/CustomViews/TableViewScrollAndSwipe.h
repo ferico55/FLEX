@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@interface TableViewScrollAndSwipe : UITableView
+@interface TableViewScrollAndSwipe : UITableView {
+    BOOL _isHorizontalDragging;
+}
+
+- (void)startHorizontalDragging;
+- (void)stopHorizontalDragging;
 
 @end

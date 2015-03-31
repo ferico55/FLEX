@@ -10,11 +10,21 @@
 
 @implementation TableViewScrollAndSwipe
 
+- (void)stopHorizontalDragging {
+    _isHorizontalDragging = NO;
+}
+
+- (void)startHorizontalDragging {
+    _isHorizontalDragging = YES;
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
+    
     if (self) {
         // Initialization code
+
     }
     return self;
 }
@@ -22,8 +32,9 @@
 - (BOOL)gestureRecognizer:(UIPanGestureRecognizer *)gestureRecognizer
 shouldRecognizeSimultaneouslyWithGestureRecognizer:(UISwipeGestureRecognizer *)otherGestureRecognizer
 {
-    NSLog(@"content offset y %f", self.contentOffset.y);
+    
     return self.isDecelerating || self.contentOffset.y < 0 || self.contentOffset.y > MAX(0, self.contentSize.height - self.bounds.size.height);
+    
 }
 
 

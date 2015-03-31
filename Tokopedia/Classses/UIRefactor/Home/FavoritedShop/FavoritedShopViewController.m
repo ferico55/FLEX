@@ -82,10 +82,10 @@
     [_act startAnimating];
     
     _table.contentInset = UIEdgeInsetsMake(-34, 0, 53, 0);
-
+    
     if (_shop.count > 0) {
         _isnodata = NO;
-    }    
+    }
     
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -187,7 +187,7 @@
             [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image];
+                [thumb setImage:image animated:YES];
 #pragma clang diagnostic pop
             } failure:nil];
         }
@@ -279,11 +279,11 @@
         [_table endUpdates];
         
     } else {
-//        [_shop removeObjectAtIndex:indexpath.row];
+        //        [_shop removeObjectAtIndex:indexpath.row];
     }
     
     //TODO ini animation nya masih jelek, yg bagus malah bikin bugs, checkthisout later!!
-//    [_table reloadData];
+    //    [_table reloadData];
     
 }
 
@@ -525,13 +525,13 @@
             if(!is_already_updated && _page == 1) {
                 [_goldshop addObjectsFromArray: favoritedshop.result.list_gold];
             }
-
+            
             _shopdictionary = [NSMutableDictionary new];
             
             if (_shop.count > 0) {
                 [_shopdictionary setObject:_shop forKey:@"Favorite"];
             }
-
+            
             if (_goldshop.count > 0) {
                 [_shopdictionary setObject:_goldshop forKey:@"Rekomendasi"];
             }
@@ -613,16 +613,16 @@
                        kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
                        };
     [self.navigationController pushViewController:container animated:YES];
-//
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-//    TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
-//    shopViewController.data = @{
-//                                kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
-//                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
-//                                @"is_dismissed" : @YES
-//                                };
-//
-//    [self.delegate pushViewController:shopViewController];
+    //
+    //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    //    TKPDTabShopViewController *shopViewController = [storyboard instantiateViewControllerWithIdentifier:@"TKPDTabShopViewController"];
+    //    shopViewController.data = @{
+    //                                kTKPDDETAIL_APISHOPIDKEY:list.shop_id?:0,
+    //                                kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
+    //                                @"is_dismissed" : @YES
+    //                                };
+    //
+    //    [self.delegate pushViewController:shopViewController];
     
 }
 

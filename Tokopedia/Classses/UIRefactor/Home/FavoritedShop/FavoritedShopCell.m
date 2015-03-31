@@ -33,7 +33,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 
@@ -59,7 +59,7 @@
 }
 
 
-#pragma mark - View Action 
+#pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
     [_delegate removeFavoritedRow:_indexpath];

@@ -474,8 +474,8 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSLog(@"scrolling %f Y", scrollView.contentOffset.y);
-    NSLog(@"scrolling %f X", scrollView.contentOffset.x);
+//    NSLog(@"scrolling %f Y", scrollView.contentOffset.y);
+//    NSLog(@"scrolling %f X", scrollView.contentOffset.x);
 }
 
 @end
