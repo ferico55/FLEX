@@ -3035,7 +3035,6 @@
 		7AEDF3AF1AC5D9A400AF6180 /* ScrollViewSimultaneousGesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewSimultaneousGesture.m; sourceTree = "<group>"; };
 		7AEDF3B01AC5D9A400AF6180 /* TableViewScrollAndSwipe.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewScrollAndSwipe.h; sourceTree = "<group>"; };
 		7AEDF3B11AC5D9A400AF6180 /* TableViewScrollAndSwipe.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewScrollAndSwipe.m; sourceTree = "<group>"; };
-		7AEDF3B91AC96D6F00AF6180 /* Login copy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Login copy.h"; sourceTree = "<group>"; };
 		7AEDF3BF1AC97F3300AF6180 /* HomeTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTabViewController.h; sourceTree = "<group>"; };
 		7AEDF3C01AC97F3300AF6180 /* HomeTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTabViewController.m; sourceTree = "<group>"; };
 		7AEDF3C11AC97F3300AF6180 /* HomeTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeTabViewController.xib; sourceTree = "<group>"; };
@@ -3263,7 +3262,6 @@
 		7AB2E5B21AC3C2940033F08D /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				7AEDF3B91AC96D6F00AF6180 /* Login copy.h */,
 				7AB2E5B31AC3C2940033F08D /* Login.h */,
 				7AB2E5B41AC3C2940033F08D /* Login.m */,
 				7AB2E5B51AC3C2940033F08D /* LoginResult.h */,
