@@ -13,6 +13,7 @@
 
 @protocol SubmitShipmentConfirmationDelegate <NSObject>
 
+@optional;
 - (void)submitConfirmationReceiptNumber:(NSString *)receiptNumber courier:(ShipmentCourier *)courier courierPackage:(ShipmentCourierPackage *)courierPackage;
 
 @end

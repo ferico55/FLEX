@@ -54,6 +54,7 @@
 #define kTKPDSEARCH_APISHOPTOTALFAVKEY @"shop_total_favorite"
 #define kTKPDSEARCH_APISHOPGOLDSHOP @"shop_gold_shop"
 #define kTKPDSEARCH_APISHOPGOLDSTATUS @"shop_gold_status"
+#define kTKPDSEARCH_APISHOPISFAV @"shop_is_fave_shop"
 /** product **/
 #define kTKPDSEARCH_APIPRODUCTIMAGEKEY      @"product_image"
 #define kTKPDSEARCH_APIPRODUCTIMAGEFULLKEY  @"product_image_full"

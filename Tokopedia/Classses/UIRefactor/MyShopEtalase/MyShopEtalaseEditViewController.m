@@ -35,6 +35,8 @@
     CGSize _scrollviewContentSize;
     
     UIBarButtonItem *_barbuttonsave;
+    
+    BOOL _isBeingPresented;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *textfieldname;
@@ -68,23 +70,32 @@
     _operationQueue = [NSOperationQueue new];
     
     [self setDefaultData:_data];
+
+    _isBeingPresented = self.navigationController.isBeingPresented;
+    if (_isBeingPresented) {
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+        barButtonItem.tag = 10;
+        self.navigationItem.leftBarButtonItem = barButtonItem;
+    } else {
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+        self.navigationItem.backBarButtonItem = barButtonItem;
+    }
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonsave setTintColor:[UIColor blackColor]];
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
+                                                      style:UIBarButtonItemStyleDone
+                                                     target:(self)
+                                                     action:@selector(tap:)];
     _barbuttonsave.tag = 11;
     self.navigationItem.rightBarButtonItem = _barbuttonsave;
-}
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    [self.textfieldname becomeFirstResponder];
+    
 }
 
 #pragma mark - View Action
@@ -97,7 +108,11 @@
         switch (btn.tag) {
             case 10:
             {
-                [self.navigationController popViewControllerAnimated:YES];
+                if (_isBeingPresented) {
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];                    
+                }
                 break;
             }
             case 11:
@@ -157,10 +172,16 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ShopSettingsResult class]];
     [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
     
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILSHOPETALASEACTION_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDDETAILSHOPETALASEACTION_APIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanagerActionAddEtalase addResponseDescriptor:responseDescriptor];
     
@@ -177,11 +198,11 @@
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
     NSInteger shopid = [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue]?:0;
     NSString *action = (_type==1)?kTKPDDETAIL_APIEDITETALASEKEY:kTKPDDETAIL_APIADDETALASEKEY;
-    NSInteger etalaseid = list.etalase_id?:0;
+    NSString *etalaseid = list.etalase_id?:@"0";
     NSString *etalasename = [userinfo objectForKey:kTKPDSHOP_APIETALASENAMEKEY]?:list.etalase_name?:@"";
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action,
-                            kTKPDSHOP_APIETALASEIDKEY :@(etalaseid),
+                            kTKPDSHOP_APIETALASEIDKEY :etalaseid,
                             kTKPDSHOP_APIETALASENAMEKEY : etalasename,
                             kTKPDDETAIL_APISHOPIDKEY : @(shopid)
                             };
@@ -189,7 +210,10 @@
     
     _barbuttonsave.enabled = NO;
     
-    _requestActionAddEtalase = [_objectmanagerActionAddEtalase appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOPETALASEACTION_APIPATH parameters:[param encrypt]];
+    _requestActionAddEtalase = [_objectmanagerActionAddEtalase appropriateObjectRequestOperationWithObject:self
+                                                                                                    method:RKRequestMethodPOST
+                                                                                                      path:kTKPDDETAILSHOPETALASEACTION_APIPATH
+                                                                                                parameters:[param encrypt]];
     
     [_requestActionAddEtalase setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionAddEtalase:mappingResult withOperation:operation];
@@ -238,52 +262,49 @@
                     NSString *message;
                     if (_type == kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY) {
                         message = @"Anda telah sukses memperbaharui informasi etalase.";
-                    }
-                    else
-                    {
+                    } else {
                         message = @"anda telah berhasil menambah etalase";
                     }
-                    NSArray *array = setting.message_status?:[[NSArray alloc]initWithObjects:message,nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    NSArray *successMessages = setting.message_status?:@[message];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+                    [alert show];
+                    
                     //TODO:: add alert
                     NSDictionary *userinfo;
                     if (_type == 1){
                         //TODO: Behavior after edit
-                        NSArray *viewcontrollers = self.navigationController.viewControllers;
-                        NSInteger index = viewcontrollers.count-3;
-                        [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
-                        userinfo = @{kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY],
-                                     kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
-                                     };
+                        userinfo = @{
+                            kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY],
+                            kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
+                        };
                     }
-                    else [self.navigationController popViewControllerAnimated:YES];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDETALASEPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDETALASEPOSTNOTIFICATIONNAMEKEY
+                                                                        object:nil
+                                                                      userInfo:userinfo];
+                    
+                    if ([self.delegate respondsToSelector:@selector(successEditEtalase:)]) {
+                        [self.delegate successEditEtalase:_textfieldname.text];
+                    }
+                                    
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 }
             }
 
-            if(setting.message_error)
-            {
-                NSArray *array = setting.message_error;
-                NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+            if(setting.message_error) {
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:setting.message_error delegate:self];
+                [alert show];
             }
-        }
-        else{
-            
+        } else {
             [self cancelActionAddEtalase];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestcount<kTKPDREQUESTCOUNTMAX) {
                     NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     //TODO:: Reload handler
-                        NSArray *array = [[NSArray alloc] initWithObjects:@"Error", nil];
-                        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Error"] delegate:self];
+                    [alert show];
                 }
-            }
-            else
-            {
             }
         }
     }
@@ -360,9 +381,8 @@
     }
     
     if (!isValid) {
-        NSArray *array = messages;
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+        [alert show];
     }
 
     return isValid;

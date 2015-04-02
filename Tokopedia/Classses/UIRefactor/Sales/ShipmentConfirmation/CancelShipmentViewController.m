@@ -7,11 +7,11 @@
 //
 
 #import "CancelShipmentViewController.h"
-#import "UITextView+UITextView_Placeholder.h"
+#import "TKPDTextView.h"
 
 @interface CancelShipmentViewController ()
 
-@property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (weak, nonatomic) IBOutlet TKPDTextView *textView;
 
 @end
 
@@ -20,9 +20,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"Konfirmasi";
+    self.title = @"";
     
-    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Kembali"
                                                                      style:UIBarButtonItemStyleBordered
                                                                     target:self
                                                                     action:@selector(tap:)];
@@ -36,8 +36,8 @@
     doneButton.tag = 2;
     self.navigationItem.rightBarButtonItem = doneButton;
     
-    [self.textView setPlaceholder:@"Tulis keterangan pembatalan order"];
     [self.textView becomeFirstResponder];
+    self.textView.placeholder = @"Tulis keterangan pembatalan order";
 }
 
 - (void)didReceiveMemoryWarning {

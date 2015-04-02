@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GenerateHost.h"
+
 @class ProductAddEditDetailViewController;
 
 #pragma mark - Product Edit Detail Delegate
@@ -24,5 +26,7 @@
 #endif
 
 @property (strong,nonatomic) NSDictionary *data;
+
+@property GenerateHost *generateHost;
 
 @end

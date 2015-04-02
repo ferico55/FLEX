@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6205" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6198"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -26,13 +27,23 @@
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WxD-zb-jsl" userLabel="Border Top">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="4TK-RN-HTT"/>
                             </constraints>
                         </view>
-                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RGv-qh-1bK">
-                            <rect key="frame" x="156" y="7" width="144" height="30"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Etalase" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DYF-Sl-QPc">
+                            <rect key="frame" x="15" y="0.0" width="110" height="44"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="44" id="CBT-u2-ZEy"/>
+                                <constraint firstAttribute="width" constant="110" id="ZJF-aU-gJ7"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <color key="textColor" red="0.25882352941176473" green="0.25882352941176473" blue="0.25882352941176473" alpha="1" colorSpace="deviceRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RGv-qh-1bK">
+                            <rect key="frame" x="135" y="0.0" width="170" height="44"/>
                             <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="deviceRGB"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
@@ -42,27 +53,28 @@
                         </textField>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jkd-pV-fqq" userLabel="Border Bottom">
                             <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="T4K-bJ-Eok"/>
                             </constraints>
                         </view>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Nama Etalase" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DYF-Sl-QPc">
-                            <rect key="frame" x="20" y="12" width="121" height="20"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <color key="textColor" red="0.25882352941176473" green="0.25882352941176473" blue="0.25882352941176473" alpha="1" colorSpace="deviceRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="jkd-pV-fqq" firstAttribute="leading" secondItem="ARG-9G-Ger" secondAttribute="leading" id="AeW-uW-VHC"/>
                         <constraint firstAttribute="height" constant="44" id="BwB-dC-HOM"/>
+                        <constraint firstItem="DYF-Sl-QPc" firstAttribute="top" secondItem="ARG-9G-Ger" secondAttribute="top" id="BzF-Wf-1OZ"/>
+                        <constraint firstItem="DYF-Sl-QPc" firstAttribute="leading" secondItem="ARG-9G-Ger" secondAttribute="leading" constant="15" id="EeY-WY-X2n"/>
                         <constraint firstItem="WxD-zb-jsl" firstAttribute="top" secondItem="ARG-9G-Ger" secondAttribute="top" id="G4j-4d-2Nz"/>
+                        <constraint firstAttribute="trailing" secondItem="RGv-qh-1bK" secondAttribute="trailing" constant="15" id="I6L-aR-ZQ6"/>
                         <constraint firstAttribute="trailing" secondItem="jkd-pV-fqq" secondAttribute="trailing" id="KN5-cK-mrq"/>
+                        <constraint firstItem="RGv-qh-1bK" firstAttribute="leading" secondItem="DYF-Sl-QPc" secondAttribute="trailing" constant="10" id="WlH-YZ-cu1"/>
                         <constraint firstAttribute="trailing" secondItem="WxD-zb-jsl" secondAttribute="trailing" id="XeM-zc-jZT"/>
+                        <constraint firstAttribute="bottom" secondItem="DYF-Sl-QPc" secondAttribute="bottom" id="aGa-Nt-exs"/>
+                        <constraint firstItem="RGv-qh-1bK" firstAttribute="top" secondItem="ARG-9G-Ger" secondAttribute="top" id="dfa-ro-YuJ"/>
                         <constraint firstAttribute="bottom" secondItem="jkd-pV-fqq" secondAttribute="bottom" id="f08-di-8Qo"/>
                         <constraint firstItem="WxD-zb-jsl" firstAttribute="leading" secondItem="ARG-9G-Ger" secondAttribute="leading" id="kAk-i4-0uh"/>
+                        <constraint firstAttribute="bottom" secondItem="RGv-qh-1bK" secondAttribute="bottom" id="vvE-36-0cx"/>
                     </constraints>
                 </view>
             </subviews>
@@ -87,9 +99,6 @@
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4">
-            <size key="portraitSize" width="320" height="568"/>
-            <size key="landscapeSize" width="568" height="320"/>
-        </simulatedScreenMetrics>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
 </document>

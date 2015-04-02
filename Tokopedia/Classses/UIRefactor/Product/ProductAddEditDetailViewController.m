@@ -25,7 +25,15 @@
 #import "Breadcrumb.h"
 #import "ProductDetail.h"
 
-@interface ProductAddEditDetailViewController ()<UITableViewDataSource,UITableViewDelegate,UITextViewDelegate, TKPDAlertViewDelegate, MyShopEtalaseFilterViewControllerDelegate,ProductEditWholesaleViewControllerDelegate>
+@interface ProductAddEditDetailViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    UITextViewDelegate,
+    TKPDAlertViewDelegate,
+    MyShopEtalaseFilterViewControllerDelegate,
+    ProductEditWholesaleViewControllerDelegate
+>
 {
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
@@ -42,6 +50,7 @@
     NSInteger _requestCount;
     NSOperationQueue *_operationQueue;
     
+    
     __weak RKObjectManager *_objectManagerActionAddProductValidation;
     __weak RKManagedObjectRequestOperation *_requestActionAddProductValidation;
     
@@ -57,6 +66,7 @@
     UIBarButtonItem *_saveBarButtonItem;
     
     BOOL _isNodata;
+    BOOL _isBeingPresented;
 }
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0TableViewCell;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1TableViewCell;
@@ -130,14 +140,17 @@
     
     _operationQueue = [NSOperationQueue new];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(tap:)];
     barButtonItem.tag = BARBUTTON_PRODUCT_BACK;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationItem.backBarButtonItem = barButtonItem;
     
-    _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_saveBarButtonItem setTintColor:[UIColor blackColor]];
+    _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
+                                                          style:UIBarButtonItemStyleDone
+                                                         target:(self)
+                                                         action:@selector(tap:)];
     _saveBarButtonItem.tag = BARBUTTON_PRODUCT_SAVE;
     self.navigationItem.rightBarButtonItem = _saveBarButtonItem;
     
@@ -170,7 +183,8 @@
                                                                                     attributes:attributes];
     
     _pengembalianProductLabel.attributedText = attributedText;
-    //[_productDescriptionTextView setPlaceholder:@"Masukkan Deskripsi Produk"];
+    
+    _isBeingPresented = self.navigationController.isBeingPresented;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -219,9 +233,7 @@
                 if (type == TYPE_ADD_EDIT_PRODUCT_ADD|| type == TYPE_ADD_EDIT_PRODUCT_COPY) {
                     [self configureRestkitActionAddProductValidation];
                     [self requestActionAddProductValidation:_dataInput];
-                }
-                else
-                {
+                } else {
                     [self configureRestkitActionEditProduct];
                     [self requestActionEditProduct:_dataInput];
                 }
@@ -237,25 +249,14 @@
     [_activeTextView resignFirstResponder];
     if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
-            //switch (gesture.state) {
-            //case UIGestureRecognizerStateBegan: {
-            //    break;
-            //}
-            //case UIGestureRecognizerStateChanged: {
-            //    break;
-            //}
-            //case UIGestureRecognizerStateEnded: {
-                if (gesture.view.tag == GESTURE_PRODUCT_EDIT_WHOLESALE) {
-                    ProductEditWholesaleViewController *editWholesaleVC = [ProductEditWholesaleViewController new];
-                    editWholesaleVC.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
-                                  DATA_INPUT_KEY : _dataInput
-                                  };
-                    editWholesaleVC.delegate = self;
-                    [self.navigationController pushViewController:editWholesaleVC animated:YES];
-                }
-                    //break;
-                //}
-            //}
+        if (gesture.view.tag == GESTURE_PRODUCT_EDIT_WHOLESALE) {
+            ProductEditWholesaleViewController *editWholesaleVC = [ProductEditWholesaleViewController new];
+            editWholesaleVC.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
+                          DATA_INPUT_KEY : _dataInput
+                          };
+            editWholesaleVC.delegate = self;
+            [self.navigationController pushViewController:editWholesaleVC animated:YES];
+        }
     }
 }
 
@@ -611,8 +612,6 @@
                                       API_PRODUCT_IS_CHANGE_WHOLESALE_KEY:@(1),
                                       API_UNIQUE_ID_KEY:uniqueID,
                                       API_IS_DUPLICATE_KEY : @(duplicate),
-                                      kTKPD_USERIDKEY : userID,
-                                      @"enc_dec" : @"off"
                                       };
     NSMutableDictionary *paramMutableDict = [NSMutableDictionary new];
     [paramMutableDict addEntriesFromDictionary:paramDictionary];
@@ -627,7 +626,7 @@
     
     
     _saveBarButtonItem.enabled = NO;
-    _requestActionAddProductValidation = [_objectManagerActionAddProductValidation appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param];
+    _requestActionAddProductValidation = [_objectManagerActionAddProductValidation appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
     
     [_requestActionAddProductValidation setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionAddProductValidation:mappingResult
@@ -640,7 +639,12 @@
     
     [_operationQueue addOperation:_requestActionAddProductValidation];
     
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeOutActionAddProductValidation:) userInfo:nil repeats:NO];
+    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                            target:self
+                                          selector:@selector(requestTimeOutActionAddProductValidation:)
+                                          userInfo:nil
+                                           repeats:NO];
+
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
@@ -671,18 +675,15 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (![setting.result.post_key integerValue]!=1)
-                {
-                    [_dataInput setObject:setting.result.post_key?:@"" forKey:API_POSTKEY_KEY];
-                    [self configureRestkitActionAddProductPicture];
-                    [self requestActionAddProductPicture:_dataInput];
-                }
-                else
-                {
+                if ([setting.result.post_key isEqualToString:@"1"] || setting.result.post_key == nil) {
                     NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                     _saveBarButtonItem.enabled = YES;
+                } else {
+                    [_dataInput setObject:setting.result.post_key?:@"" forKey:API_POSTKEY_KEY];
+                    [self configureRestkitActionAddProductPicture];
+                    [self requestActionAddProductPicture:_dataInput];
                 }
             }
         }
@@ -763,23 +764,20 @@
     NSString *productPhoto = [userInfo objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
     NSString *productPhotoDesc = [userInfo objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY]?:@"";
     NSString *photoDefault = [userInfo objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY]?:@"";
-    NSInteger userID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
-    NSInteger serverID = [[userInfo objectForKey:API_SERVER_ID_KEY] integerValue]?:0;
+    NSString *serverID = _generateHost.result.generated_host.server_id?:@"";
 
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action?:@"",
-                                      API_SERVER_ID_KEY : @(serverID)?:@(0),
+                                      API_SERVER_ID_KEY : serverID,
                                       API_PRODUCT_IMAGE_TOUPLOAD_KEY : productPhoto?:@(0),
                                       API_PRODUCT_IMAGE_DESCRIPTION_KEY: productPhotoDesc,
                                       API_PRODUCT_IMAGE_DEFAULT_KEY: photoDefault?:@"",
-                                      kTKPD_USERIDKEY : @(userID),
                                       API_IS_DUPLICATE_KEY :@(duplicate),
-                                        @"enc_dec" :@"off"
                                       };
     
-    _requestActionAddProductPicture = [_objectManagerActionAddProductPicture appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param];
+    _requestActionAddProductPicture = [_objectManagerActionAddProductPicture appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
     
     [_requestActionAddProductPicture setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionAddProductPicture:mappingResult withOperation:operation];
@@ -823,19 +821,17 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if(setting.message_error)
-                {
+                if ([setting.result.file_uploaded isEqualToString:@"1"] || setting.result.file_uploaded == nil) {
                     NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
-                //TODO:: add else after web service done
-                //else
-                //{
-                [_dataInput setObject:setting.result.file_uploaded?:@"" forKey:API_FILE_UPLOADED_KEY];
+                else
+                {
+                    [_dataInput setObject:setting.result.file_uploaded?:@"" forKey:API_FILE_UPLOADED_KEY];
                     [self configureRestkitActionAddProductSubmit];
                     [self requestActionAddProductSubmit:_dataInput];
-                //}
+                }
             }
         }
         else{
@@ -922,12 +918,10 @@
                             API_FILE_UPLOADED_KEY:uploadedFile,
                             API_UNIQUE_ID_KEY : uniqueID,
                             API_IS_DUPLICATE_KEY:@(duplicate),
-                            kTKPD_USERIDKEY :[_auth objectForKey:kTKPD_USERIDKEY]?:@"",
-                            @"enc_dec" :@"off"
                             };
     _requestCount ++;
     
-    _requestActionAddProductSubmit = [_objectManagerActionAddProductSubmit appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param];
+    _requestActionAddProductSubmit = [_objectManagerActionAddProductSubmit appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
     
     [_requestActionAddProductSubmit setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionAddProductSubmit:mappingResult withOperation:operation];
@@ -985,10 +979,7 @@
                     NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:defaultSuccessMessage, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-                    
-                    NSInteger indexPopViewController = self.navigationController.viewControllers.count-3;
-                    UIViewController *popViewController = self.navigationController.viewControllers [indexPopViewController];
-                    [self.navigationController popToViewController:popViewController animated:NO];
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
                 }
             }
@@ -1103,8 +1094,6 @@
                                       API_PRODUCT_IMAGE_DEFAULT_KEY: photoDefault?:@"",
                                       API_PRODUCT_IS_RETURNABLE_KEY : isReturnableProduct?:@"",
                                       API_PRODUCT_IS_CHANGE_WHOLESALE_KEY:@(1),
-                                      kTKPD_USERIDKEY : userID,
-                                      @"enc_dec" :@"off"
                                       };
     NSMutableDictionary *paramMutableDict = [NSMutableDictionary new];
     [paramMutableDict addEntriesFromDictionary:paramDictionary];
@@ -1119,7 +1108,7 @@
     NSDictionary *param = [paramMutableDict copy];
     
     _saveBarButtonItem.enabled = NO;
-    _requestActionEditProduct = [_objectManagerActionEditProduct appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param];
+    _requestActionEditProduct = [_objectManagerActionEditProduct appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
     
     [_requestActionEditProduct setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionEditProduct:mappingResult withOperation:operation];
@@ -1165,11 +1154,10 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if(setting.message_error)
-                {
-                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                if(setting.message_error) {
+                    NSArray *errorMessages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                    [alert show];
                 }
                 if (setting.result.is_success == 1) {
                     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
@@ -1177,13 +1165,20 @@
                     if (type == TYPE_ADD_EDIT_PRODUCT_ADD)defaultSuccessMessage=SUCCESSMESSAGE_ADD_PRODUCT;
                     if (type == TYPE_ADD_EDIT_PRODUCT_EDIT)defaultSuccessMessage=SUCCESSMESSAGE_EDIT_PRODUCT;
                     if (type == TYPE_ADD_EDIT_PRODUCT_COPY)defaultSuccessMessage=SUCCESSMESSAGE_COPY_PRODUCT;
-                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:defaultSuccessMessage, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+
+                    NSArray *successMessages = setting.message_status?:@[defaultSuccessMessage];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+                    [alert show];
+
                     
-                    NSInteger indexPopViewController = self.navigationController.viewControllers.count-3;
-                    UIViewController *popViewController = self.navigationController.viewControllers [indexPopViewController];
-                    [self.navigationController popToViewController:popViewController animated:NO];
+                    if (_isBeingPresented) {
+                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                    } else {
+                        NSInteger indexPopViewController = self.navigationController.viewControllers.count-3;
+                        UIViewController *popViewController = self.navigationController.viewControllers [indexPopViewController];
+                        [self.navigationController popToViewController:popViewController animated:NO];
+                    }
+                    
                     [[NSNotificationCenter defaultCenter] postNotificationName:ADD_PRODUCT_POST_NOTIFICATION_NAME object:nil userInfo:nil];
                 }
             }

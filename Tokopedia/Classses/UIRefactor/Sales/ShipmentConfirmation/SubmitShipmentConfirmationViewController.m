@@ -37,6 +37,12 @@
 
     self.title = @"Konfirmasi";
 
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:nil];
+    self.navigationItem.backBarButtonItem = backBarButton;
+    
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
                                                                      style:UIBarButtonItemStyleBordered
                                                                     target:self
@@ -44,8 +50,8 @@
     cancelButton.tag = 1;
     self.navigationItem.leftBarButtonItem = cancelButton;
     
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Konfirmasi"
-                                                                   style:UIBarButtonItemStyleBordered
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
+                                                                   style:UIBarButtonItemStyleDone
                                                                   target:self
                                                                   action:@selector(tap:)];
     doneButton.tag = 2;

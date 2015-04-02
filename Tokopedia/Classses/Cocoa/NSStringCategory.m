@@ -32,6 +32,7 @@
     
     NSScanner *myScanner;
     NSString *text = nil;
+    html = html?:@"";
     
     html = [html stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
     

@@ -369,6 +369,8 @@
         if([inboxmessageaction.result.is_success isEqualToString:@"0"]) {
             InboxMessageDetailList *msg = _messages[_messages.count-1];
             msg.is_not_delivered = @"1";
+            
+
         }
     }
     
@@ -686,6 +688,7 @@
     NSDictionary *userinfo;
     userinfo = @{MESSAGE_INDEX_PATH : [_data objectForKey:MESSAGE_INDEX_PATH], KTKPDMESSAGE_MESSAGEREPLYKEY : _growingtextview.text};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateMessageWithIndex" object:nil userInfo:userinfo];
+    [_growingtextview resignFirstResponder];
     
     [_requestsend setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestsendmessage:mappingResult withOperation:operation];

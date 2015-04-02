@@ -27,6 +27,7 @@
 
 #define PROMPT_DELETE_TALK @"Apakah Anda yakin ingin menghapus diskusi ini ?"
 #define PROMPT_DELETE_TALK_MESSAGE @"Diskusi yg sudah dihapus, tidak dapat dikembalikan"
+#define SUCCESS_REPORT_TALK @"Laporan Kamu telah sukses terkirim"
 #define BUTTON_CANCEL @"Tidak"
 #define BUTTON_OK @"Ya"
 

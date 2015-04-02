@@ -4,6 +4,12 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SearchViewController">
             <connections>
@@ -39,8 +45,8 @@
                                 <constraint firstAttribute="width" constant="46" id="9Df-tc-3Eb"/>
                                 <constraint firstAttribute="height" constant="44" id="PPn-DT-tYf"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <state key="normal" title="Clear">
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <state key="normal" title="Hapus">
                                 <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -48,13 +54,9 @@
                                 <action selector="tap:" destination="-1" eventType="touchUpInside" id="rPM-gu-gM1"/>
                             </connections>
                         </button>
-                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recent Search" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E6j-iT-PSE">
-                            <rect key="frame" x="15" y="0.0" width="144" height="44"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="144" id="1yl-jC-sX3"/>
-                                <constraint firstAttribute="height" constant="44" id="KDR-dj-rXo"/>
-                            </constraints>
-                            <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pencarian Terakhir" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E6j-iT-PSE">
+                            <rect key="frame" x="15" y="0.0" width="206" height="44"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -68,18 +70,18 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="E6j-iT-PSE" firstAttribute="leading" secondItem="UGu-Sr-Afb" secondAttribute="leading" constant="15" id="2yY-Sb-Xrc"/>
+                        <constraint firstItem="RGD-4w-dt6" firstAttribute="leading" secondItem="E6j-iT-PSE" secondAttribute="trailing" constant="49" id="1rz-To-UB0"/>
+                        <constraint firstItem="ZNz-aX-x5R" firstAttribute="top" secondItem="E6j-iT-PSE" secondAttribute="bottom" id="FOp-by-PAH"/>
+                        <constraint firstItem="E6j-iT-PSE" firstAttribute="leading" secondItem="ZNz-aX-x5R" secondAttribute="leading" id="GBr-ab-Wuy"/>
                         <constraint firstAttribute="trailing" secondItem="RGD-4w-dt6" secondAttribute="trailing" constant="4" id="HRj-HJ-xrB"/>
-                        <constraint firstItem="ZNz-aX-x5R" firstAttribute="top" secondItem="E6j-iT-PSE" secondAttribute="bottom" id="Zjq-p9-mmq"/>
+                        <constraint firstItem="E6j-iT-PSE" firstAttribute="bottom" secondItem="RGD-4w-dt6" secondAttribute="bottom" id="WDb-Wb-DZw"/>
                         <constraint firstItem="ZNz-aX-x5R" firstAttribute="leading" secondItem="UGu-Sr-Afb" secondAttribute="leading" constant="15" id="fkg-fE-1iK"/>
-                        <constraint firstItem="3gY-Wm-LpU" firstAttribute="top" secondItem="E6j-iT-PSE" secondAttribute="bottom" id="hLr-qx-R8i"/>
-                        <constraint firstItem="E6j-iT-PSE" firstAttribute="top" secondItem="UGu-Sr-Afb" secondAttribute="top" id="hc6-Ug-lC7"/>
                         <constraint firstItem="RGD-4w-dt6" firstAttribute="top" secondItem="UGu-Sr-Afb" secondAttribute="top" id="iQs-7L-jOY"/>
                         <constraint firstAttribute="trailing" secondItem="ZNz-aX-x5R" secondAttribute="trailing" id="kRf-xw-KGd"/>
-                        <constraint firstItem="3gY-Wm-LpU" firstAttribute="top" secondItem="E6j-iT-PSE" secondAttribute="bottom" id="llY-ky-94G"/>
                         <constraint firstAttribute="trailing" secondItem="3gY-Wm-LpU" secondAttribute="trailing" id="stY-q5-NsQ"/>
                         <constraint firstItem="3gY-Wm-LpU" firstAttribute="top" secondItem="RGD-4w-dt6" secondAttribute="bottom" id="tlV-Y6-erR"/>
                         <constraint firstAttribute="bottom" secondItem="3gY-Wm-LpU" secondAttribute="bottom" id="ulq-Gu-eXJ"/>
+                        <constraint firstItem="E6j-iT-PSE" firstAttribute="top" secondItem="RGD-4w-dt6" secondAttribute="top" id="yEZ-lt-czs"/>
                         <constraint firstItem="3gY-Wm-LpU" firstAttribute="leading" secondItem="UGu-Sr-Afb" secondAttribute="leading" id="ypb-ck-xBW"/>
                     </constraints>
                 </view>

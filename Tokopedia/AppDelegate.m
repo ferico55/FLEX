@@ -16,6 +16,8 @@
 #import "NotificationManager.h"
 
 #import <FacebookSDK/FacebookSDK.h>
+#import <Fabric/Fabric.h>
+#import <Crashlytics/Crashlytics.h>
 
 @implementation AppDelegate
 {
@@ -34,6 +36,7 @@
 {
      NSLog(@"path:%@",[[NSBundle mainBundle]bundlePath]);
     
+    [Fabric with:@[CrashlyticsKit]];
     [self adjustnavigationbar];
     
     if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {

@@ -374,7 +374,11 @@
                                                     kTKPDSHOP_APICITYIDKEY,
                                                     kTKPDSHOP_APIPHONEKEY,
                                                     kTKPDSHOP_APIEMAILKEY,
-                                                    kTKPDSHOP_APIPROVINCEIDKEY
+                                                    kTKPDSHOP_APIPROVINCEIDKEY,
+                                                    kTKPDSHOP_APICITYNAMEKEY,
+                                                    kTKPDSHOP_APIPROVINCENAMEKEY,
+                                                    kTKPDSHOP_APIDISTRICTNAMEKEY,
+                                                    kTKPDSHOP_APIADDRESSKEY
                                                     ]];
     // Relationship Mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
@@ -661,13 +665,14 @@
 }
 
 - (IBAction)settingTap:(id)sender {
-    ShopSettingViewController *settingController = [ShopSettingViewController new];
-    settingController.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                               kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result
-                               };
-    
-
-    [self.navigationController pushViewController:settingController animated:YES];
+    if (_shop) {
+        ShopSettingViewController *settingController = [ShopSettingViewController new];
+        settingController.data = @{
+                                   kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                                   kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result
+                                   };
+        [self.navigationController pushViewController:settingController animated:YES];
+    }
 }
 
 - (IBAction)addProductTap:(id)sender {

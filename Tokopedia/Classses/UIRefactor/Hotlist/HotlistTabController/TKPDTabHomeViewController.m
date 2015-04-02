@@ -30,6 +30,7 @@
     UIPageViewControllerDelegate,
     UIGestureRecognizerDelegate,
     UIScrollViewDelegate,
+    UIGestureRecognizerDelegate,
     TKPDTabHomeDelegate,
     NotificationManagerDelegate
 >
@@ -80,6 +81,7 @@
                                                                         options:nil];
     self.pageController.dataSource = self;
     self.pageController.delegate = self;
+    [self.pageController.view setMultipleTouchEnabled:YES];
     
     CGRect pageControllerFrame = [[self view] bounds];
     pageControllerFrame.origin.y = 108;
@@ -191,6 +193,7 @@
                                              selector:@selector(reloadPageController)
                                                  name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
                                                object:nil];
+
 }
 
 -(void)pan
@@ -359,8 +362,7 @@
 
 #pragma mark - Other methods
 
-- (void)tabButtonDidTap:(UIButton *)button
-{
+- (void)tabButtonDidTap:(UIButton *)button {
     if (button.tag > _viewControllerIndex) {
         _direction = UIPageViewControllerNavigationDirectionForward;
     } else {
@@ -588,9 +590,6 @@
     TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
     [nc setSelectedIndex:2];
     [nc setViewControllers:vcs];
-//    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-//    [nav.navigationBar setTranslucent:NO];
-//    [self.navigationController presentViewController:nav animated:YES completion:nil];
     [self.navigationController pushViewController:nc animated:YES];
 }
 

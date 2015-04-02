@@ -16,6 +16,7 @@
 #import "ProductReviewViewController.h"
 #import "ProductReviewDetailViewController.h"
 #import "GeneralProductReviewCell.h"
+#import "DetailReviewViewController.h"
 
 #import "TKPDAlertView.h"
 #import "AlertListView.h"
@@ -35,6 +36,7 @@
     BOOL _isnodata;
     
     NSInteger _starcount;
+    NSString *_reviewIsOwner;
     
     NSInteger _page;
     NSInteger _limit;
@@ -205,22 +207,14 @@
                 [((GeneralProductReviewCell*)cell).commentbutton setTitle:@"1 Comment" forState:UIControlStateNormal];
             }
             
-            NSString *reviewMessage;
-            if (list.review_message.length > 60) {
-                NSRange stringRange = {0, MIN(list.review_message.length, 60)};
+            if ([list.review_message length] > 50) {
+                NSRange stringRange = {0, MIN([list.review_message length], 50)};
                 stringRange = [list.review_message rangeOfComposedCharacterSequencesForRange:stringRange];
-                reviewMessage = [NSString stringWithFormat:@"%@... See more", [list.review_message substringWithRange:stringRange]];
+                ((GeneralProductReviewCell *)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [list.review_message substringWithRange:stringRange]];
             } else {
-                reviewMessage = list.review_message;
+                ((GeneralProductReviewCell *)cell).commentlabel.text = list.review_message?:@"";
             }
             
-            UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-            NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
-            style.lineSpacing = 10.f;
-            NSDictionary *attributes = @{NSFontAttributeName : font, NSParagraphStyleAttributeName : style};
-            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:reviewMessage
-                                                                             attributes:attributes];
-            ((GeneralProductReviewCell *)cell).commentlabel.attributedText = attributedString;
             ((GeneralProductReviewCell *)cell).indexpath = indexPath;
             
             
@@ -592,6 +586,8 @@
             
             if (status) {
                 NSArray *list = _review.result.list;
+                _reviewIsOwner = _review.result.is_owner;
+                
                 [_list addObjectsFromArray:list];
                 _headerview.hidden = NO;
                 _isnodata = NO;
@@ -675,27 +671,17 @@
 }
 
 #pragma mark - Delegate
-- (void)GeneralReviewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    ProductReviewDetailViewController *vc = [ProductReviewDetailViewController new];
-    
-    ReviewList *list = _list[indexpath.row];
+- (void)GeneralProductReviewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    NSInteger row = indexpath.row;
+    DetailReviewViewController *vc = [DetailReviewViewController new];
+    ReviewList *reviewlist = _list[row];
+    reviewlist.review_product_name = [_data objectForKey:API_PRODUCT_NAME_KEY];
+    reviewlist.review_product_image = [_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
 
-    vc.data = @{
-                API_PRODUCT_NAME_KEY:[_data objectForKey:API_PRODUCT_NAME_KEY]?:@(""),
-                kTKPDDETAILPRODUCT_APIIMAGESRCKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]?:@(""),
-                //ini untuk review
-                kTKPDREVIEW_APIREVIEWMESSAGEKEY:list.review_message,
-                kTKPDREVIEW_APIREVIEWCREATETIMEKEY:list.review_create_time,
-                kTKPDREVIEW_APIREVIEWUSERNAMEKEY:list.review_user_name,
-                kTKPDREVIEW_APIREVIEWUSERIMAGEKEY:list.review_user_image,
-                kTKPDREVIEW_APIREVIEWUSERIDKEY:list.review_user_id,
-                kTKPDREVIEW_APIREVIEWRESPONSEKEY:list.review_response,
-                kTKPDREVIEW_APIREVIEWRATEACCURACYKEY:list.review_rate_accuracy,
-                kTKPDREVIEW_APIREVIEWRATEQUALITY:list.review_rate_quality,
-                kTKPDREVIEW_APIREVIEWRATESERVICEKEY:list.review_rate_service,
-                kTKPDREVIEW_APIREVIEWRATESPEEDKEY:list.review_rate_speed,
-                kTKPDREVIEW_APIREVIEWPRODUCTOWNERKEY:list.review_product_owner
-                };
+    vc.data = reviewlist;
+    vc.index = [NSString stringWithFormat:@"%ld",(long)row];
+    vc.is_owner = _reviewIsOwner;
+    
     [self.navigationController pushViewController:vc animated:YES];
     
 }

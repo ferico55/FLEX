@@ -271,8 +271,8 @@ UIAlertViewDelegate>
             }
             
             
-            if ([list.review_message length] > 30) {
-                NSRange stringRange = {0, MIN([list.review_message length], 30)};
+            if ([list.review_message length] > 50) {
+                NSRange stringRange = {0, MIN([list.review_message length], 50)};
                 stringRange = [list.review_message rangeOfComposedCharacterSequencesForRange:stringRange];
                 ((GeneralReviewCell *)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [list.review_message substringWithRange:stringRange]];
             } else {

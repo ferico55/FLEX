@@ -28,7 +28,16 @@
 #import "UIImage+ImageEffects.h"
 
 #pragma mark - Profile Edit View Controller
-@interface SettingUserProfileViewController ()<CameraControllerDelegate, TKPDAlertViewDelegate, UITextFieldDelegate, UIScrollViewDelegate, UITextViewDelegate, RequestUploadImageDelegate, GenerateHostDelegate>
+@interface SettingUserProfileViewController ()
+<
+    CameraControllerDelegate,
+    TKPDAlertViewDelegate,
+    RequestUploadImageDelegate,
+    GenerateHostDelegate,
+    UITextFieldDelegate,
+    UIScrollViewDelegate,
+    UITextViewDelegate
+>
 {
     NSMutableDictionary *_datainput;
     
@@ -69,7 +78,7 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
-@property (strong, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UILabel *labelfullname;
 @property (weak, nonatomic) IBOutlet UIButton *buttondob;
 @property (weak, nonatomic) IBOutlet UIButton *buttongender;
@@ -113,7 +122,7 @@
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
-    [self setDefaultData:_data];
+    //[self setDefaultData:_data];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:)
@@ -123,17 +132,17 @@
                name:UIKeyboardWillHideNotification
              object:nil];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                       style:UIBarButtonItemStyleBordered
                                                                      target:self
-                                                                     action:@selector(tap:)];
-    barButtonItem.tag = 10;
-    self.navigationItem.backBarButtonItem = barButtonItem;
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                                                                     action:nil];
+    self.navigationItem.backBarButtonItem = backBarButton;
     
-    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:kTKPDPROFILESAVE style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonsave setTintColor:[UIColor blackColor]];
-	[_barbuttonsave setTag:11];
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:kTKPDPROFILESAVE
+                                                      style:UIBarButtonItemStyleDone
+                                                     target:(self)
+                                                     action:@selector(tap:)];
+    _barbuttonsave.tag = 11;
     self.navigationItem.rightBarButtonItem = _barbuttonsave;
     
     RequestGenerateHost *requestHost = [RequestGenerateHost new];
@@ -145,22 +154,19 @@
     [self requestProfileForm];
 }
 
--(void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
+    [super viewWillAppear:animated];
+    [self.scrollview addSubview:_contentView];
+    self.scrollview.contentSize = CGSizeMake(self.view.frame.size.width,
+                                             _contentView.frame.size.height);
+    self.scrollview.contentOffset = CGPointZero;
+
+    CGRect frame = _contentView.frame;
+    frame.origin = CGPointZero;
+    _contentView.frame = frame;
 }
 
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-}
-
--(void)viewDidLayoutSubviews
-{
-    _scrollview.contentSize = _contentView.frame.size;
-    
-}
 #pragma mark - Memory Management
 - (void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
@@ -194,12 +200,10 @@
                 NSString *password = [_datainput objectForKey:kTKPDPROFILE_APIPASSKEY];
                 if (password && ![password isEqualToString:@""]) {
                      [self requestActionSubmit:userinfo];
-                }
-                else
-                {
+                } else {
                     [messages addObject:ERRORMESSAGE_NULL_PASSWORD];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+                    [alert show];
                 }
                 break;
             }
@@ -213,13 +217,13 @@
             case 10:
             {   //edit thumbnail
                 CameraController* c = [CameraController new];
-                [c snap];
                 c.delegate = self;
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-                nav.wantsFullScreenLayout = YES;
-                nav.modalPresentationStyle = UIModalPresentationFullScreen;
+                [c snap];
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:c];
                 nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                [self.navigationController presentViewController:nav
+                                                        animated:NO
+                                                      completion:nil];
                 break;
             }
             case 11:
@@ -295,8 +299,13 @@
                                                                kTKPDPROFILE_APIUSERPHONEKEY:kTKPDPROFILE_APIUSERPHONEKEY
                                                                }];
     // Relationship Mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDPROFILE_APIDATAUSERKEY toKeyPath:kTKPDPROFILE_APIDATAUSERKEY withMapping:datauserMapping]];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDPROFILE_APIDATAUSERKEY
+                                                                                  toKeyPath:kTKPDPROFILE_APIDATAUSERKEY
+                                                                                withMapping:datauserMapping]];
     
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDPROFILE_SETTINGAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
@@ -511,8 +520,7 @@
     
     NSDictionary* param;
     
-    
-    param = @{kTKPDPROFILE_APIACTIONKEY :kTKPDPROFILE_APISETUSERPROFILEKEY,
+    param = @{kTKPDPROFILE_APIACTIONKEY :kTKPDPROFILE_APIEDITPROFILEKEY,
               kTKPDPROFILE_APIFULLNAMEKEY:[userInfo objectForKey:kTKPDPROFILE_APIFULLNAMEKEY]?:_profile.result.data_user.full_name,
               kTKPDPROFILE_APIBIRTHDAYKEY:[userInfo objectForKey:kTKPDPROFILE_APIBIRTHDAYKEY]?:_profile.result.data_user.birth_day,
               kTKPDPROFILE_APIBIRTHMONTHKEY:[userInfo objectForKey:kTKPDPROFILE_APIBIRTHMONTHKEY]?:_profile.result.data_user.birth_month,
@@ -523,7 +531,11 @@
               };
     
     _barbuttonsave.enabled = NO;
-    _requestActionSubmit = [_objectmanagerActionSubmit appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:[param encrypt]];
+    _requestActionSubmit = [_objectmanagerActionSubmit appropriateObjectRequestOperationWithObject:self
+                                                                                            method:RKRequestMethodPOST
+                                                                                              path:kTKPDPROFILE_PROFILESETTINGAPIPATH
+                                                                                        parameters:[param encrypt]];
+    
     [_requestActionSubmit setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
          [self requestSuccessSubmit:mappingResult withOperation:operation];
         _barbuttonsave.enabled = YES;
@@ -534,7 +546,12 @@
 
     [_operationQueue addOperation:_requestActionSubmit];
     
-    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeoutProfileForm) userInfo:nil repeats:NO];
+    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                             target:self
+                                           selector:@selector(requesttimeoutProfileForm)
+                                           userInfo:nil
+                                            repeats:NO];
+    
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
@@ -567,18 +584,20 @@
             BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if(_editform.message_error)
-                {
-                    NSArray *array = _editform.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                if(_editform.message_error) {
+                    NSArray *errorMessages = _editform.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                    [alert show];
                 }
-                if (_editform.result.is_success == 1) {
-                    NSArray *array = _editform.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                if ([_editform.result.is_success boolValue]) {
+                    NSArray *successMessages = _editform.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+                    [alert show];
                     
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPOSTNOTIFICATIONNAMEKEY object:nil userInfo:nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPOSTNOTIFICATIONNAMEKEY
+                                                                        object:nil
+                                                                      userInfo:nil];
+                    
                     [self.navigationController popViewControllerAnimated:YES];
                 }
             }
@@ -628,9 +647,12 @@
         
         _labelfullname.text = _profile.result.data_user.full_name?:@"";
         
-        NSString *dob = [NSString stringWithFormat:kTKPDPROFILEEDIT_DATEOFBIRTHFORMAT,_profile.result.data_user.birth_day,_profile.result.data_user.birth_month, _profile.result.data_user.birth_year];
-        [_buttondob setTitle:dob forState:UIControlStateNormal];
-        NSString *gender = ([_profile.result.data_user.gender isEqualToString:@"1"])?@"Male":@"Female";
+        NSString *dob = [NSString stringWithFormat:kTKPDPROFILEEDIT_DATEOFBIRTHFORMAT,
+                         _profile.result.data_user.birth_day?:@"",
+                         _profile.result.data_user.birth_month,
+                         _profile.result.data_user.birth_year];
+        [_buttondob setTitle:dob?:@"" forState:UIControlStateNormal];
+        NSString *gender = ([_profile.result.data_user.gender isEqualToString:@"1"])?@"Pria":@"Wanita";
         [_buttongender setTitle:gender forState:UIControlStateNormal];
     }
 }
@@ -693,60 +715,30 @@
     return YES;
 }
 
+#pragma mark - Scroll delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [_activetextfield resignFirstResponder];
+    [_activeTextView resignFirstResponder];
+}
+
 #pragma mark - Keyboard Notification
-- (void)keyboardWillShow:(NSNotification *)info {
-    if(_keyboardSize.height < 0){
-        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-        
-        
-        _scrollviewContentSize = [_scrollview contentSize];
-        _scrollviewContentSize.height += _keyboardSize.height;
-        [_scrollview setContentSize:_scrollviewContentSize];
-    }else{
-        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                              delay:0
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             _scrollviewContentSize = [_scrollview contentSize];
-                             _scrollviewContentSize.height -= _keyboardSize.height;
-                             
-                             //TODO::
-                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-                             _scrollviewContentSize.height += _keyboardSize.height;
-                             if (_activetextfield!=nil && ((self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height)> _keyboardPosition.y)) {
-                                 UIEdgeInsets inset = _scrollview.contentInset;
-                                 inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height + 10));
-                                 [_scrollview setContentInset:inset];
-                             }
-                             if (_activeTextView!=nil && ((self.view.frame.origin.y + _activeTextView.frame.origin.y+_activeTextView.frame.size.height)> _keyboardPosition.y)) {
-                                 UIEdgeInsets inset = _scrollview.contentInset;
-                                 inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activeTextView.frame.origin.y+_activeTextView.frame.size.height + 10));
-                                 [_scrollview setContentInset:inset];
-                             }
-                         }
-                         completion:^(BOOL finished){
-                         }];
-        
-    }
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSDictionary* keyboardInfo = [notification userInfo];
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    
+    self.scrollview.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                          delay:0
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         _scrollview.contentInset = contentInsets;
-                         _scrollview.scrollIndicatorInsets = contentInsets;
-                     }
-                     completion:^(BOOL finished){
-                     }];
+    self.scrollview.contentInset = UIEdgeInsetsZero;
 }
 
-
 #pragma mark - Delegate Camera Controller
+
 -(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
 {
     NSDictionary *object = @{DATA_SELECTED_PHOTO_KEY : userinfo,
@@ -755,6 +747,7 @@
 }
 
 #pragma mark - Delegate Alert View
+
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch (alertView.tag) {
@@ -771,7 +764,7 @@
             [_datainput setObject:@(month) forKey:kTKPDPROFILE_APIBIRTHMONTHKEY];
             [_datainput setObject:@(day) forKey:kTKPDPROFILE_APIBIRTHDAYKEY];
             
-            NSString *stringdate = [NSString stringWithFormat:@"%zd / %zd / %zd",day,month,year];
+            NSString *stringdate = [NSString stringWithFormat:@"%zd / %zd / %zd", day, month, year];
             [_buttondob setTitle:stringdate forState:UIControlStateNormal];
             break;
         }

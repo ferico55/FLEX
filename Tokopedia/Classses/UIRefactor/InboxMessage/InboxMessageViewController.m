@@ -141,7 +141,7 @@
     _messageNavigationFlag = [_data objectForKey:@"nav"];
     _userManager = [UserAuthentificationManager new];
     _encodeDecodeManager = [EncodeDecoderManager new];
-    _noresult = [NoResultView new];
+    _noresult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     /** set first page become 1 **/
     _page = 1;

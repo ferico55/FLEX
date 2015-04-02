@@ -23,12 +23,15 @@
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileContactViewController.h"
 #import "TKPDTabProfileNavigationController.h"
+#import "ReportViewController.h"
+#import "NavigateViewController.h"
+#import "UserAuthentificationManager.h"
 
 
 #import "stringrestkit.h"
 #import "string_more.h"
 
-@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate>
+@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate, ReportViewControllerDelegate>
 {
     BOOL _isnodata;
     NSMutableArray *_list;
@@ -66,6 +69,8 @@
     NSTimeInterval _timeinterval;
     NSMutableDictionary *_auth;
     UserAuthentificationManager *_userManager;
+    NavigateViewController *_navigateController;
+    NSString *_reportAction;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -79,7 +84,9 @@
 @property (weak, nonatomic) IBOutlet UIImageView *talkProductImage;
 @property (weak, nonatomic) IBOutlet UIView *talkInputView;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
+@property (weak, nonatomic) IBOutlet UIButton *reportButton;
 @property (weak, nonatomic) IBOutlet UIButton *talkProductName;
+@property (weak, nonatomic) IBOutlet UIView *userArea;
 
 @property (strong, nonatomic) IBOutlet UIView *header;
 
@@ -147,6 +154,7 @@
     _cachecontroller = [URLCacheController new];
     _datainput = [NSMutableDictionary new];
     _userManager = [UserAuthentificationManager new];
+    _navigateController = [NavigateViewController new];
     
     _table.tableHeaderView = _header;
     _page = 1;
@@ -178,6 +186,10 @@
     NSDictionary *userinfo;
     userinfo = @{kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateUnreadTalk" object:nil userInfo:userinfo];
+    
+    UITapGestureRecognizer *tapUserGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
+    [_userArea addGestureRecognizer:tapUserGes];
+    [_userArea setUserInteractionEnabled:YES];
     
     //cache
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILPRODUCT_CACHEFILEPATH];
@@ -482,6 +494,7 @@
                                                  TKPD_TALK_COMMENT_CREATETIME,
                                                  TKPD_TALK_COMMENT_USERIMG,
                                                  TKPD_TALK_COMMENT_USERNAME,
+                                                 TKPD_TALK_COMMENT_USERID
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
@@ -688,6 +701,10 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)tapUser {
+    [_navigateController navigateToProfileFromViewController:self withUserID:[_data objectForKey:@"user_id"]];
+}
+
 -(IBAction)tap:(id)sender {
     
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
@@ -698,6 +715,7 @@
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
+                
                 
             
                 
@@ -784,6 +802,15 @@
                 
                 break;
             }
+                
+            case 13 : {
+                _reportAction = @"report_product_talk";
+                ReportViewController *reportController = [ReportViewController new];
+                reportController.delegate = self;
+                [self.navigationController pushViewController:reportController animated:YES];
+                break;
+            }
+
             default:
                 break;
         }
@@ -971,12 +998,24 @@
         [_datainput setObject:list.comment_talk_id forKey:@"comment_id"];
         [_datainput setObject:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY] forKey:@"product_id"];
         
-        MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Delete" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
-            [self deleteCommentTalkAtIndexPath:indexPath];
-            return YES;
-        }];
-       
-        return @[trash];
+        if([[_userManager getUserId] isEqualToString:list.comment_user_id]) {
+            MGSwipeButton * report = [MGSwipeButton buttonWithTitle:@"Laporkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+                _reportAction = @"report_comment_talk";
+                ReportViewController *reportController = [ReportViewController new];
+                reportController.delegate = self;
+                [self.navigationController pushViewController:reportController animated:YES];
+                return YES;
+            }];
+            return @[report];
+        } else {
+            MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Hapus" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+                [self deleteCommentTalkAtIndexPath:indexPath];
+                return YES;
+            }];
+            
+            return @[trash];
+        }
+        
     }
     
     return nil;
@@ -1132,6 +1171,18 @@
     [self cancelActionDelete];
 }
 
+#pragma mark - Report Delegate
+- (NSDictionary *)getParameter {
+    return @{
+             @"action" : _reportAction,
+             @"talk_id" : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
+             @"product_id" : [_data objectForKey:@"product_id"]
+             };
+}
+
+- (NSString *)getPath {
+    return @"action/talk.pl";
+}
 
 /*
 #pragma mark - Navigation

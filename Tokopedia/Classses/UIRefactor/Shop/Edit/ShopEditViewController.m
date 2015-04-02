@@ -373,14 +373,13 @@
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image animated:YES];
-        
-        [_actthumb stopAnimating];
-#pragma clang diagnosti c pop
-        
-    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-    }];
-    _thumb.alpha = 1;
+                        //NSLOG(@"thumb: %@", thumb);
+                        [thumb setImage:image];
+#pragma clang diagnostic pop
+                        
+                    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                    }];
+                    
 }
 
 #pragma mark - View Action
@@ -511,7 +510,9 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             //NSLOG(@"thumb: %@", thumb);
-            [thumb setImage:image animated:YES];
+            [thumb setImage:image];
+            
+            [_actthumb stopAnimating];
 #pragma clang diagnosti c pop
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {

@@ -153,7 +153,7 @@
     _cachecontroller = [URLCacheController new];
     _talkList = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
-    _noResultView = [NoResultView new];
+    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     _table.delegate = self;
     _table.dataSource = self;
@@ -180,6 +180,12 @@
 
     _isLoadFromCache = NO;
     [self loadData];
+    
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+    self.navigationItem.backBarButtonItem = backBarButtonItem;
 
 }
 

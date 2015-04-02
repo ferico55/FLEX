@@ -10,6 +10,7 @@
 #import "ProductQuantityCell.h"
 #import "OrderProduct.h"
 #import "UITextView+UITextView_Placeholder.h"
+#import "DetailProductViewController.h"
 
 @interface ProductQuantityViewController ()
 <
@@ -33,7 +34,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = @"Konfirmasi";
+    self.title = @"Terima Sebagian";
+    
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    backBarButton.tag = 1;
+    self.navigationItem.backBarButtonItem = backBarButton;
     
     UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
                                                                      style:UIBarButtonItemStyleBordered
@@ -41,7 +49,7 @@
                                                                     action:@selector(tap:)];
     cancelButton.tag = 1;
     self.navigationItem.leftBarButtonItem = cancelButton;
-    
+
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
                                                                    style:UIBarButtonItemStyleBordered
                                                                   target:self
@@ -112,7 +120,17 @@
                                       action:@selector(textFieldDidChange:)
                             forControlEvents:UIControlEventEditingChanged];
     
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    OrderProduct *product = [_products objectAtIndex:indexPath.row];
+    DetailProductViewController *controller = [DetailProductViewController new];
+    controller.data = @{@"product_id":product.product_id};
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 #pragma mark - Text field method

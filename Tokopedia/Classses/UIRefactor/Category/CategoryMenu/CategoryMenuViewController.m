@@ -36,6 +36,7 @@
     DepartmentTree *_departmenttree;
     
     BOOL _isnodata;
+    BOOL _isBeingPresented;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -59,12 +60,21 @@
     _menu = [NSMutableArray new];
     _selectedcategory = [NSMutableDictionary new];
 
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
-                                                               style:UIBarButtonItemStyleBordered
-                                                              target:self
-                                                              action:@selector(tap:)];
-    button.tag = 13;
-    self.navigationItem.leftBarButtonItem = button;
+    _isBeingPresented = self.navigationController.isBeingPresented;
+    if (_isBeingPresented) {
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(tap:)];
+        button.tag = 10;
+        self.navigationItem.leftBarButtonItem = button;
+    } else {
+        UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(tap:)];
+        self.navigationItem.backBarButtonItem = button;
+    }
     
     /** set max data per page request **/
     _table.delegate = self;
@@ -76,7 +86,10 @@
     [_choosenindexpaths removeAllObjects];
     [_choosenindexpaths addObjectsFromArray:choosenIndexPath?:@[]];
     _ispushotomatis = [[_data objectForKey:kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY]boolValue];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(adjustChoosenIndexPath:) name:CATALOG_SELECTED_INDEXPATH_POST_NOTIFICATION_NAME object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(adjustChoosenIndexPath:)
+                                                 name:CATALOG_SELECTED_INDEXPATH_POST_NOTIFICATION_NAME
+                                               object:nil];
     
     if (_menu.count > 0) {
         _isnodata = NO;
@@ -126,31 +139,7 @@
         switch (btn.tag) {
             case 10:
             {
-                NSInteger pushCount=self.navigationController.viewControllers.count-2;
-                if (_ispushotomatis && _choosenindexpaths.count>pushCount) {
-                    [_choosenindexpaths addObjectsFromArray:(NSArray*)[_data objectForKey:kTKPDCATEGORY_DATACHOSENINDEXPATHKEY]];
-                    [_choosenindexpaths removeLastObject]; //TODO::
-                    NSArray *childs =[_menu[_selectedindexpath.row] objectForKey:kTKPDCATEGORY_APIDEPARTMENTCHILDKEY]?:@[];
-                    CategoryMenuViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-                    NSDictionary *data = @{kTKPDCATEGORY_APIDEPARTMENTTREEKEY : childs,
-                                kTKPDCATEGORY_DATADIDALLCATEGORYKEY: [_menu[_selectedindexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY]?:[NSNull null],
-                                kTKPDCATEGORY_DATATITLEKEY : [_menu[_selectedindexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY],
-                                kTKPDCATEGORY_DATACHOSENINDEXPATHKEY : _choosenindexpaths?:@[],
-                                kTKPDCATEGORY_DATAISAUTOMATICPUSHKEY : @(NO),
-                                };
-                    previousVC.data = data;
-                }
-                if (self.presentingViewController != nil) {
-                    if (self.navigationController.viewControllers.count > 1) {
-                        [self.navigationController popViewControllerAnimated:YES];
-                    } else {
-                        [self dismissViewControllerAnimated:YES completion:NULL];
-                    }
-                } else {
-                    [self.navigationController popViewControllerAnimated:YES];
-                }
-
-                break;
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             }
             case 11:
             {
@@ -159,10 +148,6 @@
 
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
-            }
-            case 13:
-            {
-                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
             }
             default:
                 break;
@@ -279,7 +264,11 @@
                                    kTKPDCATEGORY_DATATITLEKEY : [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY]
                                    };
         [_delegate CategoryMenuViewController:self userInfo:userinfo];
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        if (_isBeingPresented) {
+            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        } else {
+            [self.navigationController popToViewController:_delegate animated:YES];
+        }
     }
 }
 

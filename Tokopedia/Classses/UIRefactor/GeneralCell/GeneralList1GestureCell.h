@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelname;
 @property (weak, nonatomic) IBOutlet UILabel *labeldefault;
 @property (weak, nonatomic) IBOutlet UILabel *labelvalue;
+@property (weak, nonatomic) IBOutlet UILabel *textLabel;
 
 @property (nonatomic) NSInteger type;
 @property (strong, nonatomic) NSIndexPath *indexpath;

@@ -7,7 +7,6 @@
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
             <string>GothamBook</string>
-            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -16,7 +15,6 @@
                 <outlet property="activityIndicator" destination="pCX-Gr-tV7" id="lIz-V3-UDc"/>
                 <outlet property="alertLabel" destination="LYm-kA-B92" id="zbF-fs-2bc"/>
                 <outlet property="alertView" destination="u8O-JY-tZd" id="74M-VY-2DR"/>
-                <outlet property="filterButton" destination="LNq-tC-Dcu" id="IRS-K0-Evt"/>
                 <outlet property="footerView" destination="hXd-um-DF6" id="KN1-bQ-HuW"/>
                 <outlet property="tableView" destination="1fh-8o-6y0" id="PKR-eJ-BRx"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -27,48 +25,9 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ljV-Fk-VDb" userLabel="Toolbar View">
-                    <rect key="frame" x="0.0" y="435" width="320" height="45"/>
-                    <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p3b-14-sPe" userLabel="Top Border">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LNq-tC-Dcu">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <inset key="titleEdgeInsets" minX="-29" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <inset key="imageEdgeInsets" minX="83" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Filter" image="icon_arrow_up.png">
-                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="mrh-Qp-QeJ"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="LNq-tC-Dcu" firstAttribute="top" secondItem="ljV-Fk-VDb" secondAttribute="top" id="2RT-zi-dVX"/>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="6Lp-3H-6r0"/>
-                        <constraint firstAttribute="bottom" secondItem="LNq-tC-Dcu" secondAttribute="bottom" id="8Ab-6x-SXl"/>
-                        <constraint firstAttribute="height" constant="45" id="Cvx-cZ-dcU"/>
-                        <constraint firstItem="p3b-14-sPe" firstAttribute="leading" secondItem="ljV-Fk-VDb" secondAttribute="leading" id="PKo-5I-bsy"/>
-                        <constraint firstItem="LNq-tC-Dcu" firstAttribute="leading" secondItem="ljV-Fk-VDb" secondAttribute="leading" id="PxK-Yf-9Lu"/>
-                        <constraint firstAttribute="trailing" secondItem="LNq-tC-Dcu" secondAttribute="trailing" id="bUU-i5-ylb"/>
-                        <constraint firstAttribute="bottom" secondItem="p3b-14-sPe" secondAttribute="bottom" constant="44" id="dGe-ta-q01"/>
-                        <constraint firstAttribute="trailing" secondItem="p3b-14-sPe" secondAttribute="trailing" id="nnb-Jr-fM0"/>
-                        <constraint firstItem="p3b-14-sPe" firstAttribute="top" secondItem="ljV-Fk-VDb" secondAttribute="top" id="yiQ-Sg-4kr"/>
-                    </constraints>
-                </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="237" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="1fh-8o-6y0">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="435"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="435" id="gm9-Ku-SC5"/>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="320" id="jPd-qP-nHj"/>
-                    </constraints>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="CIs-Ij-74k"/>
                         <outlet property="delegate" destination="-1" id="AB8-Ji-EBy"/>
@@ -77,14 +36,10 @@
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="ljV-Fk-VDb" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="25m-gr-vfM"/>
                 <constraint firstAttribute="trailing" secondItem="1fh-8o-6y0" secondAttribute="trailing" id="5Ox-Br-gIo"/>
-                <constraint firstAttribute="trailing" secondItem="ljV-Fk-VDb" secondAttribute="trailing" id="Y7f-L2-yN0"/>
+                <constraint firstAttribute="bottom" secondItem="1fh-8o-6y0" secondAttribute="bottom" id="RIH-s4-37s"/>
                 <constraint firstItem="1fh-8o-6y0" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="hxb-do-I1U"/>
-                <constraint firstItem="ljV-Fk-VDb" firstAttribute="top" secondItem="1fh-8o-6y0" secondAttribute="bottom" id="ofp-l8-aIi"/>
                 <constraint firstItem="1fh-8o-6y0" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="t0V-gP-Fkh"/>
-                <constraint firstItem="ljV-Fk-VDb" firstAttribute="top" secondItem="1fh-8o-6y0" secondAttribute="bottom" id="utY-hN-bJS"/>
-                <constraint firstAttribute="bottom" secondItem="ljV-Fk-VDb" secondAttribute="bottom" id="v52-E1-N14"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
@@ -117,9 +72,6 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
-    <resources>
-        <image name="icon_arrow_up.png" width="14" height="14"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -213,9 +213,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     CGRect newHeaderPosition = searchView.frame;
     newHeaderPosition.origin.y = _header.frame.size.height;
     searchView.frame = newHeaderPosition;
+    searchView.backgroundColor = [UIColor clearColor];
     
     CGRect newFrame = _header.frame;
-    newFrame.size.height += 44;
+    newFrame.size.height += 22;
     _header.frame = newFrame;
     
     [_header addSubview:searchView];
@@ -309,7 +310,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     if (self.cellType == UITableViewCellTypeOneColumn) {
         return 230;
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-        return 215;
+        return 205;
     } else {
         return 103;
     }
@@ -382,7 +383,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     [cell.productImageView setImageWithURLRequest:request
                                  placeholderImage:nil
                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                              [cell.productImageView setImage:image animated:YES];
+                                              [cell.productImageView setImage:image];
                                               [cell.productImageView setContentMode:UIViewContentModeScaleAspectFill];
                                           } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                               cell.productImageView.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];

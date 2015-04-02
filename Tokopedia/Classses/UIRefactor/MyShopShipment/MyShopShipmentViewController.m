@@ -376,7 +376,7 @@
         #pragma clang diagnostic push
         #pragma clang diagnostic ignored "-Warc-retain-cycles"
         
-        [thumb setImage:image animated:YES];
+        [thumb setImage:image];
     
         #pragma clang diagnosti c pop
     

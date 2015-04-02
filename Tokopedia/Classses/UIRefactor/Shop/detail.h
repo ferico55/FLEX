@@ -43,7 +43,7 @@ typedef enum
 #define kTKPDTITLE_SEND_MESSAGE @"Send Message"
 #define kTKPDTITLE_NEW_TALK @"New Talk About It"
 #define kTKPDTITLE_SHOP_INFO @"Informasi Toko"
-#define KTKPDTITLE_FAV_THIS_SHOP @"People who Favorited This Shop"
+#define KTKPDTITLE_FAV_THIS_SHOP @"Yang Memfavoritkan"
 #define KTKPDTITLE_PEOPLE @"People Information"
 #define KTKPDTITLE_BIODATA @"Biodata"
 

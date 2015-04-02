@@ -10,4 +10,10 @@
 
 @implementation InboxReviewList
 
+- (NSString*)review_message {
+    return  [_review_message kv_decodeHTMLCharacterEntities];
+}
+
+
+
 @end

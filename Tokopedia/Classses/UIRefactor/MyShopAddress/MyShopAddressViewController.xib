@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6205" systemVersion="13D2061" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6198"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MyShopAddressViewController">
@@ -18,35 +18,9 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2qf-Hr-JIG">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_plus_blue" translatesAutoresizingMaskIntoConstraints="NO" id="8Ip-88-1Tj">
-                            <rect key="frame" x="20" y="14" width="15" height="15"/>
-                        </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5mg-I2-6cD">
-                            <rect key="frame" x="43" y="7" width="244" height="30"/>
-                            <state key="normal" title="Tambah Lokasi Toko">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="d3m-dP-RqJ"/>
-                            </connections>
-                        </button>
-                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Lz4-DM-V1Y" userLabel="Border Bottom">
-                            <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
-                        </view>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="44" id="X1n-VB-mSb"/>
-                    </constraints>
-                </view>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="40" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="1h2-Gr-QQo">
-                    <rect key="frame" x="0.0" y="44" width="320" height="524"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <color key="separatorColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="1h2-Gr-QQo">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="0uo-8z-FS4"/>
@@ -56,13 +30,10 @@
             </subviews>
             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="deviceRGB"/>
             <constraints>
-                <constraint firstItem="2qf-Hr-JIG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="2Wc-uY-ORq"/>
-                <constraint firstAttribute="trailing" secondItem="1h2-Gr-QQo" secondAttribute="trailing" id="JSH-NR-bbz"/>
-                <constraint firstAttribute="trailing" secondItem="2qf-Hr-JIG" secondAttribute="trailing" id="Xk1-NX-TKT"/>
-                <constraint firstItem="1h2-Gr-QQo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gJa-qb-l0D"/>
-                <constraint firstAttribute="bottom" secondItem="1h2-Gr-QQo" secondAttribute="bottom" id="kgD-Cj-UhX"/>
-                <constraint firstItem="1h2-Gr-QQo" firstAttribute="top" secondItem="2qf-Hr-JIG" secondAttribute="bottom" id="sUY-cd-sIP"/>
-                <constraint firstItem="2qf-Hr-JIG" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="xat-hv-sjS"/>
+                <constraint firstAttribute="trailing" secondItem="1h2-Gr-QQo" secondAttribute="trailing" id="AGv-WI-c4c"/>
+                <constraint firstItem="1h2-Gr-QQo" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Mk3-Jb-t3A"/>
+                <constraint firstAttribute="bottom" secondItem="1h2-Gr-QQo" secondAttribute="bottom" id="WyY-nA-QpS"/>
+                <constraint firstItem="1h2-Gr-QQo" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="orM-yr-fc3"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
         </view>
@@ -70,24 +41,22 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="34"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="g2F-g7-cPx">
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="g2F-g7-cPx">
                     <rect key="frame" x="150" y="7" width="20" height="20"/>
                 </activityIndicatorView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="centerY" secondItem="g2F-g7-cPx" secondAttribute="centerY" id="wTT-cE-SwG"/>
+                <constraint firstAttribute="centerX" secondItem="g2F-g7-cPx" secondAttribute="centerX" id="y9b-M6-9YB"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
-    <resources>
-        <image name="icon_plus_blue" width="20" height="20"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4">
-            <size key="portraitSize" width="320" height="568"/>
-            <size key="landscapeSize" width="568" height="320"/>
-        </simulatedScreenMetrics>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
 </document>
