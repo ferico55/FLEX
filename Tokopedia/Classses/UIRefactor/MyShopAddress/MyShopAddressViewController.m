@@ -18,7 +18,14 @@
 
 #import "URLCacheController.h"
 
-@interface MyShopAddressViewController ()<UITableViewDataSource, UITableViewDelegate, MyShopAddressDetailViewControllerDelegate, UIScrollViewDelegate, MGSwipeTableCellDelegate>
+@interface MyShopAddressViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    MyShopAddressDetailViewControllerDelegate,
+    UIScrollViewDelegate,
+    MGSwipeTableCellDelegate
+>
 {
     NSInteger _page;
     NSInteger _limit;
@@ -119,12 +126,18 @@
     _cachecontroller.URLCacheInterval = 86400.0;
     [_cachecontroller initCacheWithDocumentPath:path];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:nil];
     barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-
+    self.navigationItem.backBarButtonItem = barButtonItem;
+    
+    UIBarButtonItem *addBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                  target:self
+                                                                                  action:@selector(tap:)];
+    addBarButton.tag = 11;
+    self.navigationItem.rightBarButtonItem = addBarButton;
 }
 
 - (void)didReceiveMemoryWarning
@@ -201,13 +214,11 @@
 #pragma mark - Table View Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     BOOL isdefault;
     if (_ismanualsetdefault) {
         isdefault = (indexPath.row == 0)?YES:NO;
-    }
-    else
-    {
-        //isdefault = (list.address_status == 2)?YES:NO;
     }
     
     MyShopAddressDetailViewController *vc = [MyShopAddressDetailViewController new];
@@ -562,19 +573,24 @@
     
 }
 
--(void)requestActionDelete:(id)object
+-(void)requestActionDelete:(NSDictionary *)userinfo
 {
     if (_requestActionDelete.isExecuting) return;
+
     NSTimer *timer;
     
-    NSDictionary *userinfo = (NSDictionary*)object;
     Address *address = [userinfo objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY];
-    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIDELETESHOPLOCATIONKEY,
+    
+    NSDictionary* param = @{
+                            kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIDELETESHOPLOCATIONKEY,
                             kTKPDSHOP_APIADDRESSIDKEY : address.location_address_id?:@(0)
                             };
     _requestcount ++;
     
-    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOPADDRESSACTION_APIPATH parameters:[param encrypt]]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
+    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self
+                                                                                            method:RKRequestMethodPOST
+                                                                                              path:kTKPDDETAILSHOPADDRESSACTION_APIPATH
+                                                                                        parameters:[param encrypt]];
     
     [_requestActionDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionDelete:mappingResult withOperation:operation];
@@ -592,7 +608,12 @@
     
     [_operationQueue addOperation:_requestActionDelete];
     
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionDelete) userInfo:nil repeats:NO];
+    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                            target:self
+                                          selector:@selector(requestTimeoutActionDelete)
+                                          userInfo:nil
+                                           repeats:NO];
+    
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
@@ -623,28 +644,25 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (setting.message_status) {
-                    NSArray *array = setting.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-                }
-                else if(setting.message_error)
-                {
+                if (setting.result.is_success) {
+                    
+                    NSString *message = @"Anda telah berhasil menghapus lokasi.";
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[message] delegate:self];
+                    [alert show];
+                    
+                } else if(setting.message_error) {
                     [self cancelDeleteData];
-                    NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                }
-                if (!setting.result.is_success) {
-                    [self cancelActionDelete];
+                    
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:setting.message_error delegate:self];
+                    [alert show];
+                
                     NSIndexPath *indexpath = [_datainput objectForKey:kTKPDDETAIL_DATAINDEXPATHDELETEKEY];
                     [_list insertObject:[_datainput objectForKey:kTKPDDETAIL_DATADELETEDOBJECTKEY] atIndex:indexpath.row];
                     [_table reloadData];
+
                 }
             }
-        }
-        else{
-            
+        } else {
             [self cancelActionDelete];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             [self cancelDeleteData];
@@ -661,15 +679,21 @@
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else {
-        //add new address
-        MyShopAddressEditViewController *vc = [MyShopAddressEditViewController new];
-        vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
-                    kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY)
-                    };
-        [self.navigationController pushViewController:vc animated:YES];
+        if ([sender tag] == 10) {
+            [self.navigationController popViewControllerAnimated:YES];
+        } else if ([sender tag] == 11) {
+            //add new address
+            MyShopAddressEditViewController *vc = [MyShopAddressEditViewController new];
+            vc.data = @{
+                        kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
+                        kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY)
+                        };
+            
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            nav.navigationBar.translucent = NO;
+            
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+        }
     }
 }
 

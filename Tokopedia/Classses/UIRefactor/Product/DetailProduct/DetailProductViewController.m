@@ -50,7 +50,15 @@
 #import "ProductGalleryViewController.h"
 
 #pragma mark - Detail Product View Controller
-@interface DetailProductViewController () <UITableViewDelegate, UITableViewDataSource, DetailProductInfoCellDelegate, DetailProductOtherViewDelegate, LoginViewDelegate, TokopediaNetworkManagerDelegate>
+@interface DetailProductViewController ()
+<
+    UITableViewDelegate,
+    UITableViewDataSource,
+    DetailProductInfoCellDelegate,
+    DetailProductOtherViewDelegate,
+    LoginViewDelegate,
+    TokopediaNetworkManagerDelegate
+>
 {
     NSMutableDictionary *_datatalk;
     NSMutableArray *_otherproductviews;
@@ -458,7 +466,6 @@
             }
                 
             case 20 : {
-                NSMutableArray *viewcontrollers = [NSMutableArray new];
                 NSString *shopid = _product.result.shop_info.shop_id;
                 if ([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY] isEqualToString:shopid]) {
                     [self.navigationController popViewControllerAnimated:YES];

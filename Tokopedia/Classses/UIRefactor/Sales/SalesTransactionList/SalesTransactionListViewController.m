@@ -21,6 +21,7 @@
 #import "ChangeReceiptNumberViewController.h"
 #import "DetailShipmentStatusViewController.h"
 #import "TKPDTabProfileNavigationController.h"
+#import "NavigateViewController.h"
 
 @interface SalesTransactionListViewController ()
 <
@@ -105,6 +106,13 @@
                                                                          target:self
                                                                          action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+
+    UIBarButtonItem *filterBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Filter"
+                                                                        style:UIBarButtonItemStyleBordered
+                                                                       target:self
+                                                                       action:@selector(tap:)];
+    filterBarButton.tag = 11;
+    self.navigationItem.rightBarButtonItem = filterBarButton;
     
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
 }
@@ -266,10 +274,8 @@
 
 - (void)didTapUserAtIndexPath:(NSIndexPath *)indexPath{
     _selectedOrder = [_orders objectAtIndex:indexPath.row];
-    
-    TKPDTabProfileNavigationController *controller = [TKPDTabProfileNavigationController new];
-    controller.data = @{API_USER_ID_KEY:_selectedOrder.order_customer.customer_id};
-    [self.navigationController pushViewController:controller animated:YES];
+    NavigateViewController *controller = [NavigateViewController new];
+    [controller navigateToProfileFromViewController:self withUserID:_selectedOrder.order_customer.customer_id];
 }
 
 #pragma mark - Change receipt delegate
@@ -708,21 +714,16 @@
 
 - (IBAction)tap:(id)sender
 {
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton *)sender;
-        if (button.tag == 1) {
-            UINavigationController *navigationController = [[UINavigationController alloc] init];
-            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-            navigationController.navigationBar.translucent = NO;
-            navigationController.navigationBar.tintColor = [UIColor whiteColor];
-            
-            FilterSalesTransactionListViewController *controller = [FilterSalesTransactionListViewController new];
-            controller.delegate = self;
-            navigationController.viewControllers = @[controller];
-            
-            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-        }
-    }
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    FilterSalesTransactionListViewController *controller = [FilterSalesTransactionListViewController new];
+    controller.delegate = self;
+    navigationController.viewControllers = @[controller];
+    
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - Filter delegate

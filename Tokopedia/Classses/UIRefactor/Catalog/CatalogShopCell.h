@@ -38,4 +38,8 @@
 @property (strong, nonatomic) id<CatalogShopDelegate> delegate;
 @property (strong, nonatomic) NSIndexPath *indexPath;
 
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *stars;
+
+- (void)setShopRate:(NSInteger)rate;
+
 @end

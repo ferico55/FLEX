@@ -10,12 +10,46 @@
 
 @implementation TKPDTextView
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
-    // Drawing code
+    [super drawRect:rect];
+    _placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, self.frame.size.width, 40)];
+    _placeholderLabel.text = _placeholder;
+    _placeholderLabel.font = [UIFont fontWithName:self.font.fontName size:self.font.pointSize];
+    _placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
+    _placeholderLabel.tag = 1;
+    [self addSubview:_placeholderLabel];
+    
+    if (_placeholder.length > 0) {
+        _placeholderLabel.hidden = YES;
+    }
 }
-*/
+
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textChanged:)
+                                                 name:UITextViewTextDidChangeNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textChanged:)
+                                                 name:UITextViewTextDidBeginEditingNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(textChanged:)
+                                                 name:UITextViewTextDidEndEditingNotification
+                                               object:nil];
+}
+
+- (void)textChanged:(NSNotification *)notification {
+    if(self.text.length == 0) {
+        _placeholderLabel.hidden = NO;
+    } else {
+        _placeholderLabel.hidden = YES;
+    }
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 @end

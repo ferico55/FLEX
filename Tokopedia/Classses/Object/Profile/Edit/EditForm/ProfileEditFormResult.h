@@ -10,6 +10,6 @@
 
 @interface ProfileEditFormResult : NSObject
 
-@property (nonatomic) BOOL is_success;
+@property (strong, nonatomic) NSString *is_success;
 
 @end

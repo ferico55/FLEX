@@ -64,7 +64,7 @@
                             </constraints>
                             <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
                             <inset key="contentEdgeInsets" minX="0.0" minY="2" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="BUY">
+                            <state key="normal" title="Beli">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -140,6 +140,10 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fRe-AQ-JgI">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="450"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0yt-n2-JvF">
                     <rect key="frame" x="15" y="15" width="290" height="21"/>
                     <constraints>
@@ -199,8 +203,8 @@
                         <segmentedControl opaque="NO" tag="1" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Dyh-bp-GCz">
                             <rect key="frame" x="15" y="13" width="290" height="29"/>
                             <segments>
-                                <segment title="Specification"/>
-                                <segment title="Description"/>
+                                <segment title="Spesifikasi"/>
+                                <segment title="Deskripsi"/>
                             </segments>
                             <connections>
                                 <action selector="tap:" destination="-1" eventType="valueChanged" id="vUB-lT-w4v"/>
@@ -237,18 +241,22 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="0yt-n2-JvF" secondAttribute="trailing" constant="15" id="4AG-bl-skw"/>
+                <constraint firstAttribute="trailing" secondItem="fRe-AQ-JgI" secondAttribute="trailing" id="4tp-Md-68a"/>
                 <constraint firstAttribute="trailing" secondItem="mTL-UV-LYU" secondAttribute="trailing" id="BbT-bD-5Lc"/>
                 <constraint firstItem="wIs-wM-BvO" firstAttribute="leading" secondItem="dd0-OT-oAb" secondAttribute="leading" constant="15" id="DXF-Yg-aJ8"/>
                 <constraint firstItem="mTL-UV-LYU" firstAttribute="top" secondItem="4to-bW-006" secondAttribute="bottom" id="HDp-Ha-WxX"/>
                 <constraint firstItem="o8G-Ut-ECP" firstAttribute="leading" secondItem="dd0-OT-oAb" secondAttribute="leading" id="JZ0-bN-vUn"/>
                 <constraint firstItem="mTL-UV-LYU" firstAttribute="leading" secondItem="dd0-OT-oAb" secondAttribute="leading" id="Jac-Xr-Wyg"/>
+                <constraint firstItem="fRe-AQ-JgI" firstAttribute="top" secondItem="dd0-OT-oAb" secondAttribute="top" id="Ts4-91-Upx"/>
                 <constraint firstItem="o8G-Ut-ECP" firstAttribute="top" secondItem="mTL-UV-LYU" secondAttribute="bottom" id="dDs-MW-tWb"/>
                 <constraint firstAttribute="trailing" secondItem="4to-bW-006" secondAttribute="trailing" id="e1l-la-uVb"/>
+                <constraint firstItem="fRe-AQ-JgI" firstAttribute="leading" secondItem="dd0-OT-oAb" secondAttribute="leading" id="h6f-vT-ORx"/>
                 <constraint firstItem="0yt-n2-JvF" firstAttribute="top" secondItem="dd0-OT-oAb" secondAttribute="top" constant="15" id="h72-Bi-eZ2"/>
                 <constraint firstItem="0yt-n2-JvF" firstAttribute="leading" secondItem="dd0-OT-oAb" secondAttribute="leading" constant="15" id="iLn-PJ-10d"/>
+                <constraint firstAttribute="bottom" secondItem="fRe-AQ-JgI" secondAttribute="bottom" constant="10" id="ieO-Nl-6uy"/>
                 <constraint firstItem="4to-bW-006" firstAttribute="top" secondItem="wIs-wM-BvO" secondAttribute="bottom" constant="13" id="ig9-6v-GZn"/>
                 <constraint firstAttribute="trailing" secondItem="wIs-wM-BvO" secondAttribute="trailing" constant="15" id="m3s-kH-MQc"/>
                 <constraint firstAttribute="trailing" secondItem="o8G-Ut-ECP" secondAttribute="trailing" id="pVM-ev-DpY"/>

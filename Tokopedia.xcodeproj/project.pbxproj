@@ -10,6 +10,17 @@
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
+		E48F37E21ACCF063009C2B57 /* RequestGenerateHost.m in Sources */ = {isa = PBXBuildFile; fileRef = E48F37DF1ACCF063009C2B57 /* RequestGenerateHost.m */; };
+		E48F37E31ACCF063009C2B57 /* RequestUploadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = E48F37E11ACCF063009C2B57 /* RequestUploadImage.m */; };
+		E48F37E61ACCF0F5009C2B57 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = E48F37E51ACCF0F5009C2B57 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */; };
+		E48F37E81ACCF174009C2B57 /* ProductAddEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E48F37E71ACCF174009C2B57 /* ProductAddEditViewController.xib */; };
+		E4993B611ACBAF4A00A9DB88 /* icon_etalase.png in Resources */ = {isa = PBXBuildFile; fileRef = E4993B5F1ACBAF4A00A9DB88 /* icon_etalase.png */; };
+		E4993B621ACBAF4A00A9DB88 /* icon_etalase@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4993B601ACBAF4A00A9DB88 /* icon_etalase@2x.png */; };
+		E4993B651ACBDEEF00A9DB88 /* icon_plus_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = E4993B631ACBDEEF00A9DB88 /* icon_plus_blue.png */; };
+		E4993B661ACBDEEF00A9DB88 /* icon_plus_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E4993B641ACBDEEF00A9DB88 /* icon_plus_blue@2x.png */; };
+		E4A4E8751AC56734008E070A /* ChangePhoneNumber.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A4E8741AC56734008E070A /* ChangePhoneNumber.m */; };
+		E4A4E8781AC56746008E070A /* ChangePhoneNumberResult.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A4E8771AC56746008E070A /* ChangePhoneNumberResult.m */; };
+		E4E080991AC963080097E0D4 /* TKPDTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = E4E080981AC963080097E0D4 /* TKPDTextView.m */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
 		FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */; };
@@ -32,7 +43,6 @@
 		FC3FD4861AC508AC0034AE4B /* NSArrayCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FCC8B1AC508A90034AE4B /* NSArrayCategory.m */; };
 		FC3FD4871AC508AC0034AE4B /* NSData+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FCC8D1AC508A90034AE4B /* NSData+Encryption.m */; };
 		FC3FD4881AC508AC0034AE4B /* NSDictionaryCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FCC8F1AC508A90034AE4B /* NSDictionaryCategory.m */; };
-		FC3FD4891AC508AC0034AE4B /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FCC911AC508A90034AE4B /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */; };
 		FC3FD48A1AC508AC0034AE4B /* NSString+HTML.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FCC931AC508A90034AE4B /* NSString+HTML.m */; };
 		FC3FD48B1AC508AC0034AE4B /* NSStringCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FCC951AC508A90034AE4B /* NSStringCategory.m */; };
 		FC3FD48C1AC508AC0034AE4B /* NSUserDefaultCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FCC971AC508A90034AE4B /* NSUserDefaultCategory.m */; };
@@ -388,8 +398,6 @@
 		FC3FD5EA1AC508AC0034AE4B /* CameraCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3FCFA71AC508AA0034AE4B /* CameraCollectionCell.xib */; };
 		FC3FD5EB1AC508AC0034AE4B /* CameraCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FCFA91AC508AA0034AE4B /* CameraCollectionViewController.m */; };
 		FC3FD5EC1AC508AC0034AE4B /* CameraCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3FCFAA1AC508AA0034AE4B /* CameraCollectionViewController.xib */; };
-		FC3FD5ED1AC508AC0034AE4B /* RequestGenerateHost.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FCFAC1AC508AA0034AE4B /* RequestGenerateHost.m */; };
-		FC3FD5EE1AC508AC0034AE4B /* RequestUploadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FCFAE1AC508AA0034AE4B /* RequestUploadImage.m */; };
 		FC3FD5EF1AC508AC0034AE4B /* CatalogProductCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FCFB11AC508AA0034AE4B /* CatalogProductCell.m */; };
 		FC3FD5F01AC508AC0034AE4B /* CatalogProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3FCFB21AC508AA0034AE4B /* CatalogProductCell.xib */; };
 		FC3FD5F11AC508AC0034AE4B /* CatalogProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FCFB41AC508AA0034AE4B /* CatalogProductViewController.m */; };
@@ -600,7 +608,6 @@
 		FC3FD6BE1AC508AC0034AE4B /* ProductAddEditDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FD1221AC508AA0034AE4B /* ProductAddEditDetailViewController.m */; };
 		FC3FD6BF1AC508AC0034AE4B /* ProductAddEditDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD1231AC508AA0034AE4B /* ProductAddEditDetailViewController.xib */; };
 		FC3FD6C01AC508AC0034AE4B /* ProductAddEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FD1251AC508AA0034AE4B /* ProductAddEditViewController.m */; };
-		FC3FD6C11AC508AC0034AE4B /* ProductAddEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD1261AC508AA0034AE4B /* ProductAddEditViewController.xib */; };
 		FC3FD6C21AC508AC0034AE4B /* ProductEditImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FD1281AC508AA0034AE4B /* ProductEditImageViewController.m */; };
 		FC3FD6C31AC508AC0034AE4B /* ProductEditImageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD1291AC508AA0034AE4B /* ProductEditImageViewController.xib */; };
 		FC3FD6C41AC508AC0034AE4B /* ProductEditWholesaleCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FD12B1AC508AA0034AE4B /* ProductEditWholesaleCell.m */; };
@@ -1039,8 +1046,6 @@
 		FC3FD8751AC508AC0034AE4B /* icon_order_check@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD3B91AC508AB0034AE4B /* icon_order_check@2x.png */; };
 		FC3FD8761AC508AC0034AE4B /* icon_people_grey.png in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD3BA1AC508AB0034AE4B /* icon_people_grey.png */; };
 		FC3FD8771AC508AC0034AE4B /* icon_people_grey@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD3BB1AC508AB0034AE4B /* icon_people_grey@2x.png */; };
-		FC3FD8781AC508AC0034AE4B /* icon_plus_blue.png in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD3BC1AC508AB0034AE4B /* icon_plus_blue.png */; };
-		FC3FD8791AC508AC0034AE4B /* icon_plus_blue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD3BD1AC508AB0034AE4B /* icon_plus_blue@2x.png */; };
 		FC3FD87A1AC508AC0034AE4B /* icon_profile_picture.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD3BE1AC508AB0034AE4B /* icon_profile_picture.jpeg */; };
 		FC3FD87B1AC508AC0034AE4B /* icon_quote.png in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD3BF1AC508AB0034AE4B /* icon_quote.png */; };
 		FC3FD87C1AC508AC0034AE4B /* icon_quote@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD3C01AC508AB0034AE4B /* icon_quote@2x.png */; };
@@ -1218,6 +1223,23 @@
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		DF0AECEE34728168167CD53B /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		E009E2725EF60881CE01B185 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
+		E48F37DE1ACCF063009C2B57 /* RequestGenerateHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestGenerateHost.h; sourceTree = "<group>"; };
+		E48F37DF1ACCF063009C2B57 /* RequestGenerateHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestGenerateHost.m; sourceTree = "<group>"; };
+		E48F37E01ACCF063009C2B57 /* RequestUploadImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUploadImage.h; sourceTree = "<group>"; };
+		E48F37E11ACCF063009C2B57 /* RequestUploadImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUploadImage.m; sourceTree = "<group>"; };
+		E48F37E41ACCF0F5009C2B57 /* NSMutableURLRequest+TKPDURLRequestUploadImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+TKPDURLRequestUploadImage.h"; sourceTree = "<group>"; };
+		E48F37E51ACCF0F5009C2B57 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+TKPDURLRequestUploadImage.m"; sourceTree = "<group>"; };
+		E48F37E71ACCF174009C2B57 /* ProductAddEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductAddEditViewController.xib; sourceTree = "<group>"; };
+		E4993B5F1ACBAF4A00A9DB88 /* icon_etalase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_etalase.png; sourceTree = "<group>"; };
+		E4993B601ACBAF4A00A9DB88 /* icon_etalase@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_etalase@2x.png"; sourceTree = "<group>"; };
+		E4993B631ACBDEEF00A9DB88 /* icon_plus_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_plus_blue.png; sourceTree = "<group>"; };
+		E4993B641ACBDEEF00A9DB88 /* icon_plus_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_plus_blue@2x.png"; sourceTree = "<group>"; };
+		E4A4E8731AC56734008E070A /* ChangePhoneNumber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePhoneNumber.h; sourceTree = "<group>"; };
+		E4A4E8741AC56734008E070A /* ChangePhoneNumber.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePhoneNumber.m; sourceTree = "<group>"; };
+		E4A4E8761AC56746008E070A /* ChangePhoneNumberResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePhoneNumberResult.h; sourceTree = "<group>"; };
+		E4A4E8771AC56746008E070A /* ChangePhoneNumberResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePhoneNumberResult.m; sourceTree = "<group>"; };
+		E4E080971AC963080097E0D4 /* TKPDTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDTextView.h; sourceTree = "<group>"; };
+		E4E080981AC963080097E0D4 /* TKPDTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTextView.m; sourceTree = "<group>"; };
 		FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC0D6D3B1A42F3B1000696A9 /* string copy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "string copy.h"; sourceTree = "<group>"; };
 		FC0D6D3C1A42F3B1000696A9 /* stringrestkit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringrestkit.h; sourceTree = "<group>"; };
@@ -1257,8 +1279,6 @@
 		FC3FCC8D1AC508A90034AE4B /* NSData+Encryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Encryption.m"; sourceTree = "<group>"; };
 		FC3FCC8E1AC508A90034AE4B /* NSDictionaryCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDictionaryCategory.h; sourceTree = "<group>"; };
 		FC3FCC8F1AC508A90034AE4B /* NSDictionaryCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDictionaryCategory.m; sourceTree = "<group>"; };
-		FC3FCC901AC508A90034AE4B /* NSMutableURLRequest+TKPDURLRequestUploadImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableURLRequest+TKPDURLRequestUploadImage.h"; sourceTree = "<group>"; };
-		FC3FCC911AC508A90034AE4B /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableURLRequest+TKPDURLRequestUploadImage.m"; sourceTree = "<group>"; };
 		FC3FCC921AC508A90034AE4B /* NSString+HTML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HTML.h"; sourceTree = "<group>"; };
 		FC3FCC931AC508A90034AE4B /* NSString+HTML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HTML.m"; sourceTree = "<group>"; };
 		FC3FCC941AC508A90034AE4B /* NSStringCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringCategory.h; sourceTree = "<group>"; };
@@ -1956,10 +1976,6 @@
 		FC3FCFA81AC508AA0034AE4B /* CameraCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraCollectionViewController.h; sourceTree = "<group>"; };
 		FC3FCFA91AC508AA0034AE4B /* CameraCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraCollectionViewController.m; sourceTree = "<group>"; };
 		FC3FCFAA1AC508AA0034AE4B /* CameraCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraCollectionViewController.xib; sourceTree = "<group>"; };
-		FC3FCFAB1AC508AA0034AE4B /* RequestGenerateHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestGenerateHost.h; sourceTree = "<group>"; };
-		FC3FCFAC1AC508AA0034AE4B /* RequestGenerateHost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestGenerateHost.m; sourceTree = "<group>"; };
-		FC3FCFAD1AC508AA0034AE4B /* RequestUploadImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUploadImage.h; sourceTree = "<group>"; };
-		FC3FCFAE1AC508AA0034AE4B /* RequestUploadImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUploadImage.m; sourceTree = "<group>"; };
 		FC3FCFB01AC508AA0034AE4B /* CatalogProductCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CatalogProductCell.h; sourceTree = "<group>"; };
 		FC3FCFB11AC508AA0034AE4B /* CatalogProductCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatalogProductCell.m; sourceTree = "<group>"; };
 		FC3FCFB21AC508AA0034AE4B /* CatalogProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CatalogProductCell.xib; sourceTree = "<group>"; };
@@ -2297,7 +2313,6 @@
 		FC3FD1231AC508AA0034AE4B /* ProductAddEditDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductAddEditDetailViewController.xib; sourceTree = "<group>"; };
 		FC3FD1241AC508AA0034AE4B /* ProductAddEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductAddEditViewController.h; sourceTree = "<group>"; };
 		FC3FD1251AC508AA0034AE4B /* ProductAddEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductAddEditViewController.m; sourceTree = "<group>"; };
-		FC3FD1261AC508AA0034AE4B /* ProductAddEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductAddEditViewController.xib; sourceTree = "<group>"; };
 		FC3FD1271AC508AA0034AE4B /* ProductEditImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductEditImageViewController.h; sourceTree = "<group>"; };
 		FC3FD1281AC508AA0034AE4B /* ProductEditImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductEditImageViewController.m; sourceTree = "<group>"; };
 		FC3FD1291AC508AA0034AE4B /* ProductEditImageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductEditImageViewController.xib; sourceTree = "<group>"; };
@@ -2896,8 +2911,6 @@
 		FC3FD3B91AC508AB0034AE4B /* icon_order_check@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_order_check@2x.png"; sourceTree = "<group>"; };
 		FC3FD3BA1AC508AB0034AE4B /* icon_people_grey.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_people_grey.png; sourceTree = "<group>"; };
 		FC3FD3BB1AC508AB0034AE4B /* icon_people_grey@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_people_grey@2x.png"; sourceTree = "<group>"; };
-		FC3FD3BC1AC508AB0034AE4B /* icon_plus_blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_plus_blue.png; sourceTree = "<group>"; };
-		FC3FD3BD1AC508AB0034AE4B /* icon_plus_blue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_plus_blue@2x.png"; sourceTree = "<group>"; };
 		FC3FD3BE1AC508AB0034AE4B /* icon_profile_picture.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = icon_profile_picture.jpeg; sourceTree = "<group>"; };
 		FC3FD3BF1AC508AB0034AE4B /* icon_quote.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_quote.png; sourceTree = "<group>"; };
 		FC3FD3C01AC508AB0034AE4B /* icon_quote@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_quote@2x.png"; sourceTree = "<group>"; };
@@ -3225,6 +3238,8 @@
 		FC3FCC831AC508A90034AE4B /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
+				E48F37E41ACCF0F5009C2B57 /* NSMutableURLRequest+TKPDURLRequestUploadImage.h */,
+				E48F37E51ACCF0F5009C2B57 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */,
 				FC3FCC841AC508A90034AE4B /* DBManager.h */,
 				FC3FCC851AC508A90034AE4B /* DBManager.m */,
 				FC3FCC861AC508A90034AE4B /* ExpiringCache.h */,
@@ -3237,8 +3252,6 @@
 				FC3FCC8D1AC508A90034AE4B /* NSData+Encryption.m */,
 				FC3FCC8E1AC508A90034AE4B /* NSDictionaryCategory.h */,
 				FC3FCC8F1AC508A90034AE4B /* NSDictionaryCategory.m */,
-				FC3FCC901AC508A90034AE4B /* NSMutableURLRequest+TKPDURLRequestUploadImage.h */,
-				FC3FCC911AC508A90034AE4B /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */,
 				FC3FCC921AC508A90034AE4B /* NSString+HTML.h */,
 				FC3FCC931AC508A90034AE4B /* NSString+HTML.m */,
 				FC3FCC941AC508A90034AE4B /* NSStringCategory.h */,
@@ -3836,6 +3849,10 @@
 				FC3FCDD31AC508A90034AE4B /* ProfileEdit.m */,
 				FC3FCDD41AC508A90034AE4B /* ProfileEditResult.h */,
 				FC3FCDD51AC508A90034AE4B /* ProfileEditResult.m */,
+				E4A4E8731AC56734008E070A /* ChangePhoneNumber.h */,
+				E4A4E8741AC56734008E070A /* ChangePhoneNumber.m */,
+				E4A4E8761AC56746008E070A /* ChangePhoneNumberResult.h */,
+				E4A4E8771AC56746008E070A /* ChangePhoneNumberResult.m */,
 			);
 			path = Edit;
 			sourceTree = "<group>";
@@ -4703,15 +4720,15 @@
 		FC3FCF991AC508AA0034AE4B /* Camera */ = {
 			isa = PBXGroup;
 			children = (
+				E48F37DE1ACCF063009C2B57 /* RequestGenerateHost.h */,
+				E48F37DF1ACCF063009C2B57 /* RequestGenerateHost.m */,
+				E48F37E01ACCF063009C2B57 /* RequestUploadImage.h */,
+				E48F37E11ACCF063009C2B57 /* RequestUploadImage.m */,
 				FC3FCF9A1AC508AA0034AE4B /* camera.h */,
 				FC3FCF9B1AC508AA0034AE4B /* CameraController.h */,
 				FC3FCF9C1AC508AA0034AE4B /* CameraController.m */,
 				FC3FCF9D1AC508AA0034AE4B /* CameraController.xib */,
 				FC3FCF9E1AC508AA0034AE4B /* CameraCustom */,
-				FC3FCFAB1AC508AA0034AE4B /* RequestGenerateHost.h */,
-				FC3FCFAC1AC508AA0034AE4B /* RequestGenerateHost.m */,
-				FC3FCFAD1AC508AA0034AE4B /* RequestUploadImage.h */,
-				FC3FCFAE1AC508AA0034AE4B /* RequestUploadImage.m */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -4877,6 +4894,8 @@
 				FC3FD00A1AC508AA0034AE4B /* StarsRateView.xib */,
 				FC3FD00B1AC508AA0034AE4B /* TextField.h */,
 				FC3FD00C1AC508AA0034AE4B /* TextField.m */,
+				E4E080971AC963080097E0D4 /* TKPDTextView.h */,
+				E4E080981AC963080097E0D4 /* TKPDTextView.m */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -5204,13 +5223,13 @@
 		FC3FD0CC1AC508AA0034AE4B /* MyShopEtalase */ = {
 			isa = PBXGroup;
 			children = (
+				FC3FD0D31AC508AA0034AE4B /* MyshopEtalaseFilter */,
 				FC3FD0CD1AC508AA0034AE4B /* MyShopEtalaseDetailViewController.h */,
 				FC3FD0CE1AC508AA0034AE4B /* MyShopEtalaseDetailViewController.m */,
 				FC3FD0CF1AC508AA0034AE4B /* MyShopEtalaseDetailViewController.xib */,
 				FC3FD0D01AC508AA0034AE4B /* MyShopEtalaseEditViewController.h */,
 				FC3FD0D11AC508AA0034AE4B /* MyShopEtalaseEditViewController.m */,
 				FC3FD0D21AC508AA0034AE4B /* MyShopEtalaseEditViewController.xib */,
-				FC3FD0D31AC508AA0034AE4B /* MyshopEtalaseFilter */,
 				FC3FD0DA1AC508AA0034AE4B /* MyShopEtalaseViewController.h */,
 				FC3FD0DB1AC508AA0034AE4B /* MyShopEtalaseViewController.m */,
 				FC3FD0DC1AC508AA0034AE4B /* MyShopEtalaseViewController.xib */,
@@ -5295,7 +5314,7 @@
 				FC3FD1231AC508AA0034AE4B /* ProductAddEditDetailViewController.xib */,
 				FC3FD1241AC508AA0034AE4B /* ProductAddEditViewController.h */,
 				FC3FD1251AC508AA0034AE4B /* ProductAddEditViewController.m */,
-				FC3FD1261AC508AA0034AE4B /* ProductAddEditViewController.xib */,
+				E48F37E71ACCF174009C2B57 /* ProductAddEditViewController.xib */,
 				FC3FD1271AC508AA0034AE4B /* ProductEditImageViewController.h */,
 				FC3FD1281AC508AA0034AE4B /* ProductEditImageViewController.m */,
 				FC3FD1291AC508AA0034AE4B /* ProductEditImageViewController.xib */,
@@ -6264,6 +6283,10 @@
 		FC3FD3231AC508AB0034AE4B /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				E4993B631ACBDEEF00A9DB88 /* icon_plus_blue.png */,
+				E4993B641ACBDEEF00A9DB88 /* icon_plus_blue@2x.png */,
+				E4993B5F1ACBAF4A00A9DB88 /* icon_etalase.png */,
+				E4993B601ACBAF4A00A9DB88 /* icon_etalase@2x.png */,
 				FC3FD3241AC508AB0034AE4B /* balloon_read_left.png */,
 				FC3FD3251AC508AB0034AE4B /* balloon_read_right.png */,
 				FC3FD3261AC508AB0034AE4B /* button_white.png */,
@@ -6366,8 +6389,6 @@
 				FC3FD3B91AC508AB0034AE4B /* icon_order_check@2x.png */,
 				FC3FD3BA1AC508AB0034AE4B /* icon_people_grey.png */,
 				FC3FD3BB1AC508AB0034AE4B /* icon_people_grey@2x.png */,
-				FC3FD3BC1AC508AB0034AE4B /* icon_plus_blue.png */,
-				FC3FD3BD1AC508AB0034AE4B /* icon_plus_blue@2x.png */,
 				FC3FD3BE1AC508AB0034AE4B /* icon_profile_picture.jpeg */,
 				FC3FD3BF1AC508AB0034AE4B /* icon_quote.png */,
 				FC3FD3C01AC508AB0034AE4B /* icon_quote@2x.png */,
@@ -7090,7 +7111,6 @@
 				FC3FD8EB1AC508AC0034AE4B /* tabnav_bg.png in Resources */,
 				FC3FD8731AC508AC0034AE4B /* icon_order_check-01@2x.png in Resources */,
 				FC3FD6061AC508AC0034AE4B /* CategoryMenuViewCell.xib in Resources */,
-				FC3FD8791AC508AC0034AE4B /* icon_plus_blue@2x.png in Resources */,
 				FC3FD8571AC508AC0034AE4B /* icon_lock_grey@2x.png in Resources */,
 				FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */,
 				FC3FD6331AC508AC0034AE4B /* GeneralAlertCell.xib in Resources */,
@@ -7110,7 +7130,6 @@
 				FC3FD6E01AC508AC0034AE4B /* ReputationShopHeader.xib in Resources */,
 				FC3FD8D81AC508AC0034AE4B /* icon_cart_active@2x.png in Resources */,
 				FC3FD87F1AC508AC0034AE4B /* icon_share.png in Resources */,
-				FC3FD8781AC508AC0034AE4B /* icon_plus_blue.png in Resources */,
 				FC3FD6751AC508AC0034AE4B /* ResolutionCenterInputViewController.xib in Resources */,
 				FC3FD82A1AC508AC0034AE4B /* icon_category_white@2x.png in Resources */,
 				FC3FD8181AC508AC0034AE4B /* default-boy.png in Resources */,
@@ -7173,6 +7192,7 @@
 				FC3FD5FA1AC508AC0034AE4B /* CatalogSpecificationCell.xib in Resources */,
 				FC3FD8441AC508AC0034AE4B /* icon_facebook.png in Resources */,
 				FC3FD8771AC508AC0034AE4B /* icon_people_grey@2x.png in Resources */,
+				E4993B621ACBAF4A00A9DB88 /* icon_etalase@2x.png in Resources */,
 				FC3FD5F21AC508AC0034AE4B /* CatalogProductViewController.xib in Resources */,
 				FC3FD8BF1AC508AC0034AE4B /* navigation-button-bg-pt@2x.png in Resources */,
 				FC3FD6111AC508AC0034AE4B /* TKPDTabInboxTalkNavigationController.xib in Resources */,
@@ -7256,7 +7276,6 @@
 				FC3FD6D61AC508AC0034AE4B /* ProfileFavoriteShopCell.xib in Resources */,
 				FC3FD7E21AC508AC0034AE4B /* Lato-Bold.ttf in Resources */,
 				FC3FD75C1AC508AC0034AE4B /* ShopNotesViewController.xib in Resources */,
-				FC3FD6C11AC508AC0034AE4B /* ProductAddEditViewController.xib in Resources */,
 				FC3FD8561AC508AC0034AE4B /* icon_lock_grey.png in Resources */,
 				FC3FD5D41AC508AC0034AE4B /* AlertInfoVoucherCodeView.xib in Resources */,
 				FC3FD70B1AC508AC0034AE4B /* ChangeReceiptNumberViewController.xib in Resources */,
@@ -7305,6 +7324,7 @@
 				FC3FD8991AC508AC0034AE4B /* icon_success@2x.png in Resources */,
 				FC3FD8AE1AC508AC0034AE4B /* navigate-down@2x.png in Resources */,
 				FC3FD8D71AC508AC0034AE4B /* icon_cart_active.png in Resources */,
+				E4993B661ACBDEEF00A9DB88 /* icon_plus_blue@2x.png in Resources */,
 				FC3FD7D51AC508AC0034AE4B /* TxOrderPaymentConfirmationSuccessViewController.xib in Resources */,
 				FC3FD6E61AC508AC0034AE4B /* ReputationPageViewController.xib in Resources */,
 				FC3FD6A01AC508AC0034AE4B /* MyShopPaymentViewController.xib in Resources */,
@@ -7399,6 +7419,7 @@
 				FC3FD8291AC508AC0034AE4B /* icon_category_white.png in Resources */,
 				FC3FD8721AC508AC0034AE4B /* icon_order_check-01.png in Resources */,
 				FC3FD6B41AC508AC0034AE4B /* ProductGalleryViewController.xib in Resources */,
+				E4993B611ACBAF4A00A9DB88 /* icon_etalase.png in Resources */,
 				FC3FD8AD1AC508AC0034AE4B /* navigate-down.png in Resources */,
 				FC3FD7E91AC508AC0034AE4B /* icon_0@2x.png in Resources */,
 				FC3FD72B1AC508AC0034AE4B /* SettingBankNameViewController.xib in Resources */,
@@ -7437,6 +7458,7 @@
 				FC3FD82B1AC508AC0034AE4B /* icon_check.png in Resources */,
 				FC3FD8D11AC508AC0034AE4B /* ic_more.png in Resources */,
 				FC3FD63A1AC508AC0034AE4B /* GeneralPhotoProductCell.xib in Resources */,
+				E4993B651ACBDEEF00A9DB88 /* icon_plus_blue.png in Resources */,
 				FC3FD8701AC508AC0034AE4B /* icon_order_cancel.png in Resources */,
 				FC3FD7F31AC508AC0034AE4B /* icon_14.png in Resources */,
 				FC3FD83D1AC508AC0034AE4B /* icon_diskusi_comment_grey@2x.png in Resources */,
@@ -7478,6 +7500,7 @@
 				FC3FD80D1AC508AC0034AE4B /* icon_6@2x.png in Resources */,
 				FC3FD6F01AC508AC0034AE4B /* ProductQuantityCell.xib in Resources */,
 				FC3FD6551AC508AC0034AE4B /* HotlistCell.xib in Resources */,
+				E48F37E81ACCF174009C2B57 /* ProductAddEditViewController.xib in Resources */,
 				FC3FD66F1AC508AC0034AE4B /* InboxResolutionCenterOpenViewController.xib in Resources */,
 				FC3FD7DF1AC508AC0034AE4B /* GothamBook.ttf in Resources */,
 				FC3FD9021AC508AC0034AE4B /* icon_lihat_komplain@2x.png in Resources */,
@@ -7648,7 +7671,6 @@
 				FC3FD4D31AC508AC0034AE4B /* GeneralAction.m in Sources */,
 				FC3FD59A1AC508AC0034AE4B /* TransactionSummaryResult.m in Sources */,
 				FC3FD6511AC508AC0034AE4B /* ProductFeedViewController.m in Sources */,
-				FC3FD5ED1AC508AC0034AE4B /* RequestGenerateHost.m in Sources */,
 				FC3FD7241AC508AC0034AE4B /* SettingAddressExpandedCell.m in Sources */,
 				FC3FD6A21AC508AC0034AE4B /* MyShopShipmentViewController.m in Sources */,
 				FC3FD6641AC508AC0034AE4B /* FilterComplainViewController.m in Sources */,
@@ -7686,6 +7708,7 @@
 				FC3FD56E1AC508AC0034AE4B /* District.m in Sources */,
 				FC3FD7A71AC508AC0034AE4B /* TransactionCartResultViewController.m in Sources */,
 				FC3FD49C1AC508AC0034AE4B /* Deposit.m in Sources */,
+				E48F37E21ACCF063009C2B57 /* RequestGenerateHost.m in Sources */,
 				FC3FD5C71AC508AC0034AE4B /* RegisterViewController.m in Sources */,
 				FC3FD6F31AC508AC0034AE4B /* SalesNewOrderViewController.m in Sources */,
 				FC3FD76D1AC508AC0034AE4B /* ShopReviewPageViewController.m in Sources */,
@@ -7704,7 +7727,6 @@
 				FC3FD4D71AC508AC0034AE4B /* HistoryProductResult.m in Sources */,
 				FC3FD5911AC508AC0034AE4B /* OrderExtraFee.m in Sources */,
 				FC3FD5C01AC508AC0034AE4B /* UploadImage.m in Sources */,
-				FC3FD4891AC508AC0034AE4B /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
 				FC3FD4DD1AC508AC0034AE4B /* HotlistDetailResult.m in Sources */,
 				FC3FD6761AC508AC0034AE4B /* ResolutionCenterSystemCell.m in Sources */,
 				FC3FD7D61AC508AC0034AE4B /* TxOrderPaymentViewController.m in Sources */,
@@ -8009,7 +8031,6 @@
 				FC3FD65E1AC508AC0034AE4B /* InboxMessageDetailCell.m in Sources */,
 				FC3FD7381AC508AC0034AE4B /* SettingPrivacyCell.m in Sources */,
 				FC3FD69B1AC508AC0034AE4B /* MyShopNoteViewController.m in Sources */,
-				FC3FD5EE1AC508AC0034AE4B /* RequestUploadImage.m in Sources */,
 				FC3FD5261AC508AC0034AE4B /* BankAccountGetDefaultForm.m in Sources */,
 				FC3FD6C41AC508AC0034AE4B /* ProductEditWholesaleCell.m in Sources */,
 				FC3FD60B1AC508AC0034AE4B /* TKPDTabBarNavigationController.m in Sources */,
@@ -8134,6 +8155,7 @@
 				FC3FD7DB1AC508AC0034AE4B /* TxOrderTabViewController.m in Sources */,
 				FC3FD6411AC508AC0034AE4B /* GeneralSingleProductCell.m in Sources */,
 				FC3FD5CB1AC508AC0034AE4B /* AddressViewController.m in Sources */,
+				E4A4E8751AC56734008E070A /* ChangePhoneNumber.m in Sources */,
 				FC3FD5951AC508AC0034AE4B /* TxOrderConfirmationListOrder.m in Sources */,
 				FC3FD7101AC508AC0034AE4B /* FilterShipmentStatusViewController.m in Sources */,
 				FC3FD58A1AC508AC0034AE4B /* TransactionCart.m in Sources */,
@@ -8146,6 +8168,7 @@
 				FC3FD5D51AC508AC0034AE4B /* AlertListView.m in Sources */,
 				FC3FD5321AC508AC0034AE4B /* ReputationDetail.m in Sources */,
 				FC3FD5521AC508AC0034AE4B /* EtalaseList.m in Sources */,
+				E4A4E8781AC56746008E070A /* ChangePhoneNumberResult.m in Sources */,
 				FC3FD6C01AC508AC0034AE4B /* ProductAddEditViewController.m in Sources */,
 				FC3FD4D41AC508AC0034AE4B /* GeneralActionResult.m in Sources */,
 				FC3FD51F1AC508AC0034AE4B /* ProfileSettingsResult.m in Sources */,
@@ -8164,6 +8187,7 @@
 				FC3FD5AE1AC508AC0034AE4B /* SystemBankAcount.m in Sources */,
 				FC3FD7481AC508AC0034AE4B /* ShopFavoritedViewController.m in Sources */,
 				FC3FD4C41AC508AC0034AE4B /* TalkCommentResult.m in Sources */,
+				E48F37E31ACCF063009C2B57 /* RequestUploadImage.m in Sources */,
 				FC3FD62C1AC508AC0034AE4B /* DepositListBankViewController.m in Sources */,
 				FC3FD6A41AC508AC0034AE4B /* NotificationManager.m in Sources */,
 				FC3FD4F11AC508AC0034AE4B /* ResolutionCenterDetail.m in Sources */,
@@ -8215,6 +8239,7 @@
 				FC3FD7051AC508AC0034AE4B /* RequestShipmentCourier.m in Sources */,
 				FC3FD4FF1AC508AC0034AE4B /* InboxReviewResult.m in Sources */,
 				FC3FD5431AC508AC0034AE4B /* OrderTransaction.m in Sources */,
+				E4E080991AC963080097E0D4 /* TKPDTextView.m in Sources */,
 				FC3FD6621AC508AC0034AE4B /* InboxMessageViewController.m in Sources */,
 				FC3FD5211AC508AC0034AE4B /* AddressFormList.m in Sources */,
 				FC3FD50B1AC508AC0034AE4B /* Paging.m in Sources */,
@@ -8255,6 +8280,7 @@
 				FC3FD6531AC508AC0034AE4B /* ProductInfoTableViewController.m in Sources */,
 				FC3FD7191AC508AC0034AE4B /* SearchResultCell.m in Sources */,
 				FC3FD71C1AC508AC0034AE4B /* SearchResultShopViewController.m in Sources */,
+				E48F37E61ACCF0F5009C2B57 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
 				FC3FD75F1AC508AC0034AE4B /* SendMessageViewController.m in Sources */,
 				FC3FD6251AC508AC0034AE4B /* TextField.m in Sources */,
 			);

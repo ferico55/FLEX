@@ -69,6 +69,7 @@ typedef enum
 #define kTKPDPROFILE_APIGETPROFILEFORMKEY @"get_profile_form"
 #define kTKPDPROFILE_APIGETPROFILEKEY @"get_profile"
 #define kTKPDPROFILE_APISETUSERPROFILEKEY @"set_user_profile"
+#define kTKPDPROFILE_APIEDITPROFILEKEY  @"edit_profile"
 #define kTKPDPROFILE_APISETPASSWORDKEY @"set_password"
 #define kTKPDPROFILE_APIEDITPASSWORDKEY @"edit_password"
 #define kTKPDPROFILE_APISETEMAILNOTIFKEY @"set_email_notification"
@@ -227,12 +228,15 @@ typedef enum
 #define kTKPDPROFILE_PROFILESETTINGAPIPATH @"action/people.pl"
 #define API_OTP_PATH @"action/otp.pl"
 
+#define kTKPDPROFILE_VERIFICATIONNUMBERAPIPATH  @"action/verification-number.pl"
+#define kTKPDPROFILE_SEND_EMAIL_CHANGE_PHONE_NUMBER @"send_email_change_phone_number"
+
 #define kTKPDPROFILE_CACHEFILEPATH @"profile"
 #define kTKPDPROFILE_APIRESPONSEFILEFORMAT @"profile%zd"
 #define kTKPDPFAVORITESHOP_APIRESPONSEFILEFORMAT @"profilefavshop%zd"
 
 #define ARRAY_GENDER @[@{DATA_NAME_KEY:@"Pria", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Wanita", DATA_VALUE_KEY:@(2)}]
-#define ARRAY_LIST_MENU_SETTING_PROFILE @[@[@"Ubah Password"],@[@"Daftar Alamat", @"Akun Bank", @"Notifikasi", @"Ubah Profil"]]
+#define ARRAY_LIST_MENU_SETTING_PROFILE @[@[@"Ubah Password"],@[@"Daftar Alamat", @"Akun Bank", @"Notifikasi"]]
 
 #define kTKPDPROFILE_DATAGENDERARRAYKEY @[@"Pria",@"Wanita"]
 #define kTKPDPROFILE_DATAGENDERVALUEARRAYKEY @[@"1",@"2"]

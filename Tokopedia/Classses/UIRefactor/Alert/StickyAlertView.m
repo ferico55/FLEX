@@ -17,7 +17,6 @@
 
 @end
 
-
 @implementation StickyAlertView
 
 - (id)initWithFrame:(CGRect)frame
@@ -65,7 +64,10 @@
 {
     self = [self initWithMessages:messages
                         textColor:[UIColor whiteColor]
-                  backgroundColor:[UIColor colorWithRed:131.0/255.0 green:3.0/255.0 blue:0.0/255.0 alpha:1]
+                  backgroundColor:[UIColor colorWithRed:255.0/255.0
+                                                  green:59.0/255.0
+                                                   blue:48.0/255.0
+                                                  alpha:1]
                          delegate:delegate];
     return self;
 }
@@ -74,7 +76,10 @@
 {
     self = [self initWithMessages:messages
                         textColor:[UIColor whiteColor]
-                  backgroundColor:[UIColor colorWithRed:10.0/255.0 green:126.0/255.0 blue:7.0/255.0 alpha:1]
+                  backgroundColor:[UIColor colorWithRed:10.0/255.0
+                                                  green:126.0/255.0
+                                                   blue:7.0/255.0
+                                                  alpha:1]
                          delegate:delegate];
     return self;
 }
@@ -128,8 +133,10 @@
     NSString *joinedString = @"";
     if ([texts count] > 1) {
         joinedString = [NSString stringWithFormat:@"\u25CF %@", [[texts valueForKey:@"description"] componentsJoinedByString:@"\n\u25CF "]];
-    } else {
+    } else if ([texts count] == 1){
         joinedString = [texts objectAtIndex:0]?:@"";
+    } else {
+        joinedString = @"";
     }
     
     _textLabel.attributedText = [[NSAttributedString alloc] initWithString:joinedString attributes:attributes];

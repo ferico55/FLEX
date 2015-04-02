@@ -20,6 +20,7 @@
 #import "SubmitShipmentConfirmationViewController.h"
 #import "TKPDTabProfileNavigationController.h"
 #import "DetailProductViewController.h"
+#import "NavigateViewController.h"
 
 @interface OrderDetailViewController ()
 <
@@ -456,9 +457,8 @@
         [controller.view addSubview:webView];
         [self.navigationController pushViewController:controller animated:YES];
     } else if ([[sender view] isKindOfClass:[UIView class]]) {
-        TKPDTabProfileNavigationController *controller = [TKPDTabProfileNavigationController new];
-        controller.data = @{@"user_id":_transaction.order_customer.customer_id};
-        [self.navigationController pushViewController:controller animated:YES];
+        NavigateViewController *controller = [NavigateViewController new];
+        [controller navigateToProfileFromViewController:self withUserID:_transaction.order_customer.customer_id];
     }
 }
 

@@ -10,4 +10,6 @@
 
 @interface ChangePhoneNumberResult : NSObject
 
+@property BOOL is_success;
+
 @end

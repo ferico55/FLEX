@@ -661,13 +661,14 @@
 }
 
 - (IBAction)settingTap:(id)sender {
-    ShopSettingViewController *settingController = [ShopSettingViewController new];
-    settingController.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                               kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result
-                               };
-    
-
-    [self.navigationController pushViewController:settingController animated:YES];
+    if (_shop) {
+        ShopSettingViewController *settingController = [ShopSettingViewController new];
+        settingController.data = @{
+                                   kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                                   kTKPDDETAIL_DATAINFOSHOPSKEY:_shop.result
+                                   };
+        [self.navigationController pushViewController:settingController animated:YES];
+    }
 }
 
 - (IBAction)addProductTap:(id)sender {

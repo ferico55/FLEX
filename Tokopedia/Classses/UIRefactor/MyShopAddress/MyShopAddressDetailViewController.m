@@ -13,9 +13,11 @@
 
 #pragma mark - Setting Location Detail View Controller
 @interface MyShopAddressDetailViewController () <UIScrollViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UILabel *labeladdressname;
 @property (weak, nonatomic) IBOutlet UILabel *labeladdress;
 @property (weak, nonatomic) IBOutlet UILabel *labelemail;
+@property (weak, nonatomic) IBOutlet UILabel *faxLabel;
 @property (weak, nonatomic) IBOutlet UILabel *labeldistrict;
 @property (weak, nonatomic) IBOutlet UILabel *labelcity;
 @property (weak, nonatomic) IBOutlet UILabel *labelprovince;
@@ -46,16 +48,20 @@
     Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
     self.title = list.location_address_name;
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = barButtonItem;
     
-    UIBarButtonItem *barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor blackColor]];
+    UIBarButtonItem *barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Ubah"
+                                                                   style:UIBarButtonItemStyleDone
+                                                                  target:(self)
+                                                                  action:@selector(tap:)];
     barbutton1.tag = 11;
     self.navigationItem.rightBarButtonItem = barbutton1;
+
+    [self.scrollView addSubview:_contentView];
 }
 
 -(void)viewDidLayoutSubviews
@@ -68,8 +74,8 @@
 {
     [super viewWillAppear:animated];
     self.scrollView.delegate = self;
-    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, self.contentView.frame.size.height)];
-    
+    [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width,
+                                               self.contentView.frame.size.height)];
 }
 
 - (void)didReceiveMemoryWarning
@@ -84,20 +90,20 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         switch (btn.tag) {
-            case 10:
-            {
-                [self.navigationController popViewControllerAnimated:YES];
-                break;
-            }
             case 11:
             {   //Edit
                 MyShopAddressEditViewController *vc = [MyShopAddressEditViewController new];
+                vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
                 vc.data = @{kTKPDDETAIL_DATAADDRESSKEY : [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY],
                             kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
                             kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY),
                             kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
                             };
-                [self.navigationController pushViewController:vc animated:YES];
+                
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                nav.navigationBar.translucent = NO;
+                
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
 
@@ -129,14 +135,27 @@
         Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
         
         _labeladdressname.text = list.location_address_name;
-        NSString *address = [NSString convertHTML:list.location_address];
-        _labeladdress.text = [NSString stringWithFormat:@"%@\n%@",address,list.location_area];
         _labelcity.text = list.location_city_name;
         _labeldistrict.text = list.location_district_name;
         _labelphonenumber.text = list.location_phone;
         _labelprovince.text = list.location_province_name;
         NSString *email = [list.location_email isEqualToString:@"0"]?@"-":list.location_email;
+        _faxLabel.text = list.location_fax;
         _labelemail.text = email;
+        
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 4.0;
+        
+        NSDictionary *attributes = @{
+                                     NSFontAttributeName            : _labeladdress.font,
+                                     NSParagraphStyleAttributeName  : style,
+                                     NSForegroundColorAttributeName : _labeladdress.textColor,
+                                     };
+        
+        NSString *address = [NSString stringWithFormat:@"%@\n%@",
+                             [NSString convertHTML:list.location_address], list.location_area];
+
+        _labeladdress.attributedText = [[NSAttributedString alloc] initWithString:address attributes:attributes];
     }
 }
 

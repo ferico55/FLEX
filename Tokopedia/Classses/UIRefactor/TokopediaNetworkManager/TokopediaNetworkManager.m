@@ -103,7 +103,9 @@
         [self cancel];
         [self doRequest];
     } else {
-        [_delegate actionAfterFailRequestMaxTries];
+        if ([_delegate respondsToSelector:@selector(actionAfterFailRequestMaxTries)]) {
+            
+            [_delegate actionAfterFailRequestMaxTries];        }
     }
 }
 

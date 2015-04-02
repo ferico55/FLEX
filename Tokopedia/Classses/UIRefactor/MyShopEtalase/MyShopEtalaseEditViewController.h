@@ -11,8 +11,11 @@
 
 #pragma mark - Product Edit Wholesale Cell Delegate
 @protocol MyShopEtalaseEditViewControllerDelegate <NSObject>
+
 @optional
--(void)MyShopEtalaseEditViewController:(MyShopEtalaseEditViewController*)viewController withUserInfo:(NSDictionary*)userInfo;
+- (void)successEditEtalase:(NSString *)etalaseName;
+- (void)MyShopEtalaseEditViewController:(MyShopEtalaseEditViewController*)viewController
+                             withUserInfo:(NSDictionary*)userInfo;
 
 @end
 

@@ -8,11 +8,11 @@
 
 #import "string_alert.h"
 #import "profile.h"
-#import "ProfileSettings.h"
+#import "ChangePhoneNumber.h"
 #import "SettingUserPhoneViewController.h"
 
 #pragma mark - Profile Edit Phone View Controller
-@interface SettingUserPhoneViewController ()
+@interface SettingUserPhoneViewController () <UIAlertViewDelegate>
 {
     NSInteger _requestcount;
     NSTimer *_timer;
@@ -28,188 +28,168 @@
 @property (weak, nonatomic) IBOutlet UITextField *textfieldpass;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldphone;
 
--(void)cancelAction;
--(void)configureActionRestKit;
--(void)requestAction:(id)userinfo;
--(void)requestSuccessAction:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureAction:(id)object;
--(void)requestProcessAction:(id)object;
--(void)requestTimeoutAction;
-
-
-
 @end
 
 @implementation SettingUserPhoneViewController
 
-#pragma mark - Initialization
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-    }
-    return self;
-}
-
 #pragma mark - Life Cycle
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.navigationController.navigationBar setTranslucent:NO];
-    [self.navigationController.navigationItem setTitle:kTKPDPROFILEEDIT_TITLE];
+    self.title = @"Ubah Nomor HP";
     
     _operationQueue = [NSOperationQueue new];
     
-    
-    _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
+                                                          style:UIBarButtonItemStyleDone
+                                                         target:(self)
+                                                         action:@selector(tap:)];
 
-	[_saveBarButtonItem setTag:11];
+    _saveBarButtonItem.tag = 11;
     self.navigationItem.rightBarButtonItem = _saveBarButtonItem;
     
     _textfieldphone.text = [_data objectForKey:kTKPDPROFILEEDIT_DATAPHONENUMBERKEY];
-    
-}
-
--(void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-
-}
-
-#pragma mark - Memory Management
-- (void)dealloc{
-    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-}
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - View Action
--(IBAction)tap:(id)sender
-{
-
+-(IBAction)tap:(id)sender {
+    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        [self request];
+    }
 }
 
 #pragma mark - Request + Mapping
--(void)cancelAction
-{
+
+-(void)cancelAction {
     [_requestAction cancel];
     _requestAction = nil;
+
     [_objectmanagerAction.operationQueue cancelAllOperations];
     _objectmanagerAction = nil;
 }
 
-- (void)configureActionRestKit
-{
-    // initialize AFNetworking HTTPClient + restkit
-    //TraktAPIClient *client = [TraktAPIClient sharedClient];
+- (void)configureActionRestKit {
     _objectmanagerAction = [RKObjectManager sharedClient];
     
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ChangePhoneNumber class]];
+    [statusMapping addAttributeMappingsFromArray:@[kTKPD_APIERRORMESSAGEKEY,
+                                                   kTKPD_APISTATUSKEY,
+                                                   kTKPD_APISERVERPROCESSTIMEKEY]];
+
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ChangePhoneNumberResult class]];
+    [resultMapping addAttributeMappingsFromArray:@[kTKPD_APIISSUCCESSKEY]];
     
-    // setup object mappings
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
     
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDPROFILE_VERIFICATIONNUMBERAPIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
     
+    [_objectmanagerAction addResponseDescriptor:responseDescriptor];
 }
 
-- (void)requestAction:(id)userinfo
-{
+- (void)request {
     if (_requestAction.isExecuting) return;
     
-    NSDictionary *data = userinfo;
-    
     _requestcount ++;
-    [self.view setUserInteractionEnabled:NO];
     
-    NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APISETPASSWORDKEY,
-                            kTKPDPROFILESETTING_APIPASSKEY : [data objectForKey:kTKPDPROFILESETTING_APIPASSKEY],
-                            kTKPDPROFILESETTING_APINEWPASSKEY : [data objectForKey:kTKPDPROFILESETTING_APINEWPASSKEY],
-                            kTKPDPROFILESETTING_APIPASSCONFIRMKEY :[data objectForKey:kTKPDPROFILESETTING_APINEWPASSKEY]
+    NSDictionary* param = @{
+                            kTKPDPROFILE_APIACTIONKEY               : kTKPDPROFILE_SEND_EMAIL_CHANGE_PHONE_NUMBER,
+                            kTKPDPROFILESETTING_APIPASSKEY          : _textfieldpass.text,
                             };
     
-    _requestAction = [_objectmanagerAction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:[param encrypt]];
+    _requestAction = [_objectmanagerAction appropriateObjectRequestOperationWithObject:self
+                                                                                method:RKRequestMethodPOST
+                                                                                  path:kTKPDPROFILE_VERIFICATIONNUMBERAPIPATH
+                                                                            parameters:[param encrypt]];
     
-
-    _saveBarButtonItem.enabled = NO;
     [_requestAction setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+    
         [self requestSuccessAction:mappingResult withOperation:operation];
         [self.view setUserInteractionEnabled:YES];
+        
         [_timer invalidate];
         _timer = nil;
-        _saveBarButtonItem.enabled = YES;
+
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
+        
         [self requestFailureAction:error];
         [self.view setUserInteractionEnabled:YES];
+    
         [_timer invalidate];
         _timer = nil;
-        _saveBarButtonItem.enabled = YES;
+        
     }];
     
     [_operationQueue addOperation:_requestAction];
     
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutAction) userInfo:nil repeats:NO];
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                              target:self
+                                            selector:@selector(requestTimeoutAction)
+                                            userInfo:nil
+                                             repeats:NO];
+
     [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
--(void)requestSuccessAction:(id)object withOperation:(RKObjectRequestOperation *)operation{
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    ProfileSettings *setting = stat;
-    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-    
+-(void)requestSuccessAction:(RKMappingResult *)mappingResult withOperation:(RKObjectRequestOperation *)operation {
+    ChangePhoneNumber *response = [mappingResult.dictionary objectForKey:@""];
+    BOOL status = [response.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
-        [self requestProcessAction:object];
+        [self requestProcessAction:response];
     }
 }
 
 
--(void)requestTimeoutAction
-{
+-(void)requestTimeoutAction {
     [self cancelAction];
 }
 
-
--(void)requestFailureAction:(id)object
-{
+-(void)requestFailureAction:(id)object {
     [self requestProcessAction:object];
 }
 
--(void)requestProcessAction:(id)object
-{
+-(void)requestProcessAction:(id)object {
     if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            ProfileSettings *setting = stat;
-            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(setting.message_error)
-                {
-                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                }
-                if (setting.result.is_success == 1) {
-                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-                }
+        if ([object isKindOfClass:[ChangePhoneNumber class]]) {
+            ChangePhoneNumber *response = (ChangePhoneNumber *)object;
+            if(response.message_error) {
+                NSArray *errorMessages = response.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages
+                                                                               delegate:self];
+                [alert show];
             }
-        }
-        else{
-            
+            if (response.result.is_success == 1) {
+                NSString *message = @"Tokopedia telah mengirimkan email konfirmasi kepada Anda yang berisikan langkah berikutnya yang harus Anda lakukan untuk mengubah nomor telepon. Silahkan cek email tersebut untuk melanjutkan langkah berikutnya.";
+                UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Silahkan cek email Anda"
+                                                               message:message
+                                                              delegate:self
+                                                     cancelButtonTitle:@"Ok"
+                                                     otherButtonTitles:nil];
+                alert.delegate = self;
+                [alert show];
+            }
+        } else {
             [self cancelAction];
-            NSError *error = object;
-            NSString *errorDescription = error.localizedDescription;
-            UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-            [errorAlert show];
             
+            NSError *error = object;
+            UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE
+                                                                message:error.localizedDescription
+                                                               delegate:self
+                                                      cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE
+                                                      otherButtonTitles:nil];
+            [errorAlert show];
         }
     }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

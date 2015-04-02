@@ -77,12 +77,8 @@
                              @"new_add" : @(1)
                              };
     
-    _requestActionUploadPhoto = [NSMutableURLRequest requestUploadImageData:imageData
-                                                                   withName:_fieldName
-                                                                andFileName:imageName
-                                                      withRequestParameters:param
-                                 uploadHost:_generateHost.result.generated_host.upload_host
-                                 ];
+    _requestActionUploadPhoto = [NSMutableURLRequest requestUploadImageData:imageData withName:_fieldName andFileName:imageName withRequestParameters:param uploadHost:_generateHost.result.generated_host.upload_host];
+
     NSLog(@"param %@ field name %@ ImageName %@",param,_fieldName,imageName);
     
     UIImageView *thumbProductImage = [_imageObject objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];

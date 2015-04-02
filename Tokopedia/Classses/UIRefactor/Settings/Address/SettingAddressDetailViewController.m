@@ -13,7 +13,12 @@
 #import "SettingAddressViewController.h"
 
 #pragma mark - Setting Address Detail View Controller
-@interface SettingAddressDetailViewController () <UIScrollViewDelegate, SettingAddressEditViewControllerDelegate>
+@interface SettingAddressDetailViewController ()
+<
+    UIScrollViewDelegate,
+    UIAlertViewDelegate,
+    SettingAddressEditViewControllerDelegate
+>
 
 @property (weak, nonatomic) IBOutlet UILabel *labelreceivername;
 @property (weak, nonatomic) IBOutlet UILabel *labeladdressname;
@@ -27,6 +32,7 @@
 @property (weak, nonatomic) IBOutlet UIView *viewsetasdefault;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
+@property (weak, nonatomic) IBOutlet UIButton *deleteButton;
 
 @end
 
@@ -127,9 +133,12 @@
             }
             case 11:
             {
-                //delete address
-                [_delegate DidTapButton:btn withdata:_data];
-                [self.navigationController popViewControllerAnimated:YES];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Hapus Alamat"
+                                                                message:@"Apakah Anda yakin ingin menghapus alamat ini?"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Tidak"
+                                                      otherButtonTitles:@"Ya", nil];
+                [alert show];
                 break;
             }
             default:
@@ -147,7 +156,21 @@
         self.title = list.receiver_name?:TITLE_DETAIL_ADDRESS_DEFAULT;
         _labelreceivername.text = list.receiver_name?:@"";
         _labeladdressname.text = list.address_name?:@"";
-        _labeladdress.text = [NSString convertHTML:list.address_street?:@""];
+
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 4.0;
+        
+        NSDictionary *attributes = @{
+                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+                                     NSParagraphStyleAttributeName  : style,
+                                     NSForegroundColorAttributeName : [UIColor colorWithRed:66.0/255.0
+                                                                                      green:66.0/255.0
+                                                                                       blue:66.0/255.0
+                                                                                      alpha:1],
+                                     };
+        
+        _labeladdress.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML:list.address_street] attributes:attributes];
+        
         NSString *postalcode = list.postal_code?[NSString stringWithFormat:@"%zd",list.postal_code]:@"";
         _labelpostcode.text = postalcode;
         _labelcity.text = list.city_name?:@"";
@@ -187,6 +210,17 @@
     self.labelcity.text = address.city_name;
     self.labeldistrict.text = address.district_name;
     self.labelphonenumber.text = address.receiver_phone;
+}
+
+#pragma mark - Alert delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        //delete address
+        [_delegate DidTapButton:_deleteButton withdata:_data];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 @end

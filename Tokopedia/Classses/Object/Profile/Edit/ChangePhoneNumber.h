@@ -7,7 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ChangePhoneNumberResult.h"
 
 @interface ChangePhoneNumber : NSObject
+
+@property (nonatomic, strong) NSArray *message_status;
+@property (nonatomic, strong) NSArray *message_error;
+@property (nonatomic, strong) NSString *status;
+@property (nonatomic, strong) NSString *server_process_time;
+@property (nonatomic, strong) ChangePhoneNumberResult *result;
 
 @end

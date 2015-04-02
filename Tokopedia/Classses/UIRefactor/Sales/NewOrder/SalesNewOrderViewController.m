@@ -16,6 +16,7 @@
 #import "ProductQuantityViewController.h"
 #import "OrderDetailViewController.h"
 #import "TKPDTabProfileNavigationController.h"
+#import "NavigateViewController.h"
 
 #import "Order.h"
 #import "OrderTransaction.h"
@@ -123,6 +124,13 @@
                                                                          target:self
                                                                          action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    UIBarButtonItem *filterBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Filter"
+                                                                        style:UIBarButtonItemStyleBordered
+                                                                       target:self
+                                                                       action:@selector(tap:)];
+    filterBarButton.tag = 11;
+    self.navigationItem.rightBarButtonItem = filterBarButton;
     
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
     self.tableView.tableHeaderView = _alertView;
@@ -284,7 +292,6 @@
     _selectedTransaction = [_transactions objectAtIndex:indexPath.row];
     _selectedIndexPath = indexPath;
 
-    
     if (transaction.order_payment.payment_process_day_left >= 0) {
 
         if (transaction.order_detail.detail_partial_order == 1) {
@@ -364,9 +371,8 @@
     _selectedTransaction = [_transactions objectAtIndex:indexPath.row];
     _selectedIndexPath = indexPath;
 
-    TKPDTabProfileNavigationController *controller = [TKPDTabProfileNavigationController new];
-    controller.data = @{API_USER_ID_KEY:_selectedTransaction.order_customer.customer_id};
-    [self.navigationController pushViewController:controller animated:YES];
+    NavigateViewController *controller = [NavigateViewController new];
+    [controller navigateToProfileFromViewController:self withUserID:_selectedTransaction.order_customer.customer_id];
 }
 
 #pragma mark - Choose product delegate

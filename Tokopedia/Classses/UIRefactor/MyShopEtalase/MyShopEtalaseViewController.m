@@ -17,7 +17,13 @@
 
 #import "URLCacheController.h"
 
-@interface MyShopEtalaseViewController ()<UITableViewDataSource,UITableViewDelegate, MyShopEtalaseDetailViewControllerDelegate,MGSwipeTableCellDelegate>
+@interface MyShopEtalaseViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    MyShopEtalaseDetailViewControllerDelegate,
+    MGSwipeTableCellDelegate
+>
 {
     NSInteger _page;
     NSInteger _limit;
@@ -92,14 +98,21 @@
     /// adjust refresh control
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
-    [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+    [_refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
-
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
     barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationItem.backBarButtonItem = barButtonItem;
+    
+    UIBarButtonItem *addBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                  target:self
+                                                                                  action:@selector(tap:)];
+    addBarButton.tag = 11;
+    self.navigationItem.rightBarButtonItem = addBarButton;
     
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
     
@@ -113,8 +126,6 @@
     //Add observer
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(didEditEtalase:) name:kTKPD_ADDETALASEPOSTNOTIFICATIONNAMEKEY object:nil];
-    
-    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -138,27 +149,24 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         switch (btn.tag) {
-            case 10:
-            {
+            case 10: {
                 //back
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
             }
-            default:
-                break;
-        }
-    }
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton*)sender;
-        switch (btn.tag) {
-            case 10:
-            {
+            case 11: {
                 //add
                 MyShopEtalaseEditViewController *vc = [MyShopEtalaseEditViewController new];
-                vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                vc.data = @{
+                            kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                             kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY)
                             };
-                [self.navigationController pushViewController:vc animated:YES];
+
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                nav.navigationBar.translucent = NO;
+                
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+
                 break;
             }
             default:
@@ -226,6 +234,8 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     MyShopEtalaseDetailViewController *vc = [MyShopEtalaseDetailViewController new];
     vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY],DATA_ETALASE_KEY : _list[indexPath.row], kTKPDDETAIL_DATAINDEXPATHKEY:indexPath};
     vc.delegate = self;
@@ -244,12 +254,10 @@
         EtalaseList *list = _list[indexPath.row];
         if ([list.etalase_total_product isEqualToString:@"0"]) {
             [self deleteListAtIndexPath:indexPath];
-        }
-        else
-        {
-            NSArray *array = [[NSArray alloc]initWithObjects:@"Tidak dapat menghapus etalase. \nSilahkan pindahkan product ke etalase lain terlebih dahulu.",nil];
-            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        } else {
+            NSArray *errorMessages = @[@"Tidak dapat menghapus etalase. \nSilahkan pindahkan product ke etalase lain terlebih dahulu."];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+            [alert show];
         }
     }
 }
@@ -334,7 +342,10 @@
                             kTKPDDETAIL_APILIMITKEY : @(_limit)
                             };
     
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOP_APIPATH parameters:[param encrypt]];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:kTKPDDETAILSHOP_APIPATH
+                                                                parameters:[param encrypt]];
     
 	[_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
@@ -453,7 +464,13 @@
             BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
+                
+                if (_page == 1) {
+                    [_list removeAllObjects];
+                }
+                
                 [_list addObjectsFromArray:_etalase.result.list];
+
                 if (_list.count >0) {
                     _isnodata = NO;
                     [_table reloadData];
@@ -550,7 +567,10 @@
                             };
     _requestcount ++;
     
-    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOPETALASEACTION_APIPATH parameters:[param encrypt]]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
+    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self
+                                                                                            method:RKRequestMethodPOST
+                                                                                              path:kTKPDDETAILSHOPETALASEACTION_APIPATH
+                                                                                        parameters:[param encrypt]];
     
     [_requestActionDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionDelete:mappingResult withOperation:operation];
@@ -568,7 +588,12 @@
     
     [_operationQueue addOperation:_requestActionDelete];
     
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionDelete) userInfo:nil repeats:NO];
+    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                            target:self
+                                          selector:@selector(requestTimeoutActionDelete)
+                                          userInfo:nil
+                                           repeats:NO];
+    
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
@@ -599,22 +624,20 @@
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if (setting.message_status) {
-                    NSArray *array = setting.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                if (setting.result.is_success == 1) {
+                    NSArray *messages = @[@"Anda telah berhasil menghapus etalase."];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:messages
+                                                                                     delegate:self];
+                    [alert show];
                 }
-                else if(setting.message_error)
-                {
+                if(setting.message_error) {
                     [self cancelDeleteData];
-                    NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:setting.message_error
+                                                                                   delegate:self];
+                    [alert show];
                 }
             }
-        }
-        else{
-            
+        } else {
             [self cancelActionDelete];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             [self cancelDeleteData];
@@ -706,7 +729,6 @@
     NSDictionary *userinfo = notification.userInfo;
     //TODO: Behavior after edit
     [_datainput setObject:[userinfo objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
-    //[_datainput setObject:[userinfo objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]?:@(0) forKey:kTKPDPROFILE_DATAEDITTYPEKEY];
     [self refreshView:nil];
 }
 @end

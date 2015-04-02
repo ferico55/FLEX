@@ -1374,7 +1374,7 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Filter" id="VOv-yc-t8E">
                         <barButtonItem key="backBarButtonItem" title=" " id="Bre-cr-E55"/>
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="Uip-Sq-aI7">
+                        <barButtonItem key="leftBarButtonItem" title="Batal" id="Uip-Sq-aI7">
                             <connections>
                                 <action selector="tap:" destination="B6c-MU-e9O" id="0MQ-k9-FZw"/>
                             </connections>

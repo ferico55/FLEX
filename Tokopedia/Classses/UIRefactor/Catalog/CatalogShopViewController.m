@@ -116,7 +116,7 @@
     cell.productConditionLabel.text = product.product_condition;
     cell.productPriceLabel.text = product.product_price;
     
-    cell.buyButton.layer.cornerRadius = 4;
+    cell.buyButton.layer.cornerRadius = 2;
     
     [cell.shopImageView setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:shop.shop_image]]
                               placeholderImage:[UIImage imageNamed:@""]
@@ -133,6 +133,9 @@
         cell.seeOtherProducts.hidden = YES;
         cell.masking.hidden = NO;
     }
+    
+    NSInteger rateAverage = (shop.shop_rate_accuracy + shop.shop_rate_service + shop.shop_rate_speed) / 3;
+    [cell setShopRate:rateAverage];
     
     return cell;
 }
