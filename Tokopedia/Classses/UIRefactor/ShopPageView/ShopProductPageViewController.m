@@ -213,9 +213,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     CGRect newHeaderPosition = searchView.frame;
     newHeaderPosition.origin.y = _header.frame.size.height;
     searchView.frame = newHeaderPosition;
+    searchView.backgroundColor = [UIColor clearColor];
     
     CGRect newFrame = _header.frame;
-    newFrame.size.height += 44;
+    newFrame.size.height += 22;
     _header.frame = newFrame;
     
     [_header addSubview:searchView];
@@ -309,7 +310,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     if (self.cellType == UITableViewCellTypeOneColumn) {
         return 230;
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-        return 215;
+        return 205;
     } else {
         return 103;
     }

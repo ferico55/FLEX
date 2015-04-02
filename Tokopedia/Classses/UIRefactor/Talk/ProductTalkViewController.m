@@ -19,11 +19,13 @@
 #import "URLCacheController.h"
 #import "GeneralAction.h"
 #import "UserAuthentificationManager.h"
+#import "ReportViewController.h"
+
 #import "stringrestkit.h"
 #import "inbox.h"
 
 #pragma mark - Product Talk View Controller
-@interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, GeneralTalkCellDelegate>
+@interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, GeneralTalkCellDelegate,ReportViewControllerDelegate>
 {
     NSMutableArray *_list;
     NSArray *_headerimages;
@@ -59,6 +61,7 @@
     NSString *product_id;
     NSMutableDictionary *_auth;
     UserAuthentificationManager *_userManager;
+    ReportViewController *_reportController;
     
 }
 
@@ -113,6 +116,7 @@
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
+    
     
     _table.tableHeaderView = _header;
     
@@ -834,7 +838,28 @@
 
 #pragma mark - General Cell Comment Delegate
 - (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    _reportController = [ReportViewController new];
+    _reportController.delegate = self;
     
+    [self.navigationController pushViewController:_reportController animated:YES];
+}
+
+- (void)deleteTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+   //TODO::Later to do this
+    
+}
+
+#pragma mark - Report Delegate
+- (NSDictionary *)getParameter {
+    return @{
+             @"action" : @"report_product_talk",
+             @"talk_id" : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0)
+             };
+}
+
+
+- (NSString *)getPath {
+    return @"action/talk.pl";
 }
 
 

@@ -20,6 +20,7 @@
 @optional
 - (id)navigationController:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
 - (void)skipReview:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
+- (void)reportReview:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath;
 @end
 
 #pragma mark - General Review Cell
@@ -51,7 +52,12 @@
 @property (weak, nonatomic) IBOutlet UIView *inputReviewView;
 @property (weak, nonatomic) IBOutlet UIView *contentReview;
 @property (weak, nonatomic) IBOutlet UIView *topContent;
-@property (strong,nonatomic) NSDictionary *data;
+
+@property (weak, nonatomic) IBOutlet UIView *userTapView;
+@property (weak, nonatomic) IBOutlet UIView *productTapView;
+@property (weak, nonatomic) IBOutlet UIView *reviewTapView;
+
+@property (strong,nonatomic) id data;
 @property (strong, nonatomic) NSIndexPath *indexpath;
 
 @property (nonatomic) BOOL productViewIsHidden;

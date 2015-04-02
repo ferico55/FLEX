@@ -75,7 +75,7 @@
     _notifManager = [NotificationManager new];
     
     [self initNotificationCenter];
-    [self initNotificationManager];
+
     
     self.modalPresentationStyle = UIModalPresentationCurrentContext;
     
@@ -103,6 +103,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self goToPage:_page];
+    [self initNotificationManager];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

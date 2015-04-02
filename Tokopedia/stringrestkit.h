@@ -47,6 +47,7 @@
 #define TKPD_TALK_COMMENT_CREATETIME @"comment_create_time"
 #define TKPD_TALK_COMMENT_USERIMG @"comment_user_image"
 #define TKPD_TALK_COMMENT_USERNAME @"comment_user_name"
+#define TKPD_TALK_COMMENT_USERID @"comment_user_id"
 #define TKPD_TALK_FOLLOW @"Ikuti"
 #define TKPD_TALK_UNFOLLOW @"Berhenti Ikuti"
 #define TKPD_FOLLOW_TALK_ACTION @"follow_product_talk"
@@ -73,6 +74,7 @@
 #define REVIEW_IS_ALLOW_EDIT @"review_is_allow_edit"
 #define REVIEW_IS_SKIPABLE @"review_is_skipable"
 #define REVIEW_PRODUCT_STATUS @"review_product_status"
+#define REVIEW_USER_IMAGE @"review_user_image"
 #pragma mark - Deposit
 
 #define REVIEW_RESPONSE @"review_response"

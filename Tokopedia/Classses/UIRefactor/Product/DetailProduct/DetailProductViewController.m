@@ -128,6 +128,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *shoplocation;
 @property (strong, nonatomic) IBOutlet UIView *shopinformationview;
+@property (strong, nonatomic) IBOutlet UIView *shopClickView;
 @property (strong, nonatomic) IBOutlet DetailProductOtherView *otherproductview;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *otherproductscrollview;
@@ -204,7 +205,7 @@
     _table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
     
-    _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:1]]];
+    _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1], [NSNumber numberWithInteger:2]]];
     
     _imagescrollview.pagingEnabled = YES;
     _imagescrollview.contentMode = UIViewContentModeScaleAspectFit;
@@ -228,6 +229,10 @@
     self.table.hidden = YES;
     _buyButton.hidden = YES;
     _dinkButton.hidden = YES;
+    
+    UITapGestureRecognizer *tapShopGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapShop)];
+    [_shopClickView addGestureRecognizer:tapShopGes];
+    [_shopClickView setUserInteractionEnabled:YES];
 }
 
 
@@ -267,9 +272,9 @@
     if (_isnodata) {
         [self loadData];
         if (_product.result.wholesale_price) {
-            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:1], [NSNumber numberWithInteger:2]]];
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1]]];
         } else {
-            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:1]]];
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
         }
         [self.table reloadData];
     }
@@ -539,16 +544,16 @@
     [bt addTarget:self action:@selector(expandCollapseButton:) forControlEvents:UIControlEventTouchUpInside];
     switch (section) {
         case 0:
-            [bt setTitle: PRODUCT_DESC forState: UIControlStateNormal];
+            [bt setTitle:PRODUCT_INFO  forState: UIControlStateNormal];
             break;
         case 1:
             if (!_isnodatawholesale)
                 [bt setTitle: PRODUCT_WHOLESALE forState: UIControlStateNormal];
             else
-                [bt setTitle: PRODUCT_INFO forState: UIControlStateNormal];
+                [bt setTitle: PRODUCT_DESC forState: UIControlStateNormal];
             break;
         case 2:
-            [bt setTitle: PRODUCT_INFO forState: UIControlStateNormal];
+            [bt setTitle: PRODUCT_DESC forState: UIControlStateNormal];
             break;
             
         default:
@@ -597,11 +602,11 @@
     BOOL sectionIsExanded = [_expandedSections containsObject:[NSNumber numberWithInteger:indexPath.section]];
     if (sectionIsExanded) {
         if (indexPath.section == 0) {
-            return _descriptionHeight+50;
+            return _informationHeight+50;
         } else if (indexPath.section == 1 && _product.result.wholesale_price.count > 0) {
             return 230;
         } else {
-            return _informationHeight+50;
+            return _descriptionHeight+50;
         }
     } else {
         return 0;
@@ -625,16 +630,16 @@
 
     // Configure the cell...
     if (indexPath.section == 0) {
-        NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
-        DetailProductDescriptionCell *descriptionCell = (DetailProductDescriptionCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
-        if (descriptionCell == nil) {
-            descriptionCell = [DetailProductDescriptionCell newcell];
-            if(!_isnodata) {
-                descriptionCell.descriptionText = _product.result.product.product_description;
-                _descriptionHeight = descriptionCell.descriptionlabel.frame.size.height;
-            }
+        
+        NSString *cellid = kTKPDDETAILPRODUCTINFOCELLIDENTIFIER;
+        DetailProductInfoCell *productInfoCell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+        if (productInfoCell == nil) {
+            productInfoCell = [DetailProductInfoCell newcell];
+            ((DetailProductInfoCell*)cell).delegate = self;
         }
-        cell = descriptionCell;
+        [self productinfocell:productInfoCell withtableview:tableView];
+        _informationHeight = productInfoCell.productInformationView.frame.size.height;
+        cell = productInfoCell;
         return cell;
     }
     if (!_isnodatawholesale) {
@@ -649,30 +654,33 @@
             return cell;
         }
         if (indexPath.section == 2) {
-                NSString *cellid = kTKPDDETAILPRODUCTINFOCELLIDENTIFIER;
-                DetailProductInfoCell *productInfoCell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-                if (productInfoCell == nil) {
-                    productInfoCell = [DetailProductInfoCell newcell];
-                    ((DetailProductInfoCell*)cell).delegate = self;
+            NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
+            DetailProductDescriptionCell *descriptionCell = (DetailProductDescriptionCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
+            if (descriptionCell == nil) {
+                descriptionCell = [DetailProductDescriptionCell newcell];
+                if(!_isnodata) {
+                    descriptionCell.descriptionText = _product.result.product.product_description;
+                    _descriptionHeight = descriptionCell.descriptionlabel.frame.size.height;
                 }
-                [self productinfocell:productInfoCell withtableview:tableView];
-                _informationHeight = productInfoCell.productInformationView.frame.size.height;
-                cell = productInfoCell;
-                return cell;
+            }
+            cell = descriptionCell;
+            return cell;
+            
         }
     }
     else
     {
         if (indexPath.section == 1) {
-            NSString *cellid = kTKPDDETAILPRODUCTINFOCELLIDENTIFIER;
-            DetailProductInfoCell *productCell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-            if (productCell == nil) {
-                productCell = [DetailProductInfoCell newcell];
-                ((DetailProductInfoCell*)productCell).delegate = self;
-                _informationHeight = productCell.productInformationView.frame.size.height;
+            NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
+            DetailProductDescriptionCell *descriptionCell = (DetailProductDescriptionCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
+            if (descriptionCell == nil) {
+                descriptionCell = [DetailProductDescriptionCell newcell];
+                if(!_isnodata) {
+                    descriptionCell.descriptionText = _product.result.product.product_description;
+                    _descriptionHeight = descriptionCell.descriptionlabel.frame.size.height;
+                }
             }
-            [self productinfocell:productCell withtableview:tableView];
-            cell = productCell;
+            cell = descriptionCell;
             return cell;
         }
 
@@ -1141,7 +1149,6 @@
     UILabel *productLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 480, 44)];
     productLabel.backgroundColor = [UIColor clearColor];
     productLabel.numberOfLines = 2;
-    productLabel.textAlignment = NSTextAlignmentRight;
     UIFont *productLabelFont = [UIFont fontWithName:@"GothamMedium" size:14];
     
     NSMutableParagraphStyle *productLabelStyle = [[NSMutableParagraphStyle alloc] init];
@@ -1156,7 +1163,8 @@
                                                                                     attributes:productLabelAtts];
     
     productLabel.attributedText = productNameLabeAttributedText;
-
+    productLabel.textAlignment = NSTextAlignmentCenter;
+    
     self.navigationItem.titleView = productLabel;
     
 
@@ -1635,7 +1643,7 @@
     
 }
 
-#pragma mark - Tap Product Gallery
+#pragma mark - Tap View
 - (void)tapProductGallery {
     NSDictionary *data = @{
                            @"image_index" : @(_pageheaderimages),
@@ -1648,5 +1656,15 @@
     [self.navigationController presentViewController:vc animated:YES completion:nil];
 //    [self.navigationController pushViewController:vc animated:YES];
 }
+
+- (void)tapShop {
+    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    
+    container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
+                       kTKPD_AUTHKEY:_auth?:[NSNull null]};
+    [self.navigationController pushViewController:container animated:YES];
+}
+
+
 
 @end

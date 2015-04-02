@@ -529,7 +529,7 @@
             _shopdictionary = [NSMutableDictionary new];
             
             if (_shop.count > 0) {
-                [_shopdictionary setObject:_shop forKey:@"Favorite"];
+                [_shopdictionary setObject:_shop forKey:@"Favorit"];
             }
             
             if (_goldshop.count > 0) {

@@ -258,6 +258,12 @@
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.shop_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
             
+            if([list.shop_is_fave_shop isEqualToString:@"1"]) {
+                [((SearchResultShopCell*)cell).favbutton setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];
+            } else {
+                [((SearchResultShopCell*)cell).favbutton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+            }
+            
             UIImageView *thumb = (UIImageView*)((SearchResultShopCell*)cell).thumb;
             thumb = [UIImageView circleimageview:thumb];
             thumb.image = [UIImage imageNamed:@"icon_default_shop.jpg"];
@@ -332,6 +338,7 @@
                                                       kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY:kTKPDSEARCH_APIPRODUCTSHOPNAMEKEY,
                                                       kTKPDSEARCH_APISHOPTOTALFAVKEY:kTKPDSEARCH_APISHOPTOTALFAVKEY,
                                                       kTKPDSEARCH_APISHOPGOLDSHOP:kTKPDSEARCH_APISHOPGOLDSTATUS ,
+                                                      kTKPDSEARCH_APISHOPISFAV:kTKPDSEARCH_APISHOPISFAV
                                                       }];
     
     /** paging mapping **/

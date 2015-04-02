@@ -279,29 +279,9 @@ UIAlertViewDelegate>
             }
             
             if ([list.talk_message length] > 30) {
-                NSRange stringRange = {0, MIN([list.talk_message length], 50)};
+                NSRange stringRange = {0, MIN([list.talk_message length], 30)};
                 stringRange = [list.talk_message rangeOfComposedCharacterSequencesForRange:stringRange];
-                
-//                ((GeneralTalkCell*)cell).commentlabel.text = ;
-                UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-                
-                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-                style.lineSpacing = 5.0;
-                
-                NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
-                                             NSFontAttributeName: font,
-                                             NSParagraphStyleAttributeName: style,
-                                             };
-                
-                NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@...", [list.talk_message
-substringWithRange:stringRange]]
-                                                                                                attributes:attributes];
-                ((GeneralTalkCell*)cell).commentlabel.attributedText = productNameAttributedText;
-                ((GeneralTalkCell*)cell).commentlabel.numberOfLines = 0;
-                [((GeneralTalkCell*)cell).commentlabel sizeToFit];
-
-                
-                
+                ((GeneralTalkCell*)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [list.talk_message substringWithRange:stringRange]];
             } else {
                 ((GeneralTalkCell*)cell).commentlabel.text = list.talk_message;
             }

@@ -374,7 +374,11 @@
                                                     kTKPDSHOP_APICITYIDKEY,
                                                     kTKPDSHOP_APIPHONEKEY,
                                                     kTKPDSHOP_APIEMAILKEY,
-                                                    kTKPDSHOP_APIPROVINCEIDKEY
+                                                    kTKPDSHOP_APIPROVINCEIDKEY,
+                                                    kTKPDSHOP_APICITYNAMEKEY,
+                                                    kTKPDSHOP_APIPROVINCENAMEKEY,
+                                                    kTKPDSHOP_APIDISTRICTNAMEKEY,
+                                                    kTKPDSHOP_APIADDRESSKEY
                                                     ]];
     // Relationship Mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY

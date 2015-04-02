@@ -10,6 +10,7 @@
 
 @protocol NewOrderDelegate <NSObject>
 
+@optional
 - (void)viewController:(UIViewController *)viewController numberOfProcessedOrder:(NSInteger)totalOrder;
 
 @end

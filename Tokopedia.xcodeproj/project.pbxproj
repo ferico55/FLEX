@@ -485,14 +485,6 @@
 		7AB2EF401AC3C2960033F08D /* HotlistResultViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB2E9661AC3C2950033F08D /* HotlistResultViewController.xib */; };
 		7AB2EF411AC3C2960033F08D /* TKPDTabHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2E9691AC3C2950033F08D /* TKPDTabHomeViewController.m */; };
 		7AB2EF421AC3C2960033F08D /* TKPDTabHomeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB2E96A1AC3C2950033F08D /* TKPDTabHomeViewController.xib */; };
-		7AB2EF431AC3C2960033F08D /* InboxMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2E96F1AC3C2950033F08D /* InboxMessageCell.m */; };
-		7AB2EF441AC3C2960033F08D /* InboxMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB2E9701AC3C2950033F08D /* InboxMessageCell.xib */; };
-		7AB2EF451AC3C2960033F08D /* InboxMessageDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2E9721AC3C2950033F08D /* InboxMessageDetailCell.m */; };
-		7AB2EF461AC3C2960033F08D /* InboxMessageDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB2E9731AC3C2950033F08D /* InboxMessageDetailCell.xib */; };
-		7AB2EF471AC3C2960033F08D /* InboxMessageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2E9751AC3C2950033F08D /* InboxMessageDetailViewController.m */; };
-		7AB2EF481AC3C2960033F08D /* InboxMessageDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB2E9761AC3C2950033F08D /* InboxMessageDetailViewController.xib */; };
-		7AB2EF491AC3C2960033F08D /* InboxMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2E9781AC3C2950033F08D /* InboxMessageViewController.m */; };
-		7AB2EF4A1AC3C2960033F08D /* InboxMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB2E9791AC3C2950033F08D /* InboxMessageViewController.xib */; };
 		7AB2EF4B1AC3C2960033F08D /* FilterComplainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2E97E1AC3C2950033F08D /* FilterComplainViewController.m */; };
 		7AB2EF4C1AC3C2960033F08D /* FilterComplainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB2E97F1AC3C2950033F08D /* FilterComplainViewController.xib */; };
 		7AB2EF4D1AC3C2960033F08D /* InboxResolutionCenterComplainCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2E9811AC3C2950033F08D /* InboxResolutionCenterComplainCell.m */; };
@@ -516,7 +508,6 @@
 		7AB2EF5F1AC3C2960033F08D /* ResolutionInputReceiptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2E99F1AC3C2950033F08D /* ResolutionInputReceiptViewController.m */; };
 		7AB2EF601AC3C2960033F08D /* ResolutionInputReceiptViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB2E9A01AC3C2950033F08D /* ResolutionInputReceiptViewController.xib */; };
 		7AB2EF611AC3C2960033F08D /* DetailReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2E9A41AC3C2950033F08D /* DetailReviewViewController.m */; };
-		7AB2EF621AC3C2960033F08D /* DetailReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB2E9A51AC3C2950033F08D /* DetailReviewViewController.xib */; };
 		7AB2EF631AC3C2960033F08D /* InboxReviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2E9A71AC3C2950033F08D /* InboxReviewViewController.m */; };
 		7AB2EF641AC3C2960033F08D /* InboxReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB2E9A81AC3C2950033F08D /* InboxReviewViewController.xib */; };
 		7AB2EF651AC3C2960033F08D /* ReviewFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AB2E9AA1AC3C2950033F08D /* ReviewFormViewController.m */; };
@@ -1183,6 +1174,19 @@
 		7AEDF3C71ACA441900AF6180 /* HomeTabHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEDF3C51ACA441900AF6180 /* HomeTabHeaderViewController.m */; };
 		7AEDF3C81ACA441900AF6180 /* HomeTabHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AEDF3C61ACA441900AF6180 /* HomeTabHeaderViewController.xib */; };
 		7AEDF3CA1ACA8D0500AF6180 /* FavoritedShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AEDF3C91ACA8D0500AF6180 /* FavoritedShopViewController.xib */; };
+		7AEDF3F51ACAA2DB00AF6180 /* InboxMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEDF3E91ACAA2DB00AF6180 /* InboxMessageCell.m */; };
+		7AEDF3F61ACAA2DB00AF6180 /* InboxMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AEDF3EA1ACAA2DB00AF6180 /* InboxMessageCell.xib */; };
+		7AEDF3F71ACAA2DB00AF6180 /* InboxMessageDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEDF3EC1ACAA2DB00AF6180 /* InboxMessageDetailCell.m */; };
+		7AEDF3F81ACAA2DB00AF6180 /* InboxMessageDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AEDF3ED1ACAA2DB00AF6180 /* InboxMessageDetailCell.xib */; };
+		7AEDF3F91ACAA2DB00AF6180 /* InboxMessageDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEDF3EF1ACAA2DB00AF6180 /* InboxMessageDetailViewController.m */; };
+		7AEDF3FA1ACAA2DB00AF6180 /* InboxMessageDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AEDF3F01ACAA2DB00AF6180 /* InboxMessageDetailViewController.xib */; };
+		7AEDF3FB1ACAA2DB00AF6180 /* InboxMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEDF3F21ACAA2DB00AF6180 /* InboxMessageViewController.m */; };
+		7AEDF3FC1ACAA2DB00AF6180 /* InboxMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AEDF3F31ACAA2DB00AF6180 /* InboxMessageViewController.xib */; };
+		7AEDF4021ACAB7CF00AF6180 /* ReportViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEDF4001ACAB7CF00AF6180 /* ReportViewController.m */; };
+		7AEDF4031ACAB7CF00AF6180 /* ReportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AEDF4011ACAB7CF00AF6180 /* ReportViewController.xib */; };
+		7AEDF4051ACB9F2200AF6180 /* DetailReviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AB2E9A51AC3C2950033F08D /* DetailReviewViewController.xib */; };
+		7AEDF4091ACD404600AF6180 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AEDF4071ACD404600AF6180 /* Crashlytics.framework */; };
+		7AEDF40A1ACD404700AF6180 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AEDF4081ACD404600AF6180 /* Fabric.framework */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		859A393E1A8376A70055BA8F /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAAEA4419F7534B00904AFB /* MainViewController.m */; };
 		859A39411A8376A70055BA8F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36DF9619B0656400AF74C1 /* AppDelegate.m */; };
@@ -2109,20 +2113,6 @@
 		7AB2E9691AC3C2950033F08D /* TKPDTabHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTabHomeViewController.m; sourceTree = "<group>"; };
 		7AB2E96A1AC3C2950033F08D /* TKPDTabHomeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabHomeViewController.xib; sourceTree = "<group>"; };
 		7AB2E96B1AC3C2950033F08D /* string_hotlist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_hotlist.h; sourceTree = "<group>"; };
-		7AB2E96D1AC3C2950033F08D /* inbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inbox.h; sourceTree = "<group>"; };
-		7AB2E96E1AC3C2950033F08D /* InboxMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxMessageCell.h; sourceTree = "<group>"; };
-		7AB2E96F1AC3C2950033F08D /* InboxMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxMessageCell.m; sourceTree = "<group>"; };
-		7AB2E9701AC3C2950033F08D /* InboxMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxMessageCell.xib; sourceTree = "<group>"; };
-		7AB2E9711AC3C2950033F08D /* InboxMessageDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxMessageDetailCell.h; sourceTree = "<group>"; };
-		7AB2E9721AC3C2950033F08D /* InboxMessageDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxMessageDetailCell.m; sourceTree = "<group>"; };
-		7AB2E9731AC3C2950033F08D /* InboxMessageDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxMessageDetailCell.xib; sourceTree = "<group>"; };
-		7AB2E9741AC3C2950033F08D /* InboxMessageDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxMessageDetailViewController.h; sourceTree = "<group>"; };
-		7AB2E9751AC3C2950033F08D /* InboxMessageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxMessageDetailViewController.m; sourceTree = "<group>"; };
-		7AB2E9761AC3C2950033F08D /* InboxMessageDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxMessageDetailViewController.xib; sourceTree = "<group>"; };
-		7AB2E9771AC3C2950033F08D /* InboxMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxMessageViewController.h; sourceTree = "<group>"; };
-		7AB2E9781AC3C2950033F08D /* InboxMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxMessageViewController.m; sourceTree = "<group>"; };
-		7AB2E9791AC3C2950033F08D /* InboxMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxMessageViewController.xib; sourceTree = "<group>"; };
-		7AB2E97A1AC3C2950033F08D /* string_inbox_message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_inbox_message.h; sourceTree = "<group>"; };
 		7AB2E97D1AC3C2950033F08D /* FilterComplainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterComplainViewController.h; sourceTree = "<group>"; };
 		7AB2E97E1AC3C2950033F08D /* FilterComplainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterComplainViewController.m; sourceTree = "<group>"; };
 		7AB2E97F1AC3C2950033F08D /* FilterComplainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FilterComplainViewController.xib; sourceTree = "<group>"; };
@@ -3042,6 +3032,25 @@
 		7AEDF3C51ACA441900AF6180 /* HomeTabHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeTabHeaderViewController.m; sourceTree = "<group>"; };
 		7AEDF3C61ACA441900AF6180 /* HomeTabHeaderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeTabHeaderViewController.xib; sourceTree = "<group>"; };
 		7AEDF3C91ACA8D0500AF6180 /* FavoritedShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FavoritedShopViewController.xib; sourceTree = "<group>"; };
+		7AEDF3E71ACAA2DB00AF6180 /* inbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inbox.h; sourceTree = "<group>"; };
+		7AEDF3E81ACAA2DB00AF6180 /* InboxMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxMessageCell.h; sourceTree = "<group>"; };
+		7AEDF3E91ACAA2DB00AF6180 /* InboxMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxMessageCell.m; sourceTree = "<group>"; };
+		7AEDF3EA1ACAA2DB00AF6180 /* InboxMessageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxMessageCell.xib; sourceTree = "<group>"; };
+		7AEDF3EB1ACAA2DB00AF6180 /* InboxMessageDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxMessageDetailCell.h; sourceTree = "<group>"; };
+		7AEDF3EC1ACAA2DB00AF6180 /* InboxMessageDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxMessageDetailCell.m; sourceTree = "<group>"; };
+		7AEDF3ED1ACAA2DB00AF6180 /* InboxMessageDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxMessageDetailCell.xib; sourceTree = "<group>"; };
+		7AEDF3EE1ACAA2DB00AF6180 /* InboxMessageDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxMessageDetailViewController.h; sourceTree = "<group>"; };
+		7AEDF3EF1ACAA2DB00AF6180 /* InboxMessageDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxMessageDetailViewController.m; sourceTree = "<group>"; };
+		7AEDF3F01ACAA2DB00AF6180 /* InboxMessageDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxMessageDetailViewController.xib; sourceTree = "<group>"; };
+		7AEDF3F11ACAA2DB00AF6180 /* InboxMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxMessageViewController.h; sourceTree = "<group>"; };
+		7AEDF3F21ACAA2DB00AF6180 /* InboxMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxMessageViewController.m; sourceTree = "<group>"; };
+		7AEDF3F31ACAA2DB00AF6180 /* InboxMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InboxMessageViewController.xib; sourceTree = "<group>"; };
+		7AEDF3F41ACAA2DB00AF6180 /* string_inbox_message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_inbox_message.h; sourceTree = "<group>"; };
+		7AEDF3FF1ACAB7CF00AF6180 /* ReportViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReportViewController.h; sourceTree = "<group>"; };
+		7AEDF4001ACAB7CF00AF6180 /* ReportViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReportViewController.m; sourceTree = "<group>"; };
+		7AEDF4011ACAB7CF00AF6180 /* ReportViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReportViewController.xib; sourceTree = "<group>"; };
+		7AEDF4071ACD404600AF6180 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		7AEDF4081ACD404600AF6180 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		85A8E5461AAE8D4D0067D822 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 		85BAA7011A8B51650015F530 /* Tokopedia-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tokopedia-Info.plist"; sourceTree = "<group>"; };
@@ -3090,9 +3099,11 @@
 				FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */,
 				FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */,
 				85A8E5471AAE8D4D0067D822 /* FacebookSDK.framework in Frameworks */,
+				7AEDF4091ACD404600AF6180 /* Crashlytics.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
 				FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */,
 				1B723626600D60114F195DEE /* libPods-Tokopedia.a in Frameworks */,
+				7AEDF40A1ACD404700AF6180 /* Fabric.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4463,6 +4474,8 @@
 		7AB2E8561AC3C2940033F08D /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				7AEDF3FD1ACAB7B900AF6180 /* GeneralReport */,
+				7AEDF3E61ACAA2DB00AF6180 /* InboxMessage */,
 				7AB2E8571AC3C2940033F08D /* Activation */,
 				7AB2E8661AC3C2940033F08D /* Address */,
 				7AB2E86E1AC3C2940033F08D /* Alert */,
@@ -4476,7 +4489,6 @@
 				7AB2E93D1AC3C2950033F08D /* GeneralViewController */,
 				7AB2E9471AC3C2950033F08D /* Home */,
 				7AB2E95B1AC3C2950033F08D /* Hotlist */,
-				7AB2E96C1AC3C2950033F08D /* InboxMessage */,
 				7AB2E97B1AC3C2950033F08D /* InboxResolutionCenter */,
 				7AB2E9A21AC3C2950033F08D /* InboxReview */,
 				7AB2E9AD1AC3C2950033F08D /* InboxTalk */,
@@ -4973,27 +4985,6 @@
 				7AB2E96A1AC3C2950033F08D /* TKPDTabHomeViewController.xib */,
 			);
 			path = HotlistTabController;
-			sourceTree = "<group>";
-		};
-		7AB2E96C1AC3C2950033F08D /* InboxMessage */ = {
-			isa = PBXGroup;
-			children = (
-				7AB2E96D1AC3C2950033F08D /* inbox.h */,
-				7AB2E96E1AC3C2950033F08D /* InboxMessageCell.h */,
-				7AB2E96F1AC3C2950033F08D /* InboxMessageCell.m */,
-				7AB2E9701AC3C2950033F08D /* InboxMessageCell.xib */,
-				7AB2E9711AC3C2950033F08D /* InboxMessageDetailCell.h */,
-				7AB2E9721AC3C2950033F08D /* InboxMessageDetailCell.m */,
-				7AB2E9731AC3C2950033F08D /* InboxMessageDetailCell.xib */,
-				7AB2E9741AC3C2950033F08D /* InboxMessageDetailViewController.h */,
-				7AB2E9751AC3C2950033F08D /* InboxMessageDetailViewController.m */,
-				7AB2E9761AC3C2950033F08D /* InboxMessageDetailViewController.xib */,
-				7AB2E9771AC3C2950033F08D /* InboxMessageViewController.h */,
-				7AB2E9781AC3C2950033F08D /* InboxMessageViewController.m */,
-				7AB2E9791AC3C2950033F08D /* InboxMessageViewController.xib */,
-				7AB2E97A1AC3C2950033F08D /* string_inbox_message.h */,
-			);
-			path = InboxMessage;
 			sourceTree = "<group>";
 		};
 		7AB2E97B1AC3C2950033F08D /* InboxResolutionCenter */ = {
@@ -6638,6 +6629,37 @@
 			path = MGSwipeTableCell;
 			sourceTree = "<group>";
 		};
+		7AEDF3E61ACAA2DB00AF6180 /* InboxMessage */ = {
+			isa = PBXGroup;
+			children = (
+				7AEDF3E71ACAA2DB00AF6180 /* inbox.h */,
+				7AEDF3E81ACAA2DB00AF6180 /* InboxMessageCell.h */,
+				7AEDF3E91ACAA2DB00AF6180 /* InboxMessageCell.m */,
+				7AEDF3EA1ACAA2DB00AF6180 /* InboxMessageCell.xib */,
+				7AEDF3EB1ACAA2DB00AF6180 /* InboxMessageDetailCell.h */,
+				7AEDF3EC1ACAA2DB00AF6180 /* InboxMessageDetailCell.m */,
+				7AEDF3ED1ACAA2DB00AF6180 /* InboxMessageDetailCell.xib */,
+				7AEDF3EE1ACAA2DB00AF6180 /* InboxMessageDetailViewController.h */,
+				7AEDF3EF1ACAA2DB00AF6180 /* InboxMessageDetailViewController.m */,
+				7AEDF3F01ACAA2DB00AF6180 /* InboxMessageDetailViewController.xib */,
+				7AEDF3F11ACAA2DB00AF6180 /* InboxMessageViewController.h */,
+				7AEDF3F21ACAA2DB00AF6180 /* InboxMessageViewController.m */,
+				7AEDF3F31ACAA2DB00AF6180 /* InboxMessageViewController.xib */,
+				7AEDF3F41ACAA2DB00AF6180 /* string_inbox_message.h */,
+			);
+			path = InboxMessage;
+			sourceTree = "<group>";
+		};
+		7AEDF3FD1ACAB7B900AF6180 /* GeneralReport */ = {
+			isa = PBXGroup;
+			children = (
+				7AEDF3FF1ACAB7CF00AF6180 /* ReportViewController.h */,
+				7AEDF4001ACAB7CF00AF6180 /* ReportViewController.m */,
+				7AEDF4011ACAB7CF00AF6180 /* ReportViewController.xib */,
+			);
+			path = GeneralReport;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -6661,6 +6683,8 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7AEDF4071ACD404600AF6180 /* Crashlytics.framework */,
+				7AEDF4081ACD404600AF6180 /* Fabric.framework */,
 				85A8E5461AAE8D4D0067D822 /* FacebookSDK.framework */,
 				28F341981A2586D800349DD2 /* libPods-Tokopedia.a */,
 				854552261A09C1C200678144 /* QuartzCore.framework */,
@@ -6740,6 +6764,7 @@
 				FC36DF8119B0656400AF74C1 /* Resources */,
 				7C3B363ED25146719E39B6B0 /* Copy Pods Resources */,
 				859A35911A8376840055BA8F /* Sources */,
+				7AEDF4061ACD3FB000AF6180 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -6910,6 +6935,7 @@
 				7AB2F07A1AC3C2960033F08D /* TransactionCartCostView.xib in Resources */,
 				7AB2F1DF1AC3C2970033F08D /* icon_close_white@2x.png in Resources */,
 				7AB2F1D51AC3C2970033F08D /* icon_arrow_down_grey@2x.png in Resources */,
+				7AEDF4051ACB9F2200AF6180 /* DetailReviewViewController.xib in Resources */,
 				7AB2F1A81AC3C2960033F08D /* navigation-chevron@2x.png in Resources */,
 				7AB2F0E41AC3C2960033F08D /* icon_19.png in Resources */,
 				7AB2F1161AC3C2960033F08D /* icon_checkmark@2x.png in Resources */,
@@ -7005,6 +7031,7 @@
 				7AB2F1691AC3C2960033F08D /* icon_share_28px-01.png in Resources */,
 				7AB2F1A91AC3C2960033F08D /* top_bg.png in Resources */,
 				7AB2F10E1AC3C2960033F08D /* icon_cancel.png in Resources */,
+				7AEDF3F61ACAA2DB00AF6180 /* InboxMessageCell.xib in Resources */,
 				7AB2EEED1AC3C2960033F08D /* TKPDTabBarController.xib in Resources */,
 				7AB2F15B1AC3C2960033F08D /* icon_order_check.png in Resources */,
 				7AB2F16B1AC3C2960033F08D /* icon_shop@2x.png in Resources */,
@@ -7017,7 +7044,6 @@
 				7AB2EFE11AC3C2960033F08D /* OrderDetailViewController.xib in Resources */,
 				7AB2F1831AC3C2960033F08D /* icon_toped_loading_grey-01.png in Resources */,
 				7AB2F1901AC3C2960033F08D /* launch_image@2x.png in Resources */,
-				7AB2EF441AC3C2960033F08D /* InboxMessageCell.xib in Resources */,
 				7AB2F0E71AC3C2960033F08D /* icon_2.png in Resources */,
 				7AB2EEF61AC3C2960033F08D /* TKPDTabNavigationController.xib in Resources */,
 				7AB2EF0C1AC3C2960033F08D /* DepositFormViewController.xib in Resources */,
@@ -7125,7 +7151,6 @@
 				7AB2F0F21AC3C2960033F08D /* icon_5@2x.png in Resources */,
 				7AB2EED51AC3C2960033F08D /* CatalogProductViewController.xib in Resources */,
 				7AB2EFDB1AC3C2960033F08D /* SalesNewOrderViewController.xib in Resources */,
-				7AB2EF461AC3C2960033F08D /* InboxMessageDetailCell.xib in Resources */,
 				7AB2F0431AC3C2960033F08D /* ShopNotesViewController.xib in Resources */,
 				7AB2F1271AC3C2960033F08D /* icon_diskusi_unfollow_grey.png in Resources */,
 				7AB2F0D41AC3C2960033F08D /* icon_11.png in Resources */,
@@ -7142,7 +7167,6 @@
 				7AB2F0C51AC3C2960033F08D /* GothamBlack.ttf in Resources */,
 				7AB2F0FE1AC3C2960033F08D /* tab_btm_shadow@2x.png in Resources */,
 				7AB2F16D1AC3C2960033F08D /* icon_shop_addproduct_2x.png in Resources */,
-				7AB2EF481AC3C2960033F08D /* InboxMessageDetailViewController.xib in Resources */,
 				7AB2F1AF1AC3C2960033F08D /* thumb_product.png in Resources */,
 				7AB2EFFD1AC3C2960033F08D /* SearchCell.xib in Resources */,
 				7AB2EEEB1AC3C2960033F08D /* CategoryMenuViewController.xib in Resources */,
@@ -7159,6 +7183,7 @@
 				7AB2F1661AC3C2960033F08D /* icon_share.png in Resources */,
 				7AB2F0C91AC3C2960033F08D /* Lato-Bold.ttf in Resources */,
 				7AB2F07C1AC3C2960033F08D /* TransactionCartEditViewController.xib in Resources */,
+				7AEDF3FA1ACAA2DB00AF6180 /* InboxMessageDetailViewController.xib in Resources */,
 				7AB2EF681AC3C2960033F08D /* InboxTalkCell.xib in Resources */,
 				7AB2EF9F1AC3C2960033F08D /* ProductReviewDetailViewController.xib in Resources */,
 				7AB2EF251AC3C2960033F08D /* GeneralSingleProductCell.xib in Resources */,
@@ -7310,6 +7335,7 @@
 				7AB2EEB71AC3C2960033F08D /* AlertInfoVoucherCodeView.xib in Resources */,
 				7AB2EEB51AC3C2960033F08D /* AlertInfoPaymentConfirmationView.xib in Resources */,
 				7AB2EF1D1AC3C2960033F08D /* GeneralPhotoProductCell.xib in Resources */,
+				7AEDF3FC1ACAA2DB00AF6180 /* InboxMessageViewController.xib in Resources */,
 				7AB2EFDF1AC3C2960033F08D /* OrderDetailProductInformationCell.xib in Resources */,
 				7AB2F0D11AC3C2960033F08D /* icon_1.png in Resources */,
 				7AB2F0261AC3C2960033F08D /* SettingUserPhoneViewController.xib in Resources */,
@@ -7327,8 +7353,10 @@
 				7AB2F11D1AC3C2960033F08D /* icon_clock.png in Resources */,
 				7AB2EEC11AC3C2960033F08D /* AlertView.xib in Resources */,
 				7AB2F0F41AC3C2960033F08D /* icon_6@2x.png in Resources */,
+				7AEDF4031ACAB7CF00AF6180 /* ReportViewController.xib in Resources */,
 				7AB2F1641AC3C2960033F08D /* icon_retry_grey.png in Resources */,
 				7AB2F0931AC3C2960033F08D /* TransactionShipmentViewController.xib in Resources */,
+				7AEDF3F81ACAA2DB00AF6180 /* InboxMessageDetailCell.xib in Resources */,
 				7AB2F0EB1AC3C2960033F08D /* icon_21@2x.png in Resources */,
 				7AB2F1CC1AC3C2960033F08D /* icon_search.png in Resources */,
 				7AB2F1B31AC3C2960033F08D /* ic_cart@2x.png in Resources */,
@@ -7342,7 +7370,6 @@
 				7AB2F0B21AC3C2960033F08D /* TxOrderConfirmedBankCell.xib in Resources */,
 				7AB2EF751AC3C2960033F08D /* MyShopAddressViewController.xib in Resources */,
 				7AB2F1401AC3C2960033F08D /* icon_login@2x.png in Resources */,
-				7AB2EF621AC3C2960033F08D /* DetailReviewViewController.xib in Resources */,
 				7AB2EFEB1AC3C2960033F08D /* FilterShipmentConfirmationViewController.xib in Resources */,
 				7AB2F1E51AC3C2970033F08D /* icon_info_white@2x.png in Resources */,
 				7AB2EF8F1AC3C2960033F08D /* DetailProductDescriptionCell.xib in Resources */,
@@ -7355,7 +7382,6 @@
 				7AB2F1201AC3C2960033F08D /* icon_close_white@2x.png in Resources */,
 				7AB2F1211AC3C2960033F08D /* icon_default_shop.jpg in Resources */,
 				7AB2F1C51AC3C2960033F08D /* icon_home@2x.png in Resources */,
-				7AB2EF4A1AC3C2960033F08D /* InboxMessageViewController.xib in Resources */,
 				7AB2F0451AC3C2960033F08D /* ShopReviewViewController.xib in Resources */,
 				7AB2EF371AC3C2960033F08D /* HistoryProductViewController.xib in Resources */,
 				7AB2F1141AC3C2960033F08D /* icon_check_orange@2x.png in Resources */,
@@ -7437,6 +7463,19 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		7AEDF4061ACD3FB000AF6180 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run d02324f74e70ffcd2dc00ab722d32baecf1884b4 86d3efd816cabb133f016f397c41c066a22980ee54ed0805f7f73897d4cfc61e";
+		};
 		7C3B363ED25146719E39B6B0 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -7476,7 +7515,6 @@
 				7AB2EFCC1AC3C2960033F08D /* ReputationPageViewController.m in Sources */,
 				7AB2EDF31AC3C2960033F08D /* ProductFeedList.m in Sources */,
 				7AB2F0AB1AC3C2960033F08D /* TxOrderConfirmationShipmentCell.m in Sources */,
-				7AB2EF471AC3C2960033F08D /* InboxMessageDetailViewController.m in Sources */,
 				7AB2EDE01AC3C2960033F08D /* ResolutionShop.m in Sources */,
 				7AB2EDEC1AC3C2960033F08D /* Notification.m in Sources */,
 				7AB2EF6E1AC3C2960033F08D /* PurchaseViewController.m in Sources */,
@@ -7615,7 +7653,6 @@
 				7AB2EDCC1AC3C2960033F08D /* InboxMessageDetailResult.m in Sources */,
 				7AB2EF8A1AC3C2960033F08D /* NotificationBarButton.m in Sources */,
 				7AB2EE1B1AC3C2960033F08D /* ActionOrder.m in Sources */,
-				7AB2EF431AC3C2960033F08D /* InboxMessageCell.m in Sources */,
 				7AB2F00F1AC3C2960033F08D /* SettingBankNameCell.m in Sources */,
 				7AB2EDB31AC3C2960033F08D /* ListFavorited.m in Sources */,
 				7AB2EFC21AC3C2960033F08D /* ReputationDetailFormViewController.m in Sources */,
@@ -7675,8 +7712,10 @@
 				7AEDF3C21AC97F3300AF6180 /* HomeTabViewController.m in Sources */,
 				7AB2EDD81AC3C2960033F08D /* ResolutionCenterDetailResult.m in Sources */,
 				7AB2EE151AC3C2960033F08D /* Promote.m in Sources */,
+				7AEDF3F51ACAA2DB00AF6180 /* InboxMessageCell.m in Sources */,
 				7AB2F02D1AC3C2960033F08D /* ShopFavoritedCell.m in Sources */,
 				7AB2EE161AC3C2960033F08D /* PromoteResult.m in Sources */,
+				7AEDF3FB1ACAA2DB00AF6180 /* InboxMessageViewController.m in Sources */,
 				7AB2EE1C1AC3C2960033F08D /* ActionOrderResult.m in Sources */,
 				7AB2EE3E1AC3C2960033F08D /* NotesList.m in Sources */,
 				7AB2ED991AC3C2960033F08D /* OtherProduct.m in Sources */,
@@ -7704,6 +7743,7 @@
 				7AB2EE3B1AC3C2960033F08D /* NoteDetailResult.m in Sources */,
 				7AB2EFC41AC3C2960033F08D /* ReputationDetailViewController.m in Sources */,
 				7AB2EF2C1AC3C2960033F08D /* DisplayImageViewController.m in Sources */,
+				7AEDF3F91ACAA2DB00AF6180 /* InboxMessageDetailViewController.m in Sources */,
 				7AB2EFA91AC3C2960033F08D /* ProductEditImageViewController.m in Sources */,
 				7AB2EF941AC3C2960033F08D /* DetailProductViewController.m in Sources */,
 				7AB2EDF61AC3C2960033F08D /* ProductTalkCommentActionResult.m in Sources */,
@@ -7821,7 +7861,6 @@
 				7AB2F03C1AC3C2960033F08D /* ShopInfoShipmentCell.m in Sources */,
 				7AB2EEA21AC3C2960033F08D /* GenerateHostResult.m in Sources */,
 				7AB2EFE61AC3C2960033F08D /* SalesTransactionListViewController.m in Sources */,
-				7AB2EF451AC3C2960033F08D /* InboxMessageDetailCell.m in Sources */,
 				7AB2F01F1AC3C2960033F08D /* SettingPrivacyCell.m in Sources */,
 				7AB2EF821AC3C2960033F08D /* MyShopNoteViewController.m in Sources */,
 				7AB2EDF11AC3C2960033F08D /* Paging.m in Sources */,
@@ -7847,6 +7886,7 @@
 				7AB2ED851AC3C2960033F08D /* DepositFormBankAccountList.m in Sources */,
 				7AB2ED721AC3C2960033F08D /* RKObjectManagerCategory.m in Sources */,
 				7AB2F05E1AC3C2960033F08D /* FilterLocationViewCell.m in Sources */,
+				7AEDF4021ACAB7CF00AF6180 /* ReportViewController.m in Sources */,
 				7AB2F0771AC3C2960033F08D /* TransactionCartCell.m in Sources */,
 				7AB2EE821AC3C2960033F08D /* TransactionVoucherData.m in Sources */,
 				7AB2EFC01AC3C2960033F08D /* ReputationCell.m in Sources */,
@@ -8032,7 +8072,6 @@
 				7AB2EFEC1AC3C2960033F08D /* RequestShipmentCourier.m in Sources */,
 				7AB2EDA61AC3C2960033F08D /* Statistic.m in Sources */,
 				7AB2EDC61AC3C2960033F08D /* InboxMessage.m in Sources */,
-				7AB2EF491AC3C2960033F08D /* InboxMessageViewController.m in Sources */,
 				7AB2EDE51AC3C2960033F08D /* InboxReviewResult.m in Sources */,
 				7AB2ED821AC3C2960033F08D /* Deposit.m in Sources */,
 				7AB2EE8A1AC3C2960033F08D /* TxOrderConfirmedDetail.m in Sources */,
@@ -8064,6 +8103,7 @@
 				7AB2EE531AC3C2960033F08D /* ShopSettingsResult.m in Sources */,
 				7AB2EEF31AC3C2960033F08D /* TKPDTabInboxTalkNavigationController.m in Sources */,
 				7AB2F0BB1AC3C2960033F08D /* TxOrderPaymentConfirmationSuccessViewController.m in Sources */,
+				7AEDF3F71ACAA2DB00AF6180 /* InboxMessageDetailCell.m in Sources */,
 				7AB2EF651AC3C2960033F08D /* ReviewFormViewController.m in Sources */,
 				7AB2EE0B1AC3C2960033F08D /* BankAccountFormResult.m in Sources */,
 				7AB2F0361AC3C2960033F08D /* ShopInfoAddressView.m in Sources */,

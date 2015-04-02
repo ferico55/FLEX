@@ -142,7 +142,9 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [self.delegate viewController:self numberOfProcessedOrder:_numberOfProcessedOrder];
+    if ([self.delegate respondsToSelector:@selector(viewController:numberOfProcessedOrder:)]) {
+        [self.delegate viewController:self numberOfProcessedOrder:_numberOfProcessedOrder];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
