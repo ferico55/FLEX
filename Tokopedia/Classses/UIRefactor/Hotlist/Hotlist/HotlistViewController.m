@@ -72,7 +72,7 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
+        
     [self.navigationController.navigationBar setTranslucent:NO];
     
     _product = [NSMutableArray new];

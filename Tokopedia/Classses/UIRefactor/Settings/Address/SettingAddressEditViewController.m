@@ -214,14 +214,8 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         switch (btn.tag) {
-            case 12:
-            {
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-            case 11:
-            {
+            case 11: {
                 //submit
-                
                 if ([self isValidInput]) {
                     if (_type == TYPE_ADD_EDIT_PROFILE_ATC) {
 
@@ -253,10 +247,11 @@
                         NSDictionary *userInfo = @{DATA_ADDRESS_DETAIL_KEY: detailAddress};
                         
                         [_delegate SettingAddressEditViewController:self withUserInfo:userInfo];
-                        [self.navigationController popViewControllerAnimated:YES];
-                    }
-                    else
-                    {
+                        
+                        [self.navigationController dismissViewControllerAnimated:YES completion:^{
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }];
+                    } else {
                         [self configureRestKitActionAddAddress];
                         [self requestActionAddAddress:_datainput];
                     }

@@ -55,6 +55,9 @@
 
 @property (nonatomic) NSInteger deadlineProcessDayLeft;
 
+@property (strong, nonatomic) IBOutletCollection(NSLayoutConstraint) NSArray *buttonConstraintHeight;
+
+
 @property NSIndexPath *indexPath;
 
 +(id)newCell;

@@ -38,6 +38,7 @@
 - (void)initNotificationBarButton {
     _notificationButton = [[NotificationBarButton alloc] init];
     UIButton *button = (UIButton *)_notificationButton.customView;
+    
     [button addTarget:_attachedViewController action:@selector(tapNotificationBar) forControlEvents:UIControlEventTouchUpInside];
 }
 
@@ -191,12 +192,16 @@
         }
         _notificationButton.badgeLabel.frame = badgeLabelFrame;
     }
+    
+    if ([_notification.result.total_cart integerValue]>0)
+        [[_attachedViewController.tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = [_notification.result.total_cart stringValue];
 }
 
 #pragma mark - Notification view delegate
 
 - (void)pushViewController:(id)viewController
 {
+
     if ([self.delegate respondsToSelector:@selector(notificationManager:pushViewController:)]) {
         [self.delegate notificationManager:self pushViewController:viewController];        
     }

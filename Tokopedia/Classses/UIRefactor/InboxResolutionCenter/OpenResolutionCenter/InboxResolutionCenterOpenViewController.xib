@@ -3,11 +3,9 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
@@ -49,6 +47,7 @@
                 <outlet property="noteTextView" destination="3ME-nQ-g96" id="ct5-TY-qbU"/>
                 <outlet property="problemSolutionHeaderLabel" destination="XSr-k5-hIZ" id="kms-e4-nbu"/>
                 <outlet property="problemSolutionLabel" destination="Xvn-d6-hG1" id="crg-tr-Hem"/>
+                <outlet property="rightArrowImageView" destination="kpJ-Hl-d2Y" id="zJU-x1-bdi"/>
                 <outlet property="scrollViewUploadPhoto" destination="E9I-RD-rjI" id="Sg2-7C-jHZ"/>
                 <outlet property="shopImageView" destination="B1Q-dN-74m" id="KEK-Xx-DkP"/>
                 <outlet property="shopNameLabel" destination="SCK-gq-sNR" id="0BI-dq-HoB"/>
@@ -56,16 +55,21 @@
                 <outlet property="totalInvoiceLabel" destination="5Tq-Yr-44M" id="8qX-kg-uLO"/>
                 <outlet property="totalRefundTextField" destination="dBD-hC-Mwo" id="31m-yO-SwF"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
-                <outletCollection property="uploadButtons" destination="wAj-wA-cgw" id="Mae-BD-SWQ"/>
-                <outletCollection property="uploadButtons" destination="KHn-7e-jJZ" id="bVI-cE-q2r"/>
-                <outletCollection property="uploadButtons" destination="8nL-7H-tIC" id="s52-pD-bMx"/>
-                <outletCollection property="uploadButtons" destination="PuV-sr-geZ" id="kzX-oR-fzj"/>
-                <outletCollection property="uploadButtons" destination="bQF-Yj-JsB" id="pWD-3n-BZ9"/>
-                <outletCollection property="uploadedImages" destination="5uc-Gr-auB" id="4SM-Mg-ohZ"/>
                 <outletCollection property="uploadedImages" destination="R4q-zH-iUn" id="m2A-U0-O3J"/>
+                <outletCollection property="cancelButtons" destination="BwP-sh-Q9S" id="Opa-vi-sBM"/>
+                <outletCollection property="uploadedImages" destination="5uc-Gr-auB" id="4SM-Mg-ohZ"/>
+                <outletCollection property="uploadButtons" destination="bQF-Yj-JsB" id="pWD-3n-BZ9"/>
+                <outletCollection property="cancelButtons" destination="92y-65-3Lq" id="sQn-oS-UoQ"/>
                 <outletCollection property="uploadedImages" destination="4Mt-8d-V3D" id="jd1-Vf-UHJ"/>
-                <outletCollection property="uploadedImages" destination="Dii-Xj-cCd" id="je9-9u-Uwq"/>
+                <outletCollection property="cancelButtons" destination="Dk9-Vm-nJA" id="79B-qE-3Xn"/>
+                <outletCollection property="uploadButtons" destination="wAj-wA-cgw" id="Mae-BD-SWQ"/>
+                <outletCollection property="cancelButtons" destination="FTk-Sp-VD2" id="iVG-Mi-oBM"/>
+                <outletCollection property="uploadButtons" destination="8nL-7H-tIC" id="s52-pD-bMx"/>
+                <outletCollection property="cancelButtons" destination="zeX-Ym-3c7" id="qMK-qh-44l"/>
+                <outletCollection property="uploadButtons" destination="KHn-7e-jJZ" id="bVI-cE-q2r"/>
                 <outletCollection property="uploadedImages" destination="nJS-eK-hqK" id="oFh-3k-LuG"/>
+                <outletCollection property="uploadButtons" destination="PuV-sr-geZ" id="kzX-oR-fzj"/>
+                <outletCollection property="uploadedImages" destination="Dii-Xj-cCd" id="je9-9u-Uwq"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -229,7 +233,7 @@
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Barang tidak sesuai deskripsi" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TcM-NM-b8R">
-                                <rect key="frame" x="85" y="11" width="204" height="21"/>
+                                <rect key="frame" x="85" y="12" width="204" height="20"/>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                                 <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -291,40 +295,52 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="521" y="729"/>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="226" id="B4T-ot-2eY">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="226"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="236" id="B4T-ot-2eY">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="236"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="B4T-ot-2eY" id="qSp-a5-KnA">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lampirkan foto barang sebagai bukti" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FFL-ey-eNm">
-                        <rect key="frame" x="15" y="15" width="297" height="21"/>
+                        <rect key="frame" x="15" y="15" width="297" height="15"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="21" id="XzQ-c3-Htv"/>
-                        </constraints>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                        <color key="textColor" red="0.30196078430000001" green="0.30196078430000001" blue="0.30196078430000001" alpha="1" colorSpace="deviceRGB"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lampirkan foto barang sebagai bukti" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sfn-pT-ewE">
-                        <rect key="frame" x="11" y="98" width="297" height="21"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="21" id="fEY-bu-hiS"/>
+                            <constraint firstAttribute="width" constant="297" id="1fW-AY-0lT"/>
+                            <constraint firstAttribute="height" constant="15" id="3fd-Ff-PND"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                         <color key="textColor" red="0.30196078430000001" green="0.30196078430000001" blue="0.30196078430000001" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E9I-RD-rjI">
-                        <rect key="frame" x="0.0" y="44" width="320" height="118"/>
+                        <rect key="frame" x="0.0" y="44" width="320" height="120"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zgj-Ue-0eL">
-                                <rect key="frame" x="0.0" y="0.0" width="467" height="118"/>
+                                <rect key="frame" x="0.0" y="0.0" width="519" height="120"/>
                                 <subviews>
+                                    <imageView tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5uc-Gr-auB">
+                                        <rect key="frame" x="15" y="15" width="90" height="90"/>
+                                        <gestureRecognizers/>
+                                    </imageView>
+                                    <imageView tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R4q-zH-iUn">
+                                        <rect key="frame" x="115" y="15" width="90" height="90"/>
+                                        <gestureRecognizers/>
+                                    </imageView>
+                                    <imageView tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Mt-8d-V3D">
+                                        <rect key="frame" x="215" y="15" width="90" height="90"/>
+                                        <gestureRecognizers/>
+                                    </imageView>
+                                    <imageView tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dii-Xj-cCd">
+                                        <rect key="frame" x="315" y="15" width="90" height="90"/>
+                                        <gestureRecognizers/>
+                                    </imageView>
+                                    <imageView tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nJS-eK-hqK">
+                                        <rect key="frame" x="415" y="15" width="90" height="90"/>
+                                        <gestureRecognizers/>
+                                    </imageView>
                                     <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KHn-7e-jJZ">
-                                        <rect key="frame" x="15" y="90" width="70" height="20"/>
+                                        <rect key="frame" x="15" y="15" width="90" height="90"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                                        <state key="normal" title="Unggah foto">
+                                        <state key="normal" backgroundImage="icon_upload_image.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -332,9 +348,9 @@
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wAj-wA-cgw">
-                                        <rect key="frame" x="107" y="91" width="70" height="20"/>
+                                        <rect key="frame" x="115" y="15" width="90" height="90"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                                        <state key="normal" title="Unggah foto">
+                                        <state key="normal" backgroundImage="icon_upload_image.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -342,9 +358,9 @@
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8nL-7H-tIC">
-                                        <rect key="frame" x="190" y="91" width="70" height="20"/>
+                                        <rect key="frame" x="215" y="15" width="90" height="90"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                                        <state key="normal" title="Unggah foto">
+                                        <state key="normal" backgroundImage="icon_upload_image.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -352,9 +368,9 @@
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PuV-sr-geZ">
-                                        <rect key="frame" x="280" y="91" width="70" height="20"/>
+                                        <rect key="frame" x="315" y="15" width="90" height="90"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                                        <state key="normal" title="Unggah foto">
+                                        <state key="normal" backgroundImage="icon_upload_image.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -362,61 +378,101 @@
                                         </connections>
                                     </button>
                                     <button hidden="YES" opaque="NO" tag="14" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bQF-Yj-JsB">
-                                        <rect key="frame" x="377" y="91" width="70" height="20"/>
+                                        <rect key="frame" x="415" y="15" width="90" height="90"/>
                                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                                        <state key="normal" title="Unggah foto">
+                                        <state key="normal" backgroundImage="icon_upload_image.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="tap:" destination="-1" eventType="touchUpInside" id="dO0-dc-amy"/>
                                         </connections>
                                     </button>
-                                    <imageView tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5uc-Gr-auB">
-                                        <rect key="frame" x="15" y="13" width="70" height="70"/>
-                                        <gestureRecognizers/>
-                                    </imageView>
-                                    <imageView tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R4q-zH-iUn">
-                                        <rect key="frame" x="107" y="13" width="70" height="70"/>
-                                        <gestureRecognizers/>
-                                    </imageView>
-                                    <imageView tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Mt-8d-V3D">
-                                        <rect key="frame" x="190" y="13" width="70" height="70"/>
-                                        <gestureRecognizers/>
-                                    </imageView>
-                                    <imageView tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Dii-Xj-cCd">
-                                        <rect key="frame" x="280" y="13" width="70" height="70"/>
-                                        <gestureRecognizers/>
-                                    </imageView>
-                                    <imageView tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nJS-eK-hqK">
-                                        <rect key="frame" x="377" y="13" width="70" height="70"/>
-                                        <gestureRecognizers/>
-                                    </imageView>
+                                    <button hidden="YES" opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="92y-65-3Lq">
+                                        <rect key="frame" x="285" y="15" width="20" height="20"/>
+                                        <state key="normal" image="icon_cancel.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tapRemoveImage:" destination="-1" eventType="touchUpInside" id="Tc9-Ss-Z7m"/>
+                                        </connections>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FTk-Sp-VD2">
+                                        <rect key="frame" x="385" y="15" width="20" height="20"/>
+                                        <state key="normal" image="icon_cancel.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tapRemoveImage:" destination="-1" eventType="touchUpInside" id="XA8-Yp-9SY"/>
+                                        </connections>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" tag="14" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BwP-sh-Q9S">
+                                        <rect key="frame" x="484" y="15" width="20" height="20"/>
+                                        <state key="normal" image="icon_cancel.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tapRemoveImage:" destination="-1" eventType="touchUpInside" id="EW2-wJ-rW0"/>
+                                        </connections>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zeX-Ym-3c7">
+                                        <rect key="frame" x="185" y="15" width="20" height="20"/>
+                                        <state key="normal" image="icon_cancel.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tapRemoveImage:" destination="-1" eventType="touchUpInside" id="Ntj-wf-nFK"/>
+                                        </connections>
+                                    </button>
+                                    <button hidden="YES" opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dk9-Vm-nJA">
+                                        <rect key="frame" x="85" y="15" width="20" height="20"/>
+                                        <state key="normal" image="icon_cancel.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="tapRemoveImage:" destination="-1" eventType="touchUpInside" id="8t1-gA-7WF"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                         </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="120" id="jDG-fi-nWD"/>
+                        </constraints>
                         <connections>
                             <outlet property="delegate" destination="-1" id="zSb-uI-5C8"/>
                         </connections>
                     </scrollView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jFa-RM-DWt" userLabel="Horizontal Border">
-                        <rect key="frame" x="0.0" y="44" width="320" height="1"/>
+                        <rect key="frame" x="0.0" y="43" width="320" height="1"/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="KtW-OD-YOp"/>
+                        </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5i2-CJ-Ez9" userLabel="Horizontal Border">
-                        <rect key="frame" x="0.0" y="162" width="320" height="1"/>
+                        <rect key="frame" x="0.0" y="164" width="320" height="1"/>
                         <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="cUV-yM-8Tt"/>
+                        </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Besar file : Maksimum 500.000 bytes (500kilobytes)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pfb-An-PgD">
-                        <rect key="frame" x="15" y="170" width="297" height="21"/>
+                        <rect key="frame" x="15" y="173" width="297" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="ewn-YS-a0k"/>
+                            <constraint firstAttribute="width" constant="297" id="pGp-ui-p3V"/>
+                        </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                         <color key="textColor" red="0.30196078430000001" green="0.30196078430000001" blue="0.30196078430000001" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jumlah file : Maksimum 5 foto" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vHY-Xw-UvH">
-                        <rect key="frame" x="15" y="192" width="297" height="21"/>
+                        <rect key="frame" x="15" y="195" width="297" height="21"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="21" id="6jJ-sf-ee3"/>
+                            <constraint firstAttribute="height" constant="21" id="B99-SG-BGd"/>
+                            <constraint firstAttribute="width" constant="297" id="z82-kk-M30"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                         <color key="textColor" red="0.30196078430000001" green="0.30196078430000001" blue="0.30196078430000001" alpha="1" colorSpace="deviceRGB"/>
@@ -424,40 +480,33 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="sfn-pT-ewE" secondAttribute="trailing" constant="4" id="0f5-lm-4CT"/>
-                    <constraint firstItem="jFa-RM-DWt" firstAttribute="trailing" secondItem="E9I-RD-rjI" secondAttribute="trailing" id="3h4-F7-eLz"/>
-                    <constraint firstItem="sfn-pT-ewE" firstAttribute="leading" secondItem="qSp-a5-KnA" secondAttribute="leadingMargin" constant="3" id="5iE-JO-37L"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="vHY-Xw-UvH" secondAttribute="bottom" constant="4" id="6W9-WD-WwK"/>
-                    <constraint firstItem="FFL-ey-eNm" firstAttribute="leading" secondItem="vHY-Xw-UvH" secondAttribute="leading" id="7Md-0Y-fcT"/>
-                    <constraint firstItem="FFL-ey-eNm" firstAttribute="trailing" secondItem="pfb-An-PgD" secondAttribute="trailing" id="Ddg-3k-ofu"/>
-                    <constraint firstItem="FFL-ey-eNm" firstAttribute="leading" secondItem="pfb-An-PgD" secondAttribute="leading" id="EE9-rE-rfr"/>
-                    <constraint firstItem="FFL-ey-eNm" firstAttribute="trailing" secondItem="qSp-a5-KnA" secondAttribute="trailingMargin" id="FCg-YG-MVy"/>
-                    <constraint firstItem="FFL-ey-eNm" firstAttribute="trailing" secondItem="vHY-Xw-UvH" secondAttribute="trailing" id="In0-ad-Pbu"/>
-                    <constraint firstItem="jFa-RM-DWt" firstAttribute="leading" secondItem="E9I-RD-rjI" secondAttribute="leading" id="K6O-K1-uwW"/>
-                    <constraint firstItem="jFa-RM-DWt" firstAttribute="top" secondItem="FFL-ey-eNm" secondAttribute="bottom" constant="8" symbolic="YES" id="MNq-0Z-1yi"/>
-                    <constraint firstAttribute="bottom" secondItem="jFa-RM-DWt" secondAttribute="bottom" constant="180" id="OSx-1H-Jxj"/>
-                    <constraint firstItem="sfn-pT-ewE" firstAttribute="top" secondItem="jFa-RM-DWt" secondAttribute="bottom" constant="53" id="We2-EP-74E"/>
-                    <constraint firstItem="FFL-ey-eNm" firstAttribute="leading" secondItem="qSp-a5-KnA" secondAttribute="leadingMargin" constant="7" id="YMs-bC-vNn"/>
-                    <constraint firstItem="pfb-An-PgD" firstAttribute="top" secondItem="5i2-CJ-Ez9" secondAttribute="bottom" constant="7" id="bf8-YR-knz"/>
-                    <constraint firstItem="E9I-RD-rjI" firstAttribute="leading" secondItem="qSp-a5-KnA" secondAttribute="leading" id="cbf-q4-9vL"/>
-                    <constraint firstAttribute="bottom" secondItem="5i2-CJ-Ez9" secondAttribute="bottom" constant="62" id="dr1-Mv-d20"/>
-                    <constraint firstItem="jFa-RM-DWt" firstAttribute="trailing" secondItem="5i2-CJ-Ez9" secondAttribute="trailing" id="fpg-pF-RCE"/>
-                    <constraint firstAttribute="trailing" secondItem="E9I-RD-rjI" secondAttribute="trailing" id="gvH-qu-ku7"/>
-                    <constraint firstItem="jFa-RM-DWt" firstAttribute="leading" secondItem="5i2-CJ-Ez9" secondAttribute="leading" id="ksm-4g-CpD"/>
-                    <constraint firstItem="5i2-CJ-Ez9" firstAttribute="top" secondItem="sfn-pT-ewE" secondAttribute="bottom" constant="43" id="l1J-cT-qEL"/>
-                    <constraint firstItem="5i2-CJ-Ez9" firstAttribute="top" secondItem="E9I-RD-rjI" secondAttribute="bottom" id="mR4-LW-zWb"/>
-                    <constraint firstItem="E9I-RD-rjI" firstAttribute="top" secondItem="FFL-ey-eNm" secondAttribute="bottom" constant="8" id="mkh-Pc-8aM"/>
-                    <constraint firstItem="vHY-Xw-UvH" firstAttribute="top" secondItem="pfb-An-PgD" secondAttribute="bottom" constant="1" id="nGe-zT-FY6"/>
-                    <constraint firstItem="FFL-ey-eNm" firstAttribute="top" secondItem="qSp-a5-KnA" secondAttribute="topMargin" constant="7" id="nfI-93-3dq"/>
+                    <constraint firstItem="5i2-CJ-Ez9" firstAttribute="top" secondItem="E9I-RD-rjI" secondAttribute="bottom" id="1YD-Ge-S79"/>
+                    <constraint firstItem="vHY-Xw-UvH" firstAttribute="leading" secondItem="qSp-a5-KnA" secondAttribute="leading" constant="15" id="E0u-Ab-KID"/>
+                    <constraint firstAttribute="trailing" secondItem="5i2-CJ-Ez9" secondAttribute="trailing" id="EF2-uh-SzX"/>
+                    <constraint firstAttribute="bottom" secondItem="pfb-An-PgD" secondAttribute="bottom" constant="41" id="FIK-oW-nUe"/>
+                    <constraint firstItem="FFL-ey-eNm" firstAttribute="top" secondItem="qSp-a5-KnA" secondAttribute="top" constant="15" id="GS6-lf-7jU"/>
+                    <constraint firstItem="pfb-An-PgD" firstAttribute="top" secondItem="5i2-CJ-Ez9" secondAttribute="bottom" constant="8" id="LRK-SJ-iaL"/>
+                    <constraint firstItem="pfb-An-PgD" firstAttribute="leading" secondItem="vHY-Xw-UvH" secondAttribute="leading" id="Qz1-gx-svA"/>
+                    <constraint firstItem="FFL-ey-eNm" firstAttribute="leading" secondItem="qSp-a5-KnA" secondAttribute="leading" constant="15" id="T2m-Dn-lEv"/>
+                    <constraint firstItem="E9I-RD-rjI" firstAttribute="leading" secondItem="qSp-a5-KnA" secondAttribute="leading" id="WzE-AO-L6Z"/>
+                    <constraint firstAttribute="trailing" secondItem="E9I-RD-rjI" secondAttribute="trailing" id="b2V-3O-WDf"/>
+                    <constraint firstItem="E9I-RD-rjI" firstAttribute="top" secondItem="jFa-RM-DWt" secondAttribute="bottom" id="bNR-sB-8XY"/>
+                    <constraint firstItem="E9I-RD-rjI" firstAttribute="top" secondItem="jFa-RM-DWt" secondAttribute="bottom" id="dXD-aP-EBz"/>
+                    <constraint firstItem="5i2-CJ-Ez9" firstAttribute="leading" secondItem="qSp-a5-KnA" secondAttribute="leading" id="lyL-iQ-Hj5"/>
+                    <constraint firstItem="jFa-RM-DWt" firstAttribute="leading" secondItem="qSp-a5-KnA" secondAttribute="leading" id="nog-Bv-Yyu"/>
+                    <constraint firstAttribute="trailing" secondItem="jFa-RM-DWt" secondAttribute="trailing" id="oY5-Ah-WmD"/>
+                    <constraint firstItem="vHY-Xw-UvH" firstAttribute="top" secondItem="pfb-An-PgD" secondAttribute="bottom" constant="1" id="owz-cn-2G0"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-            <point key="canvasLocation" x="521" y="486"/>
+            <point key="canvasLocation" x="140" y="611"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>
+        <image name="icon_cancel.png" width="20" height="20"/>
         <image name="icon_default_shop.jpg" width="80" height="80"/>
+        <image name="icon_upload_image.png" width="90" height="90"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

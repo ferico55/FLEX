@@ -109,7 +109,6 @@
     [super viewDidLoad];
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
-    
     if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
         _doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
                                                               style:UIBarButtonItemStylePlain
@@ -118,10 +117,12 @@
         _doneBarButtonItem.tag = TAG_SETTING_ADDRESS_BARBUTTONITEM_DONE;
         self.navigationItem.rightBarButtonItem = _doneBarButtonItem;
 
+        _table.tableHeaderView = _addNewAddressView;
+        
         _searchBar.delegate = self;
         _searchBar.placeholder = @"Cari Alamat";
-        _searchBar.userInteractionEnabled=YES;
-
+        _searchBar.userInteractionEnabled = YES;
+        
     } else {
         
         UIBarButtonItem *addBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
@@ -904,6 +905,7 @@
                                            };
                 [_delegate SettingAddressViewController:self withUserInfo:userInfo];
                 [self.navigationController popViewControllerAnimated:YES];
+                break;
             }
             case TAG_SETTING_ADDRESS_BARBUTTONITEM_ADD:
             {
@@ -926,17 +928,23 @@
             default:
                 break;
         }
-    }
-    else {
-        //add new address
-        NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
-        NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
-        SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
-        vc.data = @{kTKPD_AUTHKEY: _auth,
-                    kTKPDPROFILE_DATAEDITTYPEKEY : @(typeAddAddress)
-                    };
-        vc.delegate = self;
-        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *button = (UIButton *)sender;
+        if (button.tag == 1) {
+            //add new address
+            NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
+            NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
+            SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
+            vc.data = @{kTKPD_AUTHKEY: _auth,
+                        kTKPDPROFILE_DATAEDITTYPEKEY : @(typeAddAddress)
+                        };
+            vc.delegate = self;
+            
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            nav.navigationBar.translucent = NO;
+            
+            [self.navigationController presentViewController:nav animated:YES completion:nil];            
+        }
     }
 }
 
@@ -1103,6 +1111,5 @@
     return nil;
     
 }
-
 
 @end

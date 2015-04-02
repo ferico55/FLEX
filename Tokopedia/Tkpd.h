@@ -12,7 +12,7 @@
 #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 
 #if DEBUG
-    #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+    #define kTkpdBaseURLString @"http://www.tkpdevel-pg.api/ws"
 #else
     #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 #endif

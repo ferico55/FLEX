@@ -36,6 +36,8 @@
 
 #import "StickyAlertView.h"
 
+#import "NavigateViewController.h"
+
 @interface TxOrderConfirmedViewController ()
 <
     UITableViewDelegate,
@@ -241,10 +243,9 @@
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex != 0) {
-        WebViewInvoiceViewController *VC = [WebViewInvoiceViewController new];
         TxOrderConfirmedDetailInvoice *invoice = _orderDetail.detail[buttonIndex-1];
-        VC.urlAddress = invoice.url;
-        [self.navigationController pushViewController:VC animated:YES];
+        NavigateViewController *vc =[NavigateViewController new];
+        [vc navigateToInvoiceFromViewController:self withInvoiceURL:invoice.url];
     }
 }
 #pragma mark - Camera Controller Delegate
@@ -299,7 +300,7 @@
     [cell.userNameLabel setText:detailOrder.user_account_name?:@"" animated:NO];
     [cell.bankNameLabel setText:detailOrder.user_bank_name?:@"" animated:NO];
     [cell.nomorRekLabel setText:detailOrder.user_account_no?:@"" animated:NO];
-    [cell.recieverNomorRekLabel setText:[NSString stringWithFormat:@"%@ - %@",detailOrder.bank_name,detailOrder.system_account_no] animated:NO];
+    [cell.recieverNomorRekLabel setText:[NSString stringWithFormat:@"%@",detailOrder.bank_name] animated:NO];
     
     if ([cell.userNameLabel.text isEqualToString:@""]) {
         cell.userNameLabel.text =@"-";

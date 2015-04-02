@@ -10,4 +10,6 @@
 
 @interface InboxResolutionCenterTabViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *verticalSpaceButtons;
+
 @end

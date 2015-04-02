@@ -82,7 +82,6 @@
     [titleLabel addTarget:self action:@selector(tapbutton:) forControlEvents:UIControlEventTouchUpInside];
     self.navigationItem.titleView = titleLabel;
     
-    _readOption.backgroundColor = [UIColor colorWithRed:0/255 green:0/255 blue:0/255  alpha:0.5];
     [self markAllTalkButton];
     
     

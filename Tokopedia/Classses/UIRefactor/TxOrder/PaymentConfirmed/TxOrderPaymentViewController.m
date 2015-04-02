@@ -993,6 +993,7 @@
                         NSArray *array = order.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
                         StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
                         [alert show];
+                        [_delegate refreshRequest];
                         [self.navigationController popViewControllerAnimated:YES];
                     }
                     else{
@@ -1167,7 +1168,9 @@
         [controllerObjects addObject:@"Pilih Rekening Tujuan"];
         
         for (SystemBankAcount *systemBank in listSystemBank) {
-            [controllerObjects addObject:[NSString stringWithFormat:@"%@",systemBank.sysbank_name]];
+            if (![controllerObjects containsObject:[NSString stringWithFormat:@"%@",systemBank.sysbank_name]]) {
+                [controllerObjects addObject:[NSString stringWithFormat:@"%@",systemBank.sysbank_name]];
+            }
         }
         
         controller.selectedObject = ([selectedSystemBank.sysbank_id isEqualToString:@"-1"])?@"Pilih Rekening Tujuan":[NSString stringWithFormat:@"%@",selectedSystemBank.sysbank_name];

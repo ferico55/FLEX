@@ -199,7 +199,7 @@ typedef enum {
 #define ERRORMESSAGE_INVALID_REFUND @"Nominal maksimal pengembalian dana adalah %@."
 
 #define ARRAY_FILTER_PROCESS @[@"Dalam Proses",@"Sudah Selesai",@"Semua"]
-#define ARRAY_FILTER_UNREAD @[@"Semua",@"Belum dibaca",@"Sudah dibaca"]
+#define ARRAY_FILTER_UNREAD @[@"Semua Status",@"Belum dibaca",@"Sudah dibaca"]
 #define ARRAY_FILTER_SORT @[@"Waktu dibuat",@"Perubahan Terbaru"]
 
 #define ARRAY_PROBLEM_COMPLAIN @[@"Barang tidak sesuai deskripsi", @"Barang rusak", @"Barang tidak lengkap", @"Agen kurir yang digunakan tidak sesuai permintaan"]

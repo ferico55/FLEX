@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface InboxResolutionCenterComplainViewController : UIViewController
-
-@property (nonatomic) BOOL isMyComplain;
+;
+@property BOOL isMyComplain;
+@property (nonatomic) NSInteger filterReadIndex;
 
 @end

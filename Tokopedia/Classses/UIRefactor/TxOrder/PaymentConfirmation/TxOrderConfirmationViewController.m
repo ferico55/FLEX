@@ -338,9 +338,11 @@
     if (!_isMultipleSelection && !_requestCancelPayment.isExecuting && !_requestCancelPaymentForm.isExecuting) {
         TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
         vc.data = @{DATA_SELECTED_ORDER_KEY : @[_list[indexPath.row]]};
+        vc.delegate  = self;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
+
 
 #pragma mark - Alert Delegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

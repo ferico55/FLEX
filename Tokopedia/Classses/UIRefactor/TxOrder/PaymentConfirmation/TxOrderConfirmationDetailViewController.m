@@ -23,7 +23,6 @@
 <
     UITableViewDataSource,
     UITableViewDelegate,
-    TxOrderPaymentViewControllerDelegate,
     TxOrderConfirmationDetailHeaderViewDelegate,
     TxOrderConfirmationProductCellDelegate
 >
@@ -88,7 +87,6 @@
     {
         TxOrderConfirmationList *detailOrder = [_data objectForKey:DATA_SELECTED_ORDER_KEY];
         TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
-        vc.delegate = self;
         vc.data = @{DATA_SELECTED_ORDER_KEY : @[detailOrder]};
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -351,6 +349,5 @@
     
     return cell;
 }
-
 
 @end

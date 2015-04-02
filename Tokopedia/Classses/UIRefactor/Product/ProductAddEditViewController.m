@@ -341,14 +341,14 @@
         case UIGestureRecognizerStateEnded:
         {
             if (gesture.view.tag > 0) {
-                NSInteger indexImage = gesture.view.tag-10;
+                NSInteger indexImage = gesture.view.tag-20;
                 NSString *defaultImagePath =[_dataInput objectForKey:API_PRODUCT_IMAGE_DEFAULT_KEY];
                 NSString *selectedImagePath =_productImageURLs[indexImage];
                 BOOL isDefaultImage;
                 if (defaultImagePath)
                     isDefaultImage = [defaultImagePath isEqualToString:selectedImagePath];
                 else
-                    isDefaultImage = (gesture.view.tag-10 == 0);
+                    isDefaultImage = (gesture.view.tag-20 == 0);
                 
                 ProductEditImageViewController *vc = [ProductEditImageViewController new];
                 vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
