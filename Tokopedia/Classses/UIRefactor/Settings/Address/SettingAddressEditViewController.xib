@@ -18,6 +18,10 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
@@ -33,7 +37,7 @@
                 <outlet property="textfieldphonenumber" destination="7N7-cN-ZzN" id="EOl-m1-CXO"/>
                 <outlet property="textfieldpostcode" destination="bS8-xJ-dFU" id="4pR-V9-HIk"/>
                 <outlet property="textfieldreceivername" destination="xWD-iV-Jf8" id="qWK-80-rhs"/>
-                <outlet property="textviewaddress" destination="8Om-rw-Ekh" id="3Lm-pd-ZOn"/>
+                <outlet property="textviewaddress" destination="8Om-rw-Ekh" id="aDw-0q-XS2"/>
                 <outlet property="view" destination="mvk-yQ-XQV" id="5G9-aW-yWL"/>
                 <outlet property="viewpassword" destination="dvU-hW-03w" id="B7F-PP-YSJ"/>
             </connections>
@@ -55,7 +59,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="600"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4mX-Mt-Sch">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <rect key="frame" x="0.0" y="25" width="320" height="44"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I23-ne-WcC" userLabel="Border Top">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -73,10 +77,10 @@
                                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xWD-iV-Jf8">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nama" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xWD-iV-Jf8">
                                             <rect key="frame" x="140" y="0.0" width="165" height="44"/>
                                             <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="deviceRGB"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                             <connections>
                                                 <outlet property="delegate" destination="-1" id="gnf-ir-CoA"/>
@@ -109,7 +113,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B6I-Oa-J5c">
-                                    <rect key="frame" x="0.0" y="69" width="320" height="44"/>
+                                    <rect key="frame" x="0.0" y="94" width="320" height="44"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sra-ie-nhQ" userLabel="Border Top">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -127,10 +131,10 @@
                                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tjw-Pd-Wsf">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Contoh : Alamat rumah" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tjw-Pd-Wsf">
                                             <rect key="frame" x="140" y="0.0" width="165" height="44"/>
                                             <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" returnKeyType="next"/>
                                             <connections>
                                                 <outlet property="delegate" destination="-1" id="vbu-VD-RGH"/>
@@ -163,7 +167,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n3y-3f-xUs">
-                                    <rect key="frame" x="0.0" y="113" width="320" height="123"/>
+                                    <rect key="frame" x="0.0" y="138" width="320" height="123"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bnd-rD-FKd" userLabel="Border Bottom">
                                             <rect key="frame" x="0.0" y="122" width="320" height="1"/>
@@ -172,14 +176,15 @@
                                                 <constraint firstAttribute="height" constant="1" id="PBm-um-mx6"/>
                                             </constraints>
                                         </view>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Om-rw-Ekh">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Om-rw-Ekh" customClass="TKPDTextView">
                                             <rect key="frame" x="10" y="2" width="310" height="118"/>
                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="118" id="u7c-Ec-m9j"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="deviceRGB"/>
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="next"/>
                                             <connections>
                                                 <outlet property="delegate" destination="-1" id="rfa-5x-O6u"/>
                                             </connections>
@@ -198,7 +203,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KmB-Sc-n3B">
-                                    <rect key="frame" x="0.0" y="236" width="320" height="44"/>
+                                    <rect key="frame" x="0.0" y="261" width="320" height="44"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kode Pos" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1kD-zd-oWW">
                                             <rect key="frame" x="15" y="0.0" width="120" height="44"/>
@@ -209,10 +214,10 @@
                                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bS8-xJ-dFU">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Tulis kode pos" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bS8-xJ-dFU">
                                             <rect key="frame" x="140" y="0.0" width="165" height="44"/>
                                             <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" keyboardType="numberPad" returnKeyType="next"/>
                                             <connections>
                                                 <outlet property="delegate" destination="-1" id="ZHU-jy-zaF"/>
@@ -242,7 +247,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NZx-ri-oPW">
-                                    <rect key="frame" x="0.0" y="280" width="320" height="44"/>
+                                    <rect key="frame" x="0.0" y="305" width="320" height="44"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Provinsi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RlV-qx-0A8">
                                             <rect key="frame" x="15" y="0.0" width="120" height="44"/>
@@ -297,7 +302,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cGo-Di-aku">
-                                    <rect key="frame" x="0.0" y="324" width="320" height="44"/>
+                                    <rect key="frame" x="0.0" y="349" width="320" height="44"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kota" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tTv-jC-xkj">
                                             <rect key="frame" x="15" y="0.0" width="120" height="44"/>
@@ -352,7 +357,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SgM-t1-HPS">
-                                    <rect key="frame" x="0.0" y="368" width="320" height="44"/>
+                                    <rect key="frame" x="0.0" y="393" width="320" height="44"/>
                                     <subviews>
                                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kecamatan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IM9-8u-nNh">
                                             <rect key="frame" x="15" y="0.0" width="120" height="44"/>
@@ -407,7 +412,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0wL-n8-l6x">
-                                    <rect key="frame" x="0.0" y="437" width="320" height="44"/>
+                                    <rect key="frame" x="0.0" y="462" width="320" height="44"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Pk-GR-9dA" userLabel="Border Top">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -425,11 +430,11 @@
                                             <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7N7-cN-ZzN">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Contoh: 08123456789" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7N7-cN-ZzN">
                                             <rect key="frame" x="140" y="0.0" width="165" height="44"/>
                                             <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <textInputTraits key="textInputTraits" keyboardType="phonePad" returnKeyType="done"/>
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="phonePad" returnKeyType="next"/>
                                             <connections>
                                                 <outlet property="delegate" destination="-1" id="jad-4d-kxP"/>
                                             </connections>
@@ -461,7 +466,7 @@
                                     </constraints>
                                 </view>
                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dvU-hW-03w">
-                                    <rect key="frame" x="0.0" y="506" width="320" height="44"/>
+                                    <rect key="frame" x="0.0" y="531" width="320" height="44"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HAW-9Z-4cv" userLabel="Border Top">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -525,7 +530,7 @@
                                 <constraint firstItem="dvU-hW-03w" firstAttribute="top" secondItem="0wL-n8-l6x" secondAttribute="bottom" constant="25" id="5xk-Em-vvF"/>
                                 <constraint firstItem="B6I-Oa-J5c" firstAttribute="leading" secondItem="rcd-tV-rTS" secondAttribute="leading" id="6Ad-vs-DUK"/>
                                 <constraint firstAttribute="trailing" secondItem="n3y-3f-xUs" secondAttribute="trailing" id="7Qe-HV-RBz"/>
-                                <constraint firstItem="4mX-Mt-Sch" firstAttribute="top" secondItem="rcd-tV-rTS" secondAttribute="top" id="9rn-JG-eyH"/>
+                                <constraint firstItem="4mX-Mt-Sch" firstAttribute="top" secondItem="rcd-tV-rTS" secondAttribute="top" constant="25" id="9rn-JG-eyH"/>
                                 <constraint firstItem="0wL-n8-l6x" firstAttribute="leading" secondItem="rcd-tV-rTS" secondAttribute="leading" id="AM0-Ro-Gk1"/>
                                 <constraint firstAttribute="trailing" secondItem="4mX-Mt-Sch" secondAttribute="trailing" id="CZj-sZ-DxA"/>
                                 <constraint firstAttribute="width" constant="320" id="CxT-ul-2i9"/>

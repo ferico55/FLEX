@@ -147,4 +147,13 @@
         [_delegate statusDetailAtIndexPath:_indexPath];
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    [self.contentView layoutIfNeeded];
+    self.statusLabel.preferredMaxLayoutWidth = CGRectGetWidth(self.statusLabel.frame);
+}
+
+
 @end

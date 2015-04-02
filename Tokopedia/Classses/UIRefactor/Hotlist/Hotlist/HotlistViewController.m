@@ -22,7 +22,13 @@
 
 #pragma mark - HotlistView
 
-@interface HotlistViewController () <TokopediaNetworkManagerDelegate, LoadingViewDelegate, UIGestureRecognizerDelegate>
+@interface HotlistViewController ()
+<
+    TokopediaNetworkManagerDelegate,
+    LoadingViewDelegate,
+    UITableViewDelegate,
+    UIGestureRecognizerDelegate
+>
 {
     NSMutableArray *_product;
     
@@ -45,7 +51,6 @@
     URLCacheConnection *_cacheConnection;
     URLCacheController *_cacheController;
     LoadingView *_loadingView;
-
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *table;
@@ -113,10 +118,6 @@
     } else {
         [_networkManager doRequest];
     }
-    
-    
-
-
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -471,7 +472,7 @@
         [self.delegate pushViewController:controller];
     
     }
-}
+} 
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 //    NSLog(@"scrolling %f Y", scrollView.contentOffset.y);

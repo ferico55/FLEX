@@ -136,6 +136,7 @@ typedef enum {
 #define API_DISPUTE_DEADLINE_KEY @"dispute_deadline"
 #define API_DISPUTE_RESOLUTION_ID_KEY @"dispute_resolution_id"
 #define API_DISPUTE_DETAIL_URL_KEY @"dispute_detail_url"
+#define API_DISPUTE_30_DAYS_KEY @"dispute_30_days"
 
 #pragma mark - Resolution Conversation
 #define API_RESOLUTION_CONVERSATION_KEY @"resolution_conversation"
@@ -197,7 +198,7 @@ typedef enum {
 
 #define ERRORMESSAGE_INVALID_REFUND @"Nominal maksimal pengembalian dana adalah %@."
 
-#define ARRAY_FILTER_PROCESS @[@"Dalam Process",@"Sudah Selesai",@"Semua"]
+#define ARRAY_FILTER_PROCESS @[@"Dalam Proses",@"Sudah Selesai",@"Semua"]
 #define ARRAY_FILTER_UNREAD @[@"Semua",@"Belum dibaca",@"Sudah dibaca"]
 #define ARRAY_FILTER_SORT @[@"Waktu dibuat",@"Perubahan Terbaru"]
 

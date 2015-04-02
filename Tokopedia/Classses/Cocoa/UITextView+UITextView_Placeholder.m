@@ -12,8 +12,6 @@
 
 - (void)setPlaceholder:(NSString *)placeholderText
 {
-    self.delegate = self;
-    
     UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, self.frame.size.width, 40)];
     placeholderLabel.text = placeholderText;
     placeholderLabel.font = [UIFont fontWithName:self.font.fontName size:self.font.pointSize];
@@ -22,7 +20,7 @@
     [self addSubview:placeholderLabel];
 }
 
-- (void)textViewDidChange:(UITextView *)textView
+- (void)textViewDidEndEditing:(UITextView *)textView
 {
     UILabel *placeholderLabel = (UILabel *)[textView viewWithTag:1];
     if (textView.text.length > 0) {

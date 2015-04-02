@@ -30,7 +30,20 @@
 #define DATA_SELECTED_BUTTON_KEY @"data_selected_button"
 
 #pragma mark - Setting Add Product View Controller
-@interface ProductAddEditViewController ()<UITextFieldDelegate,UIScrollViewDelegate,TKPDAlertViewDelegate,CameraControllerDelegate,CategoryMenuViewDelegate,ProductEditDetailViewControllerDelegate, ProductEditImageViewControllerDelegate, UITableViewDataSource, UITableViewDelegate, GenerateHostDelegate, RequestUploadImageDelegate>
+@interface ProductAddEditViewController ()
+<
+    UITextFieldDelegate,
+    UIScrollViewDelegate,
+    UITableViewDataSource,
+    UITableViewDelegate,
+    TKPDAlertViewDelegate,
+    CameraControllerDelegate,
+    CategoryMenuViewDelegate,
+    ProductEditDetailViewControllerDelegate,
+    ProductEditImageViewControllerDelegate,
+    GenerateHostDelegate,
+    RequestUploadImageDelegate
+>
 {
     NSMutableDictionary *_dataInput;
     NSMutableArray *_productImageURLs;
@@ -78,6 +91,7 @@
     BOOL _isNodata;
     
     GenerateHost *_generateHost;
+    BOOL _isBeingPresented;
 }
 @property (strong, nonatomic) IBOutlet UIView *section2FooterView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -151,14 +165,27 @@
     _productImageIDs = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
     _productImageDesc = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    _isBeingPresented = self.navigationController.isBeingPresented;
+    if (_isBeingPresented) {
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+        barButtonItem.tag = 10;
+        self.navigationItem.leftBarButtonItem = barButtonItem;
+    } else {
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:nil];
+        barButtonItem.tag = 10;
+        self.navigationItem.backBarButtonItem = barButtonItem;
+    }
     
-    _nextBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Next" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_nextBarButtonItem setTintColor:[UIColor blackColor]];
+    _nextBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Lanjut"
+                                                          style:UIBarButtonItemStyleDone
+                                                         target:(self)
+                                                         action:@selector(tap:)];
     _nextBarButtonItem.tag = 11;
     self.navigationItem.rightBarButtonItem = _nextBarButtonItem;
     
@@ -171,12 +198,6 @@
         productImageView.userInteractionEnabled = NO;
     }
     [self setDefaultData:_data];
-    //cache
-    //NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILPRODUCT_CACHEFILEPATH];
-    //_cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILPRODUCTFORM_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue]]];
-    //_cachecontroller.filePath = _cachepath;
-    //_cachecontroller.URLCacheInterval = 86400.0;
-    //[_cachecontroller initCacheWithDocumentPath:path];
     
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
@@ -236,8 +257,14 @@
         UIBarButtonItem *btn = (UIBarButtonItem *)sender;
         switch (btn.tag) {
             case 10:
-                [self.navigationController popViewControllerAnimated:YES];
+            {
+                if (self.navigationItem.leftBarButtonItem) {
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
                 break;
+            }
             case 11:
             {
                 if (!_isFinishedUploadImages) {
@@ -261,6 +288,7 @@
                                     DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(type),
                                     DATA_PRODUCT_DETAIL_KEY: productDetail
                                     };
+                        vc.generateHost = _generateHost;
                         vc.delegate = self;
                         [self.navigationController pushViewController:vc animated:YES];
                     }
@@ -708,46 +736,31 @@
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
     NSInteger productID = [[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]integerValue];
     NSInteger myshopID = [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue];
-    NSInteger userID = [[auth objectForKey:kTKPD_USERIDKEY]integerValue];
     
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : ACTION_GET_PRODUCT_FORM,
                             kTKPDDETAIL_APIPRODUCTIDKEY : @(productID),
                             kTKPDDETAIL_APISHOPIDKEY : @(myshopID),
-                            kTKPD_USERIDKEY : @(userID),
-                            //@"enc_dec" : @"off"
                             };
+
     [self enableButtonBeforeSuccessRequest:NO];
     
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILPRODUCT_APIPATH parameters:[param encrypt]];
-	//[_cachecontroller getFileModificationDate];
-	//_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-	//if (_timeinterval > _cachecontroller.URLCacheInterval) {
-        NSTimer *timer;
-        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            [timer invalidate];
-            [self requestsuccess:mappingResult withOperation:operation];
-            [self enableButtonBeforeSuccessRequest:YES];
-        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            [timer invalidate];
-            [self requestfailure:error];
-            [self enableButtonBeforeSuccessRequest:YES];
-        }];
-        
-        [_operationQueue addOperation:_request];
-        
-        timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-        
-    //}
-    //else {
-    //  NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    //  [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    //  [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    //  NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-    //  NSLog(@"cache and updated in last 24 hours.");
-    //  [self requestfailure:nil];
-    //}
+    NSTimer *timer;
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [timer invalidate];
+        [self requestsuccess:mappingResult withOperation:operation];
+        [self enableButtonBeforeSuccessRequest:YES];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [timer invalidate];
+        [self requestfailure:error];
+        [self enableButtonBeforeSuccessRequest:YES];
+    }];
+    
+    [_operationQueue addOperation:_request];
+    
+    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation

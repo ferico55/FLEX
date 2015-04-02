@@ -38,18 +38,25 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionCartShippingViewController">
             <connections>
                 <outlet property="addressStreetLabel" destination="gsN-AN-kC6" id="AJY-HA-4ho"/>
+                <outlet property="city" destination="Gua-7D-0MG" id="uBw-PE-xFx"/>
+                <outlet property="country" destination="RXF-cL-HyX" id="WQ2-yC-3V3"/>
+                <outlet property="district" destination="VHE-US-jVT" id="SpY-fK-kuE"/>
                 <outlet property="recieverNameLabel" destination="c7a-Pc-Vse" id="mQO-7H-Kut"/>
                 <outlet property="recieverPhoneLabel" destination="yXf-dG-oWL" id="uA3-bc-bi2"/>
                 <outlet property="senderNameLabel" destination="mnk-N0-OCT" id="MJs-MS-4L7"/>
                 <outlet property="senderPhoneLabel" destination="emy-IJ-6gK" id="f4Q-qv-d4S"/>
                 <outlet property="tableView" destination="36L-RY-E5P" id="T8Z-p7-cLe"/>
                 <outlet property="view" destination="iN0-l3-epB" id="OEK-pV-pGT"/>
+                <outlet property="viewAddressCell" destination="eB5-Gi-c9c" id="udX-eq-gp4"/>
                 <outletCollection property="tableViewCell" destination="FWA-vE-z1N" id="YMO-8U-7XQ"/>
                 <outletCollection property="tableViewCell" destination="417-5P-qLs" id="pjl-o1-S4N"/>
                 <outletCollection property="tableViewCell" destination="r04-au-7GB" id="l0i-cu-qRo"/>
@@ -98,13 +105,13 @@
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Alamat Tujuan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RsC-RT-UV6">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HyD-0S-Ygp">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -120,14 +127,12 @@
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Alamat Tujuan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fL8-Vx-853">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                        <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="awF-wk-qTh">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                        <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -137,17 +142,17 @@
         <tableViewCell tag="12" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="PZX-VB-Fqg" detailTextLabel="kNk-G2-19B" style="IBUITableViewCellStyleValue1" id="r04-au-7GB">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="r04-au-7GB" id="cLN-9b-JrA">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="r04-au-7GB" id="cLN-9b-JrA">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Kurir Pengiriman" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PZX-VB-Fqg">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kNk-G2-19B">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -163,13 +168,12 @@
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Kurir Pengiriman" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cdQ-4E-uHU">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nnU-qU-EHM">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                        <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -179,17 +183,17 @@
         <tableViewCell tag="13" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="SFT-bG-1vW" detailTextLabel="T6L-Qj-gm2" style="IBUITableViewCellStyleValue1" id="kWI-ne-rhU">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kWI-ne-rhU" id="dAt-xP-nfF">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="kWI-ne-rhU" id="dAt-xP-nfF">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Paket Pengiriman" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SFT-bG-1vW">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="T6L-Qj-gm2">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -205,12 +209,12 @@
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Biaya Asuransi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="osA-6x-jI2">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mHy-vz-ZEM">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -218,7 +222,7 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="441" y="422"/>
         </tableViewCell>
-        <tableViewCell tag="14" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="yDe-Lh-Dju" detailTextLabel="dbL-Eb-blF" style="IBUITableViewCellStyleValue1" id="6Tc-Q4-wn6">
+        <tableViewCell clipsSubviews="YES" tag="14" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="yDe-Lh-Dju" detailTextLabel="dbL-Eb-blF" style="IBUITableViewCellStyleValue1" id="6Tc-Q4-wn6">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6Tc-Q4-wn6" id="vbb-ML-yg0">
@@ -226,12 +230,12 @@
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Kirim Sebagian" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yDe-Lh-Dju">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dbL-Eb-blF">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -247,13 +251,12 @@
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Dropship" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fRF-vg-cov">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tnj-BL-TTA">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                        <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -268,12 +271,12 @@
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Ongkos Kirim" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ra9-V1-5xw">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Mhc-HN-8X7">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -289,13 +292,13 @@
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Biaya Asuransi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vSM-Gz-fsK">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qbN-tT-MZM">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -311,151 +314,220 @@
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Biaya Asuransi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ftm-RD-yPa">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SN0-HD-3kR">
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                        <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
+                        <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
             </tableViewCellContentView>
             <point key="canvasLocation" x="843" y="109"/>
         </tableViewCell>
-        <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="220" id="417-5P-qLs">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="220"/>
+        <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="243" id="417-5P-qLs">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="243"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="417-5P-qLs" id="1eI-jn-ZYg">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eB5-Gi-c9c">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="219"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="242"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Penerima :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eS3-QU-ozl">
-                                <rect key="frame" x="15" y="10" width="290" height="21"/>
+                                <rect key="frame" x="15" y="15" width="290" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="BFQ-q9-bFz"/>
+                                    <constraint firstAttribute="height" constant="21" id="l6V-xD-3hm"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Telepon Penerima:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oqT-3x-FKL">
-                                <rect key="frame" x="15" y="118" width="290" height="21"/>
+                                <rect key="frame" x="15" y="186" width="290" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="1MC-TM-E5W"/>
+                                    <constraint firstAttribute="height" constant="21" id="czc-pc-d4y"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="291" translatesAutoresizingMaskIntoConstraints="NO" id="gsN-AN-kC6">
-                                <rect key="frame" x="15" y="89" width="290" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="291" translatesAutoresizingMaskIntoConstraints="NO" id="gsN-AN-kC6">
+                                <rect key="frame" x="15" y="88" width="290" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="NcV-EM-CNr"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="jTu-Nd-XeQ"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="291" translatesAutoresizingMaskIntoConstraints="NO" id="VHE-US-jVT">
+                                <rect key="frame" x="15" y="111" width="290" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="pY9-f1-Wgn"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="291" translatesAutoresizingMaskIntoConstraints="NO" id="RXF-cL-HyX">
+                                <rect key="frame" x="15" y="155" width="290" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="OzR-JS-da8"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="291" translatesAutoresizingMaskIntoConstraints="NO" id="Gua-7D-0MG">
+                                <rect key="frame" x="15" y="132" width="290" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="ZpB-kw-M27"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Alamat :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uVJ-gQ-EBd">
-                                <rect key="frame" x="15" y="64" width="290" height="21"/>
+                                <rect key="frame" x="15" y="67" width="290" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="Q6s-dr-s6c"/>
+                                    <constraint firstAttribute="height" constant="21" id="YGC-c4-jod"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                                 <color key="textColor" red="0.61960784313725492" green="0.61960784313725492" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yXf-dG-oWL">
-                                <rect key="frame" x="15" y="143" width="290" height="21"/>
+                                <rect key="frame" x="15" y="207" width="290" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="6YZ-3t-mZP"/>
+                                    <constraint firstAttribute="height" constant="21" id="iby-yr-SSF"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c7a-Pc-Vse">
-                                <rect key="frame" x="15" y="35" width="290" height="21"/>
+                                <rect key="frame" x="15" y="36" width="290" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="Xsg-bG-5Db"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="dMU-cc-FBd"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" red="0.97647058819999999" green="0.97647058819999999" blue="0.97647058819999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="eS3-QU-ozl" secondAttribute="trailing" constant="15" id="1YB-pb-3de"/>
-                            <constraint firstItem="oqT-3x-FKL" firstAttribute="top" secondItem="gsN-AN-kC6" secondAttribute="bottom" constant="8" id="7Nx-Dz-A7s"/>
-                            <constraint firstItem="yXf-dG-oWL" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="Efg-Zh-0E7"/>
-                            <constraint firstAttribute="trailing" secondItem="uVJ-gQ-EBd" secondAttribute="trailing" constant="15" id="Eqs-0V-f0A"/>
-                            <constraint firstItem="yXf-dG-oWL" firstAttribute="top" secondItem="oqT-3x-FKL" secondAttribute="bottom" constant="4" id="FHu-r6-eCE"/>
-                            <constraint firstItem="uVJ-gQ-EBd" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="Fp1-fG-MBE"/>
-                            <constraint firstItem="eS3-QU-ozl" firstAttribute="top" secondItem="eB5-Gi-c9c" secondAttribute="top" constant="10" id="S8i-C8-QQY"/>
-                            <constraint firstAttribute="trailing" secondItem="yXf-dG-oWL" secondAttribute="trailing" constant="15" id="Sqf-0W-G93"/>
-                            <constraint firstItem="gsN-AN-kC6" firstAttribute="top" secondItem="uVJ-gQ-EBd" secondAttribute="bottom" constant="4" id="aMR-Oo-LzI"/>
-                            <constraint firstItem="oqT-3x-FKL" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="dY7-Ns-ahl"/>
-                            <constraint firstItem="c7a-Pc-Vse" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="dk7-DT-7ca"/>
-                            <constraint firstItem="c7a-Pc-Vse" firstAttribute="top" secondItem="eS3-QU-ozl" secondAttribute="bottom" constant="4" id="jqU-oA-lVn"/>
-                            <constraint firstAttribute="trailing" secondItem="gsN-AN-kC6" secondAttribute="trailing" constant="15" id="pKs-rz-6yZ"/>
-                            <constraint firstAttribute="trailing" secondItem="c7a-Pc-Vse" secondAttribute="trailing" constant="15" id="qbW-FY-v4w"/>
-                            <constraint firstAttribute="trailing" secondItem="oqT-3x-FKL" secondAttribute="trailing" constant="15" id="quy-4w-Sly"/>
-                            <constraint firstItem="uVJ-gQ-EBd" firstAttribute="top" secondItem="c7a-Pc-Vse" secondAttribute="bottom" constant="8" id="sed-aY-00y"/>
-                            <constraint firstItem="gsN-AN-kC6" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="vW0-xk-WRC"/>
-                            <constraint firstItem="eS3-QU-ozl" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="zwx-rl-6v5"/>
+                            <constraint firstAttribute="trailing" secondItem="Gua-7D-0MG" secondAttribute="trailing" constant="15" id="1hm-yR-wOf"/>
+                            <constraint firstItem="RXF-cL-HyX" firstAttribute="top" secondItem="Gua-7D-0MG" secondAttribute="bottom" constant="2" id="3FP-x3-Gvx"/>
+                            <constraint firstItem="RXF-cL-HyX" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="4H1-Jv-2Zh"/>
+                            <constraint firstItem="c7a-Pc-Vse" firstAttribute="top" secondItem="eS3-QU-ozl" secondAttribute="bottom" id="6BI-vJ-pCi"/>
+                            <constraint firstItem="oqT-3x-FKL" firstAttribute="top" secondItem="RXF-cL-HyX" secondAttribute="bottom" constant="10" id="8oc-m3-R46"/>
+                            <constraint firstItem="yXf-dG-oWL" firstAttribute="top" secondItem="oqT-3x-FKL" secondAttribute="bottom" id="Apw-Xz-5Ve"/>
+                            <constraint firstAttribute="trailing" secondItem="c7a-Pc-Vse" secondAttribute="trailing" constant="15" id="BUC-g3-Bdo"/>
+                            <constraint firstAttribute="trailing" secondItem="yXf-dG-oWL" secondAttribute="trailing" constant="15" id="Iau-hW-cCq"/>
+                            <constraint firstItem="VHE-US-jVT" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="JL7-Bp-UM9"/>
+                            <constraint firstItem="oqT-3x-FKL" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="Kwe-BM-JCk"/>
+                            <constraint firstAttribute="trailing" secondItem="uVJ-gQ-EBd" secondAttribute="trailing" constant="15" id="LFP-Fh-rN6"/>
+                            <constraint firstItem="Gua-7D-0MG" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="Nd7-OX-hEp"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="242" id="Ofp-UV-wbP"/>
+                            <constraint firstItem="eS3-QU-ozl" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="Oyc-Dz-67D"/>
+                            <constraint firstItem="gsN-AN-kC6" firstAttribute="top" secondItem="uVJ-gQ-EBd" secondAttribute="bottom" id="TDM-KN-Eth"/>
+                            <constraint firstItem="gsN-AN-kC6" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="VX8-oN-PfS"/>
+                            <constraint firstItem="uVJ-gQ-EBd" firstAttribute="top" secondItem="c7a-Pc-Vse" secondAttribute="bottom" constant="10" id="XTL-WR-SSR"/>
+                            <constraint firstItem="eS3-QU-ozl" firstAttribute="top" secondItem="eB5-Gi-c9c" secondAttribute="top" constant="15" id="bqN-7i-qBn"/>
+                            <constraint firstAttribute="trailing" secondItem="eS3-QU-ozl" secondAttribute="trailing" constant="15" id="dlU-en-zdM"/>
+                            <constraint firstItem="VHE-US-jVT" firstAttribute="top" secondItem="gsN-AN-kC6" secondAttribute="bottom" constant="2" id="drR-dR-zSB"/>
+                            <constraint firstAttribute="trailing" secondItem="oqT-3x-FKL" secondAttribute="trailing" constant="15" id="gUK-Na-GIb"/>
+                            <constraint firstAttribute="trailing" secondItem="VHE-US-jVT" secondAttribute="trailing" constant="15" id="hfl-o0-QnA"/>
+                            <constraint firstAttribute="trailing" secondItem="RXF-cL-HyX" secondAttribute="trailing" constant="15" id="mbz-CE-Uie"/>
+                            <constraint firstItem="uVJ-gQ-EBd" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="nWQ-LF-cZb"/>
+                            <constraint firstAttribute="trailing" secondItem="gsN-AN-kC6" secondAttribute="trailing" constant="15" id="qku-em-Hhb"/>
+                            <constraint firstItem="Gua-7D-0MG" firstAttribute="top" secondItem="VHE-US-jVT" secondAttribute="bottom" id="wMZ-fI-4AP"/>
+                            <constraint firstItem="yXf-dG-oWL" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="yUC-aA-vMy"/>
+                            <constraint firstItem="c7a-Pc-Vse" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="zAO-v4-pVK"/>
                         </constraints>
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="eB5-Gi-c9c" firstAttribute="top" secondItem="1eI-jn-ZYg" secondAttribute="top" id="7Yl-S8-YaZ"/>
-                    <constraint firstAttribute="bottom" secondItem="eB5-Gi-c9c" secondAttribute="bottom" id="MHm-G6-3le"/>
-                    <constraint firstItem="eB5-Gi-c9c" firstAttribute="leading" secondItem="1eI-jn-ZYg" secondAttribute="leading" id="gfV-XP-Usr"/>
-                    <constraint firstAttribute="trailing" secondItem="eB5-Gi-c9c" secondAttribute="trailing" id="qC7-Q3-8TM"/>
+                    <constraint firstItem="eB5-Gi-c9c" firstAttribute="leading" secondItem="1eI-jn-ZYg" secondAttribute="leading" id="Gc4-wG-ODo"/>
+                    <constraint firstAttribute="bottom" secondItem="eB5-Gi-c9c" secondAttribute="bottom" id="Rha-ZA-kmy"/>
+                    <constraint firstItem="eB5-Gi-c9c" firstAttribute="top" secondItem="1eI-jn-ZYg" secondAttribute="top" id="TrE-Lk-Jbz"/>
+                    <constraint firstAttribute="trailing" secondItem="eB5-Gi-c9c" secondAttribute="trailing" id="uZd-nd-GEi"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-            <point key="canvasLocation" x="441" y="89.5"/>
+            <point key="canvasLocation" x="441" y="98.5"/>
         </tableViewCell>
-        <tableViewCell tag="15" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="100" id="XBK-Lr-8Yd">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
+        <tableViewCell tag="15" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="134" id="XBK-Lr-8Yd">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="134"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XBK-Lr-8Yd" id="zBF-2g-fg0">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VfQ-7S-Dob">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="190"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VfQ-7S-Dob">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="133"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Nama Pegirim :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IMq-yb-qIi">
-                                <rect key="frame" x="15" y="6" width="118" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Pegirim :" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IMq-yb-qIi">
+                                <rect key="frame" x="15" y="15" width="118" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="118" id="GKV-CH-tqL"/>
+                                    <constraint firstAttribute="height" constant="21" id="tbF-sR-xrt"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
+                                <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mnk-N0-OCT">
-                                <rect key="frame" x="15" y="25" width="285" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="16"/>
-                                <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="deviceRGB"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mnk-N0-OCT">
+                                <rect key="frame" x="15" y="36" width="290" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="PUB-iu-8bp"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="PYD-zW-n8c"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Telepon Pengirim:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mxx-2E-AQU">
-                                <rect key="frame" x="15" y="54" width="130" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Telepon Pengirim:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mxx-2E-AQU">
+                                <rect key="frame" x="15" y="67" width="130" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="130" id="iBs-U2-WPf"/>
+                                    <constraint firstAttribute="height" constant="21" id="yvP-1f-Faq"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
+                                <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="emy-IJ-6gK">
-                                <rect key="frame" x="15" y="70" width="285" height="21"/>
-                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="16"/>
-                                <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="deviceRGB"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="emy-IJ-6gK">
+                                <rect key="frame" x="15" y="88" width="290" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="PgO-VT-4J8"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="wH9-D9-Eau"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.88235294119999996" green="0.88235294119999996" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="1" green="1" blue="0.76071068549999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="Mxx-2E-AQU" firstAttribute="leading" secondItem="VfQ-7S-Dob" secondAttribute="leading" constant="15" id="6DK-ii-yR4"/>
+                            <constraint firstItem="IMq-yb-qIi" firstAttribute="top" secondItem="VfQ-7S-Dob" secondAttribute="top" constant="15" id="GEa-xD-UZA"/>
+                            <constraint firstItem="mnk-N0-OCT" firstAttribute="top" secondItem="IMq-yb-qIi" secondAttribute="bottom" id="IEt-YC-csd"/>
+                            <constraint firstAttribute="trailing" secondItem="emy-IJ-6gK" secondAttribute="trailing" constant="15" id="OD2-Pd-cKZ"/>
+                            <constraint firstItem="Mxx-2E-AQU" firstAttribute="top" secondItem="mnk-N0-OCT" secondAttribute="bottom" constant="10" id="UKm-WO-gbn"/>
+                            <constraint firstAttribute="bottom" secondItem="emy-IJ-6gK" secondAttribute="bottom" constant="24" id="bfc-mf-Ht1"/>
+                            <constraint firstAttribute="trailing" secondItem="Mxx-2E-AQU" secondAttribute="trailing" constant="175" id="eYV-u2-hOq"/>
+                            <constraint firstItem="emy-IJ-6gK" firstAttribute="top" secondItem="Mxx-2E-AQU" secondAttribute="bottom" id="gTf-1G-nEr"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="120" id="gu8-YQ-N1t"/>
+                            <constraint firstAttribute="trailing" secondItem="mnk-N0-OCT" secondAttribute="trailing" constant="15" id="ipH-TX-8NP"/>
+                            <constraint firstItem="emy-IJ-6gK" firstAttribute="leading" secondItem="VfQ-7S-Dob" secondAttribute="leading" constant="15" id="pcS-en-TyM"/>
+                            <constraint firstItem="IMq-yb-qIi" firstAttribute="leading" secondItem="VfQ-7S-Dob" secondAttribute="leading" constant="15" id="qLK-kM-MgL"/>
+                            <constraint firstItem="mnk-N0-OCT" firstAttribute="leading" secondItem="VfQ-7S-Dob" secondAttribute="leading" constant="15" id="usE-VF-f4P"/>
+                        </constraints>
                     </view>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="VfQ-7S-Dob" secondAttribute="bottom" id="0ld-Ml-gtb"/>
+                    <constraint firstAttribute="trailing" secondItem="VfQ-7S-Dob" secondAttribute="trailing" id="KSX-ga-xOH"/>
+                    <constraint firstItem="VfQ-7S-Dob" firstAttribute="top" secondItem="zBF-2g-fg0" secondAttribute="top" id="VLz-zQ-Wcg"/>
+                    <constraint firstItem="VfQ-7S-Dob" firstAttribute="leading" secondItem="zBF-2g-fg0" secondAttribute="leading" id="XrV-dP-lpD"/>
+                </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="843" y="659"/>
+            <point key="canvasLocation" x="843" y="668"/>
         </tableViewCell>
     </objects>
 </document>

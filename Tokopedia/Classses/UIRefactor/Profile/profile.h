@@ -69,6 +69,7 @@ typedef enum
 #define kTKPDPROFILE_APIGETPROFILEFORMKEY @"get_profile_form"
 #define kTKPDPROFILE_APIGETPROFILEKEY @"get_profile"
 #define kTKPDPROFILE_APISETUSERPROFILEKEY @"set_user_profile"
+#define kTKPDPROFILE_APIEDITPROFILEKEY  @"edit_profile"
 #define kTKPDPROFILE_APISETPASSWORDKEY @"set_password"
 #define kTKPDPROFILE_APIEDITPASSWORDKEY @"edit_password"
 #define kTKPDPROFILE_APISETEMAILNOTIFKEY @"set_email_notification"
@@ -82,6 +83,7 @@ typedef enum
 #define kTKPDPROFILE_APIDELETEADDRESSKEY @"delete_address"
 #define kTKPDPROFILE_APIGETUSERBANKACCOUNTKEY @"get_bank_account"
 #define kTKPDPROFILE_APISETDEFAULTBANKACCOUNTKEY @"set_default_bank_account"
+#define kTKPDPROFILE_APIEDITDEFAULTBANKACCOUNTKEY @"edit_default_bank_account"
 #define ACTION_GET_DEFAULT_BANK_FORM @"get_default_bank_account_form"
 #define kTKPDPROFILE_APIADDBANKKEY @"add_bank_account"
 #define kTKPDPROFILE_APIEDITBANKKEY @"edit_bank_account"
@@ -158,12 +160,18 @@ typedef enum
 #define kTKPDPROFILESETTING_APIPROVINCEKEY @"province"
 #define kTKPDPROFILESETTING_APIDISTRICTKEY @"district"
 #define kTKPDPROFILESETTING_APIUSERPASSWORDKEY @"user_password"
+#define API_ADDRESS_COUNTRY @"address_country"
+#define API_ADDRESS_POSTAL @"address_postal"
+#define API_ADDRESS_DISTRICT @"address_district"
+#define API_ADDRESS_CITY @"address_city"
+#define API_ADDRESS_PROVINCE @"address_province"
 
 #define API_BANK_ACCOUNT_KEY @"bank_account"
 #define kTKPDPROFILESETTING_APIBANKIDKEY @"bank_id"
 #define API_BANK_NAME_KEY @"bank_name"
 #define API_BANK_ACCOUNT_NAME_KEY @"bank_account_name"
 #define API_BANK_OWNER_ID_KEY @"bank_owner_id"
+#define kTKPDPROFILESETTING_APIACCOUNTIDKEY @"account_id"
 #define kTKPDPROFILESETTING_APIACCOUNTNAMEKEY @"account_name"
 #define kTKPDPROFILESETTING_APIBANKACCOUNTNUMBERKEY @"bank_account_number"
 #define kTKPDPROFILESETTING_APIACCOUNTNUMBERKEY @"account_no"
@@ -220,12 +228,15 @@ typedef enum
 #define kTKPDPROFILE_PROFILESETTINGAPIPATH @"action/people.pl"
 #define API_OTP_PATH @"action/otp.pl"
 
+#define kTKPDPROFILE_VERIFICATIONNUMBERAPIPATH  @"action/verification-number.pl"
+#define kTKPDPROFILE_SEND_EMAIL_CHANGE_PHONE_NUMBER @"send_email_change_phone_number"
+
 #define kTKPDPROFILE_CACHEFILEPATH @"profile"
 #define kTKPDPROFILE_APIRESPONSEFILEFORMAT @"profile%zd"
 #define kTKPDPFAVORITESHOP_APIRESPONSEFILEFORMAT @"profilefavshop%zd"
 
 #define ARRAY_GENDER @[@{DATA_NAME_KEY:@"Pria", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Wanita", DATA_VALUE_KEY:@(2)}]
-#define ARRAY_LIST_MENU_SETTING_PROFILE @[@[@"Ubah Password"],@[@"Daftar Alamat", @"Akun Bank", @"Notifikasi", @"Ubah Profil"]]
+#define ARRAY_LIST_MENU_SETTING_PROFILE @[@[@"Ubah Password"],@[@"Daftar Alamat", @"Akun Bank", @"Notifikasi"]]
 
 #define kTKPDPROFILE_DATAGENDERARRAYKEY @[@"Pria",@"Wanita"]
 #define kTKPDPROFILE_DATAGENDERVALUEARRAYKEY @[@"1",@"2"]
@@ -237,5 +248,7 @@ typedef enum
 #define ARRAY_LIST_PRIVACY @[@"Tampilkan Tanggal Lahir", @"Tampilkan Email", @"Tampilkan YM", @"Tampilkan Nomor HP", @"Tampilkan Alamat"]
 
 #define kTKPDPROFILEEDIT_DATEOFBIRTHFORMAT @"%@ / %@ / %@"
+
+#define kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY @"msisdn_is_verified"
 
 #endif

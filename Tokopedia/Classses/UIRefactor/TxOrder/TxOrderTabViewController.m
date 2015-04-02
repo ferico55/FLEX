@@ -142,7 +142,7 @@
         {
             if (!_isMultipleSelect) {
                 UIBarButtonItem *selectBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Pilih" style:UIBarButtonItemStylePlain target:(self) action:@selector(tapBarButton:)];
-                [selectBarButtonItem setTintColor:[UIColor blackColor]];
+                [selectBarButtonItem setTintColor:[UIColor whiteColor]];
                 selectBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
                 self.navigationItem.rightBarButtonItem = selectBarButtonItem;
             }

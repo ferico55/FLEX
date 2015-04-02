@@ -4,11 +4,6 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamBook.ttf">
-            <string>GothamBook</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SalesTransactionListViewController">
             <connections>
@@ -24,58 +19,19 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="260" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="fl7-b2-7iK">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="435"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="UDd-rS-wxW"/>
                         <outlet property="delegate" destination="-1" id="1Hb-dM-DxB"/>
                     </connections>
                 </tableView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aeT-FA-X8R">
-                    <rect key="frame" x="0.0" y="435" width="320" height="45"/>
-                    <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fto-ba-qxr" userLabel="Top Border">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                            <color key="backgroundColor" white="0.66666666669999997" alpha="0.29999999999999999" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="llr-4l-1ax"/>
-                            </constraints>
-                        </view>
-                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="udW-nn-KiT">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
-                            <inset key="titleEdgeInsets" minX="-29" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <inset key="imageEdgeInsets" minX="83" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <state key="normal" title="Filter" image="icon_arrow_up.png">
-                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="5mj-OZ-cev"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstItem="fto-ba-qxr" firstAttribute="leading" secondItem="aeT-FA-X8R" secondAttribute="leading" id="2gW-Ge-C7E"/>
-                        <constraint firstItem="fto-ba-qxr" firstAttribute="top" secondItem="aeT-FA-X8R" secondAttribute="top" id="DQ3-e7-fQH"/>
-                        <constraint firstAttribute="trailing" secondItem="udW-nn-KiT" secondAttribute="trailing" id="EWG-pB-WRe"/>
-                        <constraint firstItem="udW-nn-KiT" firstAttribute="leading" secondItem="aeT-FA-X8R" secondAttribute="leading" id="If1-jH-dl4"/>
-                        <constraint firstAttribute="trailing" secondItem="fto-ba-qxr" secondAttribute="trailing" id="LWf-L9-SHf"/>
-                        <constraint firstAttribute="height" constant="45" id="h1d-Fu-Rkm"/>
-                        <constraint firstAttribute="bottom" secondItem="udW-nn-KiT" secondAttribute="bottom" id="iWa-zy-XhT"/>
-                        <constraint firstItem="udW-nn-KiT" firstAttribute="top" secondItem="aeT-FA-X8R" secondAttribute="top" id="mae-32-7fM"/>
-                    </constraints>
-                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="aeT-FA-X8R" secondAttribute="trailing" id="Aan-kJ-zwh"/>
-                <constraint firstItem="aeT-FA-X8R" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="FXi-kV-CYa"/>
-                <constraint firstItem="aeT-FA-X8R" firstAttribute="top" secondItem="fl7-b2-7iK" secondAttribute="bottom" id="Wzh-ml-atm"/>
+                <constraint firstAttribute="bottom" secondItem="fl7-b2-7iK" secondAttribute="bottom" id="MjR-Ra-HO0"/>
                 <constraint firstItem="fl7-b2-7iK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="cC9-gO-ldG"/>
                 <constraint firstAttribute="trailing" secondItem="fl7-b2-7iK" secondAttribute="trailing" id="cyp-fE-Qvz"/>
-                <constraint firstAttribute="bottom" secondItem="aeT-FA-X8R" secondAttribute="bottom" id="kZg-8w-axX"/>
                 <constraint firstItem="fl7-b2-7iK" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="vud-dL-QTj"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
@@ -97,7 +53,4 @@
             <point key="canvasLocation" x="318" y="571.5"/>
         </view>
     </objects>
-    <resources>
-        <image name="icon_arrow_up.png" width="14" height="14"/>
-    </resources>
 </document>

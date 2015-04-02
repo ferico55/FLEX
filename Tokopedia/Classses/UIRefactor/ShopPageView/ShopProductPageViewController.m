@@ -362,7 +362,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     UIFont *boldFont = [UIFont fontWithName:@"GothamMedium" size:12];
     
-    NSString *stats = [NSString stringWithFormat:@"%@ Review   %@ Ulasan", list.product_review_count, list.product_talk_count];
+    NSString *stats = [NSString stringWithFormat:@"%@ Ulasan   %@ Diskusi",
+                       list.product_review_count, list.product_talk_count];
     
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:stats];
     [attributedText addAttribute:NSFontAttributeName value:boldFont range:NSMakeRange(0, list.product_review_count.length)];

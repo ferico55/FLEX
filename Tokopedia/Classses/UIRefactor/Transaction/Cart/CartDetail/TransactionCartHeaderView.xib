@@ -23,12 +23,12 @@
                         <constraint firstAttribute="width" constant="48" id="EAB-8x-2zg"/>
                         <constraint firstAttribute="height" constant="44" id="byJ-BC-Rag"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Value" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FYa-Qi-T9k">
                     <rect key="frame" x="66" y="0.0" width="206" height="44"/>
-                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="15"/>
+                    <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="13"/>
                     <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -47,6 +47,7 @@
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="z9V-lt-b5H" firstAttribute="leading" secondItem="FYa-Qi-T9k" secondAttribute="trailing" constant="4" id="K2U-j8-0h5"/>
                 <constraint firstItem="FYa-Qi-T9k" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Myj-U2-y4e"/>
@@ -63,9 +64,15 @@
             <connections>
                 <outlet property="deleteButton" destination="z9V-lt-b5H" id="O8B-7q-YXp"/>
                 <outlet property="shopNameLabel" destination="FYa-Qi-T9k" id="cQk-2z-gm1"/>
+                <outletCollection property="gestureRecognizers" destination="t9m-IX-MvS" appends="YES" id="81L-Lr-euL"/>
             </connections>
             <point key="canvasLocation" x="460" y="2"/>
         </view>
+        <tapGestureRecognizer id="t9m-IX-MvS">
+            <connections>
+                <action selector="gesture:" destination="iN0-l3-epB" id="agg-04-liv"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="icon_cancel_grey.png" width="14" height="14"/>

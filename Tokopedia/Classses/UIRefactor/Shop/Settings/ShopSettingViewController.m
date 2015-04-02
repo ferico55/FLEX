@@ -17,14 +17,19 @@
 #import "MyShopAddressViewController.h"
 #import "ProductListMyShopViewController.h"
 
-@interface ShopSettingViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface ShopSettingViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate
+>
 {
     DetailShopResult *_shop;
-    
     NSArray *_listMenu;
-    
     BOOL _isnodata;
 }
+
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIView *contentView;
 
 - (IBAction)gesture:(id)sender;
 
@@ -45,29 +50,29 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
 
     self.navigationController.navigationBarHidden = NO;
     self.title = @"Pengaturan Toko";
-
     
     _shop = [_data objectForKey:kTKPDDETAIL_DATAINFOSHOPSKEY];
 
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = barButtonItem;
+    
     _listMenu = ARRAY_SHOP_SETTING_MENU;
-    if (_listMenu.count >0) {
-        _isnodata = NO;
-    }
+    _isnodata = NO;
+    
+    [self.scrollView addSubview:_contentView];
+    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width,
+                                             self.view.frame.size.height - 63);
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - View Action
@@ -113,12 +118,6 @@
                 }
                 case 13:
                 {
-                    //Shipment
-//                    SettingShipmentViewController *vc = [SettingShipmentViewController new];
-//                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
-//                                };
-//                    [self.navigationController pushViewController:vc animated:YES];
-                    
                     MyShopShipmentViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentViewController"];
                     vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},};
                     [self.navigationController pushViewController:vc animated:YES];
@@ -235,12 +234,6 @@
         }
         case 3:
         {
-            //Shipment
-            //                    SettingShipmentViewController *vc = [SettingShipmentViewController new];
-            //                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},
-            //                                };
-            //                    [self.navigationController pushViewController:vc animated:YES];
-            
             MyShopShipmentViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentViewController"];
             vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},};
             [self.navigationController pushViewController:vc animated:YES];

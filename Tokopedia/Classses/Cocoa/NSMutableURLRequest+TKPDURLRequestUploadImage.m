@@ -11,7 +11,7 @@
 
 @implementation NSMutableURLRequest (TKPDURLRequestUploadImage)
 
-+(NSMutableURLRequest*)requestUploadImageData:(NSData*)imageData withName:(NSString*)name andFileName:(NSString*)fileName withRequestParameters:(NSDictionary*)parameters
++(NSMutableURLRequest*)requestUploadImageData:(NSData*)imageData withName:(NSString*)name andFileName:(NSString*)fileName withRequestParameters:(NSDictionary*)parameters uploadHost:(NSString*)uploadHost
 {
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     
@@ -26,6 +26,8 @@
     //set Content-Type in HTTP header
     NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@", boundary];
     [request setValue:contentType forHTTPHeaderField: @"Content-Type"];
+//    NSString *userAgent = @"Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10.4; en-US; rv:1.9.2.2) Gecko/20100316 Firefox/3.6.2";
+//    [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
     
     //post body
     NSMutableData *body = [NSMutableData data];
@@ -52,9 +54,9 @@
     //setting the body of the post to the request
     [request setHTTPBody:body];
     
-    NSString *url = [NSString stringWithFormat:@"%@/%@",kTkpdBaseURLString,@"action/upload-image.pl"];
+    NSString *urlString = [NSString stringWithFormat:@"http://%@/%@",uploadHost,@"ws/action/upload-image.pl"];
     
-    [request setURL:[NSURL URLWithString:url]];
+    [request setURL:[NSURL URLWithString:urlString]];
     
     return request;
 }

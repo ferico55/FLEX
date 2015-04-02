@@ -4,6 +4,11 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+        </mutableArray>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingAddressViewController">
             <connections>
@@ -56,25 +61,19 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
         <view contentMode="scaleToFill" id="IzA-Ue-aRU">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="97"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cxr-RD-2mr">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <rect key="frame" x="0.0" y="35" width="320" height="44"/>
                     <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g3N-M4-7ME">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <inset key="titleEdgeInsets" minX="8" minY="0.0" maxX="0.0" maxY="0.0"/>
-                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="0.0"/>
-                            <state key="normal" title="Tambah Alamat Baru" image="icon_plus_blue">
-                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="3g1-R9-rtu"/>
-                            </connections>
-                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rmn-uq-QFV" userLabel="Border Top">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="1" id="cNZ-Au-EeI"/>
+                            </constraints>
+                        </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GRW-Tx-azr" userLabel="Border Bottom">
                             <rect key="frame" x="0.0" y="43" width="320" height="1"/>
                             <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
@@ -82,25 +81,41 @@
                                 <constraint firstAttribute="height" constant="1" id="DFC-Kb-PVM"/>
                             </constraints>
                         </view>
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Yi-kY-WdD">
+                            <rect key="frame" x="15" y="0.0" width="305" height="44"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
+                            <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
+                            <state key="normal" title="Tambah Alamat Baru" image="icon_plus_blue">
+                                <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="GV8-Uy-DB4"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="GRW-Tx-azr" secondAttribute="bottom" id="9FB-Ph-M5P"/>
-                        <constraint firstAttribute="bottom" secondItem="g3N-M4-7ME" secondAttribute="bottom" id="H1T-7f-96u"/>
-                        <constraint firstItem="g3N-M4-7ME" firstAttribute="leading" secondItem="Cxr-RD-2mr" secondAttribute="leading" id="MrE-8g-FyK"/>
+                        <constraint firstItem="Rmn-uq-QFV" firstAttribute="top" secondItem="Cxr-RD-2mr" secondAttribute="top" id="M7z-mn-K53"/>
                         <constraint firstAttribute="trailing" secondItem="GRW-Tx-azr" secondAttribute="trailing" id="OOj-Ub-aa9"/>
-                        <constraint firstItem="g3N-M4-7ME" firstAttribute="top" secondItem="Cxr-RD-2mr" secondAttribute="top" id="QKd-dM-kvG"/>
-                        <constraint firstAttribute="trailing" secondItem="g3N-M4-7ME" secondAttribute="trailing" id="p1P-pa-odC"/>
+                        <constraint firstAttribute="trailing" secondItem="Rmn-uq-QFV" secondAttribute="trailing" id="WvB-PL-2XV"/>
+                        <constraint firstItem="Rmn-uq-QFV" firstAttribute="leading" secondItem="Cxr-RD-2mr" secondAttribute="leading" id="dMM-sp-cUC"/>
+                        <constraint firstAttribute="bottom" secondItem="7Yi-kY-WdD" secondAttribute="bottom" id="eKA-u0-O38"/>
+                        <constraint firstItem="7Yi-kY-WdD" firstAttribute="top" secondItem="Cxr-RD-2mr" secondAttribute="top" id="mmj-aJ-mWC"/>
+                        <constraint firstItem="7Yi-kY-WdD" firstAttribute="leading" secondItem="Cxr-RD-2mr" secondAttribute="leading" constant="15" id="npA-gF-eeg"/>
+                        <constraint firstAttribute="trailing" secondItem="7Yi-kY-WdD" secondAttribute="trailing" id="oGJ-ir-b9F"/>
+                        <constraint firstAttribute="height" constant="44" id="t9w-kf-vn2"/>
                         <constraint firstItem="GRW-Tx-azr" firstAttribute="leading" secondItem="Cxr-RD-2mr" secondAttribute="leading" id="xbd-a9-M6d"/>
                     </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="Cxr-RD-2mr" firstAttribute="top" secondItem="IzA-Ue-aRU" secondAttribute="top" id="0K5-qT-3z2"/>
                 <constraint firstAttribute="trailing" secondItem="Cxr-RD-2mr" secondAttribute="trailing" id="1YI-Rm-3vM"/>
                 <constraint firstItem="Cxr-RD-2mr" firstAttribute="leading" secondItem="IzA-Ue-aRU" secondAttribute="leading" id="3Pd-yc-7IR"/>
-                <constraint firstAttribute="bottom" secondItem="Cxr-RD-2mr" secondAttribute="bottom" constant="21" id="lAg-ZU-KYs"/>
+                <constraint firstItem="Cxr-RD-2mr" firstAttribute="top" secondItem="IzA-Ue-aRU" secondAttribute="top" constant="35" id="NdS-Ry-kPz"/>
+                <constraint firstAttribute="bottom" secondItem="Cxr-RD-2mr" secondAttribute="bottom" constant="18" id="Vul-tJ-3Va"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="703" y="271.5"/>

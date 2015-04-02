@@ -18,7 +18,12 @@
 #import "MGSwipeButton.h"
 
 #pragma mark - Setting Note View Controller
-@interface MyShopNoteViewController () <UITableViewDataSource,UITableViewDelegate,MGSwipeTableCellDelegate>
+@interface MyShopNoteViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    MGSwipeTableCellDelegate
+>
 {
     NSMutableDictionary *_datainput;
     NSMutableArray *_list;
@@ -88,11 +93,18 @@
         _isnodata = NO;
     }
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                    action:@selector(tap:)];
     barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationItem.backBarButtonItem = barButtonItem;
+
+    UIBarButtonItem *addNoteBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                      target:self
+                                                                                      action:@selector(tap:)];
+    addNoteBarButton.tag = 11;
+    self.navigationItem.rightBarButtonItem = addNoteBarButton;
     
     /** adjust refresh control **/
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -109,8 +121,11 @@
 	[_cachecontroller initCacheWithDocumentPath:path];
     
     //Add observer
-    NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(didEditNote:) name:kTKPD_ADDNOTEPOSTNOTIFICATIONNAMEKEY object:nil];
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter addObserver:self
+                           selector:@selector(didEditNote:)
+                               name:kTKPD_ADDNOTEPOSTNOTIFICATIONNAMEKEY
+                             object:nil];    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -154,7 +169,8 @@
         
         if (_list.count > indexPath.row) {
             NotesList *list = _list[indexPath.row];
-            ((GeneralList1GestureCell*)cell).labelname.text = list.note_title;
+            ((GeneralList1GestureCell*)cell).textLabel.hidden = NO;
+            ((GeneralList1GestureCell*)cell).textLabel.text = list.note_title;
             ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
             ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
@@ -180,12 +196,14 @@
 #pragma mark - Table View Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NotesList *list = _list[indexPath.row];
     MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
     vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
                 kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
                 kTKPDNOTES_APINOTEIDKEY:list.note_id,
-                kTKPDNOTES_APINOTETITLEKEY:list.note_title
+                kTKPDNOTES_APINOTETITLEKEY:list.note_title,
+                kTKPDNOTES_APINOTESTATUSKEY:list.note_status,
                 };
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -212,14 +230,19 @@
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    if ([sender isKindOfClass:[UIButton class]]) {              
-        MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
-        vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
-                    kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY)
-                    };
-        [self.navigationController pushViewController:vc animated:YES];
+        if ([sender tag] == 10) {
+            [self.navigationController popViewControllerAnimated:YES];
+        } else if ([sender tag] == 11) {
+            MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
+            vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
+                        kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY)
+                        };
+            
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            nav.navigationBar.translucent = NO;
+            
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+        }
     }
 }
 
@@ -397,9 +420,14 @@
             NSError *error = object;
             if (!([error code] == NSURLErrorCancelled)){
                 NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE
+                                                                    message:errorDescription
+                                                                   delegate:self
+                                                          cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE
+                                                          otherButtonTitles:nil];
                 [errorAlert show];
-            }        }
+            }
+        }
     }
 }
 
@@ -453,7 +481,10 @@
                             };
     _requestcount ++;
     
-    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOPNOTEACTION_APIPATH parameters:[param encrypt]]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
+    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self
+                                                                                            method:RKRequestMethodPOST
+                                                                                              path:kTKPDDETAILSHOPNOTEACTION_APIPATH
+                                                                                        parameters:[param encrypt]];
     
     [_requestActionDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionDelete:mappingResult withOperation:operation];
@@ -469,7 +500,12 @@
     
     [_operationQueue addOperation:_requestActionDelete];
     
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionDelete) userInfo:nil repeats:NO];
+    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                             target:self
+                                           selector:@selector(requestTimeoutActionDelete)
+                                           userInfo:nil
+                                            repeats:NO];
+    
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
@@ -503,14 +539,14 @@
                 if(setting.message_error)
                 {
                     [self cancelDeleteRow];
-                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    NSArray *errorMessages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                    [alert show];
                 }
                 if (setting.result.is_success == 1) {
-                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    NSArray *successMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+                    [alert show];
                 }
             }
         }
@@ -526,46 +562,6 @@
 {
     [self cancelActionDelete];
 }
-
-
-#pragma mark - Cell Delegate
-//-(void)GeneralList1GestureCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-//{
-//    NotesList *list = _list[indexpath.row];
-//    MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
-//    vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
-//                kTKPDDETAIL_DATATYPEKEY: @(kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY),
-//                kTKPDNOTES_APINOTEIDKEY:list.note_id};
-//    [self.navigationController pushViewController:vc animated:YES];
-//}
-//
-//-(void)DidTapButton:(UIButton *)button atCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath
-//{
-//    NotesList *list = _list[indexpath.row];
-//    [_datainput setObject:list.note_id forKey:kTKPDNOTES_APINOTEIDKEY];
-//    switch (button.tag) {
-//        case 10:
-//        {
-//            //edit
-//            MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
-//            vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@"",
-//                        kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY),
-//                        kTKPDNOTES_APINOTEIDKEY : list.note_id
-//                        };
-//            [self.navigationController pushViewController:vc animated:YES];
-//            break;
-//        }
-//        case 11:
-//        {
-//            //delete
-//            [self deleteListAtIndexPath:indexpath];
-//            break;
-//        }
-//        default:
-//            break;
-//    }
-//}
-
 
 #pragma mark - Methods
 
@@ -642,6 +638,8 @@
             [self deleteListAtIndexPath:indexpath];
             return YES;
         }];
+        trash.titleLabel.font = [UIFont fontWithName:trash.titleLabel.font.fontName size:12];
+
         MGSwipeButton * flag = [MGSwipeButton buttonWithTitle:@"Ubah\nCatatan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             //edit
             MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
@@ -649,9 +647,15 @@
                         kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY),
                         kTKPDNOTES_APINOTEIDKEY : list.note_id
                         };
-            [self.navigationController pushViewController:vc animated:YES];
+            
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            nav.navigationBar.translucent = NO;
+            
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+            
             return YES;
         }];
+        flag.titleLabel.font = [UIFont fontWithName:flag.titleLabel.font.fontName size:12];
         return @[trash, flag];
     }
     

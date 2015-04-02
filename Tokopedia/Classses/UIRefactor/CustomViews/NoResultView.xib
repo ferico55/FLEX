@@ -27,7 +27,7 @@
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_no_data.png" translatesAutoresizingMaskIntoConstraints="NO" id="GyS-q9-6U3">
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_no_data_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="GyS-q9-6U3">
                     <rect key="frame" x="125" y="25" width="70" height="70"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="70" id="C78-SR-Bhx"/>
@@ -48,7 +48,7 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_no_data.png" width="125" height="125"/>
+        <image name="icon_no_data_grey.png" width="90" height="90"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

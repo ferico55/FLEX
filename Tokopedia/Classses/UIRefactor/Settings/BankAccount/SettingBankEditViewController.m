@@ -92,6 +92,12 @@
     
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
+
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backBarButton;
     
     UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
                                                                         style:UIBarButtonItemStyleBordered
@@ -130,6 +136,12 @@
     [self.container setContentSize:CGSizeMake(self.view.frame.size.width,
                                               self.contentView.frame.size.height)];
     
+    UserAuthentificationManager *authManager = [UserAuthentificationManager new];
+    NSDictionary *auth = [authManager getUserLoginData];
+    BOOL msisdnIsVerified = [[auth objectForKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY] boolValue];
+    if (msisdnIsVerified) {
+        [self.sendOTPButton setTitle:@"Kirim OTP Ke HP" forState:UIControlStateNormal];
+    }    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -619,52 +631,25 @@
     return YES;
 }
 
-
-
 #pragma mark - Keyboard Notification
-// Called when the UIKeyboardWillShowNotification is sent
-- (void)keyboardWillShow:(NSNotification *)info {
-    if(_keyboardSize.height < 0){
-        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-        
-        _scrollviewContentSize = [_container contentSize];
-        _scrollviewContentSize.height += _keyboardSize.height;
-        [_container setContentSize:_scrollviewContentSize];
-    }else{
-        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                              delay:0
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             _scrollviewContentSize = [_container contentSize];
-                             _scrollviewContentSize.height -= _keyboardSize.height;
-                             
-                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-                             _scrollviewContentSize.height += _keyboardSize.height;
-                             if ((self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height)> _keyboardPosition.y) {
-                                 UIEdgeInsets inset = _container.contentInset;
-                                 inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height + 10));
-                                 [_container setContentInset:inset];
-                             }
-                         }
-                         completion:^(BOOL finished){
-                         }];
-        
-    }
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSDictionary* keyboardInfo = [notification userInfo];
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    
+    self.container.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                          delay:0
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         _container.contentInset = contentInsets;
-                         _container.scrollIndicatorInsets = contentInsets;
-                     }
-                     completion:^(BOOL finished){
-                     }];
+    self.container.contentInset = UIEdgeInsetsZero;
+}
+
+#pragma mark - Scroll view delegate
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self.view endEditing:YES];
 }
 
 @end

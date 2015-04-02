@@ -10,11 +10,16 @@
 #import "CameraController.h"
 #import "NSDictionaryCategory.h"
 
-@interface CameraController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIActionSheetDelegate>
+@interface CameraController ()
+<
+    UIImagePickerControllerDelegate,
+    UINavigationControllerDelegate,
+    UIActionSheetDelegate
+>
 {
     BOOL _isFirstTimeLaunch;
-    
 }
+
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (nonatomic, strong) UIImagePickerController *picker;
 
@@ -259,14 +264,15 @@
 - (void) presentPickerSourceTypePhotoLibrary
 {
     [_picker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+    _picker.view.backgroundColor = [UIColor whiteColor];
     _picker.title = @"Select Photo";
     _picker.allowsEditing = NO;
     _picker.mediaTypes = @[(NSString*)kUTTypeImage];
     _picker.navigationBarHidden = NO;
     _picker.wantsFullScreenLayout = NO;
-    _picker.navigationBar.tintColor = [UIColor blueColor];
-    if(_picker != nil)
-    {
+    _picker.navigationBar.tintColor = [UIColor whiteColor];
+    _picker.navigationBar.translucent = NO;
+    if(_picker != nil) {
         [self presentViewController:_picker animated:YES completion:nil];
     }
 }

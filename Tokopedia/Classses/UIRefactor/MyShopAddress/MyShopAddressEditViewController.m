@@ -32,7 +32,6 @@ UITextViewDelegate
     
     NSMutableDictionary *_datainput;
     
-    UITextField *_activetextfield;
     UITextView *_activetextview;
     NSMutableDictionary *_detailfilter;
     
@@ -44,6 +43,8 @@ UITextViewDelegate
     
     UIBarButtonItem *_barbuttonsave;
     UIActivityIndicatorView *_act;
+    
+    BOOL _isBeingPresented;
 }
 
 @property (weak, nonatomic) IBOutlet UIScrollView *container;
@@ -57,7 +58,6 @@ UITextViewDelegate
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldemail;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldfax;
-@property (weak, nonatomic) IBOutlet UILabel *labeladdressplaceholder;
 
 -(void)cancelActionAddAddress;
 -(void)configureRestKitActionAddAddress;
@@ -71,17 +71,6 @@ UITextViewDelegate
 
 @implementation MyShopAddressEditViewController
 
-#pragma mark - Initialization
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        
-    }
-    return self;
-}
-
-
 #pragma mark - View Life Cycle
 - (void)viewDidLoad
 {
@@ -90,14 +79,26 @@ UITextViewDelegate
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    _isBeingPresented = self.navigationController.isBeingPresented;
+    if (_isBeingPresented) {
+        UIBarButtonItem *cancelBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
+                                                                            style:UIBarButtonItemStyleBordered
+                                                                           target:self
+                                                                           action:@selector(tap:)];
+        cancelBarButton.tag = 10;
+        self.navigationItem.leftBarButtonItem = cancelBarButton;
+    } else {
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                          style:UIBarButtonItemStyleBordered
+                                                                         target:self
+                                                                         action:@selector(tap:)];
+        self.navigationItem.backBarButtonItem = barButtonItem;
+    }
     
-    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonsave setTintColor:[UIColor blackColor]];
+    _barbuttonsave = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
+                                                      style:UIBarButtonItemStyleDone
+                                                     target:(self)
+                                                     action:@selector(tap:)];
     _barbuttonsave.tag = 11;
     self.navigationItem.rightBarButtonItem = _barbuttonsave;
     
@@ -106,9 +107,9 @@ UITextViewDelegate
     _type = [[_data objectForKey:kTKPDDETAIL_DATATYPEKEY]integerValue];
     if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY) {
         self.title = kTKPDTITLE_NEW_LOCATION;
-    }
-    else
+    } else {
         self.title = kTKPDTITLE_EDIT_LOCATION;
+    }
     
     /** keyboard notification **/
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -118,18 +119,20 @@ UITextViewDelegate
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
+
+    CGRect frame = self.container.frame;
+    frame.size = CGSizeMake(self.view.frame.size.height,
+                            _contentView.frame.size.height);
+    frame.origin = CGPointZero;
+    self.container.frame = frame;
+    
+    [self.container addSubview:_contentView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
-}
-
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
+    self.container.contentSize = _contentView.frame.size;
 }
 
 #pragma mark - Memory Management
@@ -147,8 +150,6 @@ UITextViewDelegate
 #pragma mark - View Action
 -(IBAction)tap:(id)sender
 {
-    [_activetextfield resignFirstResponder];
-    [_activetextview resignFirstResponder];
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton*)sender;
         Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
@@ -200,9 +201,9 @@ UITextViewDelegate
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         switch (btn.tag) {
-            case 12:
+            case 10:
             {
-                [self.navigationController popViewControllerAnimated:YES];
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 break;
             }
             case 11:
@@ -276,10 +277,10 @@ UITextViewDelegate
                 }
                 
                 NSLog(@"%@",messages);
-                if (messages) {
-                    NSArray *array = messages;
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                
+                if (messages.count>0) {
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+                    [alert show];
                 }
                 break;
             }
@@ -288,12 +289,9 @@ UITextViewDelegate
         }
     }
 }
-- (IBAction)gesture:(id)sender {
-    [_activetextfield resignFirstResponder];
-    [_activetextview resignFirstResponder];
-}
 
 #pragma mark - Request Action AddAddress
+
 -(void)cancelActionAddAddress
 {
     [_requestActionAddAddress cancel];
@@ -412,32 +410,32 @@ UITextViewDelegate
                 if (setting.result.is_success == 1) {
                     NSString *successMessage = (_type==2)?SUCCESSMESSAGE_ADD_LOCATION:SUCCESSMESSAGE_EDIT_LOCATION;
                     NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:successMessage, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:array delegate:self];
+                    [alert show];
                     
                     NSDictionary *userinfo;
                     if (_type == kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY){
                         //TODO: Behavior after edit
-                        NSArray *viewcontrollers = self.navigationController.viewControllers;
-                        NSInteger index = viewcontrollers.count-3;
-                        [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
-                        userinfo = @{kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY],
+                        userinfo = @{
+                                     kTKPDDETAIL_DATATYPEKEY:[_data objectForKey:kTKPDDETAIL_DATATYPEKEY],
                                      kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
                                      };
                     }
-                    else [self.navigationController popViewControllerAnimated:YES];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDLOCATIONPOSTNOTIFICATIONNAMEKEY object:nil userInfo:userinfo];
+
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDLOCATIONPOSTNOTIFICATIONNAMEKEY
+                                                                        object:nil
+                                                                      userInfo:userinfo];
+
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+
                 }
-                if(setting.message_error)
-                {
-                    NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                if(setting.message_error) {
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:setting.message_error delegate:self];
+                    [alert show];
                 }
             }
-        }
-        else{
-            
+        } else {
             [self cancelActionAddAddress];
             NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
             if ([(NSError*)object code] == NSURLErrorCancelled) {
@@ -445,12 +443,6 @@ UITextViewDelegate
                     NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     //TODO:: Reload handler
                 }
-                else
-                {
-                }
-            }
-            else
-            {
             }
         }
     }
@@ -469,15 +461,15 @@ UITextViewDelegate
         Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
         _textfieldaddressname.text = list.location_address_name?:@"";
         _textviewaddress.text = [NSString convertHTML:list.location_address];
-        _labeladdressplaceholder.hidden = !(!list.location_address);
         NSString *postalcode = list.location_postal_code?:@"";
         _textfieldpostcode.text = postalcode;
         NSString *email = [list.location_email isEqualToString:@"0"]?@"":list.location_email;
         _textfieldemail.text = email;
+        _textfieldfax.text = list.location_fax;
         _textfieldphonenumber.text = list.location_phone?:@"";
-        [_buttonprovince setTitle:list.location_province_name?:@"none" forState:UIControlStateNormal];
-        [_buttoncity setTitle:list.location_city_name?:@"none" forState:UIControlStateNormal];
-        [_buttondistrict setTitle:list.location_district_name?:@"none" forState:UIControlStateNormal];
+        [_buttonprovince setTitle:list.location_province_name?:@"Pilih" forState:UIControlStateNormal];
+        [_buttoncity setTitle:list.location_city_name?:@"Pilih" forState:UIControlStateNormal];
+        [_buttondistrict setTitle:list.location_district_name?:@"Pilih" forState:UIControlStateNormal];
         
         if (list.location_province_id == 0) {
             _buttondistrict.enabled = NO;
@@ -509,8 +501,8 @@ UITextViewDelegate
                 [_datainput removeObjectForKey:kTKPDLOCATION_DATADISTRICTIDKEY];
                 [_datainput removeObjectForKey:kTKPDSHOP_APIDISTRICTNAMEKEY];
                 
-                [_buttoncity setTitle:@"none" forState:UIControlStateNormal];
-                [_buttondistrict setTitle:@"none" forState:UIControlStateNormal];
+                [_buttoncity setTitle:@"Pilih" forState:UIControlStateNormal];
+                [_buttondistrict setTitle:@"Pilih" forState:UIControlStateNormal];
                 _buttondistrict.enabled = NO;
             }
             _buttoncity.enabled = YES;
@@ -534,7 +526,7 @@ UITextViewDelegate
                 [_datainput removeObjectForKey:kTKPDLOCATION_DATADISTRICTIDKEY];
                 [_datainput removeObjectForKey:kTKPDSHOP_APIDISTRICTNAMEKEY];
                 
-                [_buttondistrict setTitle:@"none" forState:UIControlStateNormal];
+                [_buttondistrict setTitle:@"Pilih" forState:UIControlStateNormal];
             }
             _buttondistrict.enabled = YES;
             [_buttoncity setTitle:name forState:UIControlStateNormal];
@@ -560,47 +552,18 @@ UITextViewDelegate
 }
 
 #pragma mark - Textfield Delegate
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
-    [textField resignFirstResponder];
-    _activetextfield = textField;
-    return YES;
-}
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField{
-
-    if ([_textfieldaddressname isFirstResponder]){
-        
-        [_textviewaddress becomeFirstResponder];
-    }
-    else if ([_textviewaddress isFirstResponder]){
-        
-        [_textfieldpostcode becomeFirstResponder];
-    }
-    else if([_textfieldpostcode isFirstResponder])
-    {
-        [_textfieldpostcode resignFirstResponder];
-    }
-    
-    return YES;
-}
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-
     if (textField == _textfieldaddressname) {
         [_datainput setObject:textField.text forKey:kTKPDSHOP_APIADDRESSNAMEKEY];
-    }
-    if (textField == _textfieldpostcode) {
+    } else if (textField == _textfieldpostcode) {
         [_datainput setObject:textField.text forKey:kTKPDSHOP_APIPOSTALCODEKEY];
-    }
-    if (textField == _textfieldphonenumber) {
+    } else if (textField == _textfieldphonenumber) {
         [_datainput setObject:textField.text forKey:kTKPDSHOP_APIPHONEKEY];
-    }
-    if (textField == _textfieldemail)
-    {
+    } else if (textField == _textfieldemail) {
         [_datainput setObject:textField.text forKey:kTKPDSHOP_APIEMAILKEY];
-    }
-    if (textField == _textfieldfax) {
+    } else if (textField == _textfieldfax) {
         [_datainput setObject:textField.text forKey:kTKPDSHOP_APIFAXKEY];
     }
     return YES;
@@ -609,85 +572,45 @@ UITextViewDelegate
 #pragma mark - Text View Delegate
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
     [textView resignFirstResponder];
-    [_activetextfield resignFirstResponder];
-    _activetextfield = nil;
     Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
     if (!list.location_address_name) {
-        _labeladdressplaceholder.hidden = YES;
         _activetextview = textView;
     }
     return YES;
 }
 
--(BOOL)textViewShouldReturn:(UITextView *)textView{
-    
-    [_activetextfield resignFirstResponder];
-    
-    return YES;
-}
-
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView
 {
-    if (textView== _textviewaddress) {
-        [_datainput setObject:textView.text forKey:kTKPDSHOP_APIADDRESSKEY];
-    }
+    [_datainput setObject:textView.text forKey:kTKPDSHOP_APIADDRESSKEY];
     return YES;
 }
 
 -(void) textViewDidChange:(UITextView *)textView
 {
     if(_textviewaddress.text.length == 0){
-        _labeladdressplaceholder.hidden = NO;
         [_textviewaddress resignFirstResponder];
     }
 }
 
+#pragma mark - Scroll delegate
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [self.view endEditing:YES];
+}
+
 #pragma mark - Keyboard Notification
-// Called when the UIKeyboardWillShowNotification is sent
-- (void)keyboardWillShow:(NSNotification *)info {
-    if(_keyboardSize.height < 0){
-        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-        
-        _scrollviewContentSize = [_container contentSize];
-        _scrollviewContentSize.height += _keyboardSize.height;
-        [_container setContentSize:_scrollviewContentSize];
-    }else{
-        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                              delay:0
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             _scrollviewContentSize = [_container contentSize];
-                             _scrollviewContentSize.height -= _keyboardSize.height;
-                             
-                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-                             _scrollviewContentSize.height += _keyboardSize.height;
-                             if ((self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height)> _keyboardPosition.y) {
-                                 UIEdgeInsets inset = _container.contentInset;
-                                 inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activetextfield.frame.origin.y+_activetextfield.frame.size.height + 10));
-                                 [_container setContentInset:inset];
-                             }
-                         }
-                         completion:^(BOOL finished){
-                         }];
-        
-    }
+
+- (void)keyboardWillShow:(NSNotification *)notification {
+    NSDictionary* keyboardInfo = [notification userInfo];
+    NSValue* keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
+    
+    self.container.contentInset = UIEdgeInsetsMake(0, 0, keyboardFrameBeginRect.size.height+25, 0);
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                          delay:0
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         _container.contentInset = contentInsets;
-                         _container.scrollIndicatorInsets = contentInsets;
-                     }
-                     completion:^(BOOL finished){
-                     }];
+    self.container.contentInset = UIEdgeInsetsZero;
 }
-
-
 
 @end

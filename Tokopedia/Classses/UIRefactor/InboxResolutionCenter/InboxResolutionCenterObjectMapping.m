@@ -95,7 +95,8 @@
                                                               API_DISPUTE_STATUS_KEY,
                                                               API_DISPUTE_DEADLINE_KEY,
                                                               API_DISPUTE_RESOLUTION_ID_KEY,
-                                                              API_DISPUTE_DETAIL_URL_KEY
+                                                              API_DISPUTE_DETAIL_URL_KEY,
+                                                              API_DISPUTE_30_DAYS_KEY
                                                                ]];
     return resolutionDisputeMapping;
 }

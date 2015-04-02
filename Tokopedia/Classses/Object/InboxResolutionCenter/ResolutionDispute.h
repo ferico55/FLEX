@@ -21,5 +21,6 @@
 @property (nonatomic, strong) NSString *dispute_deadline;
 @property (nonatomic, strong) NSString *dispute_resolution_id;
 @property (nonatomic, strong) NSString *dispute_detail_url;
+@property (nonatomic) NSInteger dispute_30_days;
 
 @end

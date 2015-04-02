@@ -19,7 +19,17 @@
 
 #import "MGSwipeButton.h"
 
-@interface SettingAddressViewController ()<UITableViewDataSource, UITableViewDelegate, SettingAddressDetailViewControllerDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, UISearchBarDelegate, SettingAddressEditViewControllerDelegate>
+@interface SettingAddressViewController ()
+<
+    UITableViewDataSource,
+    UITableViewDelegate,
+    UISearchBarDelegate,
+    UIScrollViewDelegate,
+    UIAlertViewDelegate,
+    SettingAddressDetailViewControllerDelegate,
+    MGSwipeTableCellDelegate,
+    SettingAddressEditViewControllerDelegate
+>
 {
     NSInteger _page;
     NSInteger _limit;
@@ -53,7 +63,9 @@
     UIBarButtonItem *_doneBarButtonItem;
     UIBarButtonItem *_cancelBarButtonItem;
     
+    NSIndexPath *_indexPath;
 }
+
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -109,7 +121,6 @@
     [super viewDidLoad];
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
-    
     if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
         _doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai"
                                                               style:UIBarButtonItemStylePlain
@@ -117,19 +128,13 @@
                                                              action:@selector(tap:)];
         _doneBarButtonItem.tag = TAG_SETTING_ADDRESS_BARBUTTONITEM_DONE;
         self.navigationItem.rightBarButtonItem = _doneBarButtonItem;
-        
-//        UIView *additionalView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 320, 109)];
-//        [additionalView addSubview:_searchBarView];
-//        CGRect frame = _addNewAddressView.frame;
-//        frame.origin.y +=_searchBarView.frame.size.height;
-//        [_addNewAddressView setFrame:frame];
-//        [additionalView addSubview:_addNewAddressView];
-//        _table.tableHeaderView = additionalView;
 
+        _table.tableHeaderView = _addNewAddressView;
+        
         _searchBar.delegate = self;
         _searchBar.placeholder = @"Cari Alamat";
-        _searchBar.userInteractionEnabled=YES;
-
+        _searchBar.userInteractionEnabled = YES;
+        
     } else {
         
         UIBarButtonItem *addBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
@@ -144,10 +149,6 @@
                                                                          action:@selector(tap:)];
         backBarButton.tag = 10;
         self.navigationItem.backBarButtonItem = backBarButton;
-        
-//        UIView *additionalView = [[UIView alloc]initWithFrame:_addNewAddressView.frame];
-//        [additionalView addSubview:_addNewAddressView];
-//        _table.tableHeaderView = additionalView;
     }
 
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -173,8 +174,6 @@
     
     _selectedIndexPath = [_data objectForKey:DATA_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     _limit = kTKPDPROFILESETTINGADDRESS_LIMITPAGE;
-    
-    _table.contentInset = UIEdgeInsetsMake(-14, 0, 0, 0);
 }
 
 
@@ -268,6 +267,7 @@
                     ((GeneralList1GestureCell*)cell).indexpath = indexPath;
                     [(GeneralList1GestureCell*)cell viewdetailresetposanimation:YES];
                     ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
+//                    ((GeneralList1GestureCell*)cell).labeldefault.text = @"Alamat Utama";
                     
                     if (_ismanualsetdefault) {
                         if ([indexPath isEqual:[_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY]]) {
@@ -280,9 +280,7 @@
                     }
                 }
             }
-        }
-        else
-        {
+        } else {
             NSString *cellid = kTKPDSETTINGADDRESSEXPANDEDCELL_IDENTIFIER;
             
             cell = (SettingAddressExpandedCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
@@ -314,7 +312,6 @@
                 ((SettingAddressExpandedCell*)cell).phoneLabel.text = list.receiver_phone;
             }
         }
-
     } else {
         static NSString *CellIdentifier = kTKPDPROFILE_STANDARDTABLEVIEWCELLIDENTIFIER;
         
@@ -337,9 +334,9 @@
 {
     if (indexPath.row == 0) {
         return 44;
-    }
-    else
+    } else {
         return 243;
+    }
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -600,7 +597,7 @@
                     [self.navigationController pushViewController:vc animated:NO];
                 }
                 [_table reloadData];
-
+                _table.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
             }
         }
         else{
@@ -918,6 +915,7 @@
                                            };
                 [_delegate SettingAddressViewController:self withUserInfo:userInfo];
                 [self.navigationController popViewControllerAnimated:YES];
+                break;
             }
             case TAG_SETTING_ADDRESS_BARBUTTONITEM_ADD:
             {
@@ -940,17 +938,23 @@
             default:
                 break;
         }
-    }
-    else {
-        //add new address
-        NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
-        NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
-        SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
-        vc.data = @{kTKPD_AUTHKEY: _auth,
-                    kTKPDPROFILE_DATAEDITTYPEKEY : @(typeAddAddress)
-                    };
-        vc.delegate = self;
-        [self.navigationController pushViewController:vc animated:YES];
+    } else if ([sender isKindOfClass:[UIButton class]]) {
+        UIButton *button = (UIButton *)sender;
+        if (button.tag == 1) {
+            //add new address
+            NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
+            NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
+            SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
+            vc.data = @{kTKPD_AUTHKEY: _auth,
+                        kTKPDPROFILE_DATAEDITTYPEKEY : @(typeAddAddress)
+                        };
+            vc.delegate = self;
+            
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            nav.navigationBar.translucent = NO;
+            
+            [self.navigationController presentViewController:nav animated:YES completion:nil];            
+        }
     }
 }
 
@@ -959,19 +963,35 @@
 {
     AddressFormList *list = [data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
     [_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
-    NSIndexPath *indexpath = [data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+    NSIndexPath *indexPathZero = [NSIndexPath indexPathForRow:0 inSection:0];
+    _indexPath = (NSIndexPath *)[data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]?:indexPathZero;
     switch (button.tag) {
         case 10:
         {
             //set as default
-            //NSIndexPath *indexpath1 = [NSIndexPath indexPathForRow:0 inSection:indexpath.section];
-            [self setAsDefaultAtIndexPath:indexpath];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Ganti Alamat Utama"
+                                                                message:@"Apakah Anda yakin ingin menggunakan alamat ini sebagai alamat utama Anda?"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Tidak"
+                                                      otherButtonTitles:@"Ya", nil];
+            alertView.tag = 1;
+            alertView.delegate = self;
+            [alertView show];
+            
             break;
         }
         case 11:
         {
             //delete
-            [self deleteListAtIndexPath:indexpath];
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Hapus Alamat"
+                                                                message:@"Apakah Anda yakin ingin menghapus alamat ini?"
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Tidak"
+                                                      otherButtonTitles:@"Ya", nil];
+            alertView.tag = 2;
+            alertView.delegate = self;
+            [alertView show];
+
             break;
         }
         default:
@@ -1089,7 +1109,6 @@
     swipeSettings.transition = MGSwipeTransitionStatic;
     expansionSettings.buttonIndex = -1; //-1 not expand, 0 expand
     
-    
     if (direction == MGSwipeDirectionRightToLeft) {
         expansionSettings.fillOnTrigger = YES;
         expansionSettings.threshold = 1.1;
@@ -1099,13 +1118,20 @@
         AddressFormList *list = _list[indexpath.section];
         [_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
         
-        MGSwipeButton * trash = [MGSwipeButton buttonWithTitle:@"Delete" backgroundColor:[UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+        UIColor *redColor = [UIColor colorWithRed:255/255 green:59/255.0 blue:48/255.0 alpha:1.0];
+        MGSwipeButton *trash = [MGSwipeButton buttonWithTitle:@"Hapus"
+                                              backgroundColor:redColor
+                                                      padding:padding
+                                                     callback:^BOOL(MGSwipeTableCell *sender) {
             [self deleteListAtIndexPath:indexpath];
             return YES;
         }];
         trash.titleLabel.font = [UIFont fontWithName:trash.titleLabel.font.fontName size:12];
         
-        MGSwipeButton * flag = [MGSwipeButton buttonWithTitle:@"Set As\nDefault" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
+        UIColor *blueColor = [UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0];
+        MGSwipeButton *flag = [MGSwipeButton buttonWithTitle:@"Jadikan\nUtama"
+                                             backgroundColor:blueColor
+                                                     padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
             [self setAsDefaultAtIndexPath:indexpath];
             return YES;
         }];
@@ -1113,10 +1139,22 @@
         
         return @[trash, flag];
     }
-    
     return nil;
-    
 }
 
+#pragma mark - Alert view delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == 1) {
+        if (buttonIndex == 1) {
+            [self setAsDefaultAtIndexPath:_indexPath];
+        }
+    } else if (alertView.tag == 2) {
+        if (buttonIndex == 1) {            
+            [self deleteListAtIndexPath:_indexPath];
+        }
+    }
+}
 
 @end

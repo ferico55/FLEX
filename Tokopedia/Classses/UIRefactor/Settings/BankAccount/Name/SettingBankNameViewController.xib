@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="GothamLight.ttf">
-            <string>GothamLight</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingBankNameViewController">
             <connections>
+                <outlet property="searchBar" destination="aXJ-Zp-pQT" id="DDc-AH-Nxk"/>
                 <outlet property="table" destination="YRo-VT-2lb" id="abN-RQ-4gn"/>
                 <outlet property="view" destination="iN0-l3-epB" id="lnD-0a-c6M"/>
             </connections>
@@ -21,16 +17,27 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="YRo-VT-2lb">
-                    <rect key="frame" x="0.0" y="44" width="320" height="524"/>
-                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="YRo-VT-2lb">
+                    <rect key="frame" x="0.0" y="45" width="320" height="523"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="lyp-h8-gaH"/>
                         <outlet property="delegate" destination="-1" id="kvz-oB-9vM"/>
                     </connections>
                 </tableView>
-                <searchBar contentMode="redraw" fixedFrame="YES" placeholder="Search Bank" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aXJ-Zp-pQT">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U9a-pP-GAN" userLabel="Border">
+                    <rect key="frame" x="0.0" y="44" width="320" height="1"/>
+                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="pjj-vN-bT4"/>
+                    </constraints>
+                </view>
+                <searchBar contentMode="redraw" placeholder="Cari Bank" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aXJ-Zp-pQT">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="PhL-O2-y4h"/>
+                    </constraints>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <textInputTraits key="textInputTraits"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="9bD-ih-WL8"/>
@@ -39,6 +46,18 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <gestureRecognizers/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="aXJ-Zp-pQT" secondAttribute="trailing" id="Esg-3c-vKB"/>
+                <constraint firstItem="YRo-VT-2lb" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="SvT-x1-0ot"/>
+                <constraint firstAttribute="bottom" secondItem="YRo-VT-2lb" secondAttribute="bottom" id="XvI-LE-kBQ"/>
+                <constraint firstAttribute="trailing" secondItem="U9a-pP-GAN" secondAttribute="trailing" id="ab7-Iy-GJ2"/>
+                <constraint firstItem="U9a-pP-GAN" firstAttribute="top" secondItem="aXJ-Zp-pQT" secondAttribute="bottom" id="cmZ-eL-M6J"/>
+                <constraint firstItem="aXJ-Zp-pQT" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="eNt-uj-lrp"/>
+                <constraint firstItem="aXJ-Zp-pQT" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="f4n-Ds-86h"/>
+                <constraint firstAttribute="trailing" secondItem="YRo-VT-2lb" secondAttribute="trailing" id="rr6-HT-Zhw"/>
+                <constraint firstItem="U9a-pP-GAN" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="x5h-RF-oIA"/>
+                <constraint firstItem="YRo-VT-2lb" firstAttribute="top" secondItem="U9a-pP-GAN" secondAttribute="bottom" id="yBD-ij-fNZ"/>
+            </constraints>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="9AG-bv-9Iv" appends="YES" id="six-2k-dPT"/>
             </connections>
@@ -49,13 +68,6 @@
                 <outlet property="delegate" destination="-1" id="szF-MN-fr8"/>
             </connections>
         </tapGestureRecognizer>
-        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BANK NAME" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="GSL-dn-syl">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="36"/>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
-            <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="12"/>
-            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-            <nil key="highlightedColor"/>
-        </label>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

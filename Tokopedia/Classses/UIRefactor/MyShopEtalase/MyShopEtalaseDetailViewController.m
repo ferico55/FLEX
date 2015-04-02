@@ -12,7 +12,7 @@
 #import "MyShopEtalaseEditViewController.h"
 
 #pragma mark - Setting Etalase Detail View Controller
-@interface MyShopEtalaseDetailViewController ()
+@interface MyShopEtalaseDetailViewController () <MyShopEtalaseEditViewControllerDelegate>
 {
     EtalaseList *_etalase;
 }
@@ -45,16 +45,19 @@
     self.title = _etalase.etalase_name;
     [self setDefaultData:_data];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:nil];
     barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    self.navigationItem.backBarButtonItem = barButtonItem;
     
-    barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Ubah" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barButtonItem setTintColor:[UIColor blackColor]];
-    barButtonItem.tag = 11;
-    self.navigationItem.rightBarButtonItem = barButtonItem;
+    UIBarButtonItem *editBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Ubah"
+                                                                      style:UIBarButtonItemStyleDone
+                                                                     target:(self)
+                                                                     action:@selector(tap:)];
+    editBarButton.tag = 11;
+    self.navigationItem.rightBarButtonItem = editBarButton;
 }
 
 #pragma mark - Memory Management
@@ -72,24 +75,27 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         switch (btn.tag) {
-            case 10:
-            {
-                [self.navigationController popViewControllerAnimated:YES];
-                break;
-            }
             case 11:
-            {   //Edit
+            {
+                //Edit
                 NSIndexPath *indexpath = [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                 MyShopEtalaseEditViewController *vc = [MyShopEtalaseEditViewController new];
-                vc.data = @{DATA_ETALASE_KEY : [_data objectForKey:DATA_ETALASE_KEY]?:[NSNull null],
+                vc.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+                vc.delegate = self;
+                vc.data = @{
+                            DATA_ETALASE_KEY : [_data objectForKey:DATA_ETALASE_KEY]?:[NSNull null],
                             kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                             kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY),
                             kTKPDDETAIL_DATAINDEXPATHKEY : indexpath
                             };
-                [self.navigationController pushViewController:vc animated:YES];
+
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                nav.navigationBar.translucent = NO;
+                
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
+                
                 break;
             }
-                
             default:
                 break;
         }
@@ -103,12 +109,11 @@
                 if ([_etalase.etalase_total_product isEqualToString:@"0"]) {
                     [_delegate DidTapButton:btn withdata:_data];
                     [self.navigationController popViewControllerAnimated:YES];
-                }
-                else
-                {
-                    NSArray *array = [[NSArray alloc]initWithObjects:@"Tidak dapat menghapus etalase. \nSilahkan pindahkan product ke etalase lainnya terlebih dahulu.",nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                } else {
+                    NSArray *errorMessages = @[@"Tidak dapat menghapus etalase. \nSilahkan pindahkan product ke etalase lainnya terlebih dahulu."];
+
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                    [alert show];
                 }
                 break;
             }
@@ -127,4 +132,12 @@
         _labeltotal.text = _etalase.etalase_total_product;
     }
 }
+
+#pragma mark - Etalase edit delegate
+
+- (void)successEditEtalase:(NSString *)etalaseName
+{
+    self.labelname.text = etalaseName;
+}
+
 @end

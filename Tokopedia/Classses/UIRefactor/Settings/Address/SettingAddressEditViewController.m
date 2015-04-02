@@ -13,6 +13,7 @@
 #import "AddressFormList.h"
 #import "SettingAddressEditViewController.h"
 #import "AddressViewController.h"
+#import "TKPDTextView.h"
 
 #pragma mark - Setting Address Edit View Controller
 @interface SettingAddressEditViewController ()
@@ -50,7 +51,7 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *textfieldreceivername;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldaddressname;
-@property (weak, nonatomic) IBOutlet UITextView *textviewaddress;
+@property (weak, nonatomic) IBOutlet TKPDTextView *textviewaddress;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldpostcode;
 @property (weak, nonatomic) IBOutlet UIButton *buttondistrict;
 @property (weak, nonatomic) IBOutlet UIButton *buttoncity;
@@ -124,6 +125,9 @@
     [nc addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
+    
+    [_textfieldreceivername becomeFirstResponder];
+    _textviewaddress.placeholder = @"Tulis alamat";
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -214,14 +218,8 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *btn = (UIBarButtonItem*)sender;
         switch (btn.tag) {
-            case 12:
-            {
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-            case 11:
-            {
+            case 11: {
                 //submit
-                
                 if ([self isValidInput]) {
                     if (_type == TYPE_ADD_EDIT_PROFILE_ATC) {
 
@@ -253,10 +251,11 @@
                         NSDictionary *userInfo = @{DATA_ADDRESS_DETAIL_KEY: detailAddress};
                         
                         [_delegate SettingAddressEditViewController:self withUserInfo:userInfo];
-                        [self.navigationController popViewControllerAnimated:YES];
-                    }
-                    else
-                    {
+                        
+                        [self.navigationController dismissViewControllerAnimated:YES completion:^{
+                            [self.navigationController popViewControllerAnimated:YES];
+                        }];
+                    } else {
                         [self configureRestKitActionAddAddress];
                         [self requestActionAddAddress:_datainput];
                     }
@@ -504,12 +503,20 @@
         _textfieldreceivername.text = list.receiver_name?:@"";
         _textfieldaddressname.text = list.address_name?:@"";
 
-        if (!list.address_street || [list.address_street isEqualToString:@""]) {
-            [_textviewaddress setPlaceholder:@"Alamat"];
-        } else {
-            _textviewaddress.text = [NSString convertHTML:list.address_street?:@""];
-        }
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 4.0;
         
+        NSDictionary *attributes = @{
+                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+                                     NSParagraphStyleAttributeName  : style,
+                                     NSForegroundColorAttributeName : [UIColor colorWithRed:117.0/255.0
+                                                                                      green:117.0/255.0
+                                                                                       blue:117.0/255.0
+                                                                                      alpha:1],
+                                     };
+        
+        _textviewaddress.attributedText = [[NSAttributedString alloc] initWithString:[NSString convertHTML:list.address_street] attributes:attributes];
+
         NSString *postalcode = list.postal_code?[NSString stringWithFormat:@"%zd",list.postal_code]:@"";
         _textfieldpostcode.text = postalcode;
         _textfieldphonenumber.text = list.receiver_phone?:@"";

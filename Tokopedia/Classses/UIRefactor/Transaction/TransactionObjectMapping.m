@@ -84,21 +84,25 @@
 -(RKObjectMapping*)addressMapping
 {
     RKObjectMapping *addressMapping = [RKObjectMapping mappingForClass:[AddressFormList class]];
-    [addressMapping addAttributeMappingsFromDictionary:@{kTKPDPROFILESETTING_APICOUNTRYNAMEKEY:kTKPDPROFILESETTING_APICOUNTRYNAMEKEY,
-                                                         kTKPDPROFILESETTING_APIRECEIVERNAMEKEY:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY,
-                                                         kTKPDPROFILESETTING_APIADDRESSNAMEKEY:kTKPDPROFILESETTING_APIADDRESSNAMEKEY,
-                                                         kTKPDPROFILESETTING_APIADDRESSIDKEY:kTKPDPROFILESETTING_APIADDRESSIDKEY,
-                                                         kTKPDPROFILESETTING_APIRECEIVERPHONEKEY :kTKPDPROFILESETTING_APIRECEIVERPHONEKEY,
-                                                         kTKPDPROFILESETTING_APIPROVINCENAMEKEY:kTKPDPROFILESETTING_APIPROVINCENAMEKEY,
-                                                         API_POSTAL_CODE_CART_KEY:kTKPDPROFILESETTING_APIPOSTALCODEKEY,
-                                                         kTKPDPROFILESETTING_APIADDRESSSTATUSKEY:kTKPDPROFILESETTING_APIADDRESSSTATUSKEY,
-                                                         kTKPDPROFILESETTING_APIADDRESSSTREETKEY:kTKPDPROFILESETTING_APIADDRESSSTREETKEY,
-                                                         kTKPDPROFILESETTING_APIDISTRICNAMEKEY:kTKPDPROFILESETTING_APIDISTRICNAMEKEY,
-                                                         kTKPDPROFILESETTING_APICITYNAMEKEY:kTKPDPROFILESETTING_APICITYNAMEKEY,
-                                                         kTKPDPROFILESETTING_APICITYIDKEY:kTKPDPROFILESETTING_APICITYIDKEY,
-                                                         kTKPDPROFILESETTING_APIPROVINCEIDKEY:kTKPDPROFILESETTING_APIPROVINCEIDKEY,
-                                                         kTKPDPROFILESETTING_APIDISTRICTIDKEY:kTKPDPROFILESETTING_APIDISTRICTIDKEY
-                                                         }];
+    [addressMapping addAttributeMappingsFromArray:@[kTKPDPROFILESETTING_APICOUNTRYNAMEKEY,
+                                                         kTKPDPROFILESETTING_APIRECEIVERNAMEKEY,
+                                                         kTKPDPROFILESETTING_APIADDRESSNAMEKEY,
+                                                         kTKPDPROFILESETTING_APIADDRESSIDKEY,
+                                                         kTKPDPROFILESETTING_APIRECEIVERPHONEKEY,
+                                                         kTKPDPROFILESETTING_APIPROVINCENAMEKEY,
+                                                         API_POSTAL_CODE_CART_KEY,
+                                                         kTKPDPROFILESETTING_APIADDRESSSTATUSKEY,
+                                                         kTKPDPROFILESETTING_APIADDRESSSTREETKEY,
+                                                         kTKPDPROFILESETTING_APIDISTRICNAMEKEY,
+                                                         kTKPDPROFILESETTING_APICITYNAMEKEY,
+                                                         kTKPDPROFILESETTING_APICITYIDKEY,
+                                                         kTKPDPROFILESETTING_APIPROVINCEIDKEY,
+                                                         kTKPDPROFILESETTING_APIDISTRICTIDKEY,
+                                                        API_ADDRESS_COUNTRY,
+                                                    API_ADDRESS_DISTRICT,
+                                                    API_ADDRESS_CITY,
+                                                    API_ADDRESS_PROVINCE
+                                                         ]];
     return addressMapping;
 }
 

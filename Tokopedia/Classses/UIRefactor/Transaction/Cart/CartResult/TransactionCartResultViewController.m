@@ -11,6 +11,7 @@
 #import "TransactionCartResultViewController.h"
 #import "TransactionCartResultCell.h"
 #import "TransactionCartResultPaymentCell.h"
+#import "TxOrderStatusViewController.h"
 
 #import "TxOrderTabViewController.h"
 
@@ -52,42 +53,86 @@
         [_listSystemBank addObjectsFromArray:_cartBuy.system_bank];
     }
 
-    if ([_cartBuy.transaction.deposit_amount integerValue]>0) {
-        if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)]) {
-            NSArray *detailPayment = @[
-                                       @{DATA_NAME_KEY : STRING_JUMLAH_YANG_SUDAH_DIBAYAR,
-                                         DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr
-                                         },
-                                       ];
-            [_listTotalPayment addObjectsFromArray:detailPayment];
+    if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)] ||
+        [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CLICK_BCA)] ||
+        [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)])
+    {
+        if ([_cartBuy.transaction.deposit_amount integerValue]>0) {
+            
+            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+            formatter.currencyCode = @"Rp ";
+            formatter.currencyGroupingSeparator = @".";
+            formatter.currencyDecimalSeparator = @",";
+            formatter.maximumFractionDigits = 0;
+            formatter.minimumFractionDigits = 0;
+            
+            NSInteger totalPayment = [_cartBuy.transaction.payment_left integerValue]+ [_cartBuy.transaction.deposit_amount integerValue];
+            NSString *totalPaymentString = [formatter stringFromNumber:[NSNumber numberWithInteger:totalPayment]];
+            
+            NSArray *detailPaymentIfUsingSaldo = @[
+                                                   @{DATA_NAME_KEY : STRING_JUMLAH_YANG_SUDAH_DIBAYAR,
+                                                     DATA_VALUE_KEY : totalPaymentString
+                                                     },
+                                                   @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERPAKAI,
+                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
+                                                     },
+                                                   @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
+                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_left?:@""
+                                                     },
+                                                   ];
+            [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
+        
         }
         else
         {
             NSArray *detailPayment = @[
-                                       @{DATA_NAME_KEY : STRING_TOTAL_TAGIHAN ,
-                                         DATA_VALUE_KEY : _cartBuy.transaction.grand_total_idr
+                                       @{DATA_NAME_KEY : STRING_JUMLAH_YANG_SUDAH_DIBAYAR,
+                                         DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr?:@""
                                          },
                                        ];
             [_listTotalPayment addObjectsFromArray:detailPayment];
         }
-        
-        NSArray *detailPaymentIfUsingSaldo = @[
-                                               @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERPAKAI,
-                                                 DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr
-                                                 },
-                                               @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
-                                                 DATA_VALUE_KEY : _cartBuy.transaction.deposit_left
+    }
+    else
+    {
+        if ([_cartBuy.transaction.deposit_amount integerValue]>0) {
+            if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)]) {
+                NSArray *detailPayment = @[
+                                           @{DATA_NAME_KEY : STRING_JUMLAH_YANG_SUDAH_DIBAYAR,
+                                             DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
                                              },
                                            ];
-        [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
-    }
-    if ([_cartBuy.transaction.payment_left integerValue]>0) {
-        NSArray *detailPayment = @[
-                                   @{DATA_NAME_KEY : STRING_JUMLAH_YANG_HARUS_DIBAYAR,
-                                     DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr
-                                     },
-                                   ];
-        [_listTotalPayment addObjectsFromArray:detailPayment];
+                [_listTotalPayment addObjectsFromArray:detailPayment];
+            }
+            else
+            {
+                NSArray *detailPayment = @[
+                                           @{DATA_NAME_KEY : STRING_TOTAL_TAGIHAN ,
+                                             DATA_VALUE_KEY : _cartBuy.transaction.grand_total_idr?:@""
+                                             },
+                                           ];
+                [_listTotalPayment addObjectsFromArray:detailPayment];
+            }
+            
+            NSArray *detailPaymentIfUsingSaldo = @[
+                                                   @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERPAKAI,
+                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
+                                                     },
+                                                   @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
+                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_left?:@""
+                                                 },
+                                               ];
+            [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
+        }
+        if ([_cartBuy.transaction.payment_left integerValue]>0) {
+            NSArray *detailPayment = @[
+                                       @{DATA_NAME_KEY : STRING_JUMLAH_YANG_HARUS_DIBAYAR,
+                                         DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr?:@""
+                                         },
+                                       ];
+            [_listTotalPayment addObjectsFromArray:detailPayment];
+        }
     }
 
     
@@ -125,7 +170,12 @@
     _confirmPaymentButton.layer.cornerRadius = 2;
     _paymentStatusButton.layer.cornerRadius = 2;
     
-    [_totalPaymentLabel setText:_cartBuy.transaction.payment_left_idr animated:YES];
+    [_totalPaymentLabel setText:_cartBuy.transaction.payment_left_idr?:@"" animated:YES];
+}
+
+-(void)viewWillLayoutSubviews
+{
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -160,7 +210,11 @@
 -(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     if (section == _listTotalPayment.count + _listSystemBank.count-1) {
-        return ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_TOKOPEDIA)?_paymentStatusView:_viewConfirmPayment;
+        return ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_TOKOPEDIA||
+                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)] ||
+                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CLICK_BCA)] ||
+                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)])
+        ?_paymentStatusView:_viewConfirmPayment;
     }
     return nil;
 }
@@ -192,7 +246,12 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     if (section == _listTotalPayment.count + _listSystemBank.count-1) {
-        return ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_TOKOPEDIA)?_paymentStatusView.frame.size.height:_viewConfirmPayment.frame.size.height;
+        return ([_cartBuy.transaction.gateway integerValue] == TYPE_GATEWAY_TOKOPEDIA||
+                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)] ||
+                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CLICK_BCA)] ||
+                [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)])
+        ?_paymentStatusView.frame.size.height:
+        _viewConfirmPayment.frame.size.height;
     }
     return 10;
 }
@@ -206,8 +265,18 @@
 
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
-    TxOrderTabViewController *vc = [TxOrderTabViewController new];
-    [self.navigationController pushViewController:vc animated:YES];
+    UIButton *button = (UIButton*)sender;
+    if (button == _confirmPaymentButton) {
+        TxOrderTabViewController *vc = [TxOrderTabViewController new];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+    else if (button == _paymentStatusButton)
+    {
+        TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+        vc.action = @"get_tx_order_status";
+        vc.viewControllerTitle = @"Status Pemesanan";
+        [self.navigationController pushViewController:vc animated:YES];
+    }
 }
 
 #pragma mark - methods Cell

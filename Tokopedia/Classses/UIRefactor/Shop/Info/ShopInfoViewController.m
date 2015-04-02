@@ -421,7 +421,7 @@
     
     _labelshopdescription.text = _shop.result.info.shop_description;
     [_buttonfav setTitle:_shop.result.info.shop_total_favorit forState:UIControlStateNormal];
-    [_buttonitemsold setTitle:_shop.result.stats.shop_item_sold forState:UIControlStateNormal];
+    [_buttonitemsold setTitle:_shop.result.info.shop_stats.shop_item_sold forState:UIControlStateNormal];
     _speedrate.starscount = _shop.result.stats.shop_service_rate;
     _accuracyrate.starscount = _shop.result.stats.shop_accuracy_rate;
     _servicerate.starscount = _shop.result.stats.shop_service_rate;
@@ -608,10 +608,10 @@
         
         NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
         NSInteger shop_id = [[auth objectForKey:kTKPD_SHOPIDKEY]integerValue];
-        if (_shop.result.info.shop_id==shop_id)
+        if ([_shop.result.info.shop_id integerValue]==shop_id)
         {
-            UIBarButtonItem *barbutton = [[UIBarButtonItem alloc] initWithTitle:@"Edit" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-            [barbutton setTintColor:[UIColor blackColor]];
+            UIBarButtonItem *barbutton = [[UIBarButtonItem alloc] initWithTitle:@"Ubah" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+            [barbutton setTintColor:[UIColor whiteColor]];
             barbutton.tag = 11;
             self.navigationItem.rightBarButtonItem = barbutton;
         }

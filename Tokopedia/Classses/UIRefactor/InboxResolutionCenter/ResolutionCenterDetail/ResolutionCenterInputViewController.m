@@ -19,16 +19,16 @@
 #import "requestGenerateHost.h"
 #import "CameraAlbumListViewController.h"
 #import "CameraCollectionViewController.h"
+#import "RequestUploadImage.h"
 
 #import "GeneralTableViewController.h"
 
 #import "StickyAlertView.h"
 
-#define DATA_PHOTO_UPLOADING @"data_photo_uploading"
-#define DATA_IMAGEVIEW_UPLOADING @"data_imageview_uploading"
 #define TAG_ALERT_HELPER 10
+#define TAG_CHANGE_SOLUTION 11
 
-@interface ResolutionCenterInputViewController () <UIAlertViewDelegate, UITextViewDelegate, InboxResolutionCenterOpenViewControllerDelegate, GenerateHostDelegate, CameraCollectionViewControllerDelegate, CameraControllerDelegate>
+@interface ResolutionCenterInputViewController () <UIAlertViewDelegate, UITextViewDelegate, InboxResolutionCenterOpenViewControllerDelegate, GenerateHostDelegate, CameraCollectionViewControllerDelegate, CameraControllerDelegate, RequestUploadImageDelegate>
 {
     NSMutableArray *_uploadedPhotos;
     GenerateHost *_generatehost;
@@ -69,6 +69,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *secondFooterButton;
 
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *uploadButtons;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cancelButtons;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *uploadedImages;
 @property (strong, nonatomic) IBOutlet UIScrollView *imageScrollView;
 @property (weak, nonatomic) IBOutlet UIView *imageContentView;
@@ -88,6 +89,9 @@
     _uploadingPhotos = [NSMutableArray new];
     _uploadedPhotos = [NSMutableArray new];
     
+    _uploadButtons = [NSArray sortViewsWithTagInArray:_uploadButtons];
+    _cancelButtons = [NSArray sortViewsWithTagInArray:_cancelButtons];
+    
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [barButtonItem setTintColor:[UIColor whiteColor]];
     barButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
@@ -102,6 +106,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification object:nil];
+    
+    [_cancelButtons makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
     
     [self adjustFooterButton];
     
@@ -211,6 +217,19 @@
     }
 }
 
+-(BOOL)isValid
+{
+    BOOL isValid = YES;
+    NSMutableArray *errorMessage = [NSMutableArray new];
+    
+    if ([_messageTextView.text isEqualToString:@""]||!_messageTextView.text) {
+        [errorMessage addObject:ERRORMESSAGE_NULL_MESSAGE];
+        isValid = NO;
+    }
+    
+    return  isValid;
+}
+
 - (IBAction)tap:(id)sender {
     [_messageTextView resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
@@ -219,26 +238,24 @@
             [self.navigationController popViewControllerAnimated:YES];
         }
         else if (barbutton.tag == TAG_BAR_BUTTON_TRANSACTION_SEND) {
-            NSMutableArray *fileThumbImage = [NSMutableArray new];
-            for (UploadImageResult *image in _uploadedPhotos) {
-                [fileThumbImage addObject:image.file_th];
+            if ([self isValid]) {
+                NSMutableArray *fileThumbImage = [NSMutableArray new];
+                for (UploadImageResult *image in _uploadedPhotos) {
+                    [fileThumbImage addObject:image.file_th];
+                }
+                NSString *photos = [[fileThumbImage valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
+                
+                [_delegate message:_messageTextView.text
+                             photo:photos?:@""
+                          serverID:_generatehost.result.generated_host.server_id?:@""];
+                [self.navigationController popViewControllerAnimated:YES];
             }
-            NSString *photos = [[fileThumbImage valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
-            
-            [_delegate message:_messageTextView.text
-                         photo:photos?:@""
-                      serverID:_generatehost.result.generated_host.server_id?:@""];
-            [self.navigationController popViewControllerAnimated:YES];
         }
     }
     else
     {
         UIButton *button = (UIButton*)sender;
         switch (button.tag) {
-            case 10:
-                //Image
-                [self didTapImageButton:(UIButton*)sender];
-                break;
             case 11:
                 //Bantuan
                 [self didTapReportButton];
@@ -261,6 +278,14 @@
                 break;
         }
     }
+}
+
+- (IBAction)tapUploadImage:(id)sender {
+    [self didTapImageButton:(UIButton*)sender];
+}
+
+- (IBAction)tapDeleteImage:(id)sender {
+    
 }
 
 -(void)didTapImageButton:(UIButton*)sender
@@ -295,8 +320,22 @@
 -(void)didTapEditSolutionButton
 {
     
+    BOOL isGotTheOrder = [_resolution.resolution_last.last_flag_received boolValue];
+    if (isGotTheOrder) {
+        [self resolutionOpenIsGotTheOrder:isGotTheOrder];
+    }
+    else
+    {
+        UIAlertView *alertChangeSolution = [[UIAlertView alloc]initWithTitle:@"Apakah barang telah diterima?" message:@"Anda tidak bisa mengubah menjadi tidak terima barang, setelah Anda konfirmasi terima barang." delegate:self cancelButtonTitle:@"Batal" otherButtonTitles:@"Ya",@"Tidak", nil];
+        alertChangeSolution.tag = TAG_CHANGE_SOLUTION;
+        [alertChangeSolution show];
+    }
+}
+
+-(void)resolutionOpenIsGotTheOrder:(BOOL)isGotTheOrder
+{
     InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
-    vc.isGotTheOrder = ([_resolution.resolution_last.last_flag_received integerValue]==1);
+    vc.isGotTheOrder = isGotTheOrder;
     vc.isChangeSolution = YES;
     vc.detailOpenAmount = _resolution.resolution_order.order_open_amount;
     vc.detailOpenAmountIDR = _resolution.resolution_order.order_open_amount_idr;
@@ -345,7 +384,7 @@
 -(void)setImageData:(NSDictionary*)data tag:(int)tag
 {
     NSMutableDictionary *object = [NSMutableDictionary new];
-    [object setObject:data forKey:DATA_PHOTO_UPLOADING];
+    [object setObject:data forKey:DATA_SELECTED_PHOTO_KEY];
     UIImageView *imageView;
     for (UIImageView *image in _uploadedImages) {
         if (image.tag == tag)
@@ -353,7 +392,8 @@
             imageView = image;
         }
     }
-    [object setObject:imageView forKey:DATA_IMAGEVIEW_UPLOADING];
+    
+    [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     
     NSDictionary* photo = [data objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
     
@@ -362,6 +402,7 @@
     [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
     image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    
     
     for (UIButton *button in _uploadButtons) {
         if (button.tag == tag) {
@@ -379,8 +420,7 @@
     imageView.hidden = NO;
     imageView.alpha = 0.5f;
     
-    [self configureRestkitUploadPhoto];
-    [self requestActionUploadPhoto:object];
+    [self actionUploadImage:object];
 }
 
 #pragma mark - alert view Delegate
@@ -390,6 +430,16 @@
         if (buttonIndex == 1) {
             [_delegate reportResolution];
             [self.navigationController popViewControllerAnimated:YES];
+        }
+    }
+    if (alertView.tag == TAG_CHANGE_SOLUTION)
+    {
+        if (buttonIndex == 1) {
+            [self resolutionOpenIsGotTheOrder:YES];
+        }
+        else if (buttonIndex == 2)
+        {
+            [self resolutionOpenIsGotTheOrder:NO];
         }
     }
 }
@@ -499,182 +549,42 @@
 
 
 #pragma mark Request Action Upload Photo
--(void)configureRestkitUploadPhoto
+-(void)actionUploadImage:(id)object
 {
-    _objectManagerUploadPhoto =  [RKObjectManager sharedClient];
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[UploadImage class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[UploadImageResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY:kTKPDSHOPEDIT_APIUPLOADFILEPATHKEY,
-                                                        kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY:kTKPDSHOPEDIT_APIUPLOADFILETHUMBKEY,
-                                                        API_UPLOAD_PHOTO_ID_KEY:API_UPLOAD_PHOTO_ID_KEY
-                                                        }];
-    
-    // Relationship Mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAIL_UPLOADIMAGEAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectManagerUploadPhoto addResponseDescriptor:responseDescriptor];
-    
-    [_objectManagerUploadPhoto setAcceptHeaderWithMIMEType:RKMIMETypeJSON];
-    [_objectManagerUploadPhoto setRequestSerializationMIMEType:RKMIMETypeJSON];
+    [_uploadingPhotos addObject:object];
+    _isFinishUploadingImage = NO;
+    RequestUploadImage *uploadImage = [RequestUploadImage new];
+    uploadImage.imageObject = object;
+    uploadImage.delegate = self;
+    uploadImage.generateHost = _generatehost;
+    uploadImage.action = ACTION_UPLOAD_CONTACT_IMAGE;
+    uploadImage.fieldName = API_UPLOAD_PRODUCT_IMAGE_DATA_NAME;
+    [uploadImage configureRestkitUploadPhoto];
+    [uploadImage requestActionUploadPhoto];
 }
 
-
-- (void)cancelActionUploadPhoto
+-(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
-    _requestActionUploadPhoto = nil;
+    UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    imageView.alpha = 1.0;
+    [_photos addObject:uploadImage.result];
+    [_uploadingPhotos removeObject:object];
+    _isFinishUploadingImage = YES;
     
-    [_operationQueue cancelAllOperations];
-    _objectManagerUploadPhoto = nil;
-}
-
-- (void)requestActionUploadPhoto:(NSDictionary*)object
-{
-    for (NSObject *object in _uploadingPhotos) {
-        if (![object isEqual:object]) {
-            [_uploadingPhotos addObject:object];
+    for (UIButton *button in _cancelButtons) {
+        if (button.tag == imageView.tag)
+        {
+            button.hidden = NO;
         }
     }
     
-    NSDictionary *uploadingObject = object;
-    NSDictionary *imagePhoto = [uploadingObject objectForKey:DATA_PHOTO_UPLOADING];
-    UIImageView *imageView = [uploadingObject objectForKey:DATA_IMAGEVIEW_UPLOADING];
-    
-    NSDictionary *photo = [imagePhoto objectForKey: kTKPDCAMERA_DATAPHOTOKEY];
-    NSData* imageData = [photo objectForKey:DATA_CAMERA_IMAGEDATA];
-    NSString* imageName = [photo objectForKey:DATA_CAMERA_IMAGENAME];
-    NSString *serverID = _generatehost.result.generated_host.server_id?:@"0";
-    
-    NSDictionary *param = @{ API_ACTION_KEY:ACTION_UPLOAD_CONTACT_IMAGE,
-                             kTKPDGENERATEDHOST_APISERVERIDKEY:serverID,
-                             };
-    
-    
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    NSDictionary* auth = [secureStorage keychainDictionary];
-    
-    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-    
-    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-    [paramDictionary addEntriesFromDictionary:param];
-    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-    
-    _requestActionUploadPhoto = [NSMutableURLRequest requestUploadImageData:imageData
-                                                                   withName:API_UPLOAD_PRODUCT_IMAGE_DATA_NAME
-                                                                andFileName:imageName
-                                                      withRequestParameters:paramDictionary
-                                 ];
-    
-    
-    _isFinishUploadingImage = NO;
-    
-    UIImageView *thumbProductImage = imageView;
-    thumbProductImage.alpha = 0.5f;
-    
-    [NSURLConnection sendAsynchronousRequest:_requestActionUploadPhoto
-                                       queue:[NSOperationQueue mainQueue]
-                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
-                               NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-                               NSString *responsestring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                               if ([httpResponse statusCode] == 200) {
-                                   _isFinishUploadingImage = YES;
-                                   id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-                                   if (parsedData == nil && error) {
-                                       NSLog(@"parser error");
-                                       [self requestFailureUploadPhoto:photo
-                                                           atImageView:thumbProductImage
-                                                             withError:nil];
-                                       [self requestProcessUploadPhoto];
-                                       return;
-                                   }
-                                   
-                                   NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-                                   for (RKResponseDescriptor *descriptor in _objectManagerUploadPhoto.responseDescriptors) {
-                                       [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-                                   }
-                                   
-                                   RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-                                   NSError *mappingError = nil;
-                                   BOOL isMapped = [mapper execute:&mappingError];
-                                   if (isMapped && !mappingError) {
-                                       NSLog(@"result %@",[mapper mappingResult]);
-                                       RKMappingResult *mappingresult = [mapper mappingResult];
-                                       NSDictionary *result = mappingresult.dictionary;
-                                       id stat = [result objectForKey:@""];
-                                       UploadImage *image = stat;
-                                       BOOL status = [image.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-                                       
-                                       if (status) {
-                                           
-                                           if (!image.message_error) {
-                                               
-                                               [self requestSuccessUploadPhoto:object
-                                                                   atImageView:thumbProductImage
-                                                             withMappingResult:mappingresult];
-                                           }
-                                           else
-                                           {
-                                               NSArray *array = image.message_error?:[[NSArray alloc] initWithObjects:@"Error", nil];
-                                               StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
-                                               [alert show];
-                                               [self requestFailureUploadPhoto:object
-                                                                   atImageView:thumbProductImage
-                                                                     withError:nil];
-                                           }
-                                       }
-                                       else
-                                       {
-                                           [self requestFailureUploadPhoto:object
-                                                               atImageView:thumbProductImage
-                                                                 withError:image.status];
-                                       }
-                                   }
-                                   else
-                                   {
-                                       [self requestFailureUploadPhoto:object
-                                                           atImageView:thumbProductImage
-                                                             withError:@"error"];
-                                   }
-                                   
-                               }
-                               else
-                               {
-                                   NSString *errorDescription = error.localizedDescription;
-                                   [self requestFailureUploadPhoto:object
-                                                       atImageView:thumbProductImage
-                                                         withError:errorDescription];
-                               }
-                               NSLog(@"%@",responsestring);
-                               [self requestProcessUploadPhoto];
-                           }];
+    [self requestProcessUploadPhoto];
 }
 
-- (void)requestSuccessUploadPhoto:(NSDictionary*)object atImageView:(UIImageView*)imageView withMappingResult:(RKMappingResult*)mappingResult
+-(void)failedUploadObject:(id)object
 {
-    NSDictionary *result = mappingResult.dictionary;
-    id stat = [result objectForKey:@""];
-    UploadImage *image = stat;
-    
-    imageView.alpha = 1.0;
-    [_photos addObject:image.result];
-    [_uploadingPhotos removeObject:object];
-}
-
-- (void)requestFailureUploadPhoto:(NSDictionary*)object atImageView:(UIImageView*)imageView withError:(NSString*)error
-{
-    if (error) {
-        UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:error?:@"Error" delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-        [errorAlert show];
-    }
-    
+    UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     imageView.image = nil;
     
     for (UIButton *button in _uploadButtons) {
@@ -683,16 +593,22 @@
             button.hidden = NO;
         }
     }
+    for (UIButton *button in _cancelButtons) {
+        if (button.tag == imageView.tag)
+        {
+            button.hidden = YES;
+        }
+    }
     
+    _isFinishUploadingImage = YES;
     [_uploadingPhotos removeObject:object];
+    [self requestProcessUploadPhoto];
 }
-
 
 - (void)requestProcessUploadPhoto
 {
     if (_uploadingPhotos.count > 0) {
-        [self configureRestkitUploadPhoto];
-        [self requestActionUploadPhoto:[_uploadingPhotos firstObject]];
+        [self actionUploadImage:[_uploadingPhotos firstObject]];
     }
     
     if (_uploadedPhotos.count == 0) {

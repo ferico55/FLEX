@@ -23,12 +23,14 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SettingAddressDetailViewController">
             <connections>
                 <outlet property="contentView" destination="3it-3L-ajm" id="Dy6-pF-3aw"/>
+                <outlet property="deleteButton" destination="6IS-00-sRd" id="uiK-hI-dcT"/>
                 <outlet property="labeladdress" destination="I13-ur-mHT" id="063-KO-0nK"/>
                 <outlet property="labeladdressname" destination="v8J-E2-74j" id="kS3-YP-539"/>
                 <outlet property="labelcity" destination="K8O-b9-70F" id="w2u-6W-gW2"/>
@@ -478,9 +480,9 @@
                 </view>
                 <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6IS-00-sRd">
                     <rect key="frame" x="0.0" y="575" width="320" height="44"/>
-                    <color key="backgroundColor" red="0.81020035282258063" green="0.18047505040322581" blue="0.035124747983870969" alpha="1" colorSpace="calibratedRGB"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                    <state key="normal" title="Delete This Address">
+                    <color key="backgroundColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                    <state key="normal" title="Hapus Alamat">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>

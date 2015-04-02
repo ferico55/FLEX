@@ -75,7 +75,7 @@
 - (IBAction)gesture:(id)sender {
     UITapGestureRecognizer *gesture = (UITapGestureRecognizer*)sender;
     if (gesture.view.tag == 10) {
-        [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:_order.order_detail.detail_pdf];
+        [_navigate navigateToInvoiceFromViewController:self withInvoiceURL:_order.order_detail.detail_pdf_uri];
     }
     else
     {
@@ -193,9 +193,8 @@
     _finishLabel.backgroundColor = finishLabelColor;
     
     _shopNameLabel.text = _order.order_shop.shop_name;
-    _invoiceLabel.text = _order.order_detail.detail_invoice;
     
-    [_invoiceLabel multipleLineLabel:_invoiceLabel];
+    [_invoiceLabel setCustomAttributedText:_order.order_detail.detail_invoice];
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_order.order_shop.shop_pic] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
@@ -221,8 +220,7 @@
                          ,_order.order_destination.address_district,
                          _order.order_destination.address_province,
                          _order.order_destination.address_postal];
-    _addressStreetLabel.text = address;
-    [_addressStreetLabel multipleLineLabel:_addressStreetLabel];
+    [_addressStreetLabel setCustomAttributedText:address];
     _cityLabel.text = _order.order_destination.address_city;
     _countryLabel.text = [NSString stringWithFormat:@"%@, %@ %@",_order.order_destination.address_district,_order.order_destination.address_province, _order.order_destination.address_postal];
     _shipmentLabel.text = [NSString stringWithFormat:@"%@ - %@",_order.order_shipment.shipment_name,_order.order_shipment.shipment_product];

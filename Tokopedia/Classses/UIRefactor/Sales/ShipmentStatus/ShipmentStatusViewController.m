@@ -18,6 +18,7 @@
 #import "ChangeReceiptNumberViewController.h"
 #import "TrackOrderViewController.h"
 #import "TKPDTabProfileNavigationController.h"
+#import "NavigateViewController.h"
 
 #import "ShipmentStatusCell.h"
 #import "StickyAlertView.h"
@@ -95,6 +96,13 @@
                                                                      target:self
                                                                      action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    UIBarButtonItem *filterBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Filter"
+                                                                        style:UIBarButtonItemStyleBordered
+                                                                       target:self
+                                                                       action:@selector(tap:)];
+    filterBarButton.tag = 11;
+    self.navigationItem.rightBarButtonItem = filterBarButton;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -679,10 +687,8 @@
 - (void)didTapUserAtIndexPath:(NSIndexPath *)indexPath
 {
     _selectedOrder = [_shipments objectAtIndex:indexPath.row];
-    
-    TKPDTabProfileNavigationController *controller = [TKPDTabProfileNavigationController new];
-    controller.data = @{API_USER_ID_KEY:_selectedOrder.order_customer.customer_id};
-    [self.navigationController pushViewController:controller animated:YES];
+    NavigateViewController *controller = [NavigateViewController new];
+    [controller navigateToProfileFromViewController:self withUserID:_selectedOrder.order_customer.customer_id];
 }
 
 #pragma mark - Action

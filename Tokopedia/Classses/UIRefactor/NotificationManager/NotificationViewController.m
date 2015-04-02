@@ -150,7 +150,7 @@
     NSInteger numberOfRows = 0;
     switch (section) {
         case 0:
-            numberOfRows = 3;
+            numberOfRows = 4;
             break;
             
         case 1:
@@ -298,13 +298,10 @@
 
                 break;
             }
-            case 5:
+            case 3:
             {
                 InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                [nav.navigationBar setTranslucent:NO];
-                
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"goToViewController" object:nil userInfo:@{@"nav":nav}];
+                [self.delegate pushViewController:vc];
                 break;
             }
             default:

@@ -36,6 +36,13 @@
     }
 }
 
-
+- (void)setShopRate:(NSInteger)rate
+{
+    for (UIImageView *imageView in self.stars) {
+        if (imageView.tag <= rate) {
+            [imageView setImage:[UIImage imageNamed:@"icon_star_active.png"]];
+        }
+    }
+}
 
 @end

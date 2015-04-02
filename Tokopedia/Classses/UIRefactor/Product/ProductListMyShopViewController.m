@@ -110,20 +110,17 @@
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
     
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self action:@selector(tap:)];
     barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    //NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-    
-    //NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
-    //_cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILMANAGEPRODUCT_APIRESPONSEFILEFORMAT,[[auth objectForKey:kTKPD_USERIDKEY] integerValue]]];
-    //
-    //_cachecontroller.filePath = _cachepath;
-    //_cachecontroller.URLCacheInterval = 86400.0;
-    //[_cachecontroller initCacheWithDocumentPath:path];
+    self.navigationItem.backBarButtonItem = barButtonItem;
+
+    UIBarButtonItem *addBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                  target:self
+                                                                                  action:@selector(tap:)];
+    addBarButton.tag = 11;
+    self.navigationItem.rightBarButtonItem = addBarButton;
     
     //Add observer
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
@@ -216,6 +213,8 @@
 #pragma mark - Table View Delegate
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
     [_searchbar resignFirstResponder];
     
     ManageProductList *list = _list[indexPath.row];
@@ -262,7 +261,18 @@
 - (IBAction)tap:(id)sender {
     [_searchbar resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        [self.navigationController popViewControllerAnimated:YES];
+        if ([sender tag] == 11) {
+            ProductAddEditViewController *vc = [ProductAddEditViewController new];
+            vc.data = @{
+                        kTKPD_AUTHKEY                   : [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                        DATA_TYPE_ADD_EDIT_PRODUCT_KEY  : @(TYPE_ADD_EDIT_PRODUCT_ADD),
+                        };
+            
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+            nav.navigationBar.translucent = NO;
+            
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
+        }
     }
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *button = (UIButton*)sender;
@@ -297,14 +307,6 @@
                 activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
                 [self presentViewController:activityController animated:YES completion:nil];
                 break;
-            }
-            case BUTTON_PRODUCT_ADD_NEW_PRODUCT:
-            {
-                ProductAddEditViewController *vc = [ProductAddEditViewController new];
-                vc.data = @{kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
-                            DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_ADD),
-                            };
-                [self.navigationController pushViewController:vc animated:YES];
             }
             default:
                 break;
@@ -412,8 +414,6 @@
                             kTKPDDETAIL_APISORTKEY : @(orderByID),
                             kTKPDSHOP_APIETALASEIDKEY:@(etalaseID),
                             API_KEYWORD_KEY:keyword,
-                            kTKPD_USERIDKEY :@(userID),
-                            //@"enc_dec" : @"off"
                             };
     [_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
@@ -597,17 +597,19 @@
 -(void)requestActionDelete:(id)object
 {
     if (_requestActionDelete.isExecuting) return;
+    
     NSTimer *timer;
     
     NSDictionary *userinfo = (NSDictionary*)object;
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIDELETEPRODUCTKEY,
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [userinfo objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]?:@(0),
-                            kTKPD_USERIDKEY :[_auth objectForKey:kTKPD_USERIDKEY],
-                            @"enc_dec":@"off"
                             };
     
-    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
+    _requestActionDelete = [_objectmanagerActionDelete appropriateObjectRequestOperationWithObject:self
+                                                                                            method:RKRequestMethodPOST
+                                                                                              path:kTKPDDETAILACTIONPRODUCT_APIPATH
+                                                                                        parameters:[param encrypt]];
     
     [_requestActionDelete setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionDelete:mappingResult withOperation:operation];
@@ -615,7 +617,6 @@
         _isrefreshview = NO;
         [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
         [self requestFailureActionDelete:error];
         _isrefreshview = NO;
         [timer invalidate];
@@ -623,7 +624,11 @@
     
     [_operationQueue addOperation:_requestActionDelete];
     
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionDelete) userInfo:nil repeats:NO];
+    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                            target:self
+                                          selector:@selector(requestTimeoutActionDelete)
+                                          userInfo:nil repeats:NO]
+    ;
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
@@ -662,14 +667,14 @@
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
                 if (setting.result.is_success == 1) {
-                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
+                    NSArray *array = setting.message_status?:@[@"Anda telah berhasil menghapus produk"];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
                 }
             }
         }
         else{
-            [self cancelActionDelete];
+            //[self cancelActionDelete];
             [self cancelDeleteRow];
             NSError *error = object;
             if (!([error code] == NSURLErrorCancelled)){
@@ -728,9 +733,8 @@
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:ACTION_MOVE_TO_WAREHOUSE,
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : [userinfo objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY]?:0,
-                            @"enc_dec":@"off"
                             };
-    _requestActionMoveToWarehouse = [_objectmanagerActionMoveToWarehouse appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:param]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
+    _requestActionMoveToWarehouse = [_objectmanagerActionMoveToWarehouse appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
     
     [_requestActionMoveToWarehouse setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionMoveToWarehouse:mappingResult withOperation:operation];
@@ -877,10 +881,6 @@
 #pragma mark - Notification
 - (void)didEditNote:(NSNotification*)notification
 {
-    NSDictionary *userinfo = notification.userInfo;
-    //TODO: Behavior after edit
-    [_datainput setObject:[userinfo objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
-    //[_datainput setObject:[userinfo objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]?:@(0) forKey:kTKPDPROFILE_DATAEDITTYPEKEY];
     [self refreshView:nil];
 }
 

@@ -94,21 +94,20 @@
 	}
 }
 
--(void)multipleLineLabel:(UILabel*)label
+-(void)setCustomAttributedText:(NSString *)text
 {
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
-    style.alignment = label.textAlignment;
+    style.alignment = self.textAlignment;
     
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: label.textColor,
-                                 NSFontAttributeName: label.font,
+    NSDictionary *attributes = @{NSForegroundColorAttributeName: self.textColor,
+                                 NSFontAttributeName: self.font,
                                  NSParagraphStyleAttributeName: style,
                                  };
     
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:label.text?:@""
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text?:@""
                                                                          attributes:attributes];
-    label.attributedText = attributedText;
-    //return label;
+    self.attributedText = attributedText;
 }
 
 - (void)attributedLabel:(UILabel *)label didSelectLinkWithURL:(NSURL *)url {

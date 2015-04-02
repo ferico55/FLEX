@@ -17,6 +17,8 @@
 #import "SubmitShipmentConfirmationViewController.h"
 #import "TKPDTabProfileNavigationController.h"
 #import "CancelShipmentViewController.h"
+#import "NavigateViewController.h"
+
 #import "ActionOrder.h"
 #import "StickyAlertView.h"
 #import "RequestShipmentCourier.h"
@@ -116,6 +118,13 @@
                                                                          target:self
                                                                          action:@selector(tap:)];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    UIBarButtonItem *filterBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Filter"
+                                                                        style:UIBarButtonItemStyleBordered
+                                                                       target:self
+                                                                       action:@selector(tap:)];
+    filterBarButton.tag = 11;
+    self.navigationItem.rightBarButtonItem = filterBarButton;
     
     self.tableView.contentInset = UIEdgeInsetsMake(0, 0, 10, 0);
     self.tableView.tableHeaderView = _headerView;
@@ -315,9 +324,8 @@
     _selectedOrder = [_orders objectAtIndex:indexPath.row];
     _selectedIndexPath = indexPath;
     
-    TKPDTabProfileNavigationController *controller = [TKPDTabProfileNavigationController new];
-    controller.data = @{API_USER_ID_KEY:_selectedOrder.order_customer.customer_id};
-    [self.navigationController pushViewController:controller animated:YES];
+    NavigateViewController *controller = [NavigateViewController new];
+    [controller navigateToProfileFromViewController:self withUserID:_selectedOrder.order_customer.customer_id];
 }
 
 #pragma mark - Reskit methods
@@ -678,20 +686,15 @@
 
 - (IBAction)tap:(id)sender
 {
-    if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *button = (UIButton *)sender;
-        if (button.tag == 1) {
-            UINavigationController *navigationController = [[UINavigationController alloc] init];
-            navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
-            navigationController.navigationBar.translucent = NO;
-            navigationController.navigationBar.tintColor = [UIColor whiteColor];
-            FilterShipmentConfirmationViewController *controller = [FilterShipmentConfirmationViewController new];
-            controller.delegate = self;
-            controller.couriers = _shipmentCouriers;
-            navigationController.viewControllers = @[controller];
-            [self.navigationController presentViewController:navigationController animated:YES completion:nil];
-        }
-    }
+    UINavigationController *navigationController = [[UINavigationController alloc] init];
+    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+    navigationController.navigationBar.translucent = NO;
+    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    FilterShipmentConfirmationViewController *controller = [FilterShipmentConfirmationViewController new];
+    controller.delegate = self;
+    controller.couriers = _shipmentCouriers;
+    navigationController.viewControllers = @[controller];
+    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark - Order detail delegate

@@ -76,7 +76,8 @@
     
     NSDictionary* param = @{
                             API_ACTION_KEY : API_ACTION_GENERATE_HOST,
-                            kTKPD_USERIDKEY : userID
+                            kTKPD_USERIDKEY : userID,
+                            @"new_add" : @(1) //product,contact
                             };
     
     _requestGenerateHost = [_objectManagerGenerateHost appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_UPLOAD_IMAGE_PATH parameters:param];

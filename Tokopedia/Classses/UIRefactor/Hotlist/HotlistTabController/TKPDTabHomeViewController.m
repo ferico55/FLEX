@@ -29,6 +29,7 @@
 <   UIPageViewControllerDataSource,
     UIPageViewControllerDelegate,
     UIScrollViewDelegate,
+    UIGestureRecognizerDelegate,
     TKPDTabHomeDelegate,
     NotificationManagerDelegate
 >
@@ -79,7 +80,8 @@
                                                                         options:nil];
     self.pageController.dataSource = self;
     self.pageController.delegate = self;
-
+    [self.pageController.view setMultipleTouchEnabled:YES];
+    
     CGRect pageControllerFrame = [[self view] bounds];
     pageControllerFrame.origin.y = 108;
     pageControllerFrame.size.height -= 108;
@@ -582,9 +584,6 @@
     TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
     [nc setSelectedIndex:2];
     [nc setViewControllers:vcs];
-//    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-//    [nav.navigationBar setTranslucent:NO];
-//    [self.navigationController presentViewController:nav animated:YES completion:nil];
     [self.navigationController pushViewController:nc animated:YES];
 }
 
