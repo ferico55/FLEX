@@ -739,7 +739,6 @@
 		FC3FD7421AC508AC0034AE4B /* ShopEditStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FD20D1AC508AB0034AE4B /* ShopEditStatusViewController.m */; };
 		FC3FD7431AC508AC0034AE4B /* ShopEditStatusViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD20E1AC508AB0034AE4B /* ShopEditStatusViewController.xib */; };
 		FC3FD7441AC508AC0034AE4B /* ShopEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FD2101AC508AB0034AE4B /* ShopEditViewController.m */; };
-		FC3FD7451AC508AC0034AE4B /* ShopEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD2111AC508AB0034AE4B /* ShopEditViewController.xib */; };
 		FC3FD7461AC508AC0034AE4B /* ShopFavoritedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FD2141AC508AB0034AE4B /* ShopFavoritedCell.m */; };
 		FC3FD7471AC508AC0034AE4B /* ShopFavoritedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD2151AC508AB0034AE4B /* ShopFavoritedCell.xib */; };
 		FC3FD7481AC508AC0034AE4B /* ShopFavoritedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC3FD2171AC508AB0034AE4B /* ShopFavoritedViewController.m */; };
@@ -1196,6 +1195,7 @@
 		FC3FD90D1AC508AC0034AE4B /* MGSwipeTableCell.podspec in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD4621AC508AC0034AE4B /* MGSwipeTableCell.podspec */; };
 		FC3FD90E1AC508AC0034AE4B /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = FC3FD4631AC508AC0034AE4B /* README.md */; };
 		FC3FD90F1AC508AC0034AE4B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD47F1AC508AC0034AE4B /* LaunchScreen.xib */; };
+		FC3FD9111AC5102F0034AE4B /* ShopEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD9101AC5102F0034AE4B /* ShopEditViewController.xib */; };
 		FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FC681F6619B6D62200C58548 /* libsqlite3.dylib */; };
 		FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
 		FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */; };
@@ -2519,7 +2519,6 @@
 		FC3FD20E1AC508AB0034AE4B /* ShopEditStatusViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopEditStatusViewController.xib; sourceTree = "<group>"; };
 		FC3FD20F1AC508AB0034AE4B /* ShopEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopEditViewController.h; sourceTree = "<group>"; };
 		FC3FD2101AC508AB0034AE4B /* ShopEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopEditViewController.m; sourceTree = "<group>"; };
-		FC3FD2111AC508AB0034AE4B /* ShopEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopEditViewController.xib; sourceTree = "<group>"; };
 		FC3FD2131AC508AB0034AE4B /* ShopFavoritedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopFavoritedCell.h; sourceTree = "<group>"; };
 		FC3FD2141AC508AB0034AE4B /* ShopFavoritedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopFavoritedCell.m; sourceTree = "<group>"; };
 		FC3FD2151AC508AB0034AE4B /* ShopFavoritedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopFavoritedCell.xib; sourceTree = "<group>"; };
@@ -3065,6 +3064,7 @@
 		FC3FD4621AC508AC0034AE4B /* MGSwipeTableCell.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MGSwipeTableCell.podspec; sourceTree = "<group>"; };
 		FC3FD4631AC508AC0034AE4B /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		FC3FD47F1AC508AC0034AE4B /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
+		FC3FD9101AC5102F0034AE4B /* ShopEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopEditViewController.xib; sourceTree = "<group>"; };
 		FC681F6619B6D62200C58548 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		FC6B1C1B1AB03DC900581B3B /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -5799,12 +5799,12 @@
 		FC3FD20B1AC508AB0034AE4B /* Edit */ = {
 			isa = PBXGroup;
 			children = (
+				FC3FD9101AC5102F0034AE4B /* ShopEditViewController.xib */,
 				FC3FD20C1AC508AB0034AE4B /* ShopEditStatusViewController.h */,
 				FC3FD20D1AC508AB0034AE4B /* ShopEditStatusViewController.m */,
 				FC3FD20E1AC508AB0034AE4B /* ShopEditStatusViewController.xib */,
 				FC3FD20F1AC508AB0034AE4B /* ShopEditViewController.h */,
 				FC3FD2101AC508AB0034AE4B /* ShopEditViewController.m */,
-				FC3FD2111AC508AB0034AE4B /* ShopEditViewController.xib */,
 			);
 			path = Edit;
 			sourceTree = "<group>";
@@ -7246,6 +7246,7 @@
 				FC3FD8CC1AC508AC0034AE4B /* ic_cart@2x.png in Resources */,
 				FC3FD78F1AC508AC0034AE4B /* TransactionATCViewController.xib in Resources */,
 				FC3FD7D11AC508AC0034AE4B /* TxOrderConfirmedCell.xib in Resources */,
+				FC3FD9111AC5102F0034AE4B /* ShopEditViewController.xib in Resources */,
 				FC3FD8501AC508AC0034AE4B /* icon_info.png in Resources */,
 				FC3FD6901AC508AC0034AE4B /* MyShopEtalaseDetailViewController.xib in Resources */,
 				FC3FD6161AC508AC0034AE4B /* TKPDTabShopNavigationController.xib in Resources */,
@@ -7348,7 +7349,6 @@
 				FC3FD72D1AC508AC0034AE4B /* SettingBankAccountViewController.xib in Resources */,
 				FC3FD69E1AC508AC0034AE4B /* MyShopPaymentCell.xib in Resources */,
 				FC3FD88B1AC508AC0034AE4B /* icon_shop_info.png in Resources */,
-				FC3FD7451AC508AC0034AE4B /* ShopEditViewController.xib in Resources */,
 				FC3FD7F61AC508AC0034AE4B /* icon_15@2x.png in Resources */,
 				FC3FD6AC1AC508AC0034AE4B /* DetailProductOtherView.xib in Resources */,
 				FC3FD63C1AC508AC0034AE4B /* GeneralProductCell.xib in Resources */,

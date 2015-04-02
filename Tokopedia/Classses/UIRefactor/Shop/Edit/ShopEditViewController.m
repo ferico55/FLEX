@@ -132,6 +132,8 @@
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
     _buttoneditimage.enabled = NO;
+    
+    [self setDefaultData:_data];
 
 }
 
@@ -158,7 +160,7 @@
 -(void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [self setDefaultData:_data];
+    _scrollview.contentSize = _viewcontent.frame.size;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -170,10 +172,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
-    // unregister for keyboard notifications
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 // need this for scrollview with autolayout
@@ -186,6 +184,8 @@
 #pragma mark - Memory Management
 - (void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -470,7 +470,9 @@
     }
 }
 
-- (IBAction)gesture:(id)sender {
+
+-(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
+{
     [_activetextview resignFirstResponder];
 }
 
@@ -502,21 +504,17 @@
         
         UIImageView *thumb = _thumb;
         thumb.image = nil;
-        //thumb.hidden = YES;	//@prepareforreuse then @reset
         
-        [_actthumb startAnimating];
+        [UIImageView circleimageview:thumb];
         
         [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             //NSLOG(@"thumb: %@", thumb);
             [thumb setImage:image animated:YES];
-            
-            [_actthumb stopAnimating];
 #pragma clang diagnosti c pop
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            [_actthumb stopAnimating];
         }];
         
         NSUInteger type = [[_datainput objectForKey:kTKPDSHOPEDIT_APISTATUSKEY]integerValue]?:[_shop.is_open integerValue];
@@ -540,11 +538,11 @@
         //if gold merchant
         if (!_shop.info.shop_is_gold) {
             _labelmembership.text = @"Regular Merchant";
-            _badgesMembership.image = [UIImage imageNamed:@"Badges_gold_merchant"];
+            _badgesMembership.hidden = YES;
         }
         else
         {
-            _badgesMembership.hidden = YES;
+            _badgesMembership.hidden = NO;
             _labelmembership.text = @"Gold Merchant";
         }
     }
@@ -617,45 +615,15 @@
 }
 
 #pragma mark - Keyboard Notification
-// Called when the UIKeyboardWillShowNotification is sent
 - (void)keyboardWillShow:(NSNotification *)info {
-    if(_keyboardSize.height < 0){
-        _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-        _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-        
-        _scrollviewContentSize = [_scrollview contentSize];
-        _scrollviewContentSize.height += _keyboardSize.height;
-    }else{
-        [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                              delay:0
-                            options: UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             _scrollviewContentSize.height -= _keyboardSize.height;
-                             _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
-                             _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
-                             _scrollviewContentSize.height += _keyboardSize.height;
-
-                             UIEdgeInsets inset = _scrollview.contentInset;
-                             inset.top = (_keyboardPosition.y-(self.view.frame.origin.y + _activetextview.frame.origin.y+_activetextview.frame.size.height + 10));
-                             [_scrollview setContentInset:inset];
-                         }
-                         completion:^(BOOL finished){
-                         }];
-        
-    }
+    _keyboardPosition = [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].origin;
+    _keyboardSize= [[[info userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey]CGRectValue].size;
+    
+    CGPoint cgpoint = CGPointMake(0, _keyboardSize.height + 20);
+    _scrollview.contentOffset = cgpoint;
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    //TODO::check
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
-    [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
-                          delay:0
-                        options: UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         _scrollview.contentInset = contentInsets;
-                         _scrollview.scrollIndicatorInsets = contentInsets;
-                     }
-                     completion:^(BOOL finished){
-                     }];
+    _scrollview.contentOffset = CGPointZero;
 }
 @end

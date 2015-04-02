@@ -273,5 +273,21 @@
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/Shop/Edit/ShopEditViewController.m"
+            timestampString = "449127337.292561"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "619"
+            endingLineNumber = "619"
+            landmarkName = "-keyboardWillShow:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>
