@@ -231,13 +231,9 @@
 }
 
 #pragma mark - Table View Data Source
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return _list.count;
-}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 1;
+    return _list.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -290,7 +286,7 @@
         ![shipRef isEqualToString:@""] &&
         ![shipRef isEqualToString:@"0"])
     {
-        [comment addObject:[NSString stringWithFormat:@"Nomor resi :%@", order.order_last.last_shipping_ref_num]];
+        [comment addObject:[NSString stringWithFormat:@"Nomor resi: %@", order.order_last.last_shipping_ref_num]];
     }
     if (lastComment && ![lastComment isEqualToString:@"0"] && [lastComment isEqualToString:@""]) {
         showResi = NO;
@@ -1114,12 +1110,14 @@
        orderStatus == ORDER_SHIPPING_TRACKER_INVALID ||
        orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
        orderStatus == ORDER_DELIVERED ||
-       orderStatus == ORDER_DELIVERY_FAILURE)
+       orderStatus == ORDER_DELIVERY_FAILURE||
+        orderStatus == ORDER_SHIPPING_WAITING)
     {
         
         if((orderStatus == ORDER_SHIPPING ||
             orderStatus == ORDER_SHIPPING_TRACKER_INVALID ||
-            orderStatus == ORDER_SHIPPING_REF_NUM_EDITED) &&
+            orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
+            orderStatus == ORDER_SHIPPING_WAITING) &&
            ![shipRef isEqualToString:@""]) {
             if(([_action isEqualToString:ACTION_GET_TX_ORDER_STATUS] || [_action isEqualToString:ACTION_GET_TX_ORDER_LIST]) )
             {
@@ -1143,13 +1141,16 @@
        orderStatus == ORDER_SHIPPING_TRACKER_INVALID ||
        orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
        orderStatus == ORDER_DELIVERED ||
-       orderStatus == ORDER_DELIVERY_FAILURE)
+       orderStatus == ORDER_DELIVERY_FAILURE||
+       orderStatus == ORDER_SHIPPING_WAITING)
     {
         
         if((orderStatus == ORDER_SHIPPING ||
             orderStatus == ORDER_SHIPPING_TRACKER_INVALID ||
-            orderStatus == ORDER_SHIPPING_REF_NUM_EDITED) &&
-           ![shipRef isEqualToString:@""]) {
+            orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
+            orderStatus == ORDER_SHIPPING_WAITING) &&
+           ![shipRef isEqualToString:@""])
+        {
             return YES;
         }
     }
@@ -1270,6 +1271,7 @@
 
 -(void)showAlertDeliver:(TxOrderStatusList*)order
 {
+    [_dataInput setObject:order forKey:DATA_ORDER_COMPLAIN_KEY];
     UIAlertView *alertConfirmation = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name]
                                                                message:ALERT_DELIVERY_CONFIRM_DESCRIPTION
                                                               delegate:self

@@ -14,6 +14,8 @@
 #import "NotificationManager.h"
 #import "RegisterViewController.h"
 
+#import "NotificationManager.h"
+
 @interface TransactionCartRootViewController ()
 <
     UIPageViewControllerDataSource,
@@ -86,6 +88,14 @@
     [[self view] addSubview:_pageControlView];
     [_pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadNotification)
+                                                 name:@"reloadNotification"
+                                               object:nil];
+    
+    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
+    [self.navigationItem setTitleView:logo];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -96,13 +106,6 @@
         
         [self initNotificationManager];
         
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(reloadNotification)
-                                                     name:@"reloadNotification"
-                                                   object:nil];
-        
-        UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-        [self.navigationItem setTitleView:logo];
         
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
         _auth = [secureStorage keychainDictionary];
@@ -316,10 +319,10 @@
     {
         UIButton *pageButton = (UIButton*)sender;
         if(pageButton.tag == 10) {
+            [_pageController setViewControllers:@[[self viewControllerAtIndex:pageButton.tag-10]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+        } else {
             RegisterViewController *vc = [RegisterViewController new];
             [self.navigationController pushViewController:vc animated:YES];
-        } else {
-            [_pageController setViewControllers:@[[self viewControllerAtIndex:pageButton.tag-10]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
         }
         
     }
@@ -342,12 +345,12 @@
     [_notifManager tapWindowBar];
 }
 
+#pragma mark - Notification delegate
+
 - (void)reloadNotification
 {
     [self initNotificationManager];
 }
-
-#pragma mark - Notification delegate
 
 - (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
 {
@@ -361,6 +364,7 @@
     [self.navigationController pushViewController:viewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
 }
+
 
 #pragma mark - Notification Center
 - (void)initNotification {
@@ -382,6 +386,14 @@
     if (isNodata) {
         NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, 320, 100)];
         [self.view addSubview:noResultView];
+    }
+    else
+    {
+        for (UIView *view in self.view.subviews) {
+            if ([view isKindOfClass:[NoResultView class]]) {
+                [view removeFromSuperview];
+            }
+        }
     }
 }
 

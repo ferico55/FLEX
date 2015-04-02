@@ -469,12 +469,11 @@
     [_notifManager tapWindowBar];
 }
 
+#pragma mark - Notification delegate
 - (void)reloadNotification
 {
     [self initNotificationManager];
 }
-
-#pragma mark - Notification delegate
 
 - (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
 {

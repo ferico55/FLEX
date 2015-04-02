@@ -48,9 +48,19 @@
     _listTotalPayment = [NSMutableArray new];
     
     _cartBuy = [_data objectForKey:DATA_CART_RESULT_KEY];
+    
     //TODO::
     if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TRANSFER_BANK)]) {
         [_listSystemBank addObjectsFromArray:_cartBuy.system_bank];
+    }
+    
+    if (_cartBuy.transaction.voucher_amount>0) {
+        NSArray *detailPayment = @[
+                                   @{DATA_NAME_KEY : STRING_PENGGUNAAN_KUPON,
+                                     DATA_VALUE_KEY : _cartBuy.transaction.voucher_amount_idr?:@""
+                                     },
+                                   ];
+        [_listTotalPayment addObjectsFromArray:detailPayment];
     }
 
     if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)] ||
@@ -78,7 +88,7 @@
                                                      DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
                                                      },
                                                    @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
-                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_left?:@""
+                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_after?:@""
                                                      },
                                                    ];
             [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
@@ -120,7 +130,7 @@
                                                      DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
                                                      },
                                                    @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
-                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_left?:@""
+                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_after?:@""
                                                  },
                                                ];
             [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
@@ -134,7 +144,6 @@
             [_listTotalPayment addObjectsFromArray:detailPayment];
         }
     }
-
     
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
     

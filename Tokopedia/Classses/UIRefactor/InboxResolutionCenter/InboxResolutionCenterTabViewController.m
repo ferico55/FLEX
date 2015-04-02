@@ -10,6 +10,8 @@
 
 #import "InboxResolutionCenterComplainViewController.h"
 
+#import "string_inbox_resolution_center.h"
+
 @interface InboxResolutionCenterTabViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate>
 {
     NSInteger _index;
@@ -18,19 +20,36 @@
     InboxResolutionCenterComplainViewController *_buyerComplainViewController;
     NSDictionary *_auth;
     BOOL _isLogin;
+    
+    NSInteger _filterReadIndex;
 }
 
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (strong, nonatomic) UIPageViewController *pageController;
 @property (weak, nonatomic) IBOutlet UIView *pageControlView;
+@property (strong, nonatomic) IBOutlet UIView *readOption;
+@property (weak, nonatomic) IBOutlet UIView *buttonsContainer;
 
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *filterButtons;
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *checkListImageViews;
 @end
 
 @implementation InboxResolutionCenterTabViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _checkListImageViews = [NSArray sortViewsWithTagInArray:_checkListImageViews];
+    _filterButtons = [NSArray sortViewsWithTagInArray:_filterButtons];
+    
+    for (int i = 0; i<_filterButtons.count; i++) {
+        [_filterButtons[i] setTitle:ARRAY_FILTER_UNREAD[i] forState:UIControlStateNormal];
+    }
+    
+    for (UIImageView *image in _checkListImageViews) {
+        image.hidden = YES;
+    }
     
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(iOS7_0)) {
         self.navigationController.edgesForExtendedLayout = UIRectEdgeNone;
@@ -55,11 +74,17 @@
     [_pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
     
-    
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
     backBarButtonItem.tag = 10;
     self.navigationItem.backBarButtonItem = backBarButtonItem;
+    
+    
+    [self.view addSubview:_readOption];
+    
+    _filterReadIndex = 0;
+    [self updateCheckList];
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -76,26 +101,153 @@
 }
 
 - (IBAction)tap:(UISegmentedControl*)sender {
+    _index = sender.selectedSegmentIndex;
     switch (sender.selectedSegmentIndex) {
         case 0:
         {
             [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+            [self updateCheckList];
             break;
         }
         case 1:
         {
             [_pageController setViewControllers:@[[self viewControllerAtIndex:1]] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
             self.navigationItem.rightBarButtonItem = nil;
+            [self updateCheckList];
             break;
         }
         default:
             break;
     }
+
+}
+- (IBAction)tapButton:(UIButton*)sender {
+    
+    _filterReadIndex = sender.tag-10;
+    if(_readOption.isHidden) {
+        
+        _verticalSpaceButtons.constant = -131;
+        
+        CGRect frame = _buttonsContainer.frame;
+        frame.origin.y = -131;
+        _buttonsContainer.frame = frame;
+        
+        _readOption.hidden = NO;
+        _readOption.alpha = 0;
+        [UIView animateWithDuration:0.2 animations:^{
+            _readOption.alpha = 1;
+        }];
+        
+        _verticalSpaceButtons.constant = 0;
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            CGRect frame = _buttonsContainer.frame;
+            frame.origin.y = 0;
+            _buttonsContainer.frame = frame;
+        }];
+    } else {
+        [_pageController setViewControllers:@[[self viewControllerAtIndex:_index]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
+        _verticalSpaceButtons.constant = -131;
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            CGRect frame = _buttonsContainer.frame;
+            frame.origin.y = -131;
+            _buttonsContainer.frame = frame;
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.1 animations:^{
+                _readOption.alpha = 0;
+            } completion:^(BOOL finished) {
+                _readOption.hidden = YES;
+            }];
+        }];
+    }
+    [self updateCheckList];
 }
 
 -(IBAction)tapBarButton:(UIBarButtonItem*)sender
 {
-    [self viewControllerAtIndex:_index];
+    if (sender.tag == 10) {
+        [self viewControllerAtIndex:_index];
+    }
+    if ( sender.tag == 11) {
+        if(_readOption.isHidden) {
+            
+            _verticalSpaceButtons.constant = -131;
+            
+            CGRect frame = _buttonsContainer.frame;
+            frame.origin.y = -131;
+            _buttonsContainer.frame = frame;
+            
+            _readOption.hidden = NO;
+            _readOption.alpha = 0;
+            [UIView animateWithDuration:0.2 animations:^{
+                _readOption.alpha = 1;
+            }];
+            
+            _verticalSpaceButtons.constant = 0;
+            
+            [UIView animateWithDuration:0.3 animations:^{
+                CGRect frame = _buttonsContainer.frame;
+                frame.origin.y = 0;
+                _buttonsContainer.frame = frame;
+            }];
+        } else {
+            [_pageController setViewControllers:@[[self viewControllerAtIndex:_index]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
+            _verticalSpaceButtons.constant = -131;
+            
+            [UIView animateWithDuration:0.2 animations:^{
+                CGRect frame = _buttonsContainer.frame;
+                frame.origin.y = -131;
+                _buttonsContainer.frame = frame;
+            } completion:^(BOOL finished) {
+                [UIView animateWithDuration:0.1 animations:^{
+                    _readOption.alpha = 0;
+                } completion:^(BOOL finished) {
+                    _readOption.hidden = YES;
+                }];
+            }];
+        }
+    }
+}
+- (IBAction)gesture:(id)sender {
+    if(_readOption.isHidden) {
+        
+        _verticalSpaceButtons.constant = -131;
+        
+        CGRect frame = _buttonsContainer.frame;
+        frame.origin.y = -131;
+        _buttonsContainer.frame = frame;
+        
+        _readOption.hidden = NO;
+        _readOption.alpha = 0;
+        [UIView animateWithDuration:0.2 animations:^{
+            _readOption.alpha = 1;
+        }];
+        
+        _verticalSpaceButtons.constant = 0;
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            CGRect frame = _buttonsContainer.frame;
+            frame.origin.y = 0;
+            _buttonsContainer.frame = frame;
+        }];
+    } else {
+        [_pageController setViewControllers:@[[self viewControllerAtIndex:_index]] direction:UIPageViewControllerNavigationDirectionReverse animated:NO completion:nil];
+        
+        _verticalSpaceButtons.constant = -131;
+        
+        [UIView animateWithDuration:0.2 animations:^{
+            CGRect frame = _buttonsContainer.frame;
+            frame.origin.y = -131;
+            _buttonsContainer.frame = frame;
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.1 animations:^{
+                _readOption.alpha = 0;
+            } completion:^(BOOL finished) {
+                _readOption.hidden = YES;
+            }];
+        }];
+    }
 }
 
 -(void)setScrollEnabled:(BOOL)enabled forPageViewController:(UIPageViewController*)pageViewController{
@@ -122,6 +274,7 @@
         {
             if(!_myComplainViewController)_myComplainViewController = [InboxResolutionCenterComplainViewController new];
             _myComplainViewController.isMyComplain = YES;
+            _myComplainViewController.filterReadIndex = _filterReadIndex;
             childViewController = _myComplainViewController;
             break;
         }
@@ -130,6 +283,8 @@
             self.navigationItem.rightBarButtonItem = nil;
             
             if(!_buyerComplainViewController)_buyerComplainViewController = [InboxResolutionCenterComplainViewController new];
+            _buyerComplainViewController.isMyComplain = NO;
+            _buyerComplainViewController.filterReadIndex = _filterReadIndex;
             childViewController = _buyerComplainViewController;
             break;
         }
@@ -170,6 +325,41 @@
     }
     
     return [self viewControllerAtIndex:index];
+}
+
+-(void)updateCheckList
+{
+    for (UIImageView *image in _checkListImageViews) {
+        image.hidden = YES;
+    }
+    ((UIButton*)_checkListImageViews[_filterReadIndex]).hidden = NO;
+    [self setTitleButtonString:ARRAY_FILTER_UNREAD[_filterReadIndex]];
+
+}
+
+- (void)setTitleButtonString:(NSString*)string {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.frame = CGRectMake(0, 0, 70, 44);
+    [button addTarget:self action:@selector(tapBarButton:) forControlEvents:UIControlEventTouchUpInside];
+    button.tag = 11;
+    
+    NSString *title = [NSString stringWithFormat:@"%@",string];
+    
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
+    [attributedText addAttribute:NSFontAttributeName
+                           value:[UIFont boldSystemFontOfSize: 16.0f]
+                           range:NSMakeRange(0, [string length])];
+    button.titleLabel.numberOfLines = 2;
+    button.titleLabel.font = [UIFont systemFontOfSize: 11.0f];
+    button.titleLabel.textAlignment = NSTextAlignmentCenter;
+    button.titleLabel.textColor = [UIColor whiteColor];
+    [button setAttributedTitle:attributedText forState:UIControlStateNormal];
+    UIImage *arrowImage = [UIImage imageNamed:@"icon_arrow_down_white.png"];
+    [button setImage:arrowImage forState:UIControlStateNormal];
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 10);
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 115, 0, -15);
+    
+    self.navigationItem.titleView = button;
 }
 
 

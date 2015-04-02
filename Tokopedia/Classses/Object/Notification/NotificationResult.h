@@ -13,7 +13,7 @@
 
 @interface NotificationResult : NSObject
 
-@property (strong, nonatomic) NSString *total_cart;
+@property (strong, nonatomic) NSNumber *total_cart;
 @property (strong, nonatomic) NSNumber *resolution;
 @property (strong, nonatomic) NSString *incr_notif;
 @property (strong, nonatomic) NSString *total_notif;

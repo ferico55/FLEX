@@ -80,7 +80,6 @@
         [self updateLabelAppearance:_resolutionCenterCountLabel];
     }
     
-
     
     // Payment section
     if([_notification.result.sales.sales_new_order integerValue] > 0) {
@@ -133,7 +132,7 @@
         _receiveConfirmation.hidden = YES;
     }
 
- 
+    
 }
 
 - (void)didReceiveMemoryWarning {

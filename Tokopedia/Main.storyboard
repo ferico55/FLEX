@@ -1315,6 +1315,7 @@
                         <outlet property="paymentConfirmationLabel" destination="kUg-PO-kvQ" id="z0M-mj-X0x"/>
                         <outlet property="receiveConfirmation" destination="FPH-i8-0IG" id="vh5-f8-uhe"/>
                         <outlet property="receiveConfirmationCountLabel" destination="xnc-us-OGw" id="Fh7-tm-1dD"/>
+                        <outlet property="resolutionCenterCountLabel" destination="814-OG-8Cs" id="9zG-88-lAj"/>
                         <outlet property="reviewCountLabel" destination="5Kt-UC-SF9" id="jKe-lH-Ac8"/>
                         <outlet property="salesNewOrder" destination="iN2-7A-Xxx" id="JKz-Ov-IzQ"/>
                         <outlet property="salesOrderLabel" destination="9Oh-50-UTG" id="ShY-iJ-ksT"/>

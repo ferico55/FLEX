@@ -13,7 +13,7 @@
 @protocol ResolutionCenterDetailViewControllerDelegate <NSObject>
 @required
 - (void)shouldCancelComplain:(InboxResolutionCenterList*)resolution atIndexPath:(NSIndexPath*)indexPath;
-
+- (void)finishComplain:(InboxResolutionCenterList*)resolution atIndexPath:(NSIndexPath*)indexPath;
 @end
 
 @interface ResolutionCenterDetailViewController : UIViewController

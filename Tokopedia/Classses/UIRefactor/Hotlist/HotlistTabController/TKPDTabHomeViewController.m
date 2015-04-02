@@ -28,6 +28,7 @@
 @interface TKPDTabHomeViewController ()
 <   UIPageViewControllerDataSource,
     UIPageViewControllerDelegate,
+    UIGestureRecognizerDelegate,
     UIScrollViewDelegate,
     UIGestureRecognizerDelegate,
     TKPDTabHomeDelegate,
@@ -195,6 +196,9 @@
 
 }
 
+-(void)pan
+{}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -254,6 +258,8 @@
                 [(UIScrollView *)view setScrollEnabled:YES];
             }
         }
+        
+
 
     } else {
         
@@ -586,6 +592,17 @@
     [nc setViewControllers:vcs];
     [self.navigationController pushViewController:nc animated:YES];
 }
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        CGPoint velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:_pageScrollView];
+        if (abs(velocity.y) * 2 < abs(velocity.x)) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 
 - (void)goToNewOrder {
     
