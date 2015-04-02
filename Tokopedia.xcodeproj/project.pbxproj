@@ -274,6 +274,7 @@
 		7AED01061ACD5C3200AF6180 /* MGSwipeTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEDFC391ACD5C3100AF6180 /* MGSwipeTableCell.m */; };
 		7AED01071ACD5C3200AF6180 /* MGSwipeTableCell.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 7AEDFC3A1ACD5C3100AF6180 /* MGSwipeTableCell.podspec */; };
 		7AED01081ACD5C3200AF6180 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 7AEDFC3B1ACD5C3100AF6180 /* README.md */; };
+		7AED010B1ACD677B00AF6180 /* Rating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AED010A1ACD677B00AF6180 /* Rating.m */; };
 		7AEDF4091ACD404600AF6180 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AEDF4071ACD404600AF6180 /* Crashlytics.framework */; };
 		7AEDF40A1ACD404700AF6180 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7AEDF4081ACD404600AF6180 /* Fabric.framework */; };
 		7AEDFC3C1ACD5C3100AF6180 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AEDF40E1ACD5C2E00AF6180 /* URLCacheAlert.m */; };
@@ -1277,6 +1278,8 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		7AB2F1F61AC409ED0033F08D /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
+		7AED01091ACD677B00AF6180 /* Rating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rating.h; sourceTree = "<group>"; };
+		7AED010A1ACD677B00AF6180 /* Rating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Rating.m; sourceTree = "<group>"; };
 		7AEDF4071ACD404600AF6180 /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		7AEDF4081ACD404600AF6180 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = "<group>"; };
 		7AEDF40D1ACD5C2E00AF6180 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
@@ -3476,6 +3479,8 @@
 		7AEDF47A1ACD5C2E00AF6180 /* DetailProduct */ = {
 			isa = PBXGroup;
 			children = (
+				7AED01091ACD677B00AF6180 /* Rating.h */,
+				7AED010A1ACD677B00AF6180 /* Rating.m */,
 				7AEDF47B1ACD5C2E00AF6180 /* Breadcrumb.h */,
 				7AEDF47C1ACD5C2E00AF6180 /* Breadcrumb.m */,
 				7AEDF47D1ACD5C2E00AF6180 /* DetailProductResult.h */,
@@ -8073,6 +8078,7 @@
 				7AEDFDEF1ACD5C3200AF6180 /* DepositSummaryCell.m in Sources */,
 				7AEDFC4E1ACD5C3100AF6180 /* EncodeDecoderManager.m in Sources */,
 				7AEDFE181ACD5C3200AF6180 /* ProductFeedViewController.m in Sources */,
+				7AED010B1ACD677B00AF6180 /* Rating.m in Sources */,
 				7AEDFF2E1ACD5C3200AF6180 /* ShopNotesPageViewController.m in Sources */,
 				7AEDFC751ACD5C3100AF6180 /* Review.m in Sources */,
 				7AEDFCAE1ACD5C3100AF6180 /* ResolutionCenterDetailResult.m in Sources */,
