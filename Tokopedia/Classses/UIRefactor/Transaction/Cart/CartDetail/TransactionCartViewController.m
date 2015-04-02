@@ -2892,7 +2892,7 @@
             }
             return YES;
         }
-        [_dataInput setObject:textFieldValue forKey:DATA_USED_SALDO_KEY];
+        [_dataInput setObject:depositAmount forKey:DATA_USED_SALDO_KEY];
         [_tableView reloadData];
         
     }
