@@ -7,10 +7,13 @@
 //
 
 #import "HomeTabHeaderViewController.h"
+#import "UserAuthentificationManager.h"
 
 @interface HomeTabHeaderViewController () <UIScrollViewDelegate> {
     CGFloat _totalOffset;
     NSInteger _viewControllerIndex;
+    UserAuthentificationManager *_userManager;
+    BOOL _isAbleToSwipe;
 }
 
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
@@ -25,17 +28,12 @@
                                              selector:@selector(didSwipeHomeTab:)
                                                  name:@"didSwipeHomeTab" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setStateLogout)
+                                                 name:@"setStateLogout" object:nil];
 }
 
-#pragma mark - Lifecycle
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self initNotificationCenter];
-    
-    _scrollView.contentSize = CGSizeMake((self.view.frame.size.width/3)*6, self.view.frame.size.height);
-    [_scrollView setShowsHorizontalScrollIndicator:NO];
-    _scrollView.delegate = self;
-    
+- (void)initButton {
     UIButton *button1 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*1, 0, (self.view.frame.size.width/3), 44)];
     [button1 setTitle:@"Hotlist" forState:UIControlStateNormal];
     [button1 setTitleColor:[UIColor colorWithRed:255.0/255.0 green:87.0/255.0 blue:34.0/255.0 alpha:1] forState:UIControlStateNormal];
@@ -67,7 +65,34 @@
     button4.tag = 4;
     [button4 addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
     [_scrollView addSubview:button4];
+}
 
+#pragma mark - Lifecycle
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self initNotificationCenter];
+    
+    _scrollView.contentSize = CGSizeMake((self.view.frame.size.width/3)*6, self.view.frame.size.height);
+    [_scrollView setShowsHorizontalScrollIndicator:NO];
+    _scrollView.delegate = self;
+    [self initButton];
+    
+}
+
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    _userManager = [UserAuthentificationManager new];
+    [self initButton];
+    if([[_userManager getUserId] isEqualToString:@"0"]) {
+        _isAbleToSwipe = NO;
+        [self removeButton];
+    } else {
+        _isAbleToSwipe = YES;
+
+
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -147,6 +172,14 @@
             } else {
                 [button setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
             }
+        }
+    }
+}
+
+- (void)removeButton {
+    for (UIButton *button in _scrollView.subviews) {
+        if(button.tag > 1) {
+            [button removeFromSuperview];
         }
     }
 }

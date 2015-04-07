@@ -595,7 +595,15 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
         [self requestsuccess:mappingResult withOperation:operation];
 
+        
         [_table reloadData];
+        if(_iseditmode) {
+            for (NSIndexPath *indexpath in _messages_selected) {
+                [_table selectRowAtIndexPath:indexpath animated:YES scrollPosition:UITableViewScrollPositionTop];
+            }
+            
+        }
+
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         [_timer invalidate];

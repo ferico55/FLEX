@@ -20,5 +20,6 @@
 @property (nonatomic, strong) NSString *comment_user_name;
 @property (nonatomic, strong) NSString *comment_user_id;
 @property (nonatomic, strong) NSString *is_not_delivered;
+@property (assign) BOOL is_just_sent;
 
 @end

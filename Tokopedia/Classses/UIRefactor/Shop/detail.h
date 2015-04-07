@@ -120,6 +120,7 @@ typedef enum
 #define kTKPDDETAIL_APIGETPRODUCTREVIEWKEY @"get_product_review"
 #define kTKPDDETAIL_APIGETPRODUCTTALKKEY @"get_product_talk"
 #define kTKPDDETAIL_APIGETCOMMENTBYTALKID @"get_comment_by_talk_id"
+#define kTKPDDETAIL_APIGETINBOXDETAIL @"get_inbox_detail_talk"
 #define kTKPDDETAIL_APIGETCATALOGDETAILKEY @"get_catalog_detail"
 #define kTKPDDETAIL_APIGETSHOPDETAILKEY @"get_shop_info"
 #define kTKPDDETAIL_APIGETSHOPPRODUCTKEY @"get_shop_product"

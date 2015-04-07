@@ -11,4 +11,9 @@
 
 #define kTKPDMORE_TITLE @"More"
 
+#define kTKPDMORE_PRIVACY_URL @"https://m.tokopedia.com/privacy.pl"
+#define kTKPDMORE_HELP_URL @"https://www.tokopedia.com/bantuan"
+#define kTKPDMORE_HELP_TITLE @"Bantuan"
+#define kTKPDMORE_PRIVACY_TITLE @"Kebijakan Privasi"
+
 #endif

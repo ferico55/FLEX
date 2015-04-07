@@ -15,7 +15,7 @@
 
 static CGFloat textMarginHorizontal = 13.0f;
 static CGFloat textMarginVertical = 6.5f;
-static CGFloat messageTextSize = 13.0;
+static CGFloat messageTextSize = 15.0;
 
 @synthesize sent, messageLabel, messageView, timeLabel, avatarImageView, balloonView;
 
@@ -144,9 +144,9 @@ static CGFloat messageTextSize = 13.0;
         
         messageLabelFrame = CGRectMake(self.frame.size.width - (textSize.width + textMarginHorizontal),  ballonViewFrame.origin.y + textMarginVertical, textSize.width, textSize.height);
         
-        avatarImageFrame = CGRectMake(self.frame.size.width - 55.0f,  timeLabelFrame.size.height + ballonViewFrame.size.height - 45.0f , 45.0f, 45.0f);
+        avatarImageFrame = CGRectMake(self.frame.size.width - 55.0f,  timeLabelFrame.size.height + ballonViewFrame.size.height - 40.0f , 45.0f, 45.0f);
         
-        self.messageLabel.textColor = [UIColor whiteColor];
+
         
     } else {
         ballonViewFrame = CGRectMake(55.0f, timeLabelFrame.size.height, textSize.width + 2*textMarginHorizontal, textSize.height + 2*textMarginVertical + 5.0f);
@@ -156,8 +156,8 @@ static CGFloat messageTextSize = 13.0;
         messageLabelFrame = CGRectMake(textMarginHorizontal + 55.0f, ballonViewFrame.origin.y + textMarginVertical, textSize.width, textSize.height);
         
         
-        avatarImageFrame = CGRectMake(5.0f, timeLabelFrame.size.height + ballonViewFrame.size.height - 45.0f, 45.0f, 45.0f);
-        self.messageLabel.textColor = [UIColor blackColor];
+        avatarImageFrame = CGRectMake(5.0f, timeLabelFrame.size.height + ballonViewFrame.size.height - 40.0f, 45.0f, 45.0f);
+        
         
     }
     

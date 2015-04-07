@@ -158,17 +158,17 @@
     self.createShopButton.layer.cornerRadius = 2;
     
     
-    if (_isNoDataDeposit) {
+//    if (_isNoDataDeposit) {
         _depositLabel.hidden = YES;
         _loadingSaldo.hidden = NO;
         
         [self configureRestKit];
         [self loadDataDeposit];
-    } else {
-        _depositLabel.hidden = NO;
-        _loadingSaldo.hidden = YES;
-        [_loadingSaldo stopAnimating];
-    }
+//    } else {
+//        _depositLabel.hidden = NO;
+//        _loadingSaldo.hidden = YES;
+//        [_loadingSaldo stopAnimating];
+//    }
     
 }
 
@@ -369,6 +369,24 @@
         
     }
     
+    else if (indexPath.section == 5) {
+        if(indexPath.row == 0) {
+            UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 568)];
+            [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kTKPDMORE_HELP_URL]]];
+            UIViewController *controller = [UIViewController new];
+            controller.title = kTKPDMORE_HELP_TITLE;
+            [controller.view addSubview:webView];
+            [self.navigationController pushViewController:controller animated:YES];
+        } else if(indexPath.row == 1) {
+            UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 568)];
+            [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kTKPDMORE_PRIVACY_URL]]];
+            UIViewController *controller = [UIViewController new];
+            controller.title = kTKPDMORE_PRIVACY_TITLE;
+            [controller.view addSubview:webView];
+            [self.navigationController pushViewController:controller animated:YES];
+        }
+    }
+    
     else if (indexPath.section == 6) {
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
         [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil userInfo:@{}];
@@ -443,6 +461,7 @@
         _depositLabel.text = deposit.result.deposit_total;
         _depositLabel.hidden = NO;
         _loadingSaldo.hidden = YES;
+        [_loadingSaldo stopAnimating];
         _isNoDataDeposit = NO;
     }
 }

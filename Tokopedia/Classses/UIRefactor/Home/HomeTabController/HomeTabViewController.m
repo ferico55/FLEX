@@ -24,6 +24,7 @@
 #import "InboxMessageViewController.h"
 #import "InboxReviewViewController.h"
 #import "NotificationState.h"
+#import "UserAuthentificationManager.h"
 
 @interface HomeTabViewController () <UIScrollViewDelegate,
                                     NotificationManagerDelegate,
@@ -31,7 +32,9 @@
 {
     NotificationManager *_notifManager;
     NSInteger _page;
-                                        
+    BOOL _isAbleToSwipe;
+    UserAuthentificationManager *_userManager;
+    
 }
 
 @property (strong, nonatomic) HotlistViewController *hotlistController;
@@ -73,6 +76,7 @@
     
     _homeHeaderController = [HomeTabHeaderViewController new];
     _notifManager = [NotificationManager new];
+
     
     [self initNotificationCenter];
 
@@ -104,6 +108,18 @@
     [super viewWillAppear:animated];
     [self goToPage:_page];
     [self initNotificationManager];
+    
+    _userManager = [UserAuthentificationManager new];
+    if([[_userManager getUserId] isEqualToString:@"0"]) {
+        _isAbleToSwipe = NO;
+        [_scrollView setContentSize:CGSizeMake(300, 300)];
+        [_scrollView setPagingEnabled:NO];
+
+    } else {
+        _isAbleToSwipe = YES;
+        [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*4, 300)];
+        [_scrollView setPagingEnabled:YES];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -135,6 +151,8 @@
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if(!_isAbleToSwipe) return;
+    
     float fractionalPage = scrollView.contentOffset.x  / scrollView.frame.size.width;
     NSInteger page = lround(fractionalPage);
     NSLog(@"Current Page %d", page);

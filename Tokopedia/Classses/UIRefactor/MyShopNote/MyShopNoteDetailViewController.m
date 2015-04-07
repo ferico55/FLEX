@@ -12,6 +12,7 @@
 #import "MyShopNoteDetailViewController.h"
 #import "URLCacheController.h"
 #import "TKPDTextView.h"
+#import "UserAuthentificationManager.h"
 
 #pragma mark - MyShopNoteDetailViewController
 @interface MyShopNoteDetailViewController ()
@@ -31,6 +32,7 @@
     UITextView *_activetextview;
     
     UIBarButtonItem *_barbuttonedit;
+    UserAuthentificationManager *_userManager;
     
     BOOL _isnodata;
     
@@ -86,6 +88,7 @@
     _cachecontroller = [URLCacheController new];
     _operationQueue = [NSOperationQueue new];
     _auth = [NSMutableDictionary new];
+    _userManager = [UserAuthentificationManager new];
     
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary* auth = [secureStorage keychainDictionary];
@@ -157,7 +160,19 @@
         default:
             break;
     }
-    self.navigationItem.rightBarButtonItem = _barbuttonedit;
+    
+    
+    NSString *shopId;
+    if([[_data objectForKey:@"shop_id"] isKindOfClass:[NSString class]]) {
+        shopId = [_data objectForKey:@"shop_id"];
+    } else {
+        shopId = [[_data objectForKey:@"shop_id"] stringValue];
+    }
+    
+    if([_userManager isMyShopWithShopId:shopId]) {
+        self.navigationItem.rightBarButtonItem = _barbuttonedit;
+    }
+
 
     NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILSHOP_CACHEFILEPATH];
     _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPNOTES_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue]]];

@@ -19,6 +19,7 @@
 - (id)getUserLoginData;
 - (NSString*)getUserId;
 - (NSString*)getShopId;
+- (BOOL)isMyShopWithShopId:(NSString*)shopId;
 - (NSString*)addParameterAndConvertToString:(id)params;
 
 @end    

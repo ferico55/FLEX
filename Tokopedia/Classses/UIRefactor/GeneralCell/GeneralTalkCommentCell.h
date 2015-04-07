@@ -37,6 +37,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *create_time;
 @property (weak, nonatomic) IBOutlet UIImageView *user_image;
 @property (weak, nonatomic) IBOutlet UIImageView *commentfailimage;
+@property (weak, nonatomic) IBOutlet UIButton *loadingButton;
 
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong, nonatomic) NSIndexPath *indexpath;

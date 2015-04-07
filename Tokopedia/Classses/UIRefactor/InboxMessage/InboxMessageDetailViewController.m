@@ -210,13 +210,21 @@
         cell.messageLabel.attributedText = attributedText;
 //        cell.messageLabel.text = message.message_reply;
         
-        cell.timeLabel.text = message.message_reply_time_fmt;
+
         if([message.message_action isEqualToString:@"1"]) {
+            if(message.is_just_sent) {
+                cell.timeLabel.text = @"Kirim...";
+            } else {
+                cell.timeLabel.text = message.message_reply_time_fmt;
+            }
+            
             cell.sent = YES;
             cell.avatarImageView.image = nil;
         } else {
             cell.sent = NO;
             cell.avatarImageView.image = nil;
+            cell.messageLabel.textColor = [UIColor blackColor];
+            cell.timeLabel.text = message.message_reply_time_fmt;
             
             if([message.user_image isEqualToString:@"0"]) {
                 cell.avatarImageView.image = [UIImage imageNamed:@"default-boy.png"];
@@ -366,11 +374,11 @@
     
     if(status) {
         //if success
+        InboxMessageDetailList *msg = _messages[_messages.count-1];
         if([inboxmessageaction.result.is_success isEqualToString:@"0"]) {
-            InboxMessageDetailList *msg = _messages[_messages.count-1];
             msg.is_not_delivered = @"1";
-            
-
+        } else {
+            msg.is_just_sent = NO;
         }
     }
     
@@ -537,6 +545,7 @@
                     
                     sendmessage.message_reply_time_fmt = [dateString stringByAppendingString:@"WIB"];
                     sendmessage.message_action = @"1";
+                    sendmessage.is_just_sent = YES;
                     
                     [_messages insertObject:sendmessage atIndex:lastindexpathrow];
                     NSArray *insertIndexPaths = [NSArray arrayWithObjects:
