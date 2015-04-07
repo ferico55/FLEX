@@ -9,8 +9,10 @@
 #import "NotificationViewController.h"
 #import "InboxMessageViewController.h"
 #import "InboxTalkViewController.h"
+#import "InboxReviewViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
+#import "TKPDTabInboxReviewNavigationController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "ShipmentConfirmationViewController.h"
 
@@ -295,6 +297,26 @@
 
                 [self.delegate pushViewController:controller];
 
+                break;
+            }
+                
+            case 2 : {
+                InboxReviewViewController *vc = [InboxReviewViewController new];
+                vc.data=@{@"nav":@"inbox-review"};
+                
+                InboxReviewViewController *vc1 = [InboxReviewViewController new];
+                vc1.data=@{@"nav":@"inbox-review-my-product"};
+                
+                InboxReviewViewController *vc2 = [InboxReviewViewController new];
+                vc2.data=@{@"nav":@"inbox-review-my-review"};
+                
+                NSArray *vcs = @[vc,vc1, vc2];
+                
+                TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
+                [nc setSelectedIndex:2];
+                [nc setViewControllers:vcs];
+                
+                [self.delegate pushViewController:nc];
                 break;
             }
             case 3:

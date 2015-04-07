@@ -601,6 +601,7 @@
 }
 
 - (void)tapProduct {
+    
     [_navigateController navigateToProductFromViewController:self withProductID:_review.review_product_id];
 }
 

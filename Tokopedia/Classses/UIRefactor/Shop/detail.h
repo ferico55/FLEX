@@ -120,6 +120,7 @@ typedef enum
 #define kTKPDDETAIL_APIGETPRODUCTREVIEWKEY @"get_product_review"
 #define kTKPDDETAIL_APIGETPRODUCTTALKKEY @"get_product_talk"
 #define kTKPDDETAIL_APIGETCOMMENTBYTALKID @"get_comment_by_talk_id"
+#define kTKPDDETAIL_APIGETINBOXDETAIL @"get_inbox_detail_talk"
 #define kTKPDDETAIL_APIGETCATALOGDETAILKEY @"get_catalog_detail"
 #define kTKPDDETAIL_APIGETSHOPDETAILKEY @"get_shop_info"
 #define kTKPDDETAIL_APIGETSHOPPRODUCTKEY @"get_shop_product"
@@ -233,14 +234,14 @@ typedef enum
 #define API_PRODUCT_WEIGHT_UNIT_KEY @"product_weight_unit"
 
 #define kTKPDDETAILPRODUCT_APISTATISTICKEY @"statistic"
-#define kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY @"product_sold"
-#define kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY @"product_transaction"
+#define kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY @"product_sold_count"
+#define kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY @"product_transaction_count"
 #define kTKPDDETAILPRODUCT_APIPRODUCTSUCCESSRATEKEY @"product_success_rate"
-#define kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY @"product_view"
-#define kTKPDDETAILPRODUCT_APIPRODUCTRATINGKEY @"product_rating"
+#define kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY @"product_view_count"
+#define kTKPDDETAILPRODUCT_APIPRODUCTRATINGKEY @"product_rating_point"
 #define kTKPDDETAILPRODUCT_APIPRODUCTCANCELRATEKEY @"product_cancel_rate"
-#define kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY @"product_talk"
-#define kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY @"product_review"
+#define kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY @"product_talk_count"
+#define kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY @"product_review_count"
 #define KTKPDDETAILPRODUCT_APIPRODUCTQUALITYRATEKEY @"product_quality_rate"
 #define KTKPDDETAILPRODUCT_APIPRODUCTACCURACYRATEKEY @"product_accuracy_rate"
 #define KTKPDDETAILPRODUCT_APIPRODUCTQUALITYPOINTKEY @"product_quality_point"
@@ -248,6 +249,7 @@ typedef enum
 
 
 #define kTKPDDETAILPRODUCT_APISHOPINFOKEY @"shop_info"
+#define kTKPDDETAILPRODUCT_APIRATINGKEY @"rating"
 #define kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY @"shop_open_since"
 #define kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY @"shop_location"
 #define kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY @"shop_owner_last_login"
@@ -266,6 +268,12 @@ typedef enum
 #define kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY @"shop_accuracy_rate"
 #define kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY @"shop_accuracy_description"
 #define kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY @"shop_speed_description"
+
+#define kTKPDDETAILPRODUCT_APIQUALITYRATE @"product_rating_point"
+#define kTKPDDETAILPRODUCT_APIQUALITYSTAR @"product_rating_star_point"
+#define kTKPDDETAILPRODUCT_APIACCURACYRATE @"product_rate_accuracy_point"
+#define kTKPDDETAILPRODUCT_APIACCURACYSTAR @"product_accuracy_star_rate"
+
 
 #define kTKPDDETAILPRODUCT_APIBREADCRUMBKEY @"breadcrumb"
 #define kTKPDDETAILPRODUCT_APIDEPARTMENTNAMEKEY @"department_name"

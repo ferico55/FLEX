@@ -261,6 +261,7 @@ UIAlertViewDelegate>
             ((GeneralReviewCell*)cell).userNamelabel.text = list.review_user_name;
             ((GeneralReviewCell*)cell).timelabel.text = list.review_create_time?:@"";
             ((GeneralReviewCell*)cell).indexpath = indexPath;
+            ((GeneralReviewCell*)cell).data = list;
             
             ((GeneralReviewCell*)cell).productNamelabel.text = list.review_product_name;
             

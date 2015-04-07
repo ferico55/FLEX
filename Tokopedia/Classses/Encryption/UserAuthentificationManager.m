@@ -70,5 +70,15 @@
     return jsonString;
 }
 
+- (BOOL)isMyShopWithShopId:(NSString*)shopId {
+    if([shopId isEqualToString:[NSString stringWithFormat:@"%@", [self getShopId]]]) {
+        return YES;
+    } else {
+        return NO;
+    }
+    
+    return NO;
+}
+
 
 @end

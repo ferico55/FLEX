@@ -131,7 +131,7 @@
     
     _operationQueue = [NSOperationQueue new];
     _depositSummary = [NSMutableArray new];
-    _noResultView = [NoResultView new];
+    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     _noResult = [NoResult new];
     
     _table.delegate = self;

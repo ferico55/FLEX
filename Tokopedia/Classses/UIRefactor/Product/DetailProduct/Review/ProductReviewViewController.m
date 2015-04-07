@@ -21,6 +21,7 @@
 #import "TKPDAlertView.h"
 #import "AlertListView.h"
 #import "StickyAlert.h"
+#import "NoResultView.h"
 
 #import "URLCacheController.h"
 #import "TKPDSecureStorage.h"
@@ -59,6 +60,7 @@
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    NoResultView *_noResultView;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *detailstarsandtimesview;
@@ -117,6 +119,7 @@
     _ratingviews = [NSArray sortViewsWithTagInArray:_ratingviews];
     _labelstars = [NSArray sortViewsWithTagInArray:_labelstars];
     _progressviews = [NSArray sortViewsWithTagInArray:_progressviews];
+    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     _list = [NSMutableArray new];
     _param = [NSMutableDictionary new];
@@ -197,7 +200,7 @@
         if (_list.count > indexPath.row) {
             ReviewList *list = _list[indexPath.row];
 
-            
+            ((GeneralProductReviewCell *)cell).data = list;
             ((GeneralProductReviewCell *)cell).namelabel.text = list.review_user_name;
             ((GeneralProductReviewCell *)cell).timelabel.text = list.review_create_time;
             
@@ -589,30 +592,37 @@
                 _reviewIsOwner = _review.result.is_owner;
                 
                 [_list addObjectsFromArray:list];
+                
                 _headerview.hidden = NO;
                 _isnodata = NO;
                 
                 [self setHeaderData];
-                
-                _urinext =  _review.result.paging.uri_next;
-                NSURL *url = [NSURL URLWithString:_urinext];
-                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                
-                NSMutableDictionary *queries = [NSMutableDictionary new];
-                [queries removeAllObjects];
-                for (NSString *keyValuePair in querry)
-                {
-                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                    NSString *key = [pairComponents objectAtIndex:0];
-                    NSString *value = [pairComponents objectAtIndex:1];
+                if([_list count] > 0) {
+                    _urinext =  _review.result.paging.uri_next;
+                    NSURL *url = [NSURL URLWithString:_urinext];
+                    NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
                     
-                    [queries setObject:value forKey:key];
+                    NSMutableDictionary *queries = [NSMutableDictionary new];
+                    [queries removeAllObjects];
+                    for (NSString *keyValuePair in querry)
+                    {
+                        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                        NSString *key = [pairComponents objectAtIndex:0];
+                        NSString *value = [pairComponents objectAtIndex:1];
+                        
+                        [queries setObject:value forKey:key];
+                    }
+                    
+                    _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
+                    NSLog(@"next page : %zd",_page);
+                    
+                    [_table reloadData];
+                } else {
+                    _table.tableFooterView = _noResultView;
+                    _isnodata = YES;
                 }
                 
-                _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                NSLog(@"next page : %zd",_page);
                 
-                [_table reloadData];
             }
         }else{
             [self cancel];
@@ -676,6 +686,7 @@
     DetailReviewViewController *vc = [DetailReviewViewController new];
     ReviewList *reviewlist = _list[row];
     reviewlist.review_product_name = [_data objectForKey:API_PRODUCT_NAME_KEY];
+    reviewlist.review_product_id = [_data objectForKey:API_PRODUCT_ID_KEY];
     reviewlist.review_product_image = [_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
 
     vc.data = reviewlist;

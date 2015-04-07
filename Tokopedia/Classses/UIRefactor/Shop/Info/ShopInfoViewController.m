@@ -421,7 +421,7 @@
     
     _labelshopdescription.text = _shop.result.info.shop_description;
     [_buttonfav setTitle:_shop.result.info.shop_total_favorit forState:UIControlStateNormal];
-    [_buttonitemsold setTitle:_shop.result.info.shop_stats.shop_item_sold forState:UIControlStateNormal];
+    [_buttonitemsold setTitle:_shop.result.stats.shop_item_sold forState:UIControlStateNormal];
     _speedrate.starscount = _shop.result.stats.shop_service_rate;
     _accuracyrate.starscount = _shop.result.stats.shop_accuracy_rate;
     _servicerate.starscount = _shop.result.stats.shop_service_rate;

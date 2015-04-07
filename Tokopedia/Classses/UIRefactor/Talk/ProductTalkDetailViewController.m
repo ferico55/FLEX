@@ -275,6 +275,12 @@
             } else {
                 ((GeneralTalkCommentCell*)cell).commentfailimage.hidden = YES;
             }
+            
+            if(list.is_just_sent) {
+                ((GeneralTalkCommentCell*)cell).create_time.text = @"Kirim...";
+            } else {
+                ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
+            }
         
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.comment_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             UIImageView *user_image = ((GeneralTalkCommentCell*)cell).user_image;
@@ -509,7 +515,7 @@
     [resultMapping addPropertyMapping:pageRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILTALK_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDINBOX_TALK_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
@@ -525,15 +531,14 @@
     }
     
     NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETCOMMENTBYTALKID,
+                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETINBOXDETAIL,
                             TKPD_TALK_ID : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
-                            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:TKPD_TALK_SHOP_ID]?:@(0),
                             kTKPDDETAIL_APIPAGEKEY : @(_page)
                             };
 //    [_cachecontroller getFileModificationDate];
 //	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
 //	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILTALK_APIPATH parameters:[param encrypt]];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDINBOX_TALK_APIPATH parameters:[param encrypt]];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [_timer invalidate];
             [_sendButton setEnabled:YES];
@@ -746,6 +751,7 @@
                 NSString *dateString = [dateFormat stringFromDate:today];
                 
                 commentlist.comment_create_time = [dateString stringByAppendingString:@"WIB"];
+                commentlist.is_just_sent = YES;
                 
                 [_list insertObject:commentlist atIndex:lastindexpathrow];
                 NSArray *insertIndexPaths = [NSArray arrayWithObjects:
@@ -893,6 +899,9 @@
         } else {
             NSString *totalcomment = [NSString stringWithFormat:@"%zd %@",_list.count, @"Komentar"];
             _talktotalcommentlabel.text = totalcomment;
+            
+            TalkCommentList *commentlist = _list[_list.count-1];
+            commentlist.is_just_sent = NO;
             
             NSDictionary *userinfo;
             userinfo = @{TKPD_TALK_TOTAL_COMMENT:@(_list.count)?:0, kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
