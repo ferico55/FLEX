@@ -63,6 +63,9 @@
     __weak RKObjectManager *_objectManagerActionEditProduct;
     __weak RKManagedObjectRequestOperation *_requestActionEditProduct;
     
+    __weak RKObjectManager *_objectmanagerActionMoveToWarehouse;
+    __weak RKManagedObjectRequestOperation *_requestActionMoveToWarehouse;
+    
     UIBarButtonItem *_saveBarButtonItem;
     
     BOOL _isNodata;
@@ -1060,6 +1063,12 @@
     NSString *moveToWarehouse = [product.product_etalase_id isEqual:@(0)]?PRODUCT_MOVETO_WAREHOUSE_ID:@"1";
     
     NSNumber *etalaseUserInfoID = product.product_etalase_id;
+    if ([etalaseUserInfoID isEqual:@(0)]) {
+        
+        [self configureRestKitActionMoveToWarehouse];
+        [self requestActionMoveToWarehouse:_dataInput];
+        return;
+    }
     BOOL isNewEtalase = ([etalaseUserInfoID integerValue]==DATA_ADD_NEW_ETALASE_ID);
     NSString *etalaseID = isNewEtalase?API_ADD_PRODUCT_NEW_ETALASE_TAG:[etalaseUserInfoID stringValue];
     
@@ -1071,8 +1080,6 @@
     
     NSString *productID = product.product_id?:@"";
     NSString *isReturnableProduct = product.product_returnable;
-    
-    NSString *userID = [_auth objectForKey:kTKPD_USERIDKEY]?:@"";
     
     NSDictionary* paramDictionary = @{kTKPDDETAIL_APIACTIONKEY:action?:@"",
                                       API_PRODUCT_ID_KEY: productID,
@@ -1200,6 +1207,127 @@
     [self cancelActionEditProduct];
 }
 
+#pragma mark Request Action MoveToWarehouse
+-(void)cancelActionMoveToWarehouse
+{
+    [_requestActionMoveToWarehouse cancel];
+    _requestActionMoveToWarehouse = nil;
+    [_objectmanagerActionMoveToWarehouse.operationQueue cancelAllOperations];
+    _objectmanagerActionMoveToWarehouse = nil;
+}
+
+-(void)configureRestKitActionMoveToWarehouse
+{
+    _objectmanagerActionMoveToWarehouse = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ShopSettings class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ShopSettingsResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIISSUCCESSKEY:kTKPDDETAIL_APIISSUCCESSKEY}];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILACTIONPRODUCT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectmanagerActionMoveToWarehouse addResponseDescriptor:responseDescriptor];
+    
+}
+
+-(void)requestActionMoveToWarehouse:(id)object
+{
+    if (_requestActionMoveToWarehouse.isExecuting) return;
+    NSTimer *timer;
+    
+    ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
+    
+    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:ACTION_MOVE_TO_WAREHOUSE,
+                            kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product.product_id?:@"",
+                            };
+    _requestActionMoveToWarehouse = [_objectmanagerActionMoveToWarehouse appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
+    
+    [_requestActionMoveToWarehouse setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestSuccessActionMoveToWarehouse:mappingResult withOperation:operation];
+        [timer invalidate];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+        [self requestFailureActionMoveToWarehouse:error];
+        [timer invalidate];
+    }];
+    
+    [_operationQueue addOperation:_requestActionMoveToWarehouse];
+    
+    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionMoveToWarehouse) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+}
+
+-(void)requestSuccessActionMoveToWarehouse:(id)object withOperation:(RKObjectRequestOperation *)operation
+{
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    id stat = [result objectForKey:@""];
+    ShopSettings *setting = stat;
+    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    
+    if (status) {
+        [self requestProcessActionMoveToWarehouse:object];
+    }
+}
+
+-(void)requestFailureActionMoveToWarehouse:(id)object
+{
+    [self requestProcessActionMoveToWarehouse:object];
+}
+
+-(void)requestProcessActionMoveToWarehouse:(id)object
+{
+    if (object) {
+        if ([object isKindOfClass:[RKMappingResult class]]) {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            id stat = [result objectForKey:@""];
+            ShopSettings *setting = stat;
+            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            
+            if (status) {
+                if(setting.message_error)
+                {
+                    NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                }
+                if (setting.result.is_success == 1) {
+                    NSArray *array = setting.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    
+                    if (_isBeingPresented) {
+                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                    } else {
+                        NSInteger indexPopViewController = self.navigationController.viewControllers.count-3;
+                        UIViewController *popViewController = self.navigationController.viewControllers [indexPopViewController];
+                        [self.navigationController popToViewController:popViewController animated:NO];
+                    }
+                }
+            }
+        }
+        else{
+            //[self cancelActionMoveToWarehouse];
+            NSError *error = object;
+            if (!([error code] == NSURLErrorCancelled)){
+                NSString *errorDescription = error.localizedDescription;
+                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                [errorAlert show];
+            }
+        }
+    }
+}
+
+
 #pragma mark - TextView Delegate
 -(BOOL)textViewShouldBeginEditing:(UITextView *)textView{
     [textView resignFirstResponder];
@@ -1282,6 +1410,9 @@
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
             NSString *value = [ARRAY_PRODUCT_MOVETO_ETALASE[index] objectForKey:DATA_VALUE_KEY];
             product.product_move_to = ([value integerValue]==1)?@"0":value;
+            if (index == 0) {
+                product.product_etalase_id = @(0);
+            }
             [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
             [_tableView reloadData];
             break;

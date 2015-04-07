@@ -33,6 +33,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *totalPaymentLabel;
 @property (strong, nonatomic) IBOutlet UIView *headerPaymentListView;
+@property (weak, nonatomic) IBOutlet UILabel *footerLabel1;
 @property (weak, nonatomic) IBOutlet UILabel *footerLabel;
 @property (strong, nonatomic) IBOutlet UIView *paymentStatusView;
 @property (weak, nonatomic) IBOutlet UIButton *paymentStatusButton;
@@ -44,147 +45,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _listSystemBank = [NSMutableArray new];
-    _listTotalPayment = [NSMutableArray new];
-    
-    _cartBuy = [_data objectForKey:DATA_CART_RESULT_KEY];
-    
-    //TODO::
-    if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TRANSFER_BANK)]) {
-        [_listSystemBank addObjectsFromArray:_cartBuy.system_bank];
-    }
-    
-    if (_cartBuy.transaction.voucher_amount>0) {
-        NSArray *detailPayment = @[
-                                   @{DATA_NAME_KEY : STRING_PENGGUNAAN_KUPON,
-                                     DATA_VALUE_KEY : _cartBuy.transaction.voucher_amount_idr?:@""
-                                     },
-                                   ];
-        [_listTotalPayment addObjectsFromArray:detailPayment];
-    }
 
-    if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)] ||
-        [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CLICK_BCA)] ||
-        [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)])
-    {
-        if ([_cartBuy.transaction.deposit_amount integerValue]>0) {
-            
-            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-            formatter.currencyCode = @"Rp ";
-            formatter.currencyGroupingSeparator = @".";
-            formatter.currencyDecimalSeparator = @",";
-            formatter.maximumFractionDigits = 0;
-            formatter.minimumFractionDigits = 0;
-            
-            NSInteger totalPayment = [_cartBuy.transaction.payment_left integerValue]+ [_cartBuy.transaction.deposit_amount integerValue];
-            NSString *totalPaymentString = [formatter stringFromNumber:[NSNumber numberWithInteger:totalPayment]];
-            
-            NSArray *detailPaymentIfUsingSaldo = @[
-                                                   @{DATA_NAME_KEY : STRING_JUMLAH_YANG_SUDAH_DIBAYAR,
-                                                     DATA_VALUE_KEY : totalPaymentString
-                                                     },
-                                                   @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERPAKAI,
-                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
-                                                     },
-                                                   @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
-                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_after?:@""
-                                                     },
-                                                   ];
-            [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
-        
-        }
-        else
-        {
-            NSArray *detailPayment = @[
-                                       @{DATA_NAME_KEY : STRING_JUMLAH_YANG_SUDAH_DIBAYAR,
-                                         DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr?:@""
-                                         },
-                                       ];
-            [_listTotalPayment addObjectsFromArray:detailPayment];
-        }
-    }
-    else
-    {
-        if ([_cartBuy.transaction.deposit_amount integerValue]>0) {
-            if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)]) {
-                NSArray *detailPayment = @[
-                                           @{DATA_NAME_KEY : STRING_JUMLAH_YANG_SUDAH_DIBAYAR,
-                                             DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
-                                             },
-                                           ];
-                [_listTotalPayment addObjectsFromArray:detailPayment];
-            }
-            else
-            {
-                NSArray *detailPayment = @[
-                                           @{DATA_NAME_KEY : STRING_TOTAL_TAGIHAN ,
-                                             DATA_VALUE_KEY : _cartBuy.transaction.grand_total_idr?:@""
-                                             },
-                                           ];
-                [_listTotalPayment addObjectsFromArray:detailPayment];
-            }
-            
-            NSArray *detailPaymentIfUsingSaldo = @[
-                                                   @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERPAKAI,
-                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
-                                                     },
-                                                   @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
-                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_after?:@""
-                                                 },
-                                               ];
-            [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
-        }
-        if ([_cartBuy.transaction.payment_left integerValue]>0) {
-            NSArray *detailPayment = @[
-                                       @{DATA_NAME_KEY : STRING_JUMLAH_YANG_HARUS_DIBAYAR,
-                                         DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr?:@""
-                                         },
-                                       ];
-            [_listTotalPayment addObjectsFromArray:detailPayment];
-        }
-    }
-    
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
-    
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor colorWithRed:158.0f/255 green:158.0f/255 blue:158.0f/255 alpha:1],
-                                 NSFontAttributeName: font,
-                                 NSParagraphStyleAttributeName: style,
-                                 };
-    
-    NSAttributedString *footerAttributedText = [[NSAttributedString alloc] initWithString:_footerLabel.text
-                                                                                    attributes:attributes];
-    NSAttributedString *headerAttributedText = [[NSAttributedString alloc] initWithString:_listPaymentTitleLabel.text
-                                                                               attributes:attributes];
-    
-    _listPaymentTitleLabel.attributedText = headerAttributedText;
-    _footerLabel.attributedText = footerAttributedText;
-    
-    attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
-                                 NSFontAttributeName: font,
-                                 NSParagraphStyleAttributeName: style,
-                                 };
-    
-    NSString *tableTitleLabel = [NSString stringWithFormat:FORMAT_SUCCESS_BUY,_cartBuy.transaction.gateway_name];
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:tableTitleLabel
-                                                                               attributes:attributes];
-
-    
-    _tableView.tableHeaderView = _tableHeaderView;
-    _tableTitleLabel.attributedText = attributedText;
-    _tableTitleLabel.textAlignment = NSTextAlignmentCenter;
-    _confirmPaymentButton.layer.cornerRadius = 2;
-    _paymentStatusButton.layer.cornerRadius = 2;
-    
-    [_totalPaymentLabel setText:_cartBuy.transaction.payment_left_idr?:@"" animated:YES];
 }
 
 -(void)viewWillLayoutSubviews
 {
-    
+    [self setDataDefault];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -348,5 +214,132 @@
     cell.backgroundColor = ([detail isEqualToString:STRING_JUMLAH_YANG_HARUS_DIBAYAR])?[UIColor colorWithRed:255.f/255.f green:255.f/255.f blue:229.f/255.f alpha:1]:[UIColor colorWithRed:238.f/255.f green:255.f/255.f blue:255.f/255.f alpha:1];
     
     return cell;
+}
+
+-(void)setDataDefault
+{
+    _listSystemBank = [NSMutableArray new];
+    _listTotalPayment = [NSMutableArray new];
+    
+    _cartBuy = [_data objectForKey:DATA_CART_RESULT_KEY];
+    
+    if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TRANSFER_BANK)]) {
+        [_listSystemBank addObjectsFromArray:_cartBuy.system_bank];
+    }
+    
+    if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_E_CASH)] ||
+        [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_CLICK_BCA)] ||
+        [_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_MANDIRI_CLICK_PAY)])
+    {
+        if ([_cartBuy.transaction.deposit_amount integerValue]>0) {
+            
+            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+            formatter.currencyCode = @"Rp ";
+            formatter.currencyGroupingSeparator = @".";
+            formatter.currencyDecimalSeparator = @",";
+            formatter.maximumFractionDigits = 0;
+            formatter.minimumFractionDigits = 0;
+            
+            NSInteger totalPayment = [_cartBuy.transaction.payment_left integerValue]+ [_cartBuy.transaction.deposit_amount integerValue];
+            NSString *totalPaymentString = [formatter stringFromNumber:[NSNumber numberWithInteger:totalPayment]];
+            
+            NSArray *detailPaymentIfUsingSaldo = @[
+                                                   @{DATA_NAME_KEY : STRING_JUMLAH_YANG_SUDAH_DIBAYAR,
+                                                     DATA_VALUE_KEY : totalPaymentString
+                                                     },
+                                                   @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERPAKAI,
+                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
+                                                     },
+                                                   @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
+                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_after?:@""
+                                                     },
+                                                   ];
+            [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
+            
+        }
+        else
+        {
+            NSArray *detailPayment = @[
+                                       @{DATA_NAME_KEY : STRING_JUMLAH_YANG_SUDAH_DIBAYAR,
+                                         DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr?:@""
+                                         },
+                                       ];
+            [_listTotalPayment addObjectsFromArray:detailPayment];
+        }
+        
+        if ([_cartBuy.transaction.voucher_amount integerValue]>0) {
+            NSArray *detailPayment = @[
+                                       @{DATA_NAME_KEY : STRING_PENGGUNAAN_KUPON,
+                                         DATA_VALUE_KEY : _cartBuy.transaction.voucher_amount_idr?:@""
+                                         },
+                                       ];
+            [_listTotalPayment addObjectsFromArray:detailPayment];
+        }
+    }
+    else
+    {
+        if ([_cartBuy.transaction.deposit_amount integerValue]>0) {
+            if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)]) {
+                NSArray *detailPayment = @[
+                                           @{DATA_NAME_KEY : STRING_JUMLAH_YANG_SUDAH_DIBAYAR,
+                                             DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
+                                             },
+                                           ];
+                [_listTotalPayment addObjectsFromArray:detailPayment];
+            }
+            else
+            {
+                NSArray *detailPayment = @[
+                                           @{DATA_NAME_KEY : STRING_TOTAL_TAGIHAN ,
+                                             DATA_VALUE_KEY : _cartBuy.transaction.grand_total_idr?:@""
+                                             },
+                                           ];
+                [_listTotalPayment addObjectsFromArray:detailPayment];
+            }
+            
+            NSArray *detailPaymentIfUsingSaldo = @[
+                                                   @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERPAKAI,
+                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
+                                                     },
+                                                   @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
+                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_after?:@""
+                                                     },
+                                                   ];
+            [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
+        }
+        
+        if ([_cartBuy.transaction.voucher_amount integerValue]>0) {
+            NSArray *detailPayment = @[
+                                       @{DATA_NAME_KEY : STRING_PENGGUNAAN_KUPON,
+                                         DATA_VALUE_KEY : _cartBuy.transaction.voucher_amount_idr?:@""
+                                         },
+                                       ];
+            [_listTotalPayment addObjectsFromArray:detailPayment];
+        }
+        
+        if ([_cartBuy.transaction.payment_left integerValue]>0) {
+            NSArray *detailPayment = @[
+                                       @{DATA_NAME_KEY : STRING_JUMLAH_YANG_HARUS_DIBAYAR,
+                                         DATA_VALUE_KEY : _cartBuy.transaction.payment_left_idr?:@""
+                                         },
+                                       ];
+            [_listTotalPayment addObjectsFromArray:detailPayment];
+        }
+    }
+    
+    [_footerLabel setCustomAttributedText:_footerLabel.text];
+    [_footerLabel1 setCustomAttributedText:_footerLabel1.text];
+    [_listPaymentTitleLabel setCustomAttributedText:_listPaymentTitleLabel.text];
+    
+    NSString *tableTitleLabel = [NSString stringWithFormat:FORMAT_SUCCESS_BUY,_cartBuy.transaction.gateway_name];
+    [_tableTitleLabel setCustomAttributedText:tableTitleLabel];
+    
+    _tableView.tableHeaderView = _tableHeaderView;
+    _tableTitleLabel.textAlignment = NSTextAlignmentCenter;
+    _confirmPaymentButton.layer.cornerRadius = 2;
+    _paymentStatusButton.layer.cornerRadius = 2;
+    
+    [_totalPaymentLabel setText:_cartBuy.transaction.payment_left_idr?:@"" animated:YES];
 }
 @end

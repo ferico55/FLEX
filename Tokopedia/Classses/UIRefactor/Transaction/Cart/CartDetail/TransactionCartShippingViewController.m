@@ -658,7 +658,6 @@
                 }
                 else if (action.result.is_success == 1) {
                     NSArray *array = action.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     StickyAlertView *view = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
                     [view show];
                     NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY]};
@@ -749,7 +748,7 @@
                 [_addressStreetLabel setCustomAttributedText:textString];
                 
                 //Calculate the expected size based on the font and linebreak mode of your label
-                CGSize maximumLabelSize = CGSizeMake(270,9999);
+                CGSize maximumLabelSize = CGSizeMake(290,9999);
                 
                 CGSize expectedLabelSize = [textString sizeWithFont:_addressStreetLabel.font
                                                   constrainedToSize:maximumLabelSize
@@ -772,7 +771,7 @@
             [_addressStreetLabel setCustomAttributedText:textString];
             
             //Calculate the expected size based on the font and linebreak mode of your label
-            CGSize maximumLabelSize = CGSizeMake(270,9999);
+            CGSize maximumLabelSize = CGSizeMake(290,9999);
             
             CGSize expectedLabelSize = [textString sizeWithFont:_addressStreetLabel.font
                                               constrainedToSize:maximumLabelSize

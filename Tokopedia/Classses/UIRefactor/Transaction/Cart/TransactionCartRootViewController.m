@@ -104,9 +104,6 @@
     
     if (_index == 0) {
         
-        [self initNotificationManager];
-        
-        
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
         _auth = [secureStorage keychainDictionary];
         _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
@@ -178,7 +175,7 @@
                 backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
                 self.navigationItem.leftBarButtonItem = backBarButtonItem;
             }
-            self.navigationItem.rightBarButtonItem = nil;
+            [self initNotificationManager];
             break;
         }
         case 1:
@@ -223,6 +220,7 @@
             barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
             [barbutton1 setTintColor:[UIColor blackColor]];
             [barbutton1 setTag:11];
+            [self initNotificationManager];
             self.navigationItem.leftBarButtonItem = nil;
             self.navigationItem.rightBarButtonItem = barbutton1;
             break;
@@ -314,6 +312,7 @@
             [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
             ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
         }
+        
     }
     else
     {
@@ -395,6 +394,7 @@
             }
         }
     }
+    [self initNotificationManager];
 }
 
 @end

@@ -46,5 +46,6 @@
 @property (nonatomic, strong) NSString *product_use_insurance;
 @property (nonatomic, strong) NSString *product_cart_id;
 @property (nonatomic, strong) NSString *product_total_weight;
+@property (nonatomic, strong) NSString *product_error_msg;
 
 @end

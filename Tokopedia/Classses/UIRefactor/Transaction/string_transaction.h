@@ -83,7 +83,7 @@ typedef enum
 #define DATA_SHIPMENT_PACKAGE_KEY @"shipment_package"
 #define DATA_INDEXPATH_KEY @"indexpath"
 #define DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY @"indexpath_selected_product_cart"
-#define DATA_INDEXPATH_SELECTED_GATEWAY_CART_KEY @"indexpath_selected_gateway"
+#define DATA_SELECTED_GATEWAY_CART_KEY @"selected_gateway"
 #define DATA_ADDRESS_INDEXPATH_KEY @"indexpathAddress"
 #define DATA_SELECTED_INDEXPATH_SHIPMENT_KEY @"indexpathShipment"
 #define DATA_SELECTED_SHIPMENT_KEY @"selectedShipment"

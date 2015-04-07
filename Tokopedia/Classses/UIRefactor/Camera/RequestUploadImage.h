@@ -12,6 +12,7 @@
 
 #define DATA_SELECTED_IMAGE_VIEW_KEY @"data_selected_image_view"
 #define DATA_SELECTED_PHOTO_KEY @"data_selected_photo"
+#define DATA_SELECTED_INDEXPATH_KEY @"data_selected_indexpath"
 
 @protocol RequestUploadImageDelegate <NSObject>
 @required

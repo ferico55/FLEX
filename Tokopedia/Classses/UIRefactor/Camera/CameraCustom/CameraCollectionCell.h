@@ -13,5 +13,6 @@
 + (id)newcell;
 @property (weak, nonatomic) IBOutlet UIImageView *thumb;
 @property(nonatomic, strong) ALAsset *asset;
+@property (weak, nonatomic) IBOutlet UIImageView *checkmarkImageView;
 
 @end

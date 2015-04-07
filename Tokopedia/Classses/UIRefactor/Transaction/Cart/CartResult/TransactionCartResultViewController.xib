@@ -22,7 +22,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionCartResultViewController">
             <connections>
                 <outlet property="confirmPaymentButton" destination="e70-yU-41l" id="As7-tv-XDk"/>
-                <outlet property="footerLabel" destination="V33-g9-JWw" id="LFa-gD-8Kv"/>
+                <outlet property="footerLabel" destination="8zj-kU-VAf" id="jDB-3X-ZnX"/>
+                <outlet property="footerLabel1" destination="V33-g9-JWw" id="dAY-yP-b1s"/>
                 <outlet property="headerPaymentListView" destination="RMN-oe-0Vt" id="5le-Vu-eMQ"/>
                 <outlet property="listPaymentTitleLabel" destination="cGk-2H-wBC" id="nYk-q4-MkP"/>
                 <outlet property="paymentStatusButton" destination="5Rt-3a-lHR" id="27o-GD-dbl"/>
@@ -119,7 +120,7 @@
             <point key="canvasLocation" x="437" y="-3"/>
         </view>
         <view contentMode="scaleToFill" id="QEA-BO-1aG">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="223"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="185"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e70-yU-41l">
@@ -139,13 +140,13 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V33-g9-JWw">
-                    <rect key="frame" x="15" y="70" width="290" height="114"/>
+                    <rect key="frame" x="15" y="70" width="290" height="67"/>
                     <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="114" id="JQy-EO-S4t"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="67" id="JQy-EO-S4t"/>
                     </constraints>
                     <string key="text">Pesanan Anda akan diproses setelah pembayaran dikonfirmasi dan diverifikasi oleh Tokopedia, Untuk melakukan konfirmasi pembayaran, silahakan lanjut ke halaman Konfirmasi Pembayaran.
 Silahkan menghubungi kami apabila anda mengalami kesulitan.</string>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -163,27 +164,26 @@ Silahkan menghubungi kami apabila anda mengalami kesulitan.</string>
                 <constraint firstItem="V33-g9-JWw" firstAttribute="top" secondItem="e70-yU-41l" secondAttribute="bottom" constant="10" id="yRG-Ks-CVh"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="437" y="328.5"/>
+            <point key="canvasLocation" x="437" y="309.5"/>
         </view>
         <view contentMode="scaleToFill" id="EEG-XL-95d">
             <rect key="frame" x="0.0" y="0.0" width="320" height="183"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zj-kU-VAf">
-                    <rect key="frame" x="15" y="15" width="290" height="70"/>
+                    <rect key="frame" x="15" y="15" width="290" height="58"/>
                     <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="31" id="3Bp-Xi-Dob"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="58" id="3Bp-Xi-Dob"/>
                     </constraints>
                     <string key="text">Pembayaran Anda telah kami proses dan pesanan diteruskan langsung ke penjual.
 
-
 Klik tombol dibawah untuk memantau status pesanan Anda.</string>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="11"/>
                     <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Rt-3a-lHR">
-                    <rect key="frame" x="15" y="100" width="290" height="40"/>
+                    <rect key="frame" x="15" y="94" width="290" height="40"/>
                     <color key="backgroundColor" red="0.070588235289999995" green="0.78039215689999997" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="Hlb-SG-tbA"/>
@@ -203,7 +203,7 @@ Klik tombol dibawah untuk memantau status pesanan Anda.</string>
                 <constraint firstItem="5Rt-3a-lHR" firstAttribute="leading" secondItem="EEG-XL-95d" secondAttribute="leading" constant="15" id="FXA-of-Shc"/>
                 <constraint firstItem="8zj-kU-VAf" firstAttribute="leading" secondItem="EEG-XL-95d" secondAttribute="leading" constant="15" id="It9-7B-ZIm"/>
                 <constraint firstAttribute="trailing" secondItem="5Rt-3a-lHR" secondAttribute="trailing" constant="15" id="Nff-fh-Tk5"/>
-                <constraint firstItem="5Rt-3a-lHR" firstAttribute="top" secondItem="8zj-kU-VAf" secondAttribute="bottom" constant="15" id="cgE-RQ-OC8"/>
+                <constraint firstItem="5Rt-3a-lHR" firstAttribute="top" secondItem="8zj-kU-VAf" secondAttribute="bottom" constant="21" id="cgE-RQ-OC8"/>
                 <constraint firstItem="8zj-kU-VAf" firstAttribute="top" secondItem="EEG-XL-95d" secondAttribute="top" constant="15" id="nNW-2h-OW2"/>
                 <constraint firstAttribute="trailing" secondItem="8zj-kU-VAf" secondAttribute="trailing" constant="15" id="w7w-wb-2fh"/>
             </constraints>

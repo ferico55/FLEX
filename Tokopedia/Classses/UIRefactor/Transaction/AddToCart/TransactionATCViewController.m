@@ -305,12 +305,12 @@
                     }
                     case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:
                     {
-                        label.text = shipment.shipment_name;
+                        label.text = shipment.shipment_name?:@"Pilih";
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_SERVICE_TYPE:
                     {
-                        label.text = shipmentPackage.name;
+                        label.text = shipmentPackage.name?:@"Pilih";
                         break;
                     }
                 }
@@ -791,7 +791,7 @@
     ProductDetail *product = [userinfo objectForKey:DATA_DETAIL_PRODUCT_KEY];
     
     NSInteger productID = [ product.product_id integerValue];
-    NSInteger quantity = [[userinfo objectForKey:API_QUANTITY_KEY]integerValue];
+    NSInteger quantity = [_productQuantityLabel.text integerValue];
     NSInteger insuranceID = [product.product_insurance integerValue];
     NSInteger shippingID = [shipment.shipment_id integerValue];
     NSInteger shippingProduct = [shipmentPackage.sp_id integerValue];
@@ -1115,10 +1115,13 @@
                             [shipmentPackages removeObject:package];
                         }
                     }
-                    ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
-                    [_dataInput setObject:shipment forKey:DATA_SELECTED_SHIPMENT_KEY];
-                    [_dataInput setObject:shipmentPackage forKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
-                    [_tableView reloadData];
+                    
+                    if (shipmentPackages.count>0) {
+                        ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
+                        [_dataInput setObject:shipment forKey:DATA_SELECTED_SHIPMENT_KEY];
+                        [_dataInput setObject:shipmentPackage forKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
+                        [_tableView reloadData];
+                    }
                     
                     for (UITableViewCell *cell in _tableViewPaymentDetailCell) {
                         UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView *)[cell viewWithTag:2];
@@ -1179,24 +1182,28 @@
             [shipmentPackages removeObject:package];
         }
     }
+
     if (shipmentPackages.count==0) {
-        NSArray *messages = @[[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipment.shipment_name],];
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+        NSArray *messages = @[[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipment.shipment_name]];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipment.shipment_name] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
-        return;
+       // StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:messages delegate:self];
+        //[alert show];
     }
-    ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
-    [_dataInput setObject:shipmentPackage forKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
-    
-    [_dataInput setObject:selectedIndexPathShipment forKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY];
-    [_dataInput setObject:selectedIndexPathShipmentPackage forKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY];
-    [_dataInput setObject:shipment forKey:DATA_SELECTED_SHIPMENT_KEY];
-    
-    if (type == TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY) {
-        [_dataInput removeObjectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY];
+    else
+    {
+        ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
+        [_dataInput setObject:shipmentPackage forKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
+        
+        [_dataInput setObject:selectedIndexPathShipment forKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY];
+        [_dataInput setObject:selectedIndexPathShipmentPackage forKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY];
+        [_dataInput setObject:shipment forKey:DATA_SELECTED_SHIPMENT_KEY];
+        
+        if (type == TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY) {
+            [_dataInput removeObjectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY];
+        }
+        [_tableView reloadData];
     }
-    
-    [_tableView reloadData];
 }
 
 #pragma mark - Alert View Delegate
@@ -1222,7 +1229,7 @@
             }
             else
             {
-                UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:0];
+                UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:self.tabBarController.selectedIndex];
                 [self.tabBarController setSelectedIndex:3];
                 [navController popToRootViewControllerAnimated:YES];
                 

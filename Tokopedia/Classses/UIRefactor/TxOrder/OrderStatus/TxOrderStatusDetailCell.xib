@@ -82,7 +82,7 @@
                     <constraint firstAttribute="trailing" secondItem="xMy-zK-dzB" secondAttribute="trailing" constant="8" id="tGx-pj-VBR"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <connections>
                 <outlet property="circle" destination="km4-al-YYq" id="hZZ-Kc-xXR"/>
                 <outlet property="dateLabel" destination="rL6-rz-GsI" id="QDu-1T-fJW"/>

@@ -114,6 +114,7 @@ typedef enum
 #define API_PRODUCT_WEIGHT_UNIT_KEY @"product_weight_unit"
 #define API_PRODUCT_TOTAL_WEIGHT_KEY @"product_total_weight"
 #define API_PRODUCT_NOTES_KEY @"product_notes"
+#define API_PRODUCT_ERROR_MESSAGE_KEY @"product_error_msg"
 #define API_PRODUCT_WEIGHT_KEY @"product_weight"
 #define API_PRODUCT_DESCRIPTION_KEY @"product_description"
 #define API_PRODUCT_PRICE_KEY @"product_price"
