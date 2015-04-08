@@ -25,6 +25,7 @@
 
 #define kTKPDREQUEST_REFRESHMESSAGE @""
 
+#define kTKPDOBSERVER_WISHLIST @"wishlist_observer"
 #define kTKPD_APIERRORMESSAGEKEY @"message_error"
 #define kTKPD_APISTATUSKEY @"status"
 #define kTKPD_APISERVERPROCESSTIMEKEY @"server_process_time"

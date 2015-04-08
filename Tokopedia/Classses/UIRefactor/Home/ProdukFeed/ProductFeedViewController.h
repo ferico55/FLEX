@@ -10,8 +10,9 @@
 #import "TKPDTabHomeViewController.h"
 
 @interface ProductFeedViewController : UIViewController
-
+{
+    IBOutlet UIView *viewNoData;
+}
 @property NSInteger index;
 @property (weak, nonatomic) id<TKPDTabHomeDelegate> delegate;
-
 @end

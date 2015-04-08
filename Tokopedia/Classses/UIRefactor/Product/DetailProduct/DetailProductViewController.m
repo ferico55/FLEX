@@ -12,7 +12,10 @@
 #import "string_product.h"
 #import "string_transaction.h"
 #import "string_more.h"
+#import "string_home.h"
 #import "Product.h"
+#import "WishListObjectResult.h"
+#import "WishListObject.h"
 
 #import "StarsRateView.h"
 
@@ -97,6 +100,10 @@
     NSOperationQueue *_operationFavoriteQueue;
     NSInteger _requestFavoriteCount;
     
+    __weak RKObjectManager *objectWishListManager;
+    __weak RKManagedObjectRequestOperation *requestWishList;
+    NSOperationQueue *operationWishList;
+    
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
@@ -107,6 +114,8 @@
     __weak RKObjectManager  *_objectPromoteManager;
     
     TokopediaNetworkManager *_promoteNetworkManager;
+    UIBarButtonItem *btnWishList, *btnUnWishList;
+    UIActivityIndicatorView *activityIndicator;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -185,6 +194,7 @@
     _operationQueue = [NSOperationQueue new];
     _operationOtherProductQueue = [NSOperationQueue new];
     _operationFavoriteQueue = [NSOperationQueue new];
+    operationWishList = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
@@ -761,6 +771,7 @@
                                                       kTKPDDETAILPRODUCT_APIPRODUCTIDKEY:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,
                                                       kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY:kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY,
                                                       kTKPDDETAILPRODUCT_APIPRODUCTURLKEY:kTKPDDETAILPRODUCT_APIPRODUCTURLKEY,
+                                                      kTKPDPRODUCT_ALREADY_WISHLIST:kTKPDPRODUCT_ALREADY_WISHLIST
                                                       }];
     
     RKObjectMapping *statisticMapping = [RKObjectMapping mappingForClass:[Statistic class]];
@@ -974,7 +985,9 @@
                     _isnodatawholesale = NO;
                 }
                 
-                if([_product.result.shop_info.shop_id isEqualToString:[([_auth objectForKey:@"shop_id"]) stringValue]]) {
+                
+                UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
+                if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
                     NSBundle* bundle = [NSBundle mainBundle];
                     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_setting" ofType:@"png"]];
                     
@@ -989,7 +1002,15 @@
                     [barbutton setTag:22];
                     self.navigationItem.rightBarButtonItem = barbutton;
                 } else {
-                    self.navigationItem.rightBarButtonItem = nil;
+                    btnWishList = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_unfavorite_2x.png"] withAction:@selector(setWishList:)];
+                    btnUnWishList = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_favorite_2x.png"] withAction:@selector(setUnWishList:)];
+                    activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+                    [activityIndicator startAnimating];
+                    
+                    if([_product.result.product.product_already_wishlist isEqualToString:@"x"])
+                        self.navigationItem.rightBarButtonItem = btnUnWishList;
+                    else
+                        self.navigationItem.rightBarButtonItem = btnWishList;
                 }
                 
                 //decide description height
@@ -1159,6 +1180,18 @@
 }
 
 #pragma mark - Methods
+- (UIBarButtonItem *)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action
+{
+    UIImageView *infoImageView = [[UIImageView alloc] initWithImage:image];
+    infoImageView.frame = frame;
+    infoImageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:action];
+    [infoImageView addGestureRecognizer:tapGesture];
+    UIBarButtonItem *infoBarButton = [[UIBarButtonItem alloc] initWithCustomView:infoImageView];
+    
+    return infoBarButton;
+}
+
 -(void)setHeaderviewData{
 
     CGFloat currentLabelHeight = _productnamelabel.frame.size.height;
@@ -1531,6 +1564,156 @@
                                                                                              statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectFavoriteManager addResponseDescriptor:responseDescriptorStatus];
+}
+
+- (void)configureWishListRestKit
+{
+    // initialize RestKit
+    objectWishListManager =  [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[WishListObject class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[WishListObjectResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{ kTKPD_APIISSUCCESSKEY : kTKPD_APIISSUCCESSKEY }];
+    
+    
+    
+    //relation
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:[NSString stringWithFormat:@"action/%@", kTKPDWISHLIST_APIPATH]
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    [objectWishListManager addResponseDescriptor:responseDescriptorStatus];
+}
+
+
+- (void)setUnWishList:(id)obj
+{
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityIndicator];
+    if(objectWishListManager == nil)
+        [self configureWishListRestKit];
+    
+    NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY : kTKPDREMOVE_WISHLIST_PRODUCT,
+                            kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};
+    requestWishList = [objectWishListManager appropriateObjectRequestOperationWithObject:self
+                                                                                  method:RKRequestMethodPOST
+                                                                                    path:[NSString stringWithFormat:@"action/%@", kTKPDWISHLIST_APIPATH]
+                                                                              parameters:[param encrypt]];
+    
+    [requestWishList setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        if(mappingResult)
+        {
+            NSDictionary *result = ((RKMappingResult*) mappingResult).dictionary;
+            WishListObject *wishListObject = [result objectForKey:@""];
+            BOOL status = [wishListObject.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            StickyAlertView *alert;
+            
+            if(status && [wishListObject.result.is_success isEqualToString:@"1"])
+            {
+                alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Berhasil menghapus wishlist"] delegate:self];
+                self.navigationItem.rightBarButtonItem = btnWishList;
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
+            }
+            else
+            {
+                alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal menghapus wishlist"] delegate:self];
+                self.navigationItem.rightBarButtonItem = btnUnWishList;
+            }
+            [alert show];
+        }
+        
+        [_timer invalidate];
+        _timer = nil;
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+        //        [self requestFavoriteError:error];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal menghapus wishlist"] delegate:self];
+        [alert show];
+        self.navigationItem.rightBarButtonItem = btnUnWishList;
+
+        [_timer invalidate];
+        _timer = nil;
+    }];
+    
+    [operationWishList addOperation:requestWishList];
+    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                              target:self
+                                            selector:@selector(requesttimeout)
+                                            userInfo:nil
+                                             repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+}
+
+
+- (void)setWishList:(int)obj
+{
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityIndicator];    
+    if(objectWishListManager == nil)
+        [self configureWishListRestKit];
+    NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY : kTKPDADD_WISHLIST_PRODUCT,
+                            kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};
+    requestWishList = [objectWishListManager appropriateObjectRequestOperationWithObject:self
+                                                                                    method:RKRequestMethodPOST
+                                                                                      path:[NSString stringWithFormat:@"action/%@", kTKPDWISHLIST_APIPATH]
+                                                                                parameters:[param encrypt]];
+    
+    [requestWishList setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        if(mappingResult)
+        {
+            NSDictionary *result = ((RKMappingResult*) mappingResult).dictionary;
+            WishListObject *wishListObject = [result objectForKey:@""];
+            BOOL status = [wishListObject.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            StickyAlertView *alert;
+            
+            if(status && [wishListObject.result.is_success isEqualToString:@"1"])
+            {
+                alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Berhasil menambah wishlist"] delegate:self];
+                self.navigationItem.rightBarButtonItem = btnUnWishList;
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
+            }
+            else
+            {
+                alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal menambah wishlist"] delegate:self];
+                self.navigationItem.rightBarButtonItem = btnWishList;
+            }
+            
+            [alert show];
+        }
+        
+        [_timer invalidate];
+        _timer = nil;
+        
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+//        [self requestFavoriteError:error];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal menambah wishlist"] delegate:self];
+        [alert show];
+        self.navigationItem.rightBarButtonItem = btnWishList;
+
+        
+        [_timer invalidate];
+        _timer = nil;
+    }];
+    
+    [operationWishList addOperation:requestWishList];
+    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                              target:self
+                                            selector:@selector(requesttimeout)
+                                            userInfo:nil
+                                             repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
 

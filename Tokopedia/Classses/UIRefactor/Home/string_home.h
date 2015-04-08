@@ -16,6 +16,7 @@
 
 #define kTKPDHOMEHOTLISTACT @"get_hotlist"
 #define kTKPDHOMEPRODUCTFEEDACT @"get_product_feed"
+#define kTKPDGET_WISH_LIST @"get_wishlist"
 #define kTKPDHOMEHISTORYPRODUCTACT @"get_recent_view_product"
 #define kTKPDHOMEFAVORITESHOPACT @"get_favorite_shop"
 
@@ -103,6 +104,7 @@
 
 #define kTKPDHOMEHOTLIST_APIPATH @"home.pl"
 #define kTKPDHOMEHOTLISTRESULT_APIPATH @"hotlist.pl"
+#define kTKPDWISHLIST_APIPATH @"wishlist.pl"
 
 #define kTKPDHOME_DATAURLREDIRECTHOTKEY @"hot"
 #define kTKPDHOME_DATAURLREDIRECTCATEGORY @"p"
