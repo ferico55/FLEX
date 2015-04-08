@@ -116,6 +116,8 @@ typedef enum
 
 
 #pragma mark - Get Action
+#define kTKPDADD_WISHLIST_PRODUCT @"add_wishlist_product"
+#define kTKPDREMOVE_WISHLIST_PRODUCT @"remove_wishlist_product"
 #define kTKPDDETAIL_APIGETDETAILACTIONKEY @"get_detail"
 #define kTKPDDETAIL_APIGETPRODUCTREVIEWKEY @"get_product_review"
 #define kTKPDDETAIL_APIGETPRODUCTTALKKEY @"get_product_talk"
@@ -223,6 +225,7 @@ typedef enum
 
 #define kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY @"product_last_update"
 #define kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY @"product_price_alert"
+#define kTKPDPRODUCT_ALREADY_WISHLIST @"product_already_wishlist"
 #define kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY @"product_name"
 #define kTKPDDETAILPRODUCT_APIPRODUCTURLKEY @"product_url"
 #define API_PRODUCT_PRICE_IDR_KEY @"product_price_idr"
@@ -659,6 +662,35 @@ typedef enum
 
 #define API_FILE_NAME_KEY @"file_name"
 #define API_FILE_PATH_KEY @"file_path"
+
+//wishList
+#define KTKPDSHOP_GOLD_STATUS @"shop_gold_status"
+#define KTKPDSHOP_ID @"shop_id"
+#define KTKPDPRODUCT_RATING_POINT @"product_rating_point"
+#define KTKPDPRODUCT_DEPARTMENT_ID @"product_department_id"
+#define KTKPDPRODUCT_ETALASE @"product_etalase"
+#define KTKPDSHOP_URL @"shop_url"
+#define KTKPDSHOP_FEATURED_SHOP @"shop_featured_shop"
+#define KTKPDPRODUCT_STATUS @"product_status"
+#define KTKPDPRODUCT_ID @"product_id"
+#define KTKPDPRODUCT_IMAGE_FULL @"product_image_full"
+#define KTKPDPRODUCT_CURRENCY_ID @"product_currency_id"
+#define KTKPDPRODUCT_RATING_DESC @"product_rating_desc"
+#define KTKPDPRODUCT_CURRENCY @"product_currency"
+#define KTKPDPRODUCT_TALK_COUNT @"product_talk_count"
+#define KTKPDPRODUCT_PRICE_NO_IDR @"product_price_no_idr"
+#define KTKPDPRODUCT_IMAGE @"product_image"
+#define KTKPDPRODUCT_PRICE @"product_price"
+#define KTKPDPRODUCT_SOLD_COUNT @"product_sold_count"
+#define KTKPDPRODUCT_RETURNABLE @"product_returnable"
+#define KTKPDSHOP_LOCATION @"shop_location"
+#define KTKPDPRODUCT_NORMAL_PRICE @"product_normal_price"
+#define KTKPDPRODUCT_IMAGE_300 @"product_image_300"
+#define KTKPDSHOP_NAME @"shop_name"
+#define KTKPDPRODUCT_REVIEW_COUNT @"product_review_count"
+#define KTKPDSHOP_IS_OWNER @"shop_is_owner"
+#define KTKPDPRODUCT_URL @"product_url"
+#define KTKPDPRODUCT_NAME @"product_name"
 
 //product
 #define kTKPDDETAILPRODUCT_APIPATH @"product.pl"

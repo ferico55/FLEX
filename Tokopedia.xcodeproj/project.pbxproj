@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		85457E9B1AD4D8DD000C4762 /* WishListObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 85457E9A1AD4D8DD000C4762 /* WishListObject.m */; };
+		85457E9E1AD4D8EF000C4762 /* WishListObjectList.m in Sources */ = {isa = PBXBuildFile; fileRef = 85457E9D1AD4D8EF000C4762 /* WishListObjectList.m */; };
+		85457EA11AD4D907000C4762 /* WishListObjectResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 85457EA01AD4D907000C4762 /* WishListObjectResult.m */; };
+		85457EA41AD4DFB5000C4762 /* Rating.m in Sources */ = {isa = PBXBuildFile; fileRef = 85457EA31AD4DFB5000C4762 /* Rating.m */; };
+		85457EAF1AD4E158000C4762 /* WishListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85457EAD1AD4E158000C4762 /* WishListViewController.m */; };
+		85457EB01AD4E158000C4762 /* WishListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85457EAE1AD4E158000C4762 /* WishListViewController.xib */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B3881ACD651600879D75 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = FC23AB3D1ACD651300879D75 /* URLCacheAlert.m */; };
@@ -1277,6 +1283,17 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		85457E991AD4D8DD000C4762 /* WishListObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WishListObject.h; sourceTree = "<group>"; };
+		85457E9A1AD4D8DD000C4762 /* WishListObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WishListObject.m; sourceTree = "<group>"; };
+		85457E9C1AD4D8EF000C4762 /* WishListObjectList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WishListObjectList.h; sourceTree = "<group>"; };
+		85457E9D1AD4D8EF000C4762 /* WishListObjectList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WishListObjectList.m; sourceTree = "<group>"; };
+		85457E9F1AD4D907000C4762 /* WishListObjectResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WishListObjectResult.h; sourceTree = "<group>"; };
+		85457EA01AD4D907000C4762 /* WishListObjectResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WishListObjectResult.m; sourceTree = "<group>"; };
+		85457EA21AD4DFB5000C4762 /* Rating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rating.h; sourceTree = "<group>"; };
+		85457EA31AD4DFB5000C4762 /* Rating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Rating.m; sourceTree = "<group>"; };
+		85457EAC1AD4E158000C4762 /* WishListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WishListViewController.h; sourceTree = "<group>"; };
+		85457EAD1AD4E158000C4762 /* WishListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WishListViewController.m; sourceTree = "<group>"; };
+		85457EAE1AD4E158000C4762 /* WishListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WishListViewController.xib; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -3243,6 +3260,29 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		85457E951AD4D870000C4762 /* WishList */ = {
+			isa = PBXGroup;
+			children = (
+				85457E991AD4D8DD000C4762 /* WishListObject.h */,
+				85457E9A1AD4D8DD000C4762 /* WishListObject.m */,
+				85457E9C1AD4D8EF000C4762 /* WishListObjectList.h */,
+				85457E9D1AD4D8EF000C4762 /* WishListObjectList.m */,
+				85457E9F1AD4D907000C4762 /* WishListObjectResult.h */,
+				85457EA01AD4D907000C4762 /* WishListObjectResult.m */,
+			);
+			path = WishList;
+			sourceTree = "<group>";
+		};
+		85457EAB1AD4E13C000C4762 /* WishList */ = {
+			isa = PBXGroup;
+			children = (
+				85457EAC1AD4E158000C4762 /* WishListViewController.h */,
+				85457EAD1AD4E158000C4762 /* WishListViewController.m */,
+				85457EAE1AD4E158000C4762 /* WishListViewController.xib */,
+			);
+			path = WishList;
+			sourceTree = "<group>";
+		};
 		FC23AB3A1ACD651300879D75 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
@@ -3322,6 +3362,7 @@
 		FC23AB691ACD651300879D75 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				85457E951AD4D870000C4762 /* WishList */,
 				FC23AB6A1ACD651300879D75 /* Activation */,
 				FC23AB7A1ACD651300879D75 /* Deposit */,
 				FC23AB801ACD651300879D75 /* DepositForm */,
@@ -3476,6 +3517,8 @@
 		FC23ABA91ACD651300879D75 /* DetailProduct */ = {
 			isa = PBXGroup;
 			children = (
+				85457EA21AD4DFB5000C4762 /* Rating.h */,
+				85457EA31AD4DFB5000C4762 /* Rating.m */,
 				FC23ABAA1ACD651300879D75 /* Breadcrumb.h */,
 				FC23ABAB1ACD651300879D75 /* Breadcrumb.m */,
 				FC23ABAC1ACD651300879D75 /* DetailProductResult.h */,
@@ -5028,6 +5071,7 @@
 		FC23AF151ACD651400879D75 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				85457EAB1AD4E13C000C4762 /* WishList */,
 				FC23AF161ACD651400879D75 /* FavoritedShop */,
 				FC23AF1D1ACD651400879D75 /* HistoryProduct */,
 				FC23AF211ACD651400879D75 /* HomeTabController */,
@@ -7650,6 +7694,7 @@
 				FC23B5251ACD651600879D75 /* LoadingView.xib in Resources */,
 				FC23B7C41ACD651600879D75 /* icon_shop_info.png in Resources */,
 				FC23B5C31ACD651600879D75 /* DetailProductWholesaleCell.xib in Resources */,
+				85457EB01AD4E158000C4762 /* WishListViewController.xib in Resources */,
 				FC23B5061ACD651600879D75 /* CatalogViewController.xib in Resources */,
 				FC23B7841ACD651600879D75 /* icon_lock_grey@2x.png in Resources */,
 				FC23B8411ACD651600879D75 /* icon_info_grey_small.png in Resources */,
@@ -7961,6 +8006,7 @@
 				FC23B5281ACD651600879D75 /* NoResultView.m in Sources */,
 				FC23B4DF1ACD651600879D75 /* AlertListView.m in Sources */,
 				FC23B3A91ACD651600879D75 /* DepositSummary.m in Sources */,
+				85457E9E1AD4D8EF000C4762 /* WishListObjectList.m in Sources */,
 				FC23B5581ACD651600879D75 /* GeneralTableViewController.m in Sources */,
 				FC23B6A11ACD651600879D75 /* TransactionATCViewController.m in Sources */,
 				FC23B4751ACD651600879D75 /* SettingPaymentResult.m in Sources */,
@@ -8051,6 +8097,7 @@
 				FC23B6191ACD651600879D75 /* ShipmentConfirmationViewController.m in Sources */,
 				FC23B6571ACD651600879D75 /* ShopEditViewController.m in Sources */,
 				FC23B65F1ACD651600879D75 /* ShopHeaderViewController.m in Sources */,
+				85457EA11AD4D907000C4762 /* WishListObjectResult.m in Sources */,
 				FC23B6601ACD651600879D75 /* ShopStatView.m in Sources */,
 				FC23B44F1ACD651600879D75 /* List.m in Sources */,
 				FC23B5EA1ACD651600879D75 /* ProfileFavoriteShopViewController.m in Sources */,
@@ -8235,6 +8282,7 @@
 				FC23B4431ACD651600879D75 /* OrderDeadline.m in Sources */,
 				FC23B6251ACD651600879D75 /* ShipmentStatusCell.m in Sources */,
 				FC23B4CB1ACD651600879D75 /* UploadImageParams.m in Sources */,
+				85457EAF1AD4E158000C4762 /* WishListViewController.m in Sources */,
 				FC23B42C1ACD651600879D75 /* AddressFormResult.m in Sources */,
 				FC23B5A21ACD651600879D75 /* MyShopEtalaseDetailViewController.m in Sources */,
 				FC23B6921ACD651600879D75 /* SortViewController.m in Sources */,
@@ -8366,6 +8414,7 @@
 				FC23B4EC1ACD651600879D75 /* TKPDAlertView.m in Sources */,
 				FC23B6231ACD651600879D75 /* FilterShipmentStatusViewController.m in Sources */,
 				FC23B4C11ACD651600879D75 /* TxOrderPaymentEditResult.m in Sources */,
+				85457E9B1AD4D8DD000C4762 /* WishListObject.m in Sources */,
 				FC23B6BE1ACD651600879D75 /* TransactionShipmentViewController.m in Sources */,
 				FC23B4BE1ACD651600879D75 /* TxOrderPaymentEditForm.m in Sources */,
 				FC23B3D61ACD651600879D75 /* FavoritedShop.m in Sources */,
@@ -8479,6 +8528,7 @@
 				FC23B4331ACD651600879D75 /* NotificationForm.m in Sources */,
 				FC23B3B91ACD651600879D75 /* Breadcrumb.m in Sources */,
 				FC23B4C91ACD651600879D75 /* GenerateHostResult.m in Sources */,
+				85457EA41AD4DFB5000C4762 /* Rating.m in Sources */,
 				FC23B41A1ACD651600879D75 /* ProductTalkFormResult.m in Sources */,
 				FC23B3BF1ACD651600879D75 /* AdvanceReview.m in Sources */,
 				FC23B44E1ACD651600879D75 /* HotlistDetail.m in Sources */,
