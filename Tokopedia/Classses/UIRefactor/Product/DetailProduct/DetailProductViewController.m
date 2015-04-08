@@ -316,7 +316,10 @@
                                        DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_EDIT),
                                        DATA_IS_GOLD_MERCHANT :@(0) //TODO:: Change Value
                                        };
-                [self.navigationController pushViewController:editProductVC animated:YES];
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:editProductVC];
+                nav.navigationBar.translucent = NO;
+                
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
         }

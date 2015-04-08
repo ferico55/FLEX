@@ -25,7 +25,8 @@ typedef enum
     kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY,                // create new note
     kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY,             // only see note detail
     kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY,    // can edit notes but need request
-    kTKPDSETTINGEDIT_DATATYPENEWVIEWADDPRODUCTKEY       // for etalase MyShopEtalaseEditViewController
+    kTKPDSETTINGEDIT_DATATYPENEWVIEWADDPRODUCTKEY,       // for etalase MyShopEtalaseEditViewController
+    NOTES_RETURNABLE_PRODUCT                            // untuk notes pengembalian product
 } kTKPDEDITSHOPTYPE;
 
 typedef enum
@@ -569,6 +570,7 @@ typedef enum
 #define kTKPDNOTES_APINOTESTATUSKEY @"note_status"
 #define kTKPDNOTES_APINOTETITLEKEY @"note_title"
 #define kTKPDNOTES_APINOTECONTENTKEY @"note_content"
+#define NOTES_TERMS_FLAG_KEY @"terms"
 
 #define kTKPDNOTE_APINOTESTITLEKEY @"notes_title"
 #define kTKPDNOTE_APINOTESUPDATETIMEKEY @"notes_update_time"

@@ -681,7 +681,10 @@
                                    kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                                    DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_ADD),
                                    };
-    [self.navigationController pushViewController:productViewController animated:YES];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:productViewController];
+    nav.navigationBar.translucent = NO;
+    
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 - (IBAction)tap:(id)sender {

@@ -110,6 +110,7 @@
         case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
         case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:
         case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
+        case NOTES_RETURNABLE_PRODUCT:
             _titleLabel.hidden = YES;
             _titleNoteTextField.hidden = NO;
             break;
@@ -126,6 +127,7 @@
         case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
         case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:
         case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
+        case NOTES_RETURNABLE_PRODUCT:
             barButtonTitle = @"Simpan";
             break;
         case kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY:
@@ -157,6 +159,11 @@
             self.title = [_data objectForKey:kTKPDNOTES_APINOTETITLEKEY];
             _barbuttonedit.tag = 12;
             _barbuttonedit.enabled = NO;
+            break;
+        case NOTES_RETURNABLE_PRODUCT:
+            self.title = @"Tambah Catatan";
+            _barbuttonedit.tag = 11;
+            break;
         default:
             break;
     }
@@ -169,7 +176,7 @@
         shopId = [[_data objectForKey:@"shop_id"] stringValue];
     }
     
-    if([_userManager isMyShopWithShopId:shopId]) {
+    if([_userManager isMyShopWithShopId:shopId] || _type == NOTES_RETURNABLE_PRODUCT) {
         self.navigationItem.rightBarButtonItem = _barbuttonedit;
     }
 
@@ -234,14 +241,20 @@
                 NSString *notetitle = [_datainput objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:_note.result.detail.notes_title?:@"";
                 NSString *content = [_datainput objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:_note.result.detail.notes_content;
                 
-                if (notetitle && ![notetitle isEqualToString:@""] &&
+                if (_type == NOTES_RETURNABLE_PRODUCT &&
                     content && ![content isEqualToString:@""]) {
+                    [self configureRestKitActionNote];
+                    [self requestActionNote:_datainput];
+                }
+                else if (notetitle && ![notetitle isEqualToString:@""] &&
+                    content && ![content isEqualToString:@""])
+                {
                     [self configureRestKitActionNote];
                     [self requestActionNote:_datainput];
                 }
                 else
                 {
-                    if (!notetitle || [notetitle isEqualToString:@""]) {
+                    if ((!notetitle || [notetitle isEqualToString:@""])&& _type!=NOTES_RETURNABLE_PRODUCT) {
                         [messages addObject:@"Title harus diisi."];
                     }
                     if (!content || [content isEqualToString:@""]) {
@@ -334,11 +347,13 @@
     
     NSInteger shopID = [[_auth objectForKey:kTKPD_SHOPIDKEY]integerValue] ?:[[_data objectForKey:kTKPD_SHOPIDKEY] integerValue];
     NSInteger noteID = [[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue];
+    NSInteger terms = (_type == NOTES_RETURNABLE_PRODUCT)?1:0;
     
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETNOTESDETAILKEY,
                             kTKPDDETAIL_APISHOPIDKEY : @(shopID),
-                            kTKPDNOTES_APINOTEIDKEY : @(noteID)
+                            kTKPDNOTES_APINOTEIDKEY : @(noteID),
+                            NOTES_TERMS_FLAG_KEY : @(terms)
                             };
     NSTimer *timer;
     
@@ -447,11 +462,11 @@
             if (status) {
                 _barbuttonedit.enabled = YES;
                 _timeNoteLabel.hidden = NO;
-                _titleNoteTextField.text = _note.result.detail.notes_title;
-                _titleLabel.text = _note.result.detail.notes_title;
+                _titleNoteTextField.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
+                _titleLabel.text = [_note.result.detail.notes_title isEqual:@"0"]?@"":_note.result.detail.notes_title;
                 _titleLabel.numberOfLines = 0;
                 [_titleLabel sizeToFit];
-                _timeNoteLabel.text = _note.result.detail.notes_update_time;
+                _timeNoteLabel.text = [_note.result.detail.notes_update_time isEqual:@"0"]?@"":_note.result.detail.notes_update_time;
                 
                 NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
                 
@@ -462,12 +477,41 @@
                 UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
                 [attributes setObject:font forKey:NSFontAttributeName];
                 
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
+                NSString *contentNote = [_note.result.detail.notes_content isEqualToString:@"0"]?@"":_note.result.detail.notes_content;
+                
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:contentNote attributes:attributes];
                 _contentNoteTextView.attributedText = attributedString;
                 
                 if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
                     _barbuttonedit.enabled = YES;
                     _barbuttonedit.tintColor = [UIColor whiteColor];
+                }
+                
+                if (_type == NOTES_RETURNABLE_PRODUCT && [_note.result.detail.notes_title isEqual:@"0"])
+                {
+                    _titleNoteTextField.hidden = NO;
+                    _titleNoteTextField.text = @"Kebijakan Pengembalian Produk";
+                    _titleNoteTextField.enabled = NO;
+                    _barbuttonedit.enabled = YES;
+                    
+                    NSDate *date = [NSDate date];
+                    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
+                    NSInteger year = [components year];
+                    NSInteger day = [components day];
+                    
+                    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                    dateFormatter.dateFormat = @"yyyyMMdd";
+                    [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"id"]];
+                    
+                    dateFormatter.dateFormat=@"MMMM";
+                    NSString * monthString = [[dateFormatter stringFromDate:date] capitalizedString];
+                    NSLog(@"month: %@", monthString);
+                    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+                    NSString *currentTime = [dateFormatter stringFromDate:date];
+                    
+                    _timeNoteLabel.text = [NSString stringWithFormat:@"%zd %@ %zd, %@",
+                                           day, monthString, year, currentTime];
+                    [_datainput setObject:_timeNoteLabel.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
                 }
             }
         }
@@ -531,21 +575,40 @@
 {
     if (_requestActionNote.isExecuting) return;
     
-    NSTimer *timer;
+    NSTimer *timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                              target:self
+                                                            selector:@selector(requestTimeoutActionNote)
+                                                            userInfo:nil
+                                                             repeats:NO];
+    
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     
     NSDictionary *userinfo = (NSDictionary*)object;
     
     NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
-    NSString *action = (_type==2)?kTKPDDETAIL_APIADDNOTESDETAILKEY:kTKPDDETAIL_APIEDITNOTESDETAILKEY;
-    NSInteger noteID = [[_data objectForKey:kTKPDNOTES_APINOTEIDKEY]integerValue];
+    
+    NSString *action;
+    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY) {
+        action = kTKPDDETAIL_APIADDNOTESDETAILKEY;
+    }
+    else
+    {
+        action =kTKPDDETAIL_APIEDITNOTESDETAILKEY;
+    }
+    
+    NSString *noteID = [_data objectForKey:kTKPDNOTES_APINOTEIDKEY];
     NSString *noteTitle = [userinfo objectForKey:kTKPDNOTE_APINOTESTITLEKEY]?:_note.result.detail.notes_title?:@"";
+    if (_type == NOTES_RETURNABLE_PRODUCT) {
+        noteTitle = @"Kebijakan Pengembalian Produk";
+    }
     NSString *noteContent = [userinfo objectForKey:kTKPDNOTE_APINOTESCONTENTKEY]?:[NSString convertHTML:_note.result.detail.notes_content]?:@"";
-    NSInteger userID = [[auth objectForKey: kTKPD_USERIDKEY]integerValue]?:0;
+     NSInteger terms = (_type == NOTES_RETURNABLE_PRODUCT)?1:0;
+    
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action,
-                            kTKPDNOTES_APINOTEIDKEY : @(noteID),
+                            kTKPDNOTES_APINOTEIDKEY : noteID?:@"",
                             kTKPDNOTES_APINOTETITLEKEY : noteTitle,
                             kTKPDNOTES_APINOTECONTENTKEY : noteContent,
-                            kTKPD_USERIDKEY : @(userID)
+                            NOTES_TERMS_FLAG_KEY : @(terms)
                             };
     _requestcount ++;
     
@@ -568,13 +631,6 @@
     
     [_operationQueue addOperation:_requestActionNote];
     
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                            target:self
-                                          selector:@selector(requestTimeoutActionNote)
-                                          userInfo:nil
-                                           repeats:NO];
-    
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)requestSuccessActionNote:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -786,6 +842,36 @@
                 _titleNoteTextField.hidden = NO;
                 _titleLabel.hidden = YES;
                 [_barbuttonedit setEnabled:YES];
+                [self configureRestKit];
+                [self request];
+                break;
+            }
+            case NOTES_RETURNABLE_PRODUCT:
+            {
+                _titleNoteTextField.hidden = NO;
+                _titleNoteTextField.text = @"Kebijakan Pengembalian Produk";
+                _titleNoteTextField.enabled = NO;
+                _barbuttonedit.enabled = YES;
+                
+                NSDate *date = [NSDate date];
+                NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit | NSMonthCalendarUnit | NSYearCalendarUnit fromDate:date];
+                NSInteger year = [components year];
+                NSInteger day = [components day];
+                
+                NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                dateFormatter.dateFormat = @"yyyyMMdd";
+                [dateFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"id"]];
+                
+                dateFormatter.dateFormat=@"MMMM";
+                NSString * monthString = [[dateFormatter stringFromDate:date] capitalizedString];
+                NSLog(@"month: %@", monthString);
+                [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+                NSString *currentTime = [dateFormatter stringFromDate:date];
+                
+                _timeNoteLabel.text = [NSString stringWithFormat:@"%zd %@ %zd, %@",
+                                       day, monthString, year, currentTime];
+                [_datainput setObject:_timeNoteLabel.text forKey:kTKPDNOTE_APINOTESUPDATETIMEKEY];
+                
                 [self configureRestKit];
                 [self request];
                 break;

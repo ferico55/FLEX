@@ -467,6 +467,8 @@
     [storage resetKeychain];
     [_auth removeAllObjects];
     
+    [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION
                                                         object:nil
                                                       userInfo:@{}];
