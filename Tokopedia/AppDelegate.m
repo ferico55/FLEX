@@ -37,6 +37,12 @@
      NSLog(@"path:%@",[[NSBundle mainBundle]bundlePath]);
     
     [Fabric with:@[CrashlyticsKit]];
+    
+    [GAI sharedInstance].trackUncaughtExceptions = YES;
+    [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
+    [GAI sharedInstance].dispatchInterval = 20;
+    id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:@"UA-9801603-10"];
+    
     [self adjustnavigationbar];
     
     if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {

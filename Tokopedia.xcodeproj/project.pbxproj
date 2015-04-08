@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		7A9AA3171AD4DFCC00FD8312 /* Rating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9AA3161AD4DFCC00FD8312 /* Rating.m */; };
+		7A9AA3241AD50C5000FD8312 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9AA3231AD50C5000FD8312 /* libGoogleAnalyticsServices.a */; };
+		7A9AA3261AD50C8500FD8312 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9AA3251AD50C8500FD8312 /* CoreData.framework */; };
+		7A9AA3281AD50CA000FD8312 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9AA3271AD50CA000FD8312 /* libz.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
@@ -1277,6 +1280,19 @@
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		7A9AA3151AD4DFCC00FD8312 /* Rating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rating.h; sourceTree = "<group>"; };
 		7A9AA3161AD4DFCC00FD8312 /* Rating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Rating.m; sourceTree = "<group>"; };
+		7A9AA3191AD50AA100FD8312 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
+		7A9AA31A1AD50AA100FD8312 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
+		7A9AA31B1AD50AA100FD8312 /* GAIEcommerceFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceFields.h; sourceTree = "<group>"; };
+		7A9AA31C1AD50AA100FD8312 /* GAIEcommerceProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProduct.h; sourceTree = "<group>"; };
+		7A9AA31D1AD50AA100FD8312 /* GAIEcommerceProductAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProductAction.h; sourceTree = "<group>"; };
+		7A9AA31E1AD50AA100FD8312 /* GAIEcommercePromotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommercePromotion.h; sourceTree = "<group>"; };
+		7A9AA31F1AD50AA100FD8312 /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
+		7A9AA3201AD50AA100FD8312 /* GAILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAILogger.h; sourceTree = "<group>"; };
+		7A9AA3211AD50AA100FD8312 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
+		7A9AA3221AD50AA100FD8312 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
+		7A9AA3231AD50C5000FD8312 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalyticsServices.a; path = ../../../../Downloads/GoogleAnalyticsServicesiOS_3.10/libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
+		7A9AA3251AD50C8500FD8312 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		7A9AA3271AD50CA000FD8312 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -3201,6 +3217,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A9AA3281AD50CA000FD8312 /* libz.dylib in Frameworks */,
+				7A9AA3261AD50C8500FD8312 /* CoreData.framework in Frameworks */,
 				854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */,
 				FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */,
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
@@ -3212,6 +3230,7 @@
 				FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */,
 				D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */,
 				FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */,
+				7A9AA3241AD50C5000FD8312 /* libGoogleAnalyticsServices.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3239,6 +3258,23 @@
 				C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		7A9AA3181AD50AA100FD8312 /* GoogleAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				7A9AA3191AD50AA100FD8312 /* GAI.h */,
+				7A9AA31A1AD50AA100FD8312 /* GAIDictionaryBuilder.h */,
+				7A9AA31B1AD50AA100FD8312 /* GAIEcommerceFields.h */,
+				7A9AA31C1AD50AA100FD8312 /* GAIEcommerceProduct.h */,
+				7A9AA31D1AD50AA100FD8312 /* GAIEcommerceProductAction.h */,
+				7A9AA31E1AD50AA100FD8312 /* GAIEcommercePromotion.h */,
+				7A9AA31F1AD50AA100FD8312 /* GAIFields.h */,
+				7A9AA3201AD50AA100FD8312 /* GAILogger.h */,
+				7A9AA3211AD50AA100FD8312 /* GAITrackedViewController.h */,
+				7A9AA3221AD50AA100FD8312 /* GAITracker.h */,
+			);
+			path = GoogleAnalytics;
 			sourceTree = "<group>";
 		};
 		FC23AB3A1ACD651300879D75 /* Classses */ = {
@@ -6803,6 +6839,7 @@
 		FC23B35F1ACD651600879D75 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				7A9AA3181AD50AA100FD8312 /* GoogleAnalytics */,
 				FC23B3601ACD651600879D75 /* HPGrowingTextView.h */,
 				FC23B3611ACD651600879D75 /* HPGrowingTextView.m */,
 				FC23B3621ACD651600879D75 /* HPTextViewInternal.h */,
@@ -7070,6 +7107,9 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7A9AA3271AD50CA000FD8312 /* libz.dylib */,
+				7A9AA3251AD50C8500FD8312 /* CoreData.framework */,
+				7A9AA3231AD50C5000FD8312 /* libGoogleAnalyticsServices.a */,
 				FC23B8571ACD659900879D75 /* Crashlytics.framework */,
 				FC23B8581ACD659900879D75 /* Fabric.framework */,
 				28F341981A2586D800349DD2 /* libPods-Tokopedia.a */,
@@ -8678,6 +8718,7 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphoneos",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphonesimulator",
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
+					/Users/tonitoacen/Downloads/GoogleAnalyticsServicesiOS_3.10,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -8709,6 +8750,7 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphoneos",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphonesimulator",
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
+					/Users/tonitoacen/Downloads/GoogleAnalyticsServicesiOS_3.10,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
