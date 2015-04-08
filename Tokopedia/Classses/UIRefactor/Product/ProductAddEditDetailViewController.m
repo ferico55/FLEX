@@ -24,6 +24,7 @@
 #import "MyShopNoteViewController.h"
 #import "Breadcrumb.h"
 #import "ProductDetail.h"
+#import "MyShopNoteDetailViewController.h"
 
 @interface ProductAddEditDetailViewController ()
 <
@@ -128,7 +129,9 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        _wholesaleList = [NSMutableArray new];
+        _dataInput = [NSMutableDictionary new];
+        _operationQueue = [NSOperationQueue new];
     }
     return self;
 }
@@ -138,26 +141,9 @@
 {
     [super viewDidLoad];
     
-    _wholesaleList = [NSMutableArray new];
-    _dataInput = [NSMutableDictionary new];
-    
-    _operationQueue = [NSOperationQueue new];
-    
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStylePlain
-                                                                     target:self
-                                                                     action:@selector(tap:)];
-    barButtonItem.tag = BARBUTTON_PRODUCT_BACK;
-    self.navigationItem.backBarButtonItem = barButtonItem;
-    
-    _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
-                                                          style:UIBarButtonItemStyleDone
-                                                         target:(self)
-                                                         action:@selector(tap:)];
-    _saveBarButtonItem.tag = BARBUTTON_PRODUCT_SAVE;
-    self.navigationItem.rightBarButtonItem = _saveBarButtonItem;
-    
+    [self adjustBarButton];
     [self setDefaultData:_data];
+    [self adjustReturnableNotesLabel];
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(keyboardWillShow:)
@@ -167,28 +153,10 @@
                name:UIKeyboardWillHideNotification
              object:nil];
     
-    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-    _auth = [secureStorage keychainDictionary];
-    
-    NSString *string = _pengembalianProductLabel.text;
-    
-    UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-    
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    style.lineSpacing = 6.0;
-    
-    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
-                                 NSFontAttributeName: font,
-                                 NSParagraphStyleAttributeName: style,
-                                 };
-    
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:string
-                                                                                    attributes:attributes];
-    
-    _pengembalianProductLabel.attributedText = attributedText;
-    
     _isBeingPresented = self.navigationController.isBeingPresented;
+
 }
+
 
 -(void)viewWillDisappear:(BOOL)animated
 {
@@ -245,6 +213,16 @@
             default:
                 break;
         }
+    }
+    if ([sender isKindOfClass:[UIButton class]]) {
+        MyShopNoteDetailViewController *vc = [MyShopNoteDetailViewController new];
+        vc.data = @{kTKPDDETAIL_DATATYPEKEY : @(NOTES_RETURNABLE_PRODUCT)
+                    };
+
+        UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+        nav.navigationBar.translucent = NO;
+        
+        [self.navigationController presentViewController:nav animated:YES completion:nil];
     }
 }
 
@@ -315,8 +293,11 @@
             }
             else if (indexPath.row == BUTTON_PRODUCT_ETALASE_DETAIL)
             {
-                cell.detailTextLabel.textColor = (isProductWarehouse)?[UIColor grayColor]:[UIColor blueColor];
-                cell.detailTextLabel.text = (isProductWarehouse)?@"-":[product.product_etalase isEqualToString:@"0"]?@"Pilih Etalase":product.product_etalase;
+                cell.detailTextLabel.textColor = (isProductWarehouse)?[UIColor grayColor]:[UIColor colorWithRed:(0.f/255.f) green:122.f/255.f blue:255.f/255.f alpha:1];
+                if (isProductWarehouse)
+                    cell.detailTextLabel.text = @"-";
+                else
+                    cell.detailTextLabel.text = ([product.product_etalase isEqualToString:@"0"]||!product.product_etalase)?@"Pilih Etalase":product.product_etalase;
             }
             break;
         case 2:
@@ -548,13 +529,11 @@
     NSDictionary *userInfo = (NSDictionary*)object;
 #define PRODUCT_MOVETO_WAREHOUSE_ID @"2"
     
-    //TODO:: catalogid
-    
     Breadcrumb *breadcrumb = [_dataInput objectForKey:DATA_CATEGORY_KEY];
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
 
     NSString *action = ACTION_ADD_PRODUCT_VALIDATION;
-    NSInteger serverID = [[userInfo objectForKey:API_SERVER_ID_KEY] integerValue]?:0;
+    NSInteger serverID = [_generateHost.result.generated_host.server_id integerValue]?:0;
     NSString *productName = product.product_name?:@"";
     NSString *productDescription = product.product_description?:@"";
     NSString *departmentID = breadcrumb.department_id?:@"";
@@ -741,19 +720,6 @@
     
 }
 
-/**
- # add product new langkah ke-2
- # sub add_product_picture example URL
- # www.tkpdevel-pg.ekarisky/ws/action/product.pl?action=add_product_picture&
- # product_photo=&
- # product_photo_desc=&
- # product_photo_default=&
- # duplicate=&
- # user_id=&
- # token=&
- # server_id=&
- # web_service=
- **/
 -(void)requestActionAddProductPicture:(id)object
 {
     if (_requestActionAddProductPicture.isExecuting) return;
@@ -761,8 +727,6 @@
     
     NSDictionary *userInfo = (NSDictionary*)object;
     
-    
-    //TODO:: catalogid,duplicate,token,webservice
     NSString *action = ACTION_ADD_PRODUCT_PICTURE;
     NSString *productPhoto = [userInfo objectForKey:API_PRODUCT_IMAGE_TOUPLOAD_KEY]?:@"";
     NSString *productPhotoDesc = [userInfo objectForKey:API_PRODUCT_IMAGE_DESCRIPTION_KEY]?:@"";
@@ -772,13 +736,15 @@
     NSInteger type = [[_data objectForKey:DATA_TYPE_ADD_EDIT_PRODUCT_KEY]integerValue];
     NSInteger duplicate = (type == TYPE_ADD_EDIT_PRODUCT_COPY)?1:0;
     
-    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action?:@"",
-                                      API_SERVER_ID_KEY : serverID,
-                                      API_PRODUCT_IMAGE_TOUPLOAD_KEY : productPhoto?:@(0),
-                                      API_PRODUCT_IMAGE_DESCRIPTION_KEY: productPhotoDesc,
-                                      API_PRODUCT_IMAGE_DEFAULT_KEY: photoDefault?:@"",
-                                      API_IS_DUPLICATE_KEY :@(duplicate),
-                                      };
+    NSDictionary* param = @{
+                            kTKPDDETAIL_APIACTIONKEY:action?:@"",
+                            API_SERVER_ID_KEY : serverID,
+                            API_PRODUCT_IMAGE_TOUPLOAD_KEY : productPhoto?:@(0),
+                            API_PRODUCT_IMAGE_DESCRIPTION_KEY: productPhotoDesc,
+                            API_PRODUCT_IMAGE_DEFAULT_KEY: photoDefault?:@"",
+                            API_IS_DUPLICATE_KEY :@(duplicate),
+                            @"web_service" : @(1)
+                            };
     
     _requestActionAddProductPicture = [_objectManagerActionAddProductPicture appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
     
@@ -828,6 +794,7 @@
                     NSArray *array = setting.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    _saveBarButtonItem.enabled = YES;
                 }
                 else
                 {
@@ -1049,7 +1016,7 @@
     ProductDetail *product = [userInfo objectForKey:DATA_PRODUCT_DETAIL_KEY];
     Breadcrumb *breadcrumb = [userInfo objectForKey:DATA_CATEGORY_KEY];
     
-    NSInteger serverID = [[userInfo objectForKey:API_SERVER_ID_KEY] integerValue]?:0;
+    NSInteger serverID = [_generateHost.result.generated_host.server_id integerValue]?:0;
     NSString *productName = product.product_name?:@"";
     NSString *productDescription = product.product_description?:@"";
     NSString *productPrice = product.product_price?:0;
@@ -1243,28 +1210,27 @@
 -(void)requestActionMoveToWarehouse:(id)object
 {
     if (_requestActionMoveToWarehouse.isExecuting) return;
-    NSTimer *timer;
+    
+    NSTimer *timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionMoveToWarehouse) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     
     ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
     
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:ACTION_MOVE_TO_WAREHOUSE,
                             kTKPDDETAILPRODUCT_APIPRODUCTIDKEY : product.product_id?:@"",
                             };
-    _requestActionMoveToWarehouse = [_objectmanagerActionMoveToWarehouse appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]]; //kTKPDPROFILE_PROFILESETTINGAPIPATH
+    _requestActionMoveToWarehouse = [_objectmanagerActionMoveToWarehouse appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILACTIONPRODUCT_APIPATH parameters:[param encrypt]];
     
     [_requestActionMoveToWarehouse setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionMoveToWarehouse:mappingResult withOperation:operation];
         [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
         [self requestFailureActionMoveToWarehouse:error];
         [timer invalidate];
     }];
     
     [_operationQueue addOperation:_requestActionMoveToWarehouse];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionMoveToWarehouse) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+
 }
 
 -(void)requestSuccessActionMoveToWarehouse:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -1305,13 +1271,13 @@
                     NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
                     
-                    if (_isBeingPresented) {
+                    //if (_isBeingPresented) {
                         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                    } else {
-                        NSInteger indexPopViewController = self.navigationController.viewControllers.count-3;
-                        UIViewController *popViewController = self.navigationController.viewControllers [indexPopViewController];
-                        [self.navigationController popToViewController:popViewController animated:NO];
-                    }
+                    //} else {
+                    //    NSInteger indexPopViewController = self.navigationController.viewControllers.count-3;
+                    //    UIViewController *popViewController = self.navigationController.viewControllers [indexPopViewController];
+                    //    [self.navigationController popToViewController:popViewController animated:NO];
+                    //}
                 }
             }
         }
@@ -1325,6 +1291,11 @@
             }
         }
     }
+}
+
+-(void)requestTimeoutActionMoveToWarehouse
+{
+    [self cancelActionMoveToWarehouse];
 }
 
 
@@ -1409,7 +1380,7 @@
         {
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
             NSString *value = [ARRAY_PRODUCT_MOVETO_ETALASE[index] objectForKey:DATA_VALUE_KEY];
-            product.product_move_to = ([value integerValue]==1)?@"0":value;
+            product.product_move_to = value;//([value integerValue]==1)?@"0":value;
             if (index == 0) {
                 product.product_etalase_id = @(0);
             }
@@ -1491,6 +1462,40 @@
                                 wholesaleQuantityMinimum:@(minimum)
                                 };
     [_wholesaleList addObject:wholesale];
+}
+
+-(void)adjustBarButton
+{
+    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    barButtonItem.tag = BARBUTTON_PRODUCT_BACK;
+    self.navigationItem.backBarButtonItem = barButtonItem;
+    
+    _saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
+                                                          style:UIBarButtonItemStyleDone
+                                                         target:(self)
+                                                         action:@selector(tap:)];
+    _saveBarButtonItem.tag = BARBUTTON_PRODUCT_SAVE;
+    self.navigationItem.rightBarButtonItem = _saveBarButtonItem;
+}
+
+-(void)adjustReturnableNotesLabel
+{
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 6.0;
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]  initWithString:_pengembalianProductLabel.text];
+    [attributedString addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_10 range:[_pengembalianProductLabel.text rangeOfString:@"Klik Disini"]];
+    [attributedString addAttribute:NSForegroundColorAttributeName
+                             value:[UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1]
+                             range:[_pengembalianProductLabel.text rangeOfString:@"Klik Disini"]];
+    
+    [attributedString addAttribute:NSParagraphStyleAttributeName
+                             value:style
+                             range:[_pengembalianProductLabel.text rangeOfString:_pengembalianProductLabel.text]];
+    
+    _pengembalianProductLabel.attributedText = attributedString;
 }
 
 @end

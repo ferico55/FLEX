@@ -25,6 +25,7 @@
 #import "InboxReviewViewController.h"
 #import "NotificationState.h"
 #import "UserAuthentificationManager.h"
+#import "WishListViewController.h"
 
 @interface HomeTabViewController () <UIScrollViewDelegate,
                                     NotificationManagerDelegate,
@@ -42,6 +43,7 @@
 @property (strong, nonatomic) HistoryProductViewController *historyController;
 @property (strong, nonatomic) FavoritedShopViewController *shopViewController;
 @property (strong, nonatomic) HomeTabHeaderViewController *homeHeaderController;
+@property (strong, nonatomic) WishListViewController *wishListViewController;
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet UIView *homeHeaderView;
 
@@ -76,6 +78,9 @@
     
     _homeHeaderController = [HomeTabHeaderViewController new];
     _notifManager = [NotificationManager new];
+    
+    _wishListViewController = [WishListViewController new];
+    _wishListViewController.delegate = self;
 
     
     [self initNotificationCenter];
@@ -92,7 +97,7 @@
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
-    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*4, 300)];
+    [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, 300)];
     [_scrollView setPagingEnabled:YES];
     _scrollView.delegate = self;
 
@@ -117,7 +122,7 @@
 
     } else {
         _isAbleToSwipe = YES;
-        [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*4, 300)];
+        [_scrollView setContentSize:CGSizeMake(_scrollView.frame.size.width*5, 300)];
         [_scrollView setPagingEnabled:YES];
     }
 }
@@ -182,6 +187,14 @@
         [self.scrollView addSubview:_productFeedController.view];
         [_productFeedController didMoveToParentViewController:self];
     } else if(page == 2) {
+        CGRect frame = _wishListViewController.view.frame;
+        frame.origin.x = _scrollView.frame.size.width*page;
+        _wishListViewController.view.frame = frame;
+        
+        [self addChildViewController:_wishListViewController];
+        [self.scrollView addSubview:_wishListViewController.view];
+        [_wishListViewController didMoveToParentViewController:self];
+    } else if(page == 3) {
         CGRect frame = _historyController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
         _historyController.view.frame = frame;
@@ -189,7 +202,7 @@
         [self addChildViewController:_historyController];
         [self.scrollView addSubview:_historyController.view];
         [_historyController didMoveToParentViewController:self];
-    } else if(page == 3) {
+    } else if(page == 4) {
         CGRect frame = _shopViewController.view.frame;
         frame.origin.x = _scrollView.frame.size.width*page;
         _shopViewController.view.frame = frame;
@@ -215,6 +228,8 @@
         [self tapButtonAnimate:_scrollView.frame.size.width*2];
     } else if(index == 4) {
         [self tapButtonAnimate:_scrollView.frame.size.width*3];
+    } else if(index == 5) {
+        [self tapButtonAnimate:_scrollView.frame.size.width*4];
     }
 }
 

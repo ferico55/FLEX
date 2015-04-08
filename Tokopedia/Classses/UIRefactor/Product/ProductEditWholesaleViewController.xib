@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <deployment defaultVersion="1536" identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -28,41 +28,56 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="150" sectionHeaderHeight="1" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="zm8-32-e0B">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="525"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="zAS-Lp-RT3"/>
                         <outlet property="delegate" destination="-1" id="Cd6-gc-C5h"/>
                     </connections>
                 </tableView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SUa-KT-Wxp">
-                    <rect key="frame" x="15" y="531" width="244" height="29"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XZZ-Xm-vsg">
+                    <rect key="frame" x="0.0" y="528" width="320" height="40"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SUa-KT-Wxp">
+                            <rect key="frame" x="15" y="7" width="297" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="29" id="08y-lu-upo"/>
+                                <constraint firstAttribute="width" constant="297" id="Xc6-SP-MHH"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
+                            <state key="normal" title="Tambah Harga Grosir">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="QVn-Y5-9a1"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="29" id="L2H-4M-W4S"/>
-                        <constraint firstAttribute="width" constant="244" id="ySX-hZ-PaJ"/>
+                        <constraint firstItem="SUa-KT-Wxp" firstAttribute="top" secondItem="XZZ-Xm-vsg" secondAttribute="top" constant="7" id="Kjx-Jl-ARN"/>
+                        <constraint firstAttribute="height" constant="40" id="mp8-xG-NmU"/>
+                        <constraint firstAttribute="bottom" secondItem="SUa-KT-Wxp" secondAttribute="bottom" constant="4" id="oPp-I4-rZz"/>
+                        <constraint firstItem="SUa-KT-Wxp" firstAttribute="leading" secondItem="XZZ-Xm-vsg" secondAttribute="leading" constant="15" id="wL7-PX-PjC"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="15"/>
-                    <state key="normal" title="Tambah Harga Grosir">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                    <connections>
-                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="QVn-Y5-9a1"/>
-                    </connections>
-                </button>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="SUa-KT-Wxp" secondAttribute="bottom" constant="8" id="0R9-ho-iJR"/>
-                <constraint firstItem="zm8-32-e0B" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Nvg-ZO-r2b"/>
-                <constraint firstItem="SUa-KT-Wxp" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="RzB-rP-rBj"/>
-                <constraint firstItem="zm8-32-e0B" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="Uj5-Tz-6kR"/>
-                <constraint firstItem="SUa-KT-Wxp" firstAttribute="top" secondItem="zm8-32-e0B" secondAttribute="bottom" constant="6" id="gdo-zB-ZeZ"/>
-                <constraint firstAttribute="trailing" secondItem="zm8-32-e0B" secondAttribute="trailing" id="mcQ-50-4fO"/>
+                <constraint firstAttribute="trailing" secondItem="XZZ-Xm-vsg" secondAttribute="trailing" id="9lP-dZ-XJr"/>
+                <constraint firstItem="XZZ-Xm-vsg" firstAttribute="top" secondItem="zm8-32-e0B" secondAttribute="bottom" id="Sfl-rN-IXn"/>
+                <constraint firstAttribute="bottom" secondItem="XZZ-Xm-vsg" secondAttribute="bottom" id="faF-tx-bGT"/>
+                <constraint firstItem="zm8-32-e0B" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="hL3-Oh-dQX"/>
+                <constraint firstItem="XZZ-Xm-vsg" firstAttribute="top" secondItem="zm8-32-e0B" secondAttribute="bottom" id="i0t-tQ-tLC"/>
+                <constraint firstItem="XZZ-Xm-vsg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="jH1-gW-ZNG"/>
+                <constraint firstAttribute="trailing" secondItem="zm8-32-e0B" secondAttribute="trailing" id="rcB-Gp-Ap3"/>
+                <constraint firstItem="zm8-32-e0B" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="vRr-rX-59R"/>
             </constraints>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="YDd-q6-bMu" appends="YES" id="B5y-Io-qiN"/>
             </connections>
+            <point key="canvasLocation" x="430" y="457"/>
         </view>
         <view contentMode="scaleToFill" id="UyG-mq-n15">
             <rect key="frame" x="0.0" y="0.0" width="320" height="180"/>

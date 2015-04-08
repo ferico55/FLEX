@@ -50,19 +50,27 @@
     [button2 addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
     [_scrollView addSubview:button2];
     
-    UIButton *button3 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*3, 0, (self.view.frame.size.width/3), 44)];
+    UIButton *buttonWishList = [[UIButton alloc] initWithFrame:CGRectMake((self.view.bounds.size.width/3)*3, 0, self.view.bounds.size.width/3, 44)];
+    [buttonWishList setTitle:@"WishList" forState:UIControlStateNormal];
+    [buttonWishList setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
+    buttonWishList.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+    buttonWishList.tag = 3;
+    [buttonWishList addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
+    [_scrollView addSubview:buttonWishList];
+    
+    UIButton *button3 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*4, 0, (self.view.frame.size.width/3), 44)];
     [button3 setTitle:@"Terakhir Dilihat" forState:UIControlStateNormal];
     [button3 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
     button3.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-    button3.tag = 3;
+    button3.tag = 4;
     [button3 addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
     [_scrollView addSubview:button3];
     
-    UIButton *button4 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*4, 0, (self.view.frame.size.width/3), 44)];
+    UIButton *button4 = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width/3)*5, 0, (self.view.frame.size.width/3), 44)];
     [button4 setTitle:@"Toko Favorit" forState:UIControlStateNormal];
     [button4 setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
     button4.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
-    button4.tag = 4;
+    button4.tag = 5;
     [button4 addTarget:self action:@selector(tapButton:) forControlEvents:UIControlEventTouchUpInside];
     [_scrollView addSubview:button4];
 }
@@ -158,6 +166,14 @@
             _viewControllerIndex = 4;
             break;
         }
+    
+        case 5 : {
+            _totalOffset = (self.view.frame.size.width/3)*4;
+            [self tapButtonAnimate:_totalOffset];
+            _viewControllerIndex = 5;
+            break;
+        }
+            
         default:
             break;
     }
