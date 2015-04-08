@@ -12,6 +12,11 @@
 		7A9AA3241AD50C5000FD8312 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9AA3231AD50C5000FD8312 /* libGoogleAnalyticsServices.a */; };
 		7A9AA3261AD50C8500FD8312 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9AA3251AD50C8500FD8312 /* CoreData.framework */; };
 		7A9AA3281AD50CA000FD8312 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9AA3271AD50CA000FD8312 /* libz.dylib */; };
+		7A9AA32E1AD51E3B00FD8312 /* ContactUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9AA32C1AD51E3B00FD8312 /* ContactUsViewController.m */; };
+		7A9AA32F1AD51E3B00FD8312 /* ContactUsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A9AA32D1AD51E3B00FD8312 /* ContactUsViewController.xib */; };
+		7A9AA38D1AD52ACA00FD8312 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9AA38C1AD52ACA00FD8312 /* CoreText.framework */; };
+		7A9AA38F1AD52AD900FD8312 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9AA38E1AD52AD900FD8312 /* CoreTelephony.framework */; };
+		7A9AA3911AD52E4900FD8312 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9AA3901AD52E4900FD8312 /* libsqlite3.0.dylib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
@@ -1293,6 +1298,12 @@
 		7A9AA3231AD50C5000FD8312 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalyticsServices.a; path = ../../../../Downloads/GoogleAnalyticsServicesiOS_3.10/libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
 		7A9AA3251AD50C8500FD8312 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		7A9AA3271AD50CA000FD8312 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		7A9AA32B1AD51E3B00FD8312 /* ContactUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactUsViewController.h; sourceTree = "<group>"; };
+		7A9AA32C1AD51E3B00FD8312 /* ContactUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactUsViewController.m; sourceTree = "<group>"; };
+		7A9AA32D1AD51E3B00FD8312 /* ContactUsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactUsViewController.xib; sourceTree = "<group>"; };
+		7A9AA38C1AD52ACA00FD8312 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		7A9AA38E1AD52AD900FD8312 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		7A9AA3901AD52E4900FD8312 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -3217,6 +3228,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A9AA3911AD52E4900FD8312 /* libsqlite3.0.dylib in Frameworks */,
+				FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */,
+				7A9AA38F1AD52AD900FD8312 /* CoreTelephony.framework in Frameworks */,
+				7A9AA38D1AD52ACA00FD8312 /* CoreText.framework in Frameworks */,
 				7A9AA3281AD50CA000FD8312 /* libz.dylib in Frameworks */,
 				7A9AA3261AD50C8500FD8312 /* CoreData.framework in Frameworks */,
 				854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */,
@@ -3227,7 +3242,6 @@
 				FCFF63561ABA79660076000E /* FacebookSDK.framework in Frameworks */,
 				FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
-				FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */,
 				D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */,
 				FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */,
 				7A9AA3241AD50C5000FD8312 /* libGoogleAnalyticsServices.a in Frameworks */,
@@ -3275,6 +3289,16 @@
 				7A9AA3221AD50AA100FD8312 /* GAITracker.h */,
 			);
 			path = GoogleAnalytics;
+			sourceTree = "<group>";
+		};
+		7A9AA3291AD51E2000FD8312 /* ContactUs */ = {
+			isa = PBXGroup;
+			children = (
+				7A9AA32B1AD51E3B00FD8312 /* ContactUsViewController.h */,
+				7A9AA32C1AD51E3B00FD8312 /* ContactUsViewController.m */,
+				7A9AA32D1AD51E3B00FD8312 /* ContactUsViewController.xib */,
+			);
+			path = ContactUs;
 			sourceTree = "<group>";
 		};
 		FC23AB3A1ACD651300879D75 /* Classses */ = {
@@ -4646,6 +4670,7 @@
 		FC23AE201ACD651400879D75 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				7A9AA3291AD51E2000FD8312 /* ContactUs */,
 				FC23AE211ACD651400879D75 /* Activation */,
 				FC23AE301ACD651400879D75 /* Address */,
 				FC23AE381ACD651400879D75 /* Alert */,
@@ -7107,6 +7132,9 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7A9AA3901AD52E4900FD8312 /* libsqlite3.0.dylib */,
+				7A9AA38E1AD52AD900FD8312 /* CoreTelephony.framework */,
+				7A9AA38C1AD52ACA00FD8312 /* CoreText.framework */,
 				7A9AA3271AD50CA000FD8312 /* libz.dylib */,
 				7A9AA3251AD50C8500FD8312 /* CoreData.framework */,
 				7A9AA3231AD50C5000FD8312 /* libGoogleAnalyticsServices.a */,
@@ -7245,6 +7273,24 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				cs,
+				de,
+				es,
+				fr,
+				hu,
+				id,
+				it,
+				ja,
+				ko,
+				nl,
+				pt,
+				ru,
+				sl,
+				th,
+				tr,
+				vi,
+				"zh-Hans",
+				"zh-Hant",
 			);
 			mainGroup = FC36DF7A19B0656400AF74C1;
 			productRefGroup = FC36DF8419B0656400AF74C1 /* Products */;
@@ -7469,6 +7515,7 @@
 				FC23B7901ACD651600879D75 /* icon_message.png in Resources */,
 				FC23B7541ACD651600879D75 /* icon_checkmark_1@2x.png in Resources */,
 				FC23B5141ACD651600879D75 /* TKPDTabBarController.xib in Resources */,
+				7A9AA32F1AD51E3B00FD8312 /* ContactUsViewController.xib in Resources */,
 				FC23B6111ACD651600879D75 /* FilterSalesTransactionListViewController.xib in Resources */,
 				FC23B75F1ACD651600879D75 /* icon_diskusi_comment_grey.png in Resources */,
 				FC23B5041ACD651600879D75 /* CatalogSpecificationCell.xib in Resources */,
@@ -8115,6 +8162,7 @@
 				FC23B5991ACD651600879D75 /* MoreViewController.m in Sources */,
 				FC23B6C91ACD651600879D75 /* TxOrderTransactionDetailViewController.m in Sources */,
 				FC23B5181ACD651600879D75 /* TKPDTabInboxReviewNavigationController.m in Sources */,
+				7A9AA32E1AD51E3B00FD8312 /* ContactUsViewController.m in Sources */,
 				FC23B3A81ACD651600879D75 /* DepositFormResult.m in Sources */,
 				FC23B3C71ACD651600879D75 /* ShopStats.m in Sources */,
 				FC23B6761ACD651600879D75 /* ShopTalkViewController.m in Sources */,
@@ -8719,6 +8767,8 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphonesimulator",
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 					/Users/tonitoacen/Downloads/GoogleAnalyticsServicesiOS_3.10,
+					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",
+					"/Users/tonitoacen/Downloads/helpshift-sdk-ios-v4.10.2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -8751,6 +8801,8 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphonesimulator",
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 					/Users/tonitoacen/Downloads/GoogleAnalyticsServicesiOS_3.10,
+					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",
+					"/Users/tonitoacen/Downloads/helpshift-sdk-ios-v4.10.2",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
