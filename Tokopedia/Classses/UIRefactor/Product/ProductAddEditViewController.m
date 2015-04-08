@@ -26,6 +26,8 @@
 #import "StickyAlertView.h"
 #import "RequestGenerateHost.h"
 #import "RequestUploadImage.h"
+#import "CameraAlbumListViewController.h"
+#import "CameraCollectionViewController.h"
 
 #define DATA_SELECTED_BUTTON_KEY @"data_selected_button"
 
@@ -42,6 +44,7 @@
     ProductEditDetailViewControllerDelegate,
     ProductEditImageViewControllerDelegate,
     GenerateHostDelegate,
+    CameraCollectionViewControllerDelegate,
     RequestUploadImageDelegate
 >
 {
@@ -92,6 +95,10 @@
     
     GenerateHost *_generateHost;
     BOOL _isBeingPresented;
+    
+    NSMutableArray *_selectedImagesCameraController;
+    NSMutableArray *_selectedIndexPathCameraController;
+    
 }
 @property (strong, nonatomic) IBOutlet UIView *section2FooterView;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -161,6 +168,9 @@
     _cachecontroller = [URLCacheController new];
     _uploadingImages = [NSMutableArray new];
     
+    _selectedImagesCameraController = [NSMutableArray new];
+    _selectedIndexPathCameraController = [NSMutableArray new];
+    
     _productImageURLs = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
     _productImageIDs = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
     _productImageDesc = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
@@ -192,7 +202,7 @@
     for (UIButton *buttonAdd in _addImageButtons) {
         buttonAdd.enabled = NO;
     }
-    ((UIButton*)_addImageButtons[0]).enabled = YES;
+    ((UIButton*)_addImageButtons[0]).enabled = NO;
     [_thumbProductImageViews makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
     for (UIImageView *productImageView in _thumbProductImageViews) {
         productImageView.userInteractionEnabled = NO;
@@ -333,7 +343,8 @@
             case 22:
             case 23:
             case 24:
-            { 
+            {
+                [self didTapImageButton:(UIButton*)sender];
                 CameraController* c = [CameraController new];
                 [c snap];
                 c.tag = btn.tag;
@@ -351,6 +362,35 @@
         }
     }
 }
+
+-(void)didTapImageButton:(UIButton*)sender
+{
+    CameraAlbumListViewController *albumVC = [CameraAlbumListViewController new];
+    albumVC.title = @"Album";
+    CameraCollectionViewController *photoVC = [CameraCollectionViewController new];
+    photoVC.title = @"All Picture";
+    photoVC.delegate = self;
+    photoVC.tag = sender.tag;
+    NSMutableArray *selectedImage = [NSMutableArray new];
+    for (NSIndexPath *selected in _selectedImagesCameraController) {
+        if (![selected isEqual:@""]) {
+            [selectedImage addObject: selected];
+        }
+    }
+    photoVC.selectedImagesArray = [selectedImage copy];
+    NSMutableArray *selectedIndexPath = [NSMutableArray new];
+    for (NSIndexPath *selected in _selectedIndexPathCameraController) {
+        if (![selected isEqual:@""]) {
+            [selectedIndexPath addObject: selected];
+        }
+    }
+    photoVC.selectedIndexPath = selectedIndexPath;
+    UINavigationController *nav = [[UINavigationController alloc]init];
+    NSArray *controllers = @[albumVC,photoVC];
+    [nav setViewControllers:controllers];
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
+}
+
 - (IBAction)gesture:(id)sender
 {
     [_activeTextField resignFirstResponder];
@@ -851,6 +891,7 @@
 -(void)successGenerateHost:(GenerateHost *)generateHost
 {
     _generateHost = generateHost;
+    ((UIButton*)_addImageButtons[0]).enabled = YES;
 }
 
 #pragma mark Request Action Upload Photo
@@ -878,14 +919,22 @@
 
 -(void)failedUploadObject:(id)object
 {
-    UIImageView *thumbProductImage = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    UIButton *selectedButton = [object objectForKey:DATA_SELECTED_BUTTON_KEY];
+    UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    imageView.image = nil;
     
-    selectedButton.hidden = NO;
-    selectedButton.enabled = YES;
-    thumbProductImage.hidden = YES;
+    for (UIButton *button in _addImageButtons) {
+        if (button.tag == imageView.tag) {
+            button.hidden = NO;
+            button.enabled = YES;
+        }
+    }
+
+    imageView.hidden = YES;
     
     [_uploadingImages removeObject:object];
+    
+    [_selectedIndexPathCameraController removeObject:[object objectForKey:DATA_SELECTED_INDEXPATH_KEY]];
+    [_selectedImagesCameraController removeObject:[object objectForKey:DATA_SELECTED_PHOTO_KEY]];
     
     [self requestProcessUploadPhoto];
 }
@@ -1031,46 +1080,195 @@
 
 
 #pragma mark - Camera Controller Delegate
--(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
+#pragma mark - Camera Delegate
+-(void)didDismissController:(CameraCollectionViewController *)controller withUserInfo:(NSDictionary *)userinfo
 {
-    NSMutableDictionary *object = [NSMutableDictionary new];
-    NSDictionary* photo = [userinfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIImageView *selectedProductImageView;
-    for (UIImageView *imageView in _thumbProductImageViews) {
-        if (imageView.tag == controller.tag) {
-            selectedProductImageView = imageView;
+    NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
+    
+    [_selectedIndexPathCameraController removeAllObjects];
+    [_selectedIndexPathCameraController addObjectsFromArray:[userinfo objectForKey:@"selected_indexpath"]];
+    
+    //Hapus data yg equal @""
+    NSMutableArray *selectedImageTemp = [NSMutableArray new];
+    for (NSDictionary *selected in _selectedImagesCameraController) {
+        if (![selected isEqual:@""]) {
+            [selectedImageTemp addObject:selected];
         }
     }
-    UIButton *selectedButton;
-    for (UIButton *button in _addImageButtons) {
-        if (button.tag == controller.tag) {
-            selectedButton = button;
-            button.enabled = NO;
-            button.hidden = YES;
-        }
-        if (button.tag == controller.tag+1) {
-            button.hidden = NO;
-            button.enabled = YES;
+    [_selectedImagesCameraController removeAllObjects];
+    [_selectedImagesCameraController addObjectsFromArray:selectedImageTemp];
+    
+    // Cari Index Image yang kosong
+    NSMutableArray *emptyImageIndex = [NSMutableArray new];
+    for (UIImageView *image in _thumbProductImageViews) {
+        if (image.image == nil)
+        {
+            [emptyImageIndex addObject:@(image.tag - 20)];
         }
     }
     
-    [object setObject:userinfo forKey:DATA_SELECTED_PHOTO_KEY];
-    [object setObject:selectedProductImageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
-    [object setObject:selectedButton forKey:DATA_SELECTED_BUTTON_KEY];
+    //Upload Image yg belum diupload tp dipilih
+    int j = 0;
+    for (NSDictionary *selected in selectedImages) {
+        if (![self Array:[_selectedImagesCameraController copy] containObject:selected])
+        {
+            [self setImageData:selected tag:[emptyImageIndex[j] integerValue]];
+            j++;
+        }
+    }
+    
+    [_selectedImagesCameraController removeAllObjects];
+    [_selectedImagesCameraController addObjectsFromArray:selectedImages];
+    
+}
 
-    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
-    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-    image = UIGraphicsGetImageFromCurrentImageContext();
+-(void)didRemoveImageDictionary:(NSDictionary *)removedImage
+{
+    //Hapus Image dari camera controller
+    NSMutableArray *removedImages = [NSMutableArray new];
+    for (int i = 0; i<_selectedImagesCameraController.count; i++) {
+        NSDictionary *photoObjectInArray = [_selectedImagesCameraController[i] objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+        NSDictionary *photoObject = [removedImage objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+        
+        UIImage* imageObject = [photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+        UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, imageObject.scale);
+        [imageObject drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
+        imageObject = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        if ([self image:[photoObjectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY] isEqualTo:[photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY]]) {
+            
+            NSMutableDictionary *object = [NSMutableDictionary new];
+            [object setObject:removedImage forKey:DATA_SELECTED_PHOTO_KEY];
+            UIImageView *imageView;
+            
+            for (UIImageView *image in _thumbProductImageViews) {
+                
+                if ([self image:image.image isEqualTo:imageObject])
+                {
+                    imageView = image;
+                    [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+                    break;
+                }
+            }
+            [removedImages addObject:object];
+            [self failedUploadObject:object];
+            break;
+        }
+    }
+}
+
+- (BOOL)image:(UIImage *)image1 isEqualTo:(UIImage *)image2
+{
+    NSData *data1 = UIImagePNGRepresentation(image1);
+    NSData *data2 = UIImagePNGRepresentation(image2);
+    
+    return [data1 isEqual:data2];
+}
+
+-(BOOL)Array:(NSArray*)array containObject:(NSDictionary*)object
+{
+    for (NSDictionary *objectInArray in array) {
+        NSDictionary *photoObjectInArray = [objectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+        NSDictionary *photoObject = [object objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+        if ([self image:[photoObjectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY] isEqualTo:[photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY]]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+-(void)setImageData:(NSDictionary*)data tag:(NSInteger)tag
+{
+    NSInteger tagView = tag +20;
+    NSMutableDictionary *object = [NSMutableDictionary new];
+    [object setObject:data forKey:DATA_SELECTED_PHOTO_KEY];
+    UIImageView *imageView;
+    
+    NSDictionary* photo = [data objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    
+    UIImage* imagePhoto = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, imagePhoto.scale);
+    [imagePhoto drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
+    imagePhoto = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    selectedProductImageView.image = image;
-    selectedProductImageView.hidden = NO;
-    selectedProductImageView.alpha = 0.5f;
+    for (UIImageView *image in _thumbProductImageViews) {
+        if (image.tag == tagView)
+        {
+            imageView = image;
+            image.image = imagePhoto;
+            image.hidden = NO;
+            image.alpha = 0.5f;
+        }
+    }
+    
+    [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    
+    [object setObject:_selectedIndexPathCameraController[tag] forKey:DATA_SELECTED_INDEXPATH_KEY];
+    
+    for (UIButton *button in _addImageButtons) {
+        if (button.tag == tagView) {
+            button.enabled = NO;
+        }
+        if (button.tag == tagView+1)
+        {
+            for (UIImageView *image in _addImageButtons) {
+                if (image.tag == tagView+1)
+                {
+                    if (image.image == nil) {
+                        button.enabled = YES;
+                    }
+                }
+            }
+        }
+    }
     
     [self actionUploadImage:object];
 }
 
+//-(void)didDismissCameraController:(CameraController *)controller withUserInfo:(NSDictionary *)userinfo
+//{
+//    NSMutableDictionary *object = [NSMutableDictionary new];
+//    NSDictionary* photo = [userinfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+//    UIImageView *selectedProductImageView;
+//    for (UIImageView *imageView in _thumbProductImageViews) {
+//        if (imageView.tag == controller.tag) {
+//            selectedProductImageView = imageView;
+//        }
+//    }
+//    UIButton *selectedButton;
+//    for (UIButton *button in _addImageButtons) {
+//        if (button.tag == controller.tag) {
+//            selectedButton = button;
+//            button.enabled = NO;
+//            button.hidden = YES;
+//        }
+//        if (button.tag == controller.tag+1) {
+//            button.hidden = NO;
+//            button.enabled = YES;
+//        }
+//    }
+//    
+//    [object setObject:userinfo forKey:DATA_SELECTED_PHOTO_KEY];
+//    [object setObject:selectedProductImageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+//    [object setObject:selectedButton forKey:DATA_SELECTED_BUTTON_KEY];
+//
+//    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+//    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
+//    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
+//    image = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
+//    
+//    selectedProductImageView.image = image;
+//    selectedProductImageView.hidden = NO;
+//    selectedProductImageView.alpha = 0.5f;
+//    
+//    [self actionUploadImage:object];
+//}
+
+
+#pragma mark - Upload Image
 -(void)actionUploadImage:(id)object
 {
     _isFinishedUploadImages = NO;
@@ -1085,17 +1283,17 @@
     [uploadImage requestActionUploadPhoto];
 }
 
--(void)failedAddImageAtIndex:(NSInteger)index
-{
-    NSUInteger indexDisableButton = (index<_addImageButtons.count-1)?index+1:index;
-    ((UIButton*)_addImageButtons[indexDisableButton]).enabled = NO;
-    ((UIButton*)_addImageButtons[index]).hidden = NO;
-    ((UIImageView*)_thumbProductImageViews[index]).hidden = YES;
-    
-    NSArray *array = _images.message_error?:[[NSArray alloc] initWithObjects:ERRORMESSAGE_FAILED_IMAGE_UPLOAD, nil];
-    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-}
+//-(void)failedAddImageAtIndex:(NSInteger)index
+//{
+//    NSUInteger indexDisableButton = (index<_addImageButtons.count-1)?index+1:index;
+//    ((UIButton*)_addImageButtons[indexDisableButton]).enabled = NO;
+//    ((UIButton*)_addImageButtons[index]).hidden = NO;
+//    ((UIImageView*)_thumbProductImageViews[index]).hidden = YES;
+//    
+//    NSArray *array = _images.message_error?:[[NSArray alloc] initWithObjects:ERRORMESSAGE_FAILED_IMAGE_UPLOAD, nil];
+//    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+//}
 
 #pragma mark - Category Delegate
 -(void)CategoryMenuViewController:(CategoryMenuViewController *)viewController userInfo:(NSDictionary *)userInfo
@@ -1143,6 +1341,12 @@
     [_productImageURLs replaceObjectAtIndex:index withObject:@""];
     ((UIImageView*)_thumbProductImageViews[index]).image = nil;
     ((UIImageView*)_thumbProductImageViews[index]).hidden = YES;
+    
+    NSMutableDictionary *object = [NSMutableDictionary new];
+    [object setObject:((UIImageView*)_thumbProductImageViews[index]).image  forKey:DATA_SELECTED_PHOTO_KEY];
+    [object setObject:((UIImageView*)_thumbProductImageViews[index]) forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+    
+    [self failedUploadObject:object];
 }
 
 //-(void)updateProductImage:(UIImage *)image AtIndex:(NSInteger)index withUserInfo:(NSDictionary *)userInfo

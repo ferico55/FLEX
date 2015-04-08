@@ -287,6 +287,12 @@ typedef enum ScrollDirection {
         [_timer invalidate];
         _timer = nil;
         
+        
+        if(_product.count == 0)
+            [self.view addSubview:viewNoData];
+        else
+            [viewNoData removeFromSuperview];
+        
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         /** failure **/
         [self requestfailure:error];

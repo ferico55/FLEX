@@ -758,7 +758,7 @@
                 CGRect newFrame = _addressStreetLabel.frame;
                 newFrame.size.height = expectedLabelSize.height + 26;
                 _addressStreetLabel.frame = newFrame;
-                return 230-70+_addressStreetLabel.frame.size.height;
+                return 290-70+_addressStreetLabel.frame.size.height;
             }
         }
         else cell = _tableViewCell[indexPath.row + 5];
@@ -781,7 +781,7 @@
             CGRect newFrame = _addressStreetLabel.frame;
             newFrame.size.height = expectedLabelSize.height + 26;
             _addressStreetLabel.frame = newFrame;
-            return 230-70+_addressStreetLabel.frame.size.height;
+            return 290-70+_addressStreetLabel.frame.size.height;
         }
         cell = _tableViewSummaryCell[indexPath.row];
         TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];

@@ -13,6 +13,7 @@
 #import "ProductEditWholesaleViewController.h"
 #import "ProductEditWholesaleCell.h"
 #import "ProductDetail.h"
+#import "StickyAlertView.h"
 
 @interface ProductEditWholesaleViewController ()<UITableViewDataSource,UITableViewDelegate,ProductEditWholesaleCellDelegate>
 {
@@ -60,12 +61,12 @@
     _table.tableHeaderView = _headerView;
     [self setDefaultData:_data];
     
-    UIBarButtonItem *saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [saveBarButtonItem setTintColor:[UIColor blackColor]];
+    UIBarButtonItem *saveBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Simpan" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [saveBarButtonItem setTintColor:[UIColor whiteColor]];
     saveBarButtonItem.tag = BARBUTTON_PRODUCT_SAVE;
     self.navigationItem.rightBarButtonItem = saveBarButtonItem;
     
-    UIBarButtonItem *cancelBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    UIBarButtonItem *cancelBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [cancelBarButtonItem setTintColor:[UIColor whiteColor]];
     cancelBarButtonItem.tag = BARBUTTON_PRODUCT_BACK;
     self.navigationItem.leftBarButtonItem = cancelBarButtonItem;
@@ -322,6 +323,15 @@
     if (wholesaleCount>1) {
         NSRange rangeDeletedWholesale = NSMakeRange(indexPath.row, wholesaleCount-indexPath.row);
         [_wholesaleList removeObjectsInRange:rangeDeletedWholesale];
+        
+        NSMutableArray *deletedIndexPath = [NSMutableArray new];
+        for (NSInteger i=indexPath.row; i<wholesaleCount; i++) {
+            [deletedIndexPath addObject:[NSIndexPath indexPathForRow:i inSection:0]];
+        }
+        [_table beginUpdates];
+        [_table deleteRowsAtIndexPaths:deletedIndexPath
+                      withRowAnimation:UITableViewRowAnimationLeft];
+        [_table endUpdates];
         [_table reloadData];
     }
 }
@@ -495,7 +505,7 @@
 -(BOOL)isValidWholesalePrice
 {
     BOOL isValidPrice = YES;
-    NSString *errorMessage;
+    NSString *errorMessage = @"";
     NSInteger wholesaleListKeyIndex = _wholesaleList.count;
     NSString *wholesalePriceKey = [NSString stringWithFormat:@"%@%zd",API_WHOLESALE_PRICE,wholesaleListKeyIndex];
     
@@ -506,6 +516,7 @@
     NSInteger productPriceCurrencyID = [[wholesale objectForKey:API_PRODUCT_PRICE_CURRENCY_ID_KEY]integerValue];
     
     if (!(wholesalePrice > 0)) {
+        errorMessage = @"Harga harus diisi";
         isValidPrice = NO;
     }
     else if (productPriceCurrencyID == PRICE_CURRENCY_ID_RUPIAH && (wholesalePrice<MINIMUM_PRICE_RUPIAH || wholesalePrice>MAXIMUM_PRICE_RUPIAH)) {
@@ -527,8 +538,15 @@
             isValidPrice = NO;
             UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"" message:ERRORMESSAGE_INVALID_PRICE_WHOLESALE delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alertView show];
+            return isValidPrice;
         }
     }
+    
+    if (!isValidPrice) {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[errorMessage] delegate:self];
+        [alert show];
+    }
+    
     return isValidPrice;
 }
 
