@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		7A9AA3171AD4DFCC00FD8312 /* Rating.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9AA3161AD4DFCC00FD8312 /* Rating.m */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
@@ -745,8 +746,6 @@
 		FC23B6631ACD651600879D75 /* ShopInfoAddressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC23B0FA1ACD651500879D75 /* ShopInfoAddressView.xib */; };
 		FC23B6641ACD651600879D75 /* ShopInfoPaymentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC23B0FC1ACD651500879D75 /* ShopInfoPaymentCell.m */; };
 		FC23B6651ACD651600879D75 /* ShopInfoPaymentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC23B0FD1ACD651500879D75 /* ShopInfoPaymentCell.xib */; };
-		FC23B6661ACD651600879D75 /* ShopInformationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC23B0FF1ACD651500879D75 /* ShopInformationViewController.m */; };
-		FC23B6671ACD651600879D75 /* ShopInformationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC23B1001ACD651500879D75 /* ShopInformationViewController.xib */; };
 		FC23B6681ACD651600879D75 /* ShopInfoShipmentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FC23B1021ACD651500879D75 /* ShopInfoShipmentCell.m */; };
 		FC23B6691ACD651600879D75 /* ShopInfoShipmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC23B1031ACD651500879D75 /* ShopInfoShipmentCell.xib */; };
 		FC23B66A1ACD651600879D75 /* ShopInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC23B1051ACD651500879D75 /* ShopInfoViewController.m */; };
@@ -1276,6 +1275,8 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		7A9AA3151AD4DFCC00FD8312 /* Rating.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Rating.h; sourceTree = "<group>"; };
+		7A9AA3161AD4DFCC00FD8312 /* Rating.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Rating.m; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -2592,9 +2593,6 @@
 		FC23B0FB1ACD651500879D75 /* ShopInfoPaymentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopInfoPaymentCell.h; sourceTree = "<group>"; };
 		FC23B0FC1ACD651500879D75 /* ShopInfoPaymentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopInfoPaymentCell.m; sourceTree = "<group>"; };
 		FC23B0FD1ACD651500879D75 /* ShopInfoPaymentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopInfoPaymentCell.xib; sourceTree = "<group>"; };
-		FC23B0FE1ACD651500879D75 /* ShopInformationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopInformationViewController.h; sourceTree = "<group>"; };
-		FC23B0FF1ACD651500879D75 /* ShopInformationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopInformationViewController.m; sourceTree = "<group>"; };
-		FC23B1001ACD651500879D75 /* ShopInformationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopInformationViewController.xib; sourceTree = "<group>"; };
 		FC23B1011ACD651500879D75 /* ShopInfoShipmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopInfoShipmentCell.h; sourceTree = "<group>"; };
 		FC23B1021ACD651500879D75 /* ShopInfoShipmentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopInfoShipmentCell.m; sourceTree = "<group>"; };
 		FC23B1031ACD651500879D75 /* ShopInfoShipmentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopInfoShipmentCell.xib; sourceTree = "<group>"; };
@@ -3476,6 +3474,8 @@
 		FC23ABA91ACD651300879D75 /* DetailProduct */ = {
 			isa = PBXGroup;
 			children = (
+				7A9AA3151AD4DFCC00FD8312 /* Rating.h */,
+				7A9AA3161AD4DFCC00FD8312 /* Rating.m */,
 				FC23ABAA1ACD651300879D75 /* Breadcrumb.h */,
 				FC23ABAB1ACD651300879D75 /* Breadcrumb.m */,
 				FC23ABAC1ACD651300879D75 /* DetailProductResult.h */,
@@ -5909,9 +5909,6 @@
 				FC23B0FB1ACD651500879D75 /* ShopInfoPaymentCell.h */,
 				FC23B0FC1ACD651500879D75 /* ShopInfoPaymentCell.m */,
 				FC23B0FD1ACD651500879D75 /* ShopInfoPaymentCell.xib */,
-				FC23B0FE1ACD651500879D75 /* ShopInformationViewController.h */,
-				FC23B0FF1ACD651500879D75 /* ShopInformationViewController.m */,
-				FC23B1001ACD651500879D75 /* ShopInformationViewController.xib */,
 				FC23B1011ACD651500879D75 /* ShopInfoShipmentCell.h */,
 				FC23B1021ACD651500879D75 /* ShopInfoShipmentCell.m */,
 				FC23B1031ACD651500879D75 /* ShopInfoShipmentCell.xib */,
@@ -7340,7 +7337,6 @@
 				FC23B5D41ACD651600879D75 /* ProductAddEditViewController.xib in Resources */,
 				FC23B7A41ACD651600879D75 /* icon_order_check-01@2x.png in Resources */,
 				FC23B6301ACD651600879D75 /* SearchResultShopViewController.xib in Resources */,
-				FC23B6671ACD651600879D75 /* ShopInformationViewController.xib in Resources */,
 				FC23B4F01ACD651600879D75 /* CameraAlbumListCell.xib in Resources */,
 				FC23B8321ACD651600879D75 /* tabnav_bg@2x.png in Resources */,
 				FC23B7601ACD651600879D75 /* icon_diskusi_comment_grey@2x.png in Resources */,
@@ -8056,7 +8052,6 @@
 				FC23B5EA1ACD651600879D75 /* ProfileFavoriteShopViewController.m in Sources */,
 				FC23B3D31ACD651600879D75 /* Favorited.m in Sources */,
 				FC23B5481ACD651600879D75 /* GeneralProductCell.m in Sources */,
-				FC23B6661ACD651600879D75 /* ShopInformationViewController.m in Sources */,
 				FC23B3971ACD651600879D75 /* UIImage+ImageEffects.m in Sources */,
 				FC23B4F71ACD651600879D75 /* RequestGenerateHost.m in Sources */,
 				FC23B3CF1ACD651600879D75 /* TheOtherProduct.m in Sources */,
@@ -8104,6 +8099,7 @@
 				FC23B46A1ACD651600879D75 /* ShipmentPackage.m in Sources */,
 				FC23B59C1ACD651600879D75 /* MyShopAddressDetailViewController.m in Sources */,
 				FC23B41C1ACD651600879D75 /* ChangePhoneNumberResult.m in Sources */,
+				7A9AA3171AD4DFCC00FD8312 /* Rating.m in Sources */,
 				FC23B5EE1ACD651600879D75 /* ReputationDetailFormViewController.m in Sources */,
 				FC23B4B71ACD651600879D75 /* OrderDetailForm.m in Sources */,
 				FC23B4441ACD651600879D75 /* OrderDestination.m in Sources */,

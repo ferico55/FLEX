@@ -114,11 +114,12 @@
                             kTKPDDETAIL_APIACTIONKEY:@"send_message",
                             kTKPDMESSAGE_KEYCONTENT:_messagefield.text,
                             kTKPDMESSAGE_KEYSUBJECT:_messagesubjectfield.text,
-                            kTKPDMESSAGE_KEYTOSHOPID:[_data objectForKey:@"shop_id"]
+                            kTKPDMESSAGE_KEYTOSHOPID:[_data objectForKey:@"shop_id"]?:@"",
+                            kTKPDMESSAGE_KEYTOUSERID:[_data objectForKey:@"user_id"]?:@""
                             };
     
     _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/people.pl" parameters:param];
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:@"action/message.pl" parameters:[param encrypt]];
     
     
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -175,7 +176,7 @@
     [statusMapping addPropertyMapping:resulRel];
     
     //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:@"action/people.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:@"action/message.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
