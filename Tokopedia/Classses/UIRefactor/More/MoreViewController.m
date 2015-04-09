@@ -43,7 +43,7 @@
 #import "DepositSummaryViewController.h"
 #import "ShopContainerViewController.h"
 #import "ReputationPageViewController.h"
-//#import "Helpshift.h"
+#import "Helpshift.h"
 
 @interface MoreViewController () <NotificationManagerDelegate> {
     NSDictionary *_auth;
@@ -136,6 +136,8 @@
     [super viewWillAppear:animated];
     
     [self initNotificationManager];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadNotification)
@@ -220,7 +222,7 @@
             break;
             
         case 5:
-            return 2;
+            return 3;
             break;
             
         case 6:
@@ -372,7 +374,8 @@
     
     else if (indexPath.section == 5) {
         if(indexPath.row == 0) {
-//            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
+            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
         } else if(indexPath.row == 1) {
             UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 568)];
             [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kTKPDMORE_HELP_URL]]];
