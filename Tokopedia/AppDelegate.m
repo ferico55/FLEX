@@ -18,6 +18,7 @@
 #import <FacebookSDK/FacebookSDK.h>
 #import <Fabric/Fabric.h>
 #import <Crashlytics/Crashlytics.h>
+#import "Helpshift.h"
 
 @implementation AppDelegate
 {
@@ -42,6 +43,8 @@
     [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
     [GAI sharedInstance].dispatchInterval = 20;
     id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:@"UA-9801603-10"];
+    
+    [Helpshift installForApiKey:@"a61b53892e353d1828be5154db0ac6c2" domainName:@"tokopedia.helpshift.com" appID:@"tokopedia_platform_20150407082530564-f41c14c841c644e"];
     
     [self adjustnavigationbar];
     
@@ -157,6 +160,7 @@
     }
     
     [proxy setTintColor:[UIColor whiteColor]];
+    [proxy setBackgroundColor:[UIColor colorWithRed:(18/255.0) green:(199/255.0) blue:(0/255.0) alpha:1]];
     
     NSDictionary *titleTextAttributes = [[NSDictionary alloc] initWithObjectsAndKeys:
                                          kTKPDNAVIGATION_TITLEFONT, UITextAttributeFont,
