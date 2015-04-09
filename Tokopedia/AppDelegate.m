@@ -44,7 +44,7 @@
     [GAI sharedInstance].dispatchInterval = 20;
     id<GAITracker> tracker = [[GAI sharedInstance] trackerWithTrackingId:@"UA-9801603-10"];
     
-    [Helpshift installForApiKey:@"a61b53892e353d1828be5154db0ac6c2" domainName:@"tokopedia.helpshift.com" appID:@"tokopedia_platform_20150407082530564-f41c14c841c644e"];
+//    [Helpshift installForApiKey:@"a61b53892e353d1828be5154db0ac6c2" domainName:@"tokopedia.helpshift.com" appID:@"tokopedia_platform_20150407082530564-f41c14c841c644e"];
     
     [self adjustnavigationbar];
     

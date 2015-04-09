@@ -17,6 +17,40 @@
 		7A9AA38D1AD52ACA00FD8312 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9AA38C1AD52ACA00FD8312 /* CoreText.framework */; };
 		7A9AA38F1AD52AD900FD8312 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9AA38E1AD52AD900FD8312 /* CoreTelephony.framework */; };
 		7A9AA3911AD52E4900FD8312 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9AA3901AD52E4900FD8312 /* libsqlite3.0.dylib */; };
+		7A9ABE591AD62B3900FD8312 /* HelpshiftLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE221AD62B3900FD8312 /* HelpshiftLocalizable.strings */; };
+		7A9ABE5A1AD62B3900FD8312 /* HS-Attachment.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE371AD62B3900FD8312 /* HS-Attachment.png */; };
+		7A9ABE5B1AD62B3900FD8312 /* HS-Attachment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE381AD62B3900FD8312 /* HS-Attachment@2x.png */; };
+		7A9ABE5C1AD62B3900FD8312 /* HS-Attachment@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE391AD62B3900FD8312 /* HS-Attachment@3x.png */; };
+		7A9ABE5D1AD62B3900FD8312 /* HS-camera-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE3A1AD62B3900FD8312 /* HS-camera-button.png */; };
+		7A9ABE5E1AD62B3900FD8312 /* HS-camera-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE3B1AD62B3900FD8312 /* HS-camera-button@2x.png */; };
+		7A9ABE5F1AD62B3900FD8312 /* HS-camera-button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE3C1AD62B3900FD8312 /* HS-camera-button@3x.png */; };
+		7A9ABE601AD62B3900FD8312 /* HS-delete-button.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE3D1AD62B3900FD8312 /* HS-delete-button.png */; };
+		7A9ABE611AD62B3900FD8312 /* HS-delete-button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE3E1AD62B3900FD8312 /* HS-delete-button@2x.png */; };
+		7A9ABE621AD62B3900FD8312 /* HS-delete-button@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE3F1AD62B3900FD8312 /* HS-delete-button@3x.png */; };
+		7A9ABE631AD62B3900FD8312 /* HS-no-connection.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE401AD62B3900FD8312 /* HS-no-connection.png */; };
+		7A9ABE641AD62B3900FD8312 /* HS-no-connection@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE411AD62B3900FD8312 /* HS-no-connection@2x.png */; };
+		7A9ABE651AD62B3900FD8312 /* HS-powered-by-logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE421AD62B3900FD8312 /* HS-powered-by-logo.png */; };
+		7A9ABE661AD62B3900FD8312 /* HS-powered-by-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE431AD62B3900FD8312 /* HS-powered-by-logo@2x.png */; };
+		7A9ABE671AD62B3900FD8312 /* HS-powered-by-logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE441AD62B3900FD8312 /* HS-powered-by-logo@3x.png */; };
+		7A9ABE681AD62B3900FD8312 /* HS-screenshot-error.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE451AD62B3900FD8312 /* HS-screenshot-error.png */; };
+		7A9ABE691AD62B3900FD8312 /* HS-screenshot-error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE461AD62B3900FD8312 /* HS-screenshot-error@2x.png */; };
+		7A9ABE6A1AD62B3900FD8312 /* HSChatBubbleBlue.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE471AD62B3900FD8312 /* HSChatBubbleBlue.png */; };
+		7A9ABE6B1AD62B3900FD8312 /* HSChatBubbleBlue@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE481AD62B3900FD8312 /* HSChatBubbleBlue@2x.png */; };
+		7A9ABE6C1AD62B3900FD8312 /* HSChatBubbleBlue@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE491AD62B3900FD8312 /* HSChatBubbleBlue@3x.png */; };
+		7A9ABE6D1AD62B3900FD8312 /* HSChatBubbleWhite.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE4A1AD62B3900FD8312 /* HSChatBubbleWhite.png */; };
+		7A9ABE6E1AD62B3900FD8312 /* HSChatBubbleWhite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE4B1AD62B3900FD8312 /* HSChatBubbleWhite@2x.png */; };
+		7A9ABE6F1AD62B3900FD8312 /* HSChatBubbleWhite@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE4C1AD62B3900FD8312 /* HSChatBubbleWhite@3x.png */; };
+		7A9ABE701AD62B3900FD8312 /* HSConfirmBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE4D1AD62B3900FD8312 /* HSConfirmBox.png */; };
+		7A9ABE711AD62B3900FD8312 /* HSConfirmBox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE4E1AD62B3900FD8312 /* HSConfirmBox@2x.png */; };
+		7A9ABE721AD62B3900FD8312 /* HSTutorial.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE4F1AD62B3900FD8312 /* HSTutorial.png */; };
+		7A9ABE731AD62B3900FD8312 /* HSTutorial@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE501AD62B3900FD8312 /* HSTutorial@2x.png */; };
+		7A9ABE741AD62B3900FD8312 /* HSTutorial@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE511AD62B3900FD8312 /* HSTutorial@3x.png */; };
+		7A9ABE751AD62B3900FD8312 /* HSTutorialiPad.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE521AD62B3900FD8312 /* HSTutorialiPad.png */; };
+		7A9ABE761AD62B3900FD8312 /* HSTutorialiPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE531AD62B3900FD8312 /* HSTutorialiPad@2x.png */; };
+		7A9ABE771AD62B3900FD8312 /* HSTutorialiPad@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE541AD62B3900FD8312 /* HSTutorialiPad@3x.png */; };
+		7A9ABE781AD62B3900FD8312 /* HelpshiftConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE561AD62B3900FD8312 /* HelpshiftConfig.plist */; };
+		7A9ABE791AD62B3900FD8312 /* HelpshiftConfigDark.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A9ABE571AD62B3900FD8312 /* HelpshiftConfigDark.plist */; };
+		7A9ABE7C1AD62E6300FD8312 /* libHelpshift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9ABE7B1AD62E6300FD8312 /* libHelpshift.a */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
@@ -1304,6 +1338,59 @@
 		7A9AA38C1AD52ACA00FD8312 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		7A9AA38E1AD52AD900FD8312 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		7A9AA3901AD52E4900FD8312 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		7A9ABE201AD62B3900FD8312 /* Helpshift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helpshift.h; sourceTree = "<group>"; };
+		7A9ABE231AD62B3900FD8312 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE241AD62B3900FD8312 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE251AD62B3900FD8312 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE261AD62B3900FD8312 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE271AD62B3900FD8312 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE281AD62B3900FD8312 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE291AD62B3900FD8312 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE2A1AD62B3900FD8312 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE2B1AD62B3900FD8312 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE2C1AD62B3900FD8312 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE2D1AD62B3900FD8312 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE2E1AD62B3900FD8312 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE2F1AD62B3900FD8312 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE301AD62B3900FD8312 /* sl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sl; path = sl.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE311AD62B3900FD8312 /* th */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = th; path = th.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE321AD62B3900FD8312 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE331AD62B3900FD8312 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/HelpshiftLocalizable.strings; sourceTree = "<group>"; };
+		7A9ABE341AD62B3900FD8312 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/HelpshiftLocalizable.strings"; sourceTree = "<group>"; };
+		7A9ABE351AD62B3900FD8312 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/HelpshiftLocalizable.strings"; sourceTree = "<group>"; };
+		7A9ABE371AD62B3900FD8312 /* HS-Attachment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-Attachment.png"; sourceTree = "<group>"; };
+		7A9ABE381AD62B3900FD8312 /* HS-Attachment@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-Attachment@2x.png"; sourceTree = "<group>"; };
+		7A9ABE391AD62B3900FD8312 /* HS-Attachment@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-Attachment@3x.png"; sourceTree = "<group>"; };
+		7A9ABE3A1AD62B3900FD8312 /* HS-camera-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-camera-button.png"; sourceTree = "<group>"; };
+		7A9ABE3B1AD62B3900FD8312 /* HS-camera-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-camera-button@2x.png"; sourceTree = "<group>"; };
+		7A9ABE3C1AD62B3900FD8312 /* HS-camera-button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-camera-button@3x.png"; sourceTree = "<group>"; };
+		7A9ABE3D1AD62B3900FD8312 /* HS-delete-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-delete-button.png"; sourceTree = "<group>"; };
+		7A9ABE3E1AD62B3900FD8312 /* HS-delete-button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-delete-button@2x.png"; sourceTree = "<group>"; };
+		7A9ABE3F1AD62B3900FD8312 /* HS-delete-button@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-delete-button@3x.png"; sourceTree = "<group>"; };
+		7A9ABE401AD62B3900FD8312 /* HS-no-connection.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-no-connection.png"; sourceTree = "<group>"; };
+		7A9ABE411AD62B3900FD8312 /* HS-no-connection@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-no-connection@2x.png"; sourceTree = "<group>"; };
+		7A9ABE421AD62B3900FD8312 /* HS-powered-by-logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-powered-by-logo.png"; sourceTree = "<group>"; };
+		7A9ABE431AD62B3900FD8312 /* HS-powered-by-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-powered-by-logo@2x.png"; sourceTree = "<group>"; };
+		7A9ABE441AD62B3900FD8312 /* HS-powered-by-logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-powered-by-logo@3x.png"; sourceTree = "<group>"; };
+		7A9ABE451AD62B3900FD8312 /* HS-screenshot-error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-screenshot-error.png"; sourceTree = "<group>"; };
+		7A9ABE461AD62B3900FD8312 /* HS-screenshot-error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HS-screenshot-error@2x.png"; sourceTree = "<group>"; };
+		7A9ABE471AD62B3900FD8312 /* HSChatBubbleBlue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HSChatBubbleBlue.png; sourceTree = "<group>"; };
+		7A9ABE481AD62B3900FD8312 /* HSChatBubbleBlue@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSChatBubbleBlue@2x.png"; sourceTree = "<group>"; };
+		7A9ABE491AD62B3900FD8312 /* HSChatBubbleBlue@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSChatBubbleBlue@3x.png"; sourceTree = "<group>"; };
+		7A9ABE4A1AD62B3900FD8312 /* HSChatBubbleWhite.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HSChatBubbleWhite.png; sourceTree = "<group>"; };
+		7A9ABE4B1AD62B3900FD8312 /* HSChatBubbleWhite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSChatBubbleWhite@2x.png"; sourceTree = "<group>"; };
+		7A9ABE4C1AD62B3900FD8312 /* HSChatBubbleWhite@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSChatBubbleWhite@3x.png"; sourceTree = "<group>"; };
+		7A9ABE4D1AD62B3900FD8312 /* HSConfirmBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HSConfirmBox.png; sourceTree = "<group>"; };
+		7A9ABE4E1AD62B3900FD8312 /* HSConfirmBox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSConfirmBox@2x.png"; sourceTree = "<group>"; };
+		7A9ABE4F1AD62B3900FD8312 /* HSTutorial.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HSTutorial.png; sourceTree = "<group>"; };
+		7A9ABE501AD62B3900FD8312 /* HSTutorial@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSTutorial@2x.png"; sourceTree = "<group>"; };
+		7A9ABE511AD62B3900FD8312 /* HSTutorial@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSTutorial@3x.png"; sourceTree = "<group>"; };
+		7A9ABE521AD62B3900FD8312 /* HSTutorialiPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = HSTutorialiPad.png; sourceTree = "<group>"; };
+		7A9ABE531AD62B3900FD8312 /* HSTutorialiPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSTutorialiPad@2x.png"; sourceTree = "<group>"; };
+		7A9ABE541AD62B3900FD8312 /* HSTutorialiPad@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "HSTutorialiPad@3x.png"; sourceTree = "<group>"; };
+		7A9ABE561AD62B3900FD8312 /* HelpshiftConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HelpshiftConfig.plist; sourceTree = "<group>"; };
+		7A9ABE571AD62B3900FD8312 /* HelpshiftConfigDark.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HelpshiftConfigDark.plist; sourceTree = "<group>"; };
+		7A9ABE7B1AD62E6300FD8312 /* libHelpshift.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHelpshift.a; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -3240,6 +3327,7 @@
 				FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */,
 				FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */,
 				FCFF63561ABA79660076000E /* FacebookSDK.framework in Frameworks */,
+				7A9ABE7C1AD62E6300FD8312 /* libHelpshift.a in Frameworks */,
 				FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
 				D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */,
@@ -3299,6 +3387,72 @@
 				7A9AA32D1AD51E3B00FD8312 /* ContactUsViewController.xib */,
 			);
 			path = ContactUs;
+			sourceTree = "<group>";
+		};
+		7A9ABE1F1AD62B3900FD8312 /* Helpshift */ = {
+			isa = PBXGroup;
+			children = (
+				7A9ABE201AD62B3900FD8312 /* Helpshift.h */,
+				7A9ABE211AD62B3900FD8312 /* HSLocalization */,
+				7A9ABE361AD62B3900FD8312 /* HSResources */,
+				7A9ABE551AD62B3900FD8312 /* HSThemes */,
+			);
+			name = Helpshift;
+			path = Libraries/Helpshift;
+			sourceTree = "<group>";
+		};
+		7A9ABE211AD62B3900FD8312 /* HSLocalization */ = {
+			isa = PBXGroup;
+			children = (
+				7A9ABE221AD62B3900FD8312 /* HelpshiftLocalizable.strings */,
+			);
+			path = HSLocalization;
+			sourceTree = "<group>";
+		};
+		7A9ABE361AD62B3900FD8312 /* HSResources */ = {
+			isa = PBXGroup;
+			children = (
+				7A9ABE371AD62B3900FD8312 /* HS-Attachment.png */,
+				7A9ABE381AD62B3900FD8312 /* HS-Attachment@2x.png */,
+				7A9ABE391AD62B3900FD8312 /* HS-Attachment@3x.png */,
+				7A9ABE3A1AD62B3900FD8312 /* HS-camera-button.png */,
+				7A9ABE3B1AD62B3900FD8312 /* HS-camera-button@2x.png */,
+				7A9ABE3C1AD62B3900FD8312 /* HS-camera-button@3x.png */,
+				7A9ABE3D1AD62B3900FD8312 /* HS-delete-button.png */,
+				7A9ABE3E1AD62B3900FD8312 /* HS-delete-button@2x.png */,
+				7A9ABE3F1AD62B3900FD8312 /* HS-delete-button@3x.png */,
+				7A9ABE401AD62B3900FD8312 /* HS-no-connection.png */,
+				7A9ABE411AD62B3900FD8312 /* HS-no-connection@2x.png */,
+				7A9ABE421AD62B3900FD8312 /* HS-powered-by-logo.png */,
+				7A9ABE431AD62B3900FD8312 /* HS-powered-by-logo@2x.png */,
+				7A9ABE441AD62B3900FD8312 /* HS-powered-by-logo@3x.png */,
+				7A9ABE451AD62B3900FD8312 /* HS-screenshot-error.png */,
+				7A9ABE461AD62B3900FD8312 /* HS-screenshot-error@2x.png */,
+				7A9ABE471AD62B3900FD8312 /* HSChatBubbleBlue.png */,
+				7A9ABE481AD62B3900FD8312 /* HSChatBubbleBlue@2x.png */,
+				7A9ABE491AD62B3900FD8312 /* HSChatBubbleBlue@3x.png */,
+				7A9ABE4A1AD62B3900FD8312 /* HSChatBubbleWhite.png */,
+				7A9ABE4B1AD62B3900FD8312 /* HSChatBubbleWhite@2x.png */,
+				7A9ABE4C1AD62B3900FD8312 /* HSChatBubbleWhite@3x.png */,
+				7A9ABE4D1AD62B3900FD8312 /* HSConfirmBox.png */,
+				7A9ABE4E1AD62B3900FD8312 /* HSConfirmBox@2x.png */,
+				7A9ABE4F1AD62B3900FD8312 /* HSTutorial.png */,
+				7A9ABE501AD62B3900FD8312 /* HSTutorial@2x.png */,
+				7A9ABE511AD62B3900FD8312 /* HSTutorial@3x.png */,
+				7A9ABE521AD62B3900FD8312 /* HSTutorialiPad.png */,
+				7A9ABE531AD62B3900FD8312 /* HSTutorialiPad@2x.png */,
+				7A9ABE541AD62B3900FD8312 /* HSTutorialiPad@3x.png */,
+			);
+			path = HSResources;
+			sourceTree = "<group>";
+		};
+		7A9ABE551AD62B3900FD8312 /* HSThemes */ = {
+			isa = PBXGroup;
+			children = (
+				7A9ABE561AD62B3900FD8312 /* HelpshiftConfig.plist */,
+				7A9ABE571AD62B3900FD8312 /* HelpshiftConfigDark.plist */,
+			);
+			path = HSThemes;
 			sourceTree = "<group>";
 		};
 		FC23AB3A1ACD651300879D75 /* Classses */ = {
@@ -6365,6 +6519,7 @@
 		FC23B1ED1ACD651500879D75 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				7A9ABE1F1AD62B3900FD8312 /* Helpshift */,
 				FC23B1EE1ACD651500879D75 /* Database */,
 				FC23B1F01ACD651500879D75 /* Font */,
 				FC23B1F71ACD651500879D75 /* Images */,
@@ -7132,6 +7287,7 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7A9ABE7B1AD62E6300FD8312 /* libHelpshift.a */,
 				7A9AA3901AD52E4900FD8312 /* libsqlite3.0.dylib */,
 				7A9AA38E1AD52AD900FD8312 /* CoreTelephony.framework */,
 				7A9AA38C1AD52ACA00FD8312 /* CoreText.framework */,
@@ -7391,6 +7547,7 @@
 				FC23B7261ACD651600879D75 /* icon_9@2x.png in Resources */,
 				FC23B6A01ACD651600879D75 /* TrackOrderViewController.xib in Resources */,
 				FC23B7191ACD651600879D75 /* icon_3.png in Resources */,
+				7A9ABE751AD62B3900FD8312 /* HSTutorialiPad.png in Resources */,
 				FC23B8351ACD651600879D75 /* icon_camera_grey_active.png in Resources */,
 				FC23B84E1ACD651600879D75 /* icon_upload_image@2x.png in Resources */,
 				FC23B51B1ACD651600879D75 /* TKPDTabInboxTalkNavigationController.xib in Resources */,
@@ -7401,6 +7558,8 @@
 				FC23B7C91ACD651600879D75 /* icon_shop_setting@2x.png in Resources */,
 				FC23B7821ACD651600879D75 /* icon_location@2x.png in Resources */,
 				FC23B5F91ACD651600879D75 /* ReputationPageViewController.xib in Resources */,
+				7A9ABE6E1AD62B3900FD8312 /* HSChatBubbleWhite@2x.png in Resources */,
+				7A9ABE5D1AD62B3900FD8312 /* HS-camera-button.png in Resources */,
 				FC23B6201ACD651600879D75 /* DetailShipmentStatusCell.xib in Resources */,
 				FC23B7591ACD651600879D75 /* icon_clock.png in Resources */,
 				FC23B7701ACD651600879D75 /* icon_grid_dua@2x.png in Resources */,
@@ -7424,6 +7583,7 @@
 				FC23B7A41ACD651600879D75 /* icon_order_check-01@2x.png in Resources */,
 				FC23B6301ACD651600879D75 /* SearchResultShopViewController.xib in Resources */,
 				FC23B4F01ACD651600879D75 /* CameraAlbumListCell.xib in Resources */,
+				7A9ABE761AD62B3900FD8312 /* HSTutorialiPad@2x.png in Resources */,
 				FC23B8321ACD651600879D75 /* tabnav_bg@2x.png in Resources */,
 				FC23B7601ACD651600879D75 /* icon_diskusi_comment_grey@2x.png in Resources */,
 				FC23B7621ACD651600879D75 /* icon_diskusi_report_grey@2x.png in Resources */,
@@ -7449,6 +7609,7 @@
 				FC23B7EE1ACD651600879D75 /* navigate-down.png in Resources */,
 				FC23B5921ACD651600879D75 /* ReviewFormViewController.xib in Resources */,
 				FC23B7381ACD651600879D75 /* icon_calendar.png in Resources */,
+				7A9ABE691AD62B3900FD8312 /* HS-screenshot-error@2x.png in Resources */,
 				FC23B81A1ACD651600879D75 /* icon_category.png in Resources */,
 				FC23B6881ACD651600879D75 /* FilterLocationViewCell.xib in Resources */,
 				FC23B7E41ACD651600879D75 /* icon_unread.png in Resources */,
@@ -7518,6 +7679,7 @@
 				7A9AA32F1AD51E3B00FD8312 /* ContactUsViewController.xib in Resources */,
 				FC23B6111ACD651600879D75 /* FilterSalesTransactionListViewController.xib in Resources */,
 				FC23B75F1ACD651600879D75 /* icon_diskusi_comment_grey.png in Resources */,
+				7A9ABE6D1AD62B3900FD8312 /* HSChatBubbleWhite.png in Resources */,
 				FC23B5041ACD651600879D75 /* CatalogSpecificationCell.xib in Resources */,
 				FC23B8181ACD651600879D75 /* icon_cart_active.png in Resources */,
 				FC23B80D1ACD651600879D75 /* ic_cart@2x.png in Resources */,
@@ -7537,6 +7699,7 @@
 				FC23B84F1ACD651600879D75 /* transparent_navigationbar.png in Resources */,
 				FC23B6361ACD651600879D75 /* SettingAddressEditViewController.xib in Resources */,
 				FC23B71D1ACD651600879D75 /* icon_5.png in Resources */,
+				7A9ABE641AD62B3900FD8312 /* HS-no-connection@2x.png in Resources */,
 				FC23B6871ACD651600879D75 /* FilterConditionViewController.xib in Resources */,
 				FC23B78C1ACD651600879D75 /* icon_love_active@2x.png in Resources */,
 				FC23B7E21ACD651600879D75 /* icon_track_grey.png in Resources */,
@@ -7549,15 +7712,18 @@
 				FC23B8391ACD651600879D75 /* Icon_check_green_bg.png in Resources */,
 				FC23B7151ACD651600879D75 /* icon_20@2x.png in Resources */,
 				FC23B8131ACD651600879D75 /* ic_more@2x.png in Resources */,
+				7A9ABE711AD62B3900FD8312 /* HSConfirmBox@2x.png in Resources */,
 				FC23B5C11ACD651600879D75 /* DetailProductViewController.xib in Resources */,
 				FC23B8001ACD651600879D75 /* navigation-button-bg-pt@2x.png in Resources */,
 				FC23B70D1ACD651600879D75 /* icon_17@2x.png in Resources */,
+				7A9ABE611AD62B3900FD8312 /* HS-delete-button@2x.png in Resources */,
 				FC23B77A1ACD651600879D75 /* icon_home_active.png in Resources */,
 				FC23B7EC1ACD651600879D75 /* login.jpg in Resources */,
 				FC23B77C1ACD651600879D75 /* icon_home_active@2x.png in Resources */,
 				FC23B8241ACD651600879D75 /* icon_more@2x.png in Resources */,
 				FC23B8051ACD651600879D75 /* top_bg1@2x.png in Resources */,
 				FC23B5ED1ACD651600879D75 /* ReputationCell.xib in Resources */,
+				7A9ABE6A1AD62B3900FD8312 /* HSChatBubbleBlue.png in Resources */,
 				FC23B5291ACD651600879D75 /* NoResultView.xib in Resources */,
 				FC23B4EE1ACD651600879D75 /* CameraController.xib in Resources */,
 				FC23B7331ACD651600879D75 /* icon_arrow_right_grey@2x.png in Resources */,
@@ -7566,13 +7732,16 @@
 				FC23B5531ACD651600879D75 /* GeneralTalkCell.xib in Resources */,
 				FC23B7011ACD651600879D75 /* icon_11@2x.png in Resources */,
 				FC23B84D1ACD651600879D75 /* icon_upload_image.png in Resources */,
+				7A9ABE651AD62B3900FD8312 /* HS-powered-by-logo.png in Resources */,
 				FC23B6911ACD651600879D75 /* SortCell.xib in Resources */,
+				7A9ABE741AD62B3900FD8312 /* HSTutorial@3x.png in Resources */,
 				FC23B7751ACD651600879D75 /* icon_home (deleted 52a3c070d99c24bc47d4f40ddd02be3f).png in Resources */,
 				FC23B8281ACD651600879D75 /* icon_search@2x.png in Resources */,
 				FC23B68F1ACD651600879D75 /* FilterViewController.xib in Resources */,
 				FC23B6F21ACD651600879D75 /* GothamBook.ttf in Resources */,
 				FC23B7A11ACD651600879D75 /* icon_order_cancel.png in Resources */,
 				FC23B77B1ACD651600879D75 /* icon_home_active@2x (deleted c926c3cec83acdad76005f4c6bce9d3c).png in Resources */,
+				7A9ABE791AD62B3900FD8312 /* HelpshiftConfigDark.plist in Resources */,
 				FC23B5611ACD651600879D75 /* HomeTabHeaderViewController.xib in Resources */,
 				FC23B6051ACD651600879D75 /* ProductQuantityViewController.xib in Resources */,
 				FC23B5441ACD651600879D75 /* GeneralList1GestureCell.xib in Resources */,
@@ -7605,6 +7774,7 @@
 				FC23B7411ACD651600879D75 /* icon_cart_active.png in Resources */,
 				FC23B7D11ACD651600879D75 /* icon_signin_active (deleted 63cad7fbff1b7fd53fd50f759a4b79c0).png in Resources */,
 				FC23B7351ACD651600879D75 /* icon_arrow_up@2x.png in Resources */,
+				7A9ABE6F1AD62B3900FD8312 /* HSChatBubbleWhite@3x.png in Resources */,
 				FC23B73D1ACD651600879D75 /* icon_cart.png in Resources */,
 				FC23B7981ACD651600879D75 /* icon_nav_arrow_up.png in Resources */,
 				FC23B7F31ACD651600879D75 /* icon_category_white.png in Resources */,
@@ -7624,6 +7794,7 @@
 				FC23B6031ACD651600879D75 /* ProductQuantityCell.xib in Resources */,
 				FC23B58A1ACD651600879D75 /* ResolutionCenterSystemCell.xib in Resources */,
 				FC23B7131ACD651600879D75 /* icon_2.png in Resources */,
+				7A9ABE601AD62B3900FD8312 /* HS-delete-button.png in Resources */,
 				FC23B83A1ACD651600879D75 /* Icon_check_green_bg@2x.png in Resources */,
 				FC23B7D81ACD651600879D75 /* icon_star_active@2x.png in Resources */,
 				FC23B74D1ACD651600879D75 /* icon_category_white@2x.png in Resources */,
@@ -7633,6 +7804,8 @@
 				FC23B70B1ACD651600879D75 /* icon_16@2x.png in Resources */,
 				FC23B4FC1ACD651600879D75 /* CatalogProductViewController.xib in Resources */,
 				FC23B7211ACD651600879D75 /* icon_7.png in Resources */,
+				7A9ABE591AD62B3900FD8312 /* HelpshiftLocalizable.strings in Resources */,
+				7A9ABE781AD62B3900FD8312 /* HelpshiftConfig.plist in Resources */,
 				FC23B8331ACD651600879D75 /* icon_arrow_down_grey.png in Resources */,
 				FC23B6EA1ACD651600879D75 /* TxOrderPaymentViewController.xib in Resources */,
 				FC23B8361ACD651600879D75 /* icon_camera_grey_active@2x.png in Resources */,
@@ -7658,10 +7831,12 @@
 				FC23B7431ACD651600879D75 /* icon_cart_active@2x.png in Resources */,
 				FC23B7511ACD651600879D75 /* icon_checkmark.png in Resources */,
 				FC23B54F1ACD651600879D75 /* GeneralSingleProductCell.xib in Resources */,
+				7A9ABE5B1AD62B3900FD8312 /* HS-Attachment@2x.png in Resources */,
 				FC23B57F1ACD651600879D75 /* InboxResolutionCenterTabViewController.xib in Resources */,
 				FC23B7ED1ACD651600879D75 /* login.png in Resources */,
 				FC23B64A1ACD651600879D75 /* SettingPasswordViewController.xib in Resources */,
 				FC23B83D1ACD651600879D75 /* Icon_close_white.png in Resources */,
+				7A9ABE731AD62B3900FD8312 /* HSTutorial@2x.png in Resources */,
 				FC23B6E01ACD651600879D75 /* TxOrderConfirmedButtonArrowCell.xib in Resources */,
 				FC23B50A1ACD651600879D75 /* CatalogSellerViewController.xib in Resources */,
 				FC23B6381ACD651600879D75 /* SettingAddressExpandedCell.xib in Resources */,
@@ -7671,6 +7846,7 @@
 				FC23B8421ACD651600879D75 /* icon_info_grey_small@2x.png in Resources */,
 				FC36DF9919B0656400AF74C1 /* Images.xcassets in Resources */,
 				FC23B6BF1ACD651600879D75 /* TransactionShipmentViewController.xib in Resources */,
+				7A9ABE661AD62B3900FD8312 /* HS-powered-by-logo@2x.png in Resources */,
 				FC23B7791ACD651600879D75 /* icon_home_active (deleted fda4f3a6d03a49df4fc141672e840c4a).png in Resources */,
 				FC23B63E1ACD651600879D75 /* SettingBankNameViewController.xib in Resources */,
 				FC23B5631ACD651600879D75 /* HomeTabViewController.xib in Resources */,
@@ -7718,6 +7894,7 @@
 				FC23B59D1ACD651600879D75 /* MyShopAddressDetailViewController.xib in Resources */,
 				FC23B7C51ACD651600879D75 /* icon_shop_info_2x.png in Resources */,
 				FC23B7DA1ACD651600879D75 /* icon_success@2x.png in Resources */,
+				7A9ABE721AD62B3900FD8312 /* HSTutorial.png in Resources */,
 				FC23B5961ACD651600879D75 /* InboxTalkViewController.xib in Resources */,
 				FC23B5F71ACD651600879D75 /* ReputationMyReviewViewController.xib in Resources */,
 				FC23B82F1ACD651600879D75 /* icon_green.png in Resources */,
@@ -7735,11 +7912,14 @@
 				FC23B5C31ACD651600879D75 /* DetailProductWholesaleCell.xib in Resources */,
 				FC23B5061ACD651600879D75 /* CatalogViewController.xib in Resources */,
 				FC23B7841ACD651600879D75 /* icon_lock_grey@2x.png in Resources */,
+				7A9ABE5E1AD62B3900FD8312 /* HS-camera-button@2x.png in Resources */,
 				FC23B8411ACD651600879D75 /* icon_info_grey_small.png in Resources */,
+				7A9ABE5A1AD62B3900FD8312 /* HS-Attachment.png in Resources */,
 				FC23B79B1ACD651600879D75 /* icon_no_data@2x.png in Resources */,
 				FC23B5551ACD651600879D75 /* GeneralTalkCommentCell.xib in Resources */,
 				FC23B4DA1ACD651600879D75 /* AlertDatePickerView.xib in Resources */,
 				FC23B7301ACD651600879D75 /* icon_arrow_down_white.png in Resources */,
+				7A9ABE5C1AD62B3900FD8312 /* HS-Attachment@3x.png in Resources */,
 				FC23B6651ACD651600879D75 /* ShopInfoPaymentCell.xib in Resources */,
 				FC23B7861ACD651600879D75 /* icon_login@2x.png in Resources */,
 				FC23B7021ACD651600879D75 /* icon_12.png in Resources */,
@@ -7763,8 +7943,10 @@
 				FC23B7721ACD651600879D75 /* icon_grid_satu@2x.png in Resources */,
 				FC23B80A1ACD651600879D75 /* active_tab.png in Resources */,
 				FC23B6521ACD651600879D75 /* SettingUserPhoneViewController.xib in Resources */,
+				7A9ABE631AD62B3900FD8312 /* HS-no-connection.png in Resources */,
 				FC23B7A21ACD651600879D75 /* icon_order_cancel@2x.png in Resources */,
 				FC23B73B1ACD651600879D75 /* icon_cancel@2x.png in Resources */,
+				7A9ABE671AD62B3900FD8312 /* HS-powered-by-logo@3x.png in Resources */,
 				FC23B6E21ACD651600879D75 /* TxOrderConfirmedButtonCell.xib in Resources */,
 				FC23B6F61ACD651600879D75 /* Lato-Regular.ttf in Resources */,
 				FC23B50C1ACD651600879D75 /* CategoryViewCell.xib in Resources */,
@@ -7783,6 +7965,7 @@
 				FC23B4D81ACD651600879D75 /* AlertCameraView.xib in Resources */,
 				FC23B7B91ACD651600879D75 /* icon_share@2x.png in Resources */,
 				FC23B7B31ACD651600879D75 /* icon_search@2x.png in Resources */,
+				7A9ABE701AD62B3900FD8312 /* HSConfirmBox.png in Resources */,
 				FC23B8151ACD651600879D75 /* ic_search@2x.png in Resources */,
 				FC23B7921ACD651600879D75 /* icon_more.png in Resources */,
 				FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */,
@@ -7802,6 +7985,7 @@
 				FC23B8191ACD651600879D75 /* icon_cart_active@2x.png in Resources */,
 				FC23B5DC1ACD651600879D75 /* ProductListMyShopCell.xib in Resources */,
 				FC23B4DE1ACD651600879D75 /* AlertInfoVoucherCodeView.xib in Resources */,
+				7A9ABE681AD62B3900FD8312 /* HS-screenshot-error.png in Resources */,
 				FC23B5E61ACD651600879D75 /* ProfileContactViewController.xib in Resources */,
 				FC23B7361ACD651600879D75 /* icon_arrow_up_white.png in Resources */,
 				FC23B82D1ACD651600879D75 /* icon_signin_active.png in Resources */,
@@ -7816,6 +8000,7 @@
 				FC23B81D1ACD651600879D75 /* icon_category_active.png in Resources */,
 				FC23B7321ACD651600879D75 /* icon_arrow_right_grey.png in Resources */,
 				FC23B7AC1ACD651600879D75 /* icon_quote.png in Resources */,
+				7A9ABE6C1AD62B3900FD8312 /* HSChatBubbleBlue@3x.png in Resources */,
 				FC23B7FB1ACD651600879D75 /* image-1.png in Resources */,
 				FC23B6831ACD651600879D75 /* ShopTalkPageViewController.xib in Resources */,
 				FC23B7811ACD651600879D75 /* icon_location.png in Resources */,
@@ -7828,6 +8013,7 @@
 				FC23B70E1ACD651600879D75 /* icon_18.png in Resources */,
 				FC23B4DC1ACD651600879D75 /* AlertInfoPaymentConfirmationView.xib in Resources */,
 				FC23B71C1ACD651600879D75 /* icon_4@2x.png in Resources */,
+				7A9ABE6B1AD62B3900FD8312 /* HSChatBubbleBlue@2x.png in Resources */,
 				FC23B6D01ACD651600879D75 /* TxOrderConfirmationDetailHeaderView.xib in Resources */,
 				FC23B7641ACD651600879D75 /* icon_diskusi_unfollow_grey@2x.png in Resources */,
 				FC23B5A71ACD651600879D75 /* MyShopEtalaseFilterCell.xib in Resources */,
@@ -7841,6 +8027,7 @@
 				FC23B53C1ACD651600879D75 /* DepositSummaryCell.xib in Resources */,
 				FC23B6751ACD651600879D75 /* ShopSettingViewController.xib in Resources */,
 				FC23B5D01ACD651600879D75 /* ProductTalkViewController.xib in Resources */,
+				7A9ABE771AD62B3900FD8312 /* HSTutorialiPad@3x.png in Resources */,
 				FC23B7051ACD651600879D75 /* icon_13@2x.png in Resources */,
 				FC23B6561ACD651600879D75 /* ShopEditStatusViewController.xib in Resources */,
 				FC23B6221ACD651600879D75 /* DetailShipmentStatusViewController.xib in Resources */,
@@ -7853,6 +8040,7 @@
 				FC23B7A91ACD651600879D75 /* icon_plus_blue.png in Resources */,
 				FC23B7F51ACD651600879D75 /* icon_location_14px.png in Resources */,
 				FC23B5AD1ACD651600879D75 /* MyShopNoteDetailViewController.xib in Resources */,
+				7A9ABE621AD62B3900FD8312 /* HS-delete-button@3x.png in Resources */,
 				FC23B7881ACD651600879D75 /* icon_login_active@2x.png in Resources */,
 				FC23B84B1ACD651600879D75 /* icon_pesan_ulang.png in Resources */,
 				FC23B6011ACD651600879D75 /* OrderRejectExplanationViewController.xib in Resources */,
@@ -7922,6 +8110,7 @@
 				FC23B7E81ACD651600879D75 /* icon_urutkan_alt.png in Resources */,
 				FC23B56A1ACD651600879D75 /* HotlistViewController.xib in Resources */,
 				FC23B7421ACD651600879D75 /* icon_cart_active@2x (deleted 23861aca8f6e2f6ddf563538915cc090).png in Resources */,
+				7A9ABE5F1AD62B3900FD8312 /* HS-camera-button@3x.png in Resources */,
 				FC23B83B1ACD651600879D75 /* Icon_check_grey_bg.png in Resources */,
 				FC23B84C1ACD651600879D75 /* icon_pesan_ulang@2x.png in Resources */,
 				FC23B72C1ACD651600879D75 /* default-girl.png in Resources */,
@@ -8649,6 +8838,32 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		7A9ABE221AD62B3900FD8312 /* HelpshiftLocalizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7A9ABE231AD62B3900FD8312 /* cs */,
+				7A9ABE241AD62B3900FD8312 /* de */,
+				7A9ABE251AD62B3900FD8312 /* en */,
+				7A9ABE261AD62B3900FD8312 /* es */,
+				7A9ABE271AD62B3900FD8312 /* fr */,
+				7A9ABE281AD62B3900FD8312 /* hu */,
+				7A9ABE291AD62B3900FD8312 /* id */,
+				7A9ABE2A1AD62B3900FD8312 /* it */,
+				7A9ABE2B1AD62B3900FD8312 /* ja */,
+				7A9ABE2C1AD62B3900FD8312 /* ko */,
+				7A9ABE2D1AD62B3900FD8312 /* nl */,
+				7A9ABE2E1AD62B3900FD8312 /* pt */,
+				7A9ABE2F1AD62B3900FD8312 /* ru */,
+				7A9ABE301AD62B3900FD8312 /* sl */,
+				7A9ABE311AD62B3900FD8312 /* th */,
+				7A9ABE321AD62B3900FD8312 /* tr */,
+				7A9ABE331AD62B3900FD8312 /* vi */,
+				7A9ABE341AD62B3900FD8312 /* zh-Hans */,
+				7A9ABE351AD62B3900FD8312 /* zh-Hant */,
+			);
+			name = HelpshiftLocalizable.strings;
+			sourceTree = "<group>";
+		};
 		FC36DF8F19B0656400AF74C1 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -8828,6 +9043,10 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "TokopediaTests/TokopediaTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
@@ -8847,6 +9066,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				INFOPLIST_FILE = "TokopediaTests/TokopediaTests-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
