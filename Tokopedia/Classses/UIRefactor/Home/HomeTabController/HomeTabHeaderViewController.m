@@ -51,7 +51,7 @@
     [_scrollView addSubview:button2];
     
     UIButton *buttonWishList = [[UIButton alloc] initWithFrame:CGRectMake((self.view.bounds.size.width/3)*3, 0, self.view.bounds.size.width/3, 44)];
-    [buttonWishList setTitle:@"WishList" forState:UIControlStateNormal];
+    [buttonWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
     [buttonWishList setTitleColor:[UIColor colorWithRed:117.0/255.0 green:117.0/255.0 blue:117.0/255.0 alpha:1] forState:UIControlStateNormal];
     buttonWishList.titleLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
     buttonWishList.tag = 3;

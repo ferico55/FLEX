@@ -9,6 +9,15 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		85765FAE1AD664D400FC31DC /* icon_wishlist_active.png in Resources */ = {isa = PBXBuildFile; fileRef = 85765FAA1AD664D400FC31DC /* icon_wishlist_active.png */; };
+		85765FAF1AD664D400FC31DC /* icon_wishlist_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85765FAB1AD664D400FC31DC /* icon_wishlist_active@2x.png */; };
+		85765FB01AD664D400FC31DC /* icon_wishlist_unactive.png in Resources */ = {isa = PBXBuildFile; fileRef = 85765FAC1AD664D400FC31DC /* icon_wishlist_unactive.png */; };
+		85765FB11AD664D400FC31DC /* icon_wishlist_unactive@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 85765FAD1AD664D400FC31DC /* icon_wishlist_unactive@2x.png */; };
+		85CDF0CD1AD629EB00A9CF36 /* WishListObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 85CDF0C81AD629EB00A9CF36 /* WishListObject.m */; };
+		85CDF0CE1AD629EB00A9CF36 /* WishListObjectList.m in Sources */ = {isa = PBXBuildFile; fileRef = 85CDF0CA1AD629EB00A9CF36 /* WishListObjectList.m */; };
+		85CDF0CF1AD629EB00A9CF36 /* WishListObjectResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 85CDF0CC1AD629EB00A9CF36 /* WishListObjectResult.m */; };
+		85CDF0D41AD62A2A00A9CF36 /* WishListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85CDF0D21AD62A2A00A9CF36 /* WishListViewController.m */; };
+		85CDF0D51AD62A2A00A9CF36 /* WishListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85CDF0D31AD62A2A00A9CF36 /* WishListViewController.xib */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC2116201AD4CF1D007935C1 /* CreatePassword.m in Sources */ = {isa = PBXBuildFile; fileRef = FC21136B1AD4CF1C007935C1 /* CreatePassword.m */; };
@@ -1278,6 +1287,19 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		85765FAA1AD664D400FC31DC /* icon_wishlist_active.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_wishlist_active.png; sourceTree = "<group>"; };
+		85765FAB1AD664D400FC31DC /* icon_wishlist_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_wishlist_active@2x.png"; sourceTree = "<group>"; };
+		85765FAC1AD664D400FC31DC /* icon_wishlist_unactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_wishlist_unactive.png; sourceTree = "<group>"; };
+		85765FAD1AD664D400FC31DC /* icon_wishlist_unactive@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_wishlist_unactive@2x.png"; sourceTree = "<group>"; };
+		85CDF0C71AD629EB00A9CF36 /* WishListObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WishListObject.h; sourceTree = "<group>"; };
+		85CDF0C81AD629EB00A9CF36 /* WishListObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WishListObject.m; sourceTree = "<group>"; };
+		85CDF0C91AD629EB00A9CF36 /* WishListObjectList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WishListObjectList.h; sourceTree = "<group>"; };
+		85CDF0CA1AD629EB00A9CF36 /* WishListObjectList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WishListObjectList.m; sourceTree = "<group>"; };
+		85CDF0CB1AD629EB00A9CF36 /* WishListObjectResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WishListObjectResult.h; sourceTree = "<group>"; };
+		85CDF0CC1AD629EB00A9CF36 /* WishListObjectResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WishListObjectResult.m; sourceTree = "<group>"; };
+		85CDF0D11AD62A2A00A9CF36 /* WishListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WishListViewController.h; sourceTree = "<group>"; };
+		85CDF0D21AD62A2A00A9CF36 /* WishListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WishListViewController.m; sourceTree = "<group>"; };
+		85CDF0D31AD62A2A00A9CF36 /* WishListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WishListViewController.xib; sourceTree = "<group>"; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -3246,9 +3268,33 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		85CDF0C61AD629EB00A9CF36 /* WishList */ = {
+			isa = PBXGroup;
+			children = (
+				85CDF0C71AD629EB00A9CF36 /* WishListObject.h */,
+				85CDF0C81AD629EB00A9CF36 /* WishListObject.m */,
+				85CDF0C91AD629EB00A9CF36 /* WishListObjectList.h */,
+				85CDF0CA1AD629EB00A9CF36 /* WishListObjectList.m */,
+				85CDF0CB1AD629EB00A9CF36 /* WishListObjectResult.h */,
+				85CDF0CC1AD629EB00A9CF36 /* WishListObjectResult.m */,
+			);
+			path = WishList;
+			sourceTree = "<group>";
+		};
+		85CDF0D01AD62A2A00A9CF36 /* WishList */ = {
+			isa = PBXGroup;
+			children = (
+				85CDF0D11AD62A2A00A9CF36 /* WishListViewController.h */,
+				85CDF0D21AD62A2A00A9CF36 /* WishListViewController.m */,
+				85CDF0D31AD62A2A00A9CF36 /* WishListViewController.xib */,
+			);
+			path = WishList;
+			sourceTree = "<group>";
+		};
 		FC2113671AD4CF1C007935C1 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				85CDF0C61AD629EB00A9CF36 /* WishList */,
 				FC2113681AD4CF1C007935C1 /* Activation */,
 				FC2113781AD4CF1C007935C1 /* Deposit */,
 				FC21137E1AD4CF1C007935C1 /* DepositForm */,
@@ -5033,6 +5079,7 @@
 		FC23AF151ACD651400879D75 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				85CDF0D01AD62A2A00A9CF36 /* WishList */,
 				FC23AF161ACD651400879D75 /* FavoritedShop */,
 				FC23AF1D1ACD651400879D75 /* HistoryProduct */,
 				FC23AF211ACD651400879D75 /* HomeTabController */,
@@ -6544,6 +6591,10 @@
 				FC23B2EC1ACD651600879D75 /* icon_urutkan@2x.png */,
 				FC23B2ED1ACD651600879D75 /* icon_urutkan_alt.png */,
 				FC23B2EE1ACD651600879D75 /* icon_urutkan_alt@2x.png */,
+				85765FAA1AD664D400FC31DC /* icon_wishlist_active.png */,
+				85765FAB1AD664D400FC31DC /* icon_wishlist_active@2x.png */,
+				85765FAC1AD664D400FC31DC /* icon_wishlist_unactive.png */,
+				85765FAD1AD664D400FC31DC /* icon_wishlist_unactive@2x.png */,
 				FC23B2EF1ACD651600879D75 /* launch_image@2x.png */,
 				FC23B2F01ACD651600879D75 /* launch_image@3x.png */,
 				FC23B2F11ACD651600879D75 /* login.jpg */,
@@ -7331,6 +7382,7 @@
 				FC23B7671ACD651600879D75 /* icon_etalase.png in Resources */,
 				FC23B7A31ACD651600879D75 /* icon_order_check-01.png in Resources */,
 				FC23B7201ACD651600879D75 /* icon_6@2x.png in Resources */,
+				85765FAE1AD664D400FC31DC /* icon_wishlist_active.png in Resources */,
 				FC23B8021ACD651600879D75 /* navigation-chevron@2x.png in Resources */,
 				FC23B7551ACD651600879D75 /* icon_checkmark_green-01.png in Resources */,
 				FC23B7AA1ACD651600879D75 /* icon_plus_blue@2x.png in Resources */,
@@ -7613,6 +7665,7 @@
 				FC23B56C1ACD651600879D75 /* HotlistResultViewController.xib in Resources */,
 				FC23B6A81ACD651600879D75 /* TransactionCartEditViewController.xib in Resources */,
 				FC23B7171ACD651600879D75 /* icon_21@2x.png in Resources */,
+				85765FAF1AD664D400FC31DC /* icon_wishlist_active@2x.png in Resources */,
 				FC23B7F91ACD651600879D75 /* icon_view_14px.png in Resources */,
 				FC23B65C1ACD651600879D75 /* ShopFavoritedViewController.xib in Resources */,
 				FC23B7AF1ACD651600879D75 /* icon_retry_grey@2x.png in Resources */,
@@ -7655,6 +7708,7 @@
 				FC23B5251ACD651600879D75 /* LoadingView.xib in Resources */,
 				FC23B7C41ACD651600879D75 /* icon_shop_info.png in Resources */,
 				FC23B5C31ACD651600879D75 /* DetailProductWholesaleCell.xib in Resources */,
+				85CDF0D51AD62A2A00A9CF36 /* WishListViewController.xib in Resources */,
 				FC23B5061ACD651600879D75 /* CatalogViewController.xib in Resources */,
 				FC23B7841ACD651600879D75 /* icon_lock_grey@2x.png in Resources */,
 				FC23B8411ACD651600879D75 /* icon_info_grey_small.png in Resources */,
@@ -7723,6 +7777,7 @@
 				FC23B8141ACD651600879D75 /* ic_search.png in Resources */,
 				FC23B8191ACD651600879D75 /* icon_cart_active@2x.png in Resources */,
 				FC23B5DC1ACD651600879D75 /* ProductListMyShopCell.xib in Resources */,
+				85765FB01AD664D400FC31DC /* icon_wishlist_unactive.png in Resources */,
 				FC23B4DE1ACD651600879D75 /* AlertInfoVoucherCodeView.xib in Resources */,
 				FC23B5E61ACD651600879D75 /* ProfileContactViewController.xib in Resources */,
 				FC23B7361ACD651600879D75 /* icon_arrow_up_white.png in Resources */,
@@ -7762,6 +7817,7 @@
 				FC23B6FA1ACD651600879D75 /* button_white_rounded_2.png in Resources */,
 				FC23B53C1ACD651600879D75 /* DepositSummaryCell.xib in Resources */,
 				FC23B6751ACD651600879D75 /* ShopSettingViewController.xib in Resources */,
+				85765FB11AD664D400FC31DC /* icon_wishlist_unactive@2x.png in Resources */,
 				FC23B5D01ACD651600879D75 /* ProductTalkViewController.xib in Resources */,
 				FC23B7051ACD651600879D75 /* icon_13@2x.png in Resources */,
 				FC23B6561ACD651600879D75 /* ShopEditStatusViewController.xib in Resources */,
@@ -8084,6 +8140,7 @@
 				FC23B5181ACD651600879D75 /* TKPDTabInboxReviewNavigationController.m in Sources */,
 				FC2116491AD4CF1D007935C1 /* ShopInfo.m in Sources */,
 				FC23B6761ACD651600879D75 /* ShopTalkViewController.m in Sources */,
+				85CDF0CF1AD629EB00A9CF36 /* WishListObjectResult.m in Sources */,
 				FC23B53D1ACD651600879D75 /* DepositSummaryViewController.m in Sources */,
 				FC23B6211ACD651600879D75 /* DetailShipmentStatusViewController.m in Sources */,
 				FC23B5FF1ACD651600879D75 /* FilterNewOrderViewController.m in Sources */,
@@ -8241,6 +8298,7 @@
 				FC23B5A21ACD651600879D75 /* MyShopEtalaseDetailViewController.m in Sources */,
 				FC23B6921ACD651600879D75 /* SortViewController.m in Sources */,
 				FC23B38F1ACD651600879D75 /* NSData+Encryption.m in Sources */,
+				85CDF0D41AD62A2A00A9CF36 /* WishListViewController.m in Sources */,
 				FC23B55A1ACD651600879D75 /* FavoritedShopCell.m in Sources */,
 				FC2116621AD4CF1D007935C1 /* HistoryProductResult.m in Sources */,
 				FC23B5771ACD651600879D75 /* FilterComplainViewController.m in Sources */,
@@ -8372,6 +8430,7 @@
 				FC21170A1AD4CF1E007935C1 /* TransactionAction.m in Sources */,
 				FC2117031AD4CF1E007935C1 /* ShopShipping.m in Sources */,
 				FC2117361AD4CF1E007935C1 /* TxOrderConfirmedDetailOrder.m in Sources */,
+				85CDF0CD1AD629EB00A9CF36 /* WishListObject.m in Sources */,
 				FC2116DC1AD4CF1D007935C1 /* ShipmentOrder.m in Sources */,
 				FC2116C81AD4CF1D007935C1 /* OrderDetail.m in Sources */,
 				FC2117311AD4CF1E007935C1 /* TxOrderConfirmed.m in Sources */,
@@ -8415,6 +8474,7 @@
 				FC23B3881ACD651600879D75 /* URLCacheAlert.m in Sources */,
 				FC2117131AD4CF1E007935C1 /* TransactionBuyResult.m in Sources */,
 				FC2116A11AD4CF1D007935C1 /* ProfileEditForm.m in Sources */,
+				85CDF0CE1AD629EB00A9CF36 /* WishListObjectList.m in Sources */,
 				FC36DF9719B0656400AF74C1 /* AppDelegate.m in Sources */,
 				FC23B4F91ACD651600879D75 /* CatalogProductCell.m in Sources */,
 				FC23B5371ACD651600879D75 /* DepositListBankCell.m in Sources */,
