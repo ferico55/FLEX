@@ -52,6 +52,19 @@
 #import "TokopediaNetworkManager.h"
 #import "ProductGalleryViewController.h"
 
+#pragma mark - CustomButton Expand Desc
+@interface CustomButtonExpandDesc : UIButton
+@property (nonatomic) int objSection;
+@end
+
+
+@implementation CustomButtonExpandDesc
+@synthesize objSection;
+@end
+
+
+
+
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController ()
 <
@@ -113,9 +126,11 @@
     
     __weak RKObjectManager  *_objectPromoteManager;
     
+    BOOL isExpandDesc, isNeedLogin;
     TokopediaNetworkManager *_promoteNetworkManager;
-    UIBarButtonItem *btnWishList, *btnUnWishList;
+    UIImage *imgWishList, *imgUnWishList;
     UIActivityIndicatorView *activityIndicator;
+    UIFont *fontDesc;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -186,6 +201,7 @@
     [super viewDidLoad];
     
     self.title = @"Detail Produk";
+    fontDesc = [UIFont fontWithName:@"GothamBook" size:13.0f];
     
     _datatalk = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
@@ -295,6 +311,11 @@
             _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
         }
         [self.table reloadData];
+    }
+    else if(isNeedLogin)
+    {
+        isNeedLogin = !isNeedLogin;
+        [self loadData];
     }
 }
 
@@ -535,7 +556,6 @@
 
 
 #pragma mark - Table view data source
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     UIView *mView = [[UIView alloc]initWithFrame:CGRectMake(0, 30, 50, 40)];
@@ -550,7 +570,7 @@
     if (sectionIsExpanded) {
         [expandCollapseButton setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
     } else {
-        [expandCollapseButton setImage:[UIImage imageNamed:@"icon_arrow_down"] forState:UIControlStateNormal];
+        [expandCollapseButton setImage:[UIImage imageNamed:@"icon_arrow_down.png"] forState:UIControlStateNormal];
     }
     [mView addSubview:expandCollapseButton];
     
@@ -570,10 +590,72 @@
             if (!_isnodatawholesale)
                 [bt setTitle: PRODUCT_WHOLESALE forState: UIControlStateNormal];
             else
+            {
+                CGRect rectLblDesc = CGRectZero;
                 [bt setTitle: PRODUCT_DESC forState: UIControlStateNormal];
+                
+                CustomButtonExpandDesc *btnExpand = [CustomButtonExpandDesc buttonWithType:UIButtonTypeCustom];
+                if(_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
+                {
+                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:[NSString stringWithFormat:@"%@%@", [_product.result.product.product_description substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
+                    
+                    [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_down.png"] forState:UIControlStateNormal];
+                }
+                else
+                {
+                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:_product.result.product.product_description];
+                    [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
+                }
+                [expandCollapseButton removeFromSuperview];
+                
+                
+                if(_product.result.product.product_description.length > kTKPDLIMIT_TEXT_DESC) {
+                    btnExpand.frame = CGRectMake((self.view.bounds.size.width-40)/2.0f, rectLblDesc.origin.y+rectLblDesc.size.height, 40, 40);
+                    [btnExpand addTarget:self action:@selector(expand:) forControlEvents:UIControlEventTouchUpInside];
+                    [btnExpand setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                    btnExpand.tag = 0;
+                    btnExpand.objSection = (int)section;
+                
+                    [mView addSubview:btnExpand];
+                }
+                
+                [mView addSubview:bt];
+                return mView;
+            }
             break;
         case 2:
+        {
             [bt setTitle: PRODUCT_DESC forState: UIControlStateNormal];
+            CGRect rectLblDesc = CGRectZero;
+            CustomButtonExpandDesc *btnExpand = [CustomButtonExpandDesc buttonWithType:UIButtonTypeCustom];
+
+            if(_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
+            {
+                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:[NSString stringWithFormat:@"%@%@", [_product.result.product.product_description substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
+                [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_down.png"] forState:UIControlStateNormal];
+            }
+            else
+            {
+                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:_product.result.product.product_description];
+                [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
+            }
+            
+            
+            if(_product.result.product.product_description.length > kTKPDLIMIT_TEXT_DESC)
+            {
+                btnExpand.frame = CGRectMake((self.view.bounds.size.width-40)/2.0f, rectLblDesc.origin.y+rectLblDesc.size.height, 40, 40);
+                [btnExpand addTarget:self action:@selector(expand:) forControlEvents:UIControlEventTouchUpInside];
+                [btnExpand setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                btnExpand.tag = 0;
+                btnExpand.objSection = (int)section;
+                [mView addSubview:btnExpand];
+            }
+            
+            
+            [expandCollapseButton removeFromSuperview];
+            [mView addSubview:bt];
+            return mView;
+        }
             break;
             
         default:
@@ -597,6 +679,24 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if(! _isnodatawholesale)
+    {
+        if(section == 2)
+        {
+            if(_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
+                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_product.result.product.product_description substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]] + (_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+            else
+                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_product.result.product.product_description] + (_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+        }
+    }
+    else if(section == 1)
+    {
+        if(_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
+            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_product.result.product.product_description substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]] + (_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+        else
+            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_product.result.product.product_description] + (_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+    }
+
     return 40;
 }
 
@@ -641,6 +741,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if(! _isnodatawholesale)
+    {
+        if(section == 2)
+            return 0;
+    }
+    else if(section == 1)
+        return 0;
+
     return 1;
 }
 
@@ -1001,16 +1109,42 @@
                     
                     [barbutton setTag:22];
                     self.navigationItem.rightBarButtonItem = barbutton;
+                    [btnWishList removeFromSuperview];
                 } else {
-                    btnWishList = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_unfavorite_2x.png"] withAction:@selector(setWishList:)];
-                    btnUnWishList = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_favorite_2x.png"] withAction:@selector(setUnWishList:)];
-                    activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
-                    [activityIndicator startAnimating];
+                    activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:btnWishList.frame];
+                    activityIndicator.color = [UIColor lightGrayColor];
+                    btnWishList.hidden = NO;
+                    [btnWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
+                    btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:11.0f];
+                    [btnWishList setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+                    btnWishList.layer.cornerRadius = btnShare.layer.cornerRadius = 5;
+                    btnWishList.layer.masksToBounds = btnShare.layer.masksToBounds = YES;
+                    btnWishList.layer.borderColor = btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
+                    btnWishList.layer.borderWidth = btnShare.layer.borderWidth = 1.0f;
+                    btnWishList.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
+                    btnWishList.titleEdgeInsets = UIEdgeInsetsMake(5, 0, 0, 0);
+
+                    //Rescale image
+                    UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0.0);
+                    [[UIImage imageNamed:@"icon_wishlist_active.png"] drawInRect:CGRectMake(0, 0, 15, 15)];
+                    imgUnWishList = UIGraphicsGetImageFromCurrentImageContext();
+                    UIGraphicsEndImageContext();
                     
-                    if([_product.result.product.product_already_wishlist isEqualToString:@"x"])
-                        self.navigationItem.rightBarButtonItem = btnUnWishList;
+                    UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0.0);
+                    [[UIImage imageNamed:@"icon_wishlist_unactive.png"] drawInRect:CGRectMake(0, 0, 15, 15)];
+                    imgWishList = UIGraphicsGetImageFromCurrentImageContext();
+                    UIGraphicsEndImageContext();
+                    
+                    if([_product.result.product.product_already_wishlist isEqualToString:@"1"])
+                    {
+                        [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
+                        btnWishList.tag = 0;
+                    }
                     else
-                        self.navigationItem.rightBarButtonItem = btnWishList;
+                    {
+                        [btnWishList setImage:imgWishList forState:UIControlStateNormal];
+                        btnWishList.tag = 1;
+                    }
                 }
                 
                 //decide description height
@@ -1102,11 +1236,18 @@
 #pragma mark - UIScrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)sender
 {
-    // Update the page when more than 50% of the previous/next page is visible
-    CGFloat pageWidth = _imagescrollview.frame.size.width;
-    _pageheaderimages = floor((_imagescrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-    _pagecontrol.currentPage = _pageheaderimages;
-    
+    if(sender.tag == 111)
+    {
+        CGFloat pageWidth = _otherproductscrollview.bounds.size.width;
+        otherProductPageControl.currentPage = floor((_otherproductscrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    }
+    else
+    {
+        // Update the page when more than 50% of the previous/next page is visible
+        CGFloat pageWidth = _imagescrollview.frame.size.width;
+        _pageheaderimages = floor((_imagescrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+        _pagecontrol.currentPage = _pageheaderimages;
+    }
 }
 
 #pragma mark - Cell Delegate
@@ -1180,6 +1321,70 @@
 }
 
 #pragma mark - Methods
+- (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText
+{
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    style.alignment = NSTextAlignmentLeft;
+    NSDictionary *attributes = @{
+                                 NSForegroundColorAttributeName: [UIColor whiteColor],
+                                 NSFontAttributeName: fontDesc,
+                                 NSParagraphStyleAttributeName: style,
+                                 };
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:strText attributes:attributes];
+    lblDesc.attributedText = attributedText;
+
+}
+
+- (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText
+{
+    if(strText == nil)  return 0.0f;
+    UILabel *lblSize = [[UILabel alloc] init];
+    [self initAttributeText:lblSize withStrText:strText];
+    lblSize.numberOfLines = 0;
+    
+    return [lblSize sizeThatFits:size].height;
+}
+
+
+- (CGRect)initLableDescription:(UIView *)mView originY:(float)originY width:(float)width withText:(NSString *)strText
+{
+    if(strText == nil)  return CGRectZero;
+    CGRect rectLblDesc = CGRectMake(15, originY, width, 9999);
+    rectLblDesc.size.height = [self calculateHeightLabelDesc:rectLblDesc.size withText:strText];
+    
+    UILabel *lblDescription = [[UILabel alloc] initWithFrame:rectLblDesc];
+    lblDescription.backgroundColor = [UIColor clearColor];
+    [lblDescription setNumberOfLines:0];
+    [self initAttributeText:lblDescription withStrText:strText];
+    lblDescription.textColor = [UIColor lightGrayColor];
+    [mView addSubview:lblDescription];
+    
+    return rectLblDesc;
+}
+
+- (void)expand:(CustomButtonExpandDesc *)sender
+{
+    isExpandDesc = !isExpandDesc;
+    [_table reloadData];
+}
+
+- (IBAction)actionShare:(id)sender
+{
+    NSString *activityItem = [NSString stringWithFormat:@"%@ - %@ | Tokopedia %@", _product.result.shop_info.shop_name, _product.result.shop_info.shop_location, _product.result.shop_info.shop_url];
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem] applicationActivities:nil];
+    activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+    [self presentViewController:activityController animated:YES completion:nil];
+}
+
+- (IBAction)actionWishList:(UIButton *)sender
+{
+    if(sender.tag == 1)
+        [self setWishList];
+    else
+        [self setUnWishList];
+}
+
 - (UIBarButtonItem *)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action
 {
     UIImageView *infoImageView = [[UIImageView alloc] initWithImage:image];
@@ -1203,7 +1408,7 @@
     UILabel *productLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 480, 44)];
     productLabel.backgroundColor = [UIColor clearColor];
     productLabel.numberOfLines = 2;
-    UIFont *productLabelFont = [UIFont fontWithName:@"GothamMedium" size:14];
+    UIFont *productLabelFont = [UIFont fontWithName:@"GothamMedium" size:13];
     
     NSMutableParagraphStyle *productLabelStyle = [[NSMutableParagraphStyle alloc] init];
     productLabelStyle.lineSpacing = 4.0;
@@ -1287,7 +1492,8 @@
             [thumb setImage:image];
             
 #pragma clang diagnostic pop
-            
+            [headerActivityIndicator removeFromSuperview];
+            [headerActivityIndicator stopAnimating];
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         }];
 
@@ -1339,7 +1545,9 @@
         [thumb setImage:image];
         
 #pragma clang diagnostic pop
-        
+        [merchantActivityIndicator removeFromSuperview];
+        [merchantActivityIndicator stopAnimating];
+        merchantActivityIndicator = nil;
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         
     }];
@@ -1531,7 +1739,7 @@
 }
 
 - (void)cancelOtherProduct {
-    
+    [btnWishList setImage:imgWishList forState:UIControlStateNormal];
 }
 
 #pragma mark - Request and mapping favorite action
@@ -1596,124 +1804,188 @@
 }
 
 
-- (void)setUnWishList:(id)obj
+- (void)setUnWishList
 {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityIndicator];
-    if(objectWishListManager == nil)
-        [self configureWishListRestKit];
-    
-    NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY : kTKPDREMOVE_WISHLIST_PRODUCT,
-                            kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};
-    requestWishList = [objectWishListManager appropriateObjectRequestOperationWithObject:self
-                                                                                  method:RKRequestMethodPOST
-                                                                                    path:[NSString stringWithFormat:@"action/%@", kTKPDWISHLIST_APIPATH]
-                                                                              parameters:[param encrypt]];
-    
-    [requestWishList setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        if(mappingResult)
-        {
-            NSDictionary *result = ((RKMappingResult*) mappingResult).dictionary;
-            WishListObject *wishListObject = [result objectForKey:@""];
-            BOOL status = [wishListObject.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            StickyAlertView *alert;
+    if(_auth) {
+        [_header addSubview:activityIndicator];
+        [activityIndicator startAnimating];
+        [btnWishList setHidden:YES];
+        
+        if(objectWishListManager == nil)
+            [self configureWishListRestKit];
+        
+        NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY : kTKPDREMOVE_WISHLIST_PRODUCT,
+                                kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};
+        requestWishList = [objectWishListManager appropriateObjectRequestOperationWithObject:self
+                                                                                      method:RKRequestMethodPOST
+                                                                                        path:[NSString stringWithFormat:@"action/%@", kTKPDWISHLIST_APIPATH]
+                                                                                  parameters:[param encrypt]];
+        
+        [requestWishList setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            if(mappingResult)
+            {
+                NSDictionary *result = ((RKMappingResult*) mappingResult).dictionary;
+                WishListObject *wishListObject = [result objectForKey:@""];
+                BOOL status = [wishListObject.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+                StickyAlertView *alert;
+                
+                if(status && [wishListObject.result.is_success isEqualToString:@"1"])
+                {
+                    alert = [[StickyAlertView alloc] initWithSuccessMessages:@[kTKPDSUCCESS_REMOVE_WISHLIST] delegate:self];
+                    [btnWishList setImage:imgWishList forState:UIControlStateNormal];
+                    btnWishList.tag = 1;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
+                    
+                    [activityIndicator removeFromSuperview];
+                    [activityIndicator stopAnimating];
+                    [btnWishList setHidden:NO];
+                }
+                else
+                {
+                    alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_REMOVE_WISHLIST] delegate:self];
+                    [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
+                    btnWishList.tag = 0;
+                    [activityIndicator removeFromSuperview];
+                    [activityIndicator stopAnimating];
+                    [btnWishList setHidden:NO];
+                }
+                [alert show];
+            }
             
-            if(status && [wishListObject.result.is_success isEqualToString:@"1"])
-            {
-                alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Berhasil menghapus wishlist"] delegate:self];
-                self.navigationItem.rightBarButtonItem = btnWishList;
-                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
-            }
-            else
-            {
-                alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal menghapus wishlist"] delegate:self];
-                self.navigationItem.rightBarButtonItem = btnUnWishList;
-            }
+            [_timer invalidate];
+            _timer = nil;
+            
+        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+            /** failure **/
+            //        [self requestFavoriteError:error];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_REMOVE_WISHLIST] delegate:self];
             [alert show];
-        }
+            [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
+            btnWishList.tag = 0;
+            [activityIndicator removeFromSuperview];
+            [activityIndicator stopAnimating];
+            [btnWishList setHidden:NO];
+            
+            [_timer invalidate];
+            _timer = nil;
+        }];
         
-        [_timer invalidate];
-        _timer = nil;
+        [operationWishList addOperation:requestWishList];
         
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        //        [self requestFavoriteError:error];
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal menghapus wishlist"] delegate:self];
-        [alert show];
-        self.navigationItem.rightBarButtonItem = btnUnWishList;
-
-        [_timer invalidate];
-        _timer = nil;
-    }];
-    
-    [operationWishList addOperation:requestWishList];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(requesttimeout)
-                                            userInfo:nil
-                                             repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                  target:self
+                                                selector:@selector(requesttimeout)
+                                                userInfo:nil
+                                                 repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    } else {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = self;
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = self;
+        navigationController.viewControllers = @[controller];
+        isNeedLogin = YES;
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    }
 }
 
 
-- (void)setWishList:(int)obj
+- (void)setWishList
 {
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityIndicator];    
-    if(objectWishListManager == nil)
-        [self configureWishListRestKit];
-    NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY : kTKPDADD_WISHLIST_PRODUCT,
-                            kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};
-    requestWishList = [objectWishListManager appropriateObjectRequestOperationWithObject:self
-                                                                                    method:RKRequestMethodPOST
-                                                                                      path:[NSString stringWithFormat:@"action/%@", kTKPDWISHLIST_APIPATH]
-                                                                                parameters:[param encrypt]];
-    
-    [requestWishList setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        if(mappingResult)
-        {
-            NSDictionary *result = ((RKMappingResult*) mappingResult).dictionary;
-            WishListObject *wishListObject = [result objectForKey:@""];
-            BOOL status = [wishListObject.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            StickyAlertView *alert;
-            
-            if(status && [wishListObject.result.is_success isEqualToString:@"1"])
+    if(_auth) {
+        [_header addSubview:activityIndicator];
+        [activityIndicator startAnimating];
+        [btnWishList setHidden:YES];
+        
+        if(objectWishListManager == nil)
+            [self configureWishListRestKit];
+        NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY : kTKPDADD_WISHLIST_PRODUCT,
+                                kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};
+        requestWishList = [objectWishListManager appropriateObjectRequestOperationWithObject:self
+                                                                                      method:RKRequestMethodPOST
+                                                                                        path:[NSString stringWithFormat:@"action/%@", kTKPDWISHLIST_APIPATH]
+                                                                                  parameters:[param encrypt]];
+        
+        [requestWishList setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+            if(mappingResult)
             {
-                alert = [[StickyAlertView alloc] initWithSuccessMessages:@[@"Berhasil menambah wishlist"] delegate:self];
-                self.navigationItem.rightBarButtonItem = btnUnWishList;
-                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
-            }
-            else
-            {
-                alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal menambah wishlist"] delegate:self];
-                self.navigationItem.rightBarButtonItem = btnWishList;
+                NSDictionary *result = ((RKMappingResult*) mappingResult).dictionary;
+                WishListObject *wishListObject = [result objectForKey:@""];
+                BOOL status = [wishListObject.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+                StickyAlertView *alert;
+                
+                if(status && [wishListObject.result.is_success isEqualToString:@"1"])
+                {
+                    alert = [[StickyAlertView alloc] initWithSuccessMessages:@[kTKPDSUCCESS_ADD_WISHLIST] delegate:self];
+                    [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
+                    btnWishList.tag = 0;
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
+                    [activityIndicator removeFromSuperview];
+                    [activityIndicator stopAnimating];
+                    [btnWishList setHidden:NO];
+                }
+                else
+                {
+                    alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
+                    [btnWishList setImage:imgWishList forState:UIControlStateNormal];
+                    btnWishList.tag = 1;
+                    [activityIndicator removeFromSuperview];
+                    [activityIndicator stopAnimating];
+                    [btnWishList setHidden:NO];
+                }
+                
+                [alert show];
             }
             
+            [_timer invalidate];
+            _timer = nil;
+            
+        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+            /** failure **/
+            //        [self requestFavoriteError:error];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
             [alert show];
-        }
+            [btnWishList setImage:imgWishList forState:UIControlStateNormal];
+            btnWishList.tag = 1;
+            [activityIndicator removeFromSuperview];
+            [activityIndicator stopAnimating];
+            [btnWishList setHidden:NO];
+            
+            [_timer invalidate];
+            _timer = nil;
+        }];
         
-        [_timer invalidate];
-        _timer = nil;
+        [operationWishList addOperation:requestWishList];
         
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-//        [self requestFavoriteError:error];
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal menambah wishlist"] delegate:self];
-        [alert show];
-        self.navigationItem.rightBarButtonItem = btnWishList;
-
+        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                  target:self
+                                                selector:@selector(requesttimeout)
+                                                userInfo:nil
+                                                 repeats:NO];
+        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    } else {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
         
-        [_timer invalidate];
-        _timer = nil;
-    }];
-    
-    [operationWishList addOperation:requestWishList];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(requesttimeout)
-                                            userInfo:nil
-                                             repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+        
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = self;
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = self;
+        navigationController.viewControllers = @[controller];
+        isNeedLogin = YES;
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    }
 }
 
 

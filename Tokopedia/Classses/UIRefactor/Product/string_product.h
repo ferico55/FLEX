@@ -189,6 +189,12 @@ typedef enum
 #define ERRORMESSAGE_INVALID_PRICE_WHOLESALE @"Harga harus lebih murah dari harga grosir sebelumnya."
 #define ERRORMESSAGE_INVALID_PRICE_WHOLESALE_COMPARE_NET @"Harga grosir harus lebih murah dari harga pas."
 #define ERRORMESSAGE_MAXIMAL_WHOLESALE_LIST @"Hanya boleh menambahkan 5 harga grosir"
+#define kTKPDSUCCESS_ADD_WISHLIST @"Anda berhasil menambah wishlist"
+#define kTKPDSUCCESS_REMOVE_WISHLIST @"Anda berhasil menghapus wishlist"
+#define kTKPDFAILED_ADD_WISHLIST @"Anda gagal menambah wishlist"
+#define kTKPDFAILED_REMOVE_WISHLIST @"Anda gagal menghapus wishlist"
+
+
 
 #define ERRORMESSAGE_FAILED_IMAGE_UPLOAD @"Gagal menambah image produk. Silahkan coba kembali."
 
