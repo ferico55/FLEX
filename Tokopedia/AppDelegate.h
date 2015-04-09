@@ -34,6 +34,10 @@
 #define kTKPDNAVIGATION_NAVIGATIONBGCOLOR [UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1]
 #define kTKPDNAVIGATION_NAVIGATIONITEMCOLOR [UIColor whiteColor]
 
+/******* Set your tracking ID here *******/
+static NSString *const kTrackingId = @"UA-XXXXX-Y";
+static NSString *const kAllowTracking = @"allowTracking";
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UIAlertViewDelegate>
 
 @property (assign, nonatomic) BOOL isNetworkAvailable;

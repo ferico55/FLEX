@@ -742,6 +742,7 @@ typedef enum
 #define kTKPDMESSAGE_KEYCONTENT @"message"
 #define kTKPDMESSAGE_PRODUCTIDKEY @"product_id"
 #define kTKPDMESSAGE_KEYTOSHOPID @"to_shop_id"
+#define kTKPDMESSAGE_KEYTOUSERID @"to_user_id"
 #define KTKPDMESSAGE_DELIVERED @"Pesan Anda telah terkirim!"
 #define KTKPDTALK_DELIVERED @"Diskusi Anda telah terkirim!"
 #define KTKPDMESSAGE_UNDELIVERED @"Pesan Anda gagal terkirim."

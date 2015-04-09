@@ -41,18 +41,13 @@
     
     [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];
-        
-        if (_delegate && [_delegate respondsToSelector:@selector(actionAfterRequestAsync)]) {
-            [_delegate actionAfterRequestAsync];
-        }
-
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFail:error];
-
-        if (_delegate && [_delegate respondsToSelector:@selector(actionAfterRequestFailAsync)]) {
-            [_delegate actionAfterRequestFailAsync];
-        }
     }];
+    
+    if (_delegate && [_delegate respondsToSelector:@selector(actionRequestAsync)]) {
+        [_delegate actionRequestAsync];
+    }
     
     [_operationQueue addOperation:_objectRequest];
     timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
