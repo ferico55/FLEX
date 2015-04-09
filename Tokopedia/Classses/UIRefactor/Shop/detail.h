@@ -224,6 +224,8 @@ typedef enum
 #define kTKPDDETAILPRODUCT_APIINFOKEY @"info"
 #define API_PRODUCT_INFO_KEY @"product"
 
+#define kTKPDLIMIT_TEXT_DESC 100
+#define kTKPDMORE_TEXT @"..."
 #define kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY @"product_last_update"
 #define kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY @"product_price_alert"
 #define kTKPDPRODUCT_ALREADY_WISHLIST @"product_already_wishlist"
