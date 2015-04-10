@@ -297,8 +297,8 @@
                     <rect key="frame" x="170" y="309" width="15" height="15"/>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qan-1S-e2b">
-                    <rect key="frame" x="282" y="8" width="30" height="30"/>
-                    <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                    <rect key="frame" x="272" y="8" width="40" height="30"/>
+                    <inset key="contentEdgeInsets" minX="10" minY="5" maxX="10" maxY="5"/>
                     <state key="normal" image="icon_share.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -307,7 +307,7 @@
                     </connections>
                 </button>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NZQ-y3-gDO">
-                    <rect key="frame" x="184" y="8" width="90" height="30"/>
+                    <rect key="frame" x="174" y="8" width="90" height="30"/>
                     <state key="normal" image="icon_shop_favorite.png">
                         <color key="titleShadowColor" red="0.85772945374015752" green="0.85772945374015752" blue="0.85772945374015752" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
@@ -490,22 +490,16 @@
                         <outlet property="delegate" destination="-1" id="PCJ-xL-9SS"/>
                     </connections>
                 </scrollView>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="8vh-UP-jfQ">
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="8vh-UP-jfQ">
                     <rect key="frame" x="150" y="389" width="20" height="20"/>
                 </activityIndicatorView>
-                <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="eSi-IX-aJW">
-                    <rect key="frame" x="141" y="459" width="39" height="37"/>
+                <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="eSi-IX-aJW">
+                    <rect key="frame" x="0.0" y="459" width="320" height="37"/>
                     <color key="pageIndicatorTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="currentPageIndicatorTintColor" red="0.24313725489999999" green="0.66666666669999997" blue="0.14117647059999999" alpha="1" colorSpace="calibratedRGB"/>
                 </pageControl>
             </subviews>
             <color key="backgroundColor" red="0.90588235294117647" green="0.90588235294117647" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
-            <constraints>
-                <constraint firstItem="eSi-IX-aJW" firstAttribute="top" secondItem="8vh-UP-jfQ" secondAttribute="bottom" constant="50" id="2nq-d2-qvO"/>
-                <constraint firstAttribute="bottom" secondItem="eSi-IX-aJW" secondAttribute="bottom" constant="-20" id="8q1-Z7-9oA"/>
-                <constraint firstItem="8vh-UP-jfQ" firstAttribute="leading" secondItem="S8c-C2-gKh" secondAttribute="leading" constant="150" id="kda-Od-BLy"/>
-                <constraint firstAttribute="leading" secondItem="eSi-IX-aJW" secondAttribute="leading" priority="986" constant="-141" id="xjZ-nF-TJN"/>
-            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="347" y="-278"/>

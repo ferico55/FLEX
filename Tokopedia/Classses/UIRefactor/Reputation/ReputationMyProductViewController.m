@@ -160,17 +160,17 @@
 }
 
 #pragma mark - Network Delegate
-- (NSDictionary *)getParameter {
+- (NSDictionary *)getParameter:(int)tag {
     return @{
              kTKPDREPUTATION_ACTION_KEY : kTKPDREPUTATION_ACTION_GETLIST,
              };
 }
 
-- (NSString *)getPath {
+- (NSString *)getPath:(int)tag {
     return kTKPDREPUTATION_REQUEST_PATH;
 }
 
-- (id)getObjectManager {
+- (id)getObjectManager:(int)tag {
     _listObjectManager = [RKObjectManager sharedClient];
 
 
@@ -228,7 +228,7 @@
 }
 
 
-- (NSString *)getRequestStatus:(id)result {
+- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
     Reputation *reputation = stat;
@@ -236,7 +236,7 @@
     return reputation.status;
 }
 
-- (void)actionBeforeRequest {
+- (void)actionBeforeRequest:(int)tag {
     if (!_isRefreshingView) {
         _table.tableFooterView = _footer;
         [_indicator startAnimating];
@@ -247,8 +247,9 @@
     }
 }
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation{
-    Reputation *reputation = successResult;
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {
+    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+    Reputation *reputation = [result objectForKey:@""];
     
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
@@ -265,7 +266,7 @@
     [_table reloadData];
 }
 
-- (void)actionAfterFailRequestMaxTries {
+- (void)actionAfterFailRequestMaxTries:(int)tag {
     [_refreshControl endRefreshing];
     _table.tableFooterView = _loadingView.view;
 }
