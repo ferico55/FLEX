@@ -368,6 +368,7 @@
             TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
             [nc setSelectedIndex:2];
             [nc setViewControllers:vcs];
+            nc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:nc animated:YES];
             
         }
@@ -376,6 +377,8 @@
     
     else if (indexPath.section == 5) {
         if(indexPath.row == 0) {
+            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
+            
             [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
             [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
         } else if(indexPath.row == 1) {
@@ -396,6 +399,7 @@
     }
     
     else if (indexPath.section == 6) {
+        [Helpshift logout];
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
         [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil userInfo:@{}];
         [nc postNotificationName:@"clearCacheNotificationBar" object:nil];
