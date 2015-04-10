@@ -23,8 +23,7 @@
 - (void)actionBeforeRequest;
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation;
 
-- (void)actionAfterRequestAsync;
-- (void)actionAfterRequestFailAsync;
+- (void)actionRequestAsync;
 
 - (void)actionAfterFailRequestMaxTries;
 

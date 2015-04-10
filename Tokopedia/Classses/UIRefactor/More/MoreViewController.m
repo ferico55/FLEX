@@ -43,6 +43,7 @@
 #import "DepositSummaryViewController.h"
 #import "ShopContainerViewController.h"
 #import "ReputationPageViewController.h"
+#import "Helpshift.h"
 
 @interface MoreViewController () <NotificationManagerDelegate> {
     NSDictionary *_auth;
@@ -136,6 +137,8 @@
     
     self.navigationController.title = @"More";
     [self initNotificationManager];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadNotification)
@@ -221,7 +224,7 @@
             break;
             
         case 5:
-            return 2;
+            return 3;
             break;
             
         case 6:
@@ -373,13 +376,16 @@
     
     else if (indexPath.section == 5) {
         if(indexPath.row == 0) {
+            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        } else if(indexPath.row == 1) {
             UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 568)];
             [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kTKPDMORE_HELP_URL]]];
             UIViewController *controller = [UIViewController new];
             controller.title = kTKPDMORE_HELP_TITLE;
             [controller.view addSubview:webView];
             [self.navigationController pushViewController:controller animated:YES];
-        } else if(indexPath.row == 1) {
+        } else if(indexPath.row == 2) {
             UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 568)];
             [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kTKPDMORE_PRIVACY_URL]]];
             UIViewController *controller = [UIViewController new];

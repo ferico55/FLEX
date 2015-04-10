@@ -20,6 +20,7 @@
 #import "LoadingView.h"
 #import "TableViewScrollAndSwipe.h"
 
+
 #pragma mark - HotlistView
 
 @interface HotlistViewController ()
@@ -80,7 +81,8 @@
     [super viewDidLoad];
         
     [self.navigationController.navigationBar setTranslucent:NO];
-    
+    self.screenName = @"Page Hotlist";
+
     _product = [NSMutableArray new];
     _page = 1;
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;

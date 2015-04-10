@@ -110,7 +110,7 @@ typedef enum
 #define kTKPDPROFILE_APIUSERMESSENGERKEY @"user_messenger"
 #define kTKPDPROFILE_APIUSERHOBBIESKEY @"user_hobbies"
 #define kTKPDPROFILE_APIUSERPHONEKEY @"user_phone"
-#define kTKPDPROFILE_APIUSERIDKEY @"user_id"
+#define kTKPDPROFILE_APIPROFILEUSERIDKEY @"profile_user_id"
 #define kTKPDPROFILE_APIUSERIMAGEKEY @"user_image"
 #define kTKPDPROFILE_APIUSERNAMEKEY @"user_name"
 #define kTKPDPROFILE_APIUSERBIRTHKEY @"user_birth"

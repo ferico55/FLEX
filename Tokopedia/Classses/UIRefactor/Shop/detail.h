@@ -224,6 +224,8 @@ typedef enum
 #define kTKPDDETAILPRODUCT_APIINFOKEY @"info"
 #define API_PRODUCT_INFO_KEY @"product"
 
+#define kTKPDLIMIT_TEXT_DESC 100
+#define kTKPDMORE_TEXT @"..."
 #define kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY @"product_last_update"
 #define kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY @"product_price_alert"
 #define kTKPDPRODUCT_ALREADY_WISHLIST @"product_already_wishlist"
@@ -740,6 +742,7 @@ typedef enum
 #define kTKPDMESSAGE_KEYCONTENT @"message"
 #define kTKPDMESSAGE_PRODUCTIDKEY @"product_id"
 #define kTKPDMESSAGE_KEYTOSHOPID @"to_shop_id"
+#define kTKPDMESSAGE_KEYTOUSERID @"to_user_id"
 #define KTKPDMESSAGE_DELIVERED @"Pesan Anda telah terkirim!"
 #define KTKPDTALK_DELIVERED @"Diskusi Anda telah terkirim!"
 #define KTKPDMESSAGE_UNDELIVERED @"Pesan Anda gagal terkirim."
