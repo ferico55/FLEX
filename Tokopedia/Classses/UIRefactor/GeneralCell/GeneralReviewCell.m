@@ -133,6 +133,7 @@
 
 - (void)tapReview {
     NSIndexPath* indexpath = _indexpath;
+    
     [_delegate GeneralReviewCell:self withindexpath:indexpath];
 }
 

@@ -844,8 +844,6 @@
 		7A9AE5B61AD6E7C800FD8312 /* TransactionObjectMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9AE0641AD6E7C600FD8312 /* TransactionObjectMapping.m */; };
 		7A9AE5B71AD6E7C800FD8312 /* TxOrderStatusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9AE0681AD6E7C600FD8312 /* TxOrderStatusCell.m */; };
 		7A9AE5B81AD6E7C800FD8312 /* TxOrderStatusCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A9AE0691AD6E7C600FD8312 /* TxOrderStatusCell.xib */; };
-		7A9AE5B91AD6E7C800FD8312 /* TxOrderStatusDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9AE06B1AD6E7C600FD8312 /* TxOrderStatusDetailCell.m */; };
-		7A9AE5BA1AD6E7C800FD8312 /* TxOrderStatusDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A9AE06C1AD6E7C600FD8312 /* TxOrderStatusDetailCell.xib */; };
 		7A9AE5BB1AD6E7C800FD8312 /* TxOrderStatusDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9AE06E1AD6E7C600FD8312 /* TxOrderStatusDetailViewController.m */; };
 		7A9AE5BC1AD6E7C800FD8312 /* TxOrderStatusDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A9AE06F1AD6E7C600FD8312 /* TxOrderStatusDetailViewController.xib */; };
 		7A9AE5BD1AD6E7C800FD8312 /* TxOrderStatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A9AE0711AD6E7C600FD8312 /* TxOrderStatusViewController.m */; };
@@ -1287,6 +1285,8 @@
 		7A9AE7711AD6E7C800FD8312 /* MGSwipeTableCell.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 7A9AE2781AD6E7C700FD8312 /* MGSwipeTableCell.podspec */; };
 		7A9AE7721AD6E7C800FD8312 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 7A9AE2791AD6E7C700FD8312 /* README.md */; };
 		7A9AE7741AD6E93200FD8312 /* libHelpshift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9AE7731AD6E93200FD8312 /* libHelpshift.a */; };
+		7A9AE7781AD773D400FD8312 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9AE7771AD773D400FD8312 /* libPods-Tokopedia.a */; };
+		7A9AE77A1AD773FD00FD8312 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A9AE7791AD773FD00FD8312 /* CoreTelephony.framework */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
@@ -3290,6 +3290,9 @@
 		7A9AE2781AD6E7C700FD8312 /* MGSwipeTableCell.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = MGSwipeTableCell.podspec; sourceTree = "<group>"; };
 		7A9AE2791AD6E7C700FD8312 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		7A9AE7731AD6E93200FD8312 /* libHelpshift.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHelpshift.a; sourceTree = "<group>"; };
+		7A9AE7751AD7735B00FD8312 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/../build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		7A9AE7771AD773D400FD8312 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		7A9AE7791AD773FD00FD8312 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TokopediaTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -3336,6 +3339,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A9AE77A1AD773FD00FD8312 /* CoreTelephony.framework in Frameworks */,
+				7A9AE7781AD773D400FD8312 /* libPods-Tokopedia.a in Frameworks */,
 				7A9AD9F21AD6E56000FD8312 /* Security.framework in Frameworks */,
 				7A9AD9F01AD6E55B00FD8312 /* QuickLook.framework in Frameworks */,
 				7A9AA3281AD50CA000FD8312 /* libz.dylib in Frameworks */,
@@ -7120,6 +7125,9 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7A9AE7791AD773FD00FD8312 /* CoreTelephony.framework */,
+				7A9AE7771AD773D400FD8312 /* libPods-Tokopedia.a */,
+				7A9AE7751AD7735B00FD8312 /* libPods-Tokopedia.a */,
 				7A9AD9F11AD6E56000FD8312 /* Security.framework */,
 				7A9AD9EF1AD6E55B00FD8312 /* QuickLook.framework */,
 				7A9AA3271AD50CA000FD8312 /* libz.dylib */,
@@ -7359,7 +7367,6 @@
 				7A9AE6501AD6E7C800FD8312 /* icon_clock@2x.png in Resources */,
 				7A9AE3F61AD6E7C700FD8312 /* CatalogShopCell.xib in Resources */,
 				7A9AE63C1AD6E7C800FD8312 /* icon_category@2x (deleted 2662e0e529163403f536f7766e1f94cd).png in Resources */,
-				7A9AE5BA1AD6E7C800FD8312 /* TxOrderStatusDetailCell.xib in Resources */,
 				7A9AE5A61AD6E7C800FD8312 /* TransactionCartShippingViewController.xib in Resources */,
 				7A9AE6951AD6E7C800FD8312 /* icon_order_cancel-01.png in Resources */,
 				7A9AE4ED1AD6E7C800FD8312 /* ReputationShopHeader.xib in Resources */,
@@ -8444,7 +8451,6 @@
 				7A9AE4C21AD6E7C800FD8312 /* ProductReviewCell.m in Sources */,
 				7A9AE3331AD6E7C700FD8312 /* ActionOrderResult.m in Sources */,
 				7A9AE27A1AD6E7C700FD8312 /* URLCacheAlert.m in Sources */,
-				7A9AE5B91AD6E7C800FD8312 /* TxOrderStatusDetailCell.m in Sources */,
 				7A9AE3151AD6E7C700FD8312 /* FavoriteShop.m in Sources */,
 				7A9AE4401AD6E7C700FD8312 /* GeneralProductCell.m in Sources */,
 				7A9AE3831AD6E7C700FD8312 /* TransactionBuyResult.m in Sources */,
@@ -8824,6 +8830,7 @@
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 					/Users/tonitoacen/Downloads/GoogleAnalyticsServicesiOS_3.10,
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -8857,6 +8864,7 @@
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 					/Users/tonitoacen/Downloads/GoogleAnalyticsServicesiOS_3.10,
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -8870,6 +8878,7 @@
 			baseConfigurationReference = 967FDAFC7BB3C4142CDB5FE9 /* Pods-TokopediaTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Tokopedia.app/Tokopedia";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -8893,6 +8902,7 @@
 			baseConfigurationReference = C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Tokopedia.app/Tokopedia";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
