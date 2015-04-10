@@ -242,6 +242,7 @@ TokopediaNetworkManagerDelegate
     
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
     tokopediaNetworkManagerWishList.delegate = self;
+    tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -1173,11 +1174,13 @@ TokopediaNetworkManagerDelegate
     }
     else if(tag == CTagUnWishList)
     {
-        
+        GeneralAction *wishlistAction = stat;
+        return wishlistAction.status;
     }
     else if(tag == CTagWishList)
     {
-        
+        GeneralAction *wishlistAction = stat;
+        return wishlistAction.status;
     }
     
     return nil;

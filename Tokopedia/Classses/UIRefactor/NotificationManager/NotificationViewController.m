@@ -337,13 +337,16 @@
         if([indexPath row] == 0) {
             SalesNewOrderViewController *controller = [[SalesNewOrderViewController alloc] init];
             controller.delegate = self;
+            controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
         } else if ([indexPath row] == 1) {
             ShipmentConfirmationViewController *controller = [[ShipmentConfirmationViewController alloc] init];
             controller.delegate = self;
+            controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
         } else if ([indexPath row] == 2) {
             ShipmentStatusViewController *controller = [[ShipmentStatusViewController alloc] init];
+            controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
         }
     }
@@ -354,17 +357,21 @@
             vc.action = @"get_tx_order_list";
             vc.isCanceledPayment = YES;
             vc.viewControllerTitle = @"Pesanan Dibatalkan";
+            vc.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 1) {
             TxOrderTabViewController *vc = [TxOrderTabViewController new];
+            vc.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 2) {
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+            vc.hidesBottomBarWhenPushed = YES;
             vc.action = @"get_tx_order_status";
             vc.viewControllerTitle = @"Status Pemesanan";
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 3) {
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+            vc.hidesBottomBarWhenPushed = YES;
             vc.action = @"get_tx_order_deliver";
             vc.viewControllerTitle = @"Konfirmasi Penerimaan";
             [self.delegate pushViewController:vc];

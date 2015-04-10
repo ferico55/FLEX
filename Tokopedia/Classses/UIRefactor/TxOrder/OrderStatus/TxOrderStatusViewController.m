@@ -1263,6 +1263,7 @@
 {
     TrackOrderViewController *vc = [TrackOrderViewController new];
     vc.delegate = self;
+    vc.hidesBottomBarWhenPushed = YES;
     vc.orderID = [order.order_detail.detail_order_id integerValue];
     [self.navigationController pushViewController:vc animated:YES];
 }
