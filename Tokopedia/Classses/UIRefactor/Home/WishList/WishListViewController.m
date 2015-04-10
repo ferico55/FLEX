@@ -38,6 +38,8 @@
     
     isNoData = YES;
     operationQueue = [NSOperationQueue new];
+    tokoPediaNetworkManager = [TokopediaNetworkManager new];
+    tokoPediaNetworkManager.delegate = self;
     
     /** create new **/
     product = [NSMutableArray new];
@@ -64,7 +66,7 @@
     if (product.count > 0) {
         isNoData = NO;
     }
-
+    
     
     refreshControl = [[UIRefreshControl alloc] init];
     refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
@@ -96,18 +98,18 @@
                                                                          target:self
                                                                          action:nil];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
-
+    
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 
 #pragma mark - UITableView Delegate & Data Source
@@ -220,6 +222,138 @@
     }
 }
 
+#pragma mark - TokopediaNetwork Delegate
+- (NSDictionary*)getParameter:(int)tag
+{
+    return @{kTKPDHOME_APIACTIONKEY      :   kTKPDGET_WISH_LIST,
+             kTKPDHOME_APIPAGEKEY        :       @(page),
+             kTKPDHOME_APILIMITPAGEKEY   :   @(kTKPDHOMEHOTLIST_LIMITPAGE)};
+}
+
+- (NSString*)getPath:(int)tag
+{
+    return kTKPDHOMEHOTLIST_APIPATH;
+}
+
+- (id)getObjectManager:(int)tag
+{
+    // initialize RestKit
+    objectManager =  [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[WishListObject class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+    
+    
+    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
+    
+    
+    
+    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[WishListObjectList class]];
+    [listMapping addAttributeMappingsFromArray:@[
+                                                 KTKPDSHOP_GOLD_STATUS,
+                                                 KTKPDSHOP_ID,
+                                                 KTKPDPRODUCT_RATING_POINT,
+                                                 KTKPDPRODUCT_DEPARTMENT_ID,
+                                                 KTKPDPRODUCT_ETALASE,
+                                                 KTKPDSHOP_FEATURED_SHOP,
+                                                 KTKPDSHOP_URL,
+                                                 KTKPDPRODUCT_STATUS,
+                                                 KTKPDPRODUCT_ID,
+                                                 KTKPDPRODUCT_IMAGE_FULL,
+                                                 KTKPDPRODUCT_CURRENCY_ID,
+                                                 KTKPDPRODUCT_RATING_DESC,
+                                                 KTKPDPRODUCT_CURRENCY,
+                                                 KTKPDPRODUCT_TALK_COUNT,
+                                                 KTKPDPRODUCT_PRICE_NO_IDR,
+                                                 KTKPDPRODUCT_IMAGE,
+                                                 KTKPDPRODUCT_PRICE,
+                                                 KTKPDPRODUCT_SOLD_COUNT,
+                                                 KTKPDPRODUCT_RETURNABLE,
+                                                 KTKPDSHOP_LOCATION,
+                                                 KTKPDPRODUCT_NORMAL_PRICE,
+                                                 KTKPDPRODUCT_IMAGE_300,
+                                                 KTKPDSHOP_NAME,
+                                                 KTKPDPRODUCT_REVIEW_COUNT,
+                                                 KTKPDSHOP_IS_OWNER,
+                                                 KTKPDPRODUCT_URL,
+                                                 KTKPDPRODUCT_NAME
+                                                 ]];
+    
+    //relation
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[WishListObjectResult class]];
+    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
+    [resultMapping addPropertyMapping:pageRel];
+    
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
+    [resultMapping addPropertyMapping:listRel];
+    
+    
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    
+    
+    
+    
+    //register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    [objectManager addResponseDescriptor:responseDescriptorStatus];
+    return objectManager;
+}
+
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag
+{
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    return ((WishListObject *) stat).status;
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
+{
+    [self requestsuccess:successResult withOperation:operation];
+    [tblWishList reloadData];
+    isRefreshView = NO;
+    [refreshControl endRefreshing];
+
+    if(tblWishList.contentSize.height <= tblWishList.bounds.size.height)
+        [activityIndicator setHidden:YES];
+    if(product.count == 0)
+        [self.view addSubview:viewNoData];
+    else
+        [viewNoData removeFromSuperview];
+}
+
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    /** failure **/
+    [self requestfailure:errorResult];
+    tblWishList.tableFooterView = nil;
+    isRefreshView = NO;
+    [refreshControl endRefreshing];
+}
+
+- (void)actionBeforeRequest:(int)tag
+{
+    
+}
+
+- (void)actionRequestAsync:(int)tag
+{
+
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag
+{
+
+}
+
+
 
 #pragma mark - Method
 - (void)reset:(UITableViewCell*)cell
@@ -316,7 +450,7 @@
                 {
                     NSLog(@" ==== REQUESTCOUNT %zd =====", requestCount);
                     tblWishList.tableFooterView = footer;
-//                    [_act startAnimating];
+                    //                    [_act startAnimating];
                     [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                     [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }
@@ -332,55 +466,16 @@
 
 -(void)loadData
 {
-    if(request.isExecuting)
-        return;
+//    if(request.isExecuting)
+//        return;
     
     // create a new one, this one is expired or we've never gotten it
     if(! isRefreshView) {
         tblWishList.tableFooterView = footer;
-//        [_act startAnimating];
+        //        [_act startAnimating];
     }
     
-    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY      :   kTKPDGET_WISH_LIST,
-                            kTKPDHOME_APIPAGEKEY        :       @(page),
-                            kTKPDHOME_APILIMITPAGEKEY   :   @(kTKPDHOMEHOTLIST_LIMITPAGE)};
-    
-    requestCount ++;
-    request = [objectManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:kTKPDHOMEHOTLIST_APIPATH
-                                                                parameters:[param encrypt]];
-    
-    
-    [request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestsuccess:mappingResult withOperation:operation];
-        [tblWishList reloadData];
-        isRefreshView = NO;
-        [refreshControl endRefreshing];
-        [timer invalidate];
-        timer = nil;
-        
-        if(tblWishList.contentSize.height <= tblWishList.bounds.size.height)
-            [activityIndicator setHidden:YES];
-        if(product.count == 0)
-            [self.view addSubview:viewNoData];
-        else
-            [viewNoData removeFromSuperview];
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestfailure:error];
-        tblWishList.tableFooterView = nil;
-        isRefreshView = NO;
-        [refreshControl endRefreshing];
-        [timer invalidate];
-        timer = nil;
-    }];
-    
-    [operationQueue addOperation:request];
-    
-    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout:) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    [tokoPediaNetworkManager doRequest];
 }
 
 - (void)requestTimeout:(NSTimer*)timer
@@ -394,72 +489,7 @@
 
 - (void)configureRestKit
 {
-    // initialize RestKit
-    objectManager =  [RKObjectManager sharedClient];
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[WishListObject class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
-    
-    
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[WishListObjectList class]];
-    [listMapping addAttributeMappingsFromArray:@[
-                                                 KTKPDSHOP_GOLD_STATUS,
-                                                 KTKPDSHOP_ID,
-                                                 KTKPDPRODUCT_RATING_POINT,
-                                                 KTKPDPRODUCT_DEPARTMENT_ID,
-                                                 KTKPDPRODUCT_ETALASE,
-                                                 KTKPDSHOP_FEATURED_SHOP,
-                                                 KTKPDSHOP_URL,
-                                                 KTKPDPRODUCT_STATUS,
-                                                 KTKPDPRODUCT_ID,
-                                                 KTKPDPRODUCT_IMAGE_FULL,
-                                                 KTKPDPRODUCT_CURRENCY_ID,
-                                                 KTKPDPRODUCT_RATING_DESC,
-                                                 KTKPDPRODUCT_CURRENCY,
-                                                 KTKPDPRODUCT_TALK_COUNT,
-                                                 KTKPDPRODUCT_PRICE_NO_IDR,
-                                                 KTKPDPRODUCT_IMAGE,
-                                                 KTKPDPRODUCT_PRICE,
-                                                 KTKPDPRODUCT_SOLD_COUNT,
-                                                 KTKPDPRODUCT_RETURNABLE,
-                                                 KTKPDSHOP_LOCATION,
-                                                 KTKPDPRODUCT_NORMAL_PRICE,
-                                                 KTKPDPRODUCT_IMAGE_300,
-                                                 KTKPDSHOP_NAME,
-                                                 KTKPDPRODUCT_REVIEW_COUNT,
-                                                 KTKPDSHOP_IS_OWNER,
-                                                 KTKPDPRODUCT_URL,
-                                                 KTKPDPRODUCT_NAME
-                                                 ]];
-    
-    //relation
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[WishListObjectResult class]];
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    
-   
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDHOMEHOTLIST_APIPATH keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    [objectManager addResponseDescriptor:responseDescriptorStatus];
 }
 
 @end

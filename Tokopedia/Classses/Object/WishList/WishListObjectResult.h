@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class Paging;
+#import "Paging.h"
 
 @interface WishListObjectResult : NSObject
 @property (nonatomic, strong) Paging *paging;

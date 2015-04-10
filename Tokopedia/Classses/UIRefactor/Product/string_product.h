@@ -193,7 +193,7 @@ typedef enum
 #define kTKPDSUCCESS_REMOVE_WISHLIST @"Anda berhasil menghapus wishlist"
 #define kTKPDFAILED_ADD_WISHLIST @"Anda gagal menambah wishlist"
 #define kTKPDFAILED_REMOVE_WISHLIST @"Anda gagal menghapus wishlist"
-
+#define kTKPDTIDAK_ADA_WISHLIST @"Tidak ada wishlist"
 
 
 #define ERRORMESSAGE_FAILED_IMAGE_UPLOAD @"Gagal menambah image produk. Silahkan coba kembali."
