@@ -106,6 +106,8 @@
     _orderDetail = [TxOrderConfirmedDetailOrder new];
     _dataInput = [NSMutableDictionary new];
     
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
     //[self configureRestKit];
     //[self request];
     
@@ -127,6 +129,21 @@
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.delegate = self;
     [_networkManager doRequest];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    _networkManager.delegate = self;
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
+    _networkManager.delegate = nil;
 }
 
 -(void)refreshRequest

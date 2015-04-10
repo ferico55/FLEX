@@ -45,12 +45,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-
+    _listSystemBank = [NSMutableArray new];
+    _listTotalPayment = [NSMutableArray new];
 }
 
--(void)viewWillLayoutSubviews
+-(void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     [self setDataDefault];
+    [_tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -218,8 +221,8 @@
 
 -(void)setDataDefault
 {
-    _listSystemBank = [NSMutableArray new];
-    _listTotalPayment = [NSMutableArray new];
+    [_listSystemBank removeAllObjects];
+    [_listTotalPayment removeAllObjects];
     
     _cartBuy = [_data objectForKey:DATA_CART_RESULT_KEY];
     

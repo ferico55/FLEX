@@ -206,7 +206,7 @@
 
 -(void)showAlertViewOpenComplain
 {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Buka Komplain" message:@"Apakah Anda sudah menerima barang yang dipesan?" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Tidak", @"Ya", nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Buka Komplain" message:@"Apakah Anda sudah menerima barang yang dipesan?" delegate:self cancelButtonTitle:nil otherButtonTitles:@"Tidak Terima", @"Terima", nil];
     alert.tag = TAG_ALERT_COMPLAIN;
     [alert show];
 }

@@ -138,6 +138,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *voucherCodeButton;
 @property (weak, nonatomic) IBOutlet UILabel *voucherAmountLabel;
 
+@property (weak, nonatomic) IBOutlet UISwitch *switchUsingSaldo;
+
 @property (strong, nonatomic) IBOutlet UITableViewCell *passwordCell;
 @property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 
@@ -601,23 +603,14 @@
             }
         }
         else if (indexPath.section < listCount) {
-            NSUInteger indexCart = indexPath.section;
             NSIndexPath *indexPathFirstObjectProduct = (NSIndexPath*)_listProductFirstObjectIndexPath[indexPath.section];
             TransactionCartList *list = _list[indexPath.section];
             NSArray *products = list.cart_products;
             NSInteger rowCount = products.count;
             
+            
             if (indexPath.row == indexPathFirstObjectProduct.row+rowCount) {
-                TransactionCartShippingViewController *shipmentViewController = [TransactionCartShippingViewController new];
-                shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list,
-                                                DATA_DROPSHIPPER_NAME_KEY: _senderNameDropshipper[indexCart]?:@"",
-                                                DATA_DROPSHIPPER_PHONE_KEY:_senderPhoneDropshipper[indexCart]?:@"",
-                                                DATA_INDEX_KEY : @(indexPath.section)
-                                                };
-                [_dataInput setObject:list forKey:DATA_DETAIL_CART_FOR_SHIPMENT];
-                shipmentViewController.indexPage = _indexPage;
-                shipmentViewController.delegate = self;
-                [self.navigationController pushViewController:shipmentViewController animated:YES];
+                [self pushShipmentIndex:indexPath.section];
             }
             else if (indexPath.row == indexPathFirstObjectProduct.row+rowCount+1)
             {
@@ -634,6 +627,54 @@
             [_passwordTextField becomeFirstResponder];
         }
     }
+}
+
+-(void)pushShipmentIndex:(NSInteger)index
+{
+    NSString *dropshipName = @"";
+    NSString *dropshipPhone = @"";
+    NSString *partial = @"";
+    TransactionCartList *list = _list[index];
+    if (_indexPage == 1) {
+        NSInteger shopID = [list.cart_shop.shop_id integerValue];
+        NSInteger addressID =list.cart_destination.address_id;
+        NSInteger shipmentID =[list.cart_shipments.shipment_id integerValue];
+        NSString *dropshipStringObjectFormat = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_STR_CART_SUMMARY_KEY,shopID,addressID,shipmentID];
+        NSString *partialStringObjectFormat = [NSString stringWithFormat:FORMAT_CART_PARTIAL_STR_CART_SUMMARY_KEY,shopID,addressID,shipmentID];
+        
+        NSDictionary *dropshipList = _cartSummary.dropship_list;
+        for (int i = 0; i<[dropshipList allKeys].count; i++) {
+            if ([[dropshipList allKeys][i] isEqualToString:dropshipStringObjectFormat]) {
+                dropshipName =_senderNameDropshipper[i];
+                dropshipPhone = _senderPhoneDropshipper[i];
+                break;
+            }
+        }
+        
+        NSDictionary *partialList = _cartSummary.data_partial;
+        for (int i = 0; i<[partialList allKeys].count; i++) {
+            if ([[partialList allKeys][i] isEqualToString:partialStringObjectFormat]) {
+                partial = @"Ya";
+                break;
+            }
+        }
+    }
+    else
+    {
+        partial = @"";
+    }
+    
+    TransactionCartShippingViewController *shipmentViewController = [TransactionCartShippingViewController new];
+    shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list,
+                                    DATA_DROPSHIPPER_NAME_KEY: dropshipName,
+                                    DATA_DROPSHIPPER_PHONE_KEY:dropshipPhone,
+                                    DATA_PARTIAL_LIST_KEY :partial,
+                                    DATA_INDEX_KEY : @(index)
+                                    };
+    [_dataInput setObject:list forKey:DATA_DETAIL_CART_FOR_SHIPMENT];
+    shipmentViewController.indexPage = _indexPage;
+    shipmentViewController.delegate = self;
+    [self.navigationController pushViewController:shipmentViewController animated:YES];
 }
 
 -(void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView
@@ -860,6 +901,9 @@
     _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
     
     _grandTotalLabel.text = ([_cart.grand_total integerValue]<=0)?@"Rp 0,-":_cart.grand_total_idr;
+    
+    _isUsingSaldoTokopedia = NO;
+    _switchUsingSaldo.on = _isUsingSaldoTokopedia;
     
     [_tableView reloadData];
 
@@ -1180,21 +1224,24 @@
     }
     [param addEntriesFromDictionary:paramDictionary];
     [param addEntriesFromDictionary:dropshipperDetail];
-    [param addEntriesFromDictionary:partialDetail];
+    //[param addEntriesFromDictionary:partialDetail];
     
     _checkoutButton.enabled = NO;
     _checkoutButton.layer.opacity = 0.8;
     _requestActionCheckout = [_objectManagerActionCheckout appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_TRANSACTION_PATH parameters:[param encrypt]];
+    [_checkoutButton setTitle:@"Processing" forState:UIControlStateNormal];
     [_requestActionCheckout setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
          _checkoutButton.enabled = YES;
         [self requestSuccessActionCheckout:mappingResult withOperation:operation];
         [timer invalidate];
         _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
+        [_checkoutButton setTitle:@"Checkout" forState:UIControlStateNormal];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
          _checkoutButton.enabled = YES;
         [self requestFailureActionCheckout:error];
         _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
         [timer invalidate];
+        [_checkoutButton setTitle:@"Checkout" forState:UIControlStateNormal];
     }];
     
 
@@ -1363,6 +1410,7 @@
     [alertLoading show];
 
     _requestActionBuy = [_objectManagerActionBuy appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_TRANSACTION_PATH parameters:[param encrypt]];
+    [_buyButton setTitle:@"Processing" forState:UIControlStateNormal];
     [_requestActionBuy setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccessActionBuy:mappingResult withOperation:operation];
         [timer invalidate];
@@ -2735,6 +2783,7 @@
     [_senderPhoneDropshipper addObject:@""];
     [_dropshipStrList addObject:@""];
     [_stockPartialDetail addObject:@(0)];
+
 }
 
 -(NSNumberFormatter*)grandTotalFormater
@@ -3079,7 +3128,13 @@
         textField.placeholder = placeholder;
         textField.text = (indexPath.section==_list.count+1)?@"":(indexPath.row == rowCount)?_senderNameDropshipper[indexPath.section]:_senderPhoneDropshipper[indexPath.section];
         textField.delegate = self;
-        textField.tag = isSaldoTokopediaTextField?0:(indexPath.row == rowCount)?indexPath.section+1:-indexPath.section-1;
+        if ([placeholder isEqualToString:@"Nama Pengirim"]) {
+            textField.tag = indexPath.section+1;
+        }
+        else
+        {
+            textField.tag = -indexPath.section -1;
+        }
         textField.font = FONT_DEFAULT_CELL_TKPD;
         [textField setReturnKeyType:UIReturnKeyDone];
         textField.text = text;
@@ -3186,4 +3241,6 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
+- (IBAction)switchUsingSaldo:(id)sender {
+}
 @end

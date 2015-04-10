@@ -61,6 +61,7 @@
                 <outlet property="saldoTextFieldCell" destination="tTs-1N-0vt" id="Rjx-Pn-xHQ"/>
                 <outlet property="saldoTokopediaAmountTextField" destination="Pw6-lS-pBR" id="A0B-ov-fiQ"/>
                 <outlet property="saldoTokopediaCell" destination="Lfk-xl-Rbu" id="ztG-Pk-k75"/>
+                <outlet property="switchUsingSaldo" destination="sI2-vl-FxW" id="K7c-xx-FgT"/>
                 <outlet property="tableView" destination="QKG-0J-91A" id="2Rb-96-CmS"/>
                 <outlet property="totalInvoiceCell" destination="AVf-0Y-ZcY" id="dEk-gk-dOg"/>
                 <outlet property="totalPaymentCell" destination="hTf-We-spw" id="2vh-Vl-d0W"/>
@@ -420,6 +421,9 @@
                     </label>
                     <switch opaque="NO" tag="1" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="sI2-vl-FxW">
                         <rect key="frame" x="259" y="6" width="51" height="31"/>
+                        <connections>
+                            <action selector="switchUsingSaldo:" destination="-1" eventType="touchUpInside" id="cjq-bV-vFe"/>
+                        </connections>
                     </switch>
                 </subviews>
             </tableViewCellContentView>

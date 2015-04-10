@@ -21,6 +21,7 @@
     return self;
 }
 
+
 #pragma mark - Process Request
 - (void)doRequest {
     if(_objectRequest.isExecuting) return;
@@ -41,8 +42,10 @@
     
     [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];
+        [timer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFail:error];
+        [timer invalidate];
     }];
     
     if (_delegate && [_delegate respondsToSelector:@selector(actionRequestAsync)]) {
@@ -98,9 +101,10 @@
         [self cancel];
         [self doRequest];
     } else {
-        if ([_delegate respondsToSelector:@selector(actionAfterFailRequestMaxTries)]) {
+        if (_delegate && [_delegate respondsToSelector:@selector(actionAfterFailRequestMaxTries)]) {
             
-            [_delegate actionAfterFailRequestMaxTries];        }
+            [_delegate actionAfterFailRequestMaxTries];
+        }
     }
 }
 

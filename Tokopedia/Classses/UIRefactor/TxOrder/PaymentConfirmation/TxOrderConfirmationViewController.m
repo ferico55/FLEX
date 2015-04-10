@@ -90,10 +90,28 @@
     _networkManager.delegate = self;
     [_networkManager doRequest];
     
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshRequest)
                                                  name:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME
                                                object:nil];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+     _networkManager.delegate = self;
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
+    _networkManager.delegate = nil;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -488,7 +506,7 @@
 
 - (void)actionBeforeRequest {
     
-    _tableView.tableFooterView = nil;
+    _tableView.tableFooterView = _footer;
     [_act stopAnimating];
 }
 

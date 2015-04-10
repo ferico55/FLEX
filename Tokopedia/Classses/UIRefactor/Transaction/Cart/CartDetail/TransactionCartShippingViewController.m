@@ -1048,6 +1048,8 @@
     ShippingInfoShipmentPackage *shipmentPackage = [_dataInput objectForKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
     NSString *dropshipName = [_data objectForKey:DATA_DROPSHIPPER_NAME_KEY];
     NSString *dropshipPhone = [_data objectForKey:DATA_DROPSHIPPER_PHONE_KEY];
+    NSString *partial = [_data objectForKey:DATA_PARTIAL_LIST_KEY];
+    NSString *partialString = ([partial isEqualToString:@""]||partial == nil)?@"Tidak":@"Ya";
     
     cell = _tableViewSummaryCell[indexPath.row];
     switch (indexPath.row) {
@@ -1076,8 +1078,7 @@
         }
         case 4:
         {
-            NSString *partialOrder = ([[_data objectForKey:DATA_PARTIAL_LIST_KEY] isEqualToString:@""])?@"Tidak":@"Ya";
-            cell.detailTextLabel.text = partialOrder;
+            cell.detailTextLabel.text = partialString;
             break;
         }
         case 5:
