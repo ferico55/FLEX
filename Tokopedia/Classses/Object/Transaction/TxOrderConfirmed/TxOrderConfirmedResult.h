@@ -9,9 +9,11 @@
 #import <Foundation/Foundation.h>
 
 #import "TxOrderConfirmedList.h"
+#import "Paging.h"
 
 @interface TxOrderConfirmedResult : NSObject
 
 @property (nonatomic, strong) NSArray *list;
+@property (nonatomic, strong) Paging *paging;
 
 @end

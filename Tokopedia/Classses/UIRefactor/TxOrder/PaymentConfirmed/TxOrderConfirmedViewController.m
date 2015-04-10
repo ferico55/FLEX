@@ -38,6 +38,8 @@
 
 #import "NavigateViewController.h"
 
+#import "TokopediaNetworkManager.h"
+
 @interface TxOrderConfirmedViewController ()
 <
     UITableViewDelegate,
@@ -47,7 +49,8 @@
     UIAlertViewDelegate,
     CameraControllerDelegate,
     GenerateHostDelegate,
-    RequestUploadImageDelegate
+    RequestUploadImageDelegate,
+    TokopediaNetworkManagerDelegate
 >
 {
     BOOL _isNodata;
@@ -81,6 +84,8 @@
     
     TxOrderConfirmedDetailOrder *_orderDetail;
     GenerateHost *_generateHost;
+    
+    TokopediaNetworkManager *_networkManager;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -101,8 +106,8 @@
     _orderDetail = [TxOrderConfirmedDetailOrder new];
     _dataInput = [NSMutableDictionary new];
     
-    [self configureRestKit];
-    [self request];
+    //[self configureRestKit];
+    //[self request];
     
     RequestGenerateHost *requestHost = [RequestGenerateHost new];
     [requestHost configureRestkitGenerateHost];
@@ -118,13 +123,18 @@
                                              selector:@selector(refreshRequest)
                                                  name:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME
                                                object:nil];
+    
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.delegate = self;
+    [_networkManager doRequest];
 }
 
 -(void)refreshRequest
 {
     _page = 1;
-    [self configureRestKit];
-    [self request];
+    //[self configureRestKit];
+    //[self request];
+    [_networkManager doRequest];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -199,18 +209,6 @@
 {
     if (_isNodata) {
         cell.backgroundColor = [UIColor whiteColor];
-    }
-    
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-    
-    if (row == indexPath.row) {
-        NSLog(@"%@", NSStringFromSelector(_cmd));
-        NSLog(@"%ld", (long)row);
-        
-        if (_URINext != NULL && ![_URINext isEqualToString:@"0"] && _URINext != 0) {
-            [self configureRestKit];
-            [self request];
-        }
     }
 }
 
@@ -300,7 +298,7 @@
     [cell.userNameLabel setText:detailOrder.user_account_name?:@"" animated:NO];
     [cell.bankNameLabel setText:detailOrder.user_bank_name?:@"" animated:NO];
     [cell.nomorRekLabel setText:detailOrder.user_account_no?:@"" animated:NO];
-    [cell.recieverNomorRekLabel setText:[NSString stringWithFormat:@"%@",detailOrder.bank_name] animated:NO];
+    [cell.recieverNomorRekLabel setText:[NSString stringWithFormat:@"%@ %@",detailOrder.bank_name, detailOrder.system_account_no] animated:NO];
     
     if ([cell.userNameLabel.text isEqualToString:@""]) {
         cell.userNameLabel.text =@"-";
@@ -341,15 +339,17 @@
 }
 
 #pragma mark - Request
--(void)cancel
-{
-    [_request cancel];
-    _request = nil;
-    [_objectManager.operationQueue cancelAllOperations];
-    _objectManager = nil;
-}
+//-(void)cancel
+//{
+//    [_request cancel];
+//    _request = nil;
+//    [_objectManager.operationQueue cancelAllOperations];
+//    _objectManager = nil;
+//}
 
--(void)configureRestKit
+#pragma mark - Tokopedia Network Manager
+-(id)getObjectManager
+//-(void)configureRestKit
 {
     _objectManager = [RKObjectManager sharedClient];
     
@@ -380,128 +380,69 @@
                                                                                        statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectManager addResponseDescriptor:responseDescriptor];
+    return _objectManager;
     
 }
--(void)request
+
+-(NSDictionary *)getParameter
 {
-    if (_request.isExecuting) return;
-    NSTimer *timer;
-    
     NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_TX_ORDER_PAYMENT_CONFIRMED};
-    
-    _tableView.tableFooterView = _footer;
-    [_act startAnimating];
-    
-//#if DEBUG
-//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//    NSDictionary* auth = [secureStorage keychainDictionary];
-//    
-//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-//    
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-//    
-//    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_TX_ORDER parameters:paramDictionary];
-//#else
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_TX_ORDER parameters:[param encrypt]];
-//#endif
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccess:mappingResult withOperation:operation];
-        [_refreshControl endRefreshing];
-        [timer invalidate];
-        _tableView.tableFooterView = nil;
-        [_act stopAnimating];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailure:error];
-        [_refreshControl endRefreshing];
-        [timer invalidate];
-        _tableView.tableFooterView = nil;
-        [_act stopAnimating];
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    return param;
 }
 
--(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
+-(NSString *)getPath
 {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
+    return API_PATH_TX_ORDER;
+}
+
+-(NSString *)getRequestStatus:(id)result
+{
+     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
     TxOrderConfirmed *order = stat;
-    BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    return order.status;
+}
+
+- (void)actionBeforeRequest {
+
+    _tableView.tableFooterView = nil;
+    [_act stopAnimating];
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation{
+    TxOrderConfirmed *order = successResult;
     
-    if (status) {
-        [self requestProcess:object];
+    if(_refreshControl.isRefreshing) {
+        [_refreshControl endRefreshing];
     }
-}
-
--(void)requestFailure:(id)object
-{
-    [self requestProcess:object];
-}
-
--(void)requestProcess:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            TxOrderConfirmed *order = stat;
-            BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(order.message_error)
-                {
-                    NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
-                    [alert show];
-                }
-                else{
-                    if (_page == 1) {
-                        [_list removeAllObjects];
-                        [_isExpandedCell removeAllObjects];
-                    }
-                    
-                    [_list addObjectsFromArray:order.result.list];
-                    
-                    if (_list.count >0) {
-                        _isNodata = NO;
-                        
-                        for (int i =0; i<_list.count; i++) {
-                            [_isExpandedCell addObject:@(NO)];
-                        }
-                    }
-                    else
-                    {
-                        NoResult *noResultView = [[NoResult alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
-                        _tableView.tableFooterView = noResultView;
-                    }
-                    
-                    [_tableView reloadData];
-                }
-            }
-        }
-        else{
-            
-            [self cancel];
-            NSError *error = object;
-            if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
+    
+    if (_page == 1) {
+        [_list removeAllObjects];
+        [_isExpandedCell removeAllObjects];
+    }
+    
+    [_list addObjectsFromArray:order.result.list];
+    
+    if (_list.count >0) {
+        _isNodata = NO;
+        _URINext =  order.result.paging.uri_next;
+        _page = [[_networkManager splitUriToPage:_URINext] integerValue];
+        for (int i =0; i<_list.count; i++) {
+            [_isExpandedCell addObject:@(NO)];
         }
     }
+    else
+    {
+        NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
+        _tableView.tableFooterView = noResultView;
+    }
+    
+    [_tableView reloadData];
 }
 
--(void)requestTimeout
-{
-    [self cancel];
+- (void)actionAfterFailRequestMaxTries {
+    [_refreshControl endRefreshing];
+    _tableView.tableFooterView = _act;
 }
 
 #pragma mark - Request Detail
@@ -679,7 +620,7 @@
         }
         else{
             
-            [self cancel];
+            //[self cancel];
             NSError *error = object;
             if ([error code] != NSURLErrorCancelled) {
                 NSString *errorDescription = error.localizedDescription;
@@ -757,7 +698,8 @@
 -(void)requestProof:(id)object
 {
     if (_requestProof.isExecuting) return;
-    NSTimer *timer;
+    NSTimer *timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutProof) userInfo:nil repeats:NO];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     
     TxOrderConfirmedList *selectedConfirmation = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
     
@@ -810,9 +752,6 @@
     }];
     
     [_operationQueue addOperation:_requestProof];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutProof) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)requestSuccessProof:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -842,18 +781,14 @@
             BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                if(order.message_error)
-                {
-                    NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
-                    [alert show];
-
-                    [_tableView reloadData];
-                }
                 if (order.result.is_success == 1) {
                     NSArray *array = order.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
-                    [alert show];
+                    [self showStickyAlertSuccessMessage:array];
+                }
+                else
+                {
+                    NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+                    [self showStickyAlertErrorMessage:array];
                 }
             }
         }
@@ -875,5 +810,17 @@
     [self cancelProof];
 }
 
+
+-(void)showStickyAlertErrorMessage:(NSArray*)messages
+{
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:messages delegate:self];
+    [alert show];
+}
+
+-(void)showStickyAlertSuccessMessage:(NSArray*)messages
+{
+    StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:messages delegate:self];
+    [alert show];
+}
 
 @end

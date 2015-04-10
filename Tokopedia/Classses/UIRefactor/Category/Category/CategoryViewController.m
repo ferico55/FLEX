@@ -69,6 +69,7 @@
 {
     [super viewWillAppear:animated];
 
+    self.tabBarController.title = @"Kategori";
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self

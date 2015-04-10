@@ -113,8 +113,10 @@
         _orderCancelled.hidden = YES;
     }
     
-    if([_notification.result.purchase.purchase_payment_conf integerValue] > 0) {
-        _paymentConfirmationLabel.text = _notification.result.purchase.purchase_payment_conf;
+    NSInteger totalPaymentConfirmation = [_notification.result.purchase.purchase_payment_conf integerValue] +        [_notification.result.purchase.purchase_payment_confirm integerValue];
+    
+    if(totalPaymentConfirmation > 0) {
+        _paymentConfirmationLabel.text = [NSString stringWithFormat:@"%zd",totalPaymentConfirmation];
         _paymentConfirmation.hidden = NO;
     } else {
         _paymentConfirmation.hidden = YES;
@@ -182,9 +184,10 @@
         }
     } else if(section == 2) {
         NSInteger row = indexPath.row;
+        NSInteger totalPaymentConfirmation = [_notification.result.purchase.purchase_payment_conf integerValue] +        [_notification.result.purchase.purchase_payment_confirm integerValue];
         if(row == 0 && [_notification.result.purchase.purchase_reorder integerValue] == 0) {
             return 0;
-        } else if(row == 1 && [_notification.result.purchase.purchase_payment_conf integerValue] == 0) {
+        } else if(row == 1 && totalPaymentConfirmation == 0) {
             return 0;
         } else if(row == 2 && [_notification.result.purchase.purchase_order_status integerValue] == 0) {
             return 0;
@@ -348,8 +351,9 @@
     if([indexPath section] == 2) {
         if([indexPath row] == 0) {
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
-            vc.action = @"get_tx_order_status";
-            vc.viewControllerTitle = @"Status Pemesanan";
+            vc.action = @"get_tx_order_list";
+            vc.isCanceledPayment = YES;
+            vc.viewControllerTitle = @"Pesanan Dibatalkan";
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 1) {
             TxOrderTabViewController *vc = [TxOrderTabViewController new];

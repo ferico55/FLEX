@@ -37,6 +37,7 @@
     [_infoLabel setCustomAttributedText:_infoLabel.text];
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
+    style.alignment = NSTextAlignmentCenter;
     NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc]  initWithString:_info2Label.text];
     [attributedString addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_12 range:[_info2Label.text rangeOfString:@"Klik disini"]];
     [attributedString addAttribute:NSForegroundColorAttributeName

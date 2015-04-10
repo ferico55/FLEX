@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+@class TransactionCartViewController;
+
 #pragma mark - Transaction Cart Cell Delegate
 @protocol TransactionCartViewControllerDelegate <NSObject>
 
@@ -15,6 +17,8 @@
 - (void)didFinishRequestCheckoutData:(NSDictionary*)data;
 - (void)didFinishRequestBuyData:(NSDictionary*)data;
 - (void)isNodata:(BOOL)isNodata;
+
+- (void)pushVC:(TransactionCartViewController*)vc toMandiriClickPayVCwithData:(NSDictionary*)data;
 
 @optional
 - (void)shouldBackToFirstPage;

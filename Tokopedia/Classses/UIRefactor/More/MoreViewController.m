@@ -135,6 +135,7 @@
 {
     [super viewWillAppear:animated];
     
+    self.navigationController.title = @"More";
     [self initNotificationManager];
     
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
@@ -178,6 +179,7 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    self.navigationController.tabBarController.title = @"More";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

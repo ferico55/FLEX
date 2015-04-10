@@ -504,7 +504,7 @@
             CGRect addressFrame = addressView.frame;
             addressFrame.origin.x -= 15;
             addressFrame.origin.y = totalHeight;
-            addressFrame.size.height = addressView.horizontalBorder.frame.origin.y + 2;
+            addressFrame.size.height = addressView.horizontalBorder.frame.origin.y;
             addressView.frame = addressFrame;
             
             totalHeight += addressFrame.size.height;
@@ -515,7 +515,7 @@
         newAddressFrame.size.height = totalHeight;
         _addressoffview.frame = newAddressFrame;
         
-        shopDetailFrame.size.height += newAddressFrame.size.height - 2;
+        shopDetailFrame.size.height += newAddressFrame.size.height;
 
     } else {
         shopDetailFrame.size.height -= _addressoffview.frame.size.height;
