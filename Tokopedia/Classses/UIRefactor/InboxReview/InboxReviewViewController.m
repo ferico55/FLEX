@@ -691,11 +691,10 @@
     vc.data = list;
     vc.is_owner = list.review_is_owner;
     vc.index = [NSString stringWithFormat:@"%ld",(long)row];
-
-    [self setHidesBottomBarWhenPushed:YES];
-    [vc setHidesBottomBarWhenPushed:YES];
+    
+    vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
-    [self setHidesBottomBarWhenPushed:YES];
+
     
 }
 
@@ -711,7 +710,7 @@
 - (void)reportReview:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     InboxReviewList *review = _reviews[[indexpath row]];
     _reportedReviewId = review.review_id;
-    
+    _reportController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:_reportController animated:YES];
 }
 
