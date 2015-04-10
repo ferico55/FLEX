@@ -111,6 +111,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    
+    self.navigationController.title = @"Beranda";
+    
     [self goToPage:_page];
     [self initNotificationManager];
     

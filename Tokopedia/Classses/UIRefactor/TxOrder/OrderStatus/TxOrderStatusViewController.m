@@ -109,7 +109,7 @@
     [self configureRestKit];
     [self request];
 
-    if ([_action  isEqual: ACTION_GET_TX_ORDER_LIST]) {
+    if ([_action  isEqual: ACTION_GET_TX_ORDER_LIST] && !_isCanceledPayment) {
         _filterView.hidden = NO;
         UIEdgeInsets inset = _tableView.contentInset;
         inset.bottom += _filterView.frame.size.height;
@@ -546,7 +546,7 @@
     NSString *filterInvoice = [_dataInput objectForKey:API_INVOICE_KEY]?:@"";
     NSString *filterStartDate = [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY]?:@"";
     NSString *filterEndDate = [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]?:@"";
-    NSString *filterStatus = [_dataInput objectForKey:API_TRANSACTION_STATUS_KEY]?:@"";
+    NSString *filterStatus = (_isCanceledPayment)?@"5":[_dataInput objectForKey:API_TRANSACTION_STATUS_KEY]?:@"";
     
     NSDictionary* param = @{API_ACTION_KEY : _action,
                             API_PAGE_KEY : @(_page),
@@ -1066,9 +1066,7 @@
         TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
         [nc setSelectedIndex:2];
         [nc setViewControllers:vcs];
-        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-        [nav.navigationBar setTranslucent:NO];
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
+        [self.navigationController pushViewController:nc animated:YES];
     }
     else if (alertView.tag == TAG_ALERT_REORDER)
     {

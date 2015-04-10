@@ -12,5 +12,6 @@
 
 @property (nonatomic, strong) NSString *action;
 @property (nonatomic, strong) NSString *viewControllerTitle;
+@property BOOL isCanceledPayment;
 
 @end

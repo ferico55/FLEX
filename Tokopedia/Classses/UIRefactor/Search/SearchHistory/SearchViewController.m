@@ -91,6 +91,8 @@
 {
     [super viewWillAppear:animated];
     
+    self.navigationController.title = @"Cari";
+    
     [_searchbar becomeFirstResponder];
 
     [self initNotificationManager];

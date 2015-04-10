@@ -89,7 +89,9 @@
 
 -(void)setValues
 {
-    _paymentConfirmationValueLabel.text = _notification.result.purchase.purchase_payment_conf?:@"0";
+    NSInteger totalPaymentConfirmation = [_notification.result.purchase.purchase_payment_conf integerValue] +        [_notification.result.purchase.purchase_payment_confirm integerValue];
+    
+    _paymentConfirmationValueLabel.text = [NSString stringWithFormat:@"%zd",totalPaymentConfirmation]?:@"0";
     _orderStatusValueLabel.text = _notification.result.purchase.purchase_order_status?:@"0";
     _receiveConfirmationValueLabel.text = _notification.result.purchase.purchase_delivery_confirm?:@"0";
     

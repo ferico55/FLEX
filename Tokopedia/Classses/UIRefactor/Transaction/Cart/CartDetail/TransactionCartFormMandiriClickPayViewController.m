@@ -48,7 +48,7 @@
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Lanjut" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
     barButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
     [self.navigationItem setRightBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
     _dataInput = [NSMutableDictionary new];
     //TODO::
@@ -145,14 +145,15 @@
 
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-//    if (textField == _numberCreditCardTextField) {
-//        if (range.location==15) {
-//            _lastNumberDebitCardLabel.text = [textField.text substringFromIndex: [textField.text length] - 10];
-//        }
-//        else if(range.location==16)
-//            return NO;
-//        else _lastNumberDebitCardLabel.text = @"";
-//    }
+    if (textField == _numberCreditCardTextField) {
+        if (range.location==15) {
+            NSString *stringText = [NSString stringWithFormat:@"%@%@",textField.text,string];
+            _lastNumberDebitCardLabel.text = [stringText substringFromIndex: [textField.text length] - 9];
+        }
+        else if(range.location==16)
+            return NO;
+        else _lastNumberDebitCardLabel.text = @"";
+    }
     return YES;
 }
 

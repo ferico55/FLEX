@@ -326,7 +326,11 @@
                                                 DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE:@(CATEGORY_MENU_PREVIOUS_VIEW_ADD_PRODUCT)
                                                 };
                 categoryViewController.delegate = self;
-                [self.navigationController pushViewController:categoryViewController animated:YES];
+                
+                UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:categoryViewController];
+                [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                
+                //[self.navigationController pushViewController:categoryViewController animated:YES];
                 break;
             }
             case BUTTON_PRODUCT_PRICE_CURRENCY:
@@ -575,7 +579,9 @@
                                                     DATA_CATEGORY_MENU_PREVIOUS_VIEW_TYPE:@(CATEGORY_MENU_PREVIOUS_VIEW_ADD_PRODUCT)
                                                     };
                     categoryViewController.delegate = self;
-                    [self.navigationController pushViewController:categoryViewController animated:YES];
+                    UINavigationController *navigationController = [[UINavigationController new] initWithRootViewController:categoryViewController];
+                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                    //[self.navigationController pushViewController:categoryViewController animated:YES];
                     break;
                 }
                 case BUTTON_PRODUCT_MIN_ORDER:
