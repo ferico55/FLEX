@@ -134,6 +134,7 @@
 {
     [super viewWillAppear:animated];
     
+    self.navigationController.title = @"More";
     [self initNotificationManager];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -175,6 +176,7 @@
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    self.navigationController.tabBarController.title = @"More";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

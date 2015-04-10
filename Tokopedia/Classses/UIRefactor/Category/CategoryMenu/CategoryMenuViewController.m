@@ -145,7 +145,6 @@
             {
                 CategoryMenuViewController *vc = [CategoryMenuViewController new];
                 vc.delegate = self.delegate;
-
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -252,7 +251,7 @@
         [_selectedcategory setObject:indexPath forKey:kTKPDCATEGORY_DATAINDEXPATHKEY];
         [_table reloadData];
         
-        _pushcount =self.navigationController.viewControllers.count-2; //TODO::
+        _pushcount =self.navigationController.viewControllers.count-2; 
         
         NSIndexPath *indexpath = [_selectedcategory objectForKey:kTKPDCATEGORY_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
         NSDictionary *userinfo = @{kTKPDCATEGORY_DATADEPARTMENTIDKEY:[_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATADIDKEY],
@@ -264,11 +263,22 @@
                                    kTKPDCATEGORY_DATATITLEKEY : [_menu[indexpath.row] objectForKey:kTKPDCATEGORY_DATATITLEKEY]
                                    };
         [_delegate CategoryMenuViewController:self userInfo:userinfo];
-        if (_isBeingPresented) {
+        //if (_isBeingPresented) {
             [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        } else {
-            [self.navigationController popToViewController:_delegate animated:YES];
-        }
+        //} else {
+        //    NSArray *viewControllers = self.navigationController.viewControllers;
+        //    UIViewController *destinationVC = nil;
+        //    for (UIViewController *vc in viewControllers) {
+        //        if ([vc isKindOfClass:[_delegate class]]) {
+        //            destinationVC = vc;
+        //            break;
+        //        }
+        //    }
+        //    if (destinationVC)
+        //        [self.navigationController popToViewController:destinationVC animated:YES];
+        //    else
+        //        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        //}
     }
 }
 

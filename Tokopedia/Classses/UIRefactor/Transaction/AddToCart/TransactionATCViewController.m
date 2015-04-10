@@ -151,7 +151,8 @@
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
     _isnodata = YES;
     
-    [_remarkTextView setPlaceholder:PLACEHOLDER_NOTE_ATC];
+    [self setPlaceholder:PLACEHOLDER_NOTE_ATC textView:_remarkTextView];
+    _remarkTextView.delegate = self;
     
     [self setDefaultData:_data];
     
@@ -185,6 +186,18 @@
     _tableView.rowHeight = UITableViewAutomaticDimension;
     
 }
+
+- (void)setPlaceholder:(NSString *)placeholderText textView:(UITextView*)textView
+{
+    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, textView.frame.size.width, 40)];
+    placeholderLabel.text = placeholderText;
+    placeholderLabel.font = [UIFont fontWithName:textView.font.fontName size:textView.font.pointSize];
+    placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
+    placeholderLabel.tag = 1;
+    [textView addSubview:placeholderLabel];
+}
+
+
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
 {
@@ -1279,6 +1292,17 @@
     [_activeTextView resignFirstResponder];
     _activeTextView = textView;
 
+    return YES;
+}
+
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    UILabel *placeholderLabel = (UILabel *)[textView viewWithTag:1];
+    if (textView.text.length > 0) {
+        placeholderLabel.hidden = YES;
+    } else {
+        placeholderLabel.hidden = NO;
+    }
     return YES;
 }
 

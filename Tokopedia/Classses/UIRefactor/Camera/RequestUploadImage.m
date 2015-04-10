@@ -83,6 +83,8 @@
                                                       withRequestParameters:param
                                  uploadHost:_generateHost.result.generated_host.upload_host
                                  ];
+    
+    NSLog(@"%@",_requestActionUploadPhoto);
     NSLog(@"param %@ field name %@ ImageName %@",param,_fieldName,imageName);
     
     UIImageView *thumbProductImage = [_imageObject objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
