@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		7ABC43B71AD82691007D07CD /* libHelpshift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABC43B61AD82691007D07CD /* libHelpshift.a */; };
+		7AD2C2031ADB73DA003E1F94 /* ForgotPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2C2011ADB73DA003E1F94 /* ForgotPasswordViewController.m */; };
+		7AD2C2041ADB73DA003E1F94 /* ForgotPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AD2C2021ADB73DA003E1F94 /* ForgotPasswordViewController.xib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
@@ -1326,6 +1328,9 @@
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		7ABC43B61AD82691007D07CD /* libHelpshift.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHelpshift.a; sourceTree = "<group>"; };
+		7AD2C2001ADB73DA003E1F94 /* ForgotPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ForgotPasswordViewController.h; path = ForgotPassword/ForgotPasswordViewController.h; sourceTree = "<group>"; };
+		7AD2C2011ADB73DA003E1F94 /* ForgotPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ForgotPasswordViewController.m; path = ForgotPassword/ForgotPasswordViewController.m; sourceTree = "<group>"; };
+		7AD2C2021ADB73DA003E1F94 /* ForgotPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ForgotPasswordViewController.xib; path = ForgotPassword/ForgotPasswordViewController.xib; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -3381,6 +3386,16 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		7AD2C1FF1ADB7376003E1F94 /* ForgotPassword */ = {
+			isa = PBXGroup;
+			children = (
+				7AD2C2001ADB73DA003E1F94 /* ForgotPasswordViewController.h */,
+				7AD2C2011ADB73DA003E1F94 /* ForgotPasswordViewController.m */,
+				7AD2C2021ADB73DA003E1F94 /* ForgotPasswordViewController.xib */,
+			);
+			name = ForgotPassword;
+			sourceTree = "<group>";
+		};
 		85C494C21AD79124008A314A /* Classses */ = {
 			isa = PBXGroup;
 			children = (
@@ -4756,6 +4771,7 @@
 		85C497B01AD79125008A314A /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				7AD2C1FF1ADB7376003E1F94 /* ForgotPassword */,
 				85C497B11AD79125008A314A /* Activation */,
 				85C497C01AD79125008A314A /* Address */,
 				85C497C81AD79125008A314A /* Alert */,
@@ -7774,6 +7790,7 @@
 				85C4A0E61AD79129008A314A /* icon_house.png in Resources */,
 				85C49F491AD79128008A314A /* ResolutionCenterDetailCell.xib in Resources */,
 				85C4A1631AD79129008A314A /* icon_order_check-01@2x.png in Resources */,
+				7AD2C2041ADB73DA003E1F94 /* ForgotPasswordViewController.xib in Resources */,
 				85C49F2F1AD79128008A314A /* HotlistViewController.xib in Resources */,
 				85C4A2161AD79129008A314A /* HS-Attachment.png in Resources */,
 				85C4A0AE1AD79129008A314A /* TxOrderTabViewController.xib in Resources */,
@@ -8370,6 +8387,7 @@
 				85C49E681AD79127008A314A /* TxEMoneyResult.m in Sources */,
 				85C49F401AD79128008A314A /* InboxResolutionCenterComplainViewController.m in Sources */,
 				85C49D871AD79127008A314A /* Talk.m in Sources */,
+				7AD2C2031ADB73DA003E1F94 /* ForgotPasswordViewController.m in Sources */,
 				85C49FD71AD79128008A314A /* SalesTransactionListViewController.m in Sources */,
 				85C49E1D1AD79127008A314A /* NoteDetailResult.m in Sources */,
 				85C49F5C1AD79128008A314A /* MoreNavigationController.m in Sources */,

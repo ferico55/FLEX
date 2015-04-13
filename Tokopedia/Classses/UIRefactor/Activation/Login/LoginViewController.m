@@ -17,6 +17,7 @@
 #import "TKPDSecureStorage.h"
 #import "StickyAlertView.h"
 #import "TextField.h"
+#import "ForgotPasswordViewController.h"
 
 #import <FacebookSDK/FacebookSDK.h>
 #import <QuartzCore/QuartzCore.h>
@@ -56,7 +57,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (weak, nonatomic) IBOutlet UIImageView *screenLogin;
-@property (weak, nonatomic) IBOutlet UILabel *forgetPasswordButton;
+@property (weak, nonatomic) IBOutlet UIButton *forgetPasswordButton;
 
 
 - (void)cancelLogin;
@@ -185,44 +186,59 @@
                 break;
         }
     } else if ([sender isKindOfClass:[UIButton class]]) {
-        /** SIGN IN **/
-        NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
-        NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
-        NSMutableArray *messages = [NSMutableArray new];
-        BOOL valid = NO;
-        NSString *message;
-        if (email && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""] && [email isEmail]) {
-            valid = YES;
-        }
-        if (!email||[email isEqualToString:@""]) {
-            message = @"Email harus diisi.";
-            [messages addObject:message];
-            valid = NO;
-        }
-        if (email) {
-            if (![email isEmail]) {
-                message = @"Format email salah.";
-                [messages addObject:message];
-                valid = NO;
+        UIButton *btn = (UIButton*)sender;
+        switch (btn.tag) {
+            case 10: {
+                /** SIGN IN **/
+                NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
+                NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
+                NSMutableArray *messages = [NSMutableArray new];
+                BOOL valid = NO;
+                NSString *message;
+                if (email && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""] && [email isEmail]) {
+                    valid = YES;
+                }
+                if (!email||[email isEqualToString:@""]) {
+                    message = @"Email harus diisi.";
+                    [messages addObject:message];
+                    valid = NO;
+                }
+                if (email) {
+                    if (![email isEmail]) {
+                        message = @"Format email salah.";
+                        [messages addObject:message];
+                        valid = NO;
+                    }
+                }
+                if (!pass || [pass isEqualToString:@""]) {
+                    message = @"Password harus diisi";
+                    [messages addObject:message];
+                    valid = NO;
+                }
+                
+                if (valid) {
+                    NSDictionary *userinfo = @{kTKPDACTIVATION_DATAEMAILKEY : email, kTKPDACTIVATION_DATAPASSKEY : pass};
+                    [self configureRestKitLogin];
+                    [self requestActionLogin:userinfo];
+                }
+                else{
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+                    [alert show];
+                }
+                
+                NSLog(@"message : %@", messages);
+                break;
             }
-        }
-        if (!pass || [pass isEqualToString:@""]) {
-            message = @"Password harus diisi";
-            [messages addObject:message];
-            valid = NO;
-        }
-        
-        if (valid) {
-            NSDictionary *userinfo = @{kTKPDACTIVATION_DATAEMAILKEY : email, kTKPDACTIVATION_DATAPASSKEY : pass};
-            [self configureRestKitLogin];
-            [self requestActionLogin:userinfo];
-        }
-        else{
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
-            [alert show];
+                
+            case 11 : {
+                ForgotPasswordViewController *controller = [ForgotPasswordViewController new];
+                [self.navigationController pushViewController:controller animated:YES];
+                break;
+            }
+            default:
+                break;
         }
         
-        NSLog(@"message : %@", messages);
     }
 }
 #pragma mark - Memory Management
