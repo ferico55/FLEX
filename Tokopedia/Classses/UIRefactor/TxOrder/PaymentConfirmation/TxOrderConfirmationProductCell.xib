@@ -95,7 +95,7 @@
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1pW-vR-qmP" userLabel="Horizontal Border">
-                                <rect key="frame" x="0.0" y="75" width="320" height="1"/>
+                                <rect key="frame" x="0.0" y="77" width="320" height="1"/>
                                 <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
