@@ -373,6 +373,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     
     cell.indexPath = indexPath;
     
+    cell.badge.hidden = (![list.shop_gold_status boolValue]);
+    
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image_full]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -441,6 +443,12 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 [thumb setImage:image];
 #pragma clang diagnostic pop
             } failure:nil];
+            
+            if([list.shop_gold_status isEqualToString:@"1"]) {
+                ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = NO;
+            } else {
+                ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = YES;
+            }
         }
     }
     return cell;
@@ -485,6 +493,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                   } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                       thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
                                   }];
+            
+            [[cell.badges objectAtIndex:i] setHidden:(![list.shop_gold_status boolValue])];
         }
     }
     

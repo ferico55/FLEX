@@ -20,6 +20,7 @@
 
 @property (weak, nonatomic) id<GeneralPhotoProductDelegate> delegate;
 @property (strong, nonatomic) NSIndexPath *indexPath;
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *badges;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *productImageViews;
 
 + (id)initCell;
