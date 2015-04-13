@@ -411,9 +411,11 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         
         NSAssert(!(indexlimit > _product.count), @"producs out of bounds");
         
-        NSUInteger i;
+        for (UIView *view in ((GeneralProductCell*)cell).viewcell ) {
+            view.hidden = YES;
+        }
         
-        for (i = 0; (indexsegment + i) < indexlimit; i++) {
+        for (int i = 0; (indexsegment + i) < indexlimit; i++) {
             List *list = [_product objectAtIndex:indexsegment + i];
             ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
             (((GeneralProductCell*)cell).indexpath) = indexPath;

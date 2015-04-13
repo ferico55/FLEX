@@ -18,7 +18,7 @@
 
 #import "TxOrderPaymentViewController.h"
 
-@interface TxOrderTabViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate, TxOrderConfirmedViewControllerDelegate>
+@interface TxOrderTabViewController ()<UIPageViewControllerDataSource,UIPageViewControllerDelegate, TxOrderConfirmedViewControllerDelegate, TxOrderConfirmationViewControllerDelegate>
 {
     NSInteger _index;
     NSDictionary *_data;
@@ -161,6 +161,7 @@
             ((TxOrderConfirmationViewController*)_confirmationViewController).isMultipleSelection = _isMultipleSelect;
             //((TxOrderConfirmationViewController*)_confirmationViewController).isSelectAll = _isSelectAll;
             childViewController = _confirmationViewController;
+            _confirmationViewController.delegate = self;
             break;
         }
         case 1:
@@ -232,6 +233,13 @@
     vc.isConfirmed = YES;
     vc.paymentID = object.payment_id;
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)isNodata:(BOOL)isNodata
+{
+    if (isNodata) {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
 }
 
 #pragma mark - Memory Management

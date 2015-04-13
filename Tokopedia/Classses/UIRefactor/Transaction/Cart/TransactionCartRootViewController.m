@@ -80,7 +80,7 @@
     
     _pageController.dataSource = self;
 
-    [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+    //[_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     
     [[_pageController view] setFrame:_containerView.frame];
     
@@ -94,6 +94,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadNotification)
                                                  name:@"reloadNotification"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(shouldBackToFirstPage)
+                                                 name:SHOULD_REFRESH_CART
                                                object:nil];
     
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
@@ -120,7 +125,10 @@
                 ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
                 _isShouldRefreshingCart = NO;
             } else {
-                ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = NO;
+                if (_cartViewController == nil) {
+                    [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+                }
+                else ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = NO;
             }
             
             [_noLoginView setHidden:YES];
@@ -133,6 +141,12 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+}
+
+-(void)dealloc
+{
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter]removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -163,7 +177,15 @@
     switch (index) {
         case 0:
         {
-            if(!_cartViewController)_cartViewController = [TransactionCartViewController new];
+            if(!_cartViewController)
+            {
+                _cartViewController = [TransactionCartViewController new];
+                _cartViewController.firstInit = YES;
+            }
+            else
+            {
+                _cartViewController.firstInit = NO;
+            }
             _cartViewController.delegate = self;
             ((UIButton*)_pageButtons[index]).enabled = YES;
             childViewController = _cartViewController;
@@ -298,10 +320,7 @@
     [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
     ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
     ((TransactionCartViewController*)[self viewControllerAtIndex:0]).indexPage = 0;
-}
-
--(void)dealloc{
-    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    _isShouldRefreshingCart = YES;
 }
 
 - (IBAction)tap:(id)sender {
