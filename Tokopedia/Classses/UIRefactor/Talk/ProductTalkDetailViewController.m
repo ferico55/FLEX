@@ -181,7 +181,11 @@
     [_talkProductImage setUserInteractionEnabled:YES];
     
     [self setHeaderData:_data];
-    [self initTalkInputView];
+    
+    if([_userManager getUserId] && ![[_userManager getUserId] isEqualToString:@"0"]) {
+        [self initTalkInputView];
+    }
+
     
     NSDictionary *userinfo;
     userinfo = @{kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};

@@ -9,7 +9,7 @@
 #ifndef Tokopedia_Tkpd_h
 #define Tokopedia_Tkpd_h
 
-#define kTkpdBaseURLString @"http://www.tx-tonito.ndvl/ws"
+#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 
 //#if DEBUG
 //    #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
