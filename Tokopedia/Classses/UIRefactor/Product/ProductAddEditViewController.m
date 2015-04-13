@@ -349,16 +349,6 @@
             case 24:
             {
                 [self didTapImageButton:(UIButton*)sender];
-                CameraController* c = [CameraController new];
-                [c snap];
-                c.tag = btn.tag;
-                c.delegate = self;
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:c];
-                nav.wantsFullScreenLayout = YES;
-                nav.modalPresentationStyle = UIModalPresentationFullScreen;
-                nav.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
-                //[_dataInput setObject:@(btn.tag-20) forKey:kTKPDDETAIL_DATAINDEXKEY];
                 break;
             }
             default:
@@ -371,6 +361,7 @@
 {
     CameraAlbumListViewController *albumVC = [CameraAlbumListViewController new];
     albumVC.title = @"Album";
+    albumVC.delegate = self;
     CameraCollectionViewController *photoVC = [CameraCollectionViewController new];
     photoVC.title = @"All Picture";
     photoVC.delegate = self;
@@ -390,6 +381,9 @@
     }
     photoVC.selectedIndexPath = selectedIndexPath;
     UINavigationController *nav = [[UINavigationController alloc]init];
+    nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+    nav.navigationBar.translucent = NO;
+    nav.navigationBar.tintColor = [UIColor whiteColor];
     NSArray *controllers = @[albumVC,photoVC];
     [nav setViewControllers:controllers];
     [self.navigationController presentViewController:nav animated:YES completion:nil];

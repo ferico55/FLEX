@@ -7,8 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#pragma mark - Transaction Cart Payment Delegate
+@protocol TxOrderConfirmationViewControllerDelegate <NSObject>
+@required
+- (void)isNodata:(BOOL)isNodata;
+
+@end
 
 @interface TxOrderConfirmationViewController : UIViewController
+
+@property (nonatomic, weak) IBOutlet id<TxOrderConfirmationViewControllerDelegate> delegate;
 
 @property (nonatomic) BOOL isMultipleSelection;
 @property (nonatomic) BOOL isSelectAll;
