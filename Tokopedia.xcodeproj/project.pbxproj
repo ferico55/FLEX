@@ -8906,7 +8906,7 @@
 				);
 				INFOPLIST_FILE = "TokopediaTests/TokopediaTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b8b2de0d-7dc2-4f2b-bf55-a47eebc96a45";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -8927,7 +8927,7 @@
 				GCC_PREFIX_HEADER = "Tokopedia/Tokopedia-Prefix.pch";
 				INFOPLIST_FILE = "TokopediaTests/TokopediaTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b8b2de0d-7dc2-4f2b-bf55-a47eebc96a45";
+				PROVISIONING_PROFILE = "";
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};

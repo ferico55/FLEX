@@ -9,7 +9,7 @@
 #ifndef Tokopedia_Tkpd_h
 #define Tokopedia_Tkpd_h
 
-#define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+#define kTkpdBaseURLString @"http://www.tx-tonito.ndvl/ws"
 
 //#if DEBUG
 //    #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
@@ -21,6 +21,7 @@
 
 #define kTKPD_AUTHKEY @"auth"
 #define kTKPD_ISLOGINKEY @"is_login"
+#define kTKPD_DEVICETOKENKEY @"device_token"
 #define kTKPD_USERIMAGEKEY @"user_image"
 #define kTKPD_USERIDKEY @"user_id"
 #define kTKPD_FULLNAMEKEY @"full_name"

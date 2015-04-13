@@ -142,8 +142,8 @@
     [[FBSession activeSession] close];
     [FBSession setActiveSession:nil];
     
-    TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-    [storage resetKeychain];
+//    TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+//    [storage resetKeychain];
     
     _loginButton.layer.cornerRadius = 2;
     
