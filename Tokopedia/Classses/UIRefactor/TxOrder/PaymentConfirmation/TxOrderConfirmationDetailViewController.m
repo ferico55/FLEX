@@ -31,6 +31,8 @@
     BOOL _isNodata;
     
     NavigateViewController *_navigate;
+    
+    UILabel *_addressLabel;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
@@ -162,10 +164,41 @@
     else if(indexPath.row == rowCount)
         height = SHIPMENT_HEIGHT;
     else if (indexPath.row == rowCount+1)
-        height = (isDropshipper)?DROPSHIP_HEIGHT:COST_CELL_HEIGHT;
+    {
+        if (isDropshipper) {
+            height = DROPSHIP_HEIGHT;
+        }
+        else
+        {
+            //Calculate the expected size based on the font and linebreak mode of your label
+            CGSize maximumLabelSize = CGSizeMake(150,9999);
+            
+            CGSize expectedLabelSize = [_addressLabel.text sizeWithFont:_addressLabel.font
+                                                          constrainedToSize:maximumLabelSize
+                                                              lineBreakMode:_addressLabel.lineBreakMode];
+            
+            //adjust the label the the new height.
+            CGRect newFrame = _addressLabel.frame;
+            newFrame.size.height = expectedLabelSize.height;
+            _addressLabel.frame = newFrame;
+            height = COST_CELL_HEIGHT-77 + newFrame.size.height;
+        }
+    }
     else
-        height = COST_CELL_HEIGHT;
-    
+    {
+        //Calculate the expected size based on the font and linebreak mode of your label
+        CGSize maximumLabelSize = CGSizeMake(150,9999);
+        
+        CGSize expectedLabelSize = [_addressLabel.text sizeWithFont:_addressLabel.font
+                                          constrainedToSize:maximumLabelSize
+                                              lineBreakMode:_addressLabel.lineBreakMode];
+        
+        //adjust the label the the new height.
+        CGRect newFrame = _addressLabel.frame;
+        newFrame.size.height = expectedLabelSize.height;
+        _addressLabel.frame = newFrame;
+        height = COST_CELL_HEIGHT-77 + newFrame.size.height;
+    }
     return height;
 }
 
@@ -307,11 +340,16 @@
     cell.totalPaymentLabel.text = orderList.order_detail.detail_open_amount_idr;
     
     cell.recieverNameLabel.text = orderList.order_destination.receiver_name;
-    cell.addressLabel.text = orderList.order_destination.address_street;
-    cell.addressStreetLabel.text = orderList.order_destination.address_city;
-    cell.addressCityLabel.text = [NSString stringWithFormat:@"%@, %@",orderList.order_destination.address_country,orderList.order_destination.address_postal];
+    NSString *address = [NSString stringWithFormat:@"%@\n%@\n%@, %@ %@",
+                         orderList.order_destination.address_street,
+                         orderList.order_destination.address_city,
+                         orderList.order_destination.address_district,
+                         orderList.order_destination.address_province,
+                         orderList.order_destination.address_postal];
+    [cell.addressLabel setCustomAttributedText:[NSString convertHTML:address]];
     cell.recieverPhoneLabel.text = orderList.order_destination.receiver_phone;
-                                    
+    _addressLabel = cell.addressLabel;
+    
     return cell;
 }
 

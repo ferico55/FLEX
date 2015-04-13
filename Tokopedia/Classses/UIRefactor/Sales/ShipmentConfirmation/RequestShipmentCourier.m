@@ -52,7 +52,6 @@
     RKObjectMapping *shipmentMapping = [RKObjectMapping mappingForClass:[ShipmentCourier class]];
     [shipmentMapping addAttributeMappingsFromDictionary:@{
                                                           API_SHIPMENT_ID_KEY           : API_SHIPMENT_ID_KEY,
-                                                          API_SHIPMENT_AVAILABLE_KEY    : API_SHIPMENT_AVAILABLE_KEY,
                                                           API_SHIPMENT_IMAGE_KEY        : API_SHIPMENT_IMAGE_KEY,
                                                           API_SHIPMENT_NAME_KEY         : API_SHIPMENT_NAME_KEY,
                                                           }];
