@@ -256,9 +256,9 @@
                                                    @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERPAKAI,
                                                      DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
                                                      },
-                                                   @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
-                                                     DATA_VALUE_KEY : depositAfterString?:@""
-                                                     },
+                                                   //@{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
+                                                    // DATA_VALUE_KEY : depositAfterString?:@""
+                                                    // },
                                                    ];
             [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
             
@@ -307,9 +307,9 @@
                                                    @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERPAKAI,
                                                      DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
                                                      },
-                                                   @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
-                                                     DATA_VALUE_KEY : depositAfterString?:@""
-                                                     },
+                                                   //@{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
+                                                   // DATA_VALUE_KEY : depositAfterString?:@""
+                                                   // },
                                                    ];
             [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
         }

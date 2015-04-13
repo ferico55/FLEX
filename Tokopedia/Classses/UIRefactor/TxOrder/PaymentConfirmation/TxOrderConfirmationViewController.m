@@ -90,9 +90,6 @@
     _networkManager.delegate = self;
     [_networkManager doRequest];
     
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshRequest)
                                                  name:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME
@@ -103,6 +100,8 @@
 {
     [super viewWillAppear:animated];
      _networkManager.delegate = self;
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -159,6 +158,7 @@
             if ([_selectedOrders count]>0) {
                 TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
                 vc.data = @{DATA_SELECTED_ORDER_KEY : _selectedOrders};
+                [_list removeObjectsInArray:_selectedOrders];
                 [self.navigationController pushViewController:vc animated:YES];
             }
             else{
@@ -539,6 +539,8 @@
         NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
         _tableView.tableFooterView = noResultView;
     }
+    
+    [_delegate isNodata:_isNodata];
     
     [_tableView reloadData];
 }

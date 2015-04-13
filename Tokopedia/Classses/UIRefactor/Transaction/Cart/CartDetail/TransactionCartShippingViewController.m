@@ -104,7 +104,7 @@
         _isFinishCalculate = NO;
     }
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editInsurance:) name:EDIT_CART_POST_NOTIFICATION_NAME object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(editInsurance:) name:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil];
     
     _isFirstLoad = YES;
 

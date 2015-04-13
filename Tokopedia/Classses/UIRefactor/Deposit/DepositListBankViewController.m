@@ -110,8 +110,8 @@
     
     
     UIBarButtonItem *barbutton1;
-    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor blackColor]];
+    barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [barbutton1 setTintColor:[UIColor whiteColor]];
     [barbutton1 setTag:11];
     self.navigationItem.rightBarButtonItem = barbutton1;
     

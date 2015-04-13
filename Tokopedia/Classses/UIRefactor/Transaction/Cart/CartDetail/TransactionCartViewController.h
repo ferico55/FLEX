@@ -36,5 +36,6 @@
 @property (nonatomic) NSInteger indexPage;
 @property BOOL shouldRefresh;
 @property (strong,nonatomic,setter=setData:) NSDictionary *data;
+@property BOOL firstInit;
 
 @end
