@@ -22,7 +22,5 @@
 @property (strong, nonatomic) NSIndexPath *indexpath;
 
 +(id)newcell;
--(void)viewdetailresetposanimation:(BOOL)animated;
--(void)viewdetailshowanimation:(BOOL)animated;
 
 @end

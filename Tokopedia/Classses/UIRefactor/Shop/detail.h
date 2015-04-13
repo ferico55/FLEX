@@ -373,6 +373,7 @@ typedef enum
 #define kTKPDSHOPSHIPMENT_APISHIPMENTNAMEKEY @"shipment_name"
 #define kTKPDSHOPSHIPMENT_APISHIPPINGIDKEY @"shipping_id"
 #define kTKPDSHOPSHIPMENT_APISHIPMENTIMAGEKEY @"shipment_image"
+#define kTKPDSHOPSHIPMENT_APISHIPMENTAVAILABLEKEY @"shipment_available"
 #define kTKPDSHOPSHIPMENT_APISHIPMENTPACKAGEKEY @"shipment_package"
 #define API_SHIPMENT_PACKAGE_ID @"shipment_package_id"
 #define API_SHIPMENT_PACKAGE_NAME @"shipment_package_name"

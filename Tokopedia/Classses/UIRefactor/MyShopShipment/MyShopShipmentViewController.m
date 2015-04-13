@@ -21,9 +21,9 @@
 #import "MyShopShipmentInfoViewController.h"
 
 @interface MyShopShipmentViewController () <FilterLocationViewControllerDelegate> {
-
+    
     NSMutableDictionary *_dataInput;
-
+    
     NSMutableArray *_sections;
     NSArray *_shipments;
     
@@ -92,7 +92,7 @@
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
-
+    
     _values = [NSMutableDictionary dictionaryWithDictionary:@{@"MinimumPengirimanJNE" : [NSNumber numberWithInteger:0],
                                                               @"PengirimanLuarJNE" : [NSNumber numberWithInteger:0],
                                                               @"BiayaTambahanJNE" : [NSNumber numberWithInteger:0],
@@ -116,11 +116,11 @@
     _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPSHIPPING_APIRESPONSEFILEFORMAT,0]];
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 86400.0;
-	[_cachecontroller initCacheWithDocumentPath:path];
+    [_cachecontroller initCacheWithDocumentPath:path];
     
     [self configureRestKit];
     [self request];
-
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -156,16 +156,16 @@
     [switchButton addTarget:self action:@selector(didTapSwitch:) forControlEvents:UIControlEventValueChanged];
     
     if ([cellIdentifier isEqualToString:@"TextField"]) {
-
+        
         UITextField *textField = (UITextField *)[cell viewWithTag:3];
         [textField addTarget:self
-                        action:@selector(textFieldDidChange:)
-              forControlEvents:UIControlEventEditingChanged];
+                      action:@selector(textFieldDidChange:)
+            forControlEvents:UIControlEventEditingChanged];
         textField.text = @"";
         if (![[row objectForKey:@"value"] isEqual:[NSNull null]]) {
             textField.text = [row objectForKey:@"value"];
         }
-    
+        
         if ([[row objectForKey:@"expand"] boolValue]) {
             [switchButton setOn:YES];
         } else {
@@ -180,18 +180,18 @@
         UIStepper *stepper = (UIStepper *)[cell viewWithTag:5];
         stepper.value = [[row objectForKey:@"value"] intValue];
         [stepper addTarget:self action:@selector(changeValueStepper:) forControlEvents:UIControlEventValueChanged];
-
+        
         UILabel *valueLabel = (UILabel *)[cell viewWithTag:4];
         valueLabel.text = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:stepper.value]];
-
+        
         if ([[row objectForKey:@"expand"] boolValue]) {
             [switchButton setOn:YES];
         } else {
             [switchButton setOn:NO];
         }
-
+        
         NSLog(@"%@", row);
-
+        
     } else {
         if ([[row objectForKey:@"value"] integerValue] > 0) {
             [switchButton setOn:YES];
@@ -214,7 +214,7 @@
     //update label value
     UILabel *label = (UILabel *)[cell viewWithTag:4];
     label.text = [NSString stringWithFormat:@"%d", (int)stepper.value];
-
+    
     //update value in row dictionary
     [row setObject:[NSNumber numberWithFloat:stepper.value] forKey:@"value"];
     
@@ -226,7 +226,7 @@
     else if ([[row objectForKey:@"shipmentName"] isEqualToString:@"Pos Indonesia"]) {
         [_values setValue:[NSNumber numberWithInteger:stepper.value] forKey:@"MinimumPengirimanPos"];
     }
-
+    
     NSLog(@"%@", _values);
 }
 
@@ -239,7 +239,7 @@
     NSMutableDictionary *row = [[[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] mutableCopy];
     NSString *type = [row objectForKey:@"type"];
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-
+    
     if ([type isEqualToString:@"TextField"] ||
         [type isEqualToString:@"Stepper"]) {
         
@@ -247,7 +247,7 @@
         if ([sender isOn]) {
             [row setObject:[NSNumber numberWithBool:YES] forKey:@"expand"];
             [row setObject:[NSNumber numberWithInt:88] forKey:@"rowHeight"];
-
+            
             if ([type isEqualToString:@"Stepper"]) {
                 if (indexPath.section == 0) {
                     [_values setObject:[NSNumber numberWithInteger:1] forKey:@"MinimumPengirimanJNE"];
@@ -257,7 +257,7 @@
                 }
             }
             
-        // update dictionary. collapse row
+            // update dictionary. collapse row
         } else {
             [row setObject:[NSNumber numberWithBool:NO] forKey:@"expand"];
             [row setObject:[NSNumber numberWithInt:44] forKey:@"rowHeight"];
@@ -278,12 +278,12 @@
                     [_values setObject:[NSNull null] forKey:@"BiayaTambahanPos"];
                 }
                 
-            //reset stepper value
+                //reset stepper value
             } else if ([type isEqualToString:@"Stepper"]) {
                 UIStepper *stepper = (UIStepper *)[cell viewWithTag:5];
                 stepper.value = 1;
                 [row setObject:[NSNumber numberWithInt:1] forKey:@"value"];
-
+                
                 // RESET VALUE IN VALUEDICTIONARY
                 if (indexPath.section == 0) {
                     [_values setObject:[NSNumber numberWithInteger:0] forKey:@"MinimumPengirimanJNE"];
@@ -294,7 +294,7 @@
                     [_values setObject:[NSNumber numberWithInteger:0] forKey:@"MinimumPengirimanPos"];
                 }
             }
-
+            
         }
     } else {
         if ([sender isOn]) {
@@ -303,7 +303,7 @@
             [row setObject:[NSNumber numberWithBool:NO] forKey:@"value"];
         }
     }
-
+    
     if ([[row objectForKey:@"title"] isEqualToString:@"OKE"]) {
         NSMutableDictionary *row5 = [[[_sections objectAtIndex:indexPath.section] objectAtIndex:4] mutableCopy];
         NSMutableDictionary *row6 = [[[_sections objectAtIndex:indexPath.section] objectAtIndex:5] mutableCopy];
@@ -324,7 +324,7 @@
         
         [[_sections objectAtIndex:indexPath.section] setObject:row5 atIndex:4];
         [[_sections objectAtIndex:indexPath.section] setObject:row6 atIndex:5];
-
+        
     } else if ([[row objectForKey:@"title"] isEqualToString:@"Reguler"]) {
         NSMutableDictionary *row2 = [[[_sections objectAtIndex:indexPath.section] objectAtIndex:1] mutableCopy];
         if ([sender isOn]) {
@@ -335,7 +335,7 @@
             [row2 setObject:[NSNumber numberWithInt:0] forKey:@"rowHeight"];
         }
         [[_sections objectAtIndex:indexPath.section] setObject:row2 atIndex:1];
-
+        
     } else if ([[row objectForKey:@"title"] isEqualToString:@"Hanya Dapat Melayani Pengiriman Luar Kota"]) {
         [_values setObject:[NSNumber numberWithBool:[switchButton isOn]] forKey:@"PengirimanLuarJNE"];
         
@@ -346,7 +346,7 @@
     [[_sections objectAtIndex:indexPath.section] setObject:row atIndex:indexPath.row];
     
     [self.tableView reloadData];
- 
+    
     NSLog(@"%@", _values);
 }
 
@@ -358,14 +358,14 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     ShippingInfoShipments *shipment = [_shipments objectAtIndex:section];
-
+    
     UIView *headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, tableView.sectionHeaderHeight)];
     headerView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1];
     
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width, 40)];
     label.text = shipment.shipment_name;
     [headerView addSubview:label];
-
+    
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:shipment.shipment_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     UIImageView *thumb = [[UIImageView alloc] initWithFrame:CGRectMake(self.view.frame.size.width-65, -5, 50, 50)];
     thumb.image = nil;
@@ -373,15 +373,15 @@
     thumb.clipsToBounds = YES;
     [headerView addSubview:thumb];
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-        #pragma clang diagnostic push
-        #pragma clang diagnostic ignored "-Warc-retain-cycles"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
         
         [thumb setImage:image animated:YES];
-    
-        #pragma clang diagnosti c pop
-    
+        
+#pragma clang diagnosti c pop
+        
     } failure:nil];
-
+    
     return headerView;
 }
 
@@ -432,12 +432,12 @@
                                                      kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY : kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY,
                                                      kTKPDSHOPSHIPMENT_APIJNETICKETKEY : kTKPDSHOPSHIPMENT_APIJNETICKETKEY,
                                                      }];
-
+    
     RKObjectMapping *POSMapping = [RKObjectMapping mappingForClass:[POSIndonesia class]];
     [POSMapping addAttributeMappingsFromDictionary:@{kTKPDSHOPSHIPMENT_APIPOSFEEKEY : kTKPDSHOPSHIPMENT_APIPOSFEEKEY,
                                                      kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY : kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY,
                                                      }];
-
+    
     RKObjectMapping *tikiMapping = [RKObjectMapping mappingForClass:[Tiki class]];
     [tikiMapping addAttributeMappingsFromDictionary:@{ kTKPDSHOPSHIPMENT_APITIKIFEEKEY : kTKPDSHOPSHIPMENT_APITIKIFEEKEY }];
     
@@ -464,20 +464,20 @@
     
     RKRelationshipMapping *JNERel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APIJNEKEY toKeyPath:kTKPDSHOPSHIPMENT_APIJNEKEY withMapping:JNEMapping];
     [resultMapping addPropertyMapping:JNERel];
-
+    
     RKRelationshipMapping *tikiRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APITIKIKEY toKeyPath:kTKPDSHOPSHIPMENT_APITIKIKEY withMapping:tikiMapping];
     [resultMapping addPropertyMapping:tikiRel];
-
+    
     RKRelationshipMapping *posRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APIPOSKEY toKeyPath:kTKPDSHOPSHIPMENT_APIPOSKEY withMapping:POSMapping];
     [resultMapping addPropertyMapping:posRel];
-
+    
     RKRelationshipMapping *shipmentpackagesRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APISHIPMENTPACKAGEKEY toKeyPath:kTKPDSHOPSHIPMENT_APISHIPMENTPACKAGEKEY withMapping:shipmentspackageMapping];
     [shipmentsMapping addPropertyMapping:shipmentpackagesRel];
     
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY toKeyPath:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY withMapping:posweightMapping]];
     
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDSHOPSHIPMENT_APISHOPSHIPPINGKEY toKeyPath:kTKPDSHOPSHIPMENT_APISHOPSHIPPINGKEY withMapping:shopshippingMapping]];
-
+    
     [shippingMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
     
     // Response Descriptor
@@ -491,11 +491,11 @@
     if (_request.isExecuting) return;
     _requestcount++;
     
-	NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPSHIPPINGINFOKEY,};
+    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETSHOPSHIPPINGINFOKEY,};
     
     _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDSHOPSHIPMENT_APIPATH parameters:[param encrypt]];
-	[_cachecontroller getFileModificationDate];
-	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+    [_cachecontroller getFileModificationDate];
+    _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
     NSTimer *timer;
     
@@ -513,7 +513,7 @@
     
     id stats = [result objectForKey:@""];
     _shippinginfo = stats;
-
+    
     BOOL status = [_shippinginfo.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
         [self requestprocess:object];
@@ -523,8 +523,10 @@
 -(void)requestprocess:(id)object
 {
     
-    UIBarButtonItem *barButtonSave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(saveButtonTap:)];
-    barButtonSave.tintColor = [UIColor whiteColor];
+    UIBarButtonItem *barButtonSave = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
+                                                                      style:UIBarButtonItemStyleDone
+                                                                     target:self
+                                                                     action:@selector(saveButtonTap:)];
     self.navigationItem.rightBarButtonItem = barButtonSave;
     
     if (object) {
@@ -536,7 +538,7 @@
             
             BOOL status = [_shippinginfo.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             if (status) {
-
+                
                 _topView.hidden = NO;
                 
                 _isnodata = NO;
@@ -544,7 +546,7 @@
                 
                 _provinceLabel.text = _shippinginfo.result.shop_shipping.district_name;
                 _postCodeTextField.text = _shippinginfo.result.shop_shipping.postal_code;
-
+                
                 NSMutableArray *ids = [NSMutableArray new];
                 for (id shipment_id in _shippinginfo.result.shop_shipping.district_shipping_supported) {
                     NSInteger shipment = [shipment_id integerValue];
@@ -562,7 +564,7 @@
                 
                 [_values setObject:[NSNumber numberWithInteger:_shippinginfo.result.pos.pos_min_weight]?:[NSNull null] forKey:@"MinimumPengirimanPos"];
                 [_values setObject:[NSNumber numberWithInteger:_shippinginfo.result.pos.pos_fee]?:[NSNull null] forKey:@"BiayaTambahanPos"];
-
+                
             }
         }
     }
@@ -574,7 +576,7 @@
     
     for (ShippingInfoShipments *shipment in _shipments) {
         NSMutableArray *rows = [[NSMutableArray alloc] init];
-        if ([_availableCourierId containsObject:[NSNumber numberWithInteger:shipment.shipment_id]]) {
+        if ([_availableCourierId containsObject:[NSNumber numberWithInteger:[shipment.shipment_id integerValue]]]) {
             BOOL OKE = false;
             for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
                 [rows addObject:@{
@@ -583,8 +585,8 @@
                                   @"value" : [NSNumber numberWithInteger:package.active],
                                   @"rowHeight" : [NSNumber numberWithInt:44],
                                   @"shipmentName" : shipment.shipment_name,
-                                  @"packageId" : [NSNumber numberWithInteger:package.sp_id],
-                                  @"shipmentId" : [NSNumber numberWithInteger:shipment.shipment_id],
+                                  @"packageId" : [NSNumber numberWithInteger:[package.sp_id integerValue]],
+                                  @"shipmentId" : [NSNumber numberWithInteger:[shipment.shipment_id integerValue]],
                                   }];
                 if ([package.name isEqualToString:@"OKE"] && package.active > 0) {
                     OKE = YES;
@@ -595,11 +597,11 @@
                                   @"title" : @"Not supported",
                                   @"type" : @"Plain",
                                   @"shipmentName" : shipment.shipment_name,
-                                  @"shipmentId" : [NSNumber numberWithInteger:shipment.shipment_id],
+                                  @"shipmentId" : [NSNumber numberWithInteger:[shipment.shipment_id integerValue]],
                                   }];
             } else {
                 if ([shipment.shipment_name isEqualToString:@"JNE"]) {
-
+                    
                     NSInteger heightForMinWeightRow = 0;
                     BOOL showMinWeightRow = NO;
                     BOOL expandMinWeightRow = NO;
@@ -632,7 +634,7 @@
                                                                                     @"value" : [NSNumber numberWithInteger:_shippinginfo.result.jne.jne_tiket],
                                                                                     @"rowHeight" : [NSNumber numberWithInt:68],
                                                                                     @"shipmentName" : shipment.shipment_name,
-                                                                                    @"shipmentId" : [NSNumber numberWithInteger:shipment.shipment_id],
+                                                                                    @"shipmentId" : [NSNumber numberWithInteger:[shipment.shipment_id integerValue]],
                                                                                     }]];
                     [rows addObject:[NSMutableDictionary dictionaryWithDictionary:@{
                                                                                     @"title" : @"Minimum Pengiriman Layanan",
@@ -642,7 +644,7 @@
                                                                                     @"expand" : [NSNumber numberWithInteger:expandMinWeightRow],
                                                                                     @"rowHeight" : [NSNumber numberWithInteger:heightForMinWeightRow],
                                                                                     @"shipmentName" : shipment.shipment_name,
-                                                                                    @"shipmentId" : [NSNumber numberWithInteger:shipment.shipment_id],
+                                                                                    @"shipmentId" : [NSNumber numberWithInteger:[shipment.shipment_id integerValue]],
                                                                                     }]];
                     [rows addObject:[NSMutableDictionary dictionaryWithDictionary:@{
                                                                                     @"title" : @"Hanya Dapat Melayani Pengiriman Luar Kota",
@@ -650,7 +652,7 @@
                                                                                     @"value" : [NSNumber numberWithInteger:_shippinginfo.result.jne.jne_diff_district],
                                                                                     @"rowHeight" : [NSNumber numberWithFloat:heightForRow3],
                                                                                     @"shipmentName" : shipment.shipment_name,
-                                                                                    @"shipmentId" : [NSNumber numberWithInteger:shipment.shipment_id],
+                                                                                    @"shipmentId" : [NSNumber numberWithInteger:[shipment.shipment_id integerValue]],
                                                                                     }]];
                     [rows addObject:[NSMutableDictionary dictionaryWithDictionary:@{
                                                                                     @"title" : @"Biaya Tambahan Pengiriman",
@@ -659,19 +661,19 @@
                                                                                     @"expand" : [NSNumber numberWithBool:showExtraFeeRow],
                                                                                     @"rowHeight" : [NSNumber numberWithInteger:heightForExtraFee],
                                                                                     @"shipmentName" : shipment.shipment_name,
-                                                                                    @"shipmentId" : [NSNumber numberWithInteger:shipment.shipment_id],
+                                                                                    @"shipmentId" : [NSNumber numberWithInteger:[shipment.shipment_id integerValue]],
                                                                                     }]];
                 }
                 
                 if ([shipment.shipment_name isEqualToString:@"Tiki"]) {
-
+                    
                     NSInteger heightForExtraFee = 44;
                     BOOL showExtraFeeRow = NO;
                     if (_shippinginfo.result.tiki.tiki_fee > 0) {
                         heightForExtraFee = 88;
                         showExtraFeeRow = YES;
                     }
-
+                    
                     [rows addObject:[NSMutableDictionary dictionaryWithDictionary:@{
                                                                                     @"title" : @"Biaya Tambahan Pengiriman",
                                                                                     @"type" : @"TextField",
@@ -679,7 +681,7 @@
                                                                                     @"expand" : [NSNumber numberWithBool:showExtraFeeRow],
                                                                                     @"rowHeight" : [NSNumber numberWithInteger:heightForExtraFee],
                                                                                     @"shipmentName" : shipment.shipment_name,
-                                                                                    @"shipmentId" : [NSNumber numberWithInteger:shipment.shipment_id],
+                                                                                    @"shipmentId" : [NSNumber numberWithInteger:[shipment.shipment_id integerValue]],
                                                                                     }]];
                 }
                 
@@ -691,7 +693,7 @@
                         showMinWeightRow = YES;
                         heightForMinWeightRow = 88;
                     }
-
+                    
                     NSInteger heightForExtraFee = 44;
                     BOOL showExtraFeeRow = NO;
                     if (_shippinginfo.result.pos.pos_fee > 0) {
@@ -707,7 +709,7 @@
                                                                                     @"expand" : [NSNumber numberWithBool:showMinWeightRow],
                                                                                     @"rowHeight" : [NSNumber numberWithInteger:heightForMinWeightRow],
                                                                                     @"shipmentName" : shipment.shipment_name,
-                                                                                    @"shipmentId" : [NSNumber numberWithInteger:shipment.shipment_id],
+                                                                                    @"shipmentId" : [NSNumber numberWithInteger:[shipment.shipment_id integerValue]],
                                                                                     }]];
                     [rows addObject:[NSMutableDictionary dictionaryWithDictionary:@{
                                                                                     @"title" : @"Biaya Tambahan Pengiriman",
@@ -716,7 +718,7 @@
                                                                                     @"expand" : [NSNumber numberWithBool:showExtraFeeRow],
                                                                                     @"rowHeight" : [NSNumber numberWithInteger:heightForExtraFee],
                                                                                     @"shipmentName" : shipment.shipment_name,
-                                                                                    @"shipmentId" : [NSNumber numberWithInteger:shipment.shipment_id],
+                                                                                    @"shipmentId" : [NSNumber numberWithInteger:[shipment.shipment_id integerValue]],
                                                                                     }]];
                 }
                 
@@ -725,7 +727,7 @@
                                                                                 @"type" : @"Info",
                                                                                 @"rowHeight" : [NSNumber numberWithInt:68],
                                                                                 @"shipmentName" : shipment.shipment_name,
-                                                                                @"shipmentId" : [NSNumber numberWithInteger:shipment.shipment_id],
+                                                                                @"shipmentId" : [NSNumber numberWithInteger:[shipment.shipment_id integerValue]],
                                                                                 }]];
             }
         } else {
@@ -760,7 +762,7 @@
     else if ([[row objectForKey:@"shipmentName"] isEqualToString:@"Pos Indonesia"]) {
         [_values setValue:textField.text forKey:@"BiayaTambahanPos"];
     }
-
+    
     NSLog(@"%@", _values);
 }
 
@@ -796,7 +798,7 @@
     
     _provinceLabel.text = [data objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY] ? : @"Pilih Provinsi";
     NSIndexPath *indexpath = [data objectForKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-
+    
     _postCodeTextField.text = @"";
     
     NSArray *districts = _shippinginfo.result.district;
@@ -826,7 +828,7 @@
             [data setObject:packages forKey:courierId];
         }
     }
-
+    
     NSLog(@"%@", data);
     NSLog(@"%@", _values);
     
@@ -848,7 +850,7 @@
             }
         }
     }
-
+    
     //Validate biaya tambahan pengiriman Tiki
     if ([[_sections objectAtIndex:1] count] > 1) {
         NSDictionary *biayaTambahanTiki = [[_sections objectAtIndex:1] objectAtIndex:1];
@@ -867,7 +869,7 @@
     
     //Validate biaya tambahan pengiriman Pos Indonesia
     if ([[_sections objectAtIndex:2] count] > 1) {
-        NSDictionary *biayaTambahanPos = [[_sections objectAtIndex:2] objectAtIndex:3];
+        NSDictionary *biayaTambahanPos = [[_sections objectAtIndex:4] objectAtIndex:3];
         if ([[biayaTambahanPos objectForKey:@"expand"] boolValue]) {
             if ([[_values objectForKey:@"BiayaTambahanPos"] isEqual:[NSNull null]] ||
                 [[_values objectForKey:@"BiayaTambahanPos"] integerValue] == 0) {
@@ -880,10 +882,10 @@
             }
         }
     }
-
+    
     [_dataInput setObject:_postCodeTextField.text forKey:kTKPDSHOPSHIPMENT_APIPOSTALCODEKEY];
     [_dataInput setObject:[NSNumber numberWithInteger:_shippinginfo.result.shop_shipping.origin] forKey:kTKPDFILTER_APISELECTEDDISTRICTIDKEY];
-
+    
     // set data input for jne weight value and key
     if ([[_values objectForKey:@"MinimumPengirimanJNE"] isEqual:[NSNull null]] ||
         [[[[_sections objectAtIndex:0] objectAtIndex:4] objectForKey:@"expand"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
@@ -893,7 +895,7 @@
         [_dataInput setObject:[NSNumber numberWithBool:YES] forKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY];
         [_dataInput setObject:[_values objectForKey:@"MinimumPengirimanJNE"] forKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY];
     }
-
+    
     // set data input for jne fee value and key
     if ([[_values objectForKey:@"BiayaTambahanJNE"] isEqual:[NSNull null]] ||
         [[[[_sections objectAtIndex:0] objectAtIndex:6] objectForKey:@"expand"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
@@ -906,10 +908,10 @@
     
     // set JNE AWB VALUE TO INPUT DATA
     [_dataInput setObject:[_values objectForKey:@"AWBOtomatisJNE"] forKey:kTKPDSHOPSHIPMENT_APIJNETICKETKEY];
-
+    
     // set Pengiriman luar kota JNE ke input data
     [_dataInput setObject:[_values objectForKey:@"PengirimanLuarJNE"] forKey:kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY];
-
+    
     // set data input for "Biaya Tambahan Pengiriman TIKI"
     if ([[_values objectForKey:@"BiayaTambahanTiki"] isEqual:[NSNull null]] ||
         [[[[_sections objectAtIndex:1] objectAtIndex:1] objectForKey:@"expand"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
@@ -919,7 +921,7 @@
         [_dataInput setObject:[NSNumber numberWithBool:YES] forKey:kTKPDSHOPSHIPMENT_APITIKIFEEKEY];
         [_dataInput setObject:[_values objectForKey:@"BiayaTambahanTiki"] forKey:kTKPDSHOPSHIPMENT_APITIKIFEEVALUEKEY];
     }
-
+    
     // set data input for POS INDONESIA weight value and key
     if ([[_values objectForKey:@"MinimumPengirimanPos"] isEqual:[NSNull null]] ||
         [[[[_sections objectAtIndex:2] objectAtIndex:2] objectForKey:@"expand"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
@@ -931,7 +933,7 @@
     }
     
     // set data input for POS INDONESIA fee value and key
-    if ([[_values objectForKey:@"BiayaTambahanPos"] isEqual:[NSNull null]] ||
+    if ([[_values objectForKey:@"BiayaTambahanPos"] isEqual:[NSNumber numberWithInteger:0]] ||
         [[[[_sections objectAtIndex:2] objectAtIndex:3] objectForKey:@"expand"] isEqualToNumber:[NSNumber numberWithInteger:0]]) {
         [_dataInput setObject:[NSNumber numberWithBool:NO] forKey:kTKPDSHOPSHIPMENT_APIPOSFEEKEY];
         [_dataInput setObject:[NSNumber numberWithInteger:0] forKey:kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY];
@@ -941,9 +943,9 @@
     }
     
     [_dataInput setObject:data forKey:kTKPDSHOPSHIPMENT_APISHIPMENTIDS];
-
-    if (valid) {
     
+    if (valid) {
+        
         [self configureRestKitActionShipment];
         [self requestActionShipment:_dataInput];
         
@@ -951,14 +953,14 @@
         UIBarButtonItem *barButtonLoading = [[UIBarButtonItem alloc] initWithCustomView:_act];
         self.navigationItem.rightBarButtonItem = barButtonLoading;
         [_act startAnimating];
-
+        
     } else {
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:messages,@"messages", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+        [alert show];
     }
-
+    
     NSLog(@"\n\n\n%@\n\n\n", _dataInput);
-
+    
 }
 
 -(void)configureRestKitActionShipment
@@ -995,24 +997,24 @@
     NSString *postalcode = [userinfo objectForKey:kTKPDSHOPSHIPMENT_APIPOSTALCODEKEY]?:_shippinginfo.result.shop_shipping.postal_code?:@"";
     NSString *origin = [userinfo objectForKey:kTKPDFILTER_APISELECTEDDISTRICTIDKEY]?:@(_shippinginfo.result.shop_shipping.origin)?:@"";
     NSDictionary *shipmentids = [userinfo objectForKey:kTKPDSHOPSHIPMENT_APISHIPMENTIDS];
-    BOOL jneminweight = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY] boolValue];
+    NSInteger jneminweight = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY] integerValue];
     NSInteger jneminweightvalue = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY] integerValue];
-    BOOL jnefee = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIJNEFEEKEY] boolValue];
+    NSInteger jnefee = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIJNEFEEKEY] integerValue];
     NSInteger jnefeevalue = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIJNEFEEVALUEKEY] integerValue];
-    BOOL jneticket = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIJNETICKETKEY] boolValue];
-    BOOL diffdistrict = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY] boolValue];
-    BOOL tikifee = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APITIKIFEEKEY] boolValue];
+    NSInteger jneticket = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIJNETICKETKEY] integerValue];
+    NSInteger diffdistrict = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY] integerValue];
+    NSInteger tikifee = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APITIKIFEEKEY] integerValue];
     NSInteger tikifeevalue = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APITIKIFEEVALUEKEY] integerValue];
-    BOOL posminweight = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY] boolValue];
+    NSInteger posminweight = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY] integerValue];
     NSInteger posminweightvalue = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY] integerValue];
-    BOOL posfee = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIPOSFEEKEY] integerValue];
+    NSInteger posfee = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIPOSFEEKEY] integerValue];
     NSInteger posfeevalue = [[userinfo objectForKey:kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY] integerValue];
     
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:shipmentids
                                                        options:0
                                                          error:&error];
-
+    
     NSString *JSONString;
     if (!jsonData) {
         NSLog(@"");
@@ -1056,7 +1058,7 @@
     
     timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionShipment) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-
+    
 }
 
 -(void)requestSuccessActionShipment:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -1087,24 +1089,22 @@
             
             if (status) {
                 if (setting.message_status) {
-                    NSArray *array = setting.message_status;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_DELIVERED, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-                }
-                else if(setting.message_error)
-                {
-                    NSArray *array = setting.message_error;//[[NSArray alloc] initWithObjects:KTKPDMESSAGE_UNDELIVERED, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:setting.message_status delegate:self];
+                    [alert show];
+                } else if(setting.message_error) {
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:setting.message_error delegate:self];
+                    [alert show];
                 }
                 if (setting.result.is_success == 1) {
                     [self refreshView:nil];
                 }
                 
-                UIBarButtonItem *barButtonSave = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStyleBordered target:self action:@selector(saveButtonTap:)];
-                barButtonSave.tintColor = [UIColor whiteColor];
+                UIBarButtonItem *barButtonSave = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
+                                                                                  style:UIBarButtonItemStyleDone
+                                                                                 target:self
+                                                                                 action:@selector(saveButtonTap:)];
                 self.navigationItem.rightBarButtonItem = barButtonSave;
-
+                
             }
         }
         else{

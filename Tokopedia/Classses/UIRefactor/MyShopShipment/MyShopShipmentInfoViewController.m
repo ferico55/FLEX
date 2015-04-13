@@ -30,10 +30,23 @@
         [title setHidden:NO];
 
         UILabel *descLabel = [self.descriptionLabel objectAtIndex:i];
-        descLabel.text = package.desc;
+
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 4.0;
+        
+        NSDictionary *attributes = @{
+                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+                                     NSParagraphStyleAttributeName  : style,
+                                     NSForegroundColorAttributeName : [UIColor colorWithRed:117.0/255.0
+                                                                                      green:117.0/255.0
+                                                                                       blue:117.0/255.0
+                                                                                      alpha:1],
+                                     };
+        
+        descLabel.attributedText = [[NSAttributedString alloc] initWithString:package.desc attributes:attributes];
         descLabel.numberOfLines = 0;
+        descLabel.hidden = NO;
         [descLabel sizeToFit];
-        [descLabel setHidden:NO];
     }
 }
 

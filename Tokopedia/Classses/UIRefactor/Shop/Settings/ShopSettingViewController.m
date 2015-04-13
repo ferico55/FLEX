@@ -10,12 +10,11 @@
 #import "DetailShopResult.h"
 #import "ShopSettingViewController.h"
 #import "MyShopEtalaseViewController.h"
-#import "MyShopShipmentViewController.h"
-#import "MyShopShipmentViewController.h"
 #import "MyShopPaymentViewController.h"
 #import "MyShopNoteViewController.h"
 #import "MyShopAddressViewController.h"
 #import "ProductListMyShopViewController.h"
+#import "MyShopShipmentTableViewController.h"
 
 @interface ShopSettingViewController ()
 <
@@ -118,9 +117,8 @@
                 }
                 case 13:
                 {
-                    MyShopShipmentViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentViewController"];
-                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},};
-                    [self.navigationController pushViewController:vc animated:YES];
+                    MyShopShipmentTableViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
+                    [self.navigationController pushViewController:controller animated:YES];
                     break;
                 }
                 case 14:
@@ -137,11 +135,6 @@
                     MyShopNoteViewController *vc = [MyShopNoteViewController new];
                     vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
                     [self.navigationController pushViewController:vc animated:YES];
-                    break;
-                }
-                case 16:
-                {
-                    //Admin
                     break;
                 }
                 default:
@@ -234,9 +227,9 @@
         }
         case 3:
         {
-            MyShopShipmentViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentViewController"];
-            vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{},};
-            [self.navigationController pushViewController:vc animated:YES];
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            MyShopShipmentTableViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
+            [self.navigationController pushViewController:controller animated:YES];
             break;
         }
         case 4:
@@ -253,11 +246,6 @@
             MyShopNoteViewController *vc = [MyShopNoteViewController new];
             vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
             [self.navigationController pushViewController:vc animated:YES];
-            break;
-        }
-        case 6:
-        {
-            //Admin
             break;
         }
         default:
