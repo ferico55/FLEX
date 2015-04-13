@@ -313,6 +313,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
     cell.indexPath = indexPath;
 
+    cell.badge.hidden = (![list.shop_gold_status boolValue]);
+
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image_full]
                                                   cachePolicy:NSURLRequestUseProtocolCachePolicy
                                               timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -367,8 +369,13 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
             [[cell.labeldescription objectAtIndex:i] setText:list.catalog_name?:list.product_name animated:YES];
             [[cell.labelalbum objectAtIndex:i] setText:list.shop_name?:@"" animated:YES];
             
-            NSString *urlString = list.catalog_image?:list.product_image;
+            if([list.shop_gold_status isEqualToString:@"1"]) {
+                ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = NO;
+            } else {
+                ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = YES;
+            }
             
+            NSString *urlString = list.catalog_image?:list.product_image;
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]
                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                       timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -430,6 +437,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                   } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                       thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
                                   }];
+            
+            [[cell.badges objectAtIndex:i] setHidden:(![list.shop_gold_status boolValue])];
         }
     }
     
