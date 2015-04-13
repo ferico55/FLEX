@@ -48,6 +48,8 @@
     __weak RKManagedObjectRequestOperation *_requestCancelComplain;
     
     NSMutableArray *_objectCancelComplain;
+    
+    BOOL _isFirstAppear;
 }
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 
@@ -59,16 +61,19 @@
 
 @implementation InboxResolutionCenterComplainViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    _navigate = [NavigateViewController new];
+-(instancetype)init{
     _list = [NSMutableArray new];
+    _dataInput = [NSMutableDictionary new];
+    _navigate = [NavigateViewController new];
     _operationQueue = [NSOperationQueue new];
     _mapping = [InboxResolutionCenterObjectMapping new];
-    _dataInput = [NSMutableDictionary new];
     _objectCancelComplain = [NSMutableArray new];
-    
+    return self;
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Kembali" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
     backBarButtonItem.tag = 10;
@@ -83,15 +88,14 @@
         _tableView.tableHeaderView = _headerView;
     }
     
-    [self refreshRequest];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(didChangePreferredContentSize:)
                                                  name:UIContentSizeCategoryDidChangeNotification object:nil];
     
-    _tableView.estimatedRowHeight = 100.0;
+    _tableView.estimatedRowHeight = 70.0;
     _tableView.rowHeight = UITableViewAutomaticDimension;
     
+    [self refreshRequest];
 }
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
@@ -99,13 +103,20 @@
     [self.tableView reloadData];
 }
 
+-(void)setFilterReadIndex:(NSInteger)filterReadIndex
+{
+    [_dataInput setObject:ARRAY_FILTER_UNREAD[filterReadIndex] forKey:DATA_FILTER_READ_KEY];
+    if (_filterReadIndex != filterReadIndex) {
+        _filterReadIndex = filterReadIndex;
+        [self refreshRequest];
+   }
+}
 
 -(IBAction)tap:(id)sender
 {
     UIButton *button = (UIButton*)sender;
     
     NSString *filterProcess = [_dataInput objectForKey:DATA_FILTER_PROCESS_KEY];
-    NSString *filterRead = [_dataInput objectForKey:DATA_FILTER_READ_KEY];
     NSString *filterSort = [_dataInput objectForKey:DATA_FILTER_SORTING_KEY];
     
     if (button.tag == 10) {
@@ -118,12 +129,13 @@
         [self.navigationController pushViewController:controller animated:YES];
     }
     if (button.tag == 11) {
-        
-        FilterComplainViewController *vc = [FilterComplainViewController new];
-        vc.filterProcess = filterProcess?:ARRAY_FILTER_PROCESS[0];
-        vc.filterRead = filterRead?:ARRAY_FILTER_UNREAD[0];
-        vc.delegate = self;
-        [self.navigationController pushViewController:vc animated:YES];
+        GeneralTableViewController *controller = [GeneralTableViewController new];
+        controller.title = @"Filter";
+        controller.delegate = self;
+        controller.senderIndexPath = [NSIndexPath indexPathForRow:button.tag inSection:0];
+        controller.objects = ARRAY_FILTER_PROCESS;
+        controller.selectedObject = filterProcess?:ARRAY_FILTER_PROCESS[0];
+        [self.navigationController pushViewController:controller animated:YES];
     }
     
     if (button.tag == 12) {
@@ -150,20 +162,24 @@
 #pragma mark - Delegate General View Controller
 -(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
 {
-    [_dataInput setObject:object forKey:DATA_FILTER_SORTING_KEY];
-    [self refreshRequest];
-}
-
--(void)filterProcess:(NSString *)filterProcess filterRead:(NSString *)filterRead
-{
-    [_dataInput setObject:filterProcess forKey:DATA_FILTER_PROCESS_KEY];
-    [_dataInput setObject:filterRead forKey:DATA_FILTER_READ_KEY];
+    if (indexPath.row == 10) {
+        [_dataInput setObject:object forKey:DATA_FILTER_SORTING_KEY];
+    }
+    if (indexPath.row == 11) {
+        [_dataInput setObject:object forKey:DATA_FILTER_PROCESS_KEY];
+    }
+    
     [self refreshRequest];
 }
 
 #pragma mark - Table View Data Source
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return _isNodata ? 0 : _list.count;
+}
+
+-(void)finishComplain:(InboxResolutionCenterList *)resolution atIndexPath:(NSIndexPath *)indexPath
+{
+    [self refreshRequest];
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -192,7 +208,7 @@
                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image animated:YES];
+        [thumb setImage:image];
 #pragma clang diagnosti c pop
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
@@ -231,6 +247,16 @@
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+        return 227;
+    }
+    return UITableViewAutomaticDimension;
+
+}
+
+
 #pragma mark - Cell Delegate
 -(void)goToInvoiceAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -250,8 +276,10 @@
     {
         //gotoProfile
         [_navigate navigateToProfileFromViewController:self withUserID:(resolution.resolution_detail.resolution_customer.customer_id)?:@""];
+        
     }
 }
+
 
 -(void)showImageAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -435,7 +463,7 @@
     NSTimer *timer;
     
     NSString *filterProcess = [_dataInput objectForKey:DATA_FILTER_PROCESS_KEY];
-    NSString *filterRead = [_dataInput objectForKey:DATA_FILTER_READ_KEY];
+    NSString *filterRead = ARRAY_FILTER_UNREAD[_filterReadIndex];
     NSString *filterSort = [_dataInput objectForKey:DATA_FILTER_SORTING_KEY];
     
     NSString *status = @"";
@@ -471,7 +499,7 @@
     
     _tableView.tableFooterView = _footer;
     [_act startAnimating];
-    
+//    
 //#if DEBUG
 //    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
 //    NSDictionary* auth = [secureStorage keychainDictionary];
@@ -492,13 +520,11 @@
         [self requestSuccess:mappingResult withOperation:operation];
         [_refreshControl endRefreshing];
         [timer invalidate];
-        _tableView.tableFooterView = nil;
         [_act stopAnimating];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailure:error];
         [_refreshControl endRefreshing];
         [timer invalidate];
-        _tableView.tableFooterView = nil;
         [_act stopAnimating];
     }];
     
@@ -546,9 +572,8 @@
                         [_list removeAllObjects];
                     }
                     
-                    [_list addObjectsFromArray:order.result.list];
-                    
-                    if (_list.count >0) {
+                    if (order.result.list.count >0) {
+                        [_list addObjectsFromArray:order.result.list];
                         _isNodata = NO;
                         _URINext =  order.result.paging.uri_next;
                         NSURL *url = [NSURL URLWithString:_URINext];
@@ -579,7 +604,7 @@
         }
         else{
             
-            [self cancel];
+            //[self cancel];
             NSError *error = object;
             if ([error code] != NSURLErrorCancelled) {
                 NSString *errorDescription = error.localizedDescription;

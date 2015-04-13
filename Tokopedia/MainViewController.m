@@ -28,6 +28,7 @@
 #import "TKPDSecureStorage.h"
 #import "URLCacheController.h"
 #import "UserAuthentificationManager.h"
+#import "HomeTabViewController.h"
 
 @interface MainViewController ()
 <
@@ -37,7 +38,7 @@
 {
     UITabBarController *_tabBarController;
     NSMutableDictionary *_auth;
-    TKPDTabHomeViewController *_swipevc;
+    HomeTabViewController *_swipevc;
     URLCacheController *_cacheController;
     
     UserAuthentificationManager *_userManager;
@@ -153,8 +154,11 @@
     }
     
 //    /** Adjust View Controller **/
-    _swipevc = [TKPDTabHomeViewController new];
-    UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
+//    _swipevc = [TKPDTabHomeViewController new];
+//    UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
+
+    _swipevc = [HomeTabViewController new];
+    UINavigationController *swipevcNav = [[UINavigationController alloc] initWithRootViewController:_swipevc];
     
     /** TAB BAR INDEX 2 **/
     CategoryViewController *categoryvc = [CategoryViewController new];
@@ -462,6 +466,8 @@
     TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
     [storage resetKeychain];
     [_auth removeAllObjects];
+    
+    [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION
                                                         object:nil

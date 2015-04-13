@@ -114,6 +114,7 @@ typedef enum
 #define API_PRODUCT_WEIGHT_UNIT_KEY @"product_weight_unit"
 #define API_PRODUCT_TOTAL_WEIGHT_KEY @"product_total_weight"
 #define API_PRODUCT_NOTES_KEY @"product_notes"
+#define API_PRODUCT_ERROR_MESSAGE_KEY @"product_error_msg"
 #define API_PRODUCT_WEIGHT_KEY @"product_weight"
 #define API_PRODUCT_DESCRIPTION_KEY @"product_description"
 #define API_PRODUCT_PRICE_KEY @"product_price"
@@ -188,6 +189,12 @@ typedef enum
 #define ERRORMESSAGE_INVALID_PRICE_WHOLESALE @"Harga harus lebih murah dari harga grosir sebelumnya."
 #define ERRORMESSAGE_INVALID_PRICE_WHOLESALE_COMPARE_NET @"Harga grosir harus lebih murah dari harga pas."
 #define ERRORMESSAGE_MAXIMAL_WHOLESALE_LIST @"Hanya boleh menambahkan 5 harga grosir"
+#define kTKPDSUCCESS_ADD_WISHLIST @"Anda berhasil menambah wishlist"
+#define kTKPDSUCCESS_REMOVE_WISHLIST @"Anda berhasil menghapus wishlist"
+#define kTKPDFAILED_ADD_WISHLIST @"Anda gagal menambah wishlist"
+#define kTKPDFAILED_REMOVE_WISHLIST @"Anda gagal menghapus wishlist"
+#define kTKPDTIDAK_ADA_WISHLIST @"Tidak ada wishlist"
+
 
 #define ERRORMESSAGE_FAILED_IMAGE_UPLOAD @"Gagal menambah image produk. Silahkan coba kembali."
 

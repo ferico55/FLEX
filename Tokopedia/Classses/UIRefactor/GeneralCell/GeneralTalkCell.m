@@ -12,6 +12,7 @@
 #import "ProfileFavoriteShopViewController.h"
 #import "ProfileContactViewController.h"
 #import "TKPDTabProfileNavigationController.h"
+#import "NavigateViewController.h"
 
 #import "TalkList.h"
 #import "TKPDSecureStorage.h"
@@ -20,7 +21,9 @@
 
 #import "detail.h"
 
-@interface GeneralTalkCell () <UIActionSheetDelegate>
+@interface GeneralTalkCell () <UIActionSheetDelegate> {
+    NavigateViewController *_navigateController;
+}
 
 @end
 
@@ -53,6 +56,10 @@
     UITapGestureRecognizer *messageGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapMessage)];
     [self.commentlabel addGestureRecognizer:messageGesture];
     [self.commentlabel setUserInteractionEnabled:YES];
+    
+    UITapGestureRecognizer *userGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
+    [self.thumb addGestureRecognizer:userGesture];
+    [self.thumb setUserInteractionEnabled:YES];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -113,6 +120,16 @@
     NSIndexPath* indexpath = _indexpath;
     
     [_delegate GeneralTalkCell:self withindexpath:indexpath];
+}
+
+- (void)tapUser {
+    TalkList *talkList = (TalkList *)_data;
+    NSString *userId = [NSString stringWithFormat:@"%ld", (long)talkList.talk_user_id];
+    NSIndexPath* indexpath = _indexpath;
+    
+    _navigateController = [NavigateViewController new];
+    UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
+    [_navigateController navigateToProfileFromViewController:nav withUserID:userId];
 }
 
 -(IBAction)tap:(id)sender
@@ -208,15 +225,14 @@
                 // or the comment is on the user's shop
                 NSInteger loginUserId = [[auth objectForKey:@"user_id"] integerValue];
                 NSString *talkIsOwner = talkList.talk_own;
-                
-                if ((loginUserId == talkList.talk_user_id && talkList.talk_user_id)
-                    || talkIsOwner.length > 0
-                    ) {
+              
+                if ([talkList.talk_shop_id isEqualToString:[[auth objectForKey:@"shop_id"] stringValue]] ||
+                    talkList.talk_user_id == [[auth objectForKey:@"user_id"] integerValue]) {
+                    
                     [buttonTitles addObject:@"Hapus"];
-                }
-                
-                // If the comment is not user's comment, Report button added
-                if (loginUserId && loginUserId != talkList.talk_user_id && !talkIsOwner.length) {
+                    
+                    // if not belong to the logged in user, clicked button is report button
+                } else {
                     [buttonTitles addObject:@"Lapor"];
                 }
                 

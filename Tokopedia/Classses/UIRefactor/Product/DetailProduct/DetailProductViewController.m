@@ -6,13 +6,24 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+#define CTagPromote 1
+#define CTagTokopediaNetworkManager 2
+#define CTagOtherProduct 3
+#define CTagFavorite 4
+#define CTagWishList 5
+#define CTagUnWishList 6
+
 #import "detail.h"
 #import "search.h"
 #import "stringrestkit.h"
 #import "string_product.h"
 #import "string_transaction.h"
 #import "string_more.h"
+#import "string_home.h"
 #import "Product.h"
+#import "WishListObjectResult.h"
+#import "WishListObject.h"
+#import "GeneralAction.h"
 
 #import "StarsRateView.h"
 
@@ -49,15 +60,28 @@
 #import "TokopediaNetworkManager.h"
 #import "ProductGalleryViewController.h"
 
+#pragma mark - CustomButton Expand Desc
+@interface CustomButtonExpandDesc : UIButton
+@property (nonatomic) int objSection;
+@end
+
+
+@implementation CustomButtonExpandDesc
+@synthesize objSection;
+@end
+
+
+
+
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController ()
 <
-    UITableViewDelegate,
-    UITableViewDataSource,
-    DetailProductInfoCellDelegate,
-    DetailProductOtherViewDelegate,
-    LoginViewDelegate,
-    TokopediaNetworkManagerDelegate
+UITableViewDelegate,
+UITableViewDataSource,
+DetailProductInfoCellDelegate,
+DetailProductOtherViewDelegate,
+LoginViewDelegate,
+TokopediaNetworkManagerDelegate
 >
 {
     NSMutableDictionary *_datatalk;
@@ -82,20 +106,25 @@
     NSDictionary *_auth;
     
     __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
+    TokopediaNetworkManager *tokopediaNetworkManager;
     RKResponseDescriptor *_responseDescriptor;
     NSOperationQueue *_operationQueue;
     
     __weak RKObjectManager *_objectOtherProductManager;
-    __weak RKManagedObjectRequestOperation *_requestOtherProduct;
+    TokopediaNetworkManager *tokopediaOtherProduct;
     NSOperationQueue *_operationOtherProductQueue;
     OtherProduct *_otherProduct;
     NSInteger _requestOtherProductCount;
     
     __weak RKObjectManager *_objectFavoriteManager;
-    __weak RKManagedObjectRequestOperation *_requestFavorite;
+    TokopediaNetworkManager *tokopediaNetworkManagerFavorite;
     NSOperationQueue *_operationFavoriteQueue;
     NSInteger _requestFavoriteCount;
+    NSString *tempShopID;
+    
+    __weak RKObjectManager *_objectWishListManager;
+    TokopediaNetworkManager *tokopediaNetworkManagerWishList;
+    NSOperationQueue *operationWishList;
     
     NSString *_cachepath;
     URLCacheController *_cachecontroller;
@@ -106,7 +135,11 @@
     
     __weak RKObjectManager  *_objectPromoteManager;
     
+    BOOL isExpandDesc, isNeedLogin;
     TokopediaNetworkManager *_promoteNetworkManager;
+    UIImage *imgWishList, *imgUnWishList;
+    UIActivityIndicatorView *activityIndicator;
+    UIFont *fontDesc;
 }
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
@@ -136,6 +169,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *shoplocation;
 @property (strong, nonatomic) IBOutlet UIView *shopinformationview;
+@property (strong, nonatomic) IBOutlet UIView *shopClickView;
 @property (strong, nonatomic) IBOutlet DetailProductOtherView *otherproductview;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *otherproductscrollview;
@@ -176,6 +210,7 @@
     [super viewDidLoad];
     
     self.title = @"Detail Produk";
+    fontDesc = [UIFont fontWithName:@"GothamBook" size:13.0f];
     
     _datatalk = [NSMutableDictionary new];
     _headerimages = [NSMutableArray new];
@@ -184,12 +219,30 @@
     _operationQueue = [NSOperationQueue new];
     _operationOtherProductQueue = [NSOperationQueue new];
     _operationFavoriteQueue = [NSOperationQueue new];
+    operationWishList = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
     _promoteNetworkManager = [TokopediaNetworkManager new];
+    _promoteNetworkManager.tagRequest = CTagPromote;
     _promoteNetworkManager.delegate = self;
+    
+    tokopediaNetworkManagerFavorite = [TokopediaNetworkManager new];
+    tokopediaNetworkManagerFavorite.delegate = self;
+    tokopediaNetworkManagerFavorite.tagRequest = CTagFavorite;
+    
+    tokopediaNetworkManager = [TokopediaNetworkManager new];
+    tokopediaNetworkManager.delegate = self;
+    tokopediaNetworkManager.tagRequest = CTagTokopediaNetworkManager;
+    
+    tokopediaOtherProduct = [TokopediaNetworkManager new];
+    tokopediaOtherProduct.delegate = self;
+    tokopediaOtherProduct.tagRequest = CTagOtherProduct;
+    
+    tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
+    tokopediaNetworkManagerWishList.delegate = self;
+    tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -212,7 +265,7 @@
     _table.tableHeaderView = _header;
     _table.tableFooterView = _shopinformationview;
     
-    _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:1]]];
+    _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1], [NSNumber numberWithInteger:2]]];
     
     _imagescrollview.pagingEnabled = YES;
     _imagescrollview.contentMode = UIViewContentModeScaleAspectFit;
@@ -227,7 +280,7 @@
     _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILPRODUCT_APIRESPONSEFILEFORMAT,[[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY] integerValue]]];
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 0;
-//    _cachecontroller.URLCacheInterval = 86400.0;
+    //    _cachecontroller.URLCacheInterval = 86400.0;
     [_cachecontroller initCacheWithDocumentPath:path];
     
     //Set initial table view cell for product information
@@ -236,6 +289,10 @@
     self.table.hidden = YES;
     _buyButton.hidden = YES;
     _dinkButton.hidden = YES;
+    
+    UITapGestureRecognizer *tapShopGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapShop)];
+    [_shopClickView addGestureRecognizer:tapShopGes];
+    [_shopClickView setUserInteractionEnabled:YES];
 }
 
 
@@ -271,15 +328,20 @@
     _favButton.enabled = YES;
     _favButton.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0);
     
- 
+    
     if (_isnodata) {
         [self loadData];
         if (_product.result.wholesale_price) {
-            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:1], [NSNumber numberWithInteger:2]]];
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0], [NSNumber numberWithInteger:1]]];
         } else {
-            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:1]]];
+            _expandedSections = [[NSMutableArray alloc] initWithArray:@[[NSNumber numberWithInteger:0]]];
         }
         [self.table reloadData];
+    }
+    else if(isNeedLogin)
+    {
+        isNeedLogin = !isNeedLogin;
+        [self loadData];
     }
 }
 
@@ -311,7 +373,10 @@
                                        DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_EDIT),
                                        DATA_IS_GOLD_MERCHANT :@(0) //TODO:: Change Value
                                        };
-                [self.navigationController pushViewController:editProductVC animated:YES];
+                UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:editProductVC];
+                nav.navigationBar.translucent = NO;
+                
+                [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
         }
@@ -344,8 +409,8 @@
                 
                 [_datatalk setObject:[_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]?:@(0) forKey:kTKPDDETAIL_APIPRODUCTIDKEY];
                 [_datatalk setObject:image.image_src?:@(0) forKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
-                [_datatalk setObject:_product.result.statistic.product_sold forKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY];
-                [_datatalk setObject:_product.result.statistic.product_view forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
+                [_datatalk setObject:_product.result.statistic.product_sold_count forKey:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY];
+                [_datatalk setObject:_product.result.statistic.product_view_count forKey:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY];
                 [_datatalk setObject:_product.result.shop_info.shop_id?:@"" forKey:TKPD_TALK_SHOP_ID];
                 
                 NSMutableDictionary *data = [NSMutableDictionary new];
@@ -391,20 +456,20 @@
                     
                     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                     
-//                    LoginViewController *loginVc = [LoginViewController new];
-//                    loginVc.isPresentedViewController = YES;
-//                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginVc];
-//                    [self.navigationController presentViewController:nav animated:YES completion:nil];
+                    //                    LoginViewController *loginVc = [LoginViewController new];
+                    //                    loginVc.isPresentedViewController = YES;
+                    //                    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:loginVc];
+                    //                    [self.navigationController presentViewController:nav animated:YES completion:nil];
                 }
-
+                
                 break;
             }
                 
             case 17 : {
-                if (_requestFavorite.isExecuting) return;
+                if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     //Love Shop
-                    [self configureFavoriteRestkit];
+                    //                    [self configureFavoriteRestkit];
                     [self favoriteShop:_product.result.shop_info.shop_id];
                     [self setButtonFav];
                 } else {
@@ -422,14 +487,14 @@
                     
                     [self.navigationController presentViewController:navigationController animated:YES completion:nil];
                 }
-
+                
                 
                 break;
-
+                
             }
                 
             case 18 : {
-                if (_requestFavorite.isExecuting) return;
+                if (tokopediaNetworkManagerFavorite.getObjectRequest!=nil && tokopediaNetworkManagerFavorite.getObjectRequest.isExecuting) return;
                 if(_auth) {
                     //UnLove Shop
                     [self configureFavoriteRestkit];
@@ -471,7 +536,7 @@
                     [self.navigationController popViewControllerAnimated:YES];
                 }
                 else{
-
+                    
                     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
                     
                     container.data = @{kTKPDDETAIL_APISHOPIDKEY:shopid,
@@ -488,7 +553,7 @@
                 break;
             }
                 
-            
+                
             default:
                 break;
         }
@@ -508,7 +573,7 @@
             }
             case UIGestureRecognizerStateEnded: {
                 // go to shop
-               
+                
                 break;
             }
         }
@@ -517,7 +582,6 @@
 
 
 #pragma mark - Table view data source
-
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     
     UIView *mView = [[UIView alloc]initWithFrame:CGRectMake(0, 30, 50, 40)];
@@ -532,7 +596,7 @@
     if (sectionIsExpanded) {
         [expandCollapseButton setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
     } else {
-        [expandCollapseButton setImage:[UIImage imageNamed:@"icon_arrow_down"] forState:UIControlStateNormal];
+        [expandCollapseButton setImage:[UIImage imageNamed:@"icon_arrow_down.png"] forState:UIControlStateNormal];
     }
     [mView addSubview:expandCollapseButton];
     
@@ -546,23 +610,85 @@
     [bt addTarget:self action:@selector(expandCollapseButton:) forControlEvents:UIControlEventTouchUpInside];
     switch (section) {
         case 0:
-            [bt setTitle: PRODUCT_DESC forState: UIControlStateNormal];
+            [bt setTitle:PRODUCT_INFO  forState: UIControlStateNormal];
             break;
         case 1:
             if (!_isnodatawholesale)
                 [bt setTitle: PRODUCT_WHOLESALE forState: UIControlStateNormal];
             else
-                [bt setTitle: PRODUCT_INFO forState: UIControlStateNormal];
+            {
+                CGRect rectLblDesc = CGRectZero;
+                [bt setTitle: PRODUCT_DESC forState: UIControlStateNormal];
+                
+                CustomButtonExpandDesc *btnExpand = [CustomButtonExpandDesc buttonWithType:UIButtonTypeCustom];
+                if(_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
+                {
+                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:[NSString stringWithFormat:@"%@%@", [_product.result.product.product_description substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
+                    
+                    [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_down.png"] forState:UIControlStateNormal];
+                }
+                else
+                {
+                    rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:_product.result.product.product_description];
+                    [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
+                }
+                [expandCollapseButton removeFromSuperview];
+                
+                
+                if(_product.result.product.product_description.length > kTKPDLIMIT_TEXT_DESC) {
+                    btnExpand.frame = CGRectMake((self.view.bounds.size.width-40)/2.0f, rectLblDesc.origin.y+rectLblDesc.size.height, 40, 40);
+                    [btnExpand addTarget:self action:@selector(expand:) forControlEvents:UIControlEventTouchUpInside];
+                    [btnExpand setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                    btnExpand.tag = 0;
+                    btnExpand.objSection = (int)section;
+                    
+                    [mView addSubview:btnExpand];
+                }
+                
+                [mView addSubview:bt];
+                return mView;
+            }
             break;
         case 2:
-            [bt setTitle: PRODUCT_INFO forState: UIControlStateNormal];
+        {
+            [bt setTitle: PRODUCT_DESC forState: UIControlStateNormal];
+            CGRect rectLblDesc = CGRectZero;
+            CustomButtonExpandDesc *btnExpand = [CustomButtonExpandDesc buttonWithType:UIButtonTypeCustom];
+            
+            if(_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
+            {
+                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:[NSString stringWithFormat:@"%@%@", [_product.result.product.product_description substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]];
+                [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_down.png"] forState:UIControlStateNormal];
+            }
+            else
+            {
+                rectLblDesc = [self initLableDescription:mView originY:bt.frame.origin.y+bt.bounds.size.height width:self.view.bounds.size.width-30 withText:_product.result.product.product_description];
+                [btnExpand setImage:[UIImage imageNamed:@"icon_arrow_up.png"] forState:UIControlStateNormal];
+            }
+            
+            
+            if(_product.result.product.product_description.length > kTKPDLIMIT_TEXT_DESC)
+            {
+                btnExpand.frame = CGRectMake((self.view.bounds.size.width-40)/2.0f, rectLblDesc.origin.y+rectLblDesc.size.height, 40, 40);
+                [btnExpand addTarget:self action:@selector(expand:) forControlEvents:UIControlEventTouchUpInside];
+                [btnExpand setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+                btnExpand.tag = 0;
+                btnExpand.objSection = (int)section;
+                [mView addSubview:btnExpand];
+            }
+            
+            
+            [expandCollapseButton removeFromSuperview];
+            [mView addSubview:bt];
+            return mView;
+        }
             break;
             
         default:
             break;
     }
     [mView addSubview:bt];
-
+    
     // Add border bottom if view header section is collapse
     if (!sectionIsExpanded) {
         UIView *bottomBorder = [[UIView alloc] initWithFrame:CGRectMake(0, 40, self.view.frame.size.width, 1)];
@@ -579,6 +705,24 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if(! _isnodatawholesale)
+    {
+        if(section == 2)
+        {
+            if(_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
+                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_product.result.product.product_description substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]] + (_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+            else
+                return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_product.result.product.product_description] + (_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+        }
+    }
+    else if(section == 1)
+    {
+        if(_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC && !isExpandDesc)
+            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:[NSString stringWithFormat:@"%@%@", [_product.result.product.product_description substringToIndex:kTKPDLIMIT_TEXT_DESC], kTKPDMORE_TEXT]] + (_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+        else
+            return 40 + [self calculateHeightLabelDesc:CGSizeMake(self.view.bounds.size.width-45, 9999) withText:_product.result.product.product_description] + (_product.result.product.product_description.length>kTKPDLIMIT_TEXT_DESC? 40 : 5);
+    }
+    
     return 40;
 }
 
@@ -604,11 +748,11 @@
     BOOL sectionIsExanded = [_expandedSections containsObject:[NSNumber numberWithInteger:indexPath.section]];
     if (sectionIsExanded) {
         if (indexPath.section == 0) {
-            return _descriptionHeight+50;
+            return _informationHeight+50;
         } else if (indexPath.section == 1 && _product.result.wholesale_price.count > 0) {
             return 230;
         } else {
-            return _informationHeight+50;
+            return _descriptionHeight+50;
         }
     } else {
         return 0;
@@ -623,66 +767,77 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if(! _isnodatawholesale)
+    {
+        if(section == 2)
+            return 0;
+    }
+    else if(section == 1)
+        return 0;
+    
     return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell* cell = nil;
-
+    
     // Configure the cell...
     if (indexPath.section == 0) {
-        NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
-        DetailProductDescriptionCell *descriptionCell = (DetailProductDescriptionCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
-        if (descriptionCell == nil) {
-            descriptionCell = [DetailProductDescriptionCell newcell];
-            if(!_isnodata) {
-                descriptionCell.descriptionText = _product.result.product.product_description;
-                _descriptionHeight = descriptionCell.descriptionlabel.frame.size.height;
-            }
+        
+        NSString *cellid = kTKPDDETAILPRODUCTINFOCELLIDENTIFIER;
+        DetailProductInfoCell *productInfoCell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+        if (productInfoCell == nil) {
+            productInfoCell = [DetailProductInfoCell newcell];
+            ((DetailProductInfoCell*)cell).delegate = self;
         }
-        cell = descriptionCell;
+        [self productinfocell:productInfoCell withtableview:tableView];
+        _informationHeight = productInfoCell.productInformationView.frame.size.height;
+        cell = productInfoCell;
         return cell;
     }
     if (!_isnodatawholesale) {
         if (indexPath.section == 1) {
-                NSString *cellid = kTKPDDETAILPRODUCTWHOLESALECELLIDENTIFIER;
-                cell = (DetailProductWholesaleCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-                if (cell == nil) {
-                    cell = [DetailProductWholesaleCell newcell];
-                }
+            NSString *cellid = kTKPDDETAILPRODUCTWHOLESALECELLIDENTIFIER;
+            cell = (DetailProductWholesaleCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+            if (cell == nil) {
+                cell = [DetailProductWholesaleCell newcell];
+            }
             ((DetailProductWholesaleCell*)cell).data = @{kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY : _product.result.wholesale_price};
-
+            
             return cell;
         }
         if (indexPath.section == 2) {
-                NSString *cellid = kTKPDDETAILPRODUCTINFOCELLIDENTIFIER;
-                DetailProductInfoCell *productInfoCell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-                if (productInfoCell == nil) {
-                    productInfoCell = [DetailProductInfoCell newcell];
-                    ((DetailProductInfoCell*)cell).delegate = self;
+            NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
+            DetailProductDescriptionCell *descriptionCell = (DetailProductDescriptionCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
+            if (descriptionCell == nil) {
+                descriptionCell = [DetailProductDescriptionCell newcell];
+                if(!_isnodata) {
+                    descriptionCell.descriptionText = _product.result.product.product_description;
+                    _descriptionHeight = descriptionCell.descriptionlabel.frame.size.height;
                 }
-                [self productinfocell:productInfoCell withtableview:tableView];
-                _informationHeight = productInfoCell.productInformationView.frame.size.height;
-                cell = productInfoCell;
-                return cell;
+            }
+            cell = descriptionCell;
+            return cell;
+            
         }
     }
     else
     {
         if (indexPath.section == 1) {
-            NSString *cellid = kTKPDDETAILPRODUCTINFOCELLIDENTIFIER;
-            DetailProductInfoCell *productCell = (DetailProductInfoCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
-            if (productCell == nil) {
-                productCell = [DetailProductInfoCell newcell];
-                ((DetailProductInfoCell*)productCell).delegate = self;
-                _informationHeight = productCell.productInformationView.frame.size.height;
+            NSString *cellid = kTKPDDETAILPRODUCTCELLIDENTIFIER;
+            DetailProductDescriptionCell *descriptionCell = (DetailProductDescriptionCell *)[tableView dequeueReusableCellWithIdentifier:cellid];
+            if (descriptionCell == nil) {
+                descriptionCell = [DetailProductDescriptionCell newcell];
+                if(!_isnodata) {
+                    descriptionCell.descriptionText = _product.result.product.product_description;
+                    _descriptionHeight = descriptionCell.descriptionlabel.frame.size.height;
+                }
             }
-            [self productinfocell:productCell withtableview:tableView];
-            cell = productCell;
+            cell = descriptionCell;
             return cell;
         }
-
+        
     }
     return cell;
 }
@@ -706,6 +861,532 @@
     cell.etalasebutton.hidden = NO;
 }
 
+#pragma mark - TokopediaNetwork Delegate
+- (NSDictionary*)getParameter:(int)tag
+{
+    if(tag == CTagPromote)
+        return @{@"action" : @"promote_product", @"product_id" : _product.result.product.product_id};
+    else if(tag == CTagTokopediaNetworkManager)
+        return @{
+                 kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETDETAILACTIONKEY,
+                 kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]
+                 };
+    else if(tag == CTagOtherProduct)
+        return @{@"action" : @"get_other_product", @"product_id" : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]};
+    else if(tag == CTagFavorite)
+    {
+        NSString *strShopID = [[NSString alloc] initWithString:tempShopID];
+        tempShopID = nil;
+        return @{kTKPDDETAIL_ACTIONKEY:@"fav_shop", @"shop_id":strShopID};
+    }
+    else if(tag == CTagUnWishList)
+        return @{kTKPDDETAIL_ACTIONKEY : kTKPDREMOVE_WISHLIST_PRODUCT,
+                 kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};
+    else if(tag == CTagWishList)
+        return @{kTKPDDETAIL_ACTIONKEY : kTKPDADD_WISHLIST_PRODUCT,
+                 kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};;
+    
+    return nil;
+}
+
+- (NSString*)getPath:(int)tag
+{
+    if(tag == CTagPromote)
+        return @"action/product.pl";
+    else if(tag == CTagTokopediaNetworkManager)
+        return kTKPDDETAILPRODUCT_APIPATH;
+    else if(tag == CTagOtherProduct)
+        return kTKPDDETAILPRODUCT_APIPATH;
+    else if(tag == CTagFavorite)
+        return @"action/favorite-shop.pl";
+    else if(tag == CTagUnWishList)
+        return [NSString stringWithFormat:@"action/%@", kTKPDWISHLIST_APIPATH];
+    else if(tag == CTagWishList)
+        return [NSString stringWithFormat:@"action/%@", kTKPDWISHLIST_APIPATH];
+    
+    return nil;
+}
+
+- (id)getObjectManager:(int)tag
+{
+    if(tag == CTagPromote)
+    {
+        _objectPromoteManager = [RKObjectManager sharedClient];
+        
+        // setup object mappings
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Promote class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                            kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[PromoteResult class]];
+        [resultMapping addAttributeMappingsFromDictionary:@{@"is_dink":@"is_dink"}];
+        
+        //relation
+        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                      toKeyPath:kTKPD_APIRESULTKEY
+                                                                                    withMapping:resultMapping];
+        [statusMapping addPropertyMapping:resulRel];
+        
+        //register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                      method:RKRequestMethodPOST
+                                                                                                 pathPattern:@"action/product.pl"
+                                                                                                     keyPath:@""
+                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [_objectPromoteManager addResponseDescriptor:responseDescriptorStatus];
+        
+        return _objectPromoteManager;
+    }
+    else if(tag == CTagTokopediaNetworkManager)
+    {
+        // initialize RestKit
+        _objectmanager =  [RKObjectManager sharedClient];
+        
+        // setup object mappings
+        RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[Product class]];
+        [productMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailProductResult class]];
+        RKObjectMapping *infoMapping = [RKObjectMapping mappingForClass:[ProductDetail class]];
+        [infoMapping addAttributeMappingsFromDictionary:@{API_PRODUCT_NAME_KEY:API_PRODUCT_NAME_KEY,
+                                                          API_PRODUCT_WEIGHT_UNIT_KEY:API_PRODUCT_WEIGHT_UNIT_KEY,
+                                                          API_PRODUCT_WEIGHT_KEY:API_PRODUCT_WEIGHT_KEY,
+                                                          API_PRODUCT_DESCRIPTION_KEY:API_PRODUCT_DESCRIPTION_KEY,
+                                                          API_PRODUCT_PRICE_KEY:API_PRODUCT_PRICE_KEY,
+                                                          API_PRODUCT_INSURANCE_KEY:API_PRODUCT_INSURANCE_KEY,
+                                                          API_PRODUCT_CONDITION_KEY:API_PRODUCT_CONDITION_KEY,
+                                                          API_PRODUCT_ETALASE_ID_KEY:API_PRODUCT_ETALASE_ID_KEY,
+                                                          API_PRODUCT_ETALASE_KEY:API_PRODUCT_ETALASE_KEY,
+                                                          API_PRODUCT_MINIMUM_ORDER_KEY:API_PRODUCT_MINIMUM_ORDER_KEY,
+                                                          kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY:kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY,
+                                                          kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY,
+                                                          kTKPDDETAILPRODUCT_APIPRODUCTIDKEY:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,
+                                                          kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY:kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY,
+                                                          kTKPDDETAILPRODUCT_APIPRODUCTURLKEY:kTKPDDETAILPRODUCT_APIPRODUCTURLKEY,
+                                                          kTKPDPRODUCT_ALREADY_WISHLIST:kTKPDPRODUCT_ALREADY_WISHLIST
+                                                          }];
+        
+        RKObjectMapping *statisticMapping = [RKObjectMapping mappingForClass:[Statistic class]];
+        [statisticMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISTATISTICKEY:kTKPDDETAILPRODUCT_APISTATISTICKEY,
+                                                               kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY,
+                                                               kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY:kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY,
+                                                               kTKPDDETAILPRODUCT_APIPRODUCTSUCCESSRATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTSUCCESSRATEKEY,
+                                                               kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY,
+                                                               kTKPDDETAILPRODUCT_APIPRODUCTCANCELRATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTCANCELRATEKEY,
+                                                               kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY:kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY,
+                                                               kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY:kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY,
+                                                               kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY:kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY,
+                                                               KTKPDDETAILPRODUCT_APIPRODUCTQUALITYRATEKEY:KTKPDDETAILPRODUCT_APIPRODUCTQUALITYRATEKEY,
+                                                               KTKPDDETAILPRODUCT_APIPRODUCTACCURACYRATEKEY:KTKPDDETAILPRODUCT_APIPRODUCTACCURACYRATEKEY,
+                                                               KTKPDDETAILPRODUCT_APIPRODUCTQUALITYPOINTKEY:KTKPDDETAILPRODUCT_APIPRODUCTQUALITYPOINTKEY,
+                                                               KTKPDDETAILPRODUCT_APIPRODUCTACCURACYPOINTKEY:KTKPDDETAILPRODUCT_APIPRODUCTACCURACYPOINTKEY
+                                                               
+                                                               }];
+        
+        RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
+        [shopinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPINFOKEY:kTKPDDETAILPRODUCT_APISHOPINFOKEY,
+                                                              kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY:kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY,
+                                                              kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
+                                                              kTKPDDETAIL_APISHOPIDKEY:kTKPDDETAIL_APISHOPIDKEY,
+                                                              kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY:kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY,
+                                                              kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY:kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY,
+                                                              kTKPDDETAILPRODUCT_APISHOPNAMEKEY:kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
+                                                              kTKPDDETAILPRODUCT_APISHOPISFAVKEY:kTKPDDETAILPRODUCT_APISHOPISFAVKEY,
+                                                              kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY,
+                                                              kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY,
+                                                              kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
+                                                              API_IS_GOLD_SHOP_KEY:API_IS_GOLD_SHOP_KEY
+                                                              }];
+        
+        RKObjectMapping *productRatingMapping = [RKObjectMapping mappingForClass:[Rating class]];
+        [productRatingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APIQUALITYRATE:kTKPDDETAILPRODUCT_APIQUALITYRATE,
+                                                                   kTKPDDETAILPRODUCT_APIQUALITYSTAR:kTKPDDETAILPRODUCT_APIQUALITYSTAR,
+                                                                   kTKPDDETAILPRODUCT_APIACCURACYRATE:kTKPDDETAILPRODUCT_APIACCURACYRATE,
+                                                                   kTKPDDETAILPRODUCT_APIACCURACYSTAR:kTKPDDETAILPRODUCT_APIACCURACYSTAR
+                                                                   }];
+        
+        
+        RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
+        [shopstatsMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY:kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY,
+                                                               kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY,
+                                                               kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY,
+                                                               kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY:kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY,
+                                                               kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY,
+                                                               kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY
+                                                               }];
+        
+        RKObjectMapping *wholesaleMapping = [RKObjectMapping mappingForClass:[WholesalePrice class]];
+        [wholesaleMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIWHOLESALEMINKEY,kTKPDDETAILPRODUCT_APIWHOLESALEPRICEKEY,kTKPDDETAILPRODUCT_APIWHOLESALEMAXKEY]];
+        
+        RKObjectMapping *breadcrumbMapping = [RKObjectMapping mappingForClass:[Breadcrumb class]];
+        [breadcrumbMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIDEPARTMENTNAMEKEY,API_DEPARTMENT_ID_KEY]];
+        
+        RKObjectMapping *otherproductMapping = [RKObjectMapping mappingForClass:[OtherProduct class]];
+        [otherproductMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,API_PRODUCT_NAME_KEY,kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY]];
+        
+        RKObjectMapping *imagesMapping = [RKObjectMapping mappingForClass:[ProductImages class]];
+        [imagesMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIIMAGEIDKEY,kTKPDDETAILPRODUCT_APIIMAGESTATUSKEY,kTKPDDETAILPRODUCT_APIIMAGEDESCRIPTIONKEY,kTKPDDETAILPRODUCT_APIIMAGEPRIMARYKEY,kTKPDDETAILPRODUCT_APIIMAGESRCKEY]];
+        
+        // Relationship Mapping
+        [productMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
+        
+        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY toKeyPath:API_PRODUCT_INFO_KEY withMapping:infoMapping]];
+        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY toKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY withMapping:statisticMapping]];
+        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY withMapping:shopinfoMapping]];
+        
+        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APIRATINGKEY toKeyPath:kTKPDDETAILPRODUCT_APIRATINGKEY withMapping:productRatingMapping]];
+        
+        [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY withMapping:shopstatsMapping]];
+        
+        RKRelationshipMapping *breadcrumbRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY toKeyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY withMapping:breadcrumbMapping];
+        [resultMapping addPropertyMapping:breadcrumbRel];
+        RKRelationshipMapping *otherproductRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY toKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY withMapping:otherproductMapping];
+        [resultMapping addPropertyMapping:otherproductRel];
+        RKRelationshipMapping *productimageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY toKeyPath:kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY withMapping:imagesMapping];
+        [resultMapping addPropertyMapping:productimageRel];
+        RKRelationshipMapping *wholesaleRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY toKeyPath:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY withMapping:wholesaleMapping];
+        [resultMapping addPropertyMapping:wholesaleRel];
+        
+        // Response Descriptor
+        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:productMapping
+                                                                                                method:RKRequestMethodPOST
+                                                                                           pathPattern:kTKPDDETAILPRODUCT_APIPATH
+                                                                                               keyPath:@""
+                                                                                           statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [_objectmanager addResponseDescriptor:responseDescriptor];
+        return _objectmanager;
+    }
+    else if(tag == CTagOtherProduct)
+    {
+        _objectOtherProductManager = [RKObjectManager sharedClient];
+        
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TheOtherProduct class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                            }];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TheOtherProductResult class]];
+        
+        RKObjectMapping *otherProductListMapping = [RKObjectMapping mappingForClass:[TheOtherProductList class]];
+        [otherProductListMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,API_PRODUCT_NAME_KEY,kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY]];
+        
+        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+        
+        RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY toKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY withMapping:otherProductListMapping];
+        [resultMapping addPropertyMapping:listRel];
+        
+        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                method:RKRequestMethodPOST
+                                                                                           pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@""
+                                                                                           statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [_objectOtherProductManager addResponseDescriptor:responseDescriptor];
+        return _objectOtherProductManager;
+    }
+    else if(tag == CTagFavorite)
+    {
+        // initialize RestKit
+        _objectFavoriteManager =  [RKObjectManager sharedClient];
+        
+        // setup object mappings
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[FavoriteShopAction class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[FavoriteShopActionResult class]];
+        [resultMapping addAttributeMappingsFromDictionary:@{@"content":@"content",
+                                                            @"is_success":@"is_success"}];
+        
+        //relation
+        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                      toKeyPath:kTKPD_APIRESULTKEY
+                                                                                    withMapping:resultMapping];
+        [statusMapping addPropertyMapping:resulRel];
+        
+        //register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                      method:RKRequestMethodPOST
+                                                                                                 pathPattern:@"action/favorite-shop.pl"
+                                                                                                     keyPath:@""
+                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [_objectFavoriteManager addResponseDescriptor:responseDescriptorStatus];
+        return _objectFavoriteManager;
+    }
+    else if(tag==CTagUnWishList || tag==CTagWishList)
+    {
+        _objectWishListManager =  [RKObjectManager sharedClient];
+        
+        // setup object mappings
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[GeneralAction class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                            kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[GeneralActionResult class]];
+        [resultMapping addAttributeMappingsFromDictionary:@{kTKPD_APIISSUCCESSKEY:kTKPD_APIISSUCCESSKEY}];
+        
+        //relation
+        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+        [statusMapping addPropertyMapping:resulRel];
+        
+        //register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodGET pathPattern:@"action/wishlist.pl" keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [_objectWishListManager addResponseDescriptor:responseDescriptorStatus];
+        
+        return _objectWishListManager;
+    }
+    
+    return nil;
+}
+
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag
+{
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    
+    
+    if(tag == CTagPromote)
+    {
+        Promote *action = stat;
+        return action.status;
+    }
+    else if (tag == CTagOtherProduct)
+    {
+        TheOtherProduct *theOtherProduct = stat;
+        return theOtherProduct.status;
+    }
+    else if(tag == CTagTokopediaNetworkManager)
+    {
+        Product *product = stat;
+        return product.status;
+    }
+    else if(tag == CTagFavorite)
+    {
+        FavoriteShopAction *favoriteShopAction = stat;
+        return favoriteShopAction.status;
+    }
+    else if(tag == CTagUnWishList)
+    {
+        GeneralAction *wishlistAction = stat;
+        return wishlistAction.status;
+    }
+    else if(tag == CTagWishList)
+    {
+        GeneralAction *wishlistAction = stat;
+        return wishlistAction.status;
+    }
+    
+    return nil;
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
+{
+    if(tag == CTagPromote)
+    {
+        NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+        Promote* promoteObject = [result objectForKey:@""];
+        
+        if([promoteObject.result.is_dink isEqualToString:@"1"]) {
+            NSString *successMessage = [NSString stringWithFormat:@"Promo pada product %@ telah berhasil! Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko.", _product.result.product.product_name];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[successMessage]
+                                                                             delegate:self];
+            [alert show];
+        } else {
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda belum dapat menggunakan fitur Promo pada saat ini. Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko."]
+                                                                           delegate:self];
+            [alert show];
+        }
+        
+        [_dinkButton setTitle:@"Promosi" forState:UIControlStateNormal];
+        [_dinkButton setEnabled:YES];
+    }
+    else if(tag == CTagTokopediaNetworkManager)
+    {
+        [_act stopAnimating];
+        _buyButton.enabled = YES;
+        [self configureGetOtherProductRestkit];
+        [self loadDataOtherProduct];
+        [self requestsuccess:successResult withOperation:operation];
+    }
+    else if(tag == CTagOtherProduct)
+    {
+        [_otherProductIndicator stopAnimating];
+        [self requestSuccessOtherProduct:successResult withOperation:operation];
+    }
+    else if(tag == CTagFavorite)
+    {
+        [self requestFavoriteResult:successResult withOperation:operation];
+    }
+    else if(tag == CTagUnWishList)
+    {
+        NSDictionary *result = ((RKMappingResult*) successResult).dictionary;
+        WishListObject *wishListObject = [result objectForKey:@""];
+        BOOL status = [wishListObject.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        StickyAlertView *alert;
+        
+        if(status && [wishListObject.result.is_success isEqualToString:@"1"])
+        {
+            alert = [[StickyAlertView alloc] initWithSuccessMessages:@[kTKPDSUCCESS_REMOVE_WISHLIST] delegate:self];
+            [btnWishList setImage:imgWishList forState:UIControlStateNormal];
+            btnWishList.tag = 1;
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
+            
+            [activityIndicator removeFromSuperview];
+            [activityIndicator stopAnimating];
+            [btnWishList setHidden:NO];
+        }
+        else
+        {
+            alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_REMOVE_WISHLIST] delegate:self];
+            [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
+            btnWishList.tag = 0;
+            [activityIndicator removeFromSuperview];
+            [activityIndicator stopAnimating];
+            [btnWishList setHidden:NO];
+        }
+        [alert show];
+    }
+    else if(tag == CTagWishList)
+    {
+        NSDictionary *result = ((RKMappingResult*) successResult).dictionary;
+        WishListObject *wishListObject = [result objectForKey:@""];
+        BOOL status = [wishListObject.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        StickyAlertView *alert;
+        
+        if(status && [wishListObject.result.is_success isEqualToString:@"1"])
+        {
+            alert = [[StickyAlertView alloc] initWithSuccessMessages:@[kTKPDSUCCESS_ADD_WISHLIST] delegate:self];
+            [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
+            btnWishList.tag = 0;
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDOBSERVER_WISHLIST object:nil];
+            [activityIndicator removeFromSuperview];
+            [activityIndicator stopAnimating];
+            [btnWishList setHidden:NO];
+        }
+        else
+        {
+            alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
+            [btnWishList setImage:imgWishList forState:UIControlStateNormal];
+            btnWishList.tag = 1;
+            [activityIndicator removeFromSuperview];
+            [activityIndicator stopAnimating];
+            [btnWishList setHidden:NO];
+        }
+        
+        [alert show];
+    }
+}
+
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    if(tag == CTagPromote)
+    {
+        
+    }
+    else if(tag == CTagTokopediaNetworkManager)
+    {
+        [_act stopAnimating];
+        _buyButton.enabled = YES;
+        [self requestfailure:errorResult];
+    }
+    else if(tag == CTagOtherProduct)
+        [self requestFailureOtherProduct:errorResult];
+    else if(tag == CTagFavorite)
+        [self requestFavoriteError:errorResult];
+    else if(tag == CTagUnWishList)
+    {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_REMOVE_WISHLIST] delegate:self];
+        [alert show];
+        [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
+        btnWishList.tag = 0;
+        [activityIndicator removeFromSuperview];
+        [activityIndicator stopAnimating];
+        [btnWishList setHidden:NO];
+    }
+    else if(tag == CTagWishList)
+    {
+        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[kTKPDFAILED_ADD_WISHLIST] delegate:self];
+        [alert show];
+        [btnWishList setImage:imgWishList forState:UIControlStateNormal];
+        btnWishList.tag = 1;
+        [activityIndicator removeFromSuperview];
+        [activityIndicator stopAnimating];
+        [btnWishList setHidden:NO];
+    }
+}
+
+- (void)actionBeforeRequest:(int)tag
+{
+    if(tag == CTagPromote)
+    {
+        [_dinkButton setTitle:@"Sedang Mempromosikan.." forState:UIControlStateNormal];
+        [_dinkButton setEnabled:NO];
+    }
+    else if(tag == CTagTokopediaNetworkManager)
+    {
+        
+    }
+    else if(tag == CTagOtherProduct)
+    {
+        
+    }
+    else if(tag == CTagFavorite)
+    {}
+    else if(tag == CTagUnWishList)
+    {}
+    else if(tag == CTagWishList)
+    {}
+}
+
+- (void)actionRequestAsync:(int)tag
+{
+    if(tag == CTagPromote)
+    {
+        
+    }
+    else if(tag == CTagTokopediaNetworkManager)
+    {
+    }
+    else if(tag == CTagOtherProduct)
+    {
+    }
+    else if(tag == CTagFavorite)
+    {}
+    else if(tag == CTagUnWishList)
+    {}
+    else if(tag == CTagWishList)
+    {}
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag
+{
+    if(tag == CTagPromote)
+    {
+        
+    }
+    else if(tag == CTagTokopediaNetworkManager)
+    {
+        
+    }
+    else if(tag == CTagOtherProduct)
+    {}
+    else if(tag == CTagFavorite)
+    {}
+    else if(tag == CTagUnWishList)
+    {}
+    else if(tag == CTagWishList)
+    {}
+}
+
+
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
@@ -726,154 +1407,17 @@
 
 - (void)configureRestKit
 {
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
     
-    // setup object mappings
-    RKObjectMapping *productMapping = [RKObjectMapping mappingForClass:[Product class]];
-    [productMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[DetailProductResult class]];
-    RKObjectMapping *infoMapping = [RKObjectMapping mappingForClass:[ProductDetail class]];
-    [infoMapping addAttributeMappingsFromDictionary:@{API_PRODUCT_NAME_KEY:API_PRODUCT_NAME_KEY,
-                                                      API_PRODUCT_WEIGHT_UNIT_KEY:API_PRODUCT_WEIGHT_UNIT_KEY,
-                                                      API_PRODUCT_WEIGHT_KEY:API_PRODUCT_WEIGHT_KEY,
-                                                      API_PRODUCT_DESCRIPTION_KEY:API_PRODUCT_DESCRIPTION_KEY,
-                                                      API_PRODUCT_PRICE_KEY:API_PRODUCT_PRICE_KEY,
-                                                      API_PRODUCT_INSURANCE_KEY:API_PRODUCT_INSURANCE_KEY,
-                                                      API_PRODUCT_CONDITION_KEY:API_PRODUCT_CONDITION_KEY,
-                                                      API_PRODUCT_ETALASE_ID_KEY:API_PRODUCT_ETALASE_ID_KEY,
-                                                      API_PRODUCT_ETALASE_KEY:API_PRODUCT_ETALASE_KEY,
-                                                      API_PRODUCT_MINIMUM_ORDER_KEY:API_PRODUCT_MINIMUM_ORDER_KEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY:kTKPDDETAILPRODUCT_APIPRODUCTSTATUSKEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTIDKEY:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY:kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY,
-                                                      kTKPDDETAILPRODUCT_APIPRODUCTURLKEY:kTKPDDETAILPRODUCT_APIPRODUCTURLKEY,
-                                                      }];
-    
-    RKObjectMapping *statisticMapping = [RKObjectMapping mappingForClass:[Statistic class]];
-    [statisticMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISTATISTICKEY:kTKPDDETAILPRODUCT_APISTATISTICKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY:kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY:kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTSUCCESSRATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTSUCCESSRATEKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY:kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTCANCELRATEKEY:kTKPDDETAILPRODUCT_APIPRODUCTCANCELRATEKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY:kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY:kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY,
-                                                           kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY:kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY,
-                                                           KTKPDDETAILPRODUCT_APIPRODUCTQUALITYRATEKEY:KTKPDDETAILPRODUCT_APIPRODUCTQUALITYRATEKEY,
-                                                           KTKPDDETAILPRODUCT_APIPRODUCTACCURACYRATEKEY:KTKPDDETAILPRODUCT_APIPRODUCTACCURACYRATEKEY,
-                                                           KTKPDDETAILPRODUCT_APIPRODUCTQUALITYPOINTKEY:KTKPDDETAILPRODUCT_APIPRODUCTQUALITYPOINTKEY,
-                                                           KTKPDDETAILPRODUCT_APIPRODUCTACCURACYPOINTKEY:KTKPDDETAILPRODUCT_APIPRODUCTACCURACYPOINTKEY
-
-                                                           }];
-    
-    RKObjectMapping *shopinfoMapping = [RKObjectMapping mappingForClass:[ShopInfo class]];
-    [shopinfoMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPINFOKEY:kTKPDDETAILPRODUCT_APISHOPINFOKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY:kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY:kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY,
-                                                          kTKPDDETAIL_APISHOPIDKEY:kTKPDDETAIL_APISHOPIDKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY:kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY:kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPNAMEKEY:kTKPDDETAILPRODUCT_APISHOPNAMEKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPISFAVKEY:kTKPDDETAILPRODUCT_APISHOPISFAVKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY,
-                                                          kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
-                                                          API_IS_GOLD_SHOP_KEY:API_IS_GOLD_SHOP_KEY
-                                                          }];
-    
-    RKObjectMapping *shopstatsMapping = [RKObjectMapping mappingForClass:[ShopStats class]];
-    [shopstatsMapping addAttributeMappingsFromDictionary:@{kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY:kTKPDDETAILPRODUCT_APISHOPSERVICERATEKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSERVICEDESCRIPTIONKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDRATEKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY:kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY,
-                                                           kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY
-                                                           }];
-    
-    RKObjectMapping *wholesaleMapping = [RKObjectMapping mappingForClass:[WholesalePrice class]];
-    [wholesaleMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIWHOLESALEMINKEY,kTKPDDETAILPRODUCT_APIWHOLESALEPRICEKEY,kTKPDDETAILPRODUCT_APIWHOLESALEMAXKEY]];
-    
-    RKObjectMapping *breadcrumbMapping = [RKObjectMapping mappingForClass:[Breadcrumb class]];
-    [breadcrumbMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIDEPARTMENTNAMEKEY,API_DEPARTMENT_ID_KEY]];
-    
-    RKObjectMapping *otherproductMapping = [RKObjectMapping mappingForClass:[OtherProduct class]];
-    [otherproductMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,API_PRODUCT_NAME_KEY,kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY]];
-
-    RKObjectMapping *imagesMapping = [RKObjectMapping mappingForClass:[ProductImages class]];
-    [imagesMapping addAttributeMappingsFromArray:@[kTKPDDETAILPRODUCT_APIIMAGEIDKEY,kTKPDDETAILPRODUCT_APIIMAGESTATUSKEY,kTKPDDETAILPRODUCT_APIIMAGEDESCRIPTIONKEY,kTKPDDETAILPRODUCT_APIIMAGEPRIMARYKEY,kTKPDDETAILPRODUCT_APIIMAGESRCKEY]];
-    
-    // Relationship Mapping
-    [productMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIRESULTKEY toKeyPath:kTKPDDETAIL_APIRESULTKEY withMapping:resultMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APIINFOKEY toKeyPath:API_PRODUCT_INFO_KEY withMapping:infoMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY toKeyPath:kTKPDDETAILPRODUCT_APISTATISTICKEY withMapping:statisticMapping]];
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPINFOKEY withMapping:shopinfoMapping]];
-    [shopinfoMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY toKeyPath:kTKPDDETAILPRODUCT_APISHOPSTATKEY withMapping:shopstatsMapping]];
-
-    RKRelationshipMapping *breadcrumbRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY toKeyPath:kTKPDDETAIL_APIBREADCRUMBPATHKEY withMapping:breadcrumbMapping];
-    [resultMapping addPropertyMapping:breadcrumbRel];
-    RKRelationshipMapping *otherproductRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY toKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY withMapping:otherproductMapping];
-    [resultMapping addPropertyMapping:otherproductRel];
-    RKRelationshipMapping *productimageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY toKeyPath:kTKPDDETAIL_APIPRODUCTIMAGEPATHKEY withMapping:imagesMapping];
-    [resultMapping addPropertyMapping:productimageRel];
-    RKRelationshipMapping *wholesaleRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY toKeyPath:kTKPDDETAIL_APIWHOLESALEPRICEPATHKEY withMapping:wholesaleMapping];
-    [resultMapping addPropertyMapping:wholesaleRel];
-    
-    // Response Descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:productMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDDETAILPRODUCT_APIPATH
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptor];
 }
 
 - (void)loadData
 {
-    if (_request.isExecuting) return;
-    
-    _requestcount++;
-    
-	NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETDETAILACTIONKEY,
-                            kTKPDDETAIL_APIPRODUCTIDKEY : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]
-                            };
-    
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:kTKPDDETAILPRODUCT_APIPATH
-                                                                parameters:[param encrypt]];
-	[_cachecontroller getFileModificationDate];
-	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-    NSTimer *timer;
-	if (_timeinterval > _cachecontroller.URLCacheInterval) {
+    [_cachecontroller getFileModificationDate];
+    _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+    if (_timeinterval > _cachecontroller.URLCacheInterval) {
         [_act startAnimating];
         _buyButton.enabled = NO;
-
-        //[_cachecontroller clearCache];
-        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            [timer invalidate];
-            [_act stopAnimating];
-            _buyButton.enabled = YES;
-            [self configureGetOtherProductRestkit];
-            [self loadDataOtherProduct];
-            [self requestsuccess:mappingResult withOperation:operation];
-        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            [timer invalidate];
-            [_act stopAnimating];
-            _buyButton.enabled = YES;
-            [self requestfailure:error];
-        }];
-        
-        [_operationQueue addOperation:_request];
-    
-        timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-        
+        [tokopediaNetworkManager doRequest];
     }
     else {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -882,14 +1426,13 @@
         NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
         NSLog(@"cache and updated in last 24 hours.");
         [self requestfailure:nil];
-	}
+    }
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
 {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stats = [result objectForKey:@""];
-    _product = stats;
+    _product = [result objectForKey:@""];
     BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
@@ -897,7 +1440,7 @@
         [_cachecontroller connectionDidFinish:_cacheconnection];
         //save response data to plist
         [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-
+        
         [self requestprocess:object];
     }
 }
@@ -951,8 +1494,12 @@
                 if (_product.result.wholesale_price.count > 0) {
                     _isnodatawholesale = NO;
                 }
+                if([_product.result.product.product_description isEqualToString:@"0"])
+                    _product.result.product.product_description = kTKPDTIDAK_ADA_WISHLIST;
                 
-                if([_product.result.shop_info.shop_id isEqualToString:[([_auth objectForKey:@"shop_id"]) stringValue]]) {
+                
+                UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
+                if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
                     NSBundle* bundle = [NSBundle mainBundle];
                     UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_setting" ofType:@"png"]];
                     
@@ -966,8 +1513,42 @@
                     
                     [barbutton setTag:22];
                     self.navigationItem.rightBarButtonItem = barbutton;
+                    [btnWishList removeFromSuperview];
                 } else {
-                    self.navigationItem.rightBarButtonItem = nil;
+                    activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:btnWishList.frame];
+                    activityIndicator.color = [UIColor lightGrayColor];
+                    btnWishList.hidden = NO;
+                    [btnWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
+                    btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:11.0f];
+                    [btnWishList setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+                    btnWishList.layer.cornerRadius = btnShare.layer.cornerRadius = 5;
+                    btnWishList.layer.masksToBounds = btnShare.layer.masksToBounds = YES;
+                    btnWishList.layer.borderColor = btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
+                    btnWishList.layer.borderWidth = btnShare.layer.borderWidth = 1.0f;
+                    btnWishList.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
+                    btnWishList.titleEdgeInsets = UIEdgeInsetsMake(5, 0, 0, 0);
+                    
+                    //Rescale image
+                    UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0.0);
+                    [[UIImage imageNamed:@"icon_wishlist_active.png"] drawInRect:CGRectMake(0, 0, 15, 15)];
+                    imgUnWishList = UIGraphicsGetImageFromCurrentImageContext();
+                    UIGraphicsEndImageContext();
+                    
+                    UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0.0);
+                    [[UIImage imageNamed:@"icon_wishlist_unactive.png"] drawInRect:CGRectMake(0, 0, 15, 15)];
+                    imgWishList = UIGraphicsGetImageFromCurrentImageContext();
+                    UIGraphicsEndImageContext();
+                    
+                    if([_product.result.product.product_already_wishlist isEqualToString:@"1"])
+                    {
+                        [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
+                        btnWishList.tag = 0;
+                    }
+                    else
+                    {
+                        [btnWishList setImage:imgWishList forState:UIControlStateNormal];
+                        btnWishList.tag = 1;
+                    }
                 }
                 
                 //decide description height
@@ -995,7 +1576,7 @@
                     _buyButton.hidden = NO;
                     _dinkButton.hidden = YES;
                 }
-
+                
                 
                 if(_product.result.shop_info.shop_already_favorited == 1) {
                     [self setButtonFav];
@@ -1017,7 +1598,7 @@
                 UIView *backgroundGreyView = [[UIView alloc] initWithFrame:frame];
                 backgroundGreyView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
                 [self.view insertSubview:backgroundGreyView belowSubview:self.table];
-
+                
             }
         }else{
             [self cancel];
@@ -1059,11 +1640,18 @@
 #pragma mark - UIScrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)sender
 {
-    // Update the page when more than 50% of the previous/next page is visible
-    CGFloat pageWidth = _imagescrollview.frame.size.width;
-    _pageheaderimages = floor((_imagescrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-    _pagecontrol.currentPage = _pageheaderimages;
-    
+    if(sender.tag == 111)
+    {
+        CGFloat pageWidth = _otherproductscrollview.bounds.size.width;
+        otherProductPageControl.currentPage = floor((_otherproductscrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    }
+    else
+    {
+        // Update the page when more than 50% of the previous/next page is visible
+        CGFloat pageWidth = _imagescrollview.frame.size.width;
+        _pageheaderimages = floor((_imagescrollview.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+        _pagecontrol.currentPage = _pageheaderimages;
+    }
 }
 
 #pragma mark - Cell Delegate
@@ -1122,7 +1710,7 @@
         default:
             break;
     }
-
+    
 }
 
 #pragma mark - View Delegate
@@ -1137,16 +1725,114 @@
 }
 
 #pragma mark - Methods
--(void)setHeaderviewData{
+- (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText
+{
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 4.0;
+    style.alignment = NSTextAlignmentLeft;
+    NSDictionary *attributes = @{
+                                 NSForegroundColorAttributeName: [UIColor whiteColor],
+                                 NSFontAttributeName: fontDesc,
+                                 NSParagraphStyleAttributeName: style,
+                                 };
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:strText attributes:attributes];
+    lblDesc.attributedText = attributedText;
+    
+}
 
+- (float)calculateHeightLabelDesc:(CGSize)size withText:(NSString *)strText
+{
+    if(strText == nil)  return 0.0f;
+    UILabel *lblSize = [[UILabel alloc] init];
+    [self initAttributeText:lblSize withStrText:strText];
+    lblSize.numberOfLines = 0;
+    
+    return [lblSize sizeThatFits:size].height;
+}
+
+
+- (CGRect)initLableDescription:(UIView *)mView originY:(float)originY width:(float)width withText:(NSString *)strText
+{
+    if(strText == nil)  return CGRectZero;
+    CGRect rectLblDesc = CGRectMake(15, originY, width, 9999);
+    rectLblDesc.size.height = [self calculateHeightLabelDesc:rectLblDesc.size withText:strText];
+    
+    UILabel *lblDescription = [[UILabel alloc] initWithFrame:rectLblDesc];
+    lblDescription.backgroundColor = [UIColor clearColor];
+    [lblDescription setNumberOfLines:0];
+    [self initAttributeText:lblDescription withStrText:strText];
+    lblDescription.textColor = [UIColor lightGrayColor];
+    [mView addSubview:lblDescription];
+    
+    return rectLblDesc;
+}
+
+- (void)expand:(CustomButtonExpandDesc *)sender
+{
+    isExpandDesc = !isExpandDesc;
+    [_table reloadData];
+}
+
+- (IBAction)actionShare:(id)sender
+{
+    NSString *activityItem = [NSString stringWithFormat:@"%@ - %@ | Tokopedia %@", _product.result.shop_info.shop_name, _product.result.shop_info.shop_location, _product.result.shop_info.shop_url];
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem] applicationActivities:nil];
+    activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
+    [self presentViewController:activityController animated:YES completion:nil];
+}
+
+- (IBAction)actionWishList:(UIButton *)sender
+{
+    if(sender.tag == 1)
+        [self setWishList];
+    else
+        [self setUnWishList];
+}
+
+- (UIBarButtonItem *)createBarButton:(CGRect)frame withImage:(UIImage*)image withAction:(SEL)action
+{
+    UIImageView *infoImageView = [[UIImageView alloc] initWithImage:image];
+    infoImageView.frame = frame;
+    infoImageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:action];
+    [infoImageView addGestureRecognizer:tapGesture];
+    UIBarButtonItem *infoBarButton = [[UIBarButtonItem alloc] initWithCustomView:infoImageView];
+    
+    return infoBarButton;
+}
+
+-(void)setHeaderviewData{
+    
     CGFloat currentLabelHeight = _productnamelabel.frame.size.height;
     _productnamelabel.text = _product.result.product.product_name?:@"";
-
+    
     NSString *productName = _product.result.product.product_name?:@"";
-    self.title = productName;
-
+    
+    
+    UILabel *productLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 480, 44)];
+    productLabel.backgroundColor = [UIColor clearColor];
+    productLabel.numberOfLines = 2;
+    UIFont *productLabelFont = [UIFont fontWithName:@"GothamMedium" size:13];
+    
+    NSMutableParagraphStyle *productLabelStyle = [[NSMutableParagraphStyle alloc] init];
+    productLabelStyle.lineSpacing = 4.0;
+    
+    NSDictionary *productLabelAtts = @{NSForegroundColorAttributeName: [UIColor whiteColor],
+                                       NSFontAttributeName: productLabelFont,
+                                       NSParagraphStyleAttributeName: productLabelStyle,
+                                       };
+    
+    NSAttributedString *productNameLabeAttributedText = [[NSAttributedString alloc] initWithString:productName
+                                                                                        attributes:productLabelAtts];
+    
+    productLabel.attributedText = productNameLabeAttributedText;
+    productLabel.textAlignment = NSTextAlignmentLeft;
+    
+    self.navigationItem.titleView = productLabel;
+    
+    
     UIFont *font = [UIFont fontWithName:@"GothamMedium" size:15];
-
+    
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     style.lineSpacing = 6.0;
     
@@ -1156,8 +1842,8 @@
                                  };
     
     NSAttributedString *productNameAttributedText = [[NSAttributedString alloc] initWithString:productName
-                                                                   attributes:attributes];
-
+                                                                                    attributes:attributes];
+    
     _productnamelabel.attributedText = productNameAttributedText;
     _productnamelabel.numberOfLines = 0;
     [_productnamelabel sizeToFit];
@@ -1170,22 +1856,22 @@
     _header.frame = newHeaderFrame;
     
     _pricelabel.text = _product.result.product.product_price;
-    _countsoldlabel.text = [NSString stringWithFormat:@"%@ Terjual", _product.result.statistic.product_sold];
-    _countviewlabel.text = [NSString stringWithFormat:@"%@ Dilihat", _product.result.statistic.product_view];
-
-    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Ulasan",_product.result.statistic.product_review] forState:UIControlStateNormal];
+    _countsoldlabel.text = [NSString stringWithFormat:@"%@ Terjual", _product.result.statistic.product_sold_count];
+    _countviewlabel.text = [NSString stringWithFormat:@"%@ Dilihat", _product.result.statistic.product_view_count];
+    
+    [_reviewbutton setTitle:[NSString stringWithFormat:@"%@ Ulasan",_product.result.statistic.product_review_count] forState:UIControlStateNormal];
     [_reviewbutton.layer setBorderWidth:1];
     [_reviewbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
-    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Diskusi",_product.result.statistic.product_talk] forState:UIControlStateNormal];
+    [_talkaboutbutton setTitle:[NSString stringWithFormat:@"%@ Diskusi",_product.result.statistic.product_talk_count] forState:UIControlStateNormal];
     [_talkaboutbutton.layer setBorderWidth:1];
     [_talkaboutbutton.layer setBorderColor:[UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1].CGColor];
     
-    _qualitynumberlabel.text = [NSString stringWithFormat: @"%zd ",_product.result.statistic.product_quality_point];
-    _qualityrateview.starscount = _product.result.statistic.product_quality_rate;
+    _qualitynumberlabel.text = _product.result.rating.product_rating_point;
+    _qualityrateview.starscount = [_product.result.rating.product_rating_star_point integerValue];
     
-    _accuracynumberlabel.text = [NSString stringWithFormat:@"%zd", _product.result.statistic.product_accuracy_point];
-    _accuracyrateview.starscount = _product.result.statistic.product_accuracy_rate;
+    _accuracynumberlabel.text = _product.result.rating.product_rate_accuracy_point;
+    _accuracyrateview.starscount = [_product.result.rating.product_accuracy_star_rate integerValue];
     
     NSArray *images = _product.result.product_images;
     
@@ -1207,13 +1893,14 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
             //NSLOG(@"thumb: %@", thumb);
-            [thumb setImage:image animated:YES];
+            [thumb setImage:image];
             
 #pragma clang diagnostic pop
-            
+            [headerActivityIndicator removeFromSuperview];
+            [headerActivityIndicator stopAnimating];
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         }];
-
+        
         thumb.contentMode = UIViewContentModeScaleAspectFit;
         
         [_imagescrollview addSubview:thumb];
@@ -1262,134 +1949,89 @@
         [thumb setImage:image];
         
 #pragma clang diagnostic pop
-        
+        [merchantActivityIndicator removeFromSuperview];
+        [merchantActivityIndicator stopAnimating];
+        merchantActivityIndicator = nil;
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         
     }];
-
+    
 }
 
 -(void)setOtherProducts
 {
-
-        for(int i = 0; i< _otherProductObj.count; i++)
-        {
-            OtherProduct *product = _otherProductObj[i];
-            
-            DetailProductOtherView *v = [DetailProductOtherView newview];
-            
-            int x;
-            if(i == 0) {
-                x = 10;
-            } else if(i == 1) {
-                x = 165;
-            } else if(i == 2) {
-                x = 330;
-            } else if(i == 3) {
-                x = 485;
-            } else if(i == 4) {
-                x = 650;
-            } else if(i == 5) {
-                x = 805;
-            }
-            [v setFrame:CGRectMake(x, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
-            v.delegate = self;
-            v.index = i;
-            [v.act startAnimating];
-            v.namelabel.text = product.product_name;
-            v.pricelabel.text = product.product_price;
-            //DetailProductOtherView *v = [[DetailProductOtherView alloc]initWithFrame:CGRectMake(y, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
-            
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            //request.URL = url;
-            
-            UIImageView *thumb = v.thumb;
-            //UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
-            
-            thumb.image = nil;
-            //thumb.hidden = YES;	//@prepareforreuse then @reset
-            
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    otherProductPageControl.numberOfPages = ceil(_otherProductObj.count/2.0f);
+    for(int i = 0; i< _otherProductObj.count; i++)
+    {
+        OtherProduct *product = _otherProductObj[i];
+        
+        DetailProductOtherView *v = [DetailProductOtherView newview];
+        
+        int x;
+        if(i == 0) {
+            x = 10;
+        } else if(i == 1) {
+            x = 165;
+        } else if(i == 2) {
+            x = 330;
+        } else if(i == 3) {
+            x = 485;
+        } else if(i == 4) {
+            x = 650;
+        } else if(i == 5) {
+            x = 805;
+        }
+        [v setFrame:CGRectMake(x, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
+        v.delegate = self;
+        v.index = i;
+        [v.act startAnimating];
+        v.namelabel.text = product.product_name;
+        v.pricelabel.text = product.product_price;
+        //DetailProductOtherView *v = [[DetailProductOtherView alloc]initWithFrame:CGRectMake(y, 0, _otherproductscrollview.frame.size.width, _otherproductscrollview.frame.size.height)];
+        
+        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:product.product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        //request.URL = url;
+        
+        UIImageView *thumb = v.thumb;
+        //UIImageView *thumb = [[UIImageView alloc]initWithFrame:CGRectMake(y, 0, _imagescrollview.frame.size.width, _imagescrollview.frame.size.height)];
+        
+        thumb.image = nil;
+        //thumb.hidden = YES;	//@prepareforreuse then @reset
+        
+        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                //NSLOG(@"thumb: %@", thumb);
-                [thumb setImage:image];
-                [v.act stopAnimating];
+            //NSLOG(@"thumb: %@", thumb);
+            [thumb setImage:image];
+            [v.act stopAnimating];
 #pragma clang diagnostic pop
-                
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                [v.act stopAnimating];
-            }];
             
-            [_otherproductscrollview addSubview:v];
-            [_otherproductviews addObject:v];
-        }
+        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            [v.act stopAnimating];
+        }];
         
-        _otherproductscrollview.pagingEnabled = YES;
-        _otherproductscrollview.contentSize = CGSizeMake(_otherproductviews.count*160,0);
+        [_otherproductscrollview addSubview:v];
+        [_otherproductviews addObject:v];
+    }
+    
+    _otherproductscrollview.pagingEnabled = YES;
+    _otherproductscrollview.contentSize = CGSizeMake(_otherproductviews.count*160,0);
 }
 
 
 #pragma mark - Request & Mapping Other Product
 - (void)configureGetOtherProductRestkit {
-    _objectOtherProductManager = [RKObjectManager sharedClient];
-    
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[TheOtherProduct class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[TheOtherProductResult class]];
-    
-    RKObjectMapping *otherProductListMapping = [RKObjectMapping mappingForClass:[TheOtherProductList class]];
-    [otherProductListMapping addAttributeMappingsFromArray:@[API_PRODUCT_PRICE_KEY,API_PRODUCT_NAME_KEY,kTKPDDETAILPRODUCT_APIPRODUCTIDKEY,kTKPDDETAILPRODUCT_APIPRODUCTIMAGEKEY]];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY toKeyPath:kTKPDDETAIL_APIOTHERPRODUCTPATHKEY withMapping:otherProductListMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDDETAILPRODUCT_APIPATH keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectOtherProductManager addResponseDescriptor:responseDescriptor];
-
 }
 
 - (void)loadDataOtherProduct {
-    if(_requestOtherProduct.isExecuting) return;
-    
-    _requestOtherProductCount++;
-    NSDictionary *param = @{@"action" : @"get_other_product", @"product_id" : [_data objectForKey:kTKPDDETAIL_APIPRODUCTIDKEY]};
-    [_otherProductIndicator startAnimating];
-    
-    _requestOtherProduct = [_objectOtherProductManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILPRODUCT_APIPATH parameters:[param encrypt]];
-    NSTimer *timer;
-    
-    [_requestOtherProduct setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [timer invalidate];
-        [_otherProductIndicator stopAnimating];
-        [self requestSuccessOtherProduct:mappingResult withOperation:operation];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [timer invalidate];
-        [self requestFailureOtherProduct:error];
-    }];
-    
-    [_operationOtherProductQueue addOperation:_requestOtherProduct];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutOtherProduct) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-
+    [tokopediaOtherProduct doRequest];
 }
 
 - (void)requestSuccessOtherProduct:(id)object withOperation:(RKObjectRequestOperation*)operation {
     NSDictionary *result = ((RKMappingResult*)object).dictionary;
-    id stat = [result objectForKey:@""];
-    TheOtherProduct *otherProduct = stat;
+    TheOtherProduct *otherProduct = [result objectForKey:@""];
     BOOL status = [otherProduct.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-
+    
     if(status) {
         [self requestProcessOtherProduct:object];
     }
@@ -1397,7 +2039,20 @@
 }
 
 - (void)requestFailureOtherProduct:(id)error {
-    
+    [self cancel];
+    if ([(NSError*)error code] == NSURLErrorCancelled) {
+        if (_requestcount<kTKPDREQUESTCOUNTMAX) {
+            NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
+            //_table.tableFooterView = _footer;
+            [_act startAnimating];
+            //                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+        }
+        else
+            [_act stopAnimating];
+    }
+    else
+        [_act stopAnimating];
 }
 
 - (void)requestProcessOtherProduct:(id)object {
@@ -1420,7 +2075,7 @@
             if ([(NSError*)object code] == NSURLErrorCancelled) {
                 if (_requestOtherProductCount<kTKPDREQUESTCOUNTMAX) {
                     NSLog(@" ==== REQUESTCOUNT %zd =====",_requestOtherProductCount);
-
+                    
                     [_otherProductIndicator startAnimating];
                     [self performSelector:@selector(configureGetOtherProductRestkit)
                                withObject:nil
@@ -1454,79 +2109,84 @@
 }
 
 - (void)cancelOtherProduct {
-    
+    [btnWishList setImage:imgWishList forState:UIControlStateNormal];
 }
 
 #pragma mark - Request and mapping favorite action
 
 -(void)configureFavoriteRestkit {
     
-    // initialize RestKit
-    _objectFavoriteManager =  [RKObjectManager sharedClient];
+}
+
+- (void)configureWishListRestKit
+{
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[FavoriteShopAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[FavoriteShopActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"content":@"content",
-                                                        @"is_success":@"is_success"}];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:@"action/favorite-shop.pl"
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectFavoriteManager addResponseDescriptor:responseDescriptorStatus];
+}
+
+
+- (void)setUnWishList
+{
+    if(_auth) {
+        [_header addSubview:activityIndicator];
+        [activityIndicator startAnimating];
+        [btnWishList setHidden:YES];
+        
+        tokopediaNetworkManagerWishList.tagRequest = CTagUnWishList;
+        [tokopediaNetworkManagerWishList doRequest];
+    } else {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = self;
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = self;
+        navigationController.viewControllers = @[controller];
+        isNeedLogin = YES;
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    }
+}
+
+
+- (void)setWishList
+{
+    if(_auth) {
+        [_header addSubview:activityIndicator];
+        [activityIndicator startAnimating];
+        [btnWishList setHidden:YES];
+        tokopediaNetworkManagerWishList.tagRequest = CTagWishList;
+        [tokopediaNetworkManagerWishList doRequest];
+    } else {
+        UINavigationController *navigationController = [[UINavigationController alloc] init];
+        navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+        navigationController.navigationBar.translucent = NO;
+        navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        
+        
+        LoginViewController *controller = [LoginViewController new];
+        controller.delegate = self;
+        controller.isPresentedViewController = YES;
+        controller.redirectViewController = self;
+        navigationController.viewControllers = @[controller];
+        isNeedLogin = YES;
+        
+        [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    }
 }
 
 
 -(void)favoriteShop:(NSString*)shop_id
 {
     
-    
-    _requestFavoriteCount ++;
-    
-    NSDictionary *param = @{kTKPDDETAIL_ACTIONKEY   :   @"fav_shop",
-                            @"shop_id"              :   shop_id};
-    
-    _requestFavorite = [_objectFavoriteManager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:@"action/favorite-shop.pl"
-                                                                parameters:[param encrypt]];
-    
-    [_requestFavorite setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestFavoriteResult:mappingResult withOperation:operation];
-        [_timer invalidate];
-        _timer = nil;
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestFavoriteError:error];
-        [_timer invalidate];
-        _timer = nil;
-    }];
-    
-    [_operationFavoriteQueue addOperation:_requestFavorite];
-    
-    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                              target:self
-                                            selector:@selector(requestTimeoutFavorite)
-                                            userInfo:nil
-                                             repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    tempShopID = shop_id;
+    [tokopediaNetworkManagerFavorite doRequest];
 }
 
--(void)requestFavoriteResult:(id)mappingResult withOperation:(NSOperationQueue *)operation {
+-(void)requestFavoriteResult:(id)mappingResult withOperation:(RKObjectRequestOperation *)operation {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"notifyFav" object:nil];
 }
 
@@ -1543,84 +2203,7 @@
     
 }
 
-#pragma mark - Promosi
-- (NSDictionary *)getParameter {
-    NSDictionary *parameter = @{@"action" : @"promote_product", @"product_id" : _product.result.product.product_id};
-    
-    return parameter;
-}
-
-- (NSString *)getPath {
-    return @"action/product.pl";
-}
-
-- (id)getObjectManager {
-    _objectPromoteManager = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[Promote class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[PromoteResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"is_dink":@"is_dink"}];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:@"action/product.pl"
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectPromoteManager addResponseDescriptor:responseDescriptorStatus];
-    
-    return _objectPromoteManager;
-}
-
-- (NSString *)getRequestStatus:(id)result {
-    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
-    id stat = [resultDict objectForKey:@""];
-    Promote *action = stat;
-    
-    return action.status;
-}
-
-- (void)actionBeforeRequest {
-    [_dinkButton setTitle:@"Sedang Mempromosikan.." forState:UIControlStateNormal];
-    [_dinkButton setEnabled:NO];
-}
-
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation{
-    Promote* promoteObject = successResult;
-    
-    if([promoteObject.result.is_dink isEqualToString:@"1"]) {
-        NSString *successMessage = [NSString stringWithFormat:@"Promo pada product %@ telah berhasil! Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko.", _product.result.product.product_name];
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:@[successMessage]
-                                                                       delegate:self];
-        [alert show];
-    } else {
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda belum dapat menggunakan fitur Promo pada saat ini. Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko."]
-                                                                       delegate:self];
-        [alert show];
-    }
-    
-    [_dinkButton setTitle:@"Promosi" forState:UIControlStateNormal];
-    [_dinkButton setEnabled:YES];
-}
-
-- (void)actionAfterFailRequestMaxTries {
-    
-}
-
-#pragma mark - Tap Product Gallery
+#pragma mark - Tap View
 - (void)tapProductGallery {
     NSDictionary *data = @{
                            @"image_index" : @(_pageheaderimages),
@@ -1631,7 +2214,17 @@
     vc.data = data;
     
     [self.navigationController presentViewController:vc animated:YES completion:nil];
-//    [self.navigationController pushViewController:vc animated:YES];
+    //    [self.navigationController pushViewController:vc animated:YES];
 }
+
+- (void)tapShop {
+    ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+    
+    container.data = @{kTKPDDETAIL_APISHOPIDKEY:_product.result.shop_info.shop_id,
+                       kTKPD_AUTHKEY:_auth?:[NSNull null]};
+    [self.navigationController pushViewController:container animated:YES];
+}
+
+
 
 @end

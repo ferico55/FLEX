@@ -248,7 +248,7 @@
         if (_list.count > indexPath.row) {
             
             ReviewList *list = _list[indexPath.row];
-            
+            ((GeneralReviewCell*)cell).data = list;
             ((GeneralReviewCell*)cell).userNamelabel.text = list.review_user_name;
             ((GeneralReviewCell*)cell).timelabel.text = list.review_create_time?:@"";
 

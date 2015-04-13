@@ -20,6 +20,7 @@
 
 #import <FacebookSDK/FacebookSDK.h>
 #import <QuartzCore/QuartzCore.h>
+#import "GAIDictionaryBuilder.h"
 
 @interface LoginViewController () <FBLoginViewDelegate, LoginViewDelegate, CreatePasswordDelegate> {
     
@@ -379,6 +380,7 @@
     [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [timer invalidate];
         _barbuttonsignin.enabled = YES;
+        [_loginButton setTitle:@"Masuk" forState:UIControlStateNormal];
         [self requestSuccessLogin:mappingResult withOperation:operation];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [timer invalidate];
@@ -532,7 +534,16 @@
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
             [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
             [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
-
+            
+            //add user login to GA
+            id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+            [tracker set:@"&uid" value:_login.result.user_id];
+            // This hit will be sent with the User ID value and be visible in User-ID-enabled views (profiles).
+            [tracker send:[[GAIDictionaryBuilder createEventWithCategory:@"UX"            // Event category (required)
+                                                                  action:@"User Sign In"  // Event action (required)
+                                                                   label:nil              // Event label
+                                                                   value:nil] build]];    // Event value
+            
             if (_isPresentedViewController && [self.delegate respondsToSelector:@selector(redirectViewController:)]) {
                 [self.delegate redirectViewController:_redirectViewController];
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];

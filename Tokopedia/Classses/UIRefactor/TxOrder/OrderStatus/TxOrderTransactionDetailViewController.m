@@ -41,7 +41,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *shopThumb;
 @property (weak, nonatomic) IBOutlet UILabel *senderName;
 @property (weak, nonatomic) IBOutlet UILabel *senderPhone;
-
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *dropshipHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *addressHeightConstraint;
 @end
 
 @implementation TxOrderTransactionDetailViewController
@@ -59,8 +60,29 @@
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     _tableView.tableHeaderView = _shopView;
-    
     [self setDefaultData];
+
+    NSString *textString = _addressStreetLabel.text;
+    [_addressStreetLabel setCustomAttributedText:textString];
+    
+    //Calculate the expected size based on the font and linebreak mode of your label
+    CGSize maximumLabelSize = CGSizeMake(200,9999);
+    
+    CGSize expectedLabelSize = [textString sizeWithFont:_addressStreetLabel.font
+                                      constrainedToSize:maximumLabelSize
+                                          lineBreakMode:_addressStreetLabel.lineBreakMode];
+    
+    //adjust the label the the new height.
+    CGRect newFrame = _addressStreetLabel.frame;
+    newFrame.size.height = expectedLabelSize.height + 26;
+    _addressStreetLabel.frame = newFrame;
+    
+    CGRect frame = _detailView.frame;
+    frame.size.height = 500+_dropshipHeightConstraint.constant+_addressStreetLabel.frame.size.height;
+    _addressHeightConstraint.constant = 343 + _addressStreetLabel.frame.size.height;
+    _detailView.frame = frame;
+    
+    _tableView.tableFooterView = _detailView;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -97,6 +119,7 @@
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
 }
+
 
 #pragma mark - Cell Delegate
 -(void)didTapImageViewAtIndexPath:(NSIndexPath *)indexPath
@@ -148,7 +171,7 @@
     [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image animated:YES];
+        [thumb setImage:image];
 #pragma clang diagnosti c pop
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
@@ -203,7 +226,7 @@
     [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image animated:YES];
+        [thumb setImage:image];
 #pragma clang diagnosti c pop
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
@@ -220,7 +243,7 @@
                          ,_order.order_destination.address_district,
                          _order.order_destination.address_province,
                          _order.order_destination.address_postal];
-    [_addressStreetLabel setCustomAttributedText:address];
+    [_addressStreetLabel setCustomAttributedText:[NSString convertHTML:address]];
     _cityLabel.text = _order.order_destination.address_city;
     _countryLabel.text = [NSString stringWithFormat:@"%@, %@ %@",_order.order_destination.address_district,_order.order_destination.address_province, _order.order_destination.address_postal];
     _shipmentLabel.text = [NSString stringWithFormat:@"%@ - %@",_order.order_shipment.shipment_name,_order.order_shipment.shipment_product];
@@ -228,11 +251,8 @@
     
     NSString *dropshipName = _order.order_detail.detail_dropship_name;
     if (!dropshipName || [dropshipName isEqualToString:@""] || [dropshipName isEqualToString:@"0"]) {
+        _dropshipHeightConstraint.constant = 0;
         _dropshipView.hidden = YES;
-        CGRect frame = _detailView.frame;
-        frame.size.height -= _dropshipView.frame.size.height;
-        _detailView.frame = frame;
-        _tableView.tableFooterView = _detailView;
     }
 }
 

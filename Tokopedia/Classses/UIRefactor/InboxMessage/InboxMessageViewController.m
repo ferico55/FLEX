@@ -141,7 +141,7 @@
     _messageNavigationFlag = [_data objectForKey:@"nav"];
     _userManager = [UserAuthentificationManager new];
     _encodeDecodeManager = [EncodeDecoderManager new];
-    _noresult = [NoResultView new];
+    _noresult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     /** set first page become 1 **/
     _page = 1;
@@ -595,7 +595,15 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"enableButtonRead" object:nil userInfo:nil];
         [self requestsuccess:mappingResult withOperation:operation];
 
+        
         [_table reloadData];
+        if(_iseditmode) {
+            for (NSIndexPath *indexpath in _messages_selected) {
+                [_table selectRowAtIndexPath:indexpath animated:YES scrollPosition:UITableViewScrollPositionTop];
+            }
+            
+        }
+
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         [_timer invalidate];

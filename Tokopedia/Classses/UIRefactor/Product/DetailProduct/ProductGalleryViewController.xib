@@ -37,7 +37,7 @@
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="NCT-Zf-ZTS">
                     <rect key="frame" x="271" y="0.0" width="48" height="49"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <state key="normal" image="Icon_close_white.png">
+                    <state key="normal" image="icon_close_white.png">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -70,7 +70,7 @@
         </view>
     </objects>
     <resources>
-        <image name="Icon_close_white.png" width="20" height="20"/>
+        <image name="icon_close_white.png" width="20" height="20"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

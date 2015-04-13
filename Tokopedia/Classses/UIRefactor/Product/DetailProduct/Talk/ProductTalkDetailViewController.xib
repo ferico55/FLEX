@@ -22,6 +22,7 @@
                 <outlet property="act" destination="HT4-sT-0SH" id="tNf-cA-xIm"/>
                 <outlet property="footer" destination="RKC-0v-BTt" id="oc9-8o-9wN"/>
                 <outlet property="header" destination="6Ec-xH-BZu" id="Ii2-VP-l5P"/>
+                <outlet property="reportButton" destination="yCP-He-mx1" id="tUa-qM-29H"/>
                 <outlet property="sendButton" destination="I0F-UY-vER" id="7tO-er-RDg"/>
                 <outlet property="table" destination="S8B-WM-3ht" id="xZQ-8t-qEz"/>
                 <outlet property="talkInputView" destination="0qe-6u-X0z" id="XAk-Pf-HJZ"/>
@@ -32,6 +33,7 @@
                 <outlet property="talktotalcommentlabel" destination="V0k-hC-jae" id="H3O-Oz-gT0"/>
                 <outlet property="talkuserimage" destination="edq-d3-niV" id="Ub7-Qp-RvU"/>
                 <outlet property="talkusernamelabel" destination="QCO-lA-NPE" id="eRR-Kf-TYk"/>
+                <outlet property="userArea" destination="yKL-Fz-tBp" id="etb-9f-jTC"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -41,7 +43,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="97" sectionHeaderHeight="22" sectionFooterHeight="22" id="S8B-WM-3ht">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="518"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="485"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="separatorColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="calibratedRGB"/>
@@ -103,7 +105,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Talk Message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4zl-YQ-GyN">
-                    <rect key="frame" x="94" y="107" width="208" height="32"/>
+                    <rect key="frame" x="94" y="107" width="208" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -117,18 +119,7 @@
                     <rect key="frame" x="54" y="199" width="86" height="21"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_diskusi_report_grey.png" id="CNS-9R-VTx">
-                    <rect key="frame" x="204" y="202" width="15" height="15"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Report" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fYu-U3-6Gm">
-                    <rect key="frame" x="220" y="199" width="48" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
-                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="16P-bL-SbS">
@@ -162,6 +153,22 @@
                         <action selector="tap:" destination="-1" eventType="touchUpInside" id="utq-PK-LYj"/>
                     </connections>
                 </button>
+                <button opaque="NO" tag="13" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="yCP-He-mx1">
+                    <rect key="frame" x="168" y="195" width="144" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                    <state key="normal" title="Laporkan">
+                        <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="tap:" destination="-1" eventType="touchUpInside" id="NSq-Up-Yqd"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" id="yKL-Fz-tBp">
+                    <rect key="frame" x="11" y="11" width="291" height="54"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <nil key="simulatedStatusBarMetrics"/>
@@ -185,7 +192,6 @@
     </objects>
     <resources>
         <image name="icon_diskusi_comment_grey.png" width="14" height="14"/>
-        <image name="icon_diskusi_report_grey.png" width="14" height="14"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

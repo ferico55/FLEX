@@ -76,7 +76,8 @@
                                                      API_PRODUCT_CART_ID_KEY,
                                                      API_PRODUCT_TOTAL_WEIGHT_KEY,
                                                      API_PRODUCT_NOTES_KEY,
-                                                     API_PRICE_KEY
+                                                     API_PRICE_KEY,
+                                                     API_PRODUCT_ERROR_MESSAGE_KEY
                                                      ]];
     return productMapping;
 }

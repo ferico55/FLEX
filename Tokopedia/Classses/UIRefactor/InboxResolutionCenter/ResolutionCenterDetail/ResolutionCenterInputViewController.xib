@@ -28,7 +28,6 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ResolutionCenterInputViewController">
             <connections>
-                <outlet property="attachButton" destination="dG1-90-Bf8" id="Yzb-zw-Ijg"/>
                 <outlet property="buyerSellerLabel" destination="iuG-K8-Czx" id="CIt-tp-L0D"/>
                 <outlet property="createDateLabel" destination="2Us-BX-otC" id="nmr-25-KXY"/>
                 <outlet property="editSolutionButton" destination="aNO-fR-nqz" id="5bd-Kc-2c1"/>
@@ -44,21 +43,24 @@
                 <outlet property="threeButtonsView" destination="qPb-Ac-Zf1" id="YdL-kf-Zkm"/>
                 <outlet property="twoButtonView" destination="B5R-Gt-MTq" id="Mxy-jT-1Nu"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
-                <outletCollection property="uploadButtons" destination="H4Q-R7-cem" id="egD-wx-k8k"/>
+                <outletCollection property="attachButtons" destination="DWV-nu-8Y9" id="47z-oT-fwU"/>
+                <outletCollection property="attachButtons" destination="6UJ-1h-LI6" id="BbG-Di-jzx"/>
+                <outletCollection property="attachButtons" destination="dG1-90-Bf8" id="V40-l9-qgp"/>
                 <outletCollection property="uploadButtons" destination="gMe-9L-cVN" id="kal-x0-Vzw"/>
+                <outletCollection property="uploadButtons" destination="H4Q-R7-cem" id="egD-wx-k8k"/>
+                <outletCollection property="thumbImages" destination="X1t-3d-urL" id="Pxd-zn-gOH"/>
                 <outletCollection property="uploadButtons" destination="ecq-4O-TwH" id="9VM-1o-fXx"/>
-                <outletCollection property="uploadButtons" destination="r10-l1-E6i" id="mQs-ja-42q"/>
-                <outletCollection property="uploadButtons" destination="4IY-mi-A2S" id="rCQ-d7-4l4"/>
-                <outletCollection property="uploadedImages" destination="Gft-1U-doV" id="EvO-Jg-CQ2"/>
-                <outletCollection property="uploadedImages" destination="eXx-z9-Oij" id="tLE-Jh-C1j"/>
-                <outletCollection property="uploadedImages" destination="nB6-5P-8DC" id="8T3-0P-xjG"/>
-                <outletCollection property="uploadedImages" destination="X1t-3d-urL" id="aFz-fS-oQO"/>
-                <outletCollection property="uploadedImages" destination="Xk5-va-lFn" id="shl-aA-lAd"/>
-                <outletCollection property="cancelButtons" destination="F3x-SN-sNV" id="OP5-9E-gL6"/>
-                <outletCollection property="cancelButtons" destination="X5w-ap-nwJ" id="3lD-CG-nn8"/>
                 <outletCollection property="cancelButtons" destination="Wk0-FP-uet" id="lYR-qW-4Iw"/>
-                <outletCollection property="cancelButtons" destination="cY5-xz-dtK" id="Mei-Wr-Am2"/>
+                <outletCollection property="cancelButtons" destination="X5w-ap-nwJ" id="3lD-CG-nn8"/>
                 <outletCollection property="cancelButtons" destination="lJm-8L-j9W" id="ECX-3V-V4q"/>
+                <outletCollection property="uploadButtons" destination="4IY-mi-A2S" id="rCQ-d7-4l4"/>
+                <outletCollection property="cancelButtons" destination="F3x-SN-sNV" id="OP5-9E-gL6"/>
+                <outletCollection property="thumbImages" destination="eXx-z9-Oij" id="TFH-gw-5cw"/>
+                <outletCollection property="thumbImages" destination="Xk5-va-lFn" id="Lln-LX-Y5r"/>
+                <outletCollection property="cancelButtons" destination="cY5-xz-dtK" id="Mei-Wr-Am2"/>
+                <outletCollection property="thumbImages" destination="Gft-1U-doV" id="ySw-C2-OEO"/>
+                <outletCollection property="uploadButtons" destination="r10-l1-E6i" id="mQs-ja-42q"/>
+                <outletCollection property="thumbImages" destination="nB6-5P-8DC" id="ohf-5N-Om0"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -136,7 +138,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="cg8-2V-X04"/>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="gPI-eE-lOz"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VG5-wj-olu" userLabel="Horizontal Border">
@@ -193,7 +195,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="DL1-ov-gkd"/>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="4zN-nQ-KlL"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="taI-na-2Cd" userLabel="Horizontal Border">
@@ -233,7 +235,7 @@
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="CuB-qz-QZd"/>
+                                <action selector="tap:" destination="-1" eventType="touchUpInside" id="9Jw-GV-Oin"/>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="AIK-j9-0wS" userLabel="Horizontal Border">
@@ -246,39 +248,49 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="140" y="332"/>
+            <point key="canvasLocation" x="128" y="370"/>
         </view>
         <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="kwf-7K-4wR">
             <rect key="frame" x="0.0" y="0.0" width="320" height="102"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yn2-Aa-7pv">
-                    <rect key="frame" x="0.0" y="0.0" width="467" height="102"/>
+                    <rect key="frame" x="0.0" y="0.0" width="520" height="102"/>
                     <subviews>
+                        <imageView tag="10" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gft-1U-doV">
+                            <rect key="frame" x="15" y="5" width="90" height="90"/>
+                            <gestureRecognizers/>
+                        </imageView>
+                        <imageView tag="11" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eXx-z9-Oij">
+                            <rect key="frame" x="115" y="6" width="90" height="90"/>
+                            <gestureRecognizers/>
+                        </imageView>
+                        <imageView tag="12" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nB6-5P-8DC">
+                            <rect key="frame" x="215" y="6" width="90" height="90"/>
+                            <gestureRecognizers/>
+                        </imageView>
+                        <imageView tag="13" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X1t-3d-urL">
+                            <rect key="frame" x="315" y="5" width="90" height="90"/>
+                            <gestureRecognizers/>
+                        </imageView>
+                        <imageView tag="14" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xk5-va-lFn">
+                            <rect key="frame" x="415" y="6" width="90" height="90"/>
+                            <gestureRecognizers/>
+                        </imageView>
                         <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H4Q-R7-cem">
-                            <rect key="frame" x="15" y="13" width="70" height="70"/>
+                            <rect key="frame" x="15" y="5" width="90" height="90"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                            <state key="normal" title="+">
+                            <state key="normal" backgroundImage="icon_upload_image.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="tapUploadImage:" destination="-1" eventType="touchUpInside" id="MsW-NL-xOR"/>
                             </connections>
                         </button>
-                        <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gMe-9L-cVN">
-                            <rect key="frame" x="107" y="13" width="70" height="69"/>
-                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                            <state key="normal" title="+">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                            </state>
-                            <connections>
-                                <action selector="tapUploadImage:" destination="-1" eventType="touchUpInside" id="Uju-EO-T9r"/>
-                            </connections>
-                        </button>
                         <button hidden="YES" opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ecq-4O-TwH">
-                            <rect key="frame" x="190" y="13" width="70" height="69"/>
+                            <rect key="frame" x="215" y="6" width="90" height="90"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                            <state key="normal" title="+">
+                            <state key="normal" backgroundImage="icon_upload_image.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -286,9 +298,9 @@
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r10-l1-E6i">
-                            <rect key="frame" x="280" y="13" width="70" height="69"/>
+                            <rect key="frame" x="315" y="5" width="90" height="90"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                            <state key="normal" title="+">
+                            <state key="normal" backgroundImage="icon_upload_image.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
@@ -296,37 +308,27 @@
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" tag="14" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4IY-mi-A2S">
-                            <rect key="frame" x="377" y="13" width="70" height="70"/>
+                            <rect key="frame" x="415" y="6" width="90" height="90"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
-                            <state key="normal" title="+">
+                            <state key="normal" backgroundImage="icon_upload_image.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
                                 <action selector="tapUploadImage:" destination="-1" eventType="touchUpInside" id="htg-tm-sNp"/>
                             </connections>
                         </button>
-                        <imageView tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gft-1U-doV">
-                            <rect key="frame" x="15" y="13" width="70" height="70"/>
-                            <gestureRecognizers/>
-                        </imageView>
-                        <imageView tag="11" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eXx-z9-Oij">
-                            <rect key="frame" x="107" y="13" width="70" height="70"/>
-                            <gestureRecognizers/>
-                        </imageView>
-                        <imageView tag="12" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nB6-5P-8DC">
-                            <rect key="frame" x="190" y="13" width="70" height="70"/>
-                            <gestureRecognizers/>
-                        </imageView>
-                        <imageView tag="13" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X1t-3d-urL">
-                            <rect key="frame" x="280" y="13" width="70" height="70"/>
-                            <gestureRecognizers/>
-                        </imageView>
-                        <imageView tag="14" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Xk5-va-lFn">
-                            <rect key="frame" x="377" y="13" width="70" height="70"/>
-                            <gestureRecognizers/>
-                        </imageView>
-                        <button opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3x-SN-sNV">
-                            <rect key="frame" x="66" y="12" width="20" height="20"/>
+                        <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gMe-9L-cVN">
+                            <rect key="frame" x="115" y="6" width="90" height="90"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="9"/>
+                            <state key="normal" backgroundImage="icon_upload_image.png">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="tapUploadImage:" destination="-1" eventType="touchUpInside" id="Uju-EO-T9r"/>
+                            </connections>
+                        </button>
+                        <button hidden="YES" opaque="NO" tag="10" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F3x-SN-sNV">
+                            <rect key="frame" x="85" y="5" width="20" height="20"/>
                             <state key="normal" image="icon_cancel.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -334,8 +336,8 @@
                                 <action selector="tapDeleteImage:" destination="-1" eventType="touchUpInside" id="uDm-kd-LgZ"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X5w-ap-nwJ">
-                            <rect key="frame" x="157" y="12" width="20" height="20"/>
+                        <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X5w-ap-nwJ">
+                            <rect key="frame" x="185" y="6" width="20" height="20"/>
                             <state key="normal" image="icon_cancel.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -343,8 +345,8 @@
                                 <action selector="tapDeleteImage:" destination="-1" eventType="touchUpInside" id="RA6-5u-Xlt"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wk0-FP-uet">
-                            <rect key="frame" x="240" y="13" width="20" height="20"/>
+                        <button hidden="YES" opaque="NO" tag="12" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wk0-FP-uet">
+                            <rect key="frame" x="285" y="6" width="20" height="20"/>
                             <state key="normal" image="icon_cancel.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -352,8 +354,8 @@
                                 <action selector="tapDeleteImage:" destination="-1" eventType="touchUpInside" id="aI2-W5-1UU"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cY5-xz-dtK">
-                            <rect key="frame" x="330" y="12" width="20" height="20"/>
+                        <button hidden="YES" opaque="NO" tag="13" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cY5-xz-dtK">
+                            <rect key="frame" x="385" y="6" width="20" height="20"/>
                             <state key="normal" image="icon_cancel.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -361,8 +363,8 @@
                                 <action selector="tapDeleteImage:" destination="-1" eventType="touchUpInside" id="Pjx-Vc-SNc"/>
                             </connections>
                         </button>
-                        <button opaque="NO" tag="14" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJm-8L-j9W">
-                            <rect key="frame" x="427" y="13" width="20" height="20"/>
+                        <button hidden="YES" opaque="NO" tag="14" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lJm-8L-j9W">
+                            <rect key="frame" x="485" y="6" width="20" height="20"/>
                             <state key="normal" image="icon_cancel.png">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
@@ -374,12 +376,14 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                 </view>
             </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="622.5" y="158"/>
+            <point key="canvasLocation" x="344" y="185"/>
         </scrollView>
     </objects>
     <resources>
         <image name="icon_camera_grey_active.png" width="14" height="14"/>
         <image name="icon_cancel.png" width="20" height="20"/>
+        <image name="icon_upload_image.png" width="90" height="90"/>
     </resources>
 </document>

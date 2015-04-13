@@ -19,13 +19,13 @@
 #import "GeneralSwitchCell.h"
 #import "TransactionCartCostView.h"
 #import "TransactionCartEditViewController.h"
-#import "TransactionCartPaymentViewController.h"
 #import "TransactionCartShippingViewController.h"
 #import "AlertPickerView.h"
 #import "TransactionCartFormMandiriClickPayViewController.h"
 #import "TransactionCartWebViewViewController.h"
 #import "AlertInfoVoucherCodeView.h"
 #import "StickyAlertView.h"
+#import "GeneralTableViewController.h"
 
 #import "TxEmoney.h"
 
@@ -38,9 +38,9 @@
     TransactionCartCellDelegate,
     TransactionCartHeaderViewDelegate,
     GeneralSwitchCellDelegate,
+    GeneralTableViewControllerDelegate,
     UIActionSheetDelegate,
     UIAlertViewDelegate,
-    TransactionCartPaymentViewControllerDelegate,
     TKPDAlertViewDelegate,
     UITextFieldDelegate,
     TransactionCartMandiriClickPayFormDelegate,
@@ -106,7 +106,6 @@
     NSMutableArray *_senderNameDropshipper;
     NSMutableArray *_senderPhoneDropshipper;
     NSMutableArray *_dropshipStrList;
-    NSMutableArray *_cartErrorMessage;
     
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
@@ -130,6 +129,10 @@
     
     TokopediaNetworkManager *_networkManager;
 }
+@property (weak, nonatomic) IBOutlet UIView *paymentMethodView;
+@property (weak, nonatomic) IBOutlet UIView *paymentMethodSelectedView;
+@property (weak, nonatomic) IBOutlet UIButton *choosePaymentButton;
+@property (strong, nonatomic) IBOutletCollection(UILabel) NSArray *selectedPaymentMethodLabels;
 
 @property (weak, nonatomic) IBOutlet UIView *voucerCodeBeforeTapView;
 @property (weak, nonatomic) IBOutlet UIButton *voucherCodeButton;
@@ -205,6 +208,7 @@
 -(void)requestFailureActionEditProductCart:(id)object;
 -(void)requestProcessActionEditProductCart:(id)object;
 -(void)requestTimeoutActionEditProductCart;
+@property (strong, nonatomic) IBOutlet UITableViewCell *voucherUsedCell;
 
 - (IBAction)tap:(id)sender;
 @end
@@ -212,6 +216,7 @@
 #define TAG_ALERT_PARTIAL 13
 #define DATA_PARTIAL_SECTION @"data_partial"
 #define DATA_CART_GRAND_TOTAL_BEFORE_DECREASE @"data_grand_totoal"
+#define DATA_DETAIL_CART_FOR_SHIPMENT @"data_detail_cart_fort_shipment"
 
 @implementation TransactionCartViewController
 @synthesize indexPage =_indexPage;
@@ -230,7 +235,6 @@
     _senderNameDropshipper = [NSMutableArray new];
     _senderPhoneDropshipper = [NSMutableArray new];
     _dropshipStrList = [NSMutableArray new];
-    _cartErrorMessage = [NSMutableArray new];
     _stockPartialDetail = [NSMutableArray new];
     _listProductFirstObjectIndexPath =[NSMutableArray new];
     _mapping = [TransactionObjectMapping new];
@@ -250,11 +254,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:)
                name:UIKeyboardWillHideNotification
              object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:)
+                                                 name:SHOULD_REFRESH_CART
+                                               object:nil];
     
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
-    
-    [_dataInput setObject:@(-1) forKey:API_GATEWAY_LIST_ID_KEY];
     
     _isnodata = YES;
     _isLoadingRequest = NO;
@@ -293,19 +298,51 @@
     
     _saldoTokopediaAmountTextField.delegate = self;
     
-    [_saldoTokopediaAmountTextField addTarget:self
-                                       action:@selector(saldoTextFieldDidChange:)
-                             forControlEvents:UIControlEventEditingChanged];
+//    [_saldoTokopediaAmountTextField addTarget:self
+//                                       action:@selector(saldoTextFieldDidChange:)
+//                             forControlEvents:UIControlEventEditingChanged];
+    
+    _tableView.contentInset = UIEdgeInsetsMake(22, 0, 0, 0);
+
+    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+    [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    self.navigationController.title = @"Keranjang";
+    
     if (_indexPage==1)[self adjustTableViewData:_data];
     if (_shouldRefresh && _indexPage == 0) {
         _isnodata = YES;
+        [_dataInput removeAllObjects];
+        TransactionCartGateway *gateway = [TransactionCartGateway new];
+        gateway.gateway = @(-1);
+        [_dataInput setObject:gateway forKey:DATA_CART_GATEWAY_KEY];
+        [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:@"Pilih"];
+        [_tableView reloadData];
+        
+        _saldoTokopediaAmountTextField.text = @"";
+        
+        _voucherCodeButton.hidden = NO;
+        _voucherAmountLabel.hidden = YES;
+        _buttonVoucherInfo.hidden = NO;
+        _buttonCancelVoucher.hidden = YES;
+        
         [self configureRestKitCart];
         [self requestCart];
+    }
+    if (_indexPage == 0) {
+        TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+        [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
+    }
+    else
+    {
+        _passwordTextField.text = @"";
+        TransactionCartGateway *selectedGateway = [_data objectForKey:DATA_CART_GATEWAY_KEY];
+        [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:selectedGateway.gateway_name?:@"Pilih"];
     }
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
@@ -317,9 +354,21 @@
 
     _tableView.scrollsToTop = YES;
 
-    if (_indexPage > 0) {
-        _tableView.contentInset = UIEdgeInsetsMake(-44, 0, 0, 0);
-        _tableView.contentOffset = CGPointMake(0, 0);
+    
+    if (_isnodata) {
+        _paymentMethodView.hidden = YES;
+        _paymentMethodSelectedView.hidden = YES;
+    }
+    else
+    {
+        if (_indexPage == 0) {
+            _paymentMethodView.hidden = NO;
+            _paymentMethodSelectedView.hidden = YES;
+        }
+        else if (_indexPage == 1) {
+            _paymentMethodView.hidden = YES;
+            _paymentMethodSelectedView.hidden = NO;
+        }
     }
     
     _checkoutButton.layer.cornerRadius = 2;
@@ -327,6 +376,8 @@
 
     _buyButton.layer.cornerRadius = 2;
     _buyButton.layer.opacity = 1;
+    
+    
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -334,7 +385,6 @@
     [super viewWillDisappear:animated];
     
     self.title = @"";
-    self.navigationController.title = @"";
 }
 
 - (void)didReceiveMemoryWarning {
@@ -344,7 +394,7 @@
 #pragma mark - Table View Data Source
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger sectionCount = _list.count + 2;
+    NSInteger sectionCount = _list.count + 1;
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     if (_indexPage == 0) {
         sectionCount = sectionCount +1;
@@ -375,8 +425,7 @@
     }
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
 
-    if (section == 0) rowCount = 1;
-    else if (section == listCount+1) {
+    if (section == listCount) {
         switch ([_cartSummary.gateway integerValue]) {
             case TYPE_GATEWAY_MANDIRI_CLICK_PAY:
             case TYPE_GATEWAY_MANDIRI_E_CASH:
@@ -392,14 +441,17 @@
                 else rowCount = ([_cartSummary.deposit_amount integerValue]>0&&[_cartSummary.gateway integerValue]!=TYPE_GATEWAY_TOKOPEDIA)?4:3;
                 break;
         }
+        if ([_cartSummary.voucher_amount integerValue]>0) {
+            rowCount +=1;
+        }
     }
-    else if (section <= listCount) {
-        TransactionCartList *list = _list[section-1];
+    else if (section < listCount) {
+        TransactionCartList *list = _list[section];
         NSArray *products = list.cart_products;
-        NSIndexPath *indexPathFirstObjectProduct = (NSIndexPath*)_listProductFirstObjectIndexPath[section-1];
-        rowCount = (_indexPage==0)?indexPathFirstObjectProduct.row+[_rowCountExpandCellForDropshipper[section-1]integerValue]:indexPathFirstObjectProduct.row+products.count+1;
+        NSIndexPath *indexPathFirstObjectProduct = _listProductFirstObjectIndexPath[section];
+        rowCount = (_indexPage==0)?indexPathFirstObjectProduct.row+[_rowCountExpandCellForDropshipper[section]integerValue]:indexPathFirstObjectProduct.row+products.count+1;
     }
-    else if (_indexPage == 0 && section == listCount+2 &&
+    else if (_indexPage == 0 && section == listCount+1 &&
              ![selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] &&
              ![selectedGateway.gateway isEqual:@(-1)] &&
              !([self depositAmountUser] == 0))
@@ -418,215 +470,60 @@
     
     UITableViewCell* cell = nil;
 
-    NSInteger listCount = _list.count;
-    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-    NSArray *gatewayList = _cart.gateway_list;
-    BOOL isNullDeposit = YES;
-    for (TransactionCartGateway *gateway in gatewayList) {
-        if([gateway.gateway  isEqual: @(0)])
-            isNullDeposit = NO;
-    }
-    if (indexPath.section == 0) {
-        if (_indexPage == 0) {
-            cell = _paymentGatewayCell;
-            cell.detailTextLabel.text = selectedGateway.gateway_name?:STRING_DEFAULT_PAYMENT;
-        }
-        else
-        {
-            cell = _paymentGatewaySummaryCell;
-            cell.detailTextLabel.text = _cartSummary.gateway_name?:@"";
-        }
-
-    }
-    else if (indexPath.section > 0 && indexPath.section <=listCount)
-    {
-        NSIndexPath *indexPathFirstObjectProduct = (NSIndexPath*)_listProductFirstObjectIndexPath[indexPath.section-1];
-        TransactionCartList *list = _list[indexPath.section-1];
-        NSArray *products = list.cart_products;
-        NSInteger rowCount = products.count;
-        
-        if (indexPath.section <= listCount) {
-            NSIndexPath *indexPathWithoutErrorCell = [NSIndexPath indexPathForRow:labs(indexPathFirstObjectProduct.row-indexPath.row) inSection:indexPath.section];
-            if (indexPath.row<indexPathFirstObjectProduct.row) {
-                ((UILabel*)_errorLabel[0]).text = list.cart_error_message_1;
-                NSString *string = list.cart_error_message_1;
-                [(UILabel*)_errorLabel[0] setCustomAttributedText:string];
-                cell = _errorCells[indexPath.row];
-            }
-            else if (labs(indexPathFirstObjectProduct.row-indexPath.row) < rowCount)
-                cell = [self cellTransactionCartAtIndexPath:indexPathWithoutErrorCell];
-            else
-            {
-                //otherCell
-                if (indexPath.row == indexPathFirstObjectProduct.row+rowCount)
-                    cell = [self cellDetailShipmentAtIndexPath:indexPathWithoutErrorCell];
-                else if (indexPath.row == indexPathFirstObjectProduct.row+rowCount+1)
-                    cell = [self cellPartialStockAtIndextPath:indexPathWithoutErrorCell];
-                else if (indexPath.row == indexPathFirstObjectProduct.row+rowCount+2)
-                    cell = [self cellIsDropshipperAtIndextPath:indexPath];
-                else if (indexPath.row > indexPathFirstObjectProduct.row+rowCount+2){
-                    if (indexPath.row == indexPathFirstObjectProduct.row+rowCount+3)
-                        cell = [self cellTextFieldPlaceholder:@"Nama Pengirim" atIndexPath:indexPath];
-                    else
-                        cell = [self cellTextFieldPlaceholder:@"Nomer Telepon" atIndexPath:indexPath];
-                }
-            }
-        }
-    }
-    else if (indexPath.section == listCount+1)
-    {
-        switch (indexPath.row) {
-            case 0:
-                cell = (_indexPage==0)?_voucerCell:_totalInvoiceCell;
-                cell.detailTextLabel.text =_cartSummary.grand_total_before_fee_idr;
-                break;
-            case 1:
-                if ([_cartSummary.deposit_amount integerValue]>0 &&
-                    [_cartSummary.gateway integerValue]!=TYPE_GATEWAY_TRANSFER_BANK) {
-                    cell = _usedSaldoCell;
-                    [cell.detailTextLabel setText:_cartSummary.deposit_amount_idr animated:YES];
-                }
-                else{
-                    switch ([_cartSummary.gateway integerValue]) {
-                        case TYPE_GATEWAY_MANDIRI_CLICK_PAY:
-                        case TYPE_GATEWAY_MANDIRI_E_CASH:
-                        case TYPE_GATEWAY_CLICK_BCA:
-                            cell = _totalPaymentCell;
-                            [cell.detailTextLabel setText:(_indexPage==0)?_cart.grand_total_idr:_cartSummary.payment_left_idr animated:YES];
-                            break;
-                        case TYPE_GATEWAY_TRANSFER_BANK:
-                            cell = _transferCodeCell;
-                            [cell.detailTextLabel setText:_cartSummary.conf_code_idr animated:YES];
-                            break;
-                        case TYPE_GATEWAY_TOKOPEDIA:
-                            cell = _usedSaldoCell;
-                            [cell.detailTextLabel setText:_cartSummary.deposit_amount_idr animated:YES];
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                break;
-            case 2:
-            {
-                if (_indexPage == 0) {
-                    cell = _saldoTextFieldCell;
-                    [cell.detailTextLabel setText:_cart.grand_total_idr animated:YES];
-                }
-                else
-                {
-                    cell = ([_cartSummary.deposit_amount integerValue]>0 &&
-                            [_cartSummary.gateway integerValue]==TYPE_GATEWAY_TRANSFER_BANK)
-                                ?_usedSaldoCell:
-                                _totalPaymentCell;
-                    [cell.detailTextLabel setText:([_cartSummary.deposit_amount integerValue]>0 &&
-                                                   [_cartSummary.gateway integerValue]==TYPE_GATEWAY_TRANSFER_BANK)?_cartSummary.deposit_amount_idr:_cartSummary.payment_left_idr animated:YES];
-                }
-                break;
-            }
-            case 3:
-                cell = _totalPaymentCell;
-                [cell.detailTextLabel setText:_cartSummary.payment_left_idr animated:YES];
-            default:
-                break;
-        }
-    }
-    else if (indexPath.section == listCount+2 && _indexPage == 0) {
-        if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
-            [selectedGateway.gateway isEqual:@(-1)] ||
-            [self depositAmountUser] == 0
-            )
-        {
-            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-            formatter.currencyCode = @"Rp ";
-            formatter.currencyGroupingSeparator = @".";
-            formatter.currencyDecimalSeparator = @",";
-            formatter.maximumFractionDigits = 0;
-            formatter.minimumFractionDigits = 0;
-            
-            NSString *depositAmount = [_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-            NSInteger deposit = [depositAmount integerValue];
-            NSNumber *grandTotalBefore = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
-            NSInteger grandTotal = [grandTotalBefore integerValue] - deposit;
-            _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotal]];
-            _cart.grand_total_idr = [[formatter stringFromNumber:[NSNumber numberWithInteger:grandTotal]] stringByAppendingString:@",-"];
-            _grandTotalLabel.text = _cart.grand_total_idr;
-            cell = _totalPaymentCell;
-            [cell.detailTextLabel setText:_cart.grand_total_idr];
-        }
-        else
-        {
-            cell = _saldoTokopediaCell;
-            if (indexPath.row == 0) {
-                UISwitch *switchSaldo = (UISwitch *)[cell viewWithTag:1];
-                [switchSaldo addTarget:self
-                                action:@selector(changeSwitchSaldo:)
-                      forControlEvents:UIControlEventValueChanged];
-                _switchSaldoIndexPath = indexPath;
-            }
-            if (indexPath.row==1) {
-                cell = _saldoTextFieldCell;
-            }
-        }
-    }
-    else if (indexPath.section == listCount+3 &&_indexPage == 0)
+    NSInteger shopCount = _list.count;
+    
+    if (indexPath.section <shopCount)
+        cell = [self cellListCartByShopAtIndexPath:indexPath];
+    else if (indexPath.section == shopCount)
+        cell = [self cellPaymentInformationAtIndexPath:indexPath];
+    else if (indexPath.section == shopCount+1 && _indexPage == 0)
+        cell = [self cellAdjustDepositAtIndexPath:indexPath];
+    else if (indexPath.section == shopCount+2 &&_indexPage == 0)
     {
         cell = _totalPaymentCell;
         [cell.detailTextLabel setText:_cart.grand_total_idr];
     }
     else
-    {
         cell = _passwordCell;
-    }
+    
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
 }
 
--(NSInteger)depositAmountUser
-{
-    NSString *depositAmountUser = _cart.deposit_idr;
-    depositAmountUser = [depositAmountUser stringByReplacingOccurrencesOfString:@"." withString:@""];
-    depositAmountUser = [depositAmountUser stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
-    depositAmountUser = [depositAmountUser stringByReplacingOccurrencesOfString:@"," withString:@""];
-    depositAmountUser = [depositAmountUser stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    return [depositAmountUser integerValue];
-}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 #define DEFAULT_ROW_HEIGHT 44
-#define CELL_ROW_HEIGHT 212
+#define CELL_PRODUCT_ROW_HEIGHT 212
     
     NSInteger listCount = _list.count;
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
 
-    if (indexPath.section == 0) {
-        return DEFAULT_ROW_HEIGHT;
-    }
-    else if (indexPath.section <= listCount)
+    if (indexPath.section < listCount)
     {
-        TransactionCartList *list = _list[indexPath.section-1];
+        TransactionCartList *list = _list[indexPath.section];
         NSArray *products = list.cart_products;
         
-        NSIndexPath *indexPathFirstObjectProduct = (NSIndexPath*)_listProductFirstObjectIndexPath[indexPath.section-1];
-        //TODO:: if errorMessage
+        NSIndexPath *indexPathFirstObjectProduct = (NSIndexPath*)_listProductFirstObjectIndexPath[indexPath.section];
+
+        //adjust height error message by shop
         if (indexPath.row < indexPathFirstObjectProduct.row) {
             return ((UITableViewCell*)_errorCells[0]).frame.size.height;
         }
         else if (labs(indexPathFirstObjectProduct.row-indexPath.row)<products.count) {
-            return CELL_ROW_HEIGHT;
+            return CELL_PRODUCT_ROW_HEIGHT;
         }
         else
         {
             if ( indexPath.row == indexPathFirstObjectProduct.row+2 && [list.cart_total_product integerValue]<=1) {
+                //adjust total partial cell tidak muncul ketika jumlah barang hanya 1
                 return 0;
             }
             return DEFAULT_ROW_HEIGHT;
         }
         
     }
-    else if (indexPath.section == listCount+1)
+    else if (indexPath.section == listCount)
     {
         NSArray *gatewayList = _cart.gateway_list;
         BOOL isNullDeposit = YES;
@@ -634,7 +531,7 @@
             if([gateway.gateway  isEqual:@(0)]) isNullDeposit = NO;
         }
         if (indexPath.row == 1) {
-            return ([selectedGateway.gateway isEqual: @(0)])?_totalPaymentCell.frame.size.height:(_indexPage==0)?_saldoTokopediaCell.frame.size.height:DEFAULT_ROW_HEIGHT;
+            return ([selectedGateway.gateway isEqual: @(TYPE_GATEWAY_TOKOPEDIA)])?_totalPaymentCell.frame.size.height:(_indexPage==0)?_saldoTokopediaCell.frame.size.height:DEFAULT_ROW_HEIGHT;
         }
 
         else
@@ -646,99 +543,34 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (section <= _list.count) return 44;
+    if (section < _list.count) return 44;
     return 0;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
+#define HEIGHT_VIEW_SUBTOTAL 156
+#define HEIGHT_VIEW_TOTAL_DEPOSIT 30
+    
     TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     NSInteger listCount = _list.count;
-    if (section == 0)
-        return 20;
-    else if (section <= listCount)
-        return 156;
-    else if(section == listCount+1)
+    
+    if (section < listCount)
+        return HEIGHT_VIEW_SUBTOTAL;
+    else if(section == listCount)
     {
         if (_indexPage==1 && [_cartSummary.deposit_amount integerValue]>0) {
             return 0;
         }
     }
-    else if (section == _list.count+2 && _indexPage == 0) {
+    else if (section == _list.count+1 && _indexPage == 0) {
         if (![selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] &&
             ![selectedGateway.gateway isEqual:@(-1)] &&
             !([self depositAmountUser] == 0)) {
-            return 30;
+            return HEIGHT_VIEW_TOTAL_DEPOSIT;
         }
     }
     return 0;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    
-    if(section <= _list.count && section>0)
-    {
-        TransactionCartList *list = _list[section-1];
-        NSString *shopName = list.cart_shop.shop_name;
-        
-        TransactionCartHeaderView *headerView = [TransactionCartHeaderView newview];
-        headerView.shopNameLabel.text = shopName;
-        if (_indexPage==1) {
-            headerView.shopNameLabel.textColor = [UIColor blackColor];
-            headerView.deleteButton.hidden = YES;
-            headerView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1];
-        }
-        headerView.section = section-1;
-        headerView.delegate = self;
-        return headerView;
-    }
-    else
-    {
-        return nil;
-    }
-}
-
--(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-    if (section <= _list.count && section > 0)
-    {
-        TransactionCartList *list = _list[section-1];
-        TransactionCartCostView *footerView = [TransactionCartCostView newview];
-        footerView.biayaInsuranceLabel.text = ([list.cart_logistic_fee integerValue]==0)?@"Biaya Asuransi":@"Biaya Tambahan";
-        footerView.infoButton.hidden = ([list.cart_logistic_fee integerValue]==0);
-        [footerView.subtotalLabel setText:list.cart_total_product_price_idr animated:YES];
-        NSInteger aditionalFeeValue = [list.cart_logistic_fee integerValue]+[list.cart_insurance_price integerValue];
-        NSString *formatAdditionalFeeValue = [NSString stringWithFormat:@"Rp %zd,-",aditionalFeeValue];
-        [footerView.insuranceLabel setText:formatAdditionalFeeValue animated:YES];
-        [footerView.shippingCostLabel setText:list.cart_shipping_rate_idr animated:YES];
-        [footerView.totalLabel setText:list.cart_total_amount_idr animated:YES];
-        return footerView;
-    }
-    else if (section == _list.count+1)
-    {
-        if (_indexPage==1 && [_cartSummary.deposit_amount integerValue]>0) {
-            return nil;
-        }
-    }
-    else if (section == _list.count+2 && _indexPage == 0) {
-        if (![selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] &&
-            ![selectedGateway.gateway isEqual:@(-1)] &&
-            !([self depositAmountUser]==0))
-        {
-            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
-
-            UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width-15, 34)];
-            label.text = [NSString stringWithFormat:@"(Saldo Tokopedia anda %@)", _cart.deposit_idr];
-            label.font = [UIFont fontWithName:@"GothamBook" size:12];
-            label.textColor = [UIColor grayColor];
-            [view addSubview:label];
-            
-            return view;
-        }
-    }
-    return nil;
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -762,26 +594,16 @@
 {
     if (!_isLoadingRequest) {
         NSInteger listCount = _list.count;
-        if (indexPath.section == 0) {
-            if (_indexPage == 0) {
-                NSIndexPath *selectedIndexPathGateway = [_dataInput objectForKey:DATA_INDEXPATH_SELECTED_GATEWAY_CART_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                TransactionCartPaymentViewController *paymentViewController = [TransactionCartPaymentViewController new];
-                paymentViewController.data = @{DATA_CART_GATEWAY_KEY:_cart.gateway_list,
-                                               DATA_INDEXPATH_KEY:selectedIndexPathGateway};
-                paymentViewController.delegate = self;
-                [self.navigationController pushViewController:paymentViewController animated:YES];
-            }
-        }
-        else if (indexPath.section == listCount+1)
+        if (indexPath.section == listCount)
         {
             if (indexPath.row == 1) {
                 
             }
         }
-        else if (indexPath.section <= listCount) {
-            NSUInteger indexCart = indexPath.section-1;
-            NSIndexPath *indexPathFirstObjectProduct = (NSIndexPath*)_listProductFirstObjectIndexPath[indexPath.section-1];
-            TransactionCartList *list = _list[indexPath.section-1];
+        else if (indexPath.section < listCount) {
+            NSUInteger indexCart = indexPath.section;
+            NSIndexPath *indexPathFirstObjectProduct = (NSIndexPath*)_listProductFirstObjectIndexPath[indexPath.section];
+            TransactionCartList *list = _list[indexPath.section];
             NSArray *products = list.cart_products;
             NSInteger rowCount = products.count;
             
@@ -790,8 +612,9 @@
                 shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list,
                                                 DATA_DROPSHIPPER_NAME_KEY: _senderNameDropshipper[indexCart]?:@"",
                                                 DATA_DROPSHIPPER_PHONE_KEY:_senderPhoneDropshipper[indexCart]?:@"",
-                                                DATA_INDEX_KEY : @(indexPath.section-1)
+                                                DATA_INDEX_KEY : @(indexPath.section)
                                                 };
+                [_dataInput setObject:list forKey:DATA_DETAIL_CART_FOR_SHIPMENT];
                 shipmentViewController.indexPage = _indexPage;
                 shipmentViewController.delegate = self;
                 [self.navigationController pushViewController:shipmentViewController animated:YES];
@@ -884,6 +707,11 @@
 -(void)requestCart
 {
     if (_requestCart.isExecuting) return;
+    
+    if ([((UILabel*)_selectedPaymentMethodLabels[0]).text isEqualToString:@"Pilih"]) {
+        [_dataInput setObject:@(-1) forKey:API_GATEWAY_LIST_ID_KEY];
+    }
+    
     NSTimer *timer;
     
     NSDictionary *param = @{};
@@ -904,7 +732,6 @@
         [self requestFailureCart:error];
         [_refreshControl endRefreshing];
         [timer invalidate];
-        _tableView.tableFooterView = nil;
         [_act stopAnimating];
         _isLoadingRequest = NO;
     }];
@@ -949,72 +776,19 @@
                     [alert show];
                 }
                 else{
+                    
                     [_list removeAllObjects];
-                    //if (_isRefreshRequest) {
-                    //    [_rowCountExpandCellForDropshipper removeAllObjects];
-                    //    [_isDropshipper removeAllObjects];
-                    //    [_stockPartialStrList removeAllObjects];
-                    //    [_senderNameDropshipper removeAllObjects];
-                    //    [_senderPhoneDropshipper removeAllObjects];
-                    //    [_dropshipStrList removeAllObjects];
-                    //    [_cartErrorMessage removeAllObjects];
-                    //    [_listProductFirstObjectIndexPath removeAllObjects];
-                    //    [_stockPartialDetail removeAllObjects];
-                    //}
+                    
                     NSArray *list = cart.result.list;
                     [_list addObjectsFromArray:list];
-                    if (_list.count>0) {
-                        _isnodata = NO;
-                    }
-                    else
-                    {
-                        _isnodata = YES;
-                    }
-                    [_delegate isNodata:_isnodata];
-                    _cart = cart.result;
-                    NSInteger listCount = _list.count;
-                    for (int i = 0; i<listCount; i++) {
-                        TransactionCartList *list = _list[i];
-                        NSArray *products = list.cart_products;
-                        NSInteger productCount = products.count;
-                        NSInteger rowCount = productCount+3;
-                        
-                        //TODO:: adjust when error message appear~
-                        NSIndexPath *firstProductIndexPath = [NSIndexPath indexPathForRow:0 inSection:i+1];
-                        if (![list.cart_error_message_1 isEqualToString:@"0"]||![list.cart_error_message_2 isEqualToString:@"0"])
-                            firstProductIndexPath = [NSIndexPath indexPathForRow:1 inSection:i+1];
-                        //if (![list.cart_error_message_2 isEqualToString:@"0"])
-                        //   firstProductIndexPath = [NSIndexPath indexPathForRow:2 inSection:i+1];
-                        
-                        if (_isDropshipper.count <listCount) {
-                            [_listProductFirstObjectIndexPath addObject:firstProductIndexPath];
-                            [_rowCountExpandCellForDropshipper addObject:@(rowCount)];
-                            [_isDropshipper addObject:@(NO)];
-                            [_stockPartialStrList addObject:@""];
-                            [_senderNameDropshipper addObject:@""];
-                            [_senderPhoneDropshipper addObject:@""];
-                            [_dropshipStrList addObject:@""];
-                            [_stockPartialDetail addObject:@(0)];
-                        }
-
-                    }
-                    if (listCount>0) {
-                        NSInteger indexSelectedShipment = [[_dataInput objectForKey:DATA_INDEX_KEY] integerValue]?:0;
-                        NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:((TransactionCartList*)_list[indexSelectedShipment])};
-                        [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_POST_NOTIFICATION_NAME object:nil userInfo:info];
-                        _checkoutView.hidden = NO;
-                        _tableView.tableFooterView = _checkoutView;
-                    }
                     
-                    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
-                    [_tableView reloadData];
-                    _tableView.contentInset = UIEdgeInsetsMake(-44, 0, 0, 0);
+                    _cart = cart.result;
+                    
+                    [self adjustAfterUpdateList];
                 }
             }
         }
         else {
-            
-            [self cancelCartRequest];
             NSError *error = object;
             if ([error code] != NSURLErrorCancelled) {
                 NSString *errorDescription = error.localizedDescription;
@@ -1025,9 +799,76 @@
     }
 }
 
+-(void)adjustAfterUpdateList
+{
+    
+    if (_list.count>0) {
+        _isnodata = NO;
+    }
+    else
+    {
+        _isnodata = YES;
+        _paymentMethodView.hidden = YES;
+    }
+    [_delegate isNodata:_isnodata];
+    
+    
+    NSInteger listCount = _list.count;
+    [self resetAllArray];
+    
+    for (int i = 0; i<listCount; i++) {
+        TransactionCartList *list = _list[i];
+
+        NSArray *products = list.cart_products;
+        NSInteger productCount = products.count;
+        NSInteger rowCount = productCount+3;
+        
+        NSIndexPath *firstProductIndexPath = [NSIndexPath indexPathForRow:0 inSection:i];
+        if (![list.cart_error_message_1 isEqualToString:@"0"]||![list.cart_error_message_2 isEqualToString:@"0"])
+            firstProductIndexPath = [NSIndexPath indexPathForRow:1 inSection:i];
+        
+        [_listProductFirstObjectIndexPath addObject:firstProductIndexPath];
+        [_rowCountExpandCellForDropshipper addObject:@(rowCount)];
+
+        [self addArrayObjectTemp];
+        
+    }
+    if (listCount>0) {
+        NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:[_dataInput objectForKey:DATA_DETAIL_CART_FOR_SHIPMENT]?:[TransactionCartList new]};
+        [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_POST_NOTIFICATION_NAME object:nil userInfo:info];
+        _checkoutView.hidden = NO;
+        _tableView.tableFooterView = _checkoutView;
+        
+        if (_indexPage == 0) {
+            _paymentMethodView.hidden = NO;
+            _paymentMethodSelectedView.hidden = YES;
+        }
+        else if (_indexPage == 1) {
+            _paymentMethodView.hidden = YES;
+            _paymentMethodSelectedView.hidden = NO;
+        }
+    }
+    
+    [_dataInput setObject:_cart.grand_total forKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+    
+    NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+    NSString *depositAmount = [_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
+    NSInteger deposit = [depositAmount integerValue];
+    NSInteger grandTotalInteger = [grandTotal integerValue] - deposit;
+    _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
+
+    _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+    
+    _grandTotalLabel.text = ([_cart.grand_total integerValue]<=0)?@"Rp 0,-":_cart.grand_total_idr;
+    
+    [_tableView reloadData];
+
+}
+
+
 -(void)requestTimeoutCart
 {
-    [self cancelCartRequest];
+    //[self cancelCartRequest];
 }
 
 #pragma mark - Request Cancel Cart
@@ -1158,7 +999,27 @@
                         StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
                         [alert show];
                         
+                        NSIndexPath *indexPathCancelProduct = [_dataInput objectForKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
+                        TransactionCartList *list = _list[indexPathCancelProduct.section];
+                        
+                        NSInteger type = [[_dataInput objectForKey:DATA_CANCEL_TYPE_KEY]integerValue];
+                        NSMutableArray *products = [NSMutableArray new];
+                        [products addObjectsFromArray:list.cart_products];
+                        ProductDetail *product = products[indexPathCancelProduct.row];
+                        
+                        if (type == TYPE_CANCEL_CART_PRODUCT ) {
+                            [products removeObject:product];
+                            ((TransactionCartList*)[_list objectAtIndex:indexPathCancelProduct.section]).cart_products = products;
+                        }
+                        else
+                        {
+                            [_list removeObject:list];
+                        }
+                        
+                        [self adjustAfterUpdateList];
+                                                
                         [self refreshView:nil];
+                        
                     }
                 }
             }
@@ -1278,9 +1139,7 @@
     
     NSString *token = _cart.token;
     
-    NSIndexPath *selectedIndexPathGateway = [userInfo objectForKey:DATA_INDEXPATH_SELECTED_GATEWAY_CART_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    NSArray *gateway_list = _cart.gateway_list;
-    TransactionCartGateway *gateway = gateway_list[selectedIndexPathGateway.row];
+    TransactionCartGateway *gateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
     NSNumber *gatewayID = gateway.gateway;
     
     NSMutableArray *tempDropshipStringList = [NSMutableArray new];
@@ -1302,7 +1161,7 @@
     NSString * partialString = [[tempPartialStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
     NSDictionary *partialDetail = [userInfo objectForKey:DATA_PARTIAL_LIST_KEY]?:@{};
     
-    NSNumber *usedSaldo = _isUsingSaldoTokopedia?[_dataInput objectForKey:DATA_USED_SALDO_KEY]:@"0";
+    NSNumber *usedSaldo = _isUsingSaldoTokopedia?[_dataInput objectForKey:DATA_USED_SALDO_KEY]?:@"0":@"0";
     
     NSString *voucherCode = [userInfo objectForKey:API_VOUCHER_CODE_KEY]?:@"";
     
@@ -1313,10 +1172,12 @@
                                       API_DROPSHIP_STRING_KEY:dropshipString,
                                       API_PARTIAL_STRING_KEY :partialString,
                                       API_USE_DEPOSIT_KEY:@(_isUsingSaldoTokopedia),
-                                      API_DEPOSIT_AMT_KEY:usedSaldo,
-                                      API_VOUCHER_CODE_KEY : voucherCode
+                                      API_DEPOSIT_AMT_KEY:usedSaldo
                                       };
     
+    if (![voucherCode isEqualToString:@""]) {
+        [param setObject:voucherCode forKey:API_VOUCHER_CODE_KEY];
+    }
     [param addEntriesFromDictionary:paramDictionary];
     [param addEntriesFromDictionary:dropshipperDetail];
     [param addEntriesFromDictionary:partialDetail];
@@ -1328,11 +1189,11 @@
          _checkoutButton.enabled = YES;
         [self requestSuccessActionCheckout:mappingResult withOperation:operation];
         [timer invalidate];
-        _tableView.tableFooterView = _buyView;
+        _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
          _checkoutButton.enabled = YES;
         [self requestFailureActionCheckout:error];
-        _tableView.tableFooterView = _buyView;
+        _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
         [timer invalidate];
     }];
     
@@ -1377,11 +1238,13 @@
                     [alert show];
                 }
                 else{
+                    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
                     NSDictionary *userInfo = @{DATA_CART_SUMMARY_KEY:cart.result.transaction?:[TransactionSummaryDetail new],
                                                DATA_DROPSHIPPER_NAME_KEY: _senderNameDropshipper?:@"",
                                                DATA_DROPSHIPPER_PHONE_KEY:_senderPhoneDropshipper?:@"",
                                                DATA_PARTIAL_LIST_KEY:_stockPartialStrList?:@{},
-                                               DATA_TYPE_KEY:@(TYPE_CART_SUMMARY)
+                                               DATA_TYPE_KEY:@(TYPE_CART_SUMMARY),
+                                               DATA_CART_GATEWAY_KEY :selectedGateway
                                                };
                     [_delegate didFinishRequestCheckoutData:userInfo];
                 }
@@ -1563,12 +1426,10 @@
                             break;
                         case TYPE_GATEWAY_MANDIRI_CLICK_PAY:
                         {
-                            TransactionCartFormMandiriClickPayViewController *vc = [TransactionCartFormMandiriClickPayViewController new];
-                            vc.data = @{DATA_KEY:_dataInput,
-                                        DATA_CART_SUMMARY_KEY: _cartSummary
-                                        };
-                            vc.delegate = self;
-                            [self.navigationController pushViewController:vc animated:YES];
+                            //NSDictionary *data = @{DATA_KEY:_dataInput,
+                            //                      DATA_CART_SUMMARY_KEY: _cartSummary
+                            //                       };
+                            //[_delegate pushVC:self toMandiriClickPayVCwithData:data];
                         }
                             break;
                         default:
@@ -1593,7 +1454,9 @@
                             vc.cartDetail = _cartSummary;
                             vc.emoney_code = cart.result.transaction.emoney_code;
                             vc.delegate = self;
+                            self.navigationController.hidesBottomBarWhenPushed = YES;
                             [self.navigationController pushViewController:vc animated:YES];
+                            self.navigationController.hidesBottomBarWhenPushed = NO;
                         }
                             break;
                         default:
@@ -1725,6 +1588,7 @@
             if (status) {
                 if(dataVoucher.message_error)
                 {
+                    [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
                     NSArray *errorMessages = dataVoucher.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
                     [alert show];
@@ -2217,12 +2081,10 @@
                     break;
                 case TYPE_GATEWAY_MANDIRI_CLICK_PAY:
                 {
-                    TransactionCartFormMandiriClickPayViewController *vc = [TransactionCartFormMandiriClickPayViewController new];
-                    vc.data = @{DATA_KEY:_dataInput,
-                                DATA_CART_SUMMARY_KEY: _cartSummary
-                                };
-                    vc.delegate = self;
-                    [self.navigationController pushViewController:vc animated:YES];
+                    NSDictionary *data = @{DATA_KEY:_dataInput,
+                                           DATA_CART_SUMMARY_KEY: _cartSummary
+                                           };
+                    [_delegate pushVC:self toMandiriClickPayVCwithData:data];
                 }
                     break;
                 case TYPE_GATEWAY_CLICK_BCA:
@@ -2233,7 +2095,9 @@
                     vc.token = _cartSummary.token;
                     vc.cartDetail = _cartSummary;
                     vc.delegate = self;
+                    self.navigationController.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:vc animated:YES];
+                    self.navigationController.hidesBottomBarWhenPushed = NO;
                     break;
                 }
                 case TYPE_GATEWAY_MANDIRI_E_CASH:
@@ -2266,6 +2130,24 @@
         [self.tableView deleteRowsAtIndexPaths:@[indexPath1] withRowAnimation:UITableViewRowAnimationAutomatic];
         [self.tableView endUpdates];
     }
+}
+- (IBAction)tapChoosePayment:(id)sender {
+    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY]?:[TransactionCartGateway new];
+    
+    NSMutableArray *gatewayListWithoutCreditCart = [NSMutableArray new];
+    
+    for (TransactionCartGateway *gateway in _cart.gateway_list) {
+        if (![gateway.gateway isEqual:@(8)]) {
+            [gatewayListWithoutCreditCart addObject:gateway.gateway_name];
+        }
+    }
+    
+    GeneralTableViewController *vc = [GeneralTableViewController new];
+    vc.selectedObject = selectedGateway.gateway_name;
+    vc.objects = gatewayListWithoutCreditCart;
+    vc.delegate = self;
+    vc.title = @"Metode Pembayaran";
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Delegate
@@ -2321,8 +2203,12 @@
     TransactionSummaryDetail *summaryDetail = [_data objectForKey:DATA_CART_SUMMARY_KEY];
     NSArray *list = summaryDetail.carts;
     [_list removeAllObjects];
-    [_senderPhoneDropshipper removeAllObjects];
-    [_senderNameDropshipper removeAllObjects];
+    
+    if (_shouldRefresh) {
+        [_senderPhoneDropshipper removeAllObjects];
+        [_senderNameDropshipper removeAllObjects];
+    }
+
     [_list addObjectsFromArray:list];
     if (_list.count>0) {
         _isnodata = NO;
@@ -2335,7 +2221,7 @@
         NSArray *products = list.cart_products;
         NSInteger rowCount = products.count+1;
         [_rowCountExpandCellForDropshipper addObject:@(rowCount)];
-        NSIndexPath *listProductFirstIndexPath = [NSIndexPath indexPathForRow:0 inSection:i+1];
+        NSIndexPath *listProductFirstIndexPath = [NSIndexPath indexPathForRow:0 inSection:i];
         [_listProductFirstObjectIndexPath addObject:listProductFirstIndexPath];
     }
     
@@ -2359,6 +2245,20 @@
         if (gateway == -1) {
             isValid = NO;
             [messageError addObject:ERRORMESSAGE_NULL_CART_PAYMENT];
+        }
+        if (_isUsingSaldoTokopedia)
+        {
+            NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+            NSNumber *deposit = [_dataInput objectForKey:DATA_USED_SALDO_KEY];
+            if ([deposit integerValue]> [grandTotal integerValue])
+            {
+                isValid = NO;
+                [messageError addObject:@"Jumlah Saldo Tokopedia yang Anda masukkan terlalu banyak. Gunakan Pembayaran Saldo Tokopedia apabila mencukupi."];
+            }
+            if ([deposit integerValue]> [self depositAmountUser]) {
+                isValid = NO;
+                [messageError addObject:@"Saldo Tokopedia Anda tidak mencukupi."];
+            }
         }
     }
     else if (_indexPage == 1 && [_cartSummary.deposit_amount integerValue]>0) {
@@ -2465,14 +2365,14 @@
 {
     if (!_isLoadingRequest) {
         //NSInteger shopID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
-        TransactionCartList *list = _list[indexPath.section-1];
+        TransactionCartList *list = _list[indexPath.section];
         NSInteger shopID = [list.cart_shop.shop_id integerValue];
         NSInteger addressID =list.cart_destination.address_id;
         NSInteger shipmentID =[list.cart_shipments.shipment_id integerValue];
         
         if (cell.settingSwitch.on) {
-            NSInteger rowcount = [_rowCountExpandCellForDropshipper[indexPath.section-1]integerValue];
-            [_rowCountExpandCellForDropshipper replaceObjectAtIndex:indexPath.section-1 withObject:@(rowcount+2)];
+            NSInteger rowcount = [_rowCountExpandCellForDropshipper[indexPath.section]integerValue];
+            [_rowCountExpandCellForDropshipper replaceObjectAtIndex:indexPath.section withObject:@(rowcount+2)];
             
             [self.tableView beginUpdates];
             NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
@@ -2483,21 +2383,21 @@
             
             
             NSString *dropshipStringObject = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_STR_KEY,shopID,addressID,shipmentID];
-            [_dropshipStrList replaceObjectAtIndex:indexPath.section-1 withObject:dropshipStringObject];
+            [_dropshipStrList replaceObjectAtIndex:indexPath.section withObject:dropshipStringObject];
         }
         else
         {
-            NSInteger rowcount = [_rowCountExpandCellForDropshipper[indexPath.section-1]integerValue];
-            [_rowCountExpandCellForDropshipper replaceObjectAtIndex:indexPath.section-1 withObject:@(rowcount-2)];
+            NSInteger rowcount = [_rowCountExpandCellForDropshipper[indexPath.section]integerValue];
+            [_rowCountExpandCellForDropshipper replaceObjectAtIndex:indexPath.section withObject:@(rowcount-2)];
             [self.tableView beginUpdates];
             NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
             NSIndexPath *indexPath2 = [NSIndexPath indexPathForRow:indexPath.row+2 inSection:indexPath.section];
             [self.tableView deleteRowsAtIndexPaths:@[indexPath1, indexPath2] withRowAnimation:UITableViewRowAnimationAutomatic];
             [self.tableView endUpdates];
             
-            [_dropshipStrList replaceObjectAtIndex:indexPath.section-1 withObject:@""];
+            [_dropshipStrList replaceObjectAtIndex:indexPath.section withObject:@""];
         }
-        [_isDropshipper replaceObjectAtIndex:indexPath.section-1 withObject:@(cell.settingSwitch.on)];
+        [_isDropshipper replaceObjectAtIndex:indexPath.section withObject:@(cell.settingSwitch.on)];
     }
 }
 
@@ -2511,6 +2411,8 @@
         UIAlertView *cancelCartAlert = [[UIAlertView alloc]initWithTitle:TITLE_ALERT_CANCEL_CART message:message delegate:self cancelButtonTitle:TITLE_BUTTON_CANCEL_DEFAULT otherButtonTitles:TITLE_BUTTON_OK_DEFAULT, nil];
         cancelCartAlert.tag = 11;
         [cancelCartAlert show];
+        
+        [_dataInput setObject:[NSIndexPath indexPathForRow:0 inSection:section] forKey:DATA_INDEXPATH_SELECTED_PRODUCT_CART_KEY];
     }
 }
 
@@ -2553,14 +2455,15 @@
 }
 
 #pragma mark - PaymentDelegate
--(void)TransactionCartPaymentViewController:(TransactionCartPaymentViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+-(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
 {
-    NSIndexPath *selectedIndexPathGateway = [userInfo objectForKey:DATA_INDEXPATH_KEY];
-    [_dataInput setObject:selectedIndexPathGateway forKey:DATA_INDEXPATH_SELECTED_GATEWAY_CART_KEY];
-    NSArray *gatewayList = _cart.gateway_list;
-    TransactionCartGateway *gateway = gatewayList[selectedIndexPathGateway.row];
-    [_dataInput setObject:gateway forKey:DATA_CART_GATEWAY_KEY];
-    [_dataInput setObject:gateway.gateway forKey:API_GATEWAY_LIST_ID_KEY];
+    for (TransactionCartGateway *gateway in _cart.gateway_list) {
+        if ([gateway.gateway_name isEqualToString:object]) {
+            [_dataInput setObject:gateway forKey:DATA_CART_GATEWAY_KEY];
+            [_dataInput setObject:gateway.gateway forKey:API_GATEWAY_LIST_ID_KEY];
+            [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:gateway.gateway_name];
+        }
+    }
     [_tableView reloadData];
 }
 
@@ -2603,6 +2506,10 @@
                     [self configureRestKitActionVoucher];
                     [self requestActionVoucher:_dataInput];
                 }
+                else
+                {
+                    [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
+                }
             }
         }
             break;
@@ -2610,20 +2517,20 @@
         {
             NSInteger partialSection = [[_dataInput objectForKey:DATA_PARTIAL_SECTION] integerValue];
             NSInteger index = [[((AlertPickerView*)alertView).data objectForKey:DATA_INDEX_KEY] integerValue];
-            TransactionCartList *list = _list[partialSection-1];
+            TransactionCartList *list = _list[partialSection];
             NSInteger shopID = [list.cart_shop.shop_id integerValue];
             NSInteger addressID =list.cart_destination.address_id;
             NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
             
             if (index == 0){
-                [_stockPartialStrList replaceObjectAtIndex:partialSection-1 withObject:@""];
-                [_stockPartialDetail replaceObjectAtIndex:partialSection-1 withObject:@(0)];
+                [_stockPartialStrList replaceObjectAtIndex:partialSection withObject:@""];
+                [_stockPartialDetail replaceObjectAtIndex:partialSection withObject:@(0)];
             }
             else
             {
                 NSString *partialStringObject = [NSString stringWithFormat:FORMAT_CART_PARTIAL_STR_KEY,shopID,addressID,shipmentPackageID];
-                [_stockPartialStrList replaceObjectAtIndex:partialSection-1 withObject:partialStringObject];
-                [_stockPartialDetail replaceObjectAtIndex:partialSection-1 withObject:@(1)];
+                [_stockPartialStrList replaceObjectAtIndex:partialSection withObject:partialStringObject];
+                [_stockPartialDetail replaceObjectAtIndex:partialSection withObject:@(1)];
             }
             
             [self adjustPartialListParam];
@@ -2645,30 +2552,6 @@
 }
 
 #pragma mark - Textfield Delegate
-
-- (void)saldoTextFieldDidChange:(UITextField *)textField
-{
-    NSString *depositAmount = [textField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-    NSInteger deposit = [depositAmount integerValue];
-    
-    if (deposit <= [_cart.grand_total integerValue]) {
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-        formatter.currencyCode = @"Rp ";
-        formatter.currencyGroupingSeparator = @".";
-        formatter.currencyDecimalSeparator = @",";
-        formatter.maximumFractionDigits = 0;
-        formatter.minimumFractionDigits = 0;
-        
-        NSNumber *grandTotalBefore = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
-        NSInteger grandTotal = [grandTotalBefore integerValue] - deposit;
-        _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotal]];
-        _grandTotalLabel.text = [[formatter stringFromNumber:[NSNumber numberWithInteger:grandTotal]] stringByAppendingString:@",-"];
-        
-        [_dataInput setObject:depositAmount forKey:DATA_USED_SALDO_KEY];
-    }
-}
-
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField{
     [textField resignFirstResponder];
     _activeTextField = textField;
@@ -2682,52 +2565,77 @@
 
 -(BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
+    BOOL isValid = YES;
     if (textField.tag > 0 )
+    {
         [_senderNameDropshipper replaceObjectAtIndex:textField.tag-1 withObject:textField.text];
+        if (textField.text.length < 1) {
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Nama Pengirim Harus diisi"] delegate: self];
+            [alert show];
+            isValid = NO;
+        }
+    }
     else if (textField.tag < 0)
+    {
+        if (textField.text.length < 6) {
+            StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Nomor Telephon Harus Lebih Dari 6 Karakter"] delegate: self];
+            [alert show];
+            isValid = NO;
+        }
         [_senderPhoneDropshipper replaceObjectAtIndex:-textField.tag-1 withObject:textField.text];
+    }
     if (textField == _saldoTokopediaAmountTextField) {
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-        formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-        formatter.currencyCode = @"Rp ";
-        formatter.currencyGroupingSeparator = @".";
-        formatter.currencyDecimalSeparator = @",";
-        formatter.maximumFractionDigits = 0;
-        formatter.minimumFractionDigits = 0;
         
-        NSString *depositAmount = [textField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
-        NSInteger deposit = [depositAmount integerValue];
-        NSNumber *grandTotalBefore = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
-        NSInteger grandTotal = [grandTotalBefore integerValue] - deposit;
-        _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotal]];
-        _cart.grand_total_idr = [[formatter stringFromNumber:[NSNumber numberWithInteger:grandTotal]] stringByAppendingString:@",-"];
-        _grandTotalLabel.text = _cart.grand_total_idr;
-        
-        [_dataInput setObject:depositAmount forKey:DATA_USED_SALDO_KEY];
         [_tableView reloadData];
     }
     if (textField == _passwordTextField) {
         [_dataInput setObject:textField.text forKey:API_PASSWORD_KEY];
     }
     
+    _checkoutButton.enabled = isValid;
+
     [self adjustDropshipperListParam];
     return YES;
 }
+
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if (textField == _saldoTokopediaAmountTextField) {
         
         NSString *textFieldValue = [NSString stringWithFormat:@"%@%@", textField.text, string];
-        NSString *depositAmount = [textFieldValue stringByReplacingOccurrencesOfString:@"." withString:@""];
         
         NSNumber *grandTotal = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
         
-        if ([depositAmount integerValue] > [grandTotal integerValue] || [depositAmount integerValue] > [self depositAmountUser]) {
-            return NO;
+        NSString *depositAmount = [textFieldValue stringByReplacingOccurrencesOfString:@"." withString:@""];
+        [_dataInput setObject:depositAmount forKey:DATA_USED_SALDO_KEY];
+
+        NSString *textFieldText = [textField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
+
+        if (range.length > 0)
+        {
+            NSString *textFieldRemoveOneChar = [[textField.text substringToIndex:[textField.text length]-1] stringByReplacingOccurrencesOfString:@"." withString:@""];
+
+            NSInteger deposit = [textFieldRemoveOneChar integerValue];
+            NSInteger grandTotalInteger = [grandTotal integerValue] - deposit;
+            _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
+            _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+            
+            _grandTotalLabel.text = ([_cart.grand_total integerValue]<=0)?@"Rp 0,-":_cart.grand_total_idr;
+            
+        }
+        else if ([textFieldText integerValue] <= [grandTotal integerValue] || [textFieldText integerValue] <= [self depositAmountUser])
+        {
+            NSInteger deposit = [depositAmount integerValue];
+            NSInteger grandTotalInteger = [grandTotal integerValue] - deposit;
+            _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotalInteger]];
+            _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotalInteger]] stringByAppendingString:@",-"];
+            
+            _grandTotalLabel.text = ([_cart.grand_total integerValue]<=0)?@"Rp 0,-":_cart.grand_total_idr;
+            
         }
         
-        NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+       NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
         if([string length]==0)
         {
             [formatter setGroupingSeparator:@"."];
@@ -2754,7 +2662,6 @@
             }
             return YES;
         }
-        [_dataInput setObject:depositAmount forKey:DATA_USED_SALDO_KEY];
         [_tableView reloadData];
         
     }
@@ -2771,12 +2678,12 @@
     _tableView.scrollIndicatorInsets = contentInsets;
     
     if (_activeTextField == _passwordTextField) {
-        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:_list.count+2] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+        [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:_list.count+1] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
 }
 
 - (void)keyboardWillHide:(NSNotification *)info {
-    UIEdgeInsets contentInsets = UIEdgeInsetsZero;
+    UIEdgeInsets contentInsets = UIEdgeInsetsMake(22.0, 0.0, 0.0, 0.0);
     [UIView animateWithDuration:TKPD_FADEANIMATIONDURATION
                           delay:0
                         options: UIViewAnimationOptionCurveEaseInOut
@@ -2807,7 +2714,317 @@
     [_delegate shouldBackToFirstPage];
 }
 
+#pragma mark - Methods
+-(void)resetAllArray
+{
+    [_listProductFirstObjectIndexPath removeAllObjects];
+    [_rowCountExpandCellForDropshipper removeAllObjects];
+    [_isDropshipper removeAllObjects];
+    [_stockPartialStrList removeAllObjects];
+    [_senderNameDropshipper removeAllObjects];
+    [_senderPhoneDropshipper removeAllObjects];
+    [_dropshipStrList removeAllObjects];
+    [_stockPartialDetail removeAllObjects];
+}
+
+-(void)addArrayObjectTemp
+{
+    [_isDropshipper addObject:@(NO)];
+    [_stockPartialStrList addObject:@""];
+    [_senderNameDropshipper addObject:@""];
+    [_senderPhoneDropshipper addObject:@""];
+    [_dropshipStrList addObject:@""];
+    [_stockPartialDetail addObject:@(0)];
+}
+
+-(NSNumberFormatter*)grandTotalFormater
+{
+    NSNumberFormatter * formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    formatter.currencyCode = @"Rp ";
+    formatter.currencyGroupingSeparator = @".";
+    formatter.currencyDecimalSeparator = @",";
+    formatter.maximumFractionDigits = 0;
+    formatter.minimumFractionDigits = 0;
+    
+    return formatter;
+}
+
+-(NSInteger)depositAmountUser
+{
+    NSString *depositAmountUser = _cart.deposit_idr;
+    depositAmountUser = [depositAmountUser stringByReplacingOccurrencesOfString:@"." withString:@""];
+    depositAmountUser = [depositAmountUser stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
+    depositAmountUser = [depositAmountUser stringByReplacingOccurrencesOfString:@"," withString:@""];
+    depositAmountUser = [depositAmountUser stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    return [depositAmountUser integerValue];
+}
+
+#pragma mark - Footer View
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    
+    if(section < _list.count)
+    {
+        TransactionCartList *list = _list[section];
+        NSString *shopName = list.cart_shop.shop_name;
+        
+        TransactionCartHeaderView *headerView = [TransactionCartHeaderView newview];
+        headerView.shopNameLabel.text = shopName;
+        if (_indexPage==1) {
+            headerView.shopNameLabel.textColor = [UIColor blackColor];
+            headerView.deleteButton.hidden = YES;
+            headerView.backgroundColor = [UIColor colorWithRed:247.0/255.0 green:247.0/255.0 blue:247.0/255.0 alpha:1];
+        }
+        headerView.section = section;
+        headerView.delegate = self;
+        return headerView;
+    }
+    else
+    {
+        return nil;
+    }
+}
+
+-(UIView*)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if (_indexPage == 0) {
+        return [self FirstPageCartfooterViewAtSection:section];
+    }
+    if (_indexPage == 1) {
+        return [self SecondPageCartfooterViewAtSection:section];
+    }
+    return nil;
+}
+
+-(UIView *)FirstPageCartfooterViewAtSection:(NSInteger)section
+{
+    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+    if (section < _list.count)
+    {
+        return [self CartSubTotalViewAtSection:section];
+    }
+    else if (section == _list.count+1) {
+        if (![selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] &&
+            ![selectedGateway.gateway isEqual:@(-1)] &&
+            !([self depositAmountUser]==0))
+        {
+            return [self TotalDepositView];
+        }
+    }
+    return nil;
+}
+
+-(UIView *)SecondPageCartfooterViewAtSection:(NSInteger)section
+{
+    if (section < _list.count)
+    {
+        return [self CartSubTotalViewAtSection:section];
+    }
+    return nil;
+}
+
+-(UIView*)CartSubTotalViewAtSection:(NSInteger)section
+{
+    TransactionCartList *list = _list[section];
+    TransactionCartCostView *view = [TransactionCartCostView newview];
+    view.biayaInsuranceLabel.text = ([list.cart_logistic_fee integerValue]==0)?@"Biaya Asuransi":@"Biaya Tambahan";
+    view.infoButton.hidden = ([list.cart_logistic_fee integerValue]==0);
+    [view.subtotalLabel setText:list.cart_total_product_price_idr animated:YES];
+    NSInteger aditionalFeeValue = [list.cart_logistic_fee integerValue]+[list.cart_insurance_price integerValue];
+    NSString *formatAdditionalFeeValue = [NSString stringWithFormat:@"Rp %zd,-",aditionalFeeValue];
+    [view.insuranceLabel setText:formatAdditionalFeeValue animated:YES];
+    [view.shippingCostLabel setText:list.cart_shipping_rate_idr animated:YES];
+    [view.totalLabel setText:list.cart_total_amount_idr animated:YES];
+    
+    return view;
+}
+
+-(UIView*)TotalDepositView
+{
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(15, 0, self.view.frame.size.width-15, 34)];
+    label.text = [NSString stringWithFormat:@"(Saldo Tokopedia anda %@)", _cart.deposit_idr];
+    label.font = [UIFont fontWithName:@"GothamBook" size:12];
+    label.textColor = [UIColor grayColor];
+    [view addSubview:label];
+    
+    return view;
+}
+
 #pragma mark - Table View Cell
+
+-(UITableViewCell *)cellListCartByShopAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = nil;
+    NSInteger listCount = _list.count;
+    
+    NSIndexPath *indexPathFirstObjectProduct = (NSIndexPath*)_listProductFirstObjectIndexPath[indexPath.section];
+    TransactionCartList *list = _list[indexPath.section];
+    NSArray *products = list.cart_products;
+    NSInteger productCount = products.count;
+    
+    if (indexPath.section < listCount) {
+        NSIndexPath *indexPathWithoutErrorCell = [NSIndexPath indexPathForRow:labs(indexPathFirstObjectProduct.row-indexPath.row) inSection:indexPath.section];
+        if (indexPath.row<indexPathFirstObjectProduct.row) {
+            ((UILabel*)_errorLabel[0]).text = list.cart_error_message_1;
+            NSString *string = list.cart_error_message_1;
+            [(UILabel*)_errorLabel[0] setCustomAttributedText:string];
+            cell = _errorCells[indexPath.row];
+        }
+        else if (labs(indexPathFirstObjectProduct.row-indexPath.row) < productCount)
+            cell = [self cellTransactionCartAtIndexPath:indexPathWithoutErrorCell];
+        else
+        {
+            //otherCell
+            if (indexPath.row == indexPathFirstObjectProduct.row+productCount)
+                cell = [self cellDetailShipmentAtIndexPath:indexPathWithoutErrorCell];
+            else if (indexPath.row == indexPathFirstObjectProduct.row+productCount+1)
+                cell = [self cellPartialStockAtIndextPath:indexPathWithoutErrorCell];
+            else if (indexPath.row == indexPathFirstObjectProduct.row+productCount+2)
+                cell = [self cellIsDropshipperAtIndextPath:indexPath];
+            else if (indexPath.row > indexPathFirstObjectProduct.row+productCount+2){
+                if (indexPath.row == indexPathFirstObjectProduct.row+productCount+3)
+                    cell = [self cellTextFieldPlaceholder:@"Nama Pengirim" atIndexPath:indexPath withText:_senderNameDropshipper[indexPath.section]];
+                else if (indexPath.row == indexPathFirstObjectProduct.row+productCount+4)
+                    cell = [self cellTextFieldPlaceholder:@"Nomer Telepon" atIndexPath:indexPath withText:_senderPhoneDropshipper[indexPath.section]];
+            }
+        }
+    }
+    
+    return cell;
+}
+
+-(UITableViewCell*)cellPaymentInformationAtIndexPath:(NSIndexPath*)indexPath
+{
+    
+    UITableViewCell *cell = nil;
+    switch (indexPath.row) {
+        case 0:
+            cell = (_indexPage==0)?_voucerCell:_totalInvoiceCell;
+            cell.detailTextLabel.text =_cartSummary.grand_total_before_fee_idr;
+            break;
+        case 1:
+            if ([_cartSummary.deposit_amount integerValue]>0 &&
+                [_cartSummary.gateway integerValue]!=TYPE_GATEWAY_TRANSFER_BANK) {
+                cell = _usedSaldoCell;
+                [cell.detailTextLabel setText:_cartSummary.deposit_amount_idr animated:YES];
+            }
+            else{
+                switch ([_cartSummary.gateway integerValue]) {
+                    case TYPE_GATEWAY_MANDIRI_CLICK_PAY:
+                    case TYPE_GATEWAY_MANDIRI_E_CASH:
+                    case TYPE_GATEWAY_CLICK_BCA:
+                        cell = _totalPaymentCell;
+                        [cell.detailTextLabel setText:(_indexPage==0)?_cart.grand_total_idr:_cartSummary.payment_left_idr animated:YES];
+                        break;
+                    case TYPE_GATEWAY_TRANSFER_BANK:
+                        cell = _transferCodeCell;
+                        [cell.detailTextLabel setText:_cartSummary.conf_code_idr animated:YES];
+                        break;
+                    case TYPE_GATEWAY_TOKOPEDIA:
+                        cell = _usedSaldoCell;
+                        [cell.detailTextLabel setText:_cartSummary.deposit_amount_idr animated:YES];
+                        break;
+                    default:
+                        break;
+                }
+            }
+            break;
+        case 2:
+        {
+            if (_indexPage == 0) {
+                cell = _saldoTextFieldCell;
+                [cell.detailTextLabel setText:_cart.grand_total_idr animated:YES];
+            }
+            else
+            {
+                if ([_cartSummary.voucher_amount integerValue] >0) {
+                    cell = _voucherUsedCell;
+                    [cell.detailTextLabel setText:_cartSummary.voucher_amount_idr];
+                }
+                else
+                {
+                    cell = ([_cartSummary.deposit_amount integerValue]>0 &&
+                            [_cartSummary.gateway integerValue]==TYPE_GATEWAY_TRANSFER_BANK)
+                    ?_usedSaldoCell:
+                    _totalPaymentCell;
+                    [cell.detailTextLabel setText:([_cartSummary.deposit_amount integerValue]>0 &&
+                                                   [_cartSummary.gateway integerValue]==TYPE_GATEWAY_TRANSFER_BANK)?_cartSummary.deposit_amount_idr:_cartSummary.payment_left_idr animated:YES];
+                }
+            }
+            break;
+        }
+        case 3:
+            if ([_cartSummary.voucher_amount integerValue]>0) {
+                cell = ([_cartSummary.deposit_amount integerValue]>0 &&
+                        [_cartSummary.gateway integerValue]==TYPE_GATEWAY_TRANSFER_BANK)
+                ?_usedSaldoCell:
+                _totalPaymentCell;
+                [cell.detailTextLabel setText:([_cartSummary.deposit_amount integerValue]>0 &&
+                                               [_cartSummary.gateway integerValue]==TYPE_GATEWAY_TRANSFER_BANK)?_cartSummary.deposit_amount_idr:_cartSummary.payment_left_idr animated:YES];
+            }
+            else
+            {
+                cell = _totalPaymentCell;
+                [cell.detailTextLabel setText:_cartSummary.payment_left_idr animated:YES];
+            }
+            break;
+        case 4:
+            cell = _totalPaymentCell;
+            [cell.detailTextLabel setText:_cartSummary.payment_left_idr animated:YES];
+            break;
+        default:
+            break;
+    }
+    return cell;
+}
+
+-(UITableViewCell*)cellAdjustDepositAtIndexPath:(NSIndexPath*)indexPath
+{
+    UITableViewCell *cell = nil;
+    
+    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
+    NSArray *gatewayList = _cart.gateway_list;
+    BOOL isNullDeposit = YES;
+    for (TransactionCartGateway *gateway in gatewayList) {
+        if([gateway.gateway  isEqual: @(0)])
+            isNullDeposit = NO;
+    }
+    
+    if ([selectedGateway.gateway isEqual:@(TYPE_GATEWAY_TOKOPEDIA)] ||
+        [selectedGateway.gateway isEqual:@(-1)] ||
+        [self depositAmountUser] == 0
+        )
+    {
+        NSString *depositAmount = [_saldoTokopediaAmountTextField.text stringByReplacingOccurrencesOfString:@"." withString:@""];
+        NSInteger deposit = [depositAmount integerValue];
+        NSNumber *grandTotalBefore = [_dataInput objectForKey:DATA_CART_GRAND_TOTAL_BEFORE_DECREASE];
+        NSInteger grandTotal = [grandTotalBefore integerValue] - deposit;
+        _cart.grand_total = [NSString stringWithFormat:@"%@", [NSNumber numberWithInteger:grandTotal]];
+        _cart.grand_total_idr = [[[self grandTotalFormater] stringFromNumber:[NSNumber numberWithInteger:grandTotal]] stringByAppendingString:@",-"];
+        _grandTotalLabel.text = _cart.grand_total_idr;
+        cell = _totalPaymentCell;
+        [cell.detailTextLabel setText:_cart.grand_total_idr];
+    }
+    else
+    {
+        cell = _saldoTokopediaCell;
+        if (indexPath.row == 0) {
+            UISwitch *switchSaldo = (UISwitch *)[cell viewWithTag:1];
+            [switchSaldo addTarget:self
+                            action:@selector(changeSwitchSaldo:)
+                  forControlEvents:UIControlEventValueChanged];
+            _switchSaldoIndexPath = indexPath;
+        }
+        if (indexPath.row==1) {
+            cell = _saldoTextFieldCell;
+        }
+    }
+    
+    return cell;
+}
 
 -(UITableViewCell*)cellDetailShipmentAtIndexPath:(NSIndexPath*)indexPath
 {
@@ -2832,7 +3049,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    NSInteger choosenIndex = [_stockPartialStrList[indexPath.section-1] isEqualToString:@""]?0:1;
+    NSInteger choosenIndex = [_stockPartialStrList[indexPath.section] isEqualToString:@""]?0:1;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = @"Stock Tersedia Sebagian";
     cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
@@ -2843,29 +3060,31 @@
     return cell;
 }
 
--(UITableViewCell*)cellTextFieldPlaceholder:(NSString*)placeholder atIndexPath:(NSIndexPath*)indexPath
+-(UITableViewCell*)cellTextFieldPlaceholder:(NSString*)placeholder atIndexPath:(NSIndexPath*)indexPath withText:(NSString*)text
 {
     
     static NSString *CellIdentifier = @"textfieldCellIdentifier";
-    BOOL isSaldoTokopediaTextField = (indexPath.section==_list.count+1);
-    NSInteger indexList = (isSaldoTokopediaTextField)?0:(indexPath.section-1);
+    BOOL isSaldoTokopediaTextField = (indexPath.section==_list.count);
+    NSInteger indexList = (isSaldoTokopediaTextField)?0:(indexPath.section);
     TransactionCartList *list = _list[indexList];
     NSArray *products = list.cart_products;
     NSInteger rowCount = products.count+3;
     UITableViewCell *cell = [_tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-    if (cell == nil) {
+    //if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         
         UITextField *textField = [[UITextField alloc]initWithFrame:CGRectMake(15, 0, self.view.frame.size.width-15, 44)];
         textField.placeholder = placeholder;
-        textField.text = (indexPath.section==_list.count+1)?@"":(indexPath.row == rowCount)?_senderNameDropshipper[indexPath.section-1]:_senderPhoneDropshipper[indexPath.section-1];
+        textField.text = (indexPath.section==_list.count+1)?@"":(indexPath.row == rowCount)?_senderNameDropshipper[indexPath.section]:_senderPhoneDropshipper[indexPath.section];
         textField.delegate = self;
-        textField.tag = isSaldoTokopediaTextField?0:(indexPath.row == rowCount)?indexPath.section:-indexPath.section;
+        textField.tag = isSaldoTokopediaTextField?0:(indexPath.row == rowCount)?indexPath.section+1:-indexPath.section-1;
         textField.font = FONT_DEFAULT_CELL_TKPD;
+        [textField setReturnKeyType:UIReturnKeyDone];
+        textField.text = text;
         [cell addSubview:textField];
-    }
+    //}
 
     return cell;
 }
@@ -2882,7 +3101,7 @@
     
     ((GeneralSwitchCell*)cell).indexPath = indexPath;
     ((GeneralSwitchCell*)cell).textCellLabel.text = @"Dropshipper";
-    ((GeneralSwitchCell*)cell).settingSwitch.on = [_isDropshipper[indexPath.section-1] boolValue];
+    ((GeneralSwitchCell*)cell).settingSwitch.on = [_isDropshipper[indexPath.section] boolValue];
     
     return cell;
 }
@@ -2896,7 +3115,7 @@
         cell = [TransactionCartCell newcell];
         ((TransactionCartCell*)cell).delegate = self;
     }
-    TransactionCartList *list = _list[indexPath.section-1];
+    TransactionCartList *list = _list[indexPath.section];
     //(list.cart_error_message_1)?indexPath.row-1:indexPath.row;
     //TODO:: adjust when error message appear
     NSInteger indexProduct = indexPath.row;
@@ -2927,7 +3146,7 @@
     [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor colorWithRed:158.0/255.0 green:158.0/255.0 blue:158.0/255.0 alpha:1] range:[weightTotal rangeOfString:[NSString stringWithFormat:@"(%@ kg)",product.product_total_weight]]];
     cell.quantityLabel.attributedText = attributedString;
     
-    NSIndexPath *indexPathCell = [NSIndexPath indexPathForRow:indexProduct inSection:indexPath.section-1];
+    NSIndexPath *indexPathCell = [NSIndexPath indexPathForRow:indexProduct inSection:indexPath.section];
     ((TransactionCartCell*)cell).indexPath = indexPathCell;
     cell.remarkLabel.text = product.product_notes;
     
@@ -2938,11 +3157,26 @@
     [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image animated:YES];
+        [thumb setImage:image];
 #pragma clang diagnosti c pop
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
     cell.editButton.hidden = (_indexPage == 1);
+    
+    if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+        cell.errorProductLabel.hidden = YES;
+    }
+    else
+    {
+        cell.errorProductLabel.hidden = NO;
+        if ([product.product_error_msg isEqualToString:@"Produk ini berada di gudang"]) {
+            cell.errorProductLabel.text = @"GUDANG";
+        }
+        else
+            cell.errorProductLabel.text = @"HAPUS";
+    }
+    
+    
     cell.userInteractionEnabled = (_indexPage ==0);
     return cell;
 }

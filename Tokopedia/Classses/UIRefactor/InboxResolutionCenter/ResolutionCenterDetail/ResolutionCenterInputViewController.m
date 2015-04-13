@@ -28,12 +28,10 @@
 #define TAG_ALERT_HELPER 10
 #define TAG_CHANGE_SOLUTION 11
 
-@interface ResolutionCenterInputViewController () <UIAlertViewDelegate, UITextViewDelegate, InboxResolutionCenterOpenViewControllerDelegate, GenerateHostDelegate, CameraCollectionViewControllerDelegate, CameraControllerDelegate, RequestUploadImageDelegate>
+@interface ResolutionCenterInputViewController () <UIAlertViewDelegate, UITextViewDelegate, SyncroDelegate, GenerateHostDelegate, CameraCollectionViewControllerDelegate, CameraControllerDelegate, RequestUploadImageDelegate>
 {
     NSMutableArray *_uploadedPhotos;
     GenerateHost *_generatehost;
-    NSMutableArray *_photos;
-    
     NSMutableArray *_uploadingPhotos;
     
     NSOperationQueue *_operationQueue;
@@ -52,6 +50,9 @@
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
     CGSize _scrollviewContentSize;
+    
+    NSMutableArray *_selectedImagesCameraController;
+    NSMutableArray *_selectedIndexPathCameraController;
 }
 @property (weak, nonatomic) IBOutlet UITextView *messageTextView;
 @property (weak, nonatomic) IBOutlet UIView *oneButtonView;
@@ -61,7 +62,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *buyerSellerLabel;
 @property (weak, nonatomic) IBOutlet UILabel *createDateLabel;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
-@property (weak, nonatomic) IBOutlet UIButton *attachButton;
 @property (weak, nonatomic) IBOutlet UIButton *helperButton;
 @property (weak, nonatomic) IBOutlet UIButton *editSolutionButton;
 @property (strong, nonatomic) IBOutlet UIView *twoButtonView;
@@ -70,9 +70,12 @@
 
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *uploadButtons;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cancelButtons;
-@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *uploadedImages;
+@property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *thumbImages;
 @property (strong, nonatomic) IBOutlet UIScrollView *imageScrollView;
 @property (weak, nonatomic) IBOutlet UIView *imageContentView;
+
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *attachButtons;
+
 
 @end
 #define TAG_BAR_BUTTON_TRANSACTION_BACK 10
@@ -85,20 +88,28 @@
     
     _operationQueue = [NSOperationQueue new];
     _generatehost = [GenerateHost new];
-    _photos = [NSMutableArray new];
+    
     _uploadingPhotos = [NSMutableArray new];
-    _uploadedPhotos = [NSMutableArray new];
+    _uploadedPhotos = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
+    _selectedImagesCameraController = [NSMutableArray new];
+    _selectedIndexPathCameraController = [NSMutableArray new];
     
     _uploadButtons = [NSArray sortViewsWithTagInArray:_uploadButtons];
     _cancelButtons = [NSArray sortViewsWithTagInArray:_cancelButtons];
+    _thumbImages = [NSArray sortViewsWithTagInArray:_thumbImages];
+    
+    [_cancelButtons makeObjectsPerformSelector:@selector(setHidden:)withObject:@(YES)];
+    [_uploadButtons makeObjectsPerformSelector:@selector(setEnabled:)withObject:@(NO)];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [barButtonItem setTintColor:[UIColor whiteColor]];
     barButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
     self.navigationItem.leftBarButtonItem = barButtonItem;
     
-    [self setTextViewPlaceholder:@"Isi pesan diskusi disini..."];
-        
+    if ([_messageTextView.text isEqualToString:@""]) {
+        [self setTextViewPlaceholder:@"Isi pesan diskusi disini..."];
+    }
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification object:nil];
@@ -107,14 +118,19 @@
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification object:nil];
     
-    [_cancelButtons makeObjectsPerformSelector:@selector(setHidden:) withObject:@(YES)];
-    
     [self adjustFooterButton];
     
     RequestGenerateHost *requestHost = [RequestGenerateHost new];
     [requestHost configureRestkitGenerateHost];
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
+    
+    _isFinishUploadingImage = YES;
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"dd MMMM yyyy HH:mm"];
+    
+    _createDateLabel.text = [formatter stringFromDate:[NSDate date]];
 }
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -122,6 +138,23 @@
     
     _messageTextView.autocorrectionType = UITextAutocorrectionTypeNo;
     [_messageTextView becomeFirstResponder];
+    
+
+    if ( [self totalUploadedAndUploadingImage] >= 3) {
+        _imageScrollView.contentSize = _imageContentView.frame.size;
+    }
+}
+
+-(NSInteger)totalUploadedAndUploadingImage
+{
+    NSMutableArray *fileThumbImage = [NSMutableArray new];
+    for (NSString *image in _uploadedPhotos) {
+        if (![image isEqualToString:@""]) {
+            [fileThumbImage addObject:image];
+        }
+    }
+    
+    return fileThumbImage.count + _uploadingPhotos.count;
 }
 
 - (void)setTextViewPlaceholder:(NSString *)placeholderText
@@ -222,9 +255,20 @@
     BOOL isValid = YES;
     NSMutableArray *errorMessage = [NSMutableArray new];
     
-    if ([_messageTextView.text isEqualToString:@""]||!_messageTextView.text) {
+    if ([_messageTextView.text isEqualToString:@""] ||
+        !_messageTextView.text) {
         [errorMessage addObject:ERRORMESSAGE_NULL_MESSAGE];
         isValid = NO;
+    }
+    
+    if (!_isFinishUploadingImage) {
+        [errorMessage addObject:@"Belum selesai mengupload image."];
+        isValid = NO;
+    }
+    
+    if (!isValid) {
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessage delegate:self];
+        [alert show];
     }
     
     return  isValid;
@@ -239,12 +283,7 @@
         }
         else if (barbutton.tag == TAG_BAR_BUTTON_TRANSACTION_SEND) {
             if ([self isValid]) {
-                NSMutableArray *fileThumbImage = [NSMutableArray new];
-                for (UploadImageResult *image in _uploadedPhotos) {
-                    [fileThumbImage addObject:image.file_th];
-                }
-                NSString *photos = [[fileThumbImage valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
-                
+                NSString *photos = [[_uploadedPhotos valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
                 [_delegate message:_messageTextView.text
                              photo:photos?:@""
                           serverID:_generatehost.result.generated_host.server_id?:@""];
@@ -252,10 +291,32 @@
             }
         }
     }
+    
     else
     {
         UIButton *button = (UIButton*)sender;
         switch (button.tag) {
+            case 10:
+            {
+                if ([self totalUploadedAndUploadingImage] == 0)
+                {
+                    [self didTapImageButton:(UIButton*)sender];
+                }
+                else
+                {
+                    for (UIImageView *imageView in _thumbImages) {
+                        if (imageView.image == nil)
+                        {
+                            UIButton *button = [UIButton new];
+                            button.tag = imageView.tag;
+                            [self didTapImageButton:button];
+                            break;
+                        }
+                    }
+
+                }
+            }
+                break;
             case 11:
                 //Bantuan
                 [self didTapReportButton];
@@ -284,8 +345,34 @@
     [self didTapImageButton:(UIButton*)sender];
 }
 
-- (IBAction)tapDeleteImage:(id)sender {
+- (IBAction)tapDeleteImage:(UIButton*)sender {
     
+    [_uploadedPhotos replaceObjectAtIndex:sender.tag-10 withObject:@""];
+    [_selectedImagesCameraController replaceObjectAtIndex:sender.tag - 10 withObject:@""];
+    [_selectedIndexPathCameraController replaceObjectAtIndex:sender.tag -10 withObject:@""];
+    
+    if ([self totalUploadedAndUploadingImage] == 0) {
+        [_imageScrollView removeFromSuperview];
+    }
+    
+    for (UIImageView *imageView in _thumbImages) {
+        if (imageView.tag == sender.tag)
+        {
+            imageView.image = nil;
+        }
+    }
+    for (UIButton *button in _cancelButtons) {
+        if (button.tag == sender.tag)
+        {
+            button.hidden = YES;
+        }
+    }
+    for (UIButton *button in _uploadButtons) {
+        if (button.tag == sender.tag)
+        {
+            button.hidden = NO;
+        }
+    }
 }
 
 -(void)didTapImageButton:(UIButton*)sender
@@ -304,6 +391,20 @@
     photoVC.title = @"All Picture";
     photoVC.delegate = self;
     photoVC.tag = sender.tag;
+    NSMutableArray *selectedImage = [NSMutableArray new];
+    for (NSIndexPath *selected in _selectedImagesCameraController) {
+        if (![selected isEqual:@""]) {
+            [selectedImage addObject: selected];
+        }
+    }
+    photoVC.selectedImagesArray = [selectedImage copy];
+    NSMutableArray *selectedIndexPath = [NSMutableArray new];
+    for (NSIndexPath *selected in _selectedIndexPathCameraController) {
+        if (![selected isEqual:@""]) {
+            [selectedIndexPath addObject: selected];
+        }
+    }
+    photoVC.selectedIndexPath = selectedIndexPath;
     UINavigationController *nav = [[UINavigationController alloc]init];
     NSArray *controllers = @[albumVC,photoVC];
     [nav setViewControllers:controllers];
@@ -347,7 +448,14 @@
     NSArray *viewControllers = self.navigationController.viewControllers;
     UIViewController *destinationVC = viewControllers[viewControllers.count-2];
     vc.delegate = destinationVC;
-    vc.uploadedPhotos = _uploadedPhotos;
+    vc.syncroDelegate = self;
+    NSMutableArray *thumbs = [NSMutableArray new];
+    for (NSString *thumb in _uploadedPhotos) {
+        if (![thumb isEqualToString:@""]) {
+            [thumbs addObject:thumb];
+        }
+    }
+    vc.uploadedPhotos = thumbs;
     vc.controllerTitle = @"Ubah Solusi";
     NSString *totalRefund = [_resolution.resolution_last.last_refund_amt stringValue];
     NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
@@ -375,50 +483,202 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+-(void)syncroImages:(NSArray *)images message:(NSString *)message
+{
+    [_uploadedPhotos removeAllObjects];
+    [_uploadedPhotos addObjectsFromArray:images];
+    
+    NSMutableArray *listImage = [NSMutableArray new];
+    for (NSString *image in images) {
+        if (![image isEqualToString:@""]) {
+            [listImage addObject:image];
+        }
+    }
+    for (int i = 0; i<_thumbImages.count; i++) {
+        ((UIImageView*)_thumbImages[i]).image = nil;
+        ((UIButton*)_cancelButtons[i]).hidden = YES;
+        ((UIButton*)_uploadButtons[i]).hidden = YES;
+    }
+    
+    [self setImages:listImage];
+    
+    _messageTextView.text = message;
+}
+
+- (void)setImages:(NSArray *)images
+{
+    if (images.count>0) {
+        for (int i = 0; i<images.count; i++) {
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:images[i]] cachePolicy:
+                                     NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            
+            UIImageView *thumb = (UIImageView*)_thumbImages[i];
+            thumb.image = nil;
+            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                [thumb setImage:image animated:YES];
+#pragma clang diagnostic pop
+            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+            }];
+            
+            [(UIButton*)_cancelButtons[i] setHidden:NO];
+            [(UIButton*)_uploadButtons[i] setHidden:YES];
+            if (i<_uploadButtons.count-1) {
+                [(UIButton*)_uploadButtons[i+1] setHidden:NO];
+            }
+        }
+    }
+}
+
 #pragma mark - Camera Delegate
 -(void)didDismissController:(CameraCollectionViewController *)controller withUserInfo:(NSDictionary *)userinfo
 {
-    [self setImageData:userinfo tag:controller.tag];
+    NSArray *selectedImages = [userinfo objectForKey:@"selected_images"];
+    
+    [_selectedIndexPathCameraController removeAllObjects];
+    [_selectedIndexPathCameraController addObjectsFromArray:[userinfo objectForKey:@"selected_indexpath"]];
+    
+    //Hapus data yg equal @""
+    NSMutableArray *selectedImageTemp = [NSMutableArray new];
+    for (NSDictionary *selected in _selectedImagesCameraController) {
+        if (![selected isEqual:@""]) {
+            [selectedImageTemp addObject:selected];
+        }
+    }
+    [_selectedImagesCameraController removeAllObjects];
+    [_selectedImagesCameraController addObjectsFromArray:selectedImageTemp];
+    
+    // Cari Index Image yang kosong
+    NSMutableArray *emptyImageIndex = [NSMutableArray new];
+    for (UIImageView *image in _thumbImages) {
+        if (image.image == nil)
+        {
+            [emptyImageIndex addObject:@(image.tag - 10)];
+        }
+    }
+    
+    //Upload Image yg belum diupload tp dipilih
+    int j = 0;
+    for (NSDictionary *selected in selectedImages) {
+        if (![self Array:[_selectedImagesCameraController copy] containObject:selected])
+        {
+            [self setImageData:selected tag:[emptyImageIndex[j] integerValue]];
+            j++;
+        }
+    }
+    
+    if ([self totalUploadedAndUploadingImage] == 0) {
+        [_imageScrollView removeFromSuperview];
+    }
+    
+    [_selectedImagesCameraController removeAllObjects];
+    [_selectedImagesCameraController addObjectsFromArray:selectedImages];
+
 }
 
--(void)setImageData:(NSDictionary*)data tag:(int)tag
+-(void)didRemoveImageDictionary:(NSDictionary *)removedImage
 {
+    //Hapus Image dari camera controller
+    NSMutableArray *removedImages = [NSMutableArray new];
+     for (int i = 0; i<_selectedImagesCameraController.count; i++) {
+         NSDictionary *photoObjectInArray = [_selectedImagesCameraController[i] objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+         NSDictionary *photoObject = [removedImage objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+         
+         UIImage* imageObject = [photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+         UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, imageObject.scale);
+         [imageObject drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
+         imageObject = UIGraphicsGetImageFromCurrentImageContext();
+         UIGraphicsEndImageContext();
+         
+         if ([self image:[photoObjectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY] isEqualTo:[photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY]]) {
+             
+            NSMutableDictionary *object = [NSMutableDictionary new];
+            [object setObject:removedImage forKey:DATA_SELECTED_PHOTO_KEY];
+            UIImageView *imageView;
+
+            for (UIImageView *image in _thumbImages) {
+                
+                if ([self image:image.image isEqualTo:imageObject])
+                {
+                    imageView = image;
+                    break;
+                }
+            }
+            [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
+
+            [removedImages addObject:object];
+            [self failedUploadObject:object];
+            break;
+        }
+     }
+}
+
+- (BOOL)image:(UIImage *)image1 isEqualTo:(UIImage *)image2
+{
+    NSData *data1 = UIImagePNGRepresentation(image1);
+    NSData *data2 = UIImagePNGRepresentation(image2);
+    
+    return [data1 isEqual:data2];
+}
+
+-(BOOL)Array:(NSArray*)array containObject:(NSDictionary*)object
+{
+    for (NSDictionary *objectInArray in array) {
+        NSDictionary *photoObjectInArray = [objectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+        NSDictionary *photoObject = [object objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+        if ([self image:[photoObjectInArray objectForKey:kTKPDCAMERA_DATAPHOTOKEY] isEqualTo:[photoObject objectForKey:kTKPDCAMERA_DATAPHOTOKEY]]) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+-(void)setImageData:(NSDictionary*)data tag:(NSInteger)tag
+{
+    NSInteger tagView = tag +10;
     NSMutableDictionary *object = [NSMutableDictionary new];
     [object setObject:data forKey:DATA_SELECTED_PHOTO_KEY];
     UIImageView *imageView;
-    for (UIImageView *image in _uploadedImages) {
-        if (image.tag == tag)
+    
+    NSDictionary* photo = [data objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    
+    UIImage* imagePhoto = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
+    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, imagePhoto.scale);
+    [imagePhoto drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
+    imagePhoto = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    for (UIImageView *image in _thumbImages) {
+        if (image.tag == tagView)
         {
             imageView = image;
+            image.image = imagePhoto;
+            image.hidden = NO;
+            image.alpha = 0.5f;
         }
     }
     
     [object setObject:imageView forKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     
-    NSDictionary* photo = [data objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    
-    UIImage* image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIGraphicsBeginImageContextWithOptions(kTKPDCAMERA_UPLOADEDIMAGESIZE, NO, image.scale);
-    [image drawInRect:kTKPDCAMERA_UPLOADEDIMAGERECT];
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
+    [object setObject:_selectedIndexPathCameraController[tag] forKey:DATA_SELECTED_INDEXPATH_KEY];
     
     for (UIButton *button in _uploadButtons) {
-        if (button.tag == tag) {
-            button.enabled = NO;
+        if (button.tag == tagView) {
             button.hidden = YES;
         }
-        if (button.tag == tag+1)
+        if (button.tag == tagView+1)
         {
-            button.enabled = YES;
-            button.hidden = NO;
+            for (UIImageView *image in _thumbImages) {
+                if (image.tag == tagView+1)
+                {
+                    if (image.image == nil) {
+                        button.hidden = NO;
+                    }
+                }
+            }
         }
     }
-    
-    imageView.image = image;
-    imageView.hidden = NO;
-    imageView.alpha = 0.5f;
     
     [self actionUploadImage:object];
 }
@@ -506,7 +766,7 @@
                              _scrollviewContentSize.height += _keyboardSize.height;
 
                              UIEdgeInsets inset = _messageTextView.contentInset;
-                             inset.bottom = _keyboardPosition.y - _headerView.frame.size.height;
+                             inset.bottom = _keyboardPosition.y - _headerView.frame.size.height +30;
                              [_messageTextView setContentInset:inset];
                              
                              CGRect frame = _footerView.frame;
@@ -545,14 +805,17 @@
 -(void)successGenerateHost:(GenerateHost *)generateHost
 {
     _generatehost = generateHost;
+    [_uploadButtons makeObjectsPerformSelector:@selector(setEnabled:)withObject:@(YES)];
 }
 
 
 #pragma mark Request Action Upload Photo
 -(void)actionUploadImage:(id)object
 {
+    if (![_uploadingPhotos containsObject:object]) {
+        [_uploadingPhotos addObject:object];
+    }
     
-    [_uploadingPhotos addObject:object];
     _isFinishUploadingImage = NO;
     RequestUploadImage *uploadImage = [RequestUploadImage new];
     uploadImage.imageObject = object;
@@ -568,7 +831,10 @@
 {
     UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     imageView.alpha = 1.0;
-    [_photos addObject:uploadImage.result];
+    if (![_uploadedPhotos containsObject:uploadImage.result.file_th]) {
+        [_uploadedPhotos replaceObjectAtIndex:imageView.tag-10 withObject:uploadImage.result.file_th];
+    }
+    
     [_uploadingPhotos removeObject:object];
     _isFinishUploadingImage = YES;
     
@@ -589,7 +855,6 @@
     
     for (UIButton *button in _uploadButtons) {
         if (button.tag == imageView.tag) {
-            button.enabled = YES;
             button.hidden = NO;
         }
     }
@@ -600,20 +865,24 @@
         }
     }
     
+    [_uploadedPhotos replaceObjectAtIndex:imageView.tag-10 withObject:@""];
+    
     _isFinishUploadingImage = YES;
     [_uploadingPhotos removeObject:object];
+    [_selectedIndexPathCameraController removeObject:[object objectForKey:DATA_SELECTED_INDEXPATH_KEY]];
+    [_selectedImagesCameraController removeObject:[object objectForKey:DATA_SELECTED_PHOTO_KEY]];
     [self requestProcessUploadPhoto];
 }
 
 - (void)requestProcessUploadPhoto
 {
-    if (_uploadingPhotos.count > 0) {
-        [self actionUploadImage:[_uploadingPhotos firstObject]];
-    }
+//    if (_uploadingPhotos.count > 0) {
+//        [self actionUploadImage:[_uploadingPhotos firstObject]];
+//    }
     
-    if (_uploadedPhotos.count == 0) {
-        [_imageScrollView removeFromSuperview];
-    }
+//    if ([self totalUploadedAndUploadingImage] == 0) {
+//        [_imageScrollView removeFromSuperview];
+//    }
 }
 
 

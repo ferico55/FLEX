@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *quantityLabel;
 @property (weak, nonatomic) IBOutlet UIStepper *quantityStepper;
 @property (weak, nonatomic) IBOutlet UITextView *remarkTextView;
+@property (weak, nonatomic) IBOutlet UILabel *labelCounter;
 
 
 @end
@@ -39,11 +40,11 @@
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     
-    _barButtonSave = [[UIBarButtonItem alloc] initWithTitle:@"Save"
+    _barButtonSave = [[UIBarButtonItem alloc] initWithTitle:@"Simpan"
                                                       style:UIBarButtonItemStylePlain
                                                      target:self
                                                      action:@selector(tap:)];
-    [_barButtonSave setTintColor:[UIColor blackColor]];
+    [_barButtonSave setTintColor:[UIColor whiteColor]];
     _barButtonSave.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
     self.navigationItem.rightBarButtonItem = _barButtonSave;
     
@@ -67,6 +68,7 @@
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:YES];
+    self.title = nil;
 }
 
 #pragma mark - View Action
@@ -131,11 +133,19 @@
         [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-            [thumb setImage:image animated:YES];
+            [thumb setImage:image];
 #pragma clang diagnosti c pop
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
         }];
     }
+}
+
+#pragma mark - TextView Delegate
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSInteger counter = 144 - (textView.text.length + (text.length - range.length));
+    _labelCounter.text = [NSString stringWithFormat:@"%zd",(counter<0)?0:counter];
+    return textView.text.length + (text.length - range.length) <= 144;
 }
 
 @end

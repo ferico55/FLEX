@@ -9,8 +9,10 @@
 #import "NotificationViewController.h"
 #import "InboxMessageViewController.h"
 #import "InboxTalkViewController.h"
+#import "InboxReviewViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
+#import "TKPDTabInboxReviewNavigationController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "ShipmentConfirmationViewController.h"
 
@@ -80,7 +82,6 @@
         [self updateLabelAppearance:_resolutionCenterCountLabel];
     }
     
-
     
     // Payment section
     if([_notification.result.sales.sales_new_order integerValue] > 0) {
@@ -112,8 +113,10 @@
         _orderCancelled.hidden = YES;
     }
     
-    if([_notification.result.purchase.purchase_payment_conf integerValue] > 0) {
-        _paymentConfirmationLabel.text = _notification.result.purchase.purchase_payment_conf;
+    NSInteger totalPaymentConfirmation = [_notification.result.purchase.purchase_payment_conf integerValue] +        [_notification.result.purchase.purchase_payment_confirm integerValue];
+    
+    if(totalPaymentConfirmation > 0) {
+        _paymentConfirmationLabel.text = [NSString stringWithFormat:@"%zd",totalPaymentConfirmation];
         _paymentConfirmation.hidden = NO;
     } else {
         _paymentConfirmation.hidden = YES;
@@ -133,7 +136,7 @@
         _receiveConfirmation.hidden = YES;
     }
 
- 
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -181,9 +184,10 @@
         }
     } else if(section == 2) {
         NSInteger row = indexPath.row;
+        NSInteger totalPaymentConfirmation = [_notification.result.purchase.purchase_payment_conf integerValue] +        [_notification.result.purchase.purchase_payment_confirm integerValue];
         if(row == 0 && [_notification.result.purchase.purchase_reorder integerValue] == 0) {
             return 0;
-        } else if(row == 1 && [_notification.result.purchase.purchase_payment_conf integerValue] == 0) {
+        } else if(row == 1 && totalPaymentConfirmation == 0) {
             return 0;
         } else if(row == 2 && [_notification.result.purchase.purchase_order_status integerValue] == 0) {
             return 0;
@@ -298,6 +302,26 @@
 
                 break;
             }
+                
+            case 2 : {
+                InboxReviewViewController *vc = [InboxReviewViewController new];
+                vc.data=@{@"nav":@"inbox-review"};
+                
+                InboxReviewViewController *vc1 = [InboxReviewViewController new];
+                vc1.data=@{@"nav":@"inbox-review-my-product"};
+                
+                InboxReviewViewController *vc2 = [InboxReviewViewController new];
+                vc2.data=@{@"nav":@"inbox-review-my-review"};
+                
+                NSArray *vcs = @[vc,vc1, vc2];
+                
+                TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
+                [nc setSelectedIndex:2];
+                [nc setViewControllers:vcs];
+                
+                [self.delegate pushViewController:nc];
+                break;
+            }
             case 3:
             {
                 InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
@@ -313,13 +337,16 @@
         if([indexPath row] == 0) {
             SalesNewOrderViewController *controller = [[SalesNewOrderViewController alloc] init];
             controller.delegate = self;
+            controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
         } else if ([indexPath row] == 1) {
             ShipmentConfirmationViewController *controller = [[ShipmentConfirmationViewController alloc] init];
             controller.delegate = self;
+            controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
         } else if ([indexPath row] == 2) {
             ShipmentStatusViewController *controller = [[ShipmentStatusViewController alloc] init];
+            controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
         }
     }
@@ -327,19 +354,24 @@
     if([indexPath section] == 2) {
         if([indexPath row] == 0) {
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
-            vc.action = @"get_tx_order_status";
-            vc.viewControllerTitle = @"Status Pemesanan";
+            vc.action = @"get_tx_order_list";
+            vc.isCanceledPayment = YES;
+            vc.viewControllerTitle = @"Pesanan Dibatalkan";
+            vc.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 1) {
             TxOrderTabViewController *vc = [TxOrderTabViewController new];
+            vc.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 2) {
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+            vc.hidesBottomBarWhenPushed = YES;
             vc.action = @"get_tx_order_status";
             vc.viewControllerTitle = @"Status Pemesanan";
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 3) {
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
+            vc.hidesBottomBarWhenPushed = YES;
             vc.action = @"get_tx_order_deliver";
             vc.viewControllerTitle = @"Konfirmasi Penerimaan";
             [self.delegate pushViewController:vc];

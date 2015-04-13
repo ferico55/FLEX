@@ -25,7 +25,8 @@ typedef enum
     kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY,                // create new note
     kTKPDSETTINGEDIT_DATATYPEDETAILVIEWKEY,             // only see note detail
     kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY,    // can edit notes but need request
-    kTKPDSETTINGEDIT_DATATYPENEWVIEWADDPRODUCTKEY       // for etalase MyShopEtalaseEditViewController
+    kTKPDSETTINGEDIT_DATATYPENEWVIEWADDPRODUCTKEY,       // for etalase MyShopEtalaseEditViewController
+    NOTES_RETURNABLE_PRODUCT                            // untuk notes pengembalian product
 } kTKPDEDITSHOPTYPE;
 
 typedef enum
@@ -43,7 +44,7 @@ typedef enum
 #define kTKPDTITLE_SEND_MESSAGE @"Send Message"
 #define kTKPDTITLE_NEW_TALK @"New Talk About It"
 #define kTKPDTITLE_SHOP_INFO @"Informasi Toko"
-#define KTKPDTITLE_FAV_THIS_SHOP @"People who Favorited This Shop"
+#define KTKPDTITLE_FAV_THIS_SHOP @"Yang Memfavoritkan"
 #define KTKPDTITLE_PEOPLE @"People Information"
 #define KTKPDTITLE_BIODATA @"Biodata"
 
@@ -116,10 +117,13 @@ typedef enum
 
 
 #pragma mark - Get Action
+#define kTKPDADD_WISHLIST_PRODUCT @"add_wishlist_product"
+#define kTKPDREMOVE_WISHLIST_PRODUCT @"remove_wishlist_product"
 #define kTKPDDETAIL_APIGETDETAILACTIONKEY @"get_detail"
 #define kTKPDDETAIL_APIGETPRODUCTREVIEWKEY @"get_product_review"
 #define kTKPDDETAIL_APIGETPRODUCTTALKKEY @"get_product_talk"
 #define kTKPDDETAIL_APIGETCOMMENTBYTALKID @"get_comment_by_talk_id"
+#define kTKPDDETAIL_APIGETINBOXDETAIL @"get_inbox_detail_talk"
 #define kTKPDDETAIL_APIGETCATALOGDETAILKEY @"get_catalog_detail"
 #define kTKPDDETAIL_APIGETSHOPDETAILKEY @"get_shop_info"
 #define kTKPDDETAIL_APIGETSHOPPRODUCTKEY @"get_shop_product"
@@ -220,8 +224,11 @@ typedef enum
 #define kTKPDDETAILPRODUCT_APIINFOKEY @"info"
 #define API_PRODUCT_INFO_KEY @"product"
 
+#define kTKPDLIMIT_TEXT_DESC 100
+#define kTKPDMORE_TEXT @"..."
 #define kTKPDDETAILPRODUCT_APIPRODUCTLASTUPDATEKEY @"product_last_update"
 #define kTKPDDETAILPRODUCT_APIPRODUCTPRICEALERTKEY @"product_price_alert"
+#define kTKPDPRODUCT_ALREADY_WISHLIST @"product_already_wishlist"
 #define kTKPDDETAILPRODUCT_APIPRODUCTNAMEKEY @"product_name"
 #define kTKPDDETAILPRODUCT_APIPRODUCTURLKEY @"product_url"
 #define API_PRODUCT_PRICE_IDR_KEY @"product_price_idr"
@@ -233,14 +240,14 @@ typedef enum
 #define API_PRODUCT_WEIGHT_UNIT_KEY @"product_weight_unit"
 
 #define kTKPDDETAILPRODUCT_APISTATISTICKEY @"statistic"
-#define kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY @"product_sold"
-#define kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY @"product_transaction"
+#define kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY @"product_sold_count"
+#define kTKPDDETAILPRODUCT_APIPRODUCTTRANSACTIONKEY @"product_transaction_count"
 #define kTKPDDETAILPRODUCT_APIPRODUCTSUCCESSRATEKEY @"product_success_rate"
-#define kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY @"product_view"
-#define kTKPDDETAILPRODUCT_APIPRODUCTRATINGKEY @"product_rating"
+#define kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY @"product_view_count"
+#define kTKPDDETAILPRODUCT_APIPRODUCTRATINGKEY @"product_rating_point"
 #define kTKPDDETAILPRODUCT_APIPRODUCTCANCELRATEKEY @"product_cancel_rate"
-#define kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY @"product_talk"
-#define kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY @"product_review"
+#define kTKPDDETAILPRODUCT_APIPRODUCTTALKKEY @"product_talk_count"
+#define kTKPDDETAILPRODUCT_APIPRODUCTREVIEWKEY @"product_review_count"
 #define KTKPDDETAILPRODUCT_APIPRODUCTQUALITYRATEKEY @"product_quality_rate"
 #define KTKPDDETAILPRODUCT_APIPRODUCTACCURACYRATEKEY @"product_accuracy_rate"
 #define KTKPDDETAILPRODUCT_APIPRODUCTQUALITYPOINTKEY @"product_quality_point"
@@ -248,6 +255,7 @@ typedef enum
 
 
 #define kTKPDDETAILPRODUCT_APISHOPINFOKEY @"shop_info"
+#define kTKPDDETAILPRODUCT_APIRATINGKEY @"rating"
 #define kTKPDDETAILPRODUCT_APISHOPOPENSINCEKEY @"shop_open_since"
 #define kTKPDDETAILPRODUCT_APISHOPLOCATIONKEY @"shop_location"
 #define kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY @"shop_owner_last_login"
@@ -266,6 +274,12 @@ typedef enum
 #define kTKPDDETAILPRODUCT_APISHOPACURACYRATEKEY @"shop_accuracy_rate"
 #define kTKPDDETAILPRODUCT_APISHOPACURACYDESCRIPTIONKEY @"shop_accuracy_description"
 #define kTKPDDETAILPRODUCT_APISHOPSPEEDDESCRIPTIONKEY @"shop_speed_description"
+
+#define kTKPDDETAILPRODUCT_APIQUALITYRATE @"product_rating_point"
+#define kTKPDDETAILPRODUCT_APIQUALITYSTAR @"product_rating_star_point"
+#define kTKPDDETAILPRODUCT_APIACCURACYRATE @"product_rate_accuracy_point"
+#define kTKPDDETAILPRODUCT_APIACCURACYSTAR @"product_accuracy_star_rate"
+
 
 #define kTKPDDETAILPRODUCT_APIBREADCRUMBKEY @"breadcrumb"
 #define kTKPDDETAILPRODUCT_APIDEPARTMENTNAMEKEY @"department_name"
@@ -562,6 +576,7 @@ typedef enum
 #define kTKPDNOTES_APINOTESTATUSKEY @"note_status"
 #define kTKPDNOTES_APINOTETITLEKEY @"note_title"
 #define kTKPDNOTES_APINOTECONTENTKEY @"note_content"
+#define NOTES_TERMS_FLAG_KEY @"terms"
 
 #define kTKPDNOTE_APINOTESTITLEKEY @"notes_title"
 #define kTKPDNOTE_APINOTESUPDATETIMEKEY @"notes_update_time"
@@ -653,6 +668,35 @@ typedef enum
 #define API_FILE_NAME_KEY @"file_name"
 #define API_FILE_PATH_KEY @"file_path"
 
+//wishList
+#define KTKPDSHOP_GOLD_STATUS @"shop_gold_status"
+#define KTKPDSHOP_ID @"shop_id"
+#define KTKPDPRODUCT_RATING_POINT @"product_rating_point"
+#define KTKPDPRODUCT_DEPARTMENT_ID @"product_department_id"
+#define KTKPDPRODUCT_ETALASE @"product_etalase"
+#define KTKPDSHOP_URL @"shop_url"
+#define KTKPDSHOP_FEATURED_SHOP @"shop_featured_shop"
+#define KTKPDPRODUCT_STATUS @"product_status"
+#define KTKPDPRODUCT_ID @"product_id"
+#define KTKPDPRODUCT_IMAGE_FULL @"product_image_full"
+#define KTKPDPRODUCT_CURRENCY_ID @"product_currency_id"
+#define KTKPDPRODUCT_RATING_DESC @"product_rating_desc"
+#define KTKPDPRODUCT_CURRENCY @"product_currency"
+#define KTKPDPRODUCT_TALK_COUNT @"product_talk_count"
+#define KTKPDPRODUCT_PRICE_NO_IDR @"product_price_no_idr"
+#define KTKPDPRODUCT_IMAGE @"product_image"
+#define KTKPDPRODUCT_PRICE @"product_price"
+#define KTKPDPRODUCT_SOLD_COUNT @"product_sold_count"
+#define KTKPDPRODUCT_RETURNABLE @"product_returnable"
+#define KTKPDSHOP_LOCATION @"shop_location"
+#define KTKPDPRODUCT_NORMAL_PRICE @"product_normal_price"
+#define KTKPDPRODUCT_IMAGE_300 @"product_image_300"
+#define KTKPDSHOP_NAME @"shop_name"
+#define KTKPDPRODUCT_REVIEW_COUNT @"product_review_count"
+#define KTKPDSHOP_IS_OWNER @"shop_is_owner"
+#define KTKPDPRODUCT_URL @"product_url"
+#define KTKPDPRODUCT_NAME @"product_name"
+
 //product
 #define kTKPDDETAILPRODUCT_APIPATH @"product.pl"
 #define kTKPDDETAILACTIONPRODUCT_APIPATH @"action/product.pl"
@@ -699,6 +743,7 @@ typedef enum
 #define kTKPDMESSAGE_KEYCONTENT @"message"
 #define kTKPDMESSAGE_PRODUCTIDKEY @"product_id"
 #define kTKPDMESSAGE_KEYTOSHOPID @"to_shop_id"
+#define kTKPDMESSAGE_KEYTOUSERID @"to_user_id"
 #define KTKPDMESSAGE_DELIVERED @"Pesan Anda telah terkirim!"
 #define KTKPDTALK_DELIVERED @"Diskusi Anda telah terkirim!"
 #define KTKPDMESSAGE_UNDELIVERED @"Pesan Anda gagal terkirim."

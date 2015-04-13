@@ -10,14 +10,21 @@
 #import "TxOrderStatusList.h"
 #import "GenerateHost.h"
 
-#pragma mark - Transaction Cart Payment Delegate
+#pragma mark - Delegate
 @protocol InboxResolutionCenterOpenViewControllerDelegate <NSObject>
 @optional
 - (void)updateDataSolution:(NSString*)selectedSolution refundAmount:(NSString*)refund remark:(NSString*)note;
 - (void)changeSolution:(NSString*)solutionType troubleType:(NSString*)troubleType refundAmount:(NSString*)refundAmout remark:(NSString*)note photo:(NSString*)photo serverID:(NSString*)serverID;
 - (void)appealSolution:(NSString*)solutionType refundAmount:(NSString*)refundAmout remark:(NSString*)note photo:(NSString*)photo serverID:(NSString*)serverID;
 - (void)didFailureComplainOrder:(TxOrderStatusList*)order atIndexPath:(NSIndexPath*)indexPath;
+- (void)syncroImages:(NSArray*)images message:(NSString*)message;
 @end
+
+@protocol SyncroDelegate <NSObject>
+@optional
+- (void)syncroImages:(NSArray*)images message:(NSString*)message;
+@end
+
 
 @interface InboxResolutionCenterOpenViewController : UIViewController
 
@@ -26,9 +33,16 @@
 #else
 @property (nonatomic, assign) IBOutlet id<InboxResolutionCenterOpenViewControllerDelegate> delegate;
 #endif
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
+@property (nonatomic, weak) IBOutlet id<SyncroDelegate> syncroDelegate;
+#else
+@property (nonatomic, assign) IBOutlet id<SyncroDelegate> syncroDelegate;
+#endif
+
 @property (weak, nonatomic) IBOutlet UILabel *buyerSellerLabel;
 
-@property NSString *controllerTitle;
+@property (nonatomic) NSString *controllerTitle;
 
 @property TxOrderStatusList *order;
 @property NSIndexPath *indexPath;

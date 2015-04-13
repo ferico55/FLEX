@@ -19,11 +19,14 @@
 #import "URLCacheController.h"
 #import "GeneralAction.h"
 #import "UserAuthentificationManager.h"
+#import "ReportViewController.h"
+#import "NoResultView.h"
+
 #import "stringrestkit.h"
 #import "inbox.h"
 
 #pragma mark - Product Talk View Controller
-@interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, GeneralTalkCellDelegate>
+@interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, GeneralTalkCellDelegate,ReportViewControllerDelegate>
 {
     NSMutableArray *_list;
     NSArray *_headerimages;
@@ -59,6 +62,8 @@
     NSString *product_id;
     NSMutableDictionary *_auth;
     UserAuthentificationManager *_userManager;
+    ReportViewController *_reportController;
+    NoResultView *_noResultView;
     
 }
 
@@ -113,6 +118,7 @@
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
+    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     _table.tableHeaderView = _header;
     
@@ -630,31 +636,38 @@
             BOOL status = [_talk.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                
                 NSArray *list = _talk.result.list;
                 [_list addObjectsFromArray:list];
                 
-                _urinext =  _talk.result.paging.uri_next;
-                NSURL *url = [NSURL URLWithString:_urinext];
-                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                
-                NSMutableDictionary *queries = [NSMutableDictionary new];
-                [queries removeAllObjects];
-                for (NSString *keyValuePair in querry)
-                {
-                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                    NSString *key = [pairComponents objectAtIndex:0];
-                    NSString *value = [pairComponents objectAtIndex:1];
+                if([_list count] > 0) {
+                    _urinext =  _talk.result.paging.uri_next;
+                    NSURL *url = [NSURL URLWithString:_urinext];
+                    NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
                     
-                    [queries setObject:value forKey:key];
+                    NSMutableDictionary *queries = [NSMutableDictionary new];
+                    [queries removeAllObjects];
+                    for (NSString *keyValuePair in querry)
+                    {
+                        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                        NSString *key = [pairComponents objectAtIndex:0];
+                        NSString *value = [pairComponents objectAtIndex:1];
+                        
+                        [queries setObject:value forKey:key];
+                    }
+                    
+                    _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
+                    NSLog(@"next page : %zd",_page);
+                    
+                    
+                    _isnodata = NO;
+                    [_table reloadData];
+                } else {
+                    _table.tableFooterView = _noResultView;
+                    _isnodata = YES;
                 }
                 
-                _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                NSLog(@"next page : %zd",_page);
                 
                 
-                _isnodata = NO;
-                [_table reloadData];
             }
         }else{
             [self cancel];
@@ -670,7 +683,7 @@
                 else
                 {
                     [_act stopAnimating];
-                    _table.tableFooterView = nil;
+                    _table.tableFooterView = _noResultView;
                     NSError *error = object;
                     NSString *errorDescription = error.localizedDescription;
                     UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
@@ -680,7 +693,7 @@
             else
             {
                 [_act stopAnimating];
-                _table.tableFooterView = nil;
+                _table.tableFooterView = _noResultView;
                 NSError *error = object;
                 NSString *errorDescription = error.localizedDescription;
                 UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
@@ -834,7 +847,28 @@
 
 #pragma mark - General Cell Comment Delegate
 - (void)reportTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    _reportController = [ReportViewController new];
+    _reportController.delegate = self;
     
+    [self.navigationController pushViewController:_reportController animated:YES];
+}
+
+- (void)deleteTalk:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+   //TODO::Later to do this
+    
+}
+
+#pragma mark - Report Delegate
+- (NSDictionary *)getParameter {
+    return @{
+             @"action" : @"report_product_talk",
+             @"talk_id" : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0)
+             };
+}
+
+
+- (NSString *)getPath {
+    return @"action/talk.pl";
 }
 
 

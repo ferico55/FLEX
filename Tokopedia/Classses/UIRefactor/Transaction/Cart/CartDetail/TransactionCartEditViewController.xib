@@ -12,11 +12,13 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionCartEditViewController">
             <connections>
+                <outlet property="labelCounter" destination="bYy-wx-aD3" id="tEJ-Az-br9"/>
                 <outlet property="productNameLabel" destination="HqW-nE-YmQ" id="ahu-vl-KHb"/>
                 <outlet property="productPriceLabel" destination="0VY-Wg-4c6" id="ZNZ-ha-Xji"/>
                 <outlet property="productThumbImageView" destination="6bf-HE-efG" id="c4T-tS-R9P"/>
@@ -91,7 +93,7 @@
                     <rect key="frame" x="0.0" y="154" width="320" height="414"/>
                     <subviews>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Keterangan" translatesAutoresizingMaskIntoConstraints="NO" id="OOZ-fT-ifq">
-                            <rect key="frame" x="15" y="22" width="297" height="374"/>
+                            <rect key="frame" x="15" y="29" width="297" height="374"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -100,9 +102,15 @@
                             </connections>
                         </textView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Keterangan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1sV-MT-ejo">
-                            <rect key="frame" x="15" y="0.0" width="134" height="21"/>
+                            <rect key="frame" x="15" y="7" width="134" height="21"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="10"/>
                             <color key="textColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="140" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bYy-wx-aD3">
+                            <rect key="frame" x="263" y="7" width="42" height="21"/>
+                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
+                            <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
@@ -111,7 +119,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-            <point key="canvasLocation" x="133" y="154"/>
+            <point key="canvasLocation" x="225" y="154"/>
         </view>
     </objects>
 </document>

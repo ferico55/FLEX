@@ -15,6 +15,7 @@
 @property (nonatomic, strong) NSString *shop_id;
 @property (nonatomic, strong) NSString *shop_total_transaction;
 @property (nonatomic, strong) NSString *shop_total_favorite;
+@property (nonatomic, strong) NSString *shop_is_fave_shop;
 
 /** catalog **/
 @property (nonatomic, strong) NSString *catalog_id;

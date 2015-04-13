@@ -10,6 +10,8 @@
 #import "ReviewFormViewController.h"
 #import "ReviewList.h"
 
+#import "NavigateViewController.h"
+
 #pragma mark - General Review Cell
 @implementation GeneralReviewCell
 
@@ -28,6 +30,21 @@
 - (void)awakeFromNib
 {
     self.userImageView.layer.cornerRadius = self.userImageView.frame.size.width/2;
+    
+    UITapGestureRecognizer *userGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapUser)];
+    [_userTapView addGestureRecognizer:userGes];
+    [_userTapView setUserInteractionEnabled:YES];
+    
+    
+    UITapGestureRecognizer *productGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapProduct)];
+    [_productTapView addGestureRecognizer:productGes];
+    [_productTapView setUserInteractionEnabled:YES];
+    
+    UITapGestureRecognizer *reviewGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapReview)];
+    [_reviewTapView addGestureRecognizer:reviewGes];
+    [_reviewTapView setUserInteractionEnabled:YES];
+    
+
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -68,13 +85,13 @@
                 NSIndexPath *indexPath = _indexpath;
                 
                 UIAlertView *alert = [[UIAlertView alloc]
-                                      initWithTitle:@"Skip Review"
-                                      message:@"Are you sure you want to skip this review ?"
+                                      initWithTitle:@"Lewati"
+                                      message:@"Apakah kamu yakin ingin melewati ulasan ini ?"
                                       delegate:self
-                                      cancelButtonTitle:@"Cancel"
+                                      cancelButtonTitle:@"Batal"
                                       otherButtonTitles:nil];
                 
-                [alert addButtonWithTitle:@"Skip"];
+                [alert addButtonWithTitle:@"Lewati"];
                 [alert show];
                 break;
             }
@@ -94,10 +111,39 @@
                 
             }
                 
+            case 16 : {
+                [_delegate reportReview:self withindexpath:_indexpath];
+                break;
+            }
+                
             default:
                 break;
         }
     }
+}
+
+- (void)tapProduct {
+    NavigateViewController *navigation = [NavigateViewController new];
+    NSIndexPath* indexpath = _indexpath;
+    UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
+    
+    ReviewList *list = (ReviewList *)_data;
+    [navigation navigateToProductFromViewController:nav withProductID:list.review_product_id];
+}
+
+- (void)tapReview {
+    NSIndexPath* indexpath = _indexpath;
+    
+    [_delegate GeneralReviewCell:self withindexpath:indexpath];
+}
+
+- (void)tapUser {
+    NavigateViewController *navigation = [NavigateViewController new];
+    NSIndexPath* indexpath = _indexpath;
+    UINavigationController *nav = [_delegate navigationController:self withindexpath:indexpath];
+    
+    ReviewList *list = (ReviewList *)_data;
+    [navigation navigateToProfileFromViewController:nav withUserID:list.review_user_id];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

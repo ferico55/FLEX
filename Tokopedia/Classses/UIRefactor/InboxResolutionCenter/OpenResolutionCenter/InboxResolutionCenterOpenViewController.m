@@ -7,6 +7,7 @@
 //
 
 #import "ResolutionCenterDetailViewController.h"
+#import "ResolutionCenterInputViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "InboxResolutionCenterOpenViewController.h"
 #import "string_inbox_resolution_center.h"
@@ -29,7 +30,7 @@
 #define TITLE_CHANGE_SOLUTION @"Ubah Solusi"
 #define TITLE_OPEN_COMPLAIN @"Buka Komplain"
 
-@interface InboxResolutionCenterOpenViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, GeneralTableViewControllerDelegate, CameraControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, GenerateHostDelegate, RequestUploadImageDelegate>
+@interface InboxResolutionCenterOpenViewController () <UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, GeneralTableViewControllerDelegate, CameraControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, GenerateHostDelegate, RequestUploadImageDelegate, SyncroDelegate>
 {
     BOOL _isNodata;
     NSString *_URINext;
@@ -75,6 +76,8 @@
 @property (weak, nonatomic) IBOutlet UITextView *noteTextView;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *uploadButtons;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *uploadedImages;
+@property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *cancelButtons;
+@property (weak, nonatomic) IBOutlet UIImageView *rightArrowImageView;
 
 @end
 
@@ -86,9 +89,14 @@
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     _generatehost = [GenerateHost new];
-    _photos = [NSMutableArray new];
+    _photos = [[NSMutableArray alloc]initWithObjects:@"",@"",@"",@"",@"", nil];
     _uploadingPhotos = [NSMutableArray new];
-
+    
+    _cancelButtons = [NSArray sortViewsWithTagInArray:_cancelButtons];
+    _uploadedImages = [NSArray sortViewsWithTagInArray:_uploadedImages];
+    _uploadButtons = [NSArray sortViewsWithTagInArray:_uploadButtons];
+    [_cancelButtons makeObjectsPerformSelector:@selector(setHidden:)withObject:@(YES)];
+    
     
     [self setData];
     
@@ -106,6 +114,40 @@
     [requestHost configureRestkitGenerateHost];
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
+
+}
+
+-(void)setControllerTitle:(NSString *)controllerTitle
+{
+    _controllerTitle = controllerTitle;
+    [self adjustNavigationTitle];
+}
+
+-(void)adjustNavigationTitle
+{
+    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
+    [backBarButtonItem setTintColor:[UIColor whiteColor]];
+    backBarButtonItem.tag = 10;
+    self.navigationItem.leftBarButtonItem = backBarButtonItem;
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    label.numberOfLines = 2;
+    label.font = [UIFont systemFontOfSize: 11.0f];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [UIColor whiteColor];
+    
+    NSString *status = _isGotTheOrder?@"Sudah Terima Barang":@"Tidak Terima Barang";
+    
+    NSString *title = [NSString stringWithFormat:@"%@\nStatus: %@", _controllerTitle,status];
+    
+    NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:title];
+    [attributedText addAttribute:NSFontAttributeName
+                           value:[UIFont boldSystemFontOfSize: 16.0f]
+                           range:NSMakeRange(0, [_controllerTitle length])];
+    
+    label.attributedText = attributedText;
+
+    self.navigationItem.titleView = label;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -139,6 +181,8 @@
 {
     [super viewWillDisappear:animated];
     self.title = @"";
+    
+    [_syncroDelegate syncroImages:[_photos copy] message:_noteTextView.text];
 }
 
 -(void)updateDataSolution:(NSString *)selectedSolution refundAmount:(NSString *)refund remark:(NSString *)note
@@ -148,17 +192,14 @@
     _note = note;
 }
 
+
 -(void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    if (_indexPage == 1) {
-        //[_delegate updateDataSolution:_selectedSolution refundAmount:_totalRefund remark:_remark];
-    }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - View Action
@@ -233,46 +274,48 @@
     }
     else
     {
-        if (_indexPage==0)
-        {
-            if (!_isFinishUploadingImage) {
-                StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Belum selesai meng-upload image"] delegate:self];
-                [alert show];
-            }
-            else if(!_isGotTheOrder)
-                [self didTapDoneBarButtonItem];
-            else
-                [self goToSecondPage];
+        UIBarButtonItem *button = (UIBarButtonItem*)sender;
+        if (button.tag == 10) {
+            [self.navigationController popViewControllerAnimated:YES];
         }
         else
-            [self didTapDoneBarButtonItem];
+        {
+            if (_indexPage==0)
+            {
+                if (!_isFinishUploadingImage) {
+                    StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:@[@"Belum selesai meng-upload image"] delegate:self];
+                    [alert show];
+                }
+                else if(!_isGotTheOrder)
+                    [self didTapDoneBarButtonItem];
+                else
+                    [self goToSecondPage];
+            }
+            else
+                [self didTapDoneBarButtonItem];
+        }
     }
 }
-
--(void)goToSecondPage
-{
-    InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
-    vc.indexPage = 1;
-    vc.selectedProblem = _selectedProblem;
-    vc.isGotTheOrder = _isGotTheOrder;
-    vc.order = _order?:[TxOrderStatusList new];
-    vc.uploadedPhotos = _photos;
-    vc.generatehost = _generatehost;
-    vc.delegate = _delegate;
-    vc.detailOpenAmount = _detailOpenAmount;
-    vc.detailOpenAmountIDR = _detailOpenAmountIDR;
-    vc.shippingPriceIDR = _shippingPriceIDR;
-    vc.selectedProblem = _selectedProblem;
-    vc.selectedSolution = _selectedSolution;
-    vc.invoice = _invoice;
-    vc.shopName = _shopName;
-    vc.shopPic = _shopPic;
-    vc.note = _note;
-    vc.isChangeSolution = _isChangeSolution;
-    vc.totalRefund = _totalRefund;
-    vc.controllerTitle = _controllerTitle;
+- (IBAction)tapRemoveImage:(UIButton*)sender {
+    [_photos replaceObjectAtIndex:sender.tag-10 withObject:@""];
     
-    [self.navigationController pushViewController:vc animated:YES];
+    for (UIImageView *imageView in _uploadedImages) {
+        if (imageView.tag == sender.tag) {
+            imageView.image = nil;
+        }
+    }
+    
+    for (UIButton *button in _uploadButtons) {
+        if (button.tag == sender.tag) {
+            button.hidden = NO;
+        }
+    }
+    
+    for (UIButton *button in _cancelButtons) {
+        if (button.tag == sender.tag) {
+            button.hidden = YES;
+        }
+    }
 }
 
 -(void)didTapDoneBarButtonItem
@@ -280,13 +323,8 @@
     if ([self isValidInput]) {
         NSString *troubleType = [self troubleType]?:@"";
         NSString *solutionType = [self solutionType]?:@"";
-        
-        NSMutableArray *fileThumbImage = [NSMutableArray new];
-        for (UploadImageResult *image in _uploadedPhotos) {
-            [fileThumbImage addObject:image.file_th];
-        }
-       
-        NSString *photos = [[fileThumbImage valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
+
+        NSString *photos = [[_uploadedPhotos valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
        
         NSString *serverID = _generatehost.result.generated_host.server_id?:@"0";
         
@@ -651,7 +689,7 @@
                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                              [thumb setImage:image animated:YES];
+                              [thumb setImage:image];
 #pragma clang diagnosti c pop
                           } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                           }];
@@ -659,10 +697,12 @@
     _selectedSolution = _selectedSolution?:[[self solutions] firstObject];
     _selectedProblem = _selectedProblem?:[ARRAY_PROBLEM_COMPLAIN firstObject];
     
-    [self setPlaceholder];
-    
     if (!_isCanEditProblem && _indexPage == 0) {
         _choosenProblemSolutionLabel.textColor = [UIColor grayColor];
+        _rightArrowImageView.hidden = YES;
+        CGRect frame = _choosenProblemSolutionLabel.frame;
+        frame.origin.x +=15;
+        _choosenProblemSolutionLabel.frame = frame;
     }
     
     if (_uploadedPhotos.count>0) {
@@ -675,14 +715,24 @@
             [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image animated:YES];
+                [thumb setImage:image];
 #pragma clang diagnosti c pop
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
             }];
+            
+            [(UIButton*)_cancelButtons[i] setHidden:NO];
+            [(UIButton*)_uploadButtons[i] setHidden:YES];
+            if (i<_uploadButtons.count-1) {
+                [(UIButton*)_uploadButtons[i+1] setHidden:NO];
+            }
+            [_photos replaceObjectAtIndex:i withObject:_uploadedPhotos[i]];
         }
     }
     
     _noteTextView.text = _note?:@"";
+    if ([_noteTextView.text isEqualToString:@""]) {
+        [self setPlaceholder];
+    }
     
     _totalRefundTextField.text = [_totalRefund isEqualToString:@"0"]?@"":_totalRefund;
 }
@@ -696,6 +746,7 @@
     placeholderLabel.font = [UIFont fontWithName:_noteTextView.font.fontName size:_noteTextView.font.pointSize];
     placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
     placeholderLabel.tag = 1;
+    
     [_noteTextView addSubview:placeholderLabel];
 }
 
@@ -763,6 +814,38 @@
         return YES;
     }
     return NO;
+}
+
+-(void)syncroImages:(NSArray *)images message:(NSString *)message
+{
+    _noteTextView.text = message;
+}
+
+-(void)goToSecondPage
+{
+    InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
+    vc.indexPage = 1;
+    vc.selectedProblem = _selectedProblem;
+    vc.isGotTheOrder = _isGotTheOrder;
+    vc.order = _order?:[TxOrderStatusList new];
+    vc.uploadedPhotos = _uploadedPhotos?:_photos?:@[];
+    vc.generatehost = _generatehost;
+    vc.delegate = _delegate;
+    vc.detailOpenAmount = _detailOpenAmount;
+    vc.detailOpenAmountIDR = _detailOpenAmountIDR;
+    vc.shippingPriceIDR = _shippingPriceIDR;
+    vc.selectedProblem = _selectedProblem;
+    vc.selectedSolution = _selectedSolution;
+    vc.invoice = _invoice;
+    vc.shopName = _shopName;
+    vc.shopPic = _shopPic;
+    vc.note = _note;
+    vc.isChangeSolution = _isChangeSolution;
+    vc.totalRefund = _totalRefund;
+    vc.syncroDelegate = self;
+    vc.controllerTitle = _controllerTitle;
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - Request Complaint
@@ -854,11 +937,7 @@
     NSString *troubleType = [self troubleType]?:@"";
     NSString *solutionType = [self solutionType]?:@"";
     
-    NSMutableArray *fileThumbImage = [NSMutableArray new];
-    for (UploadImageResult *image in _uploadedPhotos) {
-        [fileThumbImage addObject:image.file_th];
-    }
-    NSString *photos = [[fileThumbImage valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
+    NSString *photos = [[_uploadedPhotos valueForKey:@"description"] componentsJoinedByString:@"~"]?:@"";
     
     NSDictionary* param = @{API_ACTION_KEY : ACTION_CREATE_RESOLUTION,
                             API_ORDER_ID_KEY : _order.order_detail.detail_order_id?:@"",
@@ -991,16 +1070,25 @@
 
 -(void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
 {
+    _isFinishUploadingImage = YES;
     UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     imageView.alpha = 1.0;
-    [_photos addObject:uploadImage.result];
+    [_photos replaceObjectAtIndex:imageView.tag-10 withObject:uploadImage.result.file_th];
     [_uploadingPhotos removeObject:object];
     
-    [self requestProcessUploadPhoto];
+    for (UIButton *button in _cancelButtons) {
+        if (button.tag == imageView.tag) {
+            button.hidden = NO;
+        }
+    }
+    
+    //[self requestProcessUploadPhoto];
 }
 
 -(void)failedUploadObject:(id)object
 {
+    _isFinishUploadingImage = YES;
+    
     UIImageView *imageView = [object objectForKey:DATA_SELECTED_IMAGE_VIEW_KEY];
     imageView.image = nil; //TODO::placeholder image
     
@@ -1012,7 +1100,7 @@
     }
     [_uploadingPhotos removeObject:object];
     
-    [self requestProcessUploadPhoto];
+    //[self requestProcessUploadPhoto];
 }
 
 - (void)requestProcessUploadPhoto

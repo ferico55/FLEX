@@ -15,6 +15,7 @@
 #import "Breadcrumb.h"
 #import "OtherProduct.h"
 #import "ProductImages.h"
+#import "Rating.h"
 
 @interface DetailProductResult : NSObject
 
@@ -23,6 +24,7 @@
 @property (nonatomic) NSInteger shop_is_gold;
 @property (nonatomic, strong) Statistic *statistic;
 @property (nonatomic, strong) ShopInfo *shop_info;
+@property (nonatomic, strong) Rating *rating;
 @property (nonatomic, strong) NSArray *wholesale_price;
 @property (nonatomic, strong) NSArray *breadcrumb;
 @property (nonatomic, strong) NSArray *other_product;

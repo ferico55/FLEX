@@ -35,7 +35,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ju3-7W-SNy">
-                        <rect key="frame" x="78" y="52" width="234" height="21"/>
+                        <rect key="frame" x="78" y="52" width="217" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                         <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -48,6 +48,13 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="k1g-o7-zht">
+                        <rect key="frame" x="297" y="52" width="20" height="20"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <state key="normal" image="icon_more.png">
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                    </button>
                 </subviews>
                 <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                 <color key="tintColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -56,12 +63,16 @@
             <connections>
                 <outlet property="commentlabel" destination="Ju3-7W-SNy" id="ZUu-uJ-9Cc"/>
                 <outlet property="create_time" destination="0Dn-bB-6Dv" id="el3-b8-rg0"/>
+                <outlet property="loadingButton" destination="k1g-o7-zht" id="OHh-ER-ub7"/>
                 <outlet property="user_image" destination="arr-7l-tfF" id="99p-X6-E1B"/>
                 <outlet property="user_name" destination="Gor-g4-QIA" id="eIV-kW-Kqy"/>
             </connections>
             <point key="canvasLocation" x="427" y="275"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="icon_more.png" width="30" height="30"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

@@ -23,5 +23,7 @@
 @property (nonatomic, strong) NSString *user_image;
 @property (nonatomic, strong) NSString *is_not_delivered;
 
+@property (nonatomic) BOOL is_just_sent;
+
 
 @end

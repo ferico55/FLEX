@@ -27,6 +27,8 @@
 #import "TransactionCalculatePrice.h"
 #import "TransactionCartViewController.h"
 
+#import "StickyAlertView.h"
+
 @interface TransactionCartShippingViewController ()<UITableViewDataSource,UITableViewDelegate,SettingAddressViewControllerDelegate, TransactionShipmentViewControllerDelegate, TKPDAlertViewDelegate>
 {
     NSMutableDictionary *_dataInput;
@@ -114,13 +116,27 @@
 {
     _recieverNameLabel.text = address.receiver_name?:@"-";
     _recieverPhoneLabel.text = address.receiver_phone?:@"-";
-    [_addressStreetLabel setCustomAttributedText: [NSString convertHTML:address.address_street]?:@"-"];
-    _district.text = address.address_district;
-    _city.text = address.address_city;
-    _country.text = [NSString stringWithFormat:@"%@ - %@, %zd",
-                     address.address_province,
-                     address.address_country,
-                     address.address_postal];
+    NSString *street = ([address.address_street isEqualToString:@"0"] || !address.address_street)?@"":address.address_street;
+    NSString *districtName = ([address.address_district isEqualToString:@"0"] || !address.address_district)?@"":address.address_district;
+    NSString *cityName = ([address.address_city isEqualToString:@"0"] || !address.address_city)?@"":address.address_city;
+    NSString *provinceName = ([address.address_province isEqualToString:@"0"] || !address.address_province)?@"":address.address_province;
+    NSString *countryName = ([address.address_country isEqualToString:@"0"] || !address.address_country)?@"":address.address_country;
+    NSString *postalCode = ([address.address_postal isEqualToString:@"0"] || !address.address_postal)?@"":address.address_postal;
+    
+    NSString *addressStreet = [NSString stringWithFormat:@"%@\n%@\n%@\n%@, %@ %@",
+                               street,
+                               districtName,
+                               cityName,
+                               provinceName,
+                               countryName,
+                               postalCode];
+    [_addressStreetLabel setCustomAttributedText: [NSString convertHTML:addressStreet]?:@"-"];
+//    _district.text = address.address_district;
+//    _city.text = address.address_city;
+//    _country.text = [NSString stringWithFormat:@"%@ - %@, %zd",
+//                     address.address_province,
+//                     address.address_country,
+//                     address.address_postal];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -234,7 +250,7 @@
     NSString *provinceName = address.province_name?:@"";
     NSNumber *cityID = address.city_id?:@(0);
     NSString *disctrictName = address.district_name?:@"";
-    NSInteger postalCode = address.postal_code;
+    NSString *postalCode = address.postal_code?:@"";
     NSString *recieverName = address.receiver_name?:@"";
     NSString *recieverPhone = address.receiver_phone?:@"";
     
@@ -248,7 +264,7 @@
                             API_ADDRESS_PROVINCE_KEY:provinceName,
                             API_ADDRESS_CITY_KEY:cityID,
                             API_ADDRESS_DISTRICT_KEY:disctrictName,
-                            API_POSTAL_CODE_KEY:@(postalCode),
+                            API_POSTAL_CODE_KEY:postalCode,
                             API_RECIEVER_NAME_KEY:recieverName,
                             API_RECIEVER_PHONE_KEY:recieverPhone,
                             API_CALCULATE_QUANTTITY_KEY:@(quantity),
@@ -306,8 +322,8 @@
                 if(calculate.message_error)
                 {
                     NSArray *array = calculate.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *view = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
+                    [view show];
                 }
                 else
                 {
@@ -429,7 +445,7 @@
     NSString *addressName = address.address_name?:@"";
     NSString *addressStreet = address.address_street?:@"";
     NSNumber *districtID = address.district_id?:@(0);
-    NSInteger postalcode = address.postal_code;
+    NSString *postalcode = address.postal_code?:@"";
     NSNumber *cityID = address.city_id?:@(0);
     NSNumber *provinceID = address.province_id?:@(0);
     
@@ -446,7 +462,7 @@
                             API_ADDRESS_NAME_KEY:addressName,
                             API_ADDRESS_STREET_KEY:addressStreet,
                             API_DISTRICT_ID_KEY:districtID,
-                            API_POSTAL_CODE_KEY:@(postalcode),
+                            API_POSTAL_CODE_KEY:postalcode,
                             API_CITY_ID_KEY :cityID,
                             API_PROVINCE_ID:provinceID
                             };
@@ -510,10 +526,13 @@
                 }
                 else if (action.result.is_success == 1) {
                     NSArray *array = action.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    
                     if (!_isFirstLoad)
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
-                    _isFirstLoad = NO;
+                    {
+                        StickyAlertView *view = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
+                        [view show];
+                        _isFirstLoad = NO;
+                    }
                     NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY]};
                     [_delegate TransactionCartShippingViewController:self withUserInfo:userInfo];
                     //[self.navigationController popViewControllerAnimated:YES];
@@ -634,13 +653,13 @@
                 if(action.message_error)
                 {
                     NSArray *array = action.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *view = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
+                    [view show];
                 }
                 else if (action.result.is_success == 1) {
                     NSArray *array = action.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *view = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
+                    [view show];
                     NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY]};
                     [_delegate TransactionCartShippingViewController:self withUserInfo:userInfo];
                 }
@@ -721,12 +740,49 @@
 {
     UITableViewCell *cell;
     if (_indexPage==0) {
-        if(indexPath.section==0) cell = _tableViewCell[indexPath.row];
+        if(indexPath.section==0){
+            cell = _tableViewCell[indexPath.row];
+            
+            if (indexPath.row == 1) {
+                NSString *textString = _addressStreetLabel.text;
+                [_addressStreetLabel setCustomAttributedText:textString];
+                
+                //Calculate the expected size based on the font and linebreak mode of your label
+                CGSize maximumLabelSize = CGSizeMake(290,9999);
+                
+                CGSize expectedLabelSize = [textString sizeWithFont:_addressStreetLabel.font
+                                                  constrainedToSize:maximumLabelSize
+                                                      lineBreakMode:_addressStreetLabel.lineBreakMode];
+                
+                //adjust the label the the new height.
+                CGRect newFrame = _addressStreetLabel.frame;
+                newFrame.size.height = expectedLabelSize.height + 26;
+                _addressStreetLabel.frame = newFrame;
+                return 290-70+_addressStreetLabel.frame.size.height;
+            }
+        }
         else cell = _tableViewCell[indexPath.row + 5];
 
     }
     else
     {
+        if (indexPath.row == 1) {
+            NSString *textString = _addressStreetLabel.text;
+            [_addressStreetLabel setCustomAttributedText:textString];
+            
+            //Calculate the expected size based on the font and linebreak mode of your label
+            CGSize maximumLabelSize = CGSizeMake(290,9999);
+            
+            CGSize expectedLabelSize = [textString sizeWithFont:_addressStreetLabel.font
+                                              constrainedToSize:maximumLabelSize
+                                                  lineBreakMode:_addressStreetLabel.lineBreakMode];
+            
+            //adjust the label the the new height.
+            CGRect newFrame = _addressStreetLabel.frame;
+            newFrame.size.height = expectedLabelSize.height + 26;
+            _addressStreetLabel.frame = newFrame;
+            return 290-70+_addressStreetLabel.frame.size.height;
+        }
         cell = _tableViewSummaryCell[indexPath.row];
         TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
         if ([cart.cart_total_product integerValue] == 1 && indexPath.row == 4) {
@@ -739,76 +795,78 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-    switch (indexPath.row) {
-        case 0:
-        {
-            if (_indexPage == 0) {
-                AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-                SettingAddressViewController *addressViewController = [SettingAddressViewController new];
-                addressViewController.delegate = self;
-                NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
-                                               DATA_INDEXPATH_KEY: selectedIndexPath,
-                                               DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]};
-                [self.navigationController pushViewController:addressViewController animated:YES];
-            }
-            break;
-        }
-        case 2:
-        {
-            if (_isFinishCalculate) {
-                NSIndexPath *selectedShipment = [_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                
-                ShippingInfoShipments *shipment = [_dataInput objectForKey:DATA_SHIPMENT_KEY]?:cart.cart_shipments;
-                
-                TransactionShipmentViewController *shipmentViewController = [TransactionShipmentViewController new];
-                shipmentViewController.data = @{DATA_TYPE_KEY:@(TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY),
-                                                DATA_SHIPMENT_KEY :shipment,
-                                                DATA_INDEXPATH_KEY : selectedShipment
-                                                };
-                shipmentViewController.delegate = self;
-                [self.navigationController pushViewController:shipmentViewController animated:YES];
-            }
-            break;
-        }
-        case 3:
-        {
-            if (_isFinishCalculate) {
-                NSArray *shipments = [_dataInput objectForKey:DATA_SHIPMENT_KEY];
-                ShippingInfoShipments *shipment = [_dataInput objectForKey:DATA_SELECTED_SHIPMENT_KEY]?:shipments[0];
-                
-                NSIndexPath *selectedShipmentPackage = [_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                
-                NSMutableArray *shipmentPackages = [NSMutableArray new];
-                [shipmentPackages addObjectsFromArray:shipment.shipment_package];
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.price isEqualToString:@"0"]) {
-                        [shipmentPackages removeObject:package];
-                    }
+    if (indexPath.section == 0) {
+        switch (indexPath.row) {
+            case 0:
+            {
+                if (_indexPage == 0) {
+                    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+                    SettingAddressViewController *addressViewController = [SettingAddressViewController new];
+                    addressViewController.delegate = self;
+                    NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                    addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
+                                                   DATA_INDEXPATH_KEY: selectedIndexPath,
+                                                   DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]};
+                    [self.navigationController pushViewController:addressViewController animated:YES];
                 }
-                TransactionShipmentViewController *shipmentViewController = [TransactionShipmentViewController new];
-                shipmentViewController.data = @{DATA_TYPE_KEY:@(TYPE_TRANSACTION_SHIPMENT_SERVICE_TYPE),
-                                                DATA_SHIPMENT_KEY :shipmentPackages,
-                                                DATA_INDEXPATH_KEY : selectedShipmentPackage
-                                                };
-                shipmentViewController.delegate = self;
-                [self.navigationController pushViewController:shipmentViewController animated:YES];
+                break;
             }
-            break;
-        }
-        case 4: // insurance
-        {
-            if ([cart.cart_force_insurance integerValue]!=1&&[cart.cart_cannot_insurance integerValue]!=1) {
-                AlertPickerView *picker = [AlertPickerView newview];
-                picker.delegate = self;
-                picker.tag = 10;
-                picker.pickerData = ARRAY_INSURACE;
-                [picker show];
+            case 2:
+            {
+                if (_isFinishCalculate) {
+                    NSIndexPath *selectedShipment = [_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                    
+                    ShippingInfoShipments *shipment = [_dataInput objectForKey:DATA_SHIPMENT_KEY]?:cart.cart_shipments;
+                    
+                    TransactionShipmentViewController *shipmentViewController = [TransactionShipmentViewController new];
+                    shipmentViewController.data = @{DATA_TYPE_KEY:@(TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY),
+                                                    DATA_SHIPMENT_KEY :shipment,
+                                                    DATA_INDEXPATH_KEY : selectedShipment
+                                                    };
+                    shipmentViewController.delegate = self;
+                    [self.navigationController pushViewController:shipmentViewController animated:YES];
+                }
+                break;
             }
-            break;
+            case 3:
+            {
+                if (_isFinishCalculate) {
+                    NSArray *shipments = [_dataInput objectForKey:DATA_SHIPMENT_KEY];
+                    ShippingInfoShipments *shipment = [_dataInput objectForKey:DATA_SELECTED_SHIPMENT_KEY]?:shipments[0];
+                    
+                    NSIndexPath *selectedShipmentPackage = [_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                    
+                    NSMutableArray *shipmentPackages = [NSMutableArray new];
+                    [shipmentPackages addObjectsFromArray:shipment.shipment_package];
+                    for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                        if ([package.price isEqualToString:@"0"]) {
+                            [shipmentPackages removeObject:package];
+                        }
+                    }
+                    TransactionShipmentViewController *shipmentViewController = [TransactionShipmentViewController new];
+                    shipmentViewController.data = @{DATA_TYPE_KEY:@(TYPE_TRANSACTION_SHIPMENT_SERVICE_TYPE),
+                                                    DATA_SHIPMENT_KEY :shipmentPackages,
+                                                    DATA_INDEXPATH_KEY : selectedShipmentPackage
+                                                    };
+                    shipmentViewController.delegate = self;
+                    [self.navigationController pushViewController:shipmentViewController animated:YES];
+                }
+                break;
+            }
+            case 4: // insurance
+            {
+                if ([cart.cart_force_insurance integerValue]!=1&&[cart.cart_cannot_insurance integerValue]!=1) {
+                    AlertPickerView *picker = [AlertPickerView newview];
+                    picker.delegate = self;
+                    picker.tag = 10;
+                    picker.pickerData = ARRAY_INSURACE;
+                    [picker show];
+                }
+                break;
+            }
+            default:
+                break;
         }
-        default:
-            break;
     }
 }
 

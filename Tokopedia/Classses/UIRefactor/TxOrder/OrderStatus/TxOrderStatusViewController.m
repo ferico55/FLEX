@@ -109,7 +109,7 @@
     [self configureRestKit];
     [self request];
 
-    if ([_action  isEqual: ACTION_GET_TX_ORDER_LIST]) {
+    if ([_action  isEqual: ACTION_GET_TX_ORDER_LIST] && !_isCanceledPayment) {
         _filterView.hidden = NO;
         UIEdgeInsets inset = _tableView.contentInset;
         inset.bottom += _filterView.frame.size.height;
@@ -231,13 +231,9 @@
 }
 
 #pragma mark - Table View Data Source
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return _list.count;
-}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 1;
+    return _list.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -262,7 +258,7 @@
     [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image animated:YES];
+        [thumb setImage:image];
 #pragma clang diagnosti c pop
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
@@ -290,7 +286,7 @@
         ![shipRef isEqualToString:@""] &&
         ![shipRef isEqualToString:@"0"])
     {
-        [comment addObject:[NSString stringWithFormat:@"Nomor resi :%@", order.order_last.last_shipping_ref_num]];
+        [comment addObject:[NSString stringWithFormat:@"Nomor resi: %@", order.order_last.last_shipping_ref_num]];
     }
     if (lastComment && ![lastComment isEqualToString:@"0"] && [lastComment isEqualToString:@""]) {
         showResi = NO;
@@ -550,7 +546,7 @@
     NSString *filterInvoice = [_dataInput objectForKey:API_INVOICE_KEY]?:@"";
     NSString *filterStartDate = [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY]?:@"";
     NSString *filterEndDate = [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]?:@"";
-    NSString *filterStatus = [_dataInput objectForKey:API_TRANSACTION_STATUS_KEY]?:@"";
+    NSString *filterStatus = (_isCanceledPayment)?@"5":[_dataInput objectForKey:API_TRANSACTION_STATUS_KEY]?:@"";
     
     NSDictionary* param = @{API_ACTION_KEY : _action,
                             API_PAGE_KEY : @(_page),
@@ -1070,9 +1066,7 @@
         TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
         [nc setSelectedIndex:2];
         [nc setViewControllers:vcs];
-        UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:nc];
-        [nav.navigationBar setTranslucent:NO];
-        [self.navigationController presentViewController:nav animated:YES completion:nil];
+        [self.navigationController pushViewController:nc animated:YES];
     }
     else if (alertView.tag == TAG_ALERT_REORDER)
     {
@@ -1114,12 +1108,14 @@
        orderStatus == ORDER_SHIPPING_TRACKER_INVALID ||
        orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
        orderStatus == ORDER_DELIVERED ||
-       orderStatus == ORDER_DELIVERY_FAILURE)
+       orderStatus == ORDER_DELIVERY_FAILURE||
+        orderStatus == ORDER_SHIPPING_WAITING)
     {
         
         if((orderStatus == ORDER_SHIPPING ||
             orderStatus == ORDER_SHIPPING_TRACKER_INVALID ||
-            orderStatus == ORDER_SHIPPING_REF_NUM_EDITED) &&
+            orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
+            orderStatus == ORDER_SHIPPING_WAITING) &&
            ![shipRef isEqualToString:@""]) {
             if(([_action isEqualToString:ACTION_GET_TX_ORDER_STATUS] || [_action isEqualToString:ACTION_GET_TX_ORDER_LIST]) )
             {
@@ -1143,13 +1139,16 @@
        orderStatus == ORDER_SHIPPING_TRACKER_INVALID ||
        orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
        orderStatus == ORDER_DELIVERED ||
-       orderStatus == ORDER_DELIVERY_FAILURE)
+       orderStatus == ORDER_DELIVERY_FAILURE||
+       orderStatus == ORDER_SHIPPING_WAITING)
     {
         
         if((orderStatus == ORDER_SHIPPING ||
             orderStatus == ORDER_SHIPPING_TRACKER_INVALID ||
-            orderStatus == ORDER_SHIPPING_REF_NUM_EDITED) &&
-           ![shipRef isEqualToString:@""]) {
+            orderStatus == ORDER_SHIPPING_REF_NUM_EDITED ||
+            orderStatus == ORDER_SHIPPING_WAITING) &&
+           ![shipRef isEqualToString:@""])
+        {
             return YES;
         }
     }
@@ -1264,12 +1263,14 @@
 {
     TrackOrderViewController *vc = [TrackOrderViewController new];
     vc.delegate = self;
+    vc.hidesBottomBarWhenPushed = YES;
     vc.orderID = [order.order_detail.detail_order_id integerValue];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)showAlertDeliver:(TxOrderStatusList*)order
 {
+    [_dataInput setObject:order forKey:DATA_ORDER_COMPLAIN_KEY];
     UIAlertView *alertConfirmation = [[UIAlertView alloc]initWithTitle:[NSString stringWithFormat:ALERT_DELIVERY_CONFIRM_FORMAT,order.order_shop.shop_name]
                                                                message:ALERT_DELIVERY_CONFIRM_DESCRIPTION
                                                               delegate:self

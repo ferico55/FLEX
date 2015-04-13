@@ -16,10 +16,12 @@
 #import "ProductReviewViewController.h"
 #import "ProductReviewDetailViewController.h"
 #import "GeneralProductReviewCell.h"
+#import "DetailReviewViewController.h"
 
 #import "TKPDAlertView.h"
 #import "AlertListView.h"
 #import "StickyAlert.h"
+#import "NoResultView.h"
 
 #import "URLCacheController.h"
 #import "TKPDSecureStorage.h"
@@ -35,6 +37,7 @@
     BOOL _isnodata;
     
     NSInteger _starcount;
+    NSString *_reviewIsOwner;
     
     NSInteger _page;
     NSInteger _limit;
@@ -57,6 +60,7 @@
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    NoResultView *_noResultView;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *detailstarsandtimesview;
@@ -115,6 +119,7 @@
     _ratingviews = [NSArray sortViewsWithTagInArray:_ratingviews];
     _labelstars = [NSArray sortViewsWithTagInArray:_labelstars];
     _progressviews = [NSArray sortViewsWithTagInArray:_progressviews];
+    _noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     _list = [NSMutableArray new];
     _param = [NSMutableDictionary new];
@@ -195,7 +200,7 @@
         if (_list.count > indexPath.row) {
             ReviewList *list = _list[indexPath.row];
 
-            
+            ((GeneralProductReviewCell *)cell).data = list;
             ((GeneralProductReviewCell *)cell).namelabel.text = list.review_user_name;
             ((GeneralProductReviewCell *)cell).timelabel.text = list.review_create_time;
             
@@ -205,22 +210,14 @@
                 [((GeneralProductReviewCell*)cell).commentbutton setTitle:@"1 Comment" forState:UIControlStateNormal];
             }
             
-            NSString *reviewMessage;
-            if (list.review_message.length > 60) {
-                NSRange stringRange = {0, MIN(list.review_message.length, 60)};
+            if ([list.review_message length] > 50) {
+                NSRange stringRange = {0, MIN([list.review_message length], 50)};
                 stringRange = [list.review_message rangeOfComposedCharacterSequencesForRange:stringRange];
-                reviewMessage = [NSString stringWithFormat:@"%@... See more", [list.review_message substringWithRange:stringRange]];
+                ((GeneralProductReviewCell *)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [list.review_message substringWithRange:stringRange]];
             } else {
-                reviewMessage = list.review_message;
+                ((GeneralProductReviewCell *)cell).commentlabel.text = list.review_message?:@"";
             }
             
-            UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-            NSMutableParagraphStyle *style  = [[NSMutableParagraphStyle alloc] init];
-            style.lineSpacing = 10.f;
-            NSDictionary *attributes = @{NSFontAttributeName : font, NSParagraphStyleAttributeName : style};
-            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:reviewMessage
-                                                                             attributes:attributes];
-            ((GeneralProductReviewCell *)cell).commentlabel.attributedText = attributedString;
             ((GeneralProductReviewCell *)cell).indexpath = indexPath;
             
             
@@ -592,31 +589,40 @@
             
             if (status) {
                 NSArray *list = _review.result.list;
+                _reviewIsOwner = _review.result.is_owner;
+                
                 [_list addObjectsFromArray:list];
+                
                 _headerview.hidden = NO;
                 _isnodata = NO;
                 
                 [self setHeaderData];
-                
-                _urinext =  _review.result.paging.uri_next;
-                NSURL *url = [NSURL URLWithString:_urinext];
-                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                
-                NSMutableDictionary *queries = [NSMutableDictionary new];
-                [queries removeAllObjects];
-                for (NSString *keyValuePair in querry)
-                {
-                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                    NSString *key = [pairComponents objectAtIndex:0];
-                    NSString *value = [pairComponents objectAtIndex:1];
+                if([_list count] > 0) {
+                    _urinext =  _review.result.paging.uri_next;
+                    NSURL *url = [NSURL URLWithString:_urinext];
+                    NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
                     
-                    [queries setObject:value forKey:key];
+                    NSMutableDictionary *queries = [NSMutableDictionary new];
+                    [queries removeAllObjects];
+                    for (NSString *keyValuePair in querry)
+                    {
+                        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                        NSString *key = [pairComponents objectAtIndex:0];
+                        NSString *value = [pairComponents objectAtIndex:1];
+                        
+                        [queries setObject:value forKey:key];
+                    }
+                    
+                    _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
+                    NSLog(@"next page : %zd",_page);
+                    
+                    [_table reloadData];
+                } else {
+                    _table.tableFooterView = _noResultView;
+                    _isnodata = YES;
                 }
                 
-                _page = [[queries objectForKey:kTKPDDETAIL_APIPAGEKEY] integerValue];
-                NSLog(@"next page : %zd",_page);
                 
-                [_table reloadData];
             }
         }else{
             [self cancel];
@@ -675,27 +681,18 @@
 }
 
 #pragma mark - Delegate
-- (void)GeneralReviewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
-    ProductReviewDetailViewController *vc = [ProductReviewDetailViewController new];
-    
-    ReviewList *list = _list[indexpath.row];
+- (void)GeneralProductReviewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    NSInteger row = indexpath.row;
+    DetailReviewViewController *vc = [DetailReviewViewController new];
+    ReviewList *reviewlist = _list[row];
+    reviewlist.review_product_name = [_data objectForKey:API_PRODUCT_NAME_KEY];
+    reviewlist.review_product_id = [_data objectForKey:API_PRODUCT_ID_KEY];
+    reviewlist.review_product_image = [_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY];
 
-    vc.data = @{
-                API_PRODUCT_NAME_KEY:[_data objectForKey:API_PRODUCT_NAME_KEY]?:@(""),
-                kTKPDDETAILPRODUCT_APIIMAGESRCKEY:[_data objectForKey:kTKPDDETAILPRODUCT_APIIMAGESRCKEY]?:@(""),
-                //ini untuk review
-                kTKPDREVIEW_APIREVIEWMESSAGEKEY:list.review_message,
-                kTKPDREVIEW_APIREVIEWCREATETIMEKEY:list.review_create_time,
-                kTKPDREVIEW_APIREVIEWUSERNAMEKEY:list.review_user_name,
-                kTKPDREVIEW_APIREVIEWUSERIMAGEKEY:list.review_user_image,
-                kTKPDREVIEW_APIREVIEWUSERIDKEY:list.review_user_id,
-                kTKPDREVIEW_APIREVIEWRESPONSEKEY:list.review_response,
-                kTKPDREVIEW_APIREVIEWRATEACCURACYKEY:list.review_rate_accuracy,
-                kTKPDREVIEW_APIREVIEWRATEQUALITY:list.review_rate_quality,
-                kTKPDREVIEW_APIREVIEWRATESERVICEKEY:list.review_rate_service,
-                kTKPDREVIEW_APIREVIEWRATESPEEDKEY:list.review_rate_speed,
-                kTKPDREVIEW_APIREVIEWPRODUCTOWNERKEY:list.review_product_owner
-                };
+    vc.data = reviewlist;
+    vc.index = [NSString stringWithFormat:@"%ld",(long)row];
+    vc.is_owner = _reviewIsOwner;
+    
     [self.navigationController pushViewController:vc animated:YES];
     
 }

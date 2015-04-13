@@ -43,7 +43,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *warningLabel;
 
-
 +(id)newCell;
 
 @end

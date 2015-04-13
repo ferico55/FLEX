@@ -24,6 +24,8 @@
 #import "ProfileContactViewController.h"
 #import "ProfileFavoriteShopViewController.h"
 
+#import "NavigateViewController.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 @interface ShopInfoViewController()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
@@ -31,6 +33,7 @@
     Shop *_shop;
     BOOL _isnodata;
     BOOL _isaddressexpanded;
+    NavigateViewController *_navigateController;
 }
 
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollview;
@@ -96,6 +99,8 @@
     [super viewDidLoad];
     self.title = kTKPDTITLE_SHOP_INFO;
     
+    _navigateController = [NavigateViewController new];
+    
     _scrollview.delegate = self;
     _scrollview.scrollEnabled = YES;
     CGSize viewsize = _containerview.frame.size;
@@ -141,26 +146,7 @@
             }
             case UIGestureRecognizerStateEnded: {
                 // go to profile
-                NSMutableArray *viewcontrollers = [NSMutableArray new];
-                /** create new view controller **/
-                ProfileBiodataViewController *v = [ProfileBiodataViewController new];
-                [viewcontrollers addObject:v];
-                ProfileFavoriteShopViewController *v1 = [ProfileFavoriteShopViewController new];
-                v1.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(_shop.result.owner.owner_id),
-                            kTKPDDETAIL_APISHOPIDKEY:_shop.result.info.shop_id?:@"",
-                            kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]
-                            };
-                [viewcontrollers addObject:v1];
-                ProfileContactViewController *v2 = [ProfileContactViewController new];
-                [viewcontrollers addObject:v2];
-                // Adjust View Controller
-                TKPDTabProfileNavigationController *tapnavcon = [TKPDTabProfileNavigationController new];
-                tapnavcon.data = @{kTKPDFAVORITED_APIUSERIDKEY:@(_shop.result.owner.owner_id),
-                                   kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:[NSNull null]};
-                [tapnavcon setViewControllers:viewcontrollers animated:YES];
-                [tapnavcon setSelectedIndex:0];
-                
-                [self.navigationController pushViewController:tapnavcon animated:YES];
+                [_navigateController navigateToProfileFromViewController:self withUserID:[NSString stringWithFormat:@"%ld", (long)_shop.result.owner.owner_id]];
                 break;
             }
         }
@@ -421,7 +407,7 @@
     
     _labelshopdescription.text = _shop.result.info.shop_description;
     [_buttonfav setTitle:_shop.result.info.shop_total_favorit forState:UIControlStateNormal];
-    [_buttonitemsold setTitle:_shop.result.info.shop_stats.shop_item_sold forState:UIControlStateNormal];
+    [_buttonitemsold setTitle:_shop.result.stats.shop_item_sold forState:UIControlStateNormal];
     _speedrate.starscount = _shop.result.stats.shop_service_rate;
     _accuracyrate.starscount = _shop.result.stats.shop_accuracy_rate;
     _servicerate.starscount = _shop.result.stats.shop_service_rate;
@@ -518,7 +504,7 @@
             CGRect addressFrame = addressView.frame;
             addressFrame.origin.x -= 15;
             addressFrame.origin.y = totalHeight;
-            addressFrame.size.height = addressView.horizontalBorder.frame.origin.y + 2;
+            addressFrame.size.height = addressView.horizontalBorder.frame.origin.y;
             addressView.frame = addressFrame;
             
             totalHeight += addressFrame.size.height;
@@ -529,7 +515,7 @@
         newAddressFrame.size.height = totalHeight;
         _addressoffview.frame = newAddressFrame;
         
-        shopDetailFrame.size.height += newAddressFrame.size.height - 2;
+        shopDetailFrame.size.height += newAddressFrame.size.height;
 
     } else {
         shopDetailFrame.size.height -= _addressoffview.frame.size.height;

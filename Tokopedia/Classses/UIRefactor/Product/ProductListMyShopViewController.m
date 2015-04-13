@@ -186,7 +186,7 @@
             [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image animated:YES];
+                [thumb setImage:image];
 #pragma clang diagnosti c pop
                 [act stopAnimating];
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
@@ -949,7 +949,10 @@
                                    DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_EDIT),
                                    DATA_IS_GOLD_MERCHANT :@(0) //TODO:: Change Value
                                     };
-            [self.navigationController pushViewController:editProductVC animated:YES];
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:editProductVC];
+            nav.navigationBar.translucent = NO;
+            
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
             return YES;
         }];
         MGSwipeButton * duplicate = [MGSwipeButton buttonWithTitle:BUTTON_DUPLICATE_PRODUCT backgroundColor:[UIColor colorWithRed:199.0/255 green:199.0/255.0 blue:199.0/255 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
@@ -961,7 +964,10 @@
                                    DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_COPY),
                                    DATA_IS_GOLD_MERCHANT :@(0) //TODO:: Change Value
                                    };
-            [self.navigationController pushViewController:editProductVC animated:YES];
+            UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:editProductVC];
+            nav.navigationBar.translucent = NO;
+            
+            [self.navigationController presentViewController:nav animated:YES completion:nil];
             return YES;
         }];
         return @[trash, duplicate, etalase];

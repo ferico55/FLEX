@@ -23,7 +23,6 @@
 <
     UITableViewDataSource,
     UITableViewDelegate,
-    TxOrderPaymentViewControllerDelegate,
     TxOrderConfirmationDetailHeaderViewDelegate,
     TxOrderConfirmationProductCellDelegate
 >
@@ -88,7 +87,6 @@
     {
         TxOrderConfirmationList *detailOrder = [_data objectForKey:DATA_SELECTED_ORDER_KEY];
         TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
-        vc.delegate = self;
         vc.data = @{DATA_SELECTED_ORDER_KEY : @[detailOrder]};
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -282,7 +280,7 @@
     [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image animated:YES];
+        [thumb setImage:image];
 #pragma clang diagnosti c pop
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
@@ -351,6 +349,5 @@
     
     return cell;
 }
-
 
 @end

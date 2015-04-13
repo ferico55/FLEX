@@ -18,6 +18,8 @@
 
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
+#import "TableViewScrollAndSwipe.h"
+
 
 #pragma mark - HotlistView
 
@@ -77,9 +79,10 @@
 - (void) viewDidLoad
 {
     [super viewDidLoad];
-    
+        
     [self.navigationController.navigationBar setTranslucent:NO];
-    
+    self.screenName = @"Page Hotlist";
+
     _product = [NSMutableArray new];
     _page = 1;
     _limit = kTKPDHOMEHOTLIST_LIMITPAGE;
@@ -174,8 +177,6 @@
             ((HotlistCell *)cell).namelabel.text = hotlist.title;
             ((HotlistCell*)cell).pricelabel.text = hotlist.price_start;
             [((HotlistCell*)cell).act startAnimating];
-
-            NSLog(@"\n\n\n%ld %@\n\n\n", (long)indexPath.row, hotlist.url);
             
             NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:hotlist.image_url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
 
@@ -184,7 +185,7 @@
             [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image animated:YES];
+                [thumb setImage:image];
                 [thumb setContentMode:UIViewContentModeScaleAspectFill];
 #pragma clang diagnosti c pop
                 
@@ -246,7 +247,7 @@
 }
 
 #pragma mark - Tokopedia Network Manager
-- (NSDictionary *)getParameter {
+- (NSDictionary *)getParameter:(int)tag {
     NSDictionary* param = @{kTKPDHOME_APIACTIONKEY :   kTKPDHOMEHOTLISTACT,
                             kTKPDHOME_APIPAGEKEY   :   @(_page),
                             kTKPDHOME_APILIMITPAGEKEY  :   @(kTKPDHOMEHOTLIST_LIMITPAGE),
@@ -255,13 +256,13 @@
     return param;
 }
 
-- (NSString *)getPath {
+- (NSString *)getPath:(int)tag {
     NSString *path = kTKPDHOMEHOTLIST_APIPATH;
     
     return path;
 }
 
-- (id)getObjectManager {
+- (id)getObjectManager:(int)tag {
     _objectmanager = [RKObjectManager sharedClient];
     
     // setup object mappings
@@ -296,7 +297,7 @@
     return _objectmanager;
 }
 
-- (NSString *)getRequestStatus:(id)result {
+- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
     Hotlist *hotlist = stat;
@@ -304,7 +305,7 @@
     return hotlist.status;
 }
 
-- (void)actionBeforeRequest {
+- (void)actionBeforeRequest:(int)tag {
     if (!_isrefreshview) {
         _table.tableFooterView = _footer;
         [_act startAnimating];
@@ -315,8 +316,9 @@
     }
 }
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation{
-    Hotlist *hotlist = successResult;
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag{
+    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+    Hotlist *hotlist = [result objectForKey:@""];
     
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
@@ -342,7 +344,7 @@
     [_table reloadData];
 }
 
-- (void)actionAfterFailRequestMaxTries {
+- (void)actionAfterFailRequestMaxTries:(int)tag {
     [_refreshControl endRefreshing];
     _table.tableFooterView = _loadingView.view;
 }
@@ -383,7 +385,7 @@
         }
         
         NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        _objectmanager = [self getObjectManager];
+        _objectmanager = [self getObjectManager:0];
         for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
             [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
         }
@@ -474,5 +476,10 @@
     
     }
 } 
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    NSLog(@"scrolling %f Y", scrollView.contentOffset.y);
+//    NSLog(@"scrolling %f X", scrollView.contentOffset.x);
+}
 
 @end

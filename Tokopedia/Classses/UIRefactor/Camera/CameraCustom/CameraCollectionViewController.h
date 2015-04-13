@@ -15,6 +15,7 @@
 @protocol CameraCollectionViewControllerDelegate <NSObject>
 @optional
 - (void)didDismissController:(CameraCollectionViewController*)controller withUserInfo:(NSDictionary *)userinfo;
+- (void)didRemoveImageDictionary:(NSDictionary*)removedImage;
 @end
 
 @interface CameraCollectionViewController : UIViewController
@@ -28,5 +29,7 @@
 
 @property NSInteger tag;
 @property BOOL isCameraSource;
+@property NSArray *selectedImagesArray;
+@property(nonatomic, strong) NSMutableArray *selectedIndexPath;
 
 @end

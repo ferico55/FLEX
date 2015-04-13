@@ -26,6 +26,7 @@
     
     @private UIView * messageView;
     @private UIImageView * balloonView;
+
 }
 
 #if __IPHONE_OS_VERSION_MIN_REQUIRED >= TKPD_MINIMUMIOSVERSION
@@ -43,6 +44,7 @@
 @property (nonatomic, readonly) UIImageView * avatarImageView;
 @property (nonatomic, readonly) UIImageView * balloonView;
 @property (assign) BOOL sent;
+@property (assign) BOOL just_being_sent;
 
 
 /**Returns the text margin in horizontal direction.

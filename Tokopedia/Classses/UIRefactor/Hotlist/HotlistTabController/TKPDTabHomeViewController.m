@@ -28,6 +28,7 @@
 @interface TKPDTabHomeViewController ()
 <   UIPageViewControllerDataSource,
     UIPageViewControllerDelegate,
+    UIGestureRecognizerDelegate,
     UIScrollViewDelegate,
     UIGestureRecognizerDelegate,
     TKPDTabHomeDelegate,
@@ -192,7 +193,11 @@
                                              selector:@selector(reloadPageController)
                                                  name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
                                                object:nil];
+
 }
+
+-(void)pan
+{}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -253,6 +258,8 @@
                 [(UIScrollView *)view setScrollEnabled:YES];
             }
         }
+        
+
 
     } else {
         
@@ -355,8 +362,7 @@
 
 #pragma mark - Other methods
 
-- (void)tabButtonDidTap:(UIButton *)button
-{
+- (void)tabButtonDidTap:(UIButton *)button {
     if (button.tag > _viewControllerIndex) {
         _direction = UIPageViewControllerNavigationDirectionForward;
     } else {
@@ -586,6 +592,17 @@
     [nc setViewControllers:vcs];
     [self.navigationController pushViewController:nc animated:YES];
 }
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        CGPoint velocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:_pageScrollView];
+        if (abs(velocity.y) * 2 < abs(velocity.x)) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 
 - (void)goToNewOrder {
     

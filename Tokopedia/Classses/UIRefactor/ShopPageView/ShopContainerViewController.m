@@ -374,7 +374,11 @@
                                                     kTKPDSHOP_APICITYIDKEY,
                                                     kTKPDSHOP_APIPHONEKEY,
                                                     kTKPDSHOP_APIEMAILKEY,
-                                                    kTKPDSHOP_APIPROVINCEIDKEY
+                                                    kTKPDSHOP_APIPROVINCEIDKEY,
+                                                    kTKPDSHOP_APICITYNAMEKEY,
+                                                    kTKPDSHOP_APIPROVINCENAMEKEY,
+                                                    kTKPDSHOP_APIDISTRICTNAMEKEY,
+                                                    kTKPDSHOP_APIADDRESSKEY
                                                     ]];
     // Relationship Mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
@@ -677,7 +681,10 @@
                                    kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
                                    DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_ADD),
                                    };
-    [self.navigationController pushViewController:productViewController animated:YES];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:productViewController];
+    nav.navigationBar.translucent = NO;
+    
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 
 - (IBAction)tap:(id)sender {

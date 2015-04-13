@@ -26,9 +26,11 @@
 #import "TxOrderPaymentConfirmationSuccessViewController.h"
 #import "StickyAlertView.h"
 
+#import "TokopediaNetworkManager.h"
+
 #import "DBManager.h"
 
-@interface TxOrderPaymentViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate,SettingBankAccountViewControllerDelegate, GeneralTableViewControllerDelegate, SettingBankNameViewControllerDelegate,UITextFieldDelegate,UITextViewDelegate, UIScrollViewDelegate, SuccessPaymentConfirmationDelegate>
+@interface TxOrderPaymentViewController ()<UITableViewDataSource, UITableViewDelegate, TKPDAlertViewDelegate,SettingBankAccountViewControllerDelegate, GeneralTableViewControllerDelegate, SettingBankNameViewControllerDelegate,UITextFieldDelegate,UITextViewDelegate, UIScrollViewDelegate, SuccessPaymentConfirmationDelegate, TokopediaNetworkManagerDelegate>
 {
     NSMutableDictionary *_dataInput;
     
@@ -109,7 +111,7 @@
         self.navigationItem.backBarButtonItem = backBarButtonItem;
         
         backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [backBarButtonItem setTintColor:[UIColor blackColor]];
+        [backBarButtonItem setTintColor:[UIColor whiteColor]];
         backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
         self.navigationItem.rightBarButtonItem = backBarButtonItem;
     }
@@ -993,6 +995,7 @@
                         NSArray *array = order.message_status?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY, nil];
                         StickyAlertView *alert = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
                         [alert show];
+                        [_delegate refreshRequest];
                         [self.navigationController popViewControllerAnimated:YES];
                     }
                     else{
@@ -1164,13 +1167,14 @@
     if (indexPath == indexPathSystemBank) {
         controller.title = @"Pilih Rekening Tujuan";
         [controllerObjects removeAllObjects];
-        [controllerObjects addObject:@"Pilih Rekening Tujuan"];
         
         for (SystemBankAcount *systemBank in listSystemBank) {
-            [controllerObjects addObject:[NSString stringWithFormat:@"%@",systemBank.sysbank_name]];
+            if (![controllerObjects containsObject:[NSString stringWithFormat:@"%@",systemBank.sysbank_name]]) {
+                [controllerObjects addObject:[NSString stringWithFormat:@"%@",systemBank.sysbank_name]];
+            }
         }
         
-        controller.selectedObject = ([selectedSystemBank.sysbank_id isEqualToString:@"-1"])?@"Pilih Rekening Tujuan":[NSString stringWithFormat:@"%@",selectedSystemBank.sysbank_name];
+        controller.selectedObject = [NSString stringWithFormat:@"%@",selectedSystemBank.sysbank_name];
     }
     else if (indexPath == indexPathPaymentMethod)
     {

@@ -25,6 +25,7 @@
 @property (nonatomic) NSInteger product_price_alert;
 @property (nonatomic, strong) NSString *product_name;
 @property (nonatomic, strong) NSString *product_url;
+@property (nonatomic, strong) NSString *product_already_wishlist;
 
 @property (nonatomic, strong) NSString *product_currency_id; //product_price_currency_value(cart)
 @property (nonatomic, strong) NSString *product_currency;    //product_price_currency_value(cart)
@@ -46,5 +47,6 @@
 @property (nonatomic, strong) NSString *product_use_insurance;
 @property (nonatomic, strong) NSString *product_cart_id;
 @property (nonatomic, strong) NSString *product_total_weight;
+@property (nonatomic, strong) NSString *product_error_msg;
 
 @end

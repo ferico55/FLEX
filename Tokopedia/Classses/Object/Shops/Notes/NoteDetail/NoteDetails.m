@@ -10,4 +10,12 @@
 
 @implementation NoteDetails
 
+- (NSString*)notes_title {
+    return [_notes_title kv_decodeHTMLCharacterEntities];
+}
+
+- (NSString*)notes_content {
+    return [_notes_content kv_decodeHTMLCharacterEntities];
+}
+
 @end

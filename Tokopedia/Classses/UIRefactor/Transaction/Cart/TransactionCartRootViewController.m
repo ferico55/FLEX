@@ -14,6 +14,10 @@
 #import "NotificationManager.h"
 #import "RegisterViewController.h"
 
+#import "TransactionCartFormMandiriClickPayViewController.h"
+
+#import "NotificationManager.h"
+
 @interface TransactionCartRootViewController ()
 <
     UIPageViewControllerDataSource,
@@ -86,6 +90,14 @@
     [[self view] addSubview:_pageControlView];
     [_pageController didMoveToParentViewController:self];
     [self setScrollEnabled:NO forPageViewController:_pageController];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadNotification)
+                                                 name:@"reloadNotification"
+                                               object:nil];
+    
+    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
+    [self.navigationItem setTitleView:logo];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -93,16 +105,6 @@
     [super viewWillAppear:animated];
     
     if (_index == 0) {
-        
-        [self initNotificationManager];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(reloadNotification)
-                                                     name:@"reloadNotification"
-                                                   object:nil];
-        
-        UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-        [self.navigationItem setTitleView:logo];
         
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
         _auth = [secureStorage keychainDictionary];
@@ -175,7 +177,7 @@
                 backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
                 self.navigationItem.leftBarButtonItem = backBarButtonItem;
             }
-            self.navigationItem.rightBarButtonItem = nil;
+            [self initNotificationManager];
             break;
         }
         case 1:
@@ -218,8 +220,9 @@
             
             UIBarButtonItem *barbutton1;
             barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-            [barbutton1 setTintColor:[UIColor blackColor]];
+            [barbutton1 setTintColor:[UIColor whiteColor]];
             [barbutton1 setTag:11];
+            [self initNotificationManager];
             self.navigationItem.leftBarButtonItem = nil;
             self.navigationItem.rightBarButtonItem = barbutton1;
             break;
@@ -311,15 +314,16 @@
             [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
             ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = YES;
         }
+        
     }
     else
     {
         UIButton *pageButton = (UIButton*)sender;
         if(pageButton.tag == 10) {
+            [_pageController setViewControllers:@[[self viewControllerAtIndex:pageButton.tag-10]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+        } else {
             RegisterViewController *vc = [RegisterViewController new];
             [self.navigationController pushViewController:vc animated:YES];
-        } else {
-            [_pageController setViewControllers:@[[self viewControllerAtIndex:pageButton.tag-10]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
         }
         
     }
@@ -342,12 +346,12 @@
     [_notifManager tapWindowBar];
 }
 
+#pragma mark - Notification delegate
+
 - (void)reloadNotification
 {
     [self initNotificationManager];
 }
-
-#pragma mark - Notification delegate
 
 - (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
 {
@@ -361,6 +365,7 @@
     [self.navigationController pushViewController:viewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
 }
+
 
 #pragma mark - Notification Center
 - (void)initNotification {
@@ -383,6 +388,23 @@
         NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, 320, 100)];
         [self.view addSubview:noResultView];
     }
+    else
+    {
+        for (UIView *view in self.view.subviews) {
+            if ([view isKindOfClass:[NoResultView class]]) {
+                [view removeFromSuperview];
+            }
+        }
+    }
+    [self initNotificationManager];
+}
+
+-(void)pushVC:(TransactionCartViewController *)vc toMandiriClickPayVCwithData:(NSDictionary *)data
+{
+    TransactionCartFormMandiriClickPayViewController *mandiriVC = [TransactionCartFormMandiriClickPayViewController new];
+    mandiriVC.data = data;
+    mandiriVC.delegate = vc;
+    [self.navigationController pushViewController:mandiriVC animated:YES];
 }
 
 @end

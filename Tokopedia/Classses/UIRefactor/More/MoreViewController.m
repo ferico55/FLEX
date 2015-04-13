@@ -43,6 +43,7 @@
 #import "DepositSummaryViewController.h"
 #import "ShopContainerViewController.h"
 #import "ReputationPageViewController.h"
+#import "Helpshift.h"
 
 @interface MoreViewController () <NotificationManagerDelegate> {
     NSDictionary *_auth;
@@ -134,7 +135,10 @@
 {
     [super viewWillAppear:animated];
     
+    self.navigationController.title = @"More";
     [self initNotificationManager];
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reloadNotification)
@@ -158,23 +162,24 @@
     self.createShopButton.layer.cornerRadius = 2;
     
     
-    if (_isNoDataDeposit) {
+//    if (_isNoDataDeposit) {
         _depositLabel.hidden = YES;
         _loadingSaldo.hidden = NO;
         
         [self configureRestKit];
         [self loadDataDeposit];
-    } else {
-        _depositLabel.hidden = NO;
-        _loadingSaldo.hidden = YES;
-        [_loadingSaldo stopAnimating];
-    }
+//    } else {
+//        _depositLabel.hidden = NO;
+//        _loadingSaldo.hidden = YES;
+//        [_loadingSaldo stopAnimating];
+//    }
     
 }
 
 - (void)viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    self.navigationController.tabBarController.title = @"More";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -219,7 +224,7 @@
             break;
             
         case 5:
-            return 2;
+            return 3;
             break;
             
         case 6:
@@ -363,13 +368,38 @@
             TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
             [nc setSelectedIndex:2];
             [nc setViewControllers:vcs];
+            nc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:nc animated:YES];
             
         }
         
     }
     
+    else if (indexPath.section == 5) {
+        if(indexPath.row == 0) {
+            [Helpshift setName:[_auth objectForKey:@"full_name"] andEmail:nil];
+            
+            [[Helpshift sharedInstance]showFAQs:self withOptions:nil];
+            [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+        } else if(indexPath.row == 1) {
+            UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 568)];
+            [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kTKPDMORE_HELP_URL]]];
+            UIViewController *controller = [UIViewController new];
+            controller.title = kTKPDMORE_HELP_TITLE;
+            [controller.view addSubview:webView];
+            [self.navigationController pushViewController:controller animated:YES];
+        } else if(indexPath.row == 2) {
+            UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, 320, 568)];
+            [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kTKPDMORE_PRIVACY_URL]]];
+            UIViewController *controller = [UIViewController new];
+            controller.title = kTKPDMORE_PRIVACY_TITLE;
+            [controller.view addSubview:webView];
+            [self.navigationController pushViewController:controller animated:YES];
+        }
+    }
+    
     else if (indexPath.section == 6) {
+        [Helpshift logout];
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
         [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil userInfo:@{}];
         [nc postNotificationName:@"clearCacheNotificationBar" object:nil];
@@ -443,6 +473,7 @@
         _depositLabel.text = deposit.result.deposit_total;
         _depositLabel.hidden = NO;
         _loadingSaldo.hidden = YES;
+        [_loadingSaldo stopAnimating];
         _isNoDataDeposit = NO;
     }
 }
@@ -469,12 +500,11 @@
     [_notifManager tapWindowBar];
 }
 
+#pragma mark - Notification delegate
 - (void)reloadNotification
 {
     [self initNotificationManager];
 }
-
-#pragma mark - Notification delegate
 
 - (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
 {

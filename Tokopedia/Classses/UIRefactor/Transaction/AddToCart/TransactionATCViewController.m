@@ -23,6 +23,7 @@
 #import "DetailProductResult.h"
 #import "TransactionShipmentViewController.h"
 #import "TransactionCartRootViewController.h"
+#import "SettingAddressEditViewController.h"
 
 #pragma mark - Transaction Add To Cart View Controller
 
@@ -32,6 +33,7 @@
     SettingAddressViewControllerDelegate,
     TransactionShipmentViewControllerDelegate,
     SettingAddressViewControllerDelegate,
+    SettingAddressEditViewControllerDelegate,
     UITabBarControllerDelegate,
     UITableViewDataSource,
     UITableViewDelegate,
@@ -92,6 +94,8 @@
 @property (weak, nonatomic) IBOutlet UIButton *buyButton;
 @property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (weak, nonatomic) IBOutlet UIView *borderFullAddress;
+@property (weak, nonatomic) IBOutlet UIView *borderAddress;
 
 @property (weak, nonatomic) IBOutlet UILabel *productQuantityLabel;
 @property (weak, nonatomic) IBOutlet UIStepper *productQuantityStepper;
@@ -147,7 +151,8 @@
     _tableViewShipmentCell = [NSArray sortViewsWithTagInArray:_tableViewShipmentCell];
     _isnodata = YES;
     
-    [_remarkTextView setPlaceholder:PLACEHOLDER_NOTE_ATC];
+    [self setPlaceholder:PLACEHOLDER_NOTE_ATC textView:_remarkTextView];
+    _remarkTextView.delegate = self;
     
     [self setDefaultData:_data];
     
@@ -172,6 +177,31 @@
     [self configureRestKitFormATC];
     [self requestFormATC];
     _buyButton.hidden = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didChangePreferredContentSize:)
+                                                 name:UIContentSizeCategoryDidChangeNotification object:nil];
+    
+    _tableView.estimatedRowHeight = 100.0;
+    _tableView.rowHeight = UITableViewAutomaticDimension;
+    
+}
+
+- (void)setPlaceholder:(NSString *)placeholderText textView:(UITextView*)textView
+{
+    UILabel *placeholderLabel = [[UILabel alloc] initWithFrame:CGRectMake(5.2, -6, textView.frame.size.width, 40)];
+    placeholderLabel.text = placeholderText;
+    placeholderLabel.font = [UIFont fontWithName:textView.font.fontName size:textView.font.pointSize];
+    placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
+    placeholderLabel.tag = 1;
+    [textView addSubview:placeholderLabel];
+}
+
+
+
+- (void)didChangePreferredContentSize:(NSNotification *)notification
+{
+    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -180,8 +210,6 @@
 
     self.title = @"Beli";
     
-    _tableView.contentInset = UIEdgeInsetsMake(0, 0, 30, 0);
-
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
@@ -231,6 +259,7 @@
             return _isnodata?0:_tableViewProductCell.count;
             break;
         case 1:
+
             return _isnodata?0:_tableViewShipmentCell.count;
             break;
         case 2:
@@ -277,16 +306,24 @@
                     case TAG_BUTTON_TRANSACTION_ADDRESS:
                     {
                         label.text = address.address_name;
+                        _borderFullAddress.hidden = YES;
+                        _borderAddress.hidden = NO;
+                        if ([address.address_name isEqualToString:@"0"])
+                        {
+                            label.text= @"Tambah Alamat";
+                            _borderFullAddress.hidden = NO;
+                            _borderAddress.hidden = YES;
+                        }
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:
                     {
-                        label.text = shipment.shipment_name;
+                        label.text = shipment.shipment_name?:@"Pilih";
                         break;
                     }
                     case TAG_BUTTON_TRANSACTION_SERVICE_TYPE:
                     {
-                        label.text = shipmentPackage.name;
+                        label.text = shipmentPackage.name?:@"Pilih";
                         break;
                     }
                 }
@@ -363,6 +400,28 @@
             cell = _tableViewProductCell[indexPath.row];
             break;
         case 1:
+            if (indexPath.row == 1) {
+                NSString *textString = _addressLabel.text;
+                [_addressLabel setCustomAttributedText:textString];
+                
+                //Calculate the expected size based on the font and linebreak mode of your label
+                CGSize maximumLabelSize = CGSizeMake(180,9999);
+                
+                CGSize expectedLabelSize = [textString sizeWithFont:_addressLabel.font
+                                                  constrainedToSize:maximumLabelSize
+                                                      lineBreakMode:_addressLabel.lineBreakMode];
+                
+                //adjust the label the the new height.
+                CGRect newFrame = _addressLabel.frame;
+                newFrame.size.height = expectedLabelSize.height + 26;
+                _addressLabel.frame = newFrame;
+                AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+                if ([address.address_name isEqualToString:@"0"]) {
+                    return 0;
+                }
+                return 243-76+_addressLabel.frame.size.height;
+
+            }
             cell = _tableViewShipmentCell[indexPath.row];
             break;
         case 2:
@@ -375,6 +434,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
     [_activeTextField resignFirstResponder];
     [_activeTextView resignFirstResponder];
     if (_isRequestFrom) {
@@ -406,14 +466,28 @@
         switch (indexPath.row) {
             case TAG_BUTTON_TRANSACTION_ADDRESS:
             {
-                AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
-                SettingAddressViewController *addressViewController = [SettingAddressViewController new];
-                addressViewController.delegate = self;
-                NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
-                                               DATA_INDEXPATH_KEY: selectedIndexPath,
-                                               DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]};
-                [self.navigationController pushViewController:addressViewController animated:YES];
+                if ([address.receiver_name isEqualToString:@"0"]||!address.receiver_name) {
+                    SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
+                    vc.data = @{kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_ATC)
+                                };
+                    vc.delegate = self;
+                    
+                    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
+                    nav.navigationBar.translucent = NO;
+                    
+                    [self.navigationController presentViewController:nav animated:YES completion:nil];
+                }
+                else
+                {
+                    AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
+                    SettingAddressViewController *addressViewController = [SettingAddressViewController new];
+                    addressViewController.delegate = self;
+                    NSIndexPath *selectedIndexPath = [_dataInput objectForKey:DATA_ADDRESS_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                    addressViewController.data = @{DATA_TYPE_KEY:@(TYPE_ADD_EDIT_PROFILE_ATC),
+                                                   DATA_INDEXPATH_KEY: selectedIndexPath,
+                                                   DATA_ADDRESS_DETAIL_KEY:address?:[AddressFormList new]};
+                    [self.navigationController pushViewController:addressViewController animated:YES];
+                }
                 break;
             }
             case TAG_BUTTON_TRANSACTION_SERVICE_TYPE:
@@ -457,6 +531,11 @@
             }
         }
     }
+}
+
+-(void)SettingAddressEditViewController:(SettingAddressEditViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+{
+    [self SettingAddressViewController:nil withUserInfo:userInfo];
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -558,7 +637,6 @@
         [_act stopAnimating];
         [self buyButtonIsLoading:NO];
         _buyButton.hidden = NO;
-        _tableView.contentInset = UIEdgeInsetsMake(0, 0, 28, 0);
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFailureFormATC:error];
         _isRefreshRequest = NO;
@@ -726,7 +804,7 @@
     ProductDetail *product = [userinfo objectForKey:DATA_DETAIL_PRODUCT_KEY];
     
     NSInteger productID = [ product.product_id integerValue];
-    NSInteger quantity = [[userinfo objectForKey:API_QUANTITY_KEY]integerValue];
+    NSInteger quantity = [_productQuantityLabel.text integerValue];
     NSInteger insuranceID = [product.product_insurance integerValue];
     NSInteger shippingID = [shipment.shipment_id integerValue];
     NSInteger shippingProduct = [shipmentPackage.sp_id integerValue];
@@ -738,7 +816,7 @@
     NSString *addressStreet = address.address_street?:@"";
     NSNumber *provinceID = address.province_id?:@(0);
     NSNumber *cityID = address.city_id?:@(0);
-    NSInteger postalCode = address.postal_code;
+    NSInteger postalCode = [address.postal_code integerValue];
     NSString *recieverName = address.receiver_name?:@"";
     NSString *recieverPhone = address.receiver_phone?:@"";
     
@@ -920,7 +998,7 @@
     NSString *provinceName = address.province_name?:@"";
     NSString *cityName = address.city_name?:@"";
     NSString *disctrictName = address.district_name?:@"";
-    NSInteger postalCode = address.postal_code;
+    NSInteger postalCode = [address.postal_code integerValue];
     NSString *recieverName = address.receiver_name?:@"";
     NSString *recieverPhone = address.receiver_phone?:@"";
 
@@ -1050,10 +1128,13 @@
                             [shipmentPackages removeObject:package];
                         }
                     }
-                    ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
-                    [_dataInput setObject:shipment forKey:DATA_SELECTED_SHIPMENT_KEY];
-                    [_dataInput setObject:shipmentPackage forKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
-                    [_tableView reloadData];
+                    
+                    if (shipmentPackages.count>0) {
+                        ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
+                        [_dataInput setObject:shipment forKey:DATA_SELECTED_SHIPMENT_KEY];
+                        [_dataInput setObject:shipmentPackage forKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
+                        [_tableView reloadData];
+                    }
                     
                     for (UITableViewCell *cell in _tableViewPaymentDetailCell) {
                         UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView *)[cell viewWithTag:2];
@@ -1114,24 +1195,28 @@
             [shipmentPackages removeObject:package];
         }
     }
+
     if (shipmentPackages.count==0) {
-        NSArray *messages = @[[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipment.shipment_name],];
-        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+        NSArray *messages = @[[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipment.shipment_name]];
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipment.shipment_name] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alert show];
-        return;
+       // StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:messages delegate:self];
+        //[alert show];
     }
-    ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
-    [_dataInput setObject:shipmentPackage forKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
-    
-    [_dataInput setObject:selectedIndexPathShipment forKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY];
-    [_dataInput setObject:selectedIndexPathShipmentPackage forKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY];
-    [_dataInput setObject:shipment forKey:DATA_SELECTED_SHIPMENT_KEY];
-    
-    if (type == TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY) {
-        [_dataInput removeObjectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY];
+    else
+    {
+        ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
+        [_dataInput setObject:shipmentPackage forKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
+        
+        [_dataInput setObject:selectedIndexPathShipment forKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY];
+        [_dataInput setObject:selectedIndexPathShipmentPackage forKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY];
+        [_dataInput setObject:shipment forKey:DATA_SELECTED_SHIPMENT_KEY];
+        
+        if (type == TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY) {
+            [_dataInput removeObjectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY];
+        }
+        [_tableView reloadData];
     }
-    
-    [_tableView reloadData];
 }
 
 #pragma mark - Alert View Delegate
@@ -1157,8 +1242,12 @@
             }
             else
             {
-                TransactionCartRootViewController *cartViewController = [TransactionCartRootViewController new];
-                [self.navigationController pushViewController:cartViewController animated:YES];
+                UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:self.tabBarController.selectedIndex];
+                [self.tabBarController setSelectedIndex:3];
+                [navController popToRootViewControllerAnimated:YES];
+                
+                //TransactionCartRootViewController *cartViewController = [TransactionCartRootViewController new];
+                //[self.navigationController pushViewController:cartViewController animated:YES];
             }
             break;
         }
@@ -1203,6 +1292,17 @@
     [_activeTextView resignFirstResponder];
     _activeTextView = textView;
 
+    return YES;
+}
+
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    UILabel *placeholderLabel = (UILabel *)[textView viewWithTag:1];
+    if (textView.text.length > 0) {
+        placeholderLabel.hidden = YES;
+    } else {
+        placeholderLabel.hidden = NO;
+    }
     return YES;
 }
 
@@ -1280,10 +1380,10 @@
         thumb.image = nil;
         //thumb.hidden = YES;	//@prepareforreuse then @reset
         
-        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+        [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey-02.png"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-            [thumb setImage:image animated:YES];
+            [thumb setImage:image];
 #pragma clang diagnostic pop
             
         } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
@@ -1298,7 +1398,22 @@
 
 -(void)setAddress:(AddressFormList*)address
 {
-    NSString *addressStreet = [NSString stringWithFormat:@"%@\n%@\n%@\n%@, %@ %zd",address.address_street?:@"", address.district_name?:@"", address.city_name?:@"-",address.province_name?:@"", address.country_name?:@"", address.postal_code];
+    NSString *street = ([address.address_street isEqualToString:@"0"] || !address.address_street)?@"":address.address_street;
+    NSString *districtName = ([address.district_name isEqualToString:@"0"] || !address.district_name)?@"":address.district_name;
+    NSString *cityName = ([address.city_name isEqualToString:@"0"] || !address.city_name)?@"":address.city_name;
+    NSString *provinceName = ([address.province_name isEqualToString:@"0"] || !address.province_name)?@"":address.province_name;
+    NSString *countryName = ([address.country_name isEqualToString:@"0"] || !address.country_name)?@"":address.country_name;
+    NSString *postalCode = ([address.postal_code isEqualToString:@"0"] || !address.postal_code)?@"":address.postal_code;
+    
+    NSString *addressStreet = [NSString stringWithFormat:@"%@\n%@\n%@\n%@, %@ %@",
+                               street,
+                               districtName,
+                               cityName,
+                               provinceName,
+                               countryName,
+                               postalCode];
+    addressStreet = [NSString convertHTML:addressStreet];
+    
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:14];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -1312,8 +1427,11 @@
     NSAttributedString *addressAttributedText = [[NSAttributedString alloc] initWithString:addressStreet
                                                                                 attributes:attributes];
     _addressLabel.attributedText = addressAttributedText;
-    [_phoneLabel setText:address.receiver_phone animated:YES];
-    [_recieverNameLabel setText:address.receiver_name animated:YES];
+    
+    NSString *receiverPhone = ([address.receiver_phone isEqualToString:@"0"]||!address.receiver_phone)?@"":address.receiver_phone;
+    NSString *receiverName = ([address.receiver_name isEqualToString:@"0"]||!address.receiver_name)?@"":address.receiver_name;
+    [_phoneLabel setText:receiverPhone animated:YES];
+    [_recieverNameLabel setText:receiverName animated:YES];
 }
 
 -(BOOL)isValidInput

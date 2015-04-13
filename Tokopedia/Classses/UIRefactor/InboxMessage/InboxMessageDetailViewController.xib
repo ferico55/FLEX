@@ -32,8 +32,8 @@
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <color key="tintColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
-                        <outlet property="dataSource" destination="-1" id="qif-eV-03W"/>
-                        <outlet property="delegate" destination="-1" id="fTu-mC-fbs"/>
+                        <outlet property="dataSource" destination="-1" id="WwV-CL-iRF"/>
+                        <outlet property="delegate" destination="-1" id="YaR-gE-sin"/>
                     </connections>
                 </tableView>
                 <view contentMode="scaleToFill" id="b1X-S7-W2F">

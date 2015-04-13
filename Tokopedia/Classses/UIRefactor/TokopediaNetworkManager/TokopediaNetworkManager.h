@@ -14,19 +14,19 @@
 @protocol TokopediaNetworkManagerDelegate <NSObject>
 
 @required
-- (NSDictionary*)getParameter;
-- (NSString*)getPath;
-- (id)getObjectManager;
-- (NSString*)getRequestStatus:(id)result;
+- (NSDictionary*)getParameter:(int)tag;
+- (NSString*)getPath:(int)tag;
+- (id)getObjectManager:(int)tag;
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag;
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag;
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag;
 
 @optional
-- (void)actionBeforeRequest;
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation;
+- (void)actionBeforeRequest:(int)tag;
 
-- (void)actionAfterRequestAsync;
-- (void)actionAfterRequestFailAsync;
+- (void)actionRequestAsync:(int)tag;
 
-- (void)actionAfterFailRequestMaxTries;
+- (void)actionAfterFailRequestMaxTries:(int)tag;
 
 @end
 
@@ -51,6 +51,7 @@
 }
 
 @property (assign, nonatomic) id<TokopediaNetworkManagerDelegate> delegate;
+@property (nonatomic) int tagRequest;
 
 - (void)doRequest;
 - (void)requestProcess:(id)processResult;
@@ -61,6 +62,8 @@
 - (void)requestRetryWithButton;
 - (void)resetRequestCount;
 - (NSString*)splitUriToPage:(NSString*)uri;
+- (RKManagedObjectRequestOperation *)getObjectRequest;
+
 
 
 @end

@@ -16,6 +16,7 @@
 #import "MyShopEtalaseFilterViewController.h"
 #import "SettingUserProfileViewController.h"
 #import "ProfileSettingViewController.h"
+#import "SendMessageViewController.h"
 
 #import "URLCacheController.h"
 
@@ -587,6 +588,8 @@
                 break;
             }
                 
+            
+                
             case 20:
                 [self.navigationController popViewControllerAnimated:YES];
                 break;
@@ -612,6 +615,16 @@
                             };
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
+            }
+                
+            case 12 : {
+                SendMessageViewController *messageController = [SendMessageViewController new];
+                messageController.data = @{
+                                           kTKPDSHOPEDIT_APIUSERIDKEY:[_data objectForKey:kTKPDSHOPEDIT_APIUSERIDKEY]?:@"",
+                                           kTKPDDETAIL_APISHOPNAMEKEY:_profileinfo.result.user_info.user_name
+                                           };
+                [self.navigationController pushViewController:messageController animated:YES];
+                
             }
 
             default:
@@ -846,7 +859,7 @@
     
 	NSDictionary* param = @{
                             kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEINFOKEY,
-                            kTKPDPROFILE_APIUSERIDKEY : @([[_data objectForKey:kTKPDPROFILE_APIUSERIDKEY]integerValue])
+                            kTKPDPROFILE_APIPROFILEUSERIDKEY : @([[_data objectForKey:kTKPDPROFILE_APIUSERIDKEY]integerValue])
                             };
     
     [_cachecontroller getFileModificationDate];
@@ -1046,9 +1059,19 @@
                 
                 [_button setTitle:@"Ubah Profil" forState:UIControlStateNormal];
                 [_button setImage:nil forState:UIControlStateNormal];
+                [_button setTag:11];
                 
                 self.navigationItem.rightBarButtonItem = _barbuttoninfo;
                 
+            } else {
+                [_button setTitle:@"Message" forState:UIControlStateNormal];
+                [_button setTitleEdgeInsets:UIEdgeInsetsMake(0, 8, 0, 0)];
+                [_button setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 8)];
+                [_button setImage:[UIImage imageNamed:@"icon_message.png"] forState:UIControlStateNormal];
+                [_button setTag:12];
+                
+                [_barbuttoninfo setEnabled:NO];
+                [_barbuttoninfo setTintColor: [UIColor clearColor]];
             }
         }
         else
@@ -1057,6 +1080,7 @@
             [_button setTitleEdgeInsets:UIEdgeInsetsMake(0, 8, 0, 0)];
             [_button setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 8)];
             [_button setImage:[UIImage imageNamed:@"icon_message.png"] forState:UIControlStateNormal];
+            [_button setTag:12];
             
             [_barbuttoninfo setEnabled:NO];
             [_barbuttoninfo setTintColor: [UIColor clearColor]];

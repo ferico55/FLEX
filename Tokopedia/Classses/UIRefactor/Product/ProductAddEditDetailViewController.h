@@ -15,6 +15,7 @@
 @protocol ProductEditDetailViewControllerDelegate <NSObject>
 @optional
 -(void)ProductEditDetailViewController:(ProductAddEditDetailViewController*)cell withUserInfo:(NSDictionary*)userInfo;
+-(void)MoveToWareHouseAtIndexPath:(NSIndexPath*)indexPath;
 @end
 
 @interface ProductAddEditDetailViewController : UIViewController

@@ -11,11 +11,13 @@
 #import "UserAuthentificationManager.h"
 #import "GeneralAction.h"
 #import "string_inbox_review.h"
+#import "NavigateViewController.h"
 
 @interface DetailReviewViewController () <HPGrowingTextViewDelegate, UIScrollViewDelegate>
 {
     HPGrowingTextView *_growingtextview;
     UserAuthentificationManager *_userManager;
+    NavigateViewController *_navigateController;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *userImageView;
@@ -39,6 +41,9 @@
 @property (weak, nonatomic) IBOutlet UIView *respondView;
 @property (weak, nonatomic) IBOutlet UIView *talkInputView;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
+@property (weak, nonatomic) IBOutlet UIView *userView;
+@property (weak, nonatomic) IBOutlet UIView *productView;
+
 
 @end
 
@@ -75,6 +80,7 @@
     
 }
 
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -106,22 +112,28 @@
     _operationQueue = [NSOperationQueue new];
     _operationDeleteCommentQueue = [NSOperationQueue new];
     
+    _navigateController = [NavigateViewController new];
+    
     [self initNavigationBar];
     [self initReviewData];
     [self initTalkInputView];
+    self.title = @"Ulasan";
     
-
+    UITapGestureRecognizer *tapUserGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapUser)];
+    [_userView addGestureRecognizer:tapUserGes];
+    [_userView setUserInteractionEnabled:YES];
+    
+    
+    UITapGestureRecognizer *tapProductGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapProduct)];
+    [_productView addGestureRecognizer:tapProductGes];
+    [_productView setUserInteractionEnabled:YES];
+    
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
-    
-}
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-   
+
 }
 
 - (void)hideInputView {
@@ -149,7 +161,19 @@
         _respondView.hidden = NO;
         [self hideInputView];
         _reviewCreateTimeLabel.text = _review.review_response.response_create_time;
-        _reviewRespondLabel.text = _review.review_response.response_message;
+        
+        NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+        style.lineSpacing = 3.0;
+        
+        NSDictionary *attributes = @{
+                                     NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
+                                     NSParagraphStyleAttributeName  : style
+                                     };
+        
+        NSString *reviewMessage = _review.review_response.response_message;
+        _reviewRespondLabel.attributedText = [[NSAttributedString alloc] initWithString:reviewMessage
+                                                                       attributes:attributes];
+        
         _reviewRespondLabel.numberOfLines = 0;
         [_reviewRespondLabel sizeToFit];
     }
@@ -163,10 +187,45 @@
     
     
     _productNamelabel.text = _review.review_product_name;
-    NSString *stringWithoutBr = [_review.review_message stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-    _commentlabel.text = stringWithoutBr;
+
     
-    if([[NSString stringWithFormat:@"%@", _userManager.getShopId]  isEqualToString:_review.review_shop_id]) {
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 3.0;
+    
+    NSDictionary *attributes = @{
+                                 NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:13],
+                                 NSParagraphStyleAttributeName  : style
+                                 };
+    
+    NSString *reviewMessage = [_review.review_message stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
+    _commentlabel.attributedText = [[NSAttributedString alloc] initWithString:reviewMessage
+                                                                       attributes:attributes];
+    
+    
+    
+    [_commentlabel setNumberOfLines:0];
+    [_commentlabel sizeToFit];
+    
+    CGRect newFrame = CGRectMake(10, 75, 300, _commentlabel.frame.size.height);
+    _commentlabel.frame = newFrame;
+
+    if(_commentlabel.frame.size.height > 50) {
+        CGFloat diff = _commentlabel.frame.size.height - 50;
+        
+        CGRect frameRating = _ratingView.frame;
+        frameRating.origin.y += diff + 10;
+        _ratingView.frame = frameRating;
+        
+        CGRect frameComment = _commentView.frame;
+        frameComment.origin.y += diff;
+        _commentView.frame = frameComment;
+        
+        CGRect frameRespond = _respondView.frame;
+        frameRespond.origin.y += diff;
+        _respondView.frame = frameRespond;
+    }
+    
+    if(![[NSString stringWithFormat:@"%@", _userManager.getShopId]  isEqualToString:_review.review_shop_id]) {
         _deleteReviewButton.hidden = YES;
     }
     
@@ -180,6 +239,7 @@
     NSURLRequest *userImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_review.review_user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     UIImageView *userImageView =_userImageView;
     userImageView.image = nil;
+    userImageView = [UIImageView circleimageview:userImageView];
     [userImageView setImageWithURLRequest:userImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
@@ -188,12 +248,12 @@
     } failure:nil];
     
     NSURLRequest *productImageRequest = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_review.review_product_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-    UIImageView *productImageView = _productImageView;
-    productImageView.image = nil;
-    [productImageView setImageWithURLRequest:productImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+
+    _productImageView.image = nil;
+    [_productImageView setImageWithURLRequest:productImageRequest placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [productImageView setImage:image];
+        [_productImageView setImage:image];
 #pragma clang diagnostic pop
     } failure:nil];
     
@@ -330,6 +390,9 @@
     _growingtextview.backgroundColor = [UIColor whiteColor];
     _growingtextview.placeholder = @"Kirim pesanmu di sini..";
     
+    CGRect newFrame = _talkInputView.frame;
+    newFrame.origin.y = self.view.bounds.size.height - _talkInputView.frame.size.height;
+    _talkInputView.frame = newFrame;
     
     [_talkInputView addSubview:_growingtextview];
     _talkInputView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
@@ -396,11 +459,16 @@
 
 #pragma mark - Action Delete Review
 - (void)deleteComment {
-    _respondView.hidden = YES;
-    [_commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];
+    UIAlertView *alert = [[UIAlertView alloc]
+                          initWithTitle:@"Hapus Komentar"
+                          message:@"Apakah kamu yakin ingin menghapus komentar ulasan ini ?"
+                          delegate:self
+                          cancelButtonTitle:@"Batal"
+                          otherButtonTitles:nil];
     
-    [self configureDeleteCommentRestkit];
-    [self doDeleteComment];
+    [alert addButtonWithTitle:@"Hapus"];
+    [alert show];
+    
 }
 
 - (void)configureDeleteCommentRestkit {
@@ -486,7 +554,7 @@
                     
                 } else {
                     NSDictionary *userinfo;
-                    
+                    [_talkInputView setHidden:NO];
                     userinfo = @{@"index": _index, @"review_comment" : @"0", @"review_comment_time" : @"Just Now"};
                     
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateTotalComment" object:nil userInfo:userinfo];
@@ -521,5 +589,28 @@
     _objectDeleteCommentManager = nil;
 
 }
+
+#pragma mark - Tap View
+- (void)tapUser {
+    [_navigateController navigateToProfileFromViewController:self withUserID:_review.review_user_id];
+}
+
+- (void)tapProduct {
+    
+    [_navigateController navigateToProductFromViewController:self withProductID:_review.review_product_id];
+}
+
+#pragma mark - Alert Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    //delete talk
+    if(buttonIndex == 1) {
+        _respondView.hidden = YES;
+        [_commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];
+        
+        [self configureDeleteCommentRestkit];
+        [self doDeleteComment];
+    }
+}
+
 
 @end

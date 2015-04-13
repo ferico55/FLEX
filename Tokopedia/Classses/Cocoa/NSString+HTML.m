@@ -126,6 +126,15 @@
                                           range:NSMakeRange(0, [escaped length])];
         }
         
+        // @"<br/>"
+        range = [self rangeOfString:@"<br />"];
+        if (range.location != NSNotFound) {
+            [escaped replaceOccurrencesOfString:@"<br />"
+                                     withString:@"\n"
+                                        options:NSLiteralSearch
+                                          range:NSMakeRange(0, [escaped length])];
+        }
+        
         // @"<br>"
         range = [self rangeOfString:@"<br>"];
         if (range.location != NSNotFound) {

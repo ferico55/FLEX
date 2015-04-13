@@ -1198,12 +1198,12 @@
                         _JNEPackageOke = package;
                     }
                 }
-            } else if ([shipment.shipment_name isEqualToString:@"Tiki"]) {
+            } else if ([shipment.shipment_name isEqualToString:@"TIKI"]) {
                 _tiki = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
                     if ([package.name isEqualToString:@"Reguler"]) {
                         _tikiPackageReguler = package;
-                    } else if ([package.name isEqualToString:@"One Night Service"]) {
+                    } else if ([package.name isEqualToString:@"Over Night Service"]) {
                         _tikiPackageONS = package;
                     }
                 }
@@ -1212,7 +1212,7 @@
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
                     if ([package.name isEqualToString:@"Next Day Package"]) {
                         _RPXPackageNextDay = package;
-                    } else if ([package.name isEqualToString:@"Regular Package"]) {
+                    } else if ([package.name isEqualToString:@"Economy Package"]) {
                         _RPXPackageEconomy = package;
                     }
                 }
@@ -1226,11 +1226,11 @@
             } else if ([shipment.shipment_name isEqualToString:@"Pos Indonesia"]) {
                 _posIndonesia = shipment;
                 for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.name isEqualToString:@"POS Kilat Khusus"]) {
+                    if ([package.name isEqualToString:@"Pos Kilat Khusus"]) {
                         _posPackageKhusus = package;
                     } else if ([package.name isEqualToString:@"Paket Biasa"]) {
                         _posPackageBiasa = package;
-                    } else if ([package.name isEqualToString:@"POS Express"]) {
+                    } else if ([package.name isEqualToString:@"Pos Express"]) {
                         _posPackageExpress = package;
                     }
                 }
@@ -1411,7 +1411,7 @@
                     _showPosExtraFee = NO;
                 } else {
                     _shipmentPosExtraFeeSwitch.on = YES;
-                    _shipmentPosExtraFeeTextField.text = [NSString stringWithFormat:@"%ld", _shipment.pos.pos_min_weight];
+                    _shipmentPosExtraFeeTextField.text = [NSString stringWithFormat:@"%ld", _shipment.pos.pos_fee];
                     _showPosExtraFee = YES;
                 }
             }
@@ -1542,7 +1542,7 @@
 
 - (void)requestActionError:(NSError *)error
 {
-    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Gagal mengganti pengaturan pengiriman",]
+    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Anda gagal mengganti pengaturan pengiriman",]
                                                                    delegate:self];
     [alert show];    
 }
@@ -1551,107 +1551,137 @@
 {
     NSString *courier_origin = [NSString stringWithFormat:@"%ld", _shipment.shop_shipping.district_id];
     NSString *postal = _shipment.shop_shipping.postal_code;
+
+    NSString *jne_diff_district = @"";
+    NSString *jne_fee = @"";
+    NSString *jne_fee_value = @"";
+    NSString *jne_min_weight = @"";
+    NSString *jne_min_weight_value = @"";
+    NSString *jne_tiket = @"";
     
-    NSString *jne_diff_district = _shipment.jne.jne_diff_district;
+    if ([_availableShipments containsObject:_JNE.shipment_id]) {
+        jne_diff_district = _shipment.jne.jne_diff_district;
+        jne_fee = _showJNEExtraFeeTextField?@"1":@"0";
+        jne_fee_value = [NSString stringWithFormat:@"%ld", _shipment.jne.jne_fee];
+        jne_min_weight  = _showJNEMinimumWeightTextField?@"1":@"0";
+        jne_min_weight_value = _shipment.jne.jne_min_weight;
+        jne_tiket = _shipment.jne.jne_tiket;
+    }
     
-    NSString *jne_fee = _showJNEExtraFeeTextField?@"1":@"0";
-    NSString *jne_fee_value = [NSString stringWithFormat:@"%ld", _shipment.jne.jne_fee];
+    NSString *pos_fee = @"";
+    NSString *pos_fee_value = @"";
+    NSString *pos_min_weight = @"";
+    NSString *pos_min_weight_value = @"";
     
-    NSString *jne_min_weight = _showJNEMinimumWeightTextField?@"1":@"0";
-    NSString *jne_min_weight_value = _shipment.jne.jne_min_weight;
+    if ([_availableShipments containsObject:_posIndonesia.shipment_id]) {
+        pos_fee = _showPosExtraFee?@"1":@"0";
+        pos_fee_value = [NSString stringWithFormat:@"%ld", _shipment.pos.pos_fee];
+        pos_min_weight = _showPosMinimumWeight?@"1":@"0";
+        pos_min_weight_value = [NSString stringWithFormat:@"%ld", _shipment.pos.pos_min_weight];
+    }
     
-    NSString *jne_tiket = _shipment.jne.jne_tiket;
-    
-    NSString *pos_fee = _showPosExtraFee?@"1":@"0";
-    NSString *pos_fee_value = [NSString stringWithFormat:@"%ld", _shipment.pos.pos_fee];
-    
-    NSString *pos_min_weight = _showPosMinimumWeight?@"1":@"0";
-    NSString *pos_min_weight_value = [NSString stringWithFormat:@"%ld", _shipment.pos.pos_min_weight];
-    
-    NSString *tiki_fee = _showTikiExtraFee?@"1":@"0";
-    NSString *tiki_fee_value = [NSString stringWithFormat:@"%ld", _shipment.tiki.tiki_fee];
+    NSString *tiki_fee = @"";
+    NSString *tiki_fee_value = @"";
+    if ([_availableShipments containsObject:_tiki.shipment_id]) {
+        tiki_fee = _showTikiExtraFee?@"1":@"0";
+        tiki_fee_value = [NSString stringWithFormat:@"%ld", _shipment.tiki.tiki_fee];
+    }
     
     NSMutableDictionary *shipments = [NSMutableDictionary new];
 
     NSMutableDictionary *jne = [NSMutableDictionary new];
-    if ([_JNEPackageYes.active boolValue]) {
-        [jne setValue:@"1" forKey:_JNEPackageYes.sp_id];
-    }
-    if ([_JNEPackageReguler.active boolValue]) {
-        [jne setValue:@"1" forKey:_JNEPackageReguler.sp_id];
-    }
-    if ([_JNEPackageOke.active boolValue]) {
-        [jne setValue:@"1" forKey:_JNEPackageOke.sp_id];
+    if ([_availableShipments containsObject:_JNE.shipment_id]) {
+        if ([_JNEPackageYes.active boolValue]) {
+            [jne setValue:@"1" forKey:_JNEPackageYes.sp_id];
+        }
+        if ([_JNEPackageReguler.active boolValue]) {
+            [jne setValue:@"1" forKey:_JNEPackageReguler.sp_id];
+        }
+        if ([_JNEPackageOke.active boolValue]) {
+            [jne setValue:@"1" forKey:_JNEPackageOke.sp_id];
+        }
+        
+        if ([[jne allValues] count] > 0) {
+            [shipments setValue:jne forKey:_JNE.shipment_id];
+        }
     }
     
-    if ([[jne allValues] count] > 0) {
-        [shipments setValue:jne forKey:_JNE.shipment_id];
-    }
-
     NSMutableDictionary *tiki = [NSMutableDictionary new];
-    if ([_tikiPackageReguler.active boolValue]) {
-        [tiki setValue:@"1" forKey:_tikiPackageReguler.sp_id];
-    }
-    if ([_tikiPackageONS.active boolValue]) {
-        [tiki setValue:@"1" forKey:_tikiPackageONS.sp_id];
-    }
-    
-    if ([[tiki allValues] count] > 0) {
-        [shipments setValue:tiki forKey:_tiki.shipment_id];
+    if ([_availableShipments containsObject:_tiki.shipment_id]) {
+        if ([_tikiPackageReguler.active boolValue]) {
+            [tiki setValue:@"1" forKey:_tikiPackageReguler.sp_id];
+        }
+        if ([_tikiPackageONS.active boolValue]) {
+            [tiki setValue:@"1" forKey:_tikiPackageONS.sp_id];
+        }
+        
+        if ([[tiki allValues] count] > 0) {
+            [shipments setValue:tiki forKey:_tiki.shipment_id];
+        }
     }
     
     NSMutableDictionary *rpx = [NSMutableDictionary new];
-    if ([_RPXPackageNextDay.active boolValue]) {
-        [rpx setValue:@"1" forKey:_RPXPackageNextDay.sp_id];
-    }
-    if ([_RPXPackageEconomy.active boolValue]) {
-        [rpx setValue:@"1" forKey:_RPXPackageEconomy.sp_id];
-    }
-
-    if ([[rpx allValues] count] > 0) {
-        [shipments setValue:rpx forKey:_RPX.shipment_id];
-    }
-
-    NSMutableDictionary *wahana = [NSMutableDictionary new];
-    if ([_wahanaPackageNormal.active boolValue]) {
-        [wahana setObject:@"1" forKey:_wahanaPackageNormal.sp_id];
+    if ([_availableShipments containsObject:_RPX.shipment_id]) {
+        if ([_RPXPackageNextDay.active boolValue]) {
+            [rpx setValue:@"1" forKey:_RPXPackageNextDay.sp_id];
+        }
+        if ([_RPXPackageEconomy.active boolValue]) {
+            [rpx setValue:@"1" forKey:_RPXPackageEconomy.sp_id];
+        }
+        
+        if ([[rpx allValues] count] > 0) {
+            [shipments setValue:rpx forKey:_RPX.shipment_id];
+        }
     }
     
-    if ([[wahana allValues] count] > 0) {
-        [shipments setObject:wahana forKey:_wahana.shipment_id];
+    NSMutableDictionary *wahana = [NSMutableDictionary new];
+    if ([_availableShipments containsObject:_wahana.shipment_id]) {
+        if ([_wahanaPackageNormal.active boolValue]) {
+            [wahana setObject:@"1" forKey:_wahanaPackageNormal.sp_id];
+        }
+        
+        if ([[wahana allValues] count] > 0) {
+            [shipments setObject:wahana forKey:_wahana.shipment_id];
+        }
     }
 
     NSMutableDictionary *pos = [NSMutableDictionary new];
-    if ([_posPackageKhusus.active boolValue]) {
-        [pos setObject:@"1" forKey:_posPackageKhusus.sp_id];
-    }
-    if ([_posPackageBiasa.active boolValue]) {
-        [pos setObject:@"1" forKey:_posPackageBiasa.sp_id];
-    }
-    if ([_posPackageExpress.active boolValue]) {
-        [pos setObject:@"1" forKey:_posPackageExpress.sp_id];
-    }
-    
-    if ([[pos allValues] count] > 0) {
-        [shipments setObject:pos forKey:_posIndonesia.shipment_id];
+    if ([_availableShipments containsObject:_posIndonesia.shipment_id]) {
+        if ([_posPackageKhusus.active boolValue]) {
+            [pos setObject:@"1" forKey:_posPackageKhusus.sp_id];
+        }
+        if ([_posPackageBiasa.active boolValue]) {
+            [pos setObject:@"1" forKey:_posPackageBiasa.sp_id];
+        }
+        if ([_posPackageExpress.active boolValue]) {
+            [pos setObject:@"1" forKey:_posPackageExpress.sp_id];
+        }
+        
+        if ([[pos allValues] count] > 0) {
+            [shipments setObject:pos forKey:_posIndonesia.shipment_id];
+        }
     }
 
     NSMutableDictionary *cahaya = [NSMutableDictionary new];
-    if ([_cahayaPackageNormal.active boolValue]) {
-        [cahaya setObject:@"1" forKey:_cahayaPackageNormal.sp_id];
-    }
-    
-    if ([[cahaya allValues] count] > 0) {
-        [shipments setObject:cahaya forKey:_cahaya.shipment_id];
+    if ([_availableShipments containsObject:_cahaya.shipment_id]) {
+        if ([_cahayaPackageNormal.active boolValue]) {
+            [cahaya setObject:@"1" forKey:_cahayaPackageNormal.sp_id];
+        }
+        
+        if ([[cahaya allValues] count] > 0) {
+            [shipments setObject:cahaya forKey:_cahaya.shipment_id];
+        }
     }
 
     NSMutableDictionary *pandu = [NSMutableDictionary new];
-    if ([_panduPackageRegular.active boolValue]) {
-        [pandu setObject:@"1" forKey:_panduPackageRegular.sp_id];
-    }
-    
-    if ([[pandu allValues] count] > 0) {
-        [shipments setObject:pandu forKey:_pandu.shipment_id];
+    if ([_availableShipments containsObject:_pandu.shipment_id]) {
+        if ([_panduPackageRegular.active boolValue]) {
+            [pandu setObject:@"1" forKey:_panduPackageRegular.sp_id];
+        }
+        
+        if ([[pandu allValues] count] > 0) {
+            [shipments setObject:pandu forKey:_pandu.shipment_id];
+        }        
     }
     
     NSData *data = [NSJSONSerialization dataWithJSONObject:shipments

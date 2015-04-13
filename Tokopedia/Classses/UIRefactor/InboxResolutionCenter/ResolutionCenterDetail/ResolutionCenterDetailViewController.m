@@ -170,7 +170,7 @@
                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                              [thumb setImage:image animated:YES];
+                              [thumb setImage:image];
 #pragma clang diagnosti c pop
                           } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                           }];
@@ -226,51 +226,55 @@
     return cell;
 }
 
-//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    ResolutionConversation *conversation = _listResolutionConversation[indexPath.row];
-//    NSInteger rowHeight;
-//    NSInteger deltaHeightCell = 10;
-//    
-//    if (conversation.view_more == 1)
-//    {
-//        rowHeight = _loadMoreCell.frame.size.height;
-//    }
-//    else if (conversation.system_flag == 1 && ![conversation.user_name isEqualToString:@"Admin Tokopedia"])
-//    {
-//        NSInteger cellRowHeight = CELL_SYSTEM_HEIGHT;
-//        ResolutionCenterSystemCell *cell = (ResolutionCenterSystemCell*)[self cellSystemResolutionAtIndexPath:indexPath];
-//        
-//        rowHeight = cellRowHeight - cell.twoButtonView.frame.size.height + deltaHeightCell;
-//        if ([self isShowOneButton:conversation atIndexPath:indexPath] ||
-//            [self isShowTwoButton:conversation]
-//            ) {
-//            rowHeight = cellRowHeight + deltaHeightCell;
-//        }
-//    }
-//    else
-//    {
-//        ResolutionCenterDetailCell *cell = (ResolutionCenterDetailCell*)[self cellDetailResolutionAtIndexPath:indexPath];
-//        NSInteger cellRowHeight = CELL_DETAIL_HEIGHT;
-//        NSInteger attachmentHeight = VIEW_ATTACHMENT_HEIGHT;
-//        
-//        rowHeight = cellRowHeight + deltaHeightCell;
-//        if ([self isShowOneButton:conversation atIndexPath:indexPath] || [self isShowTwoButton:conversation]) {
-//            rowHeight = cellRowHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
-//        }
-//        if ([self isShowAttachment:conversation]) {
-//            rowHeight = cellRowHeight + attachmentHeight + deltaHeightCell;
-//        }
-//        if ([self isShowAttachmentWithButton:conversation]) {
-//            rowHeight = cellRowHeight + attachmentHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
-//        }
-//        if ([cell.markLabel.text isEqualToString:@""]) {
-//            rowHeight = rowHeight - VIEW_MARK_HEIGHT + deltaHeightCell;
-//        }
-//    }
-//    
-//    return rowHeight;
-//}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0"))
+    {
+        ResolutionConversation *conversation = _listResolutionConversation[indexPath.row];
+        NSInteger rowHeight;
+        NSInteger deltaHeightCell = 10;
+        
+        if (conversation.view_more == 1)
+        {
+            rowHeight = _loadMoreCell.frame.size.height;
+        }
+        else if (conversation.system_flag == 1 && ![conversation.user_name isEqualToString:@"Admin Tokopedia"])
+        {
+            NSInteger cellRowHeight = CELL_SYSTEM_HEIGHT;
+            ResolutionCenterSystemCell *cell = (ResolutionCenterSystemCell*)[self cellSystemResolutionAtIndexPath:indexPath];
+            
+            rowHeight = cellRowHeight - cell.twoButtonView.frame.size.height + deltaHeightCell;
+            if ([self isShowOneButton:conversation atIndexPath:indexPath] ||
+                [self isShowTwoButton:conversation]
+                ) {
+                rowHeight = cellRowHeight + deltaHeightCell;
+            }
+        }
+        else
+        {
+            ResolutionCenterDetailCell *cell = (ResolutionCenterDetailCell*)[self cellDetailResolutionAtIndexPath:indexPath];
+            NSInteger cellRowHeight = CELL_DETAIL_HEIGHT;
+            NSInteger attachmentHeight = VIEW_ATTACHMENT_HEIGHT;
+            
+            rowHeight = cellRowHeight + deltaHeightCell;
+            if ([self isShowOneButton:conversation atIndexPath:indexPath] || [self isShowTwoButton:conversation]) {
+                rowHeight = cellRowHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
+            }
+            if ([self isShowAttachment:conversation]) {
+                rowHeight = cellRowHeight + attachmentHeight + deltaHeightCell;
+            }
+            if ([self isShowAttachmentWithButton:conversation]) {
+                rowHeight = cellRowHeight + attachmentHeight + cell.oneButtonView.frame.size.height + deltaHeightCell;
+            }
+            if ([cell.markLabel.text isEqualToString:@""]) {
+                rowHeight = rowHeight - VIEW_MARK_HEIGHT + deltaHeightCell;
+            }
+        }
+        
+        return rowHeight;
+    }
+    return UITableViewAutomaticDimension;
+}
 
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
@@ -348,6 +352,7 @@
         vc.isShippingTracking = YES;
         vc.shipmentID = conversation.input_kurir;
         vc.shippingRef = conversation.input_resi;
+        vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
     
@@ -662,7 +667,7 @@
     [thumb setImageWithURLRequest:request placeholderImage:placeholderImage success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        [thumb setImage:image animated:YES];
+        [thumb setImage:image];
 #pragma clang diagnosti c pop
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
     }];
@@ -853,7 +858,7 @@
             [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                [thumb setImage:image animated:YES];
+                [thumb setImage:image];
 #pragma clang diagnosti c pop
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
             }];
@@ -1498,6 +1503,13 @@
             [alert show];
             
             [self refreshRequest];
+            
+            if ([action isEqualToString:ACTION_FINISH_RESOLUTION]||
+                [action isEqualToString:ACTION_ACCEPT_SOLUTION] ||
+                [action isEqualToString:ACTION_ACCEPT_ADMIN_SOLUTION] ) {
+                [_delegate finishComplain:_resolution atIndexPath:_indexPath];
+                [self.navigationController popViewControllerAnimated:YES];
+            }
         }
         else
         {

@@ -34,6 +34,7 @@
 @property (strong, nonatomic) NSIndexPath *indexPath;
 @property (weak, nonatomic) IBOutlet UIButton *editButton;
 @property (weak, nonatomic) IBOutlet UIView *productView;
+@property (weak, nonatomic) IBOutlet UILabel *errorProductLabel;
 
 +(id)newcell;
 

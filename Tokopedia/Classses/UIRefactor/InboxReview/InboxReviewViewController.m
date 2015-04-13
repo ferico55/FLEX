@@ -21,8 +21,9 @@
 #import "URLCacheController.h"
 #import "URLCacheConnection.h"
 #import "UserAuthentificationManager.h"
+#import "ReportViewController.h"
 
-@interface InboxReviewViewController () <UITableViewDataSource, UITableViewDelegate, GeneralReviewCellDelegate>
+@interface InboxReviewViewController () <UITableViewDataSource, UITableViewDelegate, GeneralReviewCellDelegate, ReportViewControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UIView *reviewFooter;
 @property (weak, nonatomic) IBOutlet UITableView *reviewTable;
@@ -77,6 +78,8 @@
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
     UserAuthentificationManager *_userManager;
+    ReportViewController *_reportController;
+    NSString *_reportedReviewId;
 }
 
 #pragma mark - Initialization
@@ -127,11 +130,10 @@
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-
+    
     if (self) {
         _isRefreshing = NO;
         _isNoData = YES;
-
     }
     
     return self;
@@ -153,6 +155,8 @@
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _userManager = [UserAuthentificationManager new];
+    _reportController = [ReportViewController new];
+    _reportController.delegate = self;
     
     _reviews = [NSMutableArray new];
     _reviewPage = 1;
@@ -199,6 +203,10 @@
    
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+}
+
 #pragma mark - DataSource Delegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = nil;
@@ -236,6 +244,8 @@
                 ((GeneralReviewCell*)cell).editReviewButton.hidden = YES;
             }
             
+            
+            
             if ([list.review_is_skipable isEqualToString:@"1"]) {
                 ((GeneralReviewCell*)cell).skipReviewButton.hidden = NO;
             } else {
@@ -255,38 +265,35 @@
             
             ((GeneralReviewCell*)cell).productNamelabel.text = list.review_product_name;
     
-            if ([list.review_message length] > 30) {
-                NSRange stringRange = {0, MIN([list.review_message length], 30)};
+            if ([list.review_message length] > 50) {
+                NSRange stringRange = {0, MIN([list.review_message length], 50)};
                 stringRange = [list.review_message rangeOfComposedCharacterSequencesForRange:stringRange];
-                
-                NSString *stringWithoutBr = [list.review_message stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
-                
-                
-                UIFont *font = [UIFont fontWithName:@"GothamLight" size:12];
-                
-                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-                style.lineSpacing = 3.0;
-                NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
-                                             NSFontAttributeName: font,
-                                             NSParagraphStyleAttributeName: style,
-                                             };
-                
-                NSString *commentString = [NSString stringWithFormat:@"%@...", [stringWithoutBr substringWithRange:stringRange]];
-                NSAttributedString *myString = [[NSAttributedString alloc] initWithString:commentString
-                                                                               attributes:attributes];
-                ((GeneralReviewCell *)cell).commentlabel.attributedText = myString;
-                [((GeneralReviewCell *)cell).commentlabel sizeToFit];
+                ((GeneralReviewCell *)cell).commentlabel.text = [NSString stringWithFormat:@"%@...", [list.review_message substringWithRange:stringRange]];
             } else {
-                ((GeneralReviewCell *)cell).commentlabel.text = [list.review_message isEqualToString:@"0"] ? @"" : list.review_message;
+                if([list.review_message isEqualToString:@"0"]) {
+                    ((GeneralReviewCell *)cell).commentlabel.text = @"Belum ada review" ;
+                    [((GeneralReviewCell *)cell).commentlabel setTextColor:[UIColor lightGrayColor]];
+                } else {
+                    ((GeneralReviewCell *)cell).commentlabel.text = list.review_message ;
+                }
+
+                
+            }
+            
+            if([list.review_product_status isEqualToString:STATE_PRODUCT_BANNED] || [list.review_product_status isEqualToString:STATE_PRODUCT_DELETED]) {
+                if([list.review_message isEqualToString:@"0"]) {
+                    ((GeneralReviewCell *)cell).commentlabel.text = @"Produk ini tidak dapat diulas" ;
+                    ((GeneralReviewCell*)cell).delegate = nil;
+                }
+            } else {
+                ((GeneralReviewCell*)cell).delegate = self;
             }
             
             if([list.review_id isEqualToString:NEW_REVIEW_STATE]) {
-                ((GeneralReviewCell *)cell).ratingView.hidden = YES;
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = NO;
                 ((GeneralReviewCell *)cell).commentView.hidden = YES;
                 
             } else {
-                ((GeneralReviewCell *)cell).ratingView.hidden = NO;
                 ((GeneralReviewCell *)cell).inputReviewView.hidden = YES;
                 ((GeneralReviewCell *)cell).commentView.hidden = NO;
                 
@@ -403,6 +410,7 @@
                                                  REVIEW_IS_OWNER,
                                                  REVIEW_READ_STATUS,
                                                  REVIEW_USER_ID,
+                                                 REVIEW_USER_IMAGE,
                                                  REVIEW_PRODUCT_STATUS,
                                                  REVIEW_IS_ALLOW_EDIT,
                                                  REVIEW_IS_SKIPABLE
@@ -677,11 +685,17 @@
 -(void)GeneralReviewCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
     DetailReviewViewController *vc = [DetailReviewViewController new];
     NSInteger row = indexpath.row;
-    vc.data = _reviews[row];
-    vc.is_owner = @"1";
+    
+    InboxReviewList *list = _reviews[row];
+    
+    vc.data = list;
+    vc.is_owner = list.review_is_owner;
     vc.index = [NSString stringWithFormat:@"%ld",(long)row];
-
+    
+    vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
+
+    
 }
 
 - (void)skipReview:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
@@ -691,6 +705,22 @@
     [_reviewTable reloadData];
     
     [self doSkipReview:list.review_product_id];
+}
+
+- (void)reportReview:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath {
+    InboxReviewList *review = _reviews[[indexpath row]];
+    _reportedReviewId = review.review_id;
+    _reportController.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:_reportController animated:YES];
+}
+
+#pragma mark - Report Delegate
+- (NSString *)getPath {
+    return @"action/review.pl";
+}
+
+- (NSDictionary *)getParameter {
+    return @{@"action" : @"report_comment_review", @"review_id" : _reportedReviewId};
 }
 
 #pragma mark - Action Skip Review

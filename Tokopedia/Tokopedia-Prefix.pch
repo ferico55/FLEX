@@ -38,4 +38,6 @@
     #import "NoResultView.h"
     #import "Tkpd.h"
     #import "string.h"
+    #import "GAI.h"
+    #import "GAIFields.h"
 #endif
