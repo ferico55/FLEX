@@ -1288,6 +1288,7 @@
 		85C4A23B1AD79129008A314A /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 85C49D441AD79127008A314A /* README.md */; };
 		85C4A2411AD792DD008A314A /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C4A2401AD792DD008A314A /* libGoogleAnalyticsServices.a */; };
 		D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */; };
+		E4A38D671ADB6D49007804B5 /* MyShopShipmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E4A38D661ADB6D49007804B5 /* MyShopShipmentTableViewController.m */; };
 		FC1C7E941AAD56A4001C510E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FC1C7B5C1AAD56A3001C510E /* Main.storyboard */; };
 		FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8571ACD659900879D75 /* Crashlytics.framework */; };
 		FC23B85A1ACD659900879D75 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC23B8581ACD659900879D75 /* Fabric.framework */; };
@@ -3294,6 +3295,8 @@
 		C4D513026FAA67F72C814FB0 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		DF0AECEE34728168167CD53B /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		E009E2725EF60881CE01B185 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
+		E4A38D651ADB6D49007804B5 /* MyShopShipmentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyShopShipmentTableViewController.h; sourceTree = "<group>"; };
+		E4A38D661ADB6D49007804B5 /* MyShopShipmentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyShopShipmentTableViewController.m; sourceTree = "<group>"; };
 		FBA9F5ECE5048F94F19A2D16 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tokopedia.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC0D6D3B1A42F3B1000696A9 /* string copy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "string copy.h"; sourceTree = "<group>"; };
 		FC0D6D3C1A42F3B1000696A9 /* stringrestkit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stringrestkit.h; sourceTree = "<group>"; };
@@ -5511,6 +5514,8 @@
 		85C499591AD79125008A314A /* MyShopShipment */ = {
 			isa = PBXGroup;
 			children = (
+				E4A38D651ADB6D49007804B5 /* MyShopShipmentTableViewController.h */,
+				E4A38D661ADB6D49007804B5 /* MyShopShipmentTableViewController.m */,
 				85C4995A1AD79125008A314A /* MyShopShipmentInfoViewController.h */,
 				85C4995B1AD79125008A314A /* MyShopShipmentInfoViewController.m */,
 				85C4995C1AD79125008A314A /* MyShopShipmentViewController.h */,
@@ -8571,6 +8576,7 @@
 				85C49DF21AD79127008A314A /* NotificationFormNotif.m in Sources */,
 				85C49F731AD79128008A314A /* MyShopNoteViewController.m in Sources */,
 				85C49FC51AD79128008A314A /* OrderRejectExplanationViewController.m in Sources */,
+				E4A38D671ADB6D49007804B5 /* MyShopShipmentTableViewController.m in Sources */,
 				85C49DDC1AD79127008A314A /* ProfileEditForm.m in Sources */,
 				85C49E651AD79127008A314A /* TransactionVoucherResult.m in Sources */,
 				85C49F501AD79128008A314A /* ResolutionInputReceiptViewController.m in Sources */,

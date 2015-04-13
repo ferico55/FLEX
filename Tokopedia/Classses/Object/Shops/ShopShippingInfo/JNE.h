@@ -11,8 +11,8 @@
 @interface JNE : NSObject
 
 @property (nonatomic) NSInteger jne_fee;
-@property (nonatomic) NSInteger jne_diff_district;
-@property (nonatomic) NSInteger jne_min_weight;
-@property (nonatomic) NSInteger jne_tiket;
+@property (nonatomic, strong) NSString *jne_diff_district;
+@property (nonatomic, strong) NSString *jne_min_weight;
+@property (nonatomic, strong) NSString *jne_tiket;
 
 @end
