@@ -7,13 +7,14 @@
 //
 #import "detail.h"
 #import "DetailProductViewController.h"
+#import "LoadingView.h"
 #import "Paging.h"
 #import "string_home.h"
 #import "WishListViewController.h"
 #import "WishListObject.h"
 #import "WishListObjectList.h"
 #import "WishListObjectResult.h"
-@interface WishListViewController ()
+@interface WishListViewController()<LoadingViewDelegate>
 
 @end
 
@@ -28,7 +29,7 @@
     NSOperationQueue *operationQueue;
     NSTimer *timer;
     
-    
+    LoadingView *loadingView;
     UIRefreshControl *refreshControl;
 }
 @synthesize delegate;
@@ -40,6 +41,8 @@
     operationQueue = [NSOperationQueue new];
     tokoPediaNetworkManager = [TokopediaNetworkManager new];
     tokoPediaNetworkManager.delegate = self;
+    
+    loadingView = [LoadingView new];
     
     /** create new **/
     product = [NSMutableArray new];
@@ -60,6 +63,7 @@
     tblWishList.backgroundColor = [UIColor colorWithRed:231/255.0f green:231/255.0f blue:231/255.0f alpha:1.0f];
     CGRect rectTable = tblWishList.frame;
     rectTable.size.height -= 105;
+    tblWishList.contentInset = UIEdgeInsetsMake(0, 0, 53, 0);
     tblWishList.frame = rectTable;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:kTKPDOBSERVER_WISHLIST object:nil];
     
@@ -332,10 +336,6 @@
 - (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
 {
     /** failure **/
-    [self requestfailure:errorResult];
-    tblWishList.tableFooterView = nil;
-    isRefreshView = NO;
-    [refreshControl endRefreshing];
 }
 
 - (void)actionBeforeRequest:(int)tag
@@ -350,7 +350,10 @@
 
 - (void)actionAfterFailRequestMaxTries:(int)tag
 {
-
+    loadingView.delegate = self;
+    tblWishList.tableFooterView = loadingView.view;
+    isRefreshView = NO;
+    [refreshControl endRefreshing];
 }
 
 
@@ -450,9 +453,6 @@
                 {
                     NSLog(@" ==== REQUESTCOUNT %zd =====", requestCount);
                     tblWishList.tableFooterView = footer;
-                    //                    [_act startAnimating];
-                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
                 }
                 else
                     tblWishList.tableFooterView = nil;
@@ -492,4 +492,13 @@
     
 }
 
+
+
+#pragma mark - Loading View Delegate
+- (void)pressRetryButton
+{
+    tblWishList.tableFooterView = footer;
+    [activityIndicator startAnimating];
+    [tokoPediaNetworkManager doRequest];
+}
 @end
