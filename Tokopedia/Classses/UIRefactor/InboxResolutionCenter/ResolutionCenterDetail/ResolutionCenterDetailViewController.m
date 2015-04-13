@@ -352,6 +352,7 @@
         vc.isShippingTracking = YES;
         vc.shipmentID = conversation.input_kurir;
         vc.shippingRef = conversation.input_resi;
+        vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
     

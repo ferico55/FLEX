@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-@class WishListObjectResult;
+#import "WishListObjectResult.h"
 
 @interface WishListObject : NSObject
 @property (nonatomic, strong) NSArray *message_error;

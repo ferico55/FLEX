@@ -379,7 +379,7 @@
 
 #pragma mark - Request Get Transaction Order Payment Confirmation
 
--(id)getObjectManager
+-(id)getObjectManager:(int)tag
 {
     _objectManagerGetTransaction = [RKObjectManager sharedClient];
     
@@ -483,7 +483,7 @@
     return _objectManagerGetTransaction;
 }
 
--(NSDictionary *)getParameter
+-(NSDictionary *)getParameter:(int)tag
 {
     NSDictionary* param = @{API_ACTION_KEY : ACTION_GET_TX_ORDER_PAYMENT_CONFIRMATION,
                             API_PAGE_KEY : @(_page)
@@ -491,12 +491,12 @@
     return param;
 }
 
--(NSString *)getPath
+-(NSString *)getPath:(int)tag
 {
     return API_PATH_TX_ORDER;
 }
 
--(NSString *)getRequestStatus:(id)result
+-(NSString *)getRequestStatus:(id)result withTag:(int)tag
 {
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
@@ -504,14 +504,15 @@
     return order.status;
 }
 
-- (void)actionBeforeRequest {
+- (void)actionBeforeRequest:(int)tag {
     
     _tableView.tableFooterView = _footer;
     [_act stopAnimating];
 }
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation{
-    TxOrderConfirmed *order = successResult;
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag{
+    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+    TxOrderConfirmed *order = [result objectForKey:@""];
     
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
@@ -542,7 +543,7 @@
     [_tableView reloadData];
 }
 
-- (void)actionAfterFailRequestMaxTries {
+- (void)actionAfterFailRequestMaxTries:(int)tag {
     [_refreshControl endRefreshing];
     _tableView.tableFooterView = _act;
 }

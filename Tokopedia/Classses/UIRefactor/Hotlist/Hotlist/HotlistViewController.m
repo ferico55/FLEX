@@ -247,7 +247,7 @@
 }
 
 #pragma mark - Tokopedia Network Manager
-- (NSDictionary *)getParameter {
+- (NSDictionary *)getParameter:(int)tag {
     NSDictionary* param = @{kTKPDHOME_APIACTIONKEY :   kTKPDHOMEHOTLISTACT,
                             kTKPDHOME_APIPAGEKEY   :   @(_page),
                             kTKPDHOME_APILIMITPAGEKEY  :   @(kTKPDHOMEHOTLIST_LIMITPAGE),
@@ -256,13 +256,13 @@
     return param;
 }
 
-- (NSString *)getPath {
+- (NSString *)getPath:(int)tag {
     NSString *path = kTKPDHOMEHOTLIST_APIPATH;
     
     return path;
 }
 
-- (id)getObjectManager {
+- (id)getObjectManager:(int)tag {
     _objectmanager = [RKObjectManager sharedClient];
     
     // setup object mappings
@@ -297,7 +297,7 @@
     return _objectmanager;
 }
 
-- (NSString *)getRequestStatus:(id)result {
+- (NSString *)getRequestStatus:(id)result withTag:(int)tag {
     NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
     id stat = [resultDict objectForKey:@""];
     Hotlist *hotlist = stat;
@@ -305,7 +305,7 @@
     return hotlist.status;
 }
 
-- (void)actionBeforeRequest {
+- (void)actionBeforeRequest:(int)tag {
     if (!_isrefreshview) {
         _table.tableFooterView = _footer;
         [_act startAnimating];
@@ -316,8 +316,9 @@
     }
 }
 
-- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation{
-    Hotlist *hotlist = successResult;
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag{
+    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
+    Hotlist *hotlist = [result objectForKey:@""];
     
     if(_refreshControl.isRefreshing) {
         [_refreshControl endRefreshing];
@@ -343,7 +344,7 @@
     [_table reloadData];
 }
 
-- (void)actionAfterFailRequestMaxTries {
+- (void)actionAfterFailRequestMaxTries:(int)tag {
     [_refreshControl endRefreshing];
     _table.tableFooterView = _loadingView.view;
 }
@@ -384,7 +385,7 @@
         }
         
         NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        _objectmanager = [self getObjectManager];
+        _objectmanager = [self getObjectManager:0];
         for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
             [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
         }

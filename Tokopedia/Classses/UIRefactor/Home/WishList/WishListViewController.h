@@ -9,12 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "GeneralProductCell.h"
 #import "TKPDTabHomeViewController.h"
+#import "TokopediaNetworkManager.h"
 
-@interface WishListViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate>
+@interface WishListViewController : UIViewController<UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate, TokopediaNetworkManagerDelegate>
 {
     IBOutlet UITableView *tblWishList;
     IBOutlet UIView *footer, *viewNoData;
     IBOutlet UIActivityIndicatorView *activityIndicator;
+    TokopediaNetworkManager *tokoPediaNetworkManager;
 }
 @property (weak, nonatomic) id<TKPDTabHomeDelegate> delegate;
 @end

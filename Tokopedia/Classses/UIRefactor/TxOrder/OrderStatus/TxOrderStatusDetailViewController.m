@@ -157,6 +157,7 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         TrackOrderViewController *vc = [TrackOrderViewController new];
         vc.orderID = [_order.order_detail.detail_order_id integerValue];
+        vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
     else{
