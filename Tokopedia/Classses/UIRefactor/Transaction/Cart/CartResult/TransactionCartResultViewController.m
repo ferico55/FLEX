@@ -226,6 +226,19 @@
     
     _cartBuy = [_data objectForKey:DATA_CART_RESULT_KEY];
     
+    NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+    formatter.numberStyle = NSNumberFormatterCurrencyStyle;
+    formatter.currencyCode = @"Rp ";
+    formatter.currencyGroupingSeparator = @".";
+    formatter.currencyDecimalSeparator = @",";
+    formatter.maximumFractionDigits = 0;
+    formatter.minimumFractionDigits = 0;
+    
+    NSInteger totalPayment = [_cartBuy.transaction.payment_left integerValue]+ [_cartBuy.transaction.deposit_amount integerValue];
+    NSString *totalPaymentString = [formatter stringFromNumber:[NSNumber numberWithInteger:totalPayment]];
+    NSInteger depositAfter = [_cartBuy.transaction.user_deposit integerValue] - [_cartBuy.transaction.deposit_amount integerValue];
+    NSString *depositAfterString = [formatter stringFromNumber:[NSNumber numberWithInteger:depositAfter]];
+    
     if ([_cartBuy.transaction.gateway isEqual:@(TYPE_GATEWAY_TRANSFER_BANK)]) {
         [_listSystemBank addObjectsFromArray:_cartBuy.system_bank];
     }
@@ -236,17 +249,6 @@
     {
         if ([_cartBuy.transaction.deposit_amount integerValue]>0) {
             
-            NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-            formatter.numberStyle = NSNumberFormatterCurrencyStyle;
-            formatter.currencyCode = @"Rp ";
-            formatter.currencyGroupingSeparator = @".";
-            formatter.currencyDecimalSeparator = @",";
-            formatter.maximumFractionDigits = 0;
-            formatter.minimumFractionDigits = 0;
-            
-            NSInteger totalPayment = [_cartBuy.transaction.payment_left integerValue]+ [_cartBuy.transaction.deposit_amount integerValue];
-            NSString *totalPaymentString = [formatter stringFromNumber:[NSNumber numberWithInteger:totalPayment]];
-            
             NSArray *detailPaymentIfUsingSaldo = @[
                                                    @{DATA_NAME_KEY : STRING_JUMLAH_YANG_SUDAH_DIBAYAR,
                                                      DATA_VALUE_KEY : totalPaymentString
@@ -255,7 +257,7 @@
                                                      DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
                                                      },
                                                    @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
-                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_after?:@""
+                                                     DATA_VALUE_KEY : depositAfterString?:@""
                                                      },
                                                    ];
             [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];
@@ -306,7 +308,7 @@
                                                      DATA_VALUE_KEY : _cartBuy.transaction.deposit_amount_idr?:@""
                                                      },
                                                    @{DATA_NAME_KEY : STRING_SALDO_TOKOPEDIA_TERSISA,
-                                                     DATA_VALUE_KEY : _cartBuy.transaction.deposit_after?:@""
+                                                     DATA_VALUE_KEY : depositAfterString?:@""
                                                      },
                                                    ];
             [_listTotalPayment addObjectsFromArray:detailPaymentIfUsingSaldo];

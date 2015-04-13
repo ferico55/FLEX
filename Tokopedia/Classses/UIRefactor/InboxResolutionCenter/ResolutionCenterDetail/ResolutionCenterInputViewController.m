@@ -387,6 +387,7 @@
     
     CameraAlbumListViewController *albumVC = [CameraAlbumListViewController new];
     albumVC.title = @"Album";
+    albumVC.delegate = self;
     CameraCollectionViewController *photoVC = [CameraCollectionViewController new];
     photoVC.title = @"All Picture";
     photoVC.delegate = self;

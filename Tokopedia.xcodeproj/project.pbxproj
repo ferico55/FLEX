@@ -1262,6 +1262,7 @@
 		FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */; };
 		FCA7751419F663070041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
 		FCAAEA4619F7534B00904AFB /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FCAAEA4419F7534B00904AFB /* MainViewController.m */; };
+		FCAE9CC31AD90BC8001B67F3 /* libHelpshift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCAE9CC21AD90BC8001B67F3 /* libHelpshift.a */; };
 		FCC7984B1AD7792A00A86C5C /* HelpshiftLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FCC798161AD7792A00A86C5C /* HelpshiftLocalizable.strings */; };
 		FCC7984C1AD7792A00A86C5C /* HS-Attachment.png in Resources */ = {isa = PBXBuildFile; fileRef = FCC7982B1AD7792A00A86C5C /* HS-Attachment.png */; };
 		FCC7984D1AD7792A00A86C5C /* HS-Attachment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FCC7982C1AD7792A00A86C5C /* HS-Attachment@2x.png */; };
@@ -1295,7 +1296,6 @@
 		FCC798691AD7792A00A86C5C /* HSTutorialiPad@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = FCC798481AD7792A00A86C5C /* HSTutorialiPad@3x.png */; };
 		FCC7986A1AD7792A00A86C5C /* HelpshiftConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = FCC7984A1AD7792A00A86C5C /* HelpshiftConfig.plist */; };
 		FCC7986E1AD78BBB00A86C5C /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCC7986D1AD78BBB00A86C5C /* libGoogleAnalyticsServices.a */; };
-		FCC7986F1AD78CE000A86C5C /* libHelpshift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FCC7986B1AD7793F00A86C5C /* libHelpshift.a */; };
 		FCC798711AD78D0B00A86C5C /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCC798701AD78D0B00A86C5C /* QuickLook.framework */; };
 		FCC798731AD78D1100A86C5C /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCC798721AD78D1100A86C5C /* Security.framework */; };
 		FCC798751AD78D2200A86C5C /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCC798741AD78D2200A86C5C /* CoreTelephony.framework */; };
@@ -3240,6 +3240,7 @@
 		FCAAEA4319F7534B00904AFB /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		FCAAEA4419F7534B00904AFB /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		FCAAEA4819F7536D00904AFB /* string.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string.h; sourceTree = "<group>"; };
+		FCAE9CC21AD90BC8001B67F3 /* libHelpshift.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHelpshift.a; path = Tokopedia/Resources/Libraries/Helpshift/libHelpshift.a; sourceTree = "<group>"; };
 		FCC798091AD7792A00A86C5C /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
 		FCC7980A1AD7792A00A86C5C /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
 		FCC7980B1AD7792A00A86C5C /* GAIEcommerceFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceFields.h; sourceTree = "<group>"; };
@@ -3317,12 +3318,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FCAE9CC31AD90BC8001B67F3 /* libHelpshift.a in Frameworks */,
 				FCC798791AD78D8800A86C5C /* libz.dylib in Frameworks */,
 				FCC798771AD78D2B00A86C5C /* CoreText.framework in Frameworks */,
 				FCC798751AD78D2200A86C5C /* CoreTelephony.framework in Frameworks */,
 				FCC798731AD78D1100A86C5C /* Security.framework in Frameworks */,
 				FCC798711AD78D0B00A86C5C /* QuickLook.framework in Frameworks */,
-				FCC7986F1AD78CE000A86C5C /* libHelpshift.a in Frameworks */,
 				FCC7986E1AD78BBB00A86C5C /* libGoogleAnalyticsServices.a in Frameworks */,
 				854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */,
 				FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */,
@@ -7217,6 +7218,7 @@
 		FC36DF8519B0656400AF74C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				FCAE9CC21AD90BC8001B67F3 /* libHelpshift.a */,
 				FCC798781AD78D8800A86C5C /* libz.dylib */,
 				FCC798761AD78D2B00A86C5C /* CoreText.framework */,
 				FCC798741AD78D2200A86C5C /* CoreTelephony.framework */,
@@ -8993,6 +8995,7 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphonesimulator",
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries",
+					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -9025,6 +9028,7 @@
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Tokopedia-akefsxieqkmgambfefasitqsarej/Build/Products/Debug-iphonesimulator",
 					"$(PROJECT_DIR)/Pods/build/Debug-iphoneos",
 					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries",
+					"$(PROJECT_DIR)/Tokopedia/Resources/Libraries/Helpshift",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
