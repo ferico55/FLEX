@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
-		7ABC43B71AD82691007D07CD /* libHelpshift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7ABC43B61AD82691007D07CD /* libHelpshift.a */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
+		8546AD5E1AD8013700442471 /* libHelpshift.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8546AD5D1AD8013700442471 /* libHelpshift.a */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
@@ -1326,8 +1326,8 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
-		7ABC43B61AD82691007D07CD /* libHelpshift.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libHelpshift.a; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		8546AD5D1AD8013700442471 /* libHelpshift.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libHelpshift.a; path = Resources/Libraries/Helpshift/libHelpshift.a; sourceTree = "<group>"; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		85C494BC1AD790C2008A314A /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -3340,7 +3340,6 @@
 				854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */,
 				85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */,
 				85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */,
-				7ABC43B71AD82691007D07CD /* libHelpshift.a in Frameworks */,
 				85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */,
 				85C494BB1AD790BA008A314A /* Security.framework in Frameworks */,
 				85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */,
@@ -3351,6 +3350,7 @@
 				FCFF63561ABA79660076000E /* FacebookSDK.framework in Frameworks */,
 				85C4A2411AD792DD008A314A /* libGoogleAnalyticsServices.a in Frameworks */,
 				FC23B8591ACD659900879D75 /* Crashlytics.framework in Frameworks */,
+				8546AD5E1AD8013700442471 /* libHelpshift.a in Frameworks */,
 				FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */,
 				FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */,
 				D5959CEC86F16FBC3EB09DE6 /* libPods-Tokopedia.a in Frameworks */,
@@ -7008,7 +7008,6 @@
 		85C49D001AD79127008A314A /* Helpshift */ = {
 			isa = PBXGroup;
 			children = (
-				7ABC43B61AD82691007D07CD /* libHelpshift.a */,
 				85C49D011AD79127008A314A /* Helpshift.h */,
 				85C49D021AD79127008A314A /* HSLocalization */,
 				85C49D171AD79127008A314A /* HSResources */,
@@ -7140,6 +7139,7 @@
 		FC36DF8C19B0656400AF74C1 /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
+				8546AD5D1AD8013700442471 /* libHelpshift.a */,
 				85C494C21AD79124008A314A /* Classses */,
 				85C49B7C1AD79126008A314A /* Resources */,
 				FC3FD47F1AC508AC0034AE4B /* LaunchScreen.xib */,

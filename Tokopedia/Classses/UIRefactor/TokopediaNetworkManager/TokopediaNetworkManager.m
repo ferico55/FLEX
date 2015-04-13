@@ -40,8 +40,6 @@
     
     
     [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        NSLog(@"%@", operation.HTTPRequestOperation.responseString);
-        
         [self requestSuccess:mappingResult withOperation:operation];
         [_requestTimer invalidate];
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
