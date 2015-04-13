@@ -250,33 +250,17 @@
                 if (_list.count > indexPath.section) {
                     AddressFormList *list = _list[indexPath.section];
                     
-                    UIFont *font = [UIFont fontWithName:@"GothamMedium" size:14];
-                    
-                    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-                    style.lineSpacing = 6.0;
-                    
-                    NSDictionary *attributes = @{NSForegroundColorAttributeName: [UIColor blackColor],
-                                                 NSFontAttributeName: font,
-                                                 NSParagraphStyleAttributeName: style,
-                                                 };
-                    
-                    NSAttributedString *addressAttributedText = [[NSAttributedString alloc] initWithString:list.address_name
-                                                                                                attributes:attributes];
-                    
-                    ((GeneralList1GestureCell*)cell).labelname.attributedText = addressAttributedText;
+                    ((GeneralList1GestureCell*)cell).textLabel.text = list.address_name;
                     ((GeneralList1GestureCell*)cell).indexpath = indexPath;
-                    [(GeneralList1GestureCell*)cell viewdetailresetposanimation:YES];
-                    ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
-//                    ((GeneralList1GestureCell*)cell).labeldefault.text = @"Alamat Utama";
                     
                     if (_ismanualsetdefault) {
                         if ([indexPath isEqual:[_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY]]) {
-                            ((GeneralList1GestureCell*)cell).labeldefault.hidden = NO;
+                            ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"Alamat Utama";
                         } else {
-                            ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
+                            ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"";
                         }
                     } else {
-                        ((GeneralList1GestureCell*)cell).labeldefault.hidden = (list.address_status==2)?NO:YES;
+                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"";
                     }
                 }
             }

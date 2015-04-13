@@ -24,6 +24,7 @@
 #import "WishListObjectResult.h"
 #import "WishListObject.h"
 #import "GeneralAction.h"
+#import "RKObjectManager.h"
 
 #import "StarsRateView.h"
 
@@ -887,7 +888,7 @@ TokopediaNetworkManagerDelegate
                  kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};
     else if(tag == CTagWishList)
         return @{kTKPDDETAIL_ACTIONKEY : kTKPDADD_WISHLIST_PRODUCT,
-                 kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};;
+                 kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};
     
     return nil;
 }
