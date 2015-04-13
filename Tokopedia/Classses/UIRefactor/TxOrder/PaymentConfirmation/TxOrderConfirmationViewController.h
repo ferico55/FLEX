@@ -11,6 +11,7 @@
 @protocol TxOrderConfirmationViewControllerDelegate <NSObject>
 @required
 - (void)isNodata:(BOOL)isNodata;
+- (void)successCancelOrConfirmPayment;
 
 @end
 

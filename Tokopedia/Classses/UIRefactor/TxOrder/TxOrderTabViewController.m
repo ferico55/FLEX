@@ -27,6 +27,7 @@
     NSDictionary *_auth;
     BOOL _isLogin;
     BOOL _isMultipleSelect;
+    BOOL _isNodata;
 }
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 
@@ -67,6 +68,7 @@
     
     
     _isMultipleSelect = NO;
+    _isNodata = YES;
     
 }
 
@@ -144,7 +146,9 @@
                 UIBarButtonItem *selectBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Pilih" style:UIBarButtonItemStylePlain target:(self) action:@selector(tapBarButton:)];
                 [selectBarButtonItem setTintColor:[UIColor whiteColor]];
                 selectBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
-                self.navigationItem.rightBarButtonItem = selectBarButtonItem;
+                if (_isNodata)
+                    self.navigationItem.rightBarButtonItem = nil;
+                else self.navigationItem.rightBarButtonItem = selectBarButtonItem;
             }
             else
                 self.navigationItem.rightBarButtonItem = nil;
@@ -239,7 +243,19 @@
 {
     if (isNodata) {
         self.navigationItem.rightBarButtonItem = nil;
+        _isNodata = isNodata;
     }
+}
+
+-(void)successCancelOrConfirmPayment
+{
+    _isMultipleSelect = NO;
+
+    [self viewControllerAtIndex:_index];
+    UIColor *disableColor =[UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1];
+    UIColor *enableColor = [UIColor colorWithRed:0/255.0f green:122.0f/255.0f blue:255.0f/255.0f alpha:1];
+    if (_isMultipleSelect)[_segmentControl setTintColor:disableColor]; else [_segmentControl setTintColor:enableColor];
+    _segmentControl.enabled = !_isMultipleSelect;
 }
 
 #pragma mark - Memory Management

@@ -248,6 +248,7 @@
     _networkManager.delegate = self;
 
     _isUsingSaldoTokopedia = NO;
+    _switchUsingSaldo.on = _isUsingSaldoTokopedia;
     
     _errorCells = [NSArray sortViewsWithTagInArray:_errorCells];
     _errorLabel = [NSArray sortViewsWithTagInArray:_errorLabel];
@@ -460,6 +461,9 @@
         }
     }
     else if (section < listCount) {
+        if (((TransactionCartList*)_list[section]).cart_products.count <=0) {
+            return 0;
+        }
         TransactionCartList *list = _list[section];
         NSArray *products = list.cart_products;
         NSIndexPath *indexPathFirstObjectProduct = _listProductFirstObjectIndexPath[section];
@@ -467,8 +471,10 @@
         
         if (_indexPage==0)
         {
-            if ([_isDropshipper[section] boolValue] == YES ) {
-                rowCount +=2;
+            if (_isDropshipper.count>0) {
+                if ([_isDropshipper[section] boolValue] == YES ) {
+                    rowCount +=2;
+                }
             }
         }
     }
@@ -879,16 +885,23 @@
 
         NSArray *products = list.cart_products;
         NSInteger productCount = products.count;
-        NSInteger rowCount = productCount+3;
         
         NSIndexPath *firstProductIndexPath = [NSIndexPath indexPathForRow:0 inSection:i];
         if (![list.cart_error_message_1 isEqualToString:@"0"]||![list.cart_error_message_2 isEqualToString:@"0"])
             firstProductIndexPath = [NSIndexPath indexPathForRow:1 inSection:i];
         
         [_listProductFirstObjectIndexPath addObject:firstProductIndexPath];
-        //[_rowCountExpandCellForDropshipper addObject:@(rowCount)];
 
         [self addArrayObjectTemp];
+        
+        if (productCount<=0) {
+            [_isDropshipper removeObjectAtIndex:i];
+            [_stockPartialStrList removeObjectAtIndex:i];
+            [_senderNameDropshipper removeObjectAtIndex:i];
+            [_senderPhoneDropshipper removeObjectAtIndex:i];
+            [_dropshipStrList removeObjectAtIndex:i];
+            [_stockPartialDetail removeObjectAtIndex:i];
+        }
         
     }
     if (listCount>0) {
@@ -1076,6 +1089,7 @@
                         {
                             [_list removeObject:list];
                         }
+                        
                         
                         [self adjustAfterUpdateList];
                                                 
@@ -1519,9 +1533,7 @@
                             vc.cartDetail = _cartSummary;
                             vc.emoney_code = cart.result.transaction.emoney_code;
                             vc.delegate = self;
-                            self.navigationController.hidesBottomBarWhenPushed = YES;
                             [self.navigationController pushViewController:vc animated:YES];
-                            self.navigationController.hidesBottomBarWhenPushed = NO;
                         }
                             break;
                         default:
@@ -2160,9 +2172,7 @@
                     vc.token = _cartSummary.token;
                     vc.cartDetail = _cartSummary;
                     vc.delegate = self;
-                    self.navigationController.hidesBottomBarWhenPushed = YES;
                     [self.navigationController pushViewController:vc animated:YES];
-                    self.navigationController.hidesBottomBarWhenPushed = NO;
                     break;
                 }
                 case TYPE_GATEWAY_MANDIRI_E_CASH:
@@ -2533,6 +2543,8 @@
 #pragma mark - UIAlertview delegate
 -(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    [_activeTextField resignFirstResponder];
+    [_activeTextView resignFirstResponder];
     switch (alertView.tag) {
         case TYPE_CANCEL_CART_PRODUCT:
             switch (buttonIndex) {
@@ -2791,6 +2803,7 @@
         [_dropshipStrList removeAllObjects];
         [_stockPartialDetail removeAllObjects];
         _isUsingSaldoTokopedia = NO;
+        _switchUsingSaldo.on = _isUsingSaldoTokopedia;
     }
 }
 
@@ -2804,6 +2817,7 @@
         [_dropshipStrList addObject:@""];
         [_stockPartialDetail addObject:@(0)];
         _isUsingSaldoTokopedia = NO;
+        _switchUsingSaldo.on = _isUsingSaldoTokopedia;
     }
 }
 

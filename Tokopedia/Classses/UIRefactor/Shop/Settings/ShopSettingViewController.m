@@ -59,6 +59,8 @@
                                                                       style:UIBarButtonItemStyleBordered
                                                                      target:self
                                                                      action:@selector(tap:)];
+    
+    
     self.navigationItem.backBarButtonItem = barButtonItem;
     
     _listMenu = ARRAY_SHOP_SETTING_MENU;

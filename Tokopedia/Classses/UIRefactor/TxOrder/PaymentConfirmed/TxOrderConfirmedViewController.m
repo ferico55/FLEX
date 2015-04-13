@@ -135,6 +135,8 @@
 {
     [super viewWillAppear:animated];
     _networkManager.delegate = self;
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
 }
 
 -(void)viewDidDisappear:(BOOL)animated

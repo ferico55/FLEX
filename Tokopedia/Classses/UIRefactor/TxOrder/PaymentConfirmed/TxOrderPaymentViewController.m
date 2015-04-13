@@ -843,27 +843,6 @@
 {
     if (_requestConfirmPayment.isExecuting) return;
     NSTimer *timer;
-    //    confirmation_id
-    //    token
-    //    method_id
-    //    payment_amount
-    //    payment_day
-    //    payment_month
-    //    payment_year
-    //    comments
-    //    file_name
-    //    file_path
-    //    server_id
-    //    password
-    //    sysbank_id
-    //    bank_id
-    //    bank_name
-    //    bank_account_name
-    //    bank_account_branch
-    //    bank_account_number
-    //    bank_account_id
-    //    depositor
-    //    password_deposit
     
     NSDictionary *userInfo = (NSDictionary*)object;
     NSArray *selectedOrder = [userInfo objectForKey:DATA_SELECTED_ORDER_KEY];
@@ -1019,6 +998,8 @@
                         [viewControllers replaceObjectAtIndex:viewControllers.count-1 withObject:vc];
                         self.navigationController.viewControllers = viewControllers;
                         [_delegate refreshRequest];
+                        NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
+                        [_delegate successConfirmPayment:selectedOrder];
                         //[self.navigationController pushViewController:vc animated:YES];
                         
                         [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];

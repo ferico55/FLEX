@@ -224,7 +224,7 @@
         InboxResolutionCenterOpenViewController *vc = [InboxResolutionCenterOpenViewController new];
         vc.controllerTitle = @"Buka Komplain";
         if (buttonIndex == 0) {
-            //Tidak Terima Barang
+            //Tidak Terima Barang 
             vc.isGotTheOrder = NO;
         }
         else if (buttonIndex ==1)
