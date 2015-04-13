@@ -17,8 +17,6 @@
     NSDictionary *_textAttributes;
     NSMutableArray *_searchResults;
     NSMutableArray *_searchContents;
-
-    UISearchBar *_searchBar;
 }
 
 @end
@@ -43,7 +41,7 @@
     
     if (_enableSearch) {
         _searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
-        _searchBar.placeholder = @"Search";
+        _searchBar.placeholder = @"Cari";
         _searchBar.delegate = self;
         self.tableView.tableHeaderView = _searchBar;
 
@@ -67,7 +65,7 @@
     self.navigationItem.rightBarButtonItem = doneButton;
 
     if (_isPresentedViewController) {
-        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+        UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithTitle:@"Batal"
                                                                          style:UIBarButtonItemStyleBordered
                                                                         target:self
                                                                         action:@selector(tap:)];
@@ -149,11 +147,20 @@
     UITableViewCell *cell = [tableView cellForRowAtIndexPath:_selectedIndexPath];
     cell.accessoryType = UITableViewCellAccessoryNone;
     
-    _selectedObject = [_objects objectAtIndex:indexPath.row];
-    _selectedIndexPath = indexPath;
-    
-    cell = [tableView cellForRowAtIndexPath:_selectedIndexPath];
-    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    if (_searchBar.text.length > 0) {
+        _selectedObject = [_searchResults objectAtIndex:indexPath.row];
+        NSInteger index = [_objects indexOfObject:_selectedObject];
+        _selectedIndexPath = [NSIndexPath indexPathForRow:index inSection:0];
+
+        cell = [tableView cellForRowAtIndexPath:indexPath];
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    } else {
+        _selectedObject = [_objects objectAtIndex:indexPath.row];
+        _selectedIndexPath = indexPath;
+
+        cell = [tableView cellForRowAtIndexPath:_selectedIndexPath];
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+    }
 }
 
 #pragma mark - Search bar delegate

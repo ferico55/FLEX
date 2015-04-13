@@ -24,6 +24,7 @@
 #import "WishListObjectResult.h"
 #import "WishListObject.h"
 #import "GeneralAction.h"
+#import "RKObjectManager.h"
 
 #import "StarsRateView.h"
 
@@ -313,6 +314,8 @@ TokopediaNetworkManagerDelegate
 {
     [super viewWillAppear:animated];
     
+    _promoteNetworkManager.delegate = self;
+    
     self.hidesBottomBarWhenPushed = YES;
     UIEdgeInsets inset = _table.contentInset;
     inset.bottom += 20;
@@ -348,6 +351,7 @@ TokopediaNetworkManagerDelegate
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    _promoteNetworkManager.delegate = nil;
     [self cancel];
 }
 
@@ -884,7 +888,7 @@ TokopediaNetworkManagerDelegate
                  kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};
     else if(tag == CTagWishList)
         return @{kTKPDDETAIL_ACTIONKEY : kTKPDADD_WISHLIST_PRODUCT,
-                 kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};;
+                 kTKPDDETAIL_APIPRODUCTIDKEY : _product.result.product.product_id};
     
     return nil;
 }

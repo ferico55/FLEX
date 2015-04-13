@@ -123,7 +123,7 @@
         self.navigationItem.leftBarButtonItem = backBarButtonItem;
         
         backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Ya" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [backBarButtonItem setTintColor:[UIColor blackColor]];
+        [backBarButtonItem setTintColor:[UIColor whiteColor]];
         backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
         self.navigationItem.rightBarButtonItem = backBarButtonItem;
     }
@@ -1018,6 +1018,7 @@
                         vc.methodName = method.method_name;
                         [viewControllers replaceObjectAtIndex:viewControllers.count-1 withObject:vc];
                         self.navigationController.viewControllers = viewControllers;
+                        [_delegate refreshRequest];
                         //[self.navigationController pushViewController:vc animated:YES];
                         
                         [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];

@@ -186,7 +186,8 @@
                                                         API_GATEWAY_LIST_NAME_KEY,
                                                         API_GATEWAY_LIST_ID_KEY,
                                                         API_TOKEN_KEY,
-                                                        API_STEP_KEY
+                                                        API_STEP_KEY,
+                                                        API_DROPSHIP_LIST_KEY
                                                         ]];
     return transactionMapping;
 }

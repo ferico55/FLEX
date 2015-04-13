@@ -122,7 +122,7 @@
             ((ProfileBiodataShopCell*)cell).rateservice.starscount = _profileinfo.result.shop_stats.shop_service_rate;
             ((ProfileBiodataShopCell*)cell).ratespeed.starscount = _profileinfo.result.shop_stats.shop_speed_rate;
             
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_profileinfo.result.user_info.user_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_profileinfo.result.shop_info.shop_avatar] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             //request.URL = url;
             
             UIImageView *thumb = ((ProfileBiodataShopCell*)cell).thumb;
@@ -177,7 +177,7 @@
 -(void)ProfileBiodataShopCell:(UITableViewCell*)cell withtableview:(UITableView*)tableView
 {
     ((ProfileBiodataCell*)cell).labelbirth.text = _profileinfo.result.user_info.user_birth?:@"-";
-    ((ProfileBiodataCell*)cell).labelhobbies.text = _profileinfo.result.user_info.user_hobbies?:@"-";
+    ((ProfileBiodataCell*)cell).labelhobbies.text = (_profileinfo.result.user_info.user_hobbies == nil || [_profileinfo.result.user_info.user_hobbies isEqualToString:@"0"])?@"-":_profileinfo.result.user_info.user_hobbies;
 }
 
 #pragma mark - Cell Delegate

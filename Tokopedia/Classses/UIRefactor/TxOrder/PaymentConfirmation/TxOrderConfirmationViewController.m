@@ -96,6 +96,23 @@
                                                object:nil];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+     _networkManager.delegate = self;
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
+    _networkManager.delegate = nil;
+}
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -141,6 +158,7 @@
             if ([_selectedOrders count]>0) {
                 TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
                 vc.data = @{DATA_SELECTED_ORDER_KEY : _selectedOrders};
+                [_list removeObjectsInArray:_selectedOrders];
                 [self.navigationController pushViewController:vc animated:YES];
             }
             else{
@@ -488,7 +506,7 @@
 
 - (void)actionBeforeRequest:(int)tag {
     
-    _tableView.tableFooterView = nil;
+    _tableView.tableFooterView = _footer;
     [_act stopAnimating];
 }
 
@@ -521,6 +539,8 @@
         NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
         _tableView.tableFooterView = noResultView;
     }
+    
+    [_delegate isNodata:_isNodata];
     
     [_tableView reloadData];
 }

@@ -31,4 +31,6 @@
 
 @property (nonatomic) BOOL isPresentedViewController;
 
+@property (nonatomic, strong) UISearchBar *searchBar;
+
 @end

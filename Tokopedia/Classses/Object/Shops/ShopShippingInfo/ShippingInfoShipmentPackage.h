@@ -13,7 +13,7 @@
 @property (nonatomic, strong) NSString *price_total;
 @property (nonatomic, strong) NSString *price;
 @property (nonatomic, strong) NSString *desc;
-@property (nonatomic) NSInteger active;
+@property (nonatomic, strong) NSString *active;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *sp_id;
 
