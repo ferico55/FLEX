@@ -264,7 +264,7 @@
     [viewController setViewControllers:viewcontrollers];
     [viewController setNavigationTitle:searchresult];
     
-    self.hidesBottomBarWhenPushed = YES;
+    viewController.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:YES];
     self.hidesBottomBarWhenPushed = NO;
 }
@@ -333,6 +333,7 @@
         [viewController setViewControllers:viewcontrollers];
         [viewController setNavigationTitle:_searchbar.text];
 
+        viewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:viewController animated:YES];
     }
     else

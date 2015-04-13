@@ -268,6 +268,7 @@
     
     TrackOrderViewController *controller = [TrackOrderViewController new];
     controller.order = _selectedOrder;
+    controller.hidesBottomBarWhenPushed = YES;
     
     [self.navigationController pushViewController:controller animated:YES];
 }
