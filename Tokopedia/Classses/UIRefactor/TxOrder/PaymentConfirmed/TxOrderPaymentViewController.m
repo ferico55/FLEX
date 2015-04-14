@@ -177,7 +177,7 @@
 - (IBAction)tap:(id)sender {
     [_activeTextField resignFirstResponder];
     [_activeTextView resignFirstResponder];
-    
+    NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
         if (button.tag == TAG_BAR_BUTTON_TRANSACTION_DONE) {
@@ -186,7 +186,11 @@
                 [self requestConfirmPayment:_dataInput];
             }
         }
-        else [self.navigationController popViewControllerAnimated:YES];
+        else
+        {
+            [_delegate failedOrCancelConfirmPayment:selectedOrder];
+            [self.navigationController popViewControllerAnimated:YES];
+        }
     }
     else{
         _isNewRekening = !(_isNewRekening);

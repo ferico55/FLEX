@@ -77,13 +77,13 @@
     _step4Label.attributedText = attributedString4;
     
     [_dataInput addEntriesFromDictionary:[_data objectForKey:DATA_KEY]];
-    NSString *mandiriToken = [_dataInput objectForKey:API_MANDIRI_TOKEN_KEY]?:@"";
-    NSString *cardNumber = [_dataInput objectForKey:API_CARD_NUMBER_KEY]?:@"";
+    //NSString *mandiriToken = [_dataInput objectForKey:API_MANDIRI_TOKEN_KEY]?:@"";
+    //NSString *cardNumber = [_dataInput objectForKey:API_CARD_NUMBER_KEY]?:@"";
     
     TransactionSummaryDetail *cart = [_data objectForKey:DATA_CART_SUMMARY_KEY];
     
-    _numberCreditCardTextField.text = cardNumber;
-    _tokenResponseTextField.text = mandiriToken;
+    //_numberCreditCardTextField.text = cardNumber;
+    //_tokenResponseTextField.text = mandiriToken;
     
     NSString *price = cart.payment_left;
     _priceLabel.text = price;
@@ -92,8 +92,15 @@
     _transactionNumberLabel.text = transactionNumber;
     
     if (_numberCreditCardTextField.text.length==16) {
-        _lastNumberDebitCardLabel.text = [_numberCreditCardTextField.text substringFromIndex:_numberCreditCardTextField.text.length - 9];
+        _lastNumberDebitCardLabel.text = [_numberCreditCardTextField.text substringFromIndex:_numberCreditCardTextField.text.length - 10];
     }
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [_dataInput removeObjectForKey:API_MANDIRI_TOKEN_KEY];
+    [_dataInput removeObjectForKey:API_CARD_NUMBER_KEY];
 }
 
 - (void)didReceiveMemoryWarning {

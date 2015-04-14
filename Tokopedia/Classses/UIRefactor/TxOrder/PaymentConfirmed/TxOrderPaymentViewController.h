@@ -12,6 +12,7 @@
 - (void)shouldPopViewController;
 - (void)successConfirmPayment:(NSArray*)payment;
 - (void)refreshRequest;
+- (void)failedOrCancelConfirmPayment:(NSArray*)payment;
 
 @end
 
