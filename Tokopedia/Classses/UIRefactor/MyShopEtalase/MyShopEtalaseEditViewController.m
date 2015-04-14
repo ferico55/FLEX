@@ -261,9 +261,9 @@
                 if (setting.result.is_success == 1) {
                     NSString *message;
                     if (_type == kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY) {
-                        message = @"Anda telah sukses memperbaharui informasi etalase.";
+                        message = @"Anda telah berhasil memperbaharui informasi etalase.";
                     } else {
-                        message = @"anda telah berhasil menambah etalase";
+                        message = @"Anda telah berhasil menambah etalase";
                     }
                     NSArray *successMessages = setting.message_status?:@[message];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];

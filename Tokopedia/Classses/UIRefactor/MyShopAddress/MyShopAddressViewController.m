@@ -54,9 +54,6 @@
     
     NSOperationQueue *_operationQueue;
     
-    NSString *_cachepath;
-    URLCacheController *_cachecontroller;
-    URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
 }
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -105,26 +102,16 @@
     
     _list = [NSMutableArray new];
     _datainput = [NSMutableDictionary new];
-    _cacheconnection = [URLCacheConnection new];
-    _cachecontroller = [URLCacheController new];
     _operationQueue = [NSOperationQueue new];
     
     _page = 1;
+    _isrefreshview = YES;
     
     if (_list.count>0)_isnodata = NO;else _isnodata = YES;
     
     //Add observer
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(didEditAddress:) name:kTKPD_ADDLOCATIONPOSTNOTIFICATIONNAMEKEY object:nil];
-    
-    NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-    
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILETALASE_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPLOCATION_APIRESPONSEFILEFORMAT,[[auth objectForKey:kTKPD_USERIDKEY] integerValue]]];
-    
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-    [_cachecontroller initCacheWithDocumentPath:path];
     
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                       style:UIBarButtonItemStyleBordered
@@ -138,6 +125,9 @@
                                                                                   action:@selector(tap:)];
     addBarButton.tag = 11;
     self.navigationItem.rightBarButtonItem = addBarButton;
+    
+    [self configureRestKit];
+    [self request];
 }
 
 - (void)didReceiveMemoryWarning
@@ -188,10 +178,9 @@
         
         if (_list.count > indexPath.row) {
             Address *list = _list[indexPath.row];
-            ((GeneralList1GestureCell*)cell).labelname.text = list.location_address_name;
+            ((GeneralList1GestureCell*)cell).textLabel.text = list.location_address_name;
+            ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"";
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
-            ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
-            ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
             ((GeneralList1GestureCell*)cell).type = kTKPDGENERALCELL_DATATYPEONEBUTTONKEY;
         }
         
@@ -350,24 +339,19 @@
 
     NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:kTKPDDETAIL_APIGETSHOPLOCATIONKEY,
                             };
-    [_cachecontroller getFileModificationDate];
-	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
-	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
+	if (_isrefreshview) {
         if (_request.isExecuting) return;
+
+        _table.tableFooterView = _footer;
+        [_act startAnimating];
         
-        
-        if (!_isrefreshview) {
-            _table.tableFooterView = _footer;
-            [_act startAnimating];
-        }
-        else{
-            _table.tableFooterView = nil;
-            [_act stopAnimating];
-        }
         _requestcount ++;
         
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOPADDRESS_APIPATH parameters:[param encrypt]];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                        method:RKRequestMethodPOST
+                                                                          path:kTKPDDETAILSHOPADDRESS_APIPATH
+                                                                    parameters:[param encrypt]];
         
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [self requestSuccess:mappingResult withOperation:operation];
@@ -391,14 +375,17 @@
         
         [_operationQueue addOperation:_request];
         
-        _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
+        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                  target:self
+                                                selector:@selector(requestTimeout)
+                                                userInfo:nil
+                                                 repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
     }
     else {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
         NSLog(@"cache and updated in last 24 hours.");
         [self requestFailure:nil];
 	}
@@ -413,49 +400,14 @@
     BOOL status = [address.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if (_page<2 && _list.count>0) {
-            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-            [_cachecontroller connectionDidFinish:_cacheconnection];
-            //save response data
-            [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-        }
         [self requestProcess:object];
     }
 }
 
 -(void)requestFailure:(id)object
 {
-    if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
+    if (_isrefreshview) {
         [self requestProcess:object];
-    }
-    else{
-        NSError* error;
-        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
-        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-        if (parsedData == nil && error) {
-            NSLog(@"parser error");
-        }
-        
-        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
-            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-        }
-        
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-        NSError *mappingError = nil;
-        BOOL isMapped = [mapper execute:&mappingError];
-        if (isMapped && !mappingError) {
-            NSLog(@"result %@",[mapper mappingResult]);
-            RKMappingResult *mappingresult = [mapper mappingResult];
-            NSDictionary *result = mappingresult.dictionary;
-            id stat = [result objectForKey:@""];
-            SettingLocation *address = stat;
-            BOOL status = [address.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [self requestProcess:object];
-            }
-        }
     }
 }
 
@@ -472,23 +424,6 @@
                 [_list addObjectsFromArray:address.result.list];
                 if (_list.count >0) {
                     _isnodata = NO;
-                    //_urinext =  address.result.paging.uri_next;
-                    //NSURL *url = [NSURL URLWithString:_urinext];
-                    //NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                    //
-                    //NSMutableDictionary *queries = [NSMutableDictionary new];
-                    //[queries removeAllObjects];
-                    //for (NSString *keyValuePair in querry)
-                    //{
-                    //    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                    //    NSString *key = [pairComponents objectAtIndex:0];
-                    //    NSString *value = [pairComponents objectAtIndex:1];
-                    //    
-                    //    [queries setObject:value forKey:key];
-                    //}
-                    //
-                    //_page = [[queries objectForKey:kTKPDPROFILE_APIPAGEKEY] integerValue];
-                    //NSLog(@"%d",_page);
                 }
                 [_table reloadData];
                 NSInteger type = [[_datainput objectForKey:kTKPDDETAIL_DATATYPEKEY]integerValue];
@@ -732,7 +667,6 @@
 #pragma mark - delegate address detail
 -(void)DidTapButton:(UIButton *)button withdata:(NSDictionary *)data
 {
-    //[_datainput setObject:@(list.address_id) forKey:kTKPDPROFILESETTING_APIADDRESSIDKEY];
     switch (button.tag) {
         case 11:
         {
@@ -754,7 +688,7 @@
     [_list removeAllObjects];
     _page = 1;
     _requestcount = 0;
-    //_isrefreshview = YES;
+    _isrefreshview = YES;
     
     [_table reloadData];
     /** request data **/
@@ -791,7 +725,6 @@
     NSDictionary *userinfo = notification.userInfo;
     //TODO: Behavior after edit
     [_datainput setObject:[userinfo objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDDETAIL_DATAINDEXPATHKEY];
-    //[_datainput setObject:[userinfo objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]?:@(0) forKey:kTKPDPROFILE_DATAEDITTYPEKEY];
     [self refreshView:nil];
 }
 

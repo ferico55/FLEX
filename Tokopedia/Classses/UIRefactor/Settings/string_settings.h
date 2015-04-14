@@ -20,4 +20,10 @@ typedef enum
 #define DATA_INDEXPATH_KEY @"indexpath"
 #define DATA_ADDRESS_DETAIL_KEY @"address"
 
+#define TKPD_FORGETPASS_ACTION @"reset_password"
+#define TKPD_FORGETPASS_PATH @"action/general-usage.pl"
+
+#define TKPD_FORGETPASS_TITLE @"Lupa Password"
+
+
 #endif

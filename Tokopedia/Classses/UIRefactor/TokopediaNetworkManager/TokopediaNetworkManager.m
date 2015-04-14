@@ -38,13 +38,15 @@
                                                                             path:[_delegate getPath:self.tagRequest]
                                                                       parameters:[[_delegate getParameter:self.tagRequest] encrypt]];
     
-    
+
+    [_requestTimer invalidate];
+    _requestTimer = nil;
     [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
         [self requestSuccess:mappingResult withOperation:operation];
         [_requestTimer invalidate];
+        _requestTimer = nil;
     } failure:^(RKObjectRequestOperation *operation, NSError *error) {
         [self requestFail:error];
-        [_requestTimer invalidate];
     }];
     
     if (_delegate && [_delegate respondsToSelector:@selector(actionRequestAsync:)]) {
@@ -66,14 +68,14 @@
 
         } else {
             NSError *error = processResult;
-            if ([error code] != NSURLErrorCancelled) {
+            if(_delegate && [_delegate respondsToSelector:@selector(actionFailAfterRequest:withTag:)]) {
+                [_delegate actionFailAfterRequest:processResult withTag:self.tagRequest];
+            }
+            else if(_delegate != nil)
+            {
                 NSString *errorDescription = error.localizedDescription;
                 UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                 [errorAlert show];
-                
-                if(_delegate && [_delegate respondsToSelector:@selector(actionFailAfterRequest:withTag:)]) {
-                    [_delegate actionFailAfterRequest:processResult withTag:self.tagRequest];
-                }
             }
         }
     }
@@ -97,10 +99,11 @@
 }
 
 - (void)requestTimeout {
+    [self requestCancel];
     if(_requestCount < kTKPDREQUESTCOUNTMAX) {
-        [self cancel];
         [self doRequest];
     } else {
+        [self resetRequestCount];
         if ([_delegate respondsToSelector:@selector(actionAfterFailRequestMaxTries:)]) {
             
             [_delegate actionAfterFailRequestMaxTries:self.tagRequest];        }
@@ -111,6 +114,9 @@
     //TODO:: Create MaintenanceViewController
     MaintenanceViewController *maintenanceController = [MaintenanceViewController new];
     UIViewController *vc = _delegate;
+    
+    if([[vc.navigationController.viewControllers lastObject] isMemberOfClass:[MaintenanceViewController class]])
+        return;
     [vc.navigationController pushViewController:maintenanceController animated:YES];
 }
 
@@ -142,7 +148,7 @@
     return [queries objectForKey:@"page"];
 }
 
-- (void)cancel {
+- (void)requestCancel {
     [_objectRequest cancel];
     _objectRequest = nil;
     

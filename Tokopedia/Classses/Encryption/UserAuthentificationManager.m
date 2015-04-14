@@ -45,6 +45,10 @@
     return [[_auth objectForKey:@"user_id"] stringValue] ?: @"0";
 }
 
+- (NSString*)getMyDeviceToken {
+    return [_auth objectForKey:@"device_token"] ?: @"0";
+}
+
 - (NSString *)getShopId {
     return [_auth objectForKey:@"shop_id"]?:@"0";
 }
@@ -53,8 +57,8 @@
 {
     NSDictionary *mutable = [params mutableCopy];
     [mutable setValue:[self getUserId] forKey:@"user_id"];
-    [mutable setValue:@"ABCDEFGH" forKey:@"device_id"];
-    [mutable setValue:@"ios" forKey:@"os_type"];
+    [mutable setValue:[self getMyDeviceToken] forKey:@"device_id"];
+    [mutable setValue:@"2" forKey:@"os_type"];
     
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:mutable

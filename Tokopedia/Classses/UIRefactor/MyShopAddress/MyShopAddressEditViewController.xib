@@ -38,7 +38,7 @@
                 <outlet property="textfieldfax" destination="Z74-XF-GHa" id="Ppj-kV-gEo"/>
                 <outlet property="textfieldphonenumber" destination="wrj-JC-NIe" id="8o1-Ld-Agu"/>
                 <outlet property="textfieldpostcode" destination="2V6-2H-L6W" id="HWu-2k-cBK"/>
-                <outlet property="textviewaddress" destination="L3L-Pr-laL" id="AUF-up-uIb"/>
+                <outlet property="textviewaddress" destination="L3L-Pr-laL" id="m9V-sF-0Aq"/>
                 <outlet property="view" destination="iN0-l3-epB" id="beg-5B-pfD"/>
             </connections>
         </placeholder>
@@ -134,8 +134,8 @@
                                 <constraint firstAttribute="height" constant="1" id="MFu-L5-Fwo"/>
                             </constraints>
                         </view>
-                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L3L-Pr-laL">
-                            <rect key="frame" x="10" y="1" width="310" height="122"/>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L3L-Pr-laL" customClass="TKPDTextView">
+                            <rect key="frame" x="10" y="6" width="310" height="117"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -161,7 +161,7 @@
                         <constraint firstAttribute="trailing" secondItem="cTQ-f4-kIN" secondAttribute="trailing" id="P8x-No-IoV"/>
                         <constraint firstItem="1Td-AM-k33" firstAttribute="leading" secondItem="G3N-Dx-HCg" secondAttribute="leading" id="Uy4-ax-HHR"/>
                         <constraint firstItem="L3L-Pr-laL" firstAttribute="leading" secondItem="G3N-Dx-HCg" secondAttribute="leading" constant="10" id="gLg-zj-LHT"/>
-                        <constraint firstItem="L3L-Pr-laL" firstAttribute="top" secondItem="cTQ-f4-kIN" secondAttribute="bottom" id="ptC-BR-iDE"/>
+                        <constraint firstItem="L3L-Pr-laL" firstAttribute="top" secondItem="cTQ-f4-kIN" secondAttribute="bottom" constant="5" id="ptC-BR-iDE"/>
                         <constraint firstAttribute="trailing" secondItem="L3L-Pr-laL" secondAttribute="trailing" id="s5i-D9-Zxx"/>
                         <constraint firstAttribute="bottom" secondItem="L3L-Pr-laL" secondAttribute="bottom" id="tgO-bC-NPP"/>
                     </constraints>

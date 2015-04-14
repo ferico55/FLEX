@@ -462,14 +462,8 @@
 {
     if (_request.isExecuting) return;
     
-    if (!_isrefreshview) {
-        _table.tableFooterView = _footer;
-        [_act startAnimating];
-    }
-    else{
-        _table.tableFooterView = nil;
-        [_act stopAnimating];
-    }
+    _table.tableFooterView = _footer;
+    [_act startAnimating];
     
     if (_page==1)_doneBarButtonItem.enabled = NO;
     

@@ -12,13 +12,15 @@
 #import "Address.h"
 #import "MyShopAddressEditViewController.h"
 #import "AddressViewController.h"
+#import "TKPDTextView.h"
 
 #pragma mark - Setting Location Edit View Controller
 @interface MyShopAddressEditViewController ()
-<   SettingAddressLocationViewDelegate,
-UIScrollViewDelegate,
-UITextFieldDelegate,
-UITextViewDelegate
+<
+    SettingAddressLocationViewDelegate,
+    UIScrollViewDelegate,
+    UITextFieldDelegate,
+    UITextViewDelegate
 >
 {
     NSInteger _type;
@@ -49,7 +51,7 @@ UITextViewDelegate
 
 @property (weak, nonatomic) IBOutlet UIScrollView *container;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldaddressname;
-@property (weak, nonatomic) IBOutlet UITextView *textviewaddress;
+@property (weak, nonatomic) IBOutlet TKPDTextView *textviewaddress;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldpostcode;
 @property (weak, nonatomic) IBOutlet UIButton *buttondistrict;
 @property (weak, nonatomic) IBOutlet UIButton *buttoncity;
@@ -127,6 +129,14 @@ UITextViewDelegate
     self.container.frame = frame;
     
     [self.container addSubview:_contentView];
+    
+    _textviewaddress.placeholder = @"Alamat";
+    
+    [_textfieldaddressname addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
+    [_textfieldpostcode addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
+    [_textfieldphonenumber addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
+    [_textfieldemail addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
+    [_textfieldfax addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -553,7 +563,7 @@ UITextViewDelegate
 
 #pragma mark - Textfield Delegate
 
--(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+- (void)textFieldValueChanged:(UITextField *)textField
 {
     if (textField == _textfieldaddressname) {
         [_datainput setObject:textField.text forKey:kTKPDSHOP_APIADDRESSNAMEKEY];
@@ -566,6 +576,10 @@ UITextViewDelegate
     } else if (textField == _textfieldfax) {
         [_datainput setObject:textField.text forKey:kTKPDSHOP_APIFAXKEY];
     }
+}
+
+-(BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
     return YES;
 }
 

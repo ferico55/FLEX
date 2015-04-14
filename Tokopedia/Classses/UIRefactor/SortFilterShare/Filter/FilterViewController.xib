@@ -12,6 +12,8 @@
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
         </mutableArray>
         <mutableArray key="GothamLight.ttf">
             <string>GothamLight</string>
@@ -105,7 +107,7 @@
                                                 <constraint firstAttribute="width" constant="140" id="VOy-1q-GJ6"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                         </textField>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="   Maksimum" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="7j0-xN-Ppw">
                                             <rect key="frame" x="165" y="38" width="140" height="30"/>
@@ -114,7 +116,7 @@
                                                 <constraint firstAttribute="height" constant="30" id="eXZ-io-Xai"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                         </textField>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -263,7 +265,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="imT-BN-BCZ" userLabel="location View">
                                     <rect key="frame" x="0.0" y="120" width="320" height="45"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ok-N9-Sq1">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lokasi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ok-N9-Sq1">
                                             <rect key="frame" x="15" y="0.0" width="60" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="60" id="byT-o0-jkg"/>
@@ -276,7 +278,8 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="8co-8M-csM"/>
                                             </constraints>
-                                            <state key="normal" title="All Location">
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                            <state key="normal" title="Semua Lokasi">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
@@ -404,11 +407,11 @@
             </connections>
         </tapGestureRecognizer>
         <view contentMode="scaleToFill" id="Q0d-fq-v2F" userLabel="ProductView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KkN-D2-JcV">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P3R-0O-ynz">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
@@ -493,7 +496,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d3g-hY-fRP" userLabel="location View">
                                     <rect key="frame" x="0.0" y="120" width="320" height="45"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IV2-LX-gwh">
+                                        <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lokasi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IV2-LX-gwh">
                                             <rect key="frame" x="15" y="0.0" width="60" height="44"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="60" id="ohX-lz-xbO"/>
@@ -506,7 +509,8 @@
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="YnY-Ia-yrH"/>
                                             </constraints>
-                                            <state key="normal" title="All Location">
+                                            <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                            <state key="normal" title="Semua Lokasi">
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
                                             <connections>
@@ -573,7 +577,7 @@
                                                 <constraint firstAttribute="width" constant="140" id="rAh-sj-8BM"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                         </textField>
                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="   Maksimum" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dRH-kr-g1M">
                                             <rect key="frame" x="165" y="38" width="140" height="30"/>
@@ -582,7 +586,7 @@
                                                 <constraint firstAttribute="height" constant="30" id="i38-qk-ets"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                            <textInputTraits key="textInputTraits"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                         </textField>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -635,7 +639,7 @@
                     </connections>
                 </scrollView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="KkN-D2-JcV" secondAttribute="trailing" id="IHO-It-Swd"/>
                 <constraint firstAttribute="bottom" secondItem="KkN-D2-JcV" secondAttribute="bottom" id="TMA-d5-neQ"/>
@@ -643,7 +647,7 @@
                 <constraint firstItem="KkN-D2-JcV" firstAttribute="leading" secondItem="Q0d-fq-v2F" secondAttribute="leading" id="lqb-w8-Ivk"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
             <point key="canvasLocation" x="653" y="-407"/>
         </view>
     </objects>

@@ -355,6 +355,7 @@ TokopediaNetworkManagerDelegate
     [self cancel];
 }
 
+
 #pragma mark - Table view delegate
 - (BOOL)tableView:(UITableView *)tableView canCollapseSection:(NSInteger)section
 {
@@ -1299,7 +1300,7 @@ TokopediaNetworkManagerDelegate
     {
         [_act stopAnimating];
         _buyButton.enabled = YES;
-        [self requestfailure:errorResult];
+//        [self requestfailure:errorResult];
     }
     else if(tag == CTagOtherProduct)
         [self requestFailureOtherProduct:errorResult];
@@ -1394,6 +1395,20 @@ TokopediaNetworkManagerDelegate
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    tokopediaNetworkManagerWishList.delegate = nil;
+    [tokopediaNetworkManagerWishList requestCancel];
+    
+    _promoteNetworkManager.delegate = nil;
+    [_promoteNetworkManager requestCancel];
+    
+    tokopediaNetworkManagerFavorite.delegate = nil;
+    [tokopediaNetworkManagerFavorite requestCancel];
+    
+    tokopediaNetworkManager.delegate = nil;
+    [tokopediaNetworkManager requestCancel];
+    
+    tokopediaOtherProduct.delegate = nil;
+    [tokopediaOtherProduct requestCancel];
 }
 
 - (void)didReceiveMemoryWarning
@@ -1449,197 +1464,128 @@ TokopediaNetworkManagerDelegate
     }
 }
 
--(void)requestfailure:(id)object
-{
-    if (_timeinterval > _cachecontroller.URLCacheInterval) {
-        [self requestprocess:object];
-    }
-    else{
-        NSError* error;
-        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
-        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-        if (parsedData == nil && error) {
-            NSLog(@"parser error");
-        }
-        
-        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
-            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-        }
-        
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-        NSError *mappingError = nil;
-        BOOL isMapped = [mapper execute:&mappingError];
-        if (isMapped && !mappingError) {
-            RKMappingResult *mappingresult = [mapper mappingResult];
-            NSDictionary *result = mappingresult.dictionary;
-            id stats = [result objectForKey:@""];
-            _product = stats;
-            BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [self requestprocess:mappingresult];
-            }
-        }
-    }
-}
-
 -(void)requestprocess:(id)object
 {
     if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stats = [result objectForKey:@""];
-            _product = stats;
-            BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        NSDictionary *result = ((RKMappingResult*)object).dictionary;
+        id stats = [result objectForKey:@""];
+        _product = stats;
+        BOOL status = [_product.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        
+        if (status) {
             
-            if (status) {
-                
-                if (_product.result.wholesale_price.count > 0) {
-                    _isnodatawholesale = NO;
-                }
-                if([_product.result.product.product_description isEqualToString:@"0"])
-                    _product.result.product.product_description = kTKPDTIDAK_ADA_WISHLIST;
-                
-                
-                UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
-                if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
-                    NSBundle* bundle = [NSBundle mainBundle];
-                    UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_setting" ofType:@"png"]];
-                    
-                    UIBarButtonItem *barbutton;
-                    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
-                        UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-                        barbutton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-                    }
-                    else
-                        barbutton = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
-                    
-                    [barbutton setTag:22];
-                    self.navigationItem.rightBarButtonItem = barbutton;
-                    [btnWishList removeFromSuperview];
-                } else {
-                    activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:btnWishList.frame];
-                    activityIndicator.color = [UIColor lightGrayColor];
-                    btnWishList.hidden = NO;
-                    [btnWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
-                    btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:11.0f];
-                    [btnWishList setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-                    btnWishList.layer.cornerRadius = btnShare.layer.cornerRadius = 5;
-                    btnWishList.layer.masksToBounds = btnShare.layer.masksToBounds = YES;
-                    btnWishList.layer.borderColor = btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
-                    btnWishList.layer.borderWidth = btnShare.layer.borderWidth = 1.0f;
-                    btnWishList.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
-                    btnWishList.titleEdgeInsets = UIEdgeInsetsMake(5, 0, 0, 0);
-                    
-                    //Rescale image
-                    UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0.0);
-                    [[UIImage imageNamed:@"icon_wishlist_active.png"] drawInRect:CGRectMake(0, 0, 15, 15)];
-                    imgUnWishList = UIGraphicsGetImageFromCurrentImageContext();
-                    UIGraphicsEndImageContext();
-                    
-                    UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0.0);
-                    [[UIImage imageNamed:@"icon_wishlist_unactive.png"] drawInRect:CGRectMake(0, 0, 15, 15)];
-                    imgWishList = UIGraphicsGetImageFromCurrentImageContext();
-                    UIGraphicsEndImageContext();
-                    
-                    if([_product.result.product.product_already_wishlist isEqualToString:@"1"])
-                    {
-                        [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
-                        btnWishList.tag = 0;
-                    }
-                    else
-                    {
-                        [btnWishList setImage:imgWishList forState:UIControlStateNormal];
-                        btnWishList.tag = 1;
-                    }
-                }
-                
-                //decide description height
-                id cell = [DetailProductDescriptionCell newcell];
-                NSString *productdesc = _product.result.product.product_description;
-                UILabel *desclabel = ((DetailProductDescriptionCell*)cell).descriptionlabel;
-                desclabel.text = productdesc;
-                CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
-                
-                CGSize expectedLabelSize = [productdesc sizeWithFont:desclabel.font constrainedToSize:maximumLabelSize lineBreakMode:desclabel.lineBreakMode];
-                _heightDescSection = lroundf(expectedLabelSize.height);
-                
-                [self setHeaderviewData];
-                [self setFooterViewData];
-                [self setOtherProducts];
-                _isnodata = NO;
-                [_table reloadData];
-                
-                _table.hidden = NO;
-                
-                if([_product.result.shop_info.shop_id isEqualToString:[([_auth objectForKey:@"shop_id"]) stringValue]]) {
-                    _dinkButton.hidden = NO;
-                    _buyButton.hidden = YES;
-                } else {
-                    _buyButton.hidden = NO;
-                    _dinkButton.hidden = YES;
-                }
-                
-                
-                if(_product.result.shop_info.shop_already_favorited == 1) {
-                    [self setButtonFav];
-                } else {
-                    [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
-                    [_favButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
-                    _favButton.tintColor = [UIColor lightGrayColor];
-                    _favButton.tag = 17;
-                }
-                
-                if(_auth && [[[_auth objectForKey:@"shop_id"] stringValue] isEqualToString:_product.result.shop_info.shop_id]) {
-                    _favButton.hidden = YES;
-                } else {
-                    _favButton.hidden = NO;
-                }
-                
-                // UIView below table view (View More Product button)
-                CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+100);
-                UIView *backgroundGreyView = [[UIView alloc] initWithFrame:frame];
-                backgroundGreyView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
-                [self.view insertSubview:backgroundGreyView belowSubview:self.table];
-                
+            if (_product.result.wholesale_price.count > 0) {
+                _isnodatawholesale = NO;
             }
-        }else{
-            [self cancel];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                    //_table.tableFooterView = _footer;
-                    [_act startAnimating];
-                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(loadData) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
+            if([_product.result.product.product_description isEqualToString:@"0"])
+                _product.result.product.product_description = kTKPDTIDAK_ADA_WISHLIST;
+            
+            
+            UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
+            if([userAuthentificationManager isMyShopWithShopId:_product.result.shop_info.shop_id]) {
+                NSBundle* bundle = [NSBundle mainBundle];
+                UIImage *img = [[UIImage alloc] initWithContentsOfFile:[bundle pathForResource:@"icon_shop_setting" ofType:@"png"]];
+                
+                UIBarButtonItem *barbutton;
+                if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7) { // iOS 7
+                    UIImage * image = [img imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+                    barbutton = [[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+                }
+                else
+                    barbutton = [[UIBarButtonItem alloc] initWithImage:img style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+                
+                [barbutton setTag:22];
+                self.navigationItem.rightBarButtonItem = barbutton;
+                [btnWishList removeFromSuperview];
+            } else {
+                activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:btnWishList.frame];
+                activityIndicator.color = [UIColor lightGrayColor];
+                btnWishList.hidden = NO;
+                [btnWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
+                btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:11.0f];
+                [btnWishList setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+                btnWishList.layer.cornerRadius = btnShare.layer.cornerRadius = 5;
+                btnWishList.layer.masksToBounds = btnShare.layer.masksToBounds = YES;
+                btnWishList.layer.borderColor = btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
+                btnWishList.layer.borderWidth = btnShare.layer.borderWidth = 1.0f;
+                btnWishList.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
+                btnWishList.titleEdgeInsets = UIEdgeInsetsMake(5, 0, 0, 0);
+                
+                //Rescale image
+                UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0.0);
+                [[UIImage imageNamed:@"icon_wishlist_active.png"] drawInRect:CGRectMake(0, 0, 15, 15)];
+                imgUnWishList = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+                
+                UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0.0);
+                [[UIImage imageNamed:@"icon_wishlist_unactive.png"] drawInRect:CGRectMake(0, 0, 15, 15)];
+                imgWishList = UIGraphicsGetImageFromCurrentImageContext();
+                UIGraphicsEndImageContext();
+                
+                if([_product.result.product.product_already_wishlist isEqualToString:@"1"])
+                {
+                    [btnWishList setImage:imgUnWishList forState:UIControlStateNormal];
+                    btnWishList.tag = 0;
                 }
                 else
                 {
-                    [_act stopAnimating];
-                    NSError *error = object;
-                    NSString *errorDescription = error.localizedDescription;
-                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                    [errorAlert show];
+                    [btnWishList setImage:imgWishList forState:UIControlStateNormal];
+                    btnWishList.tag = 1;
                 }
             }
-            else
-            {
-                [_act stopAnimating];
-                NSError *error = object;
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
+            
+            //decide description height
+            id cell = [DetailProductDescriptionCell newcell];
+            NSString *productdesc = _product.result.product.product_description;
+            UILabel *desclabel = ((DetailProductDescriptionCell*)cell).descriptionlabel;
+            desclabel.text = productdesc;
+            CGSize maximumLabelSize = CGSizeMake(296, FLT_MAX);
+            
+            CGSize expectedLabelSize = [productdesc sizeWithFont:desclabel.font constrainedToSize:maximumLabelSize lineBreakMode:desclabel.lineBreakMode];
+            _heightDescSection = lroundf(expectedLabelSize.height);
+            
+            [self setHeaderviewData];
+            [self setFooterViewData];
+            [self setOtherProducts];
+            _isnodata = NO;
+            [_table reloadData];
+            
+            _table.hidden = NO;
+            
+            if([_product.result.shop_info.shop_id isEqualToString:[([_auth objectForKey:@"shop_id"]) stringValue]]) {
+                _dinkButton.hidden = NO;
+                _buyButton.hidden = YES;
+            } else {
+                _buyButton.hidden = NO;
+                _dinkButton.hidden = YES;
             }
+            
+            
+            if(_product.result.shop_info.shop_already_favorited == 1) {
+                [self setButtonFav];
+            } else {
+                [_favButton setTitle:@"Favorite" forState:UIControlStateNormal];
+                [_favButton setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
+                _favButton.tintColor = [UIColor lightGrayColor];
+                _favButton.tag = 17;
+            }
+            
+            if(_auth && [[[_auth objectForKey:@"shop_id"] stringValue] isEqualToString:_product.result.shop_info.shop_id]) {
+                _favButton.hidden = YES;
+            } else {
+                _favButton.hidden = NO;
+            }
+            
+            // UIView below table view (View More Product button)
+            CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+100);
+            UIView *backgroundGreyView = [[UIView alloc] initWithFrame:frame];
+            backgroundGreyView.backgroundColor = [UIColor colorWithRed:231.0/255.0 green:231.0/255.0 blue:231.0/255.0 alpha:1];
+            [self.view insertSubview:backgroundGreyView belowSubview:self.table];
+            
         }
     }
 }
 
--(void)requesttimeout
-{
-    [self cancel];
-}
 
 #pragma mark - UIScrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)sender
