@@ -141,6 +141,8 @@
                                                       style:UIBarButtonItemStyleDone
                                                      target:(self)
                                                      action:@selector(tap:)];
+    self.navigationItem.rightBarButtonItem = _barbuttonedit;
+
     switch (_type) {
         case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
             self.title = kTKPDTITLE_NEW_NOTE;
@@ -207,6 +209,8 @@
     if ([[_data objectForKey:kTKPDNOTES_APINOTESTATUSKEY] isEqualToString:@"2"]) {
         _titleNoteTextField.enabled = NO;
     }
+    
+    [_titleNoteTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -585,8 +589,6 @@
     
     NSDictionary *userinfo = (NSDictionary*)object;
     
-    NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
-    
     NSString *action;
     if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY) {
         action = kTKPDDETAIL_APIADDNOTESDETAILKEY;
@@ -665,7 +667,23 @@
                                                                         object:nil
                                                                       userInfo:nil];
                     
-                    NSArray *successMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                    NSArray *defaultMessage;
+                    switch (_type) {
+                        case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
+                            defaultMessage = @[kTKPDNOTE_ADD_NOTE_SUCCESS];
+                            break;
+                        case kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY:
+                            defaultMessage = @[kTKPDNOTE_EDIT_NOTE_SUCCESS];
+                            break;
+                        case kTKPDSETTINGEDIT_DATATYPEEDITWITHREQUESTVIEWKEY:
+                            defaultMessage = @[kTKPDNOTE_EDIT_NOTE_SUCCESS];
+                            break;
+                        default:
+                            defaultMessage = @[];
+                            break;
+                    }
+
+                    NSArray *successMessages = setting.message_status?:defaultMessage;
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
                     [alert show];
                 
@@ -699,16 +717,10 @@
 
 #pragma mark - Text Field delegate
 
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+- (void)textFieldValueChanged:(UITextField *)textField
 {
-    NSString *text = @"";
-    if (string.length > 0) {
-        text = [NSString stringWithFormat:@"%@%@", textField.text, string];
-    }
-    [_datainput setObject:text forKey:kTKPDNOTE_APINOTESTITLEKEY];
-    [self updateSaveTabbarTitle:text content:_contentNoteTextView.text];
-    return YES;
+    [_datainput setObject:textField.text forKey:kTKPDNOTE_APINOTESTITLEKEY];
+    [self updateSaveTabbarTitle:textField.text content:_contentNoteTextView.text];
 }
 
 #pragma mark - Text View Delegate
@@ -822,6 +834,10 @@
                 _note = [_data objectForKey:kTKPDDETAIL_DATANOTEKEY];
                 _titleLabel.text = _note.result.detail.notes_title;
 
+                _timeNoteLabel.hidden = NO;
+                _titleNoteTextField.hidden = YES;
+                _timeNoteLabel.text = _note.result.detail.notes_update_time;
+                
                 NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
 
                 NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
