@@ -18,6 +18,7 @@
 #import "MGSwipeButton.h"
 #import "GeneralAction.h"
 #import "DetailProductViewController.h"
+#import "LoginViewController.h"
 
 #import "ProfileBiodataViewController.h"
 #import "ProfileFavoriteShopViewController.h"
@@ -31,7 +32,7 @@
 #import "stringrestkit.h"
 #import "string_more.h"
 
-@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate, ReportViewControllerDelegate>
+@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate, ReportViewControllerDelegate, LoginViewDelegate>
 {
     BOOL _isnodata;
     NSMutableArray *_list;
@@ -738,46 +739,66 @@
         UIButton *btn = (UIButton *)sender;
         switch (btn.tag) {
             case 10: {
-                
                 NSInteger lastindexpathrow = [_list count];
                 TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
                 NSDictionary* auth = [secureStorage keychainDictionary];
                 _auth = [auth mutableCopy];
+
                 
-                TalkCommentList *commentlist = [TalkCommentList new];
-                commentlist.comment_message =_growingtextview.text;
-                commentlist.comment_user_name = [_auth objectForKey:@"full_name"];
-                commentlist.comment_user_image = [_auth objectForKey:@"user_image"];
+                if(_auth)
+                {
+                    TalkCommentList *commentlist = [TalkCommentList new];
+                    commentlist.comment_message =_growingtextview.text;
+                    commentlist.comment_user_name = [_auth objectForKey:@"full_name"];
+                    commentlist.comment_user_image = [_auth objectForKey:@"user_image"];
+                    
+                    
+                    NSDate *today = [NSDate date];
+                    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                    [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
+                    NSString *dateString = [dateFormat stringFromDate:today];
+                    
+                    commentlist.comment_create_time = [dateString stringByAppendingString:@"WIB"];
+                    commentlist.is_just_sent = YES;
+                    
+                    [_list insertObject:commentlist atIndex:lastindexpathrow];
+                    NSArray *insertIndexPaths = [NSArray arrayWithObjects:
+                                                 [NSIndexPath indexPathForRow:lastindexpathrow inSection:0],nil
+                                                 ];
+                    
+                    [_table beginUpdates];
+                    [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+                    [_table endUpdates];
+                    
+                    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:lastindexpathrow inSection:0];
+                    [_table scrollToRowAtIndexPath:indexpath
+                                  atScrollPosition:UITableViewScrollPositionTop
+                                          animated:YES];
+                    
+                    //connect action to web service
+                    [self configureSendCommentRestkit];
+                    [self addProductCommentTalk];
+                    
+                    _growingtextview.text = nil;
+                    [_growingtextview resignFirstResponder];
+                }
+                else
+                {
+                    UINavigationController *navigationController = [[UINavigationController alloc] init];
+                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                    navigationController.navigationBar.translucent = NO;
+                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                    
+                    
+                    LoginViewController *controller = [LoginViewController new];
+                    controller.delegate = self;
+                    controller.isPresentedViewController = YES;
+                    controller.redirectViewController = self;
+                    navigationController.viewControllers = @[controller];
+                    
+                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                }
                 
-                
-                NSDate *today = [NSDate date];
-                NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-                [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
-                NSString *dateString = [dateFormat stringFromDate:today];
-                
-                commentlist.comment_create_time = [dateString stringByAppendingString:@"WIB"];
-                commentlist.is_just_sent = YES;
-                
-                [_list insertObject:commentlist atIndex:lastindexpathrow];
-                NSArray *insertIndexPaths = [NSArray arrayWithObjects:
-                                             [NSIndexPath indexPathForRow:lastindexpathrow inSection:0],nil
-                                             ];
-                
-                [_table beginUpdates];
-                [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
-                [_table endUpdates];
-                
-                NSIndexPath *indexpath = [NSIndexPath indexPathForRow:lastindexpathrow inSection:0];
-                [_table scrollToRowAtIndexPath:indexpath
-                              atScrollPosition:UITableViewScrollPositionTop
-                                      animated:YES];
-                
-                //connect action to web service
-                [self configureSendCommentRestkit];
-                [self addProductCommentTalk];
-                
-                 _growingtextview.text = nil;
-                [_growingtextview resignFirstResponder];
                 break;
             }
                 
@@ -1208,4 +1229,11 @@
 }
 */
 
+
+
+#pragma mark - LoginView Delegate
+- (void)redirectViewController:(id)viewController
+{
+
+}
 @end

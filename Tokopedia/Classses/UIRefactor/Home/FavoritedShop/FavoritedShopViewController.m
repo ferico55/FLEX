@@ -17,11 +17,17 @@
 #import "FavoritedShop.h"
 #import "FavoriteShopAction.h"
 #import "ShopContainerViewController.h"
+#import "TokopediaNetworkManager.h"
+#import "LoadingView.h"
 
-@interface FavoritedShopViewController ()<UITableViewDataSource, UITableViewDelegate, FavoritedShopCellDelegate>
+#define CTagFavoriteButton 11
+#define CTagRequest 234
+
+@interface FavoritedShopViewController ()<UITableViewDataSource, UITableViewDelegate, FavoritedShopCellDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
 {
     BOOL _isnodata;
     BOOL _isrefreshview;
+    NSString *strTempShopID;
     
     NSOperationQueue *_operationQueue;
     NSMutableArray *_shop;
@@ -33,6 +39,8 @@
     NSInteger _requestcount;
     BOOL is_already_updated;
     
+    LoadingView *loadingView;
+    
     /** url to the next page **/
     NSString *_urinext;
     NSTimer *_timer;
@@ -40,7 +48,7 @@
     
     UIRefreshControl *_refreshControl;
     __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
+    TokopediaNetworkManager *tokopediaNetworkManager;
     
 }
 
@@ -80,6 +88,9 @@
     _table.tableFooterView = _footer;
     //    [self setHeaderData:_goldshop];
     [_act startAnimating];
+    
+    tokopediaNetworkManager = [TokopediaNetworkManager new];
+    tokopediaNetworkManager.delegate = self;
     
     _table.contentInset = UIEdgeInsetsMake(-34, 0, 53, 0);
     
@@ -291,74 +302,13 @@
 }
 
 -(void) configureRestkitFav {
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[FavoriteShopAction class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[FavoriteShopActionResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"content":@"content",
-                                                        @"is_success":@"is_success"}];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor
-                                                      responseDescriptorWithMapping:statusMapping
-                                                      method:RKRequestMethodPOST
-                                                      pathPattern:@"action/favorite-shop.pl"
-                                                      keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
 
 -(void) pressFavoriteAction:(id)shopid withIndexPath:(NSIndexPath*)indexpath{
-    //    if (_request.isExecuting) return;
-    
-    NSDictionary* param = @{
-                            kTKPDHOME_APIACTIONKEY:@"fav_shop",
-                            @"shop_id":shopid
-                            };
-    
-    _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:@"action/favorite-shop.pl"
-                                                                parameters:[param encrypt]];
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestsuccessfav:mappingResult withOperation:operation];
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
-        [_table reloadData];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestfailurefav:error];
-        //[_act stopAnimating];
-        _table.tableFooterView = nil;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    
+    strTempShopID = shopid;
+    tokopediaNetworkManager.tagRequest = CTagFavoriteButton;
+    [tokopediaNetworkManager doRequest];
 }
 
 
@@ -392,61 +342,12 @@
 
 #pragma mark - Request + Mapping
 -(void) configureRestKit {
-    // initialize RestKit
-    _objectmanager =  [RKObjectManager sharedClient];
     
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[FavoritedShop class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[FavoritedShopResult class]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[FavoritedShopList class]];
-    [listMapping addAttributeMappingsFromArray:@[
-                                                 kTKPDDETAILSHOP_APISHOPIMAGE,
-                                                 kTKPDDETAILSHOP_APISHOPLOCATION,
-                                                 kTKPDDETAILSHOP_APISHOPID,
-                                                 kTKPDDETAILSHOP_APISHOPNAME,
-                                                 ]];
-    
-    RKObjectMapping *listGoldMapping = [RKObjectMapping mappingForClass:[FavoritedShopList class]];
-    [listGoldMapping addAttributeMappingsFromArray:@[
-                                                     kTKPDDETAILSHOP_APISHOPIMAGE,
-                                                     kTKPDDETAILSHOP_APISHOPLOCATION,
-                                                     kTKPDDETAILSHOP_APISHOPID,
-                                                     kTKPDDETAILSHOP_APISHOPNAME,
-                                                     ]];
-    
-    //relation
-    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
-    [statusMapping addPropertyMapping:resulRel];
-    
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    RKRelationshipMapping *listGoldRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTGOLDKEY toKeyPath:kTKPDHOME_APILISTGOLDKEY withMapping:listMapping];
-    [resultMapping addPropertyMapping:listGoldRel];
-    
-    //register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                                  method:RKRequestMethodPOST
-                                                                                             pathPattern:kTKPDHOMEHOTLIST_APIPATH
-                                                                                                 keyPath:@""
-                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptorStatus];
     
 }
 
 -(void) request {
-    if (_request.isExecuting) return;
+    if (tokopediaNetworkManager.getObjectRequest.isExecuting) return;
     
     // create a new one, this one is expired or we've never gotten it
     if (!_isrefreshview) {
@@ -454,47 +355,8 @@
         [_act startAnimating];
     }
     
-    NSDictionary* param = @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEFAVORITESHOPACT,
-                            kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
-                            kTKPDHOME_APIPAGEKEY:@(_page)};
-    
-    _requestcount ++;
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
-                                                                    method:RKRequestMethodPOST
-                                                                      path:kTKPDHOMEHOTLIST_APIPATH
-                                                                parameters:[param encrypt]];
-    
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        
-        [self requestsuccess:mappingResult withOperation:operation];
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
-        [_table reloadData];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestfailure:error];
-        //[_act stopAnimating];
-        _table.tableFooterView = nil;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [_timer invalidate];
-        _timer = nil;
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    _timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
-                                             target:self selector:@selector(requesttimeout)
-                                           userInfo:nil
-                                            repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    
+    tokopediaNetworkManager.tagRequest = CTagRequest;
+    [tokopediaNetworkManager doRequest];
 }
 
 -(void) requestsuccess:(id)object withOperation:(RKObjectRequestOperation*)operation {
@@ -648,11 +510,224 @@
 }
 
 -(void)cancel {
-    [_request cancel];
-    _request = nil;
+//    [_request cancel];
+//    _request = nil;
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
 }
 
 
+
+#pragma mark - TokoPedia Network Manager Delegate
+- (NSDictionary*)getParameter:(int)tag
+{
+    if(tag == CTagFavoriteButton)
+    {
+        NSString *tempShopID = [NSString stringWithFormat:@"%@", strTempShopID];
+        strTempShopID = nil;
+        return @{
+                 kTKPDHOME_APIACTIONKEY:@"fav_shop",
+                 @"shop_id":tempShopID
+                 };
+    }
+    else
+        return @{kTKPDHOME_APIACTIONKEY:kTKPDHOMEFAVORITESHOPACT,
+                 kTKPDHOME_APILIMITPAGEKEY : @(kTKPDHOMEHOTLIST_LIMITPAGE),
+                 kTKPDHOME_APIPAGEKEY:@(_page)};
+}
+
+- (NSString*)getPath:(int)tag
+{
+    if(tag == CTagFavoriteButton)
+        return @"action/favorite-shop.pl";
+    else
+        return kTKPDHOMEHOTLIST_APIPATH;
+}
+
+- (id)getObjectManager:(int)tag
+{
+    if(tag == CTagFavoriteButton)
+    {
+        // initialize RestKit
+        _objectmanager =  [RKObjectManager sharedClient];
+        
+        // setup object mappings
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[FavoriteShopAction class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[FavoriteShopActionResult class]];
+        [resultMapping addAttributeMappingsFromDictionary:@{@"content":@"content",
+                                                            @"is_success":@"is_success"}];
+        
+        //relation
+        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                      toKeyPath:kTKPD_APIRESULTKEY
+                                                                                    withMapping:resultMapping];
+        [statusMapping addPropertyMapping:resulRel];
+        
+        //register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor
+                                                          responseDescriptorWithMapping:statusMapping
+                                                          method:RKRequestMethodPOST
+                                                          pathPattern:@"action/favorite-shop.pl"
+                                                          keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+
+        return _objectmanager;
+    }
+    else
+    {
+        // initialize RestKit
+        _objectmanager =  [RKObjectManager sharedClient];
+        
+        // setup object mappings
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[FavoritedShop class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[FavoritedShopResult class]];
+        
+        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+        [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDDETAIL_APIURINEXTKEY:kTKPDDETAIL_APIURINEXTKEY}];
+        
+        RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[FavoritedShopList class]];
+        [listMapping addAttributeMappingsFromArray:@[
+                                                     kTKPDDETAILSHOP_APISHOPIMAGE,
+                                                     kTKPDDETAILSHOP_APISHOPLOCATION,
+                                                     kTKPDDETAILSHOP_APISHOPID,
+                                                     kTKPDDETAILSHOP_APISHOPNAME,
+                                                     ]];
+        
+        RKObjectMapping *listGoldMapping = [RKObjectMapping mappingForClass:[FavoritedShopList class]];
+        [listGoldMapping addAttributeMappingsFromArray:@[
+                                                         kTKPDDETAILSHOP_APISHOPIMAGE,
+                                                         kTKPDDETAILSHOP_APISHOPLOCATION,
+                                                         kTKPDDETAILSHOP_APISHOPID,
+                                                         kTKPDDETAILSHOP_APISHOPNAME,
+                                                         ]];
+        
+        //relation
+        RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+        [statusMapping addPropertyMapping:resulRel];
+        
+        RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APIPAGINGKEY toKeyPath:kTKPDHOME_APIPAGINGKEY withMapping:pagingMapping];
+        [resultMapping addPropertyMapping:pageRel];
+        
+        RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTKEY toKeyPath:kTKPDHOME_APILISTKEY withMapping:listMapping];
+        [resultMapping addPropertyMapping:listRel];
+        
+        RKRelationshipMapping *listGoldRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDHOME_APILISTGOLDKEY toKeyPath:kTKPDHOME_APILISTGOLDKEY withMapping:listMapping];
+        [resultMapping addPropertyMapping:listGoldRel];
+        
+        //register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                      method:RKRequestMethodPOST
+                                                                                                 pathPattern:kTKPDHOMEHOTLIST_APIPATH
+                                                                                                     keyPath:@""
+                                                                                                 statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [_objectmanager addResponseDescriptor:responseDescriptorStatus];
+        return _objectmanager;
+    }
+}
+
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag
+{
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    
+    if(tag == CTagFavoriteButton)
+        return ((FavoriteShopAction *) stat).status;
+    else
+        return ((FavoritedShop *) stat).status;
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
+{
+    if(tag == CTagFavoriteButton)
+    {
+        [self requestsuccessfav:successResult withOperation:operation];
+        [_act stopAnimating];
+        _table.tableFooterView = nil;
+        [_table reloadData];
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        [_timer invalidate];
+        _timer = nil;
+    }
+    else
+    {
+        [self requestsuccess:successResult withOperation:operation];
+        [_act stopAnimating];
+        _table.tableFooterView = nil;
+        [_table reloadData];
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        [_timer invalidate];
+        _timer = nil;
+    }
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    if(tag == CTagFavoriteButton)
+    {
+        /** failure **/
+        [self requestfailurefav:errorResult];
+        //[_act stopAnimating];
+        _table.tableFooterView = nil;
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        [_timer invalidate];
+        _timer = nil;
+    }
+    else
+    {
+        /** failure **/
+        [self requestfailure:errorResult];
+        //[_act stopAnimating];
+//        _table.tableFooterView = nil;
+//        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        [_timer invalidate];
+        _timer = nil;
+    }
+}
+
+- (void)actionBeforeRequest:(int)tag
+{}
+
+- (void)actionRequestAsync:(int)tag
+{}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag
+{
+    if(tag == CTagFavoriteButton)
+    {
+    }
+    else
+    {
+        if(loadingView == nil)
+        {
+            loadingView = [LoadingView new];
+            loadingView.delegate = self;
+        }
+    
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        _table.tableFooterView = loadingView.view;
+    }
+}
+
+
+#pragma mark - LoadingView Delegate
+- (void)pressRetryButton
+{
+    _table.tableFooterView = _footer;
+    [_act startAnimating];
+    tokopediaNetworkManager.tagRequest = CTagRequest;
+    [tokopediaNetworkManager doRequest];
+}
 @end
