@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
+		7AC068F31ADCCE5B00CAB2DC /* LogoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC068F21ADCCE5B00CAB2DC /* LogoutViewController.m */; };
 		7AD2D81C1ADBB1BA003E1F94 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2CF921ADBB1B7003E1F94 /* URLCacheAlert.m */; };
 		7AD2D81D1ADBB1BA003E1F94 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2CF941ADBB1B7003E1F94 /* URLCacheConnection.m */; };
 		7AD2D81E1ADBB1BA003E1F94 /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2CF961ADBB1B7003E1F94 /* URLCacheController.m */; };
@@ -1328,6 +1329,8 @@
 
 /* Begin PBXFileReference section */
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
+		7AC068F11ADCCE5B00CAB2DC /* LogoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogoutViewController.h; path = Logout/LogoutViewController.h; sourceTree = "<group>"; };
+		7AC068F21ADCCE5B00CAB2DC /* LogoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogoutViewController.m; path = Logout/LogoutViewController.m; sourceTree = "<group>"; };
 		7AD2CF911ADBB1B7003E1F94 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		7AD2CF921ADBB1B7003E1F94 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		7AD2CF931ADBB1B7003E1F94 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -3390,6 +3393,15 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		7AC068DA1ADCCDFF00CAB2DC /* Logout */ = {
+			isa = PBXGroup;
+			children = (
+				7AC068F11ADCCE5B00CAB2DC /* LogoutViewController.h */,
+				7AC068F21ADCCE5B00CAB2DC /* LogoutViewController.m */,
+			);
+			name = Logout;
+			sourceTree = "<group>";
+		};
 		7AD2CF8F1ADBB1B7003E1F94 /* Classses */ = {
 			isa = PBXGroup;
 			children = (
@@ -4813,6 +4825,7 @@
 		7AD2D27E1ADBB1B8003E1F94 /* Activation */ = {
 			isa = PBXGroup;
 			children = (
+				7AC068DA1ADCCDFF00CAB2DC /* Logout */,
 				7AD2D27F1ADBB1B8003E1F94 /* activation.h */,
 				7AD2D2801ADBB1B8003E1F94 /* CreatePassword */,
 				7AD2D2841ADBB1B8003E1F94 /* Login */,
@@ -8092,6 +8105,7 @@
 				7AD2D9521ADBB1BA003E1F94 /* TxOrderPaymentEditBankAccount.m in Sources */,
 				7AD2DAB11ADBB1BA003E1F94 /* SalesTransactionListViewController.m in Sources */,
 				7AD2DB551ADBB1BA003E1F94 /* TransactionCartResultViewController.m in Sources */,
+				7AC068F31ADCCE5B00CAB2DC /* LogoutViewController.m in Sources */,
 				7AD2DA481ADBB1BA003E1F94 /* MyShopEtalaseViewController.m in Sources */,
 				7AD2DB7A1ADBB1BA003E1F94 /* TxOrderConfirmedButtonCell.m in Sources */,
 				7AD2D91C1ADBB1BA003E1F94 /* TransactionAction.m in Sources */,
