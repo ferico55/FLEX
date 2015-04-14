@@ -466,7 +466,7 @@ UIAlertViewDelegate>
     /** clear object **/
     [self cancel];
     _requestCount = 0;
-    //    [_talks removeAllObjects];
+    [_list removeAllObjects];
     _page = 1;
     _isrefreshview = YES;
     
