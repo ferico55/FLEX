@@ -18,8 +18,9 @@
     _placeholderLabel.textColor = [[UIColor blackColor] colorWithAlphaComponent:0.25];
     _placeholderLabel.tag = 1;
     [self addSubview:_placeholderLabel];
-    
-    if (_placeholder.length > 0) {
+
+    _placeholderLabel.hidden = NO;
+    if (self.text.length > 0) {
         _placeholderLabel.hidden = YES;
     }
 }
@@ -38,6 +39,11 @@
                                              selector:@selector(textChanged:)
                                                  name:UITextViewTextDidEndEditingNotification
                                                object:nil];
+    
+    _placeholderLabel.hidden = NO;
+    if (self.text.length > 0) {
+        _placeholderLabel.hidden = YES;
+    }
 }
 
 - (void)textChanged:(NSNotification *)notification {

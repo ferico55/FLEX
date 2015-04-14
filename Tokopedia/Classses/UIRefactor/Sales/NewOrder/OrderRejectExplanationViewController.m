@@ -8,10 +8,11 @@
 
 #import "OrderRejectExplanationViewController.h"
 #import "UITextView+UITextView_Placeholder.h"
+#import "TKPDTextView.h"
 
 @interface OrderRejectExplanationViewController ()
 
-@property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (weak, nonatomic) IBOutlet TKPDTextView *textView;
 
 @end
 
@@ -36,7 +37,12 @@
     doneButton.tag = 2;
     self.navigationItem.rightBarButtonItem = doneButton;
 
-    [_textView setPlaceholder:@"Tulis keterangan"];
+    _textView.placeholder = @"Tulis Keterangan";
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     [_textView becomeFirstResponder];
 }
 

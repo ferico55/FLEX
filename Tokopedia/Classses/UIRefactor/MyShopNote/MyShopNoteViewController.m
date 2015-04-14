@@ -169,12 +169,10 @@
         
         if (_list.count > indexPath.row) {
             NotesList *list = _list[indexPath.row];
-            ((GeneralList1GestureCell*)cell).textLabel.hidden = NO;
             ((GeneralList1GestureCell*)cell).textLabel.text = list.note_title;
-            ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
-            ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
-            ((GeneralList1GestureCell*)cell).indexpath = indexPath;
-            ((GeneralList1GestureCell*)cell).type = kTKPDGENERALCELL_DATATYPETWOBUTTONKEY;            
+            ((GeneralList1GestureCell*)cell).detailTextLabel.hidden = YES;
+            ((GeneralList1GestureCell*)cell).indexpath = indexPath;            
+            ((GeneralList1GestureCell*)cell).type = kTKPDGENERALCELL_DATATYPETWOBUTTONKEY;
         }
         
 		return cell;
@@ -544,7 +542,7 @@
                     [alert show];
                 }
                 if (setting.result.is_success == 1) {
-                    NSArray *successMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                    NSArray *successMessages = setting.message_status?:@[kTKPDNOTE_DELETE_NOTE_SUCCESS];
                     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
                     [alert show];
                 }
