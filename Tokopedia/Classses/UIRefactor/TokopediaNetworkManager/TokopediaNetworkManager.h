@@ -63,7 +63,7 @@
 - (void)resetRequestCount;
 - (NSString*)splitUriToPage:(NSString*)uri;
 - (RKManagedObjectRequestOperation *)getObjectRequest;
-
+- (void)requestCancel;
 
 
 @end

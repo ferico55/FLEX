@@ -20,7 +20,7 @@
 @interface HistoryProductViewController() <UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (weak, nonatomic) IBOutlet UIView *footer;
+@property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 
 @property (nonatomic, strong) NSMutableArray *product;
@@ -553,9 +553,15 @@
     [_table reloadData];
 }
 
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    
+}
+
 - (void)actionAfterFailRequestMaxTries:(int)tag {
     [_refreshControl endRefreshing];
     _table.tableFooterView = _loadingView.view;
+    _isrefreshview = NO;
 }
 
 #pragma mark - Delegate LoadingView
