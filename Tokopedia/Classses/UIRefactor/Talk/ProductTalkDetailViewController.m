@@ -1030,10 +1030,10 @@
         CGFloat padding = 15;
         NSIndexPath *indexPath = ((GeneralTalkCommentCell*) cell).indexpath;
         TalkCommentList *list = _list[indexPath.row];
-        [_datainput setObject:list.comment_talk_id forKey:@"comment_id"];
+        [_datainput setObject:list.comment_id forKey:@"comment_id"];
         [_datainput setObject:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY] forKey:@"product_id"];
         
-        if([[_userManager getUserId] isEqualToString:list.comment_user_id]) {
+        if(![[_userManager getUserId] isEqualToString:list.comment_user_id]) {
             MGSwipeButton * report = [MGSwipeButton buttonWithTitle:@"Laporkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
                 _reportAction = @"report_comment_talk";
                 ReportViewController *reportController = [ReportViewController new];
@@ -1098,7 +1098,9 @@
     NSDictionary *param = @{
                             @"action" : @"delete_comment_talk",
                             @"product_id" : [_datainput objectForKey:@"product_id"],
-                            @"comment_id" : [_datainput objectForKey:@"comment_id"]
+                            @"comment_id" : [_datainput objectForKey:@"comment_id"],
+                            @"shop_id" : [_data objectForKey:@"talk_shop_id"],
+                            @"talk_id" : [_data objectForKey:@"talk_id"]
                             };
     
     _requestDeleteComment = [_objectDeleteCommentManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDACTIONTALK_APIPATH parameters:[param encrypt]];
