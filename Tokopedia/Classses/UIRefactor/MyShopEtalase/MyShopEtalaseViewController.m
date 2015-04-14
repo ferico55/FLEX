@@ -50,9 +50,6 @@
     __weak RKObjectManager *_objectmanagerActionDelete;
     __weak RKManagedObjectRequestOperation *_requestActionDelete;
     
-    NSString *_cachepath;
-    URLCacheController *_cachecontroller;
-    URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
 }
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -89,8 +86,8 @@
     _list= [NSMutableArray new];
     _datainput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
-    _cacheconnection = [URLCacheConnection new];
-    _cachecontroller = [URLCacheController new];
+    
+    _isrefreshview = YES;
     
     _page = 1;
     _limit = kTKPDSHOPETALASE_LIMITPAGE;
@@ -114,18 +111,12 @@
     addBarButton.tag = 11;
     self.navigationItem.rightBarButtonItem = addBarButton;
     
-    NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
-    
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]stringByAppendingPathComponent:kTKPDDETAILETALASE_CACHEFILEPATH];
-    _cachepath = [path stringByAppendingPathComponent:[NSString stringWithFormat:kTKPDDETAILSHOPETALASE_APIRESPONSEFILEFORMAT,[[auth objectForKey:kTKPD_USERIDKEY] integerValue]]];
-    
-    _cachecontroller.filePath = _cachepath;
-    _cachecontroller.URLCacheInterval = 86400.0;
-    [_cachecontroller initCacheWithDocumentPath:path];
-    
     //Add observer
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(didEditEtalase:) name:kTKPD_ADDETALASEPOSTNOTIFICATIONNAMEKEY object:nil];
+    
+    [self configureRestKit];
+    [self request];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -193,10 +184,8 @@
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    UITableViewCell* cell = nil;
     if (!_isnodata) {
-        
+        GeneralList1GestureCell* cell = nil;
         NSString *cellid = kTKPDGENERALLIST1GESTURECELL_IDENTIFIER;
 		
 		cell = (GeneralList1GestureCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
@@ -207,18 +196,16 @@
         
         if (_list.count > indexPath.row) {
             EtalaseList *list = _list[indexPath.row];
-            ((GeneralList1GestureCell*)cell).labelname.text = list.etalase_name;
-            ((GeneralList1GestureCell*)cell).indexpath = indexPath;
-            ((GeneralList1GestureCell*)cell).type = kTKPDGENERALCELL_DATATYPEONEBUTTONKEY;
-            ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
-            ((GeneralList1GestureCell*)cell).labelvalue.text = [NSString stringWithFormat:@"%@ Produk",list.etalase_total_product];
+            cell.textLabel.text = list.etalase_name;
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ Produk",list.etalase_total_product];
+            cell.indexpath = indexPath;
+            cell.type = kTKPDGENERALCELL_DATATYPEONEBUTTONKEY;
         }
-        
 		return cell;
     } else {
         static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
         
-        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -226,8 +213,8 @@
         
         cell.textLabel.text = kTKPDDETAIL_NODATACELLTITLE;
         cell.detailTextLabel.text = kTKPDDETAIL_NODATACELLDESCS;
+        return cell;
     }
-    return cell;
 }
 
 #pragma mark - Table View Delegate
@@ -255,7 +242,7 @@
         if ([list.etalase_total_product isEqualToString:@"0"]) {
             [self deleteListAtIndexPath:indexPath];
         } else {
-            NSArray *errorMessages = @[@"Tidak dapat menghapus etalase. \nSilahkan pindahkan product ke etalase lain terlebih dahulu."];
+            NSArray *errorMessages = @[@"Tidak dapat menghapus etalase.\nSilahkan pindahkan produk ke etalase lain terlebih dahulu."];
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
             [alert show];
         }
@@ -332,7 +319,6 @@
 
 - (void)request
 {
-    
     if (_request.isExecuting) return;
     
     _requestcount ++;
@@ -347,16 +333,11 @@
                                                                       path:kTKPDDETAILSHOP_APIPATH
                                                                 parameters:[param encrypt]];
     
-	[_cachecontroller getFileModificationDate];
-	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-    
-	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
+	if (_isrefreshview) {
         
-        if (!_isrefreshview) {
-            _table.tableFooterView = _footer;
-            [_act startAnimating];
-        }
-        
+        _table.tableFooterView = _footer;
+        [_act startAnimating];
+
         NSTimer *timer;
         //[_cachecontroller clearCache];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -375,19 +356,17 @@
             [timer invalidate];
             [_refreshControl endRefreshing];
         }];
+        
         [_operationQueue addOperation:_request];
         
-        timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
+        timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                 target:self
+                                               selector:@selector(requesttimeout)
+                                               userInfo:nil
+                                                repeats:NO];
+        
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     }
-    else {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-        NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
-	}
 }
 
 
@@ -401,12 +380,6 @@
     BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        if (_page<2) {
-            [_cacheconnection connection:operation.HTTPRequestOperation.request didReceiveResponse:operation.HTTPRequestOperation.response];
-            [_cachecontroller connectionDidFinish:_cacheconnection];
-            //save response data
-            [operation.HTTPRequestOperation.responseData writeToFile:_cachepath atomically:YES];
-        }
         [self requestprocess:object];
     }
 }
@@ -418,37 +391,8 @@
 
 -(void)requestfailure:(id)object
 {
-    if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
+    if (_isrefreshview) {
         [self requestprocess:object];
-    }
-    else{
-        NSError* error;
-        NSData *data = [NSData dataWithContentsOfFile:_cachepath];
-        id parsedData = [RKMIMETypeSerialization objectFromData:data MIMEType:RKMIMETypeJSON error:&error];
-        if (parsedData == nil && error) {
-            NSLog(@"parser error");
-        }
-        
-        NSMutableDictionary *mappingsDictionary = [[NSMutableDictionary alloc] init];
-        for (RKResponseDescriptor *descriptor in _objectmanager.responseDescriptors) {
-            [mappingsDictionary setObject:descriptor.mapping forKey:descriptor.keyPath];
-        }
-        
-        RKMapperOperation *mapper = [[RKMapperOperation alloc] initWithRepresentation:parsedData mappingsDictionary:mappingsDictionary];
-        NSError *mappingError = nil;
-        BOOL isMapped = [mapper execute:&mappingError];
-        if (isMapped && !mappingError) {
-            NSLog(@"result %@",[mapper mappingResult]);
-            RKMappingResult *mappingresult = [mapper mappingResult];
-            NSDictionary *result = mappingresult.dictionary;
-            id stat = [result objectForKey:@""];
-            _etalase = stat;
-            BOOL status = [_etalase.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [self requestprocess:mappingresult];
-            }
-        }
     }
 }
 

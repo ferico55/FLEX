@@ -582,6 +582,10 @@ typedef enum
 #define kTKPDNOTE_APINOTESUPDATETIMEKEY @"notes_update_time"
 #define kTKPDNOTE_APINOTESCONTENTKEY @"notes_content"
 
+#define kTKPDNOTE_EDIT_NOTE_SUCCESS @"Anda telah berhasil memperbaharui catatan"
+#define kTKPDNOTE_DELETE_NOTE_SUCCESS @"Anda telah berhasil menghapus catatan"
+#define kTKPDNOTE_ADD_NOTE_SUCCESS  @"Anda telah berhasil menambah catatan"
+
 #pragma mark - Favorited
 #define kTKPDFAVORITED_APIUSERIDKEY @"user_id"
 #define kTKPDFAVORITED_APIUSERIMAGEKEY @"user_image"
