@@ -171,16 +171,19 @@
         }
         
         
-        if (_shop.count > indexPath.row ) {
-            
-            NSString *sectionTitle = [_shopdictionarytitle objectAtIndex:indexPath.section];
-            NSArray *sectionDictionary = [_shopdictionary objectForKey:sectionTitle];
+        //if (_shop.count > indexPath.row ) {
+            NSArray *sectionDictionary;
+            if (indexPath.section == 0) {
+                sectionDictionary = [_shopdictionary objectForKey:@"a"];
+            } else {
+                sectionDictionary = [_shopdictionary objectForKey:@"b"];
+            }
             FavoritedShopList *shop = sectionDictionary[indexPath.row];
             
             ((FavoritedShopCell*)cell).shopname.text = shop.shop_name;
             ((FavoritedShopCell*)cell).shoplocation.text = shop.shop_location;
             
-            if ([sectionTitle isEqualToString:@"Rekomendasi"]) {
+            if (indexPath.section == 0) {
                 [((FavoritedShopCell*)cell).isfavoritedshop setImage:[UIImage imageNamed:@"icon_love.png"] forState:UIControlStateNormal];
             } else {
                 [((FavoritedShopCell*)cell).isfavoritedshop setImage:[UIImage imageNamed:@"icon_love_active.png"] forState:UIControlStateNormal];
@@ -201,7 +204,7 @@
                 [thumb setImage:image animated:YES];
 #pragma clang diagnostic pop
             } failure:nil];
-        }
+        //}
         
         
         return cell;
@@ -390,15 +393,15 @@
             
             _shopdictionary = [NSMutableDictionary new];
             
-            if (_shop.count > 0) {
-                [_shopdictionary setObject:_shop forKey:@"Favorit"];
-            }
-            
             if (_goldshop.count > 0) {
-                [_shopdictionary setObject:_goldshop forKey:@"Rekomendasi"];
+                [_shopdictionary setObject:_goldshop forKey:@"a"];
             }
             
-            _shopdictionarytitle = [_shopdictionary allKeys];
+            if (_shop.count > 0) {
+                [_shopdictionary setObject:_shop forKey:@"b"];
+            }
+            
+            _shopdictionarytitle = @[@"Rekomendasi",@"Favorite"];
             
             if (_shop.count >0) {
                 _isnodata = NO;

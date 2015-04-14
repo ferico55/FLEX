@@ -23,6 +23,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *productNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *productPriceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *productInfoLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *badge;
 @property (strong, nonatomic) NSIndexPath *indexPath;
 
 + (id)initCell;

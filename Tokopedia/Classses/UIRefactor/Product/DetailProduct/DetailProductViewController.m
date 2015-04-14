@@ -314,6 +314,8 @@ TokopediaNetworkManagerDelegate
 {
     [super viewWillAppear:animated];
     
+    _promoteNetworkManager.delegate = self;
+    
     self.hidesBottomBarWhenPushed = YES;
     UIEdgeInsets inset = _table.contentInset;
     inset.bottom += 20;
@@ -349,6 +351,7 @@ TokopediaNetworkManagerDelegate
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    _promoteNetworkManager.delegate = nil;
     [self cancel];
 }
 

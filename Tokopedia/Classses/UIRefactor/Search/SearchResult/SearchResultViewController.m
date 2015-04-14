@@ -313,6 +313,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                range:NSMakeRange(list.product_review_count.length + 11, list.product_talk_count.length)];
         
         cell.productInfoLabel.attributedText = attributedText;
+
+        cell.badge.hidden = (![list.shop_gold_status boolValue]);
         
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image_full]
                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -389,6 +391,12 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.product_price?:@"";
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.product_name?:@"";
                 ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.shop_name?:@"";
+                
+                if([list.shop_gold_status isEqualToString:@"1"]) {
+                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = NO;
+                } else {
+                    ((UIImageView*)((GeneralProductCell*)cell).isGoldShop[i]).hidden = YES;
+                }
                 
                 NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image]
                                                               cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -479,6 +487,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                       thumb.contentMode = UIViewContentModeScaleAspectFill;
 #pragma clang diagnostic pop
                                   } failure:nil];
+        
+            [[cell.badges objectAtIndex:i] setHidden:(![list.shop_gold_status boolValue])];
         }
     }
     

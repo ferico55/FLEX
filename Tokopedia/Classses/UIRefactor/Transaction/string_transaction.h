@@ -278,6 +278,7 @@ typedef enum
 #define API_GRAND_TOTAL_BEFORE_FEE_KEY @"grand_total_before_fee"
 #define API_CONFIRMATION_CODE_IDR_KEY @"conf_code_idr"
 #define API_PAYMENT_LEFT_KEY @"payment_left"
+#define API_DROPSHIP_LIST_KEY @"dropship_list"
 
 #define API_TRANSACTION_SUMMARY_KEY @"transaction"
 #define API_TRANSACTION_SUMMARY_PRODUCT_KET @"carts"
@@ -330,8 +331,10 @@ typedef enum
 #define FORMAT_CART_DROPSHIP_NAME_KEY @"dropship_name-%zd-%zd-%zd-%zd"
 #define FORMAT_CART_DROPSHIP_PHONE_KEY @"dropship_telp-%zd-%zd-%zd-%zd"
 #define FORMAT_CART_CANCEL_PARTIAL_PHONE_KEY @"fcancel_partial-%zd-%zd-%zd"
-#define FORMAT_CART_DROPSHIP_STR_KEY @"%zd~%zd~%zd"
-#define FORMAT_CART_PARTIAL_STR_KEY FORMAT_CART_DROPSHIP_STR_KEY
+#define FORMAT_CART_DROPSHIP_STR_KEY @"%zd~%zd~%zd~%zd"
+#define FORMAT_CART_DROPSHIP_STR_CART_SUMMARY_KEY @"%zd-%zd-%zd-%zd"
+#define FORMAT_CART_PARTIAL_STR_KEY @"%zd-%zd-%zd"
+#define FORMAT_CART_PARTIAL_STR_CART_SUMMARY_KEY @"%zd-%zd-%zd"
 
 #define FORMAT_SUCCESS_BUY @"Terima kasih, Anda telah berhasil melakukan checkout pemesanan dengan memilih pembayaran %@"
 

@@ -123,7 +123,7 @@
         self.navigationItem.leftBarButtonItem = backBarButtonItem;
         
         backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Ya" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-        [backBarButtonItem setTintColor:[UIColor blackColor]];
+        [backBarButtonItem setTintColor:[UIColor whiteColor]];
         backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
         self.navigationItem.rightBarButtonItem = backBarButtonItem;
     }
@@ -843,27 +843,6 @@
 {
     if (_requestConfirmPayment.isExecuting) return;
     NSTimer *timer;
-    //    confirmation_id
-    //    token
-    //    method_id
-    //    payment_amount
-    //    payment_day
-    //    payment_month
-    //    payment_year
-    //    comments
-    //    file_name
-    //    file_path
-    //    server_id
-    //    password
-    //    sysbank_id
-    //    bank_id
-    //    bank_name
-    //    bank_account_name
-    //    bank_account_branch
-    //    bank_account_number
-    //    bank_account_id
-    //    depositor
-    //    password_deposit
     
     NSDictionary *userInfo = (NSDictionary*)object;
     NSArray *selectedOrder = [userInfo objectForKey:DATA_SELECTED_ORDER_KEY];
@@ -1018,6 +997,9 @@
                         vc.methodName = method.method_name;
                         [viewControllers replaceObjectAtIndex:viewControllers.count-1 withObject:vc];
                         self.navigationController.viewControllers = viewControllers;
+                        [_delegate refreshRequest];
+                        NSArray *selectedOrder = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
+                        [_delegate successConfirmPayment:selectedOrder];
                         //[self.navigationController pushViewController:vc animated:YES];
                         
                         [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];

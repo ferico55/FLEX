@@ -20,7 +20,7 @@
 @property (nonatomic, strong) NSArray *district;
 @property (nonatomic, strong) NSArray *shipment;
 @property (nonatomic) NSInteger tiki_fee;
-@property (nonatomic) BOOL is_allow;
+@property (nonatomic) NSInteger is_allow;
 @property (nonatomic) NSInteger pos_fee;
 @property (nonatomic, strong) NSString *shop_name;
 @property (nonatomic) NSInteger diff_district;

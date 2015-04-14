@@ -24,7 +24,7 @@
 
 #import "TokopediaNetworkManager.h"
 
-@interface TxOrderConfirmationViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate ,TxOrderConfirmationCellDelegate, TxOrderConfirmationDetailViewControllerDelegate, TokopediaNetworkManagerDelegate>
+@interface TxOrderConfirmationViewController ()<UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate ,TxOrderConfirmationCellDelegate, TxOrderConfirmationDetailViewControllerDelegate, TokopediaNetworkManagerDelegate, TxOrderPaymentViewControllerDelegate>
 {
     NSInteger _page;
     NSMutableArray *_list;
@@ -96,6 +96,23 @@
                                                object:nil];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+     _networkManager.delegate = self;
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+}
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
+    _networkManager.delegate = nil;
+}
+
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -140,7 +157,9 @@
         {
             if ([_selectedOrders count]>0) {
                 TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
+                vc.delegate = self;
                 vc.data = @{DATA_SELECTED_ORDER_KEY : _selectedOrders};
+                [_list removeObjectsInArray:_selectedOrders];
                 [self.navigationController pushViewController:vc animated:YES];
             }
             else{
@@ -488,7 +507,7 @@
 
 - (void)actionBeforeRequest:(int)tag {
     
-    _tableView.tableFooterView = nil;
+    _tableView.tableFooterView = _footer;
     [_act stopAnimating];
 }
 
@@ -518,9 +537,12 @@
     }
     else
     {
+        _isNodata = YES;
         NoResultView *noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 100)];
         _tableView.tableFooterView = noResultView;
     }
+    
+    [_delegate isNodata:_isNodata];
     
     [_tableView reloadData];
 }
@@ -642,7 +664,7 @@
             
             NSDictionary *userInfo = @{DATA_PAYMENT_CONFIRMATION_COUNT_KEY:@(objects.count)};
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:userInfo];
-            
+            [_delegate successCancelOrConfirmPayment];
             [self refreshRequest];
         }
         else
@@ -899,6 +921,12 @@
     [_networkManager doRequest];
     //[self configureRestKitGetTransaction];
     //[self requestGetTransaction];
+}
+
+-(void)successConfirmPayment:(NSArray *)payment
+{
+    [_list removeObjectsInArray:payment];
+    [_delegate successCancelOrConfirmPayment];
 }
 
 @end

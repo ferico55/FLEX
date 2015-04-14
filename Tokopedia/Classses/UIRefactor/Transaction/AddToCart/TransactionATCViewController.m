@@ -1242,9 +1242,13 @@
             }
             else
             {
-                UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:self.tabBarController.selectedIndex];
-                [self.tabBarController setSelectedIndex:3];
+                
+                UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:3];
                 [navController popToRootViewControllerAnimated:YES];
+                UINavigationController *selfNav=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:self.tabBarController.selectedIndex];
+                [self.tabBarController setSelectedIndex:3];
+                [selfNav popToRootViewControllerAnimated:YES];
+                [[NSNotificationCenter defaultCenter]postNotificationName:SHOULD_REFRESH_CART object:nil];
                 
                 //TransactionCartRootViewController *cartViewController = [TransactionCartRootViewController new];
                 //[self.navigationController pushViewController:cartViewController animated:YES];
