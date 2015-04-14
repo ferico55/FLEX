@@ -513,10 +513,10 @@
                 if(action.message_error)
                 {
                     NSArray *array = action.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
                     if (!_isFirstLoad)
                     {
-                        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
+                        [alert show];
                         TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
                         [_dataInput setObject:cart.cart_destination forKey:DATA_ADDRESS_DETAIL_KEY];
                         [_tableView reloadData];
@@ -757,8 +757,7 @@
                 //adjust the label the the new height.
                 CGRect newFrame = _addressStreetLabel.frame;
                 newFrame.size.height = expectedLabelSize.height + 26;
-                _addressStreetLabel.frame = newFrame;
-                return 290-70+_addressStreetLabel.frame.size.height;
+                return 290-70+newFrame.size.height;
             }
         }
         else cell = _tableViewCell[indexPath.row + 5];
@@ -780,8 +779,7 @@
             //adjust the label the the new height.
             CGRect newFrame = _addressStreetLabel.frame;
             newFrame.size.height = expectedLabelSize.height + 26;
-            _addressStreetLabel.frame = newFrame;
-            return 290-70+_addressStreetLabel.frame.size.height;
+            return 290-70+newFrame.size.height;
         }
         cell = _tableViewSummaryCell[indexPath.row];
         TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
@@ -922,8 +920,8 @@
     }
     if (shipmentPackages.count==0) {
         NSArray *array = [[NSArray alloc] initWithObjects:[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipment.shipment_name], nil];
-        NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+        StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
+        [alert show];
         return;
     }
     

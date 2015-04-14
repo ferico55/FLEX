@@ -822,7 +822,6 @@
 		FC2122D21AD54DF5007935C1 /* TransactionCartHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC211DA11AD54DF3007935C1 /* TransactionCartHeaderView.xib */; };
 		FC2122D31AD54DF5007935C1 /* TransactionCartShippingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC211DA31AD54DF3007935C1 /* TransactionCartShippingViewController.m */; };
 		FC2122D41AD54DF5007935C1 /* TransactionCartShippingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC211DA41AD54DF3007935C1 /* TransactionCartShippingViewController.xib */; };
-		FC2122D51AD54DF5007935C1 /* TransactionCartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC211DA61AD54DF3007935C1 /* TransactionCartViewController.m */; };
 		FC2122D61AD54DF5007935C1 /* TransactionCartViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC211DA71AD54DF3007935C1 /* TransactionCartViewController.xib */; };
 		FC2122D71AD54DF5007935C1 /* TransactionCartWebViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC211DA91AD54DF3007935C1 /* TransactionCartWebViewViewController.m */; };
 		FC2122D81AD54DF5007935C1 /* TransactionCartWebViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC211DAA1AD54DF3007935C1 /* TransactionCartWebViewViewController.xib */; };
@@ -1259,6 +1258,7 @@
 		FC3FD90F1AC508AC0034AE4B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD47F1AC508AC0034AE4B /* LaunchScreen.xib */; };
 		FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FC681F6619B6D62200C58548 /* libsqlite3.dylib */; };
 		FC8640FD1ADBAA250082CD3C /* MyShopShipmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC8640FC1ADBAA250082CD3C /* MyShopShipmentTableViewController.m */; };
+		FC8641B91ADCC0060082CD3C /* TransactionCartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC8641B81ADCC0060082CD3C /* TransactionCartViewController.m */; };
 		FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
 		FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */; };
 		FCA7751419F663070041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
@@ -2756,8 +2756,6 @@
 		FC211DA21AD54DF3007935C1 /* TransactionCartShippingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartShippingViewController.h; sourceTree = "<group>"; };
 		FC211DA31AD54DF3007935C1 /* TransactionCartShippingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartShippingViewController.m; sourceTree = "<group>"; };
 		FC211DA41AD54DF3007935C1 /* TransactionCartShippingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartShippingViewController.xib; sourceTree = "<group>"; };
-		FC211DA51AD54DF3007935C1 /* TransactionCartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartViewController.h; sourceTree = "<group>"; };
-		FC211DA61AD54DF3007935C1 /* TransactionCartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartViewController.m; sourceTree = "<group>"; };
 		FC211DA71AD54DF3007935C1 /* TransactionCartViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransactionCartViewController.xib; sourceTree = "<group>"; };
 		FC211DA81AD54DF3007935C1 /* TransactionCartWebViewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartWebViewViewController.h; sourceTree = "<group>"; };
 		FC211DA91AD54DF3007935C1 /* TransactionCartWebViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartWebViewViewController.m; sourceTree = "<group>"; };
@@ -3238,6 +3236,8 @@
 		FC6B1C1B1AB03DC900581B3B /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		FC8640FB1ADBAA250082CD3C /* MyShopShipmentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyShopShipmentTableViewController.h; sourceTree = "<group>"; };
 		FC8640FC1ADBAA250082CD3C /* MyShopShipmentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyShopShipmentTableViewController.m; sourceTree = "<group>"; };
+		FC8641B71ADCC0060082CD3C /* TransactionCartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartViewController.h; sourceTree = "<group>"; };
+		FC8641B81ADCC0060082CD3C /* TransactionCartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartViewController.m; sourceTree = "<group>"; };
 		FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FCAAEA4319F7534B00904AFB /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -6314,8 +6314,8 @@
 				FC211DA21AD54DF3007935C1 /* TransactionCartShippingViewController.h */,
 				FC211DA31AD54DF3007935C1 /* TransactionCartShippingViewController.m */,
 				FC211DA41AD54DF3007935C1 /* TransactionCartShippingViewController.xib */,
-				FC211DA51AD54DF3007935C1 /* TransactionCartViewController.h */,
-				FC211DA61AD54DF3007935C1 /* TransactionCartViewController.m */,
+				FC8641B71ADCC0060082CD3C /* TransactionCartViewController.h */,
+				FC8641B81ADCC0060082CD3C /* TransactionCartViewController.m */,
 				FC211DA71AD54DF3007935C1 /* TransactionCartViewController.xib */,
 				FC211DA81AD54DF3007935C1 /* TransactionCartWebViewViewController.h */,
 				FC211DA91AD54DF3007935C1 /* TransactionCartWebViewViewController.m */,
@@ -8218,7 +8218,6 @@
 				FC2120501AD54DF4007935C1 /* BankAccountFormResult.m in Sources */,
 				FC211FAB1AD54DF4007935C1 /* DBManager.m in Sources */,
 				FC21201C1AD54DF4007935C1 /* ResolutionDetailConversation.m in Sources */,
-				FC2122D51AD54DF5007935C1 /* TransactionCartViewController.m in Sources */,
 				FC2120991AD54DF4007935C1 /* District.m in Sources */,
 				FC2121A91AD54DF4007935C1 /* ResolutionCenterDetailCell.m in Sources */,
 				FC2122201AD54DF5007935C1 /* ChooseProductCell.m in Sources */,
@@ -8617,6 +8616,7 @@
 				FC2120131AD54DF4007935C1 /* ResolutionActionResult.m in Sources */,
 				FC2120AB1AD54DF4007935C1 /* TransactionAddressShippingForm.m in Sources */,
 				FC2120B31AD54DF4007935C1 /* TransactionCalculatePrice.m in Sources */,
+				FC8641B91ADCC0060082CD3C /* TransactionCartViewController.m in Sources */,
 				FC2120631AD54DF4007935C1 /* OrderCustomer.m in Sources */,
 				FC2120901AD54DF4007935C1 /* AddProductSubmitResult.m in Sources */,
 				FC2121EC1AD54DF5007935C1 /* ProductGalleryViewController.m in Sources */,
@@ -8918,7 +8918,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -8958,7 +8959,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -8983,8 +8985,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -9016,8 +9018,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Tokopedia App";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Tokopedia App";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

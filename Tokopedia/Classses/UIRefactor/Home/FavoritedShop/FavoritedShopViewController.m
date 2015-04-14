@@ -606,9 +606,9 @@
     FavoritedShopList *list;
     
     if(section == 0) {
-        list = _shop[indexpath.row];
-    } else {
         list = _goldshop[indexpath.row];
+    } else {
+        list = _shop[indexpath.row];
     }
     
     ShopContainerViewController *container = [[ShopContainerViewController alloc] init];

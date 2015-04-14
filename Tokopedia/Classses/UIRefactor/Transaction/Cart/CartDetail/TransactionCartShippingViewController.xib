@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -375,7 +375,7 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c7a-Pc-Vse">
                                 <rect key="frame" x="15" y="36" width="290" height="21"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="dMU-cc-FBd"/>
+                                    <constraint firstAttribute="height" constant="21" id="dMU-cc-FBd"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="12"/>
                                 <nil key="highlightedColor"/>
@@ -400,6 +400,7 @@
                             <constraint firstAttribute="trailing" secondItem="eS3-QU-ozl" secondAttribute="trailing" constant="15" id="dlU-en-zdM"/>
                             <constraint firstItem="oqT-3x-FKL" firstAttribute="top" secondItem="gsN-AN-kC6" secondAttribute="bottom" constant="8" id="fAb-Xz-btw"/>
                             <constraint firstItem="uVJ-gQ-EBd" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="nWQ-LF-cZb"/>
+                            <constraint firstItem="yXf-dG-oWL" firstAttribute="top" secondItem="oqT-3x-FKL" secondAttribute="bottom" id="qH6-IT-kxJ"/>
                             <constraint firstAttribute="trailing" secondItem="gsN-AN-kC6" secondAttribute="trailing" constant="15" id="qku-em-Hhb"/>
                             <constraint firstAttribute="bottom" secondItem="yXf-dG-oWL" secondAttribute="bottom" constant="14" id="sr1-Ql-qpi"/>
                             <constraint firstItem="c7a-Pc-Vse" firstAttribute="leading" secondItem="eB5-Gi-c9c" secondAttribute="leading" constant="15" id="zAO-v4-pVK"/>

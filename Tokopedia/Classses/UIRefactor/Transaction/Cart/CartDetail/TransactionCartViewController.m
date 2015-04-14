@@ -65,7 +65,6 @@
     UITextView *_activeTextView;
     
     UIRefreshControl *_refreshControl;
-    NSInteger _requestcount;
     
     NSDictionary *_auth;
     
@@ -172,14 +171,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttonVoucherInfo;
 @property (weak, nonatomic) IBOutlet UIButton *buttonCancelVoucher;
 
--(void)cancelCartRequest;
--(void)configureRestKitCart;
--(void)requestCart;
--(void)requestSuccessCart:(id)object withOperation:(RKObjectRequestOperation*)operation;
--(void)requestFailureCart:(id)object;
--(void)requestProcessCart:(id)object;
--(void)requestTimeoutCart;
-
 -(void)cancelActionCancelCartRequest;
 -(void)configureRestKitActionCancelCart;
 -(void)requestActionCancelCart:(id)object;
@@ -276,8 +267,7 @@
         [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
         [_tableView addSubview:_refreshControl];
         
-        [self configureRestKitCart];
-        [self requestCart];
+        [_networkManager doRequest];
     }
     
     TransactionCartGateway *gateway = [TransactionCartGateway new];
@@ -317,6 +307,8 @@
 {
     [super viewWillAppear:animated];
     
+    _networkManager.delegate = self;
+    
     self.navigationController.title = @"Keranjang";
     
     if (_shouldRefresh && _indexPage == 0) {
@@ -345,8 +337,7 @@
         _buttonVoucherInfo.hidden = NO;
         _buttonCancelVoucher.hidden = YES;
         
-        [self configureRestKitCart];
-        [self requestCart];
+        [_networkManager doRequest];
     }
     if (_indexPage == 0) {
         TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
@@ -392,13 +383,17 @@
     _buyButton.layer.cornerRadius = 2;
     _buyButton.layer.opacity = 1;
     
-    
+    if (_shouldRefresh) {
+        _shouldRefresh = NO;
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    
+    [_activeTextField resignFirstResponder];
+    _activeTextField = nil;
+    _networkManager.delegate = nil;
     self.title = @"";
 }
 
@@ -707,16 +702,17 @@
 }
 
 #pragma mark - Request Cart
--(void)cancelCartRequest
-{
-    [_requestCart cancel];
-    _requestCart = nil;
-    [_objectManagerCart.operationQueue cancelAllOperations];
-    _objectManagerCart = nil;
-}
+//-(void)cancelCartRequest
+//{
+//    [_requestCart cancel];
+//    _requestCart = nil;
+//    [_objectManagerCart.operationQueue cancelAllOperations];
+//    _objectManagerCart = nil;
+//}
 
 
--(void)configureRestKitCart
+-(id)getObjectManager:(int)tag
+//-(void)configureRestKitCart
 {
     _objectManagerCart = [RKObjectManager sharedClient];
     
@@ -766,101 +762,77 @@
     RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:API_TRANSACTION_PATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectManagerCart addResponseDescriptor:responseDescriptor];
+    
+    return _objectManagerCart;
 }
 
--(void)requestCart
+-(NSDictionary *)getParameter:(int)tag
 {
-    if (_requestCart.isExecuting) return;
-    
+    return @{};
+}
+
+-(NSString *)getPath:(int)tag
+{
+    return API_TRANSACTION_PATH;
+}
+
+-(void)actionBeforeRequest:(int)tag
+{
     if ([((UILabel*)_selectedPaymentMethodLabels[0]).text isEqualToString:@"Pilih"]) {
         [_dataInput setObject:@(-1) forKey:API_GATEWAY_LIST_ID_KEY];
     }
     
-    NSTimer *timer;
-    
-    NSDictionary *param = @{};
-    
-    _requestcount ++;
-    
-    _requestCart = [_objectManagerCart appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_TRANSACTION_PATH parameters:[param encrypt]];
     _tableView.tableFooterView = _footerView;
     [_act startAnimating];
     _isLoadingRequest = YES;
-    [_requestCart setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessCart:mappingResult withOperation:operation];
-        [_refreshControl endRefreshing];
-        [timer invalidate];
-        [_act stopAnimating];
-        _isLoadingRequest = NO;
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureCart:error];
-        [_refreshControl endRefreshing];
-        [timer invalidate];
-        [_act stopAnimating];
-        _isLoadingRequest = NO;
-    }];
-    
-    [_operationQueue addOperation:_requestCart];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutCart) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
--(void)requestSuccessCart:(id)object withOperation:(RKObjectRequestOperation *)operation
+-(NSString *)getRequestStatus:(id)result withTag:(int)tag
 {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    TransactionCart *cart = stat;
+    
+    return cart.status;
+}
+
+-(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
+{
+    [_refreshControl endRefreshing];
+    [_act stopAnimating];
+    _isLoadingRequest = NO;
+    
+    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id stat = [result objectForKey:@""];
     TransactionCart *cart = stat;
     BOOL status = [cart.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [self requestProcessCart:object];
-    }
-}
-
--(void)requestFailureCart:(id)object
-{
-    [self requestProcessCart:object];
-}
-
--(void)requestProcessCart:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            TransactionCart *cart = stat;
-            BOOL status = [cart.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        if(cart.message_error)
+        {
+            NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+            [alert show];
+        }
+        else{
             
-            if (status) {
-                if(cart.message_error)
-                {
-                    NSArray *errorMessages = cart.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-                    [alert show];
-                }
-                else{
-                    
-                    [_list removeAllObjects];
-                    
-                    NSArray *list = cart.result.list;
-                    [_list addObjectsFromArray:list];
-                    
-                    _cart = cart.result;
-                    
-                    [self adjustAfterUpdateList];
-                }
-            }
-        }
-        else {
-            NSError *error = object;
-            if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
+            [_list removeAllObjects];
+            
+            NSArray *list = cart.result.list;
+            [_list addObjectsFromArray:list];
+            
+            _cart = cart.result;
+            
+            [self adjustAfterUpdateList];
         }
     }
+}
+
+-(void)actionAfterFailRequestMaxTries:(int)tag
+{
+    [_refreshControl endRefreshing];
+    [_act stopAnimating];
+    _isLoadingRequest = NO;
 }
 
 -(void)adjustAfterUpdateList
@@ -933,16 +905,9 @@
     _grandTotalLabel.text = ([_cart.grand_total integerValue]<=0)?@"Rp 0,-":_cart.grand_total_idr;
     
     if (_firstInit) _firstInit = NO;
-    if (_shouldRefresh) _shouldRefresh = NO;
     
     [_tableView reloadData];
 
-}
-
-
--(void)requestTimeoutCart
-{
-    //[self cancelCartRequest];
 }
 
 #pragma mark - Request Cancel Cart
@@ -1084,6 +1049,9 @@
                         if (type == TYPE_CANCEL_CART_PRODUCT ) {
                             [products removeObject:product];
                             ((TransactionCartList*)[_list objectAtIndex:indexPathCancelProduct.section]).cart_products = products;
+                            if (((TransactionCartList*)[_list objectAtIndex:indexPathCancelProduct.section]).cart_products.count<=0) {
+                                [_list removeObject:_list[indexPathCancelProduct.section]];
+                            }
                         }
                         else
                         {
@@ -1100,11 +1068,9 @@
             }
         }
         else{
-            
-            [self cancelCartRequest];
             NSError *error = object;
             if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = error.localizedDescription;
+                NSString *errorDescription = [[[error userInfo]objectForKey:NSUnderlyingErrorKey]localizedDescription];
                 UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                 [errorAlert show];
             }
@@ -1339,7 +1305,7 @@
             [self cancelActionCheckout];
             NSError *error = object;
             if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = error.localizedDescription;
+                NSString *errorDescription = [[[error userInfo]objectForKey:NSUnderlyingErrorKey]localizedDescription];
                 UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                 [errorAlert show];
             }
@@ -1540,7 +1506,7 @@
                         {
                             NSDictionary *userInfo = @{DATA_CART_RESULT_KEY:cart.result};
                             [_delegate didFinishRequestBuyData:userInfo];
-                            
+                            [_dataInput removeAllObjects];
                             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil userInfo:nil];
                         }
                             break;
@@ -1553,7 +1519,7 @@
             [self cancelActionBuy];
             NSError *error = object;
             if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = error.localizedDescription;
+                NSString *errorDescription = [[[error userInfo]objectForKey:NSUnderlyingErrorKey]localizedDescription];
                 UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                 [errorAlert show];
             }
@@ -1827,7 +1793,7 @@
             [self cancelActionEditProductCartRequest];
             NSError *error = object;
             if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = error.localizedDescription;
+                NSString *errorDescription = [[[error userInfo]objectForKey:NSUnderlyingErrorKey]localizedDescription];
                 UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                 [errorAlert show];
             }
@@ -2375,14 +2341,8 @@
 
 -(void)refreshView:(UIRefreshControl*)refresh
 {
-    /** clear object **/
-    _requestcount = 0;
     _isRefreshRequest = YES;
-    
-    /** request data **/
-    
-    [self configureRestKitCart];
-    [self requestCart];
+    [_networkManager doRequest];
 }
 
 -(void)adjustDropshipperListParam;
@@ -2537,6 +2497,7 @@
             [_selectedPaymentMethodLabels makeObjectsPerformSelector:@selector(setText:) withObject:gateway.gateway_name];
         }
     }
+    _isRefreshRequest = NO;
     [_tableView reloadData];
 }
 
@@ -2786,39 +2747,33 @@
 
 -(void)refreshCartAfterCancelPayment
 {
-    [_delegate shouldBackToFirstPage];
+    //[_delegate shouldBackToFirstPage];
 }
 
 #pragma mark - Methods
 -(void)resetAllArray
 {
     [_listProductFirstObjectIndexPath removeAllObjects];
-    //[_rowCountExpandCellForDropshipper removeAllObjects];
-    if (_shouldRefresh || _firstInit)
-    {
-        [_isDropshipper removeAllObjects];
-        [_stockPartialStrList removeAllObjects];
-        [_senderNameDropshipper removeAllObjects];
-        [_senderPhoneDropshipper removeAllObjects];
-        [_dropshipStrList removeAllObjects];
-        [_stockPartialDetail removeAllObjects];
-        _isUsingSaldoTokopedia = NO;
-        _switchUsingSaldo.on = _isUsingSaldoTokopedia;
-    }
+    [_isDropshipper removeAllObjects];
+    [_stockPartialStrList removeAllObjects];
+    [_senderNameDropshipper removeAllObjects];
+    [_senderPhoneDropshipper removeAllObjects];
+    [_dropshipStrList removeAllObjects];
+    [_stockPartialDetail removeAllObjects];
+    _isUsingSaldoTokopedia = NO;
+    _switchUsingSaldo.on = _isUsingSaldoTokopedia;
 }
 
 -(void)addArrayObjectTemp
 {
-    if (_shouldRefresh || _firstInit) {
-        [_isDropshipper addObject:@(NO)];
-        [_stockPartialStrList addObject:@""];
-        [_senderNameDropshipper addObject:@""];
-        [_senderPhoneDropshipper addObject:@""];
-        [_dropshipStrList addObject:@""];
-        [_stockPartialDetail addObject:@(0)];
-        _isUsingSaldoTokopedia = NO;
-        _switchUsingSaldo.on = _isUsingSaldoTokopedia;
-    }
+    [_isDropshipper addObject:@(NO)];
+    [_stockPartialStrList addObject:@""];
+    [_senderNameDropshipper addObject:@""];
+    [_senderPhoneDropshipper addObject:@""];
+    [_dropshipStrList addObject:@""];
+    [_stockPartialDetail addObject:@(0)];
+    _isUsingSaldoTokopedia = NO;
+    _switchUsingSaldo.on = _isUsingSaldoTokopedia;
 }
 
 -(NSNumberFormatter*)grandTotalFormater
@@ -3133,7 +3088,15 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
-    NSInteger choosenIndex = [_stockPartialStrList[indexPath.section] isEqualToString:@""]?0:1;
+    NSInteger choosenIndex;
+    if (_stockPartialDetail.count>0) {
+        choosenIndex = [_stockPartialStrList[indexPath.section] isEqualToString:@""]?0:1;
+    }
+    else
+    {
+        choosenIndex = 0;
+    }
+    
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.text = @"Stock Tersedia Sebagian";
     cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
@@ -3191,7 +3154,13 @@
     
     ((GeneralSwitchCell*)cell).indexPath = indexPath;
     ((GeneralSwitchCell*)cell).textCellLabel.text = @"Dropshipper";
-    ((GeneralSwitchCell*)cell).settingSwitch.on = [_isDropshipper[indexPath.section] boolValue];
+    if (_isDropshipper.count>0) {
+        ((GeneralSwitchCell*)cell).settingSwitch.on = [_isDropshipper[indexPath.section] boolValue];
+    }
+    else
+    {
+        ((GeneralSwitchCell*)cell).settingSwitch.on = NO;
+    }
     
     return cell;
 }
