@@ -11,11 +11,14 @@
 #import "ProfileSettings.h"
 #import "GeneralList1GestureCell.h"
 #import "GeneralCheckmarkCell.h"
+#import "LoadingView.h"
 #import "SettingBankDetailViewController.h"
 #import "SettingBankEditViewController.h"
 #import "SettingBankAccountViewController.h"
+#import "TokopediaNetworkManager.h"
 
 #import "MGSwipeButton.h"
+#define CTagRequest 2
 
 #pragma mark - Setting Bank Account View Controller
 @interface SettingBankAccountViewController ()
@@ -23,7 +26,9 @@
     UITableViewDataSource,
     UITableViewDelegate,
     SettingBankDetailViewControllerDelegate,
-    MGSwipeTableCellDelegate
+    MGSwipeTableCellDelegate,
+    TokopediaNetworkManagerDelegate,
+    LoadingViewDelegate
 >
 {
     BOOL _isnodata;
@@ -36,6 +41,7 @@
     BOOL _isrefreshview;
     BOOL _ismanualsetdefault;
     
+    LoadingView *loadingView;
     UIRefreshControl *_refreshControl;
     NSInteger _requestcount;
     NSTimer *_timer;
@@ -46,7 +52,7 @@
     
     BOOL _isaddressexpanded;
     __weak RKObjectManager *_objectmanager;
-    __weak RKManagedObjectRequestOperation *_request;
+    TokopediaNetworkManager *tokopediaNetworkManagerRequest;
     
     __weak RKObjectManager *_objectmanagerActionSetDefault;
     __weak RKManagedObjectRequestOperation *_requestActionSetDefault;
@@ -66,7 +72,6 @@
 @property (strong, nonatomic) IBOutlet UIView *addNewRekeningView;
 
 -(void)cancel;
--(void)configureRestKit;
 -(void)request;
 -(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation*)operation;
 -(void)requestFailure:(id)object;
@@ -163,7 +168,6 @@
     [super viewWillAppear:animated];
     
     if (!_isrefreshview) {
-        [self configureRestKit];
         if (_isnodata || (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0)) {
             [self request];
         }
@@ -183,6 +187,12 @@
 - (void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
+    if(tokopediaNetworkManagerRequest != nil)
+    {
+        tokopediaNetworkManagerRequest.delegate = nil;
+        [tokopediaNetworkManagerRequest requestCancel];
+    }
 }
 
 #pragma mark - Table View Data Source
@@ -289,7 +299,6 @@
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             /** called if need to load next page **/
             //NSLog(@"%@", NSStringFromSelector(_cmd));
-            [self configureRestKit];
             [self request];
         }
 	}
@@ -325,57 +334,15 @@
 #pragma mark - Request
 -(void)cancel
 {
-    [_request cancel];
-    _request = nil;
+//    [_request cancel];
+//    _request = nil;
     [_objectmanager.operationQueue cancelAllOperations];
     _objectmanager = nil;
 }
 
--(void)configureRestKit
-{
-    _objectmanager = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[BankAccountForm class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
-                                                        }];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[BankAccountFormResult class]];
-    
-    RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[BankAccountFormList class]];
-    [listMapping addAttributeMappingsFromArray:@[kTKPDPROFILESETTING_APIBANKIDKEY,
-                                                    API_BANK_NAME_KEY,
-                                                    API_BANK_ACCOUNT_NAME_KEY,
-                                                    kTKPDPROFILESETTING_APIBANKACCOUNTNUMBERKEY,
-                                                    kTKPDPROFILESETTING_APIBANKBRANCHKEY,
-                                                    API_BANK_ACCOUNT_ID_KEY,
-                                                    kTKPDPROFILESETTING_APIISDEFAULTBANKKEY
-                                                    ]];
-    
-    RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
-    [pagingMapping addAttributeMappingsFromDictionary:@{kTKPD_APIURINEXTKEY:kTKPD_APIURINEXTKEY}];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
-    [resultMapping addPropertyMapping:listRel];
-    
-    RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY toKeyPath:kTKPD_APIPAGINGKEY withMapping:pagingMapping];
-    [resultMapping addPropertyMapping:pageRel];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST  pathPattern:kTKPDPROFILE_SETTINGAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanager addResponseDescriptor:responseDescriptor];
-    
-}
-
 -(void)request
 {
-    if (_request.isExecuting) return;
+    if ([self getNetworkManager:CTagRequest].getObjectRequest.isExecuting) return;
     
     if (!_isrefreshview) {
         _table.tableFooterView = _footer;
@@ -385,39 +352,8 @@
         _table.tableFooterView = nil;
         [_act stopAnimating];
     }
-    
-    NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIGETUSERBANKACCOUNTKEY,
-                            kTKPDPROFILE_APIPAGEKEY : @(_page),
-                            kTKPDPROFILE_APILIMITKEY : @(kTKPDPROFILESETTINGBANKACCOUNT_LIMITPAGE),
-                            };
-    _requestcount ++;
-    
-    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_SETTINGAPIPATH parameters:[param encrypt]];
-    NSTimer *timer;
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccess:mappingResult withOperation:operation];
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
-        _table.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
-        [_table reloadData];
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [timer invalidate];
-        
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestFailure:error];
-        [_act stopAnimating];
-        _table.tableFooterView = nil;
-        _isrefreshview = NO;
-        [_refreshControl endRefreshing];
-        [timer invalidate];
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout:) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+
+    [[self getNetworkManager:CTagRequest] doRequest];
 }
 
 -(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -434,73 +370,38 @@
 
 -(void)requestFailure:(id)object
 {
-    [self requestProcess:object];
+
 }
 
 -(void)requestProcess:(id)object
 {
     if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            BankAccountForm *bankaccount = stat;
-            BOOL status = [bankaccount.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [_list addObjectsFromArray:bankaccount.result.list];
-                if (_list.count >0) {
-                    _isnodata = NO;
-                    _urinext =  bankaccount.result.paging.uri_next;
-                    NSURL *url = [NSURL URLWithString:_urinext];
-                    NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                    
-                    NSMutableDictionary *queries = [NSMutableDictionary new];
-                    [queries removeAllObjects];
-                    for (NSString *keyValuePair in querry)
-                    {
-                        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                        NSString *key = [pairComponents objectAtIndex:0];
-                        NSString *value = [pairComponents objectAtIndex:1];
-                        
-                        [queries setObject:value forKey:key];
-                    }
-                    
-                    _page = [[queries objectForKey:kTKPDPROFILE_APIPAGEKEY] integerValue];
-                }
-            }
-        }
-        else{
-            
-            [self cancel];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                    _table.tableFooterView = _footer;
-                    [_act startAnimating];
-                    [self performSelector:@selector(configureRestKit) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(request) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                }
-                else
+        NSDictionary *result = ((RKMappingResult*)object).dictionary;
+        id stat = [result objectForKey:@""];
+        BankAccountForm *bankaccount = stat;
+        BOOL status = [bankaccount.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        
+        if (status) {
+            [_list addObjectsFromArray:bankaccount.result.list];
+            if (_list.count >0) {
+                _isnodata = NO;
+                _urinext =  bankaccount.result.paging.uri_next;
+                NSURL *url = [NSURL URLWithString:_urinext];
+                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                
+                NSMutableDictionary *queries = [NSMutableDictionary new];
+                [queries removeAllObjects];
+                for (NSString *keyValuePair in querry)
                 {
-                    [_act stopAnimating];
-                    _table.tableFooterView = nil;
-                    NSError *error = object;
-                    NSString *errorDescription = error.localizedDescription;
-                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                    [errorAlert show];
+                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                    NSString *key = [pairComponents objectAtIndex:0];
+                    NSString *value = [pairComponents objectAtIndex:1];
+                    
+                    [queries setObject:value forKey:key];
                 }
+                
+                _page = [[queries objectForKey:kTKPDPROFILE_APIPAGEKEY] integerValue];
             }
-            else
-            {
-                [_act stopAnimating];
-                _table.tableFooterView = nil;
-                NSError *error = object;
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
-            
         }
     }
 }
@@ -841,6 +742,35 @@
 }
 
 #pragma mark - Methods
+- (LoadingView *)getLoadView:(int)tag
+{
+    if(loadingView == nil)
+    {
+        loadingView = [LoadingView new];
+        loadingView.delegate = self;
+    }
+    loadingView.tag = tag;
+
+    return loadingView;
+}
+
+- (TokopediaNetworkManager *)getNetworkManager:(int)tag
+{
+    if(tag == CTagRequest)
+    {
+        if(tokopediaNetworkManagerRequest == nil)
+        {
+            tokopediaNetworkManagerRequest = [TokopediaNetworkManager new];
+            tokopediaNetworkManagerRequest.delegate = self;
+            tokopediaNetworkManagerRequest.tagRequest = CTagRequest;
+        }
+        
+        return tokopediaNetworkManagerRequest;
+    }
+    
+    return nil;
+}
+
 -(void)setAsDefaultAtIndexPath:(NSIndexPath*)indexPath
 {
     _ismanualsetdefault = YES;
@@ -899,7 +829,6 @@
     
     [_table reloadData];
     /** request data **/
-    [self configureRestKit];
     [self request];
 }
 #pragma mark - Notification
@@ -951,4 +880,141 @@
 }
 
 
+
+#pragma mark - TokopediaNetworkManager Delegate
+- (NSDictionary*)getParameter:(int)tag
+{
+    if(tag == CTagRequest)
+    {
+        return @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIGETUSERBANKACCOUNTKEY,
+          kTKPDPROFILE_APIPAGEKEY : @(_page),
+          kTKPDPROFILE_APILIMITKEY : @(kTKPDPROFILESETTINGBANKACCOUNT_LIMITPAGE),
+          };
+    }
+    
+    return nil;
+}
+
+- (NSString*)getPath:(int)tag
+{
+    if(tag == CTagRequest)
+        return kTKPDPROFILE_SETTINGAPIPATH;
+    
+    return nil;
+}
+
+- (id)getObjectManager:(int)tag
+{
+    if(tag == CTagRequest)
+    {
+        _objectmanager = [RKObjectManager sharedClient];
+        
+        // setup object mappings
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[BankAccountForm class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                            kTKPD_APISTATUSMESSAGEKEY:kTKPD_APISTATUSMESSAGEKEY,
+                                                            kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY,
+                                                            }];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[BankAccountFormResult class]];
+        
+        RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[BankAccountFormList class]];
+        [listMapping addAttributeMappingsFromArray:@[kTKPDPROFILESETTING_APIBANKIDKEY,
+                                                     API_BANK_NAME_KEY,
+                                                     API_BANK_ACCOUNT_NAME_KEY,
+                                                     kTKPDPROFILESETTING_APIBANKACCOUNTNUMBERKEY,
+                                                     kTKPDPROFILESETTING_APIBANKBRANCHKEY,
+                                                     API_BANK_ACCOUNT_ID_KEY,
+                                                     kTKPDPROFILESETTING_APIISDEFAULTBANKKEY
+                                                     ]];
+        
+        RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
+        [pagingMapping addAttributeMappingsFromDictionary:@{kTKPD_APIURINEXTKEY:kTKPD_APIURINEXTKEY}];
+        
+        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
+        
+        RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APILISTKEY toKeyPath:kTKPD_APILISTKEY withMapping:listMapping];
+        [resultMapping addPropertyMapping:listRel];
+        
+        RKRelationshipMapping *pageRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIPAGINGKEY toKeyPath:kTKPD_APIPAGINGKEY withMapping:pagingMapping];
+        [resultMapping addPropertyMapping:pageRel];
+        
+        // register mappings with the provider using a response descriptor
+        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST  pathPattern:kTKPDPROFILE_SETTINGAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [_objectmanager addResponseDescriptor:responseDescriptor];
+        
+        return _objectmanager;
+    }
+    
+    return nil;
+}
+
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag
+{
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    
+    if(tag == CTagRequest)
+        return ((BankAccountForm *) stat).status;
+    
+    return nil;
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
+{
+    if(tag == CTagRequest)
+    {
+        [self requestSuccess:successResult withOperation:operation];
+        [_act stopAnimating];
+        _table.tableFooterView = nil;
+        _table.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
+        [_table reloadData];
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+    }
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    if(tag == CTagRequest)
+    {
+    }
+    
+}
+
+- (void)actionBeforeRequest:(int)tag
+{
+
+}
+
+- (void)actionRequestAsync:(int)tag
+{
+
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag
+{
+    if(tag == CTagRequest)
+    {
+        [_act stopAnimating];
+        _table.tableFooterView = [self getLoadView:CTagRequest].view;
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        _table.tableFooterView = loadingView.view;
+    }
+}
+
+
+#pragma mark - Loading View Delegate
+- (void)pressRetryButton
+{
+    if(loadingView.tag == CTagRequest)
+    {
+        _table.tableFooterView = _footer;
+        [_act startAnimating];
+        [self request];
+    }
+}
 @end
