@@ -380,9 +380,7 @@
 
 - (void)pushViewController:(id)viewController
 {
-    self.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:viewController animated:YES];
-    self.hidesBottomBarWhenPushed = NO;
 }
 
 

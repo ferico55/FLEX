@@ -1258,6 +1258,7 @@
 		FC36DFAC19B0656400AF74C1 /* TokopediaTests.m in Sources */ = {isa = PBXBuildFile; fileRef = FC36DFAB19B0656400AF74C1 /* TokopediaTests.m */; };
 		FC3FD90F1AC508AC0034AE4B /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC3FD47F1AC508AC0034AE4B /* LaunchScreen.xib */; };
 		FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FC681F6619B6D62200C58548 /* libsqlite3.dylib */; };
+		FC8640FD1ADBAA250082CD3C /* MyShopShipmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC8640FC1ADBAA250082CD3C /* MyShopShipmentTableViewController.m */; };
 		FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
 		FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */; };
 		FCA7751419F663070041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
@@ -3235,6 +3236,8 @@
 		FC3FD47F1AC508AC0034AE4B /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
 		FC681F6619B6D62200C58548 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		FC6B1C1B1AB03DC900581B3B /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
+		FC8640FB1ADBAA250082CD3C /* MyShopShipmentTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyShopShipmentTableViewController.h; sourceTree = "<group>"; };
+		FC8640FC1ADBAA250082CD3C /* MyShopShipmentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyShopShipmentTableViewController.m; sourceTree = "<group>"; };
 		FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FCAAEA4319F7534B00904AFB /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -5492,6 +5495,8 @@
 		FC211BE41AD54DF2007935C1 /* MyShopShipment */ = {
 			isa = PBXGroup;
 			children = (
+				FC8640FB1ADBAA250082CD3C /* MyShopShipmentTableViewController.h */,
+				FC8640FC1ADBAA250082CD3C /* MyShopShipmentTableViewController.m */,
 				FC211BE51AD54DF2007935C1 /* MyShopShipmentInfoViewController.h */,
 				FC211BE61AD54DF2007935C1 /* MyShopShipmentInfoViewController.m */,
 				FC211BE71AD54DF2007935C1 /* MyShopShipmentViewController.h */,
@@ -8287,6 +8292,7 @@
 				FC211FB11AD54DF4007935C1 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
 				FC21216C1AD54DF4007935C1 /* GeneralProductCell.m in Sources */,
 				FC2120C21AD54DF4007935C1 /* TransactionSummary.m in Sources */,
+				FC8640FD1ADBAA250082CD3C /* MyShopShipmentTableViewController.m in Sources */,
 				FC2122BC1AD54DF5007935C1 /* ProductTalkFormViewController.m in Sources */,
 				FC21229C1AD54DF5007935C1 /* ShopTalkViewController.m in Sources */,
 				FC21203E1AD54DF4007935C1 /* DataUser.m in Sources */,

@@ -10,6 +10,7 @@
 
 @protocol TxOrderPaymentViewControllerDelegate <NSObject>
 - (void)shouldPopViewController;
+- (void)successConfirmPayment:(NSArray*)payment;
 - (void)refreshRequest;
 
 @end
