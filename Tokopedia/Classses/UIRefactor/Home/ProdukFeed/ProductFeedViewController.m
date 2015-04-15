@@ -415,6 +415,7 @@ typedef enum TagRequest {
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
+    _isrefreshview = NO;
     [_refreshControl endRefreshing];
     _table.tableFooterView = _loadingView.view;
 }
