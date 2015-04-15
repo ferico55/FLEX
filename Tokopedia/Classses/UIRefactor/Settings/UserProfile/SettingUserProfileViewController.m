@@ -24,8 +24,10 @@
 
 #import "SettingUserProfileViewController.h"
 #import "SettingUserPhoneViewController.h"
+#import "TokopediaNetworkManager.h"
 
 #import "UIImage+ImageEffects.h"
+#define CTagProfile 2
 
 #pragma mark - Profile Edit View Controller
 @interface SettingUserProfileViewController ()
@@ -36,7 +38,8 @@
     GenerateHostDelegate,
     UITextFieldDelegate,
     UIScrollViewDelegate,
-    UITextViewDelegate
+    UITextViewDelegate,
+    TokopediaNetworkManagerDelegate
 >
 {
     NSMutableDictionary *_datainput;
@@ -70,8 +73,7 @@
     __weak RKManagedObjectRequestOperation *_requestActionSubmit;
     
     __weak RKObjectManager *_objectmanagerProfileForm;
-    __weak RKManagedObjectRequestOperation *_requestProfileForm;
-    
+    TokopediaNetworkManager *tokopediaNetworkManagerProfileForm;
     NSOperationQueue *_operationQueue;
     
     UIBarButtonItem *_barbuttonsave;
@@ -150,7 +152,6 @@
     [requestHost requestGenerateHost];
     requestHost.delegate = self;
     
-    [self configureRestkitProfileForm];
     [self requestProfileForm];
 }
 
@@ -172,6 +173,12 @@
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    
+    if(tokopediaNetworkManagerProfileForm != nil)
+    {
+        tokopediaNetworkManagerProfileForm.delegate = nil;
+        [tokopediaNetworkManagerProfileForm requestCancel];
+    }
 }
 - (void)didReceiveMemoryWarning
 {
@@ -272,50 +279,11 @@
 
 #pragma mark - Request + Mapping
 #pragma mark Request Get Profile Form
--(void)configureRestkitProfileForm
-{
-    _objectmanagerProfileForm =  [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileEdit class]];
-    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
-                                                        kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
-                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileEditResult class]];
-
-    RKObjectMapping *datauserMapping = [RKObjectMapping mappingForClass:[DataUser class]];
-    [datauserMapping addAttributeMappingsFromDictionary:@{
-                                                               kTKPDPROFILE_APIHOBBYKEY:kTKPDPROFILE_APIHOBBYKEY,
-                                                               kTKPDPROFILE_APIBIRTHDAYKEY:kTKPDPROFILE_APIBIRTHDAYKEY,
-                                                               kTKPDPROFILE_APIFULLNAMEKEY:kTKPDPROFILE_APIFULLNAMEKEY,
-                                                               kTKPDPROFILE_APIBIRTHMONTHKEY:kTKPDPROFILE_APIBIRTHMONTHKEY,
-                                                               kTKPDPROFILE_APIBIRTHMONTHKEY:kTKPDPROFILE_APIBIRTHMONTHKEY,
-                                                               kTKPDPROFILE_APIBIRTHYEARKEY:kTKPDPROFILE_APIBIRTHYEARKEY,
-                                                               kTKPDPROFILE_APIGENDERKEY:kTKPDPROFILE_APIGENDERKEY,
-                                                               kTKPDPROFILE_APIUSERIMAGEKEY:kTKPDPROFILE_APIUSERIMAGEKEY,
-                                                               kTKPDPROFILE_APIUSEREMAILKEY:kTKPDPROFILE_APIUSEREMAILKEY,
-                                                               kTKPDPROFILE_APIUSERMESSENGERKEY:kTKPDPROFILE_APIUSERMESSENGERKEY,
-                                                               kTKPDPROFILE_APIUSERPHONEKEY:kTKPDPROFILE_APIUSERPHONEKEY
-                                                               }];
-    // Relationship Mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDPROFILE_APIDATAUSERKEY
-                                                                                  toKeyPath:kTKPDPROFILE_APIDATAUSERKEY
-                                                                                withMapping:datauserMapping]];
-    
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDPROFILE_SETTINGAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanagerProfileForm addResponseDescriptor:responseDescriptor];
-}
 
 -(void)cancelProfileForm
 {
-    [_requestProfileForm cancel];
-    _requestProfileForm = nil;
+//    [_requestProfileForm cancel];
+//    _requestProfileForm = nil;
     
     [_objectmanagerProfileForm.operationQueue cancelAllOperations];
     _objectmanagerProfileForm = nil;
@@ -323,36 +291,12 @@
 
 - (void)requestProfileForm
 {
-    if(_requestProfileForm.isExecuting) return;
-    
-    _requestcount ++;
-    
-    NSTimer *timer;
-    
-	NSDictionary* param = @{
-                            kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEKEY
-                            };
+    if([self getNetWorkManager:CTagProfile].getObjectRequest.isExecuting) return;
     _barbuttonsave.enabled = NO;
     [_act startAnimating];
-    _requestProfileForm = [_objectmanagerProfileForm appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_SETTINGAPIPATH parameters:[param encrypt]];
     
-    [_requestProfileForm setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestsuccessProfileForm:mappingResult withOperation:operation];
-        [_act stopAnimating];
-        [timer invalidate];
-        _barbuttonsave.enabled = YES;
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        /** failure **/
-        [self requestfailureProfileForm:error];
-        [_act stopAnimating];
-        [timer invalidate];
-        _barbuttonsave.enabled = YES;
-    }];
     
-    [_operationQueue addOperation:_requestProfileForm];
-    
-    timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeoutProfileForm) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    [[self getNetWorkManager:CTagProfile] doRequest];
 }
 
 
@@ -377,44 +321,16 @@
 -(void)requestprocessProfileForm:(id)object
 {
     if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id info = [result objectForKey:@""];
-            _profile = info;
-            NSString *statusstring = _profile.status;
-            BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                [self setDefaultData:_profile];
-                _isnodataprofile = NO;
-            }
-        }else{
-            [self cancelProfileForm];
-            NSLog(@" REQUEST FAILURE ERROR %@", [(NSError*)object description]);
-            if ([(NSError*)object code] == NSURLErrorCancelled) {
-                if (_requestcount<kTKPDREQUESTCOUNTMAX) {
-                    NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
-                    //[_act startAnimating];
-                    [self performSelector:@selector(configureRestkitProfileForm) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                    [self performSelector:@selector(requestProfileForm) withObject:nil afterDelay:kTKPDREQUEST_DELAYINTERVAL];
-                }
-                else
-                {
-                    NSError *error = object;
-                    NSString *errorDescription = error.localizedDescription;
-                    UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                    [errorAlert show];
-                }
-            }
-            else
-            {
-                NSError *error = object;
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
-            }
+        NSDictionary *result = ((RKMappingResult*)object).dictionary;
+        id info = [result objectForKey:@""];
+        _profile = info;
+        NSString *statusstring = _profile.status;
+        BOOL status = [statusstring isEqualToString:kTKPDREQUEST_OKSTATUS];
+        
+        if (status) {
+            [self setDefaultData:_profile];
+            _isnodataprofile = NO;
         }
-
     }
 }
 
@@ -617,6 +533,23 @@
 }
 
 #pragma mark - Methods
+- (TokopediaNetworkManager *)getNetWorkManager:(int)tag
+{
+    if(tag == CTagProfile)
+    {
+        if(tokopediaNetworkManagerProfileForm == nil)
+        {
+            tokopediaNetworkManagerProfileForm = [TokopediaNetworkManager new];
+            tokopediaNetworkManagerProfileForm.tagRequest = CTagProfile;
+            tokopediaNetworkManagerProfileForm.delegate = self;
+        }
+        
+        return tokopediaNetworkManagerProfileForm;
+    }
+    
+    return nil;
+}
+
 - (void)setDefaultData:(id)object
 {
     if (object) {
@@ -783,4 +716,113 @@
     }
 }
 
+
+#pragma mark - TokopediaNetworkManager Delegate
+- (NSDictionary*)getParameter:(int)tag
+{
+    if(tag == CTagProfile)
+        return @{kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETPROFILEKEY};
+    
+    return nil;
+}
+
+- (NSString*)getPath:(int)tag
+{
+    if(tag == CTagProfile)
+        return kTKPDPROFILE_SETTINGAPIPATH;
+    
+    return nil;
+}
+
+- (id)getObjectManager:(int)tag
+{
+    if(tag == CTagProfile)
+    {
+        _objectmanagerProfileForm =  [RKObjectManager sharedClient];
+        
+        // setup object mappings
+        RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileEdit class]];
+        [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                            kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                            kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY}];
+        
+        RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileEditResult class]];
+        
+        RKObjectMapping *datauserMapping = [RKObjectMapping mappingForClass:[DataUser class]];
+        [datauserMapping addAttributeMappingsFromDictionary:@{
+                                                              kTKPDPROFILE_APIHOBBYKEY:kTKPDPROFILE_APIHOBBYKEY,
+                                                              kTKPDPROFILE_APIBIRTHDAYKEY:kTKPDPROFILE_APIBIRTHDAYKEY,
+                                                              kTKPDPROFILE_APIFULLNAMEKEY:kTKPDPROFILE_APIFULLNAMEKEY,
+                                                              kTKPDPROFILE_APIBIRTHMONTHKEY:kTKPDPROFILE_APIBIRTHMONTHKEY,
+                                                              kTKPDPROFILE_APIBIRTHMONTHKEY:kTKPDPROFILE_APIBIRTHMONTHKEY,
+                                                              kTKPDPROFILE_APIBIRTHYEARKEY:kTKPDPROFILE_APIBIRTHYEARKEY,
+                                                              kTKPDPROFILE_APIGENDERKEY:kTKPDPROFILE_APIGENDERKEY,
+                                                              kTKPDPROFILE_APIUSERIMAGEKEY:kTKPDPROFILE_APIUSERIMAGEKEY,
+                                                              kTKPDPROFILE_APIUSEREMAILKEY:kTKPDPROFILE_APIUSEREMAILKEY,
+                                                              kTKPDPROFILE_APIUSERMESSENGERKEY:kTKPDPROFILE_APIUSERMESSENGERKEY,
+                                                              kTKPDPROFILE_APIUSERPHONEKEY:kTKPDPROFILE_APIUSERPHONEKEY
+                                                              }];
+        // Relationship Mapping
+        [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                      toKeyPath:kTKPD_APIRESULTKEY
+                                                                                    withMapping:resultMapping]];
+        
+        [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDPROFILE_APIDATAUSERKEY
+                                                                                      toKeyPath:kTKPDPROFILE_APIDATAUSERKEY
+                                                                                    withMapping:datauserMapping]];
+        
+        RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDPROFILE_SETTINGAPIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+        
+        [_objectmanagerProfileForm addResponseDescriptor:responseDescriptor];
+
+        return _objectmanagerProfileForm;
+    }
+    
+    return nil;
+}
+
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag
+{
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    
+    if(tag == CTagProfile)
+        return ((ProfileEdit *) stat).status;
+    
+    return nil;
+}
+
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
+{
+    if(tag == CTagProfile)
+    {
+        [self requestsuccessProfileForm:successResult withOperation:operation];
+        [_act stopAnimating];
+        _barbuttonsave.enabled = YES;
+    }
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    if(tag == CTagProfile)
+    {
+    
+    }
+}
+
+- (void)actionBeforeRequest:(int)tag
+{}
+
+- (void)actionRequestAsync:(int)tag
+{}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag
+{
+    if(tag == CTagProfile)
+    {
+        [_act stopAnimating];
+        _barbuttonsave.enabled = YES;
+    }
+}
 @end
