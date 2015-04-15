@@ -23,7 +23,7 @@
 
 #import "URLCacheController.h"
 #import "ShopPageHeader.h"
-#import "NoResult.h"
+#import "NoResultView.h"
 #import "NSString+HTML.h"
 
 @interface ShopTalkPageViewController () <UITableViewDataSource,
@@ -74,7 +74,7 @@ UIAlertViewDelegate>
     BOOL _isrefreshnav;
     BOOL _isNeedToInsertCache;
     BOOL _isLoadFromCache;
-    NoResult *_noResult;
+    NoResultView *_noResult;
     
     
     __weak RKObjectManager *_objectManager;
@@ -152,7 +152,7 @@ UIAlertViewDelegate>
     _cachecontroller = [URLCacheController new];
     _list = [NSMutableArray new];
     _refreshControl = [[UIRefreshControl alloc] init];
-    _noResult = [NoResult new];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     _table.delegate = self;
     _table.dataSource = self;
