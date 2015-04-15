@@ -68,8 +68,8 @@
     
     
     _isMultipleSelect = NO;
-    _isNodata = YES;
-    
+    _isNodata = NO;
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -149,21 +149,20 @@
                 if (_isNodata)
                     self.navigationItem.rightBarButtonItem = nil;
                 else self.navigationItem.rightBarButtonItem = selectBarButtonItem;
+                
+                self.navigationItem.leftBarButtonItem = nil;
             }
             else
+            {
                 self.navigationItem.rightBarButtonItem = nil;
-            
-            if (_isMultipleSelect) {
-                UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tapBarButton:)];
+                UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tapBarButton:)];
                 [backBarButtonItem setTintColor:[UIColor whiteColor]];
                 backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
                 self.navigationItem.leftBarButtonItem = backBarButtonItem;
             }
-            else self.navigationItem.leftBarButtonItem = nil;
             
             if(!_confirmationViewController)_confirmationViewController = [TxOrderConfirmationViewController new];
             ((TxOrderConfirmationViewController*)_confirmationViewController).isMultipleSelection = _isMultipleSelect;
-            //((TxOrderConfirmationViewController*)_confirmationViewController).isSelectAll = _isSelectAll;
             childViewController = _confirmationViewController;
             _confirmationViewController.delegate = self;
             break;

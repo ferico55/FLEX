@@ -84,12 +84,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/Transaction/Cart/CartDetail/TransactionCartShippingViewController.m"
-            timestampString = "450700926.890755"
+            timestampString = "450783741.897516"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "473"
-            endingLineNumber = "473"
-            landmarkName = "-requestActionEditAddress:"
+            startingLineNumber = "504"
+            endingLineNumber = "504"
+            landmarkName = "-requestSuccessActionEditAddress:withOperation:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/Transaction/Cart/CartDetail/TransactionCartViewController.m"
+            timestampString = "450789971.299604"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1221"
+            endingLineNumber = "1221"
+            landmarkName = "-requestActionCheckout:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -100,12 +116,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/Transaction/Cart/CartDetail/TransactionCartShippingViewController.m"
-            timestampString = "450700958.526373"
+            timestampString = "450783741.897516"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "491"
-            endingLineNumber = "491"
-            landmarkName = "-requestSuccessActionEditAddress:withOperation:"
+            startingLineNumber = "294"
+            endingLineNumber = "294"
+            landmarkName = "-requestActionCalculate:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/Transaction/Cart/CartDetail/TransactionCartShippingViewController.m"
+            timestampString = "450783741.897516"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "561"
+            endingLineNumber = "561"
+            landmarkName = "-requestProcessActionEditAddress:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

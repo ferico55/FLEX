@@ -110,7 +110,7 @@
         }
         else if ([webView.request.URL.absoluteString isEqualToString:CLICK_BCA_LOGIN_URL]||[webView.request.URL.absoluteString isEqualToString:CLICK_BCA_LOGIN_PAYEMNET_URL])
         {
-            UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+            UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
             [backBarButtonItem setTintColor:[UIColor whiteColor]];
             backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
             self.navigationItem.leftBarButtonItem = backBarButtonItem;

@@ -1259,6 +1259,8 @@
 		FC681F6719B6D62200C58548 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FC681F6619B6D62200C58548 /* libsqlite3.dylib */; };
 		FC8640FD1ADBAA250082CD3C /* MyShopShipmentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC8640FC1ADBAA250082CD3C /* MyShopShipmentTableViewController.m */; };
 		FC8641B91ADCC0060082CD3C /* TransactionCartViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC8641B81ADCC0060082CD3C /* TransactionCartViewController.m */; };
+		FC8641D61ADDFF830082CD3C /* ForgotPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FC8641D41ADDFF830082CD3C /* ForgotPasswordViewController.m */; };
+		FC8641D71ADDFF830082CD3C /* ForgotPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC8641D51ADDFF830082CD3C /* ForgotPasswordViewController.xib */; };
 		FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
 		FCA7751319F660A40041CFE1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */; };
 		FCA7751419F663070041CFE1 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */; };
@@ -3238,6 +3240,9 @@
 		FC8640FC1ADBAA250082CD3C /* MyShopShipmentTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyShopShipmentTableViewController.m; sourceTree = "<group>"; };
 		FC8641B71ADCC0060082CD3C /* TransactionCartViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransactionCartViewController.h; sourceTree = "<group>"; };
 		FC8641B81ADCC0060082CD3C /* TransactionCartViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransactionCartViewController.m; sourceTree = "<group>"; };
+		FC8641D31ADDFF830082CD3C /* ForgotPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ForgotPasswordViewController.h; path = ForgotPassword/ForgotPasswordViewController.h; sourceTree = "<group>"; };
+		FC8641D41ADDFF830082CD3C /* ForgotPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ForgotPasswordViewController.m; path = ForgotPassword/ForgotPasswordViewController.m; sourceTree = "<group>"; };
+		FC8641D51ADDFF830082CD3C /* ForgotPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ForgotPasswordViewController.xib; path = ForgotPassword/ForgotPasswordViewController.xib; sourceTree = "<group>"; };
 		FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FCAAEA4319F7534B00904AFB /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -4751,6 +4756,7 @@
 		FC211A3F1AD54DF2007935C1 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				FC8641CD1ADDFEFE0082CD3C /* ForgotPassword */,
 				FC211A401AD54DF2007935C1 /* Activation */,
 				FC211A4F1AD54DF2007935C1 /* Address */,
 				FC211A571AD54DF2007935C1 /* Alert */,
@@ -7300,6 +7306,16 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		FC8641CD1ADDFEFE0082CD3C /* ForgotPassword */ = {
+			isa = PBXGroup;
+			children = (
+				FC8641D31ADDFF830082CD3C /* ForgotPasswordViewController.h */,
+				FC8641D41ADDFF830082CD3C /* ForgotPasswordViewController.m */,
+				FC8641D51ADDFF830082CD3C /* ForgotPasswordViewController.xib */,
+			);
+			name = ForgotPassword;
+			sourceTree = "<group>";
+		};
 		FCC798081AD7792A00A86C5C /* GoogleAnalytics */ = {
 			isa = PBXGroup;
 			children = (
@@ -7846,6 +7862,7 @@
 				FC2124681AD54DF5007935C1 /* icon_info_white@2x.png in Resources */,
 				FC2123671AD54DF5007935C1 /* icon_cart_active@2x.png in Resources */,
 				FC2123751AD54DF5007935C1 /* icon_checkmark.png in Resources */,
+				FC8641D71ADDFF830082CD3C /* ForgotPasswordViewController.xib in Resources */,
 				FC2121981AD54DF4007935C1 /* InboxMessageDetailCell.xib in Resources */,
 				FC2121E71AD54DF5007935C1 /* DetailProductViewController.xib in Resources */,
 				FCC7984D1AD7792A00A86C5C /* HS-Attachment@2x.png in Resources */,
@@ -8560,6 +8577,7 @@
 				FC2121E81AD54DF5007935C1 /* DetailProductWholesaleCell.m in Sources */,
 				FC2120F91AD54DF4007935C1 /* AddressViewController.m in Sources */,
 				FC211FCC1AD54DF4007935C1 /* DepositSummaryResult.m in Sources */,
+				FC8641D61ADDFF830082CD3C /* ForgotPasswordViewController.m in Sources */,
 				FC211FE81AD54DF4007935C1 /* ShopStats.m in Sources */,
 				FC2120881AD54DF4007935C1 /* Owner.m in Sources */,
 				FC21203D1AD54DF4007935C1 /* ChangePhoneNumberResult.m in Sources */,
