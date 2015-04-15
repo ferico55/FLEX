@@ -119,6 +119,8 @@
     TransactionObjectMapping *_mapping;
     BOOL _isLoadingRequest;
     
+    BOOL _refreshFromShipment;
+    
     NavigateViewController *_navigate;
     
     NSString *_saldoTokopedia;
@@ -359,7 +361,6 @@
     if(!_requestCart.executing && !_isnodata) _tableView.tableFooterView = (_indexPage==1)?_buyView:_checkoutView;
 
     _tableView.scrollsToTop = YES;
-
     
     if (_isnodata) {
         _paymentMethodView.hidden = YES;
@@ -386,6 +387,13 @@
     if (_shouldRefresh) {
         _shouldRefresh = NO;
     }
+}
+
+-(void)popShippingViewController
+{
+    _networkManager.delegate = self;
+    [_networkManager doRequest];
+    _refreshFromShipment = YES;
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -823,6 +831,7 @@
             
             _cart = cart.result;
             
+            [_listProductFirstObjectIndexPath removeAllObjects];
             [self adjustAfterUpdateList];
         }
     }
@@ -850,7 +859,10 @@
     
     
     NSInteger listCount = _list.count;
-    [self resetAllArray];
+    
+    if (!_refreshFromShipment) {
+        [self resetAllArray];
+    }
     
     for (int i = 0; i<listCount; i++) {
         TransactionCartList *list = _list[i];
@@ -864,7 +876,9 @@
         
         [_listProductFirstObjectIndexPath addObject:firstProductIndexPath];
 
-        [self addArrayObjectTemp];
+        if (!_refreshFromShipment) {
+            [self addArrayObjectTemp];
+        }
         
         if (productCount<=0) {
             [_isDropshipper removeObjectAtIndex:i];
@@ -879,16 +893,19 @@
     if (listCount>0) {
         NSDictionary *info = @{DATA_CART_DETAIL_LIST_KEY:[_dataInput objectForKey:DATA_DETAIL_CART_FOR_SHIPMENT]?:[TransactionCartList new]};
         [[NSNotificationCenter defaultCenter] postNotificationName:EDIT_CART_INSURANCE_POST_NOTIFICATION_NAME object:nil userInfo:info];
-        _checkoutView.hidden = NO;
-        _tableView.tableFooterView = _checkoutView;
+
         
         if (_indexPage == 0) {
             _paymentMethodView.hidden = NO;
             _paymentMethodSelectedView.hidden = YES;
+            _checkoutView.hidden = NO;
+            _tableView.tableFooterView = _checkoutView;
         }
         else if (_indexPage == 1) {
             _paymentMethodView.hidden = YES;
             _paymentMethodSelectedView.hidden = NO;
+            _buyView.hidden = NO;
+            _tableView.tableFooterView = _buyView;
         }
     }
     
@@ -905,6 +922,11 @@
     _grandTotalLabel.text = ([_cart.grand_total integerValue]<=0)?@"Rp 0,-":_cart.grand_total_idr;
     
     if (_firstInit) _firstInit = NO;
+    
+    [self adjustDropshipperListParam];
+    [self adjustPartialListParam];
+    
+    _refreshFromShipment = NO;
     
     [_tableView reloadData];
 
@@ -2178,7 +2200,7 @@
     NSMutableArray *gatewayListWithoutCreditCart = [NSMutableArray new];
     
     for (TransactionCartGateway *gateway in _cart.gateway_list) {
-        if (![gateway.gateway isEqual:@(8)]) {
+        if (![gateway.gateway isEqual:@(8)] && ![gateway.gateway isEqual:@(10)]) {
             [gatewayListWithoutCreditCart addObject:gateway.gateway_name];
         }
     }
@@ -2196,7 +2218,13 @@
 {
     [_dataInput addEntriesFromDictionary:userInfo];
     if (_indexPage == 0) {
-        [self refreshView:nil];
+        
+        NSInteger index = [[userInfo objectForKey:DATA_INDEX_KEY] integerValue];
+        [_list replaceObjectAtIndex:index withObject:[userInfo objectForKey:DATA_CART_DETAIL_LIST_KEY]];
+        
+        [self adjustDropshipperListParam];
+        
+        //[self refreshView:nil];
         _shouldRefresh = NO;
     }
 }
@@ -2342,6 +2370,7 @@
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     _isRefreshRequest = YES;
+    _networkManager.delegate = self;
     [_networkManager doRequest];
 }
 
@@ -2359,8 +2388,21 @@
         NSString *dropshipperPhoneKey = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_PHONE_KEY,shopID,addressID,shipmentID,shipmentPackageID];
         [dropshipListParam setObject:_senderNameDropshipper[i] forKey:dropshipperNameKey];
         [dropshipListParam setObject:_senderPhoneDropshipper[i] forKey:dropshipperPhoneKey];
+        
+        if (_isDropshipper.count>0)
+        {
+            if ([_isDropshipper[i] boolValue]==YES) {
+                NSString *dropshipStringObject = [NSString stringWithFormat:FORMAT_CART_DROPSHIP_STR_KEY,shopID,addressID,shipmentID,shipmentPackageID];
+                [_dropshipStrList replaceObjectAtIndex:i withObject:dropshipStringObject];
+            }
+            else
+            {
+                [_dropshipStrList replaceObjectAtIndex:i withObject:@""];
+            }
+        }
     }
     [_dataInput setObject:dropshipListParam forKey:DATA_DROPSHIPPER_LIST_KEY];
+    [self adjustPartialListParam];
 }
 
 -(void)adjustPartialListParam;
@@ -2373,8 +2415,8 @@
         NSInteger addressID =list.cart_destination.address_id;
         NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
         NSString *partialDetailKey = [NSString stringWithFormat:FORMAT_CART_CANCEL_PARTIAL_PHONE_KEY,shopID,addressID,shipmentPackageID];
-        
-        [partialListParam setObject:_stockPartialDetail[i] forKey:partialDetailKey];
+        if(_stockPartialDetail.count>0)
+            [partialListParam setObject:_stockPartialDetail[i] forKey:partialDetailKey];
     }
     [_dataInput setObject:partialListParam forKey:DATA_PARTIAL_LIST_KEY];
 }
