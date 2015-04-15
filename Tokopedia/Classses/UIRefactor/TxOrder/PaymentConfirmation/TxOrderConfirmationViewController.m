@@ -159,7 +159,6 @@
                 TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
                 vc.delegate = self;
                 vc.data = @{DATA_SELECTED_ORDER_KEY : _selectedOrders};
-                [_list removeObjectsInArray:_selectedOrders];
                 [self.navigationController pushViewController:vc animated:YES];
             }
             else{
@@ -926,7 +925,14 @@
 -(void)successConfirmPayment:(NSArray *)payment
 {
     [_list removeObjectsInArray:payment];
+    [_tableView reloadData];
     [_delegate successCancelOrConfirmPayment];
+}
+
+-(void)failedOrCancelConfirmPayment:(NSArray *)payment
+{
+    [_list addObject:payment];
+    [_tableView reloadData];
 }
 
 @end

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
@@ -72,8 +72,8 @@
                 <outlet property="voucherAmountLabel" destination="7cA-0f-cDL" id="Eyr-7G-sZt"/>
                 <outlet property="voucherCodeButton" destination="fjF-sg-pi6" id="iyh-8E-9t7"/>
                 <outlet property="voucherUsedCell" destination="ZNL-fc-Au3" id="fe4-Jn-hig"/>
-                <outletCollection property="errorCells" destination="bcD-ei-uZV" id="GEX-aS-U0P"/>
-                <outletCollection property="errorLabel" destination="u2O-zp-4Vh" id="Kj0-SJ-auY"/>
+                <outletCollection property="errorCells" destination="rQU-GF-11J" id="zBk-wo-8TY"/>
+                <outletCollection property="errorLabel" destination="idp-IE-Bsj" id="ZtN-aP-QJs"/>
                 <outletCollection property="selectedPaymentMethodLabels" destination="UMa-4j-Ur8" id="xmL-6F-4uC"/>
                 <outletCollection property="selectedPaymentMethodLabels" destination="ceV-Mh-ZPO" id="j9m-Ia-4ZT"/>
             </connections>
@@ -500,17 +500,17 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="166" y="442"/>
         </view>
-        <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="66" id="bcD-ei-uZV">
+        <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="50" id="rQU-GF-11J">
             <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="bcD-ei-uZV" id="6zq-5H-b7Y">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rQU-GF-11J" id="vTj-hg-W4a">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Akun QC tidak boleh membeli barang dari luar" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u2O-zp-4Vh">
+                    <label opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Akun QC tidak boleh membeli barang dari luar" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idp-IE-Bsj">
                         <rect key="frame" x="15" y="15" width="290" height="19"/>
                         <constraints>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="19" id="7fs-T5-h2C"/>
-                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="T7m-tJ-tla"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="8vm-KL-IIv"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="19" id="gbb-Ki-W02"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="12"/>
                         <color key="textColor" red="1" green="0.0" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
@@ -518,14 +518,13 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="u2O-zp-4Vh" secondAttribute="bottom" constant="15" id="OfX-O3-uDy"/>
-                    <constraint firstAttribute="trailing" secondItem="u2O-zp-4Vh" secondAttribute="trailing" constant="15" id="gjc-Yb-6D1"/>
-                    <constraint firstItem="u2O-zp-4Vh" firstAttribute="leading" secondItem="6zq-5H-b7Y" secondAttribute="leading" constant="15" id="voe-zK-ZLW"/>
-                    <constraint firstItem="u2O-zp-4Vh" firstAttribute="top" secondItem="6zq-5H-b7Y" secondAttribute="top" constant="15" id="w6j-MP-lES"/>
+                    <constraint firstAttribute="trailing" secondItem="idp-IE-Bsj" secondAttribute="trailing" constant="15" id="Khi-mE-ikt"/>
+                    <constraint firstItem="idp-IE-Bsj" firstAttribute="leading" secondItem="vTj-hg-W4a" secondAttribute="leading" constant="15" id="cSh-Yv-tuA"/>
+                    <constraint firstItem="idp-IE-Bsj" firstAttribute="top" secondItem="vTj-hg-W4a" secondAttribute="top" constant="15" id="lw9-tM-eMJ"/>
+                    <constraint firstAttribute="bottom" secondItem="idp-IE-Bsj" secondAttribute="bottom" constant="15" id="u3h-wK-8wY"/>
                 </constraints>
             </tableViewCellContentView>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-            <point key="canvasLocation" x="618" y="-142"/>
+            <point key="canvasLocation" x="535" y="-80"/>
         </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="tTs-1N-0vt">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

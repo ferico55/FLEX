@@ -243,8 +243,14 @@
 {
     if (isNodata) {
         self.navigationItem.rightBarButtonItem = nil;
-        _isNodata = isNodata;
     }
+    else{
+        UIBarButtonItem *selectBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Pilih" style:UIBarButtonItemStylePlain target:(self) action:@selector(tapBarButton:)];
+        [selectBarButtonItem setTintColor:[UIColor whiteColor]];
+        selectBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
+        self.navigationItem.rightBarButtonItem = selectBarButtonItem;
+    }
+    _isNodata = isNodata;
 }
 
 -(void)successCancelOrConfirmPayment

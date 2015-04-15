@@ -141,6 +141,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
+    _isShouldRefreshingCart = NO;
 }
 
 -(void)dealloc
@@ -199,7 +200,14 @@
                 backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
                 self.navigationItem.leftBarButtonItem = backBarButtonItem;
             }
-            [self initNotificationManager];
+            _isShouldRefreshingCart = NO;
+            if (_isLogin) {
+                [self initNotificationManager];
+            }
+            else
+            {
+                self.navigationItem.rightBarButtonItem = nil;
+            }
             break;
         }
         case 1:
@@ -244,9 +252,16 @@
             barbutton1 = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
             [barbutton1 setTintColor:[UIColor whiteColor]];
             [barbutton1 setTag:11];
-            [self initNotificationManager];
+            if (_isLogin) {
+                [self initNotificationManager];
+                self.navigationItem.rightBarButtonItem = barbutton1;
+            }
+            else
+            {
+                self.navigationItem.rightBarButtonItem = nil;
+            }
             self.navigationItem.leftBarButtonItem = nil;
-            self.navigationItem.rightBarButtonItem = barbutton1;
+            
             break;
         }
         default:
@@ -323,11 +338,24 @@
     _isShouldRefreshingCart = YES;
 }
 
+-(void)shouldBackToFirstPageRefresh:(BOOL)isRefresh
+{
+    [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+    ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = isRefresh;
+    ((TransactionCartViewController*)[self viewControllerAtIndex:0]).indexPage = 0;
+    _isShouldRefreshingCart = isRefresh;
+}
+
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         if (self.navigationController.viewControllers.count > 1 && _index!=1) {
             UIViewController *destinationVC = self.navigationController.viewControllers[self.navigationController.viewControllers.count-3];
             [self.navigationController popToViewController:destinationVC animated:YES];
+        }
+        else if (_index == 1)
+        {
+            [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
+            ((TransactionCartViewController*)[self viewControllerAtIndex:0]).shouldRefresh = NO;
         }
         else{
             [_pageController setViewControllers:@[[self viewControllerAtIndex:0]] direction:UIPageViewControllerNavigationDirectionReverse animated:YES completion:nil];
@@ -393,6 +421,16 @@
 }
 
 - (void)doRefreshingCart {
+    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+    _auth = [secureStorage keychainDictionary];
+    _isLogin = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
+    if (_isLogin) {
+        [self initNotificationManager];
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
     _isShouldRefreshingCart = YES;
 }
 
@@ -413,7 +451,13 @@
             }
         }
     }
-    [self initNotificationManager];
+    if (_isLogin) {
+        [self initNotificationManager];
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
 }
 
 -(void)pushVC:(TransactionCartViewController *)vc toMandiriClickPayVCwithData:(NSDictionary *)data

@@ -14,6 +14,7 @@
 #import "SettingAddressEditViewController.h"
 #import "AddressViewController.h"
 #import "TKPDTextView.h"
+#import "TokopediaNetworkManager.h"
 
 #pragma mark - Setting Address Edit View Controller
 @interface SettingAddressEditViewController ()
@@ -21,7 +22,8 @@
     SettingAddressLocationViewDelegate,
     UIScrollViewDelegate,
     UITextFieldDelegate,
-    UITextViewDelegate
+    UITextViewDelegate,
+    TokopediaNetworkManagerDelegate
 >
 {
     NSInteger _type;
@@ -29,7 +31,8 @@
     NSInteger _requestcount;
     
     __weak RKObjectManager *_objectmanagerActionAddAddress;
-    __weak RKManagedObjectRequestOperation *_requestActionAddAddress;
+    TokopediaNetworkManager *tokopediaNetworkManager;
+    NSDictionary *tempDictUserInfo;
     
     NSOperationQueue *_operationQueue;
     
@@ -63,7 +66,6 @@
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 
 -(void)cancelActionAddAddress;
--(void)configureRestKitActionAddAddress;
 -(void)requestActionAddAddress:(id)object;
 -(void)requestSuccessActionAddAddress:(id)object withOperation:(RKObjectRequestOperation*)operation;
 -(void)requestFailureActionAddAddress:(id)object;
@@ -256,7 +258,6 @@
                             [self.navigationController popViewControllerAnimated:YES];
                         }];
                     } else {
-                        [self configureRestKitActionAddAddress];
                         [self requestActionAddAddress:_datainput];
                     }
                 }
@@ -280,110 +281,23 @@
 #pragma mark - Request Action AddAddress
 -(void)cancelActionAddAddress
 {
-    [_requestActionAddAddress cancel];
-    _requestActionAddAddress = nil;
+//    [_requestActionAddAddress cancel];
+//    _requestActionAddAddress = nil;
     [_objectmanagerActionAddAddress.operationQueue cancelAllOperations];
     _objectmanagerActionAddAddress = nil;
 }
 
--(void)configureRestKitActionAddAddress
-{
-    _objectmanagerActionAddAddress = [RKObjectManager sharedClient];
-    
-    // setup object mappings
-    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileSettings class]];
-    [statusMapping addAttributeMappingsFromArray:@[
-                                                   kTKPD_APISTATUSMESSAGEKEY,
-                                                   kTKPD_APIERRORMESSAGEKEY,
-                                                   kTKPD_APISTATUSKEY,
-                                                   kTKPD_APISERVERPROCESSTIMEKEY,
-                                                   ]];
-    
-    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileSettingsResult class]];
-    [resultMapping addAttributeMappingsFromArray:@[kTKPDPROFILE_APIISSUCCESSKEY]];
-    
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
-                                                                                  toKeyPath:kTKPD_APIRESULTKEY
-                                                                                withMapping:resultMapping]];
-    
-    // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
-                                                                                            method:RKRequestMethodPOST
-                                                                                       pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH
-                                                                                           keyPath:@""
-                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
-    
-    [_objectmanagerActionAddAddress addResponseDescriptor:responseDescriptor];
-    
-}
-
 -(void)requestActionAddAddress:(id)object
 {
-    if (_requestActionAddAddress.isExecuting) return;
+    if ([self getNetworkManager].getObjectRequest.isExecuting) return;
     
     [_act startAnimating];
     UIBarButtonItem *loadingBar = [[UIBarButtonItem alloc] initWithCustomView:_act];
     self.navigationItem.rightBarButtonItem = loadingBar;
     
-    NSTimer *timer;
-    
-    NSDictionary *userinfo = (NSDictionary*)object;
-    
-    AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
-    
-    NSString *action = (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?kTKPDPROFILE_APIEDITADDRESSKEY:kTKPDPROFILE_APIADDADDRESSKEY;
-    NSInteger addressid = list.address_id?:0;
-    NSNumber *city = [userinfo objectForKey:kTKPDLOCATION_DATACITYIDKEY]?:list.city_id?:@(0);
-    NSNumber *province = [userinfo objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]?:list.province_id?:@(0);
-    NSNumber *distric = [userinfo objectForKey:kTKPDLOCATION_DATADISTRICTIDKEY]?:list.district_id?:@(0);
-    
-    NSString *recievername = [userinfo objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY]?:list.receiver_name?:@"";
-    NSString *addressname = [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY]?:list.address_name?:@"";
-    NSString *phone = [userinfo objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY]?:list.receiver_phone?:@(0);
-    NSString *postalcode = [userinfo objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY]?:list.postal_code?:@"0";
-    
-    NSString *addressstreet = [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY]?:list.address_street?:@"";
-    NSString *password = [userinfo objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY]?:@"";
-    
-    
-    NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:action,
-                            kTKPDPROFILESETTING_APIADDRESSIDKEY : @(addressid),
-                            kTKPDPROFILESETTING_APICITYKEY : city,
-                            kTKPDPROFILESETTING_APIRECEIVERNAMEKEY : recievername,
-                            kTKPDPROFILESETTING_APIADDRESSNAMEKEY : addressname,
-                            kTKPDPROFILESETTING_APIRECEIVERPHONEKEY : phone,
-                            kTKPDPROFILESETTING_APIPROVINCEKEY : province,
-                            kTKPDPROFILESETTING_APIPOSTALCODEKEY : postalcode,
-                            kTKPDPROFILESETTING_APIADDRESSSTREETKEY : addressstreet,
-                            kTKPDPROFILESETTING_APIDISTRICTKEY : distric,
-                            kTKPDPROFILESETTING_APIUSERPASSWORDKEY : password
-                            };
-    
+    tempDictUserInfo = (NSDictionary*)object;
     _barbuttonsave.enabled = NO;
-    
-    _requestActionAddAddress = [_objectmanagerActionAddAddress appropriateObjectRequestOperationWithObject:self
-                                                                                                    method:RKRequestMethodPOST
-                                                                                                      path:kTKPDPROFILE_PROFILESETTINGAPIPATH
-                                                                                                parameters:[param encrypt]];
-    
-    [_requestActionAddAddress setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccessActionAddAddress:mappingResult withOperation:operation];
-        [timer invalidate];
-        [_act stopAnimating];
-        _barbuttonsave.enabled = YES;
-        self.navigationItem.rightBarButtonItem = _barbuttonsave;
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailureActionAddAddress:error];
-        [timer invalidate];
-        [_act stopAnimating];
-        _barbuttonsave.enabled = YES;
-        self.navigationItem.rightBarButtonItem = _barbuttonsave;
-    }];
-    
-    [_operationQueue addOperation:_requestActionAddAddress];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutActionAddAddress) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    [[self getNetworkManager] doRequest];
 }
 
 -(void)requestSuccessActionAddAddress:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -406,72 +320,60 @@
 -(void)requestProcessActionAddAddress:(id)object
 {
     if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            ProfileSettings *setting = stat;
-            BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(setting.message_error) {
-                    NSArray *errorMessages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
-                    [alert show];
-                }
-                if (setting.result.is_success == 1) {
-                    //TODO:: add alert
-                    NSDictionary *userinfo;
-                    if (_type == TYPE_ADD_EDIT_PROFILE_EDIT){
-                        //TODO: Behavior after edit
-
-                        // If presented
-                        if (self.navigationController.viewControllers[0] == self) {
-                            [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-                        } else {
-                            NSArray *viewcontrollers = self.navigationController.viewControllers;
-                            NSInteger index = viewcontrollers.count-3;
-                            [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
-                            userinfo = @{
-                                         kTKPDPROFILE_DATAEDITTYPEKEY:[_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY],
-                                         kTKPDPROFILE_DATAINDEXPATHKEY : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]
-                                         };
-                        }
-                    } else {
-                        [self.navigationController popViewControllerAnimated:YES];
-                    }
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDADDRESSPOSTNOTIFICATIONNAMEKEY
-                                                                        object:nil
-                                                                      userInfo:userinfo];
-
-                    if ([self.delegate respondsToSelector:@selector(successEditAddress:)]) {
-                        AddressFormList *address = [AddressFormList new];
-                        address.receiver_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY];
-                        address.address_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY];
-                        address.address_street = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY];
-                        address.postal_code = [_datainput objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY];
-                        address.city_name = [_datainput objectForKey:kTKPDPROFILESETTING_APICITYNAMEKEY];
-                        address.province_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIPROVINCENAMEKEY];
-                        address.district_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIDISTRICNAMEKEY];
-                        address.receiver_phone = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY];
-                        [self.delegate successEditAddress:address];
-                    }
-                    
-                    NSArray *successMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
-                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
-                    [alert show];
-                }
+        NSDictionary *result = ((RKMappingResult*)object).dictionary;
+        id stat = [result objectForKey:@""];
+        ProfileSettings *setting = stat;
+        BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+        
+        if (status) {
+            if(setting.message_error) {
+                NSArray *errorMessages = setting.message_error?:@[kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY];
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
+                [alert show];
             }
-        } else {
-            [self cancelActionAddAddress];
-
-            NSError *error = object;
-            UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE
-                                                                message:error.localizedDescription
-                                                               delegate:self
-                                                      cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE
-                                                      otherButtonTitles:nil];
-            [errorAlert show];
+            if (setting.result.is_success == 1) {
+                //TODO:: add alert
+                NSDictionary *userinfo;
+                if (_type == TYPE_ADD_EDIT_PROFILE_EDIT){
+                    //TODO: Behavior after edit
+                    
+                    // If presented
+                    if (self.navigationController.viewControllers[0] == self) {
+                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                    } else {
+                        NSArray *viewcontrollers = self.navigationController.viewControllers;
+                        NSInteger index = viewcontrollers.count-3;
+                        [self.navigationController popToViewController:[viewcontrollers objectAtIndex:index] animated:NO];
+                        userinfo = @{
+                                     kTKPDPROFILE_DATAEDITTYPEKEY:[_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY],
+                                     kTKPDPROFILE_DATAINDEXPATHKEY : [_data objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY]
+                                     };
+                    }
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                
+                [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_ADDADDRESSPOSTNOTIFICATIONNAMEKEY
+                                                                    object:nil
+                                                                  userInfo:userinfo];
+                
+                if ([self.delegate respondsToSelector:@selector(successEditAddress:)]) {
+                    AddressFormList *address = [AddressFormList new];
+                    address.receiver_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY];
+                    address.address_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY];
+                    address.address_street = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY];
+                    address.postal_code = [_datainput objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY];
+                    address.city_name = [_datainput objectForKey:kTKPDPROFILESETTING_APICITYNAMEKEY];
+                    address.province_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIPROVINCENAMEKEY];
+                    address.district_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIDISTRICNAMEKEY];
+                    address.receiver_phone = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY];
+                    [self.delegate successEditAddress:address];
+                }
+                
+                NSArray *successMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
+                StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
+                [alert show];
+            }
         }
     }
 }
@@ -482,6 +384,17 @@
 }
 
 #pragma mark - Methods
+- (TokopediaNetworkManager *)getNetworkManager
+{
+    if(tokopediaNetworkManager == nil)
+    {
+        tokopediaNetworkManager = [TokopediaNetworkManager new];
+        tokopediaNetworkManager.delegate = self;
+    }
+    
+    return tokopediaNetworkManager;
+}
+
 -(void)setDefaultData:(NSDictionary*)data
 {
     _data = data;
@@ -767,4 +680,113 @@
     self.scrollView.contentInset = UIEdgeInsetsZero;
 }
 
+
+
+#pragma mark - TokopediaNetworkManager Delegate
+- (NSDictionary*)getParameter:(int)tag
+{
+    NSDictionary *userinfo = [tempDictUserInfo mutableCopy];
+    tempDictUserInfo = nil;
+    AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+    
+    NSString *action = (_type==TYPE_ADD_EDIT_PROFILE_EDIT)?kTKPDPROFILE_APIEDITADDRESSKEY:kTKPDPROFILE_APIADDADDRESSKEY;
+    NSInteger addressid = list.address_id?:0;
+    NSNumber *city = [userinfo objectForKey:kTKPDLOCATION_DATACITYIDKEY]?:list.city_id?:@(0);
+    NSNumber *province = [userinfo objectForKey:kTKPDLOCATION_DATAPROVINCEIDKEY]?:list.province_id?:@(0);
+    NSNumber *distric = [userinfo objectForKey:kTKPDLOCATION_DATADISTRICTIDKEY]?:list.district_id?:@(0);
+    
+    NSString *recievername = [userinfo objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY]?:list.receiver_name?:@"";
+    NSString *addressname = [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY]?:list.address_name?:@"";
+    NSString *phone = [userinfo objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY]?:list.receiver_phone?:@(0);
+    NSString *postalcode = [userinfo objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY]?:list.postal_code?:@"0";
+    
+    NSString *addressstreet = [userinfo objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY]?:list.address_street?:@"";
+    NSString *password = [userinfo objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY]?:@"";
+    
+    return @{kTKPDPROFILE_APIACTIONKEY:action,
+             kTKPDPROFILESETTING_APIADDRESSIDKEY : @(addressid),
+             kTKPDPROFILESETTING_APICITYKEY : city,
+             kTKPDPROFILESETTING_APIRECEIVERNAMEKEY : recievername,
+             kTKPDPROFILESETTING_APIADDRESSNAMEKEY : addressname,
+             kTKPDPROFILESETTING_APIRECEIVERPHONEKEY : phone,
+             kTKPDPROFILESETTING_APIPROVINCEKEY : province,
+             kTKPDPROFILESETTING_APIPOSTALCODEKEY : postalcode,
+             kTKPDPROFILESETTING_APIADDRESSSTREETKEY : addressstreet,
+             kTKPDPROFILESETTING_APIDISTRICTKEY : distric,
+             kTKPDPROFILESETTING_APIUSERPASSWORDKEY : password
+             };
+}
+
+- (NSString*)getPath:(int)tag
+{
+    return kTKPDPROFILE_PROFILESETTINGAPIPATH;
+}
+
+- (id)getObjectManager:(int)tag
+{
+    _objectmanagerActionAddAddress = [RKObjectManager sharedClient];
+    
+    // setup object mappings
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[ProfileSettings class]];
+    [statusMapping addAttributeMappingsFromArray:@[
+                                                   kTKPD_APISTATUSMESSAGEKEY,
+                                                   kTKPD_APIERRORMESSAGEKEY,
+                                                   kTKPD_APISTATUSKEY,
+                                                   kTKPD_APISERVERPROCESSTIMEKEY,
+                                                   ]];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileSettingsResult class]];
+    [resultMapping addAttributeMappingsFromArray:@[kTKPDPROFILE_APIISSUCCESSKEY]];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    // register mappings with the provider using a response descriptor
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDPROFILE_PROFILESETTINGAPIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectmanagerActionAddAddress addResponseDescriptor:responseDescriptor];
+    
+    return _objectmanagerActionAddAddress;
+}
+
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag
+{
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    
+    return ((ProfileSettings *) stat).status;
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
+{
+    [self requestSuccessActionAddAddress:successResult withOperation:operation];
+    [_act stopAnimating];
+    _barbuttonsave.enabled = YES;
+    self.navigationItem.rightBarButtonItem = _barbuttonsave;
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    [self requestFailureActionAddAddress:errorResult];
+    [_act stopAnimating];
+    _barbuttonsave.enabled = YES;
+    self.navigationItem.rightBarButtonItem = _barbuttonsave;
+}
+
+- (void)actionBeforeRequest:(int)tag
+{
+}
+
+- (void)actionRequestAsync:(int)tag
+{
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag
+{
+}
 @end
