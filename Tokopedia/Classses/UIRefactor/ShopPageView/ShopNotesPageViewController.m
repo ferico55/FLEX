@@ -25,7 +25,7 @@
 #import "URLCacheController.h"
 #import "ShopPageHeader.h"
 
-#import "NoResult.h"
+#import "NoResultView.h"
 
 @interface ShopNotesPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
@@ -94,7 +94,7 @@ UIAlertViewDelegate>
     Notes *_notes;
     ShopPageHeader *_shopPageHeader;
     Shop *_shop;
-    NoResult *_noResult;
+    NoResultView *_noResult;
 }
 
 #pragma mark - Initialization
@@ -158,7 +158,7 @@ UIAlertViewDelegate>
     
     _table.tableFooterView = _footer;
     _table.tableHeaderView = _header;
-    _noResult = [NoResult new];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
