@@ -13,7 +13,6 @@
 #import "stringregister.h"
 #import "RegisterViewController.h"
 #import "CreatePasswordViewController.h"
-#import "AlertInfoVoucherCodeView.h"
 
 #import "AlertDatePickerView.h"
 #import "TKPDAlert.h"

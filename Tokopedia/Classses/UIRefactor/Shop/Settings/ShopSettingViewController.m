@@ -1,5 +1,5 @@
 //
-//  ShopSettingViewController.m
+//  ShopSettingViewController.h
 //  Tokopedia
 //
 //  Created by IT Tkpd on 11/14/14.
@@ -10,11 +10,11 @@
 #import "DetailShopResult.h"
 #import "ShopSettingViewController.h"
 #import "MyShopEtalaseViewController.h"
-#import "MyShopPaymentViewController.h"
-#import "MyShopNoteViewController.h"
-#import "MyShopAddressViewController.h"
 #import "ProductListMyShopViewController.h"
+#import "MyShopAddressViewController.h"
+#import "MyShopPaymentViewController.h"
 #import "MyShopShipmentTableViewController.h"
+#import "MyShopNoteViewController.h"
 
 @interface ShopSettingViewController ()
 <
@@ -22,187 +22,52 @@
     UITableViewDelegate
 >
 {
+    NSArray *_menus;
     DetailShopResult *_shop;
-    NSArray *_listMenu;
-    BOOL _isnodata;
 }
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
-@property (strong, nonatomic) IBOutlet UIView *contentView;
-
-- (IBAction)gesture:(id)sender;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
 @implementation ShopSettingViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    self.hidesBottomBarWhenPushed = YES;
-    if (self) {
-        _isnodata = YES;
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.navigationController.navigationBarHidden = NO;
     self.title = @"Pengaturan Toko";
-    
     _shop = [_data objectForKey:kTKPDDETAIL_DATAINFOSHOPSKEY];
-
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
+    _menus = @[@"Etalase", @"Produk", @"Lokasi", @"Pengiriman", @"Pembayaran", @"Catatan"];
+    
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                       style:UIBarButtonItemStyleBordered
                                                                      target:self
-                                                                     action:@selector(tap:)];
-    
-    
-    self.navigationItem.backBarButtonItem = barButtonItem;
-    
-    _listMenu = ARRAY_SHOP_SETTING_MENU;
-    _isnodata = NO;
-    
-    [self.scrollView addSubview:_contentView];
-    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width,
-                                             self.view.frame.size.height - 63);
+                                                                     action:nil];
+    self.navigationItem.backBarButtonItem = backBarButton;
 }
 
-- (void)didReceiveMemoryWarning
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    [super didReceiveMemoryWarning];
+    return 1;
 }
 
-#pragma mark - View Action
-- (IBAction)gesture:(id)sender {
-    UITapGestureRecognizer* gesture = (UITapGestureRecognizer*)sender;
-    
-    switch (gesture.state)
-    {
-        case UIGestureRecognizerStateBegan:
-        {
-            break;
-        }
-        case UIGestureRecognizerStateChanged:
-        {
-            break;
-        }
-        case UIGestureRecognizerStateEnded:
-        {
-            switch (gesture.view.tag) {
-                case 10:
-                {
-                    //Etalase
-                    MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
-                    vc.data = @{kTKPDDETAIL_APISHOPIDKEY : _shop.info.shop_id?:@"", kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-                    [self.navigationController pushViewController:vc animated:YES];
-                    break;
-                }
-                case 11:
-                {
-                    //Product
-                    ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
-                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-                    [self.navigationController pushViewController:vc animated:YES];
-                    break;
-                }
-                case 12:
-                {
-                    //Location
-                    MyShopAddressViewController *vc = [MyShopAddressViewController new];
-                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-                    [self.navigationController pushViewController:vc animated:YES];
-                    break;
-                }
-                case 13:
-                {
-                    MyShopShipmentTableViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
-                    [self.navigationController pushViewController:controller animated:YES];
-                    break;
-                }
-                case 14:
-                {
-                    //Payment
-                    MyShopPaymentViewController *vc = [MyShopPaymentViewController new];
-                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-                    [self.navigationController pushViewController:vc animated:YES];
-                    break;
-                }
-                case 15:
-                {
-                    //Notes
-                    MyShopNoteViewController *vc = [MyShopNoteViewController new];
-                    vc.data = @{kTKPD_AUTHKEY:[_data objectForKey:kTKPD_AUTHKEY]?:@{}};
-                    [self.navigationController pushViewController:vc animated:YES];
-                    break;
-                }
-                default:
-                    break;
-            }
-            break;
-        }
-        default:
-            break;
-    }
-}
-
--(IBAction)tap:(id)sender
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    UIButton *button = (UIButton *)sender;
-    switch (button.tag) {
-        case 10:
-            [self.navigationController popViewControllerAnimated:YES];
-            break;
-            
-        default:
-            break;
-    }
+    return 6;
 }
 
-#pragma - TableView DataSource
-
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return _listMenu.count;
-}
-
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = kTKPDDETAIL_STANDARDTABLEVIEWCELLIDENTIFIER;
-    UITableViewCell* cell = nil;
-
-    if (!_isnodata) {
-        if (indexPath.row<_listMenu.count) {
-            cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-            if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-                cell.selectionStyle = UITableViewCellSelectionStyleDefault;
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            }
-            
-            cell.textLabel.font = FONT_DEFAULT_CELL_TKPD;
-            cell.textLabel.text = _listMenu[indexPath.row];
-        }
-    }
-
+    UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    cell.textLabel.font = [UIFont fontWithName:@"GothamBook" size:14];
+    cell.textLabel.text = [_menus objectAtIndex:indexPath.row];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     return cell;
 }
 
-#pragma mark - TableView Delegate
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
-    view.backgroundColor = [UIColor clearColor];
-    return view;
-}
-
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    switch (indexPath.row)
-    {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    switch (indexPath.row) {
         case 0:
         {
             //Etalase

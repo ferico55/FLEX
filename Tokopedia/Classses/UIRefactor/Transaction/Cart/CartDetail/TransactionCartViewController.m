@@ -23,7 +23,7 @@
 #import "AlertPickerView.h"
 #import "TransactionCartFormMandiriClickPayViewController.h"
 #import "TransactionCartWebViewViewController.h"
-#import "AlertInfoVoucherCodeView.h"
+#import "AlertInfoView.h"
 #import "StickyAlertView.h"
 #import "GeneralTableViewController.h"
 
@@ -2109,7 +2109,9 @@
                     break;
                 case 11:
                 {
-                    AlertInfoVoucherCodeView *alertInfo = [AlertInfoVoucherCodeView newview];
+                    AlertInfoView *alertInfo = [AlertInfoView newview];
+                    alertInfo.text = @"Info Kode Kupon Tokopedia";
+                    alertInfo.detailText = @"Hanya berlaku untuk satu kali pembayaran. Sisa nilai kupon tidak dapat dikembalikan";
                     [alertInfo show];
                 }
                 case 12:
