@@ -457,6 +457,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     return cell;
 }
 
+
 - (GeneralPhotoProductCell *)tableView:(UITableView *)tableView threeColumnCellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *cellIdentifier = kTKPDGENERAL_PHOTO_PRODUCT_CELL_IDENTIFIER;
@@ -468,37 +469,44 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         cell = [GeneralPhotoProductCell initCell];
         cell.delegate = self;
     }
-    cell.indexPath = indexPath;
+
     
-    NSUInteger index = indexPath.row * 3;
+    NSUInteger indexsegment = indexPath.row * 3;
+    NSUInteger indexmax = indexsegment + 3;
+    NSUInteger indexlimit = MIN(indexmax, _product.count);
     
-    for (int i = 0; i < cell.productImageViews.count; i++) {
-        NSUInteger indexProduct = index + i;
-        if (indexProduct < _product.count) {
-            List *list = [_product objectAtIndex:indexProduct];
-            NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image]
-                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            
-            UIImageView *thumb = [cell.productImageViews objectAtIndex:i];
-            thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
-            thumb.contentMode = UIViewContentModeCenter;
-            thumb.hidden = NO;
-            
-            [thumb setImageWithURLRequest:request
-                         placeholderImage:nil
-                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    NSAssert(!(indexlimit > _product.count), @"producs out of bounds");
+    
+    for (UIView *view in ((GeneralPhotoProductCell*)cell).viewcell ) {
+//        view.hidden = YES;
+    }
+    
+    for (int i = 0; (indexsegment + i) < indexlimit; i++) {
+        List *list = [_product objectAtIndex:indexsegment + i];
+        ((UIView*)((GeneralPhotoProductCell*)cell).viewcell[i]).hidden = NO;
+        (((GeneralPhotoProductCell*)cell).indexPath) = indexPath;
+        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image]
+                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        
+        UIImageView *thumb = [cell.productImageViews objectAtIndex:i];
+        thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+        thumb.contentMode = UIViewContentModeCenter;
+        thumb.hidden = NO;
+        
+        [thumb setImageWithURLRequest:request
+                     placeholderImage:nil
+                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                      thumb.image = image;
-                                      thumb.contentMode = UIViewContentModeScaleAspectFill;
+                                  thumb.image = image;
+                                  thumb.contentMode = UIViewContentModeScaleAspectFill;
 #pragma clang diagnostic pop
-                                  } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                                      thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
-                                  }];
-            
-            [[cell.badges objectAtIndex:i] setHidden:(![list.shop_gold_status boolValue])];
-        }
+                              } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                  thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+                              }];
+        
+        [[cell.badges objectAtIndex:i] setHidden:(![list.shop_gold_status boolValue])];
     }
     
     return cell;
