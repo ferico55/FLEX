@@ -242,7 +242,7 @@
         if ([list.etalase_total_product isEqualToString:@"0"]) {
             [self deleteListAtIndexPath:indexPath];
         } else {
-            NSArray *errorMessages = @[@"Tidak dapat menghapus etalase.\nSilahkan pindahkan produk ke etalase lain terlebih dahulu."];
+            NSArray *errorMessages = @[@"Anda tidak dapat menghapus etalase.\nSilahkan pindahkan produk ke etalase lain terlebih dahulu."];
             StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessages delegate:self];
             [alert show];
         }

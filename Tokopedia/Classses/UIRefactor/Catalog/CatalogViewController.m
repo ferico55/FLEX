@@ -129,6 +129,7 @@
 
     CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.width);
     UIImageView *catalogImageView = [[UIImageView alloc] initWithFrame:frame];
+    catalogImageView.contentMode = UIViewContentModeScaleAspectFit;
     [catalogImageView setImageWithURL:[NSURL URLWithString:catalogImageURL]
                      placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey.png"]];
     [_productPhotoScrollView addSubview:catalogImageView];
@@ -281,7 +282,8 @@
     [productListMapping addAttributeMappingsFromArray:@[API_PRODUCT_CONDITION_KEY,
                                                         API_PRODUCT_PRICE_KEY,
                                                         @"product_id",
-                                                        @"product_name"]];
+                                                        @"product_name",
+                                                        API_SHOP_NAME_KEY]];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
@@ -465,7 +467,7 @@
                                                                                       alpha:1],
                                      };
         
-        NSString *description = _catalog.result.catalog_info.catalog_description;
+        NSString *description = [NSString convertHTML:_catalog.result.catalog_info.catalog_description];
         _descriptionLabel.attributedText = [[NSAttributedString alloc] initWithString:description
                                                                            attributes:attributes];
         

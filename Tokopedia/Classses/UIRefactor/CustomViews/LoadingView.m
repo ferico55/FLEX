@@ -30,6 +30,9 @@
         
         _buttonRetry.layer.cornerRadius = 3.0;
     }
+    _buttonRetry.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    _buttonRetry.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [_buttonRetry setTitle:@"Terjadi kendala teknis \nMohon ulangi permintaan." forState:UIControlStateNormal];
     return self;
 }
 

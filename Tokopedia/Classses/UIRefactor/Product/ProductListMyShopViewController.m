@@ -19,6 +19,7 @@
 #import "DetailProductViewController.h"
 #import "ProductAddEditViewController.h"
 #import "MyShopEtalaseFilterViewController.h"
+#import "ProductListMyShopFilterViewController.h"
 
 #import "SortViewController.h"
 #import "FilterViewController.h"
@@ -179,18 +180,27 @@
             
             UIActivityIndicatorView *act = ((ProductListMyShopCell*)cell).act;
             [act startAnimating];
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image_300] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image_300]
+                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             
             UIImageView *thumb = ((ProductListMyShopCell*)cell).thumb;
-            thumb.image = nil;
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey"];
+            [thumb setImageWithURLRequest:request
+                         placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey"]
+                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 [thumb setImage:image];
+                [thumb setContentMode:UIViewContentModeScaleAspectFill];
 #pragma clang diagnosti c pop
                 [act stopAnimating];
+                [act setHidden:YES];
             } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey"];
                 [act stopAnimating];
+                [act setHidden:YES];
             }];
         }
         return cell;
@@ -288,32 +298,20 @@
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
                 break;
             }
-            case BUTTON_FILTER_TYPE_ETALASE:
+            case BUTTON_FILTER_TYPE_FILTER:
             {
-                NSIndexPath *indexpath = [_dataFilter objectForKey:kTKPDDETAILETALASE_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                MyShopEtalaseFilterViewController *vc = [MyShopEtalaseFilterViewController new];
-                vc.data = @{kTKPDDETAIL_APISHOPIDKEY:@([[_data objectForKey:kTKPDDETAIL_APISHOPIDKEY]integerValue]?:0),
-                            kTKPDFILTER_DATAINDEXPATHKEY: indexpath};
-                vc.delegate = self;
-                UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-                [self.navigationController presentViewController:nav animated:YES completion:nil];
-                break;
-            }
-            case BUTTON_FILTER_TYPE_SHARE:
-            {
-                NSString *activityItem = [NSString stringWithFormat:@"Jual %@ | Tokopedia %@", [_data objectForKey:@"title"], [_data objectForKey:@"url"]];
-                UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:@[activityItem,]
-                                                                                                 applicationActivities:nil];
-                activityController.excludedActivityTypes = @[UIActivityTypeMail, UIActivityTypeMessage];
-                [self presentViewController:activityController animated:YES completion:nil];
+                ProductListMyShopFilterViewController *controller = [ProductListMyShopFilterViewController new];
+                
+                UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+                navigation.navigationBar.translucent = NO;
+
+                [self.navigationController presentViewController:navigation animated:YES completion:nil];
+                
                 break;
             }
             default:
                 break;
         }
-
-        
-
     }
 }
 
@@ -404,7 +402,6 @@
     NSInteger orderByID = [[_dataFilter objectForKey:kTKPDFILTER_APIORDERBYKEY]integerValue];
     NSInteger etalaseID = [[_dataFilter objectForKey:API_PRODUCT_ETALASE_ID_KEY]integerValue];
     NSString *keyword = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
-    NSInteger userID = [[_auth objectForKey:kTKPD_USERIDKEY]integerValue];
     
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : ACTION_GET_PRODUCT_LIST,

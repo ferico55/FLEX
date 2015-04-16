@@ -15,7 +15,7 @@
 #import "CreatePasswordViewController.h"
 
 #import "AlertDatePickerView.h"
-#import "AlertView.h"
+#import "TKPDAlert.h"
 #import "TextField.h"
 
 #import <FacebookSDK/FacebookSDK.h>
@@ -28,8 +28,7 @@
     UIAlertViewDelegate,
     FBLoginViewDelegate,
     CreatePasswordDelegate,
-    TKPDAlertViewDelegate,
-    CustomAlertViewDelegate
+    TKPDAlertViewDelegate
 >
 {
     id<FBGraphUser> _facebookUser;
@@ -497,12 +496,13 @@
                                                                                delegate:self];
             [alertView show];
         } else {
-            
             [self.view layoutSubviews];
 
-            AlertView *alertView = [[AlertView alloc] initWithTitle:@"Anda telah berhasil membuat akun Tokopedia"];
-            alertView.delegate = self;
-            [alertView show];
+            TKPDAlert *alert = [TKPDAlert newview];
+            alert.text = @"Anda telah berhasil membuat akun Tokopedia";
+            alert.tag = 12;
+            alert.delegate = self;
+            [alert show];
             
             self.navigationItem.leftBarButtonItem = nil;
         }
@@ -821,6 +821,10 @@
             // alert success login
             [self.navigationController popViewControllerAnimated:YES];
         }
+        case 12:
+        {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
         default:
             break;
     }
@@ -927,13 +931,6 @@
                                                             object:nil
                                                           userInfo:nil];
     }
-}
-
-#pragma mark - Custom alert view delegate
-
-- (void)alertViewDismissed:(UIView *)alertView
-{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

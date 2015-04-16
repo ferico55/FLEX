@@ -21,7 +21,7 @@
 #import "string_inbox_talk.h"
 #import "detail.h"
 #import "ShopPageHeader.h"
-#import "NoResult.h"
+#import "NoResultView.h"
 
 #import "URLCacheController.h"
 
@@ -97,7 +97,7 @@ UIAlertViewDelegate>
     Review *_review;
     Shop *_shop;
     ShopPageHeader *_shopPageHeader;
-    NoResult *_noResult;
+    NoResultView *_noResult;
 }
 
 #pragma mark - Initialization
@@ -149,7 +149,7 @@ UIAlertViewDelegate>
     [self addBottomInsetWhen14inch];
     _talkNavigationFlag = [_data objectForKey:@"nav"];
     _page = 1;
-    _noResult = [NoResult new];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     _operationQueue = [NSOperationQueue new];
     _operationUnfollowQueue = [NSOperationQueue new];

@@ -124,7 +124,7 @@
     
     [[UITabBarItem appearance] setTitleTextAttributes:@{ UITextAttributeTextColor : kTKPDNAVIGATION_TABBARTITLECOLOR }
                                              forState:UIControlStateNormal];
-    [[UITabBarItem appearance] setTitleTextAttributes:@{ UITextAttributeTextColor : kTKPDNAVIGATION_TABBARACTIVETITLECOLOR }
+    [[UITabBarItem appearance] setTitleTextAttributes:@{ UITextAttributeTextColor : [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1] }
                                              forState:UIControlStateSelected];
     
     /** TAB BAR INDEX 1 **/
@@ -153,10 +153,6 @@
         [viewcontrollers addObject:v3];
     }
     
-//    /** Adjust View Controller **/
-//    _swipevc = [TKPDTabHomeViewController new];
-//    UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
-
     _swipevc = [HomeTabViewController new];
     UINavigationController *swipevcNav = [[UINavigationController alloc] initWithRootViewController:_swipevc];
     
@@ -380,8 +376,6 @@
 
 - (void)applicationLogin:(NSNotification*)notification
 {
-    NSDictionary* auth = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
-//	_auth = [auth mutableCopy];
     _userManager = [UserAuthentificationManager new];
     _auth = [_userManager getUserLoginData];
     

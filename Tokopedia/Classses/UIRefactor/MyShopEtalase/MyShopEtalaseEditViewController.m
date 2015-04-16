@@ -261,7 +261,7 @@
                 if (setting.result.is_success == 1) {
                     NSString *message;
                     if (_type == kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY) {
-                        message = @"Anda telah berhasil memperbaharui informasi etalase.";
+                        message = @"Anda telah berhasil memperbaharui nama etalase";
                     } else {
                         message = @"Anda telah berhasil menambah etalase";
                     }
