@@ -209,14 +209,13 @@
             }
             
             BankAccountFormList *list = _list[indexPath.row];
-            ((GeneralList1GestureCell*)cell).labelname.text = list.bank_account_name;
+            ((GeneralList1GestureCell*)cell).textLabel.text = list.bank_account_name;
+            ((GeneralList1GestureCell*)cell).detailTextLabel.hidden = YES;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
-            ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
             
             if (indexPath.row == 0) {
-                ((GeneralList1GestureCell*)cell).labeldefault.hidden = NO;
-            } else {
-                ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
+                ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"Utama";
+                ((GeneralList1GestureCell*)cell).detailTextLabel.hidden = NO;
             }
             
         }

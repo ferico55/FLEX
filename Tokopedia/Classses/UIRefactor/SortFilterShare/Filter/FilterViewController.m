@@ -129,14 +129,14 @@
     _pricemincatalog.text = (pricemin>0)?[NSString stringWithFormat:@"%zd",pricemin]:0;
     _pricemaxcatalog.text = (pricemax>0)?[NSString stringWithFormat:@"%zd",pricemax]:0;
     
-    NSString *location = [datafilter objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY]?:@"All Location";
+    NSString *location = [datafilter objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY]?:@"Semua Lokasi";
     [_shoplocationbutton setTitle:location forState:UIControlStateNormal];
     [_productlocationbutton setTitle:location forState:UIControlStateNormal];
     [_detailcataloglocationbutton setTitle:location forState:UIControlStateNormal];
-    [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY]?:@"All Location" forKey:kTKPDFILTER_APILOCATIONNAMEKEY];
+    [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTER_APILOCATIONNAMEKEY]?:@"Semua Lokasi" forKey:kTKPDFILTER_APILOCATIONNAMEKEY];
     [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDFILTERLOCATION_DATAINDEXPATHKEY];
     
-    NSString *condition = [datafilter objectForKey:kTKPDFILTER_APICONDITIONNAMEKEY] ?:@"All Condition";
+    NSString *condition = [datafilter objectForKey:kTKPDFILTER_APICONDITIONNAMEKEY] ?:@"Semua Kondisi";
     [_conditionbutton setTitle:condition forState:UIControlStateNormal];
     [_detailfilter setObject:condition forKey:kTKPDFILTER_APICONDITIONKEY];
     [_detailfilter setObject:[datafilter objectForKey:kTKPDFILTERCONDITION_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0] forKey:kTKPDFILTERCONDITION_DATAINDEXPATHKEY];
@@ -279,8 +279,8 @@
                 _pricemin.text = nil;
                 _pricemincatalog.text = nil;
                 _pricemaxcatalog.text = nil;
-                [_productlocationbutton setTitle:@"All Location" forState:UIControlStateNormal];
-                [_shoplocationbutton setTitle:@"All Location" forState:UIControlStateNormal];
+                [_productlocationbutton setTitle:@"Semua Lokasi" forState:UIControlStateNormal];
+                [_shoplocationbutton setTitle:@"Semua Lokasi" forState:UIControlStateNormal];
                 [_shopsegmentcontrol setSelectedSegmentIndex:0];
                 [_productsegmentcontrol setSelectedSegmentIndex:0];
                 break;

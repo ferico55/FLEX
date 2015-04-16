@@ -243,13 +243,19 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    CGFloat height = 0;
     if (self.cellType == UITableViewCellTypeOneColumn) {
-        return 230;
+        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+            height = 250;
+        } else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+            height = 230;
+        }
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
-        return 215;
+        height = 215;
     } else {
-        return 103;
+        height = 103;
     }
+    return height;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -299,6 +305,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         
         cell.productNameLabel.text = list.product_name;
         cell.productPriceLabel.text = list.product_price;
+        cell.productShopLabel.text = list.shop_name;
 
         NSString *stats = [NSString stringWithFormat:@"%@ Ulasan   %@ Diskusi",
                            list.product_review_count,
@@ -310,7 +317,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                range:NSMakeRange(0, list.product_review_count.length)];
         [attributedText addAttribute:NSFontAttributeName
                                value:boldFont
-                               range:NSMakeRange(list.product_review_count.length + 11, list.product_talk_count.length)];
+                               range:NSMakeRange(list.product_review_count.length + 10, list.product_talk_count.length)];
         
         cell.productInfoLabel.attributedText = attributedText;
 
@@ -333,7 +340,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     } else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
         cell.productNameLabel.text = list.catalog_name;
         cell.productPriceLabel.text = list.catalog_price;
-        
+        cell.productShopLabel.text = @"";
+        cell.infoLabelConstraint.constant = 0;
         NSString *stat = [NSString stringWithFormat:@"%@ Toko", list.catalog_count_shop];
         NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:stat];
         [attributedText addAttribute:NSFontAttributeName
@@ -418,7 +426,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
                 ((UILabel*)((GeneralProductCell*)cell).labelprice[i]).text = list.catalog_price?:@"";
                 ((UILabel*)((GeneralProductCell*)cell).labeldescription[i]).text = list.catalog_name?:@"";
-                ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = list.product_name?:@"";
+                ((UILabel*)((GeneralProductCell*)cell).labelalbum[i]).text = [NSString stringWithFormat:@"%@ Toko", list.catalog_count_shop];
+
                 NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.catalog_image_300] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
                 //request.URL = url;
                 

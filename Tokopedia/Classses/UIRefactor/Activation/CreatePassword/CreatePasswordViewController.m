@@ -15,15 +15,14 @@
 #import "TextField.h"
 #import <FacebookSDK/FacebookSDK.h>
 #import "AlertDatePickerView.h"
-#import "AlertView.h"
+#import "TKPDAlert.h"
 
 @interface CreatePasswordViewController ()
 <
     UIScrollViewDelegate,
     FBLoginViewDelegate,
     UITextFieldDelegate,
-    TKPDAlertViewDelegate,
-    CustomAlertViewDelegate
+    TKPDAlertViewDelegate
 >
 {
     CreatePassword *_createPassword;
@@ -336,9 +335,12 @@
 
         if (self.delegate && [self.delegate respondsToSelector:@selector(createPasswordSuccess)]) {
             [self.view layoutSubviews];
-            AlertView *alertView = [[AlertView alloc] initWithTitle:@"Anda telah berhasil membuat akun Tokopedia"];
-            alertView.delegate = self;
-            [alertView show];
+
+            TKPDAlert *alert = [TKPDAlert newview];
+            alert.text = @"Anda telah berhasil membuat akun Tokopedia";
+            alert.tag = 12;
+            alert.delegate = self;
+            [alert show];
         }
         
     } else if (_createPassword.message_error) {
@@ -408,16 +410,20 @@
 
 -(void)alertView:(TKPDAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    // alert date picker date of birth
-    NSDictionary *data = alertView.data;
-    NSDate *date = [data objectForKey:kTKPDALERTVIEW_DATADATEPICKERKEY];
-    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit
-                                                                   fromDate:date];
-    NSInteger year = [components year];
-    NSInteger month = [components month];
-    NSInteger day = [components day];
-    
-    _dateOfBirthTextField.text = [NSString stringWithFormat:@"%zd/%zd/%zd",day,month,year];
+    if (alertView.tag == 12) {
+        // alert date picker date of birth
+        NSDictionary *data = alertView.data;
+        NSDate *date = [data objectForKey:kTKPDALERTVIEW_DATADATEPICKERKEY];
+        NSDateComponents *components = [[NSCalendar currentCalendar] components:NSDayCalendarUnit|NSMonthCalendarUnit|NSYearCalendarUnit
+                                                                       fromDate:date];
+        NSInteger year = [components year];
+        NSInteger month = [components month];
+        NSInteger day = [components day];
+        
+        _dateOfBirthTextField.text = [NSString stringWithFormat:@"%zd/%zd/%zd",day,month,year];
+    } else {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 #pragma mark - Text field delegate

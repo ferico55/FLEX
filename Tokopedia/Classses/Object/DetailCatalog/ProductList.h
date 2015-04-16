@@ -14,5 +14,6 @@
 @property (nonatomic, strong) NSString *product_id;
 @property (nonatomic, strong) NSString *product_condition;
 @property (nonatomic, strong) NSString *product_name;
+@property (nonatomic, strong) NSString *shop_name;
 
 @end

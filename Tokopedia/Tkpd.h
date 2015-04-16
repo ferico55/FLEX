@@ -18,8 +18,6 @@
 //#endif
 
 #define kTKPD_AUTHKEY @"auth"
-
-#define kTKPD_AUTHKEY @"auth"
 #define kTKPD_ISLOGINKEY @"is_login"
 #define kTKPD_USERIMAGEKEY @"user_image"
 #define kTKPD_USERIDKEY @"user_id"

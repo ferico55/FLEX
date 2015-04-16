@@ -110,7 +110,7 @@
     CatalogShops *shop = [_catalog_shops objectAtIndex:indexPath.row];
     
     ProductList *product = [shop.product_list objectAtIndex:0];
-    cell.shopNameLabel.text = shop.shop_name;
+    cell.shopNameLabel.text = product.shop_name;
     cell.shopLocationLabel.text = shop.shop_location;
     cell.productNameLabel.text = product.product_name;
     cell.productConditionLabel.text = product.product_condition;
@@ -256,7 +256,8 @@
     [productListMapping addAttributeMappingsFromArray:@[API_PRODUCT_CONDITION_KEY,
                                                         API_PRODUCT_PRICE_KEY,
                                                         @"product_id",
-                                                        @"product_name"]];
+                                                        @"product_name",
+                                                        API_SHOP_NAME_KEY]];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
