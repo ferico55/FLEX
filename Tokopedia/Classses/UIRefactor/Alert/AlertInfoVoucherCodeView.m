@@ -27,7 +27,7 @@
                                           
     _infoLabel.attributedText = attributedText;
     
-    self.layer.cornerRadius = 5;
+    self.layer.cornerRadius = 5;    
 }
 
 @end

@@ -282,7 +282,8 @@
     [productListMapping addAttributeMappingsFromArray:@[API_PRODUCT_CONDITION_KEY,
                                                         API_PRODUCT_PRICE_KEY,
                                                         @"product_id",
-                                                        @"product_name"]];
+                                                        @"product_name",
+                                                        API_SHOP_NAME_KEY]];
     
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
@@ -466,7 +467,7 @@
                                                                                       alpha:1],
                                      };
         
-        NSString *description = _catalog.result.catalog_info.catalog_description;
+        NSString *description = [NSString convertHTML:_catalog.result.catalog_info.catalog_description];
         _descriptionLabel.attributedText = [[NSAttributedString alloc] initWithString:description
                                                                            attributes:attributes];
         

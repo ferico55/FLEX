@@ -13,17 +13,16 @@
 #import "SearchResultShopViewController.h"
 
 @interface TKPDTabNavigationController () <CategoryMenuViewDelegate>{
-	UIView* _tabbar;
-	NSArray* _buttons;
+	UIView *_tabbar;
+	NSArray *_buttons;
 	NSInteger _unloadSelectedIndex;
-	NSArray* _unloadViewControllers;
+	NSArray *_unloadViewControllers;
     BOOL _hascatalog;
     
     UIBarButtonItem *_barbuttoncategory;
 }
 
 @property (weak, nonatomic) IBOutlet UIButton *buttonlocation;
-
 @property (weak, nonatomic) IBOutlet UIButton *buttonfilter;
 @property (weak, nonatomic) IBOutlet UIView *container;
 @property (weak, nonatomic) IBOutlet UIView *tabbarthrees;
@@ -569,7 +568,7 @@
         if (count == 2) {
             _segmentcontrol.hidden = NO;
             [_segmentcontrol removeAllSegments];
-            [_segmentcontrol insertSegmentWithTitle:@"Product" atIndex:0 animated:NO];
+            [_segmentcontrol insertSegmentWithTitle:@"Produk" atIndex:0 animated:NO];
             _tabbar = _segmentcontrol;
             [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
             _hascatalog = NO;
@@ -577,8 +576,8 @@
         } else if (count == 3) {	//not default to 3
             _segmentcontrol.hidden = NO;
             [_segmentcontrol removeAllSegments];
-            [_segmentcontrol insertSegmentWithTitle:@"Product" atIndex:0 animated:NO];
-            [_segmentcontrol insertSegmentWithTitle:@"Catalog" atIndex:1 animated:NO];
+            [_segmentcontrol insertSegmentWithTitle:@"Produk" atIndex:0 animated:NO];
+            [_segmentcontrol insertSegmentWithTitle:@"Katalog" atIndex:1 animated:NO];
             _tabbar = _segmentcontrol;
             [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
             _hascatalog = YES;

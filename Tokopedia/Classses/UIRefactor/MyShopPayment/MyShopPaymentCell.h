@@ -25,13 +25,10 @@
 @property (nonatomic, assign) IBOutlet id<MyShopPaymentCellDelegate> delegate;
 #endif
 
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (weak, nonatomic) IBOutlet UIImageView *thumb;
-@property (weak, nonatomic) IBOutlet UISwitch *switchpayment;
-@property (weak, nonatomic) IBOutlet UILabel *labeldescription;
-@property (weak, nonatomic) IBOutlet UIButton *buttonterms;
-@property (strong, nonatomic) NSIndexPath *indexpath;
-@property (weak, nonatomic) IBOutlet UITextView *textviewdesc;
+@property (weak, nonatomic) IBOutlet UIImageView *thumbnailImageView;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *descriptionLabel;
+@property (strong, nonatomic) NSIndexPath *indexPath;
 
 + (id)newcell;
 

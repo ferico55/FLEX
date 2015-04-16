@@ -77,6 +77,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *shipmentJNEOkeLabel;
 @property (weak, nonatomic) IBOutlet UISwitch *shipmentJNEOkeSwitch;
 @property (weak, nonatomic) IBOutlet UISwitch *shipmentJNEAWBSwitch;
+@property (weak, nonatomic) IBOutlet UITableViewCell *shipmentJNEAWBCell;
 @property (weak, nonatomic) IBOutlet UISwitch *shipmentJNEMinimumWeightSwitch;
 @property (weak, nonatomic) IBOutlet UITextField *shipmentJNEMinimumWeightTextField;
 @property (weak, nonatomic) IBOutlet UILabel *shipmentJNEDifferentDistrictLabel;
@@ -129,6 +130,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *shipmentPosExtraFeeTextField;
 @property (weak, nonatomic) IBOutlet UILabel *shipmentPosNotAvailabelLabel;
 @property (weak, nonatomic) IBOutlet UITableViewCell *shipmentPosMoreInfoCell;
+@property (weak, nonatomic) IBOutlet UILabel *shipmentPosNoteCell;
 
 @property (weak, nonatomic) IBOutlet UILabel *shipmentCahayaNameLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *shipmentCahayaLogoImageView;
@@ -209,7 +211,14 @@
 
     _shipmentCahayaNotAvailabelLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentCahayaNotAvailabelLabel.text attributes:attributes];
     
+    _shipmentPosMinWeightLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentPosMinWeightLabel.text attributes:attributes];
+    
+    _shipmentPosExtraFeeLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentPosExtraFeeLabel.text attributes:attributes];
+    
     _shipmentPosNotAvailabelLabel.attributedText = [[NSAttributedString alloc] initWithString:_shipmentPosNotAvailabelLabel.text attributes:attributes];
+    
+    NSString *note = @"Berat maksimum paket biasa 30 kg. Berat maksimum paket lain nya 150 kg.";
+    _shipmentPosNoteCell.attributedText = [[NSAttributedString alloc] initWithString:note attributes:attributes];
     
     _operationQueue = [NSOperationQueue new];
     
@@ -328,7 +337,7 @@
             if ([_JNEPackageOke.active boolValue] ||
                 [_JNEPackageReguler.active boolValue] ||
                 [_JNEPackageYes.active boolValue]) {
-                height = 60;
+                height = 44;
             } else {
                 height = 0;
             }
@@ -384,7 +393,7 @@
             
         // cell to show "more information" cell
         else if (row == 10) {
-            height = 60;
+            height = 44;
         }
 
     } else {
@@ -432,7 +441,7 @@
         else if (row == 3) {
             if ([_tikiPackageReguler.active boolValue] ||
                 [_tikiPackageONS.active boolValue]) {
-                height = 58;
+                height = 50;
             } else {
                 height = 0;
             }
@@ -450,13 +459,18 @@
         
         // cell to show "more information" cell
         else if (row == 5) {
-            height = 60;
+            height = 44;
         }
+
+        else if (row == 6) {
+            height = 70;
+        }
+
     } else {
         if (row == 0) {
             height = 50;
         }
-        else if (row == 6) {
+        else if (row == 7) {
             height = 44;
         } else {
             height = 0;
@@ -494,14 +508,18 @@
         }
         
         else if (row == 3) {
-            height = 60;
+            height = 44;
+        }
+        
+        else if (row == 4) {
+            height = 70;
         }
         
     } else {
         if (row == 0) {
             height = 50;
         }
-        else if (row == 4) {
+        else if (row == 5) {
             height = 44;
         } else {
             height = 0;
@@ -529,14 +547,18 @@
         }
         
         else if (row == 2) {
-            height = 60;
+            height = 44;
+        }
+        
+        else if (row == 3) {
+            height = 70;
         }
         
     } else {
         if (row == 0) {
             height = 50;
         }
-        else if (row == 3) {
+        else if (row == 4) {
             height = 44;
         } else {
             height = 0;
@@ -587,7 +609,7 @@
             if ([_posPackageBiasa.active boolValue] ||
                 [_posPackageExpress.active boolValue] ||
                 [_posPackageKhusus.active boolValue]) {
-                height = 58;
+                height = 50;
             } else {
                 height = 0;
             }
@@ -610,7 +632,7 @@
             if ([_posPackageBiasa.active boolValue] ||
                 [_posPackageExpress.active boolValue] ||
                 [_posPackageKhusus.active boolValue]) {
-                height = 58;
+                height = 50;
             } else {
                 height = 0;
             }
@@ -627,16 +649,20 @@
                 height = 0;
             }
         }
-        
+
         else if (row == 8) {
-            height = 60;
+            height = 44;
+        }
+        
+        else if (row == 9) {
+            height = 100;
         }
         
     } else {
         if (row == 0) {
             height = 50;
         }
-        else if (row == 9) {
+        else if (row == 10) {
             height = 70;
         } else {
             height = 0;
@@ -658,13 +684,15 @@
                 height = 0;
             }
         } else if (row == 2) {
-            height = 60;
+            height = 44;
+        } else if (row == 3) {
+            height = 70;
         }
     } else {
         if (row == 0) {
             height = 50;
         }
-        else if (row == 3) {
+        else if (row == 4) {
             height = 70;
         } else {
             height = 0;
@@ -693,13 +721,18 @@
         }
         
         else if (row == 2) {
-            height = 60;
+            height = 44;
         }
+        
+        else if (row == 3) {
+            height = 70;
+        }
+        
     } else {
         if (row == 0) {
             height = 50;
         }
-        else if (row == 3) {
+        else if (row == 4) {
             height = 60;
         } else {
             height = 0;
@@ -720,27 +753,27 @@
             break;
             
         case 2:
-            numberOfRows = 7;
+            numberOfRows = 8;
             break;
             
         case 3:
-            numberOfRows = 5;
+            numberOfRows = 6;
             break;
             
         case 4:
-            numberOfRows = 4;
+            numberOfRows = 5;
             break;
             
         case 5:
-            numberOfRows = 10;
+            numberOfRows = 11;
             break;
             
         case 6:
-            numberOfRows = 4;
+            numberOfRows = 5;
             break;
 
         case 7:
-            numberOfRows = 4;
+            numberOfRows = 5;
             break;
             
         default:
@@ -758,6 +791,8 @@
     } else {
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         if ([cell isEqual:_shipmentJNEMoreInfoCell]) {
+            shouldHighlight = YES;
+        } else if ([cell isEqual:_shipmentJNEAWBCell]) {
             shouldHighlight = YES;
         } else if ([cell isEqual:_shipmentTikiMoreInfoCell]) {
             shouldHighlight = YES;
@@ -792,6 +827,8 @@
         nav.navigationBar.translucent = NO;
         
         [self.navigationController presentViewController:nav animated:YES completion:nil];
+    } else if (indexPath.section == 1 && indexPath.row == 4) {
+        
     }
 }
 
