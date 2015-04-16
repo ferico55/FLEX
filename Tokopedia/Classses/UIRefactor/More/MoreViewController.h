@@ -10,5 +10,5 @@
 
 @interface MoreViewController : UITableViewController
 
-
+- (IBAction)actionCreateShop:(id)sender;
 @end

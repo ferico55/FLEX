@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
+#import "CreateShopViewController.h"
 #import "MoreViewController.h"
 #import "more.h"
 #import "TKPDSecureStorage.h"
@@ -529,4 +530,10 @@
 }
 
 
+#pragma mark - Action
+- (IBAction)actionCreateShop:(id)sender
+{
+    CreateShopViewController *createShopViewController = [CreateShopViewController new];
+    [self pushViewController:createShopViewController];
+}
 @end
