@@ -541,6 +541,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                                  kTKPDSEARCH_APICATALOGNAMEKEY,
                                                  kTKPDSEARCH_APICATALOGPRICEKEY,
                                                  kTKPDSEARCH_APIPRODUCTIDKEY,
+                                                 kTKPDSEARCH_APISHOPGOLDSTATUS,
                                                  kTKPDSEARCH_APICATALOGIDKEY]];
     
     // paging mapping

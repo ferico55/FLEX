@@ -9,19 +9,23 @@
 #import "SubmitShipmentConfirmationViewController.h"
 #import "GeneralTableViewController.h"
 #import "StickyAlertView.h"
+#import "ZBarSDK.h"
 
 @interface SubmitShipmentConfirmationViewController ()
 <
     UITableViewDataSource,
     UITableViewDelegate,
-    GeneralTableViewControllerDelegate
+    GeneralTableViewControllerDelegate,
+    ZBarReaderDelegate
 >
 {
     BOOL _changeCourier;
     NSString *_receiptNumber;
     ShipmentCourier *_selectedCourier;
     ShipmentCourierPackage *_selectedCourierPackage;
+    ZBarReaderViewController *codeReader;
     
+    NSString *strNoResi;
     BOOL _shouldReloadData;
 }
 
@@ -132,11 +136,30 @@
         textField.placeholder = @"Nomor resi";
         textField.tag = 1;
         textField.font = [UIFont fontWithName:@"GothamBook" size:14];
+        textField.text = strNoResi;
         [cell addSubview:textField];
+        
+        
+        UIView *tempView = [cell viewWithTag:111];
+        if(tempView != nil)
+        {
+            [tempView removeFromSuperview];
+            tempView = nil;
+        }
+        
+        UIButton *btnScanCode = [UIButton buttonWithType:UIButtonTypeCustom];
+        btnScanCode.tag = 111;
+
+        int diameterFrame = 40;
+        btnScanCode.frame = CGRectMake(textField.bounds.size.width-30, (textField.bounds.size.height-diameterFrame)/2.0f, diameterFrame, diameterFrame);
+        [btnScanCode setImage:[UIImage imageNamed:@"icon_camera_grey_active.png"] forState:UIControlStateNormal];
+        [btnScanCode addTarget:self action:@selector(showCameraCode:) forControlEvents:UIControlEventTouchUpInside];
+        [cell addSubview:btnScanCode];
     }
     
     return cell;
 }
+
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
@@ -208,7 +231,61 @@
 
 }
 
+
+#pragma mark - UICamera Delegate
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    id<NSFastEnumeration> results = [info objectForKey: ZBarReaderControllerResults];
+    ZBarSymbol *symbol = nil;
+    for(symbol in results)  break;
+    
+    [picker dismissViewControllerAnimated:YES completion:^(void){
+        codeReader = nil;
+        strNoResi = symbol.data;
+        [_tableView reloadData];
+    }];
+}
+
+
 #pragma mark - Actions
+- (void)cancelCamera:(id)sender
+{
+    [codeReader dismissViewControllerAnimated:YES completion:^(void){
+        codeReader = nil;
+    }];
+}
+
+- (void)showCameraCode:(id)sender
+{
+    codeReader = [ZBarReaderViewController new];
+    codeReader.readerDelegate=self;
+    codeReader.supportedOrientationsMask = ZBarOrientationMaskAll;
+    codeReader.showsZBarControls = NO;
+    codeReader.showsCameraControls = NO;
+    
+    
+    ZBarImageScanner *scanner = codeReader.scanner;
+    [scanner setSymbology: ZBAR_CODE128 config: ZBAR_CFG_ENABLE to: 0];
+    [scanner setSymbology: ZBAR_I25 config: ZBAR_CFG_ENABLE to: 0];
+    
+    [self presentViewController:codeReader animated:YES completion:^{
+        UIView *overLayView = [[UIView alloc] initWithFrame:CGRectMake(0, codeReader.view.bounds.size.height-50, self.view.bounds.size.width, 50)];
+        overLayView.backgroundColor = [UIColor lightGrayColor];
+        
+        int diameterCancel = 10;
+        UIButton *btnCancel = [UIButton buttonWithType:UIButtonTypeCustom];
+        btnCancel.frame = CGRectMake(diameterCancel, diameterCancel, overLayView.bounds.size.height-(diameterCancel*2), overLayView.bounds.size.height-(diameterCancel*2));
+        btnCancel.layer.borderColor = [btnCancel.titleLabel.textColor CGColor];
+        btnCancel.layer.borderWidth = 1.0f;
+        btnCancel.layer.cornerRadius = (btnCancel.bounds.size.height-diameterCancel)/2.0f;
+        btnCancel.layer.masksToBounds = YES;
+        [btnCancel addTarget:self action:@selector(cancelCamera:) forControlEvents:UIControlEventTouchUpInside];
+        [btnCancel setTitle:@"X" forState:UIControlStateNormal];
+        [overLayView addSubview:btnCancel];
+        
+        [codeReader.view addSubview:overLayView];
+    }];
+}
 
 - (IBAction)tap:(id)sender
 {

@@ -150,7 +150,7 @@
                     </connections>
                 </scrollView>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="APb-x3-lmz">
-                    <rect key="frame" x="150" y="238" width="20" height="20"/>
+                    <rect key="frame" x="150" y="163" width="20" height="20"/>
                 </activityIndicatorView>
                 <label hidden="YES" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="292" translatesAutoresizingMaskIntoConstraints="NO" id="klK-p8-rjh">
                     <rect key="frame" x="15" y="15" width="241" height="14"/>

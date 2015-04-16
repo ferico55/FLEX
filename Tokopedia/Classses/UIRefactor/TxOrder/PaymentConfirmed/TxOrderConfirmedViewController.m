@@ -425,7 +425,7 @@
 - (void)actionBeforeRequest:(int)tag {
 
     _tableView.tableFooterView = nil;
-    [_act stopAnimating];
+    [_act startAnimating];
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag {

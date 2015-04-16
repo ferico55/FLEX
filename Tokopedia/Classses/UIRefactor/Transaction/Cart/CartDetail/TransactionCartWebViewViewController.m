@@ -14,11 +14,11 @@
 #define CLICK_BCA_LOGIN_URL @"https://klikpay.klikbca.com/login.do?action=loginRequest"
 #define CLICK_BCA_LOGIN_PAYEMNET_URL @"https://klikpay.klikbca.com/purchasing/purchase.do?action=loginRequest"
 #define CLICK_BCA_SUMMARY_URL @"https://klikpay.klikbca.com/purchasing/payment.do?action=summaryRequest"
+#define CLICK_BCA_VIEW_TRANSACTION @"https://klikpay.klikbca.com/purchasing/payment.do?action=viewTransaction"
 
 @interface TransactionCartWebViewViewController ()<UIWebViewDelegate, UIAlertViewDelegate>
 {
-
-    
+    BOOL _isSuccessBCA;
     NSOperationQueue *_operationQueue;
 }
 
@@ -84,6 +84,8 @@
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
     backBarButtonItem.tag = 20;
     self.navigationItem.leftBarButtonItem = backBarButtonItem;
+    
+    _isSuccessBCA = NO;
 }
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
@@ -96,6 +98,9 @@
             [_delegate shouldDoRequestBCAClickPay];
             return NO;
         }
+        if ([request.URL.absoluteString isEqualToString:CLICK_BCA_VIEW_TRANSACTION]) {
+            _isSuccessBCA = YES;
+        }
         
         if ([webView.request.URL.absoluteString isEqualToString:CLICK_BCA_SUMMARY_URL]) {
             UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
@@ -105,7 +110,7 @@
         }
         else if ([webView.request.URL.absoluteString isEqualToString:CLICK_BCA_LOGIN_URL]||[webView.request.URL.absoluteString isEqualToString:CLICK_BCA_LOGIN_PAYEMNET_URL])
         {
-            UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"Icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
+            UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_close_white.png"] style:UIBarButtonItemStylePlain target:self action:@selector(tap:)];
             [backBarButtonItem setTintColor:[UIColor whiteColor]];
             backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
             self.navigationItem.leftBarButtonItem = backBarButtonItem;
@@ -136,9 +141,6 @@
 {
     [_act stopAnimating];
     NSLog(@"URL String WebView %@", [webView request]);
-    
-     NSInteger gateway = [_gateway integerValue];
-    
 }
 
 -(void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
@@ -173,6 +175,15 @@
     if (buttonIndex == 1) {
         [_delegate refreshCartAfterCancelPayment];
         [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    if (_isSuccessBCA) {
+        [_delegate shouldDoRequestBCAClickPay];
     }
 }
 

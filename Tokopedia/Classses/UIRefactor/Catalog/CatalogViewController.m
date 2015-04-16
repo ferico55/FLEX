@@ -129,6 +129,7 @@
 
     CGRect frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.width);
     UIImageView *catalogImageView = [[UIImageView alloc] initWithFrame:frame];
+    catalogImageView.contentMode = UIViewContentModeScaleAspectFit;
     [catalogImageView setImageWithURL:[NSURL URLWithString:catalogImageURL]
                      placeholderImage:[UIImage imageNamed:@"icon_toped_loading_grey.png"]];
     [_productPhotoScrollView addSubview:catalogImageView];

@@ -159,7 +159,6 @@
                 TxOrderPaymentViewController *vc = [TxOrderPaymentViewController new];
                 vc.delegate = self;
                 vc.data = @{DATA_SELECTED_ORDER_KEY : _selectedOrders};
-                [_list removeObjectsInArray:_selectedOrders];
                 [self.navigationController pushViewController:vc animated:YES];
             }
             else{
@@ -508,7 +507,7 @@
 - (void)actionBeforeRequest:(int)tag {
     
     _tableView.tableFooterView = _footer;
-    [_act stopAnimating];
+    [_act startAnimating];
 }
 
 - (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag{
@@ -926,7 +925,14 @@
 -(void)successConfirmPayment:(NSArray *)payment
 {
     [_list removeObjectsInArray:payment];
+    [_tableView reloadData];
     [_delegate successCancelOrConfirmPayment];
+}
+
+-(void)failedOrCancelConfirmPayment:(NSArray *)payment
+{
+    [_list addObject:payment];
+    [_tableView reloadData];
 }
 
 @end

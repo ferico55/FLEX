@@ -20,7 +20,7 @@
 @interface ProductFeedViewController() <UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate, UIScrollViewDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (weak, nonatomic) IBOutlet UIView *footer;
+@property (strong, nonatomic) IBOutlet UIView *footer;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 
 @property (nonatomic, strong) NSMutableArray *product;
@@ -93,6 +93,7 @@ typedef enum TagRequest {
     _networkManager.delegate = self;
     _networkManager.tagRequest = ProductFeedTag;
     
+    _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
     /** create new **/
@@ -378,6 +379,11 @@ typedef enum TagRequest {
     return _objectmanager;
 }
 
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    
+}
+
 - (void)actionBeforeRequest:(int)tag {
     if (!_isrefreshview) {
         _table.tableFooterView = _footer;
@@ -409,6 +415,7 @@ typedef enum TagRequest {
 }
 
 - (void)actionAfterFailRequestMaxTries:(int)tag {
+    _isrefreshview = NO;
     [_refreshControl endRefreshing];
     _table.tableFooterView = _loadingView.view;
 }
@@ -416,6 +423,7 @@ typedef enum TagRequest {
 #pragma mark - Delegate LoadingView
 - (void)pressRetryButton {
     _table.tableFooterView = _footer;
+    [_act startAnimating];
     [_networkManager doRequest];
 }
 

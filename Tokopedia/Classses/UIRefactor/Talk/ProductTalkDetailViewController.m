@@ -18,6 +18,7 @@
 #import "MGSwipeButton.h"
 #import "GeneralAction.h"
 #import "DetailProductViewController.h"
+#import "LoginViewController.h"
 
 #import "ProfileBiodataViewController.h"
 #import "ProfileFavoriteShopViewController.h"
@@ -31,7 +32,7 @@
 #import "stringrestkit.h"
 #import "string_more.h"
 
-@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate, ReportViewControllerDelegate>
+@interface ProductTalkDetailViewController () <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,MGSwipeTableCellDelegate, HPGrowingTextViewDelegate, ReportViewControllerDelegate, LoginViewDelegate>
 {
     BOOL _isnodata;
     NSMutableArray *_list;
@@ -181,7 +182,11 @@
     [_talkProductImage setUserInteractionEnabled:YES];
     
     [self setHeaderData:_data];
-    [self initTalkInputView];
+    
+    if([_userManager getUserId] && ![[_userManager getUserId] isEqualToString:@"0"]) {
+        [self initTalkInputView];
+    }
+
     
     NSDictionary *userinfo;
     userinfo = @{kTKPDDETAIL_DATAINDEXKEY:[_data objectForKey:kTKPDDETAIL_DATAINDEXKEY]};
@@ -515,7 +520,7 @@
     [resultMapping addPropertyMapping:pageRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDINBOX_TALK_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILTALK_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
@@ -531,14 +536,15 @@
     }
     
     NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETINBOXDETAIL,
+                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETCOMMENTBYTALKID,
                             TKPD_TALK_ID : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
+                            kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:TKPD_TALK_SHOP_ID],
                             kTKPDDETAIL_APIPAGEKEY : @(_page)
                             };
 //    [_cachecontroller getFileModificationDate];
 //	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
 //	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDINBOX_TALK_APIPATH parameters:[param encrypt]];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILTALK_APIPATH parameters:[param encrypt]];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [_timer invalidate];
             [_sendButton setEnabled:YES];
@@ -733,46 +739,66 @@
         UIButton *btn = (UIButton *)sender;
         switch (btn.tag) {
             case 10: {
-                
                 NSInteger lastindexpathrow = [_list count];
                 TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
                 NSDictionary* auth = [secureStorage keychainDictionary];
                 _auth = [auth mutableCopy];
+
                 
-                TalkCommentList *commentlist = [TalkCommentList new];
-                commentlist.comment_message =_growingtextview.text;
-                commentlist.comment_user_name = [_auth objectForKey:@"full_name"];
-                commentlist.comment_user_image = [_auth objectForKey:@"user_image"];
+                if(_auth)
+                {
+                    TalkCommentList *commentlist = [TalkCommentList new];
+                    commentlist.comment_message =_growingtextview.text;
+                    commentlist.comment_user_name = [_auth objectForKey:@"full_name"];
+                    commentlist.comment_user_image = [_auth objectForKey:@"user_image"];
+                    
+                    
+                    NSDate *today = [NSDate date];
+                    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+                    [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
+                    NSString *dateString = [dateFormat stringFromDate:today];
+                    
+                    commentlist.comment_create_time = [dateString stringByAppendingString:@"WIB"];
+                    commentlist.is_just_sent = YES;
+                    
+                    [_list insertObject:commentlist atIndex:lastindexpathrow];
+                    NSArray *insertIndexPaths = [NSArray arrayWithObjects:
+                                                 [NSIndexPath indexPathForRow:lastindexpathrow inSection:0],nil
+                                                 ];
+                    
+                    [_table beginUpdates];
+                    [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
+                    [_table endUpdates];
+                    
+                    NSIndexPath *indexpath = [NSIndexPath indexPathForRow:lastindexpathrow inSection:0];
+                    [_table scrollToRowAtIndexPath:indexpath
+                                  atScrollPosition:UITableViewScrollPositionTop
+                                          animated:YES];
+                    
+                    //connect action to web service
+                    [self configureSendCommentRestkit];
+                    [self addProductCommentTalk];
+                    
+                    _growingtextview.text = nil;
+                    [_growingtextview resignFirstResponder];
+                }
+                else
+                {
+                    UINavigationController *navigationController = [[UINavigationController alloc] init];
+                    navigationController.navigationBar.backgroundColor = [UIColor colorWithCGColor:[UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1].CGColor];
+                    navigationController.navigationBar.translucent = NO;
+                    navigationController.navigationBar.tintColor = [UIColor whiteColor];
+                    
+                    
+                    LoginViewController *controller = [LoginViewController new];
+                    controller.delegate = self;
+                    controller.isPresentedViewController = YES;
+                    controller.redirectViewController = self;
+                    navigationController.viewControllers = @[controller];
+                    
+                    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+                }
                 
-                
-                NSDate *today = [NSDate date];
-                NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
-                [dateFormat setDateFormat:@"dd MMMM yyyy, HH:m"];
-                NSString *dateString = [dateFormat stringFromDate:today];
-                
-                commentlist.comment_create_time = [dateString stringByAppendingString:@"WIB"];
-                commentlist.is_just_sent = YES;
-                
-                [_list insertObject:commentlist atIndex:lastindexpathrow];
-                NSArray *insertIndexPaths = [NSArray arrayWithObjects:
-                                             [NSIndexPath indexPathForRow:lastindexpathrow inSection:0],nil
-                                             ];
-                
-                [_table beginUpdates];
-                [_table insertRowsAtIndexPaths:insertIndexPaths withRowAnimation:UITableViewRowAnimationTop];
-                [_table endUpdates];
-                
-                NSIndexPath *indexpath = [NSIndexPath indexPathForRow:lastindexpathrow inSection:0];
-                [_table scrollToRowAtIndexPath:indexpath
-                              atScrollPosition:UITableViewScrollPositionTop
-                                      animated:YES];
-                
-                //connect action to web service
-                [self configureSendCommentRestkit];
-                [self addProductCommentTalk];
-                
-                 _growingtextview.text = nil;
-                [_growingtextview resignFirstResponder];
                 break;
             }
                 
@@ -1004,10 +1030,10 @@
         CGFloat padding = 15;
         NSIndexPath *indexPath = ((GeneralTalkCommentCell*) cell).indexpath;
         TalkCommentList *list = _list[indexPath.row];
-        [_datainput setObject:list.comment_talk_id forKey:@"comment_id"];
+        [_datainput setObject:list.comment_id forKey:@"comment_id"];
         [_datainput setObject:[_data objectForKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY] forKey:@"product_id"];
         
-        if([[_userManager getUserId] isEqualToString:list.comment_user_id]) {
+        if(![[_userManager getUserId] isEqualToString:list.comment_user_id]) {
             MGSwipeButton * report = [MGSwipeButton buttonWithTitle:@"Laporkan" backgroundColor:[UIColor colorWithRed:0 green:122/255.0 blue:255.05 alpha:1.0] padding:padding callback:^BOOL(MGSwipeTableCell *sender) {
                 _reportAction = @"report_comment_talk";
                 ReportViewController *reportController = [ReportViewController new];
@@ -1072,7 +1098,9 @@
     NSDictionary *param = @{
                             @"action" : @"delete_comment_talk",
                             @"product_id" : [_datainput objectForKey:@"product_id"],
-                            @"comment_id" : [_datainput objectForKey:@"comment_id"]
+                            @"comment_id" : [_datainput objectForKey:@"comment_id"],
+                            @"shop_id" : [_data objectForKey:@"talk_shop_id"],
+                            @"talk_id" : [_data objectForKey:@"talk_id"]
                             };
     
     _requestDeleteComment = [_objectDeleteCommentManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDACTIONTALK_APIPATH parameters:[param encrypt]];
@@ -1203,4 +1231,11 @@
 }
 */
 
+
+
+#pragma mark - LoginView Delegate
+- (void)redirectViewController:(id)viewController
+{
+
+}
 @end

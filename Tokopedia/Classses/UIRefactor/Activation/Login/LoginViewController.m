@@ -17,6 +17,7 @@
 #import "TKPDSecureStorage.h"
 #import "StickyAlertView.h"
 #import "TextField.h"
+#import "ForgotPasswordViewController.h"
 
 #import <FacebookSDK/FacebookSDK.h>
 #import <QuartzCore/QuartzCore.h>
@@ -56,7 +57,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 
 @property (weak, nonatomic) IBOutlet UIImageView *screenLogin;
-@property (weak, nonatomic) IBOutlet UILabel *forgetPasswordButton;
+@property (weak, nonatomic) IBOutlet UIButton *forgetPasswordButton;
 
 
 - (void)cancelLogin;
@@ -141,8 +142,8 @@
     [[FBSession activeSession] close];
     [FBSession setActiveSession:nil];
     
-    TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-    [storage resetKeychain];
+//    TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
+//    [storage resetKeychain];
     
     _loginButton.layer.cornerRadius = 2;
     
@@ -185,44 +186,59 @@
                 break;
         }
     } else if ([sender isKindOfClass:[UIButton class]]) {
-        /** SIGN IN **/
-        NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
-        NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
-        NSMutableArray *messages = [NSMutableArray new];
-        BOOL valid = NO;
-        NSString *message;
-        if (email && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""] && [email isEmail]) {
-            valid = YES;
-        }
-        if (!email||[email isEqualToString:@""]) {
-            message = @"Email harus diisi.";
-            [messages addObject:message];
-            valid = NO;
-        }
-        if (email) {
-            if (![email isEmail]) {
-                message = @"Format email salah.";
-                [messages addObject:message];
-                valid = NO;
+        UIButton *btn = (UIButton*)sender;
+        switch (btn.tag) {
+            case 10: {
+                /** SIGN IN **/
+                NSString *email = [_activation objectForKey:kTKPDACTIVATION_DATAEMAILKEY];
+                NSString *pass = [_activation objectForKey:kTKPDACTIVATION_DATAPASSKEY];
+                NSMutableArray *messages = [NSMutableArray new];
+                BOOL valid = NO;
+                NSString *message;
+                if (email && pass && ![email isEqualToString:@""] && ![pass isEqualToString:@""] && [email isEmail]) {
+                    valid = YES;
+                }
+                if (!email||[email isEqualToString:@""]) {
+                    message = @"Email harus diisi.";
+                    [messages addObject:message];
+                    valid = NO;
+                }
+                if (email) {
+                    if (![email isEmail]) {
+                        message = @"Format email salah.";
+                        [messages addObject:message];
+                        valid = NO;
+                    }
+                }
+                if (!pass || [pass isEqualToString:@""]) {
+                    message = @"Password harus diisi";
+                    [messages addObject:message];
+                    valid = NO;
+                }
+                
+                if (valid) {
+                    NSDictionary *userinfo = @{kTKPDACTIVATION_DATAEMAILKEY : email, kTKPDACTIVATION_DATAPASSKEY : pass};
+                    [self configureRestKitLogin];
+                    [self requestActionLogin:userinfo];
+                }
+                else{
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
+                    [alert show];
+                }
+                
+                NSLog(@"message : %@", messages);
+                break;
             }
-        }
-        if (!pass || [pass isEqualToString:@""]) {
-            message = @"Password harus diisi";
-            [messages addObject:message];
-            valid = NO;
-        }
-        
-        if (valid) {
-            NSDictionary *userinfo = @{kTKPDACTIVATION_DATAEMAILKEY : email, kTKPDACTIVATION_DATAPASSKEY : pass};
-            [self configureRestKitLogin];
-            [self requestActionLogin:userinfo];
-        }
-        else{
-            StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
-            [alert show];
+                
+            case 11 : {
+                ForgotPasswordViewController *controller = [ForgotPasswordViewController new];
+                [self.navigationController pushViewController:controller animated:YES];
+                break;
+            }
+            default:
+                break;
         }
         
-        NSLog(@"message : %@", messages);
     }
 }
 #pragma mark - Memory Management
@@ -293,6 +309,7 @@
                                                         kTKPDLOGIN_API_STATUS_KEY               : kTKPDLOGIN_API_STATUS_KEY,
                                                         kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY   : kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY,
                                                         kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY   : kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY,
+                                                        kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY : kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY,
                                                         }];
     //add relationship mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
@@ -332,6 +349,7 @@
                                                         kTKPDLOGIN_API_STATUS_KEY               : kTKPDLOGIN_API_STATUS_KEY,
                                                         kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY   : kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY,
                                                         kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY   : kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY,
+                                                            kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY : kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY,
                                                         }];
     //add relationship mapping
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
@@ -460,6 +478,7 @@
             [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
             [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
+            [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
             [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
             [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
             
@@ -486,6 +505,7 @@
             [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
             [secureStorage setKeychainWithValue:_login.result.shop_avatar withKey:kTKPD_SHOPIMAGEKEY];
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
+            [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
 
             CreatePasswordViewController *controller = [CreatePasswordViewController new];
             controller.login = _login;
@@ -534,6 +554,7 @@
             [secureStorage setKeychainWithValue:@(_login.result.shop_is_gold) withKey:kTKPD_SHOPISGOLD];
             [secureStorage setKeychainWithValue:_login.result.msisdn_is_verified withKey:kTKPDLOGIN_API_MSISDN_IS_VERIFIED_KEY];
             [secureStorage setKeychainWithValue:_login.result.msisdn_show_dialog withKey:kTKPDLOGIN_API_MSISDN_SHOW_DIALOG_KEY];
+            [secureStorage setKeychainWithValue:_login.result.device_token_id withKey:kTKPDLOGIN_API_DEVICE_TOKEN_ID_KEY];
             
             //add user login to GA
             id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
