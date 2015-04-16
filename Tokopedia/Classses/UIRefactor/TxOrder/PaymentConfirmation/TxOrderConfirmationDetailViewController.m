@@ -33,6 +33,7 @@
     NavigateViewController *_navigate;
     
     UILabel *_addressLabel;
+    UILabel *_remarkLabel;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *headerView;
@@ -160,7 +161,18 @@
     BOOL isDropshipper = (![orderList.order_detail.detail_dropship_name isEqualToString:@"0"]);
     NSInteger rowCount = orderList.order_products.count;
     if (indexPath.row < rowCount)
-        height = PRODUCT_CELL_HEIGHT;
+    {
+        CGSize maximumLabelSize = CGSizeMake(200,9999);
+        
+        CGSize expectedLabelSize = [_remarkLabel.text sizeWithFont:_remarkLabel.font
+                                                  constrainedToSize:maximumLabelSize
+                                                      lineBreakMode:_remarkLabel.lineBreakMode];
+        
+        //adjust the label the the new height.
+        CGRect newFrame = _remarkLabel.frame;
+        newFrame.size.height = expectedLabelSize.height;
+        height = PRODUCT_CELL_HEIGHT + newFrame.size.height;
+    }
     else if(indexPath.row == rowCount)
         height = SHIPMENT_HEIGHT;
     else if (indexPath.row == rowCount+1)
@@ -171,7 +183,7 @@
         else
         {
             //Calculate the expected size based on the font and linebreak mode of your label
-            CGSize maximumLabelSize = CGSizeMake(150,9999);
+            CGSize maximumLabelSize = CGSizeMake(200,9999);
             
             CGSize expectedLabelSize = [_addressLabel.text sizeWithFont:_addressLabel.font
                                                           constrainedToSize:maximumLabelSize
@@ -180,14 +192,13 @@
             //adjust the label the the new height.
             CGRect newFrame = _addressLabel.frame;
             newFrame.size.height = expectedLabelSize.height;
-            _addressLabel.frame = newFrame;
-            height = COST_CELL_HEIGHT-77 + newFrame.size.height;
+            height = COST_CELL_HEIGHT - 50 + newFrame.size.height;
         }
     }
     else
     {
         //Calculate the expected size based on the font and linebreak mode of your label
-        CGSize maximumLabelSize = CGSizeMake(150,9999);
+        CGSize maximumLabelSize = CGSizeMake(200,9999);
         
         CGSize expectedLabelSize = [_addressLabel.text sizeWithFont:_addressLabel.font
                                           constrainedToSize:maximumLabelSize
@@ -196,8 +207,7 @@
         //adjust the label the the new height.
         CGRect newFrame = _addressLabel.frame;
         newFrame.size.height = expectedLabelSize.height;
-        _addressLabel.frame = newFrame;
-        height = COST_CELL_HEIGHT-77 + newFrame.size.height;
+        height = COST_CELL_HEIGHT - 50 + newFrame.size.height;
     }
     return height;
 }
@@ -304,7 +314,8 @@
     
     cell.productNameLabel.text = orderProduct.product_name;
     cell.productPriceLabel.text = orderProduct.product_price;
-    cell.remarkTextView.text = [orderProduct.product_notes isEqualToString:@"0"]?@"":orderProduct.product_notes;
+    [cell.remarkLabel setCustomAttributedText:[orderProduct.product_notes isEqualToString:@"0"]?@"":[NSString convertHTML:orderProduct.product_notes]];
+    _remarkLabel = cell.remarkLabel;
     
     NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:orderProduct.product_picture] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
@@ -366,7 +377,7 @@
     cell.shipmentLabel.text = [NSString stringWithFormat:@"%@ - %@",orderList.order_shipment.shipment_name, orderList.order_shipment.shipment_product];
     BOOL isDropshipper = (![orderList.order_detail.detail_dropship_name isEqualToString:@"0"]);
     [cell.dropshipLabel setText:(isDropshipper)?@"Ya":@"Tidak" animated:YES];
-    cell.insuranceLabel.text = (orderList.order_detail.detail_force_insurance==1)?@"Wajib Asuransi":([orderList.order_detail.detail_insurance_price isEqualToString:@"0"])?@"Ya":@"Tidak";
+    cell.insuranceLabel.text = (orderList.order_detail.detail_force_insurance==1)?@"Wajib Asuransi":([orderList.order_detail.detail_insurance_price isEqualToString:@"0"])?@"Tidak":@"Ya";
     cell.partialLabel.text = (orderList.order_detail.detail_partial_order==0)?@"Tidak":@"Ya";
     return cell;
 }

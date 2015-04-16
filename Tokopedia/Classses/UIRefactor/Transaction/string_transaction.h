@@ -105,6 +105,7 @@ typedef enum
 #define DATA_DROPSHIPPER_PHONE_KEY @"dropshipper_phone"
 #define DATA_PARTIAL_LIST_KEY @"partial_list"
 #define DATA_CART_SUMMARY_KEY @"cart_summary"
+#define DATA_CART_SUMMARY_LIST_KEY @"cart_summary_list"
 #define DATA_CART_RESULT_KEY @"data_cart_result"
 #define DATA_KEY @"data"
 #define DATA_USED_SALDO_KEY @"saldo_is_used"
@@ -330,10 +331,10 @@ typedef enum
 
 #define FORMAT_CART_DROPSHIP_NAME_KEY @"dropship_name-%zd-%zd-%zd-%zd"
 #define FORMAT_CART_DROPSHIP_PHONE_KEY @"dropship_telp-%zd-%zd-%zd-%zd"
-#define FORMAT_CART_CANCEL_PARTIAL_PHONE_KEY @"fcancel_partial-%zd-%zd-%zd"
+#define FORMAT_CART_CANCEL_PARTIAL_KEY @"fcancel_partial-%zd-%zd-%zd"
 #define FORMAT_CART_DROPSHIP_STR_KEY @"%zd~%zd~%zd~%zd"
 #define FORMAT_CART_DROPSHIP_STR_CART_SUMMARY_KEY @"%zd-%zd-%zd-%zd"
-#define FORMAT_CART_PARTIAL_STR_KEY @"%zd-%zd-%zd"
+#define FORMAT_CART_PARTIAL_STR_KEY @"%zd~%zd~%zd"
 #define FORMAT_CART_PARTIAL_STR_CART_SUMMARY_KEY @"%zd-%zd-%zd"
 
 #define FORMAT_SUCCESS_BUY @"Terima kasih, Anda telah berhasil melakukan checkout pemesanan dengan memilih pembayaran %@"
