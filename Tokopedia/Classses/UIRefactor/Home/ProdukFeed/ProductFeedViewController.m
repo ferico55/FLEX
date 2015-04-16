@@ -16,6 +16,7 @@
 #import "DetailProductViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
+#import "NoResultView.h"
 
 @interface ProductFeedViewController() <UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate, UIScrollViewDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
 
@@ -71,6 +72,7 @@ typedef enum TagRequest {
     NSOperationQueue *_operationQueue;
     TokopediaNetworkManager *_networkManager;
     LoadingView *_loadingView;
+    NoResultView *_noResult;
 }
 
 #pragma mark - Initialization
@@ -95,6 +97,8 @@ typedef enum TagRequest {
     
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
+    
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     /** create new **/
     _product = [NSMutableArray new];
@@ -405,6 +409,9 @@ typedef enum TagRequest {
         _isnodata = NO;
         _urinext =  feed.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_urinext] integerValue];
+    } else {
+        _isnodata = YES;
+        _table.tableFooterView = _noResult;
     }
     
     if(_refreshControl.isRefreshing) {

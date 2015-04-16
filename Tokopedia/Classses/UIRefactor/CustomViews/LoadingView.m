@@ -32,7 +32,9 @@
     }
     _buttonRetry.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     _buttonRetry.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [_buttonRetry setTitle:@"Terjadi kendala teknis \nMohon ulangi permintaan." forState:UIControlStateNormal];
+    [_buttonRetry setTitle:@"Coba Kembali" forState:UIControlStateNormal];
+    
+
     return self;
 }
 

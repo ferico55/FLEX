@@ -116,6 +116,8 @@
     
     [self initNavigationBar];
     [self initReviewData];
+    
+    
     [self initTalkInputView];
     self.title = @"Ulasan";
     
@@ -153,6 +155,10 @@
     if([_review.review_response.response_message isEqualToString:@"0"]) {
         [_commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];
         
+        if([[_userManager getUserId] isEqualToString:@"0"] || ![_userManager isMyShopWithShopId:_review.review_shop_id]) {
+            [self hideInputView];
+        }
+
         _respondView.hidden = YES;
         
     } else {

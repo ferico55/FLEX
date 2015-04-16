@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		20E4A97B4549BDCA1BE88ACC /* libPods-TokopediaTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8736842CEA8A205F5130B0E3 /* libPods-TokopediaTests.a */; };
 		7AC068F31ADCCE5B00CAB2DC /* LogoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC068F21ADCCE5B00CAB2DC /* LogoutViewController.m */; };
+		7AC068F61ADF779F00CAB2DC /* NSStringAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC068F51ADF779F00CAB2DC /* NSStringAttribute.m */; };
 		7AD2D81C1ADBB1BA003E1F94 /* URLCacheAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2CF921ADBB1B7003E1F94 /* URLCacheAlert.m */; };
 		7AD2D81D1ADBB1BA003E1F94 /* URLCacheConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2CF941ADBB1B7003E1F94 /* URLCacheConnection.m */; };
 		7AD2D81E1ADBB1BA003E1F94 /* URLCacheController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2CF961ADBB1B7003E1F94 /* URLCacheController.m */; };
@@ -1342,6 +1343,8 @@
 		28F341981A2586D800349DD2 /* libPods-Tokopedia.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libPods-Tokopedia.a"; path = "Pods/build/Debug-iphoneos/libPods-Tokopedia.a"; sourceTree = "<group>"; };
 		7AC068F11ADCCE5B00CAB2DC /* LogoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogoutViewController.h; path = Logout/LogoutViewController.h; sourceTree = "<group>"; };
 		7AC068F21ADCCE5B00CAB2DC /* LogoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogoutViewController.m; path = Logout/LogoutViewController.m; sourceTree = "<group>"; };
+		7AC068F41ADF779F00CAB2DC /* NSStringAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringAttribute.h; sourceTree = "<group>"; };
+		7AC068F51ADF779F00CAB2DC /* NSStringAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringAttribute.m; sourceTree = "<group>"; };
 		7AD2CF911ADBB1B7003E1F94 /* URLCacheAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheAlert.h; sourceTree = "<group>"; };
 		7AD2CF921ADBB1B7003E1F94 /* URLCacheAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = URLCacheAlert.m; sourceTree = "<group>"; };
 		7AD2CF931ADBB1B7003E1F94 /* URLCacheConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = URLCacheConnection.h; sourceTree = "<group>"; };
@@ -3508,6 +3511,8 @@
 				7AD2CFB31ADBB1B7003E1F94 /* UIKitCategory.m */,
 				7AD2CFB41ADBB1B7003E1F94 /* UITextView+UITextView_Placeholder.h */,
 				7AD2CFB51ADBB1B7003E1F94 /* UITextView+UITextView_Placeholder.m */,
+				7AC068F41ADF779F00CAB2DC /* NSStringAttribute.h */,
+				7AC068F51ADF779F00CAB2DC /* NSStringAttribute.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -8322,6 +8327,7 @@
 				7AD2DA001ADBB1BA003E1F94 /* ProductFeedViewController.m in Sources */,
 				7AD2D84C1ADBB1BA003E1F94 /* SpecChilds.m in Sources */,
 				7AD2DAB81ADBB1BA003E1F94 /* ShipmentConfirmationViewController.m in Sources */,
+				7AC068F61ADF779F00CAB2DC /* NSStringAttribute.m in Sources */,
 				7AD2D9F21ADBB1BA003E1F94 /* ReportViewController.m in Sources */,
 				7AD2DB781ADBB1BA003E1F94 /* TxOrderConfirmedButtonArrowCell.m in Sources */,
 				7AD2D8C71ADBB1BA003E1F94 /* BankAccountGetDefaultFormResult.m in Sources */,
