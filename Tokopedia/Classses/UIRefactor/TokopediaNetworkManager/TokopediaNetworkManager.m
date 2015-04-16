@@ -71,11 +71,15 @@
             if(_delegate && [_delegate respondsToSelector:@selector(actionFailAfterRequest:withTag:)]) {
                 [_delegate actionFailAfterRequest:processResult withTag:self.tagRequest];
             }
-            else if(_delegate != nil)
+            else 
             {
+                NSLog(@"Error Code : %ld", (long)[(NSError*)error code]) ;
                 NSString *errorDescription = error.localizedDescription;
                 UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
+                if(![errorAlert isVisible]) {
+                    [errorAlert show];                    
+                }
+
             }
         }
     }

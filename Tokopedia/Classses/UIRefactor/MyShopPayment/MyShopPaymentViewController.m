@@ -14,11 +14,15 @@
 #import "URLCacheController.h"
 
 #pragma mark - Setting Payment View Controller
-@interface MyShopPaymentViewController () <UITableViewDataSource,UITableViewDelegate, MyShopPaymentCellDelegate>
+@interface MyShopPaymentViewController ()
+<
+    UITableViewDataSource,UITableViewDelegate,
+    MyShopPaymentCellDelegate
+>
 {
     SettingPayment *_payment;
     BOOL _isnodata;
-    NSMutableArray *_list;
+    NSArray *_list;
     NSMutableDictionary *_datainput;
     NSInteger _requestcount;
     NSTimer *_timer;
@@ -77,7 +81,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _list = [NSMutableArray new];
+    
+    self.title = @"Pembayaran";
+    
+    _list = [NSArray new];
     
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
@@ -90,14 +97,6 @@
     _cachecontroller.filePath = _cachepath;
     _cachecontroller.URLCacheInterval = 86400.0;
 	[_cachecontroller initCacheWithDocumentPath:path];
-    
-    _table.tableHeaderView = _headerview;
-    
-    UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStyleBordered target:self action:@selector(tap:)];
-    UIViewController *previousVC = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count - 2];
-    barButtonItem.tag = 10;
-    [previousVC.navigationItem setBackBarButtonItem:barButtonItem];
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -110,6 +109,7 @@
         }
     }
     self.table.contentOffset = CGPointMake(0, 0);
+    self.table.contentInset = UIEdgeInsetsMake(-36, 0, 0, 0);
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -154,49 +154,46 @@
         if (_list.count > indexPath.row) {
             Payment *payment = _list[indexPath.row];
             
-            ((MyShopPaymentCell*)cell).indexpath= indexPath;
-            ((MyShopPaymentCell*)cell).switchpayment.on = [payment.payment_default_status boolValue];
+            NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+            style.alignment = NSTextAlignmentCenter;
+            style.lineSpacing = 6.0;
+
+            NSDictionary *titleAttributes = @{
+                NSFontAttributeName            : [UIFont fontWithName:@"GothamMedium" size:14],
+                NSParagraphStyleAttributeName  : style,
+            };
+
+            NSDictionary *textAttributes = @{
+                NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+                NSParagraphStyleAttributeName  : style,
+            };
             
-            //NSString *string = [NSString convertHTML: payment.payment_info];
-            //if ([string rangeOfString:@"Baca syarat dan ketentuannya disini."].location == NSNotFound) {
-            //    NSLog(@"string does not contain");
-            //    ((MyShopPaymentCell*)cell).buttonterms.hidden = YES;
-            //} else {
-            //    NSLog(@"string contains!");
-            //    string = [string stringByReplacingOccurrencesOfString:@"Baca syarat dan ketentuannya disini."
-            //                                               withString:@""];
-            //    ((MyShopPaymentCell*)cell).buttonterms.hidden = NO;
-            //}
-            //((MyShopPaymentCell*)cell).labeldescription.text = string;
+            ((MyShopPaymentCell*)cell).nameLabel.attributedText = [[NSAttributedString alloc] initWithString:payment.payment_name
+                                                                                                  attributes:titleAttributes];
             
-            UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
-            NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init];
-            [attributes setObject:font forKey:NSFontAttributeName];
+            NSString *description = [NSString convertHTML:payment.payment_info];
+            ((MyShopPaymentCell*)cell).descriptionLabel.attributedText = [[NSAttributedString alloc] initWithString:description
+                                                                                                         attributes:textAttributes];
+            [((MyShopPaymentCell*)cell).descriptionLabel sizeToFit];
             
-            NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[payment.payment_info dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:&attributes error:nil];
-            ((MyShopPaymentCell*)cell).textviewdesc.attributedText = attributedString;
+            ((MyShopPaymentCell*)cell).indexPath = indexPath;
             
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:payment.payment_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            NSURL *url = [NSURL URLWithString:payment.payment_image];
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:url
+                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
             
-            UIImageView *thumb = ((MyShopPaymentCell*)cell).thumb;
+            UIImageView *thumb = ((MyShopPaymentCell*)cell).thumbnailImageView;
             thumb.image = nil;
-            //thumb.hidden = YES;	//@prepareforreuse then @reset
-            UIActivityIndicatorView *act = ((MyShopPaymentCell*)cell).act;
             
-            [act startAnimating];
-            
-            [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+            [thumb setImageWithURLRequest:request placeholderImage:nil
+                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
                 //NSLOG(@"thumb: %@", thumb);
                 [thumb setImage:image];
-                
-                [act stopAnimating];
 #pragma clang diagnosti c pop
-                
-            } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-                [act stopAnimating];
-            }];
+            } failure:nil];
         }
         
 		return cell;
@@ -226,6 +223,21 @@
 	if (row == indexPath.row) {
 		NSLog(@"%@", NSStringFromSelector(_cmd));
 	}
+    
+    // Remove seperator inset
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+    }
+    
+    // Prevent the cell from inheriting the Table View's margin settings
+    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
+        [cell setPreservesSuperviewLayoutMargins:NO];
+    }
+    
+    // Explictly set your cell's layout margins
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsZero];
+    }
 }
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
@@ -257,7 +269,11 @@
                                                         }];
     
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[SettingPaymentResult class]];
-
+    [resultMapping addAttributeMappingsFromArray:@[
+                                                   kTKPDDETAILSHOP_APIPAYMENTLOCKEY,
+                                                   kTKPDDETAILSHOP_APIPAYMENTNOTEKEY
+                                                   ]];
+    
     RKObjectMapping *listMapping = [RKObjectMapping mappingForClass:[Payment class]];
     [listMapping addAttributeMappingsFromArray:@[kTKPDDETAILSHOP_APIPAYMENTKEY,
                                                  kTKPDDETAILSHOP_APIPAYMENTIMAGEKEY,
@@ -268,13 +284,22 @@
                                                  ]];
     
     //add relationship mapping
-    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping]];
-    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APIPAYMENTOPTIONKEY toKeyPath:kTKPDDETAILSHOP_APIPAYMENTOPTIONKEY withMapping:listMapping];
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+    
+    RKRelationshipMapping *listRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPDDETAILSHOP_APIPAYMENTOPTIONKEY
+                                                                                 toKeyPath:kTKPDDETAILSHOP_APIPAYMENTOPTIONKEY
+                                                                               withMapping:listMapping];
     [resultMapping addPropertyMapping:listRel];
     
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILSHOPPAYMENT_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:kTKPDDETAILSHOPPAYMENT_APIPATH
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
@@ -395,8 +420,17 @@
             BOOL status = [_payment.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
-                NSArray *list = _payment.result.payment_options;
-                [_list addObjectsFromArray:list];
+                for (Payment *payment in _payment.result.payment_options) {
+                    if ([_payment.result.loc objectForKey:payment.payment_id]) {
+                        payment.payment_info = [_payment.result.loc objectForKey:payment.payment_id];
+                    }
+                }
+                
+                UILabel *label = (UILabel *)[_footer viewWithTag:1];
+                label.text = _payment.result.note.description;
+                [label sizeToFit];
+                
+                _list = _payment.result.payment_options;
                 _isnodata = NO;
                 
                 [_table reloadData];
@@ -469,15 +503,12 @@
 -(void)requestActionPayment:(id)object
 {
     if (_requestActionPayment.isExecuting) return;
+
     NSTimer *timer;
     
-    //NSDictionary *userinfo = (NSDictionary*)object;
-    
-    //NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};
     NSString *action = kTKPDDETAIL_APIUPDATEPAYMENTINFOKEY;
     
-    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action,
-                            };
+    NSDictionary* param = @{kTKPDDETAIL_APIACTIONKEY:action,};
     _requestcount ++;
     
     _requestActionPayment = [_objectmanagerActionPayment appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOPEDITORACTION_APIPATH parameters:[param encrypt]];
@@ -550,12 +581,6 @@
                     NSLog(@" ==== REQUESTCOUNT %zd =====",_requestcount);
                     //TODO:: Reload handler
                 }
-                else
-                {
-                }
-            }
-            else
-            {
             }
         }
     }

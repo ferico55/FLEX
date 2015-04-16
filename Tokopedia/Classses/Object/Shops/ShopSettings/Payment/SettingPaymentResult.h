@@ -11,6 +11,7 @@
 
 @interface SettingPaymentResult : NSObject
 
+@property (nonatomic, strong) NSArray *note;
 @property (nonatomic, strong) NSDictionary *loc;
 @property (nonatomic) NSInteger shop_id;
 @property (nonatomic, strong) NSArray *shop_payment;

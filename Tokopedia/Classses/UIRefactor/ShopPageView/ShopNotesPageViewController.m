@@ -25,7 +25,7 @@
 #import "URLCacheController.h"
 #import "ShopPageHeader.h"
 
-#import "NoResult.h"
+#import "NoResultView.h"
 
 @interface ShopNotesPageViewController () <UITableViewDataSource,
 UITableViewDelegate,
@@ -94,7 +94,7 @@ UIAlertViewDelegate>
     Notes *_notes;
     ShopPageHeader *_shopPageHeader;
     Shop *_shop;
-    NoResult *_noResult;
+    NoResultView *_noResult;
 }
 
 #pragma mark - Initialization
@@ -158,7 +158,7 @@ UIAlertViewDelegate>
     
     _table.tableFooterView = _footer;
     _table.tableHeaderView = _header;
-    _noResult = [NoResult new];
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_table addSubview:_refreshControl];
@@ -254,9 +254,8 @@ UIAlertViewDelegate>
         
         if (_list.count > indexPath.row) {
             NotesList *list = _list[indexPath.row];
-            ((GeneralList1GestureCell*)cell).labelname.text = list.note_title;
-            ((GeneralList1GestureCell*)cell).labeldefault.hidden = YES;
-            ((GeneralList1GestureCell*)cell).labelvalue.hidden = YES;
+            ((GeneralList1GestureCell*)cell).textLabel.text = list.note_title;
+            ((GeneralList1GestureCell*)cell).detailTextLabel.hidden = YES;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;
             ((GeneralList1GestureCell*)cell).type = kTKPDGENERALCELL_DATATYPETWOBUTTONKEY;
         }
