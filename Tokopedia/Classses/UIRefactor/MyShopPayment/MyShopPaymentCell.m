@@ -43,7 +43,7 @@
     // Configure the view for the selected state
 }
 - (IBAction)tap:(id)sender {
-    [_delegate MyShopPaymentCell:self withindexpath:_indexpath];
+    [_delegate MyShopPaymentCell:self withindexpath:_indexPath];
 }
 
 @end
