@@ -1,17 +1,33 @@
 //
-//  AlertInfoVoucherCodeView.m
+//  AlertInfoView.m
 //  Tokopedia
 //
 //  Created by IT Tkpd on 1/28/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
 
-#import "AlertInfoVoucherCodeView.h"
+#import "AlertInfoView.h"
 
-@implementation AlertInfoVoucherCodeView
+@implementation AlertInfoView
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+    self.layer.cornerRadius = 5;
+}
+
+- (void)setText:(NSString *)text
+{
+    text = text?:@"";
+    _text = text;
+    self.textLabel.text = text;
+}
+
+- (void)setDetailText:(NSString *)detailText
+{
+    detailText = detailText?:@"";
+    _detailText = detailText;
+    
     UIFont *font = [UIFont fontWithName:@"GothamBook" size:13];
     
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
@@ -23,11 +39,12 @@
                                  NSFontAttributeName: font,
                                  NSParagraphStyleAttributeName: style,
                                  };
-    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:_infoLabel.text attributes:attributes];
-                                          
-    _infoLabel.attributedText = attributedText;
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:detailText attributes:attributes];
     
-    self.layer.cornerRadius = 5;    
+    _detailTextLabel.attributedText = attributedText;
+    
+    [_detailTextLabel sizeToFit];
+
 }
 
 @end

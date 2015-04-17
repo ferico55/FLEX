@@ -215,6 +215,7 @@
             if(!_cartSummaryViewController)_cartSummaryViewController = [TransactionCartViewController new];
             _cartSummaryViewController.indexPage = 1;
             _cartSummaryViewController.data =_data;
+            _cartSummaryViewController.listSummary = [_data objectForKey:DATA_CART_SUMMARY_LIST_KEY];
             _cartSummaryViewController.delegate = self;
             ((UIButton*)_pageButtons[index-1]).enabled = YES;
             ((UIButton*)_pageButtons[index-1]).backgroundColor = COLOR_SELECTED_BUTTON;

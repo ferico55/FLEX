@@ -137,6 +137,12 @@
     _networkManager.delegate = self;
     _tableView.delegate = self;
     _tableView.dataSource = self;
+    
+    if (_isRefresh) {
+        [_networkManager doRequest];
+        _isRefresh = NO;
+        [_delegate setIsRefresh:_isRefresh];
+    }
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -579,7 +585,7 @@
     
     [_operationQueue addOperation:_requestDetail];
     
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
+    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeoutDetail) userInfo:nil repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 

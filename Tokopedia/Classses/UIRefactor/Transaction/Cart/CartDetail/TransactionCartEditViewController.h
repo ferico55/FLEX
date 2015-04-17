@@ -14,6 +14,7 @@
 @protocol TransactionCartEditViewControllerDelegate <NSObject>
 @required
 - (void)shouldEditCartWithUserInfo:(NSDictionary*)userInfo;
+- (void)popFromEditCart;
 
 @end
 

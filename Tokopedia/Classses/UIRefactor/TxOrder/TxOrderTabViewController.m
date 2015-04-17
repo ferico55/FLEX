@@ -28,6 +28,7 @@
     BOOL _isLogin;
     BOOL _isMultipleSelect;
     BOOL _isNodata;
+    BOOL _isRefresh;
 }
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentControl;
 
@@ -174,6 +175,7 @@
             if(!_ConfirmedViewController)_ConfirmedViewController = [TxOrderConfirmedViewController new];
             ((TxOrderConfirmedViewController*)_ConfirmedViewController).delegate = self;
             childViewController = _ConfirmedViewController;
+            _ConfirmedViewController.isRefresh = _isRefresh;
              break;
         }
         default:
@@ -261,6 +263,12 @@
     UIColor *enableColor = [UIColor colorWithRed:0/255.0f green:122.0f/255.0f blue:255.0f/255.0f alpha:1];
     if (_isMultipleSelect)[_segmentControl setTintColor:disableColor]; else [_segmentControl setTintColor:enableColor];
     _segmentControl.enabled = !_isMultipleSelect;
+    _isRefresh = YES;
+}
+
+-(void)setIsRefresh:(BOOL)isRefresh
+{
+    _isRefresh = NO;
 }
 
 #pragma mark - Memory Management

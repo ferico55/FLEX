@@ -13,6 +13,7 @@
 #import "detail.h"
 #import "GeneralTableViewController.h"
 #import "MyShopShipmentInfoViewController.h"
+#import "AlertInfoView.h"
 
 @interface MyShopShipmentTableViewController ()
 <
@@ -828,7 +829,16 @@
         
         [self.navigationController presentViewController:nav animated:YES completion:nil];
     } else if (indexPath.section == 1 && indexPath.row == 4) {
-        
+        AlertInfoView *alert = [AlertInfoView newview];
+        alert.text = @"Sistem AWB Otomatis";
+        alert.detailText = @"Dengan menggunakan Sistem Kode Resi Otomatis, Anda tidak perlu lagi melakukan input nomor resi secara manual. Cukup cetak kode booking dan tunjukkan ke agen JNE yang mendukung, nomor resi akan otomatis masuk ke Tokopedia.";
+        [alert show];
+
+        CGRect frame = alert.frame;
+        frame.origin.y -= 25;
+        frame.size.height += (alert.detailTextLabel.frame.size.height-50);
+        alert.frame = frame;
+
     }
 }
 

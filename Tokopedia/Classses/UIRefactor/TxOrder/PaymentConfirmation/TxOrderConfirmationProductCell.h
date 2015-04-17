@@ -29,7 +29,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *productPriceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *productWeightLabel;
-@property (weak, nonatomic) IBOutlet UITextView *remarkTextView;
+@property (weak, nonatomic) IBOutlet UILabel *remarkLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *productThumbImageView;
 
 +(id)newCell;

@@ -21,9 +21,9 @@
 #import "TransactionATCViewController.h"
 #import "AddressFormList.h"
 #import "DetailProductResult.h"
-#import "TransactionShipmentViewController.h"
 #import "TransactionCartRootViewController.h"
 #import "SettingAddressEditViewController.h"
+#import "GeneralTableViewController.h"
 
 #pragma mark - Transaction Add To Cart View Controller
 
@@ -31,9 +31,9 @@
 <
     TKPDAlertViewDelegate,
     SettingAddressViewControllerDelegate,
-    TransactionShipmentViewControllerDelegate,
     SettingAddressViewControllerDelegate,
     SettingAddressEditViewControllerDelegate,
+    GeneralTableViewControllerDelegate,
     UITabBarControllerDelegate,
     UITableViewDataSource,
     UITableViewDelegate,
@@ -76,6 +76,11 @@
     CGSize _scrollviewContentSize;
 
     BOOL _productQuantityChanged;
+    
+    ShippingInfoShipmentPackage *_selectedShipmentPackage;
+    ShippingInfoShipments *_selectedShipment;
+    
+    NSArray *_shipments;
 }
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *headerTableView;
 
@@ -273,8 +278,8 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     UITableViewCell *cell = nil;
     if (!_isnodata) {
-        ShippingInfoShipments *shipment = [_dataInput objectForKey:DATA_SELECTED_SHIPMENT_KEY];
-        ShippingInfoShipmentPackage *shipmentPackage = [_dataInput objectForKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
+        ShippingInfoShipments *shipment = _selectedShipment;
+        ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
         AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
         [self setAddress:address];
         ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
@@ -490,43 +495,48 @@
                 }
                 break;
             }
-            case TAG_BUTTON_TRANSACTION_SERVICE_TYPE:
-            {
-                NSArray *shipments = [_dataInput objectForKey:DATA_SHIPMENT_KEY];
-                NSIndexPath *selectedShipment = [_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                NSInteger indexShipment = selectedShipment.row;
-                NSIndexPath *selectedShipmentPackage = [_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                
-                ShippingInfoShipments *shipment = shipments[indexShipment];
-                
-                NSMutableArray *shipmentPackages = [NSMutableArray new];
-                [shipmentPackages addObjectsFromArray:shipment.shipment_package];
-                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                    if ([package.price isEqualToString:@"0"]) {
-                        [shipmentPackages removeObject:package];
-                    }
-                }
-                TransactionShipmentViewController *shipmentViewController = [TransactionShipmentViewController new];
-                shipmentViewController.data = @{DATA_TYPE_KEY:@(TYPE_TRANSACTION_SHIPMENT_SERVICE_TYPE),
-                                                DATA_SHIPMENT_KEY :shipmentPackages,
-                                                DATA_INDEXPATH_KEY : selectedShipmentPackage
-                                                };
-                shipmentViewController.delegate = self;
-                [self.navigationController pushViewController:shipmentViewController animated:YES];
-                break;
-            }
             case TAG_BUTTON_TRANSACTION_SHIPPING_AGENT:
             {
-                NSIndexPath *selectedShipment = [_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
+                NSMutableArray *shipmentName = [NSMutableArray new];
+                for (ShippingInfoShipments *package in _shipments) {
+                    [shipmentName addObject:package.shipment_name];
+                }
                 
-                ShippingInfoShipments *shipments = [_dataInput objectForKey:DATA_SHIPMENT_KEY];
-                TransactionShipmentViewController *shipmentViewController = [TransactionShipmentViewController new];
-                shipmentViewController.data = @{DATA_TYPE_KEY:@(TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY),
-                                                DATA_SHIPMENT_KEY :shipments,
-                                                DATA_INDEXPATH_KEY : selectedShipment
-                                                };
-                shipmentViewController.delegate = self;
-                [self.navigationController pushViewController:shipmentViewController animated:YES];
+                GeneralTableViewController *vc = [GeneralTableViewController new];
+                vc.title = @"Kurir Pengiriman";
+                vc.selectedObject = _selectedShipment.shipment_name;
+                vc.objects = shipmentName;
+                vc.senderIndexPath = indexPath;
+                vc.delegate = self;
+                
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case TAG_BUTTON_TRANSACTION_SERVICE_TYPE:
+            {
+                NSMutableArray *shipmentPackages = [NSMutableArray new];
+                NSMutableArray *shipmentPackagesName = [NSMutableArray new];
+                
+                for (ShippingInfoShipments *shipment in _shipments) {
+                    if ([shipment.shipment_name isEqualToString:_selectedShipment.shipment_name]) {
+                        for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                            if (![package.price isEqualToString:@"0"]) {
+                                [shipmentPackages addObject:package];
+                                [shipmentPackagesName addObject:package.name];
+                            }
+                        }
+                        break;
+                    }
+                }
+                
+                GeneralTableViewController *vc = [GeneralTableViewController new];
+                vc.title = @"Paket Pengiriman";
+                vc.selectedObject = _selectedShipmentPackage.name;
+                vc.objects = shipmentPackagesName;
+                vc.senderIndexPath = indexPath;
+                vc.delegate = self;
+                
+                [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
         }
@@ -697,6 +707,7 @@
                     NSIndexPath* selectedIndexPathShipmentPackage =[_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                     
                     NSArray *shipments = ATCForm.result.form.shipment;
+                    _shipments = shipments;
                     [_dataInput setObject:shipments forKey:DATA_SHIPMENT_KEY];
                     
                     NSInteger indexShipment = selectedIndexPathShipment.row;
@@ -713,8 +724,8 @@
                     
                     if (shipmentPackages.count > 0) {
                         ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
-                        [_dataInput setObject:shipment forKey:DATA_SELECTED_SHIPMENT_KEY];
-                        [_dataInput setObject:shipmentPackage forKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];                        
+                        _selectedShipment = shipment;
+                        _selectedShipmentPackage = shipmentPackage;
                     }
 
                     [self setAddress:address];
@@ -798,8 +809,8 @@
     NSTimer *timer;
     
     NSDictionary *userinfo = (NSDictionary*)object;
-    ShippingInfoShipments *shipment = [userinfo objectForKey:DATA_SELECTED_SHIPMENT_KEY];
-    ShippingInfoShipmentPackage *shipmentPackage = [userinfo objectForKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
+    ShippingInfoShipments *shipment = _selectedShipment;
+    ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
     AddressFormList *address = [userinfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
     ProductDetail *product = [userinfo objectForKey:DATA_DETAIL_PRODUCT_KEY];
     
@@ -984,9 +995,9 @@
     NSInteger productID = [product.product_id integerValue];
     NSInteger quantity = [[userinfo objectForKey:API_QUANTITY_KEY]integerValue];
     NSInteger insuranceID = [[userinfo objectForKey:API_INSURANCE_KEY]integerValue];
-    ShippingInfoShipments *shipment = [userinfo objectForKey:DATA_SELECTED_SHIPMENT_KEY];
+    ShippingInfoShipments *shipment = _selectedShipment;
     NSInteger shippingID = [shipment.shipment_id integerValue];
-    ShippingInfoShipmentPackage *shipmentPackage = [userinfo objectForKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
+    ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
     NSInteger shippingProduct = [shipmentPackage.sp_id integerValue];
     NSString *weight = product.product_weight?:@"0";
     
@@ -1092,49 +1103,20 @@
                 else
                 {
                     NSString *toDoCalculate = [_dataInput objectForKey:DATA_TODO_CALCULATE]?:@"";
-                    NSIndexPath *selectedIndexPathShipment;
-                    NSIndexPath *selectedIndexPathShipmentPackage;
                     
                     if ([toDoCalculate isEqualToString:CALCULATE_PRODUCT]) {
                         NSString *productPrice = calculate.result.product.price;
-                        ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY];
+                        ProductDetail *product = [_dataInput objectForKey:DATA_DETAIL_PRODUCT_KEY]?:[ProductDetail new];
                         product.product_price = productPrice;
                         [_dataInput setObject:product forKey:DATA_DETAIL_PRODUCT_KEY];
-                        
-                        selectedIndexPathShipment =[_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                        
-                        selectedIndexPathShipmentPackage =[_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
                     }
                     else
                     {
-                        [_dataInput removeObjectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY];
-                        [_dataInput removeObjectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY];
-                        
-                        selectedIndexPathShipment =[NSIndexPath indexPathForRow:0 inSection:0];
-                        selectedIndexPathShipmentPackage =[NSIndexPath indexPathForRow:0 inSection:0];
+
                     }
                     
                     NSArray *shipments = calculate.result.shipment;
-                    [_dataInput setObject:shipments forKey:DATA_SHIPMENT_KEY];
-
-                    NSInteger indexShipment = selectedIndexPathShipment.row;
-                    ShippingInfoShipments *shipment = shipments[indexShipment];
-                    
-                    NSInteger indexShipmentPackage = selectedIndexPathShipmentPackage.row;
-                    NSMutableArray *shipmentPackages = [NSMutableArray new];
-                    [shipmentPackages addObjectsFromArray:shipment.shipment_package];
-                    for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                        if ([package.price isEqualToString:@"0"]) {
-                            [shipmentPackages removeObject:package];
-                        }
-                    }
-                    
-                    if (shipmentPackages.count>0) {
-                        ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
-                        [_dataInput setObject:shipment forKey:DATA_SELECTED_SHIPMENT_KEY];
-                        [_dataInput setObject:shipmentPackage forKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
-                        [_tableView reloadData];
-                    }
+                    _shipments = shipments;
                     
                     for (UITableViewCell *cell in _tableViewPaymentDetailCell) {
                         UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView *)[cell viewWithTag:2];
@@ -1166,57 +1148,56 @@
 }
 
 #pragma mark - Transaction Shipment Delegate
--(void)TransactionShipmentViewController:(TransactionShipmentViewController *)viewController withUserInfo:(NSDictionary *)userInfo
+-(void)didSelectObject:(id)object senderIndexPath:(NSIndexPath *)indexPath
 {
-    NSIndexPath *selectedIndexPath = [userInfo objectForKey:DATA_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    NSInteger type = [[userInfo objectForKey:DATA_TYPE_KEY]integerValue];
-    
-    NSArray *shipments = [_dataInput objectForKey:DATA_SHIPMENT_KEY];
+    BOOL isValidShipment;
+    ShippingInfoShipments *shipmentObject;
 
-    NSIndexPath *selectedIndexPathShipment =
-    (type == TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY)
-    ?selectedIndexPath
-    :[_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    
-    NSIndexPath *selectedIndexPathShipmentPackage =
-    (type == TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY)
-    ?[NSIndexPath indexPathForRow:0 inSection:0]
-    :selectedIndexPath?:[NSIndexPath indexPathForRow:0 inSection:0];
-    
-    NSInteger indexShipment = selectedIndexPathShipment.row;
-    ShippingInfoShipments *shipment = shipments[indexShipment];
-    
-    NSInteger indexShipmentPackage = selectedIndexPathShipmentPackage.row;
-    NSMutableArray *shipmentPackages = [NSMutableArray new];
-    [shipmentPackages addObjectsFromArray:shipment.shipment_package];
-
-    for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-        if ([package.price isEqualToString:@"0"]) {
-            [shipmentPackages removeObject:package];
+    if (indexPath.row == TAG_BUTTON_TRANSACTION_SHIPPING_AGENT) {
+        for (ShippingInfoShipments *package in _shipments) {
+            if ([package.shipment_name isEqualToString:(NSString*)object]) {
+                shipmentObject = package;
+                break;
+            }
+        }
+        NSMutableArray *availablePackage = [NSMutableArray new];
+        
+        for (ShippingInfoShipmentPackage *package in shipmentObject.shipment_package) {
+            if (![package.price isEqualToString:@"0"]) {
+                [availablePackage addObject:package];
+            }
+        }
+        if (availablePackage.count==0) {
+            isValidShipment = NO;
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipmentObject.shipment_name] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [alert show];
+        }
+        else
+        {
+            _selectedShipment = shipmentObject;
+            for (ShippingInfoShipmentPackage *package in shipmentObject.shipment_package) {
+                if (![package.price isEqualToString:@"0"]) {
+                    _selectedShipmentPackage = package;
+                }
+            }
         }
     }
-
-    if (shipmentPackages.count==0) {
-        NSArray *messages = @[[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipment.shipment_name]];
-        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipment.shipment_name] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alert show];
-       // StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:messages delegate:self];
-        //[alert show];
-    }
-    else
+    else if (indexPath.row == TAG_BUTTON_TRANSACTION_SERVICE_TYPE)
     {
-        ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
-        [_dataInput setObject:shipmentPackage forKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
-        
-        [_dataInput setObject:selectedIndexPathShipment forKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY];
-        [_dataInput setObject:selectedIndexPathShipmentPackage forKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY];
-        [_dataInput setObject:shipment forKey:DATA_SELECTED_SHIPMENT_KEY];
-        
-        if (type == TYPE_TRANSACTION_SHIPMENT_SHIPPING_AGENCY) {
-            [_dataInput removeObjectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY];
+        for (ShippingInfoShipments *shipment in _shipments) {
+            if ([shipment.shipment_name isEqualToString:_selectedShipment.shipment_name]) {
+                for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                    if ([package.name isEqualToString:(NSString*)object]) {
+                        _selectedShipmentPackage = package;
+                        break;
+                    }
+                }
+                break;
+            }
         }
-        [_tableView reloadData];
     }
+    
+    [_tableView reloadData];
 }
 
 #pragma mark - Alert View Delegate
@@ -1264,6 +1245,17 @@
 #pragma mark - Setting Address Delegate
 -(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
+    for (ShippingInfoShipments *shipment in _shipments) {
+        for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+            if (![package.price isEqualToString:@"0"]) {
+                _selectedShipment = shipment;
+                _selectedShipmentPackage = package;
+                break;
+            }
+        }
+        break;
+    }
+    
     AddressFormList *address = [userInfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
     [self setAddress:address];
@@ -1443,7 +1435,7 @@
     BOOL isValid = YES;
     NSMutableArray *errorMessage = [NSMutableArray new];
     
-    ShippingInfoShipments *shipment = [_dataInput objectForKey:DATA_SELECTED_SHIPMENT_KEY];
+    ShippingInfoShipments *shipment = _selectedShipment;
     NSInteger shippingID = [shipment.shipment_id integerValue];
     
     if (shippingID == 0)

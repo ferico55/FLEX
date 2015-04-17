@@ -1,5 +1,5 @@
 //
-//  AlertInfoVoucherCodeView.h
+//  AlertReputation.h
 //  Tokopedia
 //
 //  Created by IT Tkpd on 1/28/15.

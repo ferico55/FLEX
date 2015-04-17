@@ -228,14 +228,13 @@
         cell.delegate = self;
     }
     TxOrderConfirmationList *detailOrder = _list[indexPath.row];
-    cell.deadlineDateLabel.text = detailOrder.confirmation.pay_due_date;
-    cell.transactionDateLabel.text = detailOrder.confirmation.create_time;
-    cell.shopNameLabel.text = detailOrder.confirmation.shop_list;
-    cell.totalInvoiceLabel.text = detailOrder.confirmation.left_amount;
+    cell.deadlineDateLabel.text = detailOrder.confirmation.pay_due_date?:@"";
+    cell.transactionDateLabel.text = detailOrder.confirmation.create_time?:@"";
+    cell.shopNameLabel.text = detailOrder.confirmation.shop_list?:@"";
+    cell.totalInvoiceLabel.text = detailOrder.confirmation.left_amount?:@"";
     cell.indexPath = indexPath;
     cell.selectionButton.hidden = !(_isMultipleSelection);
     cell.frameView.hidden = !(_isMultipleSelection);
-    cell.selectionButton.selected = ([_isSelectedOrders count]>0)?[_isSelectedOrders[indexPath.row] boolValue]:NO;
     
     UIColor *selectedColor =[UIColor colorWithRed:18.0f/255.0f green:199.0f/255.0f blue:0.0f/255.0f alpha:1];
     UIColor *unSelectColor = [UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1];
@@ -251,8 +250,12 @@
         [cell.confirmationButton setTitleColor:unSelectColor forState:UIControlStateNormal];
     else [cell.confirmationButton setTitleColor:enableColor forState:UIControlStateNormal];
     
-    if (_isMultipleSelection)[cell.cancelConfirmationButton setTintColor:unSelectColor];
-    [cell.frameView setBackgroundColor:[_isSelectedOrders[indexPath.row] boolValue]?selectedColor:unSelectColor];
+    if (_isMultipleSelection)
+    {
+        cell.selectionButton.selected = [_isSelectedOrders[indexPath.row] boolValue];
+        [cell.cancelConfirmationButton setTintColor:unSelectColor];
+        [cell.frameView setBackgroundColor:[_isSelectedOrders[indexPath.row] boolValue]?selectedColor:unSelectColor];
+    }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -541,6 +544,7 @@
         _tableView.tableFooterView = noResultView;
     }
     
+    [_act stopAnimating];
     [_delegate isNodata:_isNodata];
     
     [_tableView reloadData];
@@ -917,6 +921,7 @@
 {
     _page = 1;
     
+    _networkManager.delegate = self;
     [_networkManager doRequest];
     //[self configureRestKitGetTransaction];
     //[self requestGetTransaction];
@@ -931,8 +936,7 @@
 
 -(void)failedOrCancelConfirmPayment:(NSArray *)payment
 {
-    [_list addObject:payment];
-    [_tableView reloadData];
+
 }
 
 @end
