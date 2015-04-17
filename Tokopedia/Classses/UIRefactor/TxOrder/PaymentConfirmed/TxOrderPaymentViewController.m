@@ -1289,6 +1289,7 @@
     }
     
     NSArray *bankAccountList = form.bank_account.bank_account_list;
+    _bankAccount = bankAccountList;
     BankAccountFormList *selectedBank;
     for (BankAccountFormList *bank in bankAccountList) {
         if ([form.bank_account.bank_account_id_chosen integerValue] == bank.bank_account_id) {

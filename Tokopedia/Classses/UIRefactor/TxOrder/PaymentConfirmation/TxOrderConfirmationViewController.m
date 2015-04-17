@@ -235,7 +235,6 @@
     cell.indexPath = indexPath;
     cell.selectionButton.hidden = !(_isMultipleSelection);
     cell.frameView.hidden = !(_isMultipleSelection);
-    cell.selectionButton.selected = (([_isSelectedOrders count]-1)==indexPath.row)?[_isSelectedOrders[indexPath.row] boolValue]:NO;
     
     UIColor *selectedColor =[UIColor colorWithRed:18.0f/255.0f green:199.0f/255.0f blue:0.0f/255.0f alpha:1];
     UIColor *unSelectColor = [UIColor colorWithRed:189.0f/255.0f green:189.0f/255.0f blue:189.0f/255.0f alpha:1];
@@ -253,6 +252,7 @@
     
     if (_isMultipleSelection)
     {
+        cell.selectionButton.selected = [_isSelectedOrders[indexPath.row] boolValue];
         [cell.cancelConfirmationButton setTintColor:unSelectColor];
         [cell.frameView setBackgroundColor:[_isSelectedOrders[indexPath.row] boolValue]?selectedColor:unSelectColor];
     }
@@ -921,6 +921,7 @@
 {
     _page = 1;
     
+    _networkManager.delegate = self;
     [_networkManager doRequest];
     //[self configureRestKitGetTransaction];
     //[self requestGetTransaction];
@@ -935,10 +936,7 @@
 
 -(void)failedOrCancelConfirmPayment:(NSArray *)payment
 {
-    if (_isMultipleSelection) {
-        [_list addObjectsFromArray:payment];
-        [_tableView reloadData];
-    }
+
 }
 
 @end

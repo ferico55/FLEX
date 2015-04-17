@@ -20,6 +20,8 @@
 
 #import "ResolutionAction.h"
 
+#import "TokopediaNetworkManager.h"
+
 #define DATA_FILTER_PROCESS_KEY @"filter_process"
 #define DATA_FILTER_READ_KEY @"filter_read"
 #define DATA_FILTER_SORTING_KEY @"filter_sorting"
@@ -27,7 +29,7 @@
 #define DATA_SELECTED_RESOLUTION_KEY @"selected_resolution"
 #define DATA_SELECTED_INDEXPATH_RESOLUTION_KEY @"seleted_indexpath_resolution"
 
-@interface InboxResolutionCenterComplainViewController ()<UITabBarControllerDelegate, UITableViewDataSource, GeneralTableViewControllerDelegate,FilterComplainViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate, InboxResolutionCenterComplainCellDelegate>
+@interface InboxResolutionCenterComplainViewController ()<UITabBarControllerDelegate, UITableViewDataSource, GeneralTableViewControllerDelegate,FilterComplainViewControllerDelegate, ResolutionCenterDetailViewControllerDelegate, InboxResolutionCenterComplainCellDelegate, TokopediaNetworkManagerDelegate>
 {
     NavigateViewController *_navigate;
     NSMutableArray *_list;
@@ -50,6 +52,8 @@
     NSMutableArray *_objectCancelComplain;
     
     BOOL _isFirstAppear;
+    
+    TokopediaNetworkManager *_networkManager;
 }
 @property (strong, nonatomic) IBOutlet UIView *headerView;
 
@@ -68,11 +72,15 @@
     _operationQueue = [NSOperationQueue new];
     _mapping = [InboxResolutionCenterObjectMapping new];
     _objectCancelComplain = [NSMutableArray new];
+    
+    _networkManager = [TokopediaNetworkManager new];
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _networkManager.delegate = self;
 
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Kembali" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
     [backBarButtonItem setTintColor:[UIColor whiteColor]];
@@ -96,6 +104,18 @@
     _tableView.rowHeight = UITableViewAutomaticDimension;
     
     [self refreshRequest];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    _networkManager.delegate = self;
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    _networkManager.delegate = nil;
 }
 
 - (void)didChangePreferredContentSize:(NSNotification *)notification
@@ -291,7 +311,7 @@
     else
         imageURLString = resolution.resolution_detail.resolution_customer.customer_image;
 
-    [_navigate navigateToShowImageFromViewController:self withImageURLStrings:@[imageURLString]];
+    [_navigate navigateToShowImageFromViewController:self withImageURLStrings:@[imageURLString] indexImage:0];
 }
 
 -(void)goToResolutionDetailAtIndexPath:(NSIndexPath *)indexPath
@@ -330,8 +350,7 @@
         NSLog(@"%ld", (long)row);
         
         if (_URINext != NULL && ![_URINext isEqualToString:@"0"] && _URINext != 0) {
-            [self configureRestKit];
-            [self request];
+            [_networkManager doRequest];
         }
     }
 }
@@ -341,8 +360,7 @@
 -(void)refreshRequest
 {
     _page = 1;
-    [self configureRestKit];
-    [self request];
+    [_networkManager doRequest];
 }
 
 #pragma mark - Delegate
@@ -356,15 +374,8 @@
 }
 
 #pragma mark - Request List
--(void)cancel
-{
-    [_request cancel];
-    _request = nil;
-    [_objectManager.operationQueue cancelAllOperations];
-    _objectManager = nil;
-}
 
--(void)configureRestKit
+-(id)getObjectManager:(int)tag
 {
     _objectManager = [RKObjectManager sharedClient];
     
@@ -455,13 +466,11 @@
     
     [_objectManager addResponseDescriptor:responseDescriptor];
     
+    return _objectManager;
 }
 
--(void)request
+-(NSDictionary *)getParameter:(int)tag
 {
-    if (_request.isExecuting) return;
-    NSTimer *timer;
-    
     NSString *filterProcess = [_dataInput objectForKey:DATA_FILTER_PROCESS_KEY];
     NSString *filterRead = ARRAY_FILTER_UNREAD[_filterReadIndex];
     NSString *filterSort = [_dataInput objectForKey:DATA_FILTER_SORTING_KEY];
@@ -496,128 +505,82 @@
                             API_SORT_KEY :sortType,
                             API_PAGE_KEY :@(_page)
                             };
-    
-    _tableView.tableFooterView = _footer;
-    [_act startAnimating];
-//    
-//#if DEBUG
-//    TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-//    NSDictionary* auth = [secureStorage keychainDictionary];
-//    
-//    NSString *userID = [auth objectForKey:kTKPD_USERIDKEY];
-//    
-//    NSMutableDictionary *paramDictionary = [NSMutableDictionary new];
-//    [paramDictionary addEntriesFromDictionary:param];
-//    [paramDictionary setObject:@"off" forKey:@"enc_dec"];
-//    [paramDictionary setObject:userID?:@"" forKey:kTKPD_USERIDKEY];
-//    
-//    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodGET path:API_PATH_INBOX_RESOLUTION_CENTER parameters:paramDictionary];
-//#else
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:API_PATH_INBOX_RESOLUTION_CENTER parameters:[param encrypt]];
-//#endif
-    
-    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-        [self requestSuccess:mappingResult withOperation:operation];
-        [_refreshControl endRefreshing];
-        [timer invalidate];
-        [_act stopAnimating];
-    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-        [self requestFailure:error];
-        [_refreshControl endRefreshing];
-        [timer invalidate];
-        [_act stopAnimating];
-    }];
-    
-    [_operationQueue addOperation:_request];
-    
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    return param;
 }
 
--(void)requestSuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
+-(NSString *)getPath:(int)tag
 {
-    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    return API_PATH_INBOX_RESOLUTION_CENTER;
+}
+
+-(NSString *)getRequestStatus:(id)result withTag:(int)tag
+{
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    InboxResolutionCenter *order = stat;
+    
+    return order.status;
+}
+
+-(void)actionBeforeRequest:(int)tag
+{
+    _tableView.tableFooterView = _footer;
+    [_act startAnimating];
+}
+
+-(void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation *)operation withTag:(int)tag
+{
+    NSDictionary *result = ((RKMappingResult*)successResult).dictionary;
     id stat = [result objectForKey:@""];
     InboxResolutionCenter *order = stat;
     BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
     
     if (status) {
-        [self requestProcess:object];
-    }
-}
-
--(void)requestFailure:(id)object
-{
-    [self requestProcess:object];
-}
-
--(void)requestProcess:(id)object
-{
-    if (object) {
-        if ([object isKindOfClass:[RKMappingResult class]]) {
-            NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            InboxResolutionCenter *order = stat;
-            BOOL status = [order.status isEqualToString:kTKPDREQUEST_OKSTATUS];
-            
-            if (status) {
-                if(order.message_error)
-                {
-                    NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
-                }
-                else{
-                    if (_page == 1) {
-                        [_list removeAllObjects];
-                    }
-                    
-                    if (order.result.list.count >0) {
-                        [_list addObjectsFromArray:order.result.list];
-                        _isNodata = NO;
-                        _URINext =  order.result.paging.uri_next;
-                        NSURL *url = [NSURL URLWithString:_URINext];
-                        NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                        
-                        NSMutableDictionary *queries = [NSMutableDictionary new];
-                        [queries removeAllObjects];
-                        for (NSString *keyValuePair in querry)
-                        {
-                            NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                            NSString *key = [pairComponents objectAtIndex:0];
-                            NSString *value = [pairComponents objectAtIndex:1];
-                            
-                            [queries setObject:value forKey:key];
-                        }
-                        
-                        _page = [[queries objectForKey:API_PAGE_KEY] integerValue];
-                    }
-                    else
-                    {
-                        NoResultView *noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 103)];
-                        _tableView.tableFooterView = noResultView;
-                    }
-                    
-                    [_tableView reloadData];
-                }
-            }
+        if(order.message_error)
+        {
+            NSArray *array = order.message_error?:[[NSArray alloc] initWithObjects:kTKPDMESSAGE_ERRORMESSAGEDEFAULTKEY, nil];
+            NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
         }
         else{
-            
-            //[self cancel];
-            NSError *error = object;
-            if ([error code] != NSURLErrorCancelled) {
-                NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
-                [errorAlert show];
+            if (_page == 1) {
+                [_list removeAllObjects];
             }
+            
+            if (order.result.list.count >0) {
+                [_list addObjectsFromArray:order.result.list];
+                _isNodata = NO;
+                _URINext =  order.result.paging.uri_next;
+                NSURL *url = [NSURL URLWithString:_URINext];
+                NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
+                
+                NSMutableDictionary *queries = [NSMutableDictionary new];
+                [queries removeAllObjects];
+                for (NSString *keyValuePair in querry)
+                {
+                    NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+                    NSString *key = [pairComponents objectAtIndex:0];
+                    NSString *value = [pairComponents objectAtIndex:1];
+                    
+                    [queries setObject:value forKey:key];
+                }
+                
+                _page = [[queries objectForKey:API_PAGE_KEY] integerValue];
+            }
+            else
+            {
+                NoResultView *noResultView = [[NoResultView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 103)];
+                _tableView.tableFooterView = noResultView;
+            }
+            
+            [_tableView reloadData];
         }
     }
 }
 
--(void)requestTimeout
+-(void)actionAfterFailRequestMaxTries:(int)tag
 {
-    [self cancel];
+    [_act stopAnimating];
 }
 
 #pragma mark - Request Cancel Complain
