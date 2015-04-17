@@ -1320,6 +1320,10 @@
 		7AC076E21ADFA09300CAB2DC /* zbar-help.html in Resources */ = {isa = PBXBuildFile; fileRef = 7AC071C21ADFA09300CAB2DC /* zbar-help.html */; };
 		7AC076E31ADFA09300CAB2DC /* zbar-helpicons.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AC071C31ADFA09300CAB2DC /* zbar-helpicons.png */; };
 		7AC076E41ADFA09300CAB2DC /* zbar-samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AC071C41ADFA09300CAB2DC /* zbar-samples.png */; };
+		7AC076E91AE122E000CAB2DC /* icon_triangle_down_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AC076E51AE122E000CAB2DC /* icon_triangle_down_white.png */; };
+		7AC076EA1AE122E000CAB2DC /* icon_triangle_down_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AC076E61AE122E000CAB2DC /* icon_triangle_down_white@2x.png */; };
+		7AC076EB1AE122E000CAB2DC /* icon_triangle_up_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AC076E71AE122E000CAB2DC /* icon_triangle_up_white.png */; };
+		7AC076EC1AE122E000CAB2DC /* icon_triangle_up_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AC076E81AE122E000CAB2DC /* icon_triangle_up_white@2x.png */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -3390,6 +3394,10 @@
 		7AC071C21ADFA09300CAB2DC /* zbar-help.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "zbar-help.html"; sourceTree = "<group>"; };
 		7AC071C31ADFA09300CAB2DC /* zbar-helpicons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-helpicons.png"; sourceTree = "<group>"; };
 		7AC071C41ADFA09300CAB2DC /* zbar-samples.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-samples.png"; sourceTree = "<group>"; };
+		7AC076E51AE122E000CAB2DC /* icon_triangle_down_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_triangle_down_white.png; sourceTree = "<group>"; };
+		7AC076E61AE122E000CAB2DC /* icon_triangle_down_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_triangle_down_white@2x.png"; sourceTree = "<group>"; };
+		7AC076E71AE122E000CAB2DC /* icon_triangle_up_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_triangle_up_white.png; sourceTree = "<group>"; };
+		7AC076E81AE122E000CAB2DC /* icon_triangle_up_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_triangle_up_white@2x.png"; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -6655,6 +6663,10 @@
 		7AC06FCA1ADFA09200CAB2DC /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				7AC076E51AE122E000CAB2DC /* icon_triangle_down_white.png */,
+				7AC076E61AE122E000CAB2DC /* icon_triangle_down_white@2x.png */,
+				7AC076E71AE122E000CAB2DC /* icon_triangle_up_white.png */,
+				7AC076E81AE122E000CAB2DC /* icon_triangle_up_white@2x.png */,
 				7AC06FCB1ADFA09200CAB2DC /* balloon_read_left.png */,
 				7AC06FCC1ADFA09200CAB2DC /* balloon_read_right.png */,
 				7AC06FCD1ADFA09200CAB2DC /* button_white.png */,
@@ -7563,6 +7575,7 @@
 				7AC073F61ADFA09300CAB2DC /* MyShopNoteDetailViewController.xib in Resources */,
 				7AC075691ADFA09300CAB2DC /* icon_8.png in Resources */,
 				7AC0757A1ADFA09300CAB2DC /* icon_arrow_up.png in Resources */,
+				7AC076EB1AE122E000CAB2DC /* icon_triangle_up_white.png in Resources */,
 				7AC076D51ADFA09300CAB2DC /* HelpshiftConfig.plist in Resources */,
 				7AC076011ADFA09300CAB2DC /* icon_share_28px-01.png in Resources */,
 				7AC075581ADFA09300CAB2DC /* icon_1@2x.png in Resources */,
@@ -7768,6 +7781,7 @@
 				7AC076AD1ADFA09300CAB2DC /* icon_lihat_komplain@2x.png in Resources */,
 				7AC076561ADFA09300CAB2DC /* icon_arrow_white.png in Resources */,
 				7AC076A61ADFA09300CAB2DC /* icon_info_grey_small.png in Resources */,
+				7AC076EC1AE122E000CAB2DC /* icon_triangle_up_white@2x.png in Resources */,
 				7AC0759A1ADFA09300CAB2DC /* icon_checkmark_1@2x.png in Resources */,
 				7AC074D71ADFA09300CAB2DC /* FilterLocationViewController.xib in Resources */,
 				7AC073471ADFA09300CAB2DC /* CatalogSpecificationCell.xib in Resources */,
@@ -7960,6 +7974,7 @@
 				7AC076511ADFA09300CAB2DC /* login.jpg in Resources */,
 				7AC0756D1ADFA09300CAB2DC /* icon_house.png in Resources */,
 				7AC076971ADFA09300CAB2DC /* tabnav_bg@2x.png in Resources */,
+				7AC076EA1AE122E000CAB2DC /* icon_triangle_down_white@2x.png in Resources */,
 				7AC075BC1ADFA09300CAB2DC /* icon_home.png in Resources */,
 				7AC076761ADFA09300CAB2DC /* ic_home@2x.png in Resources */,
 				7AC0759E1ADFA09300CAB2DC /* icon_circle@2x.png in Resources */,
@@ -8086,6 +8101,7 @@
 				7AC0767F1ADFA09300CAB2DC /* icon_category.png in Resources */,
 				7AC0744D1ADFA09300CAB2DC /* OrderRejectExplanationViewController.xib in Resources */,
 				7AC075441ADFA09300CAB2DC /* icon_10.png in Resources */,
+				7AC076E91AE122E000CAB2DC /* icon_triangle_down_white.png in Resources */,
 				7AC075DF1ADFA09300CAB2DC /* icon_nav_arrow_up@2x.png in Resources */,
 				7AC074FC1ADFA09300CAB2DC /* TransactionCartWebViewViewController.xib in Resources */,
 				7AC076B01ADFA09300CAB2DC /* icon_pesan_ulang.png in Resources */,

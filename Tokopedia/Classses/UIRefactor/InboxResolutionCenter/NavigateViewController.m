@@ -72,6 +72,7 @@
     DetailProductViewController *vc = [DetailProductViewController new];
     vc.data = @{@"product_id" : productID};
     vc.hidesBottomBarWhenPushed = YES;
+    
     [viewController.navigationController pushViewController:vc animated:YES];
 }
 

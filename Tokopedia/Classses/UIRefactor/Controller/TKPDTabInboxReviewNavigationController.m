@@ -631,10 +631,26 @@
     NSMutableAttributedString *myString = [[NSMutableAttributedString alloc] initWithString:string
                                                                                  attributes:attributes];
     [button setAttributedTitle:myString forState:UIControlStateNormal];
-    UIImage *arrowImage = [UIImage imageNamed:@"icon_arrow_down_white.png"];
-    [button setImage:arrowImage forState:UIControlStateNormal];
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 10);
-    button.imageEdgeInsets = UIEdgeInsetsMake(0, 115, 0, -15);
+    
+    UIImage *arrowImage;
+
+    arrowImage = [UIImage imageNamed:@"icon_triangle_down_white.png"];
+    
+    
+    CGRect rect = CGRectMake(0,0,10,7);
+    UIGraphicsBeginImageContext( rect.size );
+    [arrowImage drawInRect:rect];
+    UIImage *picture1 = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    NSData *imageData = UIImagePNGRepresentation(picture1);
+    UIImage *img=[UIImage imageWithData:imageData];
+    
+    [button setImage:img forState:UIControlStateNormal];
+    
+    
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 5);
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 115, 0, -10);
     
 }
 
