@@ -224,7 +224,7 @@
             ReviewResponse *review_response = list.review_response;
             [((GeneralProductReviewCell *)cell).commentbutton setTitle:([review_response.response_message isEqualToString:@"0"] ? @"0 Comment" : @"1 Comment") forState:UIControlStateNormal];
             
-            ((GeneralProductReviewCell *)cell).qualityrate.starscount = [list.review_rate_quality integerValue];
+            ((GeneralProductReviewCell *)cell).qualityrate.starscount = [list.review_rate_product integerValue];
             ((GeneralProductReviewCell *)cell).speedrate.starscount = [list.review_rate_speed integerValue];
             ((GeneralProductReviewCell *)cell).servicerate.starscount = [list.review_rate_service integerValue];
             ((GeneralProductReviewCell *)cell).accuracyrate.starscount = [list.review_rate_accuracy integerValue];
@@ -389,7 +389,8 @@
                                                            kTKPDREVIEW_APINETRALACCURACYKEY:kTKPDREVIEW_APINETRALACCURACYKEY,
                                                            kTKPDREVIEW_APIPOSITIVEACCURACYKEY:kTKPDREVIEW_APIPOSITIVEACCURACYKEY,
                                                            kTKPDREVIEW_APITOTALREVIEWKEY:kTKPDREVIEW_APITOTALREVIEWKEY,
-                                                           kTKPDREVIEW_APIRATINGQUALITYKEY:kTKPDREVIEW_APIRATINGQUALITYKEY
+                                                           kTKPDREVIEW_APIRATINGQUALITYKEY:kTKPDREVIEW_APIRATINGQUALITYKEY,
+
                                                            }];
     
     RKObjectMapping *ratinglistMapping = [RKObjectMapping mappingForClass:[RatingList class]];
@@ -412,6 +413,7 @@
                                                  kTKPDREVIEW_APIREVIEWMESSAGEKEY,
                                                  kTKPDREVIEW_APIREVIEWUSERIDKEY,
 //                                                 kTKPDREVIEW_APIREVIEWRESPONSEKEY
+                                                 kTKPDREVIEW_APIREVIEWPRODUCTRATEKEY
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];

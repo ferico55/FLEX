@@ -25,7 +25,7 @@
                     <rect key="frame" x="20" y="10" width="280" height="40"/>
                     <color key="backgroundColor" red="0.74117647060000003" green="0.74117647060000003" blue="0.74117647060000003" alpha="1" colorSpace="calibratedRGB"/>
                     <fontDescription key="fontDescription" name="GothamMedium" family="Gotham Medium" pointSize="14"/>
-                    <state key="normal" title="Terjadi kendala teknis, mohon ulangi permintaan.">
+                    <state key="normal" title="Coba kembali.">
                         <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>

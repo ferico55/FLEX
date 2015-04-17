@@ -729,4 +729,13 @@
     
 }
 
+#pragma mark - Growing TextView Delegate
+- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView {
+    if([growingTextView.text length] < 5) {
+        _buttonsend.enabled = NO;
+    } else {
+        _buttonsend.enabled = YES;
+    }
+}
+
 @end

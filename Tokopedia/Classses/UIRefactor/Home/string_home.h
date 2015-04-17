@@ -47,6 +47,7 @@
 
 #define kTKPDHOME_APIURLKEY @"url"
 #define kTKPDHOME_APITHUMBURLKEY @"image_url"
+#define kTKPDHOME_APILARGEIMGURLKEY @"image_url_600"
 #define kTKPDHOME_APISTARTERPRICEKEY @"price_start"
 #define kTKPDHOME_APITITLEKEY @"title"
 

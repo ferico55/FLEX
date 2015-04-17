@@ -16,6 +16,7 @@
 #import "DetailProductViewController.h"
 #import "TokopediaNetworkManager.h"
 #import "LoadingView.h"
+#import "NoResultView.h"
 
 @interface HistoryProductViewController() <UITableViewDataSource, UITableViewDelegate, GeneralProductCellDelegate, TokopediaNetworkManagerDelegate, LoadingViewDelegate>
 
@@ -56,7 +57,7 @@
     NSOperationQueue *_operationQueue;
     TokopediaNetworkManager *_networkManager;
     LoadingView *_loadingView;
-
+    NoResultView *_noResult;
 }
 
 #pragma mark - Factory Method
@@ -87,6 +88,8 @@
     
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
+    
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     /** set first page become 1 **/
     _page = 1;
@@ -435,7 +438,7 @@
 {
     [self cancel];
     /** clear object **/
-//    [_product removeAllObjects];
+    [_product removeAllObjects];
     _page = 1;
     _requestcount = 0;
     _isrefreshview = YES;
@@ -544,6 +547,10 @@
         _isnodata = NO;
         _urinext =  feed.result.paging.uri_next;
         _page = [[_networkManager splitUriToPage:_urinext] integerValue];
+        [_act stopAnimating];
+    } else {
+        _isnodata = YES;
+        _table.tableFooterView = _noResult;
     }
     
     if(_refreshControl.isRefreshing) {

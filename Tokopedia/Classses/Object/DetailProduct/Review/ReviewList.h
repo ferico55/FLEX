@@ -29,6 +29,7 @@
 @property (nonatomic) NSString* review_rate_speed;
 @property (nonatomic) NSString* review_rate_service;
 @property (nonatomic) NSString* review_rate_accuracy;
+@property (nonatomic) NSString* review_rate_product;
 
 @property (nonatomic) NSString* review_product_status;
 @property (nonatomic) NSString* review_is_allow_edit;

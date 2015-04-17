@@ -36,4 +36,14 @@
 @synthesize shop_is_owner;
 @synthesize product_url;
 @synthesize product_name;
+
+
+- (NSString*)product_name {
+    return [product_name kv_decodeHTMLCharacterEntities];
+}
+
+- (NSString*)shop_name {
+    return [shop_name kv_decodeHTMLCharacterEntities];
+}
+
 @end

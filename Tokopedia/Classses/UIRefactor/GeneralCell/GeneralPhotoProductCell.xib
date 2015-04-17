@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -20,9 +20,6 @@
                             <imageView hidden="YES" clipsSubviews="YES" tag="1" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_loading_grey-02.png" translatesAutoresizingMaskIntoConstraints="NO" id="vwp-9o-g0E">
                                 <rect key="frame" x="0.0" y="0.0" width="93" height="93"/>
                                 <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="Db5-aQ-csG" appends="YES" id="JSo-5n-Lfq"/>
-                                </connections>
                             </imageView>
                             <imageView hidden="YES" userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="gJG-j1-mnm" userLabel="Gold Badges">
                                 <rect key="frame" x="58" y="5" width="30" height="30"/>
@@ -47,6 +44,9 @@
                             <constraint firstAttribute="height" constant="93" id="sqt-7k-EyW"/>
                             <constraint firstAttribute="bottom" secondItem="vwp-9o-g0E" secondAttribute="bottom" id="zCu-8Y-HTp"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Db5-aQ-csG" appends="YES" id="DTV-RR-XiS"/>
+                        </connections>
                     </view>
                     <view tag="2" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rp7-eq-XyV">
                         <rect key="frame" x="113" y="10" width="93" height="93"/>
@@ -54,9 +54,6 @@
                             <imageView hidden="YES" clipsSubviews="YES" tag="2" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_loading_grey-02.png" translatesAutoresizingMaskIntoConstraints="NO" id="QKq-Gx-DC6">
                                 <rect key="frame" x="0.0" y="0.0" width="93" height="93"/>
                                 <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="Db5-aQ-csG" appends="YES" id="C58-Pe-Lvm"/>
-                                </connections>
                             </imageView>
                             <imageView hidden="YES" userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="yuc-A1-ghP" userLabel="Gold Badges">
                                 <rect key="frame" x="58" y="5" width="30" height="30"/>
@@ -77,6 +74,9 @@
                             <constraint firstItem="QKq-Gx-DC6" firstAttribute="top" secondItem="Rp7-eq-XyV" secondAttribute="top" id="nRM-Jt-squ"/>
                             <constraint firstItem="yuc-A1-ghP" firstAttribute="top" secondItem="Rp7-eq-XyV" secondAttribute="top" constant="5" id="zWk-4y-rpg"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="Ec6-vm-Xav" appends="YES" id="Vfn-xf-zWb"/>
+                        </connections>
                     </view>
                     <view tag="3" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dCm-qb-miv">
                         <rect key="frame" x="216" y="10" width="93" height="93"/>
@@ -84,9 +84,6 @@
                             <imageView hidden="YES" clipsSubviews="YES" tag="3" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_toped_loading_grey-02.png" translatesAutoresizingMaskIntoConstraints="NO" id="RKY-HA-9kE">
                                 <rect key="frame" x="0.0" y="0.0" width="93" height="93"/>
                                 <color key="backgroundColor" red="0.90196078430000004" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
-                                <connections>
-                                    <outletCollection property="gestureRecognizers" destination="Db5-aQ-csG" appends="YES" id="Y32-gj-zFy"/>
-                                </connections>
                             </imageView>
                             <imageView hidden="YES" userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Badges_gold_merchant" translatesAutoresizingMaskIntoConstraints="NO" id="yFS-Sy-pPE" userLabel="Gold Badges">
                                 <rect key="frame" x="58" y="5" width="30" height="30"/>
@@ -107,6 +104,9 @@
                             <constraint firstAttribute="trailing" secondItem="RKY-HA-9kE" secondAttribute="trailing" id="ceg-uD-waG"/>
                             <constraint firstItem="RKY-HA-9kE" firstAttribute="top" secondItem="dCm-qb-miv" secondAttribute="top" id="hzu-GU-P1O"/>
                         </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="hWc-qk-FT3" appends="YES" id="tkN-u9-PXy"/>
+                        </connections>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -128,11 +128,24 @@
                 <outletCollection property="badges" destination="gJG-j1-mnm" id="yRR-OF-RfQ"/>
                 <outletCollection property="badges" destination="yuc-A1-ghP" id="AHE-N2-bla"/>
                 <outletCollection property="badges" destination="yFS-Sy-pPE" id="xu7-IF-i7E"/>
+                <outletCollection property="viewcell" destination="Bdj-M2-kih" id="DZi-Ii-fee"/>
+                <outletCollection property="viewcell" destination="Rp7-eq-XyV" id="rpB-kh-RCz"/>
+                <outletCollection property="viewcell" destination="dCm-qb-miv" id="o2e-zY-iUY"/>
             </connections>
         </tableViewCell>
         <tapGestureRecognizer id="Db5-aQ-csG">
             <connections>
                 <action selector="tap:" destination="KGk-i7-Jjw" id="laO-1X-AoA"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="Ec6-vm-Xav">
+            <connections>
+                <action selector="tap:" destination="KGk-i7-Jjw" id="NYy-Bk-uU2"/>
+            </connections>
+        </tapGestureRecognizer>
+        <tapGestureRecognizer id="hWc-qk-FT3">
+            <connections>
+                <action selector="tap:" destination="KGk-i7-Jjw" id="NTW-T7-Tcf"/>
             </connections>
         </tapGestureRecognizer>
     </objects>
