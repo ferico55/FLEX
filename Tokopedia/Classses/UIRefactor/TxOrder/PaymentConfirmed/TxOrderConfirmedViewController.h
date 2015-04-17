@@ -13,6 +13,7 @@
 @protocol TxOrderConfirmedViewControllerDelegate <NSObject>
 @required
 -(void)uploadProof;
+- (void)setIsRefresh:(BOOL)isRefresh;
 @optional
 -(void)editPayment:(TxOrderConfirmedList*)object;
 @end
@@ -24,5 +25,7 @@
 #else
 @property (nonatomic, assign) IBOutlet id<TxOrderConfirmedViewControllerDelegate> delegate;
 #endif
+
+@property BOOL isRefresh;
 
 @end

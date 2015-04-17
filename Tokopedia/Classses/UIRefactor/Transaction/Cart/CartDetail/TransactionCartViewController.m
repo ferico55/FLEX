@@ -2962,7 +2962,7 @@
             ((UILabel*)_errorLabel[0]).text = list.cart_error_message_1;
             NSString *error1 = [list.cart_error_message_1 isEqualToString:@"0"]?@"":list.cart_error_message_1;
             NSString *error2 = [list.cart_error_message_2 isEqualToString:@"0"]?@"":list.cart_error_message_2;
-            NSString *string = [NSString stringWithFormat:@"%@/n%@",error1,error2];
+            NSString *string = [NSString stringWithFormat:@"%@\n%@",error1,error2];
             [(UILabel*)_errorLabel[0] setCustomAttributedText:string];
             cell = _errorCells[indexPath.row];
         }
