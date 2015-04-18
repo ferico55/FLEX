@@ -183,6 +183,10 @@ typedef enum TagRequest {
             
             NSUInteger i;
             
+            for (UIView *view in ((GeneralProductCell*)cell).viewcell ) {
+                view.hidden = YES;
+            }
+            
             for (i = 0; (indexsegment + i) < indexlimit; i++) {
                 ProductFeedList *list = [_product objectAtIndex:indexsegment + i];
                 ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;

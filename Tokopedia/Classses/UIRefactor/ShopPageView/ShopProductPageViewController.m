@@ -308,7 +308,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.cellType == UITableViewCellTypeOneColumn) {
-        return 250;
+        return 400;
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         return 205;
     } else {

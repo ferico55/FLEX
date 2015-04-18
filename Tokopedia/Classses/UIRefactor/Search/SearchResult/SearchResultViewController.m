@@ -196,6 +196,8 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 -(void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
+    
+    [tokopediaNetworkManager requestCancel];
     [self cancel];
 }
 
@@ -249,9 +251,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     CGFloat height = 0;
     if (self.cellType == UITableViewCellTypeOneColumn) {
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
-            height = 250;
+            height = 400;
         } else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-            height = 230;
+            height = 400;
         }
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         height = 215;
@@ -392,6 +394,10 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         
         NSAssert(!(indexlimit > _product.count), @"producs out of bounds");
         
+        for (UIView *view in ((GeneralPhotoProductCell*)cell).viewcell ) {
+            view.hidden = YES;
+        }
+        
         for (int i = 0; (indexsegment + i) < indexlimit; i++) {
             List *list = [_product objectAtIndex:indexsegment + i];
             ((UIView*)((GeneralProductCell*)cell).viewcell[i]).hidden = NO;
@@ -460,51 +466,62 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     NSString *cellIdentifier = kTKPDGENERAL_PHOTO_PRODUCT_CELL_IDENTIFIER;
     
     GeneralPhotoProductCell *cell;
+    
     cell = (GeneralPhotoProductCell *)[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
         cell = [GeneralPhotoProductCell initCell];
         cell.delegate = self;
     }
-    cell.indexPath = indexPath;
     
-    NSUInteger index = indexPath.row * 3;
     
-    for (int i = 0; i < cell.productImageViews.count; i++) {
-        NSUInteger indexProduct = index + i;
-        if (indexProduct < _product.count) {
-            List *list = [_product objectAtIndex:indexProduct];
-            
-            NSString *imageURL;
-            if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
-                imageURL = list.product_image;
-            } else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-                imageURL = list.catalog_image_300;
-            }
-            
-            NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:imageURL]
-                                                          cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                      timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-            
-            UIImageView *thumb = [cell.productImageViews objectAtIndex:i];
-            thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
-            thumb.contentMode = UIViewContentModeCenter;
-            thumb.hidden = NO;
-            
-            [thumb setImageWithURLRequest:request
-                         placeholderImage:nil
-                                  success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    NSUInteger indexsegment = indexPath.row * 3;
+    NSUInteger indexmax = indexsegment + 3;
+    NSUInteger indexlimit = MIN(indexmax, _product.count);
+    
+    NSAssert(!(indexlimit > _product.count), @"producs out of bounds");
+    
+    for (UIView *view in ((GeneralPhotoProductCell*)cell).viewcell ) {
+        view.hidden = YES;
+    }
+    
+    for (int i = 0; (indexsegment + i) < indexlimit; i++) {
+        List *list = [_product objectAtIndex:indexsegment + i];
+        ((UIView*)((GeneralPhotoProductCell*)cell).viewcell[i]).hidden = NO;
+        
+        (((GeneralPhotoProductCell*)cell).indexPath) = indexPath;
+        
+        NSString *imageURL;
+        if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+            imageURL = list.product_image;
+        } else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+            imageURL = list.catalog_image_300;
+        }
+        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:imageURL]
+                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        
+        UIImageView *thumb = [cell.productImageViews objectAtIndex:i];
+        thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+        thumb.contentMode = UIViewContentModeCenter;
+        thumb.hidden = NO;
+        
+        [thumb setImageWithURLRequest:request
+                     placeholderImage:nil
+                              success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-                                      thumb.image = image;
-                                      thumb.contentMode = UIViewContentModeScaleAspectFill;
+                                  thumb.image = image;
+                                  thumb.contentMode = UIViewContentModeScaleAspectFill;
 #pragma clang diagnostic pop
-                                  } failure:nil];
+                              } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                  thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
+                              }];
         
-            [[cell.badges objectAtIndex:i] setHidden:(![list.shop_gold_status boolValue])];
-        }
+        [[cell.badges objectAtIndex:i] setHidden:(![list.shop_gold_status boolValue])];
     }
     
     return cell;
+
 }
 
 #pragma mark - Request + Mapping
@@ -680,7 +697,15 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
     else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY])
     {
         // Go to catalog detail
-        NSInteger index = indexPath.section + 2 * indexPath.row;
+        NSInteger index = 0;
+        if (self.cellType == UITableViewCellTypeOneColumn) {
+            index = indexPath.row;
+        } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+            index = indexPath.section+2*(indexPath.row);
+        } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+            index = indexPath.section+3*(indexPath.row);
+        }
+        
         CatalogViewController *controller = [CatalogViewController new];
         controller.list = _product[index];
         
