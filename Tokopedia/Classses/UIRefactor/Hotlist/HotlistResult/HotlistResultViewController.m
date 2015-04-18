@@ -245,7 +245,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.cellType == UITableViewCellTypeOneColumn) {
-        return 250;
+        return 400;
     } else if (self.cellType == UITableViewCellTypeTwoColumn) {
         return 215;
     } else {
@@ -760,9 +760,9 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                                                                     method:RKRequestMethodPOST
                                                                       path:kTKPDHOMEHOTLISTRESULT_APIPATH
                                                                 parameters:[param encrypt]];
-	[_cachecontroller getFileModificationDate];
-	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
+//	[_cachecontroller getFileModificationDate];
+//	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
+//	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
         //[_cachecontroller clearCache];
         _table.tableFooterView = _footer;
         [_act startAnimating];
@@ -791,15 +791,15 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
         
         _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
         [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    }
-	else {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-        NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
-	}
+//    }
+//	else {
+//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+//        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+//        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+//        NSLog(@"cache and updated in last 24 hours.");
+//        [self requestfailure:nil];
+//	}
 }
 
 
