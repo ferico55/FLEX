@@ -73,6 +73,7 @@ typedef enum
 #define kTKPDPROFILE_APISETPASSWORDKEY @"set_password"
 #define kTKPDPROFILE_APIEDITPASSWORDKEY @"edit_password"
 #define kTKPDPROFILE_APISETEMAILNOTIFKEY @"set_email_notification"
+#define kTKPDPROFILE_APIEDITNOTIFICATIONKEY @"edit_notification"
 #define kTKPDPROFILE_APIGETEMAILNOTIFKEY @"get_notification"
 #define kTKPDPROFILE_APIGETPRIVACYKEY @"get_privacy_form"
 #define kTKPDPROFILE_APISETPRIVACYKEY @"get_privacy"
@@ -84,7 +85,8 @@ typedef enum
 #define kTKPDPROFILE_APIGETUSERBANKACCOUNTKEY @"get_bank_account"
 #define kTKPDPROFILE_APISETDEFAULTBANKACCOUNTKEY @"set_default_bank_account"
 #define kTKPDPROFILE_APIEDITDEFAULTBANKACCOUNTKEY @"edit_default_bank_account"
-#define ACTION_GET_DEFAULT_BANK_FORM @"get_default_bank_account_form"
+#define ACTION_GET_DEFAULT_BANK_ACCOUNT_KEY @"get_default_bank_account"
+#define ACTION_GET_DEFAULT_BANK @"get_default_bank_account"
 #define kTKPDPROFILE_APIADDBANKKEY @"add_bank_account"
 #define kTKPDPROFILE_APIEDITBANKKEY @"edit_bank_account"
 #define kTKPDPROFILE_APIDELETEBANKKEY @"delete_bank_account"
@@ -226,7 +228,12 @@ typedef enum
 #define kTKPDPROFILE_SETTINGAPIPATH kTKPDPROFILE_PEOPLEAPIPATH
 #define kTKPDPROFILE_UPLOADIMAGEAPIPATH @"action/upload-image.pl"
 #define kTKPDPROFILE_PROFILESETTINGAPIPATH @"action/people.pl"
+#define kTKPD_SETTING_API_PATH @"action/setting.pl"
 #define API_OTP_PATH @"action/otp.pl"
+
+#define kTKPD_DEPOSIT_API_PATH  @"action/deposit.pl"
+#define kTKPD_DEPOSIT_VERIFY_BANK_ACCOUNT   @"send_otp_verify_bank_account"
+#define kTKPD_DEPOSIT_EDIT_BANK_ACCOUNT   @"send_otp_edit_bank_account"
 
 #define kTKPDPROFILE_VERIFICATIONNUMBERAPIPATH  @"action/verification-number.pl"
 #define kTKPDPROFILE_SEND_EMAIL_CHANGE_PHONE_NUMBER @"send_email_change_phone_number"
