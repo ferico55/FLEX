@@ -255,13 +255,9 @@
                     
                     ((GeneralList1GestureCell*)cell).textLabel.text = list.address_name;
                     ((GeneralList1GestureCell*)cell).indexpath = indexPath;
-                    
-                    if (_ismanualsetdefault) {
-                        if ([indexPath isEqual:[_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY]]) {
-                            ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"Alamat Utama";
-                        } else {
-                            ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"";
-                        }
+
+                    if (indexPath.section == 0) {
+                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"Alamat Utama";
                     } else {
                         ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"";
                     }
@@ -363,9 +359,9 @@
 	if (_isnodata) {
 		cell.backgroundColor = [UIColor whiteColor];
 	}
-    
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-	if (row == indexPath.row) {
+
+    NSInteger section = _list.count - 1;
+	if (section == indexPath.section) {
 		//NSLog(@"%@", NSStringFromSelector(_cmd));
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             /** called if need to load next page **/
@@ -458,6 +454,7 @@
             }
             
             [_list addObjectsFromArray:address.result.list];
+            
             if (_list.count >0) {
                 _isnodata = NO;
                 _urinext =  address.result.paging.uri_next;
@@ -588,10 +585,15 @@
     if (status) {
         [self requestProcessActionSetDefault:object];
     }
+    else
+    {
+        [self cancelSetAsDefault];
+    }
 }
 
 -(void)requestFailureActionSetDefault:(id)object
 {
+    [self cancelSetAsDefault];
     [self requestProcessActionSetDefault:object];
 }
 
@@ -890,8 +892,11 @@
     _ismanualsetdefault = YES;
     [self configureRestKitActionSetDefault];
     [self requestActionSetDefault:_datainput];
+    id object = _list[indexpath.section];
+    [_list removeObject:object];
+    [_list insertObject:object atIndex:0];
     [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
-    [_table reloadData];
+    [self.table reloadData];
 }
 -(void)cancelSetAsDefault
 {
@@ -1201,4 +1206,17 @@
         [self request];
     }
 }
+
+#pragma mark - Address add delegate
+
+- (void)successAddAddress
+{
+    [_list removeAllObjects];
+
+    _table.tableFooterView = _footer;
+    [_act startAnimating];
+    
+    [self request];
+}
+
 @end

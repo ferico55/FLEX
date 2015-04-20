@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPDTabNavigationController">
             <connections>
                 <outlet property="container" destination="h6P-fn-Wnp" id="quZ-Kg-XgS"/>
                 <outlet property="segmentcontrol" destination="04q-Fv-Gk4" id="3DZ-WE-gWR"/>
+                <outlet property="tabView" destination="oab-Fo-r2Z" id="J9R-Cw-Qg4"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -17,30 +18,47 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" id="oab-Fo-r2Z">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                </view>
-                <segmentedControl hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="04q-Fv-Gk4">
-                    <rect key="frame" x="8" y="8" width="302" height="29"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                    <inset key="insetFor6xAndEarlier" minX="0.0" minY="0.0" maxX="0.0" maxY="-15"/>
-                    <segments>
-                        <segment title="First" width="150"/>
-                        <segment title="Second"/>
-                    </segments>
-                    <connections>
-                        <action selector="tap:" destination="-1" eventType="valueChanged" id="uPM-sO-iVm"/>
-                    </connections>
-                </segmentedControl>
-                <view clipsSubviews="YES" contentMode="scaleToFill" id="h6P-fn-Wnp" userLabel="ContainerView">
-                    <rect key="frame" x="0.0" y="44" width="320" height="524"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h6P-fn-Wnp" userLabel="ContainerView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oab-Fo-r2Z">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                    <subviews>
+                        <segmentedControl hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="04q-Fv-Gk4">
+                            <rect key="frame" x="9" y="8" width="302" height="29"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="28" id="VWL-uv-tKo"/>
+                            </constraints>
+                            <inset key="insetFor6xAndEarlier" minX="0.0" minY="0.0" maxX="0.0" maxY="-15"/>
+                            <segments>
+                                <segment title="First" width="150"/>
+                                <segment title="Second"/>
+                            </segments>
+                            <connections>
+                                <action selector="tap:" destination="-1" eventType="valueChanged" id="uPM-sO-iVm"/>
+                            </connections>
+                        </segmentedControl>
+                    </subviews>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="04q-Fv-Gk4" firstAttribute="top" secondItem="oab-Fo-r2Z" secondAttribute="top" constant="8" id="0YF-dc-R6s"/>
+                        <constraint firstItem="04q-Fv-Gk4" firstAttribute="leading" secondItem="oab-Fo-r2Z" secondAttribute="leading" constant="9" id="OTX-PN-A4J"/>
+                        <constraint firstAttribute="height" constant="44" id="cBj-dw-FUT"/>
+                        <constraint firstAttribute="trailing" secondItem="04q-Fv-Gk4" secondAttribute="trailing" constant="9" id="gQV-6Y-BP7"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="h6P-fn-Wnp" secondAttribute="bottom" id="6eD-VV-43U"/>
+                <constraint firstItem="h6P-fn-Wnp" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="7H7-ha-tGs"/>
+                <constraint firstAttribute="trailing" secondItem="h6P-fn-Wnp" secondAttribute="trailing" id="AqJ-mQ-1IM"/>
+                <constraint firstItem="oab-Fo-r2Z" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="NGm-rB-BM2"/>
+                <constraint firstAttribute="trailing" secondItem="oab-Fo-r2Z" secondAttribute="trailing" id="g9H-ut-RTB"/>
+                <constraint firstItem="h6P-fn-Wnp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="nm0-fh-rQw"/>
+                <constraint firstItem="oab-Fo-r2Z" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zbo-LO-fwq"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
         </view>
     </objects>

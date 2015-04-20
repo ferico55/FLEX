@@ -54,6 +54,12 @@
     
     [self setDefaultData:_data];
     
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
+                                                                      style:UIBarButtonItemStyleBordered
+                                                                     target:self
+                                                                     action:@selector(tap:)];
+    self.navigationItem.backBarButtonItem = backBarButton;
+
     UIBarButtonItem *editBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Edit"
                                                                       style:UIBarButtonItemStyleDone
                                                                      target:self
@@ -62,11 +68,6 @@
     editBarButton.tag = 11;
     self.navigationItem.rightBarButtonItem = editBarButton;
     
-    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
-                                                                      style:UIBarButtonItemStyleBordered
-                                                                     target:self
-                                                                     action:@selector(tap:)];
-    self.navigationItem.backBarButtonItem = backBarButton;
     backBarButton.tag = 10;
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
