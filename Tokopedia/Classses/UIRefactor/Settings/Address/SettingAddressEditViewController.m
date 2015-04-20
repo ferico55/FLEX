@@ -358,16 +358,23 @@
                                                                   userInfo:userinfo];
                 
                 if ([self.delegate respondsToSelector:@selector(successEditAddress:)]) {
+                    AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+
                     AddressFormList *address = [AddressFormList new];
-                    address.receiver_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY];
-                    address.address_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY];
-                    address.address_street = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY];
-                    address.postal_code = [_datainput objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY];
-                    address.city_name = [_datainput objectForKey:kTKPDPROFILESETTING_APICITYNAMEKEY];
-                    address.province_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIPROVINCENAMEKEY];
-                    address.district_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIDISTRICNAMEKEY];
-                    address.receiver_phone = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY];
+                    address.receiver_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERNAMEKEY]?:list.receiver_name;
+                    address.address_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSNAMEKEY]?:list.address_name;
+                    address.address_street = [_datainput objectForKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY]?:list.address_street;
+                    address.postal_code = [_datainput objectForKey:kTKPDPROFILESETTING_APIPOSTALCODEKEY]?:list.postal_code;
+                    address.city_name = [_datainput objectForKey:kTKPDPROFILESETTING_APICITYNAMEKEY]?:list.city_name;
+                    address.province_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIPROVINCENAMEKEY]?:list.province_name;
+                    address.district_name = [_datainput objectForKey:kTKPDPROFILESETTING_APIDISTRICNAMEKEY]?:list.district_name;
+                    address.receiver_phone = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY]?:list.receiver_phone;
                     [self.delegate successEditAddress:address];
+                }
+                
+                if ([self.delegate respondsToSelector:@selector(successAddAddress)]) {
+                    [self.delegate successAddAddress];
+                    [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 }
                 
                 NSArray *successMessages = setting.message_status?:@[kTKPDMESSAGE_SUCCESSMESSAGEDEFAULTKEY];
@@ -462,9 +469,6 @@
     NSString *phone = [_datainput objectForKey:kTKPDPROFILESETTING_APIRECEIVERPHONEKEY]?:list.receiver_phone;
     NSString *pass = [_datainput objectForKey:kTKPDPROFILESETTING_APIUSERPASSWORDKEY];
     
-    NSInteger phoneCharCount= [[phone stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
-    NSInteger passCharCount= [[pass stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]length];
-    
     if (!receivername || [receivername isEqualToString:@""]) {
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_RECEIVER_NAME];
@@ -497,7 +501,7 @@
         isValid = NO;
         [messages addObject:ERRORMESSAGE_NULL_RECIEPIENT_PHONE];
     }
-    if (phoneCharCount<MINIMUM_PHONE_CHARACTER_COUNT) {
+    if (phone.length < MINIMUM_PHONE_CHARACTER_COUNT) {
         isValid = NO;
         [messages addObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_COUNT];
     }
@@ -506,10 +510,6 @@
         if (!pass || [pass isEqualToString:@""]) {
             isValid = NO;
             [messages addObject:ERRORMESSAGE_NULL_PASSWORD];
-        }
-        if (passCharCount<MINIMUM_PHONE_CHARACTER_COUNT) {
-            isValid = NO;
-            [messages addObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_COUNT];
         }
     }
     

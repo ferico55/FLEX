@@ -38,7 +38,7 @@
                                                                             path:[_delegate getPath:self.tagRequest]
                                                                       parameters:[[_delegate getParameter:self.tagRequest] encrypt]];
     
-
+    
     [_requestTimer invalidate];
     _requestTimer = nil;
     [_objectRequest setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
@@ -65,21 +65,21 @@
                 [_delegate actionAfterRequest:processResult withOperation:operation withTag:self.tagRequest];
             }
             
-
+            
         } else {
             NSError *error = processResult;
             if(_delegate && [_delegate respondsToSelector:@selector(actionFailAfterRequest:withTag:)]) {
                 [_delegate actionFailAfterRequest:processResult withTag:self.tagRequest];
             }
-            else 
+            else
             {
                 NSLog(@"Error Code : %ld", (long)[(NSError*)error code]) ;
                 NSString *errorDescription = error.localizedDescription;
                 UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
                 if(![errorAlert isVisible]) {
-                    [errorAlert show];                    
+                    [errorAlert show];
                 }
-
+                
             }
         }
     }
@@ -158,12 +158,11 @@
     
     [_objectManager.operationQueue cancelAllOperations];
     _objectManager = nil;
-
+    
 }
 
 - (void)resetRequestCount {
     _requestCount = 0;
 }
-
 
 @end

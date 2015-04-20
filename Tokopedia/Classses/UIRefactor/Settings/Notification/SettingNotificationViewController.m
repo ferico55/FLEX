@@ -275,14 +275,17 @@
     
     _saveBarButtonItem.enabled = NO;
     
-    NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
+    UserAuthentificationManager *user = [UserAuthentificationManager new];
     
     NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIGETEMAILNOTIFKEY,
-                            kTKPDPROFILE_APIUSERIDKEY : [auth objectForKey:kTKPD_USERIDKEY],
+                            kTKPDPROFILE_APIUSERIDKEY : user.getUserId,
                             };
     _requestCount ++;
     
-    _request = [_objectManager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_SETTINGAPIPATH parameters:[param encrypt]];
+    _request = [_objectManager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:kTKPDPROFILE_SETTINGAPIPATH
+                                                                parameters:[param encrypt]];
     
     NSTimer *timer;
     /* file doesn't exist or hasn't been updated */
@@ -301,7 +304,12 @@
     
     [_operationQueue addOperation:_request];
     
-    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requestTimeout) userInfo:nil repeats:NO];
+    timer= [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                            target:self
+                                          selector:@selector(requestTimeout)
+                                          userInfo:nil
+                                           repeats:NO];
+    
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
@@ -335,11 +343,10 @@
                 if (!_form.message_error) {
                     [self setDefaultData:_form.result.notification];
                     [_tableView reloadData];
-                }
-                else
-                {
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:_form.message_error ,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                } else {
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:_form.message_error delegate:self];
+                    [alert show];
+                    
                     self.navigationItem.rightBarButtonItem = _saveBarButtonItem;
                     [_saveBarButtonItem setEnabled:YES];
                 }
@@ -405,7 +412,7 @@
         
     _saveBarButtonItem.enabled = NO;
     
-    NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APISETEMAILNOTIFKEY,
+    NSDictionary* param = @{kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIEDITNOTIFICATIONKEY,
                             kTKPDPROFILESETTING_APIFLAGNEWSLATTERKEY : [data objectForKey:kTKPDPROFILESETTING_APIFLAGNEWSLATTERKEY]?:_form.result.notification.flag_newsletter,
                             kTKPDPROFILESETTING_APIFLAGREVIEWKEY : [data objectForKey:kTKPDPROFILESETTING_APIFLAGREVIEWKEY]?:_form.result.notification.flag_review,
                             kTKPDPROFILESETTING_APIFLAGTALKPRODUCTKEY :[data objectForKey:kTKPDPROFILESETTING_APIFLAGTALKPRODUCTKEY]?:_form.result.notification.flag_talk_product,
@@ -414,7 +421,10 @@
                             };
     _requestCountAction ++;
     
-    _requestAction = [_objectManagerAction appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDPROFILE_PROFILESETTINGAPIPATH parameters:[param encrypt]];
+    _requestAction = [_objectManagerAction appropriateObjectRequestOperationWithObject:self
+                                                                                method:RKRequestMethodPOST
+                                                                                  path:kTKPDPROFILE_PROFILESETTINGAPIPATH
+                                                                            parameters:[param encrypt]];
     NSTimer *timer;
     //[_cachecontroller clearCache];
     /* file doesn't exist or hasn't been updated */
@@ -471,14 +481,16 @@
             
             if (status) {
                 if (setting.result.is_success == 1) {
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:setting.message_status ,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYSUCCESSMESSAGEKEY object:nil userInfo:info];
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:setting.message_status
+                                                                                     delegate:self];
+                    [alert show];
+                    
                     [self.navigationController popViewControllerAnimated:YES];
-                }
-                else
-                {
-                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:setting.message_error ,@"messages", nil];
-                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
+                } else {
+                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:setting.message_error
+                                                                                   delegate:self];
+                    [alert show];
+
                     self.navigationItem.rightBarButtonItem = _saveBarButtonItem;
                     [_saveBarButtonItem setEnabled:YES];
                 }
@@ -490,7 +502,11 @@
             NSError *error = object;
             if (!([error code] == NSURLErrorCancelled)){
                 NSString *errorDescription = error.localizedDescription;
-                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+                UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE
+                                                                    message:errorDescription
+                                                                   delegate:self
+                                                          cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE
+                                                          otherButtonTitles:nil];
                 [errorAlert show];
             }
         }

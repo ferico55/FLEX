@@ -189,13 +189,14 @@
     // add notification
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY object:nil];
+    [nc addObserver:self selector:@selector(updateView:) name:kTKPD_EDITPROFILEPOSTNOTIFICATIONNAMEKEY object:nil];
     
     //cache
     _cachecontroller.URLCacheInterval = 86400.0;
 
     _button.layer.cornerRadius = 2;
     
-    self.hidesBottomBarWhenPushed = YES;
+    self.hidesBottomBarWhenPushed = YES;    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -583,7 +584,6 @@
             {
                 //setting action
                 ProfileSettingViewController *vc = [ProfileSettingViewController new];
-                vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -611,8 +611,6 @@
             {
                 //button edit profile action
                 SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
-                vc.data = @{kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY]
-                            };
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }

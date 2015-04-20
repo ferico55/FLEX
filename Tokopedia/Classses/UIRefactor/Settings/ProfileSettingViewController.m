@@ -69,12 +69,10 @@
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIButton class]]) {
         UIButton *btn = (UIButton *)sender;
-        NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
         switch (btn.tag) {
             case 10:
             {    //change password
                 SettingPasswordViewController *vc = [SettingPasswordViewController new];
-                vc.data = @{kTKPD_AUTHKEY : auth};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -82,7 +80,6 @@
             {
                 //address list
                 SettingAddressViewController *vc = [SettingAddressViewController new];
-                vc.data = @{kTKPD_AUTHKEY : auth};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -90,7 +87,6 @@
             {
                 //bank account
                 SettingBankAccountViewController *vc = [SettingBankAccountViewController new];
-                vc.data = @{kTKPD_AUTHKEY : auth};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -98,17 +94,13 @@
             {
                 //notification
                 SettingNotificationViewController *vc = [SettingNotificationViewController new];
-                vc.data = @{kTKPD_AUTHKEY : auth};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
             case 14:
             {
                 //ubah profil
-//                SettingPrivacyViewController *vc = [SettingPrivacyViewController new];
-//                vc.data = @{kTKPD_AUTHKEY : auth};
                 SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
-                vc.data = @{kTKPD_AUTHKEY : auth};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -168,10 +160,8 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    NSDictionary *auth = [_data objectForKey:kTKPD_AUTHKEY];
     if (indexPath.section == 0 && indexPath.row == 0) {
         SettingPasswordViewController *vc = [SettingPasswordViewController new];
-        vc.data = @{kTKPD_AUTHKEY : auth};
         [self.navigationController pushViewController:vc animated:YES];
     }
     else{
@@ -180,7 +170,6 @@
             {
                 //address list
                 SettingAddressViewController *vc = [SettingAddressViewController new];
-                vc.data = @{kTKPD_AUTHKEY : auth};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -188,7 +177,6 @@
             {
                 //bank account
                 SettingBankAccountViewController *vc = [SettingBankAccountViewController new];
-                vc.data = @{kTKPD_AUTHKEY : auth};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -196,7 +184,6 @@
             {
                 //notification
                 SettingNotificationViewController *vc = [SettingNotificationViewController new];
-                vc.data = @{kTKPD_AUTHKEY : auth};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
@@ -204,7 +191,6 @@
             {
                 //privacy settings
                 SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
-                vc.data = @{kTKPD_AUTHKEY : auth};
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }
