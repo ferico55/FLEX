@@ -99,12 +99,13 @@
     
     //NSMutableArray *_rowCountExpandCellForDropshipper;
     NSMutableArray *_isDropshipper;
-     NSMutableArray *_stockPartialDetail;
+    NSMutableArray *_stockPartialDetail;
     NSMutableArray *_stockPartialStrList;
     
     NSMutableArray *_senderNameDropshipper;
     NSMutableArray *_senderPhoneDropshipper;
     NSMutableArray *_dropshipStrList;
+    NSMutableArray *_listProductFirstObjectIndexPath;
     
     CGPoint _keyboardPosition;
     CGSize _keyboardSize;
@@ -113,8 +114,6 @@
     CGSize _scrollviewContentSize;
     
     BOOL _isUsingSaldoTokopedia;
-    
-    NSMutableArray *_listProductFirstObjectIndexPath;
     
     TransactionObjectMapping *_mapping;
     BOOL _isLoadingRequest;
@@ -2774,7 +2773,6 @@
 #pragma mark - Methods
 -(void)resetAllArray
 {
-    [_listProductFirstObjectIndexPath removeAllObjects];
     [_isDropshipper removeAllObjects];
     [_stockPartialStrList removeAllObjects];
     [_senderNameDropshipper removeAllObjects];
@@ -2962,7 +2960,7 @@
             ((UILabel*)_errorLabel[0]).text = list.cart_error_message_1;
             NSString *error1 = [list.cart_error_message_1 isEqualToString:@"0"]?@"":list.cart_error_message_1;
             NSString *error2 = [list.cart_error_message_2 isEqualToString:@"0"]?@"":list.cart_error_message_2;
-            NSString *string = [NSString stringWithFormat:@"%@\n%@",error1,error2];
+            NSString *string = [NSString stringWithFormat:@"%@\n%@",error1, error2];
             [(UILabel*)_errorLabel[0] setCustomAttributedText:string];
             cell = _errorCells[indexPath.row];
         }

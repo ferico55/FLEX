@@ -702,31 +702,28 @@
                     AddressFormList *address = ATCForm.result.form.destination;
                     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
                     
-                    NSIndexPath* selectedIndexPathShipment =[_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                    
-                    NSIndexPath* selectedIndexPathShipmentPackage =[_dataInput objectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-                    
                     NSArray *shipments = ATCForm.result.form.shipment;
                     _shipments = shipments;
                     [_dataInput setObject:shipments forKey:DATA_SHIPMENT_KEY];
-                    
-                    NSInteger indexShipment = selectedIndexPathShipment.row;
-                    ShippingInfoShipments *shipment = shipments[indexShipment];
-                    
-                    NSInteger indexShipmentPackage = selectedIndexPathShipmentPackage.row;
-                    NSMutableArray *shipmentPackages = [NSMutableArray new];
-                    [shipmentPackages addObjectsFromArray:shipment.shipment_package];
-                    for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-                        if ([package.price isEqualToString:@"0"]) {
-                            [shipmentPackages removeObject:package];
+                
+                    NSMutableArray *shipmentSupporteds = [NSMutableArray new];
+                    for (ShippingInfoShipments *shipment in _shipments) {
+                        NSMutableArray *shipmentPackages = [NSMutableArray new];
+                        for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                            if (![package.price isEqualToString:@"0"]) {
+                                [shipmentPackages addObject:package];
+                            }
+                        }
+                        
+                        if (shipmentPackages.count>0) {
+                            shipment.shipment_package = shipmentPackages;
+                            [shipmentSupporteds addObject:shipment];
                         }
                     }
                     
-                    if (shipmentPackages.count > 0) {
-                        ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
-                        _selectedShipment = shipment;
-                        _selectedShipmentPackage = shipmentPackage;
-                    }
+                    _shipments = shipmentSupporteds;
+                    _selectedShipment = [shipmentSupporteds firstObject];
+                    _selectedShipmentPackage = [_selectedShipment.shipment_package firstObject];
 
                     [self setAddress:address];
                     _isnodata = NO;
@@ -1118,6 +1115,25 @@
                     NSArray *shipments = calculate.result.shipment;
                     _shipments = shipments;
                     
+                    NSMutableArray *shipmentSupporteds = [NSMutableArray new];
+                    for (ShippingInfoShipments *shipment in _shipments) {
+                        NSMutableArray *shipmentPackages = [NSMutableArray new];
+                        for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                            if (![package.price isEqualToString:@"0"]) {
+                                [shipmentPackages addObject:package];
+                            }
+                        }
+                        
+                        if (shipmentPackages.count>0) {
+                            shipment.shipment_package = shipmentPackages;
+                            [shipmentSupporteds addObject:shipment];
+                        }
+                    }
+                    
+                    _shipments = shipmentSupporteds;
+                    _selectedShipment = [shipmentSupporteds firstObject];
+                    _selectedShipmentPackage = [_selectedShipment.shipment_package firstObject];
+                    
                     for (UITableViewCell *cell in _tableViewPaymentDetailCell) {
                         UIActivityIndicatorView *indicatorView = (UIActivityIndicatorView *)[cell viewWithTag:2];
                         [indicatorView stopAnimating];
@@ -1126,6 +1142,8 @@
                         UILabel *label = (UILabel *)[cell viewWithTag:1];
                         label.hidden = NO;
                     }
+                    
+                    [_tableView reloadData];
                 }
             }
         }
@@ -1154,6 +1172,7 @@
     ShippingInfoShipments *shipmentObject;
 
     if (indexPath.row == TAG_BUTTON_TRANSACTION_SHIPPING_AGENT) {
+        
         for (ShippingInfoShipments *package in _shipments) {
             if ([package.shipment_name isEqualToString:(NSString*)object]) {
                 shipmentObject = package;
@@ -1245,17 +1264,6 @@
 #pragma mark - Setting Address Delegate
 -(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo
 {
-    for (ShippingInfoShipments *shipment in _shipments) {
-        for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
-            if (![package.price isEqualToString:@"0"]) {
-                _selectedShipment = shipment;
-                _selectedShipmentPackage = package;
-                break;
-            }
-        }
-        break;
-    }
-    
     AddressFormList *address = [userInfo objectForKey:DATA_ADDRESS_DETAIL_KEY];
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
     [self setAddress:address];

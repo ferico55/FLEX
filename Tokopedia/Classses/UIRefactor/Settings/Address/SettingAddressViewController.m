@@ -51,6 +51,7 @@
     NSInteger _requestcount;
     
     NSMutableDictionary *_datainput;
+    NSMutableArray *_listTemp;
     NSDictionary *_auth;
         
     BOOL _isaddressexpanded;
@@ -123,6 +124,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _listTemp = [NSMutableArray new];
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
@@ -133,7 +135,9 @@
         _doneBarButtonItem.tag = TAG_SETTING_ADDRESS_BARBUTTONITEM_DONE;
         self.navigationItem.rightBarButtonItem = _doneBarButtonItem;
 
-        _table.tableHeaderView = _addNewAddressView;
+        [self.view addSubview:_addNewAddressView];
+        _table.contentInset = UIEdgeInsetsMake(_addNewAddressView.frame.size.height, 0, 0, 0);
+        //_table.tableHeaderView = _addNewAddressView;
         
         _searchBar.delegate = self;
         _searchBar.placeholder = @"Cari Alamat";
@@ -153,6 +157,10 @@
                                                                          action:@selector(tap:)];
         backBarButton.tag = 10;
         self.navigationItem.backBarButtonItem = backBarButton;
+        
+        //_table.tableHeaderView = _searchBarView;
+        [self.view addSubview:_searchBarView];
+        _table.contentInset = UIEdgeInsetsMake(_searchBarView.frame.size.height, 0, 0, 0);
     }
 
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -451,9 +459,11 @@
         if (status) {
             if (_page == 1) {
                 [_list removeAllObjects];
+                [_listTemp removeAllObjects];
             }
             
             [_list addObjectsFromArray:address.result.list];
+            [_listTemp addObjectsFromArray:address.result.list];
             
             if (_list.count >0) {
                 _isnodata = NO;
@@ -476,7 +486,7 @@
                 NSLog(@"%zd",_page);
             }
             NSInteger type = [[_datainput objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]integerValue];
-            if (type == 1) {
+            if (type == TYPE_ADD_EDIT_PROFILE_EDIT) {
                 //TODO: Behavior after edit
                 NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY];
                 BOOL isdefault;
@@ -493,7 +503,7 @@
                 [self.navigationController pushViewController:vc animated:NO];
             }
             [_table reloadData];
-            _table.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
+            //_table.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
         }
     }
 }
@@ -941,6 +951,11 @@
 }
 
 #pragma mark - UISearchBar Delegate
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    
+}
+
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar resignFirstResponder];
@@ -949,14 +964,53 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar setText:@""];
+
     [searchBar resignFirstResponder];
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:NO animated:YES];
-    [_datainput setObject:searchBar.text forKey:API_QUERY_KEY];
-    [self refreshView:nil];
+
+    if (![searchBar.text isEqualToString:@""]) {
+        [_list removeAllObjects];
+        [_list addObjectsFromArray:_listTemp];
+        
+        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchBar.text];
+        NSMutableArray *listName = [NSMutableArray new];
+        NSMutableArray *listReceiver = [NSMutableArray new];
+        for (AddressFormList *address in _list) {
+            [listName addObject: address.address_name];
+            [listReceiver addObject:address.receiver_name];
+        }
+        
+        listName = [[listName filteredArrayUsingPredicate:resultPredicate] mutableCopy];
+        listReceiver = [[listReceiver filteredArrayUsingPredicate:resultPredicate] mutableCopy];
+        NSMutableArray *listFiltered = [NSMutableArray new];
+        for (AddressFormList *address in _list) {
+            for (NSString *name in listName) {
+                if ([address.address_name isEqualToString:name]) {
+                    [listFiltered addObject:address];
+                }
+            }
+            for (NSString *receiver in listReceiver) {
+                if ([address.receiver_name isEqualToString:receiver] && ![listFiltered containsObject:address]) {
+                    [listFiltered addObject:address];
+                }
+            }
+        }
+        [_list removeAllObjects];
+        [_list addObjectsFromArray:listFiltered];
+        
+        [_table reloadData];
+    }
+    else
+    {
+        [_list removeAllObjects];
+        [_list addObjectsFromArray:_listTemp];
+        [_table reloadData];
+    }
+    
     return YES;
 }
 
@@ -1162,6 +1216,7 @@
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         _doneBarButtonItem.enabled = YES;
+        
     }
 }
 
