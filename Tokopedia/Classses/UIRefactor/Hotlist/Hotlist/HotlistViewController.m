@@ -178,7 +178,7 @@
             ((HotlistCell*)cell).pricelabel.text = hotlist.price_start;
             [((HotlistCell*)cell).act startAnimating];
             
-            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:hotlist.image_url] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+            NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:hotlist.image_url_600] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
 
             UIImageView *thumb = ((HotlistCell*)cell).productimageview;
             thumb.image = nil;
@@ -274,7 +274,7 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[HotlistResult class]];
     
     RKObjectMapping *hotlistMapping = [RKObjectMapping mappingForClass:[HotlistList class]];
-    [hotlistMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIURLKEY,kTKPDHOME_APITHUMBURLKEY,kTKPDHOME_APISTARTERPRICEKEY,kTKPDHOME_APITITLEKEY]];
+    [hotlistMapping addAttributeMappingsFromArray:@[kTKPDHOME_APIURLKEY,kTKPDHOME_APILARGEIMGURLKEY, kTKPDHOME_APITHUMBURLKEY,kTKPDHOME_APISTARTERPRICEKEY,kTKPDHOME_APITITLEKEY]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];
     [pagingMapping addAttributeMappingsFromDictionary:@{kTKPDHOME_APIURINEXTKEY:kTKPDHOME_APIURINEXTKEY}];
@@ -474,7 +474,7 @@
         CatalogViewController *controller = [CatalogViewController new];
         controller.catalogID = catalogID;
         controller.catalogName = hotlist.title;
-        controller.catalogImage = hotlist.image_url;
+        controller.catalogImage = hotlist.image_url_600;
         controller.catalogPrice = hotlist.price_start;
         [self.delegate pushViewController:controller];
     

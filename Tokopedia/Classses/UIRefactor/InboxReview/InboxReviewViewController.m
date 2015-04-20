@@ -22,6 +22,7 @@
 #import "URLCacheConnection.h"
 #import "UserAuthentificationManager.h"
 #import "ReportViewController.h"
+#import "NoResultView.h"
 
 @interface InboxReviewViewController () <UITableViewDataSource, UITableViewDelegate, GeneralReviewCellDelegate, ReportViewControllerDelegate>
 
@@ -80,6 +81,7 @@
     UserAuthentificationManager *_userManager;
     ReportViewController *_reportController;
     NSString *_reportedReviewId;
+    NoResultView *_noResult;
 }
 
 #pragma mark - Initialization
@@ -157,6 +159,8 @@
     _userManager = [UserAuthentificationManager new];
     _reportController = [ReportViewController new];
     _reportController.delegate = self;
+    
+    _noResult = [[NoResultView alloc] initWithFrame:CGRectMake(0, 100, 320, 200)];
     
     _reviews = [NSMutableArray new];
     _reviewPage = 1;
@@ -554,7 +558,7 @@
 }
 
 - (void)finishRequest {
-    _reviewTable.tableFooterView = nil;
+//    _reviewTable.tableFooterView = nil;
     [_reviewLoadingAct stopAnimating];
     [_refreshControl endRefreshing];
 }
@@ -604,7 +608,7 @@
 
         } else {
             _isNoData = YES;
-            _reviewTable.tableFooterView = nil;
+            _reviewTable.tableFooterView = _noResult;
         }
     }
 }
