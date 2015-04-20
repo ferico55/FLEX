@@ -1486,7 +1486,7 @@ TokopediaNetworkManagerDelegate
                 _isnodatawholesale = NO;
             }
             if([_product.result.product.product_description isEqualToString:@"0"])
-                _product.result.product.product_description = kTKPDTIDAK_ADA_WISHLIST;
+                _product.result.product.product_description = NO_DESCRIPTION;
             
             
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];

@@ -108,7 +108,7 @@
     _cachecontroller = [URLCacheController new];
     
     /** set first page become 1 **/
-    _page = 3;
+    _page = 1;
     
     /** set max data per page request **/
     _limit = kTKPDSEARCH_LIMITPAGE;
@@ -319,21 +319,21 @@
 	
     _timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
     
-	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
+//	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
         if (!_isrefreshview) {
             _table.tableFooterView = _footer;
             [_act startAnimating];
         }
         
         [[self getNetworkManager] doRequest];
-    }else {
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-        NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
-	}
+//    }else {
+//        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+//        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+//        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
+//        NSLog(@"cache and updated in last 24 hours.");
+//        [self requestfailure:nil];
+//	}
 }
 
 
@@ -419,22 +419,7 @@
                 if (_product.count >0) {
                     
                     _urinext =  _searchitem.result.paging.uri_next;
-                    
-                    NSURL *url = [NSURL URLWithString:_urinext];
-                    NSArray* querry = [[url query] componentsSeparatedByString: @"&"];
-                    
-                    NSMutableDictionary *queries = [NSMutableDictionary new];
-                    [queries removeAllObjects];
-                    for (NSString *keyValuePair in querry)
-                    {
-                        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-                        NSString *key = [pairComponents objectAtIndex:0];
-                        NSString *value = [pairComponents objectAtIndex:1];
-                        
-                        [queries setObject:value forKey:key];
-                    }
-                    
-                    _page = [[queries objectForKey:kTKPDSEARCH_APIPAGEKEY] integerValue];
+                    _page = [[tokopediaNetworkManager splitUriToPage:_urinext] integerValue];
                     
                     NSLog(@"next page : %zd",_page);
                     _isnodata = NO;

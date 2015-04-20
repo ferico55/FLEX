@@ -214,5 +214,6 @@ typedef enum
 #define PRODUCT_DESC @"Deskripsi Produk"
 #define PRODUCT_WHOLESALE @"Harga Grosir"
 #define PRODUCT_INFO @"Informasi Produk"
+#define NO_DESCRIPTION @"Tidak ada deskripsi"
 
 #endif
