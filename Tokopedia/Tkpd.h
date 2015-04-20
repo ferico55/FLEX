@@ -12,9 +12,9 @@
 #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
 
 //#if DEBUG
-//    #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//    #define kTkpdBaseURLString @"http://www.tkpdevel-pg.api/ws"
 //#else
-//    #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
 
 #define kTKPD_AUTHKEY @"auth"

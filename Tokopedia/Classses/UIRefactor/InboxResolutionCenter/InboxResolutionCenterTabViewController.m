@@ -354,7 +354,7 @@
     button.titleLabel.textAlignment = NSTextAlignmentCenter;
     button.titleLabel.textColor = [UIColor whiteColor];
     [button setAttributedTitle:attributedText forState:UIControlStateNormal];
-    UIImage *arrowImage = [UIImage imageNamed:@"icon_arrow_down_white.png"];
+    UIImage *arrowImage = [UIImage imageNamed:@"icon_triangle_down_white.png"];
     [button setImage:arrowImage forState:UIControlStateNormal];
     button.titleEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 10);
     button.imageEdgeInsets = UIEdgeInsetsMake(0, 115, 0, -15);

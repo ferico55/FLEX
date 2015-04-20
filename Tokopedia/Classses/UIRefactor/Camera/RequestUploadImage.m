@@ -27,8 +27,10 @@
     _operationQueue = [NSOperationQueue new];
     _requestActionUploadPhoto = [NSMutableURLRequest new];
     
-    _objectManagerUploadPhoto = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:kTkpdBaseURLString]];
+    NSString *urlString = [NSString stringWithFormat:@"http://%@",_generateHost.result.generated_host.upload_host];
     
+    _objectManagerUploadPhoto = [RKObjectManager managerWithBaseURL:[NSURL URLWithString:urlString]];
+        
     // setup object mappings
     RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[UploadImage class]];
     [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
@@ -48,8 +50,8 @@
     
     [_objectManagerUploadPhoto addResponseDescriptor:responseDescriptor];
     
-    [_objectManagerUploadPhoto setAcceptHeaderWithMIMEType:RKMIMETypeJSON];
-    [_objectManagerUploadPhoto setRequestSerializationMIMEType:RKMIMETypeJSON];
+    //[_objectManagerUploadPhoto setAcceptHeaderWithMIMEType:RKMIMETypeJSON];
+    //[_objectManagerUploadPhoto setRequestSerializationMIMEType:RKMIMETypeJSON];
 }
 
 
@@ -75,6 +77,7 @@
                              kTKPD_USERIDKEY : @(userID),
                              @"product_id" : _productID?:@"",
                              @"new_add" : @(1)
+                             //@"is_temp" :@(1)
                              };
     
     _requestActionUploadPhoto = [NSMutableURLRequest requestUploadImageData:imageData
