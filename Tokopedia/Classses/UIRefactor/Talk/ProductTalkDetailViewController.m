@@ -461,6 +461,7 @@
     
     if([_userManager getUserId]) {
         [_talkInputView setHidden:NO];
+        [_sendButton setEnabled:NO];
     } else {
         [_talkInputView setHidden:YES];
     }
@@ -739,6 +740,9 @@
         UIButton *btn = (UIButton *)sender;
         switch (btn.tag) {
             case 10: {
+                if([_growingtextview.text length] < 5) {
+                    return;
+                }
                 NSInteger lastindexpathrow = [_list count];
                 TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
                 NSDictionary* auth = [secureStorage keychainDictionary];
@@ -1234,8 +1238,16 @@
 
 
 #pragma mark - LoginView Delegate
-- (void)redirectViewController:(id)viewController
-{
+- (void)redirectViewController:(id)viewController {
 
+}
+
+#pragma mark - GrowingTextView Delegate
+- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView  {
+    if([growingTextView.text length] < 5) {
+        _sendButton.enabled = NO;
+    } else {
+        _sendButton.enabled = YES;
+    }
 }
 @end

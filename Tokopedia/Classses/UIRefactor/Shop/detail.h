@@ -261,6 +261,7 @@ typedef enum
 #define kTKPDDETAILPRODUCT_APISHOPLASTLOGINKEY @"shop_owner_last_login"
 #define kTKPDDETAILPRODUCT_APISHOPTAGLINEKEY @"shop_tagline"
 #define kTKPDDETAILPRODUCT_APISHOPNAMEKEY @"shop_name"
+#define kTKPDDETAILPRODUCT_APISHOPURLKEY @"shop_url"
 #define kTKPDDETAILPRODUCT_APISHOPSTATSKEY @"shop_stats"
 #define kTKPDDETAILPRODUCT_APISHOPISFAVKEY @"shop_already_favorited"
 #define kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY @"shop_description"
@@ -534,6 +535,7 @@ typedef enum
 #define kTKPDREVIEW_APIREVIEWRATESPEEDKEY @"review_rate_speed"
 #define kTKPDREVIEW_APIREVIEWRATESERVICEKEY @"review_rate_service"
 #define kTKPDREVIEW_APIREVIEWRATEACCURACYKEY @"review_rate_accuracy"
+#define kTKPDREVIEW_APIREVIEWPRODUCTRATEKEY @"review_rate_product"
 #define kTKPDREVIEW_APIREVIEWMESSAGEKEY @"review_message"
 #define kTKPDREVIEW_APIREVIEWUSERIDKEY @"review_user_id"
 

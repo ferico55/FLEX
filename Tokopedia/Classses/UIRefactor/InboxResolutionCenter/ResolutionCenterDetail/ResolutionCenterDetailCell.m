@@ -96,8 +96,14 @@
     _atachmentView.hidden = YES;
     
 }
-- (IBAction)gesture:(id)sender {
-    [_delegate goToShopOrProfileIndexPath:_indexPath];
+- (IBAction)gesture:(UITapGestureRecognizer*)sender {
+    if (sender.view.tag == 15) {
+        [_delegate goToShopOrProfileIndexPath:_indexPath];
+    }
+    else
+    {
+        [_delegate goToImageViewerIndex:sender.view.tag-10 atIndexPath:_indexPath];
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
