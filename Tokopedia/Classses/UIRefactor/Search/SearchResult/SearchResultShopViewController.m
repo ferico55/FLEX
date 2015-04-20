@@ -164,6 +164,12 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
                                                object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(setTableViewContentInset)
+                                                 name:kTKPD_CATEGORY_HIDE_TAB_BAR
+                                               object:nil];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -749,4 +755,11 @@
     [_refreshControl endRefreshing];
     _table.tableFooterView = [self getLoadView].view;
 }
+
+- (void)setTableViewContentInset
+{
+    self.table.contentInset = UIEdgeInsetsMake(44, 0, 0, 0);
+    self.table.scrollIndicatorInsets = UIEdgeInsetsMake(44, 0, 0, 0);
+}
+
 @end
