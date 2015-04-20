@@ -11,4 +11,5 @@
 @interface MoreViewController : UITableViewController
 
 - (IBAction)actionCreateShop:(id)sender;
+- (void)updateKeyChain;
 @end

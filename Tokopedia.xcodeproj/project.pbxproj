@@ -364,8 +364,6 @@
 		7AD2D97C1ADBB1BA003E1F94 /* AlertPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AD2D2AA1ADBB1B8003E1F94 /* AlertPickerView.xib */; };
 		7AD2D97D1ADBB1BA003E1F94 /* AlertReputation.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2D2AC1ADBB1B8003E1F94 /* AlertReputation.m */; };
 		7AD2D97E1ADBB1BA003E1F94 /* AlertReputation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AD2D2AD1ADBB1B8003E1F94 /* AlertReputation.xib */; };
-		7AD2D97F1ADBB1BA003E1F94 /* AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2D2AF1ADBB1B8003E1F94 /* AlertView.m */; };
-		7AD2D9801ADBB1BA003E1F94 /* AlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AD2D2B01ADBB1B8003E1F94 /* AlertView.xib */; };
 		7AD2D9811ADBB1BA003E1F94 /* StickyAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2D2B21ADBB1B8003E1F94 /* StickyAlert.m */; };
 		7AD2D9821ADBB1BA003E1F94 /* StickyAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2D2B41ADBB1B8003E1F94 /* StickyAlertView.m */; };
 		7AD2D9831ADBB1BA003E1F94 /* StickyAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AD2D2B51ADBB1B8003E1F94 /* StickyAlertView.xib */; };
@@ -1288,12 +1286,16 @@
 		7AD2DD181ADBB1BB003E1F94 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2D81B1ADBB1BA003E1F94 /* README.md */; };
 		8518A9641ADF64B7002B053B /* AddShop.m in Sources */ = {isa = PBXBuildFile; fileRef = 8518A9631ADF64B7002B053B /* AddShop.m */; };
 		8518A9671ADF64D2002B053B /* AddShopResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 8518A9661ADF64D2002B053B /* AddShopResult.m */; };
-		8518A96B1ADF7B09002B053B /* ShopDeliveryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8518A9691ADF7B09002B053B /* ShopDeliveryViewController.m */; };
-		8518A96C1ADF7B09002B053B /* ShopDeliveryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8518A96A1ADF7B09002B053B /* ShopDeliveryViewController.xib */; };
 		8518A96F1ADF8AD7002B053B /* ShopDeliveryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8518A96E1ADF8AD7002B053B /* ShopDeliveryCell.m */; };
+		8518A9731ADFA0A0002B053B /* TKPDAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 8518A9711ADFA0A0002B053B /* TKPDAlert.m */; };
+		8518A9741ADFA0A0002B053B /* TKPDAlert.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8518A9721ADFA0A0002B053B /* TKPDAlert.xib */; };
+		8518A9781ADFA111002B053B /* ProductListMyShopFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8518A9761ADFA111002B053B /* ProductListMyShopFilterViewController.m */; };
+		8518A9791ADFA111002B053B /* ProductListMyShopFilterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8518A9771ADFA111002B053B /* ProductListMyShopFilterViewController.xib */; };
 		852A907A1ADE444D00C3C047 /* CreateShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 852A90781ADE444D00C3C047 /* CreateShopViewController.m */; };
 		852A907B1ADE444D00C3C047 /* CreateShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 852A90791ADE444D00C3C047 /* CreateShopViewController.xib */; };
 		852A907F1ADE6D7E00C3C047 /* CreateShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 852A907E1ADE6D7E00C3C047 /* CreateShopCell.m */; };
+		8531B5801AE0A60E0000946F /* BerhasilBukaTokoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8531B57E1AE0A60E0000946F /* BerhasilBukaTokoViewController.m */; };
+		8531B5811AE0A60E0000946F /* BerhasilBukaTokoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8531B57F1AE0A60E0000946F /* BerhasilBukaTokoViewController.xib */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -2052,9 +2054,6 @@
 		7AD2D2AB1ADBB1B8003E1F94 /* AlertReputation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertReputation.h; sourceTree = "<group>"; };
 		7AD2D2AC1ADBB1B8003E1F94 /* AlertReputation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertReputation.m; sourceTree = "<group>"; };
 		7AD2D2AD1ADBB1B8003E1F94 /* AlertReputation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertReputation.xib; sourceTree = "<group>"; };
-		7AD2D2AE1ADBB1B8003E1F94 /* AlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertView.h; sourceTree = "<group>"; };
-		7AD2D2AF1ADBB1B8003E1F94 /* AlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertView.m; sourceTree = "<group>"; };
-		7AD2D2B01ADBB1B8003E1F94 /* AlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertView.xib; sourceTree = "<group>"; };
 		7AD2D2B11ADBB1B8003E1F94 /* StickyAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyAlert.h; sourceTree = "<group>"; };
 		7AD2D2B21ADBB1B8003E1F94 /* StickyAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StickyAlert.m; sourceTree = "<group>"; };
 		7AD2D2B31ADBB1B8003E1F94 /* StickyAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StickyAlertView.h; sourceTree = "<group>"; };
@@ -3318,17 +3317,23 @@
 		8518A9631ADF64B7002B053B /* AddShop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddShop.m; sourceTree = "<group>"; };
 		8518A9651ADF64D2002B053B /* AddShopResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddShopResult.h; sourceTree = "<group>"; };
 		8518A9661ADF64D2002B053B /* AddShopResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddShopResult.m; sourceTree = "<group>"; };
-		8518A9681ADF7B09002B053B /* ShopDeliveryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopDeliveryViewController.h; sourceTree = "<group>"; };
-		8518A9691ADF7B09002B053B /* ShopDeliveryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopDeliveryViewController.m; sourceTree = "<group>"; };
-		8518A96A1ADF7B09002B053B /* ShopDeliveryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopDeliveryViewController.xib; sourceTree = "<group>"; };
 		8518A96D1ADF8AD7002B053B /* ShopDeliveryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopDeliveryCell.h; sourceTree = "<group>"; };
 		8518A96E1ADF8AD7002B053B /* ShopDeliveryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopDeliveryCell.m; sourceTree = "<group>"; };
+		8518A9701ADFA0A0002B053B /* TKPDAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDAlert.h; sourceTree = "<group>"; };
+		8518A9711ADFA0A0002B053B /* TKPDAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDAlert.m; sourceTree = "<group>"; };
+		8518A9721ADFA0A0002B053B /* TKPDAlert.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDAlert.xib; sourceTree = "<group>"; };
+		8518A9751ADFA111002B053B /* ProductListMyShopFilterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductListMyShopFilterViewController.h; sourceTree = "<group>"; };
+		8518A9761ADFA111002B053B /* ProductListMyShopFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductListMyShopFilterViewController.m; sourceTree = "<group>"; };
+		8518A9771ADFA111002B053B /* ProductListMyShopFilterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductListMyShopFilterViewController.xib; sourceTree = "<group>"; };
 		852A90771ADE444D00C3C047 /* CreateShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateShopViewController.h; sourceTree = "<group>"; };
 		852A90781ADE444D00C3C047 /* CreateShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateShopViewController.m; sourceTree = "<group>"; };
 		852A90791ADE444D00C3C047 /* CreateShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CreateShopViewController.xib; sourceTree = "<group>"; };
 		852A907C1ADE526B00C3C047 /* string_create_shop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = string_create_shop.h; sourceTree = "<group>"; };
 		852A907D1ADE6D7E00C3C047 /* CreateShopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateShopCell.h; sourceTree = "<group>"; };
 		852A907E1ADE6D7E00C3C047 /* CreateShopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateShopCell.m; sourceTree = "<group>"; };
+		8531B57D1AE0A60E0000946F /* BerhasilBukaTokoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BerhasilBukaTokoViewController.h; sourceTree = "<group>"; };
+		8531B57E1AE0A60E0000946F /* BerhasilBukaTokoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BerhasilBukaTokoViewController.m; sourceTree = "<group>"; };
+		8531B57F1AE0A60E0000946F /* BerhasilBukaTokoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BerhasilBukaTokoViewController.xib; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -4954,6 +4959,9 @@
 		7AD2D2951ADBB1B8003E1F94 /* Alert */ = {
 			isa = PBXGroup;
 			children = (
+				8518A9701ADFA0A0002B053B /* TKPDAlert.h */,
+				8518A9711ADFA0A0002B053B /* TKPDAlert.m */,
+				8518A9721ADFA0A0002B053B /* TKPDAlert.xib */,
 				7AD2D2961ADBB1B8003E1F94 /* AlertCameraView.h */,
 				7AD2D2971ADBB1B8003E1F94 /* AlertCameraView.m */,
 				7AD2D2981ADBB1B8003E1F94 /* AlertCameraView.xib */,
@@ -4978,9 +4986,6 @@
 				7AD2D2AB1ADBB1B8003E1F94 /* AlertReputation.h */,
 				7AD2D2AC1ADBB1B8003E1F94 /* AlertReputation.m */,
 				7AD2D2AD1ADBB1B8003E1F94 /* AlertReputation.xib */,
-				7AD2D2AE1ADBB1B8003E1F94 /* AlertView.h */,
-				7AD2D2AF1ADBB1B8003E1F94 /* AlertView.m */,
-				7AD2D2B01ADBB1B8003E1F94 /* AlertView.xib */,
 				7AD2D2B11ADBB1B8003E1F94 /* StickyAlert.h */,
 				7AD2D2B21ADBB1B8003E1F94 /* StickyAlert.m */,
 				7AD2D2B31ADBB1B8003E1F94 /* StickyAlertView.h */,
@@ -5645,6 +5650,9 @@
 		7AD2D43B1ADBB1B9003E1F94 /* Product */ = {
 			isa = PBXGroup;
 			children = (
+				8518A9751ADFA111002B053B /* ProductListMyShopFilterViewController.h */,
+				8518A9761ADFA111002B053B /* ProductListMyShopFilterViewController.m */,
+				8518A9771ADFA111002B053B /* ProductListMyShopFilterViewController.xib */,
 				7AD2D43C1ADBB1B9003E1F94 /* DetailProduct */,
 				7AD2D4611ADBB1B9003E1F94 /* ProductAddEditDetailViewController.h */,
 				7AD2D4621ADBB1B9003E1F94 /* ProductAddEditDetailViewController.m */,
@@ -7225,11 +7233,11 @@
 				852A907C1ADE526B00C3C047 /* string_create_shop.h */,
 				852A907D1ADE6D7E00C3C047 /* CreateShopCell.h */,
 				852A907E1ADE6D7E00C3C047 /* CreateShopCell.m */,
-				8518A9681ADF7B09002B053B /* ShopDeliveryViewController.h */,
-				8518A9691ADF7B09002B053B /* ShopDeliveryViewController.m */,
-				8518A96A1ADF7B09002B053B /* ShopDeliveryViewController.xib */,
 				8518A96D1ADF8AD7002B053B /* ShopDeliveryCell.h */,
 				8518A96E1ADF8AD7002B053B /* ShopDeliveryCell.m */,
+				8531B57D1AE0A60E0000946F /* BerhasilBukaTokoViewController.h */,
+				8531B57E1AE0A60E0000946F /* BerhasilBukaTokoViewController.m */,
+				8531B57F1AE0A60E0000946F /* BerhasilBukaTokoViewController.xib */,
 			);
 			path = Create;
 			sourceTree = "<group>";
@@ -7877,7 +7885,6 @@
 				7AD2DC441ADBB1BA003E1F94 /* icon_profile_picture.jpeg in Resources */,
 				7AD2DBEB1ADBB1BA003E1F94 /* icon_checkmark@2x.png in Resources */,
 				7AD2DBF81ADBB1BA003E1F94 /* icon_diskusi_comment_grey.png in Resources */,
-				8518A96C1ADF7B09002B053B /* ShopDeliveryViewController.xib in Resources */,
 				7AD2DCCF1ADBB1BA003E1F94 /* icon_green_2.png in Resources */,
 				7AD2DCD71ADBB1BA003E1F94 /* icon_cancel_grey@2x.png in Resources */,
 				7AD2D9DE1ADBB1BA003E1F94 /* GeneralCheckmarkCell.xib in Resources */,
@@ -8021,6 +8028,7 @@
 				7AD2DB9D1ADBB1BA003E1F94 /* icon_13.png in Resources */,
 				7AD2DCE51ADBB1BA003E1F94 /* icon_komplain@2x.png in Resources */,
 				7AD2DCA81ADBB1BA003E1F94 /* thumb_product.png in Resources */,
+				8518A9791ADFA111002B053B /* ProductListMyShopFilterViewController.xib in Resources */,
 				7AD2DCB81ADBB1BA003E1F94 /* icon_cart_active@2x.png in Resources */,
 				7AD2DADF1ADBB1BA003E1F94 /* SettingBankAccountViewController.xib in Resources */,
 				7AD2DC971ADBB1BA003E1F94 /* icon_sold_28px.png in Resources */,
@@ -8074,7 +8082,6 @@
 				7AD2DC0E1ADBB1BA003E1F94 /* icon_home (deleted 52a3c070d99c24bc47d4f40ddd02be3f).png in Resources */,
 				7AD2DA941ADBB1BA003E1F94 /* ReputationMyProductViewController.xib in Resources */,
 				7AD2DC771ADBB1BA003E1F94 /* icon_telephone@2x.png in Resources */,
-				7AD2D9801ADBB1BA003E1F94 /* AlertView.xib in Resources */,
 				7AD2DB961ADBB1BA003E1F94 /* icon_1.png in Resources */,
 				7AD2D9FF1ADBB1BA003E1F94 /* HomeTabViewController.xib in Resources */,
 				7AD2DD021ADBB1BB003E1F94 /* HSChatBubbleBlue@2x.png in Resources */,
@@ -8084,6 +8091,7 @@
 				7AD2DCAC1ADBB1BA003E1F94 /* ic_cart@2x.png in Resources */,
 				7AD2DA0C1ADBB1BA003E1F94 /* TKPDTabHomeViewController.xib in Resources */,
 				7AD2D96A1ADBB1BA003E1F94 /* RegisterViewController.xib in Resources */,
+				8531B5811AE0A60E0000946F /* BerhasilBukaTokoViewController.xib in Resources */,
 				7AD2DAF31ADBB1BA003E1F94 /* SettingUserProfileViewController.xib in Resources */,
 				7AD2DB791ADBB1BA003E1F94 /* TxOrderConfirmedButtonArrowCell.xib in Resources */,
 				7AD2DC581ADBB1BA003E1F94 /* icon_shop_addproduct_2x.png in Resources */,
@@ -8157,6 +8165,7 @@
 				7AD2DA961ADBB1BA003E1F94 /* ReputationMyReviewViewController.xib in Resources */,
 				7AD2DBD11ADBB1BA003E1F94 /* icon_calendar.png in Resources */,
 				7AD2DC1E1ADBB1BA003E1F94 /* icon_login.png in Resources */,
+				8518A9741ADFA0A0002B053B /* TKPDAlert.xib in Resources */,
 				7AD2DCD51ADBB1BA003E1F94 /* icon_camera_grey_active@2x.png in Resources */,
 				7AD2DCA31ADBB1BA003E1F94 /* top_bg1.png in Resources */,
 				7AD2DC421ADBB1BA003E1F94 /* icon_plus_blue.png in Resources */,
@@ -8276,6 +8285,7 @@
 				7AD2DAF41ADBB1BA003E1F94 /* ShopEditStatusViewController.m in Sources */,
 				7AD2D8FE1ADBB1BA003E1F94 /* Shipment.m in Sources */,
 				7AD2DA4E1ADBB1BA003E1F94 /* MyShopPaymentCell.m in Sources */,
+				8518A9781ADFA111002B053B /* ProductListMyShopFilterViewController.m in Sources */,
 				7AD2D9691ADBB1BA003E1F94 /* RegisterViewController.m in Sources */,
 				7AD2D8631ADBB1BA003E1F94 /* TalkResult.m in Sources */,
 				7AD2DA861ADBB1BA003E1F94 /* GoldShopView.m in Sources */,
@@ -8555,7 +8565,6 @@
 				7AD2DADC1ADBB1BA003E1F94 /* SettingBankNameViewController.m in Sources */,
 				7AD2D8C11ADBB1BA003E1F94 /* AddressFormResult.m in Sources */,
 				7AD2D84F1ADBB1BA003E1F94 /* OtherProduct.m in Sources */,
-				8518A96B1ADF7B09002B053B /* ShopDeliveryViewController.m in Sources */,
 				7AD2D9F81ADBB1BA003E1F94 /* FavoritedShopViewController.m in Sources */,
 				7AD2D8E81ADBB1BA003E1F94 /* SearchRedirect.m in Sources */,
 				7AD2DB4A1ADBB1BA003E1F94 /* TransactionCartShippingViewController.m in Sources */,
@@ -8595,7 +8604,6 @@
 				7AD2DAAF1ADBB1BA003E1F94 /* FilterSalesTransactionListViewController.m in Sources */,
 				7AD2D8A81ADBB1BA003E1F94 /* Paging.m in Sources */,
 				7AD2DD151ADBB1BB003E1F94 /* MGSwipeButton.m in Sources */,
-				7AD2D97F1ADBB1BA003E1F94 /* AlertView.m in Sources */,
 				7AD2D93F1ADBB1BA003E1F94 /* TxEMoneyResult.m in Sources */,
 				7AD2DA4C1ADBB1BA003E1F94 /* MyShopNoteViewController.m in Sources */,
 				7AD2D85E1ADBB1BA003E1F94 /* Talk.m in Sources */,
@@ -8797,6 +8805,7 @@
 				7AD2DB331ADBB1BA003E1F94 /* ProductTalkFormViewController.m in Sources */,
 				7AD2DA391ADBB1BA003E1F94 /* SalesViewController.m in Sources */,
 				7AD2D9421ADBB1BA003E1F94 /* TxOrderCancelPaymentResult.m in Sources */,
+				8531B5801AE0A60E0000946F /* BerhasilBukaTokoViewController.m in Sources */,
 				7AD2D9431ADBB1BA003E1F94 /* TxOrderConfirmed.m in Sources */,
 				7AD2D9CB1ADBB1BA003E1F94 /* TextField.m in Sources */,
 				7AD2DA211ADBB1BA003E1F94 /* ResolutionCenterDetailCell.m in Sources */,
@@ -8816,6 +8825,7 @@
 				7AD2DB761ADBB1BA003E1F94 /* TxOrderConfirmedBankCell.m in Sources */,
 				7AD2D8421ADBB1BA003E1F94 /* CatalogImages.m in Sources */,
 				7AD2D9871ADBB1BA003E1F94 /* CameraAlbumListCell.m in Sources */,
+				8518A9731ADFA0A0002B053B /* TKPDAlert.m in Sources */,
 				7AD2D8BF1ADBB1BA003E1F94 /* AddressForm.m in Sources */,
 				7AD2DB861ADBB1BA003E1F94 /* TxOrderObjectMapping.m in Sources */,
 				7AD2D9631ADBB1BA003E1F94 /* WishListObjectList.m in Sources */,

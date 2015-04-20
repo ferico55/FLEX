@@ -1502,12 +1502,12 @@ TokopediaNetworkManagerDelegate
                 activityIndicator.color = [UIColor lightGrayColor];
                 btnWishList.hidden = NO;
                 [btnWishList setTitle:@"Wishlist" forState:UIControlStateNormal];
-                btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:11.0f];
+                btnWishList.titleLabel.font = [UIFont fontWithName:@"Gotham Book" size:12.0f];
                 [btnWishList setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-                btnWishList.layer.cornerRadius = btnShare.layer.cornerRadius = 5;
-                btnWishList.layer.masksToBounds = btnShare.layer.masksToBounds = YES;
-                btnWishList.layer.borderColor = btnShare.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
-                btnWishList.layer.borderWidth = btnShare.layer.borderWidth = 1.0f;
+                btnWishList.layer.cornerRadius = 5;
+                btnWishList.layer.masksToBounds = YES;
+                btnWishList.layer.borderColor = [[UIColor colorWithRed:219/255.0f green:219/255.0f blue:219/255.0f alpha:1.0f] CGColor];
+                btnWishList.layer.borderWidth = 1.0f;
                 btnWishList.imageEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 10);
                 btnWishList.titleEdgeInsets = UIEdgeInsetsMake(5, 0, 0, 0);
                 

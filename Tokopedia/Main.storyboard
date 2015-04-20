@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7531" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7520"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -931,7 +931,7 @@
                         <outlet property="shopCell" destination="lVm-Ld-6SW" id="jq9-lW-ETZ"/>
                         <outlet property="shopImageView" destination="QKf-vE-6ME" id="e46-Un-xfy"/>
                         <outlet property="shopIsGoldLabel" destination="Dh2-ka-A8J" id="emH-hp-WL5"/>
-                        <outlet property="shopNameLabel" destination="oUN-ui-gC8" id="BSH-hd-Cq5"/>
+                        <outlet property="shopNameLabel" destination="oUN-ui-gC8" id="hlT-XT-gHl"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Bb-rc-Ecw" userLabel="First Responder" sceneMemberID="firstResponder"/>

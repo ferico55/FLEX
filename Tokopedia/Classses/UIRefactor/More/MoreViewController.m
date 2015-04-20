@@ -5,7 +5,6 @@
 //  Created by Tokopedia PT on 12/12/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
 #import "CreateShopViewController.h"
 #import "MoreViewController.h"
 #import "more.h"
@@ -55,7 +54,7 @@
     __weak RKObjectManager *_depositObjectManager;
     __weak RKManagedObjectRequestOperation *_depositRequest;
     NSInteger _depositRequestCount;
-    BOOL _isNoDataDeposit;
+    BOOL _isNoDataDeposit, hasLoadViewWillAppear;
     NotificationManager *_notifManager;
 }
 
@@ -99,7 +98,8 @@
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
     
     if([_auth objectForKey:@"shop_id"]) {
-        _shopNameLabel.text = [_auth objectForKey:@"shop_name"];
+        if([_auth objectForKey:@"shop_name"])
+            _shopNameLabel.text = [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_name"]] mutableCopy];
         
         NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"shop_avatar"]]
                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy
@@ -134,6 +134,11 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    if(hasLoadViewWillAppear) {
+        return;
+    }
+    
+    hasLoadViewWillAppear = !hasLoadViewWillAppear;
     [super viewWillAppear:animated];
     
     self.navigationController.title = @"More";
@@ -186,6 +191,50 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+
+#pragma mark - Method
+- (void)updateKeyChain
+{
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    _auth = [secureStorage keychainDictionary];
+    _auth = [_auth mutableCopy];
+    
+    if([_auth objectForKey:@"shop_id"]) {
+        _shopNameLabel.text = [_auth objectForKey:@"shop_name"];
+        
+        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"shop_avatar"]]
+                                                      cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                  timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        
+        [_shopImageView setImageWithURLRequest:request
+                              placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"]
+                                       success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                           //NSLOG(@"thumb: %@", thumb);
+                                           [_shopImageView setImage:image];
+#pragma clang diagnostic pop
+                                       } failure: nil];
+        
+        if ([[_auth objectForKey:@"shop_is_gold"] integerValue] == 1) {
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Badges_gold_merchant"]];
+            imageView.frame = CGRectMake(_shopIsGoldLabel.frame.origin.x,
+                                         _shopIsGoldLabel.frame.origin.y,
+                                         22, 22);
+            [_shopCell addSubview:imageView];
+            _shopIsGoldLabel.text = @"        Gold Merchant";
+        } else {
+            _shopIsGoldLabel.text = @"Regular Merchant";
+            CGRect shopIsGoldLabelFrame = _shopIsGoldLabel.frame;
+            shopIsGoldLabelFrame.origin.x = 83;
+            _shopIsGoldLabel.frame = shopIsGoldLabelFrame;
+            _shopIsGoldLabel.text = @"";
+        }
+        
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark - Table view data source
@@ -534,6 +583,7 @@
 - (IBAction)actionCreateShop:(id)sender
 {
     CreateShopViewController *createShopViewController = [CreateShopViewController new];
+    createShopViewController.moreViewController = self;
     [self pushViewController:createShopViewController];
 }
 @end

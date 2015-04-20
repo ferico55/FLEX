@@ -17,6 +17,9 @@
 #define kTKPD_APIACTIONKEY @"action"
 #define kTKPD_CHECK_DOMAIN @"check_domain"
 #define CStatusDomain @"status_domain"
+#define CShopID @"shop_id"
+#define CShopURL @"shop_url"
+#define CIsSuccess @"is_success"
 
 #define CFontSizeFooter 12.0f
 #define CFontSizeHeader 14.0f
@@ -36,6 +39,7 @@
 
 
 #pragma mark - String
+#define CStringFailedCreateShop @"Gagal buat toko"
 #define CStringPilihProvinsi @"Pilih provinsi"
 #define CStringKotaAsal @"Kota Asal"
 #define CStringKodePos @"Kode Pos"

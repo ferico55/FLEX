@@ -5,12 +5,92 @@
 //  Created by Tokopedia on 4/15/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-#import "CreateShopCell.h"
-#import "CreateShopViewController.h"
 #import "AddShop.h"
 #import "AddShopResult.h"
+#import "camera.h"
+#import "CreateShopCell.h"
+#import "CreateShopViewController.h"
+#import "MyShopShipmentTableViewController.h"
+#import "RequestUploadImage.h"
 #import "string_create_shop.h"
-#import "ShopDeliveryViewController.h"
+@implementation CustomTxtView
+@synthesize createShopViewController;
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (id)initWithFrame:(CGRect)frame
+{
+    if(self=[super initWithFrame:frame])
+    {
+        self.delegate = self;
+        [self setPlaceholder:@""];
+        [self setPlaceholderColor:[UIColor lightGrayColor]];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textChanged:) name:UITextViewTextDidChangeNotification object:nil];
+    }
+
+    return self;
+}
+
+- (void)textChanged:(NSNotification *)notification
+{
+    if([[self placeholder] length] == 0)
+        return;
+    
+    if([[self text] length] == 0)
+        [[self viewWithTag:999] setAlpha:1];
+    else
+        [[self viewWithTag:999] setAlpha:0];
+}
+
+- (void)setText:(NSString *)text {
+    [super setText:text];
+    [self textChanged:nil];
+}
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    return [createShopViewController textViewShouldBeginEditing:textView];
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    return [createShopViewController textView:textView shouldChangeTextInRange:range replacementText:text];
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    if( [[self placeholder] length] > 0 )
+    {
+        if (_placeHolderLabel == nil )
+        {
+            _placeHolderLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, 8, self.bounds.size.width - 16, 0)];
+            _placeHolderLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            _placeHolderLabel.numberOfLines = 0;
+            _placeHolderLabel.font = self.font;
+            _placeHolderLabel.backgroundColor = [UIColor clearColor];
+            _placeHolderLabel.textColor = self.placeholderColor;
+            _placeHolderLabel.alpha = 0;
+            _placeHolderLabel.tag = 999;
+            [self addSubview:_placeHolderLabel];
+        }
+        
+        _placeHolderLabel.text = self.placeholder;
+        [_placeHolderLabel sizeToFit];
+        [self sendSubviewToBack:_placeHolderLabel];
+    }
+    
+    if( [[self text] length] == 0 && [[self placeholder] length] > 0 )
+    {
+        [[self viewWithTag:999] setAlpha:1];
+    }
+    
+    [super drawRect:rect];
+}
+
+@end
+
 
 @implementation CustomHeaderFooterTable
 - (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier
@@ -29,18 +109,18 @@
     {
         lblHeader = [[UILabel alloc] initWithFrame:rect];
         lblHeader.backgroundColor = [UIColor clearColor];
-        lblHeader.font = font;
         lblHeader.textColor = color;
         lblHeader.numberOfLines = 0;
+        lblHeader.font = font;
         [self.contentView addSubview:lblHeader];
     }
     else
     {
         lblFooter = [[UILabel alloc] initWithFrame:rect];
         lblFooter.backgroundColor = [UIColor clearColor];
-        lblFooter.font = font;
         lblFooter.textColor = color;
         lblFooter.numberOfLines = 0;
+        lblFooter.font = font;
         [self.contentView addSubview:lblFooter];
     }
 }
@@ -100,15 +180,19 @@
     BOOL hasLoadViewWillAppear, isValidDomain, hasSetImgGambar;
     RKObjectManager *objectManager;
     TokopediaNetworkManager *tokopediaNetworkManager;
-    
+    NSMutableDictionary *dictContentPhoto;
+
+    UIImageView *tempImage;
     UIActivityIndicatorView *loadViewCheckDomain;
     UIView *viewImgGambar;
     UIImageView *imgGambar;
-    UITextField *txtDomain, *txtNamaToko, *txtSlogan, *txtDesc, *activeTextField;
+    UITextField *txtDomain, *txtNamaToko, *activeTextField;
+    CustomTxtView *txtSlogan, *txtDesc;
+    UITextView *activeTextView;
     UILabel *lblCountSlogan, *lblCountDescripsi;
     UIButton *btnLanjut;
 }
-
+@synthesize moreViewController;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initNavigation];
@@ -123,32 +207,14 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hideKeyboard:) name:UIKeyboardDidHideNotification object:nil];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:btnLanjut];
     self.hidesBottomBarWhenPushed = YES;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    btnLanjut.enabled = YES;
 }
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [tokopediaNetworkManager requestCancel];
+    tokopediaNetworkManager.delegate = nil;
+    tokopediaNetworkManager = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -158,6 +224,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     if(! hasLoadViewWillAppear)
     {
         hasLoadViewWillAppear = !hasLoadViewWillAppear;
@@ -188,12 +255,33 @@
 
 - (void)enableLanjut:(BOOL)isEnable
 {
+    btnLanjut.userInteractionEnabled = isEnable;
     btnLanjut.enabled = isEnable;
     [btnLanjut setTitleColor:(isEnable? [UIColor whiteColor]:[UIColor lightGrayColor]) forState:UIControlStateNormal];
 }
 
 
 #pragma mark - Method
+- (NSString *)getNamaDomain
+{
+    return txtDomain.text;
+}
+
+- (NSDictionary *)getDictContentPhoto
+{
+    return dictContentPhoto;
+}
+
+- (NSString *)getSlogan
+{
+    return txtSlogan.text==nil? @"":txtSlogan.text;
+}
+
+- (NSString *)getDesc
+{
+    return txtDesc.text==nil? @"":txtDesc.text;
+}
+
 - (NSString *)getNamaToko
 {
     NSString *rawString = txtNamaToko.text;
@@ -202,14 +290,18 @@
     return [rawString stringByTrimmingCharactersInSet:whitespace];
 }
 
-- (void)checkValidation:(NSString *)strNamaToko
+- (void)checkValidation:(NSString *)strNamaToko withSlogan:(NSString *)strSlogan withDesc:(NSString *)strDesc
 {
     if(isValidDomain && hasSetImgGambar)
     {
         if(strNamaToko == nil)
             strNamaToko = [self getNamaToko];
+        if(strSlogan == nil)
+            strSlogan = txtSlogan.text;
+        if(strDesc == nil)
+            strDesc = txtDesc.text;
         
-        if(strNamaToko.length == 0)
+        if(strNamaToko.length==0 || strSlogan.length==0 || strDesc.length==0)
             [self enableLanjut:NO];
         else
             [self enableLanjut:YES];
@@ -257,6 +349,9 @@
 {
     [activeTextField resignFirstResponder];
     activeTextField = nil;
+    
+    [activeTextView resignFirstResponder];
+    activeTextView = nil;
 }
 
 - (void)showKeyboard:(id)sender
@@ -264,9 +359,18 @@
     CGSize keyboardSize = [[[sender userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
     int height = MIN(keyboardSize.height,keyboardSize.width);
     
+    BOOL scroll;
     CGRect tblRect = tblCreateShop.frame;
+    if(self.view.bounds.size.height-height != tblRect.size.height) {
+        scroll = YES;
+    }
     tblRect.size.height = self.view.bounds.size.height-height;
     tblCreateShop.frame = tblRect;
+    
+
+    if(scroll && activeTextView!=nil) {
+        [tblCreateShop scrollRectToVisible:CGRectMake(0, 500, tblRect.size.width, tblRect.size.height) animated:YES];
+    }
 }
 
 - (void)hideKeyboard:(id)sender
@@ -276,11 +380,24 @@
     tblCreateShop.frame = tblRect;
 }
 
-- (float)calculateHeight:(NSString *)strText withFont:(UIFont *)font andSize:(CGSize)size
+- (void)initAttributeText:(UILabel *)lblDesc withStrText:(NSString *)strText withFont:(UIFont *)fontDesc withColor:(UIColor *)color
+{
+    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+    style.lineSpacing = 8.0;
+    style.alignment = NSTextAlignmentLeft;
+    NSDictionary *attributes = @{
+                                 NSForegroundColorAttributeName:color,
+                                 NSFontAttributeName: fontDesc,
+                                 NSParagraphStyleAttributeName: style,
+                                 };
+    NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:strText attributes:attributes];
+    lblDesc.attributedText = attributedText;
+}
+
+- (float)calculateHeight:(NSString *)strText withFont:(UIFont *)font andSize:(CGSize)size withColor:(UIColor *)color
 {
     UILabel *lblMeasure = [UILabel new];
-    lblMeasure.text = strText;
-    lblMeasure.font = font;
+    [self initAttributeText:lblMeasure withStrText:strText withFont:font withColor:color];
     lblMeasure.numberOfLines = 0;
     return [lblMeasure sizeThatFits:size].height;
 }
@@ -289,9 +406,9 @@
 #pragma mark - Action View
 - (void)lanjut:(id)sender
 {
-    ShopDeliveryViewController *shopDeliveryViewController = [ShopDeliveryViewController new];
-    shopDeliveryViewController.createShopViewController = self;
-    [self.navigationController pushViewController:shopDeliveryViewController animated:YES];
+    MyShopShipmentTableViewController *controller = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MyShopShipmentTableViewController"];
+    controller.createShopViewController = self;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)showImage:(id)sender
@@ -341,22 +458,22 @@
     switch (section) {
         case 0:
         {
-            float heightLblFooter = [self calculateHeight:CStringDescCheckDomain withFont:[customHeaderFooterTable getLblFooter].font andSize:CGSizeMake(widhtItem, 9999)];
+            float heightLblFooter = [self calculateHeight:CStringDescCheckDomain withFont:[customHeaderFooterTable getLblFooter].font andSize:CGSizeMake(widhtItem, 9999) withColor:[customHeaderFooterTable getLblFooter].textColor];
             [customHeaderFooterTable setBtnFrame:CGRectMake(CPaddingLeft/2.0f, CPaddingLeft/2.0f, widhtItem, CHeightHeaderCell-((CPaddingLeft/2.0f)*2))];
             [customHeaderFooterTable setLblFrame:CGRectMake([customHeaderFooterTable getBtnCheckDomain].frame.origin.x, [customHeaderFooterTable getBtnCheckDomain].bounds.size.height+[customHeaderFooterTable getBtnCheckDomain].frame.origin.y+CPaddingLeft, widhtItem, heightLblFooter) isHeader:NO];
 
             //Btn Check Domain
             [customHeaderFooterTable getBtnCheckDomain].hidden = NO;
-            [customHeaderFooterTable getLblFooter].text = CStringDescCheckDomain;
+            [self initAttributeText:[customHeaderFooterTable getLblFooter] withStrText:CStringDescCheckDomain withFont:[customHeaderFooterTable getLblFooter].font withColor:[customHeaderFooterTable getLblFooter].textColor];
             [[customHeaderFooterTable getBtnCheckDomain] setTitle:CStringCekDomain forState:UIControlStateNormal];
             [[customHeaderFooterTable getBtnCheckDomain] addTarget:self action:@selector(checkDomain:) forControlEvents:UIControlEventTouchUpInside];
         }
             break;
         case 1:
         {
-            float heightLblFooter = [self calculateHeight:CStringDescGambarFoto withFont:[customHeaderFooterTable getLblFooter].font andSize:CGSizeMake(widhtItem, 9999)];
+            float heightLblFooter = [self calculateHeight:CStringDescGambarFoto withFont:[customHeaderFooterTable getLblFooter].font andSize:CGSizeMake(widhtItem, 9999) withColor:[customHeaderFooterTable getLblFooter].textColor];
             [customHeaderFooterTable setLblFrame:CGRectMake(CPaddingLeft, CPaddingLeft, widhtItem, heightLblFooter) isHeader:NO];
-            [customHeaderFooterTable getLblFooter].text = CStringDescGambarFoto;
+            [self initAttributeText:[customHeaderFooterTable getLblFooter] withStrText:CStringDescGambarFoto withFont:[customHeaderFooterTable getLblFooter].font withColor:[customHeaderFooterTable getLblFooter].textColor];
             [customHeaderFooterTable getBtnCheckDomain].hidden = YES;
         }
             break;
@@ -464,9 +581,18 @@
             imgGambar.layer.borderColor = [[UIColor blackColor] CGColor];
             imgGambar.layer.borderWidth = 1.0f;
             imgGambar.layer.masksToBounds = YES;
-            imgGambar.contentMode = UIViewContentModeScaleAspectFill;
+            imgGambar.contentMode = UIViewContentModeScaleAspectFit;
             imgGambar.userInteractionEnabled = YES;
-            imgGambar.image = [UIImage imageNamed:@"icon_camera_grey_active.png"];
+            
+            if(! hasSetImgGambar)
+            {
+                tempImage = [UIImageView new];
+                tempImage.frame = CGRectMake((diameterImage-40)/2.0f, (diameterImage-40)/2.0f, 40, 40);
+                tempImage.image = [UIImage imageNamed:@"icon_camera_grey_active.png"];
+                [imgGambar addSubview:tempImage];
+            }
+            
+            
             [imgGambar addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showImage:)]];
             [viewImgGambar addSubview:imgGambar];
             viewImgGambar.userInteractionEnabled = YES;
@@ -491,7 +617,7 @@
                 
                 if(txtNamaToko == nil)
                 {
-                    txtNamaToko = [[UITextField alloc] initWithFrame:CGRectMake(CPaddingLeft, 0, tableView.bounds.size.width-(CPaddingLeft*2), CHeightHeaderCell)];
+                    txtNamaToko = [[UITextField alloc] initWithFrame:CGRectMake(CPaddingLeft+7, 0, tableView.bounds.size.width-(CPaddingLeft*2), CHeightHeaderCell)];
                     txtNamaToko.placeholder = CStringPlaceHolderNamaToko;
                     txtNamaToko.tag = CTagNamaToko;
                     txtNamaToko.font = [UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter];
@@ -514,10 +640,10 @@
                 
                 if(txtSlogan == nil)
                 {
-                    txtSlogan = [[UITextField alloc] initWithFrame:CGRectMake(CPaddingLeft, 0, tableView.bounds.size.width-(CPaddingLeft*2), CHeightHeaderCell*2)];
+                    txtSlogan = [[CustomTxtView alloc] initWithFrame:CGRectMake(CPaddingLeft, 0, tableView.bounds.size.width-(CPaddingLeft*2), CHeightHeaderCell*2)];
                     txtSlogan.placeholder = CStringPlaceHolderSlogan;
+                    txtSlogan.createShopViewController = self;
                     txtSlogan.tag = CTagSlogan;
-                    txtSlogan.delegate = self;
                     txtSlogan.font = [UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter];
                     
                     int diameter = 30;
@@ -544,10 +670,10 @@
                 
                 if(txtDesc == nil)
                 {
-                    txtDesc = [[UITextField alloc] initWithFrame:CGRectMake(CPaddingLeft, 0, tableView.bounds.size.width-(CPaddingLeft*2), CHeightHeaderCell*2)];
+                    txtDesc = [[CustomTxtView alloc] initWithFrame:CGRectMake(CPaddingLeft, 0, tableView.bounds.size.width-(CPaddingLeft*2), CHeightHeaderCell*2)];
                     txtDesc.placeholder = CstringPlaceHolderDesc;
                     txtDesc.tag = CTagDeskripsi;
-                    txtDesc.delegate = self;
+                    txtDesc.createShopViewController = self;
                     txtDesc.font = [UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter];
                     
                     int diameter = 30;
@@ -605,13 +731,14 @@
     switch (section) {
         case 0:
         {
-            height += [self calculateHeight:CStringDescCheckDomain withFont:[UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter] andSize:CGSizeMake(tableView.bounds.size.width-(CPaddingLeft*2), 9999)];
+            height += [self calculateHeight:CStringDescCheckDomain withFont:[UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter] andSize:CGSizeMake(tableView.bounds.size.width-(CPaddingLeft*2), 9999) withColor:[UIColor blackColor]];
             height += CHeightHeaderCell + CPaddingLeft;
         }
             break;
         case 1:
         {
-            height += [self calculateHeight:CStringDescGambarFoto withFont:[UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter] andSize:CGSizeMake(tableView.bounds.size.width-(CPaddingLeft*2), 9999)];
+            height += [self calculateHeight:CStringDescGambarFoto withFont:[UIFont fontWithName:CFont_Gotham_Book size:CFontSizeFooter] andSize:CGSizeMake(tableView.bounds.size.width-(CPaddingLeft*2), 9999) withColor:[UIColor blackColor]];
+            height += CPaddingLeft+(CPaddingLeft/2.0f);
         }
             break;
         case 2:
@@ -635,16 +762,26 @@
         hasSetImgGambar = YES;
         UIImage *chosenImage = info[UIImagePickerControllerEditedImage];
         imgGambar.image = chosenImage;
-        [self checkValidation:nil];
+        [self checkValidation:nil withSlogan:nil withDesc:nil];
     }
     else
     {
         hasSetImgGambar = YES;
         imgGambar.image = info[UIImagePickerControllerOriginalImage];
-        [self checkValidation:nil];
+        [self checkValidation:nil withSlogan:nil withDesc:nil];
     }
     
+    NSMutableDictionary *dictContent = [NSMutableDictionary new];
+    dictContentPhoto = [NSMutableDictionary dictionaryWithObjectsAndKeys:dictContent, DATA_SELECTED_PHOTO_KEY, nil];
+    
+    NSMutableDictionary *dictPhoto = [NSMutableDictionary new];
+    [dictContent setObject:dictPhoto forKey:kTKPDCAMERA_DATAPHOTOKEY];
+    [dictPhoto setObject:UIImageJPEGRepresentation(imgGambar.image, 1.0f) forKey:DATA_CAMERA_IMAGEDATA];
+    [dictPhoto setObject:[NSString stringWithFormat:@"%@", [NSDate date]] forKey:DATA_CAMERA_IMAGENAME];
     [picker dismissViewControllerAnimated:YES completion:NULL];
+    
+    [tempImage removeFromSuperview];
+    tempImage = nil;
 }
 
 
@@ -684,21 +821,7 @@
     }
     else if(theTextField.tag == CTagNamaToko)
     {
-        [self checkValidation:[[theTextField text] stringByReplacingCharactersInRange:range withString:string]];
-        return YES;
-    }
-    else if(theTextField.tag == CTagSlogan)
-    {
-        lblCountSlogan.text = [NSString stringWithFormat:@"%d", (int)(CMaxSlogan-theTextField.text.length)];
-        if(theTextField.text.length >= CMaxSlogan)
-            return NO;
-        return YES;
-    }
-    else if(theTextField.tag == CTagDeskripsi)
-    {
-        lblCountDescripsi.text = [NSString stringWithFormat:@"%d", (int)(CMaxDesc-theTextField.text.length)];
-        if(theTextField.text.length >= CMaxDesc)
-            return NO;
+        [self checkValidation:[[theTextField text] stringByReplacingCharactersInRange:range withString:string] withSlogan:nil withDesc:nil];
         return YES;
     }
     
@@ -788,7 +911,7 @@
     if(addShop!=nil && [addShop.result.status_domain isEqualToString:@"1"])
     {
         isValidDomain = YES;
-        [self checkValidation:nil];
+        [self checkValidation:nil withSlogan:nil withDesc:nil];
         StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithSuccessMessages:@[CStringValidDomain] delegate:self];
         [stickyAlertView show];
     }
@@ -821,5 +944,42 @@
 {
     isValidDomain = NO;
     [self isCheckingDomain:NO];
+}
+
+
+
+#pragma mark - CustomTextView Delegate
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSString *strText = [[textView text] stringByReplacingCharactersInRange:range withString:text];
+    if(textView.tag == CTagSlogan)
+    {
+        [self checkValidation:nil withSlogan:strText withDesc:nil];
+        lblCountSlogan.text = [NSString stringWithFormat:@"%d", (int)(CMaxSlogan-strText.length)];
+        if (text.length == 0)
+            return YES;
+        else if(textView.text.length >= CMaxSlogan)
+            return NO;
+        return YES;
+    }
+    else if(textView.tag == CTagDeskripsi)
+    {
+        [self checkValidation:nil withSlogan:nil withDesc:strText];
+        lblCountDescripsi.text = [NSString stringWithFormat:@"%d", (int)(CMaxDesc-strText.length)];
+        if (text.length == 0)
+            return YES;
+        else if(textView.text.length >= CMaxDesc)
+            return NO;
+        return YES;
+    }
+    
+    
+    return NO;
+}
+
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    activeTextView = textView;
+    return YES;
 }
 @end
