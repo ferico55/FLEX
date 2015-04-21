@@ -38,6 +38,8 @@
     
     TxOrderObjectMapping *_mapping;
     
+    TokopediaNetworkManager *_networkManager;
+    
     __weak RKObjectManager *_objectManager;
     __weak RKManagedObjectRequestOperation *_request;
     
@@ -50,6 +52,8 @@
     
     UITextField *_activeTextField;
     UITextView *_activeTextView;
+    
+    NSArray *_bankAccount;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -98,6 +102,8 @@
     _dataInput = [NSMutableDictionary new];
     _operationQueue = [NSOperationQueue new];
     _mapping = [TxOrderObjectMapping new];
+    _networkManager = [TokopediaNetworkManager new];
+    _networkManager.delegate = self;
     
     _sectionNewRekeningCells = [NSArray sortViewsWithTagInArray:_sectionNewRekeningCells];
     _section3CashCells = [NSArray sortViewsWithTagInArray:_section3CashCells];
@@ -430,8 +436,10 @@
             }
             else if (indexPath.row == 2 && _isFinishRequestForm)
             {
-                [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_BANK_ACCOUNT_KEY];
-                [self pushToGeneralViewControllerAtIndextPath:indexPath];
+                if (_bankAccount.count>0) {
+                    [_dataInput setObject:indexPath forKey:DATA_INDEXPATH_BANK_ACCOUNT_KEY];
+                    [self pushToGeneralViewControllerAtIndextPath:indexPath];
+                }
             }
             break;
         }
@@ -518,6 +526,7 @@
     [_objectManager.operationQueue cancelAllOperations];
     _objectManager = nil;
 }
+
 
 -(void)configureRestKit
 {
@@ -1102,7 +1111,21 @@
         case 1:
             if (indexPath.row == 0) textString = paymentDateString;
             else if (indexPath.row == 1)textString = selectedMethod.method_name;
-            else if (indexPath.row == 2)textString = selectedBank.bank_account_name?:@"Pilih Akun Bank";
+            else if (indexPath.row == 2)
+            {
+                if (_bankAccount.count==0)
+                {
+                    textString = @"Belum Memiliki Akun Bank";
+                    cell.detailTextLabel.textColor = [UIColor grayColor];
+                    cell.accessoryType = UITableViewCellAccessoryNone;
+                }
+                else
+                {
+                    textString = selectedBank.bank_account_name?:@"Pilih Akun Bank";
+                    cell.detailTextLabel.textColor = [UIColor colorWithRed:(0.f/255.f) green:122.f/255.f blue:255.f/255.f alpha:1];
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                }
+            }
             break;
         case 2:
             if (indexPath.row ==0)
@@ -1266,6 +1289,7 @@
     }
     
     NSArray *bankAccountList = form.bank_account.bank_account_list;
+    _bankAccount = bankAccountList;
     BankAccountFormList *selectedBank;
     for (BankAccountFormList *bank in bankAccountList) {
         if ([form.bank_account.bank_account_id_chosen integerValue] == bank.bank_account_id) {
@@ -1313,7 +1337,12 @@
     selectedMethod.method_name = [form.method[3] method_name];
     
     NSArray *bankAccountList = form.bank_account;
-    BankAccountFormList *selectedBank = bankAccountList[0];
+    _bankAccount = bankAccountList;
+    if(bankAccountList.count>0)
+    {
+        BankAccountFormList *selectedBank = bankAccountList[0];
+        [_dataInput setObject:selectedBank forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
+    }
     
     if ([self isPaymentTypeSaldoTokopedia]) {
         
@@ -1322,7 +1351,6 @@
     }
     
     [_dataInput setObject:selectedMethod forKey:DATA_SELECTED_PAYMENT_METHOD_KEY];
-    [_dataInput setObject:selectedBank forKey:DATA_SELECTED_BANK_ACCOUNT_KEY];
     [_dataInput setObject:form forKey:DATA_DETAIL_ORDER_CONFIRMATION_KEY];
 }
 

@@ -12,9 +12,9 @@
 #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 
 //#if DEBUG
-//    #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//    #define kTkpdBaseURLString @"http://www.tkpdevel-pg.api/ws"
 //#else
-//    #define kTkpdBaseURLString @"http://www.tokopedia.com/ws"
+//    #define kTkpdBaseURLString @"http://www.tx-tonito.dvl/ws"
 //#endif
 
 #define kTKPD_AUTHKEY @"auth"
@@ -97,6 +97,7 @@ typedef enum {
 
 #define kTKPD_SEARCHSEGMENTCONTROLPOSTNOTIFICATIONNAMEKEY @"setsegmentcontrol"
 #define kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY @"setDepartmentID"
+#define kTKPD_CATEGORY_HIDE_TAB_BAR @"hideTabView"
 
 #define CATALOG_SELECTED_INDEXPATH_POST_NOTIFICATION_NAME @"choosenIndexPath"
 

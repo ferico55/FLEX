@@ -18,6 +18,9 @@
 #import "ProfileFavoriteShopViewController.h"
 #import "TKPDTabProfileNavigationController.h"
 #import "DetailProductViewController.h"
+#import "ProductGalleryViewController.h"
+
+#import "ProductImages.h"
 
 @implementation NavigateViewController
 -(void)navigateToInvoiceFromViewController:(UIViewController *)viewController withInvoiceURL:(NSString *)invoiceURL
@@ -62,9 +65,27 @@
     [viewController.navigationController pushViewController:profileController animated:YES];
 }
 
--(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageURLStrings:(NSArray*)imageURLStrings
+-(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageURLStrings:(NSArray*)imageURLStrings indexImage:(NSInteger)index
 {
-     //TODO::
+    
+    NSMutableArray *productImages = [NSMutableArray new];
+
+    for (NSString *image in imageURLStrings) {
+        ProductImages* images = [ProductImages new];
+        images.image_src = image;
+        images.image_description = @"";
+        [productImages addObject:images];
+    }
+
+    NSDictionary *data = @{
+                           @"image_index" : @(index),
+                           @"images" : productImages
+                           };
+    
+    ProductGalleryViewController *vc = [ProductGalleryViewController new];
+    vc.data = data;
+    
+    [viewController.navigationController presentViewController:vc animated:YES completion:nil];
 }
 
 -(void)navigateToProductFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID
@@ -72,6 +93,7 @@
     DetailProductViewController *vc = [DetailProductViewController new];
     vc.data = @{@"product_id" : productID};
     vc.hidesBottomBarWhenPushed = YES;
+    
     [viewController.navigationController pushViewController:vc animated:YES];
 }
 

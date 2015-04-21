@@ -1,5 +1,5 @@
 //
-//  AlertInfoVoucherCodeView.m
+//  AlertReputation.m
 //  Tokopedia
 //
 //  Created by IT Tkpd on 1/28/15.

@@ -3,13 +3,8 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
-        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <mutableArray key="GothamLight.ttf">
-            <string>GothamLight</string>
-            <string>GothamLight</string>
-        </mutableArray>
         <mutableArray key="GothamMedium.ttf">
             <string>GothamMedium</string>
             <string>GothamMedium</string>
@@ -22,8 +17,6 @@
                 <outlet property="footer" destination="mJU-85-H19" id="18b-Ir-o5x"/>
                 <outlet property="header" destination="LZd-s0-Fh4" id="aws-UE-Skp"/>
                 <outlet property="pricelabel" destination="adA-wo-hgr" id="Cpf-4s-Cn8"/>
-                <outlet property="productSoldLabel" destination="srs-QA-ms2" id="KT0-ak-vQT"/>
-                <outlet property="productViewLabel" destination="itW-fT-eC4" id="OGr-Iy-0p8"/>
                 <outlet property="productnamelabel" destination="K6e-rW-SBX" id="h5h-Cn-5mG"/>
                 <outlet property="table" destination="dMb-4I-t0S" id="vYf-Wc-AqI"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -89,64 +82,19 @@
                     <color key="textColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_sold_28px.png" translatesAutoresizingMaskIntoConstraints="NO" id="xHm-Ks-gjD">
-                    <rect key="frame" x="15" y="56" width="15" height="15"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="15" id="2on-Wl-Hvi"/>
-                        <constraint firstAttribute="width" constant="15" id="xul-ba-VyA"/>
-                    </constraints>
-                </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sold" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="srs-QA-ms2">
-                    <rect key="frame" x="35" y="54" width="23" height="20"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="20" id="gn1-tO-ADY"/>
-                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="23" id="ryZ-XV-FiR"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="11"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_view_28px.png" translatesAutoresizingMaskIntoConstraints="NO" id="vwu-9S-oA8">
-                    <rect key="frame" x="73" y="56" width="15" height="15"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="15" id="SZk-AC-LUw"/>
-                        <constraint firstAttribute="width" constant="15" id="bkk-XD-AJf"/>
-                    </constraints>
-                </imageView>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="view" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="itW-fT-eC4">
-                    <rect key="frame" x="96" y="54" width="72" height="20"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="72" id="fYU-fM-y0G"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" name="GothamLight" family="Gotham Light" pointSize="11"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="xHm-Ks-gjD" firstAttribute="top" secondItem="adA-wo-hgr" secondAttribute="bottom" constant="9" id="8rE-Eq-t4W"/>
-                <constraint firstItem="srs-QA-ms2" firstAttribute="top" secondItem="adA-wo-hgr" secondAttribute="bottom" constant="7" id="ADa-Z1-lcn"/>
                 <constraint firstItem="adA-wo-hgr" firstAttribute="top" secondItem="K6e-rW-SBX" secondAttribute="bottom" constant="5" id="Fbw-sx-yFt"/>
-                <constraint firstItem="itW-fT-eC4" firstAttribute="baseline" secondItem="srs-QA-ms2" secondAttribute="baseline" id="GpH-QR-uWN"/>
                 <constraint firstItem="K6e-rW-SBX" firstAttribute="top" secondItem="LZd-s0-Fh4" secondAttribute="top" constant="15" id="IrK-90-3eP"/>
-                <constraint firstItem="vwu-9S-oA8" firstAttribute="top" secondItem="adA-wo-hgr" secondAttribute="bottom" constant="9" id="NPV-gh-6AK"/>
                 <constraint firstItem="K6e-rW-SBX" firstAttribute="leading" secondItem="LZd-s0-Fh4" secondAttribute="leading" constant="15" id="ayx-EW-tnE"/>
                 <constraint firstItem="adA-wo-hgr" firstAttribute="leading" secondItem="LZd-s0-Fh4" secondAttribute="leading" constant="15" id="bdE-1c-XaH"/>
-                <constraint firstItem="srs-QA-ms2" firstAttribute="leading" secondItem="xHm-Ks-gjD" secondAttribute="trailing" constant="5" id="e9L-ki-zAi"/>
-                <constraint firstItem="itW-fT-eC4" firstAttribute="leading" secondItem="vwu-9S-oA8" secondAttribute="trailing" constant="8" symbolic="YES" id="gci-e2-Gg9"/>
-                <constraint firstItem="xHm-Ks-gjD" firstAttribute="leading" secondItem="LZd-s0-Fh4" secondAttribute="leading" constant="15" id="iFF-TE-qVJ"/>
-                <constraint firstItem="itW-fT-eC4" firstAttribute="firstBaseline" secondItem="srs-QA-ms2" secondAttribute="firstBaseline" id="kOJ-aU-823"/>
-                <constraint firstItem="vwu-9S-oA8" firstAttribute="leading" secondItem="srs-QA-ms2" secondAttribute="trailing" constant="15" id="n3V-AS-Wc8"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-202" y="45"/>
         </view>
     </objects>
-    <resources>
-        <image name="icon_sold_28px.png" width="28" height="28"/>
-        <image name="icon_view_28px.png" width="28" height="28"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>

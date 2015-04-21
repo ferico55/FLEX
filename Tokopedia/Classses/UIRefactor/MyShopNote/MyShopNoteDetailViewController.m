@@ -49,6 +49,7 @@
     NSTimeInterval _timeinterval;
     
     BOOL _isBeingPresented;
+    BOOL _isNewNoteReturnableProduct;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
@@ -211,6 +212,9 @@
     }
     
     [_titleNoteTextField addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
+    
+    _isNewNoteReturnableProduct = NO;
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -483,6 +487,10 @@
                 
                 NSString *contentNote = [_note.result.detail.notes_content isEqualToString:@"0"]?@"":_note.result.detail.notes_content;
                 
+                if ([contentNote isEqualToString:@""] && _type == NOTES_RETURNABLE_PRODUCT) {
+                    _isNewNoteReturnableProduct = YES;
+                }
+                
                 NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:contentNote attributes:attributes];
                 _contentNoteTextView.attributedText = attributedString;
                 
@@ -590,7 +598,7 @@
     NSDictionary *userinfo = (NSDictionary*)object;
     
     NSString *action;
-    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY) {
+    if (_type == kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY || _isNewNoteReturnableProduct) {
         action = kTKPDDETAIL_APIADDNOTESDETAILKEY;
     }
     else
@@ -679,7 +687,7 @@
                             defaultMessage = @[kTKPDNOTE_EDIT_NOTE_SUCCESS];
                             break;
                         default:
-                            defaultMessage = @[];
+                            defaultMessage = @[@"Success"];
                             break;
                     }
 

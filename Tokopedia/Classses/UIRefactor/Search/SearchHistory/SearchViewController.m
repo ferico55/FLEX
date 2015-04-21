@@ -226,6 +226,7 @@
     }
     if (_historysearch.count > indexPath.row) {
         cell.textLabel.text = searchresult;
+        cell.textLabel.font = [UIFont fontWithName:@"GothamMedium" size:14.0f];
     }
 	
 	return cell;

@@ -51,6 +51,7 @@
     NSInteger _requestcount;
     
     NSMutableDictionary *_datainput;
+    NSMutableArray *_listTemp;
     NSDictionary *_auth;
         
     BOOL _isaddressexpanded;
@@ -123,6 +124,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _listTemp = [NSMutableArray new];
     
     NSInteger type = [[_data objectForKey:DATA_TYPE_KEY]integerValue];
     if (type == TYPE_ADD_EDIT_PROFILE_ATC) {
@@ -133,7 +135,9 @@
         _doneBarButtonItem.tag = TAG_SETTING_ADDRESS_BARBUTTONITEM_DONE;
         self.navigationItem.rightBarButtonItem = _doneBarButtonItem;
 
-        _table.tableHeaderView = _addNewAddressView;
+        [self.view addSubview:_addNewAddressView];
+        _table.contentInset = UIEdgeInsetsMake(_addNewAddressView.frame.size.height, 0, 0, 0);
+        //_table.tableHeaderView = _addNewAddressView;
         
         _searchBar.delegate = self;
         _searchBar.placeholder = @"Cari Alamat";
@@ -153,6 +157,10 @@
                                                                          action:@selector(tap:)];
         backBarButton.tag = 10;
         self.navigationItem.backBarButtonItem = backBarButton;
+        
+        //_table.tableHeaderView = _searchBarView;
+        [self.view addSubview:_searchBarView];
+        _table.contentInset = UIEdgeInsetsMake(_searchBarView.frame.size.height, 0, 0, 0);
     }
 
     _refreshControl = [[UIRefreshControl alloc] init];
@@ -255,13 +263,9 @@
                     
                     ((GeneralList1GestureCell*)cell).textLabel.text = list.address_name;
                     ((GeneralList1GestureCell*)cell).indexpath = indexPath;
-                    
-                    if (_ismanualsetdefault) {
-                        if ([indexPath isEqual:[_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY]]) {
-                            ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"Alamat Utama";
-                        } else {
-                            ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"";
-                        }
+
+                    if (indexPath.section == 0) {
+                        ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"Alamat Utama";
                     } else {
                         ((GeneralList1GestureCell*)cell).detailTextLabel.text = @"";
                     }
@@ -363,9 +367,9 @@
 	if (_isnodata) {
 		cell.backgroundColor = [UIColor whiteColor];
 	}
-    
-    NSInteger row = [self tableView:tableView numberOfRowsInSection:indexPath.section] -1;
-	if (row == indexPath.row) {
+
+    NSInteger section = _list.count - 1;
+	if (section == indexPath.section) {
 		//NSLog(@"%@", NSStringFromSelector(_cmd));
         if (_urinext != NULL && ![_urinext isEqualToString:@"0"] && _urinext != 0) {
             /** called if need to load next page **/
@@ -455,9 +459,12 @@
         if (status) {
             if (_page == 1) {
                 [_list removeAllObjects];
+                [_listTemp removeAllObjects];
             }
             
             [_list addObjectsFromArray:address.result.list];
+            [_listTemp addObjectsFromArray:address.result.list];
+            
             if (_list.count >0) {
                 _isnodata = NO;
                 _urinext =  address.result.paging.uri_next;
@@ -479,7 +486,7 @@
                 NSLog(@"%zd",_page);
             }
             NSInteger type = [[_datainput objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]integerValue];
-            if (type == 1) {
+            if (type == TYPE_ADD_EDIT_PROFILE_EDIT) {
                 //TODO: Behavior after edit
                 NSIndexPath *indexpath = [_datainput objectForKey:kTKPDPROFILE_DATAINDEXPATHKEY];
                 BOOL isdefault;
@@ -496,7 +503,7 @@
                 [self.navigationController pushViewController:vc animated:NO];
             }
             [_table reloadData];
-            _table.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
+            //_table.contentInset = UIEdgeInsetsMake(-15, 0, 0, 0);
         }
     }
 }
@@ -588,10 +595,15 @@
     if (status) {
         [self requestProcessActionSetDefault:object];
     }
+    else
+    {
+        [self cancelSetAsDefault];
+    }
 }
 
 -(void)requestFailureActionSetDefault:(id)object
 {
+    [self cancelSetAsDefault];
     [self requestProcessActionSetDefault:object];
 }
 
@@ -890,8 +902,11 @@
     _ismanualsetdefault = YES;
     [self configureRestKitActionSetDefault];
     [self requestActionSetDefault:_datainput];
+    id object = _list[indexpath.section];
+    [_list removeObject:object];
+    [_list insertObject:object atIndex:0];
     [_datainput setObject:indexpath forKey:kTKPDPROFILE_DATAINDEXPATHDEFAULTKEY];
-    [_table reloadData];
+    [self.table reloadData];
 }
 -(void)cancelSetAsDefault
 {
@@ -936,6 +951,11 @@
 }
 
 #pragma mark - UISearchBar Delegate
+-(void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    
+}
+
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar resignFirstResponder];
@@ -944,14 +964,53 @@
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
     [searchBar setText:@""];
+
     [searchBar resignFirstResponder];
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
 {
     [searchBar setShowsCancelButton:NO animated:YES];
-    [_datainput setObject:searchBar.text forKey:API_QUERY_KEY];
-    [self refreshView:nil];
+
+    if (![searchBar.text isEqualToString:@""]) {
+        [_list removeAllObjects];
+        [_list addObjectsFromArray:_listTemp];
+        
+        NSPredicate *resultPredicate = [NSPredicate predicateWithFormat:@"SELF contains[c] %@", searchBar.text];
+        NSMutableArray *listName = [NSMutableArray new];
+        NSMutableArray *listReceiver = [NSMutableArray new];
+        for (AddressFormList *address in _list) {
+            [listName addObject: address.address_name];
+            [listReceiver addObject:address.receiver_name];
+        }
+        
+        listName = [[listName filteredArrayUsingPredicate:resultPredicate] mutableCopy];
+        listReceiver = [[listReceiver filteredArrayUsingPredicate:resultPredicate] mutableCopy];
+        NSMutableArray *listFiltered = [NSMutableArray new];
+        for (AddressFormList *address in _list) {
+            for (NSString *name in listName) {
+                if ([address.address_name isEqualToString:name]) {
+                    [listFiltered addObject:address];
+                }
+            }
+            for (NSString *receiver in listReceiver) {
+                if ([address.receiver_name isEqualToString:receiver] && ![listFiltered containsObject:address]) {
+                    [listFiltered addObject:address];
+                }
+            }
+        }
+        [_list removeAllObjects];
+        [_list addObjectsFromArray:listFiltered];
+        
+        [_table reloadData];
+    }
+    else
+    {
+        [_list removeAllObjects];
+        [_list addObjectsFromArray:_listTemp];
+        [_table reloadData];
+    }
+    
     return YES;
 }
 
@@ -1157,6 +1216,7 @@
         _isrefreshview = NO;
         [_refreshControl endRefreshing];
         _doneBarButtonItem.enabled = YES;
+        
     }
 }
 
@@ -1201,4 +1261,17 @@
         [self request];
     }
 }
+
+#pragma mark - Address add delegate
+
+- (void)successAddAddress
+{
+    [_list removeAllObjects];
+
+    _table.tableFooterView = _footer;
+    [_act startAnimating];
+    
+    [self request];
+}
+
 @end

@@ -7,7 +7,7 @@
 //
 
 #import "DetailReviewViewController.h"
-#import "InboxReview.h"
+#import "Review.h"
 #import "UserAuthentificationManager.h"
 #import "GeneralAction.h"
 #import "string_inbox_review.h"
@@ -58,7 +58,7 @@
     NSOperationQueue *_operationDeleteCommentQueue;
     
     NSInteger *_requestCount;
-    InboxReviewList *_review;
+    ReviewList *_review;
     NSString *_commentReview;
     NSTimer *_timer;
 }
@@ -116,6 +116,8 @@
     
     [self initNavigationBar];
     [self initReviewData];
+    
+    
     [self initTalkInputView];
     self.title = @"Ulasan";
     
@@ -153,6 +155,10 @@
     if([_review.review_response.response_message isEqualToString:@"0"]) {
         [_commentbutton setTitle:@"0 Comment" forState:UIControlStateNormal];
         
+        if([[_userManager getUserId] isEqualToString:@"0"] || ![_userManager isMyShopWithShopId:_review.review_shop_id]) {
+            [self hideInputView];
+        }
+
         _respondView.hidden = YES;
         
     } else {
@@ -229,7 +235,7 @@
         _deleteReviewButton.hidden = YES;
     }
     
-    _qualityrate.starscount = [_review.review_rate_quality integerValue];
+    _qualityrate.starscount = [_review.review_rate_product integerValue];
     _speedrate.starscount = [_review.review_rate_speed integerValue];
     _servicerate.starscount = [_review.review_rate_service integerValue];
     _accuracyrate.starscount = [_review.review_rate_accuracy integerValue];

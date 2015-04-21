@@ -28,6 +28,7 @@
 #import "NavigateViewController.h"
 #import "UserAuthentificationManager.h"
 
+#import "ProductTalkViewController.h"
 
 #import "stringrestkit.h"
 #import "string_more.h"
@@ -39,11 +40,14 @@
     BOOL _isrefreshview;
     UIRefreshControl *_refreshControl;
     NSString *_urinext;
+    NSString *_urlPath;
+    NSString *_urlAction;
     
     NSTimer *_timer;
     NSInteger _page;
     NSInteger _limit;
     NSMutableDictionary *_datainput;
+    
 
     NSInteger _requestcount;
     __weak RKObjectManager *_objectmanager;
@@ -161,6 +165,18 @@
     _page = 1;
     _auth = [NSMutableDictionary new];
     [_sendButton setEnabled:NO];
+    
+    //validate previous class so it can use several URL path
+    NSArray *vcs = self.navigationController.viewControllers;
+    if([vcs[[vcs count] - 2] isKindOfClass:[ProductTalkViewController class]]) {
+        _urlPath = kTKPDDETAILTALK_APIPATH;
+        _urlAction = kTKPDDETAIL_APIGETCOMMENTBYTALKID;
+    } else {
+        _urlPath = kTKPDINBOX_TALK_APIPATH;
+        _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
+    }
+    
+    
     //UIBarButtonItem *barbutton1;
     //NSBundle* bundle = [NSBundle mainBundle];
     //TODO:: Change image
@@ -461,6 +477,7 @@
     
     if([_userManager getUserId]) {
         [_talkInputView setHidden:NO];
+        [_sendButton setEnabled:NO];
     } else {
         [_talkInputView setHidden:YES];
     }
@@ -520,7 +537,7 @@
     [resultMapping addPropertyMapping:pageRel];
     
     // register mappings with the provider using a response descriptor
-    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:kTKPDDETAILTALK_APIPATH keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping method:RKRequestMethodPOST pathPattern:_urlPath keyPath:@"" statusCodes:kTkpdIndexSetStatusCodeOK];
     
     [_objectmanager addResponseDescriptor:responseDescriptorStatus];
 }
@@ -536,7 +553,7 @@
     }
     
     NSDictionary* param = @{
-                            kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETCOMMENTBYTALKID,
+                            kTKPDDETAIL_APIACTIONKEY : _urlAction,
                             TKPD_TALK_ID : [_data objectForKey:kTKPDTALKCOMMENT_TALKID]?:@(0),
                             kTKPDDETAIL_APISHOPIDKEY : [_data objectForKey:TKPD_TALK_SHOP_ID],
                             kTKPDDETAIL_APIPAGEKEY : @(_page)
@@ -544,7 +561,7 @@
 //    [_cachecontroller getFileModificationDate];
 //	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
 //	if (_timeinterval > _cachecontroller.URLCacheInterval || _page > 1 || _isrefreshview) {
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILTALK_APIPATH parameters:[param encrypt]];
+        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:_urlPath parameters:[param encrypt]];
         [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
             [_timer invalidate];
             [_sendButton setEnabled:YES];
@@ -739,6 +756,9 @@
         UIButton *btn = (UIButton *)sender;
         switch (btn.tag) {
             case 10: {
+                if([_growingtextview.text length] < 5) {
+                    return;
+                }
                 NSInteger lastindexpathrow = [_list count];
                 TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
                 NSDictionary* auth = [secureStorage keychainDictionary];
@@ -1234,8 +1254,16 @@
 
 
 #pragma mark - LoginView Delegate
-- (void)redirectViewController:(id)viewController
-{
+- (void)redirectViewController:(id)viewController {
 
+}
+
+#pragma mark - GrowingTextView Delegate
+- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView  {
+    if([growingTextView.text length] < 5) {
+        _sendButton.enabled = NO;
+    } else {
+        _sendButton.enabled = YES;
+    }
 }
 @end

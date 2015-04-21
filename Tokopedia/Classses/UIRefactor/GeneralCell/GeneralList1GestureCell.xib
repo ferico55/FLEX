@@ -36,10 +36,6 @@
             </tableViewCellContentView>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <gestureRecognizers/>
-            <connections>
-                <outlet property="labeldefault" destination="oxG-tZ-FMr" id="Gfr-Il-6VV"/>
-                <outlet property="labelname" destination="icX-gW-awl" id="nGY-X1-JgW"/>
-            </connections>
         </tableViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

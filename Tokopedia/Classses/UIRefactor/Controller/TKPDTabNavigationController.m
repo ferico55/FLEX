@@ -22,15 +22,9 @@
     UIBarButtonItem *_barbuttoncategory;
 }
 
-@property (weak, nonatomic) IBOutlet UIButton *buttonlocation;
-@property (weak, nonatomic) IBOutlet UIButton *buttonfilter;
 @property (weak, nonatomic) IBOutlet UIView *container;
-@property (weak, nonatomic) IBOutlet UIView *tabbarthrees;
-@property (weak, nonatomic) IBOutlet UIView *tabbartwos;
-@property (weak, nonatomic) IBOutlet UIView *catalogproductbuttonview;
-@property (weak, nonatomic) IBOutlet UIView *shopbuttonview;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *segmentcontrol;
-@property (weak, nonatomic) IBOutlet UIView *viewtop;
+@property (weak, nonatomic) IBOutlet UIView *tabView;
 
 - (IBAction)tap:(UISegmentedControl *)sender;
 
@@ -51,29 +45,9 @@
 @dynamic contentInsetForChildController;
 
 @synthesize container = _container;
-@synthesize tabbarthrees = _tabbarthrees;
-@synthesize tabbartwos = _tabbartwos;
-
-#pragma mark -
-#pragma mark Factory methods
-
-//+ (id)allocinit
-//{
-//	id o = [[self class] alloc];
-//	if (o != nil) {
-//		o = [o initWithNibName:nil bundle:nil];
-//		return o;
-//	}
-//	return nil;
-//}
 
 #pragma mark -
 #pragma mark Initializations
-
-//- (id)init
-//{
-//	return [self initWithNibName:nil bundle:nil];
-//}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -553,7 +527,6 @@
         _tabbar = _segmentcontrol;
         [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
         _hascatalog = NO;
-        _catalogproductbuttonview.hidden = NO;
     } else if (count == 3) {	//not default to 3
         _segmentcontrol.hidden = NO;
         [_segmentcontrol removeAllSegments];
@@ -572,7 +545,6 @@
             _tabbar = _segmentcontrol;
             [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
             _hascatalog = NO;
-            _catalogproductbuttonview.hidden = NO;
         } else if (count == 3) {	//not default to 3
             _segmentcontrol.hidden = NO;
             [_segmentcontrol removeAllSegments];
@@ -583,7 +555,16 @@
             _hascatalog = YES;
         }
     }
+    
     _barbuttoncategory.enabled = YES;
+    
+    if (_segmentcontrol.numberOfSegments == 1) {
+        _tabView.hidden = YES;
+    } else {
+        _tabView.backgroundColor = [UIColor whiteColor];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_CATEGORY_HIDE_TAB_BAR object:nil];
+    }
+    
 }
 
 @end

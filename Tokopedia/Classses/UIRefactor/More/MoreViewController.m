@@ -43,6 +43,9 @@
 #import "DepositSummaryViewController.h"
 #import "ShopContainerViewController.h"
 #import "ReputationPageViewController.h"
+#import "ProductListMyShopViewController.h"
+#import "MyShopEtalaseViewController.h"
+#import "InboxResolutionCenterTabViewController.h"
 #import "Helpshift.h"
 
 @interface MoreViewController () <NotificationManagerDelegate> {
@@ -258,7 +261,7 @@
         case 2:
             if ([_auth objectForKey:@"shop_id"] &&
                 [[_auth objectForKey:@"shop_id"] integerValue] > 0)
-                    return 2;
+                    return 4;
             else return 0;
             break;
             
@@ -270,7 +273,7 @@
             break;
             
         case 4:
-            return 3;
+            return 4;
             break;
             
         case 5:
@@ -352,20 +355,31 @@
         [self.navigationController pushViewController:purchaseController animated:YES];
     }
     
-    else if (indexPath.section == 2 && indexPath.row == 0) {
-        ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
-        container.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
-                                                               MORE_AUTH : _auth,
-                                                               MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
-                                                               };
-        [self.navigationController pushViewController:container animated:YES];
-    }
     
-    else if (indexPath.section == 2 && indexPath.row == 1) {
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        SalesViewController *salesController = [storyboard instantiateViewControllerWithIdentifier:@"SalesViewController"];
-        salesController.notification = _notifManager.notification;
-        [self.navigationController pushViewController:salesController animated:YES];
+    else if (indexPath.section == 2) {
+        if(indexPath.row == 0) {
+            ShopContainerViewController *container = [[ShopContainerViewController alloc] init];
+            container.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID],
+                               MORE_AUTH : _auth,
+                               MORE_SHOP_NAME : [_auth objectForKey:MORE_SHOP_NAME]
+                               };
+            [self.navigationController pushViewController:container animated:YES];
+        } else if(indexPath.row == 1) {
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            SalesViewController *salesController = [storyboard instantiateViewControllerWithIdentifier:@"SalesViewController"];
+            salesController.notification = _notifManager.notification;
+            [self.navigationController pushViewController:salesController animated:YES];
+        } else if (indexPath.row == 2) {
+            ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
+            vc.data = @{kTKPD_AUTHKEY:_auth?:@{}};
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if (indexPath.row == 3) {
+            MyShopEtalaseViewController *vc = [MyShopEtalaseViewController new];
+            vc.data = @{MORE_SHOP_ID : [_auth objectForKey:MORE_SHOP_ID]?:@{},
+                        kTKPD_AUTHKEY:_auth?:@{}};
+            [self.navigationController pushViewController:vc animated:YES];
+        }
+
     }
     
     else if (indexPath.section == 4) {
@@ -420,6 +434,11 @@
             [nc setViewControllers:vcs];
             nc.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:nc animated:YES];
+            
+        } else if (indexPath.row  == 3) {
+            InboxResolutionCenterTabViewController *vc = [InboxResolutionCenterTabViewController new];
+            vc.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:vc animated:YES];
             
         }
         

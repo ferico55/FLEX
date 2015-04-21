@@ -495,7 +495,8 @@
                                                  TKPD_TALK_CREATE_TIME,
                                                  TKPD_TALK_MESSAGE,
                                                  TKPD_TALK_FOLLOW_STATUS,
-                                                 TKPD_TALK_SHOP_ID
+                                                 TKPD_TALK_SHOP_ID,
+                                                 TKPD_TALK_USER_ID
                                                  ]];
     
     RKObjectMapping *pagingMapping = [RKObjectMapping mappingForClass:[Paging class]];

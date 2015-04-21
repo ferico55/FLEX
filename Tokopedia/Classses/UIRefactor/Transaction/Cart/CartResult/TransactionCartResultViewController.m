@@ -38,8 +38,14 @@
 @property (weak, nonatomic) IBOutlet UILabel *footerLabel;
 @property (strong, nonatomic) IBOutlet UIView *paymentStatusView;
 @property (weak, nonatomic) IBOutlet UIButton *paymentStatusButton;
+@property (weak, nonatomic) IBOutlet UILabel *contactUsLabel;
 
 @end
+
+#define kTKPDMORE_PRIVACY_URL @"https://m.tokopedia.com/privacy.pl"
+#define kTKPDMORE_HELP_URL @"https://www.tokopedia.com/bantuan"
+#define kTKPDMORE_HELP_TITLE @"Bantuan"
+#define kTKPDMORE_PRIVACY_TITLE @"Kebijakan Privasi"
 
 @implementation TransactionCartResultViewController
 
@@ -48,6 +54,39 @@
     
     _listSystemBank = [NSMutableArray new];
     _listTotalPayment = [NSMutableArray new];
+    
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    [paragraphStyle setAlignment:NSTextAlignmentLeft];
+    paragraphStyle.lineSpacing = 6.0;
+    
+    NSString *string1 = _footerLabel1.text;
+    NSMutableAttributedString *title1 = [[NSMutableAttributedString alloc]initWithString:string1];
+    [title1 addAttribute:NSFontAttributeName value:FONT_GOTHAM_BOOK_11 range:NSMakeRange(0, title1.length)];
+    
+    //add color
+    [title1 addAttribute:NSForegroundColorAttributeName
+                   value:[UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1]
+                   range:[string1 rangeOfString:@"Konfirmasi Pembayaran"]];
+    
+    //add alignment
+    [title1 addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, title1.length)];
+    
+    _footerLabel1.attributedText = title1;
+    
+    NSString *string = @"Silahkan menghubungi kami apabila Anda mengalami kesulitan.";
+    NSMutableAttributedString *title = [[NSMutableAttributedString alloc]initWithString:string];
+    UIFont *font = FONT_GOTHAM_BOOK_11;
+    [title addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, title.length)];
+    
+    //add color
+    [title addAttribute:NSForegroundColorAttributeName
+                  value:[UIColor colorWithRed:0.0/255.0 green:122.0/255.0 blue:255.0/255.0 alpha:1]
+                  range:[string rangeOfString:@"menghubungi kami"]];
+    
+    //add alignment
+    [title addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, title.length)];
+    
+    _contactUsLabel.attributedText = title;
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -145,7 +184,7 @@
 #pragma mark - View Action
 - (IBAction)tap:(id)sender {
     UIButton *button = (UIButton*)sender;
-    if (button == _confirmPaymentButton) {
+    if (button == _confirmPaymentButton || button.tag == 10) {
         TxOrderTabViewController *vc = [TxOrderTabViewController new];
         [self.navigationController pushViewController:vc animated:YES];
     }
@@ -154,7 +193,17 @@
         TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
         vc.action = @"get_tx_order_status";
         vc.viewControllerTitle = @"Status Pemesanan";
+        vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
+    }
+    else
+    {
+        UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 568)];
+        [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kTKPDMORE_HELP_URL]]];
+        UIViewController *controller = [UIViewController new];
+        controller.title = kTKPDMORE_HELP_TITLE;
+        [controller.view addSubview:webView];
+        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 
@@ -319,7 +368,6 @@
     }
     
     [_footerLabel setCustomAttributedText:_footerLabel.text];
-    [_footerLabel1 setCustomAttributedText:_footerLabel1.text];
     [_listPaymentTitleLabel setCustomAttributedText:_listPaymentTitleLabel.text];
     
     NSString *tableTitleLabel = [NSString stringWithFormat:FORMAT_SUCCESS_BUY,_cartBuy.transaction.gateway_name];

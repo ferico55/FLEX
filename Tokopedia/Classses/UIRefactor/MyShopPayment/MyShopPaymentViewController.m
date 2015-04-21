@@ -67,9 +67,9 @@
     UIActivityIndicatorView *activityIndicator;
 }
 
-@property (weak, nonatomic) IBOutlet UIScrollView *scrollview;
-@property (weak, nonatomic) IBOutlet UIView *viewcontent;
-@property (strong, nonatomic) IBOutlet UIView *footer;
+@property (weak, nonatomic) IBOutlet UITableView *table;
+@property (strong, nonatomic) IBOutlet UIView *noteView;
+@property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *headerview;
@@ -128,12 +128,8 @@
     
     if(myShopShipmentTableViewController == nil)
     {
-        if (!_isrefreshview) {
-            [self configureRestKit];
-            if (_isnodata) {
-                [self request];
-            }
-        }
+		[self configureRestKit]; 
+		[self request];
     }
     else
     {
@@ -156,7 +152,6 @@
 -(void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    _scrollview.contentSize = _viewcontent.frame.size;
 }
 
 #pragma mark - Memory Management
@@ -377,50 +372,51 @@
     
     _requestcount++;
     
+    _table.tableFooterView = _footerView;
+    [_act startAnimating];
+
     NSDictionary* auth = [_data objectForKey:kTKPD_AUTHKEY];
     
 	NSDictionary* param = @{
                             kTKPDDETAIL_APIACTIONKEY : kTKPDDETAIL_APIGETPAYMENTINFOKEY,
                             kTKPDDETAIL_APISHOPIDKEY : [auth objectForKey:kTKPD_SHOPIDKEY]?:@(0),
                             };
+    
     [_cachecontroller getFileModificationDate];
 	_timeinterval = fabs([_cachecontroller.fileDate timeIntervalSinceNow]);
-	if (_timeinterval > _cachecontroller.URLCacheInterval || _isrefreshview) {
-        if (!_isrefreshview) {
-            _table.tableFooterView = _footer;
-            [_act startAnimating];
-        }
-        
-        _request = [_objectmanager appropriateObjectRequestOperationWithObject:self method:RKRequestMethodPOST path:kTKPDDETAILSHOPPAYMENT_APIPATH parameters:[param encrypt]];
-        [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
-            [_timer invalidate];
-            _timer = nil;
-            _table.hidden = NO;
-            _isrefreshview = NO;
-            [_refreshControl endRefreshing];
-            [_act stopAnimating];
-            [self requestsuccess:mappingResult withOperation:operation];
-        } failure:^(RKObjectRequestOperation *operation, NSError *error) {
-            /** failure **/
-            [_timer invalidate];
-            _timer = nil;
-            _isrefreshview = NO;
-            [_refreshControl endRefreshing];
-            [_act stopAnimating];
-            [self requestfailure:error];
-        }];
-        [_operationQueue addOperation:_request];
-        
-        _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL target:self selector:@selector(requesttimeout) userInfo:nil repeats:NO];
-        [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
-    }else{
-        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-        NSLog(@"Updated: %@",[dateFormatter stringFromDate:_cachecontroller.fileDate]);
-        NSLog(@"cache and updated in last 24 hours.");
-        [self requestfailure:nil];
-    }
+    
+    _request = [_objectmanager appropriateObjectRequestOperationWithObject:self
+                                                                    method:RKRequestMethodPOST
+                                                                      path:kTKPDDETAILSHOPPAYMENT_APIPATH
+                                                                parameters:[param encrypt]];
+    
+    [_request setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [_timer invalidate];
+        _timer = nil;
+        _table.hidden = NO;
+        _act.hidden = YES;
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        [_act stopAnimating];
+        [self requestsuccess:mappingResult withOperation:operation];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        /** failure **/
+        [_timer invalidate];
+        _timer = nil;
+        _isrefreshview = NO;
+        [_refreshControl endRefreshing];
+        [_act stopAnimating];
+        [self requestfailure:error];
+    }];
+    [_operationQueue addOperation:_request];
+    
+    _timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                              target:self
+                                            selector:@selector(requesttimeout)
+                                            userInfo:nil
+                                             repeats:NO];
+    
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
 -(void)requestsuccess:(id)object withOperation:(RKObjectRequestOperation *)operation
@@ -493,9 +489,31 @@
                     }
                 }
                 
-                UILabel *label = (UILabel *)[_footer viewWithTag:1];
-                label.text = _payment.result.note.description;
+                NSString *notes = @"Pilihan Pembayaran yang ingin Anda berikan kepada pengunjung Toko Online Anda.";
+                for (NSString *note in _payment.result.note) {
+                    notes = [NSString stringWithFormat:@"%@\n\n%@", notes, note];
+                }
+
+                NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
+                style.lineSpacing = 4.0;
+                
+                NSDictionary *attributes = @{
+                                             NSFontAttributeName            : [UIFont fontWithName:@"GothamBook" size:14],
+                                             NSParagraphStyleAttributeName  : style,
+                                             NSForegroundColorAttributeName : [UIColor colorWithRed:117.0/255.0
+                                                                                              green:117.0/255.0
+                                                                                               blue:117.0/255.0
+                                                                                              alpha:1],
+                                             };
+                
+                UILabel *label = (UILabel *)[_noteView viewWithTag:1];
+                label.attributedText = [[NSAttributedString alloc] initWithString:notes
+                                                                             attributes:attributes];
                 [label sizeToFit];
+                
+                self.table.contentInset = UIEdgeInsetsMake(-36, 0, label.frame.size.height, 0);
+                
+                _table.tableFooterView = _noteView;
                 
                 _list = _payment.result.payment_options;
                 _isnodata = NO;

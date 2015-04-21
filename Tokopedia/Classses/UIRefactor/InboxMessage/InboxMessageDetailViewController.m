@@ -14,6 +14,7 @@
 #import "string_home.h"
 #import "HPGrowingTextView.h"
 #import "inbox.h"
+#import "detail.h"
 
 @interface InboxMessageDetailViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, HPGrowingTextViewDelegate>
 
@@ -532,7 +533,9 @@
             }
                 
             case 11: {
-                if(_growingtextview.text.length > 0) {
+                NSString *message = [_growingtextview.text stringByTrimmingCharactersInSet:
+                                     [NSCharacterSet whitespaceCharacterSet]];
+                if(message.length > 5 || ![message isEqualToString:@""]) {
                     NSInteger lastindexpathrow = [_messages count];
                     
                     InboxMessageDetailList *sendmessage = [InboxMessageDetailList new];
@@ -565,6 +568,11 @@
                     [self doSendMessage:_growingtextview.text];
                     
                     _growingtextview.text = nil;
+                } else {
+                    
+                    NSArray *array = [[NSArray alloc] initWithObjects:KTKPDMESSAGE_EMPTYFORM5, nil];
+                    NSDictionary *info = [NSDictionary dictionaryWithObjectsAndKeys:array,@"messages", nil];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_SETUSERSTICKYERRORMESSAGEKEY object:nil userInfo:info];
                 }
                 
                 break;
@@ -727,6 +735,18 @@
 
 - (void)requestsendtimeout {
     
+}
+
+#pragma mark - Growing TextView Delegate
+- (void)growingTextViewDidChange:(HPGrowingTextView *)growingTextView {
+    NSString *message = [growingTextView.text stringByTrimmingCharactersInSet:
+                          [NSCharacterSet whitespaceCharacterSet]];
+    if([message length] < 5 || [message isEqualToString:@""]) {
+        _buttonsend.enabled = NO;
+        
+    } else {
+        _buttonsend.enabled = YES;
+    }
 }
 
 @end

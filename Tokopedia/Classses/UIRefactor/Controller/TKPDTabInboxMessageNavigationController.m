@@ -248,10 +248,12 @@
     UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
     
     if(_selectedIndex == SEGMENT_MESSAGE) {
-        [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessage];
+
         if([_titleNavMessage isEqualToString:ALL_MESSAGE]) {
+            [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessage withDirection:0];
             [self markUnreadTalkButton];
         } else {
+            [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessage withDirection:1];
             [self markAllTalkButton];
         }
     }
@@ -459,6 +461,9 @@
         switch (btn.tag) {
             case 15: {
                 if(_selectedIndex == SEGMENT_MESSAGE) {
+                    _titleNavMessage = ALL_MESSAGE;
+                    UIButton *titleLabel = [UIButton buttonWithType:UIButtonTypeCustom];
+                
                     if(_readOption.isHidden) {
                         
                         _readOption.hidden = NO;
@@ -474,7 +479,9 @@
                             frame.origin.y = 0;
                             _buttonsContainer.frame = frame;
                         }];
+                        
 
+                        [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessage withDirection:1];
                     } else {
 
                         _verticalSpaceButtons.constant = -89;
@@ -490,6 +497,8 @@
                                 _readOption.hidden = YES;
                             }];
                         }];
+                        
+                        [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessage withDirection:0];
                     }
                 }
                 
@@ -502,16 +511,16 @@
                 
                 if(_selectedIndex == SEGMENT_MESSAGE) {
                     _titleNavMessage = ALL_MESSAGE;
-                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessage];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessage withDirection:1];
                 } else if (_selectedIndex == SEGMENT_MESSAGE_SENT) {
                     _titleNavMessageSent = ALL_MESSAGE;
-                        [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageSent];
+                        [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageSent withDirection:1];
                 } else if (_selectedIndex == SEGMENT_MESSAGE_ARCHIVE) {
                     _titleNavMessageArchive = ALL_MESSAGE;
-                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageArchive];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageArchive withDirection:1];
                 } else if (_selectedIndex == SEGMENT_MESSAGE_TRASH) {
                     _titleNavMessageTrash = ALL_MESSAGE;
-                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageTrash];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageTrash withDirection:1];
                 }
                 
                 titleLabel.frame = CGRectMake(0, 0, 70, 44);
@@ -545,16 +554,16 @@
 
                 if(_selectedIndex == SEGMENT_MESSAGE) {
                     _titleNavMessage = UNREAD_MESSAGE;
-                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessage];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessage withDirection:1];
                 } else if (_selectedIndex == SEGMENT_MESSAGE_SENT) {
                     _titleNavMessageSent = UNREAD_MESSAGE;
-                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageSent];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageSent withDirection:1];
                 } else if (_selectedIndex == SEGMENT_MESSAGE_ARCHIVE) {
                     _titleNavMessageArchive = UNREAD_MESSAGE;
-                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageArchive];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageArchive withDirection:1];
                 } else if (_selectedIndex == SEGMENT_MESSAGE_TRASH) {
                     _titleNavMessageTrash = UNREAD_MESSAGE;
-                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageSent];
+                    [self setLabelButtonWithArrow:titleLabel withString:_titleNavMessageSent withDirection:1];
                 }
                 
                 titleLabel.frame = CGRectMake(0, 0, 70, 44);
@@ -647,7 +656,7 @@
     }
 }
 
-- (void)setLabelButtonWithArrow:(UIButton *)button withString:(NSString*)string
+- (void)setLabelButtonWithArrow:(UIButton *)button withString:(NSString*)string withDirection:(NSInteger)direction
 {
     NSDictionary *attributes = @{
                                  NSForegroundColorAttributeName : [UIColor colorWithWhite:1 alpha:1],
@@ -657,10 +666,29 @@
     NSMutableAttributedString *myString = [[NSMutableAttributedString alloc] initWithString:string
                                                                                  attributes:attributes];
     [button setAttributedTitle:myString forState:UIControlStateNormal];
-    UIImage *arrowImage = [UIImage imageNamed:@"icon_arrow_down_white.png"];
-    [button setImage:arrowImage forState:UIControlStateNormal];
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 10);
-    button.imageEdgeInsets = UIEdgeInsetsMake(0, 115, 0, -15);
+    
+    UIImage *arrowImage;
+    if(direction == 0) {
+        arrowImage = [UIImage imageNamed:@"icon_triangle_down_white.png"];
+    } else {
+        arrowImage = [UIImage imageNamed:@"icon_triangle_up_white.png"];
+    }
+    
+    
+    CGRect rect = CGRectMake(0,0,10,7);
+    UIGraphicsBeginImageContext( rect.size );
+    [arrowImage drawInRect:rect];
+    UIImage *picture1 = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    NSData *imageData = UIImagePNGRepresentation(picture1);
+    UIImage *img=[UIImage imageWithData:imageData];
+    
+    [button setImage:img forState:UIControlStateNormal];
+
+
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 5);
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 115, 0, -10);
 }
 
 

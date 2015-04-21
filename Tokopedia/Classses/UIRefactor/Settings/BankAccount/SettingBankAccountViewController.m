@@ -436,7 +436,6 @@
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[ProfileSettingsResult class]];
     [resultMapping addAttributeMappingsFromArray:@[kTKPDPROFILE_APIISSUCCESSKEY,]];
      
-    
     [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
                                                                                   toKeyPath:kTKPD_APIRESULTKEY
                                                                                 withMapping:resultMapping]];
@@ -451,8 +450,7 @@
     [_objectmanagerActionSetDefault addResponseDescriptor:responseDescriptor];
     
 }
-
--(void)requestActionSetDefault:(id)object
+ -(void)requestActionSetDefault:(id)object
 {
     if (_requestActionSetDefault.isExecuting) return;
     NSTimer *timer;
@@ -461,10 +459,9 @@
     
     NSDictionary* param = @{
                             kTKPDPROFILE_APIACTIONKEY:kTKPDPROFILE_APIEDITDEFAULTBANKACCOUNTKEY,
-                            API_ACCOUNT_ID_KEY  : @([[userinfo objectForKey:API_BANK_ACCOUNT_ID_KEY] integerValue])?:@(0),
-                            API_OWNER_ID_KEY    : @([[userinfo objectForKey:API_BANK_ACCOUNT_ID_KEY] integerValue])?:@(0),
+                            API_ACCOUNT_ID_KEY  : [userinfo objectForKey:API_BANK_ACCOUNT_ID_KEY]?:@"0",
+                            API_OWNER_ID_KEY    : [userinfo objectForKey:API_BANK_OWNER_ID_KEY]?:@"0",
                             };
-    _requestcount ++;
     
     _requestActionSetDefault = [_objectmanagerActionSetDefault appropriateObjectRequestOperationWithObject:self
                                                                                                     method:RKRequestMethodPOST
@@ -519,8 +516,7 @@
     if (object) {
         if ([object isKindOfClass:[RKMappingResult class]]) {
             NSDictionary *result = ((RKMappingResult*)object).dictionary;
-            id stat = [result objectForKey:@""];
-            ProfileSettings *setting = stat;
+            ProfileSettings *setting = [result objectForKey:@""];
             BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
             
             if (status) {
@@ -537,14 +533,16 @@
                     _ismanualsetdefault = NO;
                 }
             }
-        }
-        else{
-            
+        } else {
             [self cancelActionSetDefault];
             [self cancelSetAsDefault];
             NSError *error = object;
             NSString *errorDescription = error.localizedDescription;
-            UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE message:errorDescription delegate:self cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE otherButtonTitles:nil];
+            UIAlertView *errorAlert = [[UIAlertView alloc]initWithTitle:ERROR_TITLE
+                                                                message:errorDescription
+                                                               delegate:self
+                                                      cancelButtonTitle:ERROR_CANCEL_BUTTON_TITLE
+                                                      otherButtonTitles:nil];
             [errorAlert show];
         }
     }
@@ -555,7 +553,126 @@
     [self cancelActionSetDefault];
 }
 
+#pragma mark - Restkit get default form
+
+-(void)configureRestKitActionGetDefaultForm {
+    _objectmanagerActionGetDefaultForm = [RKObjectManager sharedClient];
+    
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[BankAccountGetDefaultForm class]];
+    [statusMapping addAttributeMappingsFromArray:@[kTKPD_APIERRORMESSAGEKEY,
+                                                   kTKPD_APISTATUSMESSAGEKEY,
+                                                   kTKPD_APISTATUSKEY,
+                                                   kTKPD_APISERVERPROCESSTIMEKEY]];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[BankAccountGetDefaultFormResult class]];
+    
+    RKObjectMapping *defaultBankMapping = [RKObjectMapping mappingForClass:[BankAccountGetDefaultFormDefaultBank class]];
+    [defaultBankMapping addAttributeMappingsFromArray:@[
+                                                        API_BANK_ACCOUNT_ID_KEY,
+                                                        API_BANK_NAME_KEY,
+                                                        API_BANK_ACCOUNT_NAME_KEY,
+                                                        API_BANK_OWNER_ID_KEY,
+                                                        API_TOKEN_KEY
+                                                        ]];
+    
+    [statusMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY
+                                                                                  toKeyPath:kTKPD_APIRESULTKEY
+                                                                                withMapping:resultMapping]];
+
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:API_DEFAULT_BANK_KEY
+                                                                                  toKeyPath:API_DEFAULT_BANK_KEY
+                                                                                withMapping:defaultBankMapping]];
+
+    RKResponseDescriptor *responseDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                            method:RKRequestMethodPOST
+                                                                                       pathPattern:kTKPDPROFILE_PEOPLEAPIPATH
+                                                                                           keyPath:@""
+                                                                                       statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [_objectmanagerActionGetDefaultForm addResponseDescriptor:responseDescriptor];
+}
+
+-(void)requestActionGetDefaultForm:(id)object {
+    if (_requestActionGetDefaultForm.isExecuting) {
+        return;
+    }
+    
+    NSString *bankAccountID = [_datainput objectForKey:API_BANK_ACCOUNT_ID_KEY];
+    
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    
+    NSDictionary *parameters = @{
+                                 kTKPDPROFILE_APIACTIONKEY  : ACTION_GET_DEFAULT_BANK_ACCOUNT_KEY,
+                                 kTKPDPROFILE_APIUSERIDKEY : auth.getUserId,
+                                 kTKPDPROFILESETTING_APIACCOUNTIDKEY : bankAccountID?:@"",
+                                 };
+
+    _requestActionGetDefaultForm = [_objectmanagerActionGetDefaultForm appropriateObjectRequestOperationWithObject:self
+                                                                                                            method:RKRequestMethodPOST
+                                                                                                              path:kTKPDPROFILE_PEOPLEAPIPATH
+                                                                                                        parameters:[parameters encrypt]];
+    
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:kTKPDREQUEST_TIMEOUTINTERVAL
+                                                      target:self
+                                                    selector:@selector(requestTimeoutActionGetDefaultForm)
+                                                    userInfo:nil
+                                                     repeats:NO];
+    
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    
+    [_requestActionGetDefaultForm setCompletionBlockWithSuccess:^(RKObjectRequestOperation *operation, RKMappingResult *mappingResult) {
+        [self requestSuccessActionGetDefaultForm:mappingResult withOperation:operation];
+    } failure:^(RKObjectRequestOperation *operation, NSError *error) {
+        [self requestFailureActionGetDefaultForm:error];
+    }];
+    
+    [_operationQueue addOperation:_requestActionGetDefaultForm];
+}
+
+-(void)requestSuccessActionGetDefaultForm:(id)object withOperation:(RKObjectRequestOperation*)operation {
+    NSDictionary *result = ((RKMappingResult*)object).dictionary;
+    BankAccountGetDefaultForm *setting = [result objectForKey:@""];
+    BOOL status = [setting.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+    if (status) {
+        [self requestProcessActionGetDefaultForm:object];
+    }
+}
+
+-(void)requestFailureActionGetDefaultForm:(id)object {
+    [self requestProcessActionGetDefaultForm:object];
+}
+
+-(void)requestProcessActionGetDefaultForm:(id)object {
+    if (object) {
+        if ([object isKindOfClass:[RKMappingResult class]]) {
+            NSDictionary *result = ((RKMappingResult*)object).dictionary;
+            BankAccountGetDefaultForm *defaultForm = [result objectForKey:@""];
+            BOOL status = [defaultForm.status isEqualToString:kTKPDREQUEST_OKSTATUS];
+            if (status) {
+                [_datainput setObject:defaultForm.result.default_bank.bank_owner_id forKey:API_BANK_OWNER_ID_KEY];
+                [self configureRestKitActionSetDefault];
+                [self requestActionSetDefault:_datainput];
+            }
+        } else {
+            [self cancelActionGetDefaultForm];
+        }
+    }
+}
+
+-(void)cancelActionGetDefaultForm {
+    [_requestActionGetDefaultForm cancel];
+    _requestActionGetDefaultForm = nil;
+    
+    [_objectmanagerActionGetDefaultForm.operationQueue cancelAllOperations];
+    _objectmanagerActionGetDefaultForm = nil;
+}
+
+-(void)requestTimeoutActionGetDefaultForm {
+    [self cancelActionGetDefaultForm];
+}
+
 #pragma mark Request Action Delete
+
 -(void)cancelActionDelete
 {
     [_requestActionDelete cancel];
@@ -776,8 +893,9 @@
     
     BankAccountFormList *bankAccount = _list[indexPath.row];
     [_datainput setObject:@(bankAccount.bank_account_id) forKey:API_BANK_ACCOUNT_ID_KEY];
-    [self configureRestKitActionSetDefault];
-    [self requestActionSetDefault:_datainput];
+
+    [self configureRestKitActionGetDefaultForm];
+    [self requestActionGetDefaultForm:_datainput];
     
     NSIndexPath *indexPath1 = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
     [self tableView:_table moveRowAtIndexPath:indexPath toIndexPath:indexPath1];

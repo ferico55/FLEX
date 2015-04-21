@@ -173,6 +173,7 @@ TokopediaNetworkManagerDelegate
 @property (weak, nonatomic) IBOutlet UILabel *shoplocation;
 @property (strong, nonatomic) IBOutlet UIView *shopinformationview;
 @property (strong, nonatomic) IBOutlet UIView *shopClickView;
+@property (strong, nonatomic) IBOutlet UIView *shareClickView;
 @property (strong, nonatomic) IBOutlet DetailProductOtherView *otherproductview;
 
 @property (weak, nonatomic) IBOutlet UIScrollView *otherproductscrollview;
@@ -296,6 +297,10 @@ TokopediaNetworkManagerDelegate
     UITapGestureRecognizer *tapShopGes = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapShop)];
     [_shopClickView addGestureRecognizer:tapShopGes];
     [_shopClickView setUserInteractionEnabled:YES];
+    
+    UITapGestureRecognizer *tapShareGes = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(actionShare:)];
+    [_shareClickView addGestureRecognizer:tapShareGes];
+    [_shareClickView setUserInteractionEnabled:YES];
 }
 
 
@@ -355,6 +360,8 @@ TokopediaNetworkManagerDelegate
     [super viewWillDisappear:animated];
     _promoteNetworkManager.delegate = nil;
     [self cancel];
+    
+    [tokopediaNetworkManager requestCancel];
 }
 
 
@@ -1005,7 +1012,8 @@ TokopediaNetworkManagerDelegate
                                                               kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY:kTKPDDETAILPRODUCT_APISHOPDESCRIPTIONKEY,
                                                               kTKPDDETAILPRODUCT_APISHOPAVATARKEY:kTKPDDETAILPRODUCT_APISHOPAVATARKEY,
                                                               kTKPDDETAILPRODUCT_APISHOPDOMAINKEY:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY,
-                                                              API_IS_GOLD_SHOP_KEY:API_IS_GOLD_SHOP_KEY
+                                                              API_IS_GOLD_SHOP_KEY:API_IS_GOLD_SHOP_KEY,
+                                                              kTKPDDETAILPRODUCT_APISHOPURLKEY:kTKPDDETAILPRODUCT_APISHOPURLKEY
                                                               }];
         
         RKObjectMapping *productRatingMapping = [RKObjectMapping mappingForClass:[Rating class]];
@@ -1480,7 +1488,7 @@ TokopediaNetworkManagerDelegate
                 _isnodatawholesale = NO;
             }
             if([_product.result.product.product_description isEqualToString:@"0"])
-                _product.result.product.product_description = kTKPDTIDAK_ADA_WISHLIST;
+                _product.result.product.product_description = NO_DESCRIPTION;
             
             
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];

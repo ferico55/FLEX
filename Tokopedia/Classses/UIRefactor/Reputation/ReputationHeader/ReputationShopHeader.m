@@ -10,14 +10,13 @@
 
 #import "ReputationShopHeader.h"
 #import "AlertReputation.h"
-#import "AlertInfoVoucherCodeView.h"
 
 @interface ReputationShopHeader ()
-<UIScrollViewDelegate,
-UISearchBarDelegate,
-TKPDAlertViewDelegate> {
-    
-}
+<
+    UIScrollViewDelegate,
+    UISearchBarDelegate,
+    TKPDAlertViewDelegate
+>
 
 @end
 

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <mutableArray key="GothamBook.ttf">
+            <string>GothamBook</string>
+            <string>GothamBook</string>
+            <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
             <string>GothamBook</string>
@@ -763,6 +766,36 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="ciA-PJ-Sqw" style="IBUITableViewCellStyleDefault" id="ZAn-OH-Me2">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ZAn-OH-Me2" id="Gfd-Nf-M2J">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Daftar Produk" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ciA-PJ-Sqw">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Por-MZ-d27" style="IBUITableViewCellStyleDefault" id="alE-lD-oug">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="alE-lD-oug" id="Zb8-Sl-PbF">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Etalase" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Por-MZ-d27">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                             <tableViewSection headerTitle="TOKO SAYA" id="1Kj-y4-nPe">
@@ -780,9 +813,6 @@
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
-                                                    <connections>
-                                                        <action selector="actionCreateShop:" destination="zwO-iX-RIY" eventType="touchUpInside" id="JYv-nW-baZ"/>
-                                                    </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Anda belum memiliki Toko" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JCD-Wi-qkn">
                                                     <rect key="frame" x="15" y="18" width="290" height="21"/>
@@ -834,6 +864,21 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Ulasan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="sSK-5N-vIC">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="czn-2W-BFh" style="IBUITableViewCellStyleDefault" id="uyE-yO-Qvg">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uyE-yO-Qvg" id="6gJ-Wt-3Ew">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Pusat Resolusi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="czn-2W-BFh">
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" name="GothamBook" family="Gotham Book" pointSize="14"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -931,7 +976,7 @@
                         <outlet property="shopCell" destination="lVm-Ld-6SW" id="jq9-lW-ETZ"/>
                         <outlet property="shopImageView" destination="QKf-vE-6ME" id="e46-Un-xfy"/>
                         <outlet property="shopIsGoldLabel" destination="Dh2-ka-A8J" id="emH-hp-WL5"/>
-                        <outlet property="shopNameLabel" destination="oUN-ui-gC8" id="hlT-XT-gHl"/>
+                        <outlet property="shopNameLabel" destination="oUN-ui-gC8" id="BSH-hd-Cq5"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Bb-rc-Ecw" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1587,23 +1632,12 @@
                                                         <action selector="valueChangedSwitch:" destination="XaM-Ks-4C7" eventType="valueChanged" id="9qq-nx-KNJ"/>
                                                     </connections>
                                                 </switch>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZRi-tV-gXR" userLabel="Border">
-                                                    <rect key="frame" x="0.0" y="49" width="320" height="1"/>
-                                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="OT6-Fv-aPT"/>
-                                                        <constraint firstAttribute="height" constant="1" id="R4y-oQ-qHT"/>
-                                                    </constraints>
-                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="ygR-w1-1Oc" secondAttribute="trailing" constant="15" id="5rh-4g-UJk"/>
                                                 <constraint firstAttribute="bottom" secondItem="ygR-w1-1Oc" secondAttribute="bottom" constant="10" id="7UH-RE-5mz"/>
-                                                <constraint firstAttribute="trailing" secondItem="ZRi-tV-gXR" secondAttribute="trailing" id="DC5-KM-CIp"/>
                                                 <constraint firstItem="ygR-w1-1Oc" firstAttribute="leading" secondItem="yYg-A8-buj" secondAttribute="trailing" constant="15" id="JDC-gH-VNj"/>
                                                 <constraint firstItem="ygR-w1-1Oc" firstAttribute="top" secondItem="I6i-ba-zfv" secondAttribute="top" constant="9" id="MiT-gL-8TW"/>
-                                                <constraint firstItem="ZRi-tV-gXR" firstAttribute="leading" secondItem="I6i-ba-zfv" secondAttribute="leading" id="YP4-1U-0nP"/>
-                                                <constraint firstAttribute="bottom" secondItem="ZRi-tV-gXR" secondAttribute="bottom" id="qP4-tK-UKh"/>
                                                 <constraint firstItem="yYg-A8-buj" firstAttribute="leading" secondItem="I6i-ba-zfv" secondAttribute="leading" constant="15" id="stm-jz-CLE"/>
                                                 <constraint firstAttribute="bottom" secondItem="yYg-A8-buj" secondAttribute="bottom" id="vTu-dM-Obh"/>
                                                 <constraint firstItem="yYg-A8-buj" firstAttribute="top" secondItem="I6i-ba-zfv" secondAttribute="top" id="x87-Dc-vyV"/>
@@ -1639,6 +1673,15 @@
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="Kkx-gi-3gd"/>
                                                     </constraints>
                                                 </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Syv-av-qac" userLabel="Border">
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
+                                                    <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="AtS-V0-mh3"/>
+                                                        <constraint firstAttribute="height" relation="lessThanOrEqual" constant="1" id="Sob-S2-bPN"/>
+                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="aaf-Sz-ewZ"/>
+                                                    </constraints>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="YXh-cv-FwJ" firstAttribute="top" secondItem="i0h-5a-CYX" secondAttribute="top" id="1E7-TX-i3w"/>
@@ -1646,11 +1689,14 @@
                                                 <constraint firstAttribute="bottom" secondItem="YXh-cv-FwJ" secondAttribute="bottom" id="5kv-8l-01W"/>
                                                 <constraint firstItem="n6v-vq-Isc" firstAttribute="leading" secondItem="i0h-5a-CYX" secondAttribute="leading" id="9ar-xZ-d9s"/>
                                                 <constraint firstItem="YXh-cv-FwJ" firstAttribute="leading" secondItem="i0h-5a-CYX" secondAttribute="leading" constant="15" id="Gp9-aH-QRe"/>
+                                                <constraint firstItem="Syv-av-qac" firstAttribute="top" secondItem="i0h-5a-CYX" secondAttribute="top" id="L9k-pb-GqV"/>
                                                 <constraint firstItem="ERz-QJ-AiL" firstAttribute="top" secondItem="i0h-5a-CYX" secondAttribute="top" constant="9" id="NCJ-PK-ezq"/>
                                                 <constraint firstAttribute="trailing" secondItem="n6v-vq-Isc" secondAttribute="trailing" id="Ybr-il-aPD"/>
                                                 <constraint firstAttribute="trailing" secondItem="ERz-QJ-AiL" secondAttribute="trailing" constant="15" id="o6C-Rt-ddS"/>
                                                 <constraint firstItem="ERz-QJ-AiL" firstAttribute="leading" secondItem="YXh-cv-FwJ" secondAttribute="trailing" constant="15" id="tp8-K2-Zat"/>
+                                                <constraint firstAttribute="trailing" secondItem="Syv-av-qac" secondAttribute="trailing" id="uGN-Bu-Dnp"/>
                                                 <constraint firstAttribute="bottom" secondItem="ERz-QJ-AiL" secondAttribute="bottom" constant="10" id="xnS-te-ac5"/>
+                                                <constraint firstItem="Syv-av-qac" firstAttribute="leading" secondItem="i0h-5a-CYX" secondAttribute="leading" id="yQf-am-wlQ"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
