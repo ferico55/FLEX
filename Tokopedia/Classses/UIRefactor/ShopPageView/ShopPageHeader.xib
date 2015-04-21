@@ -28,7 +28,7 @@
             </connections>
         </placeholder>
         <view contentMode="scaleToFill" id="bKn-su-j17" userLabel="HeaderView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="374"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="304"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="Ds4-4z-ewW">
@@ -37,7 +37,7 @@
                     <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                 </imageView>
                 <view contentMode="scaleToFill" id="nZg-u9-ck3">
-                    <rect key="frame" x="0.0" y="69" width="320" height="305"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="305"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" id="N39-0E-mg9">

@@ -103,8 +103,8 @@
     _settingBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_setting_2x.png"] withAction:@selector(settingTap:)];
     
     _messageBarButton = [self createBarButton:CGRectMake(22,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_message_2x.png"] withAction:@selector(messageTap:)];
-    _favoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_favorite_2x.png"] withAction:@selector(favoriteTap:)];
-    _unfavoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_shop_unfavorite_2x.png"] withAction:@selector(unfavoriteTap:)];
+    _favoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_active@2x.png"] withAction:@selector(favoriteTap:)];
+    _unfavoriteBarButton = [self createBarButton:CGRectMake(44,0,22,22) withImage:[UIImage imageNamed:@"icon_love_white@2x.png"] withAction:@selector(unfavoriteTap:)];
 
     
     _auth = [_data objectForKey:kTKPD_AUTHKEY]?:@{};

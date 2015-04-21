@@ -339,7 +339,7 @@
 
 - (void)setTitleButtonString:(NSString*)string {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.frame = CGRectMake(0, 0, 70, 44);
+    button.frame = CGRectMake(0, 0, 10, 17);
     [button addTarget:self action:@selector(tapBarButton:) forControlEvents:UIControlEventTouchUpInside];
     button.tag = 11;
     
@@ -355,9 +355,21 @@
     button.titleLabel.textColor = [UIColor whiteColor];
     [button setAttributedTitle:attributedText forState:UIControlStateNormal];
     UIImage *arrowImage = [UIImage imageNamed:@"icon_triangle_down_white.png"];
-    [button setImage:arrowImage forState:UIControlStateNormal];
-    button.titleEdgeInsets = UIEdgeInsetsMake(0, -30, 0, 10);
-    button.imageEdgeInsets = UIEdgeInsetsMake(0, 115, 0, -15);
+    
+    CGRect rect = CGRectMake(0,0,10,7);
+    UIGraphicsBeginImageContext( rect.size );
+    [arrowImage drawInRect:rect];
+    UIImage *picture1 = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    NSData *imageData = UIImagePNGRepresentation(picture1);
+    UIImage *img=[UIImage imageWithData:imageData];
+    
+    [button setImage:img forState:UIControlStateNormal];
+    
+    
+    button.titleEdgeInsets = UIEdgeInsetsMake(0, -5, 0, 5);
+    button.imageEdgeInsets = UIEdgeInsetsMake(0, 115, 0, -10);
     
     self.navigationItem.titleView = button;
 }

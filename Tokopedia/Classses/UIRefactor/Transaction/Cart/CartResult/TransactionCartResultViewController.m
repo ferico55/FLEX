@@ -193,6 +193,7 @@
         TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
         vc.action = @"get_tx_order_status";
         vc.viewControllerTitle = @"Status Pemesanan";
+        vc.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:vc animated:YES];
     }
     else

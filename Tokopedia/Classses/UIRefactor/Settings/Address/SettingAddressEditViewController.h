@@ -16,6 +16,7 @@
 @optional
 - (void)SettingAddressEditViewController:(SettingAddressEditViewController *)viewController withUserInfo:(NSDictionary*)userInfo;
 - (void)successEditAddress:(AddressFormList *)address;
+- (void)successAddAddress;
 
 @end
 

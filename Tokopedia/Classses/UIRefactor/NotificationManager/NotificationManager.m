@@ -168,9 +168,9 @@
     if ([self.delegate respondsToSelector:@selector(didReceiveNotification:)]) {
         [self.delegate didReceiveNotification:notification];
     }
-    if ([_notification.result.total_notif integerValue] == 0) {
-        _notificationButton.badgeLabel.hidden = YES;
-    } else {
+//    if ([_notification.result.total_notif integerValue] == 0) {
+//        _notificationButton.badgeLabel.hidden = YES;
+//    } else {
         _notificationButton.enabled = YES;
         _notificationButton.badgeLabel.hidden = NO;
         _notificationButton.badgeLabel.text = [_notification.result.total_notif  stringByTrimmingCharactersInSet: [NSCharacterSet whitespaceAndNewlineCharacterSet]];
@@ -191,7 +191,11 @@
             badgeLabelFrame.size.width = 50;
         }
         _notificationButton.badgeLabel.frame = badgeLabelFrame;
-    }
+    
+        if ([_notification.result.total_notif integerValue] == 0) {
+            _notificationButton.badgeLabel.hidden = YES;
+        }
+//    }
     
     if ([_notification.result.total_cart integerValue]>0)
         [[_attachedViewController.tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = [_notification.result.total_cart stringValue];

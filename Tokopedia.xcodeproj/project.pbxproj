@@ -1324,6 +1324,8 @@
 		7AC084E01AE2A7D300CAB2DC /* zbar-help.html in Resources */ = {isa = PBXBuildFile; fileRef = 7AC07FBC1AE2A7CF00CAB2DC /* zbar-help.html */; };
 		7AC084E11AE2A7D300CAB2DC /* zbar-helpicons.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AC07FBD1AE2A7CF00CAB2DC /* zbar-helpicons.png */; };
 		7AC084E21AE2A7D300CAB2DC /* zbar-samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AC07FBE1AE2A7CF00CAB2DC /* zbar-samples.png */; };
+		7AC084E61AE4EDF000CAB2DC /* icon_love_white.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AC084E41AE4EDF000CAB2DC /* icon_love_white.png */; };
+		7AC084E71AE4EDF000CAB2DC /* icon_love_white@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AC084E51AE4EDF000CAB2DC /* icon_love_white@2x.png */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -3398,6 +3400,9 @@
 		7AC07FBC1AE2A7CF00CAB2DC /* zbar-help.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "zbar-help.html"; sourceTree = "<group>"; };
 		7AC07FBD1AE2A7CF00CAB2DC /* zbar-helpicons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-helpicons.png"; sourceTree = "<group>"; };
 		7AC07FBE1AE2A7CF00CAB2DC /* zbar-samples.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-samples.png"; sourceTree = "<group>"; };
+		7AC084E31AE49EE400CAB2DC /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
+		7AC084E41AE4EDF000CAB2DC /* icon_love_white.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_love_white.png; sourceTree = "<group>"; };
+		7AC084E51AE4EDF000CAB2DC /* icon_love_white@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_love_white@2x.png"; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -3438,7 +3443,6 @@
 		FC36E1CD19B067AD00AF74C1 /* Tkpd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Tkpd.h; sourceTree = "<group>"; };
 		FC36E1CE19B067AD00AF74C1 /* TkpdImg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TkpdImg.h; sourceTree = "<group>"; };
 		FC681F6619B6D62200C58548 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		FC6B1C1B1AB03DC900581B3B /* Tokopedia-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Tokopedia-Prefix.pch"; sourceTree = "<group>"; };
 		FCA7750F19F65F540041CFE1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		FCA7751219F660A40041CFE1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		FCAAEA4319F7534B00904AFB /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -6663,6 +6667,8 @@
 		7AC07DC01AE2A7CE00CAB2DC /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				7AC084E41AE4EDF000CAB2DC /* icon_love_white.png */,
+				7AC084E51AE4EDF000CAB2DC /* icon_love_white@2x.png */,
 				7AC07DC11AE2A7CE00CAB2DC /* balloon_read_left.png */,
 				7AC07DC21AE2A7CE00CAB2DC /* balloon_read_right.png */,
 				7AC07DC31AE2A7CE00CAB2DC /* button_white.png */,
@@ -7429,7 +7435,7 @@
 		FC36DF8D19B0656400AF74C1 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				FC6B1C1B1AB03DC900581B3B /* Tokopedia-Prefix.pch */,
+				7AC084E31AE49EE400CAB2DC /* Tokopedia-Prefix.pch */,
 				FC36DF8E19B0656400AF74C1 /* Tokopedia-Info.plist */,
 				FC36DF8F19B0656400AF74C1 /* InfoPlist.strings */,
 				FC36DF9219B0656400AF74C1 /* main.m */,
@@ -7830,6 +7836,7 @@
 				7AC0839B1AE2A7D200CAB2DC /* icon_close_white.png in Resources */,
 				7AC0842C1AE2A7D200CAB2DC /* icon_urutkan.png in Resources */,
 				7AC082A91AE2A7D100CAB2DC /* ShopInfoAddressView.xib in Resources */,
+				7AC084E61AE4EDF000CAB2DC /* icon_love_white.png in Resources */,
 				7AC0823F1AE2A7D100CAB2DC /* ReputationPageViewController.xib in Resources */,
 				7AC083691AE2A7D200CAB2DC /* tab_btm_shadow.png in Resources */,
 				7AC0849D1AE2A7D200CAB2DC /* Icon_check_green_bg@2x.png in Resources */,
@@ -8059,6 +8066,7 @@
 				7AC0844A1AE2A7D200CAB2DC /* icon_signin@2x.png in Resources */,
 				7AC083221AE2A7D100CAB2DC /* TxOrderConfirmedButtonCell.xib in Resources */,
 				7AC0845E1AE2A7D200CAB2DC /* image-1.png in Resources */,
+				7AC084E71AE4EDF000CAB2DC /* icon_love_white@2x.png in Resources */,
 				7AC0844D1AE2A7D200CAB2DC /* launch_image@2x.png in Resources */,
 				7AC083361AE2A7D100CAB2DC /* Lato-Regular.ttf in Resources */,
 				7AC07FD31AE2A7CF00CAB2DC /* public_key.der in Resources */,
