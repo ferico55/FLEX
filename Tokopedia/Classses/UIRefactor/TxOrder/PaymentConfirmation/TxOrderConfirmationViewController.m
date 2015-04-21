@@ -110,6 +110,7 @@
     
     _tableView.delegate = nil;
     _tableView.dataSource = nil;
+    [_networkManager requestCancel];
     _networkManager.delegate = nil;
 }
 

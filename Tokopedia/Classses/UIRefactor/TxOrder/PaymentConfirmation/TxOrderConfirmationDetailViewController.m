@@ -377,7 +377,8 @@
     cell.shipmentLabel.text = [NSString stringWithFormat:@"%@ - %@",orderList.order_shipment.shipment_name, orderList.order_shipment.shipment_product];
     BOOL isDropshipper = (![orderList.order_detail.detail_dropship_name isEqualToString:@"0"]);
     [cell.dropshipLabel setText:(isDropshipper)?@"Ya":@"Tidak" animated:YES];
-    cell.insuranceLabel.text = (orderList.order_detail.detail_force_insurance==1)?@"Wajib Asuransi":([orderList.order_detail.detail_insurance_price isEqualToString:@"0"])?@"Tidak":@"Ya";
+    cell.insuranceLabel.text = ([orderList.order_detail.detail_insurance_price isEqualToString:@"0"])?@"Tidak":@"Ya";
+    //(orderList.order_detail.detail_force_insurance==1)?@"Wajib Asuransi":([orderList.order_detail.detail_insurance_price isEqualToString:@"0"])?@"Tidak":@"Ya";
     cell.partialLabel.text = (orderList.order_detail.detail_partial_order==0)?@"Tidak":@"Ya";
     return cell;
 }

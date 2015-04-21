@@ -139,16 +139,13 @@
     
     self.title = _viewControllerTitle?:@" ";
     _networkManager.delegate = self;
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
 }
 
--(void)viewWillDisappear:(BOOL)animated
+-(void)viewDidDisappear:(BOOL)animated
 {
-    [super viewWillDisappear:animated];
+    [super viewDidDisappear:animated];
+    [_networkManager requestCancel];
     _networkManager.delegate = nil;
-    _tableView.delegate = nil;
-    _tableView.dataSource = nil;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -628,6 +625,11 @@
         
         [_tableView reloadData];
     }
+}
+
+-(void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+    [self actionAfterFailRequestMaxTries:tag];
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag

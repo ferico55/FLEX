@@ -342,41 +342,62 @@
                     _isFinishCalculate = YES;
                     NSArray *shipments = calculate.result.shipment;
                     _shipments = shipments;
-                    [_dataInput setObject:shipments forKey:DATA_SHIPMENT_KEY];
-                    [_dataInput removeObjectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY];
-                    [_dataInput removeObjectForKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY];
                     
-                    TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
-                    NSMutableArray *shipmentIDs = [NSMutableArray new];
-                    for (ShippingInfoShipments *shipment in shipments) {
-                        [shipmentIDs addObject:shipment.shipment_id?:@""];
+                    NSMutableArray *shipmentSupporteds = [NSMutableArray new];
+                    for (ShippingInfoShipments *shipment in _shipments) {
+                        NSMutableArray *shipmentPackages = [NSMutableArray new];
+                        for (ShippingInfoShipmentPackage *package in shipment.shipment_package) {
+                            if (![package.price isEqualToString:@"0"]) {
+                                [shipmentPackages addObject:package];
+                            }
+                        }
+                        
+                        if (shipmentPackages.count>0) {
+                            shipment.shipment_package = shipmentPackages;
+                            [shipmentSupporteds addObject:shipment];
+                        }
                     }
-                    NSInteger indexShipment = [shipmentIDs indexOfObject:cart.cart_shipments.shipment_id];
-                    if(NSNotFound == indexShipment) {
-                        NSLog(@"not found");
-                        indexShipment = 0; //TODO::
-                    }
-                    ShippingInfoShipments *shipment = shipments[indexShipment];
-                    NSIndexPath *indexPathShipment = [NSIndexPath indexPathForRow:indexShipment inSection:0];
-                    [_dataInput setObject:indexPathShipment forKey:DATA_SELECTED_INDEXPATH_SHIPMENT_KEY];
-                    [_dataInput setObject:shipment forKey:DATA_SELECTED_SHIPMENT_KEY];
                     
-                    NSMutableArray *shipmentPackageIDs = [NSMutableArray new];
-                    for (ShippingInfoShipmentPackage *shipmentPackage in shipment.shipment_package) {
-                        [shipmentPackageIDs addObject:shipmentPackage.sp_id?:@""];
+                    _shipments = shipmentSupporteds;
+                    
+                    if (_isFirstLoad)
+                    {
+                        TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
+                        NSMutableArray *shipmentIDs = [NSMutableArray new];
+                        for (ShippingInfoShipments *shipment in shipments) {
+                            [shipmentIDs addObject:shipment.shipment_id?:@""];
+                        }
+                        NSInteger indexShipment = [shipmentIDs indexOfObject:cart.cart_shipments.shipment_id];
+                        if(NSNotFound == indexShipment) {
+                            NSLog(@"not found");
+                            return;
+                            indexShipment = 0;
+                        }
+                        ShippingInfoShipments *shipment = shipments[indexShipment];
+                        _selectedShipment = shipment;
+                        
+                        NSMutableArray *shipmentPackageIDs = [NSMutableArray new];
+                        for (ShippingInfoShipmentPackage *shipmentPackage in shipment.shipment_package) {
+                            [shipmentPackageIDs addObject:shipmentPackage.sp_id?:@""];
+                        }
+                        NSArray *shipmentPackages = shipment.shipment_package;
+                        NSInteger indexShipmentPackage = [shipmentPackageIDs indexOfObject:cart.cart_shipments.shipment_package_id];
+                        if(NSNotFound == indexShipmentPackage) {
+                            NSLog(@"not found");
+                            indexShipmentPackage = 0;
+                        }
+                        else{
+                            ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
+                            _selectedShipmentPackage = shipmentPackage;
+                        }
                     }
-                    NSArray *shipmentPackages = shipment.shipment_package;
-                    NSInteger indexShipmentPackage = [shipmentPackageIDs indexOfObject:cart.cart_shipments.shipment_package_id];
-                    if(NSNotFound == indexShipmentPackage) {
-                        NSLog(@"not found");
-                        indexShipmentPackage = 0;
+                    else
+                    {
+                        _selectedShipment = [shipmentSupporteds firstObject];
+                        _selectedShipmentPackage = [_selectedShipment.shipment_package firstObject];
                     }
-                    else{
-                        ShippingInfoShipmentPackage *shipmentPackage = shipmentPackages[indexShipmentPackage];
-                        NSIndexPath *indexPathShipmentPackage = [NSIndexPath indexPathForRow:indexShipment inSection:0];
-                        [_dataInput setObject:indexPathShipmentPackage forKey:DATA_SELECTED_INDEXPATH_SHIPMENT_PACKAGE_KEY];
-                        [_dataInput setObject:shipmentPackage forKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
-                    }
+                    
+                    
                     [self configureRestKitActionEditAddress];
                     [self requestActionEditAddress:_dataInput];
                     [_tableView reloadData];
@@ -549,17 +570,28 @@
                     
                     if (!_isFirstLoad)
                     {
-                        StickyAlertView *view = [[StickyAlertView alloc]initWithErrorMessages:array delegate:self];
+                        StickyAlertView *view = [[StickyAlertView alloc]initWithSuccessMessages:array delegate:self];
                         [view show];
-                        _isFirstLoad = NO;
+                        
                         TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
                         AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY];
                         cart.cart_destination = address;
+                        cart.cart_shipments = _selectedShipment;
+                        cart.cart_shipments.shipment_package = _selectedShipment.shipment_package;
+                        cart.cart_shipments.shipment_package_id = _selectedShipmentPackage.sp_id;
+                        cart.cart_shipments.shipment_package_name = _selectedShipmentPackage.name;
+                        
+                        [_dataInput setObject:cart.cart_destination forKey:DATA_ADDRESS_DETAIL_KEY];
                         [_dataInput setObject:cart forKey:DATA_CART_DETAIL_LIST_KEY];
+                        
                         NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY],
                                                    DATA_CART_DETAIL_LIST_KEY: cart};
+                        
                         [_delegate TransactionCartShippingViewController:self withUserInfo:userInfo];
+                        [_tableView reloadData];
                     }
+                    
+                    _isFirstLoad = NO;
                 }
             }
         }
@@ -688,7 +720,8 @@
                     NSDictionary *userInfo = @{DATA_INDEX_KEY : [_data objectForKey:DATA_INDEX_KEY],
                                                DATA_CART_DETAIL_LIST_KEY: cart
                                                };
-                    [_delegate TransactionCartShippingViewController:self withUserInfo:userInfo];
+                    [_delegate editInsuranceUserInfo:userInfo];
+                    //[_delegate TransactionCartShippingViewController:self withUserInfo:userInfo];
                 }
             }
         }
@@ -913,9 +946,6 @@
     address.address_province = address.province_name;
     [_dataInput setObject:address forKey:DATA_ADDRESS_DETAIL_KEY];
     
-    NSIndexPath *selectedIndexPath = [userInfo objectForKey:DATA_INDEXPATH_KEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
-    [_dataInput setObject:selectedIndexPath forKey:DATA_ADDRESS_INDEXPATH_KEY];
-    
     [self configureRestKitActionCalculate];
     [self requestActionCalculate:_dataInput];
     
@@ -944,7 +974,6 @@
         }
         if (availablePackage.count==0) {
             isValidShipment = NO;
-            NSArray *array = [[NSArray alloc] initWithObjects:[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipmentObject.shipment_name], nil];
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:nil message:[NSString stringWithFormat:@"Tidak dapat menggunakan layanan %@",shipmentObject.shipment_name] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
             [alert show];
         }
@@ -999,6 +1028,15 @@
         
         [self configureRestkitActionEditInsurance];
         [self requestActionEditInsurance:_dataInput];
+    }
+}
+
+-(void)setData:(NSDictionary *)data
+{
+    _data = data;
+    if (data) {
+        [_dataInput setObject:[_data objectForKey:DATA_CART_DETAIL_LIST_KEY] forKey:DATA_CART_DETAIL_LIST_KEY];
+        [_tableView reloadData];
     }
 }
 
@@ -1083,8 +1121,8 @@
     UITableViewCell *cell;
     TransactionCartList *cart = [_dataInput objectForKey:DATA_CART_DETAIL_LIST_KEY];
     AddressFormList *address = [_dataInput objectForKey:DATA_ADDRESS_DETAIL_KEY]?:cart.cart_destination;
-    ShippingInfoShipments *shipment = [_dataInput objectForKey:DATA_SELECTED_SHIPMENT_KEY]?:cart.cart_shipments;
-    ShippingInfoShipmentPackage *shipmentPackage = [_dataInput objectForKey:DATA_SELECTED_SHIPMENT_PACKAGE_KEY];
+    ShippingInfoShipments *shipment = _selectedShipment;
+    ShippingInfoShipmentPackage *shipmentPackage = _selectedShipmentPackage;
     NSString *dropshipName = [_data objectForKey:DATA_DROPSHIPPER_NAME_KEY];
     NSString *dropshipPhone = [_data objectForKey:DATA_DROPSHIPPER_PHONE_KEY];
     NSString *partial = [_data objectForKey:DATA_PARTIAL_LIST_KEY];
