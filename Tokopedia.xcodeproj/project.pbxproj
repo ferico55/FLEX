@@ -1307,6 +1307,9 @@
 		853A22571ADD0B3E00DD1508 /* zbar-help.html in Resources */ = {isa = PBXBuildFile; fileRef = 853A22511ADD0B3E00DD1508 /* zbar-help.html */; };
 		853A22581ADD0B3E00DD1508 /* zbar-helpicons.png in Resources */ = {isa = PBXBuildFile; fileRef = 853A22521ADD0B3E00DD1508 /* zbar-helpicons.png */; };
 		853A22591ADD0B3E00DD1508 /* zbar-samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 853A22531ADD0B3E00DD1508 /* zbar-samples.png */; };
+		853A53181AE5E7F60068E80E /* GalleryPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 853A53131AE5E7F60068E80E /* GalleryPhoto.m */; };
+		853A53191AE5E7F60068E80E /* GalleryPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 853A53151AE5E7F60068E80E /* GalleryPhotoView.m */; };
+		853A531A1AE5E7F60068E80E /* GalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 853A53171AE5E7F60068E80E /* GalleryViewController.m */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
@@ -3365,6 +3368,13 @@
 		853A22511ADD0B3E00DD1508 /* zbar-help.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "zbar-help.html"; sourceTree = "<group>"; };
 		853A22521ADD0B3E00DD1508 /* zbar-helpicons.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-helpicons.png"; sourceTree = "<group>"; };
 		853A22531ADD0B3E00DD1508 /* zbar-samples.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "zbar-samples.png"; sourceTree = "<group>"; };
+		853A53121AE5E7F60068E80E /* GalleryPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryPhoto.h; sourceTree = "<group>"; };
+		853A53131AE5E7F60068E80E /* GalleryPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryPhoto.m; sourceTree = "<group>"; };
+		853A53141AE5E7F60068E80E /* GalleryPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryPhotoView.h; sourceTree = "<group>"; };
+		853A53151AE5E7F60068E80E /* GalleryPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryPhotoView.m; sourceTree = "<group>"; };
+		853A53161AE5E7F60068E80E /* GalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryViewController.h; sourceTree = "<group>"; };
+		853A53171AE5E7F60068E80E /* GalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryViewController.m; sourceTree = "<group>"; };
+		853A53221AE612F20068E80E /* string_gallery.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = string_gallery.h; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -5683,6 +5693,7 @@
 		7AD2D43C1ADBB1B9003E1F94 /* DetailProduct */ = {
 			isa = PBXGroup;
 			children = (
+				853A53111AE5E7DF0068E80E /* ProductGallery */,
 				7AD2D43D1ADBB1B9003E1F94 /* DetailProductDescriptionCell.h */,
 				7AD2D43E1ADBB1B9003E1F94 /* DetailProductDescriptionCell.m */,
 				7AD2D43F1ADBB1B9003E1F94 /* DetailProductDescriptionCell.xib */,
@@ -5701,7 +5712,6 @@
 				7AD2D44C1ADBB1B9003E1F94 /* DetailProductWholesaleTableCell.h */,
 				7AD2D44D1ADBB1B9003E1F94 /* DetailProductWholesaleTableCell.m */,
 				7AD2D44E1ADBB1B9003E1F94 /* DetailProductWholesaleTableCell.xib */,
-				7AD2D44F1ADBB1B9003E1F94 /* ProductGallery */,
 				7AD2D4501ADBB1B9003E1F94 /* ProductGalleryViewController.h */,
 				7AD2D4511ADBB1B9003E1F94 /* ProductGalleryViewController.m */,
 				7AD2D4521ADBB1B9003E1F94 /* ProductGalleryViewController.xib */,
@@ -5709,13 +5719,6 @@
 				7AD2D45D1ADBB1B9003E1F94 /* Talk */,
 			);
 			path = DetailProduct;
-			sourceTree = "<group>";
-		};
-		7AD2D44F1ADBB1B9003E1F94 /* ProductGallery */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ProductGallery;
 			sourceTree = "<group>";
 		};
 		7AD2D4531ADBB1B9003E1F94 /* Review */ = {
@@ -7307,6 +7310,20 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		853A53111AE5E7DF0068E80E /* ProductGallery */ = {
+			isa = PBXGroup;
+			children = (
+				853A53121AE5E7F60068E80E /* GalleryPhoto.h */,
+				853A53131AE5E7F60068E80E /* GalleryPhoto.m */,
+				853A53141AE5E7F60068E80E /* GalleryPhotoView.h */,
+				853A53151AE5E7F60068E80E /* GalleryPhotoView.m */,
+				853A53161AE5E7F60068E80E /* GalleryViewController.h */,
+				853A53171AE5E7F60068E80E /* GalleryViewController.m */,
+				853A53221AE612F20068E80E /* string_gallery.h */,
+			);
+			path = ProductGallery;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -8320,6 +8337,7 @@
 				7AD2D85F1ADBB1BA003E1F94 /* TalkComment.m in Sources */,
 				7AD2D8ED1ADBB1BA003E1F94 /* ShipmentCourierPackage.m in Sources */,
 				7AD2D8AE1ADBB1BA003E1F94 /* ProductTalkForm.m in Sources */,
+				853A531A1AE5E7F60068E80E /* GalleryViewController.m in Sources */,
 				7AD2D8D61ADBB1BA003E1F94 /* Order.m in Sources */,
 				7AD2D8E01ADBB1BA003E1F94 /* OrderResult.m in Sources */,
 				7AD2D8D41ADBB1BA003E1F94 /* ActionOrder.m in Sources */,
@@ -8361,6 +8379,7 @@
 				7AD2DAE61ADBB1BA003E1F94 /* SettingNotificationViewController.m in Sources */,
 				7AD2DA421ADBB1BA003E1F94 /* MyShopEtalaseEditViewController.m in Sources */,
 				7AD2D92C1ADBB1BA003E1F94 /* TransactionCartResult.m in Sources */,
+				853A53181AE5E7F60068E80E /* GalleryPhoto.m in Sources */,
 				7AD2D8341ADBB1BA003E1F94 /* Login.m in Sources */,
 				7AD2D9061ADBB1BA003E1F94 /* AddProductValidationResult.m in Sources */,
 				7AD2D9591ADBB1BA003E1F94 /* TxOrderStatus.m in Sources */,
@@ -8661,6 +8680,7 @@
 				7AD2DB1D1ADBB1BA003E1F94 /* ShopReviewPageViewController.m in Sources */,
 				7AD2DA691ADBB1BA003E1F94 /* ProductReviewDetailViewController.m in Sources */,
 				7AD2D9271ADBB1BA003E1F94 /* TransactionCalculatePrice.m in Sources */,
+				853A53191AE5E7F60068E80E /* GalleryPhotoView.m in Sources */,
 				7AD2DB291ADBB1BA003E1F94 /* FilterLocationViewController.m in Sources */,
 				7AD2DB231ADBB1BA003E1F94 /* FilterConditionViewController.m in Sources */,
 				7AD2D8D71ADBB1BA003E1F94 /* OrderCustomer.m in Sources */,

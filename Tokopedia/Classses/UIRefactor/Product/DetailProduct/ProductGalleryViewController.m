@@ -37,28 +37,39 @@
     NSArray *images = [_data objectForKey:@"images"];
     _image = images[[[_data objectForKey:@"image_index"] integerValue]];
     [_descriptionLabel setText:_image.image_description];
+    [_scrollView setContentSize:CGSizeMake(self.view.bounds.size.width*images.count, _scrollView.bounds.size.height)];
+    _scrollView.pagingEnabled = YES;
+    [_scrollView scrollRectToVisible:CGRectMake(self.view.bounds.size.width*[[_data objectForKey:@"image_index"] integerValue], 0, _scrollView.bounds.size.width , _scrollView.bounds.size.height) animated:NO];
     
-    NSURLRequest* requestImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_image.image_src]
-                                                        cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                    timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
     
-    _productGallery = [[UIImageView alloc] init];
-    [_productGallery setImageWithURLRequest:requestImage placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+    
+    for(int i=0;i<images.count;i++) {
+        ProductImages *tempImage = [images objectAtIndex:i];
+        NSURLRequest* requestImage = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:tempImage.image_src]
+                                                           cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                                       timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+        
+        UIImageView  *tempProductGallery = [[UIImageView alloc] init];
+        
+        if(i == [[_data objectForKey:@"image_index"] integerValue])
+            _productGallery = tempProductGallery;
+            
+        tempProductGallery.tag = i;
+        [tempProductGallery setImageWithURLRequest:requestImage placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
-        _productGallery.image = image;
-        _localImage = image;
-        _productGallery.frame = CGRectMake(0, ([[UIScreen mainScreen] bounds].size.height - [self getHeightRatio:[image size].width]*[image size].height) / 2, [[UIScreen mainScreen] bounds].size.width, [self getHeightRatio:[image size].width]*[image size].height);
-        
-        [_scrollView addSubview:_productGallery];
-        _scrollView.contentSize = image.size;
-        _scrollView.delegate = self;
-        _scrollView.minimumZoomScale = 1.0;
-        _scrollView.maximumZoomScale = 50.0;
+            tempProductGallery.image = image;
+            _localImage = image;
+            tempProductGallery.frame = CGRectMake(i*self.view.bounds.size.width, ([[UIScreen mainScreen] bounds].size.height - [self getHeightRatio:[image size].width]*[image size].height) / 2, [[UIScreen mainScreen] bounds].size.width, [self getHeightRatio:[image size].width]*[image size].height);
+            
+            [_scrollView addSubview:tempProductGallery];
+            //        _scrollView.contentSize = image.size;
+            _scrollView.delegate = self;
+            _scrollView.minimumZoomScale = 1.0;
+            _scrollView.maximumZoomScale = 50.0;
 #pragma clang diagnostic pop
-    } failure:nil];
-    
-    
+        } failure:nil];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -181,4 +192,22 @@
 }
 */
 
+
+
+#pragma mark - UIScrollView Delegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    float fractionPage = scrollView.contentOffset.x / scrollView.bounds.size.width;
+    NSInteger page = lround(fractionPage);
+    NSLog(@"TESTTONGTONGTONG - %d", (int)page);
+    
+    if(page > ((NSArray *) [_data objectForKey:@"images"]).count-1) {
+        return;
+    }
+    
+    _image = [_data objectForKey:@"images"][(int)page];
+    [_descriptionLabel setText:_image.image_description];
+    if([scrollView viewWithTag:page])
+        _productGallery = (UIImageView *)[scrollView viewWithTag:page];
+}
 @end

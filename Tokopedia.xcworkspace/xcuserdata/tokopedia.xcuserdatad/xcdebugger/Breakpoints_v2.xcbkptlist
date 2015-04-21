@@ -74,29 +74,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/Product/DetailProduct/DetailProductViewController.m"
-            timestampString = "451196753.135338"
+            timestampString = "451275667.416493"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2149"
-            endingLineNumber = "2149"
-            landmarkName = "-requestTimeoutFavorite"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/Product/DetailProduct/DetailProductViewController.m"
-            timestampString = "451196753.135338"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2076"
-            endingLineNumber = "2076"
-            landmarkName = "-setUnWishList"
-            landmarkType = "5">
+            startingLineNumber = "2077"
+            endingLineNumber = "2077"
+            landmarkName = "@implementation DetailProductViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -250,7 +234,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
-            timestampString = "451213752.273955"
+            timestampString = "451217817.001185"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "402"
@@ -266,7 +250,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
-            timestampString = "451213752.273955"
+            timestampString = "451217817.001185"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "395"
@@ -281,7 +265,7 @@
                   symbolName = "-[MyShopPaymentViewController request]"
                   moduleName = "Tokopedia"
                   urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
-                  timestampString = "451213958.040203"
+                  timestampString = "451289028.827384"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "395"
@@ -295,7 +279,7 @@
                   symbolName = "__38-[MyShopPaymentViewController request]_block_invoke"
                   moduleName = "Tokopedia"
                   urlString = "file:///Users/tokopedia/Desktop/Tokopedia-Andre/Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
-                  timestampString = "451213958.040443"
+                  timestampString = "451289028.827544"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "395"
@@ -327,44 +311,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
-            timestampString = "451213752.273955"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "879"
-            endingLineNumber = "879"
-            landmarkName = "-actionAfterRequest:withOperation:withTag:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Tokopedia/Classses/UIRefactor/More/MoreViewController.m"
             timestampString = "451213838.723446"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "595"
             endingLineNumber = "595">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
-            timestampString = "451213752.273955"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "883"
-            endingLineNumber = "883"
-            landmarkName = "-actionAfterRequest:withOperation:withTag:"
-            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -460,6 +412,182 @@
             startingLineNumber = "616"
             endingLineNumber = "616"
             landmarkName = "-tapbutton:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/Shop/Create/BerhasilBukaTokoViewController.m"
+            timestampString = "451215900.260825"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
+            landmarkName = "-actionTambahProduct:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
+            timestampString = "451217817.001185"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "882"
+            endingLineNumber = "882"
+            landmarkName = "-actionAfterRequest:withOperation:withTag:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
+            timestampString = "451217817.001185"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "955"
+            endingLineNumber = "955"
+            landmarkName = "-failedGenerateHost"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
+            timestampString = "451217817.001185"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "941"
+            endingLineNumber = "941"
+            landmarkName = "-successGenerateHost:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
+            timestampString = "451217817.001185"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "919"
+            endingLineNumber = "919"
+            landmarkName = "-actionAfterFailRequestMaxTries:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
+            timestampString = "451217817.001185"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "871"
+            endingLineNumber = "871"
+            landmarkName = "-actionAfterRequest:withOperation:withTag:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
+            timestampString = "451217817.001185"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "897"
+            endingLineNumber = "897"
+            landmarkName = "-actionAfterRequest:withOperation:withTag:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/MyShopPayment/MyShopPaymentViewController.m"
+            timestampString = "451217817.001185"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "303"
+            endingLineNumber = "303"
+            landmarkName = "-lanjut:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/Product/DetailProduct/ProductGallery/GalleryViewController.m"
+            timestampString = "451285912.424184"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "275"
+            endingLineNumber = "275"
+            landmarkName = "-resetImageViewZoomLevels"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/Product/DetailProduct/ProductGallery/GalleryViewController.m"
+            timestampString = "451285912.424184"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "285"
+            endingLineNumber = "285"
+            landmarkName = "-removeImageAtIndex:"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Tokopedia/Classses/UIRefactor/Product/DetailProduct/ProductGallery/GalleryViewController.m"
+            timestampString = "451285912.424184"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "373"
+            endingLineNumber = "373"
+            landmarkName = "-actionDownload:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

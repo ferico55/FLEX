@@ -13,7 +13,7 @@
 #define CTagWishList 5
 #define CTagUnWishList 6
 
-#import "FGalleryViewController.h"
+#import "GalleryViewController.h"
 #import "detail.h"
 #import "search.h"
 #import "stringrestkit.h"
@@ -24,7 +24,7 @@
 #import "Product.h"
 #import "WishListObjectResult.h"
 #import "WishListObject.h"
-#import "GeneralAction.h"1
+#import "GeneralAction.h"
 #import "RKObjectManager.h"
 
 #import "StarsRateView.h"
@@ -78,6 +78,7 @@
 #pragma mark - Detail Product View Controller
 @interface DetailProductViewController ()
 <
+GalleryViewControllerDelegate,
 UITableViewDelegate,
 UITableViewDataSource,
 DetailProductInfoCellDelegate,
@@ -2156,20 +2157,20 @@ TokopediaNetworkManagerDelegate
 
 #pragma mark - Tap View
 - (void)tapProductGallery {
-    NSDictionary *data = @{
-                           @"image_index" : @(_pageheaderimages),
-                           @"images" : _product.result.product_images
-                           };
-    
-    ProductGalleryViewController *vc = [ProductGalleryViewController new];
-    vc.data = data;
-    
-    [self.navigationController presentViewController:vc animated:YES completion:nil];
+//    NSDictionary *data = @{
+//                           @"image_index" : @(_pageheaderimages),
+//                           @"images" : _product.result.product_images
+//                           };
+//    
+//    ProductGalleryViewController *vc = [ProductGalleryViewController new];
+//    vc.data = data;
+//    
+//    [self.navigationController presentViewController:vc animated:YES completion:nil];
     //    [self.navigationController pushViewController:vc animated:YES];
     
     
-//    FGalleryViewController *networkGallery = [[FGalleryViewController alloc] initWithPhotoSource:self];
-//    [self.navigationController pushViewController:networkGallery animated:YES];
+    GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:(int)_pageheaderimages];
+    [self.navigationController presentViewController:gallery animated:YES completion:nil];
 }
 
 - (void)tapShop {
@@ -2182,44 +2183,39 @@ TokopediaNetworkManagerDelegate
 
 
 
-
-- (int)numberOfPhotosForPhotoGallery:(FGalleryViewController *)gallery
+#pragma mark - GalleryPhoto Delegate
+- (int)numberOfPhotosForPhotoGallery:(GalleryViewController *)gallery
 {
     return (int)_product.result.product_images.count;
 }
 
 
-- (FGalleryPhotoSourceType)photoGallery:(FGalleryViewController *)gallery sourceTypeForPhotoAtIndex:(NSUInteger)index
+
+- (NSString*)photoGallery:(GalleryViewController *)gallery captionForPhotoAtIndex:(NSUInteger)index
 {
-    return FGalleryPhotoSourceTypeNetwork;
+    if(((int) index) < 0)
+        return ((ProductImages *) [_product.result.product_images objectAtIndex:0]).image_description;
+    else if(((int)index) > _product.result.product_images.count-1)
+        return ((ProductImages *) [_product.result.product_images objectAtIndex:_product.result.product_images.count-1]).image_description;
+        
+    return ((ProductImages *) [_product.result.product_images objectAtIndex:index]).image_description;
 }
 
 
-- (NSString*)photoGallery:(FGalleryViewController *)gallery captionForPhotoAtIndex:(NSUInteger)index
-{
-    NSString *caption;
-//    if( gallery == localGallery ) {
-//        caption = [localCaptions objectAtIndex:index];
-//    }
-//    else if( gallery == networkGallery ) {
-//        caption = [networkCaptions objectAtIndex:index];
-//    }
-    return caption;
+- (NSString*)photoGallery:(GalleryViewController*)gallery filePathForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index {
+    return nil;
 }
 
-
-- (NSString*)photoGallery:(FGalleryViewController*)gallery filePathForPhotoSize:(FGalleryPhotoSize)size atIndex:(NSUInteger)index {
-    return nil;//[localImages objectAtIndex:index];
-}
-
-- (NSString*)photoGallery:(FGalleryViewController *)gallery urlForPhotoSize:(FGalleryPhotoSize)size atIndex:(NSUInteger)index {
-    return nil;//[networkImages objectAtIndex:index];
+- (NSString*)photoGallery:(GalleryViewController *)gallery urlForPhotoSize:(GalleryPhotoSize)size atIndex:(NSUInteger)index {
+    if(((int) index) < 0)
+        return ((ProductImages *) [_product.result.product_images objectAtIndex:0]).image_src;
+    else if(((int)index) > _product.result.product_images.count-1)
+        return ((ProductImages *) [_product.result.product_images objectAtIndex:_product.result.product_images.count-1]).image_src;
+    
+    return ((ProductImages *) [_product.result.product_images objectAtIndex:index]).image_src;
 }
 
 - (void)handleTrashButtonTouch:(id)sender {
-    // here we could remove images from our local array storage and tell the gallery to remove that image
-    // ex:
-    //[localGallery removeImageAtIndex:[localGallery currentIndex]];
 }
 
 

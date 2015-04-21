@@ -1,14 +1,14 @@
 //
-//  FGalleryPhoto.m
+//  GalleryPhoto.m
 //  FGallery
 //
 //  Created by Grant Davis on 5/20/10.
 //  Copyright 2011 Grant Davis Interactive, LLC. All rights reserved.
 //
 
-#import "FGalleryPhoto.h"
+#import "GalleryPhoto.h"
 
-@interface FGalleryPhoto (Private)
+@interface GalleryPhoto (Private)
 
 // delegate notifying methods
 - (void)willLoadThumbFromUrl;
@@ -28,18 +28,17 @@
 @end
 
 
-@implementation FGalleryPhoto
+@implementation GalleryPhoto
 @synthesize tag;
 @synthesize thumbnail = _thumbnail;
 @synthesize fullsize = _fullsize;
 @synthesize delegate = _delegate;
-@synthesize isFullsizeLoading = _isFullsizeLoading;
 @synthesize hasFullsizeLoaded = _hasFullsizeLoaded;
 @synthesize isThumbLoading = _isThumbLoading;
 @synthesize hasThumbLoaded = _hasThumbLoaded;
 
 
-- (id)initWithThumbnailUrl:(NSString*)thumb fullsizeUrl:(NSString*)fullsize delegate:(NSObject<FGalleryPhotoDelegate>*)delegate
+- (id)initWithThumbnailUrl:(NSString*)thumb fullsizeUrl:(NSString*)fullsize delegate:(NSObject<GalleryPhotoDelegate>*)delegate
 {
 	self = [super init];
 	_useNetwork = YES;
@@ -49,7 +48,7 @@
 	return self;
 }
 
-- (id)initWithThumbnailPath:(NSString*)thumb fullsizePath:(NSString*)fullsize delegate:(NSObject<FGalleryPhotoDelegate>*)delegate
+- (id)initWithThumbnailPath:(NSString*)thumb fullsizePath:(NSString*)fullsize delegate:(NSObject<GalleryPhotoDelegate>*)delegate
 {
 	self = [super init];
 	
@@ -324,7 +323,7 @@
 
 - (void)dealloc
 {
-//	NSLog(@"FGalleryPhoto dealloc");
+//	NSLog(@"GalleryPhoto dealloc");
 	
 //	[_delegate release];
 	_delegate = nil;
