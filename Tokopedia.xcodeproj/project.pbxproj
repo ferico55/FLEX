@@ -1328,6 +1328,7 @@
 		7AC092E11AE54A0A00CAB2DC /* zbar-samples.png in Resources */ = {isa = PBXBuildFile; fileRef = 7AC08DBB1AE54A0900CAB2DC /* zbar-samples.png */; };
 		7AC092E51AE62B0E00CAB2DC /* Logout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC092E41AE62B0E00CAB2DC /* Logout.m */; };
 		7AC092E81AE62B2200CAB2DC /* LogoutResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC092E71AE62B2200CAB2DC /* LogoutResult.m */; };
+		7AC092EC1AE6AB0C00CAB2DC /* RedirectHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AC092EB1AE6AB0C00CAB2DC /* RedirectHandler.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -3409,6 +3410,8 @@
 		7AC092E41AE62B0E00CAB2DC /* Logout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Logout.m; path = Logout/Logout.m; sourceTree = "<group>"; };
 		7AC092E61AE62B2200CAB2DC /* LogoutResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogoutResult.h; path = Logout/LogoutResult.h; sourceTree = "<group>"; };
 		7AC092E71AE62B2200CAB2DC /* LogoutResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LogoutResult.m; path = Logout/LogoutResult.m; sourceTree = "<group>"; };
+		7AC092EA1AE6AB0C00CAB2DC /* RedirectHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RedirectHandler.h; path = Handler/RedirectHandler.h; sourceTree = "<group>"; };
+		7AC092EB1AE6AB0C00CAB2DC /* RedirectHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RedirectHandler.m; path = Handler/RedirectHandler.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -4895,6 +4898,7 @@
 		7AC087D81AE54A0700CAB2DC /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				7AC092E91AE6AADA00CAB2DC /* Handler */,
 				7AC087D91AE54A0700CAB2DC /* Activation */,
 				7AC087EB1AE54A0700CAB2DC /* Address */,
 				7AC087F31AE54A0700CAB2DC /* Alert */,
@@ -7377,6 +7381,15 @@
 			name = Logout;
 			sourceTree = "<group>";
 		};
+		7AC092E91AE6AADA00CAB2DC /* Handler */ = {
+			isa = PBXGroup;
+			children = (
+				7AC092EA1AE6AB0C00CAB2DC /* RedirectHandler.h */,
+				7AC092EB1AE6AB0C00CAB2DC /* RedirectHandler.m */,
+			);
+			name = Handler;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
@@ -8772,6 +8785,7 @@
 				7AC08EF41AE54A0900CAB2DC /* TxOrderPaymentEditForm.m in Sources */,
 				7AC08E071AE54A0900CAB2DC /* TheOtherProductResult.m in Sources */,
 				7AC090F41AE54A0900CAB2DC /* TransactionPaymenViewController.m in Sources */,
+				7AC092EC1AE6AB0C00CAB2DC /* RedirectHandler.m in Sources */,
 				7AC08F901AE54A0900CAB2DC /* GeneralTalkCell.m in Sources */,
 				7AC08DCB1AE54A0900CAB2DC /* TKPDSecureStorage.m in Sources */,
 				7AC08E791AE54A0900CAB2DC /* OrderDeadline.m in Sources */,
