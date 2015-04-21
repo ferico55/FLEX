@@ -508,7 +508,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" tag="11" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Akun QC tidak boleh membeli barang dari luar" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idp-IE-Bsj">
-                        <rect key="frame" x="15" y="15" width="290" height="19"/>
+                        <rect key="frame" x="15" y="0.0" width="290" height="49"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="8vm-KL-IIv"/>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="19" id="gbb-Ki-W02"/>
@@ -521,8 +521,8 @@
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="idp-IE-Bsj" secondAttribute="trailing" constant="15" id="Khi-mE-ikt"/>
                     <constraint firstItem="idp-IE-Bsj" firstAttribute="leading" secondItem="vTj-hg-W4a" secondAttribute="leading" constant="15" id="cSh-Yv-tuA"/>
-                    <constraint firstItem="idp-IE-Bsj" firstAttribute="top" secondItem="vTj-hg-W4a" secondAttribute="top" constant="15" id="lw9-tM-eMJ"/>
-                    <constraint firstAttribute="bottom" secondItem="idp-IE-Bsj" secondAttribute="bottom" constant="15" id="u3h-wK-8wY"/>
+                    <constraint firstItem="idp-IE-Bsj" firstAttribute="top" secondItem="vTj-hg-W4a" secondAttribute="top" id="lw9-tM-eMJ"/>
+                    <constraint firstAttribute="bottom" secondItem="idp-IE-Bsj" secondAttribute="bottom" id="u3h-wK-8wY"/>
                 </constraints>
             </tableViewCellContentView>
             <point key="canvasLocation" x="535" y="-80"/>

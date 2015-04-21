@@ -14,6 +14,7 @@
 @required
 - (void)TransactionCartShippingViewController:(TransactionCartShippingViewController*)viewController withUserInfo:(NSDictionary*)userInfo;
 - (void)popShippingViewController;
+- (void)editInsuranceUserInfo:(NSDictionary*)userInfo;
 
 @end
 

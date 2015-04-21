@@ -15,7 +15,6 @@
 @required
 - (void)tapMoreButtonActionAtIndexPath:(NSIndexPath*)indexPath;
 - (void)didTapProductAtIndexPath:(NSIndexPath*)indexPath;
-- (void)didTapImageAtIndexPath:(NSIndexPath*)indexPath;
 @end
 
 @interface TransactionCartCell : UITableViewCell
