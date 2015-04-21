@@ -354,8 +354,6 @@
 		7AD2D9721ADBB1BA003E1F94 /* AlertDatePickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AD2D29B1ADBB1B8003E1F94 /* AlertDatePickerView.xib */; };
 		7AD2D9731ADBB1BA003E1F94 /* AlertInfoPaymentConfirmationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2D29D1ADBB1B8003E1F94 /* AlertInfoPaymentConfirmationView.m */; };
 		7AD2D9741ADBB1BA003E1F94 /* AlertInfoPaymentConfirmationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AD2D29E1ADBB1B8003E1F94 /* AlertInfoPaymentConfirmationView.xib */; };
-		7AD2D9751ADBB1BA003E1F94 /* AlertInfoVoucherCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2D2A01ADBB1B8003E1F94 /* AlertInfoVoucherCodeView.m */; };
-		7AD2D9761ADBB1BA003E1F94 /* AlertInfoVoucherCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AD2D2A11ADBB1B8003E1F94 /* AlertInfoVoucherCodeView.xib */; };
 		7AD2D9771ADBB1BA003E1F94 /* AlertListView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2D2A31ADBB1B8003E1F94 /* AlertListView.m */; };
 		7AD2D9781ADBB1BA003E1F94 /* AlertListView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7AD2D2A41ADBB1B8003E1F94 /* AlertListView.xib */; };
 		7AD2D9791ADBB1BA003E1F94 /* AlertListViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD2D2A61ADBB1B8003E1F94 /* AlertListViewCell.m */; };
@@ -1310,6 +1308,9 @@
 		853A53181AE5E7F60068E80E /* GalleryPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 853A53131AE5E7F60068E80E /* GalleryPhoto.m */; };
 		853A53191AE5E7F60068E80E /* GalleryPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 853A53151AE5E7F60068E80E /* GalleryPhotoView.m */; };
 		853A531A1AE5E7F60068E80E /* GalleryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 853A53171AE5E7F60068E80E /* GalleryViewController.m */; };
+		853A53251AE626AE0068E80E /* NSStringAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 853A53241AE626AE0068E80E /* NSStringAttribute.m */; };
+		853A53291AE626E60068E80E /* AlertInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 853A53271AE626E60068E80E /* AlertInfoView.m */; };
+		853A532A1AE626E60068E80E /* AlertInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 853A53281AE626E60068E80E /* AlertInfoView.xib */; };
 		854552271A09C1C200678144 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 854552261A09C1C200678144 /* QuartzCore.framework */; };
 		85C494B91AD790B3008A314A /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494B81AD790B3008A314A /* CoreTelephony.framework */; };
 		85C494BB1AD790BA008A314A /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BA1AD790BA008A314A /* Security.framework */; };
@@ -2042,9 +2043,6 @@
 		7AD2D29C1ADBB1B8003E1F94 /* AlertInfoPaymentConfirmationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertInfoPaymentConfirmationView.h; sourceTree = "<group>"; };
 		7AD2D29D1ADBB1B8003E1F94 /* AlertInfoPaymentConfirmationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertInfoPaymentConfirmationView.m; sourceTree = "<group>"; };
 		7AD2D29E1ADBB1B8003E1F94 /* AlertInfoPaymentConfirmationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertInfoPaymentConfirmationView.xib; sourceTree = "<group>"; };
-		7AD2D29F1ADBB1B8003E1F94 /* AlertInfoVoucherCodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertInfoVoucherCodeView.h; sourceTree = "<group>"; };
-		7AD2D2A01ADBB1B8003E1F94 /* AlertInfoVoucherCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertInfoVoucherCodeView.m; sourceTree = "<group>"; };
-		7AD2D2A11ADBB1B8003E1F94 /* AlertInfoVoucherCodeView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertInfoVoucherCodeView.xib; sourceTree = "<group>"; };
 		7AD2D2A21ADBB1B8003E1F94 /* AlertListView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertListView.h; sourceTree = "<group>"; };
 		7AD2D2A31ADBB1B8003E1F94 /* AlertListView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertListView.m; sourceTree = "<group>"; };
 		7AD2D2A41ADBB1B8003E1F94 /* AlertListView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertListView.xib; sourceTree = "<group>"; };
@@ -3375,6 +3373,11 @@
 		853A53161AE5E7F60068E80E /* GalleryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GalleryViewController.h; sourceTree = "<group>"; };
 		853A53171AE5E7F60068E80E /* GalleryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GalleryViewController.m; sourceTree = "<group>"; };
 		853A53221AE612F20068E80E /* string_gallery.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = string_gallery.h; sourceTree = "<group>"; };
+		853A53231AE626AE0068E80E /* NSStringAttribute.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSStringAttribute.h; sourceTree = "<group>"; };
+		853A53241AE626AE0068E80E /* NSStringAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSStringAttribute.m; sourceTree = "<group>"; };
+		853A53261AE626E60068E80E /* AlertInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertInfoView.h; sourceTree = "<group>"; };
+		853A53271AE626E60068E80E /* AlertInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertInfoView.m; sourceTree = "<group>"; };
+		853A53281AE626E60068E80E /* AlertInfoView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AlertInfoView.xib; sourceTree = "<group>"; };
 		854552261A09C1C200678144 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		85C494B81AD790B3008A314A /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		85C494BA1AD790BA008A314A /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -3516,6 +3519,8 @@
 		7AD2CF971ADBB1B7003E1F94 /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
+				853A53231AE626AE0068E80E /* NSStringAttribute.h */,
+				853A53241AE626AE0068E80E /* NSStringAttribute.m */,
 				7AD2CF981ADBB1B7003E1F94 /* DBManager.h */,
 				7AD2CF991ADBB1B7003E1F94 /* DBManager.m */,
 				7AD2CF9A1ADBB1B7003E1F94 /* ExpiringCache.h */,
@@ -4969,6 +4974,9 @@
 		7AD2D2951ADBB1B8003E1F94 /* Alert */ = {
 			isa = PBXGroup;
 			children = (
+				853A53261AE626E60068E80E /* AlertInfoView.h */,
+				853A53271AE626E60068E80E /* AlertInfoView.m */,
+				853A53281AE626E60068E80E /* AlertInfoView.xib */,
 				8518A9701ADFA0A0002B053B /* TKPDAlert.h */,
 				8518A9711ADFA0A0002B053B /* TKPDAlert.m */,
 				8518A9721ADFA0A0002B053B /* TKPDAlert.xib */,
@@ -4981,9 +4989,6 @@
 				7AD2D29C1ADBB1B8003E1F94 /* AlertInfoPaymentConfirmationView.h */,
 				7AD2D29D1ADBB1B8003E1F94 /* AlertInfoPaymentConfirmationView.m */,
 				7AD2D29E1ADBB1B8003E1F94 /* AlertInfoPaymentConfirmationView.xib */,
-				7AD2D29F1ADBB1B8003E1F94 /* AlertInfoVoucherCodeView.h */,
-				7AD2D2A01ADBB1B8003E1F94 /* AlertInfoVoucherCodeView.m */,
-				7AD2D2A11ADBB1B8003E1F94 /* AlertInfoVoucherCodeView.xib */,
 				7AD2D2A21ADBB1B8003E1F94 /* AlertListView.h */,
 				7AD2D2A31ADBB1B8003E1F94 /* AlertListView.m */,
 				7AD2D2A41ADBB1B8003E1F94 /* AlertListView.xib */,
@@ -7791,6 +7796,7 @@
 				7AD2DBA51ADBB1BA003E1F94 /* icon_17.png in Resources */,
 				7AD2D96C1ADBB1BA003E1F94 /* AddressCell.xib in Resources */,
 				7AD2DACD1ADBB1BA003E1F94 /* SearchResultShopCell.xib in Resources */,
+				853A532A1AE626E60068E80E /* AlertInfoView.xib in Resources */,
 				7AD2DBEE1ADBB1BA003E1F94 /* icon_checkmark_green-01.png in Resources */,
 				7AD2DC2A1ADBB1BA003E1F94 /* icon_message@2x.png in Resources */,
 				7AD2DBD21ADBB1BA003E1F94 /* icon_calendar@2x.png in Resources */,
@@ -7876,7 +7882,6 @@
 				7AD2D9A21ADBB1BA003E1F94 /* CatalogSellerViewController.xib in Resources */,
 				7AD2D9AB1ADBB1BA003E1F94 /* CategoryResultViewController.xib in Resources */,
 				7AD2DB991ADBB1BA003E1F94 /* icon_11.png in Resources */,
-				7AD2D9761ADBB1BA003E1F94 /* AlertInfoVoucherCodeView.xib in Resources */,
 				7AD2DBAD1ADBB1BA003E1F94 /* icon_20.png in Resources */,
 				7AD2D96E1ADBB1BA003E1F94 /* AddressViewController.xib in Resources */,
 				7AD2D9A41ADBB1BA003E1F94 /* CategoryViewCell.xib in Resources */,
@@ -8516,6 +8521,7 @@
 				7AD2DB481ADBB1BA003E1F94 /* TransactionCartHeaderView.m in Sources */,
 				7AD2D9211ADBB1BA003E1F94 /* TransactionATCForm.m in Sources */,
 				7AD2DA501ADBB1BA003E1F94 /* MyShopPaymentViewController.m in Sources */,
+				853A53251AE626AE0068E80E /* NSStringAttribute.m in Sources */,
 				7AD2D81D1ADBB1BA003E1F94 /* URLCacheConnection.m in Sources */,
 				7AD2D8DA1ADBB1BA003E1F94 /* OrderDetail.m in Sources */,
 				7AD2D9541ADBB1BA003E1F94 /* TxOrderPaymentEditMethod.m in Sources */,
@@ -8559,7 +8565,6 @@
 				7AD2DA401ADBB1BA003E1F94 /* MyShopEtalaseDetailViewController.m in Sources */,
 				7AD2D8331ADBB1BA003E1F94 /* CreatePasswordResult.m in Sources */,
 				7AD2D9031ADBB1BA003E1F94 /* AddProductSubmit.m in Sources */,
-				7AD2D9751ADBB1BA003E1F94 /* AlertInfoVoucherCodeView.m in Sources */,
 				7AD2D9BB1ADBB1BA003E1F94 /* TKPDTabShopViewController.m in Sources */,
 				7AD2D8511ADBB1BA003E1F94 /* ProductDetail.m in Sources */,
 				7AD2D8E11ADBB1BA003E1F94 /* OrderShipment.m in Sources */,
@@ -8736,6 +8741,7 @@
 				7AD2DB841ADBB1BA003E1F94 /* WebViewInvoiceViewController.m in Sources */,
 				7AD2D9AF1ADBB1BA003E1F94 /* TKPDTabBarNavigationController.m in Sources */,
 				7AD2DB2D1ADBB1BA003E1F94 /* SortCell.m in Sources */,
+				853A53291AE626E60068E80E /* AlertInfoView.m in Sources */,
 				7AD2D98F1ADBB1BA003E1F94 /* RequestGenerateHost.m in Sources */,
 				7AD2D8FB1ADBB1BA003E1F94 /* DetailShopResult.m in Sources */,
 				7AD2D87B1ADBB1BA003E1F94 /* HotlistList.m in Sources */,

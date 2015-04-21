@@ -71,7 +71,6 @@
 @property (strong, nonatomic) IBOutlet UIView *noteView;
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
-@property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *headerview;
 
 -(void)cancel;
