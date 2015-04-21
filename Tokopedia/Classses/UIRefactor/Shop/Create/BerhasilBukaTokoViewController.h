@@ -17,5 +17,6 @@
     IBOutlet UIView *viewContentDesc;
 }
 
+@property (nonatomic, strong) NSDictionary *dictData;
 - (IBAction)actionTambahProduct:(id)sender;
 @end

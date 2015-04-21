@@ -13,6 +13,7 @@
 #define CTagWishList 5
 #define CTagUnWishList 6
 
+#import "FGalleryViewController.h"
 #import "detail.h"
 #import "search.h"
 #import "stringrestkit.h"
@@ -23,7 +24,7 @@
 #import "Product.h"
 #import "WishListObjectResult.h"
 #import "WishListObject.h"
-#import "GeneralAction.h"
+#import "GeneralAction.h"1
 #import "RKObjectManager.h"
 
 #import "StarsRateView.h"
@@ -2165,6 +2166,10 @@ TokopediaNetworkManagerDelegate
     
     [self.navigationController presentViewController:vc animated:YES completion:nil];
     //    [self.navigationController pushViewController:vc animated:YES];
+    
+    
+//    FGalleryViewController *networkGallery = [[FGalleryViewController alloc] initWithPhotoSource:self];
+//    [self.navigationController pushViewController:networkGallery animated:YES];
 }
 
 - (void)tapShop {
@@ -2176,5 +2181,50 @@ TokopediaNetworkManagerDelegate
 }
 
 
+
+
+- (int)numberOfPhotosForPhotoGallery:(FGalleryViewController *)gallery
+{
+    return (int)_product.result.product_images.count;
+}
+
+
+- (FGalleryPhotoSourceType)photoGallery:(FGalleryViewController *)gallery sourceTypeForPhotoAtIndex:(NSUInteger)index
+{
+    return FGalleryPhotoSourceTypeNetwork;
+}
+
+
+- (NSString*)photoGallery:(FGalleryViewController *)gallery captionForPhotoAtIndex:(NSUInteger)index
+{
+    NSString *caption;
+//    if( gallery == localGallery ) {
+//        caption = [localCaptions objectAtIndex:index];
+//    }
+//    else if( gallery == networkGallery ) {
+//        caption = [networkCaptions objectAtIndex:index];
+//    }
+    return caption;
+}
+
+
+- (NSString*)photoGallery:(FGalleryViewController*)gallery filePathForPhotoSize:(FGalleryPhotoSize)size atIndex:(NSUInteger)index {
+    return nil;//[localImages objectAtIndex:index];
+}
+
+- (NSString*)photoGallery:(FGalleryViewController *)gallery urlForPhotoSize:(FGalleryPhotoSize)size atIndex:(NSUInteger)index {
+    return nil;//[networkImages objectAtIndex:index];
+}
+
+- (void)handleTrashButtonTouch:(id)sender {
+    // here we could remove images from our local array storage and tell the gallery to remove that image
+    // ex:
+    //[localGallery removeImageAtIndex:[localGallery currentIndex]];
+}
+
+
+- (void)handleEditCaptionButtonTouch:(id)sender {
+    // here we could implement some code to change the caption for a stored image
+}
 
 @end

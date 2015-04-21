@@ -7,14 +7,16 @@
 //
 
 #import "BerhasilBukaTokoViewController.h"
+#import "ProductAddEditViewController.h"
 #import "string_more.h"
+#import "string_product.h"
 
 @interface BerhasilBukaTokoViewController ()
 
 @end
 
 @implementation BerhasilBukaTokoViewController
-
+@synthesize dictData;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = CStringBukaToko;
@@ -38,8 +40,8 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    [self initAttributeText:lblCongratulation withStrText:[NSString stringWithFormat:CStringCongratulation, @" ajsdkfjakdjajsdfjsd   asdfk"] withFont:[UIFont fontWithName:CFont_Gotham_Book size:15.0f] withColor:lblCongratulation.textColor withTextAlignment:NSTextAlignmentCenter];
-    txtURL.text = @"http://www.google.com";
+    [self initAttributeText:lblCongratulation withStrText:[NSString stringWithFormat:CStringCongratulation, [dictData objectForKey:kTKPD_SHOPNAMEKEY]] withFont:[UIFont fontWithName:CFont_Gotham_Book size:15.0f] withColor:lblCongratulation.textColor withTextAlignment:NSTextAlignmentCenter];
+    txtURL.text = [dictData objectForKey:kTKPD_SHOPURL];
     [self initAttributeText:lblSubCongratulation withStrText:lblSubCongratulation.text withFont:[UIFont fontWithName:CFont_Gotham_Book size:13.0f] withColor:lblSubCongratulation.textColor withTextAlignment:NSTextAlignmentCenter];
     lblTambahProduct.font = lblUrl.font = [UIFont fontWithName:CFont_Gotham_Book size:16.0f];
     [self initAttributeText:lblDescTambahProduct withStrText:CStringContentTambahProduct withFont:[UIFont fontWithName:CFont_Gotham_Book size:14.0f] withColor:lblTambahProduct.textColor withTextAlignment:NSTextAlignmentLeft];
@@ -104,6 +106,16 @@
 #pragma mark - Action Method
 - (IBAction)actionTambahProduct:(id)sender
 {
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    NSDictionary *_data = [secureStorage keychainDictionary];
     
+    ProductAddEditViewController *productViewController = [ProductAddEditViewController new];
+    productViewController.data = @{
+                                   kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY]?:@{},
+                                   DATA_TYPE_ADD_EDIT_PRODUCT_KEY : @(TYPE_ADD_EDIT_PRODUCT_ADD),
+                                   };
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:productViewController];
+    nav.navigationBar.translucent = NO;
+    [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 @end

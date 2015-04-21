@@ -26,6 +26,7 @@
 #define kTKPD_SHOPIDKEY @"shop_id"
 #define kTKPD_SHOPNAMEKEY @"shop_name"
 #define kTKPD_SHOPIMAGEKEY @"shop_avatar"
+#define kTKPD_SHOPURL @"shop_url"
 #define kTKPD_SHOPISGOLD @"shop_is_gold"
 #define kTKPD_NULLCOMMENTKEY @"0"
 
