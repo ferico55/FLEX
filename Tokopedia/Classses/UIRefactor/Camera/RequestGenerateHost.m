@@ -115,7 +115,8 @@
 
 -(void)requestFailureGenerateHost:(id)object
 {
-    
+    if(_delegate!=nil && [_delegate respondsToSelector:@selector(failedGenerateHost)])
+        [_delegate failedGenerateHost];
 }
 
 -(void)requestProcessGenerateHost:(id)object

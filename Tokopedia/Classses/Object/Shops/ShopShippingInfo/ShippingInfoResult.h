@@ -16,7 +16,7 @@
 #import "Tiki.h"
 
 @interface ShippingInfoResult : NSObject
-
+@property (nonatomic, strong) NSArray *payment_options;
 @property (nonatomic, strong) NSArray *district;
 @property (nonatomic, strong) NSArray *shipment;
 @property (nonatomic) NSInteger tiki_fee;

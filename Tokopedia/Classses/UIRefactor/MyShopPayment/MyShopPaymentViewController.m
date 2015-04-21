@@ -5,19 +5,36 @@
 //  Created by IT Tkpd on 11/18/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-
+#import "AddShop.h"
+#import "AddShopResult.h"
+#import "BerhasilBukaTokoViewController.h"
+#import "CreateShopViewController.h"
 #import "detail.h"
 #import "SettingPayment.h"
 #import "ShopSettings.h"
+#import "MyShopShipmentTableViewController.h"
 #import "MyShopPaymentViewController.h"
 #import "MyShopPaymentCell.h"
+#import "MoreViewController.h"
 #import "URLCacheController.h"
+#import "RequestUploadImage.h"
+#import "RequestGenerateHost.h"
+#import "ShippingInfoShipmentPackage.h"
+#import "ShippingInfoShipments.h"
+#import "ShippingInfoResult.h"
+#import "string_create_shop.h"
+#import "string_more.h"
+#import "StickyAlertView.h"
+#import "TokopediaNetworkManager.h"
 
 #pragma mark - Setting Payment View Controller
 @interface MyShopPaymentViewController ()
 <
     UITableViewDataSource,UITableViewDelegate,
-    MyShopPaymentCellDelegate
+    MyShopPaymentCellDelegate,
+    TokopediaNetworkManagerDelegate,
+    RequestUploadImageDelegate,
+    GenerateHostDelegate
 >
 {
     SettingPayment *_payment;
@@ -42,12 +59,19 @@
     URLCacheController *_cachecontroller;
     URLCacheConnection *_cacheconnection;
     NSTimeInterval _timeinterval;
+    
+    RKObjectManager *objectOpenShop;
+    GenerateHost *_generateHost;
+    TokopediaNetworkManager *tokopediaNetworkManager;
+    UIBarButtonItem *btnLanjut;
+    UIActivityIndicatorView *activityIndicator;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
 @property (strong, nonatomic) IBOutlet UIView *noteView;
 @property (strong, nonatomic) IBOutlet UIView *footerView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
+@property (strong, nonatomic) IBOutlet UIView *headerview;
 
 -(void)cancel;
 -(void)configureRestKit;
@@ -61,7 +85,7 @@
 @end
 
 @implementation MyShopPaymentViewController
-
+@synthesize myShopShipmentTableViewController, arrDataPayment;
 #pragma mark - Initialization
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -100,8 +124,20 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self configureRestKit];
-    [self request];
+    
+    if(myShopShipmentTableViewController == nil)
+    {
+		[self configureRestKit]; 
+		[self request];
+    }
+    else
+    {
+        btnLanjut = [[UIBarButtonItem alloc] initWithTitle:CStringLanjut style:UIBarButtonItemStylePlain target:self action:@selector(lanjut:)];
+        self.navigationItem.rightBarButtonItem = btnLanjut;
+        _list = [arrDataPayment mutableCopy];
+        if(_list!=nil && _list.count>0)
+            _isnodata = NO;
+    }
     self.table.contentOffset = CGPointMake(0, 0);
     self.table.contentInset = UIEdgeInsetsMake(-36, 0, 0, 0);
 }
@@ -120,6 +156,9 @@
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [tokopediaNetworkManager requestCancel];
+    tokopediaNetworkManager.delegate = nil;
+    tokopediaNetworkManager = nil;
 }
 
 #pragma mark - Table View Data Source
@@ -233,6 +272,35 @@
     }
 }
 #pragma mark - View Action
+- (void)isLoading:(BOOL)isLoading
+{
+    if(isLoading)
+    {
+        if(activityIndicator == nil)
+        {
+            activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 40, 40)];
+            activityIndicator.color = [UIColor whiteColor];
+        }
+        [activityIndicator startAnimating];
+        self.navigationItem.rightBarButtonItem.customView = activityIndicator;
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem.customView = nil;
+        self.navigationItem.rightBarButtonItem = btnLanjut;
+        [activityIndicator stopAnimating];
+    }
+}
+
+- (void)lanjut:(id)sender
+{
+    [self isLoading:YES];
+    RequestGenerateHost *requestHost = [RequestGenerateHost new];
+    [requestHost configureRestkitGenerateHost];
+    [requestHost requestGenerateHost];
+    requestHost.delegate = self;
+}
+
 - (IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         [self.navigationController popViewControllerAnimated:YES];
@@ -616,4 +684,292 @@
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:link]];
 }
 
+
+
+- (TokopediaNetworkManager *)getNetworkManager
+{
+    if(tokopediaNetworkManager == nil)
+    {
+        tokopediaNetworkManager = [TokopediaNetworkManager new];
+        tokopediaNetworkManager.delegate = self;
+    }
+    
+    return tokopediaNetworkManager;
+}
+
+
+#pragma mark - TokopediaNetworkManager Delegate
+- (NSDictionary*)getParameter:(int)tag
+{
+    NSMutableDictionary *param = [NSMutableDictionary new];
+    [param setObject:kTKPD_OPEN_SHOP forKey:kTKPDDETAIL_ACTIONKEY];
+    [param setObject:[myShopShipmentTableViewController.createShopViewController getNamaDomain] forKey:kTKPDDETAILPRODUCT_APISHOPDOMAINKEY];
+    [param setObject:@"" forKey:kTKPD_SHOP_LOGO];
+    [param setObject:[myShopShipmentTableViewController.createShopViewController getNamaToko] forKey:kTKPDDETAIL_APISHOPNAMEKEY];
+    [param setObject:[myShopShipmentTableViewController.createShopViewController getDesc] forKey:kTKPD_SHOP_SHORT_DESC];
+    [param setObject:[myShopShipmentTableViewController.createShopViewController getSlogan] forKey:kTKPD_SHOP_TAG_LINE];
+    [param setObject:[NSString stringWithFormat:@"%d", [myShopShipmentTableViewController getCourirOrigin]] forKey:kTKPD_SHOP_COURIER_ORIGIN];
+    [param setObject:[myShopShipmentTableViewController getPostalCode] forKey:kTKPD_SHOP_POSTAL];
+    [param setObject:@"" forKey:kTKPDSHOPSHIPMENT_APIRPXPACKETKEY];
+    [param setObject:@"" forKey:kTKPDSHOPSHIPMENT_APIRPXTICKETKEY];
+    
+    //Set Shipping ID
+    NSMutableDictionary *shipments = [NSMutableDictionary new];
+    NSMutableDictionary *jne = [NSMutableDictionary new];
+    if ([[myShopShipmentTableViewController getAvailShipment] containsObject:[myShopShipmentTableViewController getJne].shipment_id]) {
+        [param setObject:[myShopShipmentTableViewController getShipment].jne.jne_diff_district forKey:kTKPDSHOPSHIPMENT_APIDIFFDISTRICTKEY];
+        [param setObject:[myShopShipmentTableViewController getJneExtraFeeTextField]?@"1":@"0" forKey:kTKPDSHOPSHIPMENT_APIJNEFEEKEY];
+        [param setObject:[NSString stringWithFormat:@"%ld", [myShopShipmentTableViewController getShipment].jne.jne_fee] forKey:kTKPDSHOPSHIPMENT_APIJNEFEEVALUEKEY];
+        [param setObject:[myShopShipmentTableViewController getJneMinWeightTextField]?@"1":@"0" forKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTKEY];
+        [param setObject:[myShopShipmentTableViewController getShipment].jne.jne_min_weight forKey:kTKPDSHOPSHIPMENT_APIMINWEIGHTVALUEKEY];
+        [param setObject:[myShopShipmentTableViewController getShipment].jne.jne_tiket forKey:kTKPDSHOPSHIPMENT_APIJNETICKETKEY];
+
+        
+        if ([[myShopShipmentTableViewController getJnePackageYes].active boolValue]) {
+            [jne setValue:@"1" forKey:[myShopShipmentTableViewController getJnePackageYes].sp_id];
+        }
+        if ([[myShopShipmentTableViewController getJnePackageReguler].active boolValue]) {
+            [jne setValue:@"1" forKey:[myShopShipmentTableViewController getJnePackageReguler].sp_id];
+        }
+        if ([[myShopShipmentTableViewController getJnePackageOke].active boolValue]) {
+            [jne setValue:@"1" forKey:[myShopShipmentTableViewController getJnePackageOke].sp_id];
+        }
+        
+        if ([[jne allValues] count] > 0) {
+            [shipments setValue:jne forKey:[myShopShipmentTableViewController getJne].shipment_id];
+        }
+    }
+    
+    NSMutableDictionary *tiki = [NSMutableDictionary new];
+    if ([[myShopShipmentTableViewController getAvailShipment] containsObject:[myShopShipmentTableViewController getTiki].shipment_id]) {
+        [param setObject:[myShopShipmentTableViewController getTikiExtraFee]?@"1":@"0" forKey:kTKPDSHOPSHIPMENT_APITIKIFEEKEY];
+        [param setObject:[NSString stringWithFormat:@"%ld", [myShopShipmentTableViewController getShipment].tiki.tiki_fee] forKey:kTKPDSHOPSHIPMENT_APITIKIFEEVALUEKEY];
+        
+        
+        if ([[myShopShipmentTableViewController getTikiPackageRegular].active boolValue]) {
+            [tiki setValue:@"1" forKey:[myShopShipmentTableViewController getTikiPackageRegular].sp_id];
+        }
+        if ([[myShopShipmentTableViewController getTikiPackageOn].active boolValue]) {
+            [tiki setValue:@"1" forKey:[myShopShipmentTableViewController getTikiPackageOn].sp_id];
+        }
+        
+        if ([[tiki allValues] count] > 0) {
+            [shipments setValue:tiki forKey:[myShopShipmentTableViewController getTiki].shipment_id];
+        }
+    }
+    
+    NSMutableDictionary *rpx = [NSMutableDictionary new];
+    if ([[myShopShipmentTableViewController getAvailShipment] containsObject:[myShopShipmentTableViewController getRpx].shipment_id]) {
+        if ([[myShopShipmentTableViewController getRpxPackageNextDay].active boolValue]) {
+            [rpx setValue:@"1" forKey:[myShopShipmentTableViewController getRpxPackageNextDay].sp_id];
+        }
+        if ([[myShopShipmentTableViewController getRpxPackageEco].active boolValue]) {
+            [rpx setValue:@"1" forKey:[myShopShipmentTableViewController getRpxPackageEco].sp_id];
+        }
+        
+        if ([[rpx allValues] count] > 0) {
+            [shipments setValue:rpx forKey:[myShopShipmentTableViewController getRpx].shipment_id];
+        }
+    }
+    
+    NSMutableDictionary *wahana = [NSMutableDictionary new];
+    if ([[myShopShipmentTableViewController getAvailShipment] containsObject:[myShopShipmentTableViewController getWahana].shipment_id]) {
+        if ([[myShopShipmentTableViewController getWahanaPackNormal].active boolValue]) {
+            [wahana setObject:@"1" forKey:[myShopShipmentTableViewController getWahanaPackNormal].sp_id];
+        }
+        
+        if ([[wahana allValues] count] > 0) {
+            [shipments setObject:wahana forKey:[myShopShipmentTableViewController getWahana].shipment_id];
+        }
+    }
+    
+    NSMutableDictionary *pos = [NSMutableDictionary new];
+    if ([[myShopShipmentTableViewController getAvailShipment] containsObject:[myShopShipmentTableViewController getPosIndo].shipment_id]) {
+        [param setObject:[myShopShipmentTableViewController getPosExtraFee]?@"1":@"0" forKey:kTKPDSHOPSHIPMENT_APIPOSFEEKEY];
+        [param setObject:[NSString stringWithFormat:@"%ld", [myShopShipmentTableViewController getShipment].pos.pos_fee] forKey:kTKPDSHOPSHIPMENT_APIPOSFEEVALUEKEY];
+        [param setObject:[myShopShipmentTableViewController getPosMinWeight]?@"1":@"0" forKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTKEY];
+        [param setObject:[NSString stringWithFormat:@"%ld", [myShopShipmentTableViewController getShipment].pos.pos_min_weight] forKey:kTKPDSHOPSHIPMENT_APIPOSMINWEIGHTVALUEKEY];
+        
+        if ([[myShopShipmentTableViewController getPosPackageKhusus].active boolValue]) {
+            [pos setObject:@"1" forKey:[myShopShipmentTableViewController getPosPackageKhusus].sp_id];
+        }
+        if ([[myShopShipmentTableViewController getPosPackageBiasa].active boolValue]) {
+            [pos setObject:@"1" forKey:[myShopShipmentTableViewController getPosPackageBiasa].sp_id];
+        }
+        if ([[myShopShipmentTableViewController getPosPackageExpress].active boolValue]) {
+            [pos setObject:@"1" forKey:[myShopShipmentTableViewController getPosPackageExpress].sp_id];
+        }
+        
+        if ([[pos allValues] count] > 0) {
+            [shipments setObject:pos forKey:[myShopShipmentTableViewController getPosIndo].shipment_id];
+        }
+    }
+    
+    NSMutableDictionary *cahaya = [NSMutableDictionary new];
+    if ([[myShopShipmentTableViewController getAvailShipment] containsObject:[myShopShipmentTableViewController getCahaya].shipment_id]) {
+        if ([[myShopShipmentTableViewController getCahayaPackageNormal].active boolValue]) {
+            [cahaya setObject:@"1" forKey:[myShopShipmentTableViewController getCahayaPackageNormal].sp_id];
+        }
+        
+        if ([[cahaya allValues] count] > 0) {
+            [shipments setObject:cahaya forKey:[myShopShipmentTableViewController getCahaya].shipment_id];
+        }
+    }
+    
+    NSMutableDictionary *pandu = [NSMutableDictionary new];
+    if ([[myShopShipmentTableViewController getAvailShipment] containsObject:[myShopShipmentTableViewController getPandu].shipment_id]) {
+        if ([[myShopShipmentTableViewController getPanduPackageRegular].active boolValue]) {
+            [pandu setObject:@"1" forKey:[myShopShipmentTableViewController getPanduPackageRegular].sp_id];
+        }
+        
+        if ([[pandu allValues] count] > 0) {
+            [shipments setObject:pandu forKey:[myShopShipmentTableViewController getPandu].shipment_id];
+        }
+    }
+    
+    NSData *data = [NSJSONSerialization dataWithJSONObject:shipments options:0 error:nil];
+    NSString *shipments_ids = [[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding];
+    [param setObject:shipments_ids forKey:kTKPDSHOPSHIPMENT_APISHIPMENTIDS];
+    
+    
+    NSDictionary *dictPayment = [NSDictionary dictionaryWithObjectsAndKeys:@(1), @"1", @(1), @"4", @(1), @"6", @(1), @"7", @(1), @"8", nil];
+    data = [NSJSONSerialization dataWithJSONObject:dictPayment options:0 error:nil];
+    NSString *payment_ids = [[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSUTF8StringEncoding];
+    [param setObject:payment_ids forKey:kTKPDSHOPSHIPMENT_APIPAYMENTIDS];
+    
+    
+    return param;
+}
+
+- (NSString*)getPath:(int)tag
+{
+    return [NSString stringWithFormat:@"action/%@", kTKPMYSHOP_APIPATH];
+}
+
+- (id)getObjectManager:(int)tag
+{
+    objectOpenShop =  [RKObjectManager sharedClient];
+    RKObjectMapping *statusMapping = [RKObjectMapping mappingForClass:[AddShop class]];
+    [statusMapping addAttributeMappingsFromDictionary:@{kTKPD_APISTATUSKEY:kTKPD_APISTATUSKEY,
+                                                        kTKPD_APIERRORMESSAGEKEY:kTKPD_APIERRORMESSAGEKEY,
+                                                        kTKPD_APISERVERPROCESSTIMEKEY:kTKPD_APISERVERPROCESSTIMEKEY
+                                                        }];
+    
+    RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[AddShopResult class]];
+    [resultMapping addAttributeMappingsFromDictionary:@{CStatusDomain:CStatusDomain, CShopID:CShopID, CShopURL:CShopURL, CIsSuccess:CIsSuccess}];
+    
+    
+    //relation
+    RKRelationshipMapping *resulRel = [RKRelationshipMapping relationshipMappingFromKeyPath:kTKPD_APIRESULTKEY toKeyPath:kTKPD_APIRESULTKEY withMapping:resultMapping];
+    [statusMapping addPropertyMapping:resulRel];
+    RKResponseDescriptor *responseDescriptorStatus = [RKResponseDescriptor responseDescriptorWithMapping:statusMapping
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:[self getPath:0] keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectOpenShop addResponseDescriptor:responseDescriptorStatus];
+    
+    return objectOpenShop;
+}
+
+- (NSString*)getRequestStatus:(id)result withTag:(int)tag
+{
+    NSDictionary *resultDict = ((RKMappingResult*)result).dictionary;
+    id stat = [resultDict objectForKey:@""];
+    
+    return ((AddShop *) stat).status;
+}
+
+- (void)actionAfterRequest:(id)successResult withOperation:(RKObjectRequestOperation*)operation withTag:(int)tag
+{
+    NSDictionary *resultDict = ((RKMappingResult*)successResult).dictionary;
+    AddShop *addShop = (AddShop *)[resultDict objectForKey:@""];
+    if(addShop.message_error!=nil && addShop.message_error.count>0) {//Failed
+        StickyAlertView *stickAlert = [[StickyAlertView alloc] initWithErrorMessages:addShop.message_error delegate:self];
+        [stickAlert show];
+        [self isLoading:NO];
+    }
+    else if([addShop.result.is_success isEqualToString:@"1"])
+    {
+        TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+        if(secureStorage != nil)
+        {
+            [secureStorage setKeychainWithValue:addShop.result.shop_id withKey:kTKPD_SHOPIDKEY];
+            [secureStorage setKeychainWithValue:[myShopShipmentTableViewController.createShopViewController getNamaToko] withKey:kTKPD_SHOPNAMEKEY];
+            [secureStorage setKeychainWithValue:addShop.result.shop_url withKey:kTKPD_SHOPIMAGEKEY];
+            [secureStorage setKeychainWithValue:@(0) withKey:kTKPD_SHOPISGOLD];
+            [myShopShipmentTableViewController.createShopViewController.moreViewController updateKeyChain];
+        }
+        
+        [self isLoading:NO];
+        
+        NSDictionary *tempDict = [NSDictionary dictionaryWithObjectsAndKeys:[myShopShipmentTableViewController.createShopViewController getNamaToko], kTKPD_SHOPNAMEKEY, addShop.result.shop_url, kTKPD_SHOPURL, nil];
+        
+        BerhasilBukaTokoViewController *berhasilBukaTokoViewController = [BerhasilBukaTokoViewController new];
+        berhasilBukaTokoViewController.dictData = tempDict;
+        [self.navigationController pushViewController:berhasilBukaTokoViewController animated:YES];
+    }
+    else
+    {
+        StickyAlertView *stickAlert = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedCreateShop] delegate:self];
+        [stickAlert show];
+        [self isLoading:NO];
+    }
+}
+
+- (void)actionFailAfterRequest:(id)errorResult withTag:(int)tag
+{
+}
+
+- (void)actionBeforeRequest:(int)tag
+{
+}
+
+- (void)actionRequestAsync:(int)tag
+{
+}
+
+- (void)actionAfterFailRequestMaxTries:(int)tag
+{
+    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedCreateShop] delegate:nil];
+    [stickyAlertView show];
+    [self isLoading:NO];
+}
+
+#pragma mark - RequestUploadImage delegate
+- (void)successUploadObject:(id)object withMappingResult:(UploadImage *)uploadImage
+{
+    [[self getNetworkManager] doRequest];
+}
+
+- (void)failedUploadObject:(id)object
+{
+//    [self successUploadObject:nil withMappingResult:nil];
+//    return;
+    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedUploadImage] delegate:self];
+    [stickyAlertView show];
+    [self isLoading:NO];
+}
+
+
+#pragma mark - RequestGenerateHost Delegate
+- (void)successGenerateHost:(GenerateHost *)generateHost
+{
+    _generateHost = generateHost;
+    RequestUploadImage *uploadImage = [RequestUploadImage new];
+    uploadImage.imageObject = [myShopShipmentTableViewController.createShopViewController getDictContentPhoto];
+    uploadImage.delegate = self;
+    uploadImage.generateHost = _generateHost;
+    uploadImage.action = kTKPDDETAIL_APIUPLOADSHOPIMAGEKEY;
+    uploadImage.fieldName = API_UPLOAD_SHOP_IMAGE_FORM_FIELD_NAME;
+    [uploadImage configureRestkitUploadPhoto];
+    [uploadImage requestActionUploadPhoto];
+}
+
+- (void)failedGenerateHost
+{
+    StickyAlertView *stickyAlertView = [[StickyAlertView alloc] initWithErrorMessages:@[CStringFailedUploadImage] delegate:self];
+    [stickyAlertView show];
+    [self isLoading:NO];
+}
 @end
