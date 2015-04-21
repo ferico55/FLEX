@@ -422,9 +422,6 @@
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
         [nc postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil userInfo:@{}];
         [nc postNotificationName:@"clearCacheNotificationBar" object:nil];
-        
-        TKPDSecureStorage* storage = [TKPDSecureStorage standardKeyChains];
-        [storage resetKeychain];
     }
 
     self.hidesBottomBarWhenPushed = NO;
