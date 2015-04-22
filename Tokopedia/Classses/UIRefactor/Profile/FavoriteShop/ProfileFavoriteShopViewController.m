@@ -82,8 +82,7 @@
     _operationQueue = [NSOperationQueue new];
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
-    _noResultView = [NoResultView new];
-    
+    _noResultView = [NoResultView new];    
     _list = [NSMutableArray new];
     
     _page = 1;
@@ -411,7 +410,7 @@
                     [_table reloadData];
                 } else {
                     _isnodata = YES;
-                    _table.tableFooterView = _noResultView;
+                    _table.tableFooterView = _noResultView.view;
                 }
                 
             }

@@ -25,7 +25,7 @@
 	NSInteger _unloadSelectedIndex;
 	NSArray* _unloadViewControllers;
     
-    NSArray *_chevrons;
+    NSMutableArray *_chevrons;
     
     UIBarButtonItem *_barbuttoninfo;
     
@@ -33,7 +33,7 @@
     
     ProfileInfo *_profileinfo;
     
-    BOOL _isnodata;
+    BOOL _isnodata, hasLoadViewWillAppear;
     BOOL _isrefreshview;
     NSInteger _requestcount;
     BOOL _isaddressexpanded;
@@ -87,7 +87,7 @@
 #pragma mark TKPDTabBarProfileController
 
 @implementation TKPDTabProfileNavigationController
-
+@synthesize isOtherProfile;
 @synthesize viewControllers = _viewControllers;
 @synthesize selectedViewController = _selectedViewController;
 @synthesize selectedIndex = _selectedIndex;
@@ -145,7 +145,8 @@
     [self.navigationController.navigationBar setTranslucent:NO];
     
     _buttons = [NSArray sortViewsWithTagInArray:_buttons];
-    _chevrons = _buttons;
+    _chevrons = [NSMutableArray arrayWithArray:_buttons];
+    
 	
 	if (_unloadSelectedIndex != -1) {
 		[self setViewControllers:_unloadViewControllers];
@@ -202,6 +203,25 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    if(!hasLoadViewWillAppear && isOtherProfile) {
+        hasLoadViewWillAppear = !hasLoadViewWillAppear;
+        for(UIButton *temp in _chevrons)
+        {
+            if(temp.tag == 12) {//Btn Kontak
+                [_chevrons removeObject:temp];
+                [temp removeFromSuperview];
+                break;
+            }
+        }
+        
+        //Set Frame for button
+        int originX = 0;
+        for(UIButton *temp in _chevrons) {
+            temp.frame = CGRectMake(originX, temp.frame.origin.y, self.view.bounds.size.width/2.0f, temp.bounds.size.height);
+            originX = temp.frame.origin.x+temp.bounds.size.width;
+        }
+    }
+    
     if (!_isrefreshview) {
         [self configureRestKit];
         if (_isnodata) {
@@ -308,7 +328,7 @@
     
     CALayer *upperBorder = [CALayer layer];
     upperBorder.backgroundColor = [[UIColor colorWithRed:(22.0/255.0) green:(125.0/255.0) blue:(22.0/255.0) alpha:1.0] CGColor];
-    upperBorder.frame = CGRectMake(0, 41.0f, CGRectGetWidth([_chevrons[_selectedIndex] frame]), 3.0f);
+    upperBorder.frame = CGRectMake(0, 41.0f, (isOtherProfile? self.view.bounds.size.width/2.0f:CGRectGetWidth([_chevrons[_selectedIndex] frame])), 3.0f);
     
     [[_chevrons[_selectedIndex] layer] addSublayer:upperBorder];
 
@@ -522,7 +542,7 @@
         index = sender.tag;
         
         //reset tab border color and text color
-        for(int i=0;i<3;i++) {
+        for(int i=0;i<_chevrons.count;i++) {
             CALayer *whiteBorder = [CALayer layer];
             whiteBorder.backgroundColor = [[UIColor whiteColor] CGColor];
             whiteBorder.frame = CGRectMake(0, 41.0f, CGRectGetWidth([_chevrons[i] frame]), 3.0f);
