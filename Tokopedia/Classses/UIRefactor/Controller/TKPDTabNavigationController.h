@@ -32,7 +32,7 @@
 
 @interface TKPDTabNavigationController : UIViewController
 
-@property (nonatomic, weak) NSString *navigationTitle;
+@property (nonatomic, strong) NSString *navigationTitle;
 
 @property (nonatomic, copy, setter = setViewControllers:) NSArray *viewControllers;
 @property (nonatomic, weak, setter = setSelectedViewController:) UIViewController *selectedViewController;

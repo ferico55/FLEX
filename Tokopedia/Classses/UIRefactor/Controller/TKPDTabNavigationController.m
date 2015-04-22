@@ -537,7 +537,9 @@
         [_segmentcontrol setSelectedSegmentIndex:_selectedIndex];
         _hascatalog = YES;
     }
-    if ( [[_data objectForKey:kTKPDCATEGORY_DATATYPEKEY]  isEqual: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)]) {
+    if ( [[_data objectForKey:kTKPDCATEGORY_DATATYPEKEY]  isEqual: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)] ||
+        [[_data objectForKey:kTKPDHASHTAG_HOTLIST]  isEqual: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)]
+        ) {
         if (count == 2) {
             _segmentcontrol.hidden = NO;
             [_segmentcontrol removeAllSegments];
