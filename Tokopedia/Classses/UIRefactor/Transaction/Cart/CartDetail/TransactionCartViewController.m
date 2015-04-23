@@ -639,6 +639,9 @@
         }
     }
 
+    if (!_shipmentViewController) {
+        _shipmentViewController = [TransactionCartShippingViewController new];
+    }
     _shipmentViewController.data = @{DATA_CART_DETAIL_LIST_KEY:list,
                                     DATA_DROPSHIPPER_NAME_KEY: dropshipName,
                                     DATA_DROPSHIPPER_PHONE_KEY:dropshipPhone,
@@ -2737,6 +2740,9 @@
     [_stockPartialDetail removeAllObjects];
     _isUsingSaldoTokopedia = NO;
     _switchUsingSaldo.on = _isUsingSaldoTokopedia;
+    if (_shipmentViewController) {
+        _shipmentViewController = nil;
+    }
 }
 
 -(void)addArrayObjectTemp

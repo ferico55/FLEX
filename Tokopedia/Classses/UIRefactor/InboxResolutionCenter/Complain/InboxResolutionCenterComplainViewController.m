@@ -578,6 +578,9 @@
             [_tableView reloadData];
         }
     }
+    [_refreshControl endRefreshing];
+    [_act stopAnimating];
+    _tableView.tableFooterView = nil;
 }
 
 -(void)actionAfterFailRequestMaxTries:(int)tag
