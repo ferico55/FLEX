@@ -183,7 +183,7 @@
         else
         {
             //Calculate the expected size based on the font and linebreak mode of your label
-            CGSize maximumLabelSize = CGSizeMake(200,9999);
+            CGSize maximumLabelSize = CGSizeMake(290,9999);
             
             CGSize expectedLabelSize = [_addressLabel.text sizeWithFont:_addressLabel.font
                                                           constrainedToSize:maximumLabelSize
@@ -192,13 +192,13 @@
             //adjust the label the the new height.
             CGRect newFrame = _addressLabel.frame;
             newFrame.size.height = expectedLabelSize.height;
-            height = COST_CELL_HEIGHT - 50 + newFrame.size.height;
+            height = COST_CELL_HEIGHT + newFrame.size.height;
         }
     }
     else
     {
         //Calculate the expected size based on the font and linebreak mode of your label
-        CGSize maximumLabelSize = CGSizeMake(200,9999);
+        CGSize maximumLabelSize = CGSizeMake(290,9999);
         
         CGSize expectedLabelSize = [_addressLabel.text sizeWithFont:_addressLabel.font
                                           constrainedToSize:maximumLabelSize
@@ -207,7 +207,7 @@
         //adjust the label the the new height.
         CGRect newFrame = _addressLabel.frame;
         newFrame.size.height = expectedLabelSize.height;
-        height = COST_CELL_HEIGHT - 50 + newFrame.size.height;
+        height = COST_CELL_HEIGHT + newFrame.size.height;
     }
     return height;
 }

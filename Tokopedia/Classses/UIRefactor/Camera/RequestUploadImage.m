@@ -166,7 +166,7 @@
            [_delegate failedUploadObject:_imageObject];
        }
                                
-                           }];
+    }];
 }
 
 -(void)showErrorMessages:(NSArray*)messages
