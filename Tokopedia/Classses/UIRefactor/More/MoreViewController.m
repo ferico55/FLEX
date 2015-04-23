@@ -137,6 +137,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self initNotificationManager];
     if(hasLoadViewWillAppear) {
         return;
     }
@@ -145,7 +146,7 @@
     [super viewWillAppear:animated];
     
     self.navigationController.title = @"More";
-    [self initNotificationManager];
+
     
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationSlide];
 

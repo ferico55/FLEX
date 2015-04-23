@@ -27,15 +27,18 @@
 #import "UserAuthentificationManager.h"
 #import "WishListViewController.h"
 
+#import "RedirectHandler.h"
+
 @interface HomeTabViewController () <UIScrollViewDelegate,
                                     NotificationManagerDelegate,
+                                    RedirectHandlerDelegate,
                                     TKPDTabHomeDelegate>
 {
     NotificationManager *_notifManager;
     NSInteger _page;
     BOOL _isAbleToSwipe;
     UserAuthentificationManager *_userManager;
-    
+    RedirectHandler *_redirectHandler;
 }
 
 @property (strong, nonatomic) HotlistViewController *hotlistController;
@@ -57,6 +60,10 @@
                                              selector:@selector(didSwipeHomePage:)
                                                  name:@"didSwipeHomePage" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(redirectNotification:)
+                                                 name:@"redirectNotification" object:nil];
+    
 }
 
 #pragma mark - Lifecycle
@@ -77,11 +84,12 @@
     _shopViewController.delegate = self;
     
     _homeHeaderController = [HomeTabHeaderViewController new];
-    _notifManager = [NotificationManager new];
     
     _wishListViewController = [WishListViewController new];
     _wishListViewController.delegate = self;
 
+    _redirectHandler = [RedirectHandler new];
+    _redirectHandler.delegate = self;
     
     [self initNotificationCenter];
 
@@ -116,6 +124,11 @@
     
     [self goToPage:_page];
     [self initNotificationManager];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reloadNotification)
+                                                 name:@"reloadNotification"
+                                               object:nil];
     
     _userManager = [UserAuthentificationManager new];
     if([[_userManager getUserId] isEqualToString:@"0"]) {
@@ -365,5 +378,24 @@
     self.hidesBottomBarWhenPushed = NO;
 }
 
+
+
+#pragma mark - Memory Management
+-(void)dealloc{
+    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+- (void)redirectNotification:(NSNotification*)notification {
+    _redirectHandler = [[RedirectHandler alloc]init];
+    _redirectHandler.delegate = self;
+    
+    NSDictionary *userInfo = notification.userInfo;
+    NSDictionary *data = [userInfo objectForKey:@"data"];
+    NSInteger code = [[data objectForKey:@"tkp_code"] integerValue];
+    
+    [_redirectHandler proxyRequest:code];
+}
 
 @end

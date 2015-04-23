@@ -86,6 +86,8 @@ typedef enum TagRequest {
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(applicationLogin:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION object:nil];
     [center addObserver:self selector:@selector(applicationlogout:) name:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION object:nil];
+    
+    [center addObserver:self selector:@selector(redirectNotification:) name:@"redirectNotification" object:nil];
 
     [center addObserver:self selector:@selector(updateTabBarMore:) name:UPDATE_TABBAR object:nil];
 }
@@ -599,6 +601,18 @@ typedef enum TagRequest {
     }
 }
 
+
+- (void)redirectNotification:(NSNotification*)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    
+    _tabBarController.selectedIndex = 0;
+    for(UIViewController *viewController in _tabBarController.viewControllers) {
+        if([viewController isKindOfClass:[UINavigationController class]]) {
+            [(UINavigationController *)viewController popToRootViewControllerAnimated:NO];
+        }
+    }
+    
+}
 
 
 

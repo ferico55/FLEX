@@ -14,7 +14,7 @@
 @end
 
 @interface RedirectHandler : NSObject {
-    
+    UINavigationController *_navigationController;
 }
 
 @property (assign, nonatomic) id<RedirectHandlerDelegate> delegate;

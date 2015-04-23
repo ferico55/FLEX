@@ -10,17 +10,36 @@
 
 #import "InboxMessageViewController.h"
 #import "TKPDTabInboxMessageNavigationController.h"
+#import "InboxTalkViewController.h"
+#import "TKPDTabInboxTalkNavigationController.h"
+#import "InboxReviewViewController.h"
+#import "TKPDTabInboxReviewNavigationController.h"
+#import "SalesNewOrderViewController.h"
 
 #import "NotificationState.h"
 
 @implementation RedirectHandler
 
-- (void)proxyRequest:(int)state{
-    if(state == STATE_NEW_MESSAGE) {
+- (id)init {
+    self = [super init];
+    
+    if(self != nil) {
         
     }
     
-    [self redirectToMessage];
+    return self;
+}
+
+- (void)proxyRequest:(int)state{
+    if(state == STATE_NEW_MESSAGE) {
+        [self redirectToMessage];
+    } else if(state == STATE_NEW_TALK) {
+        [self redirectToTalk];
+    } else if(state == STATE_NEW_REVIEW) {
+        [self redirectToReview];
+    } else if(state == STATE_NEW_ORDER) {
+        [self redirectToNewOrder];
+    }
 }
 
 - (void)redirectToMessage {
@@ -47,14 +66,57 @@
 }
 
 - (void)redirectToTalk {
+    UINavigationController *nav = (UINavigationController*)_delegate;
+    _navigationController = (UINavigationController*)_delegate;
     
+    InboxTalkViewController *vc = [InboxTalkViewController new];
+    vc.data=@{@"nav":@"inbox-talk"};
+    
+    InboxTalkViewController *vc1 = [InboxTalkViewController new];
+    vc1.data=@{@"nav":@"inbox-talk-my-product"};
+    
+    InboxTalkViewController *vc2 = [InboxTalkViewController new];
+    vc2.data=@{@"nav":@"inbox-talk-following"};
+    
+    NSArray *vcs = @[vc,vc1, vc2];
+    
+    TKPDTabInboxTalkNavigationController *nc = [TKPDTabInboxTalkNavigationController new];
+    [nc setSelectedIndex:2];
+    [nc setViewControllers:vcs];
+    [nav.navigationController pushViewController:nc animated:YES];
 }
 
 - (void)redirectToReview {
+    UINavigationController *nav = (UINavigationController*)_delegate;
+    _navigationController = (UINavigationController*)_delegate;
     
+    InboxReviewViewController *vc = [InboxReviewViewController new];
+    vc.data=@{@"nav":@"inbox-review"};
+    
+    InboxReviewViewController *vc1 = [InboxReviewViewController new];
+    vc1.data=@{@"nav":@"inbox-review-my-product"};
+    
+    InboxReviewViewController *vc2 = [InboxReviewViewController new];
+    vc2.data=@{@"nav":@"inbox-review-my-review"};
+    
+    NSArray *vcs = @[vc,vc1, vc2];
+    
+    TKPDTabInboxReviewNavigationController *nc = [TKPDTabInboxReviewNavigationController new];
+    [nc setSelectedIndex:2];
+    [nc setViewControllers:vcs];
+    nc.hidesBottomBarWhenPushed = YES;
+    [nav.navigationController pushViewController:nc animated:YES];
 }
 
 - (void)redirectToNewOrder {
+    UINavigationController *nav = (UINavigationController*)_delegate;
+    _navigationController = (UINavigationController*)_delegate;
+    
+    SalesNewOrderViewController *controller = [[SalesNewOrderViewController alloc] init];
+    controller.delegate = _navigationController;
+    controller.hidesBottomBarWhenPushed = YES;
+    
+    [nav.navigationController pushViewController:controller animated:YES];
     
 }
 
