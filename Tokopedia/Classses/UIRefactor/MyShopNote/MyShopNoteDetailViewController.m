@@ -491,7 +491,8 @@
                     _isNewNoteReturnableProduct = YES;
                 }
                 
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:contentNote attributes:attributes];
+//                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:contentNote attributes:attributes];
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
                 _contentNoteTextView.attributedText = attributedString;
                 
                 if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
@@ -821,7 +822,8 @@
                 [attributes setObject:font forKey:NSFontAttributeName];
                 [attributes setObject:style forKey:NSParagraphStyleAttributeName];
                 
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
+//                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
                 _contentNoteTextView.attributedText = attributedString;
                 
                 _timeNoteLabel.hidden = NO;
@@ -855,7 +857,9 @@
                 UIFont *font = [UIFont fontWithName:@"GothamBook" size:12];
                 [attributes setObject:font forKey:NSFontAttributeName];
 
-                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
+//                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithString:[NSString convertHTML:_note.result.detail.notes_content] attributes:attributes];
+                
+                NSAttributedString *attributedString = [[NSAttributedString alloc] initWithData:[_note.result.detail.notes_content dataUsingEncoding:NSUnicodeStringEncoding] options:@{ NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType } documentAttributes:nil error:nil];
                 _contentNoteTextView.attributedText = attributedString;
                 
                 [self configureRestKit];

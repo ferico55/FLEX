@@ -5,7 +5,8 @@
 //  Created by Feizal Badri Asmoro on 2/3/15.
 //  Copyright (c) 2015 TOKOPEDIA. All rights reserved.
 //
-
+#import "category.h"
+#import "EtalaseList.h"
 #import "GeneralTableViewController.h"
 
 @interface GeneralTableViewController ()
@@ -17,11 +18,13 @@
     NSDictionary *_textAttributes;
     NSMutableArray *_searchResults;
     NSMutableArray *_searchContents;
+    NSString *strObjectName;
 }
 
 @end
 
 @implementation GeneralTableViewController
+@synthesize isObjectCategory;
 
 - (void)viewDidLoad {
 
@@ -113,9 +116,17 @@
     }
     
     if (_tableViewCellStyle == UITableViewCellStyleDefault) {
-        cell.textLabel.text = [object description];
-        cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:[object description]
+        if(isObjectCategory) {
+            cell.textLabel.text = [((NSDictionary *)object) objectForKey:kTKPDCATEGORY_DATATITLEKEY];
+        }
+        else if([object isMemberOfClass:[EtalaseList class]]) {
+            cell.textLabel.text = ((EtalaseList *)object).etalase_name;
+        }
+        else {
+            cell.textLabel.text = [object description];
+            cell.textLabel.attributedText = [[NSAttributedString alloc] initWithString:[object description]
                                                                         attributes:_textAttributes];
+        }
         cell.textLabel.numberOfLines = 0;
     }
     
@@ -130,7 +141,15 @@
         }
     }
     
-    if ([object isEqual:_selectedObject]) {
+    if(isObjectCategory && [[((NSDictionary *)object) objectForKey:kTKPDCATEGORY_DATADIDKEY] isEqualToString:_selectedObject]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        _selectedIndexPath = indexPath;
+    }
+    else if([object isMemberOfClass:[EtalaseList class]] && [((EtalaseList *) object).etalase_id isEqualToString:_selectedObject]) {
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        _selectedIndexPath = indexPath;
+    }
+    else if ([object isEqual:_selectedObject]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
         _selectedIndexPath = indexPath;
     } else {
@@ -155,7 +174,16 @@
         cell = [tableView cellForRowAtIndexPath:indexPath];
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
-        _selectedObject = [_objects objectAtIndex:indexPath.row];
+        if(isObjectCategory) {
+            _selectedObject = [((NSDictionary *) [_objects objectAtIndex:indexPath.row]) objectForKey:kTKPDCATEGORY_DATADIDKEY];
+            strObjectName = [((NSDictionary *) [_objects objectAtIndex:indexPath.row]) objectForKey:kTKPDCATEGORY_DATATITLEKEY];
+        }
+        else if([[_objects objectAtIndex:indexPath.row] isMemberOfClass:[EtalaseList class]]) {
+            _selectedObject = ((EtalaseList *) [_objects objectAtIndex:indexPath.row]).etalase_id;
+            strObjectName = ((EtalaseList *) [_objects objectAtIndex:indexPath.row]).etalase_name;
+        }
+        else
+            _selectedObject = [_objects objectAtIndex:indexPath.row];
         _selectedIndexPath = indexPath;
 
         cell = [tableView cellForRowAtIndexPath:_selectedIndexPath];
@@ -191,7 +219,10 @@
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
         if (button.tag == 1) {
-            if ([self.delegate respondsToSelector:@selector(didSelectObject:senderIndexPath:)]) {
+            if([self.delegate respondsToSelector:@selector(didSelectObject:senderIndexPath:withObjectName:)]) {
+                [self.delegate didSelectObject:_selectedObject senderIndexPath:_senderIndexPath withObjectName:strObjectName];
+            }
+            else if ([self.delegate respondsToSelector:@selector(didSelectObject:senderIndexPath:)]) {
                 [self.delegate didSelectObject:_selectedObject senderIndexPath:_senderIndexPath];
             } else if ([self.delegate respondsToSelector:@selector(didSelectObject:)]) {
                 [self.delegate didSelectObject:_selectedObject];

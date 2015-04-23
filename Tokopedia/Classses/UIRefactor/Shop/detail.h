@@ -184,6 +184,7 @@ typedef enum
 #define kTKPDDETAIL_APILOCATIONKEY @"location"
 #define kTKPDDETAIL_APIADDRESSKEY @"address"
 #define kTKPDDETAIL_APICONDITIONKEY @"condition"
+#define CStringPictureStatus @"picture_status"
 #define kTKPDDETAIL_APIORERBYKEY @"order_by"
 #define kTKPDDETAIL_APISORTKEY @"sort"
 #define kTKPDDETAIL_APIKEYWORDKEY @"keyword"
