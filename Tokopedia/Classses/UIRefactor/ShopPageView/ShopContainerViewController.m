@@ -260,6 +260,7 @@
 
     [nc addObserver:self selector:@selector(showNavigationShopTitle:) name:@"showNavigationShopTitle" object:nil];
     [nc addObserver:self selector:@selector(hideNavigationShopTitle:) name:@"hideNavigationShopTitle" object:nil];
+    [nc addObserver:self selector:@selector(refreshShopData) name:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil];
  }
 
 
@@ -828,6 +829,13 @@
     
 }
 
+
+- (void)refreshShopData {
+    [self configureRestKit];
+    [self request];
+    
+    [self postNotificationSetShopHeader];
+}
 
 
 @end

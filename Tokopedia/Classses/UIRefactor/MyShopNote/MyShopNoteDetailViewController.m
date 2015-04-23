@@ -142,7 +142,6 @@
                                                       style:UIBarButtonItemStyleDone
                                                      target:(self)
                                                      action:@selector(tap:)];
-    self.navigationItem.rightBarButtonItem = _barbuttonedit;
 
     switch (_type) {
         case kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY:
@@ -194,7 +193,7 @@
     _contentNoteTextView.contentInset = UIEdgeInsetsMake(8, 0, 0, 0);
     _contentNoteTextView.delegate = self;
     
-    [_titleNoteTextField becomeFirstResponder];
+
     
     if (_titleNoteTextField.text.length > 0 && _contentNoteTextView.text.length > 0) {
         _barbuttonedit.enabled = YES;
@@ -290,6 +289,7 @@
                 nav.navigationBar.translucent = NO;
                 
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
+                [_titleNoteTextField becomeFirstResponder];
                 break;
             }
             default:

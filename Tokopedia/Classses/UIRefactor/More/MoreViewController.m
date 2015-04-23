@@ -100,6 +100,20 @@
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
     
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:[_auth objectForKey:@"user_image"]]
+                                                  cachePolicy:NSURLRequestUseProtocolCachePolicy
+                                              timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
+    
+    [_profilePictureImageView setImageWithURLRequest:request
+                          placeholderImage:[UIImage imageNamed:@"nil"]
+                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
+                                       //NSLOG(@"thumb: %@", thumb);
+                                       [_profilePictureImageView setImage:image];
+#pragma clang diagnostic pop
+                                   } failure: nil];
+    
     if([_auth objectForKey:@"shop_id"]) {
         if([_auth objectForKey:@"shop_name"])
             _shopNameLabel.text = [[NSString stringWithFormat:@"%@", [_auth objectForKey:@"shop_name"]] mutableCopy];

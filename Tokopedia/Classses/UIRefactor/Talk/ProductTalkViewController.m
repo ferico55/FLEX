@@ -235,7 +235,7 @@
             }
             [((GeneralTalkCell*)cell).unfollowButton setTitle:followStatus forState:UIControlStateNormal];
             
-            if(![list.talk_own isEqualToString:@"1"]) {
+            if(![list.talk_own isEqualToString:@"1"] && [_userManager isLogin]) {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = NO;
             } else {
                 ((GeneralTalkCell*)cell).unfollowButton.hidden = YES;
@@ -244,6 +244,13 @@
                 CGRect newFrame = ((GeneralTalkCell*)cell).commentbutton.frame;
                 newFrame.origin.x = 75;
                 ((GeneralTalkCell*)cell).commentbutton.frame = newFrame;
+            }
+            
+
+            if([_userManager isLogin]) {
+                ((GeneralTalkCell*)cell).moreActionButton.hidden = NO;
+            } else {
+                ((GeneralTalkCell*)cell).moreActionButton.hidden = YES;
             }
             ((GeneralTalkCell*)cell).productViewIsHidden = YES;
             ((GeneralTalkCell*)cell).messageLabel.hidden = NO;

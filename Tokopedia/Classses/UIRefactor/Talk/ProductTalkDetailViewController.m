@@ -29,6 +29,7 @@
 #import "UserAuthentificationManager.h"
 
 #import "ProductTalkViewController.h"
+#import "InboxTalkViewController.h"
 
 #import "stringrestkit.h"
 #import "string_more.h"
@@ -92,6 +93,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *reportButton;
 @property (weak, nonatomic) IBOutlet UIButton *talkProductName;
 @property (weak, nonatomic) IBOutlet UIView *userArea;
+@property (weak, nonatomic) IBOutlet UIView *buttonsDividers;
 
 @property (strong, nonatomic) IBOutlet UIView *header;
 
@@ -168,12 +170,14 @@
     
     //validate previous class so it can use several URL path
     NSArray *vcs = self.navigationController.viewControllers;
-    if([vcs[[vcs count] - 2] isKindOfClass:[ProductTalkViewController class]]) {
-        _urlPath = kTKPDDETAILTALK_APIPATH;
-        _urlAction = kTKPDDETAIL_APIGETCOMMENTBYTALKID;
-    } else {
+    if([vcs[[vcs count] - 2] isKindOfClass:[InboxTalkViewController class]]) {
+        
         _urlPath = kTKPDINBOX_TALK_APIPATH;
         _urlAction = kTKPDDETAIL_APIGETINBOXDETAIL;
+        
+    } else {
+        _urlPath = kTKPDDETAILTALK_APIPATH;
+        _urlAction = kTKPDDETAIL_APIGETCOMMENTBYTALKID;
     }
     
     
@@ -290,6 +294,18 @@
             ((GeneralTalkCommentCell*)cell).create_time.text = list.comment_create_time;
             
             ((GeneralTalkCommentCell*)cell).indexpath = indexPath;
+            
+
+            if([_userManager isLogin]) {
+                _reportButton.hidden = NO;
+            } else {
+                _reportButton.hidden = YES;
+                _buttonsDividers.hidden = YES;
+                
+                CGRect newFrame = _talktotalcommentlabel.frame;
+                newFrame.origin.x = 120;
+                _talktotalcommentlabel.frame = newFrame;
+            }
             
             if(list.is_not_delivered) {
                 ((GeneralTalkCommentCell*)cell).commentfailimage.hidden = NO;
@@ -1032,7 +1048,12 @@
 #pragma mark - Swipe Delegate
 -(BOOL)swipeTableCell:(MGSwipeTableCell*) cell canSwipe:(MGSwipeDirection) direction;
 {
-    return YES;
+    if([_auth objectForKey:@"user_id"]) {
+        return YES;
+    }
+    
+    return NO;
+
 }
 
 -(NSArray*) swipeTableCell:(MGSwipeTableCell*) cell swipeButtonsForDirection:(MGSwipeDirection)direction
