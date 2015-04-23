@@ -13,6 +13,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelgender;
 @property (weak, nonatomic) IBOutlet UILabel *labelbirth;
 @property (weak, nonatomic) IBOutlet UILabel *labelhobbies;
-
+@property (nonatomic) BOOL isNotMyBiodata;
 
 @end

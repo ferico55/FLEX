@@ -523,6 +523,7 @@ typedef NS_ENUM(NSInteger, UITableViewCellType) {
                 NSArray *viewcontrollers = @[vc,vc1,vc2];
                 
                 TKPDTabNavigationController *c = [TKPDTabNavigationController new];
+                [c setData:@{kTKPDHASHTAG_HOTLIST: @(kTKPDCATEGORY_DATATYPECATEGORYKEY)}];
                 [c setNavigationTitle:hashtags.name];
                 [c setSelectedIndex:0];
                 [c setViewControllers:viewcontrollers];

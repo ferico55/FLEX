@@ -83,7 +83,6 @@
     _cacheconnection = [URLCacheConnection new];
     _cachecontroller = [URLCacheController new];
     _noResultView = [NoResultView new];
-    
     _list = [NSMutableArray new];
     
     _page = 1;
@@ -274,7 +273,7 @@
     
 	NSDictionary* param = @{
                             kTKPDPROFILE_APIACTIONKEY : kTKPDPROFILE_APIGETFAVORITESHOPKEY,
-                            kTKPDPROFILE_APIUSERIDKEY : [_data objectForKey:kTKPDPROFILE_APIUSERIDKEY]?:@(0),
+                            kTKPDPROFILE_APIPROFILEUSERIDKEY : [_data objectForKey:kTKPDPROFILE_APIUSERIDKEY]?:@(0),
                             kTKPDPROFILE_APIPAGEKEY : @(_page)
                             };
     
@@ -411,7 +410,7 @@
                     [_table reloadData];
                 } else {
                     _isnodata = YES;
-                    _table.tableFooterView = _noResultView;
+                    _table.tableFooterView = _noResultView.view;
                 }
                 
             }
